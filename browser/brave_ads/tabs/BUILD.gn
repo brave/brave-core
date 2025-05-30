@@ -44,6 +44,7 @@ source_set("browser_tests") {
       "//brave/components/brave_ads/core/browser/service:test_support",
       "//brave/components/brave_ads/core/public:headers",
       "//brave/components/brave_rewards/core",
+      "//chrome/browser/profiles/keep_alive",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

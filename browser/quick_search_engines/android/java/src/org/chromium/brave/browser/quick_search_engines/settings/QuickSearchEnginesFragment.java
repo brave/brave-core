@@ -141,6 +141,11 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         return mPageTitle;
     }
 
+    @Override
+    public @AnimationType int getAnimationType() {
+        return AnimationType.PROPERTY;
+    }
+
     private void refreshData() {
         Runnable onQuickSearchEnginesReady =
                 () -> {

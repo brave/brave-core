@@ -32,10 +32,10 @@ import org.chromium.ui.base.DeviceFormFactor;
  * toolbar, when it is visible.
  */
 public class BraveHubManagerImpl extends HubManagerImpl {
-    private Activity mActivity;
+    private final Activity mActivity;
     private int mBottomToolbarHeight;
-    private boolean mIsTablet;
-    private ComponentCallbacks mComponentCallbacks;
+    private final boolean mIsTablet;
+    private final ComponentCallbacks mComponentCallbacks;
 
     public BraveHubManagerImpl(
             @NonNull Activity activity,

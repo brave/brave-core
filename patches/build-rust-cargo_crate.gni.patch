@@ -1,8 +1,8 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index d9912722b4ecdbc95187f016cc21d120a75b93c7..6618f0382c4d784b3e1514ec0b6b988ff86766a9 100644
+index 0e73b546b38bf97f3ac6c822a47f55be3a0cbcd9..d35ae1ceb04e21b5fb78de04f7ef047f837fda54 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
-@@ -158,6 +158,7 @@ template("cargo_crate") {
+@@ -165,6 +165,7 @@ template("cargo_crate") {
      manifest_dir = rebase_path(build_gn_dir + "/crate", root_build_dir)
    }
    _rustenv += [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
@@ -10,11 +10,11 @@ index d9912722b4ecdbc95187f016cc21d120a75b93c7..6618f0382c4d784b3e1514ec0b6b988f
  
    # cargo_crate() should set library_configs, executable_configs,
    # proc_macro_configs. Not configs.
-@@ -249,6 +250,7 @@ template("cargo_crate") {
-     testonly = _testonly
-     if (defined(invoker.visibility)) {
-       visibility = invoker.visibility
+@@ -257,6 +258,7 @@ template("cargo_crate") {
+       testonly = _testonly
+       if (defined(invoker.visibility)) {
+         visibility = invoker.visibility
 +      visibility += [ "//brave/third_party/*", "//brave/components/*",  ]
-     }
-     crate_name = _crate_name
+       }
+       crate_name = _crate_name
  

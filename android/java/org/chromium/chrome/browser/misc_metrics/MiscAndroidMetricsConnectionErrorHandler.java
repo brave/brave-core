@@ -21,7 +21,7 @@ public class MiscAndroidMetricsConnectionErrorHandler implements ConnectionError
         default void cleanUpMiscAndroidMetrics() {}
     }
 
-    private MiscAndroidMetricsConnectionErrorHandlerDelegate mDelegate;
+    private final MiscAndroidMetricsConnectionErrorHandlerDelegate mDelegate;
 
     public MiscAndroidMetricsConnectionErrorHandler(
             MiscAndroidMetricsConnectionErrorHandlerDelegate delegate) {

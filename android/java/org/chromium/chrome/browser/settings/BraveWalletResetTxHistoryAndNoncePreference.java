@@ -27,12 +27,10 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
-/**
- * The preference used to reset transaction and nonce history in Brave Wallet.
- */
-public class BraveWalletResetTxHistoryAndNoncePreference
-        extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
-    private String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
+/** The preference used to reset transaction and nonce history in Brave Wallet. */
+public class BraveWalletResetTxHistoryAndNoncePreference extends Preference
+        implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
+    private static final String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
 
     private TxService mTxService;
     private final String mConfirmationPhrase;

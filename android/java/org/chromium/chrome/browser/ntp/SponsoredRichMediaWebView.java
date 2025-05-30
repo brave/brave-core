@@ -26,8 +26,8 @@ import org.chromium.ui.base.WindowAndroid;
 public class SponsoredRichMediaWebView {
     private static final String NEW_TAB_TAKEOVER_URL = "chrome://new-tab-takeover";
 
-    private WebContents mWebContents;
-    private ThinWebView mWebView;
+    private final WebContents mWebContents;
+    private final ThinWebView mWebView;
 
     public SponsoredRichMediaWebView(
             Activity activity, WindowAndroid windowAndroid, Profile profile) {

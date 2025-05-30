@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.model;
 import org.chromium.brave_wallet.mojom.CoinType;
 
 public class WalletAccountCreationRequest {
-    private @CoinType.EnumType int mCoinType;
+    private final @CoinType.EnumType int mCoinType;
 
     public WalletAccountCreationRequest(@CoinType.EnumType int coinType) {
         mCoinType = coinType;

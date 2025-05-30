@@ -66,21 +66,21 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
 
-    private ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
+    private final ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
             new ObservableSupplierImpl<>();
-    private CallbackController mCallbackController = new CallbackController();
+    private final CallbackController mCallbackController = new CallbackController();
     ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
-    private Runnable mOriginalHomeButtonRunnable;
+    private final Runnable mOriginalHomeButtonRunnable;
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
     private BookmarksButton mBookmarksButton;
     private BottomToolbarNewTabButton mNewTabButton;
-    private View mBottomContainerTopShadow;
+    private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
-    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
-    private LocationBarModel mLocationBarModel;
-    private HomepageManager mHomepageManager;
-    private BookmarkManagerOpener mBookmarkManagerOpener;
+    private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final LocationBarModel mLocationBarModel;
+    private final HomepageManager mHomepageManager;
+    private final BookmarkManagerOpener mBookmarkManagerOpener;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 

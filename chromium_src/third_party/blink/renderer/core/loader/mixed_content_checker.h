@@ -27,7 +27,7 @@
       const FetchClientSettingsObject* fetch_client_settings_object,       \
       ExecutionContext* execution_context_for_logging,                     \
       mojom::RequestContextFrameType,                                      \
-      WebContentSettingsClient* settings_client);                          \
+      WebContentSettingsClient* settings_client, LocalFrame* frame);       \
   static void UpgradeInsecureRequest_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/loader/mixed_content_checker.h"  // IWYU pragma: export

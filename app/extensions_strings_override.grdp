@@ -48,4 +48,6 @@
 
 <if expr="is_chromeos">
   </if>
+<if expr="enable_extensions">
+  </if>
 </grit-part>

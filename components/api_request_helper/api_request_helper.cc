@@ -384,18 +384,8 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
 void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
     std::string json,
     base::OnceCallback<void(ValueOrError)> callback) {
-  if (base::JSONReader::UsingRust()) {
-    ParseJsonInWorkerTaskRunner(std::move(json), task_runner_.get(),
-                                std::move(callback));
-    return;
-  }
-
-  if (!data_decoder_) {
-    VLOG(1) << "Creating DataDecoder for APIRequestHelper";
-    data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
-  }
-
-  data_decoder_->ParseJson(json, std::move(callback));
+  ParseJsonInWorkerTaskRunner(std::move(json), task_runner_.get(),
+                              std::move(callback));
 }
 
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
@@ -588,14 +578,9 @@ void APIRequestHelper::SetUrlLoaderFactoryForTesting(
 
 void ParseJsonNonBlocking(std::string json,
                           base::OnceCallback<void(ValueOrError)> callback) {
-  if (base::JSONReader::UsingRust()) {
-    auto task_runner = MakeDecoderTaskRunner();
-    ParseJsonInWorkerTaskRunner(std::move(json), task_runner.get(),
-                                std::move(callback));
-    return;
-  }
-
-  data_decoder::DataDecoder::ParseJsonIsolated(json, std::move(callback));
+  auto task_runner = MakeDecoderTaskRunner();
+  ParseJsonInWorkerTaskRunner(std::move(json), task_runner.get(),
+                              std::move(callback));
 }
 
 }  // namespace api_request_helper

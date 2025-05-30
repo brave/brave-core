@@ -150,7 +150,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 
-    private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
+    private final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;

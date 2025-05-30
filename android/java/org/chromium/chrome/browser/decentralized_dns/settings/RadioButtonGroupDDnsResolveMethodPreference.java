@@ -27,7 +27,7 @@ public class RadioButtonGroupDDnsResolveMethodPreference
     private @ResolveMethodTypes int mSetting;
     private RadioButtonWithDescription mSettingRadioButton;
     private RadioButtonWithDescriptionLayout mGroup;
-    private ArrayList<RadioButtonWithDescription> mButtons;
+    private final ArrayList<RadioButtonWithDescription> mButtons;
 
     public RadioButtonGroupDDnsResolveMethodPreference(Context context, AttributeSet attrs) {
         super(context, attrs);

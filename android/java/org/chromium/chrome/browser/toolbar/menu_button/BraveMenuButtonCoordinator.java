@@ -26,20 +26,32 @@ import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
-    private Activity mActivity;
+    private final Activity mActivity;
 
     public BraveMenuButtonCoordinator(
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate,
-            WindowAndroid windowAndroid, SetFocusFunction setUrlBarFocusFunction,
-            Runnable requestRenderRunnable, boolean shouldShowAppUpdateBadge,
-            Supplier<Boolean> isInOverviewModeSupplier, ThemeColorProvider themeColorProvider,
-            Supplier<MenuButtonState> menuButtonStateSupplier, Runnable onMenuButtonClicked,
+            WindowAndroid windowAndroid,
+            SetFocusFunction setUrlBarFocusFunction,
+            Runnable requestRenderRunnable,
+            boolean shouldShowAppUpdateBadge,
+            Supplier<Boolean> isInOverviewModeSupplier,
+            ThemeColorProvider themeColorProvider,
+            Supplier<MenuButtonState> menuButtonStateSupplier,
+            Runnable onMenuButtonClicked,
             @IdRes int menuButtonId) {
-        super(appMenuCoordinatorSupplier, controlsVisibilityDelegate, windowAndroid,
-                setUrlBarFocusFunction, requestRenderRunnable, shouldShowAppUpdateBadge,
-                isInOverviewModeSupplier, themeColorProvider, menuButtonStateSupplier,
-                onMenuButtonClicked, menuButtonId);
+        super(
+                appMenuCoordinatorSupplier,
+                controlsVisibilityDelegate,
+                windowAndroid,
+                setUrlBarFocusFunction,
+                requestRenderRunnable,
+                shouldShowAppUpdateBadge,
+                isInOverviewModeSupplier,
+                themeColorProvider,
+                menuButtonStateSupplier,
+                onMenuButtonClicked,
+                menuButtonId);
 
         mActivity = windowAndroid.getActivity().get();
     }

@@ -804,8 +804,8 @@ void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   }
 }
 
-void BraveBrowserView::ShowSplitView() {
-  BrowserView::ShowSplitView();
+void BraveBrowserView::ShowSplitView(bool focus_active_view) {
+  BrowserView::ShowSplitView(focus_active_view);
 
   UpdateContentsSeparatorVisibility();
 }

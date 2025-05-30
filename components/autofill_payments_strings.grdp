@@ -233,6 +233,38 @@
     Saving IBAN info
   </message>
 
+  <!-- Autofill Save and Fill dialog related strings -->
+  <if expr="not is_ios and not is_android">
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_TITLE" desc="Title for the Save and Fill dialog. It is shown when a user accepts the` Save and Fill` suggestion shown in the Autofill dropdown for users who don't have any cards saved in Autofill. This always users to save and fill a credit card with a single click">
+      Save card for faster checkout
+    </message>
+    <if expr="_google_chrome">
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_LOCAL" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved locally.">
+        Autofill this card for purchases made in Brave when it's saved on this device
+      </message>
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to the GPay server.">
+        Autofill this card for purchases made in Brave when it's saved to use with Google Pay
+      </message>
+    </if>
+    <if expr="not _google_chrome">
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_LOCAL" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved locally.">
+        Autofill this card for purchases made in Brave when it's saved on this device
+      </message>
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to the GPay server.">
+        Autofill this card for purchases made in Brave when it's saved to use with Google Pay
+      </message>
+    </if>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_CARD_NUMBER_LABEL" desc="The label text for the card number textfield.">
+      Card number
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_NAME_ON_CARD_LABEL" desc="The label text for the name on card textfield.">
+      Name on card
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_ACCEPT" desc="Text to show for the Autofill Save and Fill dialog accept button.">
+      Save and autofill
+    </message>
+  </if>
+
   <!-- Autofill error dialog related strings -->
   <message name="IDS_AUTOFILL_MASKED_SERVER_CARD_RISK_BASED_UNMASKING_ERROR_TITLE" desc="Text to be displayed as the title of the error dialog during credit card risk-based unmasking.">
     Something went wrong
@@ -451,6 +483,11 @@
   <message name="IDS_AUTOFILL_CARD_UNMASK_CONFIRMATION_MESSAGE" desc="Message displayed after tapping a card, and the response from the bank indicates that no further verification is required.">
     Verified
   </message>
+  <if expr="is_ios">
+    <message name="IDS_IOS_AUTOFILL_PROGRESS_DIALOG_CONFIRMATION_ACCESSIBILITY_ANNOUNCEMENT" desc="The accessibility announcement to indicate autofill progress dialog shows confirmation state. This is spoken by VoiceOver.">
+      Verified
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_3DS_FETCH_VCN_PROGRESS_DIALOG_LOADING_MESSAGE" desc="Message to be displayed after a VCN 3DS authentication has completed, and Brave is attempting to retrieve the virtual card from the Payments server. If the authentication was successful, a confirmation message will display in the progress dialog and then the virtual card will be filled. If the authentication was not successful, an error message will be displayed.">
     Verifying...
   </message>
@@ -765,6 +802,9 @@
   </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_SUGGESTION_OPTION_VALUE" desc="The text shown in the virtual card option in the credit card suggestion list. It is shown as the value of the suggestion.">
     Virtual card
+  </message>
+  <message name="IDS_AUTOFILL_IBAN_SUGGESTION_OPTION_VALUE" desc="The text shown in the IBAN option in the IBAN suggestion list. It is shown as the value of the suggestion." translateable="false">
+    IBAN
   </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_NUMBER_SWITCH_LABEL" desc="The text shown as the label for virtual card enrollment switch in the server card edit page." formatter_data="android_java">
     Virtual card
@@ -1186,8 +1226,14 @@
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for payments that appears under the GPay icon." formatter_data="android_java">
       Autofill payment info
     </message>
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Brave Wallet icon." formatter_data="android_java">
+      Autofill loyalty card
+    </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_CONTINUE_BUTTON" desc="The label of the button, which would fill in the web form with card credentials." formatter_data="android_java">
       Continue
+    </message>
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_AUTOFILL_BUTTON" desc="The label of the button, which would fill in the web form with a loyalty card number." formatter_data="android_java">
+      Autofill
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a payment method to fill into a form." formatter_data="android_java">
       Payment methods available to be filled on touch. Keyboard hidden.

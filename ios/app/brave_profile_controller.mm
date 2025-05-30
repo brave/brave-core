@@ -53,6 +53,7 @@
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
+#include "ios/chrome/browser/shared/model/profile/scoped_profile_keep_alive_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
@@ -70,6 +71,7 @@
 #endif
 
 @interface BraveProfileController () {
+  ScopedProfileKeepAliveIOS _profileKeepAlive;
   raw_ptr<ProfileIOS> _profile;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
@@ -98,35 +100,37 @@
 
 @implementation BraveProfileController
 
-- (instancetype)initWithProfile:(ProfileIOS*)profile {
+- (instancetype)initWithProfileKeepAlive:
+    (ScopedProfileKeepAliveIOS)profileKeepAlive {
   if ((self = [super init])) {
-    _profile = profile;
+    _profileKeepAlive = std::move(profileKeepAlive);
+    _profile = _profileKeepAlive.profile();
 
     // Disable Safe-Browsing via Prefs
-    profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+    _profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
 
     // Setup main browser
-    _browserList = BrowserListFactory::GetForProfile(profile);
+    _browserList = BrowserListFactory::GetForProfile(_profile);
     _browser = Browser::Create(_profile, {});
     _browserList->AddBrowser(_browser.get());
 
     // Setup otr browser
-    ProfileIOS* otr_last_used_profile = profile->GetOffTheRecordProfile();
+    ProfileIOS* otr_last_used_profile = _profile->GetOffTheRecordProfile();
     _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
     _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
     [self performFaviconsCleanup];
-    CredentialProviderServiceFactory::GetForProfile(profile);
+    CredentialProviderServiceFactory::GetForProfile(_profile);
 #endif
 
     // Setup download managers for CWVWebView
     _downloadManager =
-        std::make_unique<ios_web_view::WebViewDownloadManager>(profile);
+        std::make_unique<ios_web_view::WebViewDownloadManager>(_profile);
     _otrDownloadManager =
         std::make_unique<ios_web_view::WebViewDownloadManager>(
-            profile->GetOffTheRecordProfile());
+            _profile->GetOffTheRecordProfile());
 
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
@@ -134,7 +138,7 @@
                 GetApplicationContext()->GetComponentUpdateService(),
                 GetApplicationContext()->GetLocalState())
                             ads_service:brave_ads::AdsServiceFactoryIOS::
-                                            GetForProfile(profile)];
+                                            GetForProfile(_profile)];
   }
   return self;
 }
@@ -161,6 +165,7 @@
   _browser.reset();
 
   _profile = nil;
+  _profileKeepAlive.Reset();
 }
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)

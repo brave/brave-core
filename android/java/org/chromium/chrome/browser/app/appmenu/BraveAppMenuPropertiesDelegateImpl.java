@@ -58,9 +58,8 @@ public abstract class BraveAppMenuPropertiesDelegateImpl extends AppMenuProperti
     }
 
     @Override
-    public ModelList getMenuItems(
-            CustomItemViewTypeProvider customItemViewTypeProvider, AppMenuHandler handler) {
-        ModelList modelList = super.getMenuItems(customItemViewTypeProvider, handler);
+    public ModelList getMenuItems(AppMenuHandler handler) {
+        ModelList modelList = super.getMenuItems(handler);
 
         for (int i = 0; i < modelList.size(); ++i) {
             MVCListAdapter.ListItem item = modelList.get(i);

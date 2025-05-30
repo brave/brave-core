@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -23,8 +24,6 @@ using brave_component_updater::BraveOnDemandUpdater;
 namespace brave_shields {
 
 namespace {
-
-constexpr size_t kHashSize = 32;
 
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -63,7 +62,7 @@ class AdBlockComponentInstallerPolicy
   const std::string component_id_;
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
-  uint8_t component_hash_[kHashSize];
+  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -75,9 +74,9 @@ AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
       component_name_(component_name),
       ready_callback_(callback) {
   // Generate hash from public key.
-  std::string decoded_public_key;
-  base::Base64Decode(component_public_key, &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
+  auto decoded_public_key = base::Base64Decode(component_public_key);
+  CHECK(decoded_public_key);
+  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
 }
 
 AdBlockComponentInstallerPolicy::~AdBlockComponentInstallerPolicy() = default;
@@ -119,7 +118,7 @@ base::FilePath AdBlockComponentInstallerPolicy::GetRelativeInstallDir() const {
 
 void AdBlockComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
+  *hash = base::ToVector(component_hash_);
 }
 
 std::string AdBlockComponentInstallerPolicy::GetName() const {

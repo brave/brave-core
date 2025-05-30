@@ -128,6 +128,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -1135,125 +1136,95 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   return false;
 }
 
-std::vector<std::unique_ptr<content::NavigationThrottle>>
-BraveContentBrowserClient::CreateThrottlesForNavigation(
-    content::NavigationHandle* handle) {
-  std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
-      ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+void BraveContentBrowserClient::CreateThrottlesForNavigation(
+    content::NavigationThrottleRegistry& registry) {
+  ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
+  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
+      navigation_handle.GetWebContents()->GetBrowserContext();
 
-  if (auto rewards_throttle = brave_rewards::RewardsProtocolNavigationThrottle::
-          MaybeCreateThrottleFor(handle)) {
-    throttles.insert(throttles.begin(), std::move(rewards_throttle));
-  }
+  registry.MaybeAddThrottle(
+      brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle));
 
 #if !BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
-      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
-  if (ntp_shows_navigation_throttle) {
-    throttles.push_back(std::move(ntp_shows_navigation_throttle));
-  }
+  registry.MaybeAddThrottle(
+      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle));
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  throttles.push_back(
-      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
+  registry.AddThrottle(
+      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(
+          &navigation_handle));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
-      tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
-                                                         context->IsTor());
-  if (tor_navigation_throttle) {
-    throttles.push_back(std::move(tor_navigation_throttle));
-  }
-  std::unique_ptr<content::NavigationThrottle>
-      onion_location_navigation_throttle =
-          tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
-              handle, TorProfileServiceFactory::IsTorDisabled(context),
-              context->IsTor());
-  if (onion_location_navigation_throttle) {
-    throttles.push_back(std::move(onion_location_navigation_throttle));
-  }
+  registry.MaybeAddThrottle(tor::TorNavigationThrottle::MaybeCreateThrottleFor(
+      &navigation_handle, context->IsTor()));
+  registry.MaybeAddThrottle(
+      tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle, TorProfileServiceFactory::IsTorDisabled(context),
+          context->IsTor()));
 #endif
 
-  std::unique_ptr<content::NavigationThrottle>
-      decentralized_dns_navigation_throttle =
-          decentralized_dns::DecentralizedDnsNavigationThrottle::
-              MaybeCreateThrottleFor(handle, g_browser_process->local_state(),
-                                     g_browser_process->GetApplicationLocale());
-  if (decentralized_dns_navigation_throttle) {
-    throttles.push_back(std::move(decentralized_dns_navigation_throttle));
-  }
+  registry.MaybeAddThrottle(
+      decentralized_dns::DecentralizedDnsNavigationThrottle::
+          MaybeCreateThrottleFor(&navigation_handle,
+                                 g_browser_process->local_state(),
+                                 g_browser_process->GetApplicationLocale()));
 
   // Debounce
-  if (auto debounce_throttle =
-          debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
-              handle, debounce::DebounceServiceFactory::GetForBrowserContext(
-                          context))) {
-    throttles.push_back(std::move(debounce_throttle));
-  }
+  registry.MaybeAddThrottle(
+      debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle,
+          debounce::DebounceServiceFactory::GetForBrowserContext(context)));
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   if (host_content_settings_map) {
-    if (std::unique_ptr<content::NavigationThrottle>
-            domain_block_navigation_throttle = brave_shields::
-                DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-                    handle, g_brave_browser_process->ad_block_service(),
-                    g_brave_browser_process->ad_block_service()
-                        ->custom_filters_provider(),
-                    EphemeralStorageServiceFactory::GetForContext(context),
-                    host_content_settings_map,
-                    g_browser_process->GetApplicationLocale())) {
-      throttles.push_back(std::move(domain_block_navigation_throttle));
-    }
+    registry.MaybeAddThrottle(
+        brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
+            &navigation_handle, g_brave_browser_process->ad_block_service(),
+            g_brave_browser_process->ad_block_service()
+                ->custom_filters_provider(),
+            EphemeralStorageServiceFactory::GetForContext(context),
+            host_content_settings_map,
+            g_browser_process->GetApplicationLocale()));
   }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   // Request Off-The-Record
-  if (auto request_otr_throttle =
-          request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
-              handle,
-              request_otr::RequestOTRServiceFactory::GetForBrowserContext(
-                  context),
-              EphemeralStorageServiceFactory::GetForContext(context),
-              Profile::FromBrowserContext(context)->GetPrefs(),
-              g_browser_process->GetApplicationLocale())) {
-    throttles.push_back(std::move(request_otr_throttle));
-  }
+  registry.MaybeAddThrottle(
+      request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle,
+          request_otr::RequestOTRServiceFactory::GetForBrowserContext(context),
+          EphemeralStorageServiceFactory::GetForContext(context),
+          Profile::FromBrowserContext(context)->GetPrefs(),
+          g_browser_process->GetApplicationLocale()));
 #endif
 
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
-    if (auto ai_chat_throttle =
-            ai_chat::AIChatThrottle::MaybeCreateThrottleFor(handle)) {
-      throttles.push_back(std::move(ai_chat_throttle));
-    }
+    registry.MaybeAddThrottle(
+        ai_chat::AIChatThrottle::MaybeCreateThrottleFor(&navigation_handle));
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (auto ai_chat_brave_search_throttle =
-          ai_chat::AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
-              base::BindOnce(&ai_chat::OpenAIChatForTab), handle,
-              ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
-              user_prefs::UserPrefs::Get(context))) {
-    throttles.push_back(std::move(ai_chat_brave_search_throttle));
-  }
+  registry.MaybeAddThrottle(
+      ai_chat::AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
+          base::BindOnce(&ai_chat::OpenAIChatForTab), &navigation_handle,
+          ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
+          user_prefs::UserPrefs::Get(context)));
 #endif
 
-  if (auto backup_results_throttle =
-          brave_search::BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
-              handle)) {
-    throttles.push_back(std::move(backup_results_throttle));
-  }
-
-  return throttles;
+  registry.MaybeAddThrottle(
+      brave_search::BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
+          &navigation_handle));
 }
 
 bool PreventDarkModeFingerprinting(WebContents* web_contents,

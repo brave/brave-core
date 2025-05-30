@@ -17,11 +17,11 @@ public class QuickSearchEnginesModel {
         int AI_ASSISTANT = 1;
     }
 
-    private String mShortName;
-    private String mKeyword;
-    private String mUrl;
+    private final String mShortName;
+    private final String mKeyword;
+    private final String mUrl;
     private boolean mIsEnabled;
-    private @QuickSearchEnginesModelType int mType;
+    private final @QuickSearchEnginesModelType int mType;
 
     public QuickSearchEnginesModel(
             String shortName,

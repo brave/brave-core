@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 3340aa80cbf5f059ac0073123ab8af6f4d407647..2739be7dad9210d86248e2ddf0a5a24b3ddc7650 100644
+index 489b1c806074f3b9df58c6a1629086606f6f2aea..314d5a3dc3e5924c01c139f1a5b77e771991ef9a 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -36,7 +36,7 @@
-     [RaisesException=Setter, CEReactions] attribute unsigned long width;
-     [RaisesException=Setter, CEReactions] attribute unsigned long height;
+@@ -38,7 +38,7 @@
+ 
+     [RuntimeEnabled=CanvasDrawElement] attribute boolean layoutSubtree;
  
 -    [HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
 +    [CallWith=ScriptState, HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
