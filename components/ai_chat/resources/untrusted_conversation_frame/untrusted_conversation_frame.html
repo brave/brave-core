@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="//resources/brave/leo/css/variables.css">
     <script src="//resources/js/load_time_data_deprecated.js"></script>
     <script src="/strings.js"></script>
+    <if expr="is_ios">
+        <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
+      <script src="chrome://resources/js/ios/web_ui.js"></script>
+      <script src="chrome://resources/js/ios/mojo_api.js"></script>
+    </if>
     <script src="untrusted_conversation_frame.bundle.js" type="module"></script>
     <style>
       body {
