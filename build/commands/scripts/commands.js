@@ -265,10 +265,6 @@ program
   )
   .option('--disable_pdfjs_extension', 'disable loading the PDFJS extension')
   .option(
-    '--disable_webtorrent_extension',
-    'disable loading the WebTorrent extension',
-  )
-  .option(
     '--ui_mode <ui_mode>',
     'which built-in ui appearance mode to use',
     /^(dark|light)$/i,

@@ -5,7 +5,6 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -26,7 +25,6 @@ source_set("component_loader") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
-    "//brave/components/brave_webtorrent:static_resources",
     "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
@@ -126,7 +124,6 @@ source_set("extensions") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",
@@ -202,14 +199,6 @@ source_set("extensions") {
     "//components/prefs",
   ]
 
-  if (enable_brave_webtorrent) {
-    sources += [
-      "brave_webtorrent_navigation_throttle.cc",
-      "brave_webtorrent_navigation_throttle.h",
-    ]
-    deps += [ "//brave/components/brave_webtorrent/browser" ]
-  }
-
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
 }
 
@@ -218,12 +207,6 @@ group("resources") {
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
   ]
-  if (enable_brave_webtorrent) {
-    deps += [
-      "//brave/components/brave_webtorrent:generated_resources",
-      "//brave/components/brave_webtorrent:static_resources",
-    ]
-  }
 }
 
 source_set("test_support") {

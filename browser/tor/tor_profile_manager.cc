@@ -248,8 +248,6 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   if (base::FeatureList::IsEnabled(net::features::kBraveTorWindowsHttpsOnly)) {
     pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
   }
-  // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
-  pref_service->SetBoolean(kWebTorrentEnabled, false);
 
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through

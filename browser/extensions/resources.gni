@@ -6,5 +6,4 @@
 brave_extensions_resources = [
   "//brave/browser/extensions/api:generated_api_registration",
   "//brave/browser/extensions:resources",
-  "//brave/components/brave_webtorrent/browser/buildflags",
 ]
