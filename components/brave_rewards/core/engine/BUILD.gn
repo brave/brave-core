@@ -202,6 +202,7 @@ static_library("engine") {
     "database/migration/migration_v4.h",
     "database/migration/migration_v40.h",
     "database/migration/migration_v41.h",
+    "database/migration/migration_v42.h",
     "database/migration/migration_v5.h",
     "database/migration/migration_v6.h",
     "database/migration/migration_v7.h",
