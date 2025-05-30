@@ -23,6 +23,7 @@
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #endif
 
 namespace {
@@ -46,8 +47,7 @@ class CaptchaDelegate
     if (!browser) {
       return false;
     }
-    auto* coordinator =
-        brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
+    auto* coordinator = browser->GetFeatures().rewards_panel_coordinator();
     if (!coordinator) {
       return false;
     }

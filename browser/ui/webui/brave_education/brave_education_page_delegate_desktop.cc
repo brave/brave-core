@@ -29,13 +29,9 @@ void BraveEducationPageDelegateDesktop::OpenURL(
 }
 
 void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
-  // TODO(zenparsing): Instead of using a `Browser` pointer,
-  // expose Rewards panel functionality via `BrowserWindowFeatures`.
-  // See https://github.com/brave/brave-browser/issues/42179.
-  auto* browser = window_interface_->GetBrowserForMigrationOnly();
-  CHECK(browser);
-  if (auto* panel_coordinator =
-          brave_rewards::RewardsPanelCoordinator::FromBrowser(browser)) {
+  auto* panel_coordinator =
+      window_interface_->GetFeatures().rewards_panel_coordinator();
+  if (panel_coordinator) {
     panel_coordinator->OpenRewardsPanel();
   }
 }

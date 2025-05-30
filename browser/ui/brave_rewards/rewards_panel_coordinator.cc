@@ -7,14 +7,17 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 namespace brave_rewards {
 
-RewardsPanelCoordinator::RewardsPanelCoordinator(Browser* browser)
-    : BrowserUserData<RewardsPanelCoordinator>(*browser) {}
+RewardsPanelCoordinator::RewardsPanelCoordinator(
+    BrowserWindowInterface* browser_window_interface)
+    : browser_window_interface_(browser_window_interface) {
+  CHECK(browser_window_interface_);
+}
 
 RewardsPanelCoordinator::~RewardsPanelCoordinator() = default;
 
@@ -23,8 +26,8 @@ bool RewardsPanelCoordinator::IsRewardsPanelURLForTesting(const GURL& url) {
 }
 
 bool RewardsPanelCoordinator::OpenRewardsPanel() {
-  if (GetBrowser().window()->IsMinimized()) {
-    GetBrowser().window()->Restore();
+  if (browser_window_interface_->IsMinimized()) {
+    browser_window_interface_->ActivateWindow();
   }
 
   for (auto& observer : observers_) {
@@ -41,7 +44,5 @@ void RewardsPanelCoordinator::AddObserver(Observer* observer) {
 void RewardsPanelCoordinator::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
-
-BROWSER_USER_DATA_KEY_IMPL(RewardsPanelCoordinator);
 
 }  // namespace brave_rewards
