@@ -506,6 +506,10 @@ class TabTrayController: AuthenticationController {
 
   private func updateColors() {
     let privateBrowsingManager = tabManager.privateBrowsingManager
+    // For the UISearchBar theming
+    navigationController?.overrideUserInterfaceStyle =
+      privateBrowsingManager.isPrivateBrowsing ? .dark : .unspecified
+
     let browserColors = privateBrowsingManager.browserColors
     containerView.backgroundColor = browserColors.chromeBackground
     tabTypeSelector.backgroundColor = browserColors.chromeBackground

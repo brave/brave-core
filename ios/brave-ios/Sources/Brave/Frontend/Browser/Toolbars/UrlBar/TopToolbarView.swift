@@ -566,6 +566,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   private func updateColors() {
+    overrideUserInterfaceStyle = privateBrowsingManager.isPrivateBrowsing ? .dark : .unspecified
     let browserColors = privateBrowsingManager.browserColors
     backgroundColor = browserColors.chromeBackground
     locationTextField?.backgroundColor = browserColors.containerBackground
