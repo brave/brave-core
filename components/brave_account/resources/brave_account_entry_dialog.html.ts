@@ -14,24 +14,30 @@ export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
       dialog-description="$i18n{braveAccountEntryDialogDescription}"
       dialog-title="$i18n{braveAccountEntryDialogTitle}"
     >
-      <div slot="buttons">
-        <leo-button @click=${() => this.fire('create-button-clicked')}>
-          $i18n{braveAccountCreateBraveAccountButtonLabel}
-        </leo-button>
-        <leo-button kind="outline"
-                    @click=${() => this.fire('sign-in-button-clicked')}>
-          $i18n{braveAccountAlreadyHaveAccountSignInButtonLabel}
-        </leo-button>
-      </div>
+      <leo-button
+        slot="buttons"
+        @click=${() => this.fire('create-button-clicked')}
+      >
+        $i18n{braveAccountCreateBraveAccountButtonLabel}
+      </leo-button>
+      <leo-button
+        slot="buttons"
+        kind="outline"
+        @click=${() => this.fire('sign-in-button-clicked')}
+      >
+        $i18n{braveAccountAlreadyHaveAccountSignInButtonLabel}
+      </leo-button>
       <div slot="footer">
         <div class="footer-text">
           $i18nRaw{braveAccountSelfCustodyDescription}
         </div>
-        <leo-button kind="plain-faint"
-                    @click=${() => this.fire('self-custody-button-clicked')}>
+        <leo-button
+          kind="plain-faint"
+          @click=${() => this.fire('self-custody-button-clicked')}
+        >
           $i18n{braveAccountSelfCustodyButtonLabel}
         </leo-button>
       </div>
     </settings-brave-account-dialog>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }

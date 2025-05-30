@@ -24,12 +24,11 @@ export class SettingsBraveAccountEntryDialogElement extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-entry-dialog':
-    SettingsBraveAccountEntryDialogElement
+    'settings-brave-account-entry-dialog': SettingsBraveAccountEntryDialogElement
   }
 }
 
 customElements.define(
   SettingsBraveAccountEntryDialogElement.is,
-  SettingsBraveAccountEntryDialogElement
+  SettingsBraveAccountEntryDialogElement,
 )
