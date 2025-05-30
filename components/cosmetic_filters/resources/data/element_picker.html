@@ -52,13 +52,20 @@
       height: auto;
     }
 
+    #main-section.desktop.minimized {
+      width: auto;
+      padding: 0px;
+      height: auto;
+      min-width: auto;
+    }
+
     @media (orientation: portrait) {
       #main-section:not(.desktop) {
         bottom: 0;
         right: 0;
         left: 0;
         border-radius: 28px 28px 0 0;
-        padding-top: 32px;
+        padding-top: 41px;
         border: none;
         width: 100%;
         transition: transform 0.3s ease;
@@ -97,6 +104,20 @@
       display: none;
     }
 
+    #main-section:not(.desktop) #title {
+      display: none;
+    }
+
+    #main-section.desktop #title {
+      display: block;
+      flex-grow: 1;
+      text-align: left;
+      padding-left: 16px;
+      padding-right: 16px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
     #main-section.desktop .close-dlg-btn {
       background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20d%3D%22M5.287%205.287a.85.85%200%200%200%200%201.202L10.797%2012l-5.51%205.511a.85.85%200%200%200%201.202%201.202L12%2013.203l5.51%205.51a.85.85%200%200%200%201.202-1.203L13.202%2012l5.51-5.51a.85.85%200%200%200-1.202-1.202L12%2010.798%206.489%205.287a.85.85%200%200%200-1.202%200%22%2F%3E%3C%2Fsvg%3E');
       width: 28px;
@@ -111,13 +132,15 @@
       margin-right: 20px;
     }
 
-    #main-section.desktop.minimized {
+    #main-section.desktop.minimized > #desktop-min-icon-container {
       background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20fill-rule%3D%22evenodd%22%20d%3D%22M4.8%204a.8.8%200%200%200-.8.8v5.437a.8.8%200%200%200%201.6%200V6.722l4.4%204.4a.8.8%200%201%200%201.132-1.13L6.74%205.6h3.446a.8.8%200%200%200%200-1.6zm14.4%2016a.8.8%200%200%200%20.8-.8v-5.437a.8.8%200%200%200-1.6%200v3.515l-4.4-4.4a.8.8%200%201%200-1.132%201.13L17.26%2018.4h-3.446a.8.8%200%200%200%200%201.6z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
-      width: 28px;
-      height: 28px;
+      min-width: 48px;
+      height: 68px;
+      width: 68px;
+      display: block;
     }
 
-    #main-section.desktop.minimized > * {
+    #main-section.desktop.minimized > *:not(#desktop-min-icon-container) {
       display: none;
     }
 
@@ -229,9 +252,10 @@
 </svg>
 <section id="main-section">
   <div id="drag-header" class="drag-header">
+    <div id="title">Block Element</div>
     <div class="drag-indicator"></div>
-     <div class="minimize-dlg-btn"></div>
-     <div id="close-btn" class="close-dlg-btn"></div>
+    <div id="minimize-dlg-btn" class="minimize-dlg-btn"></div>
+    <div id="close-btn" class="close-dlg-btn"></div>
   </div>
   <div id="rules-box">
     <textarea></textarea>
@@ -251,4 +275,5 @@
       </div>
     </div>
   </div>
+  <div id="desktop-min-icon-container"></div>
 </section>

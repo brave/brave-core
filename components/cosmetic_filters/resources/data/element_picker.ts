@@ -4,11 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 const NSSVG = 'http://www.w3.org/2000/svg'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
-
-import Icon from '@brave/leo/react/icon'
-
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
@@ -39,12 +34,14 @@ const api = {
     btnHideRulesBoxText: string,
     btnQuitText: string) => void) => {
     cf_worker.getLocalizedTexts().then(
-      (val: { btnCreateDisabledText: string;
+      (val: {
+        btnCreateDisabledText: string;
         btnCreateEnabledText: string;
         btnManageText: string;
         btnShowRulesBoxText: string;
         btnHideRulesBoxText: string;
-        btnQuitText: string }) => {
+        btnQuitText: string
+      }) => {
         callback(val.btnCreateDisabledText,
           val.btnCreateEnabledText,
           val.btnManageText,
@@ -197,7 +194,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
 
   // ID
   if (elem.id.length > 0 &&
-      document.querySelectorAll(`#${elem.id}`).length == 1) {
+    document.querySelectorAll(`#${elem.id}`).length === 1) {
     builder.addRule({
       type: Selector.Id,
       value: CSS.escape(elem.id)
@@ -618,10 +615,14 @@ const launchElementPicker = (root: ShadowRoot) => {
     closeButton.addEventListener('click', () => {
       quitElementPicker()
     })
-    // const minimizeButton = root.getElementById('minimize-dlg-btn')!
-    // minimizeButton.addEventListener('click', () => {
-    //   setMinimizeState(root, true)
-    // })
+    const minimizeButton = root.getElementById('minimize-dlg-btn')!
+    minimizeButton.addEventListener('click', () => {
+      setMinimizeState(root, true)
+    })
+    const maximizeButton = root.getElementById('desktop-min-icon-container')!
+    maximizeButton.addEventListener('click', () => {
+      setMinimizeState(root, false);
+    })
   }
 
   root.addEventListener(
@@ -713,20 +714,32 @@ const launchElementPicker = (root: ShadowRoot) => {
     const sc = root.getElementById('slider-container') as HTMLInputElement
     sc.style.display = 'none'
   }
+  const setTitleBarColor = (bgcolor: number) => {
+    const dragHeader = root.getElementById("drag-header")
+    if (dragHeader) {
+      const r = (bgcolor >> 16) & 0xff
+      const g = (bgcolor >> 8) & 0xff
+      const b = bgcolor & 0xff
 
+      const graynessFactor = 10
+      const newR = r - graynessFactor
+      const newG = g - graynessFactor
+      const newB = b - graynessFactor
+
+      const newRgb = (newR << 16) | (newG << 8) | newB
+      const grayerColorHex = `#${newRgb.toString(16).padStart(6, "0")}`
+      dragHeader.style.setProperty("background-color", grayerColorHex)
+    }
+  }
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
       (isDarkModeEnabled: boolean, bgcolor: number) => {
-        const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+        const bgcolorMaskOut = bgcolor & 0xFFFFFF
+        const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('background-color', colorHex)
         root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
-
-        const dragHeader = root.getElementById('drag-header')
-        if (dragHeader) {
-          dragHeader.style.setProperty('background-color', colorHex)
-        }
-        
+        setTitleBarColor(bgcolor)
         setDarkModeButtons(isDarkModeEnabled)
       })
   }
@@ -759,9 +772,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
 
-    if(isAndroid) {
-      setMinimizeState(root, false);
-    }
+    setMinimizeState(root, false);
 
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
