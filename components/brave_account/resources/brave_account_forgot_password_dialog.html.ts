@@ -14,27 +14,28 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
       alert-message="$i18n{braveAccountAlertMessage}"
       dialog-description="$i18n{braveAccountForgotPasswordDialogDescription}"
       dialog-title="$i18n{braveAccountForgotPasswordDialogTitle}"
-      horizontal-buttons
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
-                   @input=${this.onEmailInput}>
-          <div class="label ${this.email.length !== 0 && !this.isEmailValid ?
-                              'error' : ''}">
+        <leo-input
+          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          @input=${this.onEmailInput}
+        >
+          <div
+            class="label ${this.email.length !== 0 && !this.isEmailValid
+              ? 'error'
+              : ''}"
+          >
             $i18n{braveAccountEmailInputLabel}
           </div>
         </leo-input>
       </div>
-      <div slot="buttons">
-        <leo-button kind="plain-faint"
-                    @click=${() => this.fire('cancel-button-clicked')}>
-          $i18n{braveAccountCancelButtonLabel}
-        </leo-button>
-        <leo-button ?isDisabled=${!this.isEmailValid}>
-          $i18n{braveAccountResetPasswordButtonLabel}
-        </leo-button>
-      </div>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid}
+      >
+        $i18n{braveAccountResetPasswordButtonLabel}
+      </leo-button>
     </settings-brave-account-dialog>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }

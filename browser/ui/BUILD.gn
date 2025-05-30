@@ -55,6 +55,7 @@ source_set("ui") {
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
+    "//brave/components/brave_account",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
@@ -79,6 +80,8 @@ source_set("ui") {
     "webui/ai_chat/ai_chat_ui_page_handler.h",
     "webui/ai_chat/ai_chat_untrusted_conversation_ui.cc",
     "webui/ai_chat/ai_chat_untrusted_conversation_ui.h",
+    "webui/brave_account/brave_account_dialogs_ui.cc",
+    "webui/brave_account/brave_account_dialogs_ui.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -781,6 +784,7 @@ source_set("ui") {
     "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
+    "//brave/browser/ui/webui/brave_account:mojom",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -793,7 +797,6 @@ source_set("ui") {
     "//brave/components/ai_chat/resources",
     "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
-    "//brave/components/brave_account/core/mojom",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
