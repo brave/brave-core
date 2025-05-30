@@ -19,6 +19,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/features.h"
+#include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -59,7 +60,17 @@ class P3AMessageManagerTest : public testing::Test,
 
   std::optional<MetricLogType> GetDynamicMetricLogType(
       std::string_view histogram_name) const override {
-    return std::optional<MetricLogType>();
+    return std::nullopt;
+  }
+
+  const MetricConfig* GetMetricConfig(
+      std::string_view histogram_name) const override {
+    return GetBaseMetricConfig(histogram_name);
+  }
+
+  std::optional<MetricLogType> GetLogTypeForHistogram(
+      std::string_view histogram_name) const override {
+    return GetBaseLogTypeForHistogram(histogram_name);
   }
 
   void OnRotation(MetricLogType log_type, bool is_constellation) override {}

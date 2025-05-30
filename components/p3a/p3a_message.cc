@@ -90,11 +90,10 @@ bool ShouldIncludeDate(const base::Time& time) {
   return (base::Time::Now() - time) < kDateOmissionThreshold;
 }
 
-std::string InferActivationDate(
-    const MessageMetainfo& meta,
-    const std::optional<MetricConfig>& metric_config,
-    std::string_view metric_name,
-    bool truncate_to_week) {
+std::string InferActivationDate(const MessageMetainfo& meta,
+                                const MetricConfig* metric_config,
+                                std::string_view metric_name,
+                                bool truncate_to_week) {
   std::string_view activation_metric_name = metric_name;
   if (metric_config && metric_config->activation_metric_name.has_value()) {
     activation_metric_name = *metric_config->activation_metric_name;
@@ -113,7 +112,7 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     const std::string_view metric_name,
     const uint64_t metric_value,
     const MessageMetainfo& meta,
-    const std::optional<MetricConfig>& metric_config,
+    const MetricConfig* metric_config,
     const std::vector<MetricAttribute>& attributes_to_load,
     bool is_creative) {
   base::Time::Exploded dtoi_exploded;
@@ -290,12 +289,11 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
   return result;
 }
 
-std::string GenerateP3AConstellationMessage(
-    std::string_view metric_name,
-    uint64_t metric_value,
-    const MessageMetainfo& meta,
-    const std::string& upload_type,
-    const std::optional<MetricConfig>& metric_config) {
+std::string GenerateP3AConstellationMessage(std::string_view metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta,
+                                            const std::string& upload_type,
+                                            const MetricConfig* metric_config) {
   std::vector<MetricAttribute> attributes_to_load;
   if (metric_config && metric_config->attributes) {
     for (const auto& attr : *metric_config->attributes) {

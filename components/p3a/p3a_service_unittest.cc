@@ -91,6 +91,7 @@ class P3AServiceTest : public testing::Test {
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
+    p3a_service_->remote_config_manager()->LoadRemoteConfig({});
     task_environment_.RunUntilIdle();
   }
 

@@ -44,7 +44,6 @@ MessageManager::MessageManager(PrefService& local_state,
                                base::Time first_run_time)
     : local_state_(local_state), config_(config), delegate_(delegate) {
   message_meta_.Init(&local_state, channel, first_run_time);
-
   CleanupActivationDates();
 
   // Init log stores.
@@ -76,6 +75,7 @@ void MessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
 
 void MessageManager::Start(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  RemoveObsoleteLogs();
   // Init other components.
   uploader_ = std::make_unique<Uploader>(
       url_loader_factory,
@@ -134,15 +134,26 @@ void MessageManager::Stop() {
   constellation_upload_schedulers_.clear();
 }
 
+void MessageManager::RemoveObsoleteLogs() {
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    if (json_log_stores_.contains(log_type)) {
+      json_log_stores_[log_type]->RemoveObsoleteLogs();
+    }
+    if (constellation_prep_log_stores_.contains(log_type)) {
+      constellation_prep_log_stores_[log_type]->RemoveObsoleteLogs();
+    }
+  }
+}
+
 void MessageManager::UpdateMetricValue(
     std::string_view histogram_name,
     size_t bucket,
     std::optional<bool> only_update_for_constellation) {
-  bool update_for_all = !only_update_for_constellation.has_value();
-  auto log_type = GetLogTypeForHistogram(histogram_name);
+  auto log_type = delegate_->GetLogTypeForHistogram(histogram_name);
   if (!log_type) {
     return;
   }
+  bool update_for_all = !only_update_for_constellation.has_value();
   if (features::IsConstellationEnabled() &&
       (update_for_all || *only_update_for_constellation)) {
     constellation_prep_log_stores_[*log_type]->UpdateValue(
@@ -152,9 +163,8 @@ void MessageManager::UpdateMetricValue(
   if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
     json_log_store->UpdateValue(std::string(histogram_name), bucket);
   }
-  const auto* metric_config = GetMetricConfig(histogram_name);
-  if (metric_config && *metric_config &&
-      (*metric_config)->record_activation_date && bucket >= 1) {
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+  if (metric_config && metric_config->record_activation_date && bucket >= 1) {
     // Record activation date for metric, for retention measurement purposes
     ScopedDictPrefUpdate update(&*local_state_, kActivationDatesDictPref);
     if (!update->contains(histogram_name)) {
@@ -328,9 +338,9 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
           : json_log_stores_[log_type]->staged_log_type();
   bool is_nebula = false;
   if (is_constellation) {
-    const auto* metric_config = GetMetricConfig(
+    const auto* metric_config = delegate_->GetMetricConfig(
         constellation_send_log_stores_[log_type]->staged_log_histogram_name());
-    is_nebula = metric_config && *metric_config && (*metric_config)->nebula;
+    is_nebula = metric_config && metric_config->nebula;
   }
 
   VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes";
@@ -370,8 +380,8 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
              "randomness for histogram: "
           << log_key << " " << log;
 
-  const auto* metric_config = GetMetricConfig(log_key);
-  bool is_nebula = metric_config && *metric_config && (*metric_config)->nebula;
+  const auto* metric_config = delegate_->GetMetricConfig(log_key);
+  bool is_nebula = metric_config && metric_config->nebula;
   if (is_nebula && !features::IsNebulaEnabled()) {
     // Do not report if Nebula feature is not enabled,
     // mark request as successful to avoid transmission.
@@ -389,22 +399,7 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
 
 std::optional<MetricLogType> MessageManager::GetLogTypeForHistogram(
     std::string_view histogram_name) const {
-  std::string histogram_name_str = std::string(histogram_name);
-  std::optional<MetricLogType> result;
-  if (p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
-      delegate_->GetDynamicMetricLogType(histogram_name_str) ==
-          MetricLogType::kTypical) {
-    result = MetricLogType::kTypical;
-  } else if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-             delegate_->GetDynamicMetricLogType(histogram_name_str) ==
-                 MetricLogType::kExpress) {
-    result = MetricLogType::kExpress;
-  } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
-             delegate_->GetDynamicMetricLogType(histogram_name_str) ==
-                 MetricLogType::kSlow) {
-    result = MetricLogType::kSlow;
-  }
-  return result;
+  return delegate_->GetLogTypeForHistogram(histogram_name);
 }
 
 std::string MessageManager::SerializeLog(std::string_view histogram_name,
@@ -415,10 +410,9 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   message_meta_.Update();
 
   if (is_constellation) {
-    const auto* metric_config = GetMetricConfig(histogram_name);
-    return GenerateP3AConstellationMessage(
-        histogram_name, value, message_meta_, upload_type,
-        metric_config ? *metric_config : std::nullopt);
+    const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+    return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
+                                           upload_type, metric_config);
   } else {
     base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
         histogram_name, value, log_type, message_meta_, upload_type);
@@ -430,28 +424,11 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   }
 }
 
-const std::optional<MetricConfig>* MessageManager::GetMetricConfig(
-    std::string_view histogram_name) const {
-  const std::optional<MetricConfig>* metric_config = nullptr;
-
-  auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
-  if (it != p3a::kCollectedTypicalHistograms.end()) {
-    metric_config = &it->second;
-  } else if (it = p3a::kCollectedSlowHistograms.find(histogram_name);
-             it != p3a::kCollectedSlowHistograms.end()) {
-    metric_config = &it->second;
-  } else if (it = p3a::kCollectedExpressHistograms.find(histogram_name);
-             it != p3a::kCollectedExpressHistograms.end()) {
-    metric_config = &it->second;
-  }
-  return metric_config;
-}
-
 void MessageManager::CleanupActivationDates() {
   ScopedDictPrefUpdate update(&*local_state_, kActivationDatesDictPref);
 
   for (auto it = update->begin(); it != update->end();) {
-    if (!GetMetricConfig(it->first)) {
+    if (!delegate_->GetLogTypeForHistogram(it->first)) {
       it = update->erase(it);
     } else {
       it++;
@@ -461,9 +438,9 @@ void MessageManager::CleanupActivationDates() {
 
 bool MessageManager::IsEphemeralMetric(
     const std::string& histogram_name) const {
-  const auto* metric_config = GetMetricConfig(histogram_name);
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
 
-  return (metric_config && *metric_config && (*metric_config)->ephemeral) ||
+  return (metric_config && metric_config->ephemeral) ||
          delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 

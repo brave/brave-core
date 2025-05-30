@@ -1,0 +1,36 @@
+{
+  "metrics": {
+    "Brave.Uptime.BrowserOpenMinutes": {
+      "ephemeral": true,
+      "nebula": true,
+      "constellation_only": false,
+      "disable_country_strip": true,
+      "record_activation_date": true,
+      "attributes": [
+        "version",
+        "platform"
+      ],
+      "append_attributes": [
+        "dtoi"
+      ],
+      "activation_metric_name": "Brave.Core.LastUsage",
+      "cadence": "express"
+    },
+    "Brave.Shields.UsageStatus": {
+      "ephemeral": false,
+      "nebula": false,
+      "constellation_only": true,
+      "disable_country_strip": false,
+      "record_activation_date": false,
+      "cadence": "typical"
+    },
+    "Brave.Rewards.WalletBalance": {
+      "attributes": [
+        "answer_index",
+        "channel",
+        "dtoi"
+      ]
+    },
+    "Brave.NonExistentMetric": {}
+  }
+} 
