@@ -5,10 +5,10 @@
 
 import { RegisterStyleOverride } from '//resources/brave/polymer_overriding.js'
 import { html } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { CertificateManagerV2Element } from './certificate_manager_v2-chromium.js'
+import { CertificateManagerElement } from './certificate_manager-chromium.js'
 
 RegisterStyleOverride(
-  'certificate-manager-v2',
+  'certificate-manager',
   html`
     <style>
       .cr-nav-menu-item {
@@ -41,8 +41,8 @@ RegisterStyleOverride(
 
 // Note: This is a dynamic import so the style override is registered before the
 // component is defined.
-export * from './certificate_manager_v2-chromium.js'
+export * from './certificate_manager-chromium.js'
 
 // Note: This needs to be defined after we register the style override.
 customElements.define(
-    CertificateManagerV2Element.is, CertificateManagerV2Element);
+    CertificateManagerElement.is, CertificateManagerElement);
