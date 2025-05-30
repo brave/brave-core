@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useRoute } from '$web-common/useRoute'
 import getAPI from '../api'
-import { bindConversation, ConversationBindings } from '../api/bind_conversation'
+import { bindConversation, ConversationBindings, ConversationType } from '../api/bind_conversation'
 import { useAIChat } from './ai_chat_context'
 
 // Provides the bindings and anything needed to get data for and render
@@ -76,12 +76,12 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     // Bind to an existing or new maybe-Tab-associated Conversation.
     // UI that isn't related to a Tab (e.g. standalone) will always
     // get a new conversation.
-    setConversationAPI(bindConversation(undefined, createNewConversation))
+    setConversationAPI(bindConversation(createNewConversation ? ConversationType.New : ConversationType.Related))
     // The default conversation changes as the associated tab navigates, so
     // listen for changes. This event won't be fired for standalone UIs.
     const onNewDefaultConversationListenerId =
     getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-      setConversationAPI(bindConversation(undefined))
+      setConversationAPI(bindConversation(ConversationType.Related))
     })
     return () => {
       getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)

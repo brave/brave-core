@@ -12,43 +12,40 @@ export interface ConversationBindings {
   initialStatePromise?: ReturnType<Mojom.ServiceRemote['bindConversation']>
 }
 
-// There are three ways to bind to a conversation:
-// 1. bindConversation(id)              - binds to an existing conversation with the given id.
-// 2. bindConversation(undefined)       - binds to an existing conversation related to the current Tab.
-//                                        A new conversation will be created if there is no related conversation.
-//                                        A regular unassociated conversation will be created if this UI is not related
-//                                        to a Tab.
-// 3. bindConversation(undefined, true) - always binds to a new conversation,
-//                                        the browser will decide whether it is related to an active Tab.
+// Create some keywords as alternatives to string UUID for a conversation identifier.
+// Use symbols instead of strings to ensure they are not confused with actual UUIDs,
+// and cause a compile error when they are modified.
+export const ConversationType = {
+  New: Symbol('ConversationTypeNew'),
+  Related: Symbol('ConversationTypeRelated'),
+}
+type ConversationType = typeof ConversationType[keyof typeof ConversationType]
 
 /**
  * Binds to an existing, related or new conversation as decided by the browser.
- * @param id Specific conversation uuid, or undefined for the conversation related to the current Tab if this
- *           UI is related to a Tab (e.g. opened from a Tab via the Sidebar or a menu item).
- * @param createNewConversation If true, a new conversation will be created, related to the currentTab if this
- *           UI is related to a Tab (e.g. opened from a Tab via the Sidebar or a menu item).
+ * @param uuidOrType Specific conversation uuid, or type of conversation to create or find. Related conversation may be
+ *           related to the current Tab if this UI is related to a Tab
+ *           (e.g. opened from a Tab via the Sidebar or a menu item). New conversation will always create a new
+ *          conversation, but it may be related to the current Tab if this UI is related to a Tab.
  * @returns Bindings directly to the conversation handler and conversation observer event emitter
  */
-export function bindConversation(id: string | undefined, createNewConversation: boolean = false): ConversationBindings {
+export function bindConversation(uuidOrType:  ConversationType | string): ConversationBindings {
   let conversationHandler: Mojom.ConversationHandlerRemote =
     new Mojom.ConversationHandlerRemote()
   let callbackRouter = new Mojom.ConversationUICallbackRouter()
   let initialStatePromise: ConversationBindings['initialStatePromise']
 
-  if (id !== undefined) {
-    if (createNewConversation) {
-      throw new Error('createNewConversation is not supported when id is defined')
-    }
+  if (typeof uuidOrType === 'string') {
     initialStatePromise = getAPI().service.bindConversation(
-      id,
+      uuidOrType,
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote()
     )
   } else {
-    initialStatePromise = getAPI().uiHandler.bindRelatedConversation(
+    initialStatePromise = getAPI().uiHandler.bindDefaultConversation(
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote(),
-      createNewConversation
+      uuidOrType === ConversationType.New
     )
   }
   return {

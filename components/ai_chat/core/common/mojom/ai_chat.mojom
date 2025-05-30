@@ -416,11 +416,12 @@ interface AIChatUIHandler {
   // initial constant state
   SetChatUI(pending_remote<ChatUI> chat_ui) => (bool is_standalone);
 
-  // Bind 2-way communication to an existing or new conversation, maybe related to the open page in
-  // the current browser window if the UI is connected to that (e.g. Sidebar or Popup).
-  // A new conversation is always created if the UI is not connected to a page
-  // (e.g. when the UI is open as a standalone Tab or PWA).
-  BindRelatedConversation(
+  // Bind 2-way communication to an existing or new conversation, maybe related
+  // to the open page in the current browser window if the UI is connected to
+  // that (e.g. Sidebar or Popup). A new conversation is always created if the
+  // UI is not connected to a page (e.g. when the UI is open as a standalone
+  // Tab or PWA).
+  BindDefaultConversation(
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui,
       bool create_new_conversation)

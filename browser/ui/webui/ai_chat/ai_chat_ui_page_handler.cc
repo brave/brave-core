@@ -328,11 +328,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
 }
 
-void AIChatUIPageHandler::BindRelatedConversation(
+void AIChatUIPageHandler::BindDefaultConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
     bool create_new_conversation,
-    BindRelatedConversationCallback callback) {
+    BindDefaultConversationCallback callback) {
   ConversationHandler* conversation;
 
   if (!active_chat_tab_helper_) {
