@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
+
 #include <string>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 
 namespace ntp_widget_utils {
 
@@ -19,7 +21,8 @@ bool IsRegionSupported(PrefService* pref_service,
     bool allow_list)  {
   bool is_supported = !allow_list;
   const country_codes::CountryId user_region_id =
-      country_codes::GetCountryIDFromPrefs(pref_service);
+      country_codes::CountryId::Deserialize(pref_service->GetInteger(
+          regional_capabilities::prefs::kCountryIDAtInstall));
 
   for (const auto& region : regions) {
     auto region_id = country_codes::CountryId(region);

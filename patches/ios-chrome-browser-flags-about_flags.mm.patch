@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 479900bbcc7141845396c9bb7957dd7c109c4e32..c28aed7607ef964f495754a0400e830be30130e7 100644
+index 8be6ff870e94303dece0ef9f300e9fd2512f254b..97e7853b8bc8d7cbc94f547af3e4050553936a1f 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1441,6 +1441,7 @@ const FeatureEntry::FeatureVariation kGLICPromoConsentVariations[] = {

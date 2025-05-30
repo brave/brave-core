@@ -1,5 +1,5 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index 772a983e89866c34600f20f2f7faa75d3f208d59..7b55043842b69c60edb87ea6c3b99ddedb738956 100644
+index f9b7b8c9ecf43b57ab03639924febfa5e803a41a..8d5fcfc581ec43da0a355256dcfb80611dca3ef5 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
 @@ -254,6 +254,17 @@ chromium-metrics-reviews@google.com.

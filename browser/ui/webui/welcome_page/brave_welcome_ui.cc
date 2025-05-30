@@ -33,6 +33,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/gpu_data_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -127,15 +128,16 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   // Open additional page in Japanese region
   country_codes::CountryId country_id =
-      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+      country_codes::CountryId::Deserialize(profile->GetPrefs()->GetInteger(
+          regional_capabilities::prefs::kCountryIDAtInstall));
   const bool is_jpn = country_id == country_codes::CountryId("JP");
-  if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
-    if (is_jpn) {
-      base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-          FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
-          base::Seconds(3));
-    }
+  // if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
+  if (is_jpn) {
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
+        base::Seconds(3));
   }
+  // }
 
   for (const auto& str : kLocalizedStrings) {
     std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
@@ -152,7 +154,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
-  profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+  // profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }

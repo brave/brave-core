@@ -1,5 +1,5 @@
 diff --git a/third_party/lit/v3_0/BUILD.gn b/third_party/lit/v3_0/BUILD.gn
-index bf300e33df70926ffa671006c7eaad79fefd2dfe..1e61f867a70d7e4e7b26e5c50571b99a7eeb9912 100644
+index 2b6d99b27b57e54ce28a7f540b43904c9f14c85f..423dd67bc197b74b8ff520c9874ce8e6e426403a 100644
 --- a/third_party/lit/v3_0/BUILD.gn
 +++ b/third_party/lit/v3_0/BUILD.gn
 @@ -120,6 +120,7 @@ ts_library("build_ts") {
