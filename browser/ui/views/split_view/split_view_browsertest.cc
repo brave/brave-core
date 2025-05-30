@@ -94,6 +94,10 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         brave_browser_view()->multi_contents_view_for_testing());
   }
 
+  views::Widget* secondary_location_bar_widget() const {
+    return brave_multi_contents_view()->secondary_location_bar_widget_.get();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -184,6 +188,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
   EXPECT_TRUE(split_view_separator()->GetVisible());
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
+  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsStackedAbove(
+      secondary_location_bar_widget()->GetNativeView()));
 
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
