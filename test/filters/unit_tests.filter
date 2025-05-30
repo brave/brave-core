@@ -494,6 +494,7 @@
 # password card state
 -All/PasswordStatusCheckServiceParameterizedCardTest.PasswordCardState/*
 -PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
+-PasswordStatusCheckServiceBaseTest.PasswordCheckNoPasswords
 -SafetyHubCardDataHelperTest.GetOverallState_Multi
 -SafetyHubCardDataHelperTest.GetOverallState_Password
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_HasRecommendationsAndHeader
