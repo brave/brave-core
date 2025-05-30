@@ -81,7 +81,7 @@
       left: 0;
       width: 100%;
       height: 28px;
-      background-color: #f0f0f4;
+      background-color: color-mix(in srgb, var(--dynamic-drag-header-rgb), black 10%);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -118,11 +118,19 @@
       font-weight: 600;
     }
 
+    #main-section.desktop #title.light {
+      color: #3E37D4;
+    }
+    #main-section.desktop #title.dark {
+      color: #c1c4ff;
+    }
+
     #main-section.desktop .close-dlg-btn {
       background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20d%3D%22M5.287%205.287a.85.85%200%200%200%200%201.202L10.797%2012l-5.51%205.511a.85.85%200%200%200%201.202%201.202L12%2013.203l5.51%205.51a.85.85%200%200%200%201.202-1.203L13.202%2012l5.51-5.51a.85.85%200%200%200-1.202-1.202L12%2010.798%206.489%205.287a.85.85%200%200%200-1.202%200%22%2F%3E%3C%2Fsvg%3E');
       width: 28px;
       height: 28px;
       margin-right: 20px;
+      cursor: pointer;
     }
 
     #main-section.desktop .minimize-dlg-btn {
@@ -130,6 +138,7 @@
       width: 28px;
       height: 28px;
       margin-right: 20px;
+      cursor: pointer;
     }
 
     #main-section.desktop.minimized > #desktop-min-icon-container {
@@ -138,6 +147,7 @@
       height: 68px;
       width: 68px;
       display: block;
+      cursor: pointer;
     }
 
     #main-section.desktop.minimized > *:not(#desktop-min-icon-container) {
@@ -252,7 +262,7 @@
 </svg>
 <section id="main-section">
   <div id="drag-header" class="drag-header">
-    <div id="title">Block Element</div>
+    <div id="title" class="theme-managed">Block Element</div>
     <div class="drag-indicator"></div>
     <div id="minimize-dlg-btn" class="minimize-dlg-btn"></div>
     <div id="close-btn" class="close-dlg-btn"></div>
@@ -266,12 +276,12 @@
     </div>
     <div id="buttons">
       <div class="buttons-line">
-        <button id="btnCreate" class="button block-button disabled light">Select element you want to block</button>
+        <button id="btnCreate" class="button block-button theme-managed disabled light">Select element you want to block</button>
       </div>
       <div class="buttons-line">
-        <button id="btnManage" class="button secondary-button disabled light">Manage filters</button>
-        <button id="btnShowRulesBox" class="button secondary-button disabled light">Show rules</button>
-        <button id="btnQuit" class="button secondary-button  disabled secondary-button-bordered light">Cancel</button>
+        <button id="btnManage" class="button secondary-button theme-managed disabled light">Manage filters</button>
+        <button id="btnShowRulesBox" class="button secondary-button theme-managed disabled light">Show rules</button>
+        <button id="btnQuit" class="button secondary-button theme-managed disabled secondary-button-bordered light">Cancel</button>
       </div>
     </div>
   </div>

@@ -670,8 +670,8 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const setDarkModeButtons = (isDarkModeEnabled: boolean) => {
-    const elements = root.querySelectorAll('.button');
+  const setDarkMode = (isDarkModeEnabled: boolean) => {
+    const elements = root.querySelectorAll('.theme-managed');
     elements.forEach(element => {
       if (element.classList.contains(isDarkModeEnabled ? 'light' : 'dark')) {
         element.classList.remove(isDarkModeEnabled ? 'light' : 'dark');
@@ -715,20 +715,17 @@ const launchElementPicker = (root: ShadowRoot) => {
     sc.style.display = 'none'
   }
   const setTitleBarColor = (bgcolor: number) => {
+    if (isAndroid)
+      return
+
     const dragHeader = root.getElementById("drag-header")
     if (dragHeader) {
       const r = (bgcolor >> 16) & 0xff
       const g = (bgcolor >> 8) & 0xff
       const b = bgcolor & 0xff
 
-      const graynessFactor = 10
-      const newR = r - graynessFactor
-      const newG = g - graynessFactor
-      const newB = b - graynessFactor
-
-      const newRgb = (newR << 16) | (newG << 8) | newB
-      const grayerColorHex = `#${newRgb.toString(16).padStart(6, "0")}`
-      dragHeader.style.setProperty("background-color", grayerColorHex)
+      dragHeader.style
+        .setProperty('--dynamic-drag-header-rgb', `rgb(${r}, ${g}, ${b})`)
     }
   }
   const retrieveTheme = () => {
@@ -740,7 +737,7 @@ const launchElementPicker = (root: ShadowRoot) => {
         root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
         setTitleBarColor(bgcolor)
-        setDarkModeButtons(isDarkModeEnabled)
+        setDarkMode(isDarkModeEnabled)
       })
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
