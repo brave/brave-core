@@ -4,31 +4,31 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as Mojom from '../../common/mojom'
-import getAPI, * as API from '../api'
 import { useRoute } from '$web-common/useRoute'
+import getAPI from '../api'
+import { bindConversation, ConversationBindings, ConversationType } from '../api/bind_conversation'
 import { useAIChat } from './ai_chat_context'
 
-export const tabAssociatedChatId = 'tab'
-
-export interface SelectedChatDetails {
+// Provides the bindings and anything needed to get data for and render
+// a single conversation.
+// This could be used to decide which conversation to render by checking
+// the current UI's URL path, or it could be more simply provided
+// for some feature requiring a specific conversation.
+export interface SelectedChatDetails extends ConversationBindings {
   selectedConversationId: string | undefined
-  updateSelectedConversationId: (conversationId: string | undefined) => void
-  conversationHandler: Mojom.ConversationHandlerRemote
-  callbackRouter: Mojom.ConversationUICallbackRouter
-  createNewConversation: () => void,
   isTabAssociated: boolean
+  updateSelectedConversationId: (conversationId: string | undefined) => void
+  createNewConversation: () => void,
 }
 
 export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
+  isTabAssociated: false,
   updateSelectedConversationId: () => { },
   callbackRouter: undefined!,
   conversationHandler: undefined!,
   createNewConversation: () => { },
-  isTabAssociated: false,
 })
-
 
 const updateSelectedConversation = (selectedId: string | undefined) => {
   window.location.href = `/${selectedId ?? ''}`
@@ -50,47 +50,79 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void,
 }>) {
-  const { initialized, visibleConversations } = useAIChat()
+  const { initialized, visibleConversations, isStandalone } = useAIChat()
   const [conversationAPI, setConversationAPI] =
-    React.useState<Pick<SelectedChatDetails, 'callbackRouter' | 'conversationHandler'>>()
+    React.useState<ConversationBindings>()
+
+  const [currentBoundConversationUuid, setCurrentBoundConversationUuid] = React.useState<string>()
+
+  React.useEffect(() => {
+    if (!conversationAPI?.initialStatePromise) {
+      setCurrentBoundConversationUuid(undefined)
+      return
+    }
+    conversationAPI.initialStatePromise
+      .then(({ conversationState }) => {
+        setCurrentBoundConversationUuid(conversationState.conversationUuid)
+      })
+  }, [conversationAPI?.initialStatePromise])
+
+  // Keep a reference to unsubscribe from the listener which follows
+  // associated content navigation to re-bind to a new conversation so that
+  // we can unsubscribe when changing to a specific conversation.
+  const clearNewConversationListener = React.useRef(() => {})
+
+  const bindToDefaultConversation = React.useCallback((createNewConversation: boolean) => {
+    // Bind to an existing or new maybe-Tab-associated Conversation.
+    // UI that isn't related to a Tab (e.g. standalone) will always
+    // get a new conversation.
+    setConversationAPI(bindConversation(createNewConversation ? ConversationType.New : ConversationType.Related))
+    // The default conversation changes as the associated tab navigates, so
+    // listen for changes. This event won't be fired for standalone UIs.
+    const onNewDefaultConversationListenerId =
+    getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
+      setConversationAPI(bindConversation(ConversationType.Related))
+    })
+    return () => {
+      getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
+    }
+  }, [setConversationAPI])
+
+  const createNewConversation = React.useCallback(() => {
+    if (selectedConversationId) {
+      updateSelectedConversationId(undefined)
+    } else {
+      // We're already in new or tab-default mode (URL path = /),
+      // so we need to re-bind as URL change won't do anything.
+      clearNewConversationListener.current()
+      clearNewConversationListener.current = bindToDefaultConversation(true)
+    }
+  }, [bindToDefaultConversation])
 
   const details = React.useMemo(() => ({
     ...conversationAPI,
     selectedConversationId,
+    isTabAssociated: !selectedConversationId && !isStandalone,
     updateSelectedConversationId,
-    createNewConversation: () => {
-      setConversationAPI(API.newConversation())
-    },
-    isTabAssociated: selectedConversationId === tabAssociatedChatId
-  }), [selectedConversationId, updateSelectedConversationId, conversationAPI])
+    createNewConversation,
+  }), [selectedConversationId, createNewConversation, updateSelectedConversationId, conversationAPI])
 
   React.useEffect(() => {
-    // Handle creating a new conversation
+    // Setup bindings based on selectedConversationId (i.e. URL path)
+    clearNewConversationListener.current()
+    // Bind to a Conversation based on the selectedConversationId
+    // New or default conversation when selectedConversationId is unspecified
     if (!selectedConversationId) {
-      setConversationAPI(API.newConversation())
-      return
-    }
-
-    // Select a specific conversation
-    setConversationAPI(API.bindConversation(selectedConversationId === tabAssociatedChatId
-      ? undefined
-      : selectedConversationId))
-
-    // The default conversation changes as the associated tab navigates, so
-    // listen for changes.
-    if (selectedConversationId === tabAssociatedChatId) {
-      const onNewDefaultConversationListenerId =
-        getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-          setConversationAPI(API.bindConversation(undefined))
-        })
-
-      return () => {
-        getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
+      // Default or new conversation
+      clearNewConversationListener.current = bindToDefaultConversation(false)
+    } else {
+      clearNewConversationListener.current = () => {}
+      // Specific conversation
+      // Avoid re-binding when URL updates to reflect a committed conversation
+      if (currentBoundConversationUuid !== selectedConversationId) {
+        setConversationAPI(bindConversation(selectedConversationId))
       }
     }
-
-    // Satisfy linter
-    return undefined
   }, [selectedConversationId])
 
   // Clean up bindings when not used anymore
@@ -108,8 +140,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     if (!initialized) return
 
     // Special case the default conversation - it gets treated specially as
-    // the chat is rebound as the tab navigates.
-    if (selectedConversationId === tabAssociatedChatId) return
+    // the chat is re-bound as the tab navigates.
     if (!selectedConversationId) return
     if (visibleConversations.find(c => c.uuid === selectedConversationId)) return
 

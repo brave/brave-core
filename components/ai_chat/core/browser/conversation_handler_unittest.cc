@@ -348,31 +348,25 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
     base::RunLoop run_loop;
     conversation_handler_->SetShouldSendPageContents(should_send_content);
     EXPECT_FALSE(conversation_handler_->HasAnyHistory());
-    conversation_handler_->GetState(
-        base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
-          EXPECT_EQ(state->conversation_uuid, "uuid");
-          EXPECT_FALSE(state->is_request_in_progress);
-          EXPECT_EQ(state->all_models.size(),
-                    model_service_->GetModels().size());
-          EXPECT_EQ(state->current_model_key,
-                    model_service_->GetDefaultModelKey());
-          if (should_send_content) {
-            EXPECT_THAT(state->suggested_questions,
-                        testing::ElementsAre(l10n_util::GetStringUTF8(
-                            IDS_CHAT_UI_SUMMARIZE_PAGE)));
-          } else {
-            EXPECT_EQ(4u, state->suggested_questions.size());
-          }
-          EXPECT_EQ(state->suggestion_status,
-                    should_send_content
-                        ? mojom::SuggestionGenerationStatus::CanGenerate
-                        : mojom::SuggestionGenerationStatus::None);
-          EXPECT_FALSE(state->associated_content.empty());
-          EXPECT_EQ(state->should_send_content, should_send_content);
-          EXPECT_EQ(state->error, mojom::APIError::None);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    mojom::ConversationStatePtr state = conversation_handler_->GetState();
+    EXPECT_EQ(state->conversation_uuid, "uuid");
+    EXPECT_FALSE(state->is_request_in_progress);
+    EXPECT_EQ(state->all_models.size(), model_service_->GetModels().size());
+    EXPECT_EQ(state->current_model_key, model_service_->GetDefaultModelKey());
+    if (should_send_content) {
+      EXPECT_THAT(state->suggested_questions,
+                  testing::ElementsAre(
+                      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)));
+    } else {
+      EXPECT_EQ(4u, state->suggested_questions.size());
+    }
+    EXPECT_EQ(state->suggestion_status,
+              should_send_content
+                  ? mojom::SuggestionGenerationStatus::CanGenerate
+                  : mojom::SuggestionGenerationStatus::None);
+    EXPECT_FALSE(state->associated_content.empty());
+    EXPECT_EQ(state->should_send_content, should_send_content);
+    EXPECT_EQ(state->error, mojom::APIError::None);
   }
 }
 

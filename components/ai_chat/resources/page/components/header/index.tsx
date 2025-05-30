@@ -6,14 +6,15 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale'
 import { Conversation } from '../../../common/mojom'
 import getAPI from '../../api'
-import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
-import styles from './style.module.scss'
+import { useGetVisibleConversation } from '../../hooks/useIsConversationVisible'
+import { useActiveChat } from '../../state/active_chat_context'
 import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { useConversation, useSupportsAttachments } from '../../state/conversation_context'
-import { getLocale } from '$web-common/locale'
-import { tabAssociatedChatId, useActiveChat } from '../../state/active_chat_context'
+import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
+import styles from './style.module.scss'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -33,14 +34,21 @@ const openFullPageButtonLabel = getLocale('openFullPageLabel')
 export const ConversationHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const { createNewConversation, isTabAssociated } = useActiveChat()
+  const { selectedConversationId, createNewConversation } = useActiveChat()
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
   const shouldDisplayEraseAction = (!aiChatContext.isStandalone || isMobile) &&
     conversationContext.conversationHistory.length >= 1
 
-  const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
+  const activeConversation = useGetVisibleConversation(conversationContext.conversationUuid)
+
+  // Show title when we're on standalone page or not on a default conversation
+  const showTitle = (aiChatContext.isStandalone || !!selectedConversationId) && !isMobile
+  // Back button shows when we are in a UI which can go back to a "default" conversation
+  // (i.e. not a standalone UI).
+
+  const showBackButton = !aiChatContext.isStandalone && showTitle
+
   const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
   const supportsAttachments = useSupportsAttachments()
 
@@ -48,10 +56,10 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.conversationTitle}>
-          {!isTabAssociated && !aiChatContext.isStandalone && <Button
+          {showBackButton && <Button
             kind='plain-faint'
             fab
-            onClick={() => location.href = tabAssociatedChatId}
+            onClick={() => location.href = '/'}
             title={getLocale('goBackToActiveConversationButton')}
           >
             <Icon name='arrow-left' />

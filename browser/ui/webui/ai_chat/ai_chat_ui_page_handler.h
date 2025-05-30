@@ -63,18 +63,15 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
-  void BindRelatedConversation(
+  void BindDefaultConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
-      override;
+      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+      bool create_new_conversation,
+      BindDefaultConversationCallback callback) override;
   void AssociateTab(mojom::TabDataPtr tab,
                     const std::string& conversation_uuid) override;
   void DisassociateTab(mojom::TabDataPtr tab,
                        const std::string& conversation_uuid) override;
-  void NewConversation(
-      mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
-      override;
 
   void BindParentUIFrameFromChildFrame(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);

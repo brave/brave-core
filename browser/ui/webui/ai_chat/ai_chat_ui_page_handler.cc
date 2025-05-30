@@ -328,24 +328,36 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
 }
 
-void AIChatUIPageHandler::BindRelatedConversation(
+void AIChatUIPageHandler::BindDefaultConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+    bool create_new_conversation,
+    BindDefaultConversationCallback callback) {
+  ConversationHandler* conversation;
+
   if (!active_chat_tab_helper_) {
-    ConversationHandler* conversation =
-        AIChatServiceFactory::GetForBrowserContext(profile_)
-            ->CreateConversation();
-    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
-    return;
+    // Always create new because there is never a related conversation
+    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                       ->CreateConversation();
+  } else if (create_new_conversation) {
+    // Always create new because it is specified by the client
+    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                       ->CreateConversationHandlerForContent(
+                           active_chat_tab_helper_->GetContentId(),
+                           active_chat_tab_helper_->GetWeakPtr());
+  } else {
+    // Only create new if there is no existing related conversation
+    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                       ->GetOrCreateConversationHandlerForContent(
+                           active_chat_tab_helper_->GetContentId(),
+                           active_chat_tab_helper_->GetWeakPtr());
   }
 
-  ConversationHandler* conversation =
-      AIChatServiceFactory::GetForBrowserContext(profile_)
-          ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->GetContentId(),
-              active_chat_tab_helper_->GetWeakPtr());
+  CHECK(conversation);
 
+  // Pass bindings to the frontend
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  std::move(callback).Run(conversation->GetState());
 }
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
@@ -388,23 +400,6 @@ void AIChatUIPageHandler::DisassociateTab(
 
   AIChatServiceFactory::GetForBrowserContext(contents->GetBrowserContext())
       ->DisassociateContent(tab_helper, conversation_uuid);
-}
-
-void AIChatUIPageHandler::NewConversation(
-    mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  ConversationHandler* conversation;
-  if (active_chat_tab_helper_) {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversationHandlerForContent(
-                           active_chat_tab_helper_->GetContentId(),
-                           active_chat_tab_helper_->GetWeakPtr());
-  } else {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversation();
-  }
-
-  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(

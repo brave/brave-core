@@ -14,10 +14,6 @@
 
 namespace ai_chat {
 
-GURL TabAssociatedConversationUrl() {
-  return GURL(base::StrCat({kAIChatUIURL, "tab"}));
-}
-
 GURL ConversationUrl(std::string_view conversation_uuid) {
   return GURL(base::StrCat({kAIChatUIURL, conversation_uuid}));
 }

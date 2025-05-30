@@ -152,6 +152,27 @@ void ConversationHandler::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+mojom::ConversationStatePtr ConversationHandler::GetState() {
+  const auto& models = model_service_->GetModels();
+  std::vector<mojom::ModelPtr> models_copy(models.size());
+  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
+                 [](auto& model) { return model.Clone(); });
+  auto model_key = GetCurrentModel().key;
+
+  UpdateAssociatedContentInfo();
+
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
+  mojom::ConversationStatePtr state = mojom::ConversationState::New(
+      metadata_->uuid, is_request_in_progress_, std::move(models_copy),
+      model_key, std::move(suggestions), suggestion_generation_status_,
+      associated_content_manager_->GetAssociatedContent(),
+      associated_content_manager_->should_send(), current_error_);
+
+  return state;
+}
+
 void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   conversation_ui_handlers_.Add(std::move(conversation_ui_handler));
@@ -312,27 +333,6 @@ void ConversationHandler::GetConversationHistory(
   std::move(callback).Run(std::move(history));
 }
 
-void ConversationHandler::GetState(GetStateCallback callback) {
-  const auto& models = model_service_->GetModels();
-  std::vector<mojom::ModelPtr> models_copy(models.size());
-  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
-                 [](auto& model) { return model.Clone(); });
-  auto model_key = GetCurrentModel().key;
-
-  UpdateAssociatedContentInfo();
-
-  std::vector<std::string> suggestions;
-  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                         [](const auto& s) { return s.title; });
-
-  mojom::ConversationStatePtr state = mojom::ConversationState::New(
-      metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, std::move(suggestions), suggestion_generation_status_,
-      associated_content_manager_->GetAssociatedContent(),
-      associated_content_manager_->should_send(), current_error_);
-
-  std::move(callback).Run(std::move(state));
-}
 
 void ConversationHandler::RateMessage(bool is_liked,
                                       const std::string& turn_uuid,
