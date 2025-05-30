@@ -50,8 +50,6 @@ class AdsService : public KeyedService {
     virtual void CloseNotificationAd(const std::string& id, bool is_custom) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
     virtual bool IsFullScreenMode() = 0;
-
-    virtual base::Value::Dict GetVirtualPrefs() = 0;
   };
 
   explicit AdsService(std::unique_ptr<Delegate> delegate);
