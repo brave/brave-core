@@ -73,6 +73,8 @@ export type StringKey =
   'newsNoFeedsText' |
   'newsNoFeedsTitle' |
   'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
   'newsQueryTooShortText' |
   'newsRefreshButtonLabel' |
   'newsSearchFeedsButtonLabel' |

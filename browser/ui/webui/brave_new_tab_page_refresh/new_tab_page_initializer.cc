@@ -186,6 +186,8 @@ void NewTabPageInitializer::AddStrings() {
       {"newsNoFeedsText", IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE},
       {"newsNoFeedsTitle", IDS_BRAVE_NEWS_NO_CONTENT_HEADING},
       {"newsNoMatchingFeedsText", IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS},
+      {"newsOptInDismissButtonLabel", IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL},
+      {"newsOptInText", IDS_BRAVE_NEWS_INTRO_DESCRIPTION},
       {"newsQueryTooShortText", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},
       {"newsRefreshButtonLabel", IDS_BRAVE_NEWS_REFRESH_FEED},
       {"newsSearchFeedsButtonLabel", IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON},

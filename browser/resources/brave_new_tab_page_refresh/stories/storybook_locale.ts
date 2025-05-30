@@ -75,6 +75,8 @@ const localeStrings: Record<StringKey, string>  = {
   newsNoFeedsText: 'Follow publishers and channels to see them in your feed.',
   newsNoFeedsTitle: 'Your Feed is Empty',
   newsNoMatchingFeedsText: 'No feeds found at $1',
+  newsOptInDismissButtonLabel: 'No thanks',
+  newsOptInText: 'Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!',
   newsQueryTooShortText: 'Keep typing to search sources',
   newsRefreshButtonLabel: 'Refresh',
   newsSearchFeedsButtonLabel: 'Get feeds from $1',
