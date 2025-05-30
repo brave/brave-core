@@ -61,18 +61,6 @@ open class BrowserProfile: Profile {
   public init(localName: String) {
     Logger.module.debug("Initing profile \(localName) on thread \(Thread.current).")
     self.name = localName
-
-    if let profilePath = FileManager.default.containerURL(
-      forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
-    )?.appendingPathComponent("profile.\(localName)").path {
-
-      // If the profile dir doesn't exist yet, this is first run (for this profile). The check is made here
-      // since the DB handles will create new DBs under the new profile folder.
-      if !FileManager.default.fileExists(atPath: profilePath) {
-        Logger.module.info("New profile. Removing old account metadata.")
-        prefs.clearAll()
-      }
-    }
   }
 
   public func reopen() {
