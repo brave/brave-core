@@ -95,6 +95,9 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
+constexpr char16_t kExtensionsV2LearnMoreURL[] =
+    u"https://brave.com/blog/brave-shields-manifest-v3/";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -1040,6 +1043,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantAboutLeoDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
                                  kLeoPrivacyPolicyURL));
+  html_source->AddString(
+      "extensionsV2Warn",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
+                                 kExtensionsV2LearnMoreURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
