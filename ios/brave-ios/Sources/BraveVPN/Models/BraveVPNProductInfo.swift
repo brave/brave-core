@@ -34,20 +34,11 @@ public class BraveVPNProductInfo: NSObject {
 
   private let productRequest: SKProductsRequest
 
-  /// These product ids work only on release channel.
-  struct ProductIdentifiers {
-    /// Apple's monthly IAP
-    static let monthlySub = BraveStoreProduct.vpnMonthly.rawValue
-    /// Apple's yearly IAP
-    static let yearlySub = BraveStoreProduct.vpnYearly.rawValue
-    /// account.brave.com  monthly subscription product
-    static let monthlySubSKU = "brave-premium"
-
-    static let all = Set<String>(arrayLiteral: monthlySub, yearlySub)
-  }
-
   public override init() {
-    productRequest = SKProductsRequest(productIdentifiers: ProductIdentifiers.all)
+    productRequest = SKProductsRequest(productIdentifiers: [
+      BraveStoreProduct.vpnMonthly.rawValue,
+      BraveStoreProduct.vpnYearly.rawValue,
+    ])
     super.init()
     productRequest.delegate = self
   }
@@ -62,9 +53,9 @@ extension BraveVPNProductInfo: SKProductsRequestDelegate {
   {
     response.products.forEach {
       switch $0.productIdentifier {
-      case ProductIdentifiers.monthlySub:
+      case BraveStoreProduct.vpnMonthly.rawValue:
         BraveVPNProductInfo.monthlySubProduct = $0
-      case ProductIdentifiers.yearlySub:
+      case BraveStoreProduct.vpnYearly.rawValue:
         BraveVPNProductInfo.yearlySubProduct = $0
       default:
         assertionFailure("Found product identifier that doesn't match")

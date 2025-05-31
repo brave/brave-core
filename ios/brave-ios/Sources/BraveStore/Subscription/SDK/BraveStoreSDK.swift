@@ -82,6 +82,11 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
       return
     }
 
+    if let value = Self.allCases.first(where: { $0.itemSKU == rawValue }) {
+      self = value
+      return
+    }
+
     return nil
   }
 
@@ -98,8 +103,8 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     // These are from the `Order.items.sku` and are NOT the same as the AppStore Skus
     // These are Brave's Skus
     switch self {
-    case .vpnMonthly: return "brave-firewall-vpn-premium"
-    case .vpnYearly: return "brave-firewall-vpn-premium-year"
+    case .vpnMonthly: return "brave-vpn-premium"
+    case .vpnYearly: return "brave-vpn-premium-year"
     case .leoMonthly: return "brave-leo-premium"
     case .leoYearly: return "brave-leo-premium-year"
     }

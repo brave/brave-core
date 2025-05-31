@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import GuardianConnect
 import Preferences
 import Shared
@@ -21,9 +22,9 @@ extension BraveVPN {
     }
 
     switch productId {
-    case BraveVPNProductInfo.ProductIdentifiers.monthlySub:
+    case BraveStoreProduct.vpnMonthly.rawValue:
       return .monthly
-    case BraveVPNProductInfo.ProductIdentifiers.yearlySub:
+    case BraveStoreProduct.vpnYearly.rawValue:
       return .yearly
     default:
       return .other
@@ -38,12 +39,10 @@ extension BraveVPN {
     }
 
     switch productId {
-    case BraveVPNProductInfo.ProductIdentifiers.monthlySub:
+    case BraveStoreProduct.vpnMonthly.rawValue:
       return Strings.VPN.vpnSettingsMonthlySubName
-    case BraveVPNProductInfo.ProductIdentifiers.yearlySub:
+    case BraveStoreProduct.vpnYearly.rawValue:
       return Strings.VPN.vpnSettingsYearlySubName
-    case BraveVPNProductInfo.ProductIdentifiers.monthlySubSKU:
-      return Strings.VPN.vpnSettingsMonthlySubName
     default:
       assertionFailure("Can't get product id")
       return ""
