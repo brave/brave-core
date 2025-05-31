@@ -10,6 +10,7 @@
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer_p3a_util.h"
