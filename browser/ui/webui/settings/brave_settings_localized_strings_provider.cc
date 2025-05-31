@@ -1133,6 +1133,10 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
       {"emailAliasesClickOnSecureLogin",
        IDS_SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN},
       {"emailAliasesDontSeeEmail", IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL},
+      {"emailAliasesAuthError", IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR},
+      {"emailAliasesAuthTryAgain", IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN},
+      {"emailAliasesAuthTryAgainButton",
+       IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON},
   };
   html_source->AddLocalizedStrings(localized_strings);
 }

@@ -18,6 +18,8 @@ struct AuthState {
   AuthenticationStatus status;
   // The authentication email address for this current account
   string email;
+  // Error message if authentication has failed somehow
+  string? error_message;
 };
 
 struct Alias {
