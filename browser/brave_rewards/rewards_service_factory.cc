@@ -11,11 +11,11 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -77,9 +77,6 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
   notification_observer =
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(profile);
 #endif
-  // Set up the rewards data source
-  content::URLDataSource::Add(profile,
-                              std::make_unique<BraveRewardsSource>(profile));
 
   // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
   // can't add `DependsOn` to ensure proper lifetime management.
