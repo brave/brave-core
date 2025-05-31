@@ -13,6 +13,7 @@
 #include "brave/components/p3a/managed/pref_metric.h"
 #include "brave/components/p3a/managed/time_period_events_metric.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -22,6 +23,7 @@ namespace p3a {
 namespace {
 
 constexpr char kTypeKey[] = "type";
+constexpr char kMinVersionKey[] = "min_version";
 constexpr char kTimePeriodEventsType[] = "time_period_events";
 constexpr char kPrefMetricType[] = "pref";
 
@@ -29,7 +31,9 @@ constexpr char kPrefMetricType[] = "pref";
 
 RemoteMetricManager::RemoteMetricManager(PrefService* local_state,
                                          Delegate* delegate)
-    : local_state_(local_state), delegate_(delegate) {
+    : local_state_(local_state),
+      delegate_(delegate),
+      current_version_(version_info::GetBraveVersionNumberForDisplay()) {
   last_used_profile_pref_change_registrar_.Init(local_state_);
   last_used_profile_pref_change_registrar_.Add(
       ::prefs::kProfileLastUsed,
@@ -99,6 +103,23 @@ void RemoteMetricManager::ProcessMetricDefinitions(
     const std::string* type = definition->FindString(kTypeKey);
     if (!type) {
       continue;
+    }
+
+    // Check min_version requirement if specified
+    const std::string* min_version_str = definition->FindString(kMinVersionKey);
+    if (min_version_str) {
+      base::Version min_version(*min_version_str);
+      if (!current_version_.IsValid() || !min_version.IsValid()) {
+        VLOG(1) << "Skipping metric " << metric_name
+                << " due to invalid version";
+        continue;
+      }
+
+      if (current_version_ < min_version) {
+        VLOG(1) << "Skipping metric " << metric_name
+                << " due to min_version requirement: " << *min_version_str;
+        continue;
+      }
     }
 
     std::unique_ptr<RemoteMetric> metric = nullptr;

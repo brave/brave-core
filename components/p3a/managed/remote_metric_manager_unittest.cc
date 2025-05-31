@@ -48,6 +48,26 @@ constexpr char kPrefMetricJson[] = R"({
   "use_profile_prefs": true
 })";
 
+constexpr char kTimePeriodEventsMetricWithFutureMinVersionJson[] = R"({
+  "type": "time_period_events",
+  "histogram_name": "TestHistogram2",
+  "storage_key": "test_storage_key_future",
+  "period_days": 7,
+  "buckets": [5, 10, 20],
+  "min_version": "999.0.0"
+})";
+
+constexpr char kPrefMetricWithValidMinVersionJson[] = R"({
+  "type": "pref",
+  "pref_name": "test_pref",
+  "value_map": {
+    "option1": 0,
+    "option2": 1
+  },
+  "use_profile_prefs": true,
+  "min_version": "1.0.0"
+})";
+
 }  // namespace
 
 class P3ARemoteMetricManagerUnitTest : public testing::Test,
@@ -202,6 +222,47 @@ TEST_F(P3ARemoteMetricManagerUnitTest, CleanupStorage) {
   const auto& storage = local_state_.GetDict(kRemoteMetricStorageDictPref);
   EXPECT_FALSE(storage.FindDict("unused_key"));
   EXPECT_FALSE(storage.FindDict(kTestStorageKey));
+}
+
+TEST_F(P3ARemoteMetricManagerUnitTest, MinVersionAccepted) {
+  // Set current version to a version that should accept min_version 1.0.0
+  manager_->current_version_ = base::Version("1.70.0");
+
+  RemoteMetricManager::UnparsedDefinitionsMap definitions;
+
+  // Add a metric with valid min_version for pref type (should be accepted)
+  AddDefinition(definitions, "metric_valid_pref",
+                kPrefMetricWithValidMinVersionJson);
+
+  // Add a metric without min_version (should be accepted)
+  AddDefinition(definitions, "metric_no_version", kTimePeriodEventsMetricJson);
+
+  manager_->ProcessMetricDefinitions(definitions);
+
+  // Should create all 2 metrics since they meet version requirements
+  EXPECT_EQ(manager_->metrics_.size(), 2u);
+
+  // Verify histogram mappings
+  EXPECT_EQ(manager_->histogram_to_metrics_.size(), 1u);
+  EXPECT_TRUE(manager_->histogram_to_metrics_.contains(kTestHistogramName));
+  EXPECT_EQ(manager_->histogram_to_metrics_[kTestHistogramName].size(), 1u);
+}
+
+TEST_F(P3ARemoteMetricManagerUnitTest, MinVersionRejected) {
+  // Set current version to a low version that should reject future versions
+  manager_->current_version_ = base::Version("1.0.0");
+
+  RemoteMetricManager::UnparsedDefinitionsMap definitions;
+
+  // Add a metric with future min_version (should be rejected)
+  AddDefinition(definitions, "metric_future_version",
+                kTimePeriodEventsMetricWithFutureMinVersionJson);
+
+  manager_->ProcessMetricDefinitions(definitions);
+
+  // Should create no metrics since the future version should be rejected
+  EXPECT_TRUE(manager_->metrics_.empty());
+  EXPECT_TRUE(manager_->histogram_to_metrics_.empty());
 }
 
 }  // namespace p3a

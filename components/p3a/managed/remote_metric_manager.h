@@ -17,6 +17,7 @@
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/values.h"
+#include "base/version.h"
 #include "brave/components/p3a/managed/remote_metric.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -71,6 +72,8 @@ class RemoteMetricManager {
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
                            ProfilePrefsHandling);
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, CleanupStorage);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MinVersionAccepted);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MinVersionRejected);
 
   // Called by ScopedHistogramSampleObserver when a histogram changes.
   void OnHistogramChanged(std::string_view histogram_name,
@@ -103,6 +106,9 @@ class RemoteMetricManager {
   raw_ptr<Delegate> delegate_;
 
   PrefChangeRegistrar last_used_profile_pref_change_registrar_;
+
+  // Version used for min_version comparisons. Can be overridden in tests.
+  base::Version current_version_;
 };
 
 }  // namespace p3a
