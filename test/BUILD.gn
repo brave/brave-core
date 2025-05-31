@@ -463,6 +463,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/tabs:unit_tests",
       "//brave/browser/ui/webui/settings:unittests",
       "//brave/browser/ui/whats_new:unit_test",
+      "//brave/components/autofill/core/browser/ui:unit_tests",
       "//brave/components/brave_news/common:unit_tests",
       "//brave/components/brave_shields/core/common:mojom",
       "//brave/components/brave_vpn/common/buildflags",
