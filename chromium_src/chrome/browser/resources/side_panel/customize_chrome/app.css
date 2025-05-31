@@ -1,0 +1,41 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./app-chromium.css.js
+ * #scheme=relative
+ * #include=app-chromium
+ * #css_wrapper_metadata_end */
+
+:host {
+  --toolbar-button-height: 20px;
+}
+
+/* separator before toolbar button */
+#overviewPage .sp-cards-separator:first-of-type {
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  box-sizing: border-box;
+  height: var(--leo-spacing-xl);
+}
+
+#toolbarButton {
+  height: var(--toolbar-button-height);
+}
+
+#toolbar-customization-heading {
+  margin: 0;
+  height: var(--toolbar-button-height);
+}
+
+#toolbar-customization-inner-heading {
+  color: var(--leo-color-text-interactive);
+  font: var(--leo-font-components-button-small);
+  line-height: var(--leo-typography-line-height-button-small);
+}
+
+#shortcuts {
+  display: none;
+}
