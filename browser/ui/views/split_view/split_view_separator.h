@@ -38,6 +38,8 @@ class SplitViewSeparator : public views::ResizeArea,
     separator_delegate_ = delegate;
   }
 
+  void ShowMenuButtonWidget();
+
   // views::View:
   void AddedToWidget() override;
   void VisibilityChanged(views::View* starting_from, bool is_visible) override;
