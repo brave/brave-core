@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { getMockChrome, getMockLoadTimeData } from './testData'
+import { jest } from '@jest/globals';
+
+global.jest = jest;
 
 window.alert = jest.fn()
 
