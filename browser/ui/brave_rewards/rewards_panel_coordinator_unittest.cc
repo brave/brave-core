@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 
 namespace brave_rewards {
@@ -39,8 +40,7 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
 
-    RewardsPanelCoordinator::CreateForBrowser(browser());
-    coordinator_ = RewardsPanelCoordinator::FromBrowser(browser());
+    coordinator_ = browser()->GetFeatures().rewards_panel_coordinator();
     DCHECK(coordinator_);
 
     observer_ = MakePanelObserver([this]() { called_ = true; });
