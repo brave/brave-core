@@ -91,7 +91,7 @@ class MockConversationAPIClient : public ConversationAPIClient {
 
   MOCK_METHOD(void,
               PerformRequest,
-              (const std::vector<ConversationEvent>&,
+              (std::vector<ConversationEvent>,
                const std::string& selected_language,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
@@ -187,7 +187,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -233,7 +233,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -301,7 +301,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -339,7 +339,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   base::RunLoop run_loop;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -415,7 +415,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -487,7 +487,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -531,7 +531,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -598,7 +598,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(3)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -614,7 +614,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -630,7 +630,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -663,7 +663,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   // would fail the request.
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -679,7 +679,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -701,7 +701,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
 
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(3)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -717,7 +717,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -733,7 +733,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -758,7 +758,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
     {"role": "user", "type": "dedupeFocusTopics", "content": "[\"topic1\",\"topic2\",\"topic3\",\"topic7\"]"}])";
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(3)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -774,7 +774,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -788,7 +788,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -818,7 +818,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   // Test dedupe response is not well structured.
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(3)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -834,7 +834,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -850,7 +850,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -877,7 +877,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   // Test calling DedupeTopics with empty topics.
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillRepeatedly([&](const std::vector<ConversationEvent>& conversation,
+      .WillRepeatedly([&](std::vector<ConversationEvent> conversation,
                           const std::string& selected_language,
                           EngineConsumer::GenerationDataCallback data_callback,
                           EngineConsumer::GenerationCompletedCallback callback,
@@ -913,7 +913,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -960,7 +960,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -975,7 +975,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1018,7 +1018,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
 
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1033,7 +1033,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1062,7 +1062,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   // Any server error would fail the request.
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1074,7 +1074,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1095,7 +1095,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   // Entry with unexpected structure would be skipped.
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
       .Times(2)
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1107,7 +1107,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
@@ -1232,7 +1232,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test successful response
   {
     EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-        .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1263,7 +1263,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test error response
   {
     EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-        .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1286,7 +1286,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test empty completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-        .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1312,7 +1312,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test null event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-        .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1335,7 +1335,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test non-completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _))
-        .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
@@ -1370,7 +1370,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       PerformRequest(_, _, _, _,
                      testing::Eq(std::optional<std::string>(
                          model_service_->GetLeoModelNameByKey(kModelKey)))))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,

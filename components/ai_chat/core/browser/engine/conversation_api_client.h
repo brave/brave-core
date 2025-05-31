@@ -88,8 +88,10 @@ class ConversationAPIClient {
                       const std::string& = "");
     ConversationEvent();
     ~ConversationEvent();
-    ConversationEvent(const ConversationEvent&);
-    ConversationEvent& operator=(const ConversationEvent&);
+    ConversationEvent(const ConversationEvent&) = delete;
+    ConversationEvent& operator=(const ConversationEvent&) = delete;
+    ConversationEvent(ConversationEvent&&);
+    ConversationEvent& operator=(ConversationEvent&&);
   };
 
   ConversationAPIClient(
@@ -103,7 +105,7 @@ class ConversationAPIClient {
   virtual ~ConversationAPIClient();
 
   virtual void PerformRequest(
-      const std::vector<ConversationEvent>& conversation,
+      std::vector<ConversationEvent> conversation,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
@@ -132,7 +134,7 @@ class ConversationAPIClient {
 
  private:
   void PerformRequestWithCredentials(
-      const std::vector<ConversationEvent>& conversation,
+      std::vector<ConversationEvent> conversation,
       const std::string& selected_language,
       const std::optional<std::string>& model_name,
       GenerationDataCallback data_received_callback,
