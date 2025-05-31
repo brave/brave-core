@@ -5,7 +5,8 @@
 
 import { AliasItem } from './email_aliases_item'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import { EditState, EmailAliasModal } from './email_aliases_modal'
+import { DeleteAliasModal, EditState, EmailAliasModal }
+  from './email_aliases_modal'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
@@ -79,22 +80,27 @@ export const AliasList = ({
             key={alias.email}
             alias={alias}
             onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
-            onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
+            onDelete={() => setEditState({ mode: 'Delete', alias: alias })}>
           </AliasItem>)}
-      {(editState.mode === 'Create' || editState.mode === 'Edit') &&
-        <AliasDialog
-          isOpen
-          onClose={() => setEditState({ mode: 'None' })}
-          backdropClickCloses
-          modal
-          showClose>
+      <AliasDialog
+        isOpen={editState.mode !== 'None'}
+        onClose={() => setEditState({ mode: 'None' })}
+        backdropClickCloses
+        modal
+        showClose>
+        {editState.mode === 'Delete' && editState.alias &&
+          <DeleteAliasModal
+            onReturnToMain={() => setEditState({ mode: 'None' })}
+            alias={editState.alias}
+            emailAliasesService={emailAliasesService} />}
+        {(editState.mode === 'Create' || editState.mode === 'Edit') &&
           <EmailAliasModal
             onReturnToMain={() => setEditState({ mode: 'None' })}
             editState={editState}
             mainEmail={authEmail}
             aliasCount={aliases.length}
-            emailAliasesService={emailAliasesService} />
-        </AliasDialog>}
+            emailAliasesService={emailAliasesService} />}
+      </AliasDialog>
     </DivWithTopDivider>
   )
 }
