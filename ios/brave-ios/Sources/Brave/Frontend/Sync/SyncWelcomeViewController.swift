@@ -6,6 +6,7 @@ import BraveCore
 import BraveShared
 import BraveUI
 import Data
+import DesignSystem
 import Preferences
 import Shared
 import UIKit
@@ -79,7 +80,6 @@ class SyncWelcomeViewController: SyncViewController {
 
   private var syncServiceObserver: AnyObject?
   private var syncDeviceInfoObserver: AnyObject?
-  private let tabManager: TabManager
 
   lazy var mainStackView: UIStackView = {
     let stackView = UIStackView()
@@ -167,17 +167,17 @@ class SyncWelcomeViewController: SyncViewController {
   private let braveCore: BraveProfileController
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
+  private var isModallyPresented = false
 
   init(
     braveCore: BraveProfileController,
-    tabManager: TabManager,
     windowProtection: WindowProtection?,
     isModallyPresented: Bool = false
   ) {
     self.braveCore = braveCore
     self.syncAPI = braveCore.syncAPI
     self.syncProfileServices = braveCore.syncProfileService
-    self.tabManager = tabManager
+    self.isModallyPresented = isModallyPresented
 
     super.init(windowProtection: windowProtection, isModallyPresented: isModallyPresented)
   }
@@ -223,14 +223,26 @@ class SyncWelcomeViewController: SyncViewController {
     mainStackView.addArrangedSubview(buttonsStackView)
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      image: UIImage(systemName: "gearshape"),
+      image: UIImage(braveSystemNamed: "leo.settings"),
       style: .plain,
       target: self,
       action: #selector(onSyncInternalsAction)
     )
+
+    if isModallyPresented {
+      navigationItem.leftBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .done,
+        target: self,
+        action: #selector(doneTapped)
+      )
+    }
   }
 
   // MARK: Actions
+
+  @objc private func doneTapped() {
+    dismiss(animated: true)
+  }
 
   @objc
   private func newToSyncAction() {
@@ -330,7 +342,6 @@ class SyncWelcomeViewController: SyncViewController {
     let syncSettingsVC = SyncSettingsTableViewController(
       isModallyPresented: true,
       braveCoreMain: braveCore,
-      tabManager: tabManager,
       windowProtection: windowProtection
     )
 

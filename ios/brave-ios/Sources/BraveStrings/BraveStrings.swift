@@ -7265,6 +7265,30 @@ extension Strings {
         value: "Hide for now",
         comment: "The title for the action to hide open session with all tabs"
       )
+    public static let openTabsNoSyncedTabsTitle =
+      NSLocalizedString(
+        "opentabs.openTabsNoSyncedTabsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "No Synced Tabs",
+        comment: "A title shown when there are no synced open tabs to show in the list"
+      )
+    public static let openTabsYourTabsAppearHere =
+      NSLocalizedString(
+        "opentabs.openTabsYourTabsAppearHere",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Your synced tabs appear here",
+        comment: "A description shown when there are no synced open tabs to show in the list"
+      )
+    public static let openTabsOnOtherDevices =
+      NSLocalizedString(
+        "opentabs.openTabsOnOtherDevices",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Tabs on Other Devices",
+        comment: "The title shown on the screen that shows tabs synced from other devices"
+      )
   }
 }
 

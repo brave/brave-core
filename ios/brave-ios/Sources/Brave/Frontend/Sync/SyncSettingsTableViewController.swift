@@ -59,7 +59,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   private let braveCoreMain: BraveProfileController
   private let syncAPI: BraveSyncAPI
   private let syncProfileService: BraveSyncProfileServiceIOS
-  private let tabManager: TabManager
 
   private var syncDeviceObserver: AnyObject?
   private var syncServiceObserver: AnyObject?
@@ -91,14 +90,12 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   init(
     isModallyPresented: Bool = false,
     braveCoreMain: BraveProfileController,
-    tabManager: TabManager,
     windowProtection: WindowProtection?
   ) {
     self.isModallyPresented = isModallyPresented
     self.braveCoreMain = braveCoreMain
     self.syncAPI = braveCoreMain.syncAPI
     self.syncProfileService = braveCoreMain.syncProfileService
-    self.tabManager = tabManager
 
     // Local Authentication (Biometric - Pincode) needed only for actions
     // Enabling - disabling password sync and add new device
@@ -154,7 +151,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     }
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      image: UIImage(systemName: "gearshape"),
+      image: UIImage(braveSystemNamed: "leo.settings"),
       style: .plain,
       target: self,
       action: #selector(onSyncInternalsTapped)
@@ -319,11 +316,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         Preferences.Chromium.syncPasswordsEnabled.value = !toggleExistingStatus
       case .openTabs:
         Preferences.Chromium.syncOpenTabsEnabled.value = !toggleExistingStatus
-
-        // Sync Regular Tabs when open tabs are enabled
-        if Preferences.Chromium.syncOpenTabsEnabled.value {
-          tabManager.addRegularTabsToSyncChain()
-        }
       }
 
       syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
