@@ -497,6 +497,7 @@ if (is_win) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/components/windows_recall",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
   ]

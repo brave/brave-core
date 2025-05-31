@@ -264,6 +264,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
@@ -1385,6 +1389,21 @@ std::optional<GURL> BraveContentBrowserClient::SanitizeURL(
     return std::nullopt;
   }
   return sanitized_url;
+}
+
+std::optional<bool> BraveContentBrowserClient::IsWindowsRecallEnabled(
+    content::BrowserContext* browser_context) {
+#if BUILDFLAG(IS_WIN)
+  switch (windows_recall::GetWindowsRecallState(browser_context)) {
+    case windows_recall::WindowsRecallState::kUnavailable:
+      break;
+    case windows_recall::WindowsRecallState::kEnabled:
+      return true;
+    case windows_recall::WindowsRecallState::kDisabled:
+      return false;
+  }
+#endif
+  return std::nullopt;
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(

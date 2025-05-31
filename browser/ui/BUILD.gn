@@ -387,6 +387,10 @@ source_set("ui") {
       ]
     }
 
+    if (is_win) {
+      deps += [ "//brave/components/windows_recall" ]
+    }
+
     if (enable_pin_shortcut) {
       sources += [
         "webui/settings/pin_shortcut_handler.cc",

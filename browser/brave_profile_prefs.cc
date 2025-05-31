@@ -127,6 +127,10 @@ using extensions::FeatureSwitch;
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 namespace brave {
 
 void RegisterProfilePrefsForMigration(
@@ -474,6 +478,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  windows_recall::RegisterProfilePrefs(registry);
 #endif
 }
 
