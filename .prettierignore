@@ -60,8 +60,6 @@ snapcraft.yaml
 components/brave_wallet/resources/solana_web3_script.js
 
 # Ignore components folders with a lot of formatting issues
-/components/ai_chat/
-/components/ai_rewriter/
 /components/brave_new_tab_ui/
 /components/brave_rewards/
 /components/brave_wallet/
