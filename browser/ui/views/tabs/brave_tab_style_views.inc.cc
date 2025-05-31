@@ -94,6 +94,13 @@ class BraveVerticalTabStyle : public BraveTabStyleViews {
   bool ShouldShowVerticalTabs() const;
   bool IsTabTiled(const Tab* tab) const;
 
+  // true when |tab| is shown in the split view(with SideBySide or brave split
+  // view)
+  bool IsSplitTab(const Tab* tab) const;
+
+  // true when |tab| is shown at the beginning of split view.
+  bool IsStartSplitTab(const Tab* tab) const;
+
   SkColor GetTargetTabBackgroundColor(
       TabStyle::TabSelectionState selection_state,
       bool hovered) const override;
@@ -218,10 +225,10 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  if (!is_pinned && IsTabTiled(tab()) &&
+  if (!is_pinned && IsSplitTab(tab()) &&
       path_type != TabStyle::PathType::kHitTest) {
     if (ShouldShowVerticalTabs()) {
-      tab()->controller()->IsFirstTabInTile(tab())
+      IsStartSplitTab(tab())
           ? tab_top += scale* kPaddingForVerticalTabInTile
           : tab_bottom -= scale * kPaddingForVerticalTabInTile;
       tab_left += scale * kPaddingForVerticalTabInTile;
@@ -234,7 +241,7 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_bottom -= scale * kAdditionalVerticalPadding;
 
       constexpr int kAdditionalHorizontalPadding = 4;
-      tab()->controller()->IsFirstTabInTile(tab())
+      IsStartSplitTab(tab())
           ? tab_left += scale* kAdditionalHorizontalPadding
           : tab_right -= scale * kAdditionalHorizontalPadding;
     }
@@ -261,8 +268,8 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
   const bool is_pinned = tab()->data().pinned;
   auto insets = tab_style()->GetContentsInsets();
 
-  if (!is_pinned && ShouldShowVerticalTabs() && IsTabTiled(tab())) {
-    const bool is_first_tab = tab()->controller()->IsFirstTabInTile(tab());
+  if (!is_pinned && ShouldShowVerticalTabs() && IsSplitTab(tab())) {
+    const bool is_first_tab = IsStartSplitTab(tab());
     return insets + gfx::Insets::TLBR(
                         is_first_tab ? kPaddingForVerticalTabInTile : 0, 0,
                         is_first_tab ? 0 : kPaddingForVerticalTabInTile, 0);
@@ -316,12 +323,12 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
     return 0;
   }
 
-  if (IsTabTiled(tab())) {
+  if (IsSplitTab(tab())) {
     return 0;
   }
 
   const Tab* const next_tab = tab()->controller()->GetAdjacentTab(tab(), 1);
-  const auto is_next_tab_tiled = IsTabTiled(next_tab);
+  const auto is_next_tab_tiled = IsSplitTab(next_tab);
   if (is_next_tab_tiled) {
     return 0;
   }
@@ -434,7 +441,7 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
   // It's not easy to know whether selected state is from clicking or
   // dragging here. As having selected tab state in a tile is not a
   // common state, I think it's fine to not have that state in a tile.
-  if (IsTabTiled(tab()) && !tab()->IsActive() && !hovered) {
+  if (IsSplitTab(tab()) && !tab()->IsActive() && !hovered) {
     return SK_ColorTRANSPARENT;
   }
 
@@ -478,6 +485,38 @@ bool BraveVerticalTabStyle::IsTabTiled(const Tab* tab) const {
     }
   }
   return is_tab_tiled;
+}
+
+bool BraveVerticalTabStyle::IsSplitTab(const Tab* tab) const {
+  if (!tab) {
+    return false;
+  }
+
+  if (IsTabTiled(tab)) {
+    return true;
+  }
+
+  return tab->split().has_value();
+}
+
+bool BraveVerticalTabStyle::IsStartSplitTab(const Tab* tab) const {
+  if (!tab) {
+    return false;
+  }
+
+  if (IsTabTiled(tab)) {
+    return tab->controller()->IsFirstTabInTile(tab);
+  }
+
+  if (!tab->split().has_value()) {
+    return false;
+  }
+
+  const Tab* tab_to_left = tab->controller()->GetAdjacentTab(tab, -1);
+  return std::ranges::none_of(tab->controller()->GetTabsInSplit(tab),
+                              [&tab_to_left](const Tab* split_tab) {
+                                return split_tab == tab_to_left;
+                              });
 }
 
 }  // namespace

@@ -24,9 +24,11 @@ class BraveTab;
 #define UpdateIconVisibility virtual UpdateIconVisibility
 #define ShouldRenderAsNormalTab virtual ShouldRenderAsNormalTab
 #define MaybeAdjustLeftForPinnedTab virtual MaybeAdjustLeftForPinnedTab
+#define IsActive virtual IsActive
 
 #include "src/chrome/browser/ui/views/tabs/tab.h"  // IWYU pragma: export
 
+#undef IsActive
 #undef MaybeAdjustLeftForPinnedTab
 #undef ShouldRenderAsNormalTab
 #undef UpdateIconVisibility

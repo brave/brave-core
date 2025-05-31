@@ -167,3 +167,9 @@ void BraveTab::SetData(TabRendererData data) {
     SetGroup(std::nullopt);
   }
 }
+
+bool BraveTab::IsActive() const {
+  // When SideBySide is enabled, chromium gives true if tab is in split tab even
+  // it's not active. We want to give true only for current active tab.
+  return controller_->IsActiveTab(this);
+}
