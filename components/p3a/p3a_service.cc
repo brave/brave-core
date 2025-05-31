@@ -21,13 +21,14 @@
 #include "base/timer/wall_clock_timer.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/p3a/managed/remote_config_manager.h"
+#include "brave/components/p3a/managed/remote_metric_manager.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p2a_protocols.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -84,7 +85,11 @@ P3AService::P3AService(PrefService& local_state,
   if (first_run_time.is_null()) {
     first_run_time = base::Time::Now();
   }
-  remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+
+  remote_metric_manager_ =
+      std::make_unique<RemoteMetricManager>(&local_state, this);
+  remote_config_manager_ =
+      std::make_unique<RemoteConfigManager>(this, remote_metric_manager_.get());
 
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
@@ -106,6 +111,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
+  registry->RegisterDictionaryPref(kRemoteMetricStorageDictPref);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {
@@ -185,7 +191,7 @@ void P3AService::UpdateMetricValueForSingleFormat(
     size_t bucket,
     bool is_constellation) {
   DCheckCurrentlyOnUIThread();
-  HandleHistogramChange(histogram_name, bucket, is_constellation);
+  UpdateMetricValue(histogram_name, bucket, is_constellation);
 }
 
 bool P3AService::IsP3AEnabled() const {
@@ -218,7 +224,7 @@ void P3AService::Init(
 
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    HandleHistogramChange(std::string(entry.first), entry.second);
+    UpdateMetricValue(std::string(entry.first), entry.second, std::nullopt);
   }
   histogram_values_.clear();
 }
@@ -322,7 +328,7 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   if (IsSuspendedMetric(histogram_name, sample)) {
     GetUIThreadTaskRunner()->PostTask(
         FROM_HERE,
-        base::BindOnce(&P3AService::HandleHistogramChange, this, histogram_name,
+        base::BindOnce(&P3AService::UpdateMetricValue, this, histogram_name,
                        kSuspendedMetricBucket, std::nullopt));
     return;
   }
@@ -351,11 +357,11 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   }
 
   GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+      FROM_HERE, base::BindOnce(&P3AService::UpdateMetricValue, this,
                                 histogram_name, bucket, std::nullopt));
 }
 
-void P3AService::HandleHistogramChange(
+void P3AService::UpdateMetricValue(
     std::string_view histogram_name,
     size_t bucket,
     std::optional<bool> only_update_for_constellation) {
@@ -371,6 +377,7 @@ void P3AService::HandleHistogramChange(
                                         only_update_for_constellation);
     return;
   }
+
   const auto* metric_config = GetMetricConfig(histogram_name);
   if (metric_config && metric_config->constellation_only) {
     only_update_for_constellation = true;
