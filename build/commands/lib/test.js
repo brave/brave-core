@@ -115,34 +115,77 @@ const buildTests = async (
   await util.buildTargets()
 }
 
-// Appends test results from `from` file to `into` file
+const getResultsFileInfo = (file) => {
+  if (!fs.existsSync(file)) {
+    console.log(`Error: file ${file} doesn't exist`)
+    return null
+  }
+  try {
+    const data = fs.readFileSync(file, 'utf8')
+    const testsuitesPattern =
+      '<testsuites name="AllTests"'
+      + ' tests="(?<tests>[0-9]+)" failures="(?<failures>[0-9]+)"'
+      + ' disabled="(?<disabled>[0-9]+)" errors="(?<errors>[0-9]+)"'
+      + ' time="(?<time>[0-9]+(.[0-9]+)?)"'
+      + ' timestamp="(?<timestamp>[0-9\-:T]+)">'
+    const testsuites = data.match(testsuitesPattern)
+    if (!testsuites) {
+      console.log(`Could not find matching testsuites element in ${file}`)
+      return null
+    }
+    // Strip xml declaration and the `testsuites` tag (doing this with brute
+    // force since bringing in a new xml parser is too heavy for this.)
+    const newData = data
+      .replace('<?xml version="1.0" encoding="UTF-8"?>', '')
+      .replace(testsuites[0], '')
+      .replace('</testsuites>', '')
+    return {
+      data: newData.replace(/^\s*\n/gm, ''),
+      ...testsuites.groups,
+    }
+  } catch (err) {
+    console.log(`Error reading results file ${file}: ` + err)
+    return null
+  }
+}
+
+// Merge test results from `from` file to `into` file
 const mergeTestOutput = (suite, from, into) => {
   assert(
     from !== into,
     `Attempted to merge test output into itself. File: ${from}`,
   )
-  fs.readFile(from, 'utf8', (err, data) => {
-    if (err) {
-      console.log(`Error reading results file ${from}: ` + err)
-      return false
-    }
-    let newData = ''
-    if (!fs.existsSync(into)) {
-      newData += '<?xml version="1.0" encoding="UTF-8"?>\n'
-    }
-    // Add a comment indicating which file this data came from and also
-    // strip xml declaration (doing this with brute replace since bringing
-    // in an xml parser is too heavy for this.)
-    newData +=
-      `<!-- ${suite} -->`
-      + data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
-    fs.appendFile(into, newData, (err) => {
-      if (err) {
-        console.log(`Error appending ${from} into ${into} file: ` + err)
-        return false
-      }
-    })
-  })
+  if (!fs.existsSync(into)) {
+    fs.copyFileSync(from, into)
+    return true
+  }
+  fromInfo = getResultsFileInfo(from)
+  if (!fromInfo) {
+    console.log(`Error getting results file info for ${from}.`)
+    return false
+  }
+  intoInfo = getResultsFileInfo(into)
+  if (!intoInfo) {
+    console.log(`Error getting results file info for ${into}.`)
+    return false
+  }
+  let newData = '<?xml version="1.0" encoding="UTF-8"?>\n'
+  newData +=
+    '<testsuites name="AllTests"'
+    + ` tests="${Number(intoInfo.tests) + Number(fromInfo.tests)}"`
+    + ` failures="${Number(intoInfo.failures) + Number(fromInfo.failures)}"`
+    + ` disabled="${Number(intoInfo.disabled) + Number(fromInfo.disabled)}"`
+    + ` errors="${Number(intoInfo.errors) + Number(fromInfo.errors)}"`
+    + ` time="${Number(intoInfo.time) + Number(fromInfo.time)}"`
+    + ` timestamp="${intoInfo.timestamp}">\n`
+  newData += intoInfo.data + fromInfo.data + '</testsuites>'
+
+  try {
+    fs.writeFileSync(into, newData)
+  } catch (err) {
+    console.log(`Error merging ${from} into ${into} file: ` + err)
+    return false
+  }
   return true
 }
 
