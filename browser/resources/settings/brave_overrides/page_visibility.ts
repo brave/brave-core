@@ -40,6 +40,9 @@ function getPageVisibility () {
       braveWallet: false,
       braveWeb3: false,
       leoAssistant: false,
+      // <if expr="enable_containers">
+      containers: false,
+      // </if>
       content: false,
       playlist: false,
       speedreader: false,
@@ -66,6 +69,9 @@ function getPageVisibility () {
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
+    // <if expr="enable_containers">
+    containers: loadTimeData.getBoolean('isContainersEnabled'),
+    // </if>
     content: alwaysTrueProxy,
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
     speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled'),

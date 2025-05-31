@@ -82,6 +82,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
@@ -262,6 +263,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 namespace {
@@ -865,6 +871,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       BraveEducationPageUI>(map);
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kBraveContainers)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        containers::mojom::SettingsPageHandlerFactory, BraveSettingsUI>(map);
+  }
 #endif
 }
 
