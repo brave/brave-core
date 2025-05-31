@@ -1404,5 +1404,285 @@
     "image_url": "brave-support.png",	
     "background_color": "#495057",	
     "domain": "brave.com"	
+  },
+  {
+    "title": "Samoan News",
+    "url": "https://www.samoanews.com/",
+    "image_url": "samoannews-com.png",
+    "background_color": "#FFF",
+    "domain": "samoanews.com"
+  },
+  {
+    "title": "Weather.gov",
+    "url": "https://forecast.weather.gov/MapClick.php?lat=-14.30068805999997&lon=-170.71811612199997",
+    "image_url": "weatherg-gov.png",
+    "background_color": "#FFF",
+    "domain": "weather.gov"
+  },
+  {
+    "title": "infobae",
+    "url": "https://www.infobae.com/america/",
+    "image_url": "infobae-com.png",
+    "background_color": "#000000",
+    "domain": "infobae.com"
+  },
+  {
+    "title": "Mercado Libre",
+    "url": "https://www.mercadolibre.com.ar/",
+    "image_url": "mercadolibre-com-ar.png",
+    "background_color": "#000000",
+    "domain": "mercadolibre.com.ar"
+  },
+  {
+    "title": "BOM",
+    "url": "http://www.bom.gov.au/",
+    "image_url": "bom-gov-au.png",
+    "background_color": "#FFF",
+    "domain": "bom.gov.au"
+  },
+  {
+    "title": "Swellnet",
+    "url": "https://www.swellnet.com/",
+    "image_url": "swellnet-com.png",
+    "background_color": "#FFF",
+    "domain": "swellnet.com"
+  },
+  {
+    "title": "Orf",
+    "url": "https://orf.at/",
+    "image_url": "orf-at.png",
+    "background_color": "#FFF",
+    "domain": "orf.at"
+  },
+  {
+    "title": "VRT",
+    "url": "https://www.vrt.be/nl",
+    "image_url": "vrt-be.png",
+    "background_color": "#FFF",
+    "domain": "vrt.be"
+  },
+  {
+    "title": "HLN",
+    "url": "https://www.hln.be/",
+    "image_url": "hln-be.png",
+    "background_color": "#000000",
+    "domain": "hln.be"
+  },
+  {
+    "title": "UOL",
+    "url": "https://www.uol.com.br/",
+    "image_url": "uol-com-br.png",
+    "background_color": "#fff",
+    "domain": "uol.com.br"
+  },
+  {
+    "title": "Globo",
+    "url": "https://www.globo.com/",
+    "image_url": "globo-com.png",
+    "background_color": "#fff",
+    "domain": "globo.com"
+  },
+  {
+    "title": "The Globe and Mail",
+    "url": "https://www.theglobeandmail.com/",
+    "image_url": "theglobeandmail-com.png",
+    "background_color": "#fff",
+    "domain": "theglobeandmail.com"
+  },
+  {
+    "title": "Emol",
+    "url": "https://www.emol.com/",
+    "image_url": "emol-com.png",
+    "background_color": "#fff",
+    "domain": "emol.com"
+  },
+  {
+    "title": "BiobioChile",
+    "url": "https://www.biobiochile.cl/",
+    "image_url": "biobiochile-cl.png",
+    "background_color": "#fff",
+    "domain": "biobiochile.cl"
+  },
+  {
+    "title": "El Tiempo",
+    "url": "http://eltiempo.com/",
+    "image_url": "eltiempo-com.png",
+    "background_color": "#fff",
+    "domain": "eltiempo.com"
+  },
+  {
+    "title": "Semana",
+    "url": "https://www.semana.com/",
+    "image_url": "semana-com.png",
+    "background_color": "#E91B1E",
+    "domain": "semana.com"
+  },
+  {
+    "title": "Jutarnji list",
+    "url": "https://www.jutarnji.hr/",
+    "image_url": "jutarnji-hr.png",
+    "background_color": "#fff",
+    "domain": "jutarnji.hr"
+  },
+  {
+    "title": "Index.HR",
+    "url": "https://www.index.hr/",
+    "image_url": "index-hr.png",
+    "background_color": "#fff",
+    "domain": "index.hr"
+  },
+  {
+    "title": "Novinky",
+    "url": "https://www.novinky.cz/",
+    "image_url": "novinky-cz.png",
+    "background_color": "#fff",
+    "domain": "novinky.cz"
+  },
+  {
+    "title": "iDNES.cz",
+    "url": "https://www.idnes.cz/",
+    "image_url": "idnes-cz.png",
+    "background_color": "#fff",
+    "domain": "idnes.cz"
+  },
+  {
+    "title": "Berlingske",
+    "url": "https://www.berlingske.dk/",
+    "image_url": "berlingske-dk.png",
+    "background_color": "#fff",
+    "domain": "berlingske.dk"
+  },
+  {
+    "title": "Politiken",
+    "url": "https://politiken.dk/",
+    "image_url": "politiken-dk.png",
+    "background_color": "#fff",
+    "domain": "politiken.dk"
+  },
+  {
+    "title": "اليوم السابع",
+    "url": "https://www.youm7.com/",
+    "image_url": "youm7-com.png",
+    "background_color": "#fff",
+    "domain": "youm7.com"
+  },
+  {
+    "title": "المصري اليوم",
+    "url": "https://www.almasryalyoum.com/",
+    "image_url": "almasryalyoum-com.png",
+    "background_color": "#fff",
+    "domain": "almasryalyoum.com"
+  },
+  {
+    "title": "Eesti Ekspress",
+    "url": "https://ekspress.delfi.ee/",
+    "image_url": "ekspress-delfi-ee.png",
+    "background_color": "#fff",
+    "domain": "delfi.ee"
+  },
+  {
+    "title": "Iltalehti",
+    "url": "https://www.iltalehti.fi/",
+    "image_url": "iltalehti-fi.png",
+    "background_color": "#fff",
+    "domain": "iltalehti.fi"
+  },
+  {
+    "title": "Der Spiegel",
+    "url": "https://www.spiegel.de/",
+    "image_url": "spiegel-de.png",
+    "background_color": "#fff",
+    "domain": "spiegel.de"
+  },
+  {
+    "title": "Η Καθημερινή",
+    "url": "https://www.kathimerini.gr/",
+    "image_url": "kathimerini-gr.png",
+    "background_color": "#fff",
+    "domain": "kathimerini.gr"
+  },
+  {
+    "title": "SCMP",
+    "url": "https://www.scmp.com/",
+    "image_url": "scmp-com.png",
+    "background_color": "#fff",
+    "domain": "scmp.com"
+  },
+  {
+    "title": "Asia Sentinel",
+    "url": "https://www.asiasentinel.com/",
+    "image_url": "asiasentinel-com.png",
+    "background_color": "#ffffff",
+    "domain": "asiasentinel.com"
+  },
+  {
+    "title": "EU",
+    "url": "https://european-union.europa.eu/news-and-events_en",
+    "image_url": "european-union-europa-eu.png",
+    "background_color": "#fff",
+    "domain": "europa.eu"
+  },
+  {
+    "title": "Ilbe",
+    "url": "https://www.ilbe.com/",
+    "image_url": "ilbe-com.png",
+    "background_color": "#fff",
+    "domain": "ilbe.com"
+  },
+  {
+    "title": "Naver",
+    "url": "https://www.naver.com/",
+    "image_url": "naver-com.png",
+    "background_color": "#fff",
+    "domain": "naver.com"
+  },
+  {
+    "title": "Te Ao Māori News",
+    "url": "https://www.teaonews.co.nz/",
+    "image_url": "teaonews-co-nz.png",
+    "background_color": "#fff",
+    "domain": "teaonews.co.nz"
+  },
+  {
+    "title": "The NZ Herald",
+    "url": "https://www.nzherald.co.nz/",
+    "image_url": "nzherald-co-nz.png",
+    "background_color": "#fff",
+    "domain": "nzherald.co.nz"
+  },
+  {
+    "title": "El Nuevo Día",
+    "url": "https://www.elnuevodia.com/negocios/consumo/notas/uber-le-pone-fecha-a-su-lanzamiento-para-puerto-rico/",
+    "image_url": "elnuevodia-com.png",
+    "background_color": "#fff",
+    "domain": "elnuevodia.com"
+  },
+  {
+    "title": "Hotnews",
+    "url": "https://hotnews.ro/",
+    "image_url": "hotnews-ro.png",
+    "background_color": "#fff",
+    "domain": "hotnews.ro"
+  },
+  {
+    "title": "El País",
+    "url": "https://elpais.com/",
+    "image_url": "elpais-com.png",
+    "background_color": "#fff",
+    "domain": "elpais.com"
+  },
+  {
+    "title": "ElNacional.cat",
+    "url": "https://www.elnacional.cat/",
+    "image_url": "elnacional-cat.png",
+    "background_color": "#FED340",
+    "domain": "elnacional.cat"
+  },
+  {
+    "title": "ESPN",
+    "url": "https://www.espn.com/",
+    "image_url": "espn-go-com.png",
+    "background_color": "#fff",
+    "domain": "espn.com"
   }
 ]
