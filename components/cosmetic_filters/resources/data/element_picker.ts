@@ -34,12 +34,14 @@ const api = {
     btnHideRulesBoxText: string,
     btnQuitText: string) => void) => {
     cf_worker.getLocalizedTexts().then(
-      (val: { btnCreateDisabledText: string;
+      (val: {
+        btnCreateDisabledText: string;
         btnCreateEnabledText: string;
         btnManageText: string;
         btnShowRulesBoxText: string;
         btnHideRulesBoxText: string;
-        btnQuitText: string }) => {
+        btnQuitText: string
+      }) => {
         callback(val.btnCreateDisabledText,
           val.btnCreateEnabledText,
           val.btnManageText,
@@ -192,7 +194,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
 
   // ID
   if (elem.id.length > 0 &&
-      document.querySelectorAll(`#${elem.id}`).length == 1) {
+    document.querySelectorAll(`#${elem.id}`).length === 1) {
     builder.addRule({
       type: Selector.Id,
       value: CSS.escape(elem.id)
@@ -542,12 +544,85 @@ const elementPickerUserModifiedRule = (selector: string) => {
   }
 }
 
+const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
+  const mainSection = root.getElementById('main-section')
+  if (!mainSection) return;
+  mainSection.classList.toggle('minimized', minimized);
+}
+
+const setupDragging = (root: ShadowRoot): void => {
+  const mainSection = root.getElementById('main-section') as HTMLElement | null;
+  const dragHeader = root.getElementById('drag-header') as HTMLElement | null;
+
+  if (!mainSection || !dragHeader) return;
+
+  const sectionHeight = mainSection.offsetHeight;
+  const HEADER_HEIGHT = 28;
+
+  let isDragging = false;
+  let startY = 0;
+  let startTransform = 0;
+
+  const parseTranslateY = (transform: string): number => {
+    if (transform === 'none') return 0;
+    const match = transform.match(/matrix\(.*,\s*([-\d.]+)\)$/);
+    if (match) return parseFloat(match[1]);
+    const parts = transform.split(',');
+    return parseFloat(parts[5]) || 0;
+  };
+
+  const handleDragStart = (e: TouchEvent): void => {
+    isDragging = true;
+    startY = e.touches[0].clientY;
+    startTransform = parseTranslateY(window.getComputedStyle(mainSection).transform);
+  };
+
+  const handleDragMove = (e: TouchEvent): void => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const deltaY = e.touches[0].clientY - startY;
+    const newTransform = Math.min(Math.max(startTransform + deltaY, 0), sectionHeight - HEADER_HEIGHT);
+    mainSection.style.transform = `translateY(${newTransform}px)`;
+  };
+
+  const handleDragEnd = (): void => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const currentTransform = parseTranslateY(window.getComputedStyle(mainSection).transform);
+    setMinimizeState(root, currentTransform > sectionHeight / 4)
+    mainSection.style.transform = '';
+  };
+
+  dragHeader.addEventListener('touchstart', handleDragStart);
+  root.addEventListener('touchmove', handleDragMove);
+  root.addEventListener('touchend', handleDragEnd);
+};
+
 const launchElementPicker = (root: ShadowRoot) => {
   let hasSelectedTarget = false
 
   const btnShowRulesBox = root.getElementById('btnShowRulesBox')
   if (isAndroid && btnShowRulesBox) {
     btnShowRulesBox.style.display = 'none'
+  }
+
+  if (isAndroid) {
+    setupDragging(root)
+  } else {
+    const closeButton = root.getElementById('close-btn')!
+    closeButton.addEventListener('click', () => {
+      quitElementPicker()
+    })
+    const minimizeButton = root.getElementById('minimize-dlg-btn')!
+    minimizeButton.addEventListener('click', () => {
+      setMinimizeState(root, true)
+    })
+    const maximizeButton = root.getElementById('desktop-min-icon-container')!
+    maximizeButton.addEventListener('click', () => {
+      setMinimizeState(root, false);
+    })
   }
 
   root.addEventListener(
@@ -595,8 +670,8 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const setDarkModeButtons = (isDarkModeEnabled: boolean) => {
-    const elements = root.querySelectorAll('.button');
+  const setDarkMode = (isDarkModeEnabled: boolean) => {
+    const elements = root.querySelectorAll('.theme-managed');
     elements.forEach(element => {
       if (element.classList.contains(isDarkModeEnabled ? 'light' : 'dark')) {
         element.classList.remove(isDarkModeEnabled ? 'light' : 'dark');
@@ -639,16 +714,30 @@ const launchElementPicker = (root: ShadowRoot) => {
     const sc = root.getElementById('slider-container') as HTMLInputElement
     sc.style.display = 'none'
   }
+  const setTitleBarColor = (bgcolor: number) => {
+    if (isAndroid)
+      return
 
+    const dragHeader = root.getElementById("drag-header")
+    if (dragHeader) {
+      const r = (bgcolor >> 16) & 0xff
+      const g = (bgcolor >> 8) & 0xff
+      const b = bgcolor & 0xff
+
+      dragHeader.style
+        .setProperty('--dynamic-drag-header-rgb', `rgb(${r}, ${g}, ${b})`)
+    }
+  }
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
       (isDarkModeEnabled: boolean, bgcolor: number) => {
-        const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+        const bgcolorMaskOut = bgcolor & 0xFFFFFF
+        const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('background-color', colorHex)
         root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
-
-        setDarkModeButtons(isDarkModeEnabled)
+        setTitleBarColor(bgcolor)
+        setDarkMode(isDarkModeEnabled)
       })
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -676,8 +765,12 @@ const launchElementPicker = (root: ShadowRoot) => {
     dispatchSelect()
   })
 
+
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
+
+    setMinimizeState(root, false);
+
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
