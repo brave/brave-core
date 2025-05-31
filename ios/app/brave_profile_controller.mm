@@ -131,6 +131,7 @@
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
+                GetApplicationContext()->GetVariationsService(),
                 GetApplicationContext()->GetComponentUpdateService(),
                 GetApplicationContext()->GetLocalState())
                             ads_service:brave_ads::AdsServiceFactoryIOS::

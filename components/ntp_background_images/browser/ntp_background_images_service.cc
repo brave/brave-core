@@ -16,11 +16,11 @@
 #include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/l10n/common/country_code_util.h"
-#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -33,6 +33,9 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/pref_names.h"
+#include "components/variations/service/variations_service.h"
+#include "components/variations/service/variations_service_utils.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -79,6 +82,26 @@ std::string HandleComponentData(const base::FilePath& installed_dir,
   return contents;
 }
 
+// The variations service derives the country code from the client's IP address.
+std::string GetVariationsCountryCode(
+    variations::VariationsService* variations_service) {
+  std::string country_code;
+
+  if (variations_service) {
+    country_code = variations_service->GetLatestCountry();
+  }
+
+  if (country_code.empty()) {
+    // May be empty on first run after a fresh install, so fall back to the
+    // permanently stored variations or device country code on first run.
+    country_code = variations::GetCurrentCountryCode(variations_service);
+  }
+
+  // Convert the country code to an ISO 3166-1 alpha-2 format. This ensures the
+  // country code is in uppercase, as required by the standard.
+  return base::ToUpperASCII(country_code);
+}
+
 }  // namespace
 
 // static
@@ -95,9 +118,11 @@ void NTPBackgroundImagesService::RegisterLocalStatePrefs(
 }
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(
+    variations::VariationsService* variations_service,
     component_updater::ComponentUpdateService* component_update_service,
     PrefService* pref_service)
-    : component_update_service_(component_update_service),
+    : variations_service_(variations_service),
+      component_update_service_(component_update_service),
       pref_service_(pref_service) {}
 
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
@@ -121,10 +146,10 @@ void NTPBackgroundImagesService::Init() {
     RegisterSponsoredImagesComponent();
 
     pref_change_registrar_.Add(
-        brave_l10n::prefs::kCountryCode,
+        variations::prefs::kVariationsCountry,
         base::BindRepeating(
-            &NTPBackgroundImagesService::OnCountryCodePrefChanged,
-            base::Unretained(this)));
+            &NTPBackgroundImagesService::OnVariationsCountryPrefChanged,
+            weak_factory_.GetWeakPtr()));
   }
 
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
@@ -143,6 +168,13 @@ void NTPBackgroundImagesService::Init() {
       CheckSuperReferralComponent();
     }
   }
+}
+
+void NTPBackgroundImagesService::StartTearDown() {
+  variations_service_ = nullptr;
+  component_update_service_ = nullptr;
+  pref_service_ = nullptr;
+  pref_change_registrar_.RemoveAll();
 }
 
 void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
@@ -194,8 +226,8 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const std::string country_code = brave_l10n::GetCountryCode(pref_service_);
-
+  const std::string country_code =
+      GetVariationsCountryCode(variations_service_);
   const std::optional<SponsoredImagesComponentData> data =
       GetSponsoredImagesComponentData(country_code);
   if (!data) {
@@ -214,7 +246,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   }
   sponsored_images_component_id_ = data->component_id.data();
 
-  VLOG(6) << "Registering NTP Sponsored Images component";
+  VLOG(0) << "Registering NTP Sponsored Images component for " << country_code
+          << " with ID " << data->component_id;
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, std::string(data->component_base64_public_key),
       std::string(data->component_id),
@@ -224,7 +257,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
           weak_factory_.GetWeakPtr(), false));
   // SI component checks update more frequently than other components.
   // By default, browser check update status every 5 hours.
-  // However, this background interval is too long for SI. Use 15mins interval.
+  // However, this background interval is too long for SI. Use 15mins
+  // interval.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
       base::Unretained(this), data->component_id.data());
@@ -262,24 +296,24 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   if (pref_service_
           ->FindPreference(prefs::kNewTabPageCachedSuperReferralComponentInfo)
           ->IsDefaultValue()) {
-    // At first fresh launch, we should finish initial component downloading to
-    // set initial state properly.
-    // But browser could be shutdown accidently before getting it anytime.
-    // If this happens, we have to handle this abnormal situation strictly.
-    // If not, this install will be act as a non SR install forever.
-    // To resolve that situation,
+    // At first fresh launch, we should finish initial component downloading
+    // to set initial state properly. But browser could be shutdown accidently
+    // before getting it anytime. If this happens, we have to handle this
+    // abnormal situation strictly. If not, this install will be act as a non
+    // SR install forever. To resolve that situation,
     // |kNewTabPageGetInitialSuperReferralComponentInProgress| introduced.
     // If |kReferralCheckedForPromoCodeFile| or |kReferralInitialization|
     // is true and |kNewTabPageCheckingMappingTableInProgress| is false,
     // this means not first launch. Then, we can mark this install as non-SR.
-    // If both (|kReferralCheckedForPromoCodeFile| or |kReferralInitialization|)
-    // and |kNewTabPageCheckingMappingTableInProgress| are true,
-    // browser had some trouble at first run.
-    // If |kNewTabPageGetInitialSuperReferralComponentInProgress| is true, we
-    // assume that initial component downloading is in-progress So, We will try
-    // initialization again. If referral code is non empty, that means browser
-    // is shutdown after getting referal code. In this case, we should start
-    // downloading mapping table.
+    // If both (|kReferralCheckedForPromoCodeFile| or
+    // |kReferralInitialization|) and
+    // |kNewTabPageCheckingMappingTableInProgress| are true, browser had some
+    // trouble at first run. If
+    // |kNewTabPageGetInitialSuperReferralComponentInProgress| is true, we
+    // assume that initial component downloading is in-progress So, We will
+    // try initialization again. If referral code is non empty, that means
+    // browser is shutdown after getting referal code. In this case, we should
+    // start downloading mapping table.
     const bool referral_checked =
         pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
         pref_service_->GetBoolean(kReferralInitialization);
@@ -294,9 +328,9 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     }
 
     // If referral code is empty here, this is fresh launch.
-    // If browser is crashed before fetching this install's promo code at fiirst
-    // launch, it can be handled here also because code would be empty at this
-    // time.
+    // If browser is crashed before fetching this install's promo code at
+    // fiirst launch, it can be handled here also because code would be empty
+    // at this time.
     const std::string code = GetReferralPromoCode();
     if (code.empty()) {
       pref_service_->SetBoolean(
@@ -352,7 +386,7 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
 #endif
 }
 
-void NTPBackgroundImagesService::OnCountryCodePrefChanged() {
+void NTPBackgroundImagesService::OnVariationsCountryPrefChanged() {
   RegisterSponsoredImagesComponent();
 }
 

@@ -22,9 +22,12 @@ class PublicKeyWrapper {
 #define VerifyInit(signature_algorithm, signature, public_key_info) \
   VerifyInit(signature_algorithm, signature,                        \
              PublicKeyWrapper::GetPublicKey(public_key_info))
+#define UpdateSeedDateAndLogDayChange(...) \
+  UpdateSeedDateAndLogDayChange_ChromiumImpl(__VA_ARGS__)
 
 #include "src/components/variations/variations_seed_store.cc"
 
+#undef UpdateSeedDateAndLogDayChange
 #undef VerifyInit
 
 namespace variations {
@@ -53,6 +56,19 @@ base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
   };
 
   return kBravePublicKey;
+}
+
+void VariationsSeedStore::UpdateSeedDateAndLogDayChange(
+    bool is_first_request,
+    std::string_view country_code,
+    base::Time server_date_fetched) {
+  // At browser startup, the country code is updated using the X-Country header
+  // from the response if the status is `HTTP_NOT_MODIFIED`, avoiding the need
+  // to wait for the next update, which happens every 5 hours.
+  if (is_first_request && !country_code.empty()) {
+    local_state_->SetString(prefs::kVariationsCountry, country_code);
+  }
+  UpdateSeedDateAndLogDayChange_ChromiumImpl(server_date_fetched);
 }
 
 }  // namespace variations

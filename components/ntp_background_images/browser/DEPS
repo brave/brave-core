@@ -5,13 +5,3 @@ include_rules = [
   "+crypto",
   "+ui/gfx",
 ]
-
-specific_include_rules = {
-  "ntp_background_images_service\.cc": [
-    "!brave/components/l10n/common/country_code_util.h",
-    "!brave/components/l10n/common/prefs.h",
-  ],
-  "ntp_background_images_service_unittest\.cc": [
-    "!brave/components/l10n/common/prefs.h",
-  ],
-}

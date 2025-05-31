@@ -23,6 +23,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace variations {
+class VariationsService;
+}  // namespace variations
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -56,6 +60,7 @@ class NTPBackgroundImagesService {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   NTPBackgroundImagesService(
+      variations::VariationsService* variations_service,
       component_updater::ComponentUpdateService* component_update_service,
       PrefService* pref_service);
   virtual ~NTPBackgroundImagesService();
@@ -65,6 +70,7 @@ class NTPBackgroundImagesService {
       const NTPBackgroundImagesService&) = delete;
 
   void Init();
+  void StartTearDown();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -185,7 +191,7 @@ class NTPBackgroundImagesService {
   void OnGetComponentJsonData(const std::string& json_string);
   void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
-  void OnCountryCodePrefChanged();
+  void OnVariationsCountryPrefChanged();
   void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
@@ -209,10 +215,14 @@ class NTPBackgroundImagesService {
 
   bool overridden_component_path_ = false;
 
-  const raw_ptr<component_updater::ComponentUpdateService>
-      component_update_service_ = nullptr;
+  // `variations` can be null in test.
+  raw_ptr<variations::VariationsService> variations_service_ =
+      nullptr;  // Not owned.
 
-  const raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
+      nullptr;
+
+  raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 
   base::FilePath background_images_installed_dir_;
