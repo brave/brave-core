@@ -357,19 +357,15 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   @objc
   private func onSyncInternalsTapped() {
-    askForAuthentication(viewType: .sync) { [weak self] status, error in
-      guard let self = self, status else { return }
-
-      let syncInternalsController = ChromeWebUIController(
-        braveCore: braveCoreMain,
-        isPrivateBrowsing: false
-      ).then {
-        $0.title = Strings.Sync.internalsTitle
-        $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
-      }
-
-      self.navigationController?.pushViewController(syncInternalsController, animated: true)
+    let syncInternalsController = ChromeWebUIController(
+      braveCore: braveCoreMain,
+      isPrivateBrowsing: false
+    ).then {
+      $0.title = Strings.Sync.internalsTitle
+      $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
     }
+
+    navigationController?.pushViewController(syncInternalsController, animated: true)
   }
 }
 

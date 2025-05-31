@@ -343,6 +343,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "skus-internals",
       "ads-internals",
       "credits",
+      "sync-internals",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false

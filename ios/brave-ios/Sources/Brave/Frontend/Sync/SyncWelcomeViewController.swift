@@ -308,19 +308,15 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func onSyncInternalsAction() {
-    askForAuthentication(viewType: .sync) { [weak self] status, error in
-      guard let self = self, status else { return }
-
-      let syncInternalsController = ChromeWebUIController(
-        braveCore: braveCore,
-        isPrivateBrowsing: false
-      ).then {
-        $0.title = Strings.Sync.internalsTitle
-        $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
-      }
-
-      navigationController?.pushViewController(syncInternalsController, animated: true)
+    let syncInternalsController = ChromeWebUIController(
+      braveCore: braveCore,
+      isPrivateBrowsing: false
+    ).then {
+      $0.title = Strings.Sync.internalsTitle
+      $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
     }
+
+    navigationController?.pushViewController(syncInternalsController, animated: true)
   }
 
   // MARK: Internal
