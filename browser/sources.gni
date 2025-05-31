@@ -52,6 +52,7 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+import("//printing/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
   "//brave/browser/*",
@@ -621,6 +622,15 @@ if (enable_extensions) {
       [ "//brave/browser/extensions:brave_prefs_util_impl" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/extensions:brave_prefs_util_impl" ]
+}
+
+if (enable_print_preview) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/ui/ai_chat:print_preview_extractor",
+    "//brave/browser/ui/ai_chat:print_preview_extractor_impl",
+  ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/ai_chat:print_preview_extractor_impl" ]
 }
 
 # https://github.com/brave/brave-browser/issues/41464
