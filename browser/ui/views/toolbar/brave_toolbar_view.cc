@@ -149,6 +149,12 @@ void BraveToolbarView::Init() {
     return;
   }
 
+  // We don't use chromium's split tabs button in toolbar.
+  if (split_tabs_) {
+    auto split_tabs = container_view->RemoveChildViewT(split_tabs_);
+    split_tabs_ = nullptr;
+  }
+
   Profile* profile = browser()->profile();
 
   // We don't use divider between extensions container and other toolbar
