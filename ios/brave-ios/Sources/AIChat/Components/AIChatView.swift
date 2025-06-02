@@ -59,6 +59,9 @@ public struct AIChatView: View {
   @ObservedObject
   private var shouldShowFeedbackPremiumAd = Preferences.AIChat.showPremiumFeedbackAd
 
+  @State
+  private var showSettingsMenu = false
+
   var openURL: ((URL) -> Void)
 
   enum Field {
@@ -90,289 +93,342 @@ public struct AIChatView: View {
   }
 
   public var body: some View {
-    VStack(spacing: 0.0) {
-      AIChatNavigationView(
-        isMenusAvailable: hasSeenIntro.value && model.isAgreementAccepted,
-        premiumStatus: model.premiumStatus,
-        onClose: {
-          if !model.isAgreementAccepted {
-            hasSeenIntro.value = false
-          }
-
-          dismiss()
-        },
-        onNewChat: {
-          Task {
-            await model.clearConversationHistory()
-          }
-        },
-        menuContent: {
-          menuView
-            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-        }
-      )
-      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-
-      Color(braveSystemName: .dividerSubtle)
-        .frame(height: 1.0)
-
+    NavigationStack {
       VStack(spacing: 0.0) {
-        if hasSeenIntro.value && !model.isAgreementAccepted {
-          AIChatTermsAndConditionsView(
-            termsAndConditionsAccepted: $model.isAgreementAccepted
-          )
-        } else {
-          GeometryReader { geometry in
-            ScrollViewReader { scrollViewReader in
-              ScrollView {
-                if hasSeenIntro.value {
-                  VStack(spacing: 0.0) {
-                    if model.shouldShowPremiumPrompt {
-                      AIChatPremiumUpsellView(
-                        upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
-                        upgradeAction: {
-                          isPremiumPaywallPresented = true
-                        },
-                        dismissAction: {
-                          if model.apiError == .rateLimitReached {
-                            if let nonPremiumModel = model.models.first(where: {
-                              guard let leoModelOptions = $0.options.leoModelOptions else {
-                                return false
+        VStack(spacing: 0.0) {
+          if hasSeenIntro.value && !model.isAgreementAccepted {
+            AIChatTermsAndConditionsView(
+              termsAndConditionsAccepted: $model.isAgreementAccepted
+            )
+          } else {
+            GeometryReader { geometry in
+              ScrollViewReader { scrollViewReader in
+                ScrollView {
+                  if hasSeenIntro.value {
+                    VStack(spacing: 0.0) {
+                      if model.shouldShowPremiumPrompt {
+                        AIChatPremiumUpsellView(
+                          upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
+                          upgradeAction: {
+                            isPremiumPaywallPresented = true
+                          },
+                          dismissAction: {
+                            if model.apiError == .rateLimitReached {
+                              if let nonPremiumModel = model.models.first(where: {
+                                guard let leoModelOptions = $0.options.leoModelOptions else {
+                                  return false
+                                }
+                                return leoModelOptions.access != .premium
+                              }) {
+                                model.changeModel(modelKey: nonPremiumModel.key)
+                                model.retryLastRequest()
+                              } else {
+                                Logger.module.error("No non-premium models available")
                               }
-                              return leoModelOptions.access != .premium
-                            }) {
-                              model.changeModel(modelKey: nonPremiumModel.key)
-                              model.retryLastRequest()
                             } else {
-                              Logger.module.error("No non-premium models available")
+                              model.shouldShowPremiumPrompt = false
+                            }
+                          }
+                        )
+                        .padding()
+                      } else if let currentModel = model.currentModel {
+                        AIChatIntroMessageView(model: currentModel)
+                          .padding()
+                          .background(Color(braveSystemName: .containerBackground))
+
+                        ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) {
+                          index,
+                          turn in
+                          if turn.characterType == .human {
+                            AIChatUserMessageView(
+                              message: turn.edits?.last?.text ?? turn.text,
+                              lastEdited: turn.edits?.last?.createdTime,
+                              isEditingMessage: editingTurnIndex == index,
+                              focusedField: $focusedField,
+                              cancelEditing: {
+                                self.focusedField = nil
+                                self.editingTurnIndex = nil
+                              },
+                              submitEditedText: { editedText in
+                                self.focusedField = nil
+                                self.editingTurnIndex = nil
+                                self.model.modifyConversation(
+                                  turnId: UInt(index),
+                                  newText: editedText
+                                )
+                              }
+                            )
+                            .padding()
+                            .background(Color(braveSystemName: .containerBackground))
+                            .contextMenu {
+                              responseContextMenuItems(for: index, turn: turn)
+                            }
+                            .disabled(
+                              model.requestInProgress || model.suggestionsStatus == .isGenerating
+                                || model.apiError == .contextLimitReached
+                            )
+
+                            if index == 0, model.shouldSendPageContents,
+                              let url = model.getLastCommittedURL()
+                            {
+                              AIChatPageInfoBanner(url: url, pageTitle: model.getPageTitle() ?? "")
+                                .padding([.horizontal, .bottom])
+                                .background(Color(braveSystemName: .containerBackground))
+                            }
+
+                            // Show loader view before first part of conversation reply
+                            if model.apiError == .none, model.requestInProgress,
+                              index == model.conversationHistory.count - 1
+                            {
+                              VStack(alignment: .leading) {
+                                AIChatLoaderView()
+                              }
+                              .padding()
+                              .frame(maxWidth: .infinity, alignment: .leading)
                             }
                           } else {
-                            model.shouldShowPremiumPrompt = false
-                          }
-                        }
-                      )
-                      .padding()
-                    } else if let currentModel = model.currentModel {
-                      AIChatIntroMessageView(model: currentModel)
-                        .padding()
-                        .background(Color(braveSystemName: .containerBackground))
-
-                      ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) {
-                        index,
-                        turn in
-                        if turn.characterType == .human {
-                          AIChatUserMessageView(
-                            message: turn.edits?.last?.text ?? turn.text,
-                            lastEdited: turn.edits?.last?.createdTime,
-                            isEditingMessage: editingTurnIndex == index,
-                            focusedField: $focusedField,
-                            cancelEditing: {
-                              self.focusedField = nil
-                              self.editingTurnIndex = nil
-                            },
-                            submitEditedText: { editedText in
-                              self.focusedField = nil
-                              self.editingTurnIndex = nil
-                              self.model.modifyConversation(
-                                turnId: UInt(index),
-                                newText: editedText
-                              )
-                            }
-                          )
-                          .padding()
-                          .background(Color(braveSystemName: .containerBackground))
-                          .contextMenu {
-                            responseContextMenuItems(for: index, turn: turn)
-                          }
-                          .disabled(
-                            model.requestInProgress || model.suggestionsStatus == .isGenerating
-                              || model.apiError == .contextLimitReached
-                          )
-
-                          if index == 0, model.shouldSendPageContents,
-                            let url = model.getLastCommittedURL()
-                          {
-                            AIChatPageInfoBanner(url: url, pageTitle: model.getPageTitle() ?? "")
-                              .padding([.horizontal, .bottom])
-                              .background(Color(braveSystemName: .containerBackground))
-                          }
-
-                          // Show loader view before first part of conversation reply
-                          if model.apiError == .none, model.requestInProgress,
-                            index == model.conversationHistory.count - 1
-                          {
-                            VStack(alignment: .leading) {
-                              AIChatLoaderView()
-                            }
+                            AIChatResponseMessageView(
+                              turn: turn,
+                              isEntryInProgress: index == model.conversationHistory.count - 1
+                                && model.requestInProgress,
+                              lastEdited: turn.edits?.last?.createdTime,
+                              isEditingMessage: editingTurnIndex == index,
+                              focusedField: $focusedField,
+                              cancelEditing: {
+                                self.focusedField = nil
+                                self.editingTurnIndex = nil
+                              },
+                              submitEditedText: { editedText in
+                                self.focusedField = nil
+                                self.editingTurnIndex = nil
+                                self.model.modifyConversation(
+                                  turnId: UInt(index),
+                                  newText: editedText
+                                )
+                              }
+                            )
                             .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                          }
-                        } else {
-                          AIChatResponseMessageView(
-                            turn: turn,
-                            isEntryInProgress: index == model.conversationHistory.count - 1
-                              && model.requestInProgress,
-                            lastEdited: turn.edits?.last?.createdTime,
-                            isEditingMessage: editingTurnIndex == index,
-                            focusedField: $focusedField,
-                            cancelEditing: {
-                              self.focusedField = nil
-                              self.editingTurnIndex = nil
-                            },
-                            submitEditedText: { editedText in
-                              self.focusedField = nil
-                              self.editingTurnIndex = nil
-                              self.model.modifyConversation(
-                                turnId: UInt(index),
-                                newText: editedText
-                              )
+                            .background(Color(braveSystemName: .containerBackground))
+                            .contextMenu {
+                              responseContextMenuItems(for: index, turn: turn)
                             }
-                          )
-                          .padding()
-                          .background(Color(braveSystemName: .containerBackground))
-                          .contextMenu {
-                            responseContextMenuItems(for: index, turn: turn)
-                          }
 
-                          if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
-                            feedbackView
+                            if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
+                              feedbackView
+                            }
                           }
                         }
-                      }
 
-                      apiErrorViews
+                        apiErrorViews
 
-                      if model.shouldShowSuggestions && !model.requestInProgress
-                        && model.apiError == .none
-                      {
-                        if model.suggestionsStatus != .isGenerating
-                          && !model.suggestedQuestions.isEmpty
+                        if model.shouldShowSuggestions && !model.requestInProgress
+                          && model.apiError == .none
                         {
-                          AIChatSuggestionsView(
-                            geometry: geometry,
-                            suggestions: model.suggestedQuestions
-                          ) { suggestion in
-                            hasSeenIntro.value = true
-                            hideKeyboard()
-                            model.submitSuggestion(suggestion)
+                          if model.suggestionsStatus != .isGenerating
+                            && !model.suggestedQuestions.isEmpty
+                          {
+                            AIChatSuggestionsView(
+                              geometry: geometry,
+                              suggestions: model.suggestedQuestions
+                            ) { suggestion in
+                              hasSeenIntro.value = true
+                              hideKeyboard()
+                              model.submitSuggestion(suggestion)
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 8.0)
+                            .disabled(
+                              model.suggestionsStatus == .isGenerating
+                            )
                           }
-                          .padding(.horizontal)
-                          .padding(.bottom, 8.0)
-                          .disabled(
-                            model.suggestionsStatus == .isGenerating
-                          )
+
+                          if model.shouldShowGenerateSuggestionsButton {
+                            AIChatSuggestionsButton(
+                              title: Strings.AIChat.suggestionsGenerationButtonTitle,
+                              isLoading: model.suggestionsStatus == .isGenerating
+                            ) {
+                              hideKeyboard()
+                              model.generateSuggestions()
+                            }
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .disabled(
+                              model.suggestionsStatus == .isGenerating
+                            )
+                          }
                         }
 
-                        if model.shouldShowGenerateSuggestionsButton {
-                          AIChatSuggestionsButton(
-                            title: Strings.AIChat.suggestionsGenerationButtonTitle,
-                            isLoading: model.suggestionsStatus == .isGenerating
-                          ) {
-                            hideKeyboard()
-                            model.generateSuggestions()
-                          }
-                          .padding(.horizontal)
-                          .frame(maxWidth: .infinity, alignment: .leading)
-                          .disabled(
-                            model.suggestionsStatus == .isGenerating
-                          )
-                        }
+                        Color.clear.id(lastMessageId)
+                      } else {
+                        ProgressView()
+                          .tint(Color(braveSystemName: .textInteractive))
+                          .padding(.trailing, 12.0)
                       }
-
-                      Color.clear.id(lastMessageId)
-                    } else {
-                      ProgressView()
-                        .tint(Color(braveSystemName: .textInteractive))
-                        .padding(.trailing, 12.0)
                     }
-                  }
-                  .onChange(of: model.requestInProgress) { _ in
-                    scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
-                  }
-                  .onChange(of: model.conversationHistory) { _ in
-                    scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
-                  }
-                  .onChange(of: customFeedbackInfo) { _ in
-                    hideKeyboard()
-                    withAnimation {
+                    .onChange(of: model.requestInProgress) { _ in
                       scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                     }
+                    .onChange(of: model.conversationHistory) { _ in
+                      scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
+                    }
+                    .onChange(of: customFeedbackInfo) { _ in
+                      hideKeyboard()
+                      withAnimation {
+                        scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
+                      }
+                    }
+                  } else {
+                    AIChatIntroView(
+                      onSummarizePage: model.isContentAssociationPossible
+                        && model.shouldSendPageContents
+                        ? {
+                          hasSeenIntro.value = true
+                          model.summarizePage()
+                        } : nil
+                    )
+                    .frame(minHeight: geometry.size.height, alignment: .bottom)
                   }
-                } else {
-                  AIChatIntroView(
-                    onSummarizePage: model.isContentAssociationPossible
-                      && model.shouldSendPageContents
-                      ? {
-                        hasSeenIntro.value = true
-                        model.summarizePage()
-                      } : nil
-                  )
-                  .frame(minHeight: geometry.size.height, alignment: .bottom)
                 }
               }
             }
           }
-        }
 
-        if !isShowingSlashTools
-          && (model.apiError == .none && model.isAgreementAccepted
-            || (!hasSeenIntro.value && !model.isAgreementAccepted))
-        {
-          if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
-            AIChatPageContextView(
-              isToggleOn: $model.shouldSendPageContents,
-              url: model.getLastCommittedURL(),
-              pageTitle: model.getPageTitle() ?? ""
-            )
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 12.0)
-            .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
+          if !isShowingSlashTools
+            && (model.apiError == .none && model.isAgreementAccepted
+              || (!hasSeenIntro.value && !model.isAgreementAccepted))
+          {
+            if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
+              AIChatPageContextView(
+                isToggleOn: $model.shouldSendPageContents,
+                url: model.getLastCommittedURL(),
+                pageTitle: model.getPageTitle() ?? ""
+              )
+              .padding(.horizontal, 8.0)
+              .padding(.bottom, 12.0)
+              .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
+            }
           }
         }
-      }
-      .overlay(alignment: .bottom) {
-        if isShowingSlashTools {
-          AIChatSlashToolsView(
-            isShowing: $isShowingSlashTools,
+        .overlay(alignment: .bottom) {
+          if isShowingSlashTools {
+            AIChatSlashToolsView(
+              isShowing: $isShowingSlashTools,
+              prompt: $prompt,
+              slashActions: model.slashActions,
+              selectedOption: $slashToolsOption
+            )
+          }
+        }
+
+        if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
+          AIChatPromptInputView(
             prompt: $prompt,
-            slashActions: model.slashActions,
-            selectedOption: $slashToolsOption
+            speechRecognizer: speechRecognizer,
+            isShowingSlashTools: $isShowingSlashTools,
+            slashToolsOption: $slashToolsOption,
+            focusedField: $focusedField,
+            messageCount: model.conversationHistory.count
+          ) { prompt in
+            hasSeenIntro.value = true
+
+            if let actionType = slashToolsOption?.entry.details?.type {
+              model.submitSelectedText(
+                prompt,
+                action: actionType
+              )
+
+              slashToolsOption = nil
+              isShowingSlashTools = false
+            } else {
+              model.submitQuery(prompt)
+            }
+
+            hideKeyboard()
+          }
+          .disabled(
+            model.requestInProgress || model.suggestionsStatus == .isGenerating
+              || model.apiError == .contextLimitReached || editingTurnIndex != nil
           )
         }
       }
+      .background(Color(braveSystemName: .containerBackground))
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          Button {
+            if !model.isAgreementAccepted {
+              hasSeenIntro.value = false
+            }
 
-      if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView(
-          prompt: $prompt,
-          speechRecognizer: speechRecognizer,
-          isShowingSlashTools: $isShowingSlashTools,
-          slashToolsOption: $slashToolsOption,
-          focusedField: $focusedField,
-          messageCount: model.conversationHistory.count
-        ) { prompt in
-          hasSeenIntro.value = true
-
-          if let actionType = slashToolsOption?.entry.details?.type {
-            model.submitSelectedText(
-              prompt,
-              action: actionType
-            )
-
-            slashToolsOption = nil
-            isShowingSlashTools = false
-          } else {
-            model.submitQuery(prompt)
+            dismiss()
+          } label: {
+            Text(Strings.close)
+              .foregroundStyle(Color(braveSystemName: .textInteractive))
           }
-
-          hideKeyboard()
         }
-        .disabled(
-          model.requestInProgress || model.suggestionsStatus == .isGenerating
-            || model.apiError == .contextLimitReached || editingTurnIndex != nil
-        )
+
+        ToolbarItemGroup(placement: .principal) {
+          HStack(spacing: 8.0) {
+            Text(Strings.AIChat.leoNavigationTitle)
+              .font(.body.weight(.bold))
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+
+            if model.premiumStatus == .active || model.premiumStatus == .activeDisconnected {
+              Text(Strings.AIChat.premiumNavigationBarBadgeTitle.uppercased())
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(Color(braveSystemName: .blue50))
+                .padding(.horizontal, 6.0)
+                .padding(.vertical, 4.0)
+                .background(
+                  Color(braveSystemName: .blue20),
+                  in: RoundedRectangle(cornerRadius: 4.0, style: .continuous)
+                )
+            }
+          }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+          if hasSeenIntro.value && model.isAgreementAccepted {
+            HStack(spacing: 0.0) {
+              Button {
+                Task {
+                  await model.clearConversationHistory()
+                }
+              } label: {
+                Label {
+                  Text(Strings.edit)
+                } icon: {
+                  Image(braveSystemName: "leo.edit.box")
+                    .tint(Color(braveSystemName: .textInteractive))
+                }
+                .labelStyle(.iconOnly)
+              }
+
+              Button {
+                showSettingsMenu = true
+              } label: {
+                Label {
+                  Text(Strings.settings)
+                } icon: {
+                  Image(braveSystemName: "leo.more.horizontal")
+                    .tint(Color(braveSystemName: .textInteractive))
+                }
+                .labelStyle(.iconOnly)
+              }
+              .popover(
+                isPresented: $showSettingsMenu,
+                content: {
+                  menuView
+                    .background(Color(braveSystemName: .pageBackground))
+                    .presentationCompactAdaptation(.popover)
+                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                }
+              )
+            }
+          }
+        }
       }
     }
-    .background(Color(braveSystemName: .containerBackground))
     .sheet(isPresented: $isPremiumPaywallPresented) {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
@@ -801,123 +857,165 @@ struct AIChatView_Preview: PreviewProvider {
   @FocusState static var focusedField: AIChatView.Field?
 
   static var previews: some View {
-    return VStack(spacing: 0.0) {
-      AIChatNavigationView(
-        isMenusAvailable: true,
-        premiumStatus: .active,
-        onClose: {
-          print("Closed Chat")
-        },
-        onNewChat: {
-          print("Erased Chat History")
-        },
-        menuContent: {
-          EmptyView()
+    NavigationStack {
+      VStack(spacing: 0.0) {
+        GeometryReader { geometry in
+          ScrollView {
+            VStack(spacing: 0.0) {
+              AIChatUserMessageView(
+                message: "Does it work with Apple devices?",
+                lastEdited: nil,
+                isEditingMessage: false,
+                focusedField: $focusedField,
+                cancelEditing: {},
+                submitEditedText: { _ in }
+              )
+              .padding()
+              .background(Color(braveSystemName: .pageBackground))
+
+              AIChatPageInfoBanner(
+                url: nil,
+                pageTitle:
+                  "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023"
+              )
+              .padding([.horizontal, .bottom])
+              .background(Color(braveSystemName: .pageBackground))
+
+              AIChatResponseMessageView(
+                turn:
+                  .init(
+                    uuid: nil,
+                    characterType: .assistant,
+                    actionType: .response,
+                    text:
+                      "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
+                    prompt: nil,
+                    selectedText: nil,
+                    events: nil,
+                    createdTime: Date.now,
+                    edits: nil,
+                    uploadedFiles: nil,
+                    fromBraveSearchSerp: false,
+                    modelKey: nil
+                  ),
+                isEntryInProgress: false,
+                lastEdited: nil,
+                isEditingMessage: false,
+                focusedField: $focusedField,
+                cancelEditing: {},
+                submitEditedText: { _ in }
+              )
+              .padding()
+              .background(Color(braveSystemName: .containerBackground))
+
+              AIChatFeedbackView(
+                speechRecognizer: SpeechRecognizer(),
+                premiumStatus: .inactive,
+                shouldShowPremiumAd: true,
+                onSubmit: {
+                  print("Submitted Feedback: \($0) -- \($1)")
+                },
+                onCancel: {
+                  print("Cancelled Feedback")
+                }
+              )
+              .padding()
+
+              AIChatSuggestionsView(
+                geometry: geometry,
+                suggestions: [
+                  "What Bluetooth version does it use?",
+                  "Summarize this page?",
+                  "What is Leo?",
+                  "What can the Leo assistant do for me?",
+                ]
+              )
+              .padding()
+            }
+          }
+          .frame(maxHeight: geometry.size.height)
         }
-      )
 
-      Color(braveSystemName: .dividerSubtle)
-        .frame(height: 1.0)
+        Spacer()
 
-      GeometryReader { geometry in
-        ScrollView {
-          VStack(spacing: 0.0) {
-            AIChatUserMessageView(
-              message: "Does it work with Apple devices?",
-              lastEdited: nil,
-              isEditingMessage: false,
-              focusedField: $focusedField,
-              cancelEditing: {},
-              submitEditedText: { _ in }
-            )
-            .padding()
-            .background(Color(braveSystemName: .pageBackground))
+        AIChatPageContextView(
+          isToggleOn: .constant(true),
+          url: URL(string: "https://brave.com"),
+          pageTitle: "Brave Private Browser"
+        )
+        .padding()
 
-            AIChatPageInfoBanner(
-              url: nil,
-              pageTitle:
-                "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023"
-            )
-            .padding([.horizontal, .bottom])
-            .background(Color(braveSystemName: .pageBackground))
+        AIChatPromptInputView(
+          prompt: .constant(""),
+          speechRecognizer: SpeechRecognizer(),
+          isShowingSlashTools: .constant(false),
+          slashToolsOption: .constant(nil),
+          focusedField: $focusedField,
+          messageCount: 0
+        ) {
+          print("Prompt Submitted: \($0)")
+        }
+      }
+      .background(Color(braveSystemName: .containerBackground))
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          Button {
 
-            AIChatResponseMessageView(
-              turn:
-                .init(
-                  uuid: nil,
-                  characterType: .assistant,
-                  actionType: .response,
-                  text:
-                    "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
-                  prompt: nil,
-                  selectedText: nil,
-                  events: nil,
-                  createdTime: Date.now,
-                  edits: nil,
-                  uploadedFiles: nil,
-                  fromBraveSearchSerp: false,
-                  modelKey: nil
-                ),
-              isEntryInProgress: false,
-              lastEdited: nil,
-              isEditingMessage: false,
-              focusedField: $focusedField,
-              cancelEditing: {},
-              submitEditedText: { _ in }
-            )
-            .padding()
-            .background(Color(braveSystemName: .containerBackground))
-
-            AIChatFeedbackView(
-              speechRecognizer: SpeechRecognizer(),
-              premiumStatus: .inactive,
-              shouldShowPremiumAd: true,
-              onSubmit: {
-                print("Submitted Feedback: \($0) -- \($1)")
-              },
-              onCancel: {
-                print("Cancelled Feedback")
-              }
-            )
-            .padding()
-
-            AIChatSuggestionsView(
-              geometry: geometry,
-              suggestions: [
-                "What Bluetooth version does it use?",
-                "Summarize this page?",
-                "What is Leo?",
-                "What can the Leo assistant do for me?",
-              ]
-            )
-            .padding()
+          } label: {
+            Text(Strings.close)
+              .foregroundStyle(Color(braveSystemName: .textInteractive))
           }
         }
-        .frame(maxHeight: geometry.size.height)
+
+        ToolbarItemGroup(placement: .principal) {
+          HStack(spacing: 8.0) {
+            Text(Strings.AIChat.leoNavigationTitle)
+              .font(.body.weight(.bold))
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+
+            Text(Strings.AIChat.premiumNavigationBarBadgeTitle.uppercased())
+              .font(.caption2.weight(.bold))
+              .foregroundStyle(Color(braveSystemName: .blue50))
+              .padding(.horizontal, 6.0)
+              .padding(.vertical, 4.0)
+              .background(
+                Color(braveSystemName: .blue20),
+                in: RoundedRectangle(cornerRadius: 4.0, style: .continuous)
+              )
+          }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+          HStack(spacing: 0.0) {
+            Button {
+
+            } label: {
+              Label {
+                Text(Strings.edit)
+              } icon: {
+                Image(braveSystemName: "leo.edit.box")
+                  .tint(Color(braveSystemName: .textInteractive))
+              }
+              .labelStyle(.iconOnly)
+            }
+
+            Button {
+
+            } label: {
+              Label {
+                Text(Strings.settings)
+              } icon: {
+                Image(braveSystemName: "leo.more.horizontal")
+                  .tint(Color(braveSystemName: .textInteractive))
+              }
+              .labelStyle(.iconOnly)
+            }
+          }
+        }
       }
-
-      Spacer()
-
-      AIChatPageContextView(
-        isToggleOn: .constant(true),
-        url: URL(string: "https://brave.com"),
-        pageTitle: "Brave Private Browser"
-      )
-      .padding()
-
-      AIChatPromptInputView(
-        prompt: .constant(""),
-        speechRecognizer: SpeechRecognizer(),
-        isShowingSlashTools: .constant(false),
-        slashToolsOption: .constant(nil),
-        focusedField: $focusedField,
-        messageCount: 0
-      ) {
-        print("Prompt Submitted: \($0)")
-      }
+      .previewLayout(.sizeThatFits)
     }
-    .background(Color(braveSystemName: .containerBackground))
-    .previewLayout(.sizeThatFits)
   }
 }
 #endif
