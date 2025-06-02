@@ -29,6 +29,7 @@ class BraveTabHoverCardController;
   friend class BraveTabStrip;                                           \
   friend class BraveTabDragContext;                                     \
   bool IsTabTiled(const Tab* tab) const override;                       \
+  const Browser* GetBrowser() const override;                           \
   bool IsFirstTabInTile(const Tab* tab) const override;                 \
   static constexpr bool IsUsingBraveTabHoverCardController() {          \
     return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \
