@@ -81,6 +81,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final LocationBarModel mLocationBarModel;
     private final HomepageManager mHomepageManager;
     private final BookmarkManagerOpener mBookmarkManagerOpener;
+    private boolean mIsInTabSwitcherMode;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -199,7 +200,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                         @Override
                         public void onStartedShowing(@LayoutType int layoutType) {
                             if (layoutType != LayoutType.TAB_SWITCHER) return;
-
+                            mIsInTabSwitcherMode = true;
                             BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                                     (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                             browsingModeCoordinator.getSearchAccelerator().setVisibility(View.GONE);
@@ -230,7 +231,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                         @Override
                         public void onStartedHiding(@LayoutType int layoutType) {
                             if (layoutType != LayoutType.TAB_SWITCHER) return;
-
+                            mIsInTabSwitcherMode = false;
                             BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                                     (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                             browsingModeCoordinator
@@ -381,5 +382,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mHomeButton.setImageDrawable(
                     ContextCompat.getDrawable(mContext, R.drawable.btn_toolbar_home));
         }
+    }
+
+    public boolean isInTabSwitcherMode() {
+        return mIsInTabSwitcherMode;
     }
 }
