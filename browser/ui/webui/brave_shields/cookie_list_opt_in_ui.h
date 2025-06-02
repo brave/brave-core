@@ -32,7 +32,7 @@ class CookieListOptInUI
   void BindInterface(
       mojo::PendingReceiver<CookieListOptInPageHandlerFactory> reciever);
 
-  static constexpr std::string GetWebUIName() {
+  static constexpr std::string_view GetWebUIName() {
     return "CookieListOptInBubblePanel";
   }
 
