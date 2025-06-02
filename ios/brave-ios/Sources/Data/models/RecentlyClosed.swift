@@ -49,6 +49,13 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
     return all(sortDescriptors: sortDescriptors) ?? []
   }
 
+  public class func first() -> RecentlyClosed? {
+    let sortDescriptors = [
+      NSSortDescriptor(key: #keyPath(RecentlyClosed.dateAdded), ascending: false)
+    ]
+    return first(sortDescriptors: sortDescriptors) ?? nil
+  }
+
   public class func remove(with url: String) {
     DataController.perform { context in
       if let item = getInternal(with: url, context: context) {
