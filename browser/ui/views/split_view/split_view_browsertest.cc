@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -92,6 +93,15 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   BraveMultiContentsView* brave_multi_contents_view() const {
     return static_cast<BraveMultiContentsView*>(
         brave_browser_view()->multi_contents_view_for_testing());
+  }
+
+  BrowserNonClientFrameView* browser_non_client_frame_view() {
+    return brave_browser_view()->frame()->GetFrameView();
+  }
+
+  void ToggleVerticalTabStrip() {
+    brave::ToggleVerticalTabStrip(browser());
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
  private:
@@ -181,7 +191,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   // Created new tab(at 3) for new split view with existing tab(at 2).
   chrome::NewSplitTab(browser());
   EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
+  EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
@@ -194,6 +206,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   // Check selected split tab becomes active tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+  EXPECT_TRUE(tab_strip()->tab_at(2)->IsActive());
+  EXPECT_FALSE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
@@ -202,6 +216,34 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
 
   tab_strip()->SelectTab(tab_strip()->tab_at(3), GetDummyEvent());
   EXPECT_EQ(3, tab_strip()->GetActiveIndex());
+  EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
+
+  // Check split tab's border insets to test split tabs related apis in
+  // BraveVerticalTabStyle. Its insets is different with normal tabs. Also
+  // different between first and second split tab in vertical tab mode.
+  ToggleVerticalTabStrip();
+
+  // Create new tab at 4.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(4, tab_strip()->GetActiveIndex());
+
+  // Get base insets.
+  const auto insets = tab_strip()->tab_at(4)->tab_style()->GetContentsInsets();
+
+  // Check normal tab's border insets.
+  EXPECT_EQ(tab_strip()->tab_at(4)->GetBorder()->GetInsets(), insets);
+
+  // Create split tabs with tab at 4 and new tab at 5.
+  chrome::NewSplitTab(browser());
+
+  // Check split tab's first & second tabs' insets are different.
+  // value 4 here is copied from |kPaddingForVerticalTabInTile| in
+  // brave_tab_style_views.inc.cc.
+  EXPECT_EQ(tab_strip()->tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip()->tab_at(5)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
@@ -237,6 +279,19 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 
   SplitViewSeparator& split_view_separator() {
     return *browser_view().split_view_->split_view_separator_;
+  }
+
+  BrowserNonClientFrameView& browser_non_client_frame_view() {
+    return *browser_view().frame()->GetFrameView();
+  }
+
+  void ToggleVerticalTabStrip() {
+    brave::ToggleVerticalTabStrip(browser());
+    browser_non_client_frame_view().DeprecatedLayoutImmediately();
+  }
+
+  TabStrip& tab_strip() {
+    return *BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
@@ -400,6 +455,32 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   // Then, the secondary web view should show up
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return secondary_contents_container().GetVisible(); }));
+
+  // Check split tab's border insets to test split tabs related apis in
+  // BraveVerticalTabStyle. Its insets is different with normal tabs. Also
+  // different between first and second split tab in vertical tab mode.
+  ToggleVerticalTabStrip();
+
+  // Create new tab at 3.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(3, tab_strip().GetActiveIndex());
+
+  // Get base insets.
+  const auto insets = tab_strip().tab_at(3)->tab_style()->GetContentsInsets();
+
+  // Check normal tab's border insets.
+  EXPECT_EQ(tab_strip().tab_at(3)->GetBorder()->GetInsets(), insets);
+
+  // Create split tabs with tab at 3 and new tab at 4.
+  brave::NewSplitViewForTab(browser());
+
+  // Check split tab's first & second tabs' insets are different.
+  // value 4 here is copied from |kPaddingForVerticalTabInTile| in
+  // brave_tab_style_views.inc.cc.
+  EXPECT_EQ(tab_strip().tab_at(3)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip().tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,

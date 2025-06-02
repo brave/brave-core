@@ -72,6 +72,16 @@ class BraveTabStyle : public TabStyle {
   }
 
   int GetSeparatorCornerRadius() const override { return 0; }
+
+  int GetMinimumActiveSplitWidth() const override {
+    // We don't use different width for split tab.
+    return GetMinimumActiveWidth();
+  }
+
+  int GetStandardSplitWidth() const override {
+    // We don't use different width for split tab.
+    return GetStandardWidth();
+  }
 };
 
 }  // namespace

@@ -38,6 +38,7 @@ class BraveTab : public Tab {
                                    int visual_width) const override;
   gfx::Insets GetInsets() const override;
   void SetData(TabRendererData data) override;
+  bool IsActive() const override;
 
  private:
   friend class BraveTabTest;

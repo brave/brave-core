@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/views/chrome_views_test_base.h"
@@ -81,4 +82,15 @@ TEST_F(BraveTabTest, TabHeightTest) {
   rect.set_y(GetLayoutConstant(TAB_STRIP_PADDING) +
              GetLayoutConstant(TAB_HEIGHT));
   EXPECT_FALSE(mask_region.intersects(RectToSkIRect(rect)));
+}
+
+TEST_F(BraveTabTest, TabStyleTest) {
+  FakeTabSlotController tab_slot_controller;
+  BraveTab tab(&tab_slot_controller);
+
+  // We use same width for split and non-split tab.
+  auto* tab_style = tab.tab_style();
+  EXPECT_EQ(tab_style->GetStandardWidth(), tab_style->GetStandardSplitWidth());
+  EXPECT_EQ(tab_style->GetMinimumActiveWidth(),
+            tab_style->GetMinimumActiveSplitWidth());
 }
