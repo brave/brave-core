@@ -15,7 +15,6 @@ import {
 } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
-import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import { BraveWallet } from '../../../../constants/types'
 import { UISelectors } from '../../../../common/selectors'
@@ -42,7 +41,7 @@ export const RemoveAccountModal = () => {
   const dispatch = useDispatch()
 
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isMobile = loadTimeData.getBoolean('isAndroid') || false
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // accounts tab state
   const accountToRemove = useSelector(
@@ -174,7 +173,7 @@ export const RemoveAccountModal = () => {
           </Row>
         </Column>
 
-        {isMobile || isPanel ? (
+        {isAndroid || isPanel ? (
           <Row gap='4px'>
             <LeoSquaredButton
               onClick={() =>

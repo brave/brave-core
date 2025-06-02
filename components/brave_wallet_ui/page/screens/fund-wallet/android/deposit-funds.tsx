@@ -40,7 +40,7 @@ export function AndroidDepositApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <DepositFundsScreen isAndroid={true} />
+          <DepositFundsScreen />
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>

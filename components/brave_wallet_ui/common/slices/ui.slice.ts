@@ -13,6 +13,7 @@ export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
   isPanel: false,
+  isAndroid: false,
 }
 
 // slice

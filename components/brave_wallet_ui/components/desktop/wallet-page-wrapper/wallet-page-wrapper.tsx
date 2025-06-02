@@ -43,8 +43,6 @@ import {
   ConnectionBackgroundColor,
 } from './wallet-page-wrapper.style'
 
-import { loadTimeData } from '../../../../common/loadTimeData'
-
 export interface Props {
   wrapContentInBox?: boolean
   noPadding?: boolean
@@ -82,12 +80,11 @@ export const WalletPageWrapper = (props: Props) => {
     isConnection,
   } = props
 
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // State
   const [headerShadowOpacity, setHeaderShadowOpacity] =

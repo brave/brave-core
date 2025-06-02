@@ -16,7 +16,7 @@ import { walletApi } from '../common/slices/api.slice'
 import walletReducer from '../common/slices/wallet.slice'
 import accountsTabReducer from './reducers/accounts-tab-reducer'
 import pageReducer from './reducers/page_reducer'
-import uiReducer from '../common/slices/ui.slice'
+import { uiReducer, defaultUIState } from '../common/slices/ui.slice'
 
 // utils
 import {
@@ -26,6 +26,7 @@ import {
   makeKeyringServiceObserver,
   makeTxServiceObserver,
 } from '../common/wallet_api_proxy_observers'
+import { loadTimeData } from '../../common/loadTimeData'
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,12 @@ export const store = configureStore({
     accountsTab: accountsTabReducer,
     ui: uiReducer,
     [walletApi.reducerPath]: walletApi.reducer,
+  },
+  preloadedState: {
+    ui: {
+      ...defaultUIState,
+      isAndroid: loadTimeData.getBoolean('isAndroid') || false,
+    },
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

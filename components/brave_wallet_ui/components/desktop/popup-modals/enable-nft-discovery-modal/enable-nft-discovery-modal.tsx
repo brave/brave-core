@@ -12,7 +12,6 @@ import { UISelectors } from '../../../../common/selectors'
 
 // utils
 import { getLocale, formatLocale } from '$web-common/locale'
-import { loadTimeData } from '../../../../../common/loadTimeData'
 
 // components
 import { PopupModal } from '../../popup-modals/index'
@@ -54,7 +53,7 @@ const enableNftAutoDiscovery = formatLocale(
 export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   return (
     <PopupModal

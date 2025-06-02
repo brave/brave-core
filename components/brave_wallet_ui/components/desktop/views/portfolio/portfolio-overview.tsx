@@ -59,7 +59,6 @@ import {
   getStoredPortfolioTimeframe, //
 } from '../../../../utils/local-storage-utils'
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
-import { loadTimeData } from '../../../../../common/loadTimeData'
 
 // Options
 import {
@@ -135,8 +134,6 @@ import {
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 export const PortfolioOverview = () => {
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
   // routing
   const history = useHistory()
   const location = useLocation()
@@ -146,6 +143,7 @@ export const PortfolioOverview = () => {
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // custom hooks
   const {

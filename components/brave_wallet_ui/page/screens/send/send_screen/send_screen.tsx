@@ -99,13 +99,7 @@ import {
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
 
-interface Props {
-  isAndroid?: boolean
-}
-
-export const SendScreen = React.memo((props: Props) => {
-  const { isAndroid = false } = props
-
+export const SendScreen = React.memo(() => {
   // routing
   const query = useQuery()
   const history = useHistory()
@@ -138,6 +132,7 @@ export const SendScreen = React.memo((props: Props) => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )

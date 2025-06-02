@@ -15,7 +15,6 @@ import {
 import { WalletRoutes } from '../../../constants/types'
 
 // Utils
-import { loadTimeData } from '../../../../common/loadTimeData'
 import { getLocale } from '../../../../common/locale'
 import { openWalletRouteTab } from '../../../utils/routes-utils'
 import { UISelectors } from '../../../common/selectors'
@@ -44,6 +43,7 @@ import { VerticalSpace, Row, Text } from '../../shared/style'
 export const LockScreen = () => {
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // routing
   const history = useHistory()
@@ -107,8 +107,6 @@ export const LockScreen = () => {
       getWalletAPIProxy().pageHandler?.unlockWalletUI()
     }
   }
-
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // render
   if (isAndroid) {
