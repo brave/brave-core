@@ -492,15 +492,7 @@ public class WelcomeViewController: UIViewController {
     using attributionData: AdAttributionData,
     controller: WelcomeViewController
   ) async {
-    Task {
-      await withCheckedContinuation { continuation in
-        DispatchQueue.global().async {
-          controller.attributionManager.generateReferralCodeAndPingServer(with: attributionData)
-          continuation.resume()
-        }
-      }
-    }
-
+    await controller.attributionManager.generateReferralCodeAndPingServer(with: attributionData)
     controller.calloutView.isLoading = false
     close()
   }

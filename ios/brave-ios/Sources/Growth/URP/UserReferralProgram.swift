@@ -114,7 +114,7 @@ public class UserReferralProgram {
     service.referralCodeLookup(refCode: refCode, completion: referralBlock)
   }
 
-  @MainActor public func adCampaignLookup(
+  public func adCampaignLookup(
     isRetryEnabled: Bool = true,
     timeout: TimeInterval = 60
   ) async throws -> AdAttributionData {
@@ -138,8 +138,7 @@ public class UserReferralProgram {
     }
   }
 
-  @MainActor func adReportsKeywordLookup(attributionData: AdAttributionData) async throws -> String
-  {
+  func adReportsKeywordLookup(attributionData: AdAttributionData) async throws -> String {
     guard let adGroupId = attributionData.adGroupId, let keywordId = attributionData.keywordId
     else {
       Logger.module.info("Could not retrieve ad campaign attibution from ad services")
