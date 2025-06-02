@@ -162,6 +162,14 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   if (!isJunitTestSuite) {
     braveArgs = braveArgs.concat(passthroughArgs)
+  } else {
+    // Retain --json-results-file for junit tests.
+    const jsonResultsArg = passthroughArgs.find((arg) =>
+      arg.startsWith('--json-results-file='),
+    )
+    if (jsonResultsArg) {
+      braveArgs.push(jsonResultsArg)
+    }
   }
 
   if (
