@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import CoreData
 import Data
 import DesignSystem
 import Favicon
@@ -10,7 +11,6 @@ import Shared
 import Storage
 import Then
 import UIKit
-import CoreData
 
 // MARK: - SearchViewControllerDelegate
 
@@ -196,7 +196,9 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   private func updateAvailableOnYourDeviceItems() {
     let playlistItems = playlistFRC.fetchedObjects ?? []
-    allOnYourDeviceItems = allSiteData.map { OnYourDeviceItem(site: $0) } + playlistItems.map { OnYourDeviceItem(playlistItem: $0) }
+    allOnYourDeviceItems =
+      allSiteData.map { OnYourDeviceItem(site: $0) }
+      + playlistItems.map { OnYourDeviceItem(playlistItem: $0) }
     collectionView.reloadData()
   }
 
@@ -1143,11 +1145,15 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
     updateAvailableOnYourDeviceItems()
   }
 
-  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerDidChangeContent(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>
+  ) {
     updateAvailableOnYourDeviceItems()
   }
 
-  public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerWillChangeContent(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>
+  ) {
     updateAvailableOnYourDeviceItems()
   }
 }
