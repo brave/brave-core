@@ -125,6 +125,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   if (!isJunitTestSuite) {
     braveArgs.push('--enable-logging=stderr')
+  } else {
+    braveArgs.push(`--json-results-file=test-${suite}.json`)
   }
 
   // Android doesn't support --v
