@@ -4,12 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Data
 import DesignSystem
+import PlaylistUI
 import Shared
 import Storage
 import UIKit
-import Data
-import PlaylistUI
 
 extension Site.SiteType {
   var icon: UIImage? {

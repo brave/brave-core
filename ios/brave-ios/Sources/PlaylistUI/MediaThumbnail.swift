@@ -12,9 +12,9 @@ import SwiftUI
 
 /// Loads a thumbnail for media assets
 public class MediaThumbnailLoader: ObservableObject {
-  
+
   public init() {}
-  
+
   @Published public var image: UIImage?
 
   enum MediaThumbnailError: Error {
