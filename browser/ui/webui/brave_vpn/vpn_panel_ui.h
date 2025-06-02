@@ -41,7 +41,7 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
   void set_embedder(base::WeakPtr<Embedder> embedder) { embedder_ = embedder; }
   base::WeakPtr<Embedder> embedder() { return embedder_; }
 
-  static constexpr std::string GetWebUIName() { return "VPNPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "VPNPanel"; }
 
  private:
   // brave_vpn::mojom::PanelHandlerFactory:
