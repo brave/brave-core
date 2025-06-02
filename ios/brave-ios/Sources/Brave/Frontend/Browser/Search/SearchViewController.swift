@@ -725,7 +725,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       return
     }
 
-    let offset = dataSource.isPrivate ? 0 : 1  // offset for the Leo button
+    let offset = dataSource.isAIChatAvailable ? 1 : 0  // offset for the Leo button
     let engine = dataSource.quickSearchEngines[index - offset]
     let localSearchQuery = dataSource.searchQuery.lowercased()
     guard let url = engine.searchURLForQuery(localSearchQuery) else {
