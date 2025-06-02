@@ -224,7 +224,7 @@
       Organize your browsing with containers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER" desc="The label for dialog title for adding a container">
-      Add container
+      Add new container
     </message>
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER" desc="The label for dialog title for editing a container">
       Edit container
@@ -236,10 +236,10 @@
       Are you sure you want to delete container <ph name="CONTAINER_NAME">"$1"<ex>"Work"</ex></ph>? This will remove all the data associated with it.
     </message>
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME" desc="The label for container name input field">
-      Container name
+      Name
     </message>
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER" desc="The placeholder for container name input field">
-      Personal, Work, Shopping, Social, you name it.
+      Give your container a name like Work or Personal
     </message>
   </if>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS" desc="The label for showing tabs vertically">
