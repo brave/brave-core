@@ -5886,5 +5886,13 @@ extension Strings {
       comment:
         "The text in the disclosure view in transaction status screen."
     )
+    public static let txConfirmationNoMorePendingTitle = NSLocalizedString(
+      "wallet.txStatusSubmittedDisclosure",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "No more pending transactions",
+      comment:
+        "The title displays in confirmation screen when there is no more pending transaction."
+    )
   }
 }
