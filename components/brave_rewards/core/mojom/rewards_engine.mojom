@@ -46,9 +46,12 @@ interface RewardsEngine {
   GetBalanceReport(ActivityMonth month, int32 year)
       => (Result result, BalanceReportInfo? report);
 
-  GetPublisherActivityFromUrl(uint64 window_id,
-                              VisitData visit_data,
-                              string publisher_blob);
+  // Notifies the Rewards engine that the user has visited a publisher page
+  // (which may be associated with a registered publisher) and calls the
+  // client's |OnPanelPublisherInfo| observation method.
+  NotifyPublisherPageVisit(uint64 tab_id,
+                           VisitData visit_data,
+                           string publisher_blob);
 
   GetPublisherBanner(string publisher_id)
       => (PublisherBanner? banner);

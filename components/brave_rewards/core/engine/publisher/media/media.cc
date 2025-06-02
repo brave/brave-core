@@ -78,8 +78,8 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  engine_->publisher()->GetPublisherActivityFromUrl(window_id,
-                                                    std::move(visit_data), "");
+  engine_->publisher()->NotifyPublisherPageVisit(window_id,
+                                                 std::move(visit_data), "");
 }
 
 void Media::SaveMediaInfo(const std::string& type,

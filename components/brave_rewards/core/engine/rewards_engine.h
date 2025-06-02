@@ -108,9 +108,9 @@ class RewardsEngine : public mojom::RewardsEngine,
                         int32_t year,
                         GetBalanceReportCallback callback) override;
 
-  void GetPublisherActivityFromUrl(uint64_t window_id,
-                                   mojom::VisitDataPtr visit_data,
-                                   const std::string& publisher_blob) override;
+  void NotifyPublisherPageVisit(uint64_t tab_id,
+                                mojom::VisitDataPtr visit_data,
+                                const std::string& publisher_blob) override;
 
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;

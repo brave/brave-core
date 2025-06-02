@@ -243,7 +243,7 @@ void BraveRewardsNativeWorker::GetPublisherInfo(
     int tabId,
     const base::android::JavaParamRef<jstring>& host) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetPublisherActivityFromUrl(
+    brave_rewards_service_->NotifyPublisherPageVisit(
         tabId, base::android::ConvertJavaStringToUTF8(env, host), "", "");
   }
 }

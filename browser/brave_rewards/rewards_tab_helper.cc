@@ -89,10 +89,9 @@ void RewardsTabHelper::MaybeSavePublisherInfo() {
   }
 
   // The Rewards system currently assumes that the |publisher_info| table is
-  // populated by calling `GetPublisherActivityFromUrl` as the user navigates
-  // the web. Previously, this was accomplished within the background script of
-  // the Rewards extension.
-  rewards_service_->GetPublisherActivityFromUrl(
+  // populated by calling `NotifyPublisherPageVisit` as the user navigates
+  // the web.
+  rewards_service_->NotifyPublisherPageVisit(
       tab_id_.id(), GetWebContents().GetLastCommittedURL().spec(), "", "");
 }
 
@@ -121,9 +120,7 @@ void RewardsTabHelper::OnCreatorDetected(
     // When a creator has been detected for the current tab, we must send the
     // creator data to the utility process so that the "publisher_info" database
     // table can be populated.
-    // TODO(https://github.com/brave/brave-browser/issues/41832): Rename and
-    // possibly refactor this API.
-    rewards_service_->GetPublisherActivityFromVisitData(visit->Clone());
+    rewards_service_->NotifyPublisherPageVisit(visit->Clone());
   }
 }
 

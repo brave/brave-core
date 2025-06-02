@@ -503,7 +503,7 @@ NSNotificationName const BraveRewardsNotificationAdded =
       blob = base::SysNSStringToUTF8(publisherBlob);
     }
 
-    selfPtr->_rewardsEngine->GetPublisherActivityFromUrl(
+    selfPtr->_rewardsEngine->NotifyPublisherPageVisit(
         tabId, std::move(visitData), blob);
   }];
 }
