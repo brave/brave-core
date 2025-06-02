@@ -155,6 +155,8 @@ public class BraveScrollingBottomViewResourceFrameLayout
 
     @SuppressLint("VisibleForTests")
     public void triggerBitmapCapture(boolean dropCachedBitmap) {
+        if (isInTabSwitcherMode()) return;
+
         synchronized (mCallbackController) {
             if (dropCachedBitmap) {
                 getResourceAdapter().dropCachedBitmap();
@@ -163,5 +165,11 @@ public class BraveScrollingBottomViewResourceFrameLayout
                 getResourceAdapter().triggerBitmapCapture();
             }
         }
+    }
+
+    private boolean isInTabSwitcherMode() {
+        BraveBottomControlsCoordinator bottomControlsCoordinator = braveBottomControlsCoordinator();
+        if (bottomControlsCoordinator == null) return false;
+        return bottomControlsCoordinator.isInTabSwitcherMode();
     }
 }
