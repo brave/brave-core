@@ -8,6 +8,8 @@ import { ThemeColorPickerElement } from '//resources/cr_components/theme_color_p
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 
+// TODO(sko) Can we remove this file entirely? I tried to remove this file and
+// related includes, but it seems to break the build.
 injectStyle(ThemeColorPickerElement, css`
     #defaultColor { display: none; }
 `)
