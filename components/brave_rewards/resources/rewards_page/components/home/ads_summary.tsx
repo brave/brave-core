@@ -41,7 +41,6 @@ export function AdsSummary() {
       {renderRow(getString('adTypeNewTabPageLabel'), 'new-tab-page')}
       {renderRow(getString('adTypeNotificationLabel'), 'notification')}
       {renderRow(getString('adTypeSearchResultLabel'), 'search-result')}
-      {renderRow(getString('adTypeInlineContentLabel'), 'inline-content')}
     </div>
   )
 }
