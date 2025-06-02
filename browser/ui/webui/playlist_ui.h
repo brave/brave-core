@@ -70,7 +70,7 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void ShouldShowAddMediaFromPageUI(
       ShouldShowAddMediaFromPageUICallback callback) override;
 
-  static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "PlaylistPanel"; }
 
  private:
   void OnActiveTabStateChanged(bool should_show_add_media_from_page_ui);
@@ -100,7 +100,9 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
   UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;
   UntrustedPlayerUI& operator=(const UntrustedPlayerUI&) = delete;
 
-  static constexpr std::string GetWebUIName() { return "UntrustedPlayerPanel"; }
+  static constexpr std::string_view GetWebUIName() {
+    return "UntrustedPlayerPanel";
+  }
 };
 
 class UntrustedPlaylistUIConfig
