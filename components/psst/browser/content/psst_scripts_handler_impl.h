@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/psst/browser/content/psst_scripts_handler.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
@@ -44,14 +45,10 @@ class PsstScriptsHandlerImpl : public PsstScriptsHandler {
                           std::optional<base::Value> value,
                           InsertScriptInPageCallback cb);
 
-  //   Get the remote used to send the script to the renderer.
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
-      content::RenderFrameHost* rfh);
-
   const raw_ptr<PrefService> prefs_;
 
   const content::GlobalRenderFrameHostId render_frame_host_id_;
-  raw_ptr<content::WebContents> web_contents_{nullptr};
+  base::WeakPtr<content::WebContents> web_contents_;
   const int32_t world_id_;
 
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>

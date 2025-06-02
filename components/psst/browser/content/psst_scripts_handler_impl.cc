@@ -62,7 +62,7 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     const int32_t world_id)
     : prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
-      web_contents_(web_contents),
+      web_contents_(web_contents->GetWeakPtr()),
       world_id_(world_id) {
   CHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
   CHECK(render_frame_host);
@@ -108,7 +108,7 @@ void PsstScriptsHandlerImpl::InsertScriptInPage(
       content::RenderFrameHost::FromID(render_frame_host_id_);
 
   // Check if render_frame_host is still valid and if starting rfh is the same.
-  if (!render_frame_host ||
+  if (!render_frame_host || !web_contents_ ||
       render_frame_host_id_ !=
           web_contents_->GetPrimaryMainFrame()->GetGlobalId()) {
     std::move(cb).Run(base::Value(base::Value::Type::NONE));
@@ -119,20 +119,8 @@ void PsstScriptsHandlerImpl::InsertScriptInPage(
   std::string script_with_params =
       GetScriptWithParams(script, std::move(value));
 
-  GetRemote(render_frame_host)
-      ->RequestAsyncExecuteScript(
-          world_id_, base::UTF8ToUTF16(script_with_params),
-          blink::mojom::UserActivationOption::kDoNotActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
-}
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
-PsstScriptsHandlerImpl::GetRemote(content::RenderFrameHost* rfh) {
-  if (!script_injector_remote_.is_bound()) {
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-  }
-  return script_injector_remote_;
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      base::UTF8ToUTF16(script_with_params), std::move(cb), world_id_);
 }
 
 }  // namespace psst
