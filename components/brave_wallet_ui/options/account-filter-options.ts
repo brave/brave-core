@@ -16,10 +16,10 @@ export const AllAccountsOption: BraveWallet.AccountInfo = {
     kind: BraveWallet.AccountKind.kDerived,
     address: AllAccountsOptionUniqueKey,
     accountIndex: 0,
-    uniqueKey: AllAccountsOptionUniqueKey
+    uniqueKey: AllAccountsOptionUniqueKey,
   },
   name: getLocale('braveWalletAccountFilterAllAccounts'),
-  hardware: undefined
+  hardware: undefined,
 }
 
 export const isAllAccountsOptionFilter = (selectedAccountFilter: string) => {

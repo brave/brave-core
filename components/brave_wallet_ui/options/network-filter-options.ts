@@ -18,14 +18,14 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   rpcEndpoints: [],
   symbol: 'all',
   symbolName: 'all',
-  supportedKeyrings: []
+  supportedKeyrings: [],
 }
 
 export const AllNetworksOptionNetworkId = getNetworkId(AllNetworksOption)
 
 export const AllNetworksOptionDefault: NetworkFilterType = {
   chainId: 'all',
-  coin: 0
+  coin: 0,
 }
 
 export const SupportedTopLevelChainIds = [
@@ -33,5 +33,5 @@ export const SupportedTopLevelChainIds = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.BITCOIN_MAINNET,
-  BraveWallet.Z_CASH_MAINNET
+  BraveWallet.Z_CASH_MAINNET,
 ]

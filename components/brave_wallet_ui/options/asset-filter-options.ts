@@ -7,21 +7,21 @@ import { DropdownFilterOption } from '../constants/types'
 
 export const HighToLowAssetsFilterOption: DropdownFilterOption = {
   id: 'highToLow',
-  name: 'braveWalletAssetFilterHighToLow'
+  name: 'braveWalletAssetFilterHighToLow',
 }
 
 export const AssetFilterOptions: DropdownFilterOption[] = [
   HighToLowAssetsFilterOption,
   {
     id: 'lowToHigh',
-    name: 'braveWalletAssetFilterLowToHigh'
+    name: 'braveWalletAssetFilterLowToHigh',
   },
   {
     id: 'aToZ',
-    name: 'braveWalletAssetFilterAToZ'
+    name: 'braveWalletAssetFilterAToZ',
   },
   {
     id: 'zToA',
-    name: 'braveWalletAssetFilterZToA'
-  }
+    name: 'braveWalletAssetFilterZToA',
+  },
 ]

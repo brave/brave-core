@@ -12,5 +12,5 @@ export const ETH: BlockchainToken = {
   logo: '',
   name: 'Ethereum',
   symbol: 'ETH',
-  visible: true
+  visible: true,
 }

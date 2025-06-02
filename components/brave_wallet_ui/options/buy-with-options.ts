@@ -21,14 +21,14 @@ function getBuyOptions(): BuyOption[] {
       actionText: getLocale('braveWalletBuyWithRamp'),
       icon: RampIcon,
       name: getLocale('braveWalletBuyRampNetworkName'),
-      description: getLocale('braveWalletBuyRampDescription')
+      description: getLocale('braveWalletBuyRampDescription'),
     },
     {
       id: BraveWallet.OnRampProvider.kTransak,
       actionText: getLocale('braveWalletBuyWithTransak'),
       icon: TransakIcon,
       name: getLocale('braveWalletBuyTransakName'),
-      description: getLocale('braveWalletBuyTransakDescription')
+      description: getLocale('braveWalletBuyTransakDescription'),
     },
     {
       id: BraveWallet.OnRampProvider.kSardine,
@@ -37,15 +37,15 @@ function getBuyOptions(): BuyOption[] {
         ? SardineIconDark
         : SardineIconLight,
       name: getLocale('braveWalletBuySardineName'),
-      description: getLocale('braveWalletBuySardineDescription')
+      description: getLocale('braveWalletBuySardineDescription'),
     },
     {
       id: BraveWallet.OnRampProvider.kCoinbase,
       actionText: getLocale('braveWalletBuyWithCoinbase'),
       icon: CoinbaseIcon,
       name: getLocale('braveWalletBuyCoinbaseName'),
-      description: getLocale('braveWalletBuyCoinbaseDescription')
-    }
+      description: getLocale('braveWalletBuyCoinbaseDescription'),
+    },
   ]
 
   if (isStripeSupported()) {
@@ -54,7 +54,7 @@ function getBuyOptions(): BuyOption[] {
       actionText: getLocale('braveWalletBuyWithStripe'),
       icon: StripeIcon,
       name: getLocale('braveWalletBuyStripeName'),
-      description: getLocale('braveWalletBuyStripeDescription')
+      description: getLocale('braveWalletBuyStripeDescription'),
     })
   }
 

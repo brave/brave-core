@@ -16,7 +16,7 @@ export const CustomReferenceDot = ({
   cx,
   cy,
   onUpdateYPosition,
-  onUpdateXPosition
+  onUpdateXPosition,
 }: Props) => {
   // Effects
   React.useLayoutEffect(() => {

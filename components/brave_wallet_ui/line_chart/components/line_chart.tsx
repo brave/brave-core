@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
-  Tooltip
+  Tooltip,
 } from 'recharts'
 
 // Types
@@ -22,7 +22,7 @@ import type { TokenPriceHistory } from '../../constants/types'
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import {
   deserializeTimeDelta,
-  makeSerializableTimeDelta
+  makeSerializableTimeDelta,
 } from '../../utils/model-serialization-utils'
 
 // Components
@@ -34,7 +34,7 @@ import {
   StyledWrapper,
   LoadingOverlay,
   LoadIcon,
-  AreaWrapper
+  AreaWrapper,
 } from './line_chart.styles'
 
 interface Props {
@@ -50,22 +50,22 @@ interface Props {
 const EmptyChartData = [
   {
     date: makeSerializableTimeDelta({
-      microseconds: 1
+      microseconds: 1,
     }),
-    close: 1
+    close: 1,
   },
   {
     date: makeSerializableTimeDelta({
-      microseconds: 2
+      microseconds: 2,
     }),
-    close: 1
+    close: 1,
   },
   {
     date: makeSerializableTimeDelta({
-      microseconds: 3
+      microseconds: 3,
     }),
-    close: 1
-  }
+    close: 1,
+  },
 ]
 
 export function LineChart({
@@ -75,7 +75,7 @@ export function LineChart({
   customStyle,
   showTooltip,
   defaultFiatCurrency,
-  hidePortfolioBalances
+  hidePortfolioBalances,
 }: Props) {
   // state
   const [activeXPosition, setActiveXPosition] = React.useState<number>(0)
@@ -91,7 +91,7 @@ export function LineChart({
 
     return priceHistory.map((price) => ({
       date: mojoTimeDeltaToJSDate(deserializeTimeDelta(price.date)),
-      close: price.close
+      close: price.close,
     }))
   }, [priceData, isDisabled])
 
@@ -139,19 +139,19 @@ export function LineChart({
               hide={true}
               dataKey='date'
             />
-            {priceData &&
-              priceData.length > 0 &&
-              !isDisabled &&
-              showTooltip && (
+            {priceData
+              && priceData.length > 0
+              && !isDisabled
+              && showTooltip && (
                 <Tooltip
                   isAnimationActive={false}
                   position={{
                     x: activeXPosition,
-                    y: toolTipYPosition
+                    y: toolTipYPosition,
                   }}
                   cursor={{
                     stroke: leo.color.icon.interactive,
-                    strokeWidth: 2
+                    strokeWidth: 2,
                   }}
                   content={
                     <CustomTooltip
@@ -192,5 +192,5 @@ export function LineChart({
 
 LineChart.defaultProps = {
   showPulsatingDot: true,
-  showTooltip: true
+  showTooltip: true,
 }

@@ -9,24 +9,24 @@ import { getLocale } from '$web-common/locale'
 export const TopNavOptions = (): TopTabNavObjectType[] => [
   {
     id: 'portfolio',
-    name: getLocale('braveWalletTopNavPortfolio')
+    name: getLocale('braveWalletTopNavPortfolio'),
   },
   {
     id: 'nfts',
-    name: getLocale('braveWalletTopNavNFTS')
+    name: getLocale('braveWalletTopNavNFTS'),
   },
   {
     id: 'activity', // Transactions
-    name: getLocale('braveWalletActivity')
+    name: getLocale('braveWalletActivity'),
   },
   {
     id: 'accounts',
-    name: getLocale('braveWalletTopNavAccounts')
+    name: getLocale('braveWalletTopNavAccounts'),
   },
   {
     id: 'market',
-    name: getLocale('braveWalletTopNavMarket')
-  }
+    name: getLocale('braveWalletTopNavMarket'),
+  },
   // Temp commented out for MVP
   // {
   //   id: 'apps',
