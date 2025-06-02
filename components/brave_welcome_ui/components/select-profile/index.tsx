@@ -11,8 +11,15 @@ import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'
-import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes, P3APhase } from '../../api/welcome_browser_proxy'
+import {
+  WelcomeBrowserProxyImpl,
+  ImportDataBrowserProxyImpl,
+  ImportDataStatus,
+  defaultImportTypes,
+  P3APhase,
+} from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
+import { addWebUiListener } from 'chrome://resources/js/cr.js'
 
 interface ProfileItemProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -55,6 +62,34 @@ function SelectProfile () {
 
   const { back } = useViewTypeTransition(viewType)
   const handleBackButton = () => setViewType(back!)
+
+  const [importStatus, setImportStatus] = React.useState<ImportDataStatus>(
+    ImportDataStatus.INITIAL,
+  )
+
+  const isImportInProgress = () => {
+    return importStatus === ImportDataStatus.IN_PROGRESS
+  }
+
+  React.useEffect(() => {
+    addWebUiListener('import-data-status-changed', (status: string) => {
+      switch (status) {
+        case 'inProgress':
+          setImportStatus(ImportDataStatus.IN_PROGRESS)
+          break
+        case 'failed':
+          setImportStatus(ImportDataStatus.FAILED)
+          break
+        case 'succeeded':
+          setImportStatus(ImportDataStatus.SUCCEEDED)
+          break
+        default:
+          setImportStatus(ImportDataStatus.INITIAL)
+          break
+      }
+    })
+  }, [])
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target
@@ -133,6 +168,7 @@ function SelectProfile () {
         <Button
           isPrimary={true}
           onClick={handleImportProfiles}
+          isDisabled={selectedProfiles.size === 0 || isImportInProgress()}
           scale="jumbo"
         >
           {getLocale('braveWelcomeImportProfilesButtonLabel')}

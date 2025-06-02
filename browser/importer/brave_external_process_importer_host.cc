@@ -91,7 +91,7 @@ void BraveExternalProcessImporterHost::OnExtensionsImportReady(bool ready) {
   if (!ready) {
     extensions_importer_.reset();
     importer::ShowImportLockDialog(
-        parent_window_,
+        parent_view_, parent_window_,
         base::BindOnce(
             &BraveExternalProcessImporterHost::OnExtensionsImportLockDialogEnd,
             weak_ptr_factory_.GetWeakPtr()),

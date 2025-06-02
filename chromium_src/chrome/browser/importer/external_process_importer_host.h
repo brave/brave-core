@@ -6,12 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
-#define BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H \
-  friend class BraveExternalProcessImporterHost;
+#define NotifyImportEnded(...)                        \
+  virtual NotifyImportEnded(__VA_ARGS__);             \
+  friend class BraveExternalProcessImporterHost;      \
+  void set_parent_view(gfx::NativeView parent_view) { \
+    parent_view_ = parent_view;                       \
+  }                                                   \
+  gfx::NativeView parent_view_ = gfx::NativeView()
 
-#define NotifyImportEnded virtual NotifyImportEnded
 #include "src/chrome/browser/importer/external_process_importer_host.h"  // IWYU pragma: export
-#undef BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H
+
 #undef NotifyImportEnded
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_
