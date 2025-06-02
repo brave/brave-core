@@ -101,7 +101,7 @@ export const WalletSettingsMenu = (props: Props) => {
   const onClickHelpCenter = React.useCallback(() => {
     chrome.tabs.create(
       {
-        url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet',
+        url: 'https://support.brave.com/hc/categories/360001062531-Wallet',
       },
       () => {
         if (chrome.runtime.lastError) {
