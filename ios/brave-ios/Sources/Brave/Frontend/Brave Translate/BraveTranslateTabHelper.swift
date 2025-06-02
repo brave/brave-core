@@ -105,9 +105,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.otherError
       }
 
+      let currentLanguage = currentLanguageInfo.currentLanguage.braveTranslateLanguageIdentifier
+
       guard
-        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier(.alpha2),
-        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier(.alpha2),
+        let pageLanguage = currentLanguageInfo.pageLanguage?.braveTranslateLanguageIdentifier,
         currentLanguage != pageLanguage
       else {
         throw BraveTranslateError.invalidLanguage
@@ -167,14 +168,9 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       }
 
       // The library is ready, we can now begin translating the page
-
-      // Normalize Chinese if necessary to Chinese (Simplified). zh-TW = Traditional
-      // We don't current use the components/language/ios/browser/language_detection_java_script_feature.mm
-      // Supported List of Languages is from: components/translate/core/browser/translate_language_list.cc
-      // So we have to do this for now.
       let didStartTranslation = await translate(
-        from: pageLanguage == "zh" ? "zh-CN" : pageLanguage,
-        to: currentLanguage == "zh" ? "zh-CN" : currentLanguage
+        from: pageLanguage,
+        to: currentLanguage
       )
 
       try Task.checkCancellation()
@@ -496,7 +492,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       if await hasTranslationFinished() {
         let actualSourceLanguage = await getPageSourceLanguage()
         if actualSourceLanguage.isEmpty
-          || actualSourceLanguage == currentLanguageInfo.currentLanguage.languageCode?.identifier
+          || actualSourceLanguage
+            == currentLanguageInfo.currentLanguage.braveTranslateLanguageIdentifier
         {
           delegate.updateTranslateURLBar(tab: tab, state: .available)
           delegate.presentTranslateError(tab: tab)

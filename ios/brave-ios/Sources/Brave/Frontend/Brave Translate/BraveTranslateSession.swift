@@ -46,11 +46,8 @@ class BraveTranslateSession {
       #endif
     }
 
-    guard let sourceLanguage = source.languageCode?.identifier(.alpha2),
-      let targetLanguage = target.languageCode?.identifier(.alpha2)
-    else {
-      return false
-    }
+    let sourceLanguage = source.braveTranslateLanguageIdentifier
+    let targetLanguage = target.braveTranslateLanguageIdentifier
     return sourceLanguage != targetLanguage
   }
 
