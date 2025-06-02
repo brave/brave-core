@@ -6,5 +6,5 @@
 #include "brave/browser/ui/views/download/brave_download_item_view.h"
 
 #define DownloadItemView BraveDownloadItemView
-#include "src/chrome/browser/ui/views/download/download_item_view_unittest.cc"
+#include "src/chrome/browser/ui/views/download/download_item_view_browsertest.cc"
 #undef DownloadItemView
