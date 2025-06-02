@@ -60,7 +60,6 @@ include_rules += [
   "+components/sync/base/features.h",
   "+components/user_education/common/user_education_features.h",
   "+components/webapps/browser/features.h",
-  "+components/webui/chrome_urls/features.h",
   "+components/password_manager/core/common/password_manager_features.h",
   "+components/device_signals/core/common/signals_features.h",
   "+components/translate/core/common/translate_util.h",
