@@ -104,7 +104,7 @@ public class AttributionManager {
   @MainActor public func handleSearchAdsInstallAttribution() async throws -> AdAttributionData {
     do {
       let attributionData = try await urp.adCampaignLookup()
-      generateReferralCodeAndPingServer(with: attributionData)
+      await generateReferralCodeAndPingServer(with: attributionData)
 
       return attributionData
     } catch {
@@ -112,10 +112,10 @@ public class AttributionManager {
     }
   }
 
-  @MainActor public func handleSearchAdsFeatureLinkage() async throws -> FeatureLinkageType? {
+  public func handleSearchAdsFeatureLinkage() async throws -> FeatureLinkageType? {
     do {
       let attributionData = try await urp.adCampaignLookup(isRetryEnabled: false, timeout: 30)
-      generateReferralCodeAndPingServer(with: attributionData)
+      await generateReferralCodeAndPingServer(with: attributionData)
 
       return fetchFeatureTypes(for: attributionData.campaignId)
     } catch {
@@ -124,14 +124,14 @@ public class AttributionManager {
   }
 
   public func pingDAUServer(_ isP3AEnabled: Bool) {
-    Task { @MainActor in
+    Task {
       do {
         let attributionData =
           isP3AEnabled ? try await urp.adCampaignLookup(isRetryEnabled: false, timeout: 30) : nil
-        generateReferralCodeAndPingServer(with: attributionData)
+        await generateReferralCodeAndPingServer(with: attributionData)
 
       } catch {
-        generateReferralCodeAndPingServer(with: nil)
+        await generateReferralCodeAndPingServer(with: nil)
         Logger.module.error("Error Campaign Lookup: \(error)")
       }
     }
@@ -158,7 +158,7 @@ public class AttributionManager {
       }
 
       do {
-        generateReferralCodeAndPingServer(with: attributionData)
+        await generateReferralCodeAndPingServer(with: attributionData)
 
         let keyword = try await urp.adReportsKeywordLookup(attributionData: attributionData)
         return fetchFeatureTypes(for: keyword)
@@ -185,7 +185,7 @@ public class AttributionManager {
     return nil
   }
 
-  public func setupReferralCodeAndPingServer(refCode: String? = nil) {
+  @MainActor public func setupReferralCodeAndPingServer(refCode: String? = nil) {
     let refCode = refCode ?? organicInstallReferralCode
 
     // Setting up referral code value
@@ -196,9 +196,9 @@ public class AttributionManager {
     dau.sendPingToServer()
   }
 
-  public func generateReferralCodeAndPingServer(with attributionData: AdAttributionData?) {
+  public func generateReferralCodeAndPingServer(with attributionData: AdAttributionData?) async {
     let refCode = generateReferralCode(attributionData: attributionData)
-    setupReferralCodeAndPingServer(refCode: refCode)
+    await setupReferralCodeAndPingServer(refCode: refCode)
   }
 
   private func performProgramReferralLookup(refCode: String?, completion: @escaping (URL?) -> Void)

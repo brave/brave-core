@@ -87,7 +87,7 @@ struct UrpService {
     }
   }
 
-  @MainActor func adCampaignTokenLookupQueue(
+  func adCampaignTokenLookupQueue(
     adAttributionToken: String,
     isRetryEnabled: Bool = true,
     timeout: TimeInterval
@@ -121,7 +121,7 @@ struct UrpService {
     }
   }
 
-  @MainActor func adGroupReportsKeywordLookup(
+  func adGroupReportsKeywordLookup(
     adGroupId: Int,
     campaignId: Int,
     keywordId: Int
