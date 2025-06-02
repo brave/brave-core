@@ -51,7 +51,6 @@
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
-#include "components/webui/chrome_urls/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
 #include "content/public/common/buildflags.h"
