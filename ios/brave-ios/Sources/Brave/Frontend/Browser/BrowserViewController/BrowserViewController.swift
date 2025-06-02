@@ -48,7 +48,7 @@ public class BrowserViewController: UIViewController {
   private(set) lazy var topToolbar: TopToolbarView = {
     // Setup the URL bar, wrapped in a view to get transparency effect
     let topToolbar = TopToolbarView(
-      voiceSearchSupported: speechRecognizer.isVoiceSearchAvailable,
+      speechRecognizer: speechRecognizer,
       privateBrowsingManager: privateBrowsingManager
     )
     topToolbar.translatesAutoresizingMaskIntoConstraints = false

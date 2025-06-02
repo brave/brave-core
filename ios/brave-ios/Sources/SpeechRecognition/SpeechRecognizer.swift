@@ -43,8 +43,14 @@ public class SpeechRecognizer: ObservableObject {
   @Published private(set) var animationType: AnimationType = .pulse(scale: 1)
 
   public init() {
-    // Default constructor for public initialization
-    isOnDeviceSupportAvailable = recognizer?.supportsOnDeviceRecognition ?? false
+    Task.detached { [self] in
+      // Calling this method tends to block the thread for a few hundred ms, so get it off main
+      let supportsOnDeviceRecognition = recognizer?.supportsOnDeviceRecognition ?? false
+      await MainActor.run {
+        isOnDeviceSupportAvailable = supportsOnDeviceRecognition
+        objectWillChange.send()
+      }
+    }
   }
 
   public var isVoiceSearchAvailable: Bool {
