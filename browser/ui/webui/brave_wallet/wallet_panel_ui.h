@@ -42,7 +42,7 @@ class WalletPanelUI : public TopChromeWebUIController,
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
 
-  static constexpr std::string GetWebUIName() { return "WalletPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "WalletPanel"; }
 
  private:
   // brave_wallet::mojom::PanelHandlerFactory:
