@@ -11,13 +11,12 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/json/json_value_converter.h"
+#include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/managed/remote_metric.h"
-#include "brave/components/time_period_storage/time_period_storage.h"
 
-class PrefService;
+class TimePeriodStorage;
 
 namespace p3a {
 
@@ -55,28 +54,28 @@ struct TimePeriodEventsMetricDefinition {
 // in a given time period.
 class TimePeriodEventsMetric : public RemoteMetric {
  public:
-  TimePeriodEventsMetric(PrefService* local_state,
-                         TimePeriodEventsMetricDefinition definition,
-                         base::RepeatingCallback<void(size_t)> update_callback);
+  TimePeriodEventsMetric(TimePeriodEventsMetricDefinition definition,
+                         Delegate* delegate,
+                         std::string_view metric_name);
   ~TimePeriodEventsMetric() override;
 
   TimePeriodEventsMetric(const TimePeriodEventsMetric&) = delete;
   TimePeriodEventsMetric& operator=(const TimePeriodEventsMetric&) = delete;
+
+  void Init() override;
 
   void HandleHistogramChange(std::string_view histogram_name,
                              size_t sample) override;
 
   std::vector<std::string_view> GetSourceHistogramNames() const override;
 
-  std::optional<std::string_view> GetStorageKey() const override;
+  std::optional<std::vector<std::string_view>> GetStorageKeys() const override;
 
  private:
   void Report();
 
-  raw_ptr<PrefService> local_state_;
   TimePeriodEventsMetricDefinition definition_;
-  TimePeriodStorage storage_;
-  base::RepeatingCallback<void(size_t)> update_callback_;
+  raw_ptr<TimePeriodStorage> storage_ = nullptr;
 
   base::WallClockTimer report_timer_;
   // Cache of int values from definition_.buckets for easier access

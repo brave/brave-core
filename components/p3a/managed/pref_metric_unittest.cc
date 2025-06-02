@@ -46,7 +46,8 @@ PrefMetricDefinition ParseMetricDefinition(std::string_view json) {
 
 }  // namespace
 
-class P3APrefMetricUnitTest : public testing::Test {
+class P3APrefMetricUnitTest : public testing::Test,
+                              public RemoteMetric::Delegate {
  public:
   P3APrefMetricUnitTest() = default;
 
@@ -63,15 +64,19 @@ class P3APrefMetricUnitTest : public testing::Test {
     auto json = base::StringPrintf(kPrefMetricJson, pref_name,
                                    use_profile_prefs ? "true" : "false");
     auto definition = ParseMetricDefinition(json);
-    metric_ = std::make_unique<PrefMetric>(
-        &local_state_, std::move(definition),
-        base::BindRepeating(&P3APrefMetricUnitTest::OnMetricUpdated,
-                            base::Unretained(this)));
+    metric_ = std::make_unique<PrefMetric>(&local_state_, std::move(definition),
+                                           this, "test_metric");
   }
 
-  void OnMetricUpdated(size_t value) {
-    last_reported_value_ = value;
+  // RemoteMetric::Delegate:
+  void UpdateMetric(std::string_view metric_name, size_t bucket) override {
+    last_reported_value_ = bucket;
     report_count_++;
+  }
+
+  TimePeriodStorage* GetTimePeriodStorage(std::string_view storage_key,
+                                          int period_days) override {
+    return nullptr;
   }
 
  protected:
@@ -128,8 +133,8 @@ TEST_F(P3APrefMetricUnitTest, EmptyHistogramAndStorageKey) {
   auto histogram_names = metric_->GetSourceHistogramNames();
   EXPECT_TRUE(histogram_names.empty());
 
-  auto storage_key = metric_->GetStorageKey();
-  EXPECT_FALSE(storage_key.has_value());
+  auto storage_keys = metric_->GetStorageKeys();
+  EXPECT_FALSE(storage_keys.has_value());
 }
 
 TEST_F(P3APrefMetricUnitTest, LocalStateBasics) {

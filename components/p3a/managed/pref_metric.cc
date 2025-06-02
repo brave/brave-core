@@ -65,9 +65,9 @@ bool PrefMetricDefinition::Validate() const {
 // PrefMetric implementation
 PrefMetric::PrefMetric(PrefService* local_state,
                        PrefMetricDefinition definition,
-                       base::RepeatingCallback<void(size_t)> update_callback)
-    : definition_(std::move(definition)),
-      update_callback_(std::move(update_callback)) {
+                       Delegate* delegate,
+                       std::string_view metric_name)
+    : RemoteMetric(delegate, metric_name), definition_(std::move(definition)) {
   // If we're not using profile prefs, set up monitoring on local state
   // immediately
   if (!definition_.use_profile_prefs) {
@@ -85,7 +85,8 @@ std::vector<std::string_view> PrefMetric::GetSourceHistogramNames() const {
   return {};
 }
 
-std::optional<std::string_view> PrefMetric::GetStorageKey() const {
+std::optional<std::vector<std::string_view>> PrefMetric::GetStorageKeys()
+    const {
   return std::nullopt;
 }
 
@@ -127,7 +128,7 @@ void PrefMetric::UpdateMetric() {
   // Look up the value in the map
   auto metric_value = definition_.value_map.FindInt(*string_value);
   if (metric_value) {
-    update_callback_.Run(*metric_value);
+    delegate_->UpdateMetric(metric_name_, *metric_value);
   }
 }
 

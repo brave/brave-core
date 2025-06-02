@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/p3a/managed/remote_metric.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
@@ -28,7 +29,7 @@ namespace p3a {
 // Manages metrics defined via remote configuration. Responsible for creating
 // and tracking appropriate metric objects based on definitions received from
 // the remote config system.
-class RemoteMetricManager {
+class RemoteMetricManager : public RemoteMetric::Delegate {
  public:
   using UnparsedDefinitionsMap =
       base::flat_map<std::string, std::unique_ptr<base::Value::Dict>>;
@@ -46,7 +47,7 @@ class RemoteMetricManager {
   };
 
   RemoteMetricManager(PrefService* local_state, Delegate* delegate);
-  ~RemoteMetricManager();
+  ~RemoteMetricManager() override;
 
   RemoteMetricManager(const RemoteMetricManager&) = delete;
   RemoteMetricManager& operator=(const RemoteMetricManager&) = delete;
@@ -61,6 +62,11 @@ class RemoteMetricManager {
   // Process all metric definitions in a map. Called by RemoteConfigManager
   // when new definitions are available.
   void ProcessMetricDefinitions(const UnparsedDefinitionsMap& definitions);
+
+  // RemoteMetric::Delegate:
+  void UpdateMetric(std::string_view metric_name, size_t bucket) override;
+  TimePeriodStorage* GetTimePeriodStorage(std::string_view storage_key,
+                                          int period_days) override;
 
  private:
   friend class P3ARemoteMetricManagerUnitTest;
@@ -84,7 +90,9 @@ class RemoteMetricManager {
 
   void OnLastUsedProfileChanged();
 
-  void OnMetricUpdated(std::string_view metric_name, size_t bucket);
+  // Maps from storage key to TimePeriodStorage objects
+  base::flat_map<std::string, std::unique_ptr<TimePeriodStorage>>
+      time_period_storages_;
 
   // Maps from metric name to metric objects
   std::vector<std::unique_ptr<RemoteMetric>> metrics_;
@@ -107,8 +115,8 @@ class RemoteMetricManager {
 
   PrefChangeRegistrar last_used_profile_pref_change_registrar_;
 
-  // Version used for min_version comparisons. Can be overridden in tests.
   base::Version current_version_;
+  bool is_processing_metric_definitions_ = false;
 };
 
 }  // namespace p3a

@@ -28,6 +28,7 @@ static_library("p3a") {
     "managed/pref_metric.h",
     "managed/remote_config_manager.cc",
     "managed/remote_config_manager.h",
+    "managed/remote_metric.cc",
     "managed/remote_metric.h",
     "managed/remote_metric_manager.cc",
     "managed/remote_metric_manager.h",

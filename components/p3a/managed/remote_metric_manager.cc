@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/json/json_value_converter.h"
+#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/p3a/managed/pref_metric.h"
 #include "brave/components/p3a/managed/time_period_events_metric.h"
@@ -98,6 +100,8 @@ void RemoteMetricManager::ProcessMetricDefinitions(
   histogram_to_metrics_.clear();
   metrics_.clear();
 
+  is_processing_metric_definitions_ = true;
+
   // Process all definitions
   for (const auto& [metric_name, definition] : definitions) {
     const std::string* type = definition->FindString(kTypeKey);
@@ -129,9 +133,7 @@ void RemoteMetricManager::ProcessMetricDefinitions(
       if (converter.Convert(*definition, &metric_definition) &&
           metric_definition.Validate()) {
         metric = std::make_unique<TimePeriodEventsMetric>(
-            local_state_, std::move(metric_definition),
-            base::BindRepeating(&RemoteMetricManager::OnMetricUpdated,
-                                base::Unretained(this), metric_name));
+            std::move(metric_definition), this, metric_name);
       } else {
         VLOG(1) << "Invalid time period events metric definition: "
                 << metric_name;
@@ -142,9 +144,7 @@ void RemoteMetricManager::ProcessMetricDefinitions(
       if (converter.Convert(*definition, &metric_definition) &&
           metric_definition.Validate()) {
         metric = std::make_unique<PrefMetric>(
-            local_state_, std::move(metric_definition),
-            base::BindRepeating(&RemoteMetricManager::OnMetricUpdated,
-                                base::Unretained(this), metric_name));
+            local_state_, std::move(metric_definition), this, metric_name);
       } else {
         VLOG(1) << "Invalid pref metric definition: " << metric_name;
       }
@@ -163,6 +163,12 @@ void RemoteMetricManager::ProcessMetricDefinitions(
 
   SetupObservers();
   CleanupStorage();
+
+  is_processing_metric_definitions_ = false;
+
+  for (const auto& metric : metrics_) {
+    metric->Init();
+  }
 
   if (last_used_profile_prefs_) {
     for (const auto& metric : metrics_) {
@@ -188,12 +194,23 @@ void RemoteMetricManager::SetupObservers() {
 }
 
 void RemoteMetricManager::CleanupStorage() {
-  base::flat_set<std::string> used_storage_keys;
+  base::flat_set<std::string_view> used_storage_keys;
   for (const auto& metric : metrics_) {
-    auto storage_key = metric->GetStorageKey();
-    if (storage_key) {
-      used_storage_keys.insert(std::string(*storage_key));
+    auto storage_keys = metric->GetStorageKeys();
+    if (storage_keys) {
+      for (const auto& key : *storage_keys) {
+        used_storage_keys.insert(key);
+      }
     }
+  }
+
+  for (auto it = time_period_storages_.begin();
+       it != time_period_storages_.end();) {
+    if (!used_storage_keys.contains(it->first)) {
+      it = time_period_storages_.erase(it);
+      continue;
+    }
+    it++;
   }
 
   ScopedDictPrefUpdate update(local_state_, kRemoteMetricStorageDictPref);
@@ -220,9 +237,25 @@ void RemoteMetricManager::OnHistogramChanged(
   }
 }
 
-void RemoteMetricManager::OnMetricUpdated(std::string_view metric_name,
-                                          size_t bucket) {
+void RemoteMetricManager::UpdateMetric(std::string_view metric_name,
+                                       size_t bucket) {
   delegate_->UpdateMetricValue(metric_name, bucket, std::nullopt);
+}
+
+TimePeriodStorage* RemoteMetricManager::GetTimePeriodStorage(
+    std::string_view storage_key,
+    int period_days) {
+  CHECK(!is_processing_metric_definitions_)
+      << "GetTimePeriodStorage should only be called on Init()";
+  if (auto* storage = base::FindOrNull(time_period_storages_, storage_key)) {
+    return storage->get();
+  }
+
+  auto it = time_period_storages_.insert({std::string(storage_key), nullptr});
+  it.first->second = std::make_unique<TimePeriodStorage>(
+      local_state_, kRemoteMetricStorageDictPref, it.first->first.c_str(),
+      period_days);
+  return it.first->second.get();
 }
 
 }  // namespace p3a

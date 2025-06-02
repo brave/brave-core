@@ -30,16 +30,10 @@ TimePeriodEventsMetricDefinition::TimePeriodEventsMetricDefinition(
     TimePeriodEventsMetricDefinition&& other) = default;
 
 TimePeriodEventsMetric::TimePeriodEventsMetric(
-    PrefService* local_state,
     TimePeriodEventsMetricDefinition definition,
-    base::RepeatingCallback<void(size_t)> update_callback)
-    : local_state_(local_state),
-      definition_(std::move(definition)),
-      storage_(local_state,
-               kRemoteMetricStorageDictPref,
-               definition_.storage_key.c_str(),
-               definition_.period_days),
-      update_callback_(std::move(update_callback)) {
+    Delegate* delegate,
+    std::string_view metric_name)
+    : RemoteMetric(delegate, metric_name), definition_(std::move(definition)) {
   // Populate the buckets cache for easier access
   buckets_.reserve(definition_.buckets.size());
   for (const auto& bucket_ptr : definition_.buckets) {
@@ -48,10 +42,15 @@ TimePeriodEventsMetric::TimePeriodEventsMetric(
     }
   }
   definition_.buckets.clear();
-  Report();
 }
 
 TimePeriodEventsMetric::~TimePeriodEventsMetric() = default;
+
+void TimePeriodEventsMetric::Init() {
+  storage_ = delegate_->GetTimePeriodStorage(definition_.storage_key,
+                                             definition_.period_days);
+  Report();
+}
 
 void TimePeriodEventsMetric::HandleHistogramChange(
     std::string_view histogram_name,
@@ -61,9 +60,9 @@ void TimePeriodEventsMetric::HandleHistogramChange(
     value_to_add = sample;
   }
   if (definition_.report_max) {
-    storage_.ReplaceTodaysValueIfGreater(value_to_add);
+    storage_->ReplaceTodaysValueIfGreater(value_to_add);
   } else {
-    storage_.AddDelta(value_to_add);
+    storage_->AddDelta(value_to_add);
   }
   Report();
 }
@@ -73,16 +72,17 @@ std::vector<std::string_view> TimePeriodEventsMetric::GetSourceHistogramNames()
   return {definition_.histogram_name};
 }
 
-std::optional<std::string_view> TimePeriodEventsMetric::GetStorageKey() const {
-  return definition_.storage_key;
+std::optional<std::vector<std::string_view>>
+TimePeriodEventsMetric::GetStorageKeys() const {
+  return std::vector<std::string_view>{definition_.storage_key};
 }
 
 void TimePeriodEventsMetric::Report() {
   size_t value = 0;
   if (definition_.report_max) {
-    value = storage_.GetHighestValueInPeriod();
+    value = storage_->GetHighestValueInPeriod();
   } else {
-    value = storage_.GetPeriodSum();
+    value = storage_->GetPeriodSum();
   }
 
   if (value < static_cast<size_t>(definition_.min_report_amount)) {
@@ -92,7 +92,7 @@ void TimePeriodEventsMetric::Report() {
   auto it = std::lower_bound(buckets_.begin(), buckets_.end(), value);
   size_t answer = std::distance(buckets_.begin(), it);
 
-  update_callback_.Run(answer);
+  delegate_->UpdateMetric(metric_name_, answer);
 
   report_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval, this,
                       &TimePeriodEventsMetric::Report);

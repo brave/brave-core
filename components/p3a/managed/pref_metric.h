@@ -11,7 +11,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/json/json_value_converter.h"
 #include "brave/components/p3a/managed/remote_metric.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -50,7 +49,8 @@ class PrefMetric : public RemoteMetric {
  public:
   PrefMetric(PrefService* local_state,
              PrefMetricDefinition definition,
-             base::RepeatingCallback<void(size_t)> update_callback);
+             Delegate* delegate,
+             std::string_view metric_name);
   ~PrefMetric() override;
 
   PrefMetric(const PrefMetric&) = delete;
@@ -60,7 +60,7 @@ class PrefMetric : public RemoteMetric {
   void HandleHistogramChange(std::string_view histogram_name,
                              size_t sample) override;
   std::vector<std::string_view> GetSourceHistogramNames() const override;
-  std::optional<std::string_view> GetStorageKey() const override;
+  std::optional<std::vector<std::string_view>> GetStorageKeys() const override;
   void OnLastUsedProfilePrefsChanged(PrefService* profile_prefs) override;
 
  private:
@@ -68,7 +68,6 @@ class PrefMetric : public RemoteMetric {
 
   raw_ptr<PrefService> current_prefs_ = nullptr;
   PrefMetricDefinition definition_;
-  base::RepeatingCallback<void(size_t)> update_callback_;
   PrefChangeRegistrar pref_change_registrar_;
 };
 

@@ -14,6 +14,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -61,7 +62,8 @@ TimePeriodEventsMetricDefinition ParseMetricDefinition(std::string_view json) {
 }
 }  // namespace
 
-class P3ATimePeriodEventsMetricUnitTest : public testing::Test {
+class P3ATimePeriodEventsMetricUnitTest : public testing::Test,
+                                          public RemoteMetric::Delegate {
  public:
   P3ATimePeriodEventsMetricUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
@@ -69,25 +71,38 @@ class P3ATimePeriodEventsMetricUnitTest : public testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterDictionaryPref(
         kRemoteMetricStorageDictPref);
+
+    // Create a single storage for the test
+    storage_ = std::make_unique<TimePeriodStorage>(
+        &local_state_, kRemoteMetricStorageDictPref, kTestStorageKey, 7);
   }
 
   void CreateMetric(std::string_view json_definition) {
     auto definition = ParseMetricDefinition(json_definition);
 
-    metric_ = std::make_unique<TimePeriodEventsMetric>(
-        &local_state_, std::move(definition),
-        base::BindRepeating(&P3ATimePeriodEventsMetricUnitTest::OnMetricUpdated,
-                            base::Unretained(this)));
+    metric_ = std::make_unique<TimePeriodEventsMetric>(std::move(definition),
+                                                       this, "test_metric");
+    metric_->Init();
   }
 
-  void OnMetricUpdated(size_t value) {
-    last_reported_value_ = value;
+  // RemoteMetric::Delegate implementation
+  void UpdateMetric(std::string_view metric_name, size_t bucket) override {
+    last_reported_value_ = bucket;
     report_count_++;
+  }
+
+  TimePeriodStorage* GetTimePeriodStorage(std::string_view storage_key,
+                                          int period_days) override {
+    // Assert that the storage key matches what we expect
+    EXPECT_EQ(storage_key, kTestStorageKey);
+    EXPECT_EQ(period_days, 7);
+    return storage_.get();
   }
 
  protected:
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
+  std::unique_ptr<TimePeriodStorage> storage_;
   std::unique_ptr<TimePeriodEventsMetric> metric_;
 
   size_t last_reported_value_ = 0;
@@ -147,12 +162,13 @@ TEST_F(P3ATimePeriodEventsMetricUnitTest, GetSourceHistogramNames) {
   EXPECT_EQ(histogram_names[0], kTestHistogramName);
 }
 
-TEST_F(P3ATimePeriodEventsMetricUnitTest, GetStorageKey) {
+TEST_F(P3ATimePeriodEventsMetricUnitTest, GetStorageKeys) {
   CreateMetric(kTestMetricDefinitionJson);
 
-  auto storage_key = metric_->GetStorageKey();
-  ASSERT_TRUE(storage_key.has_value());
-  EXPECT_EQ(storage_key.value(), kTestStorageKey);
+  auto storage_keys = metric_->GetStorageKeys();
+  ASSERT_TRUE(storage_keys.has_value());
+  ASSERT_EQ(storage_keys->size(), 1u);
+  EXPECT_EQ((*storage_keys)[0], kTestStorageKey);
 }
 
 TEST_F(P3ATimePeriodEventsMetricUnitTest, HandleHistogramChange) {
