@@ -159,7 +159,6 @@ source_set("unit_tests") {
     "//components/sync/base:features",
     "//components/user_education/common",
     "//components/webapps/browser",
-    "//components/webui/chrome_urls",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
