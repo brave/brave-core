@@ -11,15 +11,18 @@ import SDWebImage
 import SwiftUI
 
 /// Loads a thumbnail for media assets
-class MediaThumbnailLoader: ObservableObject {
-  @Published var image: UIImage?
+public class MediaThumbnailLoader: ObservableObject {
+  
+  public init() {}
+  
+  @Published public var image: UIImage?
 
   enum MediaThumbnailError: Error {
     case invalidURL
     case assetGenerationFailed
   }
 
-  func loadThumbnail(assetURL: URL, pageURL: URL) async throws {
+  public func loadThumbnail(assetURL: URL, pageURL: URL) async throws {
     // The page URL is more stable than the asset URL for most sites, but we don't want to
     // pick up favicons so prefix the cache key.
     let cacheKey = "playlist-\(pageURL.absoluteString)"

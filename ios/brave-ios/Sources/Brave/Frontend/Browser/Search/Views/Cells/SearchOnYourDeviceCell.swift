@@ -8,6 +8,8 @@ import DesignSystem
 import Shared
 import Storage
 import UIKit
+import Data
+import PlaylistUI
 
 extension Site.SiteType {
   var icon: UIImage? {
@@ -34,6 +36,8 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     let badge: UIImage
   }
 
+  private let thumbnailLoader: MediaThumbnailLoader = .init()
+
   private let stackView = UIStackView().then {
     $0.spacing = 16.0
     $0.alignment = .center
@@ -43,9 +47,13 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     $0.layer.cornerRadius = 8.0
     $0.layer.cornerCurve = .continuous
     $0.backgroundColor = UIColor(braveSystemName: .containerHighlight)
+    $0.clipsToBounds = true
   }
   private let imageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
+  }
+  private let thumbnailImageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFill
   }
 
   private let textStackView = UIStackView().then {
@@ -81,6 +89,13 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
+  private let durationFormatter = DateComponentsFormatter().then {
+    $0.maximumUnitCount = 3
+    $0.unitsStyle = .positional
+    $0.zeroFormattingBehavior = .pad
+    $0.allowedUnits = [.hour, .minute, .second]
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -90,6 +105,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
 
     contentView.addSubview(stackView)
     imageContainerView.addSubview(imageView)
+    imageContainerView.addSubview(thumbnailImageView)
     stackView.addArrangedSubview(imageContainerView)
     stackView.addArrangedSubview(textStackView)
     stackView.addArrangedSubview(badgeImageView)
@@ -108,6 +124,9 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     imageView.snp.makeConstraints {
       $0.size.equalTo(20.0)
       $0.center.equalToSuperview()
+    }
+    thumbnailImageView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
 
     badgeImageView.snp.makeConstraints {
@@ -166,6 +185,9 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
       for: site.tileURL,
       isPrivateBrowsing: isPrivateBrowsing
     )
+    imageView.isHidden = false
+    thumbnailImageView.isHidden = true
+
     if site.siteType == .tab {
       titleLabel.text = site.title
 
@@ -196,5 +218,31 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     if let badgeImage = site.siteType.icon?.template {
       badgeImageView.image = badgeImage
     }
+  }
+
+  func setPlaylistItem(_ item: PlaylistItem) {
+    Task {
+      if let assetURL = URL(string: item.mediaSrc), let pageURL = URL(string: item.pageSrc) {
+        do {
+          try await thumbnailLoader.loadThumbnail(assetURL: assetURL, pageURL: pageURL)
+          if let image = thumbnailLoader.image {
+            thumbnailImageView.image = image
+          } else {
+            thumbnailImageView.loadFavicon(for: pageURL, isPrivateBrowsing: false)
+          }
+        } catch {
+          thumbnailImageView.loadFavicon(for: pageURL, isPrivateBrowsing: false)
+        }
+      }
+    }
+
+    imageView.isHidden = true
+    thumbnailImageView.isHidden = false
+
+    titleLabel.text = item.name
+    if let formattedString = durationFormatter.string(from: item.duration) {
+      subtitleLabel.text = formattedString
+    }
+    badgeImageView.image = UIImage(braveSystemNamed: "leo.product.playlist")
   }
 }
