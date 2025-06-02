@@ -23,7 +23,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
   PsstScriptsHandler(const PsstScriptsHandler&) = delete;
   PsstScriptsHandler& operator=(const PsstScriptsHandler&) = delete;
 
-  PsstScriptsHandler();
   virtual ~PsstScriptsHandler();
 
   static std::unique_ptr<PsstScriptsHandler> Create(
@@ -32,6 +31,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
       const int32_t world_id);
 
   virtual void Start() = 0;
+
+ protected:
+  PsstScriptsHandler();
 };
 
 }  // namespace psst
