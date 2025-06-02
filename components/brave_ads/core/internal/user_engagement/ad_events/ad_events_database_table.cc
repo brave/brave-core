@@ -515,7 +515,8 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
            TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
 
   // New tab page ads.
-  days = UserHasJoinedBraveRewards() ? 90 : 2;
+  days =
+      UserHasJoinedBraveRewards() || UserHasOptedInToSurveyPanelist() ? 90 : 2;
   Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1

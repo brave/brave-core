@@ -1695,6 +1695,17 @@ Leo AI. This action can't be undone.
     ≈<ph name="TOKENS_COUNT">$1<ex>175</ex></ph> tokens
   </message>
 
+  <!-- Settings / Survey Panelist -->
+  <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">
+    Survey Panelist
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_LABEL" desc="The text for settings option to enable survey panelist">
+    Allow Brave surveys
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="The description for settings option to enable survey panelist">
+    Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more / see opt-out choices<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+
   <!-- Settings / Playlist -->
   <message name="IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL" desc="The text for setting to en/disable Playlist feature">
     Enable Playlist

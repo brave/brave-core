@@ -95,6 +95,9 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
+constexpr char16_t kSurveyPanelistLearnMoreURL[] =
+    u"https://support.brave.com/hc/en-us/articles/36550092449165";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -638,6 +641,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC},
       {"braveLeoAssistantTokensCount", IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT},
 
+      // Survey Panelist Page
+      {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
+      {"braveSurveyPanelistLabel", IDS_SETTINGS_SURVEY_PANELIST_LABEL},
+      {"braveSurveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
+
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
       {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -1040,6 +1048,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantAboutLeoDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
                                  kLeoPrivacyPolicyURL));
+
+  html_source->AddString("braveSurveyPanelistLearnMoreURL",
+                         kSurveyPanelistLearnMoreURL);
+
+  html_source->AddString(
+      "braveSurveyPanelistDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_DESC,
+                                 kSurveyPanelistLearnMoreURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,

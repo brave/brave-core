@@ -259,6 +259,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationEnabled] =
       settings_api::PrefType::kBoolean;
 
+  // Survey Panelist pref
+  (*s_brave_allowlist)
+      [ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist] =
+          settings_api::PrefType::kBoolean;
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
   (*s_brave_allowlist)[kBraveGCMChannelStatus] =
