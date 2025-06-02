@@ -133,6 +133,10 @@ SplitViewSeparator::SplitViewSeparator(Browser* browser)
 
 SplitViewSeparator::~SplitViewSeparator() = default;
 
+void SplitViewSeparator::ShowMenuButtonWidget() {
+  menu_button_widget_->Show();
+}
+
 void SplitViewSeparator::AddedToWidget() {
   ResizeArea::AddedToWidget();
 

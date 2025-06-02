@@ -145,6 +145,12 @@ void BraveMultiContentsView::UpdateSecondaryLocationBar() {
       GetInactiveContentsView()->GetWebContents());
   secondary_location_bar_->SetParentWebView(
       contents_container_views_[inactive_index]);
+
+  // Set separator's menu widget visibility after setting location bar's to make
+  // separator's menu widget locate above the location bar.
+  auto* separator = static_cast<SplitViewSeparator*>(resize_area_);
+  CHECK(separator);
+  separator->ShowMenuButtonWidget();
 }
 
 BEGIN_METADATA(BraveMultiContentsView)
