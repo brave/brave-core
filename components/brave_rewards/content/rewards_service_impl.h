@@ -141,12 +141,11 @@ class RewardsServiceImpl final : public RewardsService,
   void GetBalanceReport(const uint32_t month,
                         const uint32_t year,
                         GetBalanceReportCallback callback) override;
-  void GetPublisherActivityFromVisitData(
-      mojom::VisitDataPtr visit_data) override;
-  void GetPublisherActivityFromUrl(uint64_t tab_id,
-                                   const std::string& url,
-                                   const std::string& favicon_url,
-                                   const std::string& publisher_blob) override;
+  void NotifyPublisherPageVisit(mojom::VisitDataPtr visit_data) override;
+  void NotifyPublisherPageVisit(uint64_t tab_id,
+                                const std::string& url,
+                                const std::string& favicon_url,
+                                const std::string& publisher_blob) override;
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,

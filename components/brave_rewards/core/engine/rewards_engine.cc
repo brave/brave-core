@@ -151,14 +151,14 @@ void RewardsEngine::GetBalanceReport(mojom::ActivityMonth month,
   });
 }
 
-void RewardsEngine::GetPublisherActivityFromUrl(
-    uint64_t window_id,
+void RewardsEngine::NotifyPublisherPageVisit(
+    uint64_t tab_id,
     mojom::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
-  WhenReady([this, window_id, visit_data = std::move(visit_data),
+  WhenReady([this, tab_id, visit_data = std::move(visit_data),
              publisher_blob]() mutable {
-    publisher()->GetPublisherActivityFromUrl(window_id, std::move(visit_data),
-                                             publisher_blob);
+    publisher()->NotifyPublisherPageVisit(tab_id, std::move(visit_data),
+                                          publisher_blob);
   });
 }
 

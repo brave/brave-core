@@ -301,7 +301,7 @@ void YouTube::OnMediaActivityError(const mojom::VisitData& visit_data,
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
-    engine_->publisher()->GetPublisherActivityFromUrl(
+    engine_->publisher()->NotifyPublisherPageVisit(
         window_id, mojom::VisitData::New(new_visit_data), std::string());
   } else {
     engine_->LogError(FROM_HERE) << "Media activity error";

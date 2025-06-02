@@ -52,9 +52,9 @@ class Publisher {
 
   void OnPublisherInfoSaved(const mojom::Result result);
 
-  void GetPublisherActivityFromUrl(uint64_t windowId,
-                                   mojom::VisitDataPtr visit_data,
-                                   const std::string& publisher_blob);
+  void NotifyPublisherPageVisit(uint64_t tab_id,
+                                mojom::VisitDataPtr visit_data,
+                                const std::string& publisher_blob);
 
   void GetPublisherBanner(const std::string& publisher_key,
                           GetPublisherBannerCallback callback);

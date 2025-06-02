@@ -1069,16 +1069,16 @@ void RewardsServiceImpl::GetBalanceReport(const uint32_t month,
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::GetPublisherActivityFromVisitData(
+void RewardsServiceImpl::NotifyPublisherPageVisit(
     mojom::VisitDataPtr visit_data) {
   if (!Connected()) {
     return;
   }
   uint32_t tab_id = visit_data->tab_id;
-  engine_->GetPublisherActivityFromUrl(tab_id, std::move(visit_data), "");
+  engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data), "");
 }
 
-void RewardsServiceImpl::GetPublisherActivityFromUrl(
+void RewardsServiceImpl::NotifyPublisherPageVisit(
     uint64_t tab_id,
     const std::string& url,
     const std::string& favicon_url,
@@ -1113,8 +1113,8 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   visit_data->url = parsed_url.scheme() + "://" + *publisher_domain + "/";
   visit_data->favicon_url = favicon_url;
 
-  engine_->GetPublisherActivityFromUrl(tab_id, std::move(visit_data),
-                                       publisher_blob);
+  engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data),
+                                    publisher_blob);
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(mojom::Result result,
