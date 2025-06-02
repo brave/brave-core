@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 69c39fbd2f4704db6c1de99994e8b51b5d050ecf..724b57905e10757820c003da9aa21a56e1300591 100644
+index cd5adeeceaf8d991048d4a43edffcc5fce82da53..c113bec7bd8b6cf4f7859e25455b6e2e0198c0b6 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -352,6 +352,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -362,6 +362,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
-   bool ShouldDisableAccelerationBecauseOfReadback() const;
+   void SetHitTestRegions(VectorOf<ElementHitTestRegion> hit_test_regions);
  
 +  BRAVE_HTML_CANVAS_ELEMENT_H_
   protected:
