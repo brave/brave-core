@@ -2564,6 +2564,16 @@ extension BrowserViewController: SearchViewControllerDelegate {
 
   func searchViewController(
     _ searchViewController: SearchViewController,
+    didSelectPlaylistItem item: PlaylistItem
+  ) {
+    guard let tab = tabManager.selectedTab else { return }
+    popToBVC(isAnimated: true) { [weak self] in
+      self?.openPlaylist(tab: tab, item: PlaylistInfo(item: item))
+    }
+  }
+
+  func searchViewController(
+    _ searchViewController: SearchViewController,
     didLongPressSuggestion suggestion: String
   ) {
     self.topToolbar.setLocation(suggestion, search: true)

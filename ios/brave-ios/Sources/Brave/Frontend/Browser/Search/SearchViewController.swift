@@ -10,6 +10,7 @@ import Shared
 import Storage
 import Then
 import UIKit
+import CoreData
 
 // MARK: - SearchViewControllerDelegate
 
@@ -27,6 +28,10 @@ protocol SearchViewControllerDelegate: AnyObject {
   func searchViewController(
     _ searchViewController: SearchViewController,
     didSelectOpenTab tabInfo: (id: UUID?, url: URL)
+  )
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSelectPlaylistItem item: PlaylistItem
   )
   func searchViewController(
     _ searchViewController: SearchViewController,
@@ -156,19 +161,43 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   let dataSource: SearchSuggestionDataSource
+  let playlistFRC = PlaylistItem.frc()
   public static var userAgent: String?
   private var browserColors: any BrowserColors
-  private var allSiteData = [Site]()
-  private var showAllSiteData: Bool = false
-  private var availableSiteData: [Site] {
-    if showAllSiteData {
-      return allSiteData
-    } else {
-      return Array(allSiteData.prefix(5))
+  private var allSiteData = [Site]() {
+    didSet {
+      updateAvailableOnYourDeviceItems()
     }
   }
+  private var showAllSiteData: Bool = false
   private var isSiteDataShowMoreAvailable: Bool {
-    availableSiteData.count < allSiteData.count
+    availableOnYourDeviceItems.count < allOnYourDeviceItems.count
+  }
+  private struct OnYourDeviceItem {
+    private(set) var site: Site?
+    private(set) var playlistItem: PlaylistItem?
+
+    init(site: Site) {
+      self.site = site
+    }
+
+    init(playlistItem: PlaylistItem) {
+      self.playlistItem = playlistItem
+    }
+  }
+  private var allOnYourDeviceItems: [OnYourDeviceItem] = []
+  private var availableOnYourDeviceItems: [OnYourDeviceItem] {
+    if showAllSiteData {
+      return allOnYourDeviceItems
+    } else {
+      return Array(allOnYourDeviceItems.prefix(5))
+    }
+  }
+
+  private func updateAvailableOnYourDeviceItems() {
+    let playlistItems = playlistFRC.fetchedObjects ?? []
+    allOnYourDeviceItems = allSiteData.map { OnYourDeviceItem(site: $0) } + playlistItems.map { OnYourDeviceItem(playlistItem: $0) }
+    collectionView.reloadData()
   }
 
   private var availableSections: [SearchSuggestionDataSource.SearchListSection] {
@@ -193,7 +222,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     } else if Preferences.Privacy.privateBrowsingOnly.value
       && dataSource.searchEngines?.shouldShowSearchSuggestions == false
     {
-    } else if !availableSiteData.isEmpty {
+    } else if !availableOnYourDeviceItems.isEmpty {
       result.append(.openTabsAndHistoryAndBookmarks)
     }
 
@@ -269,6 +298,8 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
 
     KeyboardHelper.defaultHelper.addDelegate(self)
+
+    playlistFRC.delegate = self
 
     NotificationCenter.default.addObserver(
       self,
@@ -411,6 +442,12 @@ public class SearchViewController: UIViewController, LoaderListener {
     // Do not query suggestions if the text entred is suspicious
     if showSearchSuggestions {
       dataSource.querySuggestClient()
+    }
+    // fetch media
+    if !query.isEmpty {
+      playlistFRC.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[c] %@", query)
+      try? playlistFRC.performFetch()
+      updateAvailableOnYourDeviceItems()
     }
   }
 
@@ -802,7 +839,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       return !dataSource.searchQuery.looksLikeAURL()
         && !dataSource.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
     case .openTabsAndHistoryAndBookmarks:
-      return availableSiteData.count
+      return availableOnYourDeviceItems.count
     case .findInPage:
       return 1
     case .braveSearchPromotion:
@@ -918,8 +955,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       return cell
     case .openTabsAndHistoryAndBookmarks:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
-      let site = availableSiteData[indexPath.row]
-      cell.setSite(site, isPrivateBrowsing: dataSource.isPrivate)
+      let onYourDeviceItem = availableOnYourDeviceItems[indexPath.row]
+      if let site = onYourDeviceItem.site {
+        cell.setSite(site, isPrivateBrowsing: dataSource.isPrivate)
+      } else if let playlistItem = onYourDeviceItem.playlistItem {
+        cell.setPlaylistItem(playlistItem)
+      }
 
       return cell
     }
@@ -1018,17 +1059,21 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       let localSearchQuery = dataSource.searchQuery.lowercased()
       searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
     case .openTabsAndHistoryAndBookmarks:
-      let site = availableSiteData[indexPath.row]
-      if let url = URL(string: site.url) {
-        if site.siteType == .tab {
-          var tabId: UUID?
-          if let siteId = site.tabID {
-            tabId = UUID(uuidString: siteId)
+      let onYourDeviceItem = availableOnYourDeviceItems[indexPath.row]
+      if let site = onYourDeviceItem.site {
+        if let url = URL(string: site.url) {
+          if site.siteType == .tab {
+            var tabId: UUID?
+            if let siteId = site.tabID {
+              tabId = UUID(uuidString: siteId)
+            }
+            searchDelegate?.searchViewController(self, didSelectOpenTab: (tabId, url))
+          } else {
+            searchDelegate?.searchViewController(self, didSelectURL: url)
           }
-          searchDelegate?.searchViewController(self, didSelectOpenTab: (tabId, url))
-        } else {
-          searchDelegate?.searchViewController(self, didSelectURL: url)
         }
+      } else if let playlistItem = onYourDeviceItem.playlistItem {
+        searchDelegate?.searchViewController(self, didSelectPlaylistItem: playlistItem)
       }
     }
   }
@@ -1082,6 +1127,28 @@ extension SearchViewController {
 extension SearchViewController: SearchQuickEnginesViewControllerDelegate {
   func searchQuickEnginesUpdated() {
     reloadSearchEngines()
+  }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension SearchViewController: NSFetchedResultsControllerDelegate {
+  public func controller(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
+    updateAvailableOnYourDeviceItems()
+  }
+
+  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    updateAvailableOnYourDeviceItems()
+  }
+
+  public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    updateAvailableOnYourDeviceItems()
   }
 }
 
