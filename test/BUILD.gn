@@ -1390,6 +1390,9 @@ if (is_android) {
       "//mojo/public/mojom/base",
     ]
 
-    deps = [ "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage" ]
+    deps = [
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabbed_mode",
+    ]
   }
 }  # if (is_android) {
