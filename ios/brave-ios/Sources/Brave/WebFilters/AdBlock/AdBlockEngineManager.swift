@@ -142,8 +142,10 @@ import os
     }
     let startFromDAT = ContinuousClock().now
     // First try loading from cached DAT file (more performant that plaintext cache)
-    if let cachedGroupInfoFromDAT = await loadCachedDAT(
-      cacheFolderURL: createdCacheFolderURL
+    let cachedSerializedEngineURL = cachedEngineSerializedURL(in: createdCacheFolderURL)
+    if let cachedGroupInfoFromDAT = await loadCachedInfo(
+      cacheFolderURL: createdCacheFolderURL,
+      cachedEngineURL: cachedSerializedEngineURL
     ),
       let groupedEngine = await compileEngine(
         cachedGroupInfo: cachedGroupInfoFromDAT,
@@ -153,8 +155,9 @@ import os
       self.set(engine: groupedEngine, start: startFromDAT)
       return true
     } else {
-      // failed to find or load cached DAT file, or failed to compile engine from cached DAT
-      // TODO: Remove cached DAT
+      // Failed to find or load cached DAT file, or failed to compile engine from cached DAT.
+      // Cleanup the cached DAT as we can't compile it.
+      try? await AsyncFileManager.default.removeItem(atPath: cachedSerializedEngineURL.path)
     }
 
     switch self.engineType {
@@ -177,10 +180,13 @@ import os
     if self.engineType == .standard {
       // New timer to accurately measure load of cached txt & engine.
       let startFromTXT = ContinuousClock().now
-      // Previously we never waited for the
-      // aggressive engines to be ready, only attempt for standard
-      if let cachedGroupInfoFromTXT = await loadCachedPlainText(
-        cacheFolderURL: createdCacheFolderURL
+      // Previously we never waited for the aggressive engines to be ready,
+      // only attempt early recompile for standard engine as this is slower
+      // that creating AdblockEngine from serialized DAT.
+      let cachedCombinedRulesURL = cachedCombinedRulesURL(in: createdCacheFolderURL)
+      if let cachedGroupInfoFromTXT = await loadCachedInfo(
+        cacheFolderURL: createdCacheFolderURL,
+        cachedEngineURL: cachedCombinedRulesURL
       ),
         let groupedEngine = await compileEngine(
           cachedGroupInfo: cachedGroupInfoFromTXT,
@@ -192,8 +198,9 @@ import os
         await cache(engine: groupedEngine)
         return true
       } else {
-        // failed to find or load cached TXT file, or failed to compile engine from cached TXT
-        // TODO: Remove cached TXT
+        // Failed to find or load cached TXT file, or failed to compile engine from cached TXT.
+        // Cleanup the cached combined rules TXT as we can't compile it.
+        try? await AsyncFileManager.default.removeItem(atPath: cachedCombinedRulesURL.path)
       }
     }  // else engine is aggressive, compile later
 
@@ -526,21 +533,17 @@ import os
     }
   }
 
-  nonisolated private func loadCachedDAT(
-    cacheFolderURL: URL
-  ) async -> GroupedAdBlockEngine.FilterListGroup? {
-    let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
-    return await loadCachedInfo(cacheFolderURL: cacheFolderURL, cachedEngineURL: cachedEngineURL)
+  /// Given the `cacheFolderURL` for the engine, returns the serialized engine DAT file url
+  private func cachedEngineSerializedURL(in cacheFolderURL: URL) -> URL {
+    cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
   }
 
-  nonisolated private func loadCachedPlainText(
-    cacheFolderURL: URL
-  ) async -> GroupedAdBlockEngine.FilterListGroup? {
-    let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.txt", conformingTo: .text)
-    return await loadCachedInfo(cacheFolderURL: cacheFolderURL, cachedEngineURL: cachedEngineURL)
+  /// Given the `cacheFolderURL` for the engine, returns the combined rules TXT file url
+  private func cachedCombinedRulesURL(in cacheFolderURL: URL) -> URL {
+    cacheFolderURL.appendingPathComponent("list.txt", conformingTo: .text)
   }
 
-  // Do not call directly. Use either `loadCachedDAT` or `loadCachedPlainText`.
+  /// Loads & decode the `FilterListGroup` from the cache for this engine.
   nonisolated private func loadCachedInfo(
     cacheFolderURL: URL,
     cachedEngineURL: URL
