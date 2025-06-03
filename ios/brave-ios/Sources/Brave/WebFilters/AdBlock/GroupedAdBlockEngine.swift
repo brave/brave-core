@@ -85,7 +85,13 @@ public actor GroupedAdBlockEngine {
   public struct FilterListGroup: Hashable, Equatable {
     let infos: [FilterListInfo]
     let localFileURL: URL
-    let fileType: GroupedAdBlockEngine.FileType
+    var fileType: GroupedAdBlockEngine.FileType {
+      if localFileURL.lastPathComponent.hasSuffix(".txt") {
+        return .text
+      } else {
+        return .data
+      }
+    }
 
     public func makeDebugDescription(for engineType: GroupedAdBlockEngine.EngineType) -> String {
       return infos.enumerated()

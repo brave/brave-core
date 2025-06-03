@@ -129,16 +129,95 @@ import os
     return compilableInfos != engine.group.infos
   }
 
-  /// Load the engine from cache so it can be ready during launch
-  func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async -> Bool {
-    guard let createdCacheFolderURL else { return false }
-    do {
-      guard let cachedGroupInfo = await loadCachedInfo(cacheFolderURL: createdCacheFolderURL) else {
-        return false
+  /// Load the engine from cache so it can be ready during launch. First attempts to load from
+  /// cached DAT, if that fails we compile from the cached TXT file.
+  /// - parameter resourcesInfo: The `ResourcesInfo` model to use after compiling the engine.
+  /// - returns: success / failure status of loading the engine from cache.
+  @discardableResult func loadFromCache(
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+  ) async -> Bool {
+    guard let createdCacheFolderURL else {
+      // if the cached folder does not exist, the cache does not exist.
+      return false
+    }
+    let startFromDAT = ContinuousClock().now
+    // First try loading from cached DAT file (more performant that plaintext cache)
+    let cachedSerializedEngineURL = cachedEngineSerializedURL(in: createdCacheFolderURL)
+    if let cachedGroupInfoFromDAT = await loadCachedInfo(
+      cacheFolderURL: createdCacheFolderURL,
+      cachedEngineURL: cachedSerializedEngineURL
+    ),
+      let groupedEngine = await compileEngine(
+        cachedGroupInfo: cachedGroupInfoFromDAT,
+        resourcesInfo: resourcesInfo
+      )
+    {
+      self.set(engine: groupedEngine, start: startFromDAT)
+      return true
+    } else {
+      // Failed to find or load cached DAT file, or failed to compile engine from cached DAT.
+      // Cleanup the cached DAT as we can't compile it.
+      try? await AsyncFileManager.default.removeItem(atPath: cachedSerializedEngineURL.path)
+    }
+
+    switch self.engineType {
+    case .standard:
+      ContentBlockerManager.log.debug(
+        """
+        Failed to load `\(self.cacheFolderName)` engine from DAT after (\(ContinuousClock().now.formatted(since: startFromDAT))). \
+        Attempting to load from TXT.
+        """
+      )
+    case .aggressive:
+      ContentBlockerManager.log.debug(
+        """
+        Failed to load `\(self.cacheFolderName)` engine from DAT after (\(ContinuousClock().now.formatted(since: startFromDAT))).
+        """
+      )
+    }
+
+    // Next try loading from cached TXT file for standard engine.
+    if self.engineType == .standard {
+      // New timer to accurately measure load of cached txt & engine.
+      let startFromTXT = ContinuousClock().now
+      // Previously we never waited for the aggressive engines to be ready,
+      // only attempt early recompile for standard engine as this is slower
+      // that creating AdblockEngine from serialized DAT.
+      let cachedCombinedRulesURL = cachedCombinedRulesURL(in: createdCacheFolderURL)
+      if let cachedGroupInfoFromTXT = await loadCachedInfo(
+        cacheFolderURL: createdCacheFolderURL,
+        cachedEngineURL: cachedCombinedRulesURL
+      ),
+        let groupedEngine = await compileEngine(
+          cachedGroupInfo: cachedGroupInfoFromTXT,
+          resourcesInfo: resourcesInfo
+        )
+      {
+        self.set(engine: groupedEngine, start: startFromTXT)
+        // Force caching of engine now that we've re-compiled it from TXT
+        await cache(engine: groupedEngine)
+        return true
+      } else {
+        // Failed to find or load cached TXT file, or failed to compile engine from cached TXT.
+        // Cleanup the cached combined rules TXT as we can't compile it.
+        try? await AsyncFileManager.default.removeItem(atPath: cachedCombinedRulesURL.path)
       }
-      let start = ContinuousClock().now
-      let engineType = self.engineType
-      let groupedEngine = try await Task.detached(priority: .high) {
+    }  // else engine is aggressive, compile later
+
+    // Failed to load or compile engine using both DAT and TXT.
+    return false
+  }
+
+  /// Compiles a `GroupedAdBlockEngine` from the given cached `FilterListGroup`.
+  /// If successful, will setup engine to use `ResourcesInfo`.
+  /// If unsuccessful in compiling the engine, returns nil.
+  private func compileEngine(
+    cachedGroupInfo: GroupedAdBlockEngine.FilterListGroup,
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+  ) async -> GroupedAdBlockEngine? {
+    let engineType = self.engineType
+    do {
+      let groupedAdBlockEngine = try await Task.detached(priority: .high) {
         let engine = try GroupedAdBlockEngine.compile(
           group: cachedGroupInfo,
           type: engineType
@@ -150,15 +229,12 @@ import os
 
         return engine
       }.value
-
-      self.set(engine: groupedEngine, start: start)
-      return true
+      return groupedAdBlockEngine
     } catch {
       ContentBlockerManager.log.error(
         "Failed to load engine from cache for `\(self.cacheFolderName)`: \(String(describing: error))"
       )
-
-      return false
+      return nil
     }
   }
 
@@ -400,8 +476,7 @@ import os
       // 4. Return a group containing info on this new file
       return GroupedAdBlockEngine.FilterListGroup(
         infos: compiledInfos,
-        localFileURL: fileURL,
-        fileType: .text
+        localFileURL: fileURL
       )
     }.value
   }
@@ -458,10 +533,21 @@ import os
     }
   }
 
+  /// Given the `cacheFolderURL` for the engine, returns the serialized engine DAT file url
+  private func cachedEngineSerializedURL(in cacheFolderURL: URL) -> URL {
+    cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
+  }
+
+  /// Given the `cacheFolderURL` for the engine, returns the combined rules TXT file url
+  private func cachedCombinedRulesURL(in cacheFolderURL: URL) -> URL {
+    cacheFolderURL.appendingPathComponent("list.txt", conformingTo: .text)
+  }
+
+  /// Loads & decode the `FilterListGroup` from the cache for this engine.
   nonisolated private func loadCachedInfo(
-    cacheFolderURL: URL
+    cacheFolderURL: URL,
+    cachedEngineURL: URL
   ) async -> GroupedAdBlockEngine.FilterListGroup? {
-    let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
     guard await AsyncFileManager.default.fileExists(atPath: cachedEngineURL.path) else {
       return nil
     }
@@ -478,8 +564,7 @@ import os
 
       return GroupedAdBlockEngine.FilterListGroup(
         infos: cachedInfo.infos,
-        localFileURL: cachedEngineURL,
-        fileType: cachedInfo.fileType
+        localFileURL: cachedEngineURL
       )
     } catch {
       ContentBlockerManager.log.error(

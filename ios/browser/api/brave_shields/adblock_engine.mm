@@ -91,7 +91,13 @@ class AdblockEngineBox final {
         if (error) {
           *error = [[self class] adblockErrorForKind:result.result_kind
                                              message:result.error_message];
+        } else {
+          *error = [[self class]
+              adblockErrorForKind:adblock::ResultKind::AdblockError
+                          message:
+                              "Unknown error initializing engine with rules"];
         }
+        return nil;
       }
     }
   }
@@ -105,6 +111,7 @@ class AdblockEngineBox final {
         *error =
             [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
                                       message:"Failed to deserialize data"];
+        return nil;
       }
     }
   }

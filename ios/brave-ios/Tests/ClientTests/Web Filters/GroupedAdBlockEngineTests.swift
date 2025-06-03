@@ -75,8 +75,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
       engine: engine!,
       group: GroupedAdBlockEngine.FilterListGroup(
         infos: [filterListInfo],
-        localFileURL: localFileURL,
-        fileType: .text
+        localFileURL: localFileURL
       ),
       type: .standard
     )
@@ -107,8 +106,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
     )
     let group = GroupedAdBlockEngine.FilterListGroup(
       infos: [textFilterListInfo],
-      localFileURL: localFileURL,
-      fileType: .text
+      localFileURL: localFileURL
     )
 
     let expectation = expectation(description: "Compiled engine resources")
@@ -187,8 +185,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
 
       let group = GroupedAdBlockEngine.FilterListGroup(
         infos: [filterListInfo],
-        localFileURL: sampleFilterListURL,
-        fileType: .text
+        localFileURL: sampleFilterListURL
       )
 
       do {
