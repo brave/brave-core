@@ -9,7 +9,6 @@
 #include <array>
 #include <optional>
 
-#include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace brave_rewards {

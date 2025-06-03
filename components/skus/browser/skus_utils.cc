@@ -9,7 +9,6 @@
 
 #include "base/command_line.h"
 #include "base/notreached.h"
-#include "base/strings/string_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"

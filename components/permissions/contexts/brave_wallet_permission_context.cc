@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"

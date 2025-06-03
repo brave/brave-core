@@ -17,7 +17,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "net/http/http_request_headers.h"

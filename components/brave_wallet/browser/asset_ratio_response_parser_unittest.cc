@@ -7,7 +7,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"

@@ -10,7 +10,6 @@
 #include <optional>
 #include <string>
 
-#include "base/strings/string_util.h"
 
 namespace brave_ads {
 

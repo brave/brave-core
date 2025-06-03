@@ -16,7 +16,6 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/escape.h"
-#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "net/http/http_status_code.h"

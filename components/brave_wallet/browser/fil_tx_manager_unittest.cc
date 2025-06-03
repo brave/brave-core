@@ -12,6 +12,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"

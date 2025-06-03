@@ -15,7 +15,6 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 

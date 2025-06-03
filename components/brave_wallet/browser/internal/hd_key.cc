@@ -18,7 +18,6 @@
 #include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"

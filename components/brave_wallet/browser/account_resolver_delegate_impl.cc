@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 
+#include "base/strings/string_util.h"
+
 namespace brave_wallet {
 
 AccountResolverDelegateImpl::AccountResolverDelegateImpl(

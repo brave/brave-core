@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "base/strings/string_util.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"

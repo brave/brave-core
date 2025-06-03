@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"

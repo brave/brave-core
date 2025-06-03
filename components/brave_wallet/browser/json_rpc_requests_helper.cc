@@ -12,6 +12,7 @@
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"

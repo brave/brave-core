@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
