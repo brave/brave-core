@@ -8,6 +8,7 @@
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/api/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
+#include "brave/ios/browser/brave_account/brave_account_service_factory.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
@@ -24,6 +25,7 @@ namespace brave {
 void EnsureProfileKeyedServiceFactoriesBuilt() {
   ai_chat::ModelServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
+  brave_account::BraveAccountServiceFactory::GetInstance();
   brave_ads::AdsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();

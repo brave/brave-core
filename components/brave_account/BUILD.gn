@@ -4,17 +4,44 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("brave_account") {
-  sources = [ "brave_account_dialogs_ui_base.h" ]
+  sources = [
+    "brave_account_dialogs_ui_base.h",
+    "brave_account_service.cc",
+    "brave_account_service.h",
+    "brave_account_service_factory_base.h",
+    "endpoints/verify/init.cc",
+    "endpoints/verify/init.h",
+  ]
 
   deps = [
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_account:common",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
     "//brave/components/password_strength_meter",
     "//brave/components/password_strength_meter:mojom",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
+    "//components/keyed_service/core",
+    "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
+  ]
+}
+
+component("common") {
+  output_name = "brave_account_common"
+  defines = [ "IS_BRAVE_ACCOUNT_COMMON_IMPL" ]
+
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
   ]
 }

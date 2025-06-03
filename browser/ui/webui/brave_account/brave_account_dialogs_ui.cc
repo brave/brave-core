@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/check.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
@@ -39,7 +40,10 @@ class BraveAccountDialogs : public ui::WebDialogDelegate {
 
 BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui),
-      BraveAccountDialogsUIBase(Profile::FromWebUI(web_ui)) {}
+      BraveAccountDialogsUIBase(Profile::FromWebUI(web_ui)) {
+  brave_account::BraveAccountServiceFactory::GetForBrowserContext(
+      Profile::FromWebUI(web_ui));
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
 
