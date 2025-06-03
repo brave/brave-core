@@ -46,45 +46,39 @@ class BraveShieldsUtilProfilesTest : public testing::Test {
         /*create_if_needed=*/true));
   }
 
-  HostContentSettingsMap* hcsm(Profile* profile) {
-    return HostContentSettingsMapFactory::GetForProfile(profile);
-  }
-
-  HostContentSettingsMap* hcsm(ScopedIncognitoProfile& profile) {
-    return hcsm(profile.get());
-  }
-
-  const GURL test_url{"https://example.com"};
-
-  template <typename ValueT, typename SetFn, typename GetFn>
+  template <typename ValueT>
   void RunTest(base::span<const std::pair<ValueT, ValueT>> cases,
-               SetFn setter,
-               GetFn getter) {
-    testing::Message issues;
+               base::FunctionRef<void(HostContentSettingsMap*, ValueT)> setter,
+               base::FunctionRef<ValueT(HostContentSettingsMap*)> getter) {
     for (const auto& [value, expect] : cases) {
-      setter(hcsm(regular_profile()), value);
-      const auto get = getter(hcsm(regular_profile()));
+      auto* regular_map =
+          HostContentSettingsMapFactory::GetForProfile(regular_profile());
+      setter(regular_map, value);
+      const auto get = getter(regular_map);
       if (expect != get) {
-        issues << "Regular profile: Set " << value << " Get " << get
-               << " Expected " << expect << "\n";
+        ADD_FAILURE() << "Regular profile: Set " << value << " Get " << get
+                      << " Expected " << expect << "\n";
       }
 
       auto incognito = incognito_profile();
       // Now change value for incognito and expect that values are not depended
       // on the regular profile.
       for (const auto& [ivalue, iexpect] : cases) {
-        setter(hcsm(incognito), ivalue);
-        const auto iget = getter(hcsm(incognito));
+        auto* incognito_map =
+            HostContentSettingsMapFactory::GetForProfile(incognito.get());
+
+        setter(incognito_map, ivalue);
+        const auto iget = getter(incognito_map);
         if (iexpect != iget) {
-          issues << "Incognito profile: Set " << ivalue << " Get " << iget
-                 << " Expected " << iexpect << " Regular profile value "
-                 << value << "\n";
+          ADD_FAILURE() << "Incognito profile: Set " << ivalue << " Get "
+                        << iget << " Expected " << iexpect
+                        << " Regular profile value " << value << "\n";
         }
       }
     }
-    const auto message = issues.GetString();
-    EXPECT_TRUE(message.empty()) << message;
   }
+
+  const GURL kTestUrl{"https://example.com"};
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -96,10 +90,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetBraveShieldsEnabled) {
   constexpr std::pair<bool, bool> kExpects[] = {{true, true}, {false, false}};
 
   auto set = [this](HostContentSettingsMap* map, bool value) {
-    SetBraveShieldsEnabled(map, value, test_url);
+    SetBraveShieldsEnabled(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetBraveShieldsEnabled(map, test_url);
+    return GetBraveShieldsEnabled(map, kTestUrl);
   };
 
   RunTest<bool>(kExpects, std::move(set), std::move(get));
@@ -110,10 +104,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetAdControlType) {
                                                               {BLOCK, BLOCK}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetAdControlType(map, value, test_url);
+    SetAdControlType(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetAdControlType(map, test_url);
+    return GetAdControlType(map, kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -124,10 +118,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetCosmeticFilteringControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetCosmeticFilteringControlType(map, value, test_url);
+    SetCosmeticFilteringControlType(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetCosmeticFilteringControlType(map, test_url);
+    return GetCosmeticFilteringControlType(map, kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -138,14 +132,13 @@ TEST_F(BraveShieldsUtilProfilesTest, SetCookieControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetCookieControlType(map, regular_profile()->GetPrefs(), value, test_url);
+    SetCookieControlType(map, regular_profile()->GetPrefs(), value, kTestUrl);
   };
 
-  auto cookie_settings =
-      CookieSettingsFactory::GetForProfile(regular_profile());
-
-  auto get = [this, cookie_settings](HostContentSettingsMap* map) {
-    return GetCookieControlType(map, cookie_settings.get(), test_url);
+  auto get = [this](HostContentSettingsMap* map) {
+    return GetCookieControlType(
+        map, CookieSettingsFactory::GetForProfile(regular_profile()).get(),
+        kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -159,10 +152,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
       {DEFAULT, DEFAULT}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetFingerprintingControlType(map, value, test_url);
+    SetFingerprintingControlType(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetFingerprintingControlType(map, test_url);
+    return GetFingerprintingControlType(map, kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -173,10 +166,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetHttpsUpgradeControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetHttpsUpgradeControlType(map, value, test_url);
+    SetHttpsUpgradeControlType(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetHttpsUpgradeControlType(map, test_url);
+    return GetHttpsUpgradeControlType(map, kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -187,10 +180,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetNoScriptControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {DEFAULT, BLOCK}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetNoScriptControlType(map, value, test_url);
+    SetNoScriptControlType(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetNoScriptControlType(map, test_url);
+    return GetNoScriptControlType(map, kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -200,10 +193,10 @@ TEST_F(BraveShieldsUtilProfilesTest, SetForgetFirstPartyStorageEnabled) {
   constexpr std::pair<bool, bool> kExpects[] = {{true, true}, {false, false}};
 
   auto set = [this](HostContentSettingsMap* map, bool value) {
-    SetForgetFirstPartyStorageEnabled(map, value, test_url);
+    SetForgetFirstPartyStorageEnabled(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetForgetFirstPartyStorageEnabled(map, test_url);
+    return GetForgetFirstPartyStorageEnabled(map, kTestUrl);
   };
 
   RunTest<bool>(kExpects, std::move(set), std::move(get));
