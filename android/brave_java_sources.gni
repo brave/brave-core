@@ -21,6 +21,7 @@ import(
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
+import("//brave/browser/android/youtube_script_injector/java_sources.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
@@ -513,6 +514,7 @@ brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
 brave_java_sources += brave_fullscreen_java_sources
+brave_java_sources += brave_youtube_script_injector_java_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 
