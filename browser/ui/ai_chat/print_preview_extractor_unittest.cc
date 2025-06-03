@@ -294,6 +294,8 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     return print_render_frame;
   }
 
+  // Intentionally setup a PrintRenderFrame error to stop early so we can
+  // verify the print settings we pass is correct.
   void RunPrintSettingsTest(const std::string& mime_type,
                             bool use_capture_pdf,
                             bool expect_preview_modifiable,
@@ -385,6 +387,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
             web_contents()->GetLastCommittedURL().spec())));
   }
 
+  // Test for all possible PrintRenderFrame errors
   void RunErrorTest(
       const std::string& mime_type,
       bool use_capture_pdf,
@@ -434,6 +437,8 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
         full_pdf_region.Duplicate());
   }
 
+  // Test all possible flows with mocked PreviewPageTextExtractor that retruns
+  // fixed successful results.
   template <typename T>
   void RunTestCase(base::test::TestFuture<T>& future,
                    const std::string& mime_type,
@@ -622,6 +627,7 @@ class PreviewPageTextExtractorTest : public testing::Test {
 
   MockPdfToBitmapConverter* converter() { return converter_.get(); }
 
+  // Testing early errors
   void RunErrorTest(const std::string& expected_error,
                     const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
@@ -643,6 +649,8 @@ class PreviewPageTextExtractorTest : public testing::Test {
     }
   }
 
+  // Testing image capturing logic with page count and make sure processed
+  // images are not empty
   void RunCaptureImageTest(uint32_t expected_page_count,
                            const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
@@ -658,6 +666,8 @@ class PreviewPageTextExtractorTest : public testing::Test {
     }));
   }
 
+  // Testing text extraction with page count and inspect page separators are
+  // placed correctly or none for single page.
   void RunExtractTextTest(uint32_t page_count,
                           const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
