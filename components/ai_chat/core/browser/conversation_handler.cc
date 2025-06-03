@@ -1536,7 +1536,6 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
-
   for (auto& client : conversation_ui_handlers_) {
     client->OnSuggestedQuestionsChanged(suggestions,
                                         suggestion_generation_status_);

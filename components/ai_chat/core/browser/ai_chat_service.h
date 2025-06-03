@@ -226,6 +226,8 @@ class AIChatService : public KeyedService,
 
  private:
   friend class AIChatServiceUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
+                           ConversationShouldNotBeUnloadedIfRequestInProgress);
 
   // Key is uuid
   using ConversationMap =

@@ -676,6 +676,11 @@ void AIChatService::MaybeUnloadConversation(
     return;
   }
 
+  // Don't unload conversations that are in the middle of a request.
+  if (conversation_handler->is_request_in_progress()) {
+    return;
+  }
+
   auto uuid = conversation_handler->get_conversation_uuid();
   conversation_observations_.RemoveObservation(conversation_handler);
   conversation_handlers_.erase(uuid);
