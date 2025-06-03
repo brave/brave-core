@@ -279,10 +279,17 @@ private struct CorruptCacheSectionView: View {
       // if file doesn't exist, we can't corrupt it.
       return false
     }
+    guard let content = await AsyncFileManager.default.contents(atPath: cachedDATFile.path),
+      var corruptedData = UUID().uuidString.data(using: .utf8)
+    else {
+      return false
+    }
+    // prefix UUID string to existing data to corrupt it
+    corruptedData.append(content)
     // remove the cached DAT file
     try? await AsyncFileManager.default.removeItem(atPath: cachedDATFile.path)
-    // 'corrupt' by replacing with empty file
-    await AsyncFileManager.default.createFile(atPath: cachedDATFile.path, contents: Data())
+    // 'corrupt' by replacing with corrupted data format
+    await AsyncFileManager.default.createFile(atPath: cachedDATFile.path, contents: corruptedData)
 
     return true
   }
