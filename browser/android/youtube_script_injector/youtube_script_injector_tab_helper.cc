@@ -5,6 +5,10 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/strings/string_split.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
