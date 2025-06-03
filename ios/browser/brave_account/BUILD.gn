@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_account") {
+  sources = [
+    "brave_account_service_factory.h",
+    "brave_account_service_factory.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/web/public",
+    "//services/network/public/cpp",
+  ]
+}
