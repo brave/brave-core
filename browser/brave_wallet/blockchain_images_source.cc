@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"

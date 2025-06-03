@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_search_conversion/utils.h"

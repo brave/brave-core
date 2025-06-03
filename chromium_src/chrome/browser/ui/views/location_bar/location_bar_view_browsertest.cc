@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/strings/string_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/test/base/in_process_browser_test.h"

@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/skus/browser/pref_names.h"

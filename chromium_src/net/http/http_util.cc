@@ -5,6 +5,8 @@
 
 #include "net/http/http_util.h"
 
+#include "base/strings/string_util.h"
+
 #define IsNonCoalescingHeader IsNonCoalescingHeader_ChromiumImpl
 #include "src/net/http/http_util.cc"
 #undef IsNonCoalescingHeader

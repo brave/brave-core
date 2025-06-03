@@ -10,7 +10,6 @@
 
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"

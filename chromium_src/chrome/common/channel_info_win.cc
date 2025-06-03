@@ -6,7 +6,6 @@
 #include "chrome/common/channel_info.h"
 
 #include "base/debug/profiler.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "build/branding_buildflags.h"
 

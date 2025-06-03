@@ -7,7 +7,6 @@
 
 #include <initializer_list>
 
-#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"

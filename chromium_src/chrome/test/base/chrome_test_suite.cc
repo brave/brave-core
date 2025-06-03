@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <string_view>
 
+#include "base/strings/string_util.h"
+
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
 #include "src/chrome/test/base/chrome_test_suite.cc"
 #undef ChromeTestSuite

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "url/gurl.h"
 
 namespace net {

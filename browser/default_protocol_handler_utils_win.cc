@@ -27,6 +27,7 @@
 #include "base/path_service.h"
 #include "base/strings/cstring_view.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/string_util_win.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"

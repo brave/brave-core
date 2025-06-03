@@ -13,7 +13,6 @@
 #include "base/functional/callback.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"

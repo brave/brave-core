@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
-#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"

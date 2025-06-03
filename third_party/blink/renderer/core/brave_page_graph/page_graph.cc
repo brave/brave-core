@@ -30,6 +30,7 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_page_graph/common/features.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
