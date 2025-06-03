@@ -53,7 +53,7 @@ struct TransactionConfirmationView: View {
   }
 
   @ViewBuilder private var containerView: some View {
-    if confirmationStore.unapprovedTxs.count == 0 {
+    if confirmationStore.unapprovedTxs.isEmpty {
       VStack {
         Spacer()
         Image(braveSystemName: "leo.info.outline")
@@ -83,7 +83,7 @@ struct TransactionConfirmationView: View {
         isShowingAdvancedSettings: $isShowingAdvancedSettings,
         isTxSubmitting: $confirmationStore.isTxSubmitting,
         onDismiss: {
-          if confirmationStore.unapprovedTxs.count == 0 {
+          if confirmationStore.unapprovedTxs.isEmpty {
             onDismiss()
           }
           // update activeTransactionId
