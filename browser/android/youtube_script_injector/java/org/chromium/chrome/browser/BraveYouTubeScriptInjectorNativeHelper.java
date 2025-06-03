@@ -7,11 +7,12 @@ package org.chromium.chrome.browser;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.content_public.browser.WebContents;
 
 /**
- * Helper to interact with native BraveYouTubeScriptInjectorNativeHelper.
- * Check brave_youtube_script_injector_native_helper.{h|cc}, for native parts.
+ * Helper to interact with native methods. Check
+ * brave_youtube_script_injector_native_helper.{h|cc}.
  */
 @JNINamespace("youtube_script_injector")
 public class BraveYouTubeScriptInjectorNativeHelper {
@@ -22,12 +23,14 @@ public class BraveYouTubeScriptInjectorNativeHelper {
     public static void setFullscreen(WebContents webContents) {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
+
     /**
      * @noinspection unused
      */
     @NativeMethods
     interface Natives {
         boolean isYouTubeVideo(WebContents webContents);
+
         void setFullscreen(WebContents webContents);
     }
 }

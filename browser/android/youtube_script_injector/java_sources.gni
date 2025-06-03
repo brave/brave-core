@@ -3,6 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_youtube_script_injector_java_sources = [
-  "../../brave/browser/android/youtube_script_injector/java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java",
-]
+brave_youtube_script_injector_java_sources = [ "../../brave/browser/android/youtube_script_injector/java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java" ]

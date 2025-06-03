@@ -4,15 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
-#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
+
 #include "base/android/jni_android.h"
-#include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "brave/browser/android/youtube_script_injector/jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace {
 constexpr char16_t kYoutubeFullscreen[] =
@@ -72,8 +73,8 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsYouTubeVideo(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
-      auto url = web_contents->GetLastCommittedURL();
-    return YouTubeScriptInjectorTabHelper::IsYouTubeVideo(url);
+  auto url = web_contents->GetLastCommittedURL();
+  return YouTubeScriptInjectorTabHelper::IsYouTubeVideo(url);
 }
 
 // static
@@ -84,17 +85,14 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
       content::WebContents::FromJavaWebContents(jweb_contents);
 
   content::RenderFrameHost* rfh = web_contents->GetPrimaryMainFrame();
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> script_injector_remote;
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote);
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
+      script_injector_remote;
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote);
 
   script_injector_remote->RequestAsyncExecuteScript(
-    ISOLATED_WORLD_ID_BRAVE_INTERNAL,
-    kYoutubeFullscreen,
-    blink::mojom::UserActivationOption::kActivate,
-    blink::mojom::PromiseResultOption::kDoNotWait,
-    base::NullCallback()
-  );
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
+      blink::mojom::UserActivationOption::kActivate,
+      blink::mojom::PromiseResultOption::kDoNotWait, base::NullCallback());
 }
 
-} // namespace youtube_script_injector
+}  // namespace youtube_script_injector
