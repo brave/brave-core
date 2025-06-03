@@ -246,6 +246,7 @@ export const {
   useGetQrCodeImageQuery,
   useGetRewardsInfoQuery,
   useGetSelectedAccountIdQuery,
+  useGetSelectedADAAccountIdQuery,
   useGetSelectedSOLAccountIdQuery,
   useGetSelectedETHAccountIdQuery,
   useGetSelectedChainQuery,

@@ -38,7 +38,8 @@ import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 const CONNECTABLE_COIN_TYPES = [
   BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.SOL
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ADA
 ]
 
 export const Connections = () => {

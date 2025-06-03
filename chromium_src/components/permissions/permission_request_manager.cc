@@ -68,6 +68,7 @@ void PermissionRequestManager::AcceptDenyCancel(
 
   for (const auto& request : requests_) {
     if (base::Contains(accepted_requests, request)) {
+      LOG(ERROR) << "XXXZZZ permission granted " << request->requesting_origin().spec();
       PermissionGrantedIncludingDuplicates(request, /*is_one_time=*/false);
     } else if (base::Contains(denied_requests, request)) {
       PermissionDeniedIncludingDuplicates(request);

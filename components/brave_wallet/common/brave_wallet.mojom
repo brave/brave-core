@@ -189,7 +189,7 @@ struct CardanoProviderPagination {
 
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (bool success);
+  Enable() => (bool success, string? error_message);
 
   GetNetworkId() =>
     (int32 network_id, string? error_message);
@@ -1016,6 +1016,7 @@ struct AllAccountsInfo {
   AccountInfo? selected_account;
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
+  AccountInfo? ada_dapp_selected_account;
 };
 
 struct WalletInfo {

@@ -592,7 +592,13 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
     acc_to_select =
         all_accounts->sol_dapp_selected_account->account_id->Clone();
     DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+  } else if (coin == mojom::CoinType::ADA &&
+             all_accounts->ada_dapp_selected_account) {
+    acc_to_select =
+        all_accounts->ada_dapp_selected_account->account_id->Clone();
+    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
   }
+
 
   if (!acc_to_select) {
     // Find any account that matches coin/chain_id

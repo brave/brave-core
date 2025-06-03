@@ -85,6 +85,7 @@ interface Props {
 
 export const ConnectWithSite = (props: Props) => {
   const { originInfo, accountsToConnect } = props
+  console.error('xxxzzzz ' + accountsToConnect)
 
   // State
   const [addressToConnect, setAddressToConnect] = React.useState<string>()
@@ -122,11 +123,15 @@ export const ConnectWithSite = (props: Props) => {
 
   const onSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => () => {
-      if (addressToConnect === account.address) {
+      if (addressToConnect === account.address || addressToConnect === account.accountId.uniqueKey) {
         setAddressToConnect(undefined)
         return
       }
-      setAddressToConnect(account.address)
+      if (account.accountId.coin === BraveWallet.CoinType.ADA) {
+        setAddressToConnect(account.accountId.uniqueKey)
+      } else {
+        setAddressToConnect(account.address)
+      }
     },
     [addressToConnect]
   )
@@ -209,7 +214,7 @@ export const ConnectWithSite = (props: Props) => {
                   key={account.accountId.uniqueKey}
                   onSelectAccount={onSelectAccount(account)}
                   account={account}
-                  isSelected={addressToConnect === account.address}
+                  isSelected={addressToConnect === account.address || addressToConnect === account.accountId.uniqueKey}
                   tokenBalancesRegistry={tokenBalancesRegistry}
                 />
               ))}

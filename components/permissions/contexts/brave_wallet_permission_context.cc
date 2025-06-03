@@ -184,6 +184,10 @@ void BraveWalletPermissionContext::RequestPermissions(
     const std::vector<std::string>& addresses,
     base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
         callback) {
+  LOG(ERROR) << "XXXZZZ RequestPermissions";
+  for (const auto& addr: addresses) {
+    LOG(ERROR) << "XXXZZZ " << addr;
+  }
   if (!rfh) {
     std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
     return;
@@ -250,13 +254,19 @@ BraveWalletPermissionContext::GetAllowedAccounts(
   std::vector<std::string> allowed_accounts;
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
   for (const auto& address : addresses) {
+    LOG(ERROR) << "XXXZZZ check address " << address;
     auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
         ContentSettingsTypeToRequestType(content_settings_type), origin,
         address);
+    LOG(ERROR) << "XXXZZZ check address " << sub_request_origin.has_value();
+
     if (sub_request_origin) {
+      LOG(ERROR) << "XXXZZZ check address for url " << sub_request_origin->GetURL().spec();
+
       auto status = delegate->GetPermissionStatusForOrigin(
           permission, rfh, sub_request_origin->GetURL());
       if (status == blink::mojom::PermissionStatus::GRANTED) {
+        LOG(ERROR) << "XXXZZZ granted";
         allowed_accounts.push_back(address);
       }
     }

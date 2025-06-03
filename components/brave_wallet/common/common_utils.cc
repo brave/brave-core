@@ -388,7 +388,7 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
 }
 
 bool CoinSupportsDapps(mojom::CoinType coin) {
-  return coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL;
+  return coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL || coin == mojom::CoinType::ADA;
 }
 
 std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
