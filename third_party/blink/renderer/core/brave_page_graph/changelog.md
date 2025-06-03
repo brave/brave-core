@@ -3,6 +3,11 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.5
+
+Fix crashing issue where a disconnected document can cause a crash because
+of an error in how the `security origin` was determined by Pagegraph.
+
 ## Version 0.7.4
 
 Add `security origin` attribute for `NodeDOMRoot` objects, to explicitly
