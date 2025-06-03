@@ -400,7 +400,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   for (const std::string& method :
        {"getNetworkId", "getUsedAddresses", "getUnusedAddresses",
@@ -419,7 +419,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, EnableSuccess) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
 
   auto result = EvalJs(web_contents(browser()), EnableScript());
@@ -432,7 +432,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, EnableFail) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(false);
+            std::move(callback).Run(false, "");
           }));
   auto result = EvalJs(web_contents(browser()), EnableScript());
   EXPECT_EQ(base::Value(false), result.value);
@@ -474,7 +474,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetNetworkId) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetNetworkId(_))
       .WillByDefault(::testing::Invoke(
@@ -493,7 +493,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetNetworkId_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetNetworkId(_))
       .WillByDefault(::testing::Invoke(
@@ -512,7 +512,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, "");
           }));
   ON_CALL(*provider, GetUsedAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -536,7 +536,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUsedAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -556,7 +556,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUnusedAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -580,7 +580,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUnusedAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -601,7 +601,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetBalance(_))
       .WillByDefault(::testing::Invoke(
@@ -621,7 +621,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetBalance(_))
       .WillByDefault(::testing::Invoke(
@@ -641,7 +641,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetChangeAddress(_))
       .WillByDefault(::testing::Invoke(
@@ -662,7 +662,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetChangeAddress(_))
       .WillByDefault(::testing::Invoke(
@@ -683,7 +683,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetRewardAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -709,7 +709,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses_Error) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetRewardAddresses(_))
       .WillByDefault(::testing::Invoke(
@@ -731,7 +731,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUtxos(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -762,7 +762,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoArgs) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUtxos(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -792,7 +792,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoPagination) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUtxos(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -822,7 +822,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongArguments) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetUtxos(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -847,7 +847,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SignTx(_, _, _))
       .WillByDefault(
@@ -872,7 +872,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_PartialUndefined) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SignTx(_, _, _))
       .WillByDefault(
@@ -896,7 +896,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_WrongArguments) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SignTx(_, _, _))
       .WillByDefault(
@@ -952,7 +952,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SignData(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -984,7 +984,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SignData(_, _, _))
       .WillByDefault(::testing::Invoke(
@@ -1036,7 +1036,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SubmitTx(_, _))
       .WillByDefault(::testing::Invoke(
@@ -1058,7 +1058,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_WrongArguments) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, SubmitTx(_, _))
       .WillByDefault(::testing::Invoke(
@@ -1099,7 +1099,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetExtensions) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
 
   auto result = EvalJs(web_contents(browser()),
@@ -1114,7 +1114,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetCollateral) {
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetCollateral(_, _))
       .WillByDefault(::testing::Invoke(
@@ -1143,7 +1143,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   ON_CALL(*provider, GetCollateral(_, _))
       .WillByDefault(::testing::Invoke(
@@ -1354,7 +1354,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
   ON_CALL(*provider, Enable(_))
       .WillByDefault(
           ::testing::Invoke([&](TestCardanoProvider::EnableCallback callback) {
-            std::move(callback).Run(true);
+            std::move(callback).Run(true, std::nullopt);
           }));
   auto result = EvalJs(web_contents(browser()), EnableScript());
   EXPECT_EQ(base::Value(true), result.value);

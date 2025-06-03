@@ -561,16 +561,6 @@ void AddDerivedAccountInfoForKeyring(PrefService* profile_prefs,
   SetDerivedAccountsForKeyring(profile_prefs, keyring_id, accounts);
 }
 
-std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
-                                            mojom::CoinType dapp_coin) {
-  CHECK(CoinSupportsDapps(dapp_coin));
-  const char* pref_name = dapp_coin == mojom::CoinType::ETH
-                              ? kBraveWalletSelectedEthDappAccount
-                              : kBraveWalletSelectedSolDappAccount;
-
-  return profile_prefs->GetString(pref_name);
-}
-
 std::string GetSelectedWalletAccountFromPrefs(PrefService* profile_prefs) {
   return profile_prefs->GetString(kBraveWalletSelectedWalletAccount);
 }
@@ -1620,6 +1610,18 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
   return account_info;
 }
 
+mojom::AccountInfoPtr KeyringService::GetHDAccountInfoForKeyring(
+    mojom::KeyringId keyring_id,
+    uint32_t index) const {
+  for (const auto& derived_account_info :
+       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+    if (derived_account_info.account_index == index) {
+      return MakeAccountInfoForDerivedAccount(derived_account_info);
+    }
+  }
+  return nullptr;
+}
+
 // This member function should not assume that the wallet is unlocked!
 std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
     mojom::KeyringId keyring_id) const {
@@ -2079,7 +2081,8 @@ mojom::AllAccountsInfoPtr KeyringService::GetAllAccountsSync() {
 
   return mojom::AllAccountsInfo::New(
       std::move(all_accounts), GetSelectedWalletAccount(),
-      GetSelectedEthereumDappAccount(), GetSelectedSolanaDappAccount());
+      GetSelectedEthereumDappAccount(), GetSelectedSolanaDappAccount(),
+      GetSelectedCardanoDappAccount());
 }
 
 void KeyringService::SetSelectedAccount(mojom::AccountIdPtr account_id,
@@ -2926,13 +2929,27 @@ mojom::AccountInfoPtr KeyringService::GetSelectedSolanaDappAccount() {
   return GetSelectedDappAccount(mojom::CoinType::SOL);
 }
 
+mojom::AccountInfoPtr KeyringService::GetSelectedCardanoDappAccount() {
+  return GetSelectedDappAccount(mojom::CoinType::ADA);
+}
+
 mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
     mojom::CoinType coin) {
   CHECK(CoinSupportsDapps(coin));
 
-  const mojom::KeyringId keyring_id = coin == mojom::CoinType::ETH
-                                          ? mojom::KeyringId::kDefault
-                                          : mojom::KeyringId::kSolana;
+  mojom::KeyringId keyring_id = mojom::KeyringId::kDefault;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      break;
+    case mojom::CoinType::SOL:
+      keyring_id = mojom::KeyringId::kSolana;
+      break;
+    case mojom::CoinType::ADA:
+      keyring_id = mojom::KeyringId::kCardanoMainnet;
+      break;
+    default:
+      NOTREACHED();
+  }
 
   auto unique_key = GetSelectedDappAccountFromPrefs(profile_prefs_, coin);
 

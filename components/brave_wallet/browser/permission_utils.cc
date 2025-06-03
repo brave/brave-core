@@ -26,6 +26,8 @@ constexpr char kEthAddrPattern[] = "addr=(0x[[:xdigit:]]{40})";
 // This is generic pattern for all coins, we put maximum length bump 128 is to
 // prevent ReDoS attack.
 constexpr char kAddrPattern[] = "addr=([[:alnum:]]{1,128})";
+// This is a pattern for the mojom::AccountId's unique_key format.
+constexpr char kCardanoAddrPattern[] = "addr=(([0-9]+_?)+)";
 
 // Given an origin and an account address, append the account address to the
 // end of the host piece of the origin, then return it as the new origin.
@@ -54,6 +56,7 @@ void ExtractAddresses(permissions::RequestType type,
                       const url::Origin& origin,
                       std::queue<std::string>* address_queue) {
   static base::NoDestructor<re2::RE2> kEthAddrRegex(kEthAddrPattern);
+  static base::NoDestructor<re2::RE2> kCardanoAddrRegex(kCardanoAddrPattern);
   static base::NoDestructor<re2::RE2> kAddrRegex(kAddrPattern);
   DCHECK(!origin.opaque() && address_queue);
 
@@ -63,6 +66,8 @@ void ExtractAddresses(permissions::RequestType type,
   re2::RE2* regex;
   if (type == permissions::RequestType::kBraveEthereum) {
     regex = kEthAddrRegex.get();
+  } else if (type == permissions::RequestType::kBraveCardano) {
+    regex = kCardanoAddrRegex.get();
   } else {
     regex = kAddrRegex.get();
   }
@@ -95,6 +100,10 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
     pattern = sub_req_format ? "(.*)(0x[[:xdigit:]]{40})(:[0-9]+)*"
                              : "(.*){addr=0x[[:xdigit:]]{40}(&"
                                "addr=0x[[:xdigit:]]{40})*}(:[0-9]+)*";
+  } else if (type == permissions::RequestType::kBraveCardano) {
+    // AccountId->unique_key is used as account identifier for cardano.
+    pattern = sub_req_format ? "(.*)__([0-9_]+)(:[0-9]+)*"
+                             : "(.*){addr=[0-9_]+(&addr=[0-9_]+)*}(:[0-9]+)*";
   } else {
     pattern = sub_req_format ? "(.*)__([[:alnum:]]{1,128})(:[0-9]+)*"
                              : "(.*){addr=[[:alnum:]]{1,128}(&"

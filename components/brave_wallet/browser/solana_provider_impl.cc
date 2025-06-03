@@ -132,23 +132,24 @@ void SolanaProviderImpl::Connect(std::optional<base::Value::Dict> arg,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
   } else {
     std::vector<mojom::AccountInfoPtr> sol_accounts;
-    std::vector<std::string> addresses;
+    std::vector<std::string> identifiers;
     for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
       if (account_info->account_id->coin == mojom::CoinType::SOL) {
         sol_accounts.push_back(account_info.Clone());
-        addresses.push_back(account_info->address);
+        identifiers.push_back(
+            GetAccountPermissionIdentifier(account_info->account_id));
       }
     }
     // filter out already permitted accounts if exists
     const auto allowed_accounts =
-        delegate_->GetAllowedAccounts(mojom::CoinType::SOL, addresses);
+        delegate_->GetAllowedAccounts(mojom::CoinType::SOL, identifiers);
     if (allowed_accounts) {
-      std::erase_if(addresses, [&allowed_accounts](const auto& address) {
-        return base::Contains(*allowed_accounts, address);
+      std::erase_if(identifiers, [&allowed_accounts](const auto& identifier) {
+        return base::Contains(*allowed_accounts, identifier);
       });
     }
     delegate_->RequestPermissions(
-        mojom::CoinType::SOL, addresses,
+        mojom::CoinType::SOL, identifiers,
         base::BindOnce(&SolanaProviderImpl::OnConnect,
                        weak_factory_.GetWeakPtr(), std::move(sol_accounts),
                        std::move(callback)));

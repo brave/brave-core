@@ -782,7 +782,8 @@ TEST(CommonUtils, MakeIndexBasedAccountId_ADA) {
 
 TEST(CommonUtils, CoinSupportsDapps) {
   for (auto coin : kAllCoins) {
-    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL) {
+    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+        coin == mojom::CoinType::ADA) {
       EXPECT_TRUE(CoinSupportsDapps(coin));
     } else {
       EXPECT_FALSE(CoinSupportsDapps(coin));
