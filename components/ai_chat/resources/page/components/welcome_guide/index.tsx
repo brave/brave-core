@@ -13,7 +13,7 @@ function WelcomeGuide() {
   const conversationContext = useConversation()
 
   const summarizeNow = () => {
-    conversationContext.conversationHandler?.submitSummarizationRequest()
+    conversationContext.api.actions.submitSummarizationRequest()
   }
 
   return (

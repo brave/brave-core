@@ -13,7 +13,7 @@ import styles from './style.module.scss'
 export function SuggestedQuestion({ question }: { question: string }) {
     const context = useConversation()
     return <SuggestionButton
-        onClick={() => context.conversationHandler?.submitSuggestion(question)}
+        onClick={() => context.api.actions.submitSuggestion(question)}
         className={styles.questionButton}
     >
       <span className={styles.questionButtonText}>{question}</span>

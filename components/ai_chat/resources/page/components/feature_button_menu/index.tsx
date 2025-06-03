@@ -24,7 +24,7 @@ export default function FeatureMenu(props: Props) {
   const conversationContext = useConversation()
 
   const handleSettingsClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
+    aiChatContext.api.actions.uiHandler.openAIChatSettings()
   }
 
   // If conversation is in the conversations list, then it has been committed

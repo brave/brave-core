@@ -30,7 +30,7 @@ export default function NoticeConversationStorage() {
             target='_blank'
             onClick={(e) => {
               e.preventDefault()
-              aiChatContext.uiHandler?.openStorageSupportUrl()
+              aiChatContext.api.actions.uiHandler.openStorageSupportUrl()
             }}
           >
             {getLocale('learnMore')}

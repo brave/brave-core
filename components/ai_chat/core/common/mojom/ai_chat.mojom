@@ -383,6 +383,9 @@ interface Service {
   DismissPremiumPrompt();
 
   // Get metadata for non-archived conversations
+  // TODO(petemill): The first invoke causes the browser to fire
+  // OnConversationListChanged, so the first request will result
+  // in the data being sent twice.
   GetVisibleConversations() => (array<Conversation> conversations);
 
   // Get metadata for all quick actions

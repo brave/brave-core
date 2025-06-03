@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { MAX_IMAGES } from './constants'
 import * as Mojom from './mojom'
 
 /**
@@ -48,4 +49,24 @@ export function getImageFiles(
     file.type === Mojom.UploadedFileType.kImage ||
     file.type === Mojom.UploadedFileType.kScreenshot
   );
+}
+
+/**
+ * Combines existing images with new images, ensuring the total throughout
+ * the entire conversation does not exceed MAX_IMAGES.
+ */
+export function combinePendingImages(conversationHistory: Mojom.ConversationTurn[], existingImages: Mojom.UploadedFile[], images: Mojom.UploadedFile[]) {
+  const totalUploadedImages = conversationHistory.reduce(
+    (total, turn) => total +
+      (getImageFiles(turn.uploadedFiles)?.length || 0),
+    0
+  )
+  const currentPendingImages = existingImages.length
+  const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
+  const newImages = images.slice(0, Math.max(0, maxNewImages))
+
+  return [
+    ...existingImages,
+    ...newImages
+  ]
 }
