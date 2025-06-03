@@ -440,7 +440,7 @@ extension BrowserViewController: TabManagerDelegate {
         }
       )
       // Fetch last item in Recently Closed
-      if let recentlyClosedTab = RecentlyClosed.all().first {
+      if let recentlyClosedTab = RecentlyClosed.first() {
         recentlyClosedMenuChildren.append(viewRecentlyClosedTabs)
         let reopenLastClosedTab = UIAction(
           title: Strings.RecentlyClosed.recentlyClosedReOpenLastActionTitle,
