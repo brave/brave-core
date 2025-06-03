@@ -17,6 +17,7 @@ public protocol TabObserver: AnyObject {
   func tabDidRedirectNavigation(_ tab: some TabState)
   func tabDidFinishNavigation(_ tab: some TabState)
   func tab(_ tab: some TabState, didFailNavigationWithError error: Error)
+  func tabRenderProcessDidTerminate(_ tab: some TabState)
 
   func tabDidUpdateURL(_ tab: some TabState)
   func tabDidChangeTitle(_ tab: some TabState)
@@ -47,6 +48,7 @@ extension TabObserver {
   public func tabDidRedirectNavigation(_ tab: some TabState) {}
   public func tabDidFinishNavigation(_ tab: some TabState) {}
   public func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {}
+  public func tabRenderProcessDidTerminate(_ tab: some TabState) {}
 
   public func tabDidUpdateURL(_ tab: some TabState) {}
   public func tabDidChangeTitle(_ tab: some TabState) {}
@@ -75,6 +77,7 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   private let _tabDidRedirectNavigation: (any TabState) -> Void
   private let _tabDidFinishNavigation: (any TabState) -> Void
   private let _tabDidFailNavigationWithError: (any TabState, Error) -> Void
+  private let _tabRenderProcessDidTerminate: (any TabState) -> Void
 
   private let _tabDidUpdateURL: (any TabState) -> Void
   private let _tabDidChangeTitle: (any TabState) -> Void
@@ -118,6 +121,8 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
     _tabDidFailNavigationWithError = { [weak observer] in
       observer?.tab($0, didFailNavigationWithError: $1)
     }
+    _tabRenderProcessDidTerminate = { [weak observer] in observer?.tabRenderProcessDidTerminate($0)
+    }
     _tabDidUpdateURL = { [weak observer] in observer?.tabDidUpdateURL($0) }
     _tabDidChangeTitle = { [weak observer] in observer?.tabDidChangeTitle($0) }
     _tabDidStartLoading = { [weak observer] in observer?.tabDidStartLoading($0) }
@@ -160,6 +165,9 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   }
   func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {
     _tabDidFailNavigationWithError(tab, error)
+  }
+  func tabRenderProcessDidTerminate(_ tab: some TabState) {
+    _tabRenderProcessDidTerminate(tab)
   }
   func tabDidUpdateURL(_ tab: some TabState) {
     _tabDidUpdateURL(tab)

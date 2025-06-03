@@ -326,6 +326,10 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     tab?.didFinishNavigation()
   }
 
+  func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+    tab?.renderProcessTerminated()
+  }
+
   func webView(
     _ webView: WKWebView,
     didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
@@ -350,11 +354,6 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         // to open an external application and hand it over to UIApplication.openURL(). The result
         // will be that we switch to the external app, for example the app store, while keeping the
         // original web page in the tab instead of replacing it with an error page.
-        return
-      }
-      if error.code == WKError.webContentProcessTerminated.rawValue {
-        Logger.module.warning("WebContent process has crashed. Trying to reload to restart it.")
-        tab.reload()
         return
       }
     }
