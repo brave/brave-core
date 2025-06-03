@@ -214,7 +214,7 @@
     "top_sites": [
       {
         "name": "infobae",
-        "url": "https://www.infobae.com/america/"
+        "url": "https://www.infobae.com"
       },
       {
         "name": "Wikipedia",
@@ -2148,7 +2148,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en?prefLang=hu"
+        "url": "https://european-union.europa.eu?prefLang=hu"
       }
     ]
   },
@@ -2169,7 +2169,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en"
+        "url": "https://european-union.europa.eu"
       }
     ]
   },
@@ -2337,7 +2337,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en?prefLang=it"
+        "url": "https://european-union.europa.eu?prefLang=it"
       }
     ]
   },
@@ -2643,7 +2643,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en?prefLang=lv"
+        "url": "https://european-union.europa.eu?prefLang=lv"
       }
     ]
   },
@@ -2769,7 +2769,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en?prefLang=lt"
+        "url": "https://european-union.europa.eu?prefLang=lt"
       }
     ]
   },
@@ -3357,7 +3357,7 @@
       },
       {
         "name": "EU",
-        "url": "https://european-union.europa.eu/news-and-events_en?prefLang=nl"
+        "url": "https://european-union.europa.eu?prefLang=nl"
       }
     ]
   },
@@ -3844,7 +3844,7 @@
       },
       {
         "name": "El Nuevo Día",
-        "url": "https://www.elnuevodia.com/negocios/consumo/notas/uber-le-pone-fecha-a-su-lanzamiento-para-puerto-rico/"
+        "url": "https://www.elnuevodia.com"
       },
       {
         "name": "Humanos de PR",
