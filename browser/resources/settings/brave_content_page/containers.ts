@@ -42,6 +42,11 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
         type: String,
         computed: 'computeEditingDialogTitle_(editingContainer_)',
       },
+      isRemoving: {
+        type: Boolean,
+        value: false,
+        observer: 'onIsRemovingChanged_',
+      },
     }
   }
 
@@ -49,6 +54,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   declare editingContainer_: Container | null
   declare deletingContainer_: Container | null
   declare editDialogTitle_: string
+  declare isRemoving: boolean
 
   override ready() {
     super.ready()
@@ -75,12 +81,15 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onDeleteContainerClick_(e: DomRepeatEvent<Container>) {
+    assert(!this.deletingContainer_)
     this.deletingContainer_ = e.model.item
   }
 
   onCancelDialog_() {
     this.editingContainer_ = null
-    this.deletingContainer_ = null
+    if (!this.isRemoving) {
+      this.deletingContainer_ = null
+    }
   }
 
   onSaveContainerFromDialog_() {
@@ -96,31 +105,38 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   async onDeleteContainerFromDialog_() {
     assert(this.deletingContainer_)
 
-    const dialog = this.shadowRoot!.querySelector(
-      '#deleteContainerDialog',
-    ) as CrDialogElement
-    assert(dialog)
-
-    const buttons = dialog.querySelectorAll('cr-button, cr-icon-button')
-    if (buttons) {
-      buttons.forEach((button) => button.setAttribute('disabled', 'true'))
+    try {
+      this.isRemoving = true
+      await this.browserProxy.handler.removeContainer(
+        this.deletingContainer_.id,
+      )
+    } finally {
+      this.isRemoving = false
+      this.deletingContainer_ = null
     }
-    dialog.noCancel = true
-
-    await this.browserProxy.handler.removeContainer(this.deletingContainer_.id)
-
-    if (buttons) {
-      buttons.forEach((button) => button.removeAttribute('disabled'))
-    }
-    dialog.noCancel = false
-
-    this.deletingContainer_ = null
   }
 
   computeEditingDialogTitle_(): string {
     return this.editingContainer_?.id
       ? this.i18n('containersEditContainer')
       : this.i18n('containersAddContainer')
+  }
+
+  onIsRemovingChanged_(isRemoving: boolean) {
+    // Disable the delete dialog X button when removing a container. We do it
+    // manually because the dialog does not offer a way to disable this button
+    // via property.
+    const dialog = this.shadowRoot?.querySelector('#deleteContainerDialog')
+    if (dialog) {
+      const closeButton = dialog.shadowRoot?.querySelector('cr-icon-button')
+      if (closeButton) {
+        if (isRemoving) {
+          closeButton.setAttribute('disabled', 'true')
+        } else {
+          closeButton.removeAttribute('disabled')
+        }
+      }
+    }
   }
 }
 
