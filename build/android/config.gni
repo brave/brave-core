@@ -136,4 +136,5 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
+  "//brave/browser/android/youtube_script_injector/java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java",
 ]

@@ -4,11 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 
 source_set("youtube_script_injector") {
   sources = [
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
+    "brave_youtube_script_injector_native_helper.cc",
+    "brave_youtube_script_injector_native_helper.h",
   ]
 
   public_deps = [ "//content/public/browser" ]
@@ -16,12 +19,15 @@ source_set("youtube_script_injector") {
   deps = [
     ":features",
     "//base",
+    "//brave/browser/android/youtube_script_injector:jni_headers",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/constants",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
     "//net",
     "//url",
+    "//brave/components/script_injector/common/mojom",
+    "//chrome/common",
   ]
 }
 
@@ -48,5 +54,11 @@ source_set("browser_tests") {
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
+  ]
+}
+
+generate_jni("jni_headers") {
+  sources = [
+    "java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java",
   ]
 }

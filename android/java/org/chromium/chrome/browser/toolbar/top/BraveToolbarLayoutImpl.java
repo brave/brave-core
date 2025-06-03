@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -121,6 +123,7 @@ import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 import org.chromium.url.mojom.Url;
+import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -155,10 +158,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
+    private ImageButton mYouTubePipButton;
     private HomeButton mHomeButton;
     private FrameLayout mWalletLayout;
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
+    private FrameLayout mYouTubePipLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
 
     // TabModelSelectorTabObserver setups observer at the ctor
@@ -239,15 +244,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        mWalletLayout = (FrameLayout) findViewById(R.id.brave_wallet_button_layout);
-        mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
-        mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
-        mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
+        mWalletLayout = findViewById(R.id.brave_wallet_button_layout);
+        mShieldsLayout = findViewById(R.id.brave_shields_button_layout);
+        mRewardsLayout = findViewById(R.id.brave_rewards_button_layout);
+        mYouTubePipLayout = findViewById(R.id.brave_youtube_pip_layout);
+        mBraveRewardsNotificationsCount = findViewById(R.id.br_notifications_count);
         mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
-        mBraveWalletButton = (ImageButton) findViewById(R.id.brave_wallet_button);
-        mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
-        mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
-        mHomeButton = (HomeButton) findViewById(R.id.home_button);
+        mBraveWalletButton = findViewById(R.id.brave_wallet_button);
+        mBraveShieldsButton = findViewById(R.id.brave_shields_button);
+        mBraveRewardsButton = findViewById(R.id.brave_rewards_button);
+        mYouTubePipButton = findViewById(R.id.brave_youtube_pip_button);
+        mHomeButton = findViewById(R.id.home_button);
         mBraveWalletBadge = findViewById(R.id.wallet_notfication_badge);
         if (mWalletLayout != null) {
             mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
@@ -280,6 +287,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveWalletButton.setOnClickListener(this);
             mBraveWalletButton.setOnLongClickListener(this);
             BraveTouchUtils.ensureMinTouchTarget(mBraveWalletButton);
+        }
+
+        if (mYouTubePipButton != null) {
+            mYouTubePipButton.setClickable(true);
+            mYouTubePipButton.setOnClickListener(this);
+            mYouTubePipButton.setOnLongClickListener(this);
+            BraveTouchUtils.ensureMinTouchTarget(mYouTubePipButton);
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
@@ -529,6 +543,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
+                        showYouTubePipIcon(tab);
                         if (mBraveRewardsNativeWorker != null) {
                             mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
                         }
@@ -573,6 +588,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 new TabModelSelectorTabModelObserver(selector) {
                     @Override
                     public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
+                        showYouTubePipIcon(tab);
                         if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
@@ -588,6 +604,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                     }
                 };
+    }
+
+    private void showYouTubePipIcon(@NonNull final Tab tab) {
+        // The layout could be null in Custom Tabs layout.
+        if (mYouTubePipLayout == null) {
+            return;
+        }
+        final boolean show = BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(tab.getWebContents());
+        mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void showOnBoarding() {
@@ -1090,6 +1115,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel();
+        } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
+            Tab currentTab = getToolbarDataProvider().getTab();
+            BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
+            try {
+                BraveActivity.getBraveActivity().enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
+            } catch (IllegalStateException | IllegalArgumentException e) {
+                Log.e(TAG, "Error entering picture in picture mode.", e);
+            }
         }
     }
 
@@ -1238,6 +1273,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mWalletLayout != null) {
             mWalletLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+        if (mYouTubePipLayout != null) {
+            mYouTubePipLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 
@@ -1571,6 +1609,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             canvas.save();
             ViewUtils.translateCanvasToView(toolbarButtonsContainer, mRewardsLayout, canvas);
             mRewardsLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (mYouTubePipLayout != null && mYouTubePipLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mYouTubePipLayout, canvas);
+            mYouTubePipLayout.draw(canvas);
             canvas.restore();
         }
     }

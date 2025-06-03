@@ -11,6 +11,23 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content" >
 
+    <FrameLayout android:id="@+id/brave_youtube_pip_layout"
+        android:layout_width="45dp"
+        android:orientation="vertical"
+        android:background="@drawable/modern_toolbar_background_grey_middle_segment"
+        android:layout_marginTop="8dp"
+        android:layout_height="40dp"
+        android:visibility="gone" >
+
+        <ImageButton android:id="@+id/brave_youtube_pip_button"
+            style="@style/ToolbarButton"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_picture_in_picture"
+            android:layout_gravity="center"
+            android:contentDescription="@string/accessibility_toolbar_btn_brave_shields" />
+    </FrameLayout>
+
   <FrameLayout android:id="@+id/brave_wallet_button_layout"
       android:layout_width="45dp"
       android:orientation="vertical"

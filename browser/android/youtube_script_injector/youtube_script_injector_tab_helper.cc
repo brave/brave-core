@@ -5,6 +5,7 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
+#include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -80,16 +81,6 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
-bool IsYouTubeDomain(const GURL& url) {
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          url, GURL("https://www.youtube.com"),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return true;
-  }
-
-  return false;
-}
-
 bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
@@ -110,8 +101,8 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   content::WebContents* contents = web_contents();
-  // Filter only YT domain here
-  if (!IsYouTubeDomain(contents->GetLastCommittedURL())) {
+  // Filter only YouTube videos.
+  if (!IsYouTubeVideo(contents->GetLastCommittedURL())) {
     return;
   }
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -124,6 +115,48 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
+}
+
+// static
+bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
+  if (!url.is_valid() || url.is_empty()) {
+    return false;
+  }
+
+  // Check if domain is youtube.com (including subdomains).
+  if (!net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://www.youtube.com"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return false;
+  }
+
+  // Check if path is exactly "/watch" (case-insensitive, ASCII only).
+  std::string path = url.path();
+  const std::string watch_path = "/watch";
+  if (!base::EqualsCaseInsensitiveASCII(path, watch_path)) {
+    return false;
+  }
+
+  // Check if query exists and contains a non-empty "v" parameter.
+  std::string query = url.query();
+  if (query.empty()) {
+    return false;
+  }
+
+  // Key-value pairs are '&' delimited and the keys/values are '=' delimited.
+  // Example: "https://www.youtube.com/watch?v=abcdefg&somethingElse=12345".
+  std::vector<std::pair<std::string, std::string>> key_value_pairs;
+  base::SplitStringIntoKeyValuePairs(query, '=', '&', &key_value_pairs);
+
+  std::string video_id;
+  for (const auto& pair : key_value_pairs) {
+    if (pair.first == "v") {
+      base::TrimWhitespaceASCII(pair.second, base::TRIM_ALL, &video_id);
+      break;
+    }
+  }
+
+  return !video_id.empty();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
