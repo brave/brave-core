@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/omnibox_text_util.cc b/components/omnibox/browser/omnibox_text_util.cc
+index 4fed0c88c689f87b2961832ac027bd5be2ef9b36..84df5e15b2b66c402311b8d80492c1ea8d8f7bf5 100644
+--- a/components/omnibox/browser/omnibox_text_util.cc
++++ b/components/omnibox/browser/omnibox_text_util.cc
+@@ -151,6 +151,7 @@ void AdjustTextForCopy(int sel_min,
+   if (!has_user_modified_text) {
+     *url_from_text = client->GetNavigationEntryURL();
+     *write_url = true;
++    BRAVE_ADJUST_TEXT_FOR_COPY
+ 
+     // Don't let users copy Reader Mode page URLs.
+     // We display the original article's URL in the omnibox, so users will
