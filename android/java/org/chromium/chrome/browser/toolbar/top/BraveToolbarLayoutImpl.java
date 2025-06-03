@@ -67,6 +67,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
@@ -611,7 +612,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mYouTubePipLayout == null) {
             return;
         }
-        final boolean show = BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(tab.getWebContents());
+        final boolean show = PictureInPicture.isEnabled(getContext()) &&
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS) &&
+                BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(tab.getWebContents());
         mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
