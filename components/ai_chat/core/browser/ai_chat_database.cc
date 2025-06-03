@@ -74,6 +74,18 @@ bool MigrateFrom2To3(sql::Database* db) {
 }
 
 bool MigrateFrom3to4(sql::Database* db) {
+  // Check if column exists first
+  static constexpr char kCheckColumnQuery[] =
+      "PRAGMA table_info(conversation_entry_uploaded_files)";
+  sql::Statement check_statement(db->GetUniqueStatement(kCheckColumnQuery));
+
+  while (check_statement.Step()) {
+    if (check_statement.ColumnString(1) == "type") {
+      // Column already exists, no need to migrate
+      return true;
+    }
+  }
+
   static constexpr char kAddTypeColumnQuery[] =
       "ALTER TABLE conversation_entry_uploaded_files ADD COLUMN type INTEGER "
       "DEFAULT 0";
