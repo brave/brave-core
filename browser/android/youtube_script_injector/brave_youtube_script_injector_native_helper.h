@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_NATIVE_HELPER_H_
 #define BRAVE_BROWSER_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_NATIVE_HELPER_H_
 
-#include "url/gurl.h"
 #include "base/android/scoped_java_ref.h"
+#include "url/gurl.h"
 
 namespace youtube_script_injector {
 
@@ -19,6 +19,6 @@ static void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents);
 
-} // namespace youtube_script_injector
+}  // namespace youtube_script_injector
 
 #endif  // BRAVE_BROWSER_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_NATIVE_HELPER_H_

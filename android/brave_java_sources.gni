@@ -10,6 +10,7 @@ import(
     "//brave/android/java/org/chromium/chrome/browser/fullscreen/brave_fullscreen_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/base/brave_base_shared_preferences_java.gni")
+import("//brave/browser/android/youtube_script_injector/java_sources.gni")
 import("//brave/browser/bookmarks/android/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/hub/internal/android/java/java_sources.gni")
@@ -21,7 +22,6 @@ import(
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
-import("//brave/browser/android/youtube_script_injector/java_sources.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",

@@ -56,6 +56,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
@@ -124,7 +125,6 @@ import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 import org.chromium.url.mojom.Url;
-import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -612,9 +612,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mYouTubePipLayout == null) {
             return;
         }
-        final boolean show = PictureInPicture.isEnabled(getContext()) &&
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS) &&
-                BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(tab.getWebContents());
+        final boolean show =
+                PictureInPicture.isEnabled(getContext())
+                        && ChromeFeatureList.isEnabled(
+                                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)
+                        && BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(
+                                tab.getWebContents());
         mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
@@ -1122,7 +1125,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Tab currentTab = getToolbarDataProvider().getTab();
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
             try {
-                BraveActivity.getBraveActivity().enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+                BraveActivity.getBraveActivity()
+                        .enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
             } catch (IllegalStateException | IllegalArgumentException e) {
