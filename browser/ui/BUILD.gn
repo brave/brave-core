@@ -332,6 +332,7 @@ source_set("ui") {
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
+      "//chrome/browser/ui/extensions",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/tabs:tab_menu",
@@ -609,6 +610,7 @@ source_set("ui") {
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/download",
+      "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -738,6 +740,8 @@ source_set("ui") {
         "views/obsolete_system_confirm_dialog_view.h",
       ]
     }
+
+    deps += [ "//chrome/browser/infobars" ]
   }
 
   deps += [
