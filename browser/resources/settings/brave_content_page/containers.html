@@ -126,6 +126,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     show-close-button
     show-on-attach
     on-close="onCancelDialog_"
+    no-cancel="[[isRemoving]]"
   >
     <div slot="title">$i18n{containersDeleteContainer}</div>
     <div slot="body">
@@ -138,12 +139,14 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       <cr-button
         class="cancel-button"
         on-click="onCancelDialog_"
+        disabled="[[isRemoving]]"
       >
         $i18n{cancel}
       </cr-button>
       <cr-button
         class="tonal-button"
         on-click="onDeleteContainerFromDialog_"
+        disabled="[[isRemoving]]"
       >
         $i18n{delete}
       </cr-button>
