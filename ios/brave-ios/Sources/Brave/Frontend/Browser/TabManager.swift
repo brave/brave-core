@@ -699,7 +699,7 @@ class TabManager: NSObject {
     }
   }
 
-  func saveAllTabs() {
+  func saveAllTabs(synchronously: Bool = false) {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -710,6 +710,7 @@ class TabManager: NSObject {
     let tabs =
       Preferences.Privacy.persistentPrivateBrowsing.value ? allTabs : tabs(isPrivate: false)
     SessionTab.updateAll(
+      synchronously: synchronously,
       tabs: tabs.compactMap({
         if let sessionData = $0.sessionData {
           return ($0.id, sessionData, $0.title ?? "", $0.visibleURL ?? TabManager.ntpInteralURL)
