@@ -8,13 +8,14 @@ package org.chromium.chrome.browser;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.content_public.browser.WebContents;
 
 /**
- * Helper to interact with native methods. Check
- * brave_youtube_script_injector_native_helper.{h|cc}.
+ * Helper to interact with native methods. Check brave_youtube_script_injector_native_helper.{h|cc}.
  */
 @JNINamespace("youtube_script_injector")
+@NullMarked
 public class BraveYouTubeScriptInjectorNativeHelper {
     public static boolean isYouTubeVideo(WebContents webContents) {
         return BraveYouTubeScriptInjectorNativeHelperJni.get().isYouTubeVideo(webContents);
