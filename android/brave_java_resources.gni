@@ -996,9 +996,3 @@ brave_android_features_java_resources = [
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_top_window.xml",
   "java/res/drawable-night/tablet_tab_switcher_empty_state_illustration.xml",
 ]
-
-# XML preprocessing
-brave_java_preprocess_xml_sources =
-    [ "//chrome/android/java/res/menu/main_menu.xml" ]
-brave_java_preprocess_module_sources =
-    [ "//brave/android/preprocess/xml/menu_main_menu_xml.py" ]

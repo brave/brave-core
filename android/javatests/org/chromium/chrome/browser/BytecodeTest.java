@@ -280,9 +280,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl"));
-        Assert.assertTrue(
-                classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
@@ -1209,7 +1206,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate",
                         Context.class,
                         ActivityTabProvider.class,
                         MultiWindowModeStateDispatcher.class,
@@ -1297,19 +1294,6 @@ public class BytecodeTest {
                         int.class,
                         int.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
-                        Context.class,
-                        ActivityTabProvider.class,
-                        MultiWindowModeStateDispatcher.class,
-                        TabModelSelector.class,
-                        ToolbarManager.class,
-                        View.class,
-                        OneshotSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -2398,14 +2382,6 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
                         "org/chromium/chrome/browser/app/BraveActivity"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView",

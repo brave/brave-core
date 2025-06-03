@@ -189,7 +189,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate {
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate {
     public <init>(...);
 }
 
@@ -305,14 +305,6 @@
 }
 
 -keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.app.appmenu.BraveAppMenuPropertiesDelegateImpl {
     public <init>(...);
 }
 
