@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_prefs_deps = [
+  "//brave/components/brave_account:common",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_news/common",
   "//brave/components/brave_rewards/core",
