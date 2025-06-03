@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveStrings
 import Foundation
@@ -184,16 +185,39 @@ extension BrowserViewController: TabDownloadDelegate {
     tab: some TabState,
     suggestedFileName: String
   ) async -> Bool {
-    // Only download if there is a valid host
-    let host = download.originalURL?.host() ?? ""
-
     // Never present the download alert on a tab that isn't visible
     guard tab === tabManager.selectedTab
     else {
       return false
     }
 
-    let filename = Download.stripUnicode(fromFilename: suggestedFileName)
+    // The following logic for the title and url is from Chromium: https://github.com/brave/brave-browser/issues/45988
+    // and https://hackerone.com/reports/3175265
+    // Title has a max length of 33 characters and can be truncated in the middle to allow showing
+    // the beginning of the file name as well as the extension.
+    // URL has a max length of 40, otherwise fall-back to the eTLD+1 (may or may not be >= 40)
+
+    let host = download.originalURL?.host() ?? tab.lastCommittedURL?.host() ?? ""
+    let url =
+      download.originalURL?.isWebPage(includeDataURIs: false) == true
+      ? download.originalURL : tab.lastCommittedURL
+    var formattedUrl = URLFormatter.formatURLOrigin(
+      forSecurityDisplay: url?.absoluteString ?? host,
+      schemeDisplay: .omitHttpAndHttps
+    )
+
+    // Fallback to eTLD+1 - Origin is too long
+    if formattedUrl.isEmpty || formattedUrl.count > 40 {
+      formattedUrl = url?.baseDomain ?? host  // eTLD+1
+    }
+
+    // Truncate the file-name after stripping any unicode control characters
+    let filename = Download.truncateMiddle(
+      fileName:
+        Download.stripUnicode(fromFilename: suggestedFileName),
+      maxLength: 33  // Max file name length of 33 characters (same as Chromium)
+    )
+
     let totalBytesExpected = download.totalBytesExpected
 
     let expectedSize =
