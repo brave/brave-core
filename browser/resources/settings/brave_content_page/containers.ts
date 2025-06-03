@@ -3,61 +3,58 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  DomRepeatEvent,
-  PolymerElement,
-} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { getTemplate } from './containers.html.js'
+import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { ContainersSettingsPageBrowserProxy } from './containers_browser_proxy.js'
 import { Container } from '../containers.mojom-webui.js'
+import { getCss } from './containers.css.js'
+import { getHtml } from './containers.html.js'
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
-import { CrDialogElement } from '//resources/cr_elements/cr_dialog/cr_dialog.js'
 
-const SettingsBraveContentContainersElementBase = I18nMixin(PolymerElement)
+const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 
 /**
  * 'settings-brave-content-containers' is the settings page containing settings for Containers
  */
 export class SettingsBraveContentContainersElement extends SettingsBraveContentContainersElementBase {
-  private browserProxy: ContainersSettingsPageBrowserProxy =
-    ContainersSettingsPageBrowserProxy.getInstance()
-
   static get is() {
     return 'settings-brave-content-containers'
   }
 
-  static get template() {
-    return getTemplate()
+  static override get styles() {
+    return getCss()
   }
 
-  static get properties() {
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
     return {
       containersList_: {
-        type: Array as unknown as Container[],
+        type: Array,
       },
-      editingContainer_: Object as unknown as Container | null,
-      deletingContainer_: Object as unknown as Container | null,
-      editDialogTitle_: {
-        type: String,
-        computed: 'computeEditingDialogTitle_(editingContainer_)',
+      editingContainer_: {
+        type: Object,
       },
-      isRemoving: {
+      deletingContainer_: {
+        type: Object,
+      },
+      isRemoving_: {
         type: Boolean,
         value: false,
-        observer: 'onIsRemovingChanged_',
       },
     }
   }
 
-  declare containersList_: Container[]
-  declare editingContainer_: Container | null
-  declare deletingContainer_: Container | null
-  declare editDialogTitle_: string
-  declare isRemoving: boolean
+  private browserProxy = ContainersSettingsPageBrowserProxy.getInstance()
+  accessor containersList_: Container[]
+  accessor editingContainer_: Container | null
+  accessor deletingContainer_: Container | null
+  accessor isRemoving_: boolean
 
-  override ready() {
-    super.ready()
+  override connectedCallback() {
+    super.connectedCallback()
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
@@ -74,21 +71,32 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.editingContainer_ = { id: '', name: '' }
   }
 
-  onEditContainerClick_(e: DomRepeatEvent<Container>) {
-    // Copy the container to the editingContainer_ to avoid mutating the
-    // original container before saving.
-    this.editingContainer_ = { ...e.model.item }
+  onEditContainerClick_(e: Event) {
+    const id = (e.currentTarget as HTMLElement).dataset['id']
+    assert(id)
+    this.editingContainer_ =
+      this.containersList_.find((c) => c.id === id) ?? null
   }
 
-  onDeleteContainerClick_(e: DomRepeatEvent<Container>) {
-    assert(!this.deletingContainer_)
-    this.deletingContainer_ = e.model.item
+  onDeleteContainerClick_(e: Event) {
+    const id = (e.currentTarget as HTMLElement).dataset['id']
+    assert(id)
+    this.deletingContainer_ =
+      this.containersList_.find((c) => c.id === id) ?? null
   }
 
   onCancelDialog_() {
     this.editingContainer_ = null
-    if (!this.isRemoving) {
+    if (!this.isRemoving_) {
       this.deletingContainer_ = null
+    }
+  }
+
+  onContainerNameInput_(e: InputEvent) {
+    assert(this.editingContainer_)
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      name: (e.target as HTMLInputElement).value,
     }
   }
 
@@ -104,19 +112,18 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   async onDeleteContainerFromDialog_() {
     assert(this.deletingContainer_)
-
     try {
-      this.isRemoving = true
+      this.isRemoving_ = true
       await this.browserProxy.handler.removeContainer(
         this.deletingContainer_.id,
       )
     } finally {
-      this.isRemoving = false
+      this.isRemoving_ = false
       this.deletingContainer_ = null
     }
   }
 
-  computeEditingDialogTitle_(): string {
+  getEditDialogTitle_(): string {
     return this.editingContainer_?.id
       ? this.i18n('containersEditContainer')
       : this.i18n('containersAddContainer')
