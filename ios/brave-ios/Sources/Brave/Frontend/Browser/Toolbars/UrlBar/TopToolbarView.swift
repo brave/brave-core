@@ -11,6 +11,7 @@ import DesignSystem
 import Preferences
 import Shared
 import SnapKit
+import SpeechRecognition
 import UIKit
 import Web
 
@@ -70,7 +71,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
   weak var tabToolbarDelegate: ToolbarDelegate?
 
   private var cancellables: Set<AnyCancellable> = []
-  private var privateModeCancellable: AnyCancellable?
   private let privateBrowsingManager: PrivateBrowsingManager
 
   private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
@@ -130,7 +130,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   private var locationTextField: AutocompleteTextField?
 
   lazy var locationView = TabLocationView(
-    voiceSearchSupported: isVoiceSearchAvailable,
+    speechRecognizer: speechRecognizer,
     privateBrowsingManager: privateBrowsingManager
   ).then {
     $0.translatesAutoresizingMaskIntoConstraints = false
@@ -271,7 +271,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = UIColor(braveSystemName: .iconDefault)
-    $0.isHidden = !isVoiceSearchAvailable
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -350,12 +349,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.layer.shadowColor = UIColor.black.cgColor
   }
 
-  private var isVoiceSearchAvailable: Bool
+  private var speechRecognizer: SpeechRecognizer
 
   // MARK: Lifecycle
 
-  init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
-    isVoiceSearchAvailable = voiceSearchSupported
+  init(speechRecognizer: SpeechRecognizer, privateBrowsingManager: PrivateBrowsingManager) {
+    self.speechRecognizer = speechRecognizer
     self.privateBrowsingManager = privateBrowsingManager
 
     super.init(frame: .zero)
@@ -415,7 +414,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // Make sure we hide any views that shouldn't be showing in non-overlay mode.
     updateViewsForOverlayModeAndToolbarChanges()
 
-    privateModeCancellable = privateBrowsingManager
+    privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
@@ -428,6 +427,17 @@ class TopToolbarView: UIView, ToolbarProtocol {
           isBottomToolbar: false
         )
       })
+      .store(in: &cancellables)
+
+    speechRecognizer.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        guard let self else { return }
+        updateLocationBarRightView(
+          showToolbarActions: locationView.urlDisplayLabel.text?.isEmpty == true
+        )
+      }
+      .store(in: &cancellables)
 
     updateURLBarButtonsVisibility()
     helper?.updateForTraitCollection(
@@ -615,9 +625,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if RecentSearchQRCodeScannerController.hasCameraSupport {
       locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
     }
-    if isVoiceSearchAvailable {
-      locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
-    }
+    locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
+    voiceSearchButton.isHidden = !speechRecognizer.isVoiceSearchAvailable
 
     let subviews = [searchImageView, locationTextField, locationBarOptionsStackView]
     locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
@@ -851,7 +860,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       qrCodeButton.isHidden = true
     }
 
-    if isVoiceSearchAvailable {
+    if speechRecognizer.isVoiceSearchAvailable {
       voiceSearchButton.isHidden = !showToolbarActions
     } else {
       voiceSearchButton.isHidden = true

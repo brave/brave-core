@@ -11,6 +11,7 @@ import NaturalLanguage
 import Preferences
 import Shared
 import SnapKit
+import SpeechRecognition
 import Strings
 import UIKit
 import Web
@@ -42,7 +43,7 @@ private struct TabLocationViewUX {
 class TabLocationView: UIView {
   var delegate: TabLocationViewDelegate?
   let contentView = UIView()
-  private var privateModeCancellable: AnyCancellable?
+  private var cancellables: Set<AnyCancellable> = []
 
   var url: URL? {
     didSet {
@@ -262,7 +263,6 @@ class TabLocationView: UIView {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
-    $0.isHidden = !isVoiceSearchAvailable
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
     $0.addTarget(self, action: #selector(didTapVoiceSearchButton), for: .touchUpInside)
@@ -273,7 +273,7 @@ class TabLocationView: UIView {
     $0.insetsLayoutMarginsFromSafeArea = false
   }
 
-  private var isVoiceSearchAvailable: Bool
+  private var speechRecognizer: SpeechRecognizer
   private let privateBrowsingManager: PrivateBrowsingManager
 
   private let placeholderLabel = UILabel().then {
@@ -324,9 +324,9 @@ class TabLocationView: UIView {
     $0.setGradientColors(startColor: .braveBlurpleTint, endColor: .braveBlurpleTint)
   }
 
-  init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
+  init(speechRecognizer: SpeechRecognizer, privateBrowsingManager: PrivateBrowsingManager) {
+    self.speechRecognizer = speechRecognizer
     self.privateBrowsingManager = privateBrowsingManager
-    isVoiceSearchAvailable = voiceSearchSupported
 
     super.init(frame: .zero)
 
@@ -341,10 +341,8 @@ class TabLocationView: UIView {
       leadingItemStackView.addArrangedSubview($0)
     }
 
-    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton]
-    if isVoiceSearchAvailable {
-      trailingOptionSubviews.append(voiceSearchButton)
-    }
+    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton, voiceSearchButton]
+    voiceSearchButton.isHidden = !speechRecognizer.isVoiceSearchAvailable
     trailingOptionSubviews.append(contentsOf: [reloadButton])
 
     trailingOptionSubviews.forEach {
@@ -404,12 +402,20 @@ class TabLocationView: UIView {
       $0.leading.trailing.equalToSuperview()
     }
 
-    privateModeCancellable = privateBrowsingManager.$isPrivateBrowsing
+    privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
       .sink(receiveValue: { [weak self] _ in
         self?.updateColors()
       })
+      .store(in: &cancellables)
+
+    speechRecognizer.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        self?.updateURLBarWithText()
+      }
+      .store(in: &cancellables)
 
     playlistButton.menuActionHandler = { [unowned self] action in
       self.delegate?.tabLocationViewDidTapPlaylistMenuAction(self, action: action)
@@ -572,7 +578,7 @@ class TabLocationView: UIView {
     }
 
     reloadButton.isHidden = url == nil
-    voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable
+    voiceSearchButton.isHidden = (url != nil) || !speechRecognizer.isVoiceSearchAvailable
     placeholderLabel.isHidden = url != nil
     urlDisplayLabel.isHidden = url == nil
     leadingItemStackView.isHidden = url == nil
