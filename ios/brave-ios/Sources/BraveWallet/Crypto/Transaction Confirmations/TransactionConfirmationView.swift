@@ -53,21 +53,44 @@ struct TransactionConfirmationView: View {
   }
 
   @ViewBuilder private var containerView: some View {
-    PendingTransactionView(
-      confirmationStore: confirmationStore,
-      networkStore: networkStore,
-      keyringStore: keyringStore,
-      isShowingGas: $isShowingGas,
-      isShowingAdvancedSettings: $isShowingAdvancedSettings,
-      isTxSubmitting: $confirmationStore.isTxSubmitting,
-      onDismiss: {
-        if confirmationStore.unapprovedTxs.count == 0 {
-          onDismiss()
-        }
-        // update activeTransactionId
-        confirmationStore.updateActiveTxIdAfterSignedClosed()
+    if confirmationStore.unapprovedTxs.isEmpty {
+      VStack {
+        Spacer()
+        Image(braveSystemName: "leo.info.outline")
+          .resizable()
+          .frame(width: 28, height: 28)
+          .padding(16)
+          .background(
+            Color.white.clipShape(.circle)
+          )
+        Text(Strings.Wallet.txConfirmationNoMorePendingTitle)
+          .font(.title3.weight(.semibold))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .padding(.top, 24)
+          .padding(.bottom, 12)
+        Text(Strings.Wallet.txStatusSubmittedDisclosure)
+          .font(.subheadline)
+          .foregroundColor(Color(braveSystemName: .textTertiary))
+        Spacer()
       }
-    )
+      .frame(maxWidth: .infinity)
+    } else {
+      PendingTransactionView(
+        confirmationStore: confirmationStore,
+        networkStore: networkStore,
+        keyringStore: keyringStore,
+        isShowingGas: $isShowingGas,
+        isShowingAdvancedSettings: $isShowingAdvancedSettings,
+        isTxSubmitting: $confirmationStore.isTxSubmitting,
+        onDismiss: {
+          if confirmationStore.unapprovedTxs.isEmpty {
+            onDismiss()
+          }
+          // update activeTransactionId
+          confirmationStore.updateActiveTxIdAfterSignedClosed()
+        }
+      )
+    }
   }
 
   var body: some View {
