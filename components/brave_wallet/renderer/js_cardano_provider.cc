@@ -115,7 +115,8 @@ void JSCardanoProvider::OnEnableResponse(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    const bool success) {
+    const bool success,
+    const std::optional<std::string>& error_message) {
   if (!render_frame()) {
     return;
   }

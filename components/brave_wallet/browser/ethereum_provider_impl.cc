@@ -58,26 +58,28 @@ base::Value::Dict GetJsonRpcRequest(const std::string& method,
 }
 
 // Common logic for filtering the list of accounts based on the selected account
-std::vector<std::string> FilterAccounts(
-    const std::vector<std::string>& accounts,
+std::vector<std::string> FilterAccountsByPermissionIdentifier(
+    const std::vector<std::string>& identifiers,
     const brave_wallet::mojom::AccountInfoPtr& selected_account) {
   // If one of the accounts matches the selected account, then only
   // return that account.  This is for webcompat reasons.
   // Some Dapps select the first account in the list, and some the
   // last. So having only 1 item returned here makes it work for
   // all Dapps.
-  std::vector<std::string> filtered_accounts;
-  for (const auto& account : accounts) {
+  std::vector<std::string> filtered_identifiers;
+  for (const auto& identifier : identifiers) {
     if (selected_account &&
-        base::EqualsCaseInsensitiveASCII(account, selected_account->address)) {
-      filtered_accounts.clear();
-      filtered_accounts.push_back(account);
+        base::EqualsCaseInsensitiveASCII(
+            identifier, brave_wallet::GetAccountPermissionIdentifier(
+                            selected_account->account_id))) {
+      filtered_identifiers.clear();
+      filtered_identifiers.push_back(identifier);
       break;
     } else {
-      filtered_accounts.push_back(account);
+      filtered_identifiers.push_back(identifier);
     }
   }
-  return filtered_accounts;
+  return filtered_identifiers;
 }
 
 }  // namespace
@@ -1078,7 +1080,8 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   std::vector<std::string> addresses;
   for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
     if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      addresses.push_back(account_info->address);
+      addresses.push_back(
+          GetAccountPermissionIdentifier(account_info->account_id));
     }
   }
 
@@ -1153,14 +1156,16 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     const std::string& method,
     const url::Origin& origin,
     RequestPermissionsError error,
-    const std::optional<std::vector<std::string>>& allowed_accounts) {
+    const std::optional<std::vector<std::string>>&
+        allowed_accounts_identifiers) {
   base::Value formed_response;
 
   bool success = error == RequestPermissionsError::kNone;
   std::vector<std::string> accounts;
-  if (success && allowed_accounts) {
-    accounts = FilterAccounts(
-        *allowed_accounts, keyring_service_->GetSelectedEthereumDappAccount());
+  if (success && allowed_accounts_identifiers) {
+    accounts = FilterAccountsByPermissionIdentifier(
+        *allowed_accounts_identifiers,
+        keyring_service_->GetSelectedEthereumDappAccount());
   }
 
   std::string first_allowed_account;
@@ -1207,7 +1212,8 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
   std::vector<std::string> addresses;
   for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
     if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      addresses.push_back(base::ToLowerASCII(account_info->address));
+      addresses.push_back(base::ToLowerASCII(
+          GetAccountPermissionIdentifier(account_info->account_id)));
     }
   }
 
@@ -1224,7 +1230,8 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
 
   std::vector<std::string> filtered_accounts;
   if (!keyring_service_->IsLockedSync() || include_accounts_when_locked) {
-    filtered_accounts = FilterAccounts(*allowed_accounts, selected_account);
+    filtered_accounts = FilterAccountsByPermissionIdentifier(*allowed_accounts,
+                                                             selected_account);
   }
 
   return filtered_accounts;

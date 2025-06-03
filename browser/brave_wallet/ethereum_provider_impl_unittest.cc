@@ -1965,7 +1965,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // If there is allowed account which is also selected then only
   // this account may be used for signin process.
   // another_hd_account is not allowed because it has no permission.
-  // Also see EthereumProviderImpl.FilterAccounts method.
+  // Also see EthereumProviderImpl.FilterAccountsByPermissionIdentifier method.
   auto account_1 = GetAccountUtils().EnsureEthAccount(1);
   SetSelectedAccount(account_1->account_id);
 

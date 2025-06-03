@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/functional/callback.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "content/public/browser/render_frame_host.h"
@@ -110,7 +111,8 @@ void WalletPanelHandler::RequestPermission(
   }
 
   permissions::BraveWalletPermissionContext::RequestPermissions(
-      *permission, rfh, {account_id->address},
+      *permission, rfh,
+      {brave_wallet::GetAccountPermissionIdentifier(account_id)},
       base::BindOnce(
           [](RequestPermissionCallback cb,
              const std::vector<blink::mojom::PermissionStatus>& responses) {

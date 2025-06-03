@@ -178,7 +178,9 @@ export const SelectAccountItem = (props: Props) => {
               text={account.address}
             >
               <AccountAddressText>
-                {reduceAddress(account.address)}
+                {account.accountId.coin === BraveWallet.CoinType.ADA
+                  ? account.name
+                  : reduceAddress(account.accountId.address)}
               </AccountAddressText>
             </Tooltip>
           )}

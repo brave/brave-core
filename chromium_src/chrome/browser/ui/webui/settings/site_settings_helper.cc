@@ -142,7 +142,7 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
       ContentSettingsType::BRAVE_OPEN_AI_CHAT,
-      // TODO(cypt4): Enable ContentSettingsType::BRAVE_CARDANO,
+      ContentSettingsType::BRAVE_CARDANO,
   };
 
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);

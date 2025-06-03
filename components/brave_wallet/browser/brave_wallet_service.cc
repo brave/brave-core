@@ -594,6 +594,11 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
     acc_to_select =
         all_accounts->sol_dapp_selected_account->account_id->Clone();
     DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+  } else if (coin == mojom::CoinType::ADA &&
+             all_accounts->ada_dapp_selected_account) {
+    acc_to_select =
+        all_accounts->ada_dapp_selected_account->account_id->Clone();
+    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
   }
 
   if (!acc_to_select) {
@@ -780,7 +785,7 @@ BraveWalletService::HasPermissionSync(
   std::vector<mojom::AccountIdPtr> result;
   for (auto& account_id : accounts) {
     if (delegate_->HasPermission(account_id->coin, origin,
-                                 account_id->address)) {
+                                 GetAccountPermissionIdentifier(account_id))) {
       result.push_back(account_id->Clone());
     }
   }
@@ -822,8 +827,8 @@ void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
     return;
   }
 
-  std::move(callback).Run(delegate_->ResetPermission(account_id->coin, *origin,
-                                                     account_id->address));
+  std::move(callback).Run(delegate_->ResetPermission(
+      account_id->coin, *origin, GetAccountPermissionIdentifier(account_id)));
 }
 
 void BraveWalletService::IsPermissionDenied(

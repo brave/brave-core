@@ -9,24 +9,29 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
+#include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
-class BraveWalletService;
 
-class CardanoProviderImpl final : public mojom::CardanoProvider {
+class CardanoProviderImpl final : public mojom::CardanoProvider,
+                                  public KeyringServiceObserverBase {
  public:
   CardanoProviderImpl(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl& operator=(const CardanoProviderImpl&) = delete;
-  CardanoProviderImpl(HostContentSettingsMap& host_content_settings_map,
-                      BraveWalletService* brave_wallet_service,
+  CardanoProviderImpl(KeyringService& keyring_service,
                       std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~CardanoProviderImpl() override;
 
+  // mojom::CardanoProvider
   void Enable(EnableCallback callback) override;
   void IsEnabled(IsEnabledCallback callback) override;
 
@@ -51,9 +56,39 @@ class CardanoProviderImpl final : public mojom::CardanoProvider {
                      GetCollateralCallback callback) override;
 
  private:
-  const raw_ref<HostContentSettingsMap> host_content_settings_map_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  friend class CardanoProviderImplUnitTest;
+
+  mojom::AccountIdPtr GetAllowedSelectedAccount();
+
+  BraveWalletProviderDelegate* delegate();
+
+  // KeyringServiceObserverBase:
+  void Locked() override;
+  void Unlocked() override;
+  void SelectedDappAccountChanged(mojom::CoinType coin,
+                                  mojom::AccountInfoPtr account) override;
+
+  void RequestCardanoPermissions(EnableCallback callback,
+                                 const url::Origin& origin);
+
+  void OnRequestCardanoPermissions(
+      EnableCallback callback,
+      const url::Origin& origin,
+      mojom::RequestPermissionsError error,
+      const std::optional<std::vector<std::string>>& allowed_accounts);
+
+  raw_ref<KeyringService> keyring_service_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+
+  std::optional<EnableCallback> pending_request_cardano_permissions_callback_;
+
+  url::Origin pending_request_cardano_permissions_origin_;
+  bool wallet_onboarding_shown_ = false;
+
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
+
+  base::WeakPtrFactory<CardanoProviderImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

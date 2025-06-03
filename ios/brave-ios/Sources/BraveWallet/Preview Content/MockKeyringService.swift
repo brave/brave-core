@@ -554,6 +554,20 @@ extension BraveWallet.AccountInfo {
     name: "Zcash Testnet 1",
     hardware: nil
   )
+
+  static let mockAdaAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .ada,
+      keyringId: BraveWallet.KeyringId.cardanoMainnet,
+      kind: .derived,
+      address: "",
+      accountIndex: 0,
+      uniqueKey: "1815_0_0_0"
+    ),
+    address: "",
+    name: "Cardano Account 1",
+    hardware: nil
+  )
 }
 
 extension BraveWallet.AllAccountsInfo {
@@ -568,6 +582,7 @@ extension BraveWallet.AllAccountsInfo {
     ],
     selectedAccount: .mockEthAccount,
     ethDappSelectedAccount: .mockEthAccount,
-    solDappSelectedAccount: .mockSolAccount
+    solDappSelectedAccount: .mockSolAccount,
+    adaDappSelectedAccount: .mockAdaAccount
   )
 }

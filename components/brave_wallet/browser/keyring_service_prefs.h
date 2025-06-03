@@ -67,6 +67,8 @@ base::Value::Dict& GetDictPrefForKeyringUpdate(
 uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
                                   mojom::KeyringId keyring_id);
 
+std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
+                                            mojom::CoinType dapp_coin);
 bool SetSelectedWalletAccountInPrefs(PrefService* profile_prefs,
                                      const std::string& unique_key);
 bool SetSelectedDappAccountInPrefs(PrefService* profile_prefs,
