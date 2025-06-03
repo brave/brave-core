@@ -145,6 +145,10 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     tab.didFailNavigation(with: error)
   }
 
+  func webViewWebContentProcessDidTerminate(_ webView: CWVWebView) {
+    tab?.renderProcessTerminated()
+  }
+
   public func webView(_ webView: CWVWebView, didRequestDownloadWith task: CWVDownloadTask) {
     guard let tab else { return }
     let pendingDownload = ChromiumDownload(

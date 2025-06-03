@@ -147,4 +147,10 @@ extension TabStateImpl {
       $0.tab(self, didFailNavigationWithError: error)
     }
   }
+
+  func renderProcessTerminated() {
+    observers.forEach {
+      $0.tabRenderProcessDidTerminate(self)
+    }
+  }
 }
