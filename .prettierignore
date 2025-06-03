@@ -65,17 +65,11 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/brave_new_tab_ui/
 /components/brave_rewards/
 /components/brave_wallet/
-/components/brave_wallet_ui/constants/
-/components/brave_wallet_ui/ledger/
-/components/brave_wallet_ui/line_chart/
 /components/brave_wallet_ui/market/
 /components/brave_wallet_ui/mocks/
 /components/brave_wallet_ui/nft/
-/components/brave_wallet_ui/options/
 /components/brave_wallet_ui/panel/
 /components/brave_wallet_ui/stories/
-/components/brave_wallet_ui/theme/
-/components/brave_wallet_ui/trezor/
 /components/brave_shields/
 /components/brave_vpn/
 /components/brave_news/

@@ -12,38 +12,38 @@ import { MarketGridHeader } from '../constants/types'
 export const marketGridHeaders: MarketGridHeader[] = [
   {
     id: 'assets',
-    label: getLocale('braveWalletMarketDataAssetsColumn')
+    label: getLocale('braveWalletMarketDataAssetsColumn'),
   },
   {
     id: 'currentPrice',
     label: getLocale('braveWalletMarketDataPriceColumn'),
-    sortable: true
+    sortable: true,
   },
   {
     id: 'priceChangePercentage24h',
     label: getLocale('braveWalletMarketData24HrColumn'),
     sortable: true,
-    width: '80px'
+    width: '80px',
   },
   {
     id: 'marketCap',
     label: getLocale('braveWalletMarketDataMarketCapColumn'),
     sortable: true,
     width: '90px',
-    hideOnPanel: true
+    hideOnPanel: true,
   },
   {
     id: 'totalVolume',
     label: getLocale('braveWalletMarketDataVolumeColumn'),
     sortable: true,
     hideOnPanel: true,
-    width: '95px'
+    width: '95px',
   },
   {
     id: 'actions',
     label: 'Buy/Deposit',
     sortable: false,
     hideOnPanel: true,
-    width: '130px'
-  }
+    width: '130px',
+  },
 ]

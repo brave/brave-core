@@ -15,8 +15,8 @@ const walletDarkTheme: ITheme & IThemeWallet = {
     ...defaultDarkTheme.color,
     text: colors.white,
     panelBackground: colors.grey900,
-    outlineColor: 'rgba(255,255,255,0.5)'
-  }
+    outlineColor: 'rgba(255,255,255,0.5)',
+  },
 }
 
 export default walletDarkTheme

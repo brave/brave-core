@@ -14,7 +14,7 @@ import { formatTimelineDate } from '../../utils/datetime-utils'
 import {
   TooltipWrapper,
   ChartBalance,
-  ChartDate
+  ChartDate,
 } from './custom_tooltip.styles'
 
 type Props = TooltipProps<number, number> & {
@@ -31,7 +31,7 @@ export function CustomTooltip({
   payload,
   viewBox,
   defaultFiatCurrency,
-  hidePortfolioBalances
+  hidePortfolioBalances,
 }: Props) {
   // Effects
   React.useLayoutEffect(() => {
@@ -50,7 +50,7 @@ export function CustomTooltip({
     const middleEndTranslate =
       xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) - 4
     const balance = new Amount(payload[0].value).formatAsFiat(
-      defaultFiatCurrency
+      defaultFiatCurrency,
     )
 
     return (

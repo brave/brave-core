@@ -9,7 +9,7 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   ExternalWallet,
-  ExternalWalletProvider
+  ExternalWalletProvider,
 } from '../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
@@ -26,7 +26,7 @@ export {
   MeldPaymentMethod,
   MeldCryptoWidget,
   CryptoBuySessionData,
-  CryptoWidgetCustomerData
+  CryptoWidgetCustomerData,
 } from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export type NftDropdownOptionId = 'collected' | 'hidden'
 
@@ -355,8 +355,8 @@ export type SerializableSolanaTxDataMaxRetries = {
 }
 
 export type SerializableSolanaTxDataSendOptions =
-  | (Omit<Defined<BraveWallet.SolanaSendTransactionOptions>, 'maxRetries'> &
-      SerializableSolanaTxDataMaxRetries)
+  | (Omit<Defined<BraveWallet.SolanaSendTransactionOptions>, 'maxRetries'>
+      & SerializableSolanaTxDataMaxRetries)
   | undefined
 
 export type SerializableSolanaTxData = Omit<
@@ -452,7 +452,7 @@ export const BuySupportedChains = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.FILECOIN_MAINNET,
-  BraveWallet.FANTOM_MAINNET_CHAIN_ID
+  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
 ]
 
 export type TransactionPanelPayload = {
@@ -479,12 +479,12 @@ export enum WalletRoutes {
   OnboardingNewWalletNetworkSelection = '/crypto/onboarding/new/networks',
   OnboardingNewWalletCreatePassword = '/crypto/onboarding/new/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/new/backup-wallet',
-  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new' +
-    '/explain-recovery-phrase',
-  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/new' +
-    '/backup-recovery-phrase',
-  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/new' +
-    '/verify-recovery-phrase',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new'
+    + '/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/new'
+    + '/backup-recovery-phrase',
+  OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/new'
+    + '/verify-recovery-phrase',
 
   // onboarding (import & restore)
   OnboardingImportStart = '/crypto/onboarding/import',
@@ -507,12 +507,12 @@ export enum WalletRoutes {
   OnboardingImportHardwareWalletWelcome = '/crypto/onboarding/hardware/welcome',
   OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
   OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect',
-  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/' +
-    'hardware/select-device/:accountTypeName?',
-  OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware' +
-    '/networks',
-  OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +
-    'hardware/create-password',
+  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/'
+    + 'hardware/select-device/:accountTypeName?',
+  OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware'
+    + '/networks',
+  OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/'
+    + 'hardware/create-password',
 
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
@@ -602,13 +602,13 @@ export enum WalletRoutes {
   AccountsHash = '#accounts',
   TransactionsHash = '#transactions',
   MyAssetsHash = '#my-assets',
-  AvailableAssetsHash = '#available-assets'
+  AvailableAssetsHash = '#available-assets',
 }
 
 export const AccountPageTabs = {
   AccountAssetsSub: 'assets',
   AccountNFTsSub: 'nfts',
-  AccountTransactionsSub: 'transactions'
+  AccountTransactionsSub: 'transactions',
 } as const
 
 export const WalletOrigin = 'chrome://wallet'
@@ -675,7 +675,7 @@ export const emptyProviderErrorCodeUnion: BraveWallet.ProviderErrorUnion = {
   bitcoinProviderError: undefined,
   filecoinProviderError: undefined,
   solanaProviderError: undefined,
-  cardanoProviderError: undefined
+  cardanoProviderError: undefined,
 }
 
 export interface TransactionProviderErrorRegistry {
@@ -694,7 +694,7 @@ export const SupportedOnRampNetworks = [
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
   BraveWallet.AURORA_MAINNET_CHAIN_ID,
-  BraveWallet.BITCOIN_MAINNET
+  BraveWallet.BITCOIN_MAINNET,
 ]
 
 export const SupportedOffRampNetworks = [
@@ -707,7 +707,7 @@ export const SupportedOffRampNetworks = [
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.BITCOIN_MAINNET
+  BraveWallet.BITCOIN_MAINNET,
 ]
 
 export const SupportedTestNetworks = [
@@ -719,7 +719,7 @@ export const SupportedTestNetworks = [
   BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
   BraveWallet.BITCOIN_TESTNET,
   BraveWallet.Z_CASH_TESTNET,
-  BraveWallet.CARDANO_TESTNET
+  BraveWallet.CARDANO_TESTNET,
 ]
 
 export const SupportedTestNetworkEntityIds: EntityId[] = [
@@ -735,34 +735,34 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
   BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
   BraveWallet.BITCOIN_TESTNET,
   BraveWallet.Z_CASH_TESTNET,
-  BraveWallet.CARDANO_TESTNET
+  BraveWallet.CARDANO_TESTNET,
 ]
 
 export const DAppSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH
+  BraveWallet.CoinType.ETH,
 ]
 
 export const CustomAssetSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH
+  BraveWallet.CoinType.ETH,
 ]
 
 export const DAppSupportedPrimaryChains = [
   BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.SOLANA_MAINNET
+  BraveWallet.SOLANA_MAINNET,
 ]
 
 export const BitcoinMainnetKeyringIds = [
   BraveWallet.KeyringId.kBitcoin84,
   BraveWallet.KeyringId.kBitcoinImport,
-  BraveWallet.KeyringId.kBitcoinHardware
+  BraveWallet.KeyringId.kBitcoinHardware,
 ]
 
 export const BitcoinTestnetKeyringIds = [
   BraveWallet.KeyringId.kBitcoin84Testnet,
   BraveWallet.KeyringId.kBitcoinImportTestnet,
-  BraveWallet.KeyringId.kBitcoinHardwareTestnet
+  BraveWallet.KeyringId.kBitcoinHardwareTestnet,
 ]
 
 export const ZCashTestnetKeyringIds = [BraveWallet.KeyringId.kZCashTestnet]
@@ -781,7 +781,7 @@ export const CoinTypes = {
   SOL: 501,
   ADA: 1815,
   MIN_VALUE: 0,
-  MAX_VALUE: 501
+  MAX_VALUE: 501,
 } as const
 
 export type CoinType = (typeof CoinTypes)[keyof typeof CoinTypes]
@@ -792,7 +792,7 @@ export enum CoinTypesMap {
   SOL = BraveWallet.CoinType.SOL,
   BTC = BraveWallet.CoinType.BTC,
   ZEC = BraveWallet.CoinType.ZEC,
-  ADA = BraveWallet.CoinType.ADA
+  ADA = BraveWallet.CoinType.ADA,
 }
 
 export type BuyOption = {
@@ -890,7 +890,7 @@ export type SendPageTabHashes =
 
 export const SendPageTabHashes = {
   token: '#token',
-  nft: '#nft'
+  nft: '#nft',
 } as const
 
 export type NavIDTypes =
@@ -927,7 +927,7 @@ export enum TokenStandards {
   ERC721 = 'ERC721',
   ERC20 = 'ERC20',
   ERC1155 = 'ERC1155',
-  SPL = 'SPL'
+  SPL = 'SPL',
 }
 export interface CommonNftMetadata {
   attributes?: any[]
@@ -956,7 +956,7 @@ export enum AddressMessageInfoIds {
   zcashInvalidUnifiedAddressError = 11,
   zcashInvalidUnifiedAddressMissingTransparentPartError = 12,
   zcashInvalidUnifiedAddressMissingOrchardPartError = 13,
-  zcashInvalidAddressNetworkMismatchError = 14
+  zcashInvalidAddressNetworkMismatchError = 14,
 }
 
 export type AddressMessageInfo = {
@@ -988,35 +988,35 @@ export type DAppConnectedPermissionsOption = {
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET,
-  BraveWallet.FILECOIN_TESTNET
+  BraveWallet.FILECOIN_TESTNET,
 ] as const
 export type FilecoinNetwork = (typeof FilecoinNetworkTypes)[number]
 
 export const FilecoinNetworkLocaleMapping = {
   [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
-  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
+  [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet',
 }
 
 export const BitcoinNetworkTypes = [
   BraveWallet.BITCOIN_MAINNET,
-  BraveWallet.BITCOIN_TESTNET
+  BraveWallet.BITCOIN_TESTNET,
 ] as const
 export type BitcoinNetwork = (typeof BitcoinNetworkTypes)[number]
 
 export const ZCashNetworkTypes = [
   BraveWallet.Z_CASH_MAINNET,
-  BraveWallet.Z_CASH_TESTNET
+  BraveWallet.Z_CASH_TESTNET,
 ] as const
 export type ZCashNetwork = (typeof ZCashNetworkTypes)[number]
 
 export const BitcoinNetworkLocaleMapping = {
   [BraveWallet.BITCOIN_MAINNET]: 'Bitcoin Mainnet',
-  [BraveWallet.BITCOIN_TESTNET]: 'Bitcoin Testnet'
+  [BraveWallet.BITCOIN_TESTNET]: 'Bitcoin Testnet',
 }
 
 export const ZCashNetworkLocaleMapping = {
   [BraveWallet.Z_CASH_MAINNET]: 'ZCash Mainnet',
-  [BraveWallet.Z_CASH_TESTNET]: 'ZCash Testnet'
+  [BraveWallet.Z_CASH_TESTNET]: 'ZCash Testnet',
 }
 
 export type GasFeeOption = {
@@ -1038,7 +1038,7 @@ export type SwapAndSend = {
 
 export enum SignDataSteps {
   SignRisk = 0,
-  SignData = 1
+  SignData = 1,
 }
 
 export interface LineChartIframeData {
@@ -1076,14 +1076,14 @@ export type BitcoinBalances = {
 export const WalletStatus = {
   kNotConnected: 0,
   kConnected: 2,
-  kLoggedOut: 4
+  kLoggedOut: 4,
 } as const
 
 export const externalWalletProviders = [
   'uphold',
   'bitflyer',
   'gemini',
-  'zebpay'
+  'zebpay',
 ]
 
 export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
@@ -1102,7 +1102,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kJupiter]: 'Jupiter',
   [BraveWallet.SwapProvider.kZeroEx]: '0x',
   [BraveWallet.SwapProvider.kLiFi]: 'LI.FI',
-  [BraveWallet.SwapProvider.kSquid]: 'Squid'
+  [BraveWallet.SwapProvider.kSquid]: 'Squid',
 }
 
 export const SupportedSwapProviders = [
@@ -1110,7 +1110,7 @@ export const SupportedSwapProviders = [
   BraveWallet.SwapProvider.kJupiter,
   BraveWallet.SwapProvider.kZeroEx,
   BraveWallet.SwapProvider.kLiFi,
-  BraveWallet.SwapProvider.kSquid
+  BraveWallet.SwapProvider.kSquid,
 ]
 
 export type StorybookTransactionTypes = 'Send' | 'Swap' | 'Bridge' | 'Approve'
@@ -1118,7 +1118,7 @@ export const StorybookTransactionOptions: StorybookTransactionTypes[] = [
   'Send',
   'Swap',
   'Bridge',
-  'Approve'
+  'Approve',
 ]
 
 export type StorybookCoinTypes = 'ETH' | 'SOL' | 'BTC' | 'ZEC' | 'FIL'
@@ -1127,7 +1127,7 @@ export const StorybookCoinTypeOptions: StorybookCoinTypes[] = [
   'SOL',
   'BTC',
   'ZEC',
-  'FIL'
+  'FIL',
 ]
 
 export type StorybookTransactionArgs = {

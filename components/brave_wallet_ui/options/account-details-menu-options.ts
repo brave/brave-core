@@ -9,26 +9,26 @@ export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'edit',
     name: 'braveWalletAllowSpendEditButton',
-    icon: 'edit-pencil'
+    icon: 'edit-pencil',
   },
   {
     id: 'explorer',
     name: 'braveWalletTransactionExplorer',
-    icon: 'web3-blockexplorer'
+    icon: 'web3-blockexplorer',
   },
   {
     id: 'deposit',
     name: 'braveWalletAccountsDeposit',
-    icon: 'money-bag-coins'
+    icon: 'money-bag-coins',
   },
   {
     id: 'privateKey',
     name: 'braveWalletAccountsExport',
-    icon: 'key'
+    icon: 'key',
   },
   {
     id: 'remove',
     name: 'braveWalletAccountsRemove',
-    icon: 'trash'
-  }
+    icon: 'trash',
+  },
 ]

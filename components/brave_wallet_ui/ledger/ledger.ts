@@ -5,11 +5,11 @@
 
 import {
   LedgerCommand,
-  LEDGER_BRIDGE_URL
+  LEDGER_BRIDGE_URL,
 } from '../common/hardware/ledgerjs/ledger-messages'
 import {
   BridgeType,
-  BridgeTypes
+  BridgeTypes,
 } from '../common/hardware/untrusted_shared_types'
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
@@ -19,11 +19,11 @@ import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/led
 
 const setUpAuthorizeButtonListener = (
   targetUrl: string,
-  bridgeType: string
+  bridgeType: string,
 ) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(
     bridgeType,
-    targetUrl
+    targetUrl,
   )
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
@@ -33,7 +33,7 @@ const setUpAuthorizeButtonListener = (
           untrustedMessagingTransport.sendCommand({
             id: LedgerCommand.AuthorizationSuccess,
             origin: LEDGER_BRIDGE_URL,
-            command: LedgerCommand.AuthorizationSuccess
+            command: LedgerCommand.AuthorizationSuccess,
           })
         })
       })
@@ -43,28 +43,28 @@ const setUpAuthorizeButtonListener = (
 
 const getUntrustedMessagingTransport = (
   bridgeType: string,
-  targetUrl: string
+  targetUrl: string,
 ): LedgerUntrustedMessagingTransport => {
   switch (bridgeType as BridgeType) {
     case BridgeTypes.SolLedger:
       return new SolanaLedgerUntrustedMessagingTransport(
         window.parent,
-        targetUrl
+        targetUrl,
       )
     case BridgeTypes.EthLedger:
       return new EthereumLedgerUntrustedMessagingTransport(
         window.parent,
-        targetUrl
+        targetUrl,
       )
     case BridgeTypes.FilLedger:
       return new FilecoinLedgerUntrustedMessagingTransport(
         window.parent,
-        targetUrl
+        targetUrl,
       )
     case BridgeTypes.BtcLedger:
       return new BitcoinLedgerUntrustedMessagingTransport(
         window.parent,
-        targetUrl
+        targetUrl,
       )
     default:
       throw new Error(`Invalid bridgeType ${bridgeType}`)

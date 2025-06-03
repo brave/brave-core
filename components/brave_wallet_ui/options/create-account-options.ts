@@ -15,7 +15,7 @@ export const CreateAccountOptions = (options: {
 }): CreateAccountOptionsType[] => {
   const isNetworkVisible = (coin: BraveWallet.CoinType, chaiId: string) => {
     return !!options.visibleNetworks.find(
-      (n) => n.coin === coin && n.chainId === chaiId
+      (n) => n.coin === coin && n.chainId === chaiId,
     )
   }
 
@@ -27,7 +27,7 @@ export const CreateAccountOptions = (options: {
     name: 'Ethereum',
     coin: BraveWallet.CoinType.ETH,
     icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH'),
-    chainIcons: ['eth-color', 'matic-color', 'op-color', 'aurora-color']
+    chainIcons: ['eth-color', 'matic-color', 'op-color', 'aurora-color'],
   })
 
   accounts.push({
@@ -35,7 +35,7 @@ export const CreateAccountOptions = (options: {
     name: 'Solana',
     coin: BraveWallet.CoinType.SOL,
     icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL'),
-    chainIcons: ['sol-color']
+    chainIcons: ['sol-color'],
   })
 
   accounts.push({
@@ -44,20 +44,20 @@ export const CreateAccountOptions = (options: {
     coin: BraveWallet.CoinType.FIL,
     fixedNetwork: BraveWallet.FILECOIN_MAINNET,
     icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL'),
-    chainIcons: ['filecoin-color']
+    chainIcons: ['filecoin-color'],
   })
   if (
     isNetworkVisible(BraveWallet.CoinType.FIL, BraveWallet.FILECOIN_TESTNET)
   ) {
     testnetAccounts.push({
       description: getLocale(
-        'braveWalletCreateAccountFilecoinTestnetDescription'
+        'braveWalletCreateAccountFilecoinTestnetDescription',
       ),
       name: 'Filecoin Testnet',
       coin: BraveWallet.CoinType.FIL,
       fixedNetwork: BraveWallet.FILECOIN_TESTNET,
       icon: getNetworkLogo(BraveWallet.FILECOIN_TESTNET, 'FIL'),
-      chainIcons: ['filecoin-color']
+      chainIcons: ['filecoin-color'],
     })
   }
 
@@ -68,20 +68,20 @@ export const CreateAccountOptions = (options: {
       fixedNetwork: BraveWallet.BITCOIN_MAINNET,
       coin: BraveWallet.CoinType.BTC,
       icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC'),
-      chainIcons: ['btc-color']
+      chainIcons: ['btc-color'],
     })
     if (
       isNetworkVisible(BraveWallet.CoinType.BTC, BraveWallet.BITCOIN_TESTNET)
     ) {
       testnetAccounts.push({
         description: getLocale(
-          'braveWalletCreateAccountBitcoinTestnetDescription'
+          'braveWalletCreateAccountBitcoinTestnetDescription',
         ),
         name: 'Bitcoin Testnet',
         fixedNetwork: BraveWallet.BITCOIN_TESTNET,
         coin: BraveWallet.CoinType.BTC,
         icon: getNetworkLogo(BraveWallet.BITCOIN_TESTNET, 'BTC'),
-        chainIcons: ['btc-color']
+        chainIcons: ['btc-color'],
       })
     }
   }
@@ -93,20 +93,20 @@ export const CreateAccountOptions = (options: {
       fixedNetwork: BraveWallet.Z_CASH_MAINNET,
       coin: BraveWallet.CoinType.ZEC,
       icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC'),
-      chainIcons: []
+      chainIcons: [],
     })
     if (
       isNetworkVisible(BraveWallet.CoinType.ZEC, BraveWallet.Z_CASH_TESTNET)
     ) {
       testnetAccounts.push({
         description: getLocale(
-          'braveWalletCreateAccountZCashTestnetDescription'
+          'braveWalletCreateAccountZCashTestnetDescription',
         ),
         name: 'Zcash Testnet',
         fixedNetwork: BraveWallet.Z_CASH_TESTNET,
         coin: BraveWallet.CoinType.ZEC,
         icon: getNetworkLogo(BraveWallet.Z_CASH_TESTNET, 'ZEC'),
-        chainIcons: []
+        chainIcons: [],
       })
     }
 
@@ -117,20 +117,20 @@ export const CreateAccountOptions = (options: {
         fixedNetwork: BraveWallet.CARDANO_MAINNET,
         coin: BraveWallet.CoinType.ADA,
         icon: getNetworkLogo(BraveWallet.CARDANO_MAINNET, 'ADA'),
-        chainIcons: ['ada-color']
+        chainIcons: ['ada-color'],
       })
       if (
         isNetworkVisible(BraveWallet.CoinType.ADA, BraveWallet.CARDANO_TESTNET)
       ) {
         testnetAccounts.push({
           description: getLocale(
-            'braveWalletCreateAccountCardanoTestnetDescription'
+            'braveWalletCreateAccountCardanoTestnetDescription',
           ),
           name: 'Cardano Testnet',
           fixedNetwork: BraveWallet.CARDANO_TESTNET,
           coin: BraveWallet.CoinType.ADA,
           icon: getNetworkLogo(BraveWallet.CARDANO_TESTNET, 'ADA'),
-          chainIcons: ['ada-color']
+          chainIcons: ['ada-color'],
         })
       }
     }

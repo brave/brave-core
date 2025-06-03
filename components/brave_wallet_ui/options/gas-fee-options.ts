@@ -9,14 +9,14 @@ import { GasFeeOption } from '../constants/types'
 export const gasFeeOptions: GasFeeOption[] = [
   {
     id: 'slow',
-    name: 'braveSwapSlow'
+    name: 'braveSwapSlow',
   },
   {
     id: 'average',
-    name: 'braveSwapAverage'
+    name: 'braveSwapAverage',
   },
   {
     id: 'fast',
-    name: 'braveSwapFast'
-  }
+    name: 'braveSwapFast',
+  },
 ]

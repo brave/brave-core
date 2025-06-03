@@ -9,10 +9,10 @@ import { TabOption } from '../components/shared/tabs/tabs'
 export const CUSTOM_ASSET_NAV_OPTIONS: TabOption[] = [
   {
     id: 'token',
-    label: getLocale('braveWalletAddAssetTokenTabTitle')
+    label: getLocale('braveWalletAddAssetTokenTabTitle'),
   },
   {
     id: 'nft',
-    label: getLocale('braveWalletAddAssetNftTabTitle')
-  }
+    label: getLocale('braveWalletAddAssetNftTabTitle'),
+  },
 ]

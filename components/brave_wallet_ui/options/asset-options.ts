@@ -29,15 +29,14 @@ import {
   MATICIcon,
   SOLIcon,
   ZECIcon,
-  CardanoIcon
+  CardanoIcon,
 } from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) return AuroraIcon
   if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) return OpIcon
   if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) return MATICIcon
-  if (chainId === BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID)
-    return BNBIcon
+  if (chainId === BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID) return BNBIcon
   if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) return AVAXIcon
   if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) return FtmIcon
   if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) return CeloIcon
@@ -68,15 +67,15 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
 export const makeNativeAssetLogo = (symbol: string, chainId: string) => {
   return getNetworkLogo(
     symbol.toUpperCase() === 'ETH' ? BraveWallet.MAINNET_CHAIN_ID : chainId,
-    symbol
+    symbol,
   )
 }
 
 type UndefinedIf<R, T> = T extends undefined ? undefined : R
 export const makeNetworkAsset = <
-  T extends BraveWallet.NetworkInfo | undefined | null
+  T extends BraveWallet.NetworkInfo | undefined | null,
 >(
-  network: T
+  network: T,
 ): UndefinedIf<BraveWallet.BlockchainToken, T> => {
   if (!network) {
     return undefined as UndefinedIf<BraveWallet.BlockchainToken, T>
@@ -101,6 +100,6 @@ export const makeNetworkAsset = <
         ? SKIP_PRICE_LOOKUP_COINGECKO_ID
         : '',
     chainId: network.chainId,
-    coin: network.coin
+    coin: network.coin,
   } as UndefinedIf<BraveWallet.BlockchainToken, T>
 }

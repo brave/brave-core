@@ -7,21 +7,21 @@ import { DropdownFilterOption } from '../constants/types'
 
 export const NoneGroupByOption: DropdownFilterOption = {
   id: 'none',
-  name: 'braveWalletNone'
+  name: 'braveWalletNone',
 }
 
 export const AccountsGroupByOption: DropdownFilterOption = {
   id: 'accounts',
-  name: 'braveWalletAccounts'
+  name: 'braveWalletAccounts',
 }
 
 export const NetworksGroupByOption: DropdownFilterOption = {
   id: 'networks',
-  name: 'braveWalletNetworks'
+  name: 'braveWalletNetworks',
 }
 
 export const GroupAssetsByOptions: DropdownFilterOption[] = [
   NoneGroupByOption,
   AccountsGroupByOption,
-  NetworksGroupByOption
+  NetworksGroupByOption,
 ]

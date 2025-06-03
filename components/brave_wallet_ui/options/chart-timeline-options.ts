@@ -8,36 +8,36 @@ export const ChartTimelineOptions: ChartTimelineObjectType[] = [
   {
     abr: 'braveWalletChartOneHourAbbr',
     name: 'braveWalletChartOneHour',
-    id: 0
+    id: 0,
   },
   {
     abr: 'braveWalletChartOneDayAbbr',
     name: 'braveWalletChartOneDay',
-    id: 1
+    id: 1,
   },
   {
     abr: 'braveWalletChartOneWeekAbbr',
     name: 'braveWalletChartOneWeek',
-    id: 2
+    id: 2,
   },
   {
     abr: 'braveWalletChartOneMonthAbbr',
     name: 'braveWalletChartOneMonth',
-    id: 3
+    id: 3,
   },
   {
     abr: 'braveWalletChartThreeMonthsAbbr',
     name: 'braveWalletChartThreeMonths',
-    id: 4
+    id: 4,
   },
   {
     abr: 'braveWalletChartOneYearAbbr',
     name: 'braveWalletChartOneYear',
-    id: 5
+    id: 5,
   },
   {
     abr: 'braveWalletChartAllTimeAbbr',
     name: 'braveWalletChartAllTime',
-    id: 6
-  }
+    id: 6,
+  },
 ]
