@@ -17,9 +17,9 @@ const panelViewport = {
     name: 'Wallet Panel',
     styles: {
       width: '390px',
-      height: '650px'
-    }
-  }
+      height: '650px',
+    },
+  },
 }
 
 export default {
@@ -27,15 +27,15 @@ export default {
   argTypes: {
     isPanel: { control: { type: 'boolean', onboard: false } },
     onboarding: { control: { type: 'boolean', onboard: false } },
-    locked: { control: { type: 'boolean', lock: false } }
+    locked: { control: { type: 'boolean', lock: false } },
   },
   parameters: {
     viewport: {
       viewports: {
-        ...panelViewport
-      }
-    }
-  }
+        ...panelViewport,
+      },
+    },
+  },
 }
 
 export const _DesktopWalletConcept = {
@@ -46,19 +46,19 @@ export const _DesktopWalletConcept = {
     return (
       <WalletPageStory
         walletStateOverride={{
-          isWalletCreated: true
+          isWalletCreated: true,
         }}
         pageStateOverride={{
-          hasInitialized: true
+          hasInitialized: true,
         }}
         uiStateOverride={{
-          isPanel: isPanel
+          isPanel: isPanel,
         }}
       >
         <Container />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export const _WalletOnboardingConcept = {
@@ -66,14 +66,14 @@ export const _WalletOnboardingConcept = {
     return (
       <WalletPageStory
         walletStateOverride={{
-          isWalletCreated: false
+          isWalletCreated: false,
         }}
         pageStateOverride={{
-          setupStillInProgress: true
+          setupStillInProgress: true,
         }}
       >
         <Container />
       </WalletPageStory>
     )
-  }
+  },
 }

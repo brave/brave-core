@@ -40,7 +40,7 @@ export const WalletPanelStory: React.FC<
   panelStateOverride,
   walletStateOverride,
   uiStateOverride,
-  walletApiDataOverrides
+  walletApiDataOverrides,
 }) => {
   // redux
   const store = React.useMemo(() => {
@@ -48,15 +48,15 @@ export const WalletPanelStory: React.FC<
       {
         walletStateOverride,
         panelStateOverride,
-        uiStateOverride: uiStateOverride
+        uiStateOverride: uiStateOverride,
       },
-      walletApiDataOverrides
+      walletApiDataOverrides,
     )
   }, [
     walletStateOverride,
     panelStateOverride,
     walletApiDataOverrides,
-    uiStateOverride
+    uiStateOverride,
   ])
 
   React.useEffect(() => {
@@ -72,7 +72,7 @@ export const WalletPanelStory: React.FC<
 }
 
 export const WalletPanelTestWrapper = (
-  props: React.PropsWithChildren<WalletPanelStoryProps>
+  props: React.PropsWithChildren<WalletPanelStoryProps>,
 ) => (
   <LightDarkThemeProvider
     initialThemeType={'Light'}

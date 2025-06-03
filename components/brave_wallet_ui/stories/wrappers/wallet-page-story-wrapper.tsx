@@ -19,7 +19,7 @@ import {
   PageState,
   WalletRoutes,
   WalletState,
-  UIState
+  UIState,
 } from '../../constants/types'
 
 // theme
@@ -49,7 +49,7 @@ export const WalletPageStory: React.FC<
   accountTabStateOverride,
   uiStateOverride,
   apiOverrides,
-  initialRoute
+  initialRoute,
 }) => {
   // redux
   const store = React.useMemo(() => {
@@ -58,16 +58,16 @@ export const WalletPageStory: React.FC<
         accountTabStateOverride,
         pageStateOverride,
         walletStateOverride,
-        uiStateOverride
+        uiStateOverride,
       },
-      apiOverrides
+      apiOverrides,
     )
   }, [
     accountTabStateOverride,
     pageStateOverride,
     walletStateOverride,
     uiStateOverride,
-    apiOverrides
+    apiOverrides,
   ])
 
   React.useEffect(() => {
@@ -84,9 +84,7 @@ export const WalletPageStory: React.FC<
       <MemoryRouter
         initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
       >
-        <Provider store={store}>
-            {children}
-        </Provider>
+        <Provider store={store}>{children}</Provider>
       </MemoryRouter>
     </LightDarkThemeProvider>
   )

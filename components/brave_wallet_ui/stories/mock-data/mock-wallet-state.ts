@@ -20,36 +20,36 @@ export const mockWalletState: WalletState = {
   allowedNewWalletAccountTypeNetworkIds: [
     networkEntityAdapter.selectId({
       chainId: BraveWallet.FILECOIN_MAINNET,
-      coin: BraveWallet.CoinType.FIL
+      coin: BraveWallet.CoinType.FIL,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.FILECOIN_TESTNET,
-      coin: BraveWallet.CoinType.FIL
+      coin: BraveWallet.CoinType.FIL,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.BITCOIN_MAINNET,
-      coin: BraveWallet.CoinType.BTC
+      coin: BraveWallet.CoinType.BTC,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.BITCOIN_TESTNET,
-      coin: BraveWallet.CoinType.BTC
+      coin: BraveWallet.CoinType.BTC,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.Z_CASH_MAINNET,
-      coin: BraveWallet.CoinType.ZEC
+      coin: BraveWallet.CoinType.ZEC,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.Z_CASH_TESTNET,
-      coin: BraveWallet.CoinType.ZEC
+      coin: BraveWallet.CoinType.ZEC,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.SOLANA_MAINNET,
-      coin: BraveWallet.CoinType.SOL
+      coin: BraveWallet.CoinType.SOL,
     }),
     networkEntityAdapter.selectId({
       chainId: BraveWallet.MAINNET_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
-    })
+      coin: BraveWallet.CoinType.ETH,
+    }),
   ],
   isWalletCreated: false,
   isWalletLocked: false,
@@ -57,5 +57,5 @@ export const mockWalletState: WalletState = {
   assetAutoDiscoveryCompleted: false,
   isRefreshingNetworksAndTokens: false,
   isZCashShieldedTransactionsEnabled: false,
-  isCardanoEnabled: true
+  isCardanoEnabled: true,
 }

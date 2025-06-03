@@ -21,7 +21,7 @@ import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enab
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import {
   ContainerCard,
-  LayoutCardWrapper
+  LayoutCardWrapper,
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { TabOption, Tabs } from '../components/shared/tabs/tabs'
 import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
@@ -33,8 +33,8 @@ import { mockErc721Token } from './mock-data/mock-asset-options'
 export default {
   title: 'Wallet/Desktop/Components',
   parameters: {
-    layout: 'centered'
-  }
+    layout: 'centered',
+  },
 }
 
 export const _DesktopSideNav = () => {
@@ -56,7 +56,7 @@ export const _DesktopSideNav = () => {
 }
 
 _DesktopSideNav.story = {
-  name: 'Side Nav'
+  name: 'Side Nav',
 }
 
 export const _DesktopTopTabNav = () => {
@@ -79,7 +79,7 @@ export const _DesktopTopTabNav = () => {
 }
 
 _DesktopTopTabNav.story = {
-  name: 'Top Tab Nav'
+  name: 'Top Tab Nav',
 }
 
 export const _LoadingSkeleton = () => {
@@ -89,7 +89,7 @@ export const _LoadingSkeleton = () => {
         width: '600px',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <LoadingSkeleton
@@ -102,7 +102,7 @@ export const _LoadingSkeleton = () => {
 }
 
 _LoadingSkeleton.story = {
-  name: 'Loading Skeleton'
+  name: 'Loading Skeleton',
 }
 
 export const _BuySendSwapDeposit = () => {
@@ -110,7 +110,7 @@ export const _BuySendSwapDeposit = () => {
 }
 
 _BuySendSwapDeposit.story = {
-  name: 'Buy/Send/Swap/Deposit'
+  name: 'Buy/Send/Swap/Deposit',
 }
 
 export const _NftsEmptyState = () => {
@@ -127,7 +127,7 @@ export const _EnableNftDiscoveryModal = () => {
 }
 
 _EnableNftDiscoveryModal.story = {
-  title: 'Enable NFT Discovery Modal'
+  title: 'Enable NFT Discovery Modal',
 }
 
 export const _NftScreen = () => {
@@ -137,7 +137,7 @@ export const _NftScreen = () => {
         isAutoPinEnabled: true,
         isFetchingNFTMetadata: false,
         nftMetadata: mockNFTMetadata[0],
-        nftMetadataError: ''
+        nftMetadataError: '',
       }}
     >
       <LayoutCardWrapper headerHeight={92}>
@@ -163,7 +163,7 @@ export const _AutoDiscoveryEmptyState = () => {
 }
 
 _AutoDiscoveryEmptyState.story = {
-  title: 'NFT Auto Discovery Empty State'
+  title: 'NFT Auto Discovery Empty State',
 }
 
 export const _Tabs = () => {
@@ -171,12 +171,12 @@ export const _Tabs = () => {
     {
       id: 'nfts',
       label: 'NFTs',
-      labelSummary: '10'
+      labelSummary: '10',
     },
     {
       id: 'hidden',
-      label: 'Hidden'
-    }
+      label: 'Hidden',
+    },
   ]
   return (
     <Tabs
@@ -190,7 +190,7 @@ export const _MarketGrid = () => {
   return (
     <div
       style={{
-        width: '700px'
+        width: '700px',
       }}
     >
       <MarketGrid

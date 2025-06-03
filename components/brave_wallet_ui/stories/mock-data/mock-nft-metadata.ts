@@ -22,56 +22,56 @@ export const mockMoonCatMetadata: NFTMetadataReturnType = {
     address: mockMoonCatNFT.contractAddress,
     name: 'MoonCatsRescue',
     description:
-      'After a whirlwind adventure four years in the making, ' +
-      '25440 MoonCats have been rescued ' +
-      'and are acclimating to their life on the blockchain.',
+      'After a whirlwind adventure four years in the making, '
+      + '25440 MoonCats have been rescued '
+      + 'and are acclimating to their life on the blockchain.',
     website: 'https://mooncat.community',
     twitter: 'https://twitter.com/ponderware',
     facebook: '',
-    logo: MooncatProjectIcon
+    logo: MooncatProjectIcon,
   },
   attributes: [
     {
       traitType: 'Feet',
-      value: 'Bleached Sand Sneakers'
+      value: 'Bleached Sand Sneakers',
     },
     {
       traitType: 'Legs',
-      value: 'White Skirt'
+      value: 'White Skirt',
     },
     {
       traitType: 'Upper Body',
-      value: 'Dark Blue / White Sweater and Shirt'
+      value: 'Dark Blue / White Sweater and Shirt',
     },
     {
       traitType: 'Sleeves',
-      value: 'Long Sleeves'
+      value: 'Long Sleeves',
     },
     {
       traitType: 'Eyes',
-      value: 'Brown Glasses'
+      value: 'Brown Glasses',
     },
     {
       traitType: 'Bag',
-      value: 'Black Chest Bag'
+      value: 'Black Chest Bag',
     },
     {
       traitType: 'Right Arm',
-      value: 'Swinging'
+      value: 'Swinging',
     },
     {
       traitType: 'Left Arm',
-      value: 'Swinging'
+      value: 'Swinging',
     },
     {
       traitType: 'Background',
-      value: 'Blue'
-    }
+      value: 'Blue',
+    },
   ],
   collection: {
     family: 'MoonCatsRescue',
-    name: 'MoonCatsRescue'
-  }
+    name: 'MoonCatsRescue',
+  },
 }
 export const mockNFTMetadata: NFTMetadataReturnType[] = [
   // Image
@@ -81,8 +81,8 @@ export const mockNFTMetadata: NFTMetadataReturnType[] = [
     tokenID: '0x1',
     contractInformation: {
       ...mockMoonCatMetadata.contractInformation,
-      address: 'moon'
-    }
+      address: 'moon',
+    },
   },
   // AUDIO
   {
@@ -105,8 +105,8 @@ export const mockNFTMetadata: NFTMetadataReturnType[] = [
       website: 'https://mooncat.community',
       twitter: 'https://twitter.com/ponderware',
       facebook: '',
-      logo: ''
-    }
+      logo: '',
+    },
   },
   // VIDEO
   {
@@ -126,13 +126,13 @@ export const mockNFTMetadata: NFTMetadataReturnType[] = [
       address: '0x2a459947f0ac25ec28c197f09c2d88058a83f3bb',
       name: 'Stickmen Toy',
       description:
-        'I am sure we all go through ups and downs when creating art.\nMaybe caring a little too much about what others think' +
-        ' and not enough appreciation towards your own art. \nWhatever you make, it is still your creation. \nAnd it will always give you a like. :)\n\n*This is a full-length (2:37) short film that achieved a Staff Pick from Vimeo.',
+        'I am sure we all go through ups and downs when creating art.\nMaybe caring a little too much about what others think'
+        + ' and not enough appreciation towards your own art. \nWhatever you make, it is still your creation. \nAnd it will always give you a like. :)\n\n*This is a full-length (2:37) short film that achieved a Staff Pick from Vimeo.',
       website: '',
       twitter: '',
       facebook: '',
-      logo: ''
-    }
+      logo: '',
+    },
   },
   // HTML
   {
@@ -154,8 +154,8 @@ export const mockNFTMetadata: NFTMetadataReturnType[] = [
       website: '',
       twitter: '',
       facebook: '',
-      logo: ''
-    }
+      logo: '',
+    },
   },
   // 3D Model
   {
@@ -178,7 +178,7 @@ export const mockNFTMetadata: NFTMetadataReturnType[] = [
       website: '',
       twitter: '',
       facebook: '',
-      logo: ''
-    }
-  }
+      logo: '',
+    },
+  },
 ]

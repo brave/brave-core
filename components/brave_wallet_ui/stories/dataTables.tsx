@@ -11,9 +11,7 @@ import { Table, Header, Row } from '../components/shared/datatable'
 
 export default {
   title: 'Wallet/Desktop/Components',
-  decorators: [
-    withKnobs
-  ]
+  decorators: [withKnobs],
 }
 
 export const DataTable = {
@@ -25,36 +23,36 @@ export const DataTable = {
         id: 'row-1',
         content: [
           {
-            content: 'Baker'
+            content: 'Baker',
           },
           {
             content: '40%',
-            customStyle: rowTheme
+            customStyle: rowTheme,
           },
           {
             content: '4',
-            customStyle: rowTheme
-          }
+            customStyle: rowTheme,
+          },
         ],
-        data: ''
+        data: '',
       },
       {
         id: 'row-2',
         content: [
           {
-            content: 'duckduckgo.com'
+            content: 'duckduckgo.com',
           },
           {
             content: '20%',
-            customStyle: rowTheme
+            customStyle: rowTheme,
           },
           {
             content: '2',
-            customStyle: rowTheme
-          }
+            customStyle: rowTheme,
+          },
         ],
-        data: ''
-      }
+        data: '',
+      },
     ]
 
     const header: Header[] = [
@@ -62,18 +60,18 @@ export const DataTable = {
         id: 'site',
         content: 'Site visited',
         sortable: true,
-        sortOrder: 'desc'
+        sortOrder: 'desc',
       },
       {
         id: 'Attention',
         content: 'Attention',
-        sortOrder: 'desc'
+        sortOrder: 'desc',
       },
       {
         id: 'tokens',
         content: 'Tokens',
-        sortable: true
-      }
+        sortable: true,
+      },
     ]
 
     return (
@@ -87,5 +85,5 @@ export const DataTable = {
         <br />
       </div>
     )
-  }
+  },
 }
