@@ -41,7 +41,7 @@ type AIChatContextInternal = AIChatContextProps & {
 
 export type AIChatContext = AIChat.State & AIChatContextInternal
 
-const defaultContext: AIChatContext = {
+export const defaultContext: AIChatContext = {
   ...AIChat.defaultUIState,
   initialized: false,
   goPremium: () => { },
