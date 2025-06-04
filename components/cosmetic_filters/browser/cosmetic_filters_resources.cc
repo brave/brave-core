@@ -117,7 +117,7 @@ void CosmeticFiltersResources::UrlCosmeticResources(
         {"[", base::JoinString(procedural_actions_strings, ","), "]"});
     std::string procedural_actions_script = base::ReplaceStringPlaceholders(
         kProceduralActionsScript,
-        {procedural_filtering_feature_enabled, procedural_actions_json.c_str()},
+        {procedural_filtering_feature_enabled, procedural_actions_json},
         nullptr);
     resources.Set("procedural_actions_script", procedural_actions_script);
   }

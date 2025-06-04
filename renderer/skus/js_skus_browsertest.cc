@@ -39,7 +39,7 @@ TEST_F(JsSkusBrowserTest, AttachSkus) {
                           "https://account.some.other");
   EXPECT_FALSE(ExecuteJavascript(command));
   GURL url("https://account.brave.software");
-  LoadHTMLWithUrlOverride(R"(<html><body> </body></html>)", url.spec().c_str());
+  LoadHTMLWithUrlOverride(R"(<html><body> </body></html>)", url.spec());
   EXPECT_TRUE(ExecuteJavascript(command));
   std::u16string overwrite =
       u"Number((window.chrome.braveSkus = ['test']) && "

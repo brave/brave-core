@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 
-#include <map>
 #include <string>
 
 #include "base/command_line.h"
@@ -16,22 +15,21 @@
 
 namespace brave_wallet {
 
-const std::string GetSardineNetworkName(const std::string& chain_id) {
+std::optional<std::string> GetSardineNetworkName(std::string_view chain_id) {
   // key = chain_id, value = sardine_network_name
-  static std::map<std::string, std::string> sardine_network_names = {
-      {mojom::kMainnetChainId, "ethereum"},
-      {mojom::kPolygonMainnetChainId, "ethereum"},
-      {mojom::kAvalancheMainnetChainId, "avalanche"},
-      {mojom::kFantomMainnetChainId, "fantom"},
-      {mojom::kSolanaMainnet, "solana"}};
-  auto sardine_network_pair = sardine_network_names.find(chain_id.c_str());
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      sardine_network_names({{mojom::kMainnetChainId, "ethereum"},
+                             {mojom::kPolygonMainnetChainId, "ethereum"},
+                             {mojom::kAvalancheMainnetChainId, "avalanche"},
+                             {mojom::kFantomMainnetChainId, "fantom"},
+                             {mojom::kSolanaMainnet, "solana"}});
+  auto sardine_network_pair = sardine_network_names->find(chain_id);
 
-  if (sardine_network_pair == sardine_network_names.end()) {
+  if (sardine_network_pair == sardine_network_names->end()) {
     // not found
-    return "";
-  } else {
-    return sardine_network_pair->second;
+    return std::nullopt;
   }
+  return sardine_network_pair->second;
 }
 
 const base::flat_map<std::string, std::string>&
@@ -66,12 +64,12 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces() {
   return *interfaces;
 }
 
-const std::string GetAssetRatioBaseURL() {
+std::string GetAssetRatioBaseURL() {
   std::string ratios_url =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           switches::kAssetRatioDevUrl);
   if (ratios_url.empty()) {
-    ratios_url = "https://ratios.wallet.brave.com";
+    return "https://ratios.wallet.brave.com";
   }
 
   return ratios_url;
@@ -101,9 +99,9 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 
 // See https://0x.org/docs/introduction/0x-cheat-sheet#allowanceholder-address
 std::optional<std::string> GetZeroExAllowanceHolderAddress(
-    const std::string& chain_id) {
+    std::string_view chain_id) {
   // key = chain_id, value = allowance_holder_contract_address
-  static base::NoDestructor<std::map<std::string, std::string>>
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
       allowance_holder_addresses(
           {{mojom::kMainnetChainId, kZeroExAllowanceHolderCancun},
            {mojom::kArbitrumMainnetChainId, kZeroExAllowanceHolderCancun},
@@ -117,7 +115,7 @@ std::optional<std::string> GetZeroExAllowanceHolderAddress(
            {mojom::kScrollChainId, kZeroExAllowanceHolderShanghai}});
 
   auto allowance_holder_address_pair =
-      allowance_holder_addresses->find(chain_id.c_str());
+      allowance_holder_addresses->find(chain_id);
 
   if (allowance_holder_address_pair == allowance_holder_addresses->end()) {
     // not found
