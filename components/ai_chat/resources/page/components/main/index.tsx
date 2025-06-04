@@ -340,7 +340,7 @@ function Main() {
             categories={aiChatContext.actionList}
             handleClick={conversationContext.handleActionTypeClick}
           />
-          <TabsMenu />
+          {!hasConversationStarted && <TabsMenu />}
           <InputBox
             conversationStarted={hasConversationStarted}
             context={{ ...conversationContext, ...aiChatContext }}

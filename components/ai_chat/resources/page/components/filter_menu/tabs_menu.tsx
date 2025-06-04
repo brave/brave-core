@@ -7,7 +7,7 @@ import { TabData } from "components/ai_chat/resources/common/mojom";
 import FilterMenu from "./filter_menu";
 import styles from "./style.module.scss";
 import * as React from "react";
-import { extractQuery, matches } from "./query";
+import { useExtractedQuery, matches } from "./query";
 import { useAIChat } from "../../state/ai_chat_context";
 import { useConversation } from "../../state/conversation_context";
 import { getLocale } from "$web-common/locale";
@@ -19,8 +19,8 @@ function matchesQuery(query: string, entry: TabData) {
 export default function TabsMenu() {
   const aiChat = useAIChat()
   const conversation = useConversation()
-  
-  const query = extractQuery(conversation.inputText, {
+
+  const query = useExtractedQuery(conversation.inputText, {
     onlyAtStart: true,
     triggerCharacter: '@',
   })
