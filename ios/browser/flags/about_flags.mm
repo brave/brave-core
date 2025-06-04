@@ -5,7 +5,6 @@
 
 // This file is included into //ios/chrome/browser/flags/about_flags.mm
 
-#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"

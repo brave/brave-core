@@ -11,7 +11,6 @@
 #include "src/net/base/lookup_string_in_fixed_set.cc"
 #undef LookupSuffixInReversedSet
 
-#include "base/strings/string_util.h"
 #include "brave/net/decentralized_dns/constants.h"
 
 namespace net {

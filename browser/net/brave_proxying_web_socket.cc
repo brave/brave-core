@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/strings/string_util.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/constants/network_constants.h"
 #include "content/public/browser/browser_context.h"

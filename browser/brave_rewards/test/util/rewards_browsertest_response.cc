@@ -15,6 +15,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"

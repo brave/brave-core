@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"

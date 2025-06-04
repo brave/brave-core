@@ -5,7 +5,6 @@
 
 #include "content/browser/renderer_host/mixed_content_checker.h"
 
-#include "base/strings/string_util.h"
 
 #include "src/content/browser/renderer_host/mixed_content_checker.cc"
 

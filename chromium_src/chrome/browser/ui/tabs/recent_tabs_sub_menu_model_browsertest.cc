@@ -6,7 +6,6 @@
 #include <string_view>
 
 #include "base/containers/to_vector.h"
-#include "base/strings/string_util.h"
 
 // Disabling these tests because they refer to g_brave_browser_process which is
 // not initialized in unit tests, is null and so they are crashing. Not related

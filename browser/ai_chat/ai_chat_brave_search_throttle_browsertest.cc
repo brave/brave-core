@@ -11,7 +11,6 @@
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
-#include "base/strings/string_util.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/brave_paths.h"

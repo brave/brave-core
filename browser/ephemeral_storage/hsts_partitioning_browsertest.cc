@@ -6,7 +6,6 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"

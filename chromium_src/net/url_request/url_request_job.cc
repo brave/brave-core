@@ -5,6 +5,8 @@
 
 #include "net/url_request/url_request_job.h"
 
+#include "base/strings/string_util.h"
+
 // Strip referrer for cross-origin requests from a .onion hostname.
 // This also affects the Origin header outside of CORS requests.
 #define ComputeReferrerForPolicy                                              \

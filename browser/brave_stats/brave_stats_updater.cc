@@ -11,6 +11,7 @@
 #include "base/barrier_closure.h"
 #include "base/command_line.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
