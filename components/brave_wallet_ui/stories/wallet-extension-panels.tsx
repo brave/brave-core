@@ -10,35 +10,35 @@ import './locale'
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  UIState
+  UIState,
 } from '../constants/types'
 
 // Components
 import {
-  ConnectWithSite //
+  ConnectWithSite, //
 } from '../components/extension/connect-with-site-panel/connect-with-site-panel'
 import {
-  ConfirmTransactionPanel //
+  ConfirmTransactionPanel, //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import {
-  AddSuggestedTokenPanel //
+  AddSuggestedTokenPanel, //
 } from '../components/extension/add-suggested-token-panel/index'
 import {
-  DecryptRequestPanel //
+  DecryptRequestPanel, //
 } from '../components/extension/encryption-key-panel/index'
 
 import {
   StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
-  StyledWelcomPanel
+  StyledWelcomPanel,
 } from './style'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
 // mocks
 import {
   mockTransactionInfo,
-  mockedErc20ApprovalTransaction
+  mockedErc20ApprovalTransaction,
 } from './mock-data/mock-transaction-info'
 import { mockAccounts } from './mock-data/mock-wallet-accounts'
 import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
@@ -50,15 +50,15 @@ import { WalletApiDataOverrides } from '../constants/testing_types'
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
-    locked: { control: { type: 'boolean', lock: false } }
-  }
+    locked: { control: { type: 'boolean', lock: false } },
+  },
 }
 
 const mockEthAccountId = (
-  address: string
+  address: string,
 ): { fromAddress: string; fromAccountId: BraveWallet.AccountId } => {
   return {
     fromAddress: address,
@@ -68,8 +68,8 @@ const mockEthAccountId = (
       kind: BraveWallet.AccountKind.kDerived,
       address: address,
       accountIndex: 0,
-      uniqueKey: `${address}_id`
-    }
+      uniqueKey: `${address}_id`,
+    },
   }
 }
 
@@ -89,16 +89,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: 'ETHEREUM ACCOUNT 2',
             value: '0xb1a2bc2ec50000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -112,7 +112,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
+      swapInfo: undefined,
     },
     {
       chainId: '',
@@ -128,16 +128,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
             value: '0xb1a2bc2ec50000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -151,7 +151,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
+      swapInfo: undefined,
     },
     {
       chainId: '',
@@ -167,16 +167,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
             value: '0xb1a2bc2ec90000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -190,7 +190,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
+      swapInfo: undefined,
     },
     {
       chainId: '',
@@ -206,16 +206,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
             value: '0xb1a2bc2ec90000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -229,7 +229,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
+      swapInfo: undefined,
     },
     {
       chainId: '',
@@ -245,16 +245,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
             value: '0xb1a2bc2ec90000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -268,8 +268,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
-    }
+      swapInfo: undefined,
+    },
   ],
   [
     {
@@ -286,16 +286,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
             value: '0xb1a2bc2ec90000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -309,7 +309,7 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
+      swapInfo: undefined,
     },
     {
       chainId: '',
@@ -325,16 +325,16 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
             value: '0xb1a2bc2ec90000',
             signOnly: false,
-            signedTransaction: undefined
+            signedTransaction: undefined,
           },
           chainId: '',
           maxFeePerGas: '',
           maxPriorityFeePerGas: '',
-          gasEstimation: undefined
+          gasEstimation: undefined,
         },
         ethTxData: undefined,
         solanaTxData: undefined,
-        filTxData: undefined
+        filTxData: undefined,
       },
       txHash:
         '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
@@ -348,9 +348,9 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
       isRetriable: false,
-      swapInfo: undefined
-    }
-  ]
+      swapInfo: undefined,
+    },
+  ],
 ]
 
 const originInfo = mockOriginInfo
@@ -359,30 +359,30 @@ const store = createMockStore(
   {
     walletStateOverride: {},
     uiStateOverride: {
-      selectedPendingTransactionId: mockTransactionInfo.id
-    }
+      selectedPendingTransactionId: mockTransactionInfo.id,
+    },
   },
   {
     transactionInfos: [
       ...transactionDummyData[0].map((tx) => deserializeTransaction(tx)),
-      ...transactionDummyData[1].map((tx) => deserializeTransaction(tx))
-    ]
-  }
+      ...transactionDummyData[1].map((tx) => deserializeTransaction(tx)),
+    ],
+  },
 )
 
 const transactionList = [
   mockTransactionInfo,
   ...transactionDummyData[0],
-  ...transactionDummyData[1]
+  ...transactionDummyData[1],
 ]
 
 const mockCustomUiState: Partial<UIState> = {
   selectedPendingTransactionId: mockTransactionInfo.id,
-  transactionProviderErrorRegistry: {}
+  transactionProviderErrorRegistry: {},
 }
 
 const mockApiData: WalletApiDataOverrides = {
-  transactionInfos: transactionList.map(deserializeTransaction)
+  transactionInfos: transactionList.map(deserializeTransaction),
 }
 
 export const _ConfirmTransaction = {
@@ -391,9 +391,9 @@ export const _ConfirmTransaction = {
       <Provider
         store={createMockStore(
           {
-            uiStateOverride: mockCustomUiState
+            uiStateOverride: mockCustomUiState,
           },
-          mockApiData
+          mockApiData,
         )}
       >
         <StyledExtensionWrapperLonger>
@@ -401,7 +401,7 @@ export const _ConfirmTransaction = {
         </StyledExtensionWrapperLonger>
       </Provider>
     )
-  }
+  },
 }
 
 export const _ConfirmErcApproveTransaction = {
@@ -412,23 +412,23 @@ export const _ConfirmErcApproveTransaction = {
           store={createMockStore(
             {
               uiStateOverride: {
-                selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
-              }
+                selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
+              },
             },
             {
               ...mockApiData,
               transactionInfos: [
                 deserializeTransaction(mockedErc20ApprovalTransaction),
-                ...(mockApiData?.transactionInfos ?? [])
-              ]
-            }
+                ...(mockApiData?.transactionInfos ?? []),
+              ],
+            },
           )}
         >
           <ConfirmTransactionPanel />
         </Provider>
       </StyledExtensionWrapperLonger>
     )
-  }
+  },
 }
 
 export const _ReadEncryptedMessage = {
@@ -438,7 +438,7 @@ export const _ReadEncryptedMessage = {
         <DecryptRequestPanel payload={mockDecryptRequest} />
       </StyledExtensionWrapperLonger>
     )
-  }
+  },
 }
 
 export const _ConnectWithSite = {
@@ -453,7 +453,7 @@ export const _ConnectWithSite = {
         </StyledExtensionWrapperLonger>
       </Provider>
     )
-  }
+  },
 }
 
 export const _SetupWallet = {
@@ -463,7 +463,7 @@ export const _SetupWallet = {
         <WelcomePanel />
       </StyledWelcomPanel>
     )
-  }
+  },
 }
 
 export const _AddSuggestedToken = {
@@ -475,5 +475,5 @@ export const _AddSuggestedToken = {
         </WalletPanelStory>
       </StyledExtensionWrapper>
     )
-  }
+  },
 }

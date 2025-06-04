@@ -28,7 +28,7 @@ import {
   MarketAssetFilterOption,
   MarketGridColumnTypes,
   MeldCryptoCurrency,
-  SortOrder
+  SortOrder,
 } from '../constants/types'
 
 // utils
@@ -44,12 +44,12 @@ import {
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
   UpdateIframeHeightMessage,
-  braveWalletPanelOrigin
+  braveWalletPanelOrigin,
 } from './market-ui-messages'
 import {
   filterCoinMarkets,
   searchCoinMarkets,
-  sortCoinMarkets
+  sortCoinMarkets,
 } from '../utils/coin-market-utils'
 import { getAssetSymbol } from '../utils/meld_utils'
 
@@ -60,7 +60,7 @@ import { marketGridHeaders } from '../options/market-data-headers'
 // components
 import { TopRow } from '../components/desktop/views/market/style'
 import {
-  AssetsFilterDropdown //
+  AssetsFilterDropdown, //
 } from '../components/desktop/assets-filter-dropdown/index'
 import { SearchBar } from '../components/shared/search-bar/index'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
@@ -99,7 +99,7 @@ const App = () => {
     const filteredCoins = filterCoinMarkets(
       searchResults,
       buyableAssets,
-      currentFilter
+      currentFilter,
     )
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
   }, [
@@ -108,7 +108,7 @@ const App = () => {
     buyableAssets,
     currentFilter,
     sortOrder,
-    sortByColumnId
+    sortByColumnId,
   ])
 
   // Methods
@@ -117,55 +117,55 @@ const App = () => {
       return (
         buyableAssets?.some(
           (asset) =>
-            getAssetSymbol(asset).toLowerCase() ===
-            coinMarket.symbol.toLowerCase()
+            getAssetSymbol(asset).toLowerCase()
+            === coinMarket.symbol.toLowerCase(),
         ) ?? false
       )
     },
-    [buyableAssets]
+    [buyableAssets],
   )
 
   const isDepositSupported = React.useCallback(
     (coinMarket: BraveWallet.CoinMarket) => {
       return depositableAssets.some(
         (asset) =>
-          asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase()
+          asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase(),
       )
     },
-    [depositableAssets]
+    [depositableAssets],
   )
 
   const onClickBuy = React.useCallback(
     (coinMarket: BraveWallet.CoinMarket) => {
       const message: SelectBuyMessage = {
         command: MarketUiCommand.SelectBuy,
-        payload: coinMarket
+        payload: coinMarket,
       }
       sendMessageToWalletUi(parent, message, origin)
     },
-    [origin]
+    [origin],
   )
 
   const onClickDeposit = React.useCallback(
     (coinMarket: BraveWallet.CoinMarket) => {
       const message: SelectDepositMessage = {
         command: MarketUiCommand.SelectDeposit,
-        payload: coinMarket
+        payload: coinMarket,
       }
       sendMessageToWalletUi(parent, message, origin)
     },
-    [origin]
+    [origin],
   )
 
   const onUpdateIframeHeight = React.useCallback(
     (height: number) => {
       const message: UpdateIframeHeightMessage = {
         command: MarketUiCommand.UpdateIframeHeight,
-        payload: height
+        payload: height,
       }
       sendMessageToWalletUi(parent, message, origin)
     },
-    [origin]
+    [origin],
   )
 
   const onSelectFilter = (value: MarketAssetFilterOption) => {
@@ -176,8 +176,8 @@ const App = () => {
     (event: MessageEvent<MarketCommandMessage>) => {
       // validate message origin
       if (
-        event.origin === braveWalletOrigin ||
-        event.origin === braveWalletPanelOrigin
+        event.origin === braveWalletOrigin
+        || event.origin === braveWalletPanelOrigin
       ) {
         const message = event.data
         switch (message.command) {
@@ -201,7 +201,7 @@ const App = () => {
         }
       }
     },
-    []
+    [],
   )
 
   const onSort = React.useCallback(
@@ -209,18 +209,18 @@ const App = () => {
       setSortByColumnId(columnId)
       setSortOrder(newSortOrder)
     },
-    []
+    [],
   )
 
   const onSelectCoinMarket = React.useCallback(
     (coinMarket: BraveWallet.CoinMarket) => {
       const message: SelectCoinMarketMessage = {
         command: MarketUiCommand.SelectCoinMarket,
-        payload: coinMarket
+        payload: coinMarket,
       }
       sendMessageToWalletUi(parent, message, origin)
     },
-    [origin]
+    [origin],
   )
 
   // Effects

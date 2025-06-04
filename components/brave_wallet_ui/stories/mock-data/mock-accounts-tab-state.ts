@@ -8,5 +8,5 @@ export const mockAccountsTabState: AccountsTabState = {
   accountModalType: 'deposit',
   selectedAccount: undefined,
   showAccountModal: false,
-  accountToRemove: undefined
+  accountToRemove: undefined,
 }

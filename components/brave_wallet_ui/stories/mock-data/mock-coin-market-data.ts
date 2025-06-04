@@ -15,7 +15,7 @@ export const coinMarketMockData = [
     'currentPrice': 30171,
     'priceChange24h': -169.360810273065,
     'priceChangePercentage24h': -0.5582,
-    'totalVolume': 6922938232
+    'totalVolume': 6922938232,
   },
   {
     'id': 'ethereum',
@@ -28,7 +28,7 @@ export const coinMarketMockData = [
     'currentPrice': 1863.05,
     'priceChange24h': -12.960901901372154,
     'priceChangePercentage24h': -0.69088,
-    'totalVolume': 6076168182
+    'totalVolume': 6076168182,
   },
   {
     'id': 'tether',
@@ -41,7 +41,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999683,
     'priceChange24h': -0.000674690262077005,
     'priceChangePercentage24h': -0.06744,
-    'totalVolume': 15336231094
+    'totalVolume': 15336231094,
   },
   {
     'id': 'binancecoin',
@@ -54,7 +54,7 @@ export const coinMarketMockData = [
     'currentPrice': 242.26,
     'priceChange24h': 7.04,
     'priceChangePercentage24h': 2.99445,
-    'totalVolume': 752942348
+    'totalVolume': 752942348,
   },
   {
     'id': 'usd-coin',
@@ -67,7 +67,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999579,
     'priceChange24h': -0.001298465427277851,
     'priceChangePercentage24h': -0.12973,
-    'totalVolume': 2104709822
+    'totalVolume': 2104709822,
   },
   {
     'id': 'ripple',
@@ -80,7 +80,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.471428,
     'priceChange24h': 0.00186899,
     'priceChangePercentage24h': 0.39803,
-    'totalVolume': 558155251
+    'totalVolume': 558155251,
   },
   {
     'id': 'staked-ether',
@@ -93,7 +93,7 @@ export const coinMarketMockData = [
     'currentPrice': 1862.83,
     'priceChange24h': -13.102308488474819,
     'priceChangePercentage24h': -0.69844,
-    'totalVolume': 4675168
+    'totalVolume': 4675168,
   },
   {
     'id': 'cardano',
@@ -106,7 +106,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.285624,
     'priceChange24h': -0.001899743621714745,
     'priceChangePercentage24h': -0.66073,
-    'totalVolume': 203439504
+    'totalVolume': 203439504,
   },
   {
     'id': 'dogecoin',
@@ -119,7 +119,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.064587,
     'priceChange24h': -0.001330228647638224,
     'priceChangePercentage24h': -2.01803,
-    'totalVolume': 208240867
+    'totalVolume': 208240867,
   },
   {
     'id': 'solana',
@@ -132,7 +132,7 @@ export const coinMarketMockData = [
     'currentPrice': 20.73,
     'priceChange24h': -1.0128123930094937,
     'priceChangePercentage24h': -4.65814,
-    'totalVolume': 403734189
+    'totalVolume': 403734189,
   },
   {
     'id': 'litecoin',
@@ -145,7 +145,7 @@ export const coinMarketMockData = [
     'currentPrice': 94.63,
     'priceChange24h': -2.191698164869493,
     'priceChangePercentage24h': -2.26363,
-    'totalVolume': 998211977
+    'totalVolume': 998211977,
   },
   {
     'id': 'tron',
@@ -158,7 +158,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.077061,
     'priceChange24h': -0.002410413170743975,
     'priceChangePercentage24h': -3.03305,
-    'totalVolume': 247407571
+    'totalVolume': 247407571,
   },
   {
     'id': 'matic-network',
@@ -171,7 +171,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.696516,
     'priceChange24h': 0.00051268,
     'priceChangePercentage24h': 0.07366,
-    'totalVolume': 219841864
+    'totalVolume': 219841864,
   },
   {
     'id': 'polkadot',
@@ -184,7 +184,7 @@ export const coinMarketMockData = [
     'currentPrice': 5.07,
     'priceChange24h': -0.05343621824886924,
     'priceChangePercentage24h': -1.04351,
-    'totalVolume': 91876227
+    'totalVolume': 91876227,
   },
   {
     'id': 'bitcoin-cash',
@@ -197,7 +197,7 @@ export const coinMarketMockData = [
     'currentPrice': 267.33,
     'priceChange24h': -2.988169486051561,
     'priceChangePercentage24h': -1.10543,
-    'totalVolume': 401980014
+    'totalVolume': 401980014,
   },
   {
     'id': 'wrapped-bitcoin',
@@ -210,7 +210,7 @@ export const coinMarketMockData = [
     'currentPrice': 30149,
     'priceChange24h': -180.37088978668544,
     'priceChangePercentage24h': -0.59472,
-    'totalVolume': 61761569
+    'totalVolume': 61761569,
   },
   {
     'id': 'avalanche-2',
@@ -223,7 +223,7 @@ export const coinMarketMockData = [
     'currentPrice': 13.29,
     'priceChange24h': -0.752932620114084,
     'priceChangePercentage24h': -5.3634,
-    'totalVolume': 155734472
+    'totalVolume': 155734472,
   },
   {
     'id': 'shiba-inu',
@@ -236,7 +236,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.00000752,
     'priceChange24h': -2.22163492448e-7,
     'priceChangePercentage24h': -2.87022,
-    'totalVolume': 106724658
+    'totalVolume': 106724658,
   },
   {
     'id': 'dai',
@@ -249,7 +249,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999511,
     'priceChange24h': 0.00013891,
     'priceChangePercentage24h': 0.0139,
-    'totalVolume': 78398186
+    'totalVolume': 78398186,
   },
   {
     'id': 'binance-usd',
@@ -262,7 +262,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999854,
     'priceChange24h': -0.000009493937244143,
     'priceChangePercentage24h': -0.00095,
-    'totalVolume': 2418434676
+    'totalVolume': 2418434676,
   },
   {
     'id': 'uniswap',
@@ -275,7 +275,7 @@ export const coinMarketMockData = [
     'currentPrice': 5.17,
     'priceChange24h': -0.10183247354149838,
     'priceChangePercentage24h': -1.93257,
-    'totalVolume': 77186216
+    'totalVolume': 77186216,
   },
   {
     'id': 'leo-token',
@@ -288,7 +288,7 @@ export const coinMarketMockData = [
     'currentPrice': 3.98,
     'priceChange24h': 0.064625,
     'priceChangePercentage24h': 1.64938,
-    'totalVolume': 1037724
+    'totalVolume': 1037724,
   },
   {
     'id': 'chainlink',
@@ -301,7 +301,7 @@ export const coinMarketMockData = [
     'currentPrice': 6.1,
     'priceChange24h': -0.10794132439574255,
     'priceChangePercentage24h': -1.73764,
-    'totalVolume': 102767580
+    'totalVolume': 102767580,
   },
   {
     'id': 'monero',
@@ -314,7 +314,7 @@ export const coinMarketMockData = [
     'currentPrice': 165.29,
     'priceChange24h': -2.3519262998891577,
     'priceChangePercentage24h': -1.40297,
-    'totalVolume': 49354675
+    'totalVolume': 49354675,
   },
   {
     'id': 'true-usd',
@@ -327,7 +327,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999343,
     'priceChange24h': -0.000177008443660753,
     'priceChangePercentage24h': -0.01771,
-    'totalVolume': 1359380420
+    'totalVolume': 1359380420,
   },
   {
     'id': 'cosmos',
@@ -340,7 +340,7 @@ export const coinMarketMockData = [
     'currentPrice': 9.31,
     'priceChange24h': -0.10732608759633955,
     'priceChangePercentage24h': -1.1399,
-    'totalVolume': 148631818
+    'totalVolume': 148631818,
   },
   {
     'id': 'ethereum-classic',
@@ -353,7 +353,7 @@ export const coinMarketMockData = [
     'currentPrice': 18.74,
     'priceChange24h': -0.19842602881114502,
     'priceChangePercentage24h': -1.04791,
-    'totalVolume': 93706285
+    'totalVolume': 93706285,
   },
   {
     'id': 'stellar',
@@ -366,7 +366,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.098203,
     'priceChange24h': -0.000676166537399561,
     'priceChangePercentage24h': -0.68383,
-    'totalVolume': 34906970
+    'totalVolume': 34906970,
   },
   {
     'id': 'okb',
@@ -379,7 +379,7 @@ export const coinMarketMockData = [
     'currentPrice': 42.73,
     'priceChange24h': -1.2805387746226486,
     'priceChangePercentage24h': -2.90979,
-    'totalVolume': 11977130
+    'totalVolume': 11977130,
   },
   {
     'id': 'the-open-network',
@@ -392,7 +392,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.38,
     'priceChange24h': 0.0095223,
     'priceChangePercentage24h': 0.69604,
-    'totalVolume': 5292123
+    'totalVolume': 5292123,
   },
   {
     'id': 'filecoin',
@@ -405,7 +405,7 @@ export const coinMarketMockData = [
     'currentPrice': 4.23,
     'priceChange24h': -0.12430204015950874,
     'priceChangePercentage24h': -2.85425,
-    'totalVolume': 90955872
+    'totalVolume': 90955872,
   },
   {
     'id': 'internet-computer',
@@ -418,7 +418,7 @@ export const coinMarketMockData = [
     'currentPrice': 4,
     'priceChange24h': -0.0756605563116195,
     'priceChangePercentage24h': -1.85725,
-    'totalVolume': 14179928
+    'totalVolume': 14179928,
   },
   {
     'id': 'lido-dao',
@@ -431,7 +431,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.9,
     'priceChange24h': -0.05506710977048778,
     'priceChangePercentage24h': -2.81778,
-    'totalVolume': 16434698
+    'totalVolume': 16434698,
   },
   {
     'id': 'hedera-hashgraph',
@@ -444,7 +444,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.04698299,
     'priceChange24h': -0.000538050249671254,
     'priceChangePercentage24h': -1.13224,
-    'totalVolume': 14436647
+    'totalVolume': 14436647,
   },
   {
     'id': 'aptos',
@@ -457,7 +457,7 @@ export const coinMarketMockData = [
     'currentPrice': 7.05,
     'priceChange24h': -0.08389354002981086,
     'priceChangePercentage24h': -1.17517,
-    'totalVolume': 50152367
+    'totalVolume': 50152367,
   },
   {
     'id': 'quant-network',
@@ -470,7 +470,7 @@ export const coinMarketMockData = [
     'currentPrice': 101.81,
     'priceChange24h': -0.921677524677321,
     'priceChangePercentage24h': -0.89718,
-    'totalVolume': 9135515
+    'totalVolume': 9135515,
   },
   {
     'id': 'crypto-com-chain',
@@ -483,7 +483,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.055487,
     'priceChange24h': -0.00144836825335988,
     'priceChangePercentage24h': -2.5439,
-    'totalVolume': 3834693
+    'totalVolume': 3834693,
   },
   {
     'id': 'arbitrum',
@@ -496,7 +496,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.11,
     'priceChange24h': -0.025244642821075747,
     'priceChangePercentage24h': -2.21962,
-    'totalVolume': 114922736
+    'totalVolume': 114922736,
   },
   {
     'id': 'vechain',
@@ -509,7 +509,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.01836273,
     'priceChange24h': -0.000382016145754747,
     'priceChangePercentage24h': -2.03799,
-    'totalVolume': 37298234
+    'totalVolume': 37298234,
   },
   {
     'id': 'near',
@@ -522,7 +522,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.3,
     'priceChange24h': -0.03605673948368925,
     'priceChangePercentage24h': -2.68968,
-    'totalVolume': 33509454
+    'totalVolume': 33509454,
   },
   {
     'id': 'aave',
@@ -535,7 +535,7 @@ export const coinMarketMockData = [
     'currentPrice': 70.19,
     'priceChange24h': -2.4894282251565585,
     'priceChangePercentage24h': -3.42501,
-    'totalVolume': 87781443
+    'totalVolume': 87781443,
   },
   {
     'id': 'the-graph',
@@ -548,7 +548,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.111905,
     'priceChange24h': -0.002955910446316074,
     'priceChangePercentage24h': -2.57347,
-    'totalVolume': 30630848
+    'totalVolume': 30630848,
   },
   {
     'id': 'frax',
@@ -561,7 +561,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.001,
     'priceChange24h': 0.00036169,
     'priceChangePercentage24h': 0.03615,
-    'totalVolume': 7157110
+    'totalVolume': 7157110,
   },
   {
     'id': 'rocket-pool-eth',
@@ -574,7 +574,7 @@ export const coinMarketMockData = [
     'currentPrice': 2005.79,
     'priceChange24h': -15.447185956362773,
     'priceChangePercentage24h': -0.76424,
-    'totalVolume': 1614948
+    'totalVolume': 1614948,
   },
   {
     'id': 'elrond-erd-2',
@@ -587,7 +587,7 @@ export const coinMarketMockData = [
     'currentPrice': 34.63,
     'priceChange24h': 0.02339553,
     'priceChangePercentage24h': 0.06761,
-    'totalVolume': 9020539
+    'totalVolume': 9020539,
   },
   {
     'id': 'blockstack',
@@ -600,7 +600,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.625905,
     'priceChange24h': -0.020049938938316192,
     'priceChangePercentage24h': -3.10392,
-    'totalVolume': 13107437
+    'totalVolume': 13107437,
   },
   {
     'id': 'maker',
@@ -613,7 +613,7 @@ export const coinMarketMockData = [
     'currentPrice': 931.3,
     'priceChange24h': -0.04492505195594276,
     'priceChangePercentage24h': -0.00482,
-    'totalVolume': 54389873
+    'totalVolume': 54389873,
   },
   {
     'id': 'algorand',
@@ -626,7 +626,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.110241,
     'priceChange24h': -0.001920999245638516,
     'priceChangePercentage24h': -1.7127,
-    'totalVolume': 31989070
+    'totalVolume': 31989070,
   },
   {
     'id': 'eos',
@@ -639,7 +639,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.713568,
     'priceChange24h': -0.02180588606081557,
     'priceChangePercentage24h': -2.96528,
-    'totalVolume': 86222021
+    'totalVolume': 86222021,
   },
   {
     'id': 'whitebit',
@@ -652,7 +652,7 @@ export const coinMarketMockData = [
     'currentPrice': 5.38,
     'priceChange24h': -0.011292425296263175,
     'priceChangePercentage24h': -0.20955,
-    'totalVolume': 437248
+    'totalVolume': 437248,
   },
   {
     'id': 'paxos-standard',
@@ -665,7 +665,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.999482,
     'priceChange24h': -0.001191017876277401,
     'priceChangePercentage24h': -0.11902,
-    'totalVolume': 3069192
+    'totalVolume': 3069192,
   },
   {
     'id': 'bitcoin-cash-sv',
@@ -678,7 +678,7 @@ export const coinMarketMockData = [
     'currentPrice': 39.71,
     'priceChange24h': -1.172596181742449,
     'priceChangePercentage24h': -2.86816,
-    'totalVolume': 18047983
+    'totalVolume': 18047983,
   },
   {
     'id': 'optimism',
@@ -691,7 +691,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.19,
     'priceChange24h': -0.028286685435314984,
     'priceChangePercentage24h': -2.32826,
-    'totalVolume': 56841407
+    'totalVolume': 56841407,
   },
   {
     'id': 'tezos',
@@ -704,7 +704,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.811108,
     'priceChange24h': -0.00988392159474494,
     'priceChangePercentage24h': -1.2039,
-    'totalVolume': 13365761
+    'totalVolume': 13365761,
   },
   {
     'id': 'the-sandbox',
@@ -717,7 +717,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.405233,
     'priceChange24h': -0.013175058916940876,
     'priceChangePercentage24h': -3.14886,
-    'totalVolume': 39961709
+    'totalVolume': 39961709,
   },
   {
     'id': 'fantom',
@@ -730,7 +730,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.264459,
     'priceChange24h': -0.011518221981849932,
     'priceChangePercentage24h': -4.17361,
-    'totalVolume': 92834007
+    'totalVolume': 92834007,
   },
   {
     'id': 'usdd',
@@ -743,7 +743,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.998555,
     'priceChange24h': -0.001377873791994833,
     'priceChangePercentage24h': -0.1378,
-    'totalVolume': 17234300
+    'totalVolume': 17234300,
   },
   {
     'id': 'theta-token',
@@ -756,7 +756,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.713584,
     'priceChange24h': -0.02094291161074313,
     'priceChangePercentage24h': -2.85121,
-    'totalVolume': 7543286
+    'totalVolume': 7543286,
   },
   {
     'id': 'immutable-x',
@@ -769,7 +769,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.685521,
     'priceChange24h': -0.018197536057922403,
     'priceChangePercentage24h': -2.58591,
-    'totalVolume': 11153438
+    'totalVolume': 11153438,
   },
   {
     'id': 'rocket-pool',
@@ -782,7 +782,7 @@ export const coinMarketMockData = [
     'currentPrice': 36.34,
     'priceChange24h': 0.01588539,
     'priceChangePercentage24h': 0.04373,
-    'totalVolume': 2931775
+    'totalVolume': 2931775,
   },
   {
     'id': 'apecoin',
@@ -795,7 +795,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.89,
     'priceChange24h': -0.08885583447253942,
     'priceChangePercentage24h': -4.48701,
-    'totalVolume': 89980154
+    'totalVolume': 89980154,
   },
   {
     'id': 'render-token',
@@ -808,7 +808,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.88,
     'priceChange24h': -0.07687988171726667,
     'priceChangePercentage24h': -3.92639,
-    'totalVolume': 19888867
+    'totalVolume': 19888867,
   },
   {
     'id': 'decentraland',
@@ -821,7 +821,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.375755,
     'priceChange24h': -0.009326542696020013,
     'priceChangePercentage24h': -2.42197,
-    'totalVolume': 35947295
+    'totalVolume': 35947295,
   },
   {
     'id': 'curve-dao-token',
@@ -834,7 +834,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.793916,
     'priceChange24h': 0.00093714,
     'priceChangePercentage24h': 0.11818,
-    'totalVolume': 37432337
+    'totalVolume': 37432337,
   },
   {
     'id': 'ecash',
@@ -847,7 +847,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.0000348,
     'priceChange24h': 0.00000118,
     'priceChangePercentage24h': 3.50563,
-    'totalVolume': 132933784
+    'totalVolume': 132933784,
   },
   {
     'id': 'axie-infinity',
@@ -860,7 +860,7 @@ export const coinMarketMockData = [
     'currentPrice': 5.76,
     'priceChange24h': -0.10753087165133836,
     'priceChangePercentage24h': -1.83246,
-    'totalVolume': 24667512
+    'totalVolume': 24667512,
   },
   {
     'id': 'bitget-token',
@@ -873,7 +873,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.470411,
     'priceChange24h': -0.003023096624098609,
     'priceChangePercentage24h': -0.63855,
-    'totalVolume': 8980728
+    'totalVolume': 8980728,
   },
   {
     'id': 'havven',
@@ -886,7 +886,7 @@ export const coinMarketMockData = [
     'currentPrice': 2,
     'priceChange24h': -0.0975186677125206,
     'priceChangePercentage24h': -4.65139,
-    'totalVolume': 29932005
+    'totalVolume': 29932005,
   },
   {
     'id': 'injective-protocol',
@@ -899,7 +899,7 @@ export const coinMarketMockData = [
     'currentPrice': 7.98,
     'priceChange24h': -0.34326911667091053,
     'priceChangePercentage24h': -4.12568,
-    'totalVolume': 43891771
+    'totalVolume': 43891771,
   },
   {
     'id': 'pepe',
@@ -912,7 +912,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.00000149,
     'priceChange24h': -7.5871497025e-8,
     'priceChangePercentage24h': -4.85206,
-    'totalVolume': 104943398
+    'totalVolume': 104943398,
   },
   {
     'id': 'bitdao',
@@ -925,7 +925,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.426687,
     'priceChange24h': -0.004569772812119233,
     'priceChangePercentage24h': -1.05964,
-    'totalVolume': 7517308
+    'totalVolume': 7517308,
   },
   {
     'id': 'neo',
@@ -938,7 +938,7 @@ export const coinMarketMockData = [
     'currentPrice': 8.8,
     'priceChange24h': -0.2378674634858804,
     'priceChangePercentage24h': -2.63047,
-    'totalVolume': 20987104
+    'totalVolume': 20987104,
   },
   {
     'id': 'flow',
@@ -951,7 +951,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.594207,
     'priceChange24h': -0.01062446050721988,
     'priceChangePercentage24h': -1.7566,
-    'totalVolume': 12216087
+    'totalVolume': 12216087,
   },
   {
     'id': 'kava',
@@ -964,7 +964,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.983102,
     'priceChange24h': 0.03928979,
     'priceChangePercentage24h': 4.16288,
-    'totalVolume': 20889927
+    'totalVolume': 20889927,
   },
   {
     'id': 'kucoin-shares',
@@ -977,7 +977,7 @@ export const coinMarketMockData = [
     'currentPrice': 6.28,
     'priceChange24h': -0.03584235465086749,
     'priceChangePercentage24h': -0.5673,
-    'totalVolume': 908663
+    'totalVolume': 908663,
   },
   {
     'id': 'gatechain-token',
@@ -990,7 +990,7 @@ export const coinMarketMockData = [
     'currentPrice': 4.23,
     'priceChange24h': -0.060718076562343626,
     'priceChangePercentage24h': -1.41643,
-    'totalVolume': 488154
+    'totalVolume': 488154,
   },
   {
     'id': 'gala',
@@ -1003,7 +1003,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.02394785,
     'priceChange24h': -0.000586616132798937,
     'priceChangePercentage24h': -2.39099,
-    'totalVolume': 28929846
+    'totalVolume': 28929846,
   },
   {
     'id': 'radix',
@@ -1016,7 +1016,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.056578,
     'priceChange24h': -0.002415600806382597,
     'priceChangePercentage24h': -4.09469,
-    'totalVolume': 2597042
+    'totalVolume': 2597042,
   },
   {
     'id': 'gemini-dollar',
@@ -1029,7 +1029,7 @@ export const coinMarketMockData = [
     'currentPrice': 1.001,
     'priceChange24h': -0.000693161484886185,
     'priceChangePercentage24h': -0.06919,
-    'totalVolume': 425966
+    'totalVolume': 425966,
   },
   {
     'id': 'chiliz',
@@ -1042,7 +1042,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.075764,
     'priceChange24h': -0.000741498965104684,
     'priceChangePercentage24h': -0.96921,
-    'totalVolume': 17809090
+    'totalVolume': 17809090,
   },
   {
     'id': 'klay-token',
@@ -1055,7 +1055,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.161801,
     'priceChange24h': -0.005479594791779369,
     'priceChangePercentage24h': -3.27569,
-    'totalVolume': 9945045
+    'totalVolume': 9945045,
   },
   {
     'id': 'iota',
@@ -1068,7 +1068,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.17856,
     'priceChange24h': -0.003408666674605571,
     'priceChangePercentage24h': -1.87321,
-    'totalVolume': 5657767
+    'totalVolume': 5657767,
   },
   {
     'id': 'gmx',
@@ -1081,7 +1081,7 @@ export const coinMarketMockData = [
     'currentPrice': 54.88,
     'priceChange24h': -1.3784442324520398,
     'priceChangePercentage24h': -2.45011,
-    'totalVolume': 9051755
+    'totalVolume': 9051755,
   },
   {
     'id': 'compound-ether',
@@ -1094,7 +1094,7 @@ export const coinMarketMockData = [
     'currentPrice': 37.4,
     'priceChange24h': -0.2671362283764509,
     'priceChangePercentage24h': -0.70925,
-    'totalVolume': 894.41
+    'totalVolume': 894.41,
   },
   {
     'id': 'pax-gold',
@@ -1107,7 +1107,7 @@ export const coinMarketMockData = [
     'currentPrice': 1901.55,
     'priceChange24h': -2.7743210376786465,
     'priceChangePercentage24h': -0.14569,
-    'totalVolume': 4680828
+    'totalVolume': 4680828,
   },
   {
     'id': 'terra-luna',
@@ -1120,7 +1120,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.00008147,
     'priceChange24h': -0.000001310912001082,
     'priceChangePercentage24h': -1.58358,
-    'totalVolume': 16998198
+    'totalVolume': 16998198,
   },
   {
     'id': 'tether-gold',
@@ -1133,7 +1133,7 @@ export const coinMarketMockData = [
     'currentPrice': 1918.9,
     'priceChange24h': -5.988885004009035,
     'priceChangePercentage24h': -0.31113,
-    'totalVolume': 6928364
+    'totalVolume': 6928364,
   },
   {
     'id': 'kaspa',
@@ -1146,7 +1146,7 @@ export const coinMarketMockData = [
     'currentPrice': 0.02382791,
     'priceChange24h': -0.001424984587286807,
     'priceChangePercentage24h': -5.64286,
-    'totalVolume': 10052402
+    'totalVolume': 10052402,
   },
   {
     'id': 'tokenize-xchange',
@@ -1159,7 +1159,7 @@ export const coinMarketMockData = [
     'currentPrice': 5.77,
     'priceChange24h': -0.011944105738719736,
     'priceChangePercentage24h': -0.20665,
-    'totalVolume': 5859703
+    'totalVolume': 5859703,
   },
   {
     'id': 'frax-share',
@@ -1172,7 +1172,7 @@ export const coinMarketMockData = [
     'currentPrice': 6.31,
     'priceChange24h': 0.107231,
     'priceChangePercentage24h': 1.72764,
-    'totalVolume': 18057370
+    'totalVolume': 18057370,
   },
   {
     'id': 'bittorrent',
@@ -1185,7 +1185,7 @@ export const coinMarketMockData = [
     'currentPrice': 4.72097e-7,
     'priceChange24h': -2.937015515e-9,
     'priceChangePercentage24h': -0.61828,
-    'totalVolume': 10638357
+    'totalVolume': 10638357,
   },
   {
     'id': 'frax-ether',
@@ -1198,7 +1198,7 @@ export const coinMarketMockData = [
     'currentPrice': 1861.94,
     'priceChange24h': -13.116918884636789,
     'priceChangePercentage24h': -0.69955,
-    'totalVolume': 1434494
+    'totalVolume': 1434494,
   },
   {
     'id': 'huobi-token',
@@ -1211,6 +1211,6 @@ export const coinMarketMockData = [
     'currentPrice': 2.7,
     'priceChange24h': -0.01894010017520875,
     'priceChangePercentage24h': -0.69575,
-    'totalVolume': 9780380
-  }
+    'totalVolume': 9780380,
+  },
 ]

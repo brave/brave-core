@@ -7,7 +7,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import {
   layoutPanelWidth,
-  layoutSmallWidth
+  layoutSmallWidth,
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { WalletButton } from '../../../components/shared/style'
 

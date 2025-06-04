@@ -21,5 +21,5 @@ export const mockPageState: PageState = {
     .replace('velvet', 'THIRD')
     .concat(` ${mockedMnemonic} LAST`),
   enablingAutoPin: false,
-  isAutoPinEnabled: false
+  isAutoPinEnabled: false,
 }

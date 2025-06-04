@@ -15,7 +15,7 @@ import {
   FILECOINIcon,
   BNBIcon,
   BTCIcon,
-  ZECIcon
+  ZECIcon,
 } from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthToken = {
@@ -35,7 +35,7 @@ export const mockEthToken = {
   coingeckoId: 'ethereum',
   chainId: '0x1',
   coin: BraveWallet.CoinType.ETH,
-  isShielded: false
+  isShielded: false,
 } as BraveWallet.BlockchainToken
 
 export const mockBtcToken = {
@@ -55,7 +55,7 @@ export const mockBtcToken = {
   coingeckoId: 'bitcoin',
   chainId: BraveWallet.BITCOIN_MAINNET,
   coin: BraveWallet.CoinType.BTC,
-  isShielded: false
+  isShielded: false,
 } as BraveWallet.BlockchainToken
 
 export const mockZecToken = {
@@ -75,7 +75,7 @@ export const mockZecToken = {
   coingeckoId: 'zcash',
   chainId: BraveWallet.Z_CASH_MAINNET,
   coin: BraveWallet.CoinType.ZEC,
-  isShielded: false
+  isShielded: false,
 } as BraveWallet.BlockchainToken
 
 export const mockSolToken = {
@@ -95,7 +95,7 @@ export const mockSolToken = {
   coingeckoId: 'solana',
   chainId: BraveWallet.SOLANA_MAINNET,
   coin: BraveWallet.CoinType.SOL,
-  isShielded: false
+  isShielded: false,
 } as BraveWallet.BlockchainToken
 
 export const mockFilToken = {
@@ -115,7 +115,7 @@ export const mockFilToken = {
   coingeckoId: 'filecoin',
   chainId: BraveWallet.FILECOIN_MAINNET,
   coin: BraveWallet.CoinType.FIL,
-  isShielded: false
+  isShielded: false,
 } as BraveWallet.BlockchainToken
 
 export const mockBasicAttentionToken = {
@@ -136,7 +136,7 @@ export const mockBasicAttentionToken = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockBinanceCoinErc20Token = {
@@ -157,7 +157,7 @@ export const mockBinanceCoinErc20Token = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockBitcoinErc20Token = {
@@ -178,7 +178,7 @@ export const mockBitcoinErc20Token = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockAlgorandErc20Token = {
@@ -199,7 +199,7 @@ export const mockAlgorandErc20Token = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockZrxErc20Token = {
@@ -220,7 +220,7 @@ export const mockZrxErc20Token = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockDaiToken = {
@@ -241,7 +241,7 @@ export const mockDaiToken = {
   visible: true,
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockUSDCoin = {
@@ -262,7 +262,7 @@ export const mockUSDCoin = {
   visible: true,
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockMoonCatNFT: BraveWallet.BlockchainToken = {
@@ -283,7 +283,7 @@ export const mockMoonCatNFT: BraveWallet.BlockchainToken = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: '0x1',
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockERC20Token: BraveWallet.BlockchainToken = {
@@ -304,7 +304,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockErc721Token: BraveWallet.BlockchainToken = {
@@ -325,7 +325,7 @@ export const mockErc721Token: BraveWallet.BlockchainToken = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockSplNft: BraveWallet.BlockchainToken = {
@@ -346,7 +346,7 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
   coingeckoId: '',
   coin: BraveWallet.CoinType.SOL,
   chainId: BraveWallet.SOLANA_MAINNET,
-  isShielded: false
+  isShielded: false,
 }
 
 export const mockSplBat = {
@@ -355,7 +355,7 @@ export const mockSplBat = {
   isCompressed: false,
   isErc20: false,
   contractAddress: 'splBat498tu349u498j',
-  chainId: BraveWallet.SOLANA_MAINNET
+  chainId: BraveWallet.SOLANA_MAINNET,
 }
 
 export const mockSplUSDC = {
@@ -364,7 +364,7 @@ export const mockSplUSDC = {
   isCompressed: false,
   isErc20: false,
   contractAddress: 'splusd09856080378450y75',
-  chainId: BraveWallet.SOLANA_MAINNET
+  chainId: BraveWallet.SOLANA_MAINNET,
 }
 
 export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
@@ -380,7 +380,7 @@ export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
   mockUSDCoin,
   mockSplBat,
   mockSplNft,
-  mockSplUSDC
+  mockSplUSDC,
 ]
 
 export const mockErc20TokensList = [
@@ -390,7 +390,7 @@ export const mockErc20TokensList = [
   mockAlgorandErc20Token,
   mockZrxErc20Token,
   mockDaiToken,
-  mockUSDCoin
+  mockUSDCoin,
 ]
 
 export const mockNfts = [mockSplNft, mockMoonCatNFT, mockErc721Token]
@@ -417,7 +417,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
-    isShielded: false
+    isShielded: false,
   },
   {
     contractAddress: '3',
@@ -437,7 +437,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     chainId: '0xaa36a7',
-    isShielded: false
+    isShielded: false,
   },
   {
     contractAddress: '4',
@@ -457,7 +457,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
-    isShielded: false
+    isShielded: false,
   },
   {
     contractAddress: '5',
@@ -477,7 +477,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
-    isShielded: false
+    isShielded: false,
   },
   {
     contractAddress: '6',
@@ -497,16 +497,16 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
-    isShielded: false
+    isShielded: false,
   },
   mockMoonCatNFT,
   { ...mockMoonCatNFT, contractAddress: 'moon', tokenId: '0x1' },
   { ...mockMoonCatNFT, tokenId: '0x52a5' },
-  { ...mockMoonCatNFT, tokenId: '0x62a5' }
+  { ...mockMoonCatNFT, tokenId: '0x62a5' },
 ]
 
 export const mockBinanceCoinErc20TokenId = getAssetIdKey(
-  mockBinanceCoinErc20Token
+  mockBinanceCoinErc20Token,
 )
 export const mockBitcoinErc20TokenId = getAssetIdKey(mockBitcoinErc20Token)
 export const mockAlgorandErc20TokenId = getAssetIdKey(mockAlgorandErc20Token)

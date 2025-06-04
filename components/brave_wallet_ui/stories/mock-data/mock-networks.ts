@@ -8,7 +8,7 @@ import {
   ETHIcon,
   FILECOINIcon,
   SOLIcon,
-  BTCIcon
+  BTCIcon,
 } from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthMainnet: BraveWallet.NetworkInfo = {
@@ -22,7 +22,7 @@ export const mockEthMainnet: BraveWallet.NetworkInfo = {
   iconUrls: [ETHIcon],
   rpcEndpoints: [{ url: 'https://mainnet.infura.io/v3/' }],
   symbol: 'ETH',
-  symbolName: 'Ethereum'
+  symbolName: 'Ethereum',
 }
 
 export const mockSepolia: BraveWallet.NetworkInfo = {
@@ -36,7 +36,7 @@ export const mockSepolia: BraveWallet.NetworkInfo = {
   iconUrls: [ETHIcon],
   rpcEndpoints: [{ url: 'https://sepolia-infura.brave.com' }],
   symbol: 'ETH',
-  symbolName: 'Ethereum'
+  symbolName: 'Ethereum',
 }
 
 export const mockEthLocalhost: BraveWallet.NetworkInfo = {
@@ -50,7 +50,7 @@ export const mockEthLocalhost: BraveWallet.NetworkInfo = {
   iconUrls: [ETHIcon],
   rpcEndpoints: [{ url: 'http://localhost:7545/' }],
   symbol: 'ETH',
-  symbolName: 'Ethereum'
+  symbolName: 'Ethereum',
 }
 
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
@@ -92,7 +92,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   iconUrls: [SOLIcon],
   rpcEndpoints: [{ url: 'https://api.testnet.solana.com' }],
   symbol: 'SOL',
-  symbolName: 'Solana'
+  symbolName: 'Solana',
 }
 
 export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
@@ -120,7 +120,7 @@ export const mockBitcoinMainnet: BraveWallet.NetworkInfo = {
   iconUrls: [BTCIcon],
   rpcEndpoints: [{ url: 'https://bitcoin.rpc' }],
   symbol: 'BTC',
-  symbolName: 'Bitcoin'
+  symbolName: 'Bitcoin',
 }
 
 export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
@@ -134,7 +134,7 @@ export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
   iconUrls: [BTCIcon],
   rpcEndpoints: [{ url: 'https://bitcoin.rpc/test' }],
   symbol: 'BTC',
-  symbolName: 'Bitcoin'
+  symbolName: 'Bitcoin',
 }
 
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
@@ -145,5 +145,5 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockSolanaMainnetNetwork,
   mockSolanaTestnetNetwork,
   mockEthLocalhost,
-  mockBitcoinMainnet
+  mockBitcoinMainnet,
 ]

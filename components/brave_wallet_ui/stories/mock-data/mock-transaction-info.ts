@@ -8,7 +8,7 @@ import {
   BraveWallet,
   SerializableTransactionInfo,
   StorybookCoinTypes,
-  StorybookTransactionTypes
+  StorybookTransactionTypes,
 } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
 import { FileCoinTransactionInfo } from '../../utils/tx-utils'
@@ -20,7 +20,7 @@ import {
   mockFilecoinAccount,
   mockSolanaAccount,
   mockSolanaAccountInfo,
-  mockZecAccount
+  mockZecAccount,
 } from '../../common/constants/mocks'
 import { mockOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
@@ -42,18 +42,18 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
         signOnly: false,
-        signedTransaction: undefined
+        signedTransaction: undefined,
       },
       chainId: '0x0',
       maxPriorityFeePerGas: '1',
       maxFeePerGas: '1',
-      gasEstimation: undefined
+      gasEstimation: undefined,
     },
     ethTxData: undefined,
     solanaTxData: undefined,
     filTxData: undefined,
     btcTxData: undefined,
-    zecTxData: undefined
+    zecTxData: undefined,
   },
   txHash:
     '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
@@ -66,7 +66,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   originInfo: mockOriginInfo,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
@@ -87,28 +87,28 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       messageHeader: {
         numReadonlySignedAccounts: 1,
         numReadonlyUnsignedAccounts: 1,
-        numRequiredSignatures: 1
+        numRequiredSignatures: 1,
       },
       recentBlockhash: '1',
       sendOptions: {
         preflightCommitment: '',
         skipPreflight: undefined,
-        maxRetries: { maxRetries: 1 }
+        maxRetries: { maxRetries: 1 },
       },
       signTransactionParam: {
         encodedSerializedMsg: '',
-        signatures: []
+        signatures: [],
       },
       feeEstimation: undefined,
       tokenAddress: '',
       staticAccountKeys: [],
       toWalletAddress: mockSolanaAccountInfo.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-      version: 1
+      version: 1,
     },
     filTxData: undefined,
     btcTxData: undefined,
-    zecTxData: undefined
+    zecTxData: undefined,
   },
   txHash:
     '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
@@ -121,25 +121,25 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   originInfo: mockOriginInfo,
   effectiveRecipient: undefined,
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const mockSolanaTransactionInfoAccount: BraveWallet.AccountInfo = {
   ...mockSolanaAccount,
-  accountId: mockSolanaTransactionInfo.fromAccountId
+  accountId: mockSolanaTransactionInfo.fromAccountId,
 }
 
 export const mockSvmTxInfos: BraveWallet.TransactionInfo[] = [
   deserializeTransaction({
     ...mockSolanaTransactionInfo,
     txStatus: BraveWallet.TransactionStatus.Unapproved,
-    txType: BraveWallet.TransactionType.SolanaSystemTransfer
+    txType: BraveWallet.TransactionType.SolanaSystemTransfer,
   }),
   deserializeTransaction({
     ...mockSolanaTransactionInfo,
     txStatus: BraveWallet.TransactionStatus.Unapproved,
-    txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer
-  })
+    txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+  }),
 ]
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
@@ -159,14 +159,14 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
       gasFeeCap: '100',
       gasLimit: '200',
       gasPremium: '1',
-      maxFee: '1000'
+      maxFee: '1000',
     },
     ethTxData: undefined,
     ethTxData1559: undefined,
     solanaTxData: undefined,
     btcTxData: undefined,
     zecTxData: undefined,
-    cardanoTxData: undefined
+    cardanoTxData: undefined,
   },
   txHash: 'fil-send-tx',
   txParams: [],
@@ -174,12 +174,12 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txType: BraveWallet.TransactionType.Other,
   effectiveRecipient: mockAccount.address,
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const mockedErc20ApprovalTransaction = {
   ...mockTransactionInfo,
-  txType: BraveWallet.TransactionType.ERC20Approve
+  txType: BraveWallet.TransactionType.ERC20Approve,
 }
 
 export const mockEthSendTransaction = {
@@ -197,7 +197,7 @@ export const mockEthSendTransaction = {
         value: '0x5543df729c0000',
         data: [],
         signOnly: false,
-        signedTransaction: 'mockSignedTx'
+        signedTransaction: 'mockSignedTx',
       },
       chainId: '0xaa36a7',
       maxPriorityFeePerGas: '0x2faf080',
@@ -209,31 +209,31 @@ export const mockEthSendTransaction = {
         avgMaxFeePerGas: '0x2faf092',
         fastMaxPriorityFeePerGas: '0x59682f00',
         fastMaxFeePerGas: '0x59682f12',
-        baseFeePerGas: '0x12'
-      }
-    }
+        baseFeePerGas: '0x12',
+      },
+    },
   },
   txStatus: 4,
   txType: 0,
   txParams: [],
   txArgs: [],
   createdTime: {
-    microseconds: 1697722990427000
+    microseconds: 1697722990427000,
   },
   submittedTime: {
-    microseconds: 1697723019222000
+    microseconds: 1697723019222000,
   },
   confirmedTime: {
-    microseconds: 1697723040798000
+    microseconds: 1697723040798000,
   },
   originInfo: {
     originSpec: 'chrome://wallet',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
   },
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   effectiveRecipient: mockEthAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const mockBtcSendTransaction = {
@@ -248,30 +248,30 @@ export const mockBtcSendTransaction = {
       inputs: [],
       outputs: [],
       sendingMaxAmount: false,
-      to: 'another-btc-address'
-    }
+      to: 'another-btc-address',
+    },
   },
   txStatus: 4,
   txType: BraveWallet.TransactionType.Other,
   txParams: [],
   txArgs: [],
   createdTime: {
-    microseconds: 1697722990427000
+    microseconds: 1697722990427000,
   },
   submittedTime: {
-    microseconds: 1697723019222000
+    microseconds: 1697723019222000,
   },
   confirmedTime: {
-    microseconds: 1697723040798000
+    microseconds: 1697723040798000,
   },
   originInfo: {
     originSpec: 'chrome://wallet',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
   },
   chainId: BraveWallet.BITCOIN_MAINNET,
   effectiveRecipient: mockBtcAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const mockZecSendTransaction = {
@@ -287,35 +287,35 @@ export const mockZecSendTransaction = {
       outputs: [],
       to: 'another-Zec-address',
       useShieldedPool: false,
-      memo: undefined
-    }
+      memo: undefined,
+    },
   },
   txStatus: 4,
   txType: BraveWallet.TransactionType.Other,
   txParams: [],
   txArgs: [],
   createdTime: {
-    microseconds: 1697722990427000
+    microseconds: 1697722990427000,
   },
   submittedTime: {
-    microseconds: 1697723019222000
+    microseconds: 1697723019222000,
   },
   confirmedTime: {
-    microseconds: 1697723040798000
+    microseconds: 1697723040798000,
   },
   originInfo: {
     originSpec: 'chrome://wallet',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
   },
   chainId: BraveWallet.Z_CASH_MAINNET,
   effectiveRecipient: mockZecAccount.accountId.address,
   isRetriable: false,
-  swapInfo: undefined
+  swapInfo: undefined,
 }
 
 export const createMockERC20TransferTxArgs = ({
   amount,
-  recipient
+  recipient,
 }: {
   recipient: string
   amount: number | string
@@ -326,7 +326,7 @@ export const createMockERC20TransferTxArgs = ({
 
 export const createMockERC20ApprovalTxArgs = ({
   amount,
-  spender
+  spender,
 }: {
   spender: string
   amount: number | string
@@ -338,7 +338,7 @@ export const createMockERC20ApprovalTxArgs = ({
 export const createMockERC721TxArgs = ({
   owner,
   to,
-  tokenId
+  tokenId,
 }: {
   owner: string
   to: string
@@ -376,7 +376,7 @@ export const createMockTransactionInfo = (arg: {
     isERC20Approve,
     isERC721Send,
     tokenId,
-    buyAmount
+    buyAmount,
   } = arg
 
   const txBase =
@@ -386,8 +386,8 @@ export const createMockTransactionInfo = (arg: {
           coinType === BraveWallet.CoinType.ETH
             ? mockTransactionInfo
             : coinType === BraveWallet.CoinType.SOL
-            ? mockSolanaTransactionInfo
-            : mockTransactionInfo
+              ? mockSolanaTransactionInfo
+              : mockTransactionInfo,
         )
 
   const ethTxData = {
@@ -402,7 +402,7 @@ export const createMockTransactionInfo = (arg: {
       avgMaxFeePerGas: '0x2faf092',
       fastMaxPriorityFeePerGas: '0x59682f00',
       fastMaxFeePerGas: '0x59682f12',
-      baseFeePerGas: '0x12'
+      baseFeePerGas: '0x12',
     },
     baseData: {
       ...txBase.txDataUnion.ethTxData1559?.baseData,
@@ -413,8 +413,8 @@ export const createMockTransactionInfo = (arg: {
       signedTransaction: 'signed',
       signOnly: false,
       to: sendApproveOrSellAssetContractAddress,
-      value: '1'
-    }
+      value: '1',
+    },
   }
 
   let txArgs: string[] = []
@@ -424,13 +424,13 @@ export const createMockTransactionInfo = (arg: {
     case isERC20Approve: {
       txArgs = createMockERC20ApprovalTxArgs({
         amount: sendApproveOrSellAmount,
-        spender: fromAccount.address
+        spender: fromAccount.address,
       })
     }
     case isERC20Send: {
       txArgs = createMockERC20TransferTxArgs({
         recipient: toAddress,
-        amount: sendApproveOrSellAmount
+        amount: sendApproveOrSellAmount,
       })
       txBase.txDataUnion.ethTxData1559 = ethTxData
     }
@@ -438,7 +438,7 @@ export const createMockTransactionInfo = (arg: {
       txArgs = createMockERC721TxArgs({
         owner: fromAccount.address,
         to: toAddress,
-        tokenId: tokenId || ''
+        tokenId: tokenId || '',
       })
       txBase.txDataUnion.ethTxData1559 = ethTxData
     }
@@ -453,7 +453,7 @@ export const createMockTransactionInfo = (arg: {
         toAsset: buyAssetContractAddress,
         toAmount: buyAmount || '',
         receiver: toAddress,
-        provider: 'lifi'
+        provider: 'lifi',
       } as BraveWallet.SwapInfo
     }
   }
@@ -470,14 +470,14 @@ export const createMockTransactionInfo = (arg: {
     chainId,
     fromAccountId: fromAccount.accountId,
     txArgs,
-    swapInfo
+    swapInfo,
   }
 }
 
 const getMockTransactionType = (
   isSwapOrBridge: boolean,
   transactionType: StorybookTransactionTypes,
-  coinType: BraveWallet.CoinType
+  coinType: BraveWallet.CoinType,
 ) => {
   if (isSwapOrBridge && coinType === BraveWallet.CoinType.SOL) {
     return BraveWallet.TransactionType.SolanaSwap
@@ -497,7 +497,7 @@ const getMockTransactionType = (
 export const getPostConfirmationStatusMockTransaction = (
   transactionType: StorybookTransactionTypes,
   transactionStatus: BraveWallet.TransactionStatus,
-  transactionCoinType: StorybookCoinTypes
+  transactionCoinType: StorybookCoinTypes,
 ) => {
   const isSwapOrBridge =
     transactionType === 'Swap' || transactionType === 'Bridge'
@@ -506,23 +506,23 @@ export const getPostConfirmationStatusMockTransaction = (
     transactionCoinType === 'BTC'
       ? BraveWallet.CoinType.BTC
       : transactionCoinType === 'FIL'
-      ? BraveWallet.CoinType.FIL
-      : transactionCoinType === 'SOL'
-      ? BraveWallet.CoinType.SOL
-      : transactionCoinType === 'ZEC'
-      ? BraveWallet.CoinType.ZEC
-      : BraveWallet.CoinType.ETH
+        ? BraveWallet.CoinType.FIL
+        : transactionCoinType === 'SOL'
+          ? BraveWallet.CoinType.SOL
+          : transactionCoinType === 'ZEC'
+            ? BraveWallet.CoinType.ZEC
+            : BraveWallet.CoinType.ETH
 
   const chain =
     transactionCoinType === 'BTC'
       ? BraveWallet.BITCOIN_MAINNET
       : transactionCoinType === 'FIL'
-      ? BraveWallet.FILECOIN_MAINNET
-      : transactionCoinType === 'SOL'
-      ? BraveWallet.SOLANA_MAINNET
-      : transactionCoinType === 'ZEC'
-      ? BraveWallet.Z_CASH_MAINNET
-      : BraveWallet.MAINNET_CHAIN_ID
+        ? BraveWallet.FILECOIN_MAINNET
+        : transactionCoinType === 'SOL'
+          ? BraveWallet.SOLANA_MAINNET
+          : transactionCoinType === 'ZEC'
+            ? BraveWallet.Z_CASH_MAINNET
+            : BraveWallet.MAINNET_CHAIN_ID
 
   return {
     ...mockTransactionInfo,
@@ -531,7 +531,7 @@ export const getPostConfirmationStatusMockTransaction = (
       BraveWallet.TransactionType.ERC20Approve
         ? LiFiExchangeProxy
         : '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-      '0x15ddf09c97b0000'
+      '0x15ddf09c97b0000',
     ],
     txDataUnion: {
       ...mockTransactionInfo.txDataUnion,
@@ -541,14 +541,14 @@ export const getPostConfirmationStatusMockTransaction = (
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
                 ...mockTransactionInfo.txDataUnion.ethTxData1559?.baseData,
-                to: mockBasicAttentionToken.contractAddress
-              }
+                to: mockBasicAttentionToken.contractAddress,
+              },
             }
           : undefined,
       solanaTxData:
         coin === BraveWallet.CoinType.SOL
           ? mockSolanaTransactionInfo.txDataUnion.solanaTxData
-          : undefined
+          : undefined,
     },
     txStatus: transactionStatus,
     txType: getMockTransactionType(isSwapOrBridge, transactionType, coin),
@@ -566,8 +566,8 @@ export const getPostConfirmationStatusMockTransaction = (
           toAsset: mockUSDCoin.contractAddress,
           toAmount: '111111111111111',
           receiver: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-          provider: 'lifi'
+          provider: 'lifi',
         } as BraveWallet.SwapInfo)
-      : undefined
+      : undefined,
   } as SerializableTransactionInfo
 }

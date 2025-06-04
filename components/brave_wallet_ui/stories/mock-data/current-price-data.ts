@@ -12,7 +12,7 @@ export const mockedCurrentPriceData = [
     usd: '56806.36',
     btc: '1',
     usdTimeframeChange: '2.3',
-    btcTimeframeChange: '-0.1'
+    btcTimeframeChange: '-0.1',
   },
   {
     name: 'Binance Coin',
@@ -20,7 +20,7 @@ export const mockedCurrentPriceData = [
     usd: '502.24',
     btc: '0.0098',
     usdTimeframeChange: '-4.6',
-    btcTimeframeChange: '-4.8'
+    btcTimeframeChange: '-4.8',
   },
   {
     name: 'Ethereum',
@@ -28,7 +28,7 @@ export const mockedCurrentPriceData = [
     usd: '2156.20',
     btc: '0.042',
     usdTimeframeChange: '0.2',
-    btcTimeframeChange: '0.3'
+    btcTimeframeChange: '0.3',
   },
   {
     name: 'Basic Attention Token',
@@ -36,8 +36,8 @@ export const mockedCurrentPriceData = [
     usd: '1.34',
     btc: '0.000022',
     usdTimeframeChange: '2',
-    btcTimeframeChange: '2.1'
-  }
+    btcTimeframeChange: '2.1',
+  },
 ]
 
 export const mockTransactionSpotPrices: SpotPriceRegistry = {
@@ -45,12 +45,12 @@ export const mockTransactionSpotPrices: SpotPriceRegistry = {
     fromAsset: 'ETH',
     toAsset: 'USD',
     price: '3300',
-    assetTimeframeChange: ''
+    assetTimeframeChange: '',
   },
   '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': {
     fromAsset: 'BAT',
     toAsset: 'USD',
     price: '0.85',
-    assetTimeframeChange: ''
-  }
+    assetTimeframeChange: '',
+  },
 }

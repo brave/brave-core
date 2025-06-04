@@ -6,15 +6,15 @@ import { BraveWallet } from '../../constants/types'
 
 export const mockOriginInfo: BraveWallet.OriginInfo = {
   originSpec: 'https://with_a_really_looooooong_site_name.fixme.uniswap.org',
-  eTldPlusOne: 'uniswap.org'
+  eTldPlusOne: 'uniswap.org',
 }
 
 export const mockUniswapOriginInfo: BraveWallet.OriginInfo = {
   originSpec: 'https://app.uniswap.org',
-  eTldPlusOne: 'uniswap.org'
+  eTldPlusOne: 'uniswap.org',
 }
 
 export const mockBraveWalletOrigin: BraveWallet.OriginInfo = {
   originSpec: 'brave://wallet',
-  eTldPlusOne: 'wallet'
+  eTldPlusOne: 'wallet',
 }

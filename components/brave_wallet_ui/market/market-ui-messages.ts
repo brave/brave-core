@@ -28,7 +28,7 @@ export const enum MarketUiCommand {
   UpdateTradableAssets = 'update-tradable-assets',
   UpdateBuyableAssets = 'update-buyable-assets',
   UpdateDepositableAssets = 'update-depositable-assets',
-  UpdateIframeHeight = 'update-iframe-height'
+  UpdateIframeHeight = 'update-iframe-height',
 }
 
 export type MarketCommandMessage = {
@@ -68,7 +68,7 @@ export type UpdateIframeHeightMessage = MarketCommandMessage & {
 
 export const sendMessageToMarketUiFrame = (
   targetWindow: Window | null,
-  message: MarketCommandMessage
+  message: MarketCommandMessage,
 ) => {
   if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveMarketUiOrigin)
@@ -78,7 +78,7 @@ export const sendMessageToMarketUiFrame = (
 export const sendMessageToWalletUi = (
   targetWindow: Window | null,
   message: MarketCommandMessage,
-  origin: string
+  origin: string,
 ) => {
   if (targetWindow) {
     targetWindow.postMessage(message, origin)

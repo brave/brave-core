@@ -11,12 +11,12 @@ export const mockEncryptionKeyRequest: //
 BraveWallet.GetEncryptionPublicKeyRequest = {
   requestId: 'random_id',
   accountId: mockEthAccount.accountId,
-  originInfo: mockOriginInfo
+  originInfo: mockOriginInfo,
 }
 
 export const mockDecryptRequest: BraveWallet.DecryptRequest = {
   requestId: 'random_id',
   accountId: mockEthAccount.accountId,
   unsafeMessage: 'This is a test message.',
-  originInfo: mockOriginInfo
+  originInfo: mockOriginInfo,
 }

@@ -20,7 +20,7 @@ import Amount from '../../../utils/amount'
 import {
   getNFTTokenStandard,
   isComponentInStorybook,
-  stripERC20TokenImageURL
+  stripERC20TokenImageURL,
 } from '../../../utils/string-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
@@ -31,7 +31,7 @@ import { isTokenWatchOnly } from '../../../utils/asset-utils'
 import {
   useGetNftMetadataQuery,
   useGetNftOwnerQuery,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
 } from '../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
@@ -69,7 +69,7 @@ import {
   NftMultimediaWrapper,
   NftMultimedia,
   IconWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
 } from './nft-screen.styles'
 import { Row, VerticalSpace } from '../../../components/shared/style'
 
@@ -80,12 +80,12 @@ interface Props {
 
 const createSkeletonProps = (
   width?: string | number,
-  height?: string | number
+  height?: string | number,
 ) => {
   return {
     width: width || '100%',
     height: height || '100%',
-    enableAnimation: true
+    enableAnimation: true,
   }
 }
 
@@ -99,9 +99,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
   const {
     data: nftMetadata,
     isLoading: isFetchingNFTMetadata,
-    error: nftMetadataError
+    error: nftMetadataError,
   } = useGetNftMetadataQuery(selectedAsset, {
-    skip: !selectedAsset
+    skip: !selectedAsset,
   })
 
   const { data: ownerAddress } = useGetNftOwnerQuery(
@@ -109,9 +109,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       ? {
           contract: selectedAsset.contractAddress,
           tokenId: selectedAsset.tokenId,
-          chainId: tokenNetwork.chainId
+          chainId: tokenNetwork.chainId,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { accounts } = useAccountsQuery()
@@ -121,9 +121,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       ? {
           accounts,
           networks: [tokenNetwork],
-          isSpamRegistry: false
+          isSpamRegistry: false,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
@@ -131,9 +131,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       ? {
           accounts,
           networks: [tokenNetwork],
-          isSpamRegistry: true
+          isSpamRegistry: true,
         }
-      : skipToken
+      : skipToken,
   )
 
   // mutations
@@ -142,7 +142,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
   // hooks
   const history = useHistory()
   const onClickViewOnBlockExplorer = useExplorer(
-    tokenNetwork || new BraveWallet.NetworkInfo()
+    tokenNetwork || new BraveWallet.NetworkInfo(),
   )
 
   // memos
@@ -150,14 +150,14 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     if (!ownerAddress) return
 
     return accounts.find(
-      (account) => account.address.toLowerCase() === ownerAddress.toLowerCase()
+      (account) => account.address.toLowerCase() === ownerAddress.toLowerCase(),
     )
   }, [accounts, ownerAddress])
 
   const tokenIdAsNumberString = React.useMemo(
     () =>
       selectedAsset.tokenId ? new Amount(selectedAsset.tokenId).format() : '',
-    [selectedAsset.tokenId]
+    [selectedAsset.tokenId],
   )
   const reducedTokenId = tokenIdAsNumberString
     ? reduceAddress(tokenIdAsNumberString, '...')
@@ -167,7 +167,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     const params = new URLSearchParams({
       displayMode: 'details',
       nftMetadata: nftMetadata ? JSON.stringify(nftMetadata) : '',
-      error: nftMetadataError as string
+      error: nftMetadataError as string,
     })
     return `chrome-untrusted://nft-display?${params}`
   }, [nftMetadata, nftMetadataError])
@@ -177,20 +177,20 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     onClickViewOnBlockExplorer(
       selectedAsset.coin === BraveWallet.CoinType.ETH ? 'nft' : 'token',
       selectedAsset.contractAddress,
-      selectedAsset.tokenId
+      selectedAsset.tokenId,
     )()
   }, [
     onClickViewOnBlockExplorer,
     selectedAsset.coin,
     selectedAsset.contractAddress,
-    selectedAsset.tokenId
+    selectedAsset.tokenId,
   ])
 
   const onClickViewAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
       history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
     },
-    [history]
+    [history],
   )
 
   // effects
@@ -198,13 +198,13 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     // update the asset logo if it doesn't currently have one + one was found
     // in the metadata
     if (
-      selectedAsset &&
-      nftMetadata?.imageURL &&
-      stripERC20TokenImageURL(selectedAsset.logo) === ''
+      selectedAsset
+      && nftMetadata?.imageURL
+      && stripERC20TokenImageURL(selectedAsset.logo) === ''
     ) {
       updateUserToken({
         existingToken: selectedAsset,
-        updatedToken: { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
+        updatedToken: { ...selectedAsset, logo: nftMetadata?.imageURL || '' },
       })
     }
   }, [selectedAsset, nftMetadata?.imageURL, updateUserToken])
@@ -230,7 +230,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         selectedAsset,
         accounts,
         tokenBalancesRegistry,
-        spamTokenBalancesRegistry
+        spamTokenBalancesRegistry,
       ) && (
         <>
           <Alert type='info'>{getLocale('braveWalletUnownedNftAlert')}</Alert>
@@ -246,7 +246,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
               as='img'
               visible={!isFetchingNFTMetadata}
               src={`chrome-untrusted://image?url=${encodeURIComponent(
-                nftMetadata?.imageURL || ''
+                nftMetadata?.imageURL || '',
               )}&staticEncode=true`}
             />
           ) : (

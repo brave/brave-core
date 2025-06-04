@@ -9,13 +9,13 @@ import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
   BraveWallet,
-  AppsListType
+  AppsListType,
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import {
   TopTabNav,
   WalletBanner,
-  AddAccountModal
+  AddAccountModal,
 } from '../../components/desktop'
 import { SearchBar, AppList } from '../../components/shared'
 import { getLocale } from '../../../common/locale'
@@ -37,11 +37,10 @@ const CryptoStoryView = (props: Props) => {
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] =
     React.useState<boolean>(needsBackup)
   const [hideNav] = React.useState<boolean>(false)
-  const [filteredAppsList, setFilteredAppsList] = React.useState<
-    AppsListType[]
-  >(AppsList())
+  const [filteredAppsList, setFilteredAppsList] =
+    React.useState<AppsListType[]>(AppsList())
   const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>(
-    [AppsList()[0].appList[0]]
+    [AppsList()[0].appList[0]],
   )
   const [selectedTab, setSelectedTab] =
     React.useState<TopTabNavTypes>('portfolio')
