@@ -957,6 +957,10 @@ Config.prototype.getProjectRef = function (
 }
 
 Config.prototype.update = function (options) {
+  console.log(`DEBUG: Config.update - Received options:`, JSON.stringify(options, null, 2))
+  console.log(`DEBUG: Config.update - PKCS11 provider in options:`, options.pkcs11_provider)
+  console.log(`DEBUG: Config.update - PKCS11 alias in options:`, options.pkcs11_alias)
+
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }

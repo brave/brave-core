@@ -33,6 +33,7 @@ const checkVersionsMatch = () => {
 
 const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
+  console.log(`DEBUG: build.js - Received options:`, JSON.stringify(options, null, 2))
   config.update(options)
   checkVersionsMatch()
 
