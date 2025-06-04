@@ -93,7 +93,7 @@ void RecordInitialP3AValues(Profile* profile) {
   }
   ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
   if (profile->IsRegularProfile()) {
-    brave_shields::MaybeRecordInitialShieldsSettings(
+    P3A(profile) << brave_shields::MaybeRecordInitialShieldsSettings(
         profile->GetPrefs(),
         HostContentSettingsMapFactory::GetForProfile(profile));
   }
