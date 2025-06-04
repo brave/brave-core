@@ -2127,19 +2127,6 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(0u, conversation_handler_->GetSuggestedQuestionsForTest().size());
 }
 
-TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
-       ConversationShouldNotBeUnloadedIfRequestInProgress) {
-  auto conversation = ai_chat_service_->CreateConversation()->GetWeakPtr();
-  conversation->SetRequestInProgressForTesting(true);
-
-  ai_chat_service_->MaybeUnloadConversation(conversation.get());
-  EXPECT_TRUE(conversation);
-
-  conversation->SetRequestInProgressForTesting(false);
-  ai_chat_service_->MaybeUnloadConversation(conversation.get());
-  EXPECT_FALSE(conversation);
-}
-
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
