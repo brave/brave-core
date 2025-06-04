@@ -112,9 +112,6 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
       if (model->key == "chat-basic") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
-      } else if (model->key == "chat-leo-expanded") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE);
       } else if (model->key == "chat-claude-instant") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);

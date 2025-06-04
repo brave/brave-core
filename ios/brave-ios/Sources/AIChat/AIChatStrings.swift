@@ -260,14 +260,6 @@ extension Strings {
       comment:
         "The model's purpose - Describes what it can do best"
     )
-    public static let introMessageMixtralModelPurposeDescription = NSLocalizedString(
-      "aichat.introMessageMixtralModelPurposeDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Advanced chat tasks",
-      comment:
-        "The model's purpose - Describes what it can do best"
-    )
     public static let introMessageQwenModelPurposeDescription = NSLocalizedString(
       "aichat.introMessageQwenModelPurposeDescription",
       tableName: "BraveLeo",
@@ -322,14 +314,6 @@ extension Strings {
       bundle: .module,
       value:
         "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.",
-      comment: "The model intro message when you first enter the chat assistant"
-    )
-    public static let introMessageMixtralMessageDescription = NSLocalizedString(
-      "aichat.introMessageMixtralMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. Mixtral is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeInstantMessageDescription = NSLocalizedString(
@@ -833,7 +817,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the **[privacy policy](%@)** for more information.",
+        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the **[privacy policy](%@)** for more information.",
       comment:
         "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
     )
