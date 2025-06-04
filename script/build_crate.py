@@ -5,6 +5,7 @@
 
 import argparse
 import os
+from pathlib import Path
 import platform
 import subprocess
 
@@ -18,3 +19,4 @@ if platform.system() == "Windows":
 else:
     env["TMPDIR"] = args.temp_dir_path
 subprocess.check_call(cargo_args, env=env)
+Path(f'{args.temp_dir_path}/.stamp').touch()
