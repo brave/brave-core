@@ -33,6 +33,7 @@
 namespace {
 
 constexpr char kExtensionId[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+constexpr char kFailExtensionId[] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 
 class TestObserver : public importer::ImporterProgressObserver {
  public:
@@ -62,12 +63,12 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  std::string ReadStore(Profile* profile) {
+  std::string ReadStore(Profile* profile, const extensions::ExtensionId& id) {
     base::ScopedAllowBlockingForTesting allow_io;
     const auto path =
         profile->GetPath()
             .Append(extensions::kLocalExtensionSettingsDirectoryName)
-            .AppendASCII(kExtensionId);
+            .AppendASCII(id);
 
     if (!base::DirectoryExists(path)) {
       return {};
@@ -75,8 +76,7 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     auto store_factory =
         base::MakeRefCounted<value_store::TestValueStoreFactory>(path);
     auto source_store = store_factory->CreateValueStore(
-        base::FilePath(extensions::kLocalExtensionSettingsDirectoryName),
-        kExtensionId);
+        base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
     auto setting = source_store->Get();
     if (!setting.status().ok()) {
       return {};
@@ -84,25 +84,26 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     return *setting.PassSettings().FindString("id");
   }
 
-  std::string ReadIndexedDB(Profile* profile) {
+  std::string ReadIndexedDB(Profile* profile,
+                            const extensions::ExtensionId& id) {
     base::ScopedAllowBlockingForTesting allow_io;
 
     const auto indexeddb_path =
         profile->GetPath()
             .AppendASCII("IndexedDB")
-            .AppendASCII(base::StrCat(
-                {"chrome-extension_", kExtensionId, "_indexeddb.test"}))
+            .AppendASCII(
+                base::StrCat({"chrome-extension_", id, "_indexeddb.test"}))
             .AppendASCII("test");
     std::string contents;
     base::ReadFileToString(indexeddb_path, &contents);
     return contents;
   }
 
-  void AddTestExtension(Profile* profile) {
+  void AddTestExtension(Profile* profile, const extensions::ExtensionId& id) {
     scoped_refptr<const extensions::Extension> extension(
         extensions::ExtensionBuilder("extension")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
-            .SetID(kExtensionId)
+            .SetID(id)
             .AddJSON(R"("manifest_version": 2, "version": "1.0.0")")
             .SetLocation(extensions::mojom::ManifestLocation::kInternal)
             .Build());
@@ -112,31 +113,35 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
         base::Value::Dict());
 
     base::ScopedAllowBlockingForTesting allow_blocking;
+    const auto count = GetImportableChromeExtensionsList(profile->GetPath())
+                           .value_or(std::vector<std::string>())
+                           .size();
+
     const auto indexeddb_path =
         profile->GetPath()
             .AppendASCII("IndexedDB")
-            .AppendASCII(base::StrCat(
-                {"chrome-extension_", kExtensionId, "_indexeddb.test"}));
+            .AppendASCII(
+                base::StrCat({"chrome-extension_", id, "_indexeddb.test"}));
     const auto local_store_path =
         profile->GetPath()
             .Append(extensions::kLocalExtensionSettingsDirectoryName)
-            .AppendASCII(kExtensionId);
+            .AppendASCII(id);
 
     // Simulate pref data.
     auto store_factory =
         base::MakeRefCounted<value_store::TestValueStoreFactory>(
             local_store_path);
     auto source_store = store_factory->CreateValueStore(
-        base::FilePath(extensions::kLocalExtensionSettingsDirectoryName),
-        kExtensionId);
-    source_store->Set(value_store::ValueStore::DEFAULTS, "id",
-                      base::Value(kExtensionId));
+        base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
+    source_store->Set(value_store::ValueStore::DEFAULTS, "id", base::Value(id));
 
     base::CreateDirectory(indexeddb_path);
-    base::WriteFile(indexeddb_path.AppendASCII("test"), "test");
+    base::WriteFile(indexeddb_path.AppendASCII("test"), id);
 
     // Wait for prefs are written on the disk.
-    while (!GetImportableChromeExtensionsList(profile->GetPath())) {
+    while (GetImportableChromeExtensionsList(profile->GetPath())
+               .value_or(std::vector<std::string>())
+               .size() != count + 1) {
       NonBlockingDelay(base::Milliseconds(10));
     }
   }
@@ -144,7 +149,7 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
   auto* source_profile = CreateProfile();
-  AddTestExtension(source_profile);
+  AddTestExtension(source_profile, kExtensionId);
 
   for (int i = 0; i < 3; ++i) {
     Profile* target = CreateProfile();
@@ -179,6 +184,55 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
                               new ProfileWriter(target));
     run_loop.Run();
     EXPECT_TRUE(extension_imported);
-    EXPECT_EQ(kExtensionId, ReadStore(target));
+    EXPECT_EQ(kExtensionId, ReadStore(target, kExtensionId));
+    EXPECT_EQ(kExtensionId, ReadIndexedDB(target, kExtensionId));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ReImportExtensions) {
+  auto* source_profile = CreateProfile();
+  AddTestExtension(source_profile, kExtensionId);
+  AddTestExtension(source_profile, kFailExtensionId);
+
+  Profile* target = CreateProfile();
+
+  auto import = [&]() {
+    // Deletes itself.
+    auto* host = new BraveExternalProcessImporterHost;
+
+    testing::NiceMock<TestObserver> observer;
+
+    base::RunLoop run_loop;
+    EXPECT_CALL(observer, ImportEnded())
+        .WillOnce(
+            ::testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+    host->set_observer(&observer);
+
+    importer::SourceProfile source;
+    source.importer_type = importer::TYPE_CHROME;
+    source.source_path = source_profile->GetPath();
+
+    extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
+        base::BindLambdaForTesting(
+            [&](const std::string& id)
+                -> extensions_import::ExtensionImportStatus {
+              if (id == kFailExtensionId) {
+                return extensions_import::ExtensionImportStatus::
+                    kFailedToInstall;
+              }
+              AddTestExtension(target, id);
+              return extensions_import::ExtensionImportStatus::kOk;
+            });
+
+    host->StartImportSettings(source, target, importer::EXTENSIONS,
+                              new ProfileWriter(target));
+    run_loop.Run();
+  };
+
+  // First: on-boarding import.
+  import();
+
+  // Second: import from settings. Shouldn't crash.
+  import();
 }
