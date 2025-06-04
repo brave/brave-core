@@ -9,6 +9,7 @@ import sys
 import subprocess
 import tempfile
 
+
 def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('zipalign_path')
@@ -19,17 +20,24 @@ def main():
     argument_parser.add_argument('key_passwd')
     argument_parser.add_argument('prvt_key_passwd')
     argument_parser.add_argument('key_name')
-    argument_parser.add_argument('--pkcs11')
+    argument_parser.add_argument('--pkcs11-provider', help='PKCS11 provider configuration file path')
+    argument_parser.add_argument('--pkcs11-alias', help='PKCS11 key alias')
     args = argument_parser.parse_args()
 
     sign(args.zipalign_path, args.apksigner_path, args.jarsigner_path, \
         args.unsigned_apk_paths, args.key_path, args.key_passwd, \
-        args.prvt_key_passwd, args.key_name, args.pkcs11)
-
+        args.prvt_key_passwd, args.key_name, args.pkcs11_provider, args.pkcs11_alias)
 
 def sign(zipalign_path, apksigner_path, jarsigner_path, \
     unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd, \
-    key_name, pkcs11_key_label=None):
+    key_name, pkcs11_provider=None, pkcs11_alias=None):
+    print(f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
+
+    # Debug logging for PKCS11 arguments
+    if pkcs11_provider or pkcs11_alias:
+        print(f"PKCS11 provider: {pkcs11_provider}")
+        print(f"PKCS11 alias: {pkcs11_alias}")
+
     with tempfile.NamedTemporaryFile() as staging_file:
         for unsigned_apk_path in unsigned_apk_paths:
             subprocess.check_output([
@@ -54,25 +62,48 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                         'pass:' + prvt_key_passwd,
                     ]
             else:
-                base_args = [jarsigner_path, '-verbose']
-                common_args = [staging_file.name, '-signedjar', unsigned_apk_path, key_name]
-
-                if pkcs11_key_label:
-                    cmd_args = base_args + [
+                if pkcs11_provider and pkcs11_alias:
+                    print("Using PKCS11 signing")
+                    if not os.path.exists(pkcs11_provider):
+                        raise FileNotFoundError(f"PKCS11 provider config file not found: {pkcs11_provider}")
+                    cmd_args = [
+                        jarsigner_path, '-verbose',
                         '-keystore', 'NONE',
                         '-storetype', 'PKCS11',
-                        '-providerName', f'SunPKCS11-{pkcs11_key_label}',
+                        '-providerClass', 'sun.security.pkcs11.SunPKCS11',
+                        '-providerArg', pkcs11_provider,
                         '-storepass', 'password',
-                    ] + common_args
+                        staging_file.name, '-signedjar', unsigned_apk_path, pkcs11_alias
+                    ]
                 else:
-                    cmd_args = base_args + [
+                    print("Using standard keystore signing")
+                    cmd_args = [
+                        jarsigner_path, '-verbose',
                         '-sigalg', 'SHA256withRSA',
                         '-digestalg', 'SHA-256',
                         '-keystore', key_path,
                         '-storepass', key_passwd,
                         '-keypass', prvt_key_passwd,
-                    ] + common_args
-            subprocess.check_output(cmd_args)
+                        staging_file.name, '-signedjar', unsigned_apk_path, key_name
+                    ]
+
+            print(f"Executing signing command for {unsigned_apk_path}")
+            try:
+                result = subprocess.run(cmd_args, capture_output=True, text=True, check=True)
+                print(f"Successfully signed: {unsigned_apk_path}")
+                if result.stdout:
+                    print(f"Signing stdout: {result.stdout}")
+                if result.stderr:
+                    print(f"Signing stderr: {result.stderr}")
+            except subprocess.CalledProcessError as e:
+                print(f"ERROR: Signing failed for {unsigned_apk_path}")
+                print(f"  Command: {' '.join(cmd_args)}")
+                print(f"  Exit code: {e.returncode}")
+                print(f"  Stdout: {e.stdout}")
+                print(f"  Stderr: {e.stderr}")
+                raise
+
+    print("APK signing process completed")
 
 
 if __name__ == '__main__':

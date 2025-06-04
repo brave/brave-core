@@ -313,9 +313,8 @@ const Config = function () {
     'brave_android_keystore_password',
   ])
   this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
-  this.braveVariationsServerUrl =
-    getEnvConfig(['brave_variations_server_url']) || ''
-  this.braveAndroidPkcs11KeyLabel = getEnvConfig(['brave_android_pkcs11_key_label'])
+  this.braveAndroidPkcs11Provider = ''
+  this.braveAndroidPkcs11Alias = ''
   this.braveVariationsServerUrl = getEnvConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
@@ -553,8 +552,9 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_name = this.braveAndroidKeystoreName
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
-      if (this.braveAndroidPkcs11KeyLabel) {
-        args.brave_android_pkcs11_key_label = this.braveAndroidPkcs11KeyLabel
+      if (this.braveAndroidPkcs11Provider) {
+        args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
+        args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
       }
     }
   }
@@ -1145,8 +1145,14 @@ Config.prototype.update = function (options) {
     this.use_libfuzzer = options.use_libfuzzer
   }
 
-  if (options.pkcs11) {
-    this.braveAndroidPkcs11KeyLabel = options.pkcs11
+  if (options.pkcs11_provider) {
+    this.braveAndroidPkcs11Provider = options.pkcs11_provider
+    console.log(`DEBUG: Set braveAndroidPkcs11Provider to: ${this.braveAndroidPkcs11Provider}`)
+  }
+
+  if (options.pkcs11_alias) {
+    this.braveAndroidPkcs11Alias = options.pkcs11_alias
+    console.log(`DEBUG: Set braveAndroidPkcs11Alias to: ${this.braveAndroidPkcs11Alias}`)
   }
 }
 
