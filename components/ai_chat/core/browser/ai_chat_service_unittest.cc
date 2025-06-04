@@ -17,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
@@ -36,6 +37,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -437,6 +439,33 @@ TEST_P(AIChatServiceUnitTest,
 
   // Set up the engine so we can submit a turn.
   conversation->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(conversation->GetEngineForTesting());
+
+  // Function to call to finish generating the response.
+  base::OnceClosure resolve;
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _))
+      .WillRepeatedly(testing::Invoke(
+          [&resolve](bool send_page_contents, const std::string& page_contents,
+                     const std::vector<mojom::ConversationTurnPtr>& history,
+                     const std::string& selected_language,
+                     base::RepeatingCallback<void(
+                         EngineConsumer::GenerationResultData)> callback,
+                     base::OnceCallback<void(
+                         base::expected<EngineConsumer::GenerationResultData,
+                                        mojom::APIError>)> done_callback) {
+            resolve = base::BindOnce(
+                [](base::OnceCallback<void(
+                       base::expected<EngineConsumer::GenerationResultData,
+                                      mojom::APIError>)> done_callback) {
+                  std::move(done_callback)
+                      .Run(base::ok(EngineConsumer::GenerationResultData(
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New("")),
+                          std::nullopt /* model_key */)));
+                },
+                std::move(done_callback));
+          }));
 
   // Conversation should exist in memory.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
@@ -450,6 +479,15 @@ TEST_P(AIChatServiceUnitTest,
 
   // Weak pointer should still be valid
   EXPECT_TRUE(weak_ptr);
+
+  // Let the engine complete the request
+  std::move(resolve).Run();
+
+  // Conversation should be unloaded
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+
+  // Weak pointer should be invalid
+  EXPECT_FALSE(weak_ptr);
 }
 
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
