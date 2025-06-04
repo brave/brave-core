@@ -33,7 +33,11 @@ const checkVersionsMatch = () => {
 
 const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
-  console.log(`DEBUG: build.js - Received options:`, JSON.stringify(options, null, 2))
+  console.log(`DEBUG: build.js - Received PKCS11 options:`)
+  console.log(`  pkcs11_provider: '${options.pkcs11_provider || 'undefined'}'`)
+  console.log(`  pkcs11_alias: '${options.pkcs11_alias || 'undefined'}'`)
+  console.log(`  pkcs11Provider: '${options.pkcs11Provider || 'undefined'}'`)
+  console.log(`  pkcs11Alias: '${options.pkcs11Alias || 'undefined'}'`)
   config.update(options)
   checkVersionsMatch()
 
