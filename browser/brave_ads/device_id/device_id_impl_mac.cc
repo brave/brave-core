@@ -195,12 +195,6 @@ std::string GetMacAddress(
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::MAY_BLOCK);
 
-  mach_port_t main_port;
-  kern_return_t result = IOMasterPort(MACH_PORT_NULL, &main_port);
-  if (result != KERN_SUCCESS) {
-    return {};
-  }
-
   CFMutableDictionaryRef matching =
       IOServiceMatching(kIOEthernetInterfaceClass);
   if (!matching) {
@@ -208,7 +202,8 @@ std::string GetMacAddress(
   }
 
   io_iterator_t iterator;
-  result = IOServiceGetMatchingServices(main_port, matching, &iterator);
+  kern_return_t result =
+      IOServiceGetMatchingServices(kIOMainPortDefault, matching, &iterator);
   if (result != KERN_SUCCESS) {
     return {};
   }
