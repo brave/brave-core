@@ -23,10 +23,8 @@ ProfileMenuViewBase::IdentitySectionParams BraveAdjustIdentitySectionParams(
 
 }  // namespace
 
-#define kGuestMenuArtIcon gfx::VectorIcon::EmptyIcon()
 #define SetProfileIdentityWithCallToAction(PARAMS) \
   SetProfileIdentityWithCallToAction(BraveAdjustIdentitySectionParams(PARAMS))
 
 #include "src/chrome/browser/ui/views/profiles/profile_menu_view.cc"
 #undef SetProfileIdentityWithCallToAction
-#undef kGuestMenuArtIcon
