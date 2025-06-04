@@ -250,6 +250,17 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                  value:base::Value(isEnabled)];
 }
 
+- (BOOL)isSurveyPanelistEnabled {
+  return self.profilePrefService->GetBoolean(
+      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
+}
+
+- (void)setIsSurveyPanelistEnabled:(BOOL)enabled {
+  [self setProfilePref:ntp_background_images::prefs::
+                           kNewTabPageSponsoredImagesSurveyPanelist
+                 value:base::Value(enabled)];
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
