@@ -114,8 +114,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
   bool is_third_party = !SameDomainOrHost(
-      url,
-      url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
+      url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
       INCLUDE_PRIVATE_REGISTRIES);
   return ad_block_client_->matches(
       url.spec(), url.host(), tab_host, ResourceTypeToString(resource_type),
@@ -136,8 +135,7 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
   bool is_third_party = !SameDomainOrHost(
-      url,
-      url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
+      url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
       INCLUDE_PRIVATE_REGISTRIES);
   auto result = ad_block_client_->get_csp_directives(
       url.spec(), url.host(), tab_host, ResourceTypeToString(resource_type),

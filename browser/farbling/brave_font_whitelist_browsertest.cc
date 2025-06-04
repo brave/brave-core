@@ -82,8 +82,7 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
   // previously succeeded (thereby bypassing the font whitelist) because
   // src:local CSS font processing was not hooked into the font whitelist logic
   // in brave::AllowFontFamily.
-  LoadHTMLWithUrlOverride(kFontLocalSourceHTML,
-                          GURL("http://b.test/").spec().c_str());
+  LoadHTMLWithUrlOverride(kFontLocalSourceHTML, GURL("http://b.test/").spec());
   blink::WebDocument document = GetMainFrame()->GetDocument();
   blink::WebElement p1 =
       document.GetElementById(blink::WebString::FromUTF8("test1"));

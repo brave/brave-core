@@ -134,7 +134,7 @@ void BraveMainDelegate::AppendCommandLineOptions() {
   // Brave's sync protocol does not use the sync service url
   if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
     command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                    brave_sync_service_url.c_str());
+                                    brave_sync_service_url);
   }
 
   variations::AppendBraveCommandLineOptions(*command_line);
@@ -210,7 +210,7 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
 
     command_line->AppendSwitchASCII(
         switches::kComponentUpdater,
-        (current_value + "url-source=" + update_url).c_str());
+        base::StrCat({current_value, "url-source=", update_url}));
   }
   return result;
 }

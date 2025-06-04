@@ -308,8 +308,7 @@ std::optional<std::string> FilTransaction::ConvertMessageStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
   std::string converted_json =
-      json::convert_string_value_to_int64(path + "/GasLimit", json, true)
-          .c_str();
+      json::convert_string_value_to_int64(path + "/GasLimit", json, true);
   converted_json = json::convert_string_value_to_uint64(path + "/Nonce",
                                                         converted_json, true);
   converted_json = json::convert_string_value_to_uint64(path + "/Method",

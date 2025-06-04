@@ -374,8 +374,8 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
     log_store->StageNextLog();
   }
 
-  const std::string log = log_store->staged_log();
-  const std::string log_key = log_store->staged_log_key();
+  const std::string& log = log_store->staged_log();
+  const std::string& log_key = log_store->staged_log_key();
   VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Requesting "
              "randomness for histogram: "
           << log_key << " " << log;
@@ -391,8 +391,8 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
     return;
   }
 
-  if (!constellation_helper_->StartMessagePreparation(log_key.c_str(), log_type,
-                                                      log, is_nebula)) {
+  if (!constellation_helper_->StartMessagePreparation(log_key, log_type, log,
+                                                      is_nebula)) {
     scheduler->UploadFinished(false);
   }
 }

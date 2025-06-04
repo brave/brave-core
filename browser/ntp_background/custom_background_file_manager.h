@@ -110,7 +110,7 @@ class CustomBackgroundFileManager final {
 #if defined(OS_WIN)
         auto file_name = base::SysWideToUTF8(value.BaseName().value());
 #else
-        auto file_name = std::string(value.BaseName().value().c_str());
+        auto file_name = value.BaseName().value();
 #endif
         DCHECK(!file_name.empty())
             << "Couldn't extract file name from the given path " << value;
