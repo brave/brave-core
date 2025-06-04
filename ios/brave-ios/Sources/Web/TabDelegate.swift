@@ -19,6 +19,11 @@ public protocol TabDelegate: AnyObject {
   ) async -> UIContextMenuConfiguration?
   func tab(
     _ tab: some TabState,
+    contextMenuWithLinkURL linkURL: URL?,
+    willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating?
+  )
+  func tab(
+    _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision
   func tab(
@@ -90,6 +95,12 @@ extension TabDelegate {
   ) async -> UIContextMenuConfiguration? {
     return nil
   }
+
+  func tab(
+    _ tab: some TabState,
+    contextMenuWithLinkURL linkURL: URL?,
+    willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating?
+  ) {}
 
   public func tab(
     _ tab: some TabState,
