@@ -744,7 +744,7 @@ public class BrowserViewController: UIViewController {
   }
 
   @objc func appWillTerminateNotification() {
-    tabManager.saveAllTabs()
+    tabManager.saveAllTabs(synchronously: true)
   }
 
   @objc private func tappedCollapsedURLBar() {
@@ -762,6 +762,12 @@ public class BrowserViewController: UIViewController {
   @objc func sceneWillResignActiveNotification(_ notification: NSNotification) {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
+    }
+
+    // TODO: brave/brave-browser/issues/46565
+    // Remove when all direct mutations on CoreData types are replaced
+    DataController.performOnMainContext { context in
+      try? context.save()
     }
 
     tabManager.saveAllTabs()
