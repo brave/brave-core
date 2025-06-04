@@ -96,6 +96,7 @@ test("brave_unit_tests") {
 
   sources = [
     "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
+    "//brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper_unittest.cc",
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/browsing_data/brave_browsing_data_remover_delegate_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
@@ -159,6 +160,8 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/ai_chat:unit_tests",
+    "//brave/browser/android/youtube_script_injector",
+    "//brave/browser/android/youtube_script_injector:unit_tests",
     "//brave/browser/autocomplete:unit_tests",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_ads/device_id:unit_tests",

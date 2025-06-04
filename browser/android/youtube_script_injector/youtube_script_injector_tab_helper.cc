@@ -134,10 +134,10 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
     return false;
   }
 
-  // Check if path is exactly "/watch" (case-insensitive, ASCII only).
+  // Check if path is exactly "/watch" (case sensitive).
   std::string path = url.path();
   const std::string watch_path = "/watch";
-  if (!base::EqualsCaseInsensitiveASCII(path, watch_path)) {
+  if (path != watch_path) {
     return false;
   }
 
