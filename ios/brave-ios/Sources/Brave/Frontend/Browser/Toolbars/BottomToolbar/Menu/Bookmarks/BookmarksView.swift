@@ -120,6 +120,7 @@ private struct BookmarksListView: View {
   @ObservedObject
   var viewModel: BookmarkViewModel
 
+  @State private var showImportExport = false
   @State private var showCreateFolder = false
   @State private var createFolderName = ""
 
@@ -258,7 +259,7 @@ private struct BookmarksListView: View {
         HStack {
           Button {
             if viewModel.folder == nil {
-              // TODO: Share - Import/Export
+              showImportExport = true
             } else {
               showCreateFolder = true
             }
@@ -312,6 +313,19 @@ private struct BookmarksListView: View {
         Text(Strings.enterFolderName)
       }
     )
+    .confirmationDialog("", isPresented: $showImportExport, actions: {
+      Button {
+        
+      } label: {
+        Text(Strings.bookmarksImportAction)
+      }
+      
+      Button {
+        
+      } label: {
+        Text(Strings.bookmarksExportAction)
+      }
+    })
     .onChange(of: searchText) { searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(

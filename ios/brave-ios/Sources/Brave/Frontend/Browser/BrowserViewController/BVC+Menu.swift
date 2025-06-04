@@ -198,7 +198,7 @@ extension BrowserViewController {
         let vc = UIHostingController(
           rootView: BookmarksView(
             model: BookmarkModel(
-              api: self.braveCore.bookmarksAPI,
+              api: self.profileController.bookmarksAPI,
               tabManager: self.tabManager,
               bookmarksManager: self.bookmarkManager,
               toolbarUrlActionsDelegate: self,
@@ -806,7 +806,7 @@ extension BrowserViewController {
         let vc = UIHostingController(
           rootView: BookmarksView(
             model: BookmarkModel(
-              api: self.braveCore.bookmarksAPI,
+              api: self.profileController.bookmarksAPI,
               tabManager: self.tabManager,
               bookmarksManager: self.bookmarkManager,
               toolbarUrlActionsDelegate: self,
