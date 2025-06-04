@@ -132,6 +132,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
@@ -1205,8 +1206,8 @@ public class BytecodeTest {
     public void testConstructorsExistAndMatch() throws Exception {
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate",
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate", // presubmit: ignore-long-line
                         Context.class,
                         ActivityTabProvider.class,
                         MultiWindowModeStateDispatcher.class,
@@ -1374,8 +1375,8 @@ public class BytecodeTest {
                         StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator", // presubmit: ignore-long-line
                         ToolbarControlContainer.class,
                         ToolbarLayout.class,
                         ToolbarDataProvider.class,
@@ -1404,7 +1405,8 @@ public class BytecodeTest {
                         ToolbarProgressBar.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        BackButtonCoordinator.class));
+                        BackButtonCoordinator.class,
+                        HomeButtonDisplay.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
