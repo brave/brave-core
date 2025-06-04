@@ -45,22 +45,22 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                 staging_file.name
             ])
             if os.path.splitext(unsigned_apk_path)[1] == '.apk':
-                    cmd_args = [
-                        apksigner_path,
-                        'sign',
-                        '--in',
-                        staging_file.name,
-                        '--out',
-                        unsigned_apk_path,
-                        '--ks',
-                        key_path,
-                        '--ks-key-alias',
-                        key_name,
-                        '--ks-pass',
-                        'pass:' + key_passwd,
-                        '--key-pass',
-                        'pass:' + prvt_key_passwd,
-                    ]
+                cmd_args = [
+                    apksigner_path,
+                    'sign',
+                    '--in',
+                    staging_file.name,
+                    '--out',
+                    unsigned_apk_path,
+                    '--ks',
+                    key_path,
+                    '--ks-key-alias',
+                    key_name,
+                    '--ks-pass',
+                    'pass:' + key_passwd,
+                    '--key-pass',
+                    'pass:' + prvt_key_passwd,
+                ]
             else:
                 if pkcs11_provider and pkcs11_alias:
                     print("Using PKCS11 signing")
