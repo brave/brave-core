@@ -35,7 +35,7 @@ public final class WalletConstants {
             "https://github.com/brave/brave-browser/wiki/NFT-Discovery";
 
     public static final String WALLET_HELP_CENTER =
-            "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet";
+            "https://support.brave.com/hc/categories/360001062531-Wallet";
 
     // Regex
     public static final String REGX_ANY_ETH_ADDRESS = ".*(0x[a-fA-F0-9]{40}).*";
