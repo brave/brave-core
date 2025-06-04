@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
@@ -62,7 +63,8 @@
     &brave_shields::features::kBlockAllCookiesToggle,                   \
     &brave_shields::features::kBraveShieldsElementPicker,               \
     &features::kNewAndroidOnboarding,                                   \
-    &brave_ads::kNewTabPageAdFeature
+    &brave_ads::kNewTabPageAdFeature,                                   \
+    &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist
 
 // clang-format on
 

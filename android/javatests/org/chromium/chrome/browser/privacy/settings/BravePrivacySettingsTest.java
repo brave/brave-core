@@ -42,6 +42,8 @@ public class BravePrivacySettingsTest {
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
+    private static final String PREF_SURVEY_PANELIST = "survey_panelist";
+    private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
     private static final String PREF_INCOGNITO_TRACKING_PROTECTIONS =
             "incognito_tracking_protections";
@@ -79,6 +81,8 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
+        checkPreferenceExists(PREF_SURVEY_PANELIST);
+        checkPreferenceExists(PREF_SURVEY_PANELIST_LEARN_MORE);
 
         checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
         checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);

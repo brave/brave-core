@@ -9,6 +9,7 @@ include_rules = [
   "+brave/components/brave_wallet/common/features.h",
   "+brave/components/debounce/core/common/features.h",
   "+brave/components/google_sign_in_permission/features.h",
+  "+brave/components/ntp_background_images/browser/features.h",
   "+brave/components/playlist/common/features.h",
   "+brave/components/request_otr/common/features.h",
   "+brave/components/speedreader/common/features.h",

@@ -774,6 +774,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
       </message>
+      <message name="IDS_SURVEY_PANELIST_TITLE" desc="Title for enable/disable brave survey panelist toggle.">
+        Allow Brave surveys
+      </message>
+      <message name="IDS_SURVEY_PANELIST_SUMMARY" desc="Summary for enable/disable brave survey panelist toggle.">
+        Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns.
+      </message>
+      <message name="IDS_SURVEY_PANELIST_LEARN_MORE" desc="Title of learn more about survey panelist.">
+        Learn more about Brave surveys
+      </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
         Autoplay
