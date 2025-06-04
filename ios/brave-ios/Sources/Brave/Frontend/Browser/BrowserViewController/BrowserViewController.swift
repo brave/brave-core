@@ -3314,6 +3314,18 @@ extension BrowserViewController {
       return
     }
 
+    if privateBrowsingManager.isPrivateBrowsing {
+      let alert = UIAlertController(
+        title: Strings.AIChat.leoDisabledPrivateBrowsingMessageTitle,
+        message: Strings.AIChat.leoDisabledPrivateBrowsingMessageDescription,
+        preferredStyle: .alert
+      )
+      let action = UIAlertAction(title: Strings.OKString, style: .default)
+      alert.addAction(action)
+      present(alert, animated: true)
+      return
+    }
+
     let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
 
     let model = AIChatViewModel(
