@@ -33,10 +33,17 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
     key_name, pkcs11_provider=None, pkcs11_alias=None):
     print(f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
 
-    # Debug logging for PKCS11 arguments
-    if pkcs11_provider or pkcs11_alias:
-        print(f"PKCS11 provider: {pkcs11_provider}")
-        print(f"PKCS11 alias: {pkcs11_alias}")
+    # Print all received parameters
+    print(f"zipalign_path: {zipalign_path}")
+    print(f"apksigner_path: {apksigner_path}")
+    print(f"jarsigner_path: {jarsigner_path}")
+    print(f"unsigned_apk_paths: {unsigned_apk_paths}")
+    print(f"key_path: {key_path}")
+    print(f"key_passwd: {key_passwd}")
+    print(f"prvt_key_passwd: {prvt_key_passwd}")
+    print(f"key_name: {key_name}")
+    print(f"pkcs11_provider: {pkcs11_provider}")
+    print(f"pkcs11_alias: {pkcs11_alias}")
 
     with tempfile.NamedTemporaryFile() as staging_file:
         for unsigned_apk_path in unsigned_apk_paths:
@@ -86,8 +93,6 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                         '-keypass', prvt_key_passwd,
                         staging_file.name, '-signedjar', unsigned_apk_path, key_name
                     ]
-
-            print(f"Executing signing command for {unsigned_apk_path}")
             try:
                 result = subprocess.run(cmd_args, capture_output=True, text=True, check=True)
                 print(f"Successfully signed: {unsigned_apk_path}")
