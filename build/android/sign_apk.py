@@ -110,6 +110,5 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
 
     print("APK signing process completed")
 
-
 if __name__ == '__main__':
     sys.exit(main())

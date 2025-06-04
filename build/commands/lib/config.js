@@ -552,13 +552,9 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_name = this.braveAndroidKeystoreName
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
-      console.log(`DEBUG: Checking PKCS11 parameters - Provider: '${this.braveAndroidPkcs11Provider}', Alias: '${this.braveAndroidPkcs11Alias}'`)
       if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
-        console.log(`DEBUG: Adding PKCS11 parameters to GN args`)
         args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
         args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
-      } else {
-        console.log(`DEBUG: PKCS11 provider or alias is empty, not adding PKCS11 parameters`)
       }
     }
   }
@@ -957,11 +953,6 @@ Config.prototype.getProjectRef = function (
 }
 
 Config.prototype.update = function (options) {
-  console.log(`DEBUG: Config.update - PKCS11 parameters check:`)
-  console.log(`  options.pkcs11_provider: '${options.pkcs11_provider || 'undefined'}'`)
-  console.log(`  options.pkcs11_alias: '${options.pkcs11_alias || 'undefined'}'`)
-  console.log(`  options.pkcs11Provider: '${options.pkcs11Provider || 'undefined'}'`)
-  console.log(`  options.pkcs11Alias: '${options.pkcs11Alias || 'undefined'}'`)
 
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
@@ -1157,12 +1148,10 @@ Config.prototype.update = function (options) {
 
   if (options.pkcs11Provider) {
     this.braveAndroidPkcs11Provider = options.pkcs11Provider
-    console.log(`DEBUG: Set braveAndroidPkcs11Provider to: ${this.braveAndroidPkcs11Provider}`)
   }
 
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
-    console.log(`DEBUG: Set braveAndroidPkcs11Alias to: ${this.braveAndroidPkcs11Alias}`)
   }
 }
 
