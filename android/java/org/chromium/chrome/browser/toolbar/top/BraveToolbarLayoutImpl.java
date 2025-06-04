@@ -52,6 +52,8 @@ import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -1124,14 +1126,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
             Tab currentTab = getToolbarDataProvider().getTab();
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
-            try {
-                BraveActivity.getBraveActivity()
-                        .enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
-            } catch (IllegalStateException | IllegalArgumentException e) {
-                Log.e(TAG, "Error entering picture in picture mode.", e);
-            }
+            PostTask.postDelayedTask(
+                    TaskTraits.UI_USER_BLOCKING,
+                    () -> {
+                        try {
+                            BraveActivity.getBraveActivity()
+                                    .enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
+                        } catch (IllegalStateException | IllegalArgumentException e) {
+                            Log.e(TAG, "Error entering picture in picture mode.", e);
+                        }
+                    },
+                    // Introduce a small delay before entering picture in picture to guarantee the
+                    // fullscreen operations have completely finished before the activity performs
+                    // the layout pass.
+                    300);
         }
     }
 
