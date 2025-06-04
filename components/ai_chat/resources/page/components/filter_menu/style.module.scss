@@ -32,3 +32,15 @@
   text-transform: uppercase;
   border-top: 1px solid var(--leo-color-divider-subtle);
 }
+
+.tabMenuItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+
+  & > img {
+    width: 20px;
+    aspect-ratio: 1 / 1;
+  }
+}
