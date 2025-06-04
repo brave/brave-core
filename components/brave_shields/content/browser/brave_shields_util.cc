@@ -246,7 +246,9 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
         primary_pattern, ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_SHIELDS, setting);
 
-    RecordShieldsToggled(local_state);
+    if (!map->IsOffTheRecord()) {
+      RecordShieldsToggled(local_state);
+    }
   } else {
     map->SetContentSettingCustomScope(
         primary_pattern, ContentSettingsPattern::Wildcard(),
