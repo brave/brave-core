@@ -957,9 +957,11 @@ Config.prototype.getProjectRef = function (
 }
 
 Config.prototype.update = function (options) {
-  console.log(`DEBUG: Config.update - Received options:`, JSON.stringify(options, null, 2))
-  console.log(`DEBUG: Config.update - PKCS11 provider in options:`, options.pkcs11_provider)
-  console.log(`DEBUG: Config.update - PKCS11 alias in options:`, options.pkcs11_alias)
+  console.log(`DEBUG: Config.update - PKCS11 parameters check:`)
+  console.log(`  options.pkcs11_provider: '${options.pkcs11_provider || 'undefined'}'`)
+  console.log(`  options.pkcs11_alias: '${options.pkcs11_alias || 'undefined'}'`)
+  console.log(`  options.pkcs11Provider: '${options.pkcs11Provider || 'undefined'}'`)
+  console.log(`  options.pkcs11Alias: '${options.pkcs11Alias || 'undefined'}'`)
 
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
@@ -1153,13 +1155,13 @@ Config.prototype.update = function (options) {
     this.use_libfuzzer = options.use_libfuzzer
   }
 
-  if (options.pkcs11_provider) {
-    this.braveAndroidPkcs11Provider = options.pkcs11_provider
+  if (options.pkcs11Provider) {
+    this.braveAndroidPkcs11Provider = options.pkcs11Provider
     console.log(`DEBUG: Set braveAndroidPkcs11Provider to: ${this.braveAndroidPkcs11Provider}`)
   }
 
-  if (options.pkcs11_alias) {
-    this.braveAndroidPkcs11Alias = options.pkcs11_alias
+  if (options.pkcs11Alias) {
+    this.braveAndroidPkcs11Alias = options.pkcs11Alias
     console.log(`DEBUG: Set braveAndroidPkcs11Alias to: ${this.braveAndroidPkcs11Alias}`)
   }
 }
