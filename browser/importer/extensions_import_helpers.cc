@@ -213,6 +213,8 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
 
   for (auto& extension : extensions_) {
     if (extension.is_installed) {
+      // Force tests to fail if |this| is deleted while enumerating extensions.
+      DCHECK(weak_factory_.GetWeakPtr());
       on_extension.Run(extension.id, ExtensionImportStatus::kOk);
       continue;
     }
