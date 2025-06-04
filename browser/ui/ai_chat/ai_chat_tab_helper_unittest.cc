@@ -11,19 +11,26 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
+#include "components/pdf/common/constants.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
+#include "pdf/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_PDF)
+#include "components/pdf/browser/pdf_document_helper.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 using ::testing::_;
 using ::testing::NiceMock;
@@ -151,6 +158,21 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
   content::TestWebContents* test_web_contents() {
     return static_cast<content::TestWebContents*>(web_contents());
   }
+
+#if BUILDFLAG(ENABLE_PDF)
+  void OnAllPDFPagesTextReceived(
+      GetPageContentCallback callback,
+      const std::vector<std::pair<size_t, std::string>>& page_texts) {
+    helper_->OnAllPDFPagesTextReceived(std::move(callback), page_texts);
+  }
+
+  void OnGetPDFPageCount(GetPageContentCallback callback,
+                         pdf::mojom::PdfListener::GetPdfBytesStatus status,
+                         const std::vector<uint8_t>& bytes,
+                         uint32_t page_count) {
+    helper_->OnGetPDFPageCount(std::move(callback), status, bytes, page_count);
+  }
+#endif  // BUILDFLAG(ENABLE_PDF)
 
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
@@ -454,6 +476,111 @@ TEST_P(AIChatTabHelperUnitTest,
     if (is_print_preview_supported_) {
       testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
     }
+  }
+}
+
+#if BUILDFLAG(ENABLE_PDF)
+TEST_P(AIChatTabHelperUnitTest, OnAllPDFPagesTextReceived) {
+  // Create test data with out-of-order pages
+  std::vector<std::pair<size_t, std::string>> page_texts = {
+      {2, "Page 3 content"},
+      {0, "Page 1 content"},
+      {1, "Page 2 content"},
+  };
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  OnAllPDFPagesTextReceived(future.GetCallback(), page_texts);
+
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+  EXPECT_EQ(content, "Page 1 content\nPage 2 content\nPage 3 content");
+}
+
+TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_FailedStatus) {
+  base::test::TestFuture<std::string, bool, std::string> future;
+
+  OnGetPDFPageCount(future.GetCallback(),
+                    pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed,
+                    std::vector<uint8_t>(), 0);
+
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_TRUE(content.empty());
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+}
+
+TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
+  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+
+  OnGetPDFPageCount(future.GetCallback(),
+                    pdf::mojom::PdfListener::GetPdfBytesStatus::kSuccess,
+                    std::vector<uint8_t>(), 3);
+
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_TRUE(content.empty());
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+TEST_P(AIChatTabHelperUnitTest, GetPageContent_NoFallbackWhenNotPDF) {
+  NavigateTo(GURL("https://www.brave.com"));
+#if BUILDFLAG(ENABLE_PDF)
+  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+  content::WebContentsTester::For(web_contents())
+      ->SetMainFrameMimeType("text/html");
+
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("HTML content", false, ""));
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_EQ(content, "HTML content");
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+}
+
+TEST_P(AIChatTabHelperUnitTest,
+       GetPageContent_FallbackToPrintPreviewWhenNoPDFHelper) {
+  NavigateTo(GURL("https://www.brave.com"));
+  content::WebContentsTester::For(web_contents())
+      ->SetMainFrameMimeType(pdf::kPDFMimeType);
+#if BUILDFLAG(ENABLE_PDF)
+  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+  const std::string expected_text =
+      is_print_preview_supported_ ? "PDF content from print preview" : "";
+  base::test::TestFuture<std::string, bool, std::string> future;
+
+  if (is_print_preview_supported_) {
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+    EXPECT_CALL(*print_preview_extractor_, Extract)
+        .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_text)));
+  } else {
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
+  }
+
+  GetPageContent(future.GetCallback(), "");
+
+  auto [content, is_video, invalidation_token] = future.Get();
+  EXPECT_EQ(content, expected_text);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+  if (is_print_preview_supported_) {
+    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
   }
 }
 

@@ -310,6 +310,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
+  ASSERT_TRUE(
+      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
   FetchPageContent(
       FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
 
@@ -336,6 +338,36 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
   // Test when meta tag is not present, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
+  constexpr char kExpectedText[] = "This is the way\nI have spoken";
+  NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
+  ASSERT_TRUE(
+      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
+  FetchPageContent(FROM_HERE, kExpectedText);
+
+  NavigateURL(https_server_.GetURL("a.com", "/empty_pdf.pdf"));
+  ASSERT_TRUE(
+      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
+  FetchPageContent(FROM_HERE, "");
+
+  // Test pdf tab loaded in background.
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), https_server_.GetURL("a.com", "/dummy.pdf"),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+  ASSERT_TRUE(
+      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
+  // It needs update because it was created for tab 0 at setup
+  chat_tab_helper_ =
+      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+  ASSERT_TRUE(chat_tab_helper_);
+  FetchPageContent(FROM_HERE, kExpectedText);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,

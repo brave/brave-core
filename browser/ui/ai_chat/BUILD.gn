@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//pdf/features.gni")
+
 if (!is_android) {
   source_set("ai_chat") {
     sources = [
@@ -31,7 +33,13 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/favicon/content",
     "//components/favicon/core/test:test_support",
+    "//components/pdf/common:constants",
     "//content/test:test_support",
+    "//pdf:buildflags",
     "//testing/gtest:gtest",
   ]
+
+  if (enable_pdf) {
+    deps += [ "//components/pdf/browser" ]
+  }
 }

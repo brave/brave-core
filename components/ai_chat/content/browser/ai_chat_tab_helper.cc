@@ -6,31 +6,22 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
 #include <cstdint>
-#include <functional>
-#include <ios>
 #include <memory>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
-#include "base/containers/contains.h"
-#include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
-#include "base/location.h"
 #include "base/logging.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_ostream_operators.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/time/time.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -38,8 +29,6 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "components/favicon/content/content_favicon_driver.h"
-#include "components/strings/grit/components_strings.h"
 #include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
@@ -48,54 +37,17 @@
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "pdf/buildflags.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
-#include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
-#include "ui/accessibility/ax_enums.mojom-shared.h"
-#include "ui/accessibility/ax_mode.h"
-#include "ui/accessibility/ax_node_data.h"
-#include "ui/accessibility/ax_tree_update.h"
-#include "ui/accessibility/ax_updates_and_events.h"
-#include "ui/base/l10n/l10n_util.h"
 
-namespace favicon {
-class FaviconDriver;
-}  // namespace favicon
-namespace gfx {
-class Image;
-}  // namespace gfx
+#if BUILDFLAG(ENABLE_PDF)
+#include "components/pdf/browser/pdf_document_helper.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 namespace ai_chat {
-
-AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
-    content::WebContents* web_contents,
-    AIChatTabHelper* helper)
-    : content::WebContentsObserver(web_contents), helper_(helper) {}
-
-void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
-    const ui::AXUpdatesAndEvents& details) {
-#if BUILDFLAG(ENABLE_PDF)
-  for (const auto& update : details.updates) {
-    for (const auto& node : update.nodes) {
-      const auto& node_name =
-          node.GetStringAttribute(ax::mojom::StringAttribute::kName);
-      if (node_name == l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE)) {
-        // features::kUseMoveNotCopyInMergeTreeUpdate updates a11y tree after
-        // `AccessibilityEventReceived` so we cannot assume changes are
-        // reflected upon receiving updates.
-        helper_->CheckPDFA11yTree();
-        break;
-      }
-    }
-  }
-#endif
-}
-
-AIChatTabHelper::PDFA11yInfoLoadObserver::~PDFA11yInfoLoadObserver() = default;
 
 // static
 void AIChatTabHelper::BindPageContentExtractorHost(
@@ -138,29 +90,9 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
-    base::OnceClosure cb) {
-  on_pdf_a11y_info_loaded_cb_ = std::move(cb);
-}
-
-void AIChatTabHelper::OnPDFA11yInfoLoaded() {
-  DVLOG(3) << " PDF Loaded: " << GetPageURL();
-  is_pdf_a11y_info_loaded_ = true;
-  if (pending_get_page_content_callback_) {
-    // Call GetPageContent again so that we can still utilize fallback
-    // to print preview for PDF if needed.
-    GetPageContent(std::move(pending_get_page_content_callback_), "");
-  }
-  pdf_load_observer_.reset();
-  if (on_pdf_a11y_info_loaded_cb_) {
-    std::move(on_pdf_a11y_info_loaded_cb_).Run();
-  }
-}
-
 // content::WebContentsObserver
 
 void AIChatTabHelper::WebContentsDestroyed() {
-  inner_web_contents_ = nullptr;
   OnNewPage(-1);
 }
 
@@ -209,37 +141,6 @@ void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   OnTitleChanged();
 }
 
-void AIChatTabHelper::InnerWebContentsAttached(
-    content::WebContents* inner_web_contents,
-    content::RenderFrameHost* render_frame_host) {
-  // Setting a11y mode for PDF process which is dedicated for each
-  // PDF so we don't have to unset it.
-  if (IsPdf(content::WebContents::FromRenderFrameHost(render_frame_host))) {
-    // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
-    // `AXMode::kWebContents` for observing a11y events from WebContents.
-    bool mode_change_needed = false;
-    auto current_mode = inner_web_contents->GetAccessibilityMode();
-    if (!current_mode.has_mode(ui::AXMode::kNativeAPIs)) {
-      current_mode |= ui::AXMode::kNativeAPIs;
-      mode_change_needed = true;
-    }
-    if (!current_mode.has_mode(ui::AXMode::kWebContents)) {
-      current_mode |= ui::AXMode::kWebContents;
-      mode_change_needed = true;
-    }
-    if (mode_change_needed) {
-      scoped_accessibility_mode_ =
-          content::BrowserAccessibilityState::GetInstance()
-              ->CreateScopedModeForWebContents(inner_web_contents,
-                                               current_mode);
-    }
-    inner_web_contents_ = inner_web_contents;
-    pdf_load_observer_ =
-        std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
-    is_pdf_a11y_info_loaded_ = false;
-  }
-}
-
 void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                     const GURL& validated_url) {
   DVLOG(4) << __func__ << ": " << validated_url.spec();
@@ -266,18 +167,27 @@ GURL AIChatTabHelper::GetPageURL() const {
 void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
                                      std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
-  if (is_pdf && !is_pdf_a11y_info_loaded_) {
-    SetPendingGetContentCallback(std::move(callback));
-    // Manually check when pdf extraction requested so we don't always rely on
-    // a11y events to prevent stale callback. It can happens during background
-    // pdf tab loading or bug in upstream kPdfOCR that an empty page in pdf will
-    // cause PdfOcrHelper::AreAllPagesOcred() return false becasue it won't get
-    // Ocred but `remaining_page_count_` was set to total pdf page count. Hence
-    // status IDS_PDF_OCR_COMPLETED or IDS_PDF_OCR_NO_RESULT won't be set.
-    CheckPDFA11yTree();
-    return;
+  bool pdf_helper_not_available = false;
+  if (is_pdf) {
+#if BUILDFLAG(ENABLE_PDF)
+    auto* pdf_helper =
+        pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
+    if (pdf_helper) {
+      pdf_helper->RegisterForDocumentLoadComplete(base::BindOnce(
+          &AIChatTabHelper::OnPDFDocumentLoadComplete,
+          weak_ptr_factory_.GetWeakPtr(),
+          base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+      return;
+    } else {
+      pdf_helper_not_available = true;
+    }
+#else
+    pdf_helper_not_available = true;
+#endif  // BUILDFLAG(ENABLE_PDF)
   }
-  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece())) {
+  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece()) ||
+      pdf_helper_not_available) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
     DVLOG(1) << __func__ << " print preview url";
@@ -388,31 +298,79 @@ void AIChatTabHelper::BindPageContentExtractorReceiver(
   page_content_extractor_receiver_.Bind(std::move(receiver));
 }
 
-void AIChatTabHelper::CheckPDFA11yTree() {
-  DVLOG(3) << __func__ << ": " << GetPageURL();
-  auto* primary_rfh = web_contents()->GetPrimaryMainFrame();
-  if (!primary_rfh || is_pdf_a11y_info_loaded_) {
+#if BUILDFLAG(ENABLE_PDF)
+void AIChatTabHelper::OnPDFDocumentLoadComplete(
+    GetPageContentCallback callback) {
+  auto* pdf_helper =
+      pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
+  if (!pdf_helper) {
+    std::move(callback).Run("", false, "");
     return;
   }
 
-  auto* pdf_root = GetPdfRoot(primary_rfh);
-  if (!IsPdfLoaded(pdf_root)) {
-    DVLOG(4) << "Waiting for PDF a11y tree ready, scheduled next check.";
-    if (++check_pdf_a11y_tree_attempts_ >= 5) {
-      DVLOG(4) << "PDF a11y tree not ready after 5 attempts.";
-      // Reset the counter for next check
-      check_pdf_a11y_tree_attempts_ = 0;
-      return;
-    }
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&AIChatTabHelper::CheckPDFA11yTree,
-                       weak_ptr_factory_.GetWeakPtr()),
-        base::Seconds(3));
+  // Fetch zero PDF bytes to just receive the total page count.
+  pdf_helper->GetPdfBytes(
+      /*size_limit=*/0,
+      base::BindOnce(&AIChatTabHelper::OnGetPDFPageCount,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatTabHelper::OnGetPDFPageCount(
+    GetPageContentCallback callback,
+    pdf::mojom::PdfListener::GetPdfBytesStatus status,
+    const std::vector<uint8_t>& bytes,
+    uint32_t page_count) {
+  auto* pdf_helper =
+      pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
+  if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
+      !pdf_helper) {
+    std::move(callback).Run("", false, "");
     return;
   }
-  OnPDFA11yInfoLoaded();
+
+  // Create a barrier callback that will be called when all pages are received
+  auto barrier_callback = base::BarrierCallback<std::pair<size_t, std::string>>(
+      page_count,
+      base::BindOnce(&AIChatTabHelper::OnAllPDFPagesTextReceived,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  for (size_t i = 0; i < page_count; ++i) {
+    pdf_helper->GetPageText(
+        i, base::BindOnce(
+               [](base::OnceCallback<void(std::pair<size_t, std::string>)>
+                      barrier_callback,
+                  size_t page_index, const std::u16string& page_text) {
+                 // Convert to UTF8 immediately and include page index
+                 std::move(barrier_callback)
+                     .Run(std::make_pair(page_index,
+                                         base::UTF16ToUTF8(page_text)));
+               },
+               barrier_callback, i));
+  }
 }
+
+void AIChatTabHelper::OnAllPDFPagesTextReceived(
+    GetPageContentCallback callback,
+    const std::vector<std::pair<size_t, std::string>>& page_texts) {
+  // Pre-size vector to hold all texts in order
+  std::vector<std::string> ordered_texts(page_texts.size());
+
+  // Insert texts at their correct indices
+  for (const auto& [index, text] : page_texts) {
+    ordered_texts[index] = std::move(text);
+  }
+
+  std::string content;
+  for (auto it = ordered_texts.begin(); it != ordered_texts.end(); ++it) {
+    content.append(*it);
+    if (std::next(it) != ordered_texts.end()) {
+      content.append("\n");
+    }
+  }
+
+  std::move(callback).Run(std::move(content), false, "");
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 void AIChatTabHelper::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
