@@ -552,9 +552,13 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_name = this.braveAndroidKeystoreName
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
-      if (this.braveAndroidPkcs11Provider) {
+      console.log(`DEBUG: Checking PKCS11 parameters - Provider: '${this.braveAndroidPkcs11Provider}', Alias: '${this.braveAndroidPkcs11Alias}'`)
+      if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
+        console.log(`DEBUG: Adding PKCS11 parameters to GN args`)
         args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
         args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
+      } else {
+        console.log(`DEBUG: PKCS11 provider or alias is empty, not adding PKCS11 parameters`)
       }
     }
   }
