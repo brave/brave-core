@@ -79,25 +79,4 @@ open class Download: NSObject {
 
     return proposedPath
   }
-
-  // Used to avoid name spoofing using Unicode RTL char to change file extension
-  public static func stripUnicode(fromFilename string: String) -> String {
-    let validFilenameSet = CharacterSet(charactersIn: ":/")
-      .union(.newlines)
-      .union(.controlCharacters)
-      .union(.illegalCharacters)
-    return string.components(separatedBy: validFilenameSet).joined()
-  }
-
-  // Truncates the file-name in the middle to the specified maxLength characters.
-  public static func truncateMiddle(fileName: String, maxLength: Int) -> String {
-    guard fileName.count > maxLength else {
-      return fileName
-    }
-
-    let halfLength = (maxLength - 1) / 2
-    let start = fileName.prefix(halfLength)
-    let end = fileName.suffix(maxLength - halfLength - 1)
-    return "\(start)...\(end)"
-  }
 }

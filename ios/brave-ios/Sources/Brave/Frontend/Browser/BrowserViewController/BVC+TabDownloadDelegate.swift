@@ -212,9 +212,9 @@ extension BrowserViewController: TabDownloadDelegate {
     }
 
     // Truncate the file-name after stripping any unicode control characters
-    let filename = Download.truncateMiddle(
+    let filename = truncateMiddle(
       fileName:
-        Download.stripUnicode(fromFilename: suggestedFileName),
+        stripUnicode(fromFilename: suggestedFileName),
       maxLength: 33  // Max file name length of 33 characters (same as Chromium)
     )
 
@@ -259,5 +259,26 @@ extension BrowserViewController: TabDownloadDelegate {
 
       present(downloadAlert, animated: true, completion: nil)
     }
+  }
+
+  // Used to avoid name spoofing using Unicode RTL char to change file extension
+  private func stripUnicode(fromFilename string: String) -> String {
+    let validFilenameSet = CharacterSet(charactersIn: ":/")
+      .union(.newlines)
+      .union(.controlCharacters)
+      .union(.illegalCharacters)
+    return string.components(separatedBy: validFilenameSet).joined()
+  }
+
+  // Truncates the file-name in the middle to the specified maxLength characters.
+  private func truncateMiddle(fileName: String, maxLength: Int) -> String {
+    guard fileName.count > maxLength else {
+      return fileName
+    }
+
+    let halfLength = (maxLength - 1) / 2
+    let start = fileName.prefix(halfLength)
+    let end = fileName.suffix(maxLength - halfLength - 1)
+    return "\(start)…\(end)"
   }
 }
