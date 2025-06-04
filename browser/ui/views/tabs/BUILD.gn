@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//build/config/ozone.gni")
 
 source_set("browser_tests") {
@@ -54,4 +55,13 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_containers) {
+    sources += [ "tab_model_unittest.cc" ]
+    deps += [
+      "//brave/components/containers/core/common",
+      "//chrome/browser/ui:test_support",
+      "//chrome/browser/ui/tabs:test_support",
+    ]
+  }
 }
