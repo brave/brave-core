@@ -49,4 +49,9 @@ std::optional<GURL> ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
   return std::nullopt;
 }
 
+blink::UserAgentMetadata ContentBrowserClient::BraveGetUserAgentMetadata(
+    bool showBraveBrand) {
+  return GetUserAgentMetadata();
+}
+
 }  // namespace content
