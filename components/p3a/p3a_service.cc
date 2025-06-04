@@ -210,10 +210,6 @@ void P3AService::Init(
   }
 #endif
 
-  if (local_state_->GetBoolean(kP3AEnabled)) {
-    message_manager_->Start(url_loader_factory_);
-  }
-
   initialized_ = true;
 
   // Store values that were recorded between calling constructor and |Init()|.
@@ -221,6 +217,10 @@ void P3AService::Init(
     HandleHistogramChange(std::string(entry.first), entry.second);
   }
   histogram_values_.clear();
+
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory_);
+  }
 }
 
 void P3AService::OnRotation(MetricLogType log_type, bool is_constellation) {

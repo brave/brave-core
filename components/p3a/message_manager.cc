@@ -136,10 +136,10 @@ void MessageManager::Stop() {
 
 void MessageManager::RemoveObsoleteLogs() {
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (json_log_stores_.contains(log_type)) {
+    if (json_log_stores_[log_type]) {
       json_log_stores_[log_type]->RemoveObsoleteLogs();
     }
-    if (constellation_prep_log_stores_.contains(log_type)) {
+    if (constellation_prep_log_stores_[log_type]) {
       constellation_prep_log_stores_[log_type]->RemoveObsoleteLogs();
     }
   }
