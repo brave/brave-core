@@ -267,7 +267,7 @@ export const HardwareWalletAccountsList = ({
               >
                 <DropdownLabel>{getLocale('braveWalletHDPath')}</DropdownLabel>
                 <HelpLink
-                  href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
+                  href='https://support.brave.com/hc/categories/360001062531-Wallet'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
