@@ -1,0 +1,18 @@
+diff --git a/ios/web_view/internal/cwv_web_view.mm b/ios/web_view/internal/cwv_web_view.mm
+index 702c5657c5f656384b33942a472db818cb941f3e..09a22c5fb849ba5514b717ff97679d4c4eba9b11 100644
+--- a/ios/web_view/internal/cwv_web_view.mm
++++ b/ios/web_view/internal/cwv_web_view.mm
+@@ -1209,11 +1209,11 @@ class WebViewHolder : public web::WebStateUserData<WebViewHolder> {
+   if (![self isWebStateSafeToUse]) {
+     return;
+   }
++  self.backForwardList.navigationManager = _webState->GetNavigationManager();
++
+   self.canGoBack = _webState && _webState->GetNavigationManager()->CanGoBack();
+   self.canGoForward =
+       _webState && _webState->GetNavigationManager()->CanGoForward();
+-
+-  self.backForwardList.navigationManager = _webState->GetNavigationManager();
+ }
+ 
+ - (void)updateCurrentURLs {
