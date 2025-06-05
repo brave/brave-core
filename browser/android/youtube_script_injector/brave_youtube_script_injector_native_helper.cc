@@ -28,8 +28,10 @@ constexpr char16_t kYoutubeFullscreen[] =
       // Create a MutationObserver to watch for changes in the DOM.
       const observer = new MutationObserver((_mutationsList, observer) => {
         var fullscreenBtn = document.querySelector("button.fullscreen-icon");
-        if (fullscreenBtn) {
+        var videoPlayer = document.querySelector("video.html5-main-video");
+        if (fullscreenBtn && videoPlayer) {
           observer.disconnect()
+          videoPlayer.play();
           fullscreenBtn.click();
         }
       });
