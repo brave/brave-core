@@ -8,6 +8,10 @@ import BraveCore
 class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
   private weak var tab: ChromiumTabState?
 
+  // We don't have the same info passed into the commit delegate method, so we must store the most
+  // recent element used when the context menu is created.
+  private var activeContextMenuElement: CWVHTMLElement?
+
   init(tab: ChromiumTabState) {
     self.tab = tab
   }
@@ -51,6 +55,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler(nil)
       return
     }
+    activeContextMenuElement = element
     Task { @MainActor in
       let configuration = await tab.delegate?.tab(
         tab,
@@ -58,6 +63,14 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       )
       completionHandler(configuration)
     }
+  }
+
+  func webView(
+    _ webView: CWVWebView,
+    contextMenuWillCommitWithAnimator animator: any UIContextMenuInteractionCommitAnimating
+  ) {
+    guard let tab, let linkURL = activeContextMenuElement?.hyperlink else { return }
+    tab.delegate?.tab(tab, contextMenuWithLinkURL: linkURL, willCommitWithAnimator: animator)
   }
 
   func webView(

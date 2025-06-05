@@ -145,8 +145,8 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     contextMenuForElement elementInfo: WKContextMenuElementInfo,
     willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating
   ) {
-    guard let url = elementInfo.linkURL else { return }
-    webView.load(URLRequest(url: url))
+    guard let tab, let url = elementInfo.linkURL else { return }
+    tab.delegate?.tab(tab, contextMenuWithLinkURL: url, willCommitWithAnimator: animator)
   }
 }
 

@@ -180,6 +180,15 @@ extension BrowserViewController: TabDelegate {
 
   public func tab(
     _ tab: some TabState,
+    contextMenuWithLinkURL linkURL: URL?,
+    willCommitWithAnimator animator: (any UIContextMenuInteractionCommitAnimating)?
+  ) {
+    guard let linkURL else { return }
+    tab.loadRequest(URLRequest(url: linkURL))
+  }
+
+  public func tab(
+    _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
     guard let origin = tab.lastCommittedURL?.origin, tab === tabManager.selectedTab else {
