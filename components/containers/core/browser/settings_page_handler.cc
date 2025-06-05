@@ -34,29 +34,25 @@ void SettingsPageHandler::GetContainers(GetContainersCallback callback) {
   std::move(callback).Run(GetContainerList(*prefs_));
 }
 
-void SettingsPageHandler::AddContainer(mojom::ContainerPtr container) {
-  // New containers must not have an ID.
-  CHECK(container->id.empty());
+void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
   CHECK(!container->name.empty());
 
-  // Generate a new ID for the container.
-  container->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   auto containers = GetContainerList(*prefs_);
-  containers.push_back(std::move(container));
-  SetContainerList(std::move(containers), *prefs_);
-}
 
-void SettingsPageHandler::UpdateContainer(mojom::ContainerPtr container) {
-  // Existing containers must have ID.
-  CHECK(!container->id.empty());
-  CHECK(!container->name.empty());
-  auto containers = GetContainerList(*prefs_);
-  for (auto& c : containers) {
-    if (c->id == container->id) {
-      c = std::move(container);
-      break;
+  if (container->id.empty()) {
+    // Create a new container if it doesn't have an ID.
+    container->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+    containers.push_back(std::move(container));
+  } else {
+    // Update an existing container.
+    for (auto& c : containers) {
+      if (c->id == container->id) {
+        c = std::move(container);
+        break;
+      }
     }
   }
+
   SetContainerList(std::move(containers), *prefs_);
 }
 
@@ -76,7 +72,8 @@ void SettingsPageHandler::OnContainerDataRemoved(
   auto containers = GetContainerList(*prefs_);
   std::erase_if(containers, [id](const auto& c) { return c->id == id; });
   SetContainerList(std::move(containers), *prefs_);
-  std::move(callback).Run();
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, std::move(callback), base::Seconds(5));
 }
 
 void SettingsPageHandler::OnContainersChanged() {

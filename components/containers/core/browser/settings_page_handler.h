@@ -47,10 +47,8 @@ class SettingsPageHandler : public mojom::SettingsPageHandler {
   //
   // Retrieves the current list of containers from preferences.
   void GetContainers(GetContainersCallback callback) override;
-  // Creates a new container and stores it in preferences.
-  void AddContainer(mojom::ContainerPtr container) override;
-  // Updates an existing container's properties in preferences.
-  void UpdateContainer(mojom::ContainerPtr container) override;
+  // Creates a new container or updates an existing one.
+  void AddOrUpdateContainer(mojom::ContainerPtr container) override;
   // Removes a container and all its associated data. Returns async response
   // after data cleanup is complete.
   void RemoveContainer(const std::string& id,

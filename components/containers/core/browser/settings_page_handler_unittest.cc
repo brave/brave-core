@@ -97,7 +97,7 @@ class ContainersSettingsPageHandlerTest : public testing::Test {
 };
 
 TEST_F(ContainersSettingsPageHandlerTest, AddContainer) {
-  handler_->AddContainer(mojom::Container::New("", "Test Container"));
+  handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
 
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
   handler_->GetContainers(future.GetCallback());
@@ -111,7 +111,7 @@ TEST_F(ContainersSettingsPageHandlerTest, AddContainer) {
 
 TEST_F(ContainersSettingsPageHandlerTest, UpdateContainer) {
   // First add a container
-  handler_->AddContainer(mojom::Container::New("", "Original Name"));
+  handler_->AddOrUpdateContainer(mojom::Container::New("", "Original Name"));
 
   // Get the container with generated ID
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
@@ -121,7 +121,7 @@ TEST_F(ContainersSettingsPageHandlerTest, UpdateContainer) {
 
   // Update the container
   auto updated = mojom::Container::New(containers[0]->id, "Updated Name");
-  handler_->UpdateContainer(std::move(updated));
+  handler_->AddOrUpdateContainer(std::move(updated));
 
   // Verify update
   handler_->GetContainers(future.GetCallback());
@@ -133,9 +133,21 @@ TEST_F(ContainersSettingsPageHandlerTest, UpdateContainer) {
   EXPECT_EQ(2, mock_page_->containers_changed_count());
 }
 
+TEST_F(ContainersSettingsPageHandlerTest, UpdateNonExistingContainerIsNoOp) {
+  // Container ID is only generated on C++ side. It should be impossible to
+  // add a container with ID passed from JS.
+  handler_->AddOrUpdateContainer(
+      mojom::Container::New("non-existing-id", "Updated Name"));
+
+  base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
+  handler_->GetContainers(future.GetCallback());
+  std::vector<mojom::ContainerPtr> containers = future.Take();
+  EXPECT_EQ(0u, containers.size());
+}
+
 TEST_F(ContainersSettingsPageHandlerTest, RemoveContainer) {
   // Add a container
-  handler_->AddContainer(mojom::Container::New("", "Test Container"));
+  handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
 
   // Get the container with generated ID
   std::string container_id;

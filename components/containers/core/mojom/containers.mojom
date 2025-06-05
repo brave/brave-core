@@ -35,11 +35,9 @@ interface SettingsPageHandler {
   // containers
   GetContainers() => (array<Container> containers);
 
-  // Creates a new container.
-  AddContainer(Container container);
-
-  // Updates an existing container's properties.
-  UpdateContainer(Container container);
+  // Creates a new container or updates an existing one. A new container must
+  // have an empty ID, and an existing container must have a non-empty ID.
+  AddOrUpdateContainer(Container container);
 
   // Removes a container by its ID. Returns async response to block UI until
   // completion, because the data removal might take some time.

@@ -102,11 +102,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   onSaveContainerFromDialog_() {
     assert(this.editingContainer_)
-    if (!this.editingContainer_.id) {
-      this.browserProxy.handler.addContainer(this.editingContainer_)
-    } else {
-      this.browserProxy.handler.updateContainer(this.editingContainer_)
-    }
+    this.browserProxy.handler.addOrUpdateContainer(this.editingContainer_)
     this.editingContainer_ = null
   }
 
