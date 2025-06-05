@@ -678,7 +678,7 @@ void AIChatService::MaybeUnloadConversation(
 
   // Don't unload conversations that are in the middle of a request (they will
   // be unloaded when the request completes).
-  if (conversation_handler->is_request_in_progress()) {
+  if (conversation_handler->IsRequestInProgress()) {
     return;
   }
 

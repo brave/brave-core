@@ -239,8 +239,6 @@ class ConversationHandler : public mojom::ConversationHandler,
     is_request_in_progress_ = in_progress;
   }
 
-  bool is_request_in_progress() const { return is_request_in_progress_; }
-
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;

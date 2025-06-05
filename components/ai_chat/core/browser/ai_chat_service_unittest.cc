@@ -445,7 +445,7 @@ TEST_P(AIChatServiceUnitTest,
   // Function to call to finish generating the response.
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _))
-      .WillRepeatedly(testing::Invoke(
+      .WillOnce(
           [&resolve](bool send_page_contents, const std::string& page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
@@ -465,14 +465,14 @@ TEST_P(AIChatServiceUnitTest,
                           std::nullopt /* model_key */)));
                 },
                 std::move(done_callback));
-          }));
+          });
 
   // Conversation should exist in memory.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 
   conversation->SubmitHumanConversationEntry(
       ai_chat::mojom::ConversationTurn::New());
-  EXPECT_TRUE(conversation->is_request_in_progress());
+  EXPECT_TRUE(conversation->IsRequestInProgress());
 
   // Conversation should not be unloaded
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
