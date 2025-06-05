@@ -489,6 +489,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     }
 
                     @Override
+                    public void onCrash(Tab tab) {
+                        super.onCrash(tab);
+                        // When a tab crashes it shows a custom view with a reload button.
+                        // The PIP layout must be hidden.
+                        hideYouTubePipIcon();
+                    }
+
+                    @Override
                     public void onShown(Tab tab, @TabSelectionType int type) {
                         // Update shields button state when visible tab is changed.
                         updateBraveShieldsButtonState(tab);
@@ -507,6 +515,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     @Override
                     public void onPageLoadStarted(Tab tab, GURL url) {
+                        hideYouTubePipIcon();
                         showWalletIcon(false, tab);
                         if (getToolbarDataProvider().getTab() == tab) {
                             updateBraveShieldsButtonState(tab);
@@ -614,6 +623,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mYouTubePipLayout == null) {
             return;
         }
+
+        // When a tab is still loading we can safely assume the
+        // layout is hidden and we don't need to perform further actions.
+        if (tab.isLoading()) {
+            return;
+        }
+
+        // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
+        // mode. This can also happen when a tab is re-selected after a crash and it's showing
+        // the crash custom view, or is in a frozen state (likely inactive or unloaded).
+        if (tab.isShowingCustomView() || tab.isShowingErrorPage() || tab.isFrozen()) {
+            mYouTubePipLayout.setVisibility(View.GONE);
+            return;
+        }
         final boolean show =
                 PictureInPicture.isEnabled(getContext())
                         && ChromeFeatureList.isEnabled(
@@ -621,6 +644,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(
                                 tab.getWebContents());
         mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void hideYouTubePipIcon() {
+        // The layout could be null in Custom Tabs layout.
+        if (mYouTubePipLayout == null) {
+            return;
+        }
+        mYouTubePipLayout.setVisibility(View.GONE);
     }
 
     private void showOnBoarding() {
@@ -1125,15 +1156,26 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             maybeShowWalletPanel();
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
             Tab currentTab = getToolbarDataProvider().getTab();
+            if (currentTab.isLoading()
+                    || currentTab.isShowingErrorPage()
+                    || currentTab.isFrozen()
+                    || currentTab.isShowingCustomView()) {
+                return;
+            }
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
             PostTask.postDelayedTask(
                     TaskTraits.UI_USER_BLOCKING,
                     () -> {
                         try {
                             BraveActivity.getBraveActivity()
-                                    .enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+                                    .enterPictureInPictureMode(
+                                            new PictureInPictureParams.Builder().build());
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
+                            Log.e(
+                                    TAG,
+                                    "BraveActivity not found when entering picture in picture"
+                                            + " mode.",
+                                    e);
                         } catch (IllegalStateException | IllegalArgumentException e) {
                             Log.e(TAG, "Error entering picture in picture mode.", e);
                         }
