@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -90,9 +91,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ("about:blank",
-              base::UTF16ToUTF8(
-                  browser()->location_bar_model()->GetFormattedFullURL()));
+    EXPECT_EQ("about:blank", base::UTF16ToUTF8(browser()
+                                                   ->GetFeatures()
+                                                   .location_bar_model()
+                                                   ->GetFormattedFullURL()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
@@ -123,8 +125,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
-    EXPECT_EQ(url, base::UTF16ToUTF8(
-                       browser()->location_bar_model()->GetFormattedFullURL()));
+    EXPECT_EQ(url, base::UTF16ToUTF8(browser()
+                                         ->GetFeatures()
+                                         .location_bar_model()
+                                         ->GetFormattedFullURL()));
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
@@ -151,9 +155,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ("about:blank",
-              base::UTF16ToUTF8(
-                  browser()->location_bar_model()->GetFormattedFullURL()));
+    EXPECT_EQ("about:blank", base::UTF16ToUTF8(browser()
+                                                   ->GetFeatures()
+                                                   .location_bar_model()
+                                                   ->GetFormattedFullURL()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
