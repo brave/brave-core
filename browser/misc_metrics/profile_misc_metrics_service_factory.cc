@@ -68,9 +68,10 @@ ProfileMiscMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
 content::BrowserContext*
 ProfileMiscMetricsServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  if (context->IsOffTheRecord()) {
+  /*
+    if (context->IsOffTheRecord()) {
     return nullptr;
-  }
+  }*/
   return context;
 }
 
