@@ -154,38 +154,42 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
   for (int i = 0; i < 3; ++i) {
     Profile* target = CreateProfile();
 
-    // Deletes itself.
-    auto* host = new BraveExternalProcessImporterHost;
+    for (bool reimport : {false, true}) {
+      SCOPED_TRACE(testing::Message() << "Reimport: " << reimport);
 
-    testing::NiceMock<TestObserver> observer;
+      // Deletes itself.
+      auto* host = new BraveExternalProcessImporterHost;
 
-    base::RunLoop run_loop;
-    EXPECT_CALL(observer, ImportEnded())
-        .WillOnce(
-            ::testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+      testing::NiceMock<TestObserver> observer;
 
-    host->set_observer(&observer);
+      base::RunLoop run_loop;
+      EXPECT_CALL(observer, ImportEnded())
+          .WillOnce(
+              ::testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
-    importer::SourceProfile source;
-    source.importer_type = importer::TYPE_CHROME;
-    source.source_path = source_profile->GetPath();
+      host->set_observer(&observer);
 
-    bool extension_imported = false;
-    extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
-        base::BindLambdaForTesting(
-            [&](const std::string& id)
-                -> extensions_import::ExtensionImportStatus {
-              EXPECT_EQ(id, kExtensionId);
-              extension_imported = true;
-              return extensions_import::ExtensionImportStatus::kOk;
-            });
+      importer::SourceProfile source;
+      source.importer_type = importer::TYPE_CHROME;
+      source.source_path = source_profile->GetPath();
 
-    host->StartImportSettings(source, target, importer::EXTENSIONS,
-                              new ProfileWriter(target));
-    run_loop.Run();
-    EXPECT_TRUE(extension_imported);
-    EXPECT_EQ(kExtensionId, ReadStore(target, kExtensionId));
-    EXPECT_EQ(kExtensionId, ReadIndexedDB(target, kExtensionId));
+      bool extension_imported = false;
+      extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
+          base::BindLambdaForTesting(
+              [&](const std::string& id)
+                  -> extensions_import::ExtensionImportStatus {
+                EXPECT_EQ(id, kExtensionId);
+                extension_imported = true;
+                return extensions_import::ExtensionImportStatus::kOk;
+              });
+
+      host->StartImportSettings(source, target, importer::EXTENSIONS,
+                                new ProfileWriter(target));
+      run_loop.Run();
+      EXPECT_TRUE(extension_imported);
+      EXPECT_EQ(kExtensionId, ReadStore(target, kExtensionId));
+      EXPECT_EQ(kExtensionId, ReadIndexedDB(target, kExtensionId));
+    }
   }
 }
 
