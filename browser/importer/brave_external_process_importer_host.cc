@@ -34,6 +34,8 @@ void BraveExternalProcessImporterHost::NotifyImportEnded() {
     }
   }
 #endif
+  // Force tests to fail if |this| is deleted.
+  DCHECK(weak_ptr_factory_.GetWeakPtr());
 
   // Otherwise, notifying here and importing is finished.
   ExternalProcessImporterHost::NotifyImportEnded();
