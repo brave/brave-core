@@ -120,7 +120,10 @@ export default function FeatureMenu(props: Props) {
       <div className={styles.menuSeparator} />
 
       {!hasConversationStarted && (
-        <leo-menu-item>
+        <leo-menu-item
+          data-is-interactive="true"
+          onClick={() => handleTemporaryChatToggle({ checked: !conversationContext.isTemporaryChat })}
+        >
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem
