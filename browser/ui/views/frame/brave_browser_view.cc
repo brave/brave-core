@@ -10,7 +10,6 @@
 #include <map>
 #include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -36,6 +35,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -808,12 +808,30 @@ void BraveBrowserView::ShowSplitView() {
   BrowserView::ShowSplitView();
 
   UpdateContentsSeparatorVisibility();
+  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 
 void BraveBrowserView::HideSplitView() {
   BrowserView::HideSplitView();
 
   UpdateContentsSeparatorVisibility();
+}
+
+void BraveBrowserView::UpdateActiveSplitView() {
+  BrowserView::UpdateActiveSplitView();
+  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
+}
+
+void BraveBrowserView::OnSplitTabContentsUpdated(
+    split_tabs::SplitTabId split_id,
+    std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
+    std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) {
+  BrowserView::OnSplitTabContentsUpdated(split_id, prev_tabs, new_tabs);
+  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
+}
+
+BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
+  return BraveMultiContentsView::From(multi_contents_view_);
 }
 
 bool BraveBrowserView::ShouldShowWindowTitle() const {
