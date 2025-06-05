@@ -250,6 +250,14 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
             insets + gfx::Insets::TLBR(4, 0, 0, 0));
   EXPECT_EQ(tab_strip()->tab_at(5)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
+  // Check active tab is not changed after swap.
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(5, tab_strip_model->active_index());
+  auto split_id = tab_strip_model->GetSplitForTab(4);
+  ASSERT_TRUE(split_id);
+  tab_strip_model->SwapTabsInSplit(split_id.value());
+  EXPECT_EQ(4, tab_strip_model->active_index());
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
