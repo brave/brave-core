@@ -315,7 +315,8 @@ const Config = function () {
   this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
   this.braveAndroidPkcs11Provider = ''
   this.braveAndroidPkcs11Alias = ''
-  this.braveVariationsServerUrl = getEnvConfig(['brave_variations_server_url']) || ''
+  this.braveVariationsServerUrl =
+    getEnvConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
   this.offline = getEnvConfig(['offline']) || false
@@ -953,7 +954,6 @@ Config.prototype.getProjectRef = function (
 }
 
 Config.prototype.update = function (options) {
-
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
