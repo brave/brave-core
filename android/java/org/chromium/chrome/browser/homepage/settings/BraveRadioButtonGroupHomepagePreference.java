@@ -51,7 +51,9 @@ public final class BraveRadioButtonGroupHomepagePreference
         if (preferenceValues == null) return;
 
         // This hack is to avoid assert in `super.onCheckedChanged` in debug builds.
-        if (ApkInfo.isDebugApp() && checkedId == R.id.brave_homepage_mobile_bookmarks) {
+        if (ApkInfo.isDebugApp()
+                && checkedId == R.id.brave_homepage_mobile_bookmarks
+                && mCustomUri != null) {
             mCustomUri.setChecked(true);
         }
         super.onCheckedChanged(group, checkedId);
