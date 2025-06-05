@@ -211,6 +211,10 @@ void ExtensionsImporter::Prepare(OnReady on_ready) {
 bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
   CHECK(!IsImportInProgress());
 
+  if (extensions_.empty()) {
+    return false;
+  }
+
   in_progress_count_ = extensions_.size();
   for (auto& extension : extensions_) {
     if (extension.is_installed) {
@@ -251,7 +255,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
     }
   }
 
-  return IsImportInProgress();
+  return true;
 }
 
 const ImportingExtension* ExtensionsImporter::GetExtension(
