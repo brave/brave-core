@@ -111,9 +111,8 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
     bool is_secure = false;
-    EXPECT_STREQ(
-        test_case.expected_text,
-        base::UTF16ToUTF8(model().GetOriginURLText(&is_secure)).c_str());
+    EXPECT_EQ(test_case.expected_text,
+              base::UTF16ToUTF8(model().GetOriginURLText(&is_secure)));
     EXPECT_EQ(is_secure, test_case.expected_is_secure) << test_case.url;
     Mock::VerifyAndClearExpectations(&item());
   }
@@ -147,6 +146,5 @@ TEST_F(BraveDownloadItemModelTest, NoDownloadItem) {
   DownloadUIModel model;
   BraveDownloadItemModel brave_model(&model);
   bool is_secure = false;
-  EXPECT_STREQ(
-      "", base::UTF16ToUTF8(brave_model.GetOriginURLText(&is_secure)).c_str());
+  EXPECT_EQ("", base::UTF16ToUTF8(brave_model.GetOriginURLText(&is_secure)));
 }

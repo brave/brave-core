@@ -311,8 +311,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify input body contains input events in expected json format
-        EXPECT_STREQ(GetEventsJson(body).c_str(),
-                     FormatComparableEventsJson(expected_events_body).c_str());
+        EXPECT_EQ(GetEventsJson(body),
+                  FormatComparableEventsJson(expected_events_body));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
@@ -524,8 +524,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify body contains events in expected json format
-        EXPECT_STREQ(GetEventsJson(body).c_str(),
-                     FormatComparableEventsJson(expected_events_body).c_str());
+        EXPECT_EQ(GetEventsJson(body),
+                  FormatComparableEventsJson(expected_events_body));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
