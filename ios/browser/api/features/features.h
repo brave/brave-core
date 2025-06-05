@@ -46,6 +46,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaper;
 @property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaperDemo;
 @property(class, nonatomic, readonly) Feature* kBraveNTPSuperReferralWallpaper;
+@property(class, nonatomic, readonly)
+    Feature* kBraveNTPBrandedWallpaperSurveyPanelist;
 @property(class, nonatomic, readonly) Feature* kBraveNewsCardPeekFeature;
 @property(class, nonatomic, readonly) Feature* kBraveNewsFeedUpdate;
 @property(class, nonatomic, readonly) Feature* kBraveReduceLanguage;

@@ -90,6 +90,10 @@ extension URL {
       string:
         "https://support.brave.com/hc/en-us/articles/35182999599501"
     )!
+    public static let surveyPanelistLearnMoreLinkUrl = URL(
+      string:
+        "https://support.brave.com/hc/en-us/articles/36550092449165"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(

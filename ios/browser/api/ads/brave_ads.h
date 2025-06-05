@@ -91,6 +91,9 @@ OBJC_EXPORT
 /// sponsored images.
 - (void)notifySponsoredImagesIsEnabledPreferenceDidChange:(BOOL)isEnabled;
 
+/// Indicates if the user has opted-in to survey panelist.
+@property(nonatomic) BOOL isSurveyPanelistEnabled;
+
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
 @property(nonatomic, assign, getter=isEnabled)

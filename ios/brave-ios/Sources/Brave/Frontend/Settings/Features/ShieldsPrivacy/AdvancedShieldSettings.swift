@@ -94,6 +94,12 @@ import os
     }
   }
 
+  @Published var isSurveyPanelistEnabled: Bool = false {
+    didSet {
+      rewards?.ads.isSurveyPanelistEnabled = isSurveyPanelistEnabled
+    }
+  }
+
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
 
@@ -130,6 +136,7 @@ import os
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredLevel = ShieldPreferences.shredLevel
     self.webcompatReporterHandler = webcompatReporterHandler
+    self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
