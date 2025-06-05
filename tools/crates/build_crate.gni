@@ -9,13 +9,14 @@ template("build_crate") {
       defined(invoker["${crate}_exe"]),
       "Please add ${crate}_exe to //brave/tools/crates/config.gni (or to $crate itself)!")
   crate_exe = invoker["${crate}_exe"]
+  crate_target_dir = get_path_info(get_path_info(crate_exe, "dir"), "dir")
 
   action("build_$crate") {
     assert(current_toolchain == host_toolchain)
 
     forward_variables_from(invoker, [ "deps" ])
 
-    script = "//build/gn_run_binary.py"
+    script = "//brave/script/build_crate.py"
 
     cargo_exe = "//third_party/rust-toolchain/bin/cargo"
     if (host_os == "win") {
@@ -24,10 +25,15 @@ template("build_crate") {
 
     inputs = [
       cargo_exe,
+      ".cargo/config.toml",
       "Cargo.lock",
+      "Cargo.toml",
     ]
 
-    outputs = [ crate_exe ]
+    outputs = [
+      crate_exe,
+      "$crate_target_dir/.stamp",
+    ]
 
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
@@ -36,6 +42,8 @@ template("build_crate") {
     #   --frozen (--locked + --offline)
     # when running `cargo build`.
     args = [
+      "--temp_dir_path",
+      rebase_path(crate_target_dir),
       rebase_path(cargo_exe),
       "build",
       "--quiet",
@@ -45,7 +53,7 @@ template("build_crate") {
       "--config",
       rebase_path(".cargo/config.toml"),
       "--target-dir",
-      rebase_path(get_path_info(crate_exe, "dir") + "/.."),
+      rebase_path(crate_target_dir),
       "--frozen",
       "--package",
       string_replace(crate, "_", "-"),
