@@ -28,4 +28,23 @@ source_set("component_updater") {
   if (is_win) {
     deps += [ "//chrome/installer/util:with_no_strings" ]
   }
+
+  if (is_android) {
+    public_deps = [ ":zxcvbn_data_component_installer" ]
+  }
+}
+
+source_set("zxcvbn_data_component_installer") {
+  sources = [
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.cc",
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/password_manager/core/common:features",
+    "//components/update_client",
+    "//third_party/zxcvbn-cpp",
+  ]
 }

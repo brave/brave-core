@@ -21,6 +21,10 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/component_updater/zxcvbn_data_component_installer.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
 namespace component_updater {
 
 void RegisterComponentsForUpdate() {
@@ -35,6 +39,10 @@ void RegisterComponentsForUpdate() {
     p3a::RegisterP3AComponent(
         cus, p3a_service->remote_config_manager()->GetWeakPtr());
   }
+#if BUILDFLAG(IS_ANDROID)
+  // Currently behind !BUILDFLAG(IS_ANDROID) in upstream.
+  RegisterZxcvbnDataComponent(cus);
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace component_updater
