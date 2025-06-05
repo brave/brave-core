@@ -11,56 +11,69 @@
 #include <vector>
 
 #include "base/component_export.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
+#include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
 class GURL;
 
 namespace psst {
-// Needed for testing private methods in PsstTabHelperBrowserTest.
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, NoMatch);
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse);
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue);
 
-// This class loads and stores the rules from the psst.json file.
-// It is also used for matching based on the URL.
+// Represents the registry of PSST rules.
+// It allows to load the all items from the psst.json file and match them
+// against the URL. For matched rules, it loads rule data (the user.js and
+// policy.js script contents) with using of rule data reader.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
  public:
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;
   PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
+
   ~PsstRuleRegistry();
-  static PsstRuleRegistry* GetInstance();  // singleton
+
+  static PsstRuleRegistry* GetInstance();
+
   // Returns the matched PSST rule, if any.
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(MatchedRule)> cb) const;
-  // Given a path to psst.json, loads the rules from the file into memory.
+  void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb);
+
   void LoadRules(const base::FilePath& path);
 
  private:
   PsstRuleRegistry();
+  friend base::NoDestructor<PsstRuleRegistry>;
 
-  // These methods are also called by PsstTabHelperBrowserTest.
-  // Given contents of psst.json, loads the rules from the file into memory.
-  // Called by |LoadRules| after the file is read.
-  void OnLoadRules(const std::string& data);
-  // Sets the component path used to resolve the paths to the scripts.
-  void SetComponentPath(const base::FilePath& path);
-
-  base::FilePath component_path_;
-  std::vector<PsstRule> rules_;
-
-  base::WeakPtrFactory<PsstRuleRegistry> weak_factory_{this};
-
-  // Needed for testing private methods in PsstTabHelperBrowserTest.
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, NoMatch);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue);
   friend class PsstTabHelperBrowserTest;
+  friend class PsstRuleRegistryUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoading);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
+                           CheckIfMatchWithNoRulesLoaded);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
+                           RulesLoadingBrokenRulesFile);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
+                           RulesLoadingNonExistingPath);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, LoadConcreteRule);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
+                           RuleReferencesToNotExistedPath);
 
-  friend struct base::DefaultSingletonTraits<PsstRuleRegistry>;
+  void OnLoadRules(const std::string& data);
+  void SetOnLoadCallbackForTest(
+      base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
+          callback);
+  std::optional<base::OnceCallback<void(const std::string&,
+                                        const std::vector<PsstRule>&)>>
+      onload_test_callback_;
+
+  std::vector<PsstRule> rules_;
+  base::FilePath component_path_;
+  base::WeakPtrFactory<PsstRuleRegistry> weak_factory_{this};
 };
 
 }  // namespace psst
