@@ -3,21 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
-#define BRAVE_BROWSER_UI_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#define BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
 
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
-#include <variant>
 #include <vector>
 
+#include "base/containers/id_map.h"
+#include "base/functional/callback.h"
 #include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/browser/ui/ai_chat/print_preview_extractor.h"
+#include "brave/browser/ai_chat/print_preview_extractor.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -42,18 +43,13 @@ using CapturePdfCallback = PrintPreviewExtractor::CapturePdfCallback;
 
 class PreviewPageTextExtractor {
  public:
-  using TextCallback =
-      AIChatTabHelper::PrintPreviewExtractionDelegate::ExtractCallback;
-  using ImageCallback =
-      AIChatTabHelper::PrintPreviewExtractionDelegate::CapturePdfCallback;
-  using CallbackVariant = std::variant<TextCallback, ImageCallback>;
-
   PreviewPageTextExtractor();
   virtual ~PreviewPageTextExtractor();
 
-  virtual void StartExtract(base::ReadOnlySharedMemoryRegion pdf_region,
-                            CallbackVariant callback,
-                            std::optional<bool> pdf_use_skia_renderer_enabled);
+  virtual void StartExtract(
+      base::ReadOnlySharedMemoryRegion pdf_region,
+      PrintPreviewExtractor::Extractor::CallbackVariant callback,
+      std::optional<bool> pdf_use_skia_renderer_enabled);
 
   void BindForTesting(
       mojo::PendingRemote<printing::mojom::PdfToBitmapConverter> converter);
@@ -70,7 +66,7 @@ class PreviewPageTextExtractor {
   size_t current_page_index_ = 0;
   size_t total_page_count_ = 0;
   base::ReadOnlySharedMemoryRegion pdf_region_;
-  CallbackVariant callback_;
+  PrintPreviewExtractor::Extractor::CallbackVariant callback_;
   // raw bytes data of captured pdf pages
   std::vector<std::vector<uint8_t>> pdf_pages_image_data_;
   mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
@@ -80,12 +76,17 @@ class PreviewPageTextExtractor {
 class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
                                       public printing::mojom::PrintPreviewUI {
  public:
-  using CallbackVariant = std::variant<ExtractCallback, CapturePdfCallback>;
-
-  PrintPreviewExtractorInternal(content::WebContents* web_contents,
-                                Profile* profile,
-                                bool is_pdf,
-                                CallbackVariant callback);
+  using GetPrintPreviewUIIdMapCallback =
+      base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>;
+  using GetPrintPreviewUIRequestIdMapCallback =
+      base::RepeatingCallback<base::flat_map<int, int>&()>;
+  PrintPreviewExtractorInternal(
+      content::WebContents* web_contents,
+      Profile* profile,
+      bool is_pdf,
+      PrintPreviewExtractor::Extractor::CallbackVariant callback,
+      GetPrintPreviewUIIdMapCallback id_map_callback,
+      GetPrintPreviewUIRequestIdMapCallback request_id_map_callback);
 
   ~PrintPreviewExtractorInternal() override;
 
@@ -173,7 +174,9 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
  private:
   bool is_pdf_ = false;
-  CallbackVariant callback_;
+  PrintPreviewExtractor::Extractor::CallbackVariant callback_;
+  GetPrintPreviewUIIdMapCallback id_map_callback_;
+  GetPrintPreviewUIRequestIdMapCallback request_id_map_callback_;
   // unique id to avoid conflicts with other print preview UIs
   std::optional<int32_t> print_preview_ui_id_;
   mojo::AssociatedReceiver<PrintPreviewUI> print_preview_ui_receiver_{this};
@@ -189,4 +192,4 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 };
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_UI_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_

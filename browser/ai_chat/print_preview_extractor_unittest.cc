@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/ai_chat/print_preview_extractor.h"
+#include "brave/browser/ai_chat/print_preview_extractor.h"
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
@@ -17,7 +18,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
-#include "brave/browser/ui/ai_chat/print_preview_extractor_internal.h"
+#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
@@ -161,20 +162,24 @@ class MockPreviewPageTextExtractor : public PreviewPageTextExtractor {
 
   void StartExtract(
       base::ReadOnlySharedMemoryRegion pdf_region,
-      CallbackVariant callback,
+      PrintPreviewExtractor::Extractor::CallbackVariant callback,
       std::optional<bool> pdf_use_skia_renderer_enabled) override {
     // verify the correct memory region is passed
     EXPECT_EQ(pdf_region.Map().GetMemoryAsSpan<const uint8_t>(),
               expected_region_.Map().GetMemoryAsSpan<const uint8_t>());
 
-    if (auto* text_cb = std::get_if<TextCallback>(&callback)) {
+    if (auto* text_cb =
+            std::get_if<PrintPreviewExtractor::Extractor::TextCallback>(
+                &callback)) {
       if (!expected_error_) {
         std::move(*text_cb).Run(base::ok("extracted text"));
       } else {
         std::move(*text_cb).Run(
             base::unexpected("PreviewPageTextExtractor error"));
       }
-    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback)) {
+    } else if (auto* image_cb =
+                   std::get_if<PrintPreviewExtractor::Extractor::ImageCallback>(
+                       &callback)) {
       if (!expected_error_) {
         std::vector<std::vector<uint8_t>> result = {{0xde, 0xad}, {0xbe, 0xef}};
         std::move(*image_cb).Run(base::ok(std::move(result)));
@@ -256,7 +261,26 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     NavigateAndCommit(GURL("https://brave.com/"),
                       ui::PageTransition::PAGE_TRANSITION_FIRST);
     printing::PrintCompositeClient::CreateForWebContents(web_contents());
-    pp_extractor_ = std::make_unique<PrintPreviewExtractor>(web_contents());
+    pp_extractor_ = std::make_unique<PrintPreviewExtractor>(
+        web_contents(),
+        base::BindRepeating([](content::WebContents* web_contents, bool is_pdf,
+                               ai_chat::PrintPreviewExtractor::Extractor::
+                                   CallbackVariant&& variant)
+                                -> std::unique_ptr<
+                                    ai_chat::PrintPreviewExtractor::Extractor> {
+          return std::make_unique<ai_chat::PrintPreviewExtractorInternal>(
+              web_contents,
+              Profile::FromBrowserContext(web_contents->GetBrowserContext()),
+              is_pdf, std::move(variant),
+              base::BindRepeating(
+                  []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
+                    return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
+                  }),
+              base::BindRepeating([]() -> base::flat_map<int, int>& {
+                return printing::PrintPreviewUI::
+                    GetPrintPreviewUIRequestIdMap();
+              }));
+        }));
   }
   void TearDown() override {
     pp_extractor_.reset();

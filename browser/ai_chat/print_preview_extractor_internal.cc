@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/ai_chat/print_preview_extractor_internal.h"
+#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
 
 #include <memory>
 #include <optional>
@@ -17,7 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
-#include "brave/browser/ui/ai_chat/print_preview_extractor.h"
+#include "brave/browser/ai_chat/print_preview_extractor.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -29,7 +29,6 @@
 #include "chrome/browser/printing/print_view_manager_common.h"
 #include "chrome/browser/printing/printing_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/services/printing/public/mojom/printing_service.mojom.h"
 #include "components/prefs/pref_service.h"
@@ -59,6 +58,10 @@ using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
 namespace ai_chat {
+
+using CallbackVariant = PrintPreviewExtractor::Extractor::CallbackVariant;
+using TextCallback = PrintPreviewExtractor::Extractor::TextCallback;
+using ImageCallback = PrintPreviewExtractor::Extractor::ImageCallback;
 
 namespace {
 // chrome/browser/printing/print_view_manager_common.cc
@@ -224,9 +227,13 @@ PrintPreviewExtractorInternal::PrintPreviewExtractorInternal(
     content::WebContents* web_contents,
     Profile* profile,
     bool is_pdf,
-    CallbackVariant callback)
+    CallbackVariant callback,
+    GetPrintPreviewUIIdMapCallback id_map_callback,
+    GetPrintPreviewUIRequestIdMapCallback request_id_map_callback)
     : is_pdf_(is_pdf),
       callback_(std::move(callback)),
+      id_map_callback_(std::move(id_map_callback)),
+      request_id_map_callback_(std::move(request_id_map_callback)),
       web_contents_(web_contents),
       profile_(profile) {
   DCHECK(web_contents_);
@@ -430,8 +437,7 @@ void PrintPreviewExtractorInternal::PrintPreviewFailed(int32_t document_cookie,
                                                        int32_t request_id) {
   DLOG(ERROR) << __func__ << ": id=" << request_id;
   if (print_preview_ui_id_) {
-    printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
-        [*print_preview_ui_id_] = -1;
+    request_id_map_callback_.Run()[*print_preview_ui_id_] = -1;
   }
   SendError("PrintPreviewFailed");
 }
@@ -479,10 +485,8 @@ bool PrintPreviewExtractorInternal::IsPrintPreviewUIBound() const {
 
 void PrintPreviewExtractorInternal::SetPreviewUIId() {
   DCHECK(!print_preview_ui_id_);
-  print_preview_ui_id_ =
-      printing::PrintPreviewUI::GetPrintPreviewUIIdMap().Add(this);
-  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
-      [*print_preview_ui_id_] = -1;
+  print_preview_ui_id_ = id_map_callback_.Run().Add(this);
+  request_id_map_callback_.Run()[*print_preview_ui_id_] = -1;
 }
 
 void PrintPreviewExtractorInternal::ClearPreviewUIId() {
@@ -494,16 +498,13 @@ void PrintPreviewExtractorInternal::ClearPreviewUIId() {
 
   DisconnectPrintPreviewUI();
   PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
-  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap().erase(
-      *print_preview_ui_id_);
-  printing::PrintPreviewUI::GetPrintPreviewUIIdMap().Remove(
-      *print_preview_ui_id_);
+  request_id_map_callback_.Run().erase(*print_preview_ui_id_);
+  id_map_callback_.Run().Remove(*print_preview_ui_id_);
   print_preview_ui_id_.reset();
 }
 
 void PrintPreviewExtractorInternal::OnPrintPreviewRequest(int request_id) {
-  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
-      [*print_preview_ui_id_] = request_id;
+  request_id_map_callback_.Run()[*print_preview_ui_id_] = request_id;
 }
 
 void PrintPreviewExtractorInternal::OnPrepareForDocumentToPdfDone(
@@ -581,7 +582,7 @@ void PrintPreviewExtractorInternal::OnPreviewReady() {
   }
 
   // Create the appropriate callback based on the variant type
-  PreviewPageTextExtractor::CallbackVariant callback;
+  CallbackVariant callback;
   if (std::holds_alternative<ExtractCallback>(callback_)) {
     callback = base::BindOnce(&PrintPreviewExtractorInternal::OnGetOCRResult,
                               weak_ptr_factory_.GetWeakPtr());

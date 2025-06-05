@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//printing/buildflags/buildflags.gni")
-
 if (!is_android) {
   source_set("ai_chat") {
     sources = [
@@ -20,65 +18,11 @@ if (!is_android) {
   }
 }
 
-if (enable_print_preview) {
-  source_set("print_preview_extractor") {
-    sources = [ "print_preview_extractor.h" ]
-    public_deps = [
-      "//base",
-      "//brave/components/ai_chat/content/browser",
-      "//chrome/browser/profiles",
-      "//content/public/browser",
-      "//printing/buildflags",
-    ]
-  }
-
-  source_set("print_preview_extractor_impl") {
-    visibility = [
-      ":unit_tests",
-      "//chrome/browser",
-    ]
-    sources = [
-      "print_preview_extractor.cc",
-      "print_preview_extractor_internal.cc",
-      "print_preview_extractor_internal.h",
-    ]
-    deps = [
-      ":print_preview_extractor",
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/text_recognition/common/buildflags",
-      "//chrome/browser/pdf",
-      "//chrome/browser/pdf:pdf_pref_names",
-      "//chrome/browser/ui",
-      "//chrome/common:constants",
-      "//chrome/services/printing/public/mojom",
-      "//components/pdf/browser",
-      "//components/prefs",
-      "//components/printing/browser",
-      "//components/printing/common:mojo_interfaces",
-      "//components/services/print_compositor/public/mojom",
-      "//pdf:buildflags",
-      "//pdf:features",
-    ]
-  }
-}
-
 source_set("unit_tests") {
   testonly = true
   sources = [ "ai_chat_tab_helper_unittest.cc" ]
-  deps = []
 
-  if (enable_print_preview) {
-    sources += [ "print_preview_extractor_unittest.cc" ]
-    deps += [
-      ":print_preview_extractor",
-      ":print_preview_extractor_impl",
-      "//brave/components/text_recognition/common/buildflags",
-      "//chrome/services/printing/public/mojom",
-      "//components/printing/browser",
-    ]
-  }
-
-  deps += [
+  deps = [
     "//base/test:test_support",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",

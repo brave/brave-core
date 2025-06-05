@@ -626,11 +626,11 @@ if (enable_extensions) {
 
 if (enable_print_preview) {
   brave_chrome_browser_deps += [
-    "//brave/browser/ui/ai_chat:print_preview_extractor",
-    "//brave/browser/ui/ai_chat:print_preview_extractor_impl",
+    "//brave/browser/ai_chat:print_preview_extractor",
+    "//brave/browser/ai_chat:print_preview_extractor_internal",
   ]
   brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/ui/ai_chat:print_preview_extractor_impl" ]
+      [ "//brave/browser/ai_chat:print_preview_extractor_internal" ]
 }
 
 # https://github.com/brave/brave-browser/issues/41464
