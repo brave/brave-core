@@ -19,7 +19,7 @@ export function cardImageURL(url: string) {
   url = sanitizeURL(url)
   try {
     if (/(^|\.)brave(software)?\.com$/i.test(new URL(url).hostname)) {
-      return `chrome://rewards-image/${url}`
+      return `chrome://image?url=${encodeURIComponent(url)}`
     }
     return ''
   } catch {

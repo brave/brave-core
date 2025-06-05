@@ -12,7 +12,7 @@
 
 namespace {
 
-constexpr int kCurrentVersionNumber = 41;
+constexpr int kCurrentVersionNumber = 42;
 constexpr int kCompatibleVersionNumber = 1;
 
 }  // namespace

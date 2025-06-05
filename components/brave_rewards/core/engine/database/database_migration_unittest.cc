@@ -833,4 +833,23 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_41) {
   EXPECT_FALSE(GetDB()->DoesTableExist("publisher_prefix_list"));
 }
 
+TEST_F(RewardsDatabaseMigrationTest, Migration_42) {
+  DatabaseMigration::SetTargetVersionForTesting(42);
+  InitializeDatabaseAtVersion(39);
+  ASSERT_TRUE(GetDB()->Execute(R"sql(
+      INSERT INTO server_publisher_banner
+        (publisher_key, title, description, background, logo, web3_url)
+      VALUES
+        ('a', 'b', 'c', 'chrome://rewards-image/background-url',
+         'chrome://rewards-image/logo-url', '')
+  )sql"));
+  InitializeEngine();
+  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+      SELECT background, logo FROM server_publisher_banner
+  )sql"));
+  EXPECT_TRUE(sql.Step());
+  EXPECT_EQ(sql.ColumnString(0), "background-url");
+  EXPECT_EQ(sql.ColumnString(1), "logo-url");
+}
+
 }  // namespace brave_rewards::internal
