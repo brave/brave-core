@@ -62,7 +62,7 @@ Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
 a Lit HTML template we need a way to directly modify the source file. This is
 done with a Lit mangler.
 
-Create a file in `chromium_src` for `path/to/your/file.html.ts` at `chromium_src/path/to/your/file.html.ts`
+Create a file in `chromium_src` for `path/to/your/file.html.ts` at `chromium_src/path/to/your/file.html.ts.lit_mangler.ts`
 
 ```ts
 import mangle from 'lit-mangler'
