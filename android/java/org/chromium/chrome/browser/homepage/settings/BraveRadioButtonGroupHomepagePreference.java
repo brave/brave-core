@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
+import org.chromium.base.ApkInfo;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.HomepageOption;
@@ -30,7 +31,8 @@ public final class BraveRadioButtonGroupHomepagePreference
 
     @Nullable private RadioButtonWithDescription mMobileBookmarks;
     @Nullable private RadioButtonWithEditText mCustomUri;
-    private boolean mSelectMobileBookmarks;
+    private boolean mMobileBookmarksSelectedInitially;
+    private boolean mIgnoreEmptyTextChange;
 
     public BraveRadioButtonGroupHomepagePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,12 +50,16 @@ public final class BraveRadioButtonGroupHomepagePreference
         PreferenceValues preferenceValues = super.getPreferenceValue();
         if (preferenceValues == null) return;
 
+        // This hack is to avoid assert in `super.onCheckedChanged` in debug builds.
+        if (ApkInfo.isDebugApp()
+                && checkedId == R.id.brave_homepage_mobile_bookmarks
+                && mCustomUri != null) {
+            mCustomUri.setChecked(true);
+        }
+        super.onCheckedChanged(group, checkedId);
         if (checkedId == R.id.brave_homepage_mobile_bookmarks) {
             maybeSelectMobileBookmarks(true);
-        } else {
-            super.onCheckedChanged(group, checkedId);
         }
-        maybeClearCustomUri();
     }
 
     @Override
@@ -78,7 +84,7 @@ public final class BraveRadioButtonGroupHomepagePreference
 
         // If it is custom uri with mobile bookmarks path, set the mobile bookmarks radio button
         // selected.
-        mSelectMobileBookmarks =
+        mMobileBookmarksSelectedInitially =
                 value.getCheckedOption() == HomepageOption.ENTRY_CUSTOM_URI
                         && value.getCustomURI().equals(MOBILE_BOOKMARKS_PATH);
 
@@ -86,14 +92,13 @@ public final class BraveRadioButtonGroupHomepagePreference
         maybeClearCustomUri();
     }
 
-    void maybeSelectMobileBookmarks(boolean forceSelect) {
-        if ((mSelectMobileBookmarks || forceSelect) && mMobileBookmarks != null) {
-            // Make sure it is selected.
-            mMobileBookmarks.setChecked(true);
-            // Set proper URL (mobile bookmarks is the same as custom uri just with mobile
-            // bookmarks path).
-            super.onTextChanged(MOBILE_BOOKMARKS_PATH);
-        }
+    void maybeSelectMobileBookmarks(boolean manuallySelected) {
+        if (!manuallySelected && !mMobileBookmarksSelectedInitially) return;
+        // Make sure it is selected if applicable.
+        if (mMobileBookmarks != null) mMobileBookmarks.setChecked(true);
+        // Make sure we set proper URL (mobile bookmarks is the same as custom uri just with mobile
+        // bookmarks path).
+        super.onTextChanged(MOBILE_BOOKMARKS_PATH);
     }
 
     private void maybeClearCustomUri() {
@@ -102,8 +107,20 @@ public final class BraveRadioButtonGroupHomepagePreference
         if (mCustomUri != null
                 && !mCustomUri.isChecked()
                 && mCustomUri.getPrimaryText().toString().equals(MOBILE_BOOKMARKS_PATH)) {
+            // We only want to clear the text box without triggering home page change.
+            mIgnoreEmptyTextChange = true;
             mCustomUri.setPrimaryText("");
         }
+    }
+
+    @Override
+    public void onTextChanged(CharSequence newText) {
+        if (newText.toString().isEmpty() && mIgnoreEmptyTextChange) {
+            mIgnoreEmptyTextChange = false;
+            return;
+        }
+
+        super.onTextChanged(newText);
     }
 
     @VisibleForTesting
