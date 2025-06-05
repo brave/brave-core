@@ -103,7 +103,7 @@
     Delete
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING" desc="The warning for the delete alias">
-    This action is irreversible. Please ensure you want to proceed before continuing.
+    This action is irreversible. Are you sure you want to proceed?
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT" desc="The label for the sign in or create account">
     To get started, sign in or create a Brave account
