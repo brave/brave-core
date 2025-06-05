@@ -88,7 +88,7 @@ class ModelServiceTestWithDifferentPremiumModel : public ModelServiceTest {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         features::kAIChat,
         {
-            {features::kAIModelsDefaultKey.name, "chat-leo-expanded"},
+            {features::kAIModelsDefaultKey.name, "chat-basic"},
             {features::kAIModelsPremiumDefaultKey.name, "claude-3-sonnet"},
         });
   }
@@ -103,8 +103,8 @@ class ModelServiceTestWithSamePremiumModel : public ModelServiceTest {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         features::kAIChat,
         {
-            {features::kAIModelsDefaultKey.name, "chat-leo-expanded"},
-            {features::kAIModelsPremiumDefaultKey.name, "chat-leo-expanded"},
+            {features::kAIModelsDefaultKey.name, "chat-basic"},
+            {features::kAIModelsPremiumDefaultKey.name, "chat-basic"},
         });
     ModelServiceTest::SetUp();
   }
@@ -151,9 +151,9 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-leo-expanded", "claude-3-sonnet"))
+              OnDefaultModelChanged("chat-basic", "claude-3-sonnet"))
       .Times(1);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "claude-3-sonnet");
@@ -162,32 +162,40 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel_UserModified) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-leo-expanded", "chat-basic"))
+              OnDefaultModelChanged("chat-basic", "chat-claude-haiku"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-basic");
+  GetService()->SetDefaultModelKey("chat-claude-haiku");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTestWithSamePremiumModel,
        MigrateToPremiumDefaultModel_None) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
-  GetService()->SetDefaultModelKeyWithoutValidationForTesting("chat-default");
-  ModelService::MigrateProfilePrefs(&pref_service_);
+  constexpr std::array<const char*, 2> old_keys = {
+      "chat-default",
+      "chat-leo-expanded",
+  };
 
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  for (const char* old_key : old_keys) {
+    GetService()->SetDefaultModelKeyWithoutValidationForTesting(old_key);
+    ModelService::MigrateProfilePrefs(&pref_service_);
+    EXPECT_EQ(GetService()->GetDefaultModelKey(),
+              features::kAIModelsDefaultKey.Get())
+        << "Failed to migrate key: " << old_key;
+  }
 }
 
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
@@ -226,10 +234,10 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
   GetService()->SetDefaultModelKey("chat-basic");
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-basic", "chat-leo-expanded"))
+              OnDefaultModelChanged("chat-basic", "chat-claude-haiku"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-leo-expanded");
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  GetService()->SetDefaultModelKey("chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
