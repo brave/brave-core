@@ -9,7 +9,6 @@
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
@@ -31,7 +30,6 @@
 #define BrowserContentSettingBubbleModelDelegate \
   BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
-#define BrowserLocationBarModelDelegate BraveLocationBarModelDelegate
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
 
@@ -39,7 +37,6 @@
 
 #undef BrowserActions
 #undef BrowserTabStripModelDelegate
-#undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_SHOULD_SHOW_BOOKMARK_BAR
