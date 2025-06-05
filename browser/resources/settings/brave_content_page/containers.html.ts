@@ -7,19 +7,16 @@ import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
 
 export function getHtml(this: SettingsBraveContentContainersElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <div class="cr-row first two-line">
       <div class="flex">
-        <div
-          class="label"
-          .innerHTML="${this.i18nAdvanced('containersDesc')}"
-        ></div>
+        <div class="label">$i18nRaw{containersDesc}</div>
       </div>
       <cr-button
         @click="${this.onAddContainerClick_}"
         size="small"
       >
-        ${this.i18n('containersAddContainer')}
+        $i18n{containersAddContainer}
       </cr-button>
     </div>
 
@@ -74,10 +71,8 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                   required
                   auto-validate
                   pattern=".+"
-                  label="${this.i18n('containersContainerName')}"
-                  placeholder="${this.i18n(
-                    'containersContainerNamePlaceholder',
-                  )}"
+                  label="$i18n{containersContainerName}"
+                  placeholder="$i18n{containersContainerNamePlaceholder}"
                 >
                 </cr-input>
               </div>
@@ -87,14 +82,14 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                 class="cancel-button"
                 @click="${this.onCancelDialog_}"
               >
-                ${this.i18n('cancel')}
+                $i18n{cancel}
               </cr-button>
               <cr-button
                 class="action-button"
                 @click="${this.onSaveContainerFromDialog_}"
                 ?disabled="${!this.editingContainer_.name}"
               >
-                ${this.i18n('save')}
+                $i18n{save}
               </cr-button>
             </div>
           </cr-dialog>
@@ -109,7 +104,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
             @close="${this.onCancelDialog_}"
             ?no-cancel="${this.isRemoving_}"
           >
-            <div slot="title">${this.i18n('containersDeleteContainer')}</div>
+            <div slot="title">$i18n{containersDeleteContainer}</div>
             <div slot="body">
               <div class="label">
                 ${this.i18n(
@@ -124,18 +119,18 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                 @click="${this.onCancelDialog_}"
                 ?disabled="${this.isRemoving_}"
               >
-                ${this.i18n('cancel')}
+                $i18n{cancel}
               </cr-button>
               <cr-button
                 class="tonal-button"
                 @click="${this.onDeleteContainerFromDialog_}"
                 ?disabled="${this.isRemoving_}"
               >
-                ${this.i18n('delete')}
+                $i18n{delete}
               </cr-button>
             </div>
           </cr-dialog>
         `
       : nothing}
-  `
+    <!--_html_template_end_-->`
 }
