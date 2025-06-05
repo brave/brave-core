@@ -42,16 +42,15 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       },
       isRemoving_: {
         type: Boolean,
-        value: false,
       },
     }
   }
 
   private browserProxy = ContainersSettingsPageBrowserProxy.getInstance()
-  accessor containersList_: Container[]
-  accessor editingContainer_: Container | null
-  accessor deletingContainer_: Container | null
-  accessor isRemoving_: boolean
+  accessor containersList_: Container[] = []
+  accessor editingContainer_: Container | undefined
+  accessor deletingContainer_: Container | undefined
+  accessor isRemoving_ = false
 
   override connectedCallback() {
     super.connectedCallback()
@@ -74,21 +73,19 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   onEditContainerClick_(e: Event) {
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
-    this.editingContainer_ =
-      this.containersList_.find((c) => c.id === id) ?? null
+    this.editingContainer_ = this.containersList_.find((c) => c.id === id)
   }
 
   onDeleteContainerClick_(e: Event) {
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
-    this.deletingContainer_ =
-      this.containersList_.find((c) => c.id === id) ?? null
+    this.deletingContainer_ = this.containersList_.find((c) => c.id === id)
   }
 
   onCancelDialog_() {
-    this.editingContainer_ = null
+    this.editingContainer_ = undefined
     if (!this.isRemoving_) {
-      this.deletingContainer_ = null
+      this.deletingContainer_ = undefined
     }
   }
 
@@ -103,7 +100,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   onSaveContainerFromDialog_() {
     assert(this.editingContainer_)
     this.browserProxy.handler.addOrUpdateContainer(this.editingContainer_)
-    this.editingContainer_ = null
+    this.editingContainer_ = undefined
   }
 
   async onDeleteContainerFromDialog_() {
@@ -115,7 +112,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       )
     } finally {
       this.isRemoving_ = false
-      this.deletingContainer_ = null
+      this.deletingContainer_ = undefined
     }
   }
 
