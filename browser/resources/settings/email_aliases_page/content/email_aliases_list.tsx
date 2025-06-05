@@ -5,7 +5,7 @@
 
 import { AliasItem } from './email_aliases_item'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import { DeleteAliasModal, EditState, EmailAliasModal }
+import { DeleteAliasModal, EditMode, EmailAliasModal }
   from './email_aliases_modal'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
@@ -35,6 +35,11 @@ const AliasDialog = styled(Dialog)`
   --leo-dialog-backdrop-background: ${color.dialogs.scrimBackground};
   --leo-dialog-padding: ${spacing['2Xl']};
 `
+
+export type EditState = {
+  mode: EditMode,
+  alias?: Alias
+}
 
 export const ListIntroduction = ({
   aliasesCount,
@@ -96,7 +101,8 @@ export const AliasList = ({
         {(editState.mode === 'Create' || editState.mode === 'Edit') &&
           <EmailAliasModal
             onReturnToMain={() => setEditState({ mode: 'None' })}
-            editState={editState}
+            editing={editState.mode === 'Edit'}
+            editAlias={editState.alias}
             mainEmail={authEmail}
             aliasCount={aliases.length}
             emailAliasesService={emailAliasesService} />}

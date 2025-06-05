@@ -257,7 +257,7 @@ export const Bubble = () => {
     <EmailAliasModal
       aliasCount={demoData.aliases.length}
       onReturnToMain={() => {}}
-      editState={{ mode: 'Create' }}
+      editing={false}
       mainEmail={demoData.email}
       bubble={true}
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
