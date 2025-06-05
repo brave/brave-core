@@ -19,7 +19,8 @@ def main():
     argument_parser.add_argument('key_passwd')
     argument_parser.add_argument('prvt_key_passwd')
     argument_parser.add_argument('key_name')
-    argument_parser.add_argument('--pkcs11-provider', help='PKCS11 provider configuration file path')
+    argument_parser.add_argument(
+        '--pkcs11-provider', help='PKCS11 provider configuration file path')
     argument_parser.add_argument('--pkcs11-alias', help='PKCS11 key alias')
     args = argument_parser.parse_args()
 
@@ -30,7 +31,8 @@ def main():
 def sign(zipalign_path, apksigner_path, jarsigner_path, \
     unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd, \
     key_name, pkcs11_provider=None, pkcs11_alias=None):
-    print(f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
+    print(
+        f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
 
     with tempfile.NamedTemporaryFile() as staging_file:
         for unsigned_apk_path in unsigned_apk_paths:
@@ -59,29 +61,31 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                 if pkcs11_provider and pkcs11_alias:
                     print("Using PKCS11 signing")
                     if not os.path.exists(pkcs11_provider):
-                        raise FileNotFoundError(f"PKCS11 provider config file not found: {pkcs11_provider}")
+                        raise FileNotFoundError(
+                            f"PKCS11 provider config file not found: {pkcs11_provider}"
+                        )
                     cmd_args = [
-                        jarsigner_path, '-verbose',
-                        '-keystore', 'NONE',
-                        '-storetype', 'PKCS11',
-                        '-providerClass', 'sun.security.pkcs11.SunPKCS11',
-                        '-providerArg', pkcs11_provider,
-                        '-storepass', 'password',
-                        staging_file.name, '-signedjar', unsigned_apk_path, pkcs11_alias
+                        jarsigner_path, '-verbose', '-keystore', 'NONE',
+                        '-storetype', 'PKCS11', '-providerClass',
+                        'sun.security.pkcs11.SunPKCS11', '-providerArg',
+                        pkcs11_provider, '-storepass', 'password',
+                        staging_file.name, '-signedjar', unsigned_apk_path,
+                        pkcs11_alias
                     ]
                 else:
                     print("Using standard keystore signing")
                     cmd_args = [
-                        jarsigner_path, '-verbose',
-                        '-sigalg', 'SHA256withRSA',
-                        '-digestalg', 'SHA-256',
-                        '-keystore', key_path,
-                        '-storepass', key_passwd,
-                        '-keypass', prvt_key_passwd,
-                        staging_file.name, '-signedjar', unsigned_apk_path, key_name
+                        jarsigner_path, '-verbose', '-sigalg', 'SHA256withRSA',
+                        '-digestalg', 'SHA-256', '-keystore', key_path,
+                        '-storepass', key_passwd, '-keypass', prvt_key_passwd,
+                        staging_file.name, '-signedjar', unsigned_apk_path,
+                        key_name
                     ]
             try:
-                result = subprocess.run(cmd_args, capture_output=True, text=True, check=True)
+                result = subprocess.run(cmd_args,
+                                        capture_output=True,
+                                        text=True,
+                                        check=True)
                 print(f"Successfully signed: {unsigned_apk_path}")
             except subprocess.CalledProcessError as e:
                 print(f"ERROR: Signing failed for {unsigned_apk_path}")
