@@ -641,7 +641,8 @@ public class BytecodeTest {
                         int.class,
                         Context.class,
                         boolean.class,
-                        boolean.class));
+                        boolean.class,
+                        Integer.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",

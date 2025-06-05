@@ -9,6 +9,9 @@ import android.content.Context;
 
 import androidx.annotation.ColorInt;
 
+import org.chromium.build.annotations.Nullable;
+import org.chromium.components.tab_groups.TabGroupColorId;
+
 public class BraveTabUiThemeUtils {
     @ColorInt
     public static int getTitleTextColor(Context context, boolean isIncognito, boolean isSelected) {
@@ -32,11 +35,15 @@ public class BraveTabUiThemeUtils {
 
     @ColorInt
     public static int getCardViewBackgroundColor(
-            Context context, boolean isIncognito, boolean isSelected) {
+            Context context,
+            boolean isIncognito,
+            boolean isSelected,
+            @Nullable @TabGroupColorId Integer colorId) {
         if (isSelected && !isIncognito) {
             return context.getColor(R.color.baseline_primary_80);
         }
 
-        return TabUiThemeUtils.getCardViewBackgroundColor(context, isIncognito, isSelected);
+        return TabUiThemeUtils.getCardViewBackgroundColor(
+                context, isIncognito, isSelected, colorId);
     }
 }
