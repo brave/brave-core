@@ -115,7 +115,7 @@ void BraveWalletTabHelper::BindSolanaProvider(
 void BraveWalletTabHelper::BindCardanoProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<mojom::CardanoProvider> receiver) {
-  if (!IsCardanoEnabled()) {
+  if (!IsCardanoDAppSupportEnabled()) {
     return;
   }
   auto* brave_wallet_service = BraveWalletServiceFactory::GetServiceForContext(

@@ -126,7 +126,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   // Cardano setting
   if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
                                                          "cardano") &&
-      IsCardanoDAppSupportEnabled()) {
+      dynamic_params.install_window_brave_cardano_provider) {
     JSCardanoProvider::Install(render_frame());
   }
 }

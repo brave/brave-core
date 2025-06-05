@@ -21,6 +21,8 @@ class CardanoProviderImpl final : public mojom::CardanoProvider {
   ~CardanoProviderImpl() override;
 
   void Enable(EnableCallback callback) override;
+  void IsEnabled(IsEnabledCallback callback) override;
+
   void GetNetworkId(GetNetworkIdCallback callback) override;
   void GetUsedAddresses(GetUsedAddressesCallback callback) override;
   void GetUnusedAddresses(GetUnusedAddressesCallback callback) override;
@@ -38,6 +40,8 @@ class CardanoProviderImpl final : public mojom::CardanoProvider {
   void SignData(const std::string& address,
                 const std::string& payload_hex,
                 SignDataCallback callback) override;
+  void GetCollateral(const std::string& amount,
+                     GetCollateralCallback callback) override;
 };
 
 }  // namespace brave_wallet
