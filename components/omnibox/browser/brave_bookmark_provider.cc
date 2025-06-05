@@ -6,6 +6,7 @@
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
 
 #include "base/containers/contains.h"
+#include "base/strings/string_util.h"
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/autocomplete_match.h"

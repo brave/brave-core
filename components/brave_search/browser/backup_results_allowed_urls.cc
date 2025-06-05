@@ -12,7 +12,6 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/url_constants.h"
 

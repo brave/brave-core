@@ -9,6 +9,7 @@
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
+#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/fil_address.h"

@@ -7,7 +7,6 @@
 
 #include <string_view>
 
-#include "base/strings/string_util.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/net/decentralized_dns/constants.h"

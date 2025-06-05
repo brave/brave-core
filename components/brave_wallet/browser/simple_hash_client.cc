@@ -13,6 +13,7 @@
 #include "base/containers/to_vector.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

@@ -9,7 +9,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 

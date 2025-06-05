@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"

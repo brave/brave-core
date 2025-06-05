@@ -11,7 +11,6 @@
 
 #include "base/numerics/safe_math.h"
 #include "base/strings/string_number_conversions_internal.h"
-#include "base/strings/string_util.h"
 
 namespace brave_wallet {
 

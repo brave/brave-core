@@ -6,7 +6,6 @@
 #include "brave/components/speedreader/common/url_readable_hints.h"
 
 #include "base/no_destructor.h"
-#include "base/strings/string_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
