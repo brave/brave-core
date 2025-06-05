@@ -40,6 +40,7 @@ void RegisterComponentsForUpdate() {
         cus, p3a_service->remote_config_manager()->GetWeakPtr());
   }
 #if BUILDFLAG(IS_ANDROID)
+  // Currently behind !BUILDFLAG(IS_ANDROID) in upstream.
   RegisterZxcvbnDataComponent(cus);
 #endif  // BUILDFLAG(IS_ANDROID)
 }
