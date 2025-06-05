@@ -127,7 +127,7 @@ struct PatternsURLDetails {
 
   // The regex used to match the URL in the address bar.
   std::unique_ptr<re2::RE2> url_regex;
-  bool is_search_engine;
+  bool is_search_engine = false;
   // The two or three-letter arbitrary id associated with the site.
   std::string id;
   // The search path prefix used for constructing private search queries
