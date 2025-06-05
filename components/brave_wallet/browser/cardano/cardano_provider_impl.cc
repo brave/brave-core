@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 
 #include <utility>
+#include <vector>
 
 namespace brave_wallet {
 
@@ -14,6 +15,10 @@ CardanoProviderImpl::CardanoProviderImpl() = default;
 CardanoProviderImpl::~CardanoProviderImpl() = default;
 
 void CardanoProviderImpl::Enable(EnableCallback callback) {
+  std::move(callback).Run(true);
+}
+
+void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
   std::move(callback).Run(true);
 }
 
@@ -46,7 +51,7 @@ void CardanoProviderImpl::GetBalance(GetBalanceCallback callback) {
 void CardanoProviderImpl::GetUtxos(const std::optional<std::string>& amount,
                                    mojom::CardanoProviderPaginationPtr paginate,
                                    GetUtxosCallback callback) {
-  std::move(callback).Run({"1", "2"}, std::nullopt);
+  std::move(callback).Run(std::vector<std::string>({"1", "2"}), std::nullopt);
 }
 
 void CardanoProviderImpl::SignTx(const std::string& tx_cbor,
@@ -65,6 +70,11 @@ void CardanoProviderImpl::SignData(const std::string& address,
                                    SignDataCallback callback) {
   std::move(callback).Run(mojom::CardanoProviderSignatureResult::New("1", "2"),
                           std::nullopt);
+}
+
+void CardanoProviderImpl::GetCollateral(const std::string& amount,
+                                        GetCollateralCallback callback) {
+  std::move(callback).Run(std::vector<std::string>({"1", "2"}), std::nullopt);
 }
 
 }  // namespace brave_wallet

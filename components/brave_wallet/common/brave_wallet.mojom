@@ -190,6 +190,7 @@ struct CardanoProviderPagination {
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
   Enable() => (bool success);
+  IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
     (int32 network_id, string? error_message);
@@ -204,13 +205,14 @@ interface CardanoProvider {
   GetBalance() =>
     (string cbor_balance, string? error_message);
   GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
-    (array<string> utxos, string? error_message);
+    (array<string>? utxos, string? error_message);
   SignTx(string tx_cbor, bool partial_sign) =>
     (string signed_tx_cbor, string? error_message);
   SubmitTx(string signed_tx_cbor) =>
     (string tx_hash, string? error_message);
   SignData(string address, string payload_hex) =>
     (CardanoProviderSignatureResult result, string? error_message);
+  GetCollateral(string amount) => (array<string>? utxos, string? error_message);
 };
 
 struct ChainId {

@@ -211,7 +211,8 @@ void BraveRendererUpdater::UpdateRenderer(
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
   bool install_window_brave_cardano_provider =
-      brave_wallet::IsCardanoDAppSupportEnabled() && is_wallet_allowed_for_context_;
+      brave_wallet::IsCardanoDAppSupportEnabled() &&
+      is_wallet_allowed_for_context_;
   bool allow_overwrite_window_solana_provider =
       default_solana_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;

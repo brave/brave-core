@@ -25,8 +25,10 @@ namespace brave_wallet {
 class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                                  public content::RenderFrameObserver {
  public:
-  explicit JSCardanoWalletApi(base::PassKey<class JSCardanoProvider> pass_key,
-                              content::RenderFrame* render_frame);
+  JSCardanoWalletApi(base::PassKey<class JSCardanoProvider> pass_key,
+                     v8::Local<v8::Context> context,
+                     v8::Isolate* isolate,
+                     content::RenderFrame* render_frame);
   ~JSCardanoWalletApi() override;
   JSCardanoWalletApi(const JSCardanoWalletApi&) = delete;
   JSCardanoWalletApi& operator=(const JSCardanoWalletApi&) = delete;
@@ -52,6 +54,12 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                              v8::Isolate* isolate,
                              const std::vector<std::string>& result,
                              const std::optional<std::string>& error);
+  void HandleUtxoVecResult(
+      v8::Global<v8::Context> global_context,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      const std::optional<std::vector<std::string>>& result,
+      const std::optional<std::string>& error_message);
 
   v8::Local<v8::Promise> GetNetworkId(v8::Isolate* isolate);
   void OnGetNetworkId(v8::Global<v8::Context> global_context,
@@ -72,7 +80,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
 
   v8::Local<v8::Promise> GetUtxos(gin::Arguments* args);
 
-  v8::Local<v8::Promise> SingTx(gin::Arguments* args);
+  v8::Local<v8::Promise> SignTx(gin::Arguments* args);
 
   v8::Local<v8::Promise> SignData(gin::Arguments* args);
   void OnSignData(v8::Global<v8::Context> global_context,
@@ -82,6 +90,10 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                   const std::optional<std::string>& error_message);
 
   v8::Local<v8::Promise> SubmitTx(gin::Arguments* args);
+
+  v8::Local<v8::Promise> GetExtensions(gin::Arguments* args);
+
+  v8::Local<v8::Promise> GetCollateral(gin::Arguments* args);
 
   mojo::Remote<mojom::CardanoProvider> cardano_provider_;
   base::WeakPtrFactory<JSCardanoWalletApi> weak_ptr_factory_{this};

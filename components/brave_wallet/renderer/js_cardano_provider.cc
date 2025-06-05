@@ -37,11 +37,28 @@ constexpr char kBrave[] = "brave";
 // content::RenderFrameObserver
 void JSCardanoProvider::OnDestruct() {}
 
+std::vector<std::string> JSCardanoProvider::GetSupportedExtensions() {
+  return std::vector<std::string>();
+}
+
+std::string JSCardanoProvider::GetName() {
+  return "Brave";
+}
+
+std::string JSCardanoProvider::GetIcon() {
+  return "";
+}
+
 // gin::Wrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSCardanoProvider>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("enable", &JSCardanoProvider::Enable);
+      .SetMethod("enable", &JSCardanoProvider::Enable)
+      .SetMethod("isEnabled", &JSCardanoProvider::IsEnabled)
+      .SetProperty("supportedExtensions",
+                   &JSCardanoProvider::GetSupportedExtensions)
+      .SetProperty("name", &JSCardanoProvider::GetName)
+      .SetProperty("icon", &JSCardanoProvider::GetIcon);
 }
 
 const char* JSCardanoProvider::GetTypeName() {
@@ -114,6 +131,7 @@ void JSCardanoProvider::OnEnableResponse(
   if (success) {
     gin::Handle<JSCardanoWalletApi> wallet_api = gin::CreateHandle(
         isolate, new JSCardanoWalletApi(base::PassKey<JSCardanoProvider>(),
+                                        global_context.Get(isolate), isolate,
                                         render_frame()));
     if (wallet_api.IsEmpty()) {
       return;
@@ -121,10 +139,63 @@ void JSCardanoProvider::OnEnableResponse(
     v8::Local<v8::Value> wallet_api_value = wallet_api.ToV8();
     v8::Local<v8::Object> wallet_api_object =
         wallet_api_value->ToObject(context).ToLocalChecked();
+
+    // Non-function properties are readonly guaranteed by gin::Wrappable
+    for (const std::string& method :
+         {"getNetworkId", "getUsedAddresses", "getUnusedAddresses",
+          "getChangeAddress", "getRewardAddresses", "getUtxos", "getBalance",
+          "signTx", "signData", "submitTx", "getExtensions", "getCollateral"}) {
+      SetOwnPropertyWritable(context, wallet_api_object,
+                             gin::StringToV8(isolate, method), false);
+    }
+
     std::ignore = resolver->Resolve(context, std::move(wallet_api_object));
   } else {
     std::ignore = resolver->Reject(context, result);
   }
+}
+
+v8::Local<v8::Promise> JSCardanoProvider::IsEnabled(v8::Isolate* isolate) {
+  if (!EnsureConnected()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto global_context(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+
+  cardano_provider_->IsEnabled(base::BindOnce(
+      &JSCardanoProvider::OnIsEnableResponse, weak_ptr_factory_.GetWeakPtr(),
+      std::move(global_context), std::move(promise_resolver), isolate));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void JSCardanoProvider::OnIsEnableResponse(
+    v8::Global<v8::Context> global_context,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    const bool is_enabled) {
+  if (!render_frame()) {
+    return;
+  }
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  std::ignore =
+      resolver->Resolve(context, v8::Boolean::New(isolate, is_enabled));
 }
 
 // static
@@ -170,6 +241,12 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
   SetProviderNonWritable(
       context, cardano_root->ToObject(context).ToLocalChecked(),
       cardano_brave_provider_object, gin::StringToV8(isolate, kBrave), true);
+
+  // Non-function properties are readonly guaranteed by gin::Wrappable
+  for (const std::string& method : {"enable", "isEnabled"}) {
+    SetOwnPropertyWritable(context, cardano_brave_provider_object,
+                           gin::StringToV8(isolate, method), false);
+  }
 }
 
 }  // namespace brave_wallet
