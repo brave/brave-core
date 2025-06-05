@@ -5,4 +5,11 @@
 
 #include "content/browser/client_hints/client_hints.h"
 
+#include "content/public/browser/content_browser_client.h"
+#include "content/public/browser/client_hints_controller_delegate.h"
+
+#define GetUserAgentMetadata() BraveGetUserAgentMetadata(false)
+
 #include "src/content/browser/client_hints/client_hints.cc"
+
+#undef GetUserAgentMetadata

@@ -6,6 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CLIENT_HINTS_CONTROLLER_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CLIENT_HINTS_CONTROLLER_DELEGATE_H_
 
+#include "content/public/browser/content_browser_client.h"
+
+#define GetUserAgentMetadata() \
+  BraveGetUserAgentMetadata(bool showBraveBrand) = 0; \
+  virtual blink::UserAgentMetadata GetUserAgentMetadata()
+
 #include "src/content/public/browser/client_hints_controller_delegate.h"  // IWYU pragma: export
+
+#undef GetUserAgentMetadata
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CLIENT_HINTS_CONTROLLER_DELEGATE_H_
