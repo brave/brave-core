@@ -23,19 +23,13 @@ struct AdBlockDebugView: View {
 
 private struct CompileContentBlockersSectionView: View {
   @AppStorage("numberOfRuns") private var numberOfRuns: Int = 10
-  @AppStorage("selectionId") private var selectionId: String = ""
+  @State private var selection: AdBlockEngineManager.FileInfo?
   @State private var currentRun = 0
   @State private var currentAverage = 0
   @State private var result: Result<Duration, Error>?
   @State private var availableSelections: [AdBlockEngineManager.FileInfo] = []
   @State private var task: Task<Void, Never>?
   @State private var stopping = false
-
-  var selection: AdBlockEngineManager.FileInfo? {
-    return availableSelections.first(where: {
-      $0.filterListInfo.source.debugDescription == selectionId
-    })
-  }
 
   var body: some View {
     Section {
@@ -51,12 +45,14 @@ private struct CompileContentBlockersSectionView: View {
         .multilineTextAlignment(.trailing)
       }
 
-      Picker("Filter List", selection: $selectionId) {
-        ForEach(availableSelections, id: \.filterListInfo.source) { selection in
+      Picker(selection: $selection) {
+        ForEach(availableSelections) { selection in
           Group {
             Text(getTitle(for: selection)) + Text(verbatim: " v\(selection.filterListInfo.version)")
-          }.tag(selection.filterListInfo.source.debugDescription)
+          }.tag(selection)
         }
+      } label: {
+        Text("Filter List")
       }
 
       if let result {
@@ -113,10 +109,10 @@ private struct CompileContentBlockersSectionView: View {
         return AdBlockGroupsManager.shared.getManager(for: engineType).compilableFiles(
           for: sources
         )
-      })
+      }).uniqued(on: \.id)
 
-      if selectionId.isEmpty, let selection = availableSelections.first {
-        self.selectionId = selection.filterListInfo.source.debugDescription
+      if selection == nil {
+        self.selection = availableSelections.first
       }
     }
   }
