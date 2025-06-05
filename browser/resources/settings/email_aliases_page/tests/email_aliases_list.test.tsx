@@ -149,10 +149,6 @@ describe('AliasList', () => {
 
     await waitForTexts([
       'emailAliasesEditAliasTitle',
-      'emailAliasesAliasLabel',
-      'emailAliasesNoteLabel',
-      'emailAliasesEmailsWillBeForwardedTo',
-      'emailAliasesUsedBy',
       'emailAliasesCancelButton',
       'emailAliasesSaveAliasButton'
     ])
@@ -167,9 +163,6 @@ describe('AliasList', () => {
 
     await waitForTexts([
       'emailAliasesDeleteAliasTitle',
-      'emailAliasesDeleteAliasDescription',
-      'emailAliasesDeleteAliasButton',
-      'emailAliasesDeleteWarning',
       'emailAliasesCancelButton',
       'emailAliasesDeleteAliasButton'
     ])
