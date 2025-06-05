@@ -209,8 +209,15 @@ program
   )
   .option('--target_os <target_os>', 'target OS')
   .option('--universal', 'build a universal binary distribution')
-  .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
-  .option('--xcode_gen <target>', 'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.')
+  .option(
+    '--use_remoteexec [arg]',
+    'whether to use RBE for building',
+    JSON.parse,
+  )
+  .option(
+    '--xcode_gen <target>',
+    'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.',
+  )
   .option('--pkcs11-provider <provider_config_file>', 'PKCS11 provider configuration file path')
   .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
   .arguments('[build_config]')
@@ -220,9 +227,9 @@ program
   .command('build_chromium_release')
   .description(
     'Produces a chromium release build for performance testing.\n'
-    + 'Uses the same /src directory; all brave patches are reverted.\n'
-    + 'The default build_dir is `chromium_Release(_target_arch)`.\n'
-    + 'Intended for use on CI, use locally with care.',
+      + 'Uses the same /src directory; all brave patches are reverted.\n'
+      + 'The default build_dir is `chromium_Release(_target_arch)`.\n'
+      + 'Intended for use on CI, use locally with care.',
   )
   .option('--force', 'Ignore a warning about non-CI build')
   .option('-C <build_dir>', 'build config (out/chromium_Release')
