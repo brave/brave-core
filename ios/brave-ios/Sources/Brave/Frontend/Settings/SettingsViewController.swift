@@ -533,6 +533,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.alwaysRequestDesktopSite,
           image: UIImage(braveSystemNamed: "leo.window.cursor"),
+          accessory: .view(defaultPageModeSwitch),
           cellClass: MultilineSubtitleCell.self
         )
       )
