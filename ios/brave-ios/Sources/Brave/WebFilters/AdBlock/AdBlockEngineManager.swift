@@ -22,9 +22,13 @@ import os
     }
   }
 
-  public struct FileInfo: Hashable, Equatable {
+  public struct FileInfo: Hashable, Equatable, Identifiable {
     let filterListInfo: GroupedAdBlockEngine.FilterListInfo
     let localFileURL: URL
+
+    var id: String {
+      localFileURL.absoluteString
+    }
   }
 
   /// The top level folder to create for caching engine data
