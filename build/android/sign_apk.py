@@ -26,7 +26,9 @@ def main():
 
     sign(args.zipalign_path, args.apksigner_path, args.jarsigner_path, \
         args.unsigned_apk_paths, args.key_path, args.key_passwd, \
-        args.prvt_key_passwd, args.key_name, args.pkcs11_provider, args.pkcs11_alias)
+        args.prvt_key_passwd, args.key_name, args.pkcs11_provider, \
+        args.pkcs11_alias)
+
 
 def sign(zipalign_path, apksigner_path, jarsigner_path, \
     unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd, \
@@ -62,7 +64,8 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                     print("Using PKCS11 signing")
                     if not os.path.exists(pkcs11_provider):
                         raise FileNotFoundError(
-                            f"PKCS11 provider config file not found: {pkcs11_provider}"
+                            f"PKCS11 provider config file not found: "
+                            f"{pkcs11_provider}"
                         )
                     cmd_args = [
                         jarsigner_path, '-verbose', '-keystore', 'NONE',
@@ -82,7 +85,7 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                         key_name
                     ]
             try:
-                result = subprocess.run(cmd_args,
+                subprocess.run(cmd_args,
                                         capture_output=True,
                                         text=True,
                                         check=True)
