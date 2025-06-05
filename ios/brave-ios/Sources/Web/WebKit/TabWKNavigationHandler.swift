@@ -320,6 +320,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     tab.lastCommittedURL = webView.url
     tab.isRestoring = false
     tab.contentsMimeType = pendingMIMEType
+    tab.updateSecureContentStateAndNotifyObserversIfNeeded()
 
     pendingMIMEType = nil
 
