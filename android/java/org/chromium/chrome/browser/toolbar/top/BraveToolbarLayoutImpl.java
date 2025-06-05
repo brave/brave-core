@@ -52,8 +52,6 @@ import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -67,6 +65,8 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenOptions;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
@@ -146,7 +146,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveRewardsObserver,
                 BraveRewardsNativeWorker.PublisherObserver,
                 ConnectionErrorHandler,
-                PlaylistServiceObserverImplDelegate {
+                PlaylistServiceObserverImplDelegate,
+                FullscreenManager.Observer {
     private static final String TAG = "BraveToolbar";
 
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -206,6 +207,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private PlaylistService mPlaylistService;
 
     private enum BigtechCompany { Google, Facebook, Amazon }
+    private int mYouTubePipTabId = -1;
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -470,6 +472,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveRewardsNativeWorker.addObserver(this);
             mBraveRewardsNativeWorker.addPublisherObserver(this);
             mBraveRewardsNativeWorker.getAllNotifications();
+        }
+
+        if (ChromeFeatureList.isEnabled(
+                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)) {
+            try {
+                final FullscreenManager fullscreenManager = BraveActivity.getBraveActivity().getFullscreenManager();
+                fullscreenManager.addObserver(this);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "BraveActivity not found when retrieving fullscreen manager", e);
+            }
+
         }
     }
 
@@ -1162,28 +1175,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     || currentTab.isShowingCustomView()) {
                 return;
             }
+            mYouTubePipTabId = currentTab.getId();
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
-            PostTask.postDelayedTask(
-                    TaskTraits.UI_USER_BLOCKING,
-                    () -> {
-                        try {
-                            BraveActivity.getBraveActivity()
-                                    .enterPictureInPictureMode(
-                                            new PictureInPictureParams.Builder().build());
-                        } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(
-                                    TAG,
-                                    "BraveActivity not found when entering picture in picture"
-                                            + " mode.",
-                                    e);
-                        } catch (IllegalStateException | IllegalArgumentException e) {
-                            Log.e(TAG, "Error entering picture in picture mode.", e);
-                        }
-                    },
-                    // Introduce a small delay before entering picture in picture to guarantee the
-                    // fullscreen operations have completely finished before the activity performs
-                    // the layout pass.
-                    300);
         }
     }
 
@@ -1691,5 +1684,38 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 showPlaylistButton(playlistItems);
             }
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        try {
+            FullscreenManager fullscreenManager = BraveActivity.getBraveActivity().getFullscreenManager();
+            // Remove the observer when the layout is detached from the window.
+            fullscreenManager.removeObserver(this);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
+        }
+    }
+
+    // FullscreenManager.Observer methods.
+    @Override
+    public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
+        if (mYouTubePipTabId == tab.getId()) {
+            try {
+                BraveActivity.getBraveActivity()
+                        .enterPictureInPictureMode(
+                                new PictureInPictureParams.Builder().build());
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
+            } catch (IllegalStateException | IllegalArgumentException e) {
+                Log.e(TAG, "Error entering picture in picture mode.", e);
+            }
+        }
+    }
+
+    @Override
+    public void onExitFullscreen(Tab tab) {
+        mYouTubePipTabId = -1;
     }
 }
