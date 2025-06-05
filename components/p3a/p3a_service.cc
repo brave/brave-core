@@ -198,17 +198,10 @@ void P3AService::Init(
     url_loader_factory_ = url_loader_factory;
   }
 
-  if (initialized_ || !url_loader_factory_) {
+  if (initialized_ || !url_loader_factory_ ||
+      !remote_config_manager_->is_loaded()) {
     return;
   }
-
-  // TODO(djandries): remove the buildflag guard once
-  // https://github.com/brave/brave-browser/issues/45042 is resolved
-#if !BUILDFLAG(IS_IOS)
-  if (!remote_config_manager_->is_loaded()) {
-    return;
-  }
-#endif
 
   initialized_ = true;
 
