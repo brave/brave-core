@@ -175,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForStandardStatsUpdatedCallback();
 
   // Dummy URL confirms no request was triggered
-  EXPECT_STREQ(GetUpdateURL().host().c_str(), "no-thanks.invalid");
+  EXPECT_EQ(GetUpdateURL().host(), "no-thanks.invalid");
 
   // No prefs should be updated
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
@@ -199,11 +199,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // Verify that daily parameter is true
   std::string query_value;
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "true");
+  EXPECT_EQ(query_value, "true");
 
   // Verify that there is no referral code
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "BRV001");
+  EXPECT_EQ(query_value, "BRV001");
 }
 
 // TODO(bridiver) - convert to a unit test
@@ -226,11 +226,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // Verify that daily parameter is true
   std::string query_value;
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "true");
+  EXPECT_EQ(query_value, "true");
 
   // Verify that there is no referral code
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "BRV001");
+  EXPECT_EQ(query_value, "BRV001");
 }
 
 class BraveStatsUpdaterReferralCodeBrowserTest
@@ -275,9 +275,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
   // Verify that daily parameter is true
   std::string query_value;
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "true");
+  EXPECT_EQ(query_value, "true");
 
   // Verify that the expected referral code is present
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), referral_code().c_str());
+  EXPECT_EQ(query_value, referral_code());
 }

@@ -58,10 +58,8 @@ IN_PROC_BROWSER_TEST_P(BraveKeychainPasswordTest, ServiceAndAccountName) {
     base::CommandLine::ForCurrentProcess()->AppendSwitch(
         test_data.switch_to_append);
   }
-  EXPECT_STREQ(KeychainPassword::GetServiceName().c_str(),
-               test_data.service_name);
-  EXPECT_STREQ(KeychainPassword::GetAccountName().c_str(),
-               test_data.account_name);
+  EXPECT_EQ(KeychainPassword::GetServiceName(), test_data.service_name);
+  EXPECT_EQ(KeychainPassword::GetAccountName(), test_data.account_name);
 }
 
 INSTANTIATE_TEST_SUITE_P(/*no prefix*/,

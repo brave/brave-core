@@ -168,22 +168,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
           ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
-      EXPECT_STREQ(base::UTF16ToUTF8(
-                       browser()->location_bar_model()->GetFormattedFullURL())
-                       .c_str(),
-                   ("brave://" + page).c_str());
-      EXPECT_STREQ(contents->GetController()
-                       .GetLastCommittedEntry()
-                       ->GetVirtualURL()
-                       .spec()
-                       .c_str(),
-                   ("chrome://" + page + "/").c_str());
-      EXPECT_STREQ(contents->GetController()
-                       .GetLastCommittedEntry()
-                       ->GetURL()
-                       .spec()
-                       .c_str(),
-                   ("chrome://" + page + "/").c_str());
+      EXPECT_EQ(base::UTF16ToUTF8(
+                    browser()->location_bar_model()->GetFormattedFullURL()),
+                ("brave://" + page));
+      EXPECT_EQ(contents->GetController()
+                    .GetLastCommittedEntry()
+                    ->GetVirtualURL()
+                    .spec(),
+                ("chrome://" + page + "/"));
+      EXPECT_EQ(
+          contents->GetController().GetLastCommittedEntry()->GetURL().spec(),
+          ("chrome://" + page + "/"));
     }
   }
 }
@@ -206,22 +201,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
           ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
-      EXPECT_STREQ(base::UTF16ToUTF8(
-                       browser()->location_bar_model()->GetFormattedFullURL())
-                       .c_str(),
-                   ("brave://" + page).c_str());
-      EXPECT_STREQ(contents->GetController()
-                       .GetLastCommittedEntry()
-                       ->GetVirtualURL()
-                       .spec()
-                       .c_str(),
-                   ("chrome://" + page + "/").c_str());
-      EXPECT_STREQ(contents->GetController()
-                       .GetLastCommittedEntry()
-                       ->GetURL()
-                       .spec()
-                       .c_str(),
-                   ("chrome://" + page + "/").c_str());
+      EXPECT_EQ(base::UTF16ToUTF8(
+                    browser()->location_bar_model()->GetFormattedFullURL()),
+                ("brave://" + page));
+      EXPECT_EQ(contents->GetController()
+                    .GetLastCommittedEntry()
+                    ->GetVirtualURL()
+                    .spec(),
+                ("chrome://" + page + "/"));
+      EXPECT_EQ(
+          contents->GetController().GetLastCommittedEntry()->GetURL().spec(),
+          ("chrome://" + page + "/"));
     }
   }
 }
@@ -239,22 +229,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
         ui_test_utils::NavigateToURL(browser(), GURL(scheme + "about/")));
     ASSERT_TRUE(WaitForLoadStop(contents));
 
-    EXPECT_STREQ(base::UTF16ToUTF8(
-                     browser()->location_bar_model()->GetFormattedFullURL())
-                     .c_str(),
-                 "brave://about");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetVirtualURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://about/");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://chrome-urls/");
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  browser()->location_bar_model()->GetFormattedFullURL()),
+              "brave://about");
+    EXPECT_EQ(contents->GetController()
+                  .GetLastCommittedEntry()
+                  ->GetVirtualURL()
+                  .spec(),
+              "chrome://about/");
+    EXPECT_EQ(
+        contents->GetController().GetLastCommittedEntry()->GetURL().spec(),
+        "chrome://chrome-urls/");
   }
 }
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
@@ -270,10 +255,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
                                     GURL(scheme + chrome::kBraveUISyncHost),
                                     GURL("chrome://sync"));
 
-    EXPECT_STREQ(base::UTF16ToUTF8(
-                     browser()->location_bar_model()->GetFormattedFullURL())
-                     .c_str(),
-                 "brave://sync");
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  browser()->location_bar_model()->GetFormattedFullURL()),
+              "brave://sync");
     EXPECT_EQ(
         contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
         GURL("chrome://sync"));
@@ -293,10 +277,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
         browser()->tab_strip_model()->GetActiveWebContents();
     NavigateToURLAndWaitForRewrites(contents, GURL(scheme + "adblock"),
                                     GURL("chrome://settings/shields/filters"));
-    EXPECT_STREQ(base::UTF16ToUTF8(
-                     browser()->location_bar_model()->GetFormattedFullURL())
-                     .c_str(),
-                 "brave://settings/shields/filters");
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  browser()->location_bar_model()->GetFormattedFullURL()),
+              "brave://settings/shields/filters");
     EXPECT_EQ(browser()->location_bar_model()->GetURL(),
               GURL("chrome://settings/shields/filters"));
     EXPECT_EQ(
@@ -313,12 +296,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               magnet_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(), magnet_url().spec())
       << "URL visible to users should stay as the magnet URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(), extension_url().spec().c_str())
+  EXPECT_EQ(entry->GetURL().spec(), extension_url().spec())
       << "Real URL should be extension URL";
 }
 
@@ -334,12 +316,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               magnet_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(), magnet_url().spec())
       << "URL visible to users should stay as the magnet URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(), extension_url().spec().c_str())
+  EXPECT_EQ(entry->GetURL().spec(), extension_url().spec())
       << "Real URL should be extension URL";
 }
 
@@ -373,8 +354,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "URL visible to users should stay as the torrent URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-               torrent_extension_url().spec().c_str())
+  EXPECT_EQ(entry->GetURL().spec(), torrent_extension_url().spec())
       << "Real URL should be extension URL";
 }
 
@@ -435,13 +415,13 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), torrent_invalid_query_extension_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               torrent_invalid_query_extension_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(),
+            torrent_invalid_query_extension_url().spec())
       << "URL visible to users should stay as extension URL for invalid query";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-               torrent_invalid_query_extension_url().spec().c_str())
+  EXPECT_EQ(entry->GetURL().spec(),
+            torrent_invalid_query_extension_url().spec())
       << "Real URL should be extension URL";
 }
 
@@ -481,10 +461,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(), "about:blank");
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(), "about:blank");
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(), "about:blank");
+  EXPECT_EQ(entry->GetURL().spec(), "about:blank");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
@@ -511,12 +491,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               magnet_html_url().spec().c_str());
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(), magnet_html_url().spec());
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-               magnet_html_url().spec().c_str());
+  EXPECT_EQ(entry->GetURL().spec(), magnet_html_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
@@ -538,13 +516,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), torrent_extension_url()));
   WaitForLoadStop(contents);
 
-  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-               torrent_extension_url().spec().c_str())
+  EXPECT_EQ(contents->GetLastCommittedURL().spec(),
+            torrent_extension_url().spec())
       << "No changes on the visible URL";
   content::NavigationEntry* entry =
       contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-               torrent_extension_url().spec().c_str())
+  EXPECT_EQ(entry->GetURL().spec(), torrent_extension_url().spec())
       << "No changes on the real URL";
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

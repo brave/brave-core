@@ -195,24 +195,24 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
       false, page_content, "",
       base::BindLambdaForTesting(
           [](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+            EXPECT_EQ(result.value()[0], "Question 1");
+            EXPECT_EQ(result.value()[1], "Question 2");
           }));
 
   engine_->GenerateQuestionSuggestions(
       false, page_content, "",
       base::BindLambdaForTesting(
           [](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+            EXPECT_EQ(result.value()[0], "Question 1");
+            EXPECT_EQ(result.value()[1], "Question 2");
           }));
 
   engine_->GenerateQuestionSuggestions(
       false, page_content, "",
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+            EXPECT_EQ(result.value()[0], "Question 1");
+            EXPECT_EQ(result.value()[1], "Question 2");
             run_loop.Quit();
           }));
 

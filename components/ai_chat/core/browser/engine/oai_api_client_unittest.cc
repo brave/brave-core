@@ -160,9 +160,8 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
         EXPECT_EQ(url, model_options->endpoint);
         EXPECT_EQ(headers.contains("Authorization"), true);
         EXPECT_EQ(method, net::HttpRequestHeaders::kPostMethod);
-        EXPECT_STREQ(
-            GetMessagesJson(body).c_str(),
-            FormatComparableEventsJson(expected_conversation_body).c_str());
+        EXPECT_EQ(GetMessagesJson(body),
+                  FormatComparableEventsJson(expected_conversation_body));
 
         auto chunk = base::test::ParseJson(server_chunk);
         data_received_callback.Run(base::ok(std::move(chunk)));

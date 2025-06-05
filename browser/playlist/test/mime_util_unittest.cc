@@ -12,10 +12,9 @@
 
 TEST(PlaylistMimeUtilUnitTest, GetFileExtensionForMimetype) {
   auto compare_result = [](const auto& mimetype, const auto& extension) {
-    EXPECT_STREQ(playlist::mime_util::GetFileExtensionForMimetype(mimetype)
-                     .value()
-                     .c_str(),
-                 extension);
+    EXPECT_EQ(
+        playlist::mime_util::GetFileExtensionForMimetype(mimetype).value(),
+        extension);
   };
 
   compare_result("application/ogg", FILE_PATH_LITERAL("ogx"));
@@ -48,10 +47,9 @@ TEST(PlaylistMimeUtilUnitTest, GetFileExtensionForMimetype) {
 
 TEST(PlaylistMimeUtilUnitTest, GetMimeTypeForFileExtension) {
   auto compare_result = [](const auto& extension, const auto& mimetype) {
-    EXPECT_STREQ(playlist::mime_util::GetMimeTypeForFileExtension(extension)
-                     .value()
-                     .c_str(),
-                 mimetype);
+    EXPECT_EQ(
+        playlist::mime_util::GetMimeTypeForFileExtension(extension).value(),
+        mimetype);
   };
 
   compare_result(FILE_PATH_LITERAL("m3u8"), "application/x-mpegurl");
