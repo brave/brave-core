@@ -5,6 +5,8 @@
 
 #include "brave/common/brave_channel_info_posix.h"
 
+#include <cstdlib>
+
 #include "build/build_config.h"
 
 namespace brave {
