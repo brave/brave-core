@@ -28,7 +28,7 @@ public struct WalletConstants {
 
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(
-    string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet"
+    string: "https://support.brave.com/hc/categories/360001062531-Wallet"
   )!
 
   // TODO: update wiki link
