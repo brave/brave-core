@@ -446,7 +446,7 @@ describe('ManagePageConnected', () => {
        'mockErrorMessage')
 
     await waitFor(() => {
-      expect(screen.queryByText('mockErrorMessage emailAliasesAuthTryAgain'))
+      expect(screen.queryByText('mockErrorMessage'))
         .toBeInTheDocument()
     })
 
@@ -454,7 +454,7 @@ describe('ManagePageConnected', () => {
        '' /* empty string */ )
 
     await waitFor(() => {
-      expect(screen.queryByText('emailAliasesAuthTryAgain'))
+      expect(screen.queryByText('mockErrorMessage'))
         .not.toBeInTheDocument()
     })
   })

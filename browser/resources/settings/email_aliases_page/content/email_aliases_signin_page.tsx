@@ -84,7 +84,7 @@ const AfterSendingEmailMessage = (
       {getLocale('emailAliasesDontSeeEmail')}
     </div>
     {errorMessage && <Alert>
-      {errorMessage + ' ' + getLocale('emailAliasesAuthTryAgain')}
+      {errorMessage}
     </Alert>}
     <div>
       <Button onClick={() => emailAliasesService.cancelAuthenticationOrLogout()}

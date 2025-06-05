@@ -69,8 +69,8 @@ provideStrings({
     'email to access your account.',
   emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder ' +
     'or try again.',
-  emailAliasesAuthError: 'Error authenticating with Brave Account.',
-  emailAliasesAuthTryAgain: 'Please try again.',
+  emailAliasesAuthError: 'Error authenticating with Brave Account. ' +
+    'Please try again.',
   emailAliasesAuthTryAgainButton: 'Start over',
   emailAliasesBubbleDescription: 'Create a random email address that ' +
     'forwards to your inbox while keeping your personal email private.',

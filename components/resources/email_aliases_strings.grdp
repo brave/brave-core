@@ -118,10 +118,7 @@
     Don't see the email? Check your spam folder or try again.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR" desc="The label for the auth error">
-    Error authenticating with Brave Account.
-  </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN" desc="The label for the auth try again">
-    Please try again.
+    Error authenticating with Brave Account. Please try again.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON" desc="The label for the auth try again button">
     Start over
