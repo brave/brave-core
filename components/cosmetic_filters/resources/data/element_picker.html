@@ -9,17 +9,13 @@
 
     background: transparent;
     color: black;
-    font: 14px sans-serif;
+    font: 14px 'Inter Variable', 'Inter', sans-serif;
     height: 100%;
     width: 100%;
     margin: 0;
     overflow: hidden;
-    font-family: 'Inter Variable', 'Inter', sans-serif;
   }
 
-  :host :focus {
-    outline: none;
-  }
 
   #rules-box {
     height: 8em;
@@ -53,9 +49,8 @@
     bottom: 4px;
     left: unset;
     right: 4px;
-    width: calc(30% - 4px);
+    width: 360px;
     box-sizing: border-box;
-    min-width: 24em;
     padding-top: 56px;
     padding-right: 16px;
     padding-left: 16px;
@@ -86,12 +81,18 @@
       padding-top: 41px;
       border: none;
       width: 100%;
-      transition: transform 0.3s ease;
     }
+  }
 
-    #main-section.minimized:not(.desktop) {
-      transform: translateY(calc(100% - 28px));
+  @media (orientation: landscape) {
+    #main-section:not(.desktop) {
+      padding-top: 36px;
     }
+  }
+
+  #main-section.minimized:not(.desktop) {
+    transition: transform 0.3s ease;
+    transform: translateY(calc(100% - 28px));
   }
 
   #main-section .drag-header {
@@ -149,6 +150,7 @@
     color: var(--white);
   }
 
+  #main-section.desktop #btnQuit,
   #main-section:not(.desktop) .minimize-dlg-btn,
   #main-section:not(.desktop) .close-dlg-btn {
     display: none;
@@ -162,14 +164,6 @@
     position: unset;
   }
 
-  #main-section.desktop>.drag-header.light>.close-dlg-btn path {
-    fill: var(--black)
-  }
-
-  #main-section.desktop>.drag-header.dark>.close-dlg-btn path {
-    fill: var(--white)
-  }
-
   #main-section.desktop .minimize-dlg-btn svg {
     width: 25px;
     height: 25px;
@@ -178,11 +172,11 @@
     position: unset;
   }
 
-  #main-section.desktop>.drag-header.light>.minimize-dlg-btn path {
+  #main-section.desktop>.drag-header.light .close-dlg-btn path #main-section.desktop>.drag-header.light .minimize-dlg-btn path {
     fill: var(--black)
   }
 
-  #main-section.desktop>.drag-header.dark>.minimize-dlg-btn path {
+  #main-section.desktop>.drag-header.dark .close-dlg-btn path #main-section.desktop>.drag-header.dark>.minimize-dlg-btn path {
     fill: var(--white)
   }
 
@@ -237,7 +231,7 @@
 
   .block-button.light {
     background-color: var(--primary-light);
-    color: #FFFFFF;
+    color: white;
   }
 
   .block-button.dark {
@@ -398,30 +392,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .slider:focus {
-    outline: none;
-  }
-
   .slider:focus .slider-thumb {
     box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary-light);
-  }
-
-  /* For Firefox */
-  .slider::-moz-range-track {
-    background: transparent;
-  }
-
-  .slider::-moz-range-thumb {
-    opacity: 0;
-  }
-
-  /* For Webkit browsers */
-  .slider::-webkit-slider-thumb {
-    opacity: 0;
-  }
-
-  .slider::-webkit-slider-runnable-track {
-    background: transparent;
   }
 
   @media (max-width: 768px) {
