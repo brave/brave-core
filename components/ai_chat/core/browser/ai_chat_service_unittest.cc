@@ -17,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
@@ -36,6 +37,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -427,6 +429,67 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
   task_environment_.RunUntilIdle();
 }
 
+TEST_P(AIChatServiceUnitTest,
+       ConversationLifecycle_ShouldNotUnloadInProgressConversations) {
+  ConversationHandler* conversation = CreateConversation();
+
+  // Store a weak pointer to the conversation, so we can check if its been
+  // destroyed.
+  auto weak_ptr = conversation->GetWeakPtr();
+
+  // Set up the engine so we can submit a turn.
+  conversation->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(conversation->GetEngineForTesting());
+
+  // Function to call to finish generating the response.
+  base::OnceClosure resolve;
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _))
+      .WillOnce(
+          [&resolve](bool send_page_contents, const std::string& page_contents,
+                     const std::vector<mojom::ConversationTurnPtr>& history,
+                     const std::string& selected_language,
+                     base::RepeatingCallback<void(
+                         EngineConsumer::GenerationResultData)> callback,
+                     base::OnceCallback<void(
+                         base::expected<EngineConsumer::GenerationResultData,
+                                        mojom::APIError>)> done_callback) {
+            resolve = base::BindOnce(
+                [](base::OnceCallback<void(
+                       base::expected<EngineConsumer::GenerationResultData,
+                                      mojom::APIError>)> done_callback) {
+                  std::move(done_callback)
+                      .Run(base::ok(EngineConsumer::GenerationResultData(
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New("")),
+                          std::nullopt /* model_key */)));
+                },
+                std::move(done_callback));
+          });
+
+  // Conversation should exist in memory.
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  conversation->SubmitHumanConversationEntry(
+      ai_chat::mojom::ConversationTurn::New());
+  EXPECT_TRUE(conversation->IsRequestInProgress());
+
+  // Conversation should not be unloaded
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  // Weak pointer should still be valid
+  EXPECT_TRUE(weak_ptr);
+
+  // Let the engine complete the request
+  std::move(resolve).Run();
+
+  // Conversation should be unloaded
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+
+  // Weak pointer should be invalid
+  EXPECT_FALSE(weak_ptr);
+}
+
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   // Should have these combinations at some point
   EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(1)))
@@ -760,11 +823,10 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   NiceMock<MockAssociatedContent> associated_content{};
   ON_CALL(associated_content, GetStagedEntriesFromContent)
-      .WillByDefault(
-          [](GetStagedEntriesCallback callback) {
-            std::move(callback).Run(std::vector<SearchQuerySummary>{
-                SearchQuerySummary("query", "summary")});
-          });
+      .WillByDefault([](GetStagedEntriesCallback callback) {
+        std::move(callback).Run(std::vector<SearchQuerySummary>{
+            SearchQuerySummary("query", "summary")});
+      });
   ON_CALL(associated_content, HasOpenAIChatPermission)
       .WillByDefault(testing::Return(true));
 
