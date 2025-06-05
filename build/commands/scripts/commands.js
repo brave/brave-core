@@ -218,7 +218,10 @@ program
     '--xcode_gen <target>',
     'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.',
   )
-  .option('--pkcs11-provider <provider_config_file>', 'PKCS11 provider configuration file path')
+  .option(
+    '--pkcs11-provider <provider_config_file>',
+    'PKCS11 provider configuration file path',
+  )
   .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
   .arguments('[build_config]')
   .action(build)
