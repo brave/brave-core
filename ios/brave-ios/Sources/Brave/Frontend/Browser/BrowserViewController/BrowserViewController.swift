@@ -2179,20 +2179,10 @@ public class BrowserViewController: UIViewController {
       // VoiceOver will sometimes be stuck on the element, not allowing user to move
       // forward/backward. Strange, but LayoutChanged fixes that.
       UIAccessibility.post(notification: .layoutChanged, argument: nil)
+    }
 
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-        self.screenshotHelper.takeScreenshot(tab)
-      }
-    } else if tab.isWebViewCreated {
-      // To Screenshot a tab that is hidden we must add the webView,
-      // then wait enough time for the webview to render.
-      view.insertSubview(tab.view, at: 0)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-        self.screenshotHelper.takeScreenshot(tab)
-        if tab.view.superview == self.view {
-          tab.view.removeFromSuperview()
-        }
-      }
+    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+      self.screenshotHelper.takeScreenshot(tab)
     }
   }
 
