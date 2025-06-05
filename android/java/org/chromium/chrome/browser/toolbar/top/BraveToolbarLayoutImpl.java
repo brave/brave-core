@@ -206,7 +206,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private PlaylistService mPlaylistService;
 
-    private enum BigtechCompany { Google, Facebook, Amazon }
+    private enum BigtechCompany {
+        Google,
+        Facebook,
+        Amazon
+    }
+
     private int mYouTubePipTabId = -1;
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
@@ -477,12 +482,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (ChromeFeatureList.isEnabled(
                 BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)) {
             try {
-                final FullscreenManager fullscreenManager = BraveActivity.getBraveActivity().getFullscreenManager();
+                final FullscreenManager fullscreenManager =
+                        BraveActivity.getBraveActivity().getFullscreenManager();
                 fullscreenManager.addObserver(this);
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "BraveActivity not found when retrieving fullscreen manager", e);
             }
-
         }
     }
 
@@ -1695,7 +1700,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         try {
-            FullscreenManager fullscreenManager = BraveActivity.getBraveActivity().getFullscreenManager();
+            FullscreenManager fullscreenManager =
+                    BraveActivity.getBraveActivity().getFullscreenManager();
             // Remove the observer when the layout is detached from the window.
             fullscreenManager.removeObserver(this);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -1709,8 +1715,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mYouTubePipTabId == tab.getId()) {
             try {
                 BraveActivity.getBraveActivity()
-                        .enterPictureInPictureMode(
-                                new PictureInPictureParams.Builder().build());
+                        .enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "BraveActivity not found when entering picture in picture mode.", e);
             } catch (IllegalStateException | IllegalArgumentException e) {
