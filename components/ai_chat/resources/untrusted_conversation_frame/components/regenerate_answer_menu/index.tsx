@@ -7,7 +7,9 @@ import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Label from '@brave/leo/react/label'
 import { getLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
@@ -23,23 +25,20 @@ interface Props {
 export function RegenerateAnswerMenu(props: Props) {
   const { isOpen, onOpen, onClose, onRegenerate, leoModels, turnModelKey } =
     props
-  const [selectedModel, setSelectedModel] = React.useState(turnModelKey)
 
-  const isRegenerateButtonDisabled = React.useMemo(() => {
-    return !leoModels.some((model) => model.key === selectedModel)
-  }, [leoModels, selectedModel])
+  const modelDisplayName =
+    leoModels.find((model) => model.key === turnModelKey)?.displayName ?? ''
 
-  const handleModelSelect = (modelKey: string) => {
-    setSelectedModel(modelKey)
-  }
-
-  const handleRegenerate = React.useCallback(() => {
-    if (isRegenerateButtonDisabled) {
-      return
-    }
-    onRegenerate(selectedModel)
-    onClose()
-  }, [isRegenerateButtonDisabled, onRegenerate, onClose, selectedModel])
+  const handleRegenerate = React.useCallback(
+    (modelKey: string) => {
+      if (!leoModels.some((model) => model.key === modelKey)) {
+        return
+      }
+      onRegenerate(modelKey)
+      onClose()
+    },
+    [onRegenerate, onClose, leoModels],
+  )
 
   return (
     <ButtonMenu
@@ -57,35 +56,49 @@ export function RegenerateAnswerMenu(props: Props) {
         size='small'
         kind='plain-faint'
         onClick={isOpen ? onClose : onOpen}
-        className={styles.anchorButton}
+        title={getLocale('regenerateAnswerMenuTooltip').replace(
+          '$1',
+          modelDisplayName,
+        )}
+        className={classnames({
+          [styles.anchorButton]: true,
+          [styles.anchorButtonOpen]: isOpen,
+        })}
       >
-        <Icon name='refresh' />
+        <div className={styles.anchorButtonIconRow}>
+          <Icon name='refresh' />
+          <Icon name={isOpen ? 'carat-up' : 'carat-down'} />
+        </div>
       </Button>
       {leoModels.map((model) => {
-        const selected = model.key === selectedModel
+        const selected = model.key === turnModelKey
         return (
           <leo-menu-item
             key={model.key}
             data-key={model.key}
-            onClick={() => {
-              onOpen()
-              handleModelSelect(model.key)
-            }}
+            onClick={() => handleRegenerate(model.key)}
             aria-selected={selected || null}
           >
             {model.displayName}
-            {selected && <Icon name='check-circle-outline' />}
+            {selected && (
+              <Label
+                mode='loud'
+                color='primary'
+              >
+                {getLocale('currentLabel')}
+              </Label>
+            )}
           </leo-menu-item>
         )
       })}
       <div className={styles.footerGap} />
       <div className={styles.menuFooter}>
         <leo-menu-item
-          onClick={handleRegenerate}
-          data-key='regenerate'
+          onClick={() => handleRegenerate(turnModelKey)}
+          data-key='retrySameModel'
         >
           <Icon name='refresh' />
-          {getLocale('regenerateAnswerButtonLabel')}
+          {getLocale('retrySameModelButtonLabel')}
         </leo-menu-item>
       </div>
     </ButtonMenu>

@@ -258,11 +258,17 @@
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
     Edit answer
   </message>
-  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
-    Regenerate
+  <message name="IDS_CHAT_UI_RETRY_SAME_MODEL_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
+    Retry same model
+  </message>
+  <message name="IDS_CHAT_UI_CURRENT_LABEL" desc="Label for current model">
+    Current
   </message>
   <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TITLE" desc="Title of menu to regenerate AI agent answer">
     Change model for answer
+  </message>
+  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP" desc="Tooltip of menu to regenerate AI agent answer with a specific model">
+    Change model for answer (current model: <ph name="MODEL_NAME">$1<ex>Qwen 14B</ex></ph>)
   </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
