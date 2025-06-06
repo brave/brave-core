@@ -365,19 +365,17 @@ class BuyTokenStoreTests: XCTestCase {
 
     await store.updateInfo()
 
-    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 4 : 3)
+    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 3 : 2)
     XCTAssertNotNil(store.orderedSupportedBuyOptions.first)
     XCTAssertEqual(store.orderedSupportedBuyOptions.first, .sardine)
-    XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
-    XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .transak)
     if isTestRunningInUSRegion {
-      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 2])
-      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 2], .stripe)
-      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 3])
-      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 3], .coinbase)
-    } else {
+      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
+      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .stripe)
       XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 2])
       XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 2], .coinbase)
+    } else {
+      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
+      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .coinbase)
     }
   }
 
@@ -455,25 +453,22 @@ class BuyTokenStoreTests: XCTestCase {
     store.selectedCurrency = .mockUSD
     // some providers are only available in the US. Check ourselves instead of swizzling `regionCode` / `region`.
     if isTestRunningInUSRegion {
-      XCTAssertEqual(store.supportedProviders.count, 4)
+      XCTAssertEqual(store.supportedProviders.count, 3)
       XCTAssertEqual(
         store.supportedProviders,
         [
           BraveWallet.OnRampProvider.sardine,
-          BraveWallet.OnRampProvider.transak,
           BraveWallet.OnRampProvider.stripe,
           BraveWallet.OnRampProvider.coinbase,
         ]
       )
     } else {
       // stripe only supported in en-us locale
-      XCTAssertEqual(store.supportedProviders.count, 4)
+      XCTAssertEqual(store.supportedProviders.count, 2)
       XCTAssertEqual(
         store.supportedProviders,
         [
-          BraveWallet.OnRampProvider.ramp,
           BraveWallet.OnRampProvider.sardine,
-          BraveWallet.OnRampProvider.transak,
           BraveWallet.OnRampProvider.coinbase,
         ]
       )
@@ -481,12 +476,11 @@ class BuyTokenStoreTests: XCTestCase {
 
     // Test CAD. Ramp, Sardine, Transak, Coinbase are supported. Stripe unsupported.
     store.selectedCurrency = .mockCAD
-    XCTAssertEqual(store.supportedProviders.count, 3)
+    XCTAssertEqual(store.supportedProviders.count, 2)
     XCTAssertEqual(
       store.supportedProviders,
       [
         BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.transak,
         BraveWallet.OnRampProvider.coinbase,
       ]
     )
