@@ -316,25 +316,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }()
     }
 
-    if let installDate = Preferences.P3A.installationDate.value, AppConstants.isOfficialBuild {
-      AppState.shared.braveCore.initializeP3AService(
-        forChannel: AppConstants.buildChannel.serverChannelParam,
-        installationDate: installDate
-      )
-    }
-
     LanguageMetrics.recordPrimaryLanguageP3A()
 
     Task(priority: .low) {
       await self.cleanUpLargeTemporaryDirectory()
-    }
-
-    Task(priority: .high) {
-      // Start preparing the ad-block services right away
-      // So it's ready a lot faster
-      await LaunchHelper.shared.prepareAdBlockServices(
-        adBlockService: AppState.shared.braveCore.adblockService
-      )
     }
 
     // Setup Playlist
@@ -374,7 +359,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
     // Clean up BraveCore
-    AppState.shared.braveCore.profileController?.syncAPI.removeAllObservers()
+    AppState.shared.state = .terminating
 
     log.debug("Cleanly Terminated the Application")
   }

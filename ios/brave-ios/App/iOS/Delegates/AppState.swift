@@ -37,6 +37,7 @@ public class AppState {
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
   private var didBecomeActive = false
+  private var didFinishSetup = false
 
   public var state: State = .launching(options: [:], active: false) {
     didSet {
@@ -73,6 +74,18 @@ public class AppState {
       case .backgrounded:
         break
       case .terminating:
+        braveCore.profileController?.syncAPI.removeAllObservers()
+        break
+      case .variationsLoaded:
+        if !didFinishSetup {
+          didFinishSetup = true
+
+          // Setup BraveCore
+          braveCore.finishBasicStartup()
+          braveCore.scheduleLowPriorityStartupTasks()
+        }
+        break
+      case .profileLoaded:
         break
       }
     }
@@ -82,10 +95,8 @@ public class AppState {
     // Setup Constants
     AppState.setupConstants()
 
-    // Setup BraveCore
-    braveCore = AppState.setupBraveCore().then {
-      $0.scheduleLowPriorityStartupTasks()
-    }
+    // Setup Brave-Core
+    braveCore = AppState.setupBraveCore()
 
     // Setup Profile
     profile = BrowserProfile(localName: "profile")
@@ -107,6 +118,8 @@ public class AppState {
     case active
     case backgrounded
     case terminating
+    case variationsLoaded
+    case profileLoaded
   }
 
   private static func setupConstants() {
