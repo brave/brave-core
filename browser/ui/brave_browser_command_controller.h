@@ -8,6 +8,8 @@
 
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
@@ -65,6 +67,21 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void OnTabGroupChanged(const TabGroupChange& change) override;
+  void OnSplitTabCreated(std::vector<std::pair<tabs::TabInterface*, int>> tabs,
+                         split_tabs::SplitTabId split_id,
+                         SplitTabAddReason reason,
+                         split_tabs::SplitTabVisualData visual_data) override;
+  void OnSplitTabRemoved(std::vector<std::pair<tabs::TabInterface*, int>> tabs,
+                         split_tabs::SplitTabId split_id,
+                         SplitTabRemoveReason reason) override;
+  void OnSplitTabVisualsChanged(
+      split_tabs::SplitTabId split_id,
+      split_tabs::SplitTabVisualData old_visual_data,
+      split_tabs::SplitTabVisualData new_visual_data) override;
+  void OnSplitTabContentsUpdated(
+      split_tabs::SplitTabId split_id,
+      std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
+      std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;
@@ -109,6 +126,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   void UpdateCommandsForSend();
   void UpdateCommandsForPin();
   void UpdateCommandForSplitView();
+
+  // Rename to UpdateCommandForSplitView when we enable
+  // SideBySide by default.
+  void UpdateCommandForSplitViewWithSideBySide();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
