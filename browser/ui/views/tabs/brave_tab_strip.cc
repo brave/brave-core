@@ -47,6 +47,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
