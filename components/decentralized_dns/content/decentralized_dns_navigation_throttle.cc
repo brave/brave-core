@@ -28,6 +28,7 @@ namespace decentralized_dns {
 std::unique_ptr<DecentralizedDnsNavigationThrottle>
 DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
+    PrefService* user_prefs,
     PrefService* local_state,
     const std::string& locale) {
   content::BrowserContext* context =
@@ -36,17 +37,21 @@ DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
     return nullptr;
   }
 
+  if (!navigation_handle->IsInMainFrame()) {
+    return nullptr;
+  }
+
   return std::make_unique<DecentralizedDnsNavigationThrottle>(
-      navigation_handle, local_state, locale);
+      navigation_handle, user_prefs, local_state, locale);
 }
 
 DecentralizedDnsNavigationThrottle::DecentralizedDnsNavigationThrottle(
     content::NavigationHandle* navigation_handle,
+    PrefService* user_prefs,
     PrefService* local_state,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
-      user_prefs_(user_prefs::UserPrefs::Get(
-          navigation_handle->GetWebContents()->GetBrowserContext())),
+      user_prefs_(user_prefs),
       local_state_(local_state),
       locale_(locale) {}
 
