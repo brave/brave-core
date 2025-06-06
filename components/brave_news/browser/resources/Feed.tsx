@@ -33,7 +33,6 @@ interface NewsScrollData {
 
 const CARD_CLASS = 'feed-card'
 const FeedContainer = styled.div`
-  width: 540px;
   display: flex;
   flex-direction: column;
   gap: ${spacing.xl};
@@ -167,16 +166,17 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
     loadMoreObserver.current.observe(el);
   }, [])
 
+  const cardDisplayCount = Math.min(feed?.items.length ?? 0, cardCount)
+
   const cards = React.useMemo(() => {
-    const count = Math.min(feed?.items.length ?? 0, cardCount)
     let currentCardCount = 0;
     const setRefAtIndex = (index: number) => (element: HTMLElement | null) => {
-      const isLast = index === count - 1
+      const isLast = index === cardDisplayCount - 1
       if (isLast) setLastCardRef(element)
       registerViewDepthObservation(element)
     }
 
-    return feed?.items.slice(0, count).map((item, index) => {
+    return feed?.items.slice(0, cardDisplayCount).map((item, index) => {
       let el: React.ReactNode
 
       if (item.advert) {
@@ -208,7 +208,7 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
         {el}
       </div>
     })
-  }, [cardCount, feed?.items, registerViewDepthObservation])
+  }, [cardDisplayCount, feed?.items, registerViewDepthObservation])
 
   return <FeedContainer className={NEWS_FEED_CLASS}>
     {feed

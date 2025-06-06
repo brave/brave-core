@@ -10,6 +10,53 @@ export type StringKey =
   'addTopSiteTitle' |
   'backgroundSettingsTitle' |
   'braveBackgroundLabel' |
+  'braveNewsAdvertBadge' |
+  'braveNewsCaughtUp' |
+  'braveNewsChannel-Brave' |
+  'braveNewsChannel-Business' |
+  'braveNewsChannel-Cars' |
+  'braveNewsChannel-Celebrities' |
+  'braveNewsChannel-Crypto' |
+  'braveNewsChannel-Culture' |
+  'braveNewsChannel-Education' |
+  'braveNewsChannel-Entertainment' |
+  'braveNewsChannel-Fashion' |
+  'braveNewsChannel-Film and TV' |
+  'braveNewsChannel-Food' |
+  'braveNewsChannel-Fun' |
+  'braveNewsChannel-Gaming' |
+  'braveNewsChannel-Health' |
+  'braveNewsChannel-Home' |
+  'braveNewsChannel-Lifestyle' |
+  'braveNewsChannel-Music' |
+  'braveNewsChannel-Politics' |
+  'braveNewsChannel-Regional News' |
+  'braveNewsChannel-Science' |
+  'braveNewsChannel-Sports' |
+  'braveNewsChannel-Technology' |
+  'braveNewsChannel-Top News' |
+  'braveNewsChannel-Top Sources' |
+  'braveNewsChannel-Travel' |
+  'braveNewsChannel-UK News' |
+  'braveNewsChannel-US News' |
+  'braveNewsChannel-Weather' |
+  'braveNewsChannel-World News' |
+  'braveNewsChannelsHeader' |
+  'braveNewsFollowingFeed' |
+  'braveNewsForYouFeed' |
+  'braveNewsHideContentFrom' |
+  'braveNewsNoArticlesMessage' |
+  'braveNewsNoArticlesTitle' |
+  'braveNewsNoContentActionLabel' |
+  'braveNewsNoContentHeading' |
+  'braveNewsNoContentMessage' |
+  'braveNewsOfflineMessage' |
+  'braveNewsOfflineTitle' |
+  'braveNewsPublishersHeading' |
+  'braveNewsRefreshFeed' |
+  'braveNewsShowAll' |
+  'braveNewsShowLess' |
+  'braveNewsSourcesRecommendation' |
   'cancelButtonLabel' |
   'clockFormatLabel' |
   'clockFormatOption12HourText' |
@@ -25,56 +72,15 @@ export type StringKey =
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
   'hideTopSitesLabel' |
-  'newsAddSourcesButtonLabel' |
   'newsBackButtonLabel' |
-  'newsCaughtUpText' |
-  'newsChannelBrave' |
-  'newsChannelBusiness' |
-  'newsChannelCars' |
-  'newsChannelCelebrities' |
-  'newsChannelCrypto' |
-  'newsChannelCulture' |
-  'newsChannelEducation' |
-  'newsChannelEntertainment' |
-  'newsChannelFashion' |
-  'newsChannelFilmAndTV' |
-  'newsChannelFood' |
-  'newsChannelFun' |
-  'newsChannelGaming' |
-  'newsChannelHealth' |
-  'newsChannelHome' |
-  'newsChannelLifestyle' |
-  'newsChannelMusic' |
-  'newsChannelPolitics' |
-  'newsChannelRegionalNews' |
-  'newsChannelScience' |
-  'newsChannelSports' |
-  'newsChannelTravel' |
-  'newsChannelTechnology' |
-  'newsChannelTopNews' |
-  'newsChannelTopSources' |
-  'newsChannelUKNews' |
-  'newsChannelUSNews' |
-  'newsChannelWeather' |
-  'newsChannelWorldNews' |
-  'newsConnectionErrorText' |
-  'newsConnectionErrorTitle' |
   'newsContentAvailableButtonLabel' |
-  'newsDiscoverTitle' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
-  'newsFeedAllTitle' |
-  'newsFeedChannelsTitle' |
-  'newsFeedFollowingTitle' |
-  'newsFeedPublishersTitle' |
-  'newsHidePublisherLabel' |
-  'newsNoArticlesText' |
-  'newsNoArticlesTitle' |
-  'newsNoFeedsText' |
-  'newsNoFeedsTitle' |
+  'newsManageFeedsButtonLabel' |
   'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
   'newsQueryTooShortText' |
-  'newsRefreshButtonLabel' |
   'newsSearchFeedsButtonLabel' |
   'newsSettingsChannelsTitle' |
   'newsSettingsDiscoverTitle' |
@@ -113,7 +119,7 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
-  'showNewsWidgetLabel' |
+  'showNewsLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesEarningText' |
