@@ -1,10 +1,9 @@
 diff --git a/chrome/updater/branding.gni b/chrome/updater/branding.gni
-index d9e28c39d0dd34743b08103578e95ac03b58e5f5..b7ea224df47a494827cbf549962356b2f08d5e96 100644
+index 50e9e0c40a411d9537752496e9261a2519d50e41..5375587caff19f8fe0419ed654d0fe68f26deafa 100644
 --- a/chrome/updater/branding.gni
 +++ b/chrome/updater/branding.gni
-@@ -107,3 +107,4 @@ if (is_chrome_branded) {
+@@ -108,3 +108,4 @@ if (is_chrome_branded) {
  # Chrome and Chromium share the same endpoints for now.
  update_check_url = "https://update.googleapis.com/service/update2/json"
- device_management_server_url = "https://m.google.com/devicemanagement/data/api"
+ updater_event_logging_url = "https://play.googleapis.com/log"
 +import("//brave/chromium_src/chrome/updater/branding.gni") forward_variables_from(brave_updater_branding, "*")
-\ No newline at end of file
