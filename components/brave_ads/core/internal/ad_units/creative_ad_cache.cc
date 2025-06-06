@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 
-#include "base/functional/overloaded.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 
 namespace brave_ads {
 
@@ -15,7 +15,7 @@ namespace {
 
 bool IsValid(const CreativeAdVariant& creative_ad_variant) {
   return std::visit(
-      base::Overloaded{
+      absl::Overload{
           [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
               -> bool { return !!mojom_creative_ad; }},
       creative_ad_variant);
@@ -24,7 +24,7 @@ bool IsValid(const CreativeAdVariant& creative_ad_variant) {
 std::optional<CreativeAdVariant> Clone(
     const CreativeAdVariant& creative_ad_variant) {
   return std::visit(
-      base::Overloaded{
+      absl::Overload{
           [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
               -> std::optional<CreativeAdVariant> {
             return mojom_creative_ad.Clone();
