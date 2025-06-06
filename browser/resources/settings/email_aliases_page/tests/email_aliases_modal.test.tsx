@@ -12,18 +12,6 @@ import { clickLeoButton } from './test_utils'
 import { EmailAliasesServiceInterface, GenerateAliasResult }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string) => {
-    return key
-  },
-  formatLocale: (key: string) => {
-    return key
-  }
-}))
-
 // Mock the email aliases service
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),

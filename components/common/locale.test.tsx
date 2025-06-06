@@ -7,6 +7,9 @@ import * as assert from 'assert'
 import * as React from 'react'
 import { formatString } from './locale'
 
+// Note: We need to unmock the locale module here because we want to test it!
+jest.unmock('$web-common/locale')
+
 describe('formatString', () => {
   it('should format a string with replacements', () => {
     assert.equal(formatString('Hello $1', {

@@ -8,18 +8,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { AliasItem } from '../content/email_aliases_item'
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string) => {
-    return key
-  },
-  formatLocale: (key: string) => {
-    return key
-  }
-}))
-
 // Mock the callback functions
 const mockOnEdit = jest.fn()
 const mockOnDelete = jest.fn()
