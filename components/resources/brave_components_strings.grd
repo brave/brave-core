@@ -783,10 +783,6 @@
       <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
 
-      <message name="IDS_PAGE_INFO_BRAVE_WEBTORRENT" desc="The message showed to the user in the HTTP info bubble view when viewing a webtorrent: page">
-        You're viewing a WebTorrent page
-      </message>
-
       <message name="IDS_TEST_STRING_FOR_PLACEHOLDERS" desc="Only for test purpose. Don't need to translate">
         Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
       </message>

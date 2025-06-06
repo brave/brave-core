@@ -79,7 +79,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
@@ -185,10 +184,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -1157,11 +1152,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   if (ntp_shows_navigation_throttle) {
     throttles.push_back(std::move(ntp_shows_navigation_throttle));
   }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  throttles.push_back(
-      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

@@ -35,17 +35,4 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
           content_settings::CookieControlsMode::kBlockThirdParty)));
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-void SetWebTorrentEnabled(Profile* profile, bool is_new_profile) {
-  const PrefService::Preference* pref_webtorrent_enabled =
-      profile->GetPrefs()->FindPreference(kWebTorrentEnabled);
-  if (!pref_webtorrent_enabled->HasUserSetting()) {
-    profile->GetPrefs()->SetBoolean(
-        kWebTorrentEnabled,
-        is_new_profile ? false
-                       : profile->GetPrefs()->GetBoolean(kWebTorrentEnabled));
-  }
-}
-#endif
-
 }  // namespace brave

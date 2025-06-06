@@ -33,7 +33,6 @@ source_set("impl") {
     ":util",
     "//base",
     "//brave/browser:browser_process",
-    "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/constants",
     "//brave/components/tor",
     "//brave/components/tor:common",

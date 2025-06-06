@@ -960,7 +960,6 @@ source_set("ui") {
     deps += [
       "//brave/app/theme:brave_theme_resources",
       "//brave/app/theme:brave_unscaled_resources",
-      "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
