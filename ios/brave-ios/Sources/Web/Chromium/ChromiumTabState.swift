@@ -354,11 +354,6 @@ class ChromiumTabState: TabState, TabStateImpl {
     webView?.canGoForward ?? false
   }
   var backForwardList: (any BackForwardListProxy)? {
-    if isRestoring {
-      // When restoring there's a chance the back forward list isn't completely ready yet and
-      // accessing it will crash
-      return nil
-    }
     return webView?.backForwardList.flatMap { ChromiumBackForwardList($0) }
   }
 
