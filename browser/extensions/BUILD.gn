@@ -191,6 +191,10 @@ source_set("extensions") {
     deps += [ "//brave/components/web_discovery/common" ]
   }
 
+  if (is_win) {
+    deps += [ "//brave/components/windows_recall" ]
+  }
+
   # This API is still being used by the preferences page
   sources += [
     "api/brave_wallet_api.cc",

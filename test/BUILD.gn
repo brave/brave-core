@@ -1020,6 +1020,8 @@ test("brave_browser_tests") {
   }
 
   if (is_win) {
+    deps += [ "//brave/components/windows_recall" ]
+
     public_configs = [ "//build/config/win:delayloads" ]
   }
 
