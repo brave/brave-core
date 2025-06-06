@@ -138,9 +138,15 @@ export const DeleteAliasModal = ({
   alias: Alias,
   emailAliasesService: EmailAliasesServiceInterface
 }) => {
-  const onDeleteAlias = () => {
-    emailAliasesService.deleteAlias(alias.email)
-    onReturnToMain()
+  const [deleteErrorMessage, setDeleteErrorMessage] =
+    React.useState<string | null>(null)
+  const onDeleteAlias = async () => {
+    const { errorMessage } = await emailAliasesService.deleteAlias(alias.email)
+    if (errorMessage) {
+      setDeleteErrorMessage(errorMessage)
+    } else {
+      onReturnToMain()
+    }
   }
   return <ModalCol>
     <ModalTitle>{getLocale('emailAliasesDeleteAliasTitle')}</ModalTitle>
@@ -161,6 +167,10 @@ export const DeleteAliasModal = ({
         </Button>
       </span>
     </ButtonRow>
+    {deleteErrorMessage &&
+      <Alert>
+        {deleteErrorMessage}
+      </Alert>}
   </ModalCol>
 }
 

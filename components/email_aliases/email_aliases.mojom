@@ -65,7 +65,7 @@ interface EmailAliasesService {
   UpdateAlias(string alias_email, string? note) => (string? error_message);
 
   // Delete an email alias.
-  DeleteAlias(string alias_email);
+  DeleteAlias(string alias_email) => (string? error_message);
 
   // Add an email aliases observer.
   AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
