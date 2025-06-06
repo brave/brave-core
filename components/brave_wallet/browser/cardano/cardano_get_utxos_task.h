@@ -40,26 +40,27 @@ class GetCardanoUtxosTask {
   void Start(Callback callback);
 
  private:
-  void ScheduleWorkOnTask();
-  void WorkOnTask();
   void StopWithError(std::string error_string);
+  void StopWithResult(UtxoMap result);
 
   cardano_rpc::CardanoRpc* GetCardanoRpc();
 
-  void MaybeSendRequests();
+  void FetchAllRequiredData();
+  bool IsAllRequiredDataFetched();
+  void OnMaybeAllRequiredDataFetched();
+
   void OnGetUtxoList(
       CardanoAddress address,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
   const raw_ref<CardanoWalletService> cardano_wallet_service_;
   std::string chain_id_;
-  std::vector<CardanoAddress> addresses_;
-  bool requests_sent_ = false;
+  std::vector<CardanoAddress> pending_addresses_;
 
   UtxoMap utxos_;
-  std::optional<UtxoMap> result_;
+
   Callback callback_;
-  base::WeakPtrFactory<GetCardanoUtxosTask> weak_factory_{this};
+  base::WeakPtrFactory<GetCardanoUtxosTask> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

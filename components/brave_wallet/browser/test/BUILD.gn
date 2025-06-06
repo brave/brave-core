@@ -34,6 +34,8 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/brave_wallet_prefs_unittest.cc",
     "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_block_tracker_unittest.cc",
+    "//brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task_unittest.cc",
+    "//brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_hd_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_max_send_solver_unittest.cc",

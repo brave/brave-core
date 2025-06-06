@@ -26,7 +26,7 @@ GetCardanoUtxosTask::GetCardanoUtxosTask(
     std::vector<CardanoAddress> addresses)
     : cardano_wallet_service_(cardano_wallet_service),
       chain_id_(chain_id),
-      addresses_(std::move(addresses)) {
+      pending_addresses_(std::move(addresses)) {
   CHECK(IsCardanoNetwork(chain_id));
 }
 
@@ -34,36 +34,24 @@ GetCardanoUtxosTask::~GetCardanoUtxosTask() = default;
 
 void GetCardanoUtxosTask::Start(Callback callback) {
   callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
-  ScheduleWorkOnTask();
-}
-
-void GetCardanoUtxosTask::ScheduleWorkOnTask() {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&GetCardanoUtxosTask::WorkOnTask,
-                                weak_factory_.GetWeakPtr()));
+  FetchAllRequiredData();
 }
 
 cardano_rpc::CardanoRpc* GetCardanoUtxosTask::GetCardanoRpc() {
   return cardano_wallet_service_->GetCardanoRpc(chain_id_);
 }
 
-void GetCardanoUtxosTask::MaybeSendRequests() {
-  if (requests_sent_) {
-    return;
-  }
-  requests_sent_ = true;
-
-  if (addresses_.empty()) {
-    result_ = UtxoMap();
-    ScheduleWorkOnTask();
+void GetCardanoUtxosTask::FetchAllRequiredData() {
+  if (pending_addresses_.empty()) {
+    StopWithResult(UtxoMap());
     return;
   }
 
-  for (const auto& address : addresses_) {
+  for (const auto& address : pending_addresses_) {
     GetCardanoRpc()->GetUtxoList(
         address.ToString(),
         base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
-                       weak_factory_.GetWeakPtr(), address));
+                       weak_ptr_factory_.GetWeakPtr(), address));
   }
 }
 
@@ -76,26 +64,31 @@ void GetCardanoUtxosTask::OnGetUtxoList(
   }
 
   utxos_[address] = std::move(utxos.value());
+  CHECK(std::erase(pending_addresses_, address));
 
-  CHECK(std::erase(addresses_, address));
-  if (addresses_.empty()) {
-    result_ = std::move(utxos_);
-  }
-
-  WorkOnTask();
+  OnMaybeAllRequiredDataFetched();
 }
 
-void GetCardanoUtxosTask::WorkOnTask() {
-  if (result_) {
-    std::move(callback_).Run(base::ok(std::move(*result_)));
-    return;
-  }
+bool GetCardanoUtxosTask::IsAllRequiredDataFetched() {
+  return pending_addresses_.empty();
+}
 
-  MaybeSendRequests();
+void GetCardanoUtxosTask::OnMaybeAllRequiredDataFetched() {
+  if (IsAllRequiredDataFetched()) {
+    StopWithResult(std::move(utxos_));
+  }
 }
 
 void GetCardanoUtxosTask::StopWithError(std::string error_string) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
   std::move(callback_).Run(base::unexpected(std::move(error_string)));
+}
+
+void GetCardanoUtxosTask::StopWithResult(UtxoMap result) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
+  std::move(callback_).Run(base::ok(std::move(result)));
 }
 
 }  // namespace brave_wallet

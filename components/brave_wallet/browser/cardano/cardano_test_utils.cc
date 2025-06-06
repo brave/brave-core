@@ -45,6 +45,12 @@ void CardanoTestRpcServer::RequestInterceptor(
   url_loader_factory_.ClearResponses();
 
   if (auto address = IsAddressUtxoRequest(request)) {
+    if (fail_address_utxo_request_) {
+      url_loader_factory_.AddResponse(request.url.spec(), "Bad request",
+                                      net::HTTP_BAD_REQUEST);
+      return;
+    }
+
     if (utxos_map_.contains(*address)) {
       base::Value::List items;
       for (const auto& utxo : utxos_map_[*address]) {
@@ -59,6 +65,12 @@ void CardanoTestRpcServer::RequestInterceptor(
   }
 
   if (IsLatestEpochParametersRequest(request)) {
+    if (fail_latest_epoch_parameters_request_) {
+      url_loader_factory_.AddResponse(request.url.spec(), "Bad request",
+                                      net::HTTP_BAD_REQUEST);
+      return;
+    }
+
     cardano_rpc::blockfrost_api::EpochParameters params;
     params.min_fee_a = "44";
     params.min_fee_b = "155381";
@@ -68,6 +80,12 @@ void CardanoTestRpcServer::RequestInterceptor(
   }
 
   if (IsLatestBlockRequest(request)) {
+    if (fail_latest_block_request_) {
+      url_loader_factory_.AddResponse(request.url.spec(), "Bad request",
+                                      net::HTTP_BAD_REQUEST);
+      return;
+    }
+
     cardano_rpc::blockfrost_api::Block latest_block;
     latest_block.height = "11854454";
     latest_block.slot = "155479747";

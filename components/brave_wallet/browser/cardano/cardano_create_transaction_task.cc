@@ -76,13 +76,7 @@ void CardanoCreateTransactionTask::SetArrangeTransactionForTesting(bool value) {
 
 void CardanoCreateTransactionTask::Start(Callback callback) {
   callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
-  ScheduleWorkOnTask();
-}
-
-void CardanoCreateTransactionTask::ScheduleWorkOnTask() {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&CardanoCreateTransactionTask::WorkOnTask,
-                                weak_ptr_factory_.GetWeakPtr()));
+  FetchAllRequiredData();
 }
 
 CardanoTransaction::TxOutput
@@ -112,74 +106,79 @@ cardano_rpc::CardanoRpc* CardanoCreateTransactionTask::GetCardanoRpc() {
       GetNetworkForCardanoAccount(account_id_));
 }
 
-void CardanoCreateTransactionTask::WorkOnTask() {
-  if (!latest_epoch_parameters_) {
-    GetCardanoRpc()->GetLatestEpochParameters(base::BindOnce(
-        &CardanoCreateTransactionTask::OnGetLatestEpochParameters,
-        weak_ptr_factory_.GetWeakPtr()));
+void CardanoCreateTransactionTask::FetchAllRequiredData() {
+  GetCardanoRpc()->GetLatestEpochParameters(
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestEpochParameters,
+                     weak_ptr_factory_.GetWeakPtr()));
+  GetCardanoRpc()->GetLatestBlock(
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestBlock,
+                     weak_ptr_factory_.GetWeakPtr()));
+  cardano_wallet_service_->GetUtxos(
+      account_id_.Clone(),
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetUtxos,
+                     weak_ptr_factory_.GetWeakPtr()));
+  cardano_wallet_service_->DiscoverNextUnusedAddress(
+      account_id_.Clone(), mojom::CardanoKeyRole::kExternal,
+      base::BindOnce(
+          &CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+bool CardanoCreateTransactionTask::IsAllRequiredDataFetched() {
+  return latest_epoch_parameters_ && latest_block_ && utxo_map_ &&
+         change_address_;
+}
+
+void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
+  if (IsAllRequiredDataFetched()) {
+    RunSolverForTransaction();
+  }
+}
+
+void CardanoCreateTransactionTask::RunSolverForTransaction() {
+  CHECK(IsAllRequiredDataFetched());
+
+  base::expected<CardanoTransaction, std::string> solved_transaction;
+  transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
+
+  if (sending_max_amount_) {
+    transaction_.AddOutput(CreateTargetOutput());
+
+    CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
+                                TxInputsFromUtxoMap(*utxo_map_));
+    solved_transaction = solver.Solve();
+  } else {
+    transaction_.AddOutput(CreateTargetOutput());
+    transaction_.AddOutput(CreateChangeOutput());
+
+    CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
+                                 TxInputsFromUtxoMap(*utxo_map_));
+    solved_transaction = solver.Solve();
+  }
+
+  if (!solved_transaction.has_value()) {
+    StopWithError(solved_transaction.error());
     return;
   }
 
-  if (!latest_block_) {
-    GetCardanoRpc()->GetLatestBlock(
-        base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestBlock,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
+  transaction_ = std::move(*solved_transaction);
+  if (g_arrange_tx_for_test) {
+    transaction_.ArrangeTransactionForTesting();  // IN-TEST
   }
 
-  if (!utxo_map_) {
-    cardano_wallet_service_->GetUtxos(
-        account_id_.Clone(),
-        base::BindOnce(&CardanoCreateTransactionTask::OnGetUtxos,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  if (!change_address_) {
-    cardano_wallet_service_->DiscoverNextUnusedAddress(
-        account_id_.Clone(), mojom::CardanoKeyRole::kExternal,
-        base::BindOnce(
-            &CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
-            weak_ptr_factory_.GetWeakPtr()));
-    return;
-  }
-
-  if (!has_solved_transaction_) {
-    base::expected<CardanoTransaction, std::string> solved_transaction;
-    transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
-
-    if (sending_max_amount_) {
-      transaction_.AddOutput(CreateTargetOutput());
-
-      CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
-                                  TxInputsFromUtxoMap(*utxo_map_));
-      solved_transaction = solver.Solve();
-    } else {
-      transaction_.AddOutput(CreateTargetOutput());
-      transaction_.AddOutput(CreateChangeOutput());
-
-      CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
-                                   TxInputsFromUtxoMap(*utxo_map_));
-      solved_transaction = solver.Solve();
-    }
-
-    if (!solved_transaction.has_value()) {
-      StopWithError(solved_transaction.error());
-      return;
-    }
-
-    has_solved_transaction_ = true;
-    transaction_ = std::move(*solved_transaction);
-    if (g_arrange_tx_for_test) {
-      transaction_.ArrangeTransactionForTesting();  // IN-TEST
-    }
-  }
-
-  std::move(callback_).Run(base::ok(std::move(transaction_)));
+  StopWithResult(std::move(transaction_));
 }
 
 void CardanoCreateTransactionTask::StopWithError(std::string error_string) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
   std::move(callback_).Run(base::unexpected(std::move(error_string)));
+}
+
+void CardanoCreateTransactionTask::StopWithResult(CardanoTransaction result) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
+  std::move(callback_).Run(base::ok(std::move(result)));
 }
 
 void CardanoCreateTransactionTask::OnGetLatestEpochParameters(
@@ -191,7 +190,7 @@ void CardanoCreateTransactionTask::OnGetLatestEpochParameters(
   }
 
   latest_epoch_parameters_ = std::move(epoch_parameters.value());
-  WorkOnTask();
+  OnMaybeAllRequiredDataFetched();
 }
 
 void CardanoCreateTransactionTask::OnGetLatestBlock(
@@ -202,7 +201,7 @@ void CardanoCreateTransactionTask::OnGetLatestBlock(
   }
 
   latest_block_ = std::move(block.value());
-  WorkOnTask();
+  OnMaybeAllRequiredDataFetched();
 }
 
 void CardanoCreateTransactionTask::OnGetUtxos(
@@ -218,7 +217,7 @@ void CardanoCreateTransactionTask::OnGetUtxos(
   }
 
   utxo_map_ = std::move(utxos.value());
-  WorkOnTask();
+  OnMaybeAllRequiredDataFetched();
 }
 
 void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
@@ -235,7 +234,7 @@ void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
   // TODO(https://github.com/brave/brave-browser/issues/45278): should update
   // account pref with new address.
   change_address_ = std::move(address.value());
-  WorkOnTask();
+  OnMaybeAllRequiredDataFetched();
 }
 
 }  // namespace brave_wallet

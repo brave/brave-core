@@ -11,6 +11,7 @@
 #include "base/numerics/clamped_math.h"
 #include "base/rand_util.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "components/grit/brave_components_strings.h"
@@ -202,8 +203,7 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   RunSolverForTransaction(no_change_transaction);
 
   if (!current_best_solution_) {
-    return base::unexpected(
-        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
+    return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
   DCHECK(current_best_solution_->witnesses().empty());

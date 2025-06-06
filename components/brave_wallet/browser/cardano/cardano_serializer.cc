@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "components/cbor/values.h"
 #include "components/cbor/writer.h"
@@ -97,7 +98,7 @@ cbor::Value CardanoSerializer::SerializeWitnessSet(
     for (const auto& _ : tx.inputs()) {
       cbor::Value::ArrayValue input_array;
       auto [pubkey, signature] =
-          base::span(kDummyTxWitnessBytes).split_at<32>();
+          base::span(kDummyTxWitnessBytes).split_at<kEd25519PublicKeySize>();
       input_array.emplace_back(pubkey);
       input_array.emplace_back(signature);
       vk_witness_array.emplace_back(std::move(input_array));
@@ -108,7 +109,7 @@ cbor::Value CardanoSerializer::SerializeWitnessSet(
     for (const auto& witness : tx.witnesses()) {
       cbor::Value::ArrayValue input_array;
       auto [pubkey, signature] =
-          base::span(witness.witness_bytes).split_at<32>();
+          base::span(witness.witness_bytes).split_at<kEd25519PublicKeySize>();
       input_array.emplace_back(pubkey);
       input_array.emplace_back(signature);
       vk_witness_array.emplace_back(std::move(input_array));
