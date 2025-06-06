@@ -13,18 +13,6 @@ import {
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string) => {
-    return key
-  },
-  formatLocale: (key: string) => {
-    return key
-  }
-}))
-
 // Mock the email aliases service
 class MockEmailAliasesService extends EmailAliasesServiceInterface {
   private observer?: EmailAliasesServiceObserverInterface

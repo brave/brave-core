@@ -5,3 +5,16 @@
 
 import '@testing-library/jest-dom'
 import './testPolyfills'
+
+// Mock the locale module so we don't need to provide strings in tests
+jest.mock('$web-common/locale', () => ({
+  getLocale: (key: string) => {
+    return key
+  },
+  formatMessage: (message: string) => {
+    return message
+  },
+  formatLocale: (key: string) => {
+    return key
+  }
+}))
