@@ -1283,7 +1283,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         DesktopWindowStateManager.class,
                         MultiInstanceManager.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        MenuButtonCoordinator.VisibilityDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1411,7 +1412,7 @@ public class BytecodeTest {
                         HomeButtonDisplay.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
+                        "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator", // presubmit: ignore-long-line
                         OneshotSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
@@ -1423,7 +1424,8 @@ public class BytecodeTest {
                         ThemeColorProvider.class,
                         Supplier.class,
                         Runnable.class,
-                        int.class));
+                        int.class,
+                        MenuButtonCoordinator.VisibilityDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/share/ShareDelegateImpl",
