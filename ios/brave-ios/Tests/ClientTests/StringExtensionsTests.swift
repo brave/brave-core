@@ -68,9 +68,50 @@ import XCTest
 
     for (file, nounicode) in zip(files, nounicodes) {
       XCTAssert(file != nounicode)
-      let strip = Download.stripUnicode(fromFilename: file)
+      let strip = file.strippingUnicodeControlCharacters
       XCTAssert(strip == nounicode)
     }
+  }
+
+  func testTruncateMiddle() {
+    var str =
+      "long-extended-file-name-containing-many-letters-and-dashes-to-confuse-the-user-with-a-long-extended-file-name-containing-many-letters-and-dashes-to-confuse-the-user.pdf"
+    var result = str.truncatingMiddle(maxLength: 32)
+    XCTAssertEqual(result.count, 32)
+    XCTAssertTrue(result.hasSuffix(".pdf"))
+    XCTAssertTrue(result.hasPrefix("long"))
+
+    str = "user.pdf"
+    result = str.truncatingMiddle(maxLength: 32)
+    XCTAssertEqual(result, "user.pdf")
+
+    str = "a"
+    result = str.truncatingMiddle(maxLength: 1)
+    XCTAssertEqual(result, "a")
+
+    str = "a"
+    result = str.truncatingMiddle(maxLength: 2)
+    XCTAssertEqual(result, "a")
+
+    str = "a"
+    result = str.truncatingMiddle(maxLength: 3)
+    XCTAssertEqual(result, "a")
+
+    str = "abc"
+    result = str.truncatingMiddle(maxLength: 2)
+    XCTAssertEqual(result, "a…c")
+
+    str = "abcd"
+    result = str.truncatingMiddle(maxLength: 2)
+    XCTAssertEqual(result, "a…d")
+
+    str = "abcde"
+    result = str.truncatingMiddle(maxLength: 2)
+    XCTAssertEqual(result, "a…e")
+
+    str = "abcde"
+    result = str.truncatingMiddle(maxLength: 3)
+    XCTAssertEqual(result, "a…e")
   }
 
   func testWithSecureUrlScheme() {

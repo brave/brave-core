@@ -60,6 +60,28 @@ extension String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }
 
+  // Truncates the string in the middle to the specified maxLength characters.
+  public func truncatingMiddle(maxLength: Int) -> String {
+    guard self.count > maxLength else {
+      return self
+    }
+
+    guard maxLength > 1 else {
+      return String(self.prefix(maxLength))
+    }
+
+    if maxLength == 2 {
+      let start = self.prefix(1)
+      let end = self.suffix(1)
+      return "\(start)…\(end)"
+    }
+
+    let halfLength = (maxLength - 1) / 2
+    let start = self.prefix(halfLength)
+    let end = self.suffix(maxLength - halfLength - 1)
+    return "\(start)…\(end)"
+  }
+
   public var capitalizeFirstLetter: String {
     return prefix(1).capitalized + dropFirst()
   }
@@ -127,5 +149,14 @@ extension String {
       .replacingOccurrences(of: "<", with: "&lt;", options: .literal)
       .replacingOccurrences(of: ">", with: "&gt;", options: .literal)
       .replacingOccurrences(of: "`", with: "&lsquo;", options: .literal)
+  }
+
+  // Strips unicode control characters such as LTR, RTL, New-Lines, and illegal Characters
+  public var strippingUnicodeControlCharacters: String {
+    let validFilenameSet = CharacterSet(charactersIn: ":/")
+      .union(.newlines)
+      .union(.controlCharacters)
+      .union(.illegalCharacters)
+    return self.components(separatedBy: validFilenameSet).joined()
   }
 }
