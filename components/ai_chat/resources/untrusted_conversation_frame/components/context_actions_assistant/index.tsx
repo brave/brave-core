@@ -53,7 +53,8 @@ export default function ContextActionsAssistant(
   }
 
   const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions
+    (model) => model.options.leoModelOptions &&
+      model.key !== 'chat-automatic'
   )
 
   return (

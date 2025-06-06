@@ -11,7 +11,9 @@
     justify-content: space-between;
     gap: var(--leo-spacing-xl);
     padding: var(--leo-spacing-m);
-    min-width: 200px;
+    margin: var(--leo-spacing-s) var(--leo-spacing-s) 0;
+    min-width: 240px;
+    font: var(--leo-font-default-regular);
   }
 }
 
@@ -20,7 +22,7 @@
   background-color: var(--leo-color-container-highlight);
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-secondary);
-  font: var(--leo-font-components-label);
+  font: var(--leo-font-small-regular);
   text-transform: uppercase;
   position: absolute;
   border-radius: 8px 8px 0px 0px;
@@ -34,13 +36,22 @@
 }
 
 .headerGap {
-  min-height: 33px;
+  min-height: 43px;
 }
 
 .anchorButton {
   display: flex;
   color: var(--leo-color-neutral-30);
   flex: 0;
+}
+
+.anchorButtonOpen {
+  color: var(--leo-color-icon-interactive);
+}
+
+.anchorButtonIconRow {
+  display: flex;
+  flex-direction: row;
 }
 
 .footerGap {
@@ -61,9 +72,9 @@
   leo-menu-item {
     justify-content: flex-start;
     border-radius: var(--leo-radius-s);
+    margin: 0;
     &:hover {
       background-color: var(--leo-color-container-highlight);
     }
   }
 }
-

@@ -21,10 +21,10 @@ const mockModels = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
-      customModelOptions: undefined
-    }
+      customModelOptions: undefined,
+    },
   },
   {
     key: '2',
@@ -37,160 +37,190 @@ const mockModels = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
-      customModelOptions: undefined
-    }
-  }
+      customModelOptions: undefined,
+    },
+  },
 ]
 
 describe('regenerate answer menu', () => {
-  it('ensures the menu opens and is visible and closes.', async () => {
-    const TestComponent = () => {
-      const [isOpen, setIsOpen] = React.useState(false)
-      return (
-        <RegenerateAnswerMenu
-          isOpen={isOpen}
-          onOpen={() => setIsOpen(true)}
-          onClose={() => setIsOpen(false)}
-          onRegenerate={() => {}}
-          leoModels={mockModels}
-          turnModelKey='1'
-        />
-      )
-    }
-
-    render(<TestComponent />)
-
-    // Make sure the anchor button is visible
-    const anchorButton: any = document.querySelector('leo-button')
-    expect(anchorButton).toBeInTheDocument()
-    expect(anchorButton).toBeVisible()
-
-    // Click the anchor button to open the menu
-    await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button').click()
-    })
-
-    const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
+  const TestComponent = ({
+    onRegenerateMock,
+    turnModelKeyOverride,
+  }: {
+    onRegenerateMock?: jest.Mock
+    turnModelKeyOverride?: string
+  }) => {
+    const [isOpen, setIsOpen] = React.useState(false)
+    const [turnModelKey, setTurnModelKey] = React.useState(
+      turnModelKeyOverride ?? '1',
     )
 
-    // Covers that onOpen was called
-    expect(menu).toHaveAttribute('isOpen', 'true')
+    const onRegenerate = React.useCallback(
+      (selectedModelKey: string) => {
+        act(() => setTurnModelKey(selectedModelKey))
+        onRegenerateMock?.(selectedModelKey)
+      },
+      [onRegenerateMock],
+    )
 
-    // Make sure the menu is open
+    return (
+      <RegenerateAnswerMenu
+        isOpen={isOpen}
+        onOpen={() => act(() => setIsOpen(true))}
+        onClose={() => act(() => setIsOpen(false))}
+        onRegenerate={onRegenerate}
+        leoModels={mockModels}
+        turnModelKey={turnModelKey}
+      />
+    )
+  }
+
+  const getAndTestAnchorButton = async () => {
+    // Make sure the anchor button is visible
+    const anchorButton =
+      document.querySelector<HTMLButtonElement>('leo-button')
+    expect(anchorButton).toBeInTheDocument()
+    expect(anchorButton).toBeVisible()
+    return anchorButton
+  }
+
+  const clickAnchorButton = async (anchorButton: HTMLButtonElement) => {
+    await act(async () => {
+      anchorButton?.shadowRoot?.querySelector('button')?.click()
+    })
+  }
+
+  const getAndTestMenu = async () => {
+    const menu: any = await waitFor(
+      () => document.querySelector('leo-buttonmenu')!,
+    )
     expect(menu).toBeInTheDocument()
+    expect(menu).toHaveAttribute('isOpen', 'true')
+    return menu
+  }
+
+  const getAndTestModelOption = (key: string) => {
+    const modelOption = document.querySelector<HTMLElement>(
+      `leo-menu-item[data-key="${key}"]`,
+    )!
+    expect(modelOption).toBeInTheDocument()
+    return modelOption
+  }
+
+  const getAndTestRetryButton = () => {
+    const retryButton = document.querySelector<HTMLElement>(
+      'leo-menu-item[data-key="retrySameModel"]',
+    )!
+    expect(retryButton).toBeInTheDocument()
+    return retryButton
+  }
+
+  it('ensures the menu opens and is visible and closes.', async () => {
+    render(<TestComponent />)
+
+    const anchorButton = (await getAndTestAnchorButton())!
+    await clickAnchorButton(anchorButton)
+
+    const menu = await getAndTestMenu()
+
+    // Covers that onOpen was called
     expect(menu).toHaveTextContent('regenerateAnswerMenuTitle')
-    expect(menu).toHaveTextContent('regenerateAnswerButtonLabel')
+    expect(menu).toHaveTextContent('retrySameModelButtonLabel')
     expect(menu).toHaveTextContent('Model One')
     expect(menu).toHaveTextContent('Model Two')
 
-    // Click the anchor button to close the menu
-    await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button').click()
-    })
+    await clickAnchorButton(anchorButton)
     // Covers that onClose was called
     expect(menu).toHaveAttribute('isOpen', 'false')
   })
 
-  it('switches models and regenerates the answer', async () => {
+  it('retries the answer with same model', async () => {
     const onRegenerateMock = jest.fn()
-    render(
-      <RegenerateAnswerMenu
-        isOpen={false}
-        onOpen={() => {}}
-        onClose={() => {}}
-        onRegenerate={onRegenerateMock}
-        leoModels={mockModels}
-        turnModelKey='1'
-      />
-    )
+    render(<TestComponent onRegenerateMock={onRegenerateMock} />)
 
-    const anchorButton: any = document.querySelector('leo-button')
-    anchorButton?.shadowRoot?.querySelector('button').click()
+    const anchorButton = (await getAndTestAnchorButton())!
+    await clickAnchorButton(anchorButton)
 
-    // Make sure the menu is open
-    const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
-    )
-    expect(menu).toBeInTheDocument()
+    const menu = await getAndTestMenu()
 
     // Make sure the model one option is selected
-    const modelOneOption: any = document.querySelector(
-      'leo-menu-item[data-key="1"]'
-    )
-    expect(modelOneOption).toBeInTheDocument()
+    const modelOneOption = getAndTestModelOption('1')
     expect(modelOneOption).toHaveAttribute('aria-selected', 'true')
+    expect(modelOneOption).toHaveTextContent('currentLabel')
+
+    // Click the retry same model button and make sure the onRegenerate
+    // function is called with model one
+    const retrySameModelButton = getAndTestRetryButton()
+    await act(async () => {
+      retrySameModelButton.click()
+    })
+    expect(onRegenerateMock).toHaveBeenCalledWith('1')
+    expect(menu).toHaveAttribute('isOpen', 'false')
+  })
+
+  it('retries the answer with a different model', async () => {
+    const onRegenerateMock = jest.fn()
+    render(<TestComponent onRegenerateMock={onRegenerateMock} />)
+
+    const anchorButton = (await getAndTestAnchorButton())!
+    await clickAnchorButton(anchorButton)
+
+    const menu = await getAndTestMenu()
+
+    // Make sure the model one option is selected
+    const modelOneOption = getAndTestModelOption('1')
+    expect(modelOneOption).toHaveAttribute('aria-selected', 'true')
+    expect(modelOneOption).toHaveTextContent('currentLabel')
 
     // Make sure the model two option is not selected
-    const modelTwoOption: any = document.querySelector(
-      'leo-menu-item[data-key="2"]'
-    )
-    expect(modelTwoOption).toBeInTheDocument()
+    const modelTwoOption = getAndTestModelOption('2')
     expect(modelTwoOption).not.toHaveAttribute('aria-selected')
+    expect(modelTwoOption).not.toHaveTextContent('currentLabel')
 
     // Select the model two option
     await act(async () => {
       modelTwoOption.click()
     })
 
-    await waitFor(() => {
-      expect(modelOneOption).not.toHaveAttribute('aria-selected')
-      expect(modelTwoOption).toHaveAttribute('aria-selected', 'true')
-    })
-
-    // Click the regenerate button and make sure the onRegenerate
-    // function is called with model two
-    const regenerateButton: any = document.querySelector(
-      'leo-menu-item[data-key="regenerate"]'
-    )
-    expect(regenerateButton).toBeInTheDocument()
-    await act(async () => {
-      regenerateButton.click()
-    })
+    // Make sure the onRegenerate function is called with model two
     expect(onRegenerateMock).toHaveBeenCalledWith('2')
+    expect(menu).toHaveAttribute('isOpen', 'false')
+
+    // Reopen the menu and make sure the model two option is selected
+    await clickAnchorButton(anchorButton)
+
+    expect(menu).toBeInTheDocument()
+    expect(menu).toHaveAttribute('isOpen', 'true')
+    expect(modelTwoOption).toHaveAttribute('aria-selected', 'true')
+    expect(modelTwoOption).toHaveTextContent('currentLabel')
   })
 
   it('handles invalid turnModelKey gracefully', async () => {
     const onRegenerateMock = jest.fn()
     render(
-      <RegenerateAnswerMenu
-        isOpen={false}
-        onOpen={() => {}}
-        onClose={() => {}}
-        onRegenerate={onRegenerateMock}
-        leoModels={mockModels}
-        turnModelKey='3'
-      />
+      <TestComponent
+        onRegenerateMock={onRegenerateMock}
+        turnModelKeyOverride='3'
+      />,
     )
 
-    const anchorButton: any = document.querySelector('leo-button')
-    anchorButton?.shadowRoot?.querySelector('button').click()
+    const anchorButton = (await getAndTestAnchorButton())!
+    await clickAnchorButton(anchorButton)
 
-    // Make sure the menu is open
-    const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
-    )
-    expect(menu).toBeInTheDocument()
+    await getAndTestMenu()
 
     // Verify no model is selected
-    const modelOneOption: any = document.querySelector(
-      'leo-menu-item[data-key="1"]'
-    )
-    const modelTwoOption: any = document.querySelector(
-      'leo-menu-item[data-key="2"]'
-    )
+    const modelOneOption = getAndTestModelOption('1')
+    const modelTwoOption = getAndTestModelOption('2')
     expect(modelOneOption).not.toHaveAttribute('aria-selected')
     expect(modelTwoOption).not.toHaveAttribute('aria-selected')
 
     // Click the regenerate button and make sure the onRegenerate
     // function is not called since the turnModelKey is not in
     // the models list
-    const regenerateButton: any = document.querySelector(
-      'leo-menu-item[data-key="regenerate"]'
-    )
-    expect(regenerateButton).toBeInTheDocument()
+    const regenerateButton = getAndTestRetryButton()
     await act(async () => {
       regenerateButton.click()
     })
