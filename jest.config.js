@@ -99,6 +99,7 @@ module.exports = {
     '^\\$web-components\\/(.*)': '<rootDir>/components/web-components/$1',
     '^brave-ui$': '<rootDir>/node_modules/@brave/brave-ui',
     '^brave-ui\\/(.*)': '<rootDir>/node_modules/@brave/brave-ui/$1',
+    '^\\$test-utils\\/(.*)': '<rootDir>/components/test/$1',
 
     // mocks for brave-wallet and brave-rewards proxies
     '\\/brave_rewards_api_proxy$':
