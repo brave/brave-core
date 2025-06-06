@@ -9,12 +9,12 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Tooltip from '@brave/leo/react/tooltip'
 
-import { AppModelContext, useAppState } from '../lib/app_model_context'
-import { RouterContext } from '../lib/router'
-import { formatMessage } from '../../shared/lib/locale_context'
-import { useLocaleContext } from '../lib/locale_strings'
-import { NewTabLink } from '../../shared/components/new_tab_link'
-import { WalletProviderIcon } from '../../shared/components/icons/wallet_provider_icon'
+import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { RouterContext } from '../../lib/router'
+import { formatMessage } from '../../../shared/lib/locale_context'
+import { useLocaleContext } from '../../lib/locale_strings'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
 
 import {
   ExternalWalletProvider,
@@ -22,10 +22,10 @@ import {
   getExternalWalletProviderName,
   isExternalWalletProviderAllowed,
   isExternalWalletProviderDisabled
-} from '../../shared/lib/external_wallet'
+} from '../../../shared/lib/external_wallet'
 
-import * as routes from '../lib/app_routes'
-import * as urls from '../../shared/lib/rewards_urls'
+import * as routes from '../../lib/app_routes'
+import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './connect_account.style'
 

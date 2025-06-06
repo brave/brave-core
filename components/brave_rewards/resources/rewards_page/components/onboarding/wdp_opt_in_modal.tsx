@@ -10,7 +10,7 @@ import Checkbox from '@brave/leo/react/checkbox'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
-import { Modal } from '../modal'
+import { Modal } from '../common/modal'
 import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './wdp_opt_in_modal.style'

@@ -7,10 +7,10 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocaleContext } from '../lib/locale_strings'
-import { AppModelContext, useAppState } from '../lib/app_model_context'
-import { TabOpenerContext } from '../../shared/components/new_tab_link'
-import { Modal } from './modal'
+import { useLocaleContext } from '../../lib/locale_strings'
+import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { TabOpenerContext } from '../../../shared/components/new_tab_link'
+import { Modal } from '../common/modal'
 
 import {
   getNotificationView,
@@ -19,7 +19,7 @@ import {
   NotificationBodyProps,
   NotificationTitleProps,
   OpenLinkAction
-} from '../../shared/components/notifications'
+} from '../../../shared/components/notifications'
 
 import { style } from './notification_modal.style'
 

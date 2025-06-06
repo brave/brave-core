@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { useLocaleContext } from '../../lib/locale_strings'
-import { Modal } from '../modal'
+import { Modal } from '../common/modal'
 import { CountrySelect } from './country_select'
 
 import { style } from './country_select_modal.style'
