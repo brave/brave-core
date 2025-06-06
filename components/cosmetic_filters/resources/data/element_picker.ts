@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 const NSSVG = 'http://www.w3.org/2000/svg'
 
+import { throttle } from 'lodash';
+
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
@@ -34,12 +36,14 @@ const api = {
     btnHideRulesBoxText: string,
     btnQuitText: string) => void) => {
     cf_worker.getLocalizedTexts().then(
-      (val: { btnCreateDisabledText: string;
+      (val: {
+        btnCreateDisabledText: string;
         btnCreateEnabledText: string;
         btnManageText: string;
         btnShowRulesBoxText: string;
         btnHideRulesBoxText: string;
-        btnQuitText: string }) => {
+        btnQuitText: string
+      }) => {
         callback(val.btnCreateDisabledText,
           val.btnCreateEnabledText,
           val.btnManageText,
@@ -192,7 +196,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
 
   // ID
   if (elem.id.length > 0 &&
-      document.querySelectorAll(`#${elem.id}`).length == 1) {
+    document.querySelectorAll(`#${elem.id}`).length === 1) {
     builder.addRule({
       type: Selector.Id,
       value: CSS.escape(elem.id)
@@ -455,6 +459,16 @@ const hideByCssSelector = (selector: string) => {
   style.innerText += `${selector} {display: none !important;}`
 }
 
+interface SliderOptions {
+  onChange?: (value: number) => void;
+}
+
+interface SliderAPI {
+  setValue: (value: number) => number;
+  getValue: () => number;
+  min: number;
+  max: number;
+}
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
   if (lastHoveredElem === null) { return '' }
@@ -542,6 +556,236 @@ const elementPickerUserModifiedRule = (selector: string) => {
   }
 }
 
+const seShowRulesHiddenBtnState = (
+  showRulesButton: HTMLElement | null, show: boolean) => {
+  if (!showRulesButton) return
+  showRulesButton.textContent = show ? btnHideRulesBoxText : btnShowRulesBoxText
+}
+
+const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
+  const rulesBox = root.getElementById('rules-box')!
+  const showRulesButton = root.getElementById('btnShowRulesBox')!
+
+  rulesBox.style.display = 'none'
+  seShowRulesHiddenBtnState(showRulesButton, false)
+
+  const mainSection = root.getElementById('main-section')
+  if (!mainSection) return;
+  mainSection.classList.toggle('minimized', minimized);
+
+}
+
+const setupDragging = (root: ShadowRoot): void => {
+  const mainSection = root.getElementById('main-section') as HTMLElement | null;
+  const dragHeader = root.getElementById('drag-header') as HTMLElement | null;
+
+  if (!mainSection || !dragHeader) return;
+
+  const sectionHeight = mainSection.offsetHeight;
+  const HEADER_HEIGHT = 28;
+
+  let isDragging = false;
+  let startY = 0;
+  let startTransform = 0;
+
+  const parseTranslateY = (transform: string): number => {
+    if (transform === 'none') return 0;
+    const match = transform.match(/matrix\(.*,\s*([-\d.]+)\)$/);
+    if (match) return parseFloat(match[1]);
+    const parts = transform.split(',');
+    return parseFloat(parts[5]) || 0;
+  };
+
+  const handleDragStart = (e: TouchEvent): void => {
+    isDragging = true;
+    startY = e.touches[0].clientY;
+    startTransform = parseTranslateY(
+      window.getComputedStyle(mainSection).transform);
+  };
+
+  const handleDragMove = (e: TouchEvent): void => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const deltaY = e.touches[0].clientY - startY;
+    const newTransform = Math.min(
+      Math.max(startTransform + deltaY, 0), sectionHeight - HEADER_HEIGHT);
+    mainSection.style.transform = `translateY(${newTransform}px)`;
+  };
+
+  const handleDragEnd = (): void => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const currentTransform = parseTranslateY(
+      window.getComputedStyle(mainSection).transform);
+    setMinimizeState(root, currentTransform > sectionHeight / 4)
+    mainSection.style.transform = '';
+  };
+
+  dragHeader.addEventListener('touchstart', handleDragStart);
+  root.addEventListener('touchmove', handleDragMove);
+  root.addEventListener('touchend', handleDragEnd);
+};
+
+const createThumbElement = () => {
+  const thumb = document.createElement('div');
+  thumb.className = 'slider-thumb theme-managed';
+  thumb.setAttribute('role', 'slider');
+  thumb.setAttribute('aria-valuemin', '0');
+  thumb.setAttribute('aria-valuemax', '4');
+  thumb.setAttribute('aria-valuenow', '4');
+  return thumb;
+}
+
+function initSlider(root: ShadowRoot, element: HTMLElement
+  | null, options: SliderOptions = {}): SliderAPI | undefined {
+  if (!element) return;
+
+  const min = parseInt(element.dataset.min || '0', 10);
+  const max = parseInt(element.dataset.max || '4', 10);
+  const initialValue = 4
+
+  const thumb = createThumbElement();
+  element.appendChild(thumb);
+
+  element.tabIndex = 0;
+
+  let isDragging = false;
+  let currentValue = initialValue;
+
+  const updateSlider = (value: number, fireEvent = true): number => {
+    value = Math.max(min, Math.min(max, value));
+
+    const percentage = ((value - min) / (max - min)) * 100;
+
+    // Update thumb position and fill
+    thumb.style.left = `${percentage}%`;
+    element.style.setProperty('--fill-percentage', `${percentage}%`);
+    element.style.setProperty('--value', value.toString());
+
+    // Set track fill width
+    element.style.setProperty('--track-fill-width', `${percentage}%`);
+    element.style.setProperty('--before-width', `${percentage}%`);
+
+    // Using ::before for the filled part
+    element.style.setProperty('--before-width', `${percentage}%`);
+
+    currentValue = value;
+
+    if (fireEvent && options.onChange) {
+      options.onChange(value);
+    }
+    return value;
+  };
+
+  element.style.setProperty(
+    '--before-width', `${((currentValue - min) / (max - min)) * 100}%`);
+
+  const handleMove = (e: MouseEvent | TouchEvent) => {
+    if (!isDragging && e.type !== 'click') return;
+
+    e.preventDefault();
+
+    const rect = element.getBoundingClientRect();
+    const clientX = e.type.includes('touch')
+      ? (e as TouchEvent).touches[0].clientX
+      : (e as MouseEvent).clientX;
+
+    // Calculate new value based on pointer position
+    const percentage = Math.max(
+      0, Math.min(1, (clientX - rect.left) / rect.width));
+    const newValue = Math.round(min + percentage * (max - min));
+
+    updateSlider(newValue);
+  };
+
+  const throttledHandleMove = throttle(handleMove, 50);
+  // Event handlers
+  const handleStart = (e: MouseEvent | TouchEvent) => {
+    e.preventDefault();
+    isDragging = true;
+    thumb.classList.add('active');
+    handleMove(e);
+
+    document.addEventListener('mousemove', throttledHandleMove);
+    document.addEventListener(
+      'touchmove', throttledHandleMove, { passive: false });
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchend', handleEnd);
+  };
+
+  const handleEnd = () => {
+    isDragging = false;
+    thumb.classList.remove('active');
+
+    // Remove event listeners
+    document.removeEventListener('mousemove', handleMove);
+    document.removeEventListener('touchmove', handleMove);
+    document.removeEventListener('mouseup', handleEnd);
+    document.removeEventListener('touchend', handleEnd);
+    throttledHandleMove.flush()
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    let newValue = currentValue;
+
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowUp':
+        newValue += 1;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        newValue -= 1;
+        break;
+      case 'Home':
+        newValue = min;
+        break;
+      case 'End':
+        newValue = max;
+        break;
+      case 'PageUp':
+        newValue += 10;
+        break;
+      case 'PageDown':
+        newValue -= 10;
+        break;
+      default:
+        return;
+    }
+
+    e.preventDefault();
+    updateSlider(newValue);
+  };
+
+  // Add event listeners
+  thumb.addEventListener('mousedown', handleStart);
+  thumb.addEventListener('touchstart', handleStart, { passive: false });
+  element.addEventListener('click', handleMove);
+  element.addEventListener('keydown', handleKeyDown);
+
+  const style = root.querySelector('style');
+  if (style) {
+    style.textContent += `
+      #${element.id}::before {
+        width: var(--before-width, 0%);
+      }
+    `;
+  }
+
+  // Initial update
+  updateSlider(currentValue, false);
+
+  // Return API for external control
+  return {
+    setValue: (value: number) => updateSlider(value),
+    getValue: () => currentValue,
+    min,
+    max
+  };
+}
+
 const launchElementPicker = (root: ShadowRoot) => {
   let hasSelectedTarget = false
 
@@ -549,6 +793,30 @@ const launchElementPicker = (root: ShadowRoot) => {
   if (isAndroid && btnShowRulesBox) {
     btnShowRulesBox.style.display = 'none'
   }
+
+  if (isAndroid) {
+    setupDragging(root)
+  } else {
+    const closeButton = root.getElementById('close-btn')!
+    closeButton.addEventListener('click', () => {
+      quitElementPicker()
+    })
+    const minimizeButton = root.getElementById('minimize-dlg-btn')!
+    minimizeButton.addEventListener('click', () => {
+      setMinimizeState(root, true)
+    })
+    const maximizeButton = root.getElementById('desktop-min-icon-container')!
+    maximizeButton.addEventListener('click', () => {
+      setMinimizeState(root, false);
+    })
+  }
+
+  const sliderElement = root.getElementById('custom-slider');
+  const slider = initSlider(root, sliderElement, {
+    onChange: (value) => {
+      dispatchSelect()
+    }
+  });
 
   root.addEventListener(
     'keydown',
@@ -595,8 +863,8 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const setDarkModeButtons = (isDarkModeEnabled: boolean) => {
-    const elements = root.querySelectorAll('.button');
+  const setDarkMode = (isDarkModeEnabled: boolean) => {
+    const elements = root.querySelectorAll('.theme-managed');
     elements.forEach(element => {
       if (element.classList.contains(isDarkModeEnabled ? 'light' : 'dark')) {
         element.classList.remove(isDarkModeEnabled ? 'light' : 'dark');
@@ -634,21 +902,37 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
   targetedElems.togglePicker = togglePopup
 
-  const slider = root.getElementById('sliderSpecificity') as HTMLInputElement
+  //  const slider = root.getElementById('custom-slider') as HTMLInputElement
   if (isAndroid) {
     const sc = root.getElementById('slider-container') as HTMLInputElement
     sc.style.display = 'none'
   }
+  const setTitleBarColor = (bgcolor: number) => {
+    if (isAndroid)
+      return
 
+    const section = root.getElementById('main-section')
+    if (section) {
+      const r = (bgcolor >> 16) & 0xff
+      const g = (bgcolor >> 8) & 0xff
+      const b = bgcolor & 0xff
+
+      section.style
+        .setProperty('--dynamic-color-rgb', `rgb(${r}, ${g}, ${b})`)
+    }
+  }
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
       (isDarkModeEnabled: boolean, bgcolor: number) => {
-        const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+        const bgcolorMaskOut = bgcolor & 0xFFFFFF
+        const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('background-color', colorHex)
+        section.style.setProperty('--theme-background-color', colorHex)
         root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
-
-        setDarkModeButtons(isDarkModeEnabled)
+        setTitleBarColor(bgcolor)
+        setDarkMode(isDarkModeEnabled)
+        dispatchSelect()
       })
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -660,24 +944,19 @@ const launchElementPicker = (root: ShadowRoot) => {
 
   const dispatchSelect = () => {
     const { isValid, selector } = elementPickerUserSelectedTarget(
-      parseInt(slider.value),
+      slider?.getValue() ?? 4
     )
 
     hasSelectedTarget = isValid
     togglePopup(isValid)
-    if (isValid) {
-      rulesTextArea.value = selector
-    } else {
-      slider.value = '4'
-    }
+    rulesTextArea.value = selector
   }
-
-  slider.addEventListener('input', () => {
-    dispatchSelect()
-  })
 
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
+
+    setMinimizeState(root, false);
+
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
@@ -726,10 +1005,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     trigger.addEventListener('click', e => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
-        trigger.textContent = btnHideRulesBoxText
+        seShowRulesHiddenBtnState(trigger, true)
       } else {
         target.style.display = 'none'
-        trigger.textContent = btnShowRulesBoxText
+        seShowRulesHiddenBtnState(trigger, false)
       }
     })
   }
