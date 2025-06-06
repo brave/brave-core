@@ -509,7 +509,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onCrash(Tab tab) {
                         super.onCrash(tab);
-                        mYouTubePipTabId = -1;
                         // When a tab crashes it shows a custom view with a reload button.
                         // The PIP layout must be hidden.
                         hideYouTubePipIcon();
@@ -666,6 +665,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void hideYouTubePipIcon() {
+        mYouTubePipTabId = -1;
         // The layout could be null in Custom Tabs layout.
         if (mYouTubePipLayout == null) {
             return;
@@ -1174,6 +1174,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel();
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
+            // Prevent PIP action from being
+            // fired twice on same tab in case PIP icon is
+            // quickly tapped multiple times.
+            if (mYouTubePipTabId != -1) {
+                return;
+            }
             Tab currentTab = getToolbarDataProvider().getTab();
             if (currentTab.isLoading()
                     || currentTab.isShowingErrorPage()
@@ -1705,7 +1711,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    // FullscreenManager.Observer methods.
+    // FullscreenManager.Observer method.
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
         if (mYouTubePipTabId == tab.getId()) {
@@ -1718,10 +1724,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 Log.e(TAG, "Error entering picture in picture mode.", e);
             }
         }
-    }
-
-    @Override
-    public void onExitFullscreen(Tab tab) {
         mYouTubePipTabId = -1;
     }
 }
