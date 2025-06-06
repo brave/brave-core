@@ -185,14 +185,16 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kAuthenticating,
-        email: email
+        email: email,
+        errorMessage: undefined
       })
     })
     this.accountRequestId = window.setTimeout(() => {
       this.observers.forEach(observer => {
         observer.onAuthStateChanged({
           status: AuthenticationStatus.kAuthenticated,
-          email: email
+          email: email,
+          errorMessage: undefined
         })
       })
     }, 5000);
@@ -204,7 +206,8 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kUnauthenticated,
-        email: ''
+        email: '',
+        errorMessage: undefined
       })
     })
   }
@@ -218,13 +221,15 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
 const stubEmailAliasesServiceNoAccountInstance =
   new StubEmailAliasesService({
     status: AuthenticationStatus.kUnauthenticated,
-    email: ''
+    email: '',
+    errorMessage: undefined
   })
 
 const stubEmailAliasesServiceAccountReadyInstance =
   new StubEmailAliasesService({
     status: AuthenticationStatus.kAuthenticated,
-    email: demoData.email
+    email: demoData.email,
+    errorMessage: undefined
   })
 
 const bindNoAccountObserver =
