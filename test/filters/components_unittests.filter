@@ -8,6 +8,15 @@
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
 
+# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
+-DocumentProviderTest.CachingForSyncMatches
+-DocumentProviderTest.IsDocumentProviderAllowed
+-DocumentProviderTest.MaxMatches
+
+# This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
+# https://github.com/brave/brave-browser/issues/47218
+-OmniboxTextUtilTest.AdjustTextForCopy
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
