@@ -1517,6 +1517,8 @@ provideStrings({
   // ZCash
   braveWalletSwitchToShieldedAccount: 'Switch to a shielded account',
   braveWalletShieldAccount: 'Shield account',
+  braveWalletShieldAccountAlertDescription:
+    'Enable shielding to enhance transaction privacy.',
   braveWalletAccountNotShieldedDescription:
     'Currently this account supports transparent transactions which means they are visible to everyone on the blockchain.',
   braveWalletAccountShieldedDescription:
