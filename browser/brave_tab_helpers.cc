@@ -6,9 +6,11 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -61,7 +63,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-#include "brave/browser/ui/ai_chat/print_preview_extractor.h"
+#include "brave/browser/ai_chat/print_preview_extractor.h"
+#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
+#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -129,7 +133,31 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-        std::make_unique<ai_chat::PrintPreviewExtractor>(web_contents)
+        std::make_unique<ai_chat::PrintPreviewExtractor>(
+            web_contents,
+            base::BindRepeating(
+                [](content::WebContents* web_contents, bool is_pdf,
+                   ai_chat::PrintPreviewExtractor::Extractor::CallbackVariant&&
+                       variant)
+                    -> std::unique_ptr<
+                        ai_chat::PrintPreviewExtractor::Extractor> {
+                  return std::make_unique<
+                      ai_chat::PrintPreviewExtractorInternal>(
+                      web_contents,
+                      Profile::FromBrowserContext(
+                          web_contents->GetBrowserContext()),
+                      is_pdf, std::move(variant),
+                      base::BindRepeating(
+                          []() -> base::IDMap<
+                                   printing::mojom::PrintPreviewUI*>& {
+                            return printing::PrintPreviewUI::
+                                GetPrintPreviewUIIdMap();
+                          }),
+                      base::BindRepeating([]() -> base::flat_map<int, int>& {
+                        return printing::PrintPreviewUI::
+                            GetPrintPreviewUIRequestIdMap();
+                      }));
+                }))
 #else
         nullptr
 #endif
