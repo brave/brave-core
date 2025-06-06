@@ -509,6 +509,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onCrash(Tab tab) {
                         super.onCrash(tab);
+                        mYouTubePipTabId = -1;
                         // When a tab crashes it shows a custom view with a reload button.
                         // The PIP layout must be hidden.
                         hideYouTubePipIcon();
