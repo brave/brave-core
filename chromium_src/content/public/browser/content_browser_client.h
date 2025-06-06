@@ -33,7 +33,7 @@
                                BrowserContext* browser_context);             \
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
-  virtual std::optional<bool> IsWindowsRecallEnabled(                        \
+  virtual bool IsWindowsRecallDisabled(                                      \
       content::BrowserContext* browser_context);                             \
   virtual void SetBrowserStartupIsCompleteForTesting
 

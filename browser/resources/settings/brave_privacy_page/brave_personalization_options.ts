@@ -91,9 +91,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup()
   }
 
-  shouldShowRestartWindowsRecall_(blocked: boolean) {
-    const enabled = !blocked
-    return enabled != this.browserProxy_.wasWindowsRecallEnabledAtStartup()
+  shouldShowRestartWindowsRecall_(disabled: boolean) {
+    return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
   }
 
   restartBrowser_(e: Event) {

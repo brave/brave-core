@@ -18,14 +18,10 @@ namespace prefs {
 inline constexpr char kBlockWindowsRecall[] = "brave.block_windows_recall";
 }
 
-enum class WindowsRecallState { kUnavailable = 0, kEnabled, kDisabled };
-
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 bool IsWindowsRecallAvailable();
-
-WindowsRecallState GetWindowsRecallState(
-    content::BrowserContext* browser_context);
+bool IsWindowsRecallDisabled(content::BrowserContext* browser_context);
 
 }  // namespace windows_recall
 

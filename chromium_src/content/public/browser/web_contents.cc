@@ -7,6 +7,8 @@
 
 namespace content {
 
-void WebContents::GetShouldDoLearningForTesting(bool& should) {}
+bool WebContents::GetShouldDoLearningForTesting() {
+  return true;
+}
 
 }  // namespace content

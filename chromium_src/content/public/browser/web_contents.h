@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_H_
 
-#define ClosePage(...)                         \
-  GetShouldDoLearningForTesting(bool& should); \
-  virtual void ClosePage(__VA_ARGS__)
+#define IsLoading(...)             \
+  GetShouldDoLearningForTesting(); \
+  virtual bool IsLoading(__VA_ARGS__)
 
 #include "src/content/public/browser/web_contents.h"  // IWYU pragma: export
 
-#undef ClosePage
+#undef IsLoading
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_H_
