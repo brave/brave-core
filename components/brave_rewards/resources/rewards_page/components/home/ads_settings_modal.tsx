@@ -12,7 +12,7 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { AdType } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { Modal } from '../modal'
+import { Modal } from '../common/modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 
 import * as urls from '../../../shared/lib/rewards_urls'

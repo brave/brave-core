@@ -11,7 +11,7 @@ import { LocaleContext } from '../shared/lib/locale_context'
 import { AppModelContext } from './lib/app_model_context'
 import { createModel } from './webui/webui_model'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
-import { ShowHandler } from './components/show_handler'
+import { ShowHandler } from './components/common/show_handler'
 import { App } from './components/app'
 import * as routes from './lib/app_routes'
 

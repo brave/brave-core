@@ -5,12 +5,12 @@
 
 import * as React from 'react'
 
-import { Modal } from './modal'
+import { Modal } from '../common/modal'
 
-import { formatMessage } from '../../shared/lib/locale_context'
-import { useLocaleContext } from '../lib/locale_strings'
-import { NewTabLink } from '../../shared/components/new_tab_link'
-import * as urls from '../../shared/lib/rewards_urls'
+import { formatMessage } from '../../../shared/lib/locale_context'
+import { useLocaleContext } from '../../lib/locale_strings'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './tos_update_modal.style'
 

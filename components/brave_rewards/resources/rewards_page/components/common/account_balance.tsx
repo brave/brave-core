@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { Optional } from '../../shared/lib/optional'
+import { Optional } from '../../../shared/lib/optional'
 import { TextSkeleton } from './text_skeleton'
 
 const balanceFormatter = new Intl.NumberFormat(undefined, {

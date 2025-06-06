@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { Modal } from './modal'
-import { useLocaleContext } from '../lib/locale_strings'
+import { Modal } from '../common/modal'
+import { useLocaleContext } from '../../lib/locale_strings'
 
 import { style } from './self_custody_invite_modal.style'
 

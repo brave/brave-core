@@ -10,7 +10,7 @@ import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { AdsHistoryItem } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
-import { Modal } from '../modal'
+import { Modal } from '../common/modal'
 
 import { style } from './ads_history_modal.style'
 

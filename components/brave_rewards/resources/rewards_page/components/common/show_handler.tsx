@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { AppModelContext, useAppState } from '../lib/app_model_context'
+import { AppModelContext, useAppState } from '../../lib/app_model_context'
 
 interface Props {
   children: React.ReactNode

@@ -7,11 +7,11 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { TabOpenerContext } from '../../shared/components/new_tab_link'
-import { Modal } from './modal'
-import { CaptchaInfo } from '../lib/app_state'
-import { useLocaleContext } from '../lib/locale_strings'
-import * as urls from '../../shared/lib/rewards_urls'
+import { TabOpenerContext } from '../../../shared/components/new_tab_link'
+import { Modal } from '../common/modal'
+import { CaptchaInfo } from '../../lib/app_state'
+import { useLocaleContext } from '../../lib/locale_strings'
+import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './captcha_modal.style'
 
