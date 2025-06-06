@@ -14,7 +14,11 @@ import org.chromium.components.tab_groups.TabGroupColorId;
 
 public class BraveTabUiThemeUtils {
     @ColorInt
-    public static int getTitleTextColor(Context context, boolean isIncognito, boolean isSelected) {
+    public static int getTitleTextColor(
+            Context context,
+            boolean isIncognito,
+            boolean isSelected,
+            @Nullable @TabGroupColorId Integer colorId) {
         // These checks are just making sure that these values are still used in Chromium to avoid
         // lint issues.
         assert R.color.empty_state_icon_bg_background_color > 0
@@ -30,7 +34,7 @@ public class BraveTabUiThemeUtils {
             return context.getColor(R.color.baseline_neutral_10);
         }
 
-        return TabUiThemeUtils.getTitleTextColor(context, isIncognito, isSelected);
+        return TabUiThemeUtils.getTitleTextColor(context, isIncognito, isSelected, colorId);
     }
 
     @ColorInt
