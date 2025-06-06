@@ -8,23 +8,24 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "chrome/browser/ui/browser_user_data.h"
 #include "url/gurl.h"
+
+class BrowserWindowInterface;
 
 namespace brave_rewards {
 
 // Provides a browser-scoped communication channel for components that need to
 // display the Rewards panel and components responsible for showing the Rewards
 // panel.
-class RewardsPanelCoordinator
-    : public BrowserUserData<RewardsPanelCoordinator> {
+class RewardsPanelCoordinator {
  public:
-  explicit RewardsPanelCoordinator(Browser* browser);
+  explicit RewardsPanelCoordinator(
+      BrowserWindowInterface* browser_window_interface);
 
   RewardsPanelCoordinator(const RewardsPanelCoordinator&) = delete;
   RewardsPanelCoordinator& operator=(const RewardsPanelCoordinator&) = delete;
 
-  ~RewardsPanelCoordinator() override;
+  ~RewardsPanelCoordinator();
 
   static bool IsRewardsPanelURLForTesting(const GURL& url);
 
@@ -44,11 +45,8 @@ class RewardsPanelCoordinator
       base::ScopedObservation<RewardsPanelCoordinator, Observer>;
 
  private:
-  friend class BrowserUserData<RewardsPanelCoordinator>;
-
+  raw_ptr<BrowserWindowInterface> browser_window_interface_;
   base::ObserverList<Observer> observers_;
-
-  BROWSER_USER_DATA_KEY_DECL();
 };
 
 }  // namespace brave_rewards

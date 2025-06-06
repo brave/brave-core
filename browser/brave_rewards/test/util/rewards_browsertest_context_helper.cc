@@ -11,6 +11,8 @@
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
@@ -27,7 +29,7 @@ RewardsBrowserTestContextHelper::~RewardsBrowserTestContextHelper() = default;
 
 void RewardsBrowserTestContextHelper::OpenPopup() {
   // Ask the popup to open
-  auto* coordinator = RewardsPanelCoordinator::FromBrowser(browser_);
+  auto* coordinator = browser_->GetFeatures().rewards_panel_coordinator();
   ASSERT_TRUE(coordinator);
   bool popup_shown = coordinator->OpenRewardsPanel();
   if (!popup_shown) {

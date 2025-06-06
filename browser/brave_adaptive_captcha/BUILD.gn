@@ -18,6 +18,10 @@ source_set("impl") {
     "//components/keyed_service/content",
     "//components/user_prefs",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/browser_window" ]
+  }
 }
 
 source_set("brave_adaptive_captcha") {
