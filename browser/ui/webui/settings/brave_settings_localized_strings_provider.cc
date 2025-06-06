@@ -1141,6 +1141,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION},
       {"emailAliasesDeleteAliasButton",
        IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON},
+      {"emailAliasesDeleteAliasError",
+       IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR},
       {"emailAliasesDeleteWarning", IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING},
       {"emailAliasesSignInOrCreateAccount",
        IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT},

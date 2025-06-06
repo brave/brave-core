@@ -102,6 +102,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON" desc="The label for the delete alias button">
     Delete
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR" desc="The label for the delete alias error">
+    Error deleting alias. Check your internet connection and try again.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING" desc="The warning for the delete alias">
     This action is irreversible. Are you sure you want to proceed?
   </message>

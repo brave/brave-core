@@ -59,6 +59,8 @@ provideStrings({
   emailAliasesDeleteWarning: 'This action is irreversible. Please ensure you ' +
     'want to proceed before continuing.',
   emailAliasesDeleteAliasButton: 'Delete',
+  emailAliasesDeleteAliasError: 'Error deleting alias. Check your internet ' +
+    'connection and try again.',
   emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a ' +
     'Brave account',
   emailAliasesEnterEmailToGetLoginLink: 'Enter your email address to get a ' +
@@ -138,42 +140,44 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   }
 
   async updateAlias (email: string, note: string) {
+    if (Math.random() < 1/3) {
+      return { errorMessage: getLocale('emailAliasesUpdateAliasError') }
+    }
     const alias = { email, note, domains: undefined }
     this.aliases.set(email, alias)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    const errorMessage = Math.random() < 1/3
-      ? getLocale('emailAliasesUpdateAliasError')
-      : null
-    return { errorMessage }
+    return { errorMessage: null }
   }
 
-  deleteAlias (email: string) {
+  async deleteAlias (email: string) {
+    if (Math.random() < 1/3) {
+      return { errorMessage: getLocale('emailAliasesDeleteAliasError') }
+    }
     this.aliases.delete(email)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
+    return { errorMessage: null }
   }
 
   async generateAlias () {
-    let generatedAlias: string | undefined = undefined
-    do {
-      generatedAlias = "mock-" + Math.random().toString().slice(2,6) +
-        "@bravealias.com"
-    } while (this.aliases.has(generatedAlias))
     await new Promise(resolve => setTimeout(resolve, 1000))
-    const error : boolean = Math.random() < 1/3
-    const errorMessage = error
-      ? getLocale('emailAliasesGenerateError')
-      : undefined
-    const aliasEmail = error ? undefined : generatedAlias
-    return { result: { errorMessage, aliasEmail } }
+    if (Math.random() < 1/3) {
+      return { result: { errorMessage: getLocale('emailAliasesGenerateError'),
+          aliasEmail: '' } }
+    }
+    let aliasEmail: string = ''
+    do {
+      aliasEmail = "mock-" + Math.random().toString().slice(2,6) +
+        "@bravealias.com"
+    } while (this.aliases.has(aliasEmail))
+
+    return { result: { errorMessage: undefined, aliasEmail } }
   }
 
-  async requestAuthentication (email: string) : Promise<{
-    errorMessage: string | null,
-  }> {
+  async requestAuthentication (email: string) {
     if (Math.random() < 1/3) {
       return {
         errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
@@ -187,14 +191,10 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     })
     this.accountRequestId = window.setTimeout(() => {
       this.observers.forEach(observer => {
-        observer.onAuthStateChanged(Math.random() < 1/3 ? {
+        observer.onAuthStateChanged({
           status: AuthenticationStatus.kAuthenticated,
           email: email,
           errorMessage: undefined
-        } : {
-          status: AuthenticationStatus.kAuthenticating,
-          email: '',
-          errorMessage: getLocale('emailAliasesAuthError')
         })
       })
     }, 5000);
