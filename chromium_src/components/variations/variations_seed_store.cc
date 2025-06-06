@@ -55,6 +55,19 @@ base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
   return kBravePublicKey;
 }
 
+void VariationsSeedStore::UpdateSeedDateAndMaybeCountry(
+    bool is_first_request,
+    std::string_view country_code,
+    base::Time server_date_fetched) {
+  // At browser startup, the country code is updated using the X-Country header
+  // from the response if the status is `HTTP_NOT_MODIFIED`, avoiding the need
+  // to wait for the next update, which happens every 5 hours.
+  if (is_first_request && !country_code.empty()) {
+    local_state_->SetString(prefs::kVariationsCountry, country_code);
+  }
+  UpdateSeedDateAndLogDayChange(server_date_fetched);
+}
+
 }  // namespace variations
 
 #undef BRAVE_K_PUBLIC_KEY
