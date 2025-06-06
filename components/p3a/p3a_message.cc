@@ -73,7 +73,7 @@ constexpr auto kNotableCountries = base::MakeFixedFlatSet<std::string_view>(
     {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES",
      "NL", "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT"});
 
-constexpr base::TimeDelta kDateOmissionThreshold = base::Days(30);
+constexpr base::TimeDelta kDateOmissionThreshold = base::Days(31);
 
 std::string FormatUTCDateFromExploded(const base::Time::Exploded& exploded) {
   return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
