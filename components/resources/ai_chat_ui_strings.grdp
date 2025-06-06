@@ -384,6 +384,9 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE" desc="Title for the browser tabs section">
     Browser tabs
   </message>
+  <message name="IDS_CHAT_UI_TABS_MENU_TITLE" desc="Title for the tabs menu">
+    Add tab contents for context
+  </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>

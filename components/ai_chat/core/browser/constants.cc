@@ -174,6 +174,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"attachmentsDescription", IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION},
        {"attachmentsBrowserTabsTitle",
         IDS_CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE},
+       {"tabsMenuTitle", IDS_CHAT_UI_TABS_MENU_TITLE},
        {"noticeConversationHistoryBody",
         IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY},
        {"noticeConversationHistoryEmpty",
