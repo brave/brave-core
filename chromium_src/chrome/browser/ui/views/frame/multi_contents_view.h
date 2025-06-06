@@ -15,15 +15,12 @@ class ResizeArea;
   friend class BraveMultiContentsView; \
   virtual void UpdateContentsBorder
 
-#define SetActiveIndex virtual SetActiveIndex
-
 // Changed to base class as we want to point to our views::ResizeArea subclass.
 #define MultiContentsResizeArea views::ResizeArea
 
 #include "src/chrome/browser/ui/views/frame/multi_contents_view.h"  // IWYU pragma: export
 
 #undef MultiContentsResizeArea
-#undef SetActiveIndex
 #undef UpdateContentsBorder
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_
