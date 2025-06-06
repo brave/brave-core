@@ -129,6 +129,25 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 void SwapTabsInTile(Browser* browser);
 
+// Split view API with SideBySide.
+// false if active tab is already split tab.
+bool CanOpenNewSplitTabsWithSideBySide(Browser* browser);
+
+// true if two tabs are selected and both are not in split tabs.
+bool CanSplitTabsWithSideBySide(Browser* browser);
+
+// Add to split with selected two tabs.
+void SplitTabsWithSideBySide(Browser* browser);
+
+// true if any selected tab is split tabs.
+bool IsSplitTabs(Browser* browser);
+
+// Remove split tabs of selected tabs.
+void RemoveSplitWithSideBySide(Browser* browser);
+
+// Swap tabs in active tab.
+void SwapTabsInSplitWithSideBySide(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

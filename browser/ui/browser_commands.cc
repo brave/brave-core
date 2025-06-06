@@ -53,6 +53,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
+#include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
@@ -62,6 +63,7 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
@@ -1180,6 +1182,82 @@ void SwapTabsInTile(Browser* browser) {
   model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
                            model->GetIndexOfTab(tile.first.Get()),
                            /*select_after_move*/ false);
+}
+
+bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
+  auto* tab_strip_model = browser->tab_strip_model();
+  auto active_index = tab_strip_model->active_index();
+  if (active_index == TabStripModel::kNoTab) {
+    return false;
+  }
+
+  return !tab_strip_model->GetSplitForTab(active_index).has_value();
+}
+
+bool CanSplitTabsWithSideBySide(Browser* browser) {
+  auto* tab_strip_model = browser->tab_strip_model();
+  if (tab_strip_model->empty()) {
+    return false;
+  }
+
+  auto selected_indices = GetSelectedIndices(browser);
+  if (selected_indices.size() != 2) {
+    return false;
+  }
+
+  return std::ranges::none_of(selected_indices, [&](auto index) {
+    return tab_strip_model->GetSplitForTab(index).has_value();
+  });
+}
+
+bool IsSplitTabs(Browser* browser) {
+  auto* tab_strip_model = browser->tab_strip_model();
+  if (tab_strip_model->empty()) {
+    return false;
+  }
+
+  auto selected_indices = GetSelectedIndices(browser);
+  return std::ranges::any_of(selected_indices, [&](auto index) {
+    return tab_strip_model->GetSplitForTab(index).has_value();
+  });
+}
+
+void SplitTabsWithSideBySide(Browser* browser) {
+  CHECK(brave::CanSplitTabsWithSideBySide(browser));
+
+  auto selected_indices = GetSelectedIndices(browser);
+  CHECK(selected_indices.size() == 2);
+  auto* tab_strip_model = browser->tab_strip_model();
+  const auto active_index = tab_strip_model->active_index();
+  CHECK_NE(TabStripModel::kNoTab, active_index);
+  // selected indices must have active tab index.
+  CHECK(active_index == selected_indices[0] ||
+        active_index == selected_indices[1]);
+  const int non_active_index_from_selected_indices =
+      active_index == selected_indices[0] ? selected_indices[1]
+                                          : selected_indices[0];
+  tab_strip_model->AddToNewSplit({non_active_index_from_selected_indices},
+                                 split_tabs::SplitTabLayout::kVertical);
+}
+
+void RemoveSplitWithSideBySide(Browser* browser) {
+  auto selected_indices = GetSelectedIndices(browser);
+  auto* tab_strip_model = browser->tab_strip_model();
+  for (auto index : selected_indices) {
+    if (auto split_id = tab_strip_model->GetSplitForTab(index)) {
+      tab_strip_model->RemoveSplit(*split_id);
+    }
+  }
+}
+
+void SwapTabsInSplitWithSideBySide(Browser* browser) {
+  auto* tab_strip_model = browser->tab_strip_model();
+  auto active_index = tab_strip_model->active_index();
+  CHECK_NE(TabStripModel::kNoTab, active_index);
+
+  auto split_id = tab_strip_model->GetSplitForTab(active_index);
+  CHECK(split_id.has_value());
+  tab_strip_model->SwapTabsInSplit(*split_id);
 }
 
 }  // namespace brave
