@@ -23,7 +23,6 @@ brave_android_manifest_includes = [
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/browser/download/android:java",
-  "//brave/browser/download/internal/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/quick_search_engines/android:java",
@@ -74,6 +73,7 @@ brave_chrome_java_deps += brave_app_playlist_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
+  "//brave/browser/download/internal/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
 ]
 
