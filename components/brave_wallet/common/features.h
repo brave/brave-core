@@ -25,6 +25,7 @@ extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
 
 BASE_DECLARE_FEATURE(kBraveWalletCardanoFeature);
 extern const base::FeatureParam<int> kCardanoRpcThrottle;
+extern const base::FeatureParam<bool> kCardanoDAppSupport;
 
 BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);

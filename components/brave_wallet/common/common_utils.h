@@ -23,6 +23,7 @@ bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsCardanoEnabled();
+bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
