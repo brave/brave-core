@@ -272,6 +272,9 @@
   <message name="IDS_OS_SETTINGS_FIRMWARE_UP_TO_DATE_DESCRIPTION" desc="Sublabel shown when no firmware updates are available.">
     Firmware is up to date
   </message>
+  <message name="IDS_OS_SETTINGS_FIRMWARE_DISABLED_DESCRIPTION" desc="Sublabel shown when firmware updates are disabled.">
+    Firmware updates are disabled by your administrator.
+  </message>
   <message name="IDS_OS_SETTINGS_FIRMWARE_UPDATE_AVAILABLE_DESCRIPTION" desc="Sublabel shown when firmware updates are available.">
     Update available
   </message>
@@ -705,6 +708,9 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DISABLE_PERSONALIZED_SUGGESTIONS" desc="The label for the setting toggle to enable or disable the personalized conversions and custom user dictionaries for Japanese. The original string in Japanese is '学習機能、入力履歴からのサジェスト機能、ユーザ辞書機能を無効にする'.">
     Disable personalized conversions and suggestions as well as user dictionary
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_DEFAULT_NAME" desc="This is the default name for a new Japanese dictionary. The number value is a number like 1,2,3,4, etc. In Japanese, this string should in the format: ユーザー辞書 1">
+   User Dictionary <ph name="number">$1</ph>
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_NAME" desc="Label for the text box of the Japanese user settings which allows them to change the name of their custom dictionary for Japanese input.">
     Name
   </message>
@@ -725,6 +731,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_EXPORT" desc="Button to export a Japanese dictionary to a file on the device. In Japanese, this text should be: エクスポート">
     Export
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_ENTRY_DELETED" desc="This text is an announcement made to screen readers that a dictionary entry has been deleted. This occurs aftere the delete button is pressed and deletion is successful.">
+   Entry deleted
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_ENTRY_POSITION" desc="This text is mainly for screen readers to differentiate between different entries inside a dictionary, by referring to the entry and its position in the list of entries inside the dictionary. The number value will be a number like 1,2,3,etc">
+   Entry <ph name="number">$1</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_DELETE_ENTRY" desc="Button to delete an entry into a Japanese dictionary. In Japanese, this text should be: この単語を削除">
+    Delete entry
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_DICTIONARY_NEW_ENTRY" desc="Button to add a new entry into a Japanese dictionary. In Japanese, this text should be: 単語を追加">
     New entry
@@ -779,6 +794,30 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_SYLLABLE_INPUT">
     Input a syllable at a time
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_CLEAR_PERSONALIZATION_DATA" desc="Label for a heading/button to clear persionalized data from the Japanese IME">
+   Clear personalization data
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_DICTIONARY" desc="Label for a dialog for users to confirm deletion of a user dictionary">
+   Delete this dictionary
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_DICTIONARY_DETAIL" desc="More detail confirming that the user wants to delete a particular user dictionary">
+   <ph name="dictionary">$1</ph> will be permanently deleted. This action can't be undone.
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_DICTIONARY_BUTTON_LABEL" desc="Accessible name for button that will delete user a user dictionary in the Japanese IME.">
+   Delete dictionary
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_DICTIONARY_BUTTON" desc="Button that will confirm deletion of user dictionary in Japanese IME">
+   Delete
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DELETE_ITEMS" desc="Label for a form for users to select the type of personalized data they wany to Delete">
+   Delete the following items:
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_CONVERSATION_HISTORY" desc="One of the types of personalization data that can be cleared from the Japanese IME">
+   Conversation history
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SUGGESTION_HISTORY" desc="One of the types of personalization data that can be cleared from the Japanese IME">
+   Suggestion history
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_INPUT_MODE" desc="The label for the Input Mode section of the Japanese keyboad settings. As an example, it could be set to have a value of Romaji or Kana. In Japanese, this string should be 'ローマ字入力・かな入力'.">
    Input mode
@@ -846,9 +885,6 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE" desc="The label for Japanese keyboard settings dropdown within the settings page to set the keymap style for the Japanese keyboard. The available dropdown values are 'Custom keymap', 'ATOK', 'MS-IME', 'Kotoeri', and 'ChromeOS'. In Japanese, this string should be 'キー設定の選択'.">
     Keymap style
   </message>
-  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE_CUSTOM" desc="The label for Japanese settings page to set the keymap style to use a Custom keymap. This is 'Custom Keymap' in Japanese. In Japanese, this string should be 'カスタム'.">
-    Custom keymap
-  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE_ATOK" translateable="false">
     ATOK
   </message>
@@ -860,6 +896,9 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE_CHROMEOS" translateable="false">
     ChromeOS
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DICTIONARY" desc="Heading on the settings page where users can modify their custom user dictionary for the Japanese IME">
+    Dictionaries
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY" desc="Label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
     Manage user dictionaries
@@ -4346,6 +4385,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADVANCED_CONFIG_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
     Alternatively, select printer PPD. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_MANAGED_PRINTER_PPD" desc="Label for the text box displaying a path to the used PPD file for the active printer.">
+    Printer PPD
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
     or select PPD. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>

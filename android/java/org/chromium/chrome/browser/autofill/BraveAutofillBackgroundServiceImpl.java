@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceImpl {
 
-    private String mPackageName = ContextUtils.getApplicationContext().getPackageName();
+    private final String mPackageName = ContextUtils.getApplicationContext().getPackageName();
     private FillRequest mFillRequest;
     private FillCallback mFillCallback;
     private SaveRequest mSaveRequest;

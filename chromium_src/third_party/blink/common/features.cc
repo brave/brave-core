@@ -35,7 +35,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 BASE_FEATURE(kFileSystemAccessAPI,

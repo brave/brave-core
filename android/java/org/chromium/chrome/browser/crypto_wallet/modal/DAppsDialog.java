@@ -41,7 +41,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     private View mRootView;
     private boolean mShowOnboarding;
     private KeyringService mKeyringService;
-    private DialogInterface.OnDismissListener mOnDismissListener;
+    private final DialogInterface.OnDismissListener mOnDismissListener;
     private boolean mDismissed;
     private final Handler mHandler;
     @DAppsDialogStyle private final int mStyle;

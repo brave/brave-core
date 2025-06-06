@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 54244bbdcb5a7599c6182e6092236f29b4b7a795..02c2a50e2f23783c64113c3c022d446f4e3b8ded 100644
+index f8815b416307b3a64aa2c628ef3df180014f2f08..f050ae7fc7b95de1b90fab899ca837b2469ad5e0 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -74,7 +74,7 @@ index 54244bbdcb5a7599c6182e6092236f29b4b7a795..02c2a50e2f23783c64113c3c022d446f
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -888,6 +902,7 @@ by a child template that "extends" this file.
+@@ -893,6 +907,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -82,7 +82,7 @@ index 54244bbdcb5a7599c6182e6092236f29b4b7a795..02c2a50e2f23783c64113c3c022d446f
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -911,6 +926,7 @@ by a child template that "extends" this file.
+@@ -916,6 +931,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>

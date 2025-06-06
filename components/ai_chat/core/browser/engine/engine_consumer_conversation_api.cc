@@ -67,15 +67,6 @@ void EngineConsumerConversationAPI::ClearAllQueries() {
 base::expected<std::vector<std::string>, mojom::APIError>
 EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
     std::vector<EngineConsumer::GenerationResult>& results) {
-  // Rust implementation of JSON reader is required to parse the response
-  // safely. This function currently is only called on Desktop which uses a
-  // rust JSON reader. Chromium is in progress of making all platforms use the
-  // rust JSON reader and updating the rule of 2 documentation to explicitly
-  // point out that JSON parser in base is considered safe.
-  if (!base::JSONReader::UsingRust()) {
-    return base::unexpected(mojom::APIError::InternalError);
-  }
-
   // Use RE2 to extract the array from the response, then use rust JSON::Reader
   // to safely parse the array.
   std::vector<std::string> str_arr;

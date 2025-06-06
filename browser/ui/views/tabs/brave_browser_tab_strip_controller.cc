@@ -43,11 +43,3 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
       std::make_unique<BraveTabContextMenuContents>(tab, this, *tab_index);
   context_menu_contents_->RunMenuAt(p, source_type);
 }
-
-int BraveBrowserTabStripController::GetIndexOfLastFocusedTabInSplit(
-    int model_index) {
-  // To use original |model_index| value always instead of updating it.
-  // We want to activate clicked tab. But upstream activates the most recently
-  // focused tab in the split when selecting a split tab.
-  return model_index;
-}

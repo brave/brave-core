@@ -26,6 +26,7 @@ class BraveBrowser : public Browser {
   static bool ShouldUseBraveWebViewRoundedCorners(Browser* browser);
 
   // Browser overrides:
+  bool ShouldShowBookmarkBar() const override;
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;
   bool ShouldDisplayFavicon(content::WebContents* web_contents) const override;

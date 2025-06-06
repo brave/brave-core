@@ -89,7 +89,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public int mTrackersBlocked;
         public int mScriptsBlocked;
         public int mFingerprintsBlocked;
-        public ArrayList<String> mBlockerNames;
+        public final ArrayList<String> mBlockerNames;
     }
 
     private Context mContext;
@@ -1277,10 +1277,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    private View.OnClickListener mDoneClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            hideBraveShieldsMenu();
-        }
-    };
+    private final View.OnClickListener mDoneClickListener =
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideBraveShieldsMenu();
+                }
+            };
 }

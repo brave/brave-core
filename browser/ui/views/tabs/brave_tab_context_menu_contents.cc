@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
@@ -48,7 +49,7 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
   const bool is_vertical_tab = tabs::utils::ShouldShowVerticalTabs(browser_);
 
   model_ = std::make_unique<BraveTabMenuModel>(
-      this, controller->browser()->tab_menu_model_delegate(),
+      this, browser_->GetFeatures().tab_menu_model_delegate(),
       controller->model(), index, is_vertical_tab);
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_->profile());

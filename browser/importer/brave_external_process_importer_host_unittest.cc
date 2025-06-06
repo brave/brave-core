@@ -46,11 +46,11 @@ class ImportEndedObserver : public importer::ImporterProgressObserver {
   void ImportStarted() override {}
 
   // Invoked when data for the specified item is about to be collected.
-  void ImportItemStarted(importer::ImportItem item) override {}
+  void ImportItemStarted(user_data_importer::ImportItem item) override {}
 
   // Invoked when data for the specified item has been collected from the
   // source profile and is now ready for further processing.
-  void ImportItemEnded(importer::ImportItem item) override {}
+  void ImportItemEnded(user_data_importer::ImportItem item) override {}
 
   // Invoked when the source profile has been imported.
   void ImportEnded() override { std::move(callback_).Run(); }
@@ -142,7 +142,8 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
 
   Profile* GetProfile() { return profile_.get(); }
 
-  void LaunchExtensionsImportAndWait(importer::SourceProfile source_profile) {
+  void LaunchExtensionsImportAndWait(
+      user_data_importer::SourceProfile source_profile) {
     base::RunLoop loop;
     ImportEndedObserver observer(loop.QuitClosure());
 
@@ -151,8 +152,8 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
 
     external_process_host->DoNotLaunchImportForTesting();
     external_process_host->set_observer(&observer);
-    external_process_host->StartImportSettings(source_profile, GetProfile(),
-                                               importer::EXTENSIONS, nullptr);
+    external_process_host->StartImportSettings(
+        source_profile, GetProfile(), user_data_importer::EXTENSIONS, nullptr);
     loop.Run();
   }
 
@@ -181,10 +182,10 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
 };
 
 TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
-  importer::SourceProfile source_profile;
+  user_data_importer::SourceProfile source_profile;
   source_profile.source_path = GetProductProfilePath("Chrome");
-  source_profile.importer_type = importer::TYPE_CHROME;
-  source_profile.services_supported = importer::EXTENSIONS;
+  source_profile.importer_type = user_data_importer::TYPE_CHROME;
+  source_profile.services_supported = user_data_importer::EXTENSIONS;
 
   auto extension_installer = base::BindLambdaForTesting(
       [this](

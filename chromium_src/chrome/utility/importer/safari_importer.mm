@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/utility/importer/safari_importer.h"
+
 #include <Cocoa/Cocoa.h>
 
 #include <vector>
 
 #include "base/logging.h"
-#include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/grit/generated_resources.h"
-#include "chrome/utility/importer/safari_importer.h"
+#include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -22,7 +23,7 @@ int GetBookmarkGroupFromSafariID() {
 constexpr char16_t kSafariReadingListPath[] = u"com.apple.ReadingList";
 
 void CorrectSafariReadingListPath(
-    std::vector<ImportedBookmarkEntry>& bookmarks) {
+    std::vector<user_data_importer::ImportedBookmarkEntry>& bookmarks) {
   for (auto& item : bookmarks) {
     for (auto& folder : item.path) {
       if (folder == kSafariReadingListPath) {

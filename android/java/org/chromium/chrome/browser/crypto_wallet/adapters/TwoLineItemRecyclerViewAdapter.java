@@ -31,7 +31,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private List<TwoLineItem> mValues;
     private final ExecutorService mExecutor;
     private final Handler mHandler;
-    private AdapterViewOrientation mItemViewOrientation;
+    private final AdapterViewOrientation mItemViewOrientation;
     private LayoutInflater mLayoutInflater;
     public int mSubTextAlignment;
     public int mDividerMargin;
@@ -199,7 +199,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         public ImageType imageType;
         public String imgData;
 
-        private Callbacks.Callback2<TextView, TextView> updateViewCb;
+        public Callbacks.Callback2<TextView, TextView> updateViewCb;
 
         public TwoLineItemText(
                 String title,

@@ -581,11 +581,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
-  // Skip this test if not using Rust JSON parser, as it is not supported.
-  if (!base::JSONReader::UsingRust()) {
-    return;
-  }
-
   auto [tabs, tabs_json_strings] =
       GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
   ASSERT_EQ(tabs.size(), 2 * kChunkSize);
@@ -908,11 +903,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GetSuggestedTopics_SingleTabChunk) {
-  // Skip this test if not using Rust JSON parser, as it is not supported.
-  if (!base::JSONReader::UsingRust()) {
-    return;
-  }
-
   auto [tabs, tabs_json_strings] = GetMockTabsAndExpectedTabsJsonString(1);
   ASSERT_EQ(tabs.size(), 1u);
   ASSERT_EQ(tabs_json_strings.size(), 1u);
@@ -950,11 +940,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
-  // Skip this test if not using Rust JSON parser, as it is not supported.
-  if (!base::JSONReader::UsingRust()) {
-    return;
-  }
-
   // Get two full chunks of tabs for testing.
   auto [tabs, tabs_json_strings] =
       GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
@@ -1152,12 +1137,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
       EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
           results),
       base::unexpected(mojom::APIError::InternalError));
-
-  if (!base::JSONReader::UsingRust()) {
-    // This function is early return without any actions if not using Rust JSON,
-    // so we can skip the rest of the test.
-    return;
-  }
 
   auto add_result = [&results](const std::string& completion_text) {
     results.push_back(base::ok(EngineConsumer::GenerationResultData(

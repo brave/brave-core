@@ -15,6 +15,7 @@ BASE_FEATURE(kPermissionLifetime,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPermissionOnDeviceNotificationPredictions,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT},

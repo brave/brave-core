@@ -1,8 +1,8 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index 642c6c2dc0f4feedbaa84eccc6d343cddb68500e..4ca049f578ec020635a3753f15a7bb9e8a5d0d13 100644
+index 32f9014d0ca517399bbf2691fa0c01e7ebedccfb..957ee97238148bcb81ab094ef91adafe74781c7b 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
-@@ -101,7 +101,7 @@
+@@ -103,7 +103,7 @@
              {
                  "domain": "Network",
                  "include": ["enable", "disable", "clearBrowserCache", "clearBrowserCookies", "getCookies", "getAllCookies", "deleteCookies", "setCookie", "setCookies", "setExtraHTTPHeaders", "canEmulateNetworkConditions", "emulateNetworkConditions", "setBypassServiceWorker", "setRequestInterception", "continueInterceptedRequest", "getResponseBody", "getResponseBodyForInterception", "setCacheDisabled", "takeResponseBodyForInterceptionAsStream", "getSecurityIsolationStatus", "loadNetworkResource", "setAcceptedEncodings", "clearAcceptedEncodingsOverride", "enableReportingApi", "setCookieControls"],

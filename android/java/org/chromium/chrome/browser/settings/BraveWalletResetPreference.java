@@ -44,7 +44,7 @@ public class BraveWalletResetPreference
         extends Preference implements Preference.OnPreferenceClickListener {
     private static final String TAG = "BraveWalletResetPref";
 
-    private int mPrefAccentColor;
+    private final int mPrefAccentColor;
     private final String mConfirmationPhrase;
     private Profile mProfile;
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/BUILD.gn b/chrome/browser/importer/BUILD.gn
-index 55239e167ca30397e477734947424f19f464a91c..96fd6ea44b43d324e26e70b749dc28a50689e45f 100644
+index 0c048e2d14800f174da8282e87b936b6e07e3e6a..82fd338a7c142060e1dfff4762ebece101c00c9b 100644
 --- a/chrome/browser/importer/BUILD.gn
 +++ b/chrome/browser/importer/BUILD.gn
-@@ -30,6 +30,7 @@ source_set("importer") {
+@@ -31,6 +31,7 @@ source_set("importer") {
      "//ui/gfx",
      "//url",
    ]
@@ -10,7 +10,7 @@ index 55239e167ca30397e477734947424f19f464a91c..96fd6ea44b43d324e26e70b749dc28a5
  }
  
  source_set("impl") {
-@@ -58,6 +59,7 @@ source_set("impl") {
+@@ -59,6 +60,7 @@ source_set("impl") {
      "//components/password_manager/core/browser:password_form",
      "//components/password_manager/core/browser/password_store:password_store_interface",
    ]

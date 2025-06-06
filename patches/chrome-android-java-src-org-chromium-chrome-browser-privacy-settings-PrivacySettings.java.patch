@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index a2718ae46cf88f63a3c98ccf24246db3ca9b1183..ce2cb99c8d64574697916bf834728429a3bccad0 100644
+index e4bb3943331be4264953f8c3a95c762b6718b494..459dd4d813aeaca4c72250c852a9b9f174688b45 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -77,7 +77,7 @@ import java.util.concurrent.TimeUnit;
+@@ -78,7 +78,7 @@ import java.util.concurrent.TimeUnit;
  import java.util.function.Consumer;
  
  /** Fragment to keep track of the all the privacy related preferences. */
@@ -11,7 +11,7 @@ index a2718ae46cf88f63a3c98ccf24246db3ca9b1183..ce2cb99c8d64574697916bf834728429
          implements Preference.OnPreferenceChangeListener {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_PRELOAD_PAGES = "preload_pages";
-@@ -554,6 +554,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+@@ -551,6 +551,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index a2718ae46cf88f63a3c98ccf24246db3ca9b1183..ce2cb99c8d64574697916bf834728429
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(
-@@ -568,7 +569,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+@@ -565,7 +566,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
                      .show(getActivity(), getString(R.string.help_context_privacy), null);
              return true;
          }

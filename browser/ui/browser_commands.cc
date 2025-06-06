@@ -54,7 +54,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
-#include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -64,6 +63,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
+#include "components/tabs/public/tab_group.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
@@ -615,7 +615,9 @@ void UngroupCurrentGroup(Browser* browser) {
 
   auto* group = tsm->group_model()->GetTabGroup(group_id.value());
   std::vector<int> indices(group->tab_count());
-  std::iota(indices.begin(), indices.end(), group->GetFirstTab().value());
+  tabs::TabInterface* first_tab = group->GetFirstTab();
+  DCHECK(first_tab);
+  std::iota(indices.begin(), indices.end(), tsm->GetIndexOfTab(first_tab));
   tsm->RemoveFromGroup(indices);
 }
 

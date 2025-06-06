@@ -56,7 +56,8 @@ extends SettingsClearBrowsingDataDialogElement {
     ;(this as any).tabsNames_.push(loadTimeData.getString('onExitPageTitle'))
 
     this.addWebUiListener(
-      'update-counter-text', this.updateOnExitCountersText_.bind(this))
+      'browsing-data-counter-text-update',
+      this.updateOnExitCountersText_.bind(this))
 
     this.addWebUiListener(
       'brave-rewards-enabled-changed', (enabled: boolean) => {

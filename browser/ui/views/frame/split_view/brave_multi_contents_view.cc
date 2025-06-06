@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
@@ -48,20 +49,16 @@ BraveMultiContentsView::BraveMultiContentsView(
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
 
-void BraveMultiContentsView::UpdateContentsBorder() {
+void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
   if (!IsInSplitView()) {
-    MultiContentsView::UpdateContentsBorder();
+    MultiContentsView::UpdateContentsBorderAndOverlay();
     return;
   }
 
-  auto* cp = GetColorProvider();
-  if (!cp) {
-    return;
-  }
-
-  // Draw active/inactive outlines around the contents areas.
-  const auto set_contents_border =
-      [this, cp](ContentsContainerView* contents_container_view) {
+  // Draw active/inactive outlines around the contents areas and updates mini
+  // toolbar visibility.
+  const auto set_contents_border_and_mini_toolbar =
+      [this](ContentsContainerView* contents_container_view) {
         const bool is_active = contents_container_view->GetContentsView() ==
                                GetActiveContentsView();
         const float corner_radius = GetCornerRadius();
@@ -72,15 +69,20 @@ void BraveMultiContentsView::UpdateContentsBorder() {
         } else {
           contents_container_view->SetBorder(views::CreateBorderPainter(
               views::Painter::CreateRoundRectWith1PxBorderPainter(
-                  cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder),
-                  cp->GetColor(kColorToolbar), corner_radius, SkBlendMode::kSrc,
+                  GetColorProvider()->GetColor(
+                      kColorBraveSplitViewInactiveWebViewBorder),
+                  GetColorProvider()->GetColor(kColorToolbar), corner_radius,
+                  SkBlendMode::kSrc,
                   /*anti_alias*/ true,
                   /*should_border_scale*/ true),
               gfx::Insets(kBorderThickness)));
         }
+        // Chromium's Mini toolbar should be hidden always as we have our own
+        // mini urlbar.
+        contents_container_view->GetMiniToolbar()->SetVisible(false);
       };
   for (auto* contents_container_view : contents_container_views_) {
-    set_contents_border(contents_container_view);
+    set_contents_border_and_mini_toolbar(contents_container_view);
   }
 }
 

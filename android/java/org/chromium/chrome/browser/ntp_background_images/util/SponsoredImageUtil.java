@@ -6,13 +6,13 @@
 package org.chromium.chrome.browser.ntp_background_images.util;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
-import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
 
 public class SponsoredImageUtil {
 
@@ -26,24 +26,31 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-    private static List<BackgroundImage> backgroundImages = new ArrayList<BackgroundImage>(
-            Arrays.asList(new BackgroundImage(R.drawable.dylan_malval_sea_min, 1300, 720,
-                    new ImageCredit("Dylan Malval", "https://www.instagram.com/vass_captures/"))));
+    private static final List<BackgroundImage> sBackgroundImages =
+            new ArrayList<BackgroundImage>(
+                    Arrays.asList(
+                            new BackgroundImage(
+                                    R.drawable.dylan_malval_sea_min,
+                                    1300,
+                                    720,
+                                    new ImageCredit(
+                                            "Dylan Malval",
+                                            "https://www.instagram.com/vass_captures/"))));
 
-    private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
+    private static int sBackgroundImageIndex = getRandomIndex(sBackgroundImages.size());
 
-    private static int tabIndex = 1;
+    private static int sTabIndex = 1;
 
     public static List<BackgroundImage> getBackgroundImages() {
-        return backgroundImages;
+        return sBackgroundImages;
     }
 
     public static int getTabIndex() {
-        return tabIndex;
+        return sTabIndex;
     }
 
     public static void incrementTabIndex(int count) {
-        tabIndex = tabIndex + count;
+        sTabIndex = sTabIndex + count;
     }
 
     private static int getRandomIndex(int count) {
@@ -52,12 +59,12 @@ public class SponsoredImageUtil {
     }
 
     public static BackgroundImage getBackgroundImage() {
-    	if (backgroundImageIndex >= backgroundImages.size()) {
-    		backgroundImageIndex = 0;
-    	}
+        if (sBackgroundImageIndex >= sBackgroundImages.size()) {
+            sBackgroundImageIndex = 0;
+        }
 
-    	BackgroundImage backgroundImage = backgroundImages.get(backgroundImageIndex);
-    	backgroundImageIndex++;
-    	return backgroundImage;
+        BackgroundImage backgroundImage = sBackgroundImages.get(sBackgroundImageIndex);
+        sBackgroundImageIndex++;
+        return backgroundImage;
     }
 }

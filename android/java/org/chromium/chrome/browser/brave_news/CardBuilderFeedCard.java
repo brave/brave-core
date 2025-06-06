@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
 public class CardBuilderFeedCard {
     private static final int CARD_LAYOUT = 7;
     private static final int BUTTON_LAYOUT = 8;
@@ -90,18 +91,18 @@ public class CardBuilderFeedCard {
 
     public static final int CARDTYPE_BRAVE_RATING = 100;
 
-    private LinearLayout mLinearLayout;
-    private Activity mActivity;
-    private FeedItemsCard mNewsItem;
-    private BraveNewsController mBraveNewsController;
-    private int mType;
-    private int mPosition;
-    private int mHorizontalMargin;
-    private int mDeviceWidth;
+    private final LinearLayout mLinearLayout;
+    private final Activity mActivity;
+    private final FeedItemsCard mNewsItem;
+    private final BraveNewsController mBraveNewsController;
+    private final int mType;
+    private final int mPosition;
+    private final int mHorizontalMargin;
+    private final int mDeviceWidth;
     private boolean mIsPromo;
     private String mCreativeInstanceId;
     private String mOffersCategory;
-    private RequestManager mGlide;
+    private final RequestManager mGlide;
 
     private static final String TAG = "BN";
     private static final int MARGIN_VERTICAL = 10;

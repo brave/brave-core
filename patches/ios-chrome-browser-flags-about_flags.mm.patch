@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index a126cdbc2bbfb51b5d1ace9bf57a32cf80385238..a27f2cdbd2ca2969f96e8aa79f0724a7fc1e207a 100644
+index 479900bbcc7141845396c9bb7957dd7c109c4e32..c28aed7607ef964f495754a0400e830be30130e7 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1512,6 +1512,7 @@ const FeatureEntry::FeatureVariation
+@@ -1441,6 +1441,7 @@ const FeatureEntry::FeatureVariation kGLICPromoConsentVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {
