@@ -31,15 +31,15 @@ constexpr char16_t kYoutubeFullscreen[] =
         var videoPlayer = document.querySelector("video.html5-main-video");
         if (fullscreenBtn && videoPlayer) {
           observer.disconnect()
-          videoPlayer.play();
-          fullscreenBtn.click();
+          delayedPlayAndClick(fullscreenBtn, videoPlayer);
         }
       });
 
       var fullscreenBtn = document.querySelector("button.fullscreen-icon");
-      // Check if fullscreen button is available.
-      if (fullscreenBtn) {
-        fullscreenBtn.click();
+      var videoPlayer = document.querySelector("video.html5-main-video");
+      // Check if fullscreen button and video are available.
+      if (fullscreenBtn && videoPlayer) {
+       delayedPlayAndClick(fullscreenBtn, videoPlayer);
       } else {
         // When fullscreen button is not available
         // clicking the movie player resume the UI.
@@ -52,6 +52,23 @@ constexpr char16_t kYoutubeFullscreen[] =
         }
       }
     }
+  }
+
+  // Click the fullscreen button and play the video and after a delay 
+  // to ensure the video is ready.
+  // This is necessary because sometimes (rarely) when switching to fullscreen
+  // mode a video might be paused automatically from the backend if the buffer 
+  // was not ready.
+  // The delay allows the video to load properly before attempting to play it.
+  // This is especially important for high quality videos, which may require 
+  // some time to buffer before they can be played.
+  // The delay is set to 500 milliseconds, which is a reasonable delay for 
+  // the videos to be ready for playback.
+  function delayedPlayAndClick(fullscreenBtn, videoPlayer) {
+    setTimeout(() => {
+      videoPlayer.play();
+    }, 500);
+    fullscreenBtn.click();
   }
 
   if (document.readyState === "loading") {
