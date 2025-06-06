@@ -68,7 +68,10 @@ provideStrings({
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the ' +
     'email to access your account.',
   emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder ' +
-    'or $1try again$2.',
+    'or try again.',
+  emailAliasesAuthError: 'Error authenticating with Brave Account. ' +
+    'Please try again.',
+  emailAliasesAuthTryAgainButton: 'Start over',
   emailAliasesBubbleDescription: 'Create a random email address that ' +
     'forwards to your inbox while keeping your personal email private.',
   emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free ' +
@@ -162,28 +165,34 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { errorMessage, aliasEmail } }
   }
 
-  async requestAuthentication (email: string) {
-    const error : boolean = Math.random() < 1/3
-    if (!error) {
+  async requestAuthentication (email: string) : Promise<{
+    errorMessage: string | null,
+  }> {
+    if (Math.random() < 1/3) {
+      return {
+        errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
+    }
+    this.observers.forEach(observer => {
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticating,
+        email: email,
+        errorMessage: undefined
+      })
+    })
+    this.accountRequestId = window.setTimeout(() => {
       this.observers.forEach(observer => {
-        observer.onAuthStateChanged({
+        observer.onAuthStateChanged(Math.random() < 1/3 ? {
+          status: AuthenticationStatus.kAuthenticated,
+          email: email,
+          errorMessage: undefined
+        } : {
           status: AuthenticationStatus.kAuthenticating,
-          email: email
+          email: '',
+          errorMessage: getLocale('emailAliasesAuthError')
         })
       })
-      this.accountRequestId = window.setTimeout(() => {
-        this.observers.forEach(observer => {
-          observer.onAuthStateChanged({
-            status: AuthenticationStatus.kAuthenticated,
-            email: email
-          })
-        })
-      }, 5000);
-    }
-    const errorMessage = error
-      ? getLocale('emailAliasesRequestAuthenticationError')
-      : null
-    return { errorMessage }
+    }, 5000);
+    return { errorMessage: null }
   }
 
   cancelAuthenticationOrLogout () {
@@ -191,7 +200,8 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kUnauthenticated,
-        email: ''
+        email: '',
+        errorMessage: undefined
       })
     })
   }
@@ -205,13 +215,15 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
 const stubEmailAliasesServiceNoAccountInstance =
   new StubEmailAliasesService({
     status: AuthenticationStatus.kUnauthenticated,
-    email: ''
+    email: '',
+    errorMessage: undefined
   })
 
 const stubEmailAliasesServiceAccountReadyInstance =
   new StubEmailAliasesService({
     status: AuthenticationStatus.kAuthenticated,
-    email: demoData.email
+    email: demoData.email,
+    errorMessage: undefined
   })
 
 const bindNoAccountObserver =

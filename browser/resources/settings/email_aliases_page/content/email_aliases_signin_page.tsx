@@ -3,16 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { formatLocale, getLocale } from "$web-common/locale";
+import { formatLocale, getLocale } from "$web-common/locale"
 import { onEnterKeyForInput } from "./on_enter_key"
-import { spacing } from "@brave/leo/tokens/css/variables";
+import { spacing } from "@brave/leo/tokens/css/variables"
 import * as React from 'react'
 import Alert from "@brave/leo/react/alert"
 import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
 import Card from "./styles/Card"
 import Col from "./styles/Col"
-import formatMessage from '$web-common/formatMessage'
 import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
@@ -74,18 +73,24 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
   </SpacedCol>
 }
 
-const AfterSendingEmailMessage = ({ authEmail, emailAliasesService }:
-  { authEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
-  const onClick = () => {
-    emailAliasesService.cancelAuthenticationOrLogout()
-  }
+const AfterSendingEmailMessage = (
+  { authEmail, emailAliasesService, errorMessage }:
+  { authEmail: string, emailAliasesService: EmailAliasesServiceInterface,
+    errorMessage: string | undefined }) => {
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
-      {formatMessage(getLocale('emailAliasesDontSeeEmail'),
-       { tags: { $1: (content) => <a href='#'
-                                     onClick={onClick}>{content}</a> } })}
+      {getLocale('emailAliasesDontSeeEmail')}
+    </div>
+    {errorMessage && <Alert>
+      {errorMessage}
+    </Alert>}
+    <div>
+      <Button onClick={() => emailAliasesService.cancelAuthenticationOrLogout()}
+              kind='filled'>
+        {getLocale('emailAliasesAuthTryAgainButton')}
+      </Button>
     </div>
   </SpacedCol>
 }
@@ -103,6 +108,7 @@ export const MainEmailEntryForm = (
           emailAliasesService={emailAliasesService} /> :
         <AfterSendingEmailMessage
           authEmail={authState.email}
+          errorMessage={authState.errorMessage}
           emailAliasesService={emailAliasesService} />}
     </SignupRow>
   </Card>
