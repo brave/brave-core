@@ -313,6 +313,8 @@ const Config = function () {
     'brave_android_keystore_password',
   ])
   this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
+  this.braveAndroidPkcs11Provider = ''
+  this.braveAndroidPkcs11Alias = ''
   this.braveVariationsServerUrl =
     getEnvConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
@@ -551,6 +553,10 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_name = this.braveAndroidKeystoreName
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
+      if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
+        args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
+        args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
+      }
     }
   }
 
@@ -1138,6 +1144,14 @@ Config.prototype.update = function (options) {
 
   if (options.use_libfuzzer) {
     this.use_libfuzzer = options.use_libfuzzer
+  }
+
+  if (options.pkcs11Provider) {
+    this.braveAndroidPkcs11Provider = options.pkcs11Provider
+  }
+
+  if (options.pkcs11Alias) {
+    this.braveAndroidPkcs11Alias = options.pkcs11Alias
   }
 }
 

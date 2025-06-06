@@ -34,6 +34,8 @@ declare_args() {
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
   brave_android_key_password = ""
+  brave_android_pkcs11_provider = ""
+  brave_android_pkcs11_alias = ""
 
   skip_signing = false
 
