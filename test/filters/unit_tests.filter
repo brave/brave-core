@@ -164,9 +164,10 @@
 -PerformanceHandlerTest.GetCurrentOpenSites
 
 # Prerender is disabled
--PrerenderManagerBasicRequirementTest.*
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
+-PrerenderManagerBasicRequirementTest.*
+-PrerenderManagerPrewarmTest.StartPrewarmSearchResult
 -PrerenderManagerTest.DestroyedOnNavigateAway
 -PrerenderManagerTest.DisallowSearchUrlBookmarkBar
 -PrerenderManagerTest.DisallowSearchUrlNewTabPage
@@ -239,6 +240,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndRevokeSyncNotAllowed
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
@@ -271,6 +273,7 @@
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
+-SigninUtilHistorySyncOptinTest.*
 -SignoutAllowed/SigninManagerTest.*
 -SyncPromoIdentityPillManagerTest.MaxShownCount
 -SyncPromoIdentityPillManagerTest.MaxUsedCount
