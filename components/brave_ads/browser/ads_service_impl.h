@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
@@ -68,7 +69,6 @@ class DeviceId;
 class ResourceComponent;
 struct NewTabPageAdInfo;
 class NewTabPageAdPrefetcher;
-
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
                              public bat_ads::mojom::BatAdsObserver,
@@ -81,6 +81,8 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<Delegate> delegate,
       PrefService* prefs,
       PrefService* local_state,
+      std::unique_ptr<VirtualPrefProvider::Delegate>
+          virtual_pref_provider_delegate,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader,
       std::string_view channel_name,
       const base::FilePath& profile_path,
@@ -464,6 +466,8 @@ class AdsServiceImpl final : public AdsService,
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
   const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
+
+  const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
 

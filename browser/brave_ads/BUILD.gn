@@ -11,6 +11,7 @@ source_set("brave_ads") {
     "ads_service_delegate.h",
     "ads_service_factory.h",
     "analytics/p3a/brave_stats_helper.h",
+    "virtual_pref_provider_delegate.h",
   ]
 
   public_deps = [
@@ -47,6 +48,7 @@ source_set("impl") {
     "application_state/notification_helper/notification_helper.h",
     "application_state/notification_helper/notification_helper_impl.cc",
     "application_state/notification_helper/notification_helper_impl.h",
+    "virtual_pref_provider_delegate.cc",
   ]
 
   deps = [
@@ -64,7 +66,6 @@ source_set("impl") {
     "//brave/components/brave_ads/browser/application_state",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
-    "//brave/components/skus/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:primitives",
