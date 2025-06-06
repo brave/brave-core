@@ -25,6 +25,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"

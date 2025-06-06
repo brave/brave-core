@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/importer/extensions_import_helpers.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"

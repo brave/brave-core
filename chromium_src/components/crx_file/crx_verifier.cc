@@ -7,7 +7,6 @@
 
 #include <array>
 #include <utility>
-#include <vector>
 
 #include "base/containers/span.h"
 
