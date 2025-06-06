@@ -739,21 +739,22 @@ class TabManager: NSObject {
 
   /// Forget all data for websites that have forget me enabled
   /// Will forget all data instantly with no delay
-  @MainActor func forgetDataOnAppExitDomains() {
+  func forgetDataOnAppExitDomains() {
     guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
-    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
-      .compactMap { domain -> URL? in
-        guard let urlString = domain.url,
-          let url = URL(string: urlString),
-          !InternalURL.isValid(url: url)
-        else {
-          return nil
+    Task.detached { [weak self] in
+      guard let self else { return }
+      let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
+        .compactMap { domain -> URL? in
+          guard let urlString = domain.url,
+            let url = URL(string: urlString),
+            !InternalURL.isValid(url: url)
+          else {
+            return nil
+          }
+          return url
         }
-        return url
-      }
-    guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
-    Task {
-      await forgetData(for: shredOnAppExitURLs)
+      guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
+      await self.forgetData(for: shredOnAppExitURLs)
     }
   }
 
