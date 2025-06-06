@@ -4,6 +4,8 @@
     <output filename="grit/brave_components_strings.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
+    <output filename="grit/brave_components_webui_strings.h" type="webui_header" />
+    <output filename="grit/brave_components_webui_strings.ts" type="webui_ts" />
     <output filename="brave_components_strings_af.pak" type="data_package" lang="af" />
     <output filename="brave_components_strings_am.pak" type="data_package" lang="am" />
     <output filename="brave_components_strings_ar.pak" type="data_package" lang="ar" />

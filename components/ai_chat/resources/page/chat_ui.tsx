@@ -19,6 +19,8 @@ import FullScreen from './components/full_page'
 import Loading from './components/loading'
 import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
+import '../common/strings'
+
 setIconBasePath('chrome://resources/brave-icons')
 
 // Make sure we're fetching data as early as possible

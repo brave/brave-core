@@ -117,7 +117,7 @@
   <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
     New chat
   </message>
-  <message name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
+  <message name="IDS_AI_CHAT_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium" formatter_data="webui=ai_chat">
     Go Premium
   </message>
   <message name="IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
