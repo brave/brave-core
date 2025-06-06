@@ -1099,5 +1099,23 @@ extension Strings {
       comment:
         "The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature."
     )
+    public static let leoDisabledPrivateBrowsingMessageTitle = NSLocalizedString(
+      "aichat.leoDisabledPrivateBrowsingMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo Not Available",
+      comment:
+        "The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode."
+    )
+    public static let leoDisabledPrivateBrowsingMessageDescription = NSLocalizedString(
+      "aichat.leoDisabledPrivateBrowsingMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo is currently not available in Private Browsing Mode. To use Leo, please exit Private Browsing Mode and try again.",
+      comment:
+        "The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode."
+    )
   }
 }
