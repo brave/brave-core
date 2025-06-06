@@ -3308,7 +3308,7 @@ extension BrowserViewController {
         message: Strings.AIChat.leoDisabledMessageDescription,
         preferredStyle: .alert
       )
-      let action = UIAlertAction(title: Strings.OKString, style: .default)
+      let action = UIAlertAction(title: Strings.OBErrorOkay, style: .default)
       alert.addAction(action)
       present(alert, animated: true)
       return
@@ -3320,7 +3320,7 @@ extension BrowserViewController {
         message: Strings.AIChat.leoDisabledPrivateBrowsingMessageDescription,
         preferredStyle: .alert
       )
-      let action = UIAlertAction(title: Strings.OKString, style: .default)
+      let action = UIAlertAction(title: Strings.OBErrorOkay, style: .default)
       alert.addAction(action)
       present(alert, animated: true)
       return

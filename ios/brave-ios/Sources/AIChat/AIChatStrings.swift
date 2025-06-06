@@ -1104,7 +1104,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Leo Disabled",
+        "Leo Not Available",
       comment:
         "The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode."
     )
