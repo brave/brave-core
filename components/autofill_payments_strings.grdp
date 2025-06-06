@@ -59,6 +59,9 @@
   <message name="IDS_AUTOFILL_GOOGLE_PAY_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Google Pay logo.">
     Google Pay logo
   </message>
+  <message name="IDS_AUTOFILL_CHROME_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Brave logo.">
+    Brave logo
+  </message>
 
   <if expr="not is_android">
     <message name="IDS_AUTOFILL_FIELD_LABEL_PHONE" desc="The label of the Phone entry in a settings-like UI to enter a phone number.">
@@ -105,9 +108,18 @@
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_LOCAL" desc="Title text for the Autofill save card prompt to save a card locally. It is shown when a new card is used during checkout, and sync is not enabled. This prompt title is shown on both the Desktop bubble and the Android infobar.">
     Save card?
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_ONLY_PROMPT_EXPLANATION_LOCAL" desc="Explanation text for the Autofill save card prompt to save a card locally. It is shown when a new card is used during checkout, and sync is not enabled. This prompt description is shown on both the Desktop bubble, the Android infobar, and the Android bottom sheet..">
-    To pay faster next time, save your card to your device
-  </message>
+  <if expr="is_ios">
+    <then>
+      <message name="IDS_AUTOFILL_SAVE_CARD_ONLY_PROMPT_EXPLANATION_LOCAL" desc="Explanation text for the Autofill save card prompt to save a card locally. It is shown when a new card is used during checkout, and sync is not enabled. This prompt description is shown on iOS bottomsheet.">
+        Pay faster when your card is saved. Card details are saved to Brave on your device.
+      </message>
+    </then>
+    <else>
+      <message name="IDS_AUTOFILL_SAVE_CARD_ONLY_PROMPT_EXPLANATION_LOCAL" desc="Explanation text for the Autofill save card prompt to save a card locally. It is shown when a new card is used during checkout, and sync is not enabled. This prompt description is shown on both the Desktop bubble, the Android infobar, and the Android bottom sheet.">
+        To pay faster next time, save your card to your device
+      </message>
+    </else>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_WITH_CVC_PROMPT_EXPLANATION_LOCAL" desc="Explanation text for the Autofill save card prompt to save a card with CVC locally. It is shown when a new card is used during checkout, and sync is not enabled. This prompt description is shown on both the Desktop bubble and the Android infobar, and the Android bottom sheet..">
     To pay faster next time, save your card and encrypted security code to your device
   </message>
@@ -1223,11 +1235,20 @@
     <message name="IDS_AUTOFILL_BOTTOM_SHEET_MANAGE_PAYMENT_METHODS" desc="An option in the autofill bottom sheet that triggers navigation to the payment settings." formatter_data="android_java">
       Manage payment methods
     </message>
+    <message name="IDS_AUTOFILL_BOTTOM_SHEET_MANAGE_LOYALTY_CARDS" desc="An option in the autofill bottom sheet that triggers navigation to the loyalty cards management UI in Brave Wallet." formatter_data="android_java">
+      Manage loyalty cards
+    </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for payments that appears under the GPay icon." formatter_data="android_java">
       Autofill payment info
     </message>
     <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Brave Wallet icon." formatter_data="android_java">
       Autofill loyalty card
+    </message>
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_FIRST_TIME_USAGE_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Brave Wallet icon. This title is shown to promote loyalty card filling to users." formatter_data="android_java">
+      Now you can autofill loyalty cards from Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_FIRST_TIME_USAGE_BOTTOM_SHEET_SUBTITLE" desc="The subtitle of the touch to fill bottom sheet for loyalty cards that appears under the title. This subtitle is shown to promote loyalty card filling to users." formatter_data="android_java">
+      Manage loyalty cards or turn these suggestions off in Brave Wallet
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_CONTINUE_BUTTON" desc="The label of the button, which would fill in the web form with card credentials." formatter_data="android_java">
       Continue

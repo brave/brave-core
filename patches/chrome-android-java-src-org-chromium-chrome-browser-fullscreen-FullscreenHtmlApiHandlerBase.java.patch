@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 1e7233fae74a53403d37922e9c6046990769c242..cad5733125a9ebfc01576627b4dc78722cc331c2 100644
+index b83537d2cba653d79f004961e6539aefca9c980b..e2d80e34e0e7e65ad7b351a94089a69381a26b7f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -237,7 +237,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -236,7 +236,7 @@ public abstract class FullscreenHtmlApiHandlerBase
          @Override
          public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
              if (mTab != null && !mIsInMultiWindowMode && isInMultiWindowMode) {
@@ -11,7 +11,7 @@ index 1e7233fae74a53403d37922e9c6046990769c242..cad5733125a9ebfc01576627b4dc7872
              }
              mIsInMultiWindowMode = isInMultiWindowMode;
          }
-@@ -300,6 +300,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -299,6 +299,7 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {

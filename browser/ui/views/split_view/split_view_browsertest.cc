@@ -93,7 +93,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
 
   BraveMultiContentsView* brave_multi_contents_view() const {
     return static_cast<BraveMultiContentsView*>(
-        brave_browser_view()->multi_contents_view_for_testing());
+        brave_browser_view()->multi_contents_view());
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
@@ -321,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // MultiContentsView is not initialized if we don't enable
   // features::kSideBySide.
-  EXPECT_FALSE(browser_view().multi_contents_view_for_testing());
+  EXPECT_FALSE(browser_view().multi_contents_view());
 }
 
 // MacOS does not need views window scrim. We use sheet to show window modals

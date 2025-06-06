@@ -132,6 +132,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
@@ -186,11 +187,11 @@ import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
-import org.chromium.ui.InsetObserver;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.insets.InsetObserver;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -278,9 +279,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
@@ -633,7 +631,8 @@ public class BytecodeTest {
                         int.class,
                         Context.class,
                         boolean.class,
-                        boolean.class));
+                        boolean.class,
+                        Integer.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
@@ -642,7 +641,8 @@ public class BytecodeTest {
                         int.class,
                         Context.class,
                         boolean.class,
-                        boolean.class));
+                        boolean.class,
+                        Integer.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
@@ -1208,8 +1208,8 @@ public class BytecodeTest {
     public void testConstructorsExistAndMatch() throws Exception {
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate", // presubmit: ignore-long-line
                         Context.class,
                         ActivityTabProvider.class,
                         MultiWindowModeStateDispatcher.class,
@@ -1283,7 +1283,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         DesktopWindowStateManager.class,
                         MultiInstanceManager.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        MenuButtonCoordinator.VisibilityDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1297,19 +1298,6 @@ public class BytecodeTest {
                         int.class,
                         int.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
-                        Context.class,
-                        ActivityTabProvider.class,
-                        MultiWindowModeStateDispatcher.class,
-                        TabModelSelector.class,
-                        ToolbarManager.class,
-                        View.class,
-                        OneshotSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1349,7 +1337,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/status/StatusMediator",
-                        "org/chromium/chrome/browser/omnibox/status/BraveStatusMediator",
+                        "org/chromium/chrome/browser/omnibox/status/BraveStatusMediator", // presubmit: ignore-long-line
                         PropertyModel.class,
                         Context.class,
                         UrlBarEditingTextStateProvider.class,
@@ -1357,7 +1345,7 @@ public class BytecodeTest {
                         LocationBarDataProvider.class,
                         PermissionDialogController.class,
                         OneshotSupplier.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         PageInfoIphController.class,
                         WindowAndroid.class,
                         Supplier.class));
@@ -1390,8 +1378,8 @@ public class BytecodeTest {
                         StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator", // presubmit: ignore-long-line
                         ToolbarControlContainer.class,
                         ToolbarLayout.class,
                         ToolbarDataProvider.class,
@@ -1420,10 +1408,11 @@ public class BytecodeTest {
                         ToolbarProgressBar.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        BackButtonCoordinator.class));
+                        BackButtonCoordinator.class,
+                        HomeButtonDisplay.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
+                        "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator", // presubmit: ignore-long-line
                         OneshotSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
@@ -1435,7 +1424,8 @@ public class BytecodeTest {
                         ThemeColorProvider.class,
                         Supplier.class,
                         Runnable.class,
-                        int.class));
+                        int.class,
+                        MenuButtonCoordinator.VisibilityDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/share/ShareDelegateImpl",
@@ -2398,14 +2388,6 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
                         "org/chromium/chrome/browser/app/BraveActivity"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate",
-                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView",

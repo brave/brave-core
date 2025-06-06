@@ -56,6 +56,7 @@
 #include "components/favicon/core/favicon_service.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
@@ -485,7 +486,10 @@ std::string RewardsServiceImpl::GetCountryCode() const {
   return !declared_geo.empty()
              ? declared_geo
              : std::string(
-                   country_codes::GetCountryIDFromPrefs(prefs_).CountryCode());
+                   country_codes::CountryId::Deserialize(
+                       prefs_->GetInteger(
+                           regional_capabilities::prefs::kCountryIDAtInstall))
+                       .CountryCode());
 }
 
 void RewardsServiceImpl::GetAvailableCountries(

@@ -207,11 +207,6 @@ java_strings_grd("android_brave_strings_grd") {
   ]
 }
 
-brave_xml_preprocessor("brave_java_xml_preprocess_resources") {
-  sources = brave_java_preprocess_xml_sources
-  modules = brave_java_preprocess_module_sources
-}
-
 generate_jni("jni_headers") {
   sources = [
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",

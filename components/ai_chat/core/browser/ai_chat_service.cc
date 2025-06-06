@@ -361,9 +361,8 @@ void AIChatService::MaybeInitStorage() {
   if (IsAIChatHistoryEnabled()) {
     if (!ai_chat_db_) {
       DVLOG(0) << "Initializing OS Crypt Async";
-      encryptor_ready_subscription_ = os_crypt_async_->GetInstance(
-          base::BindOnce(&AIChatService::OnOsCryptAsyncReady,
-                         weak_ptr_factory_.GetWeakPtr()));
+      os_crypt_async_->GetInstance(base::BindOnce(
+          &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
       // Don't init DB until oscrypt is ready - we don't want to use the DB
       // if we can't use encryption.
     }
@@ -381,13 +380,8 @@ void AIChatService::MaybeInitStorage() {
   OnStateChanged();
 }
 
-void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
-                                        bool success) {
+void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
   CHECK(features::IsAIChatHistoryEnabled());
-  if (!success) {
-    LOG(ERROR) << "Failed to initialize AIChat DB due to OSCrypt failure";
-    return;
-  }
   // Pref might have changed since we started this process
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;

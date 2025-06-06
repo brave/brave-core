@@ -21,6 +21,7 @@
     <item name="request_vpn_location_row_menu_id" type="id"/>
     <item name="request_vpn_location_id" type="id"/>
     <item name="request_vpn_location_icon_id" type="id"/>
+    <item name="brave_speedreader_id" type="id"/>
 
     <!-- App menu item custom tags -->
     <item type="id" name="menu_item_enter_anim_id" />

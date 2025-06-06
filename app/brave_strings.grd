@@ -1367,16 +1367,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <if expr="not is_android">
-        <!-- Desktop User Education IPH Strings -->
-        <message name="IDS_SIDE_PANEL_GENERIC_MENU_IPH" desc="The body text of the IPH describing how to find side panel entry points in the app menu.">
-          You can open bookmarks, reading mode, and more from the Brave menu
-        </message>
-        <message name="IDS_SIDE_PANEL_GENERIC_MENU_IPH_SCREENREADER" desc="The screen reader text of the IPH describing how to find side panel entry points in the app menu. The phrase 'top right' should read as 'top left' in rtl languages.">
-          You can open bookmarks, reading mode, and more from the Brave menu at the top right
-        </message>
-      </if>
-
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the start pages. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
         ''' It also controls what page is shown when you start Brave. '''
@@ -1864,13 +1854,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <!-- Welcome page (chrome://welcome) strings -->
-      <if expr="not is_chromeos and not is_android">
-        <message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
-          Welcome to Brave
-        </message>
-      </if>
-
       <!-- Native notifications for Windows 10 -->
       <if expr="is_win">
         <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Brave notification settings.">
@@ -1985,6 +1968,13 @@ Brave is unable to recover your settings.
       <if expr="not is_android">
         <message name="IDS_HATS_BUBBLE_TITLE" translateable="false" desc="The title of Happiness Tracking Survey's invitation banner, it invites users to take a survey">
           Help us improve Brave
+        </message>
+      </if>
+
+      <!-- HaTS invitations on Android -->
+      <if expr="is_android">
+        <message name="IDS_MESSAGE_ACT_SURVEY_INVITATION" desc="Survey invitation text that's shown in a pop up. The user can then ignore the invitation or accept it, which will cause the survey to be shown.">
+          Help us improve Private by taking this 1 minute survey.
         </message>
       </if>
 

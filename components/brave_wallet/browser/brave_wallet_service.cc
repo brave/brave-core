@@ -40,6 +40,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -1909,8 +1910,11 @@ void BraveWalletService::SetTransactionSimulationOptInStatus(
 }
 
 void BraveWalletService::GetCountryCode(GetCountryCodeCallback callback) {
-  std::move(callback).Run(std::string(
-      country_codes::GetCountryIDFromPrefs(profile_prefs_).CountryCode()));
+  std::move(callback).Run(
+      std::string(country_codes::CountryId::Deserialize(
+                      profile_prefs_->GetInteger(
+                          regional_capabilities::prefs::kCountryIDAtInstall))
+                      .CountryCode()));
 }
 
 }  // namespace brave_wallet

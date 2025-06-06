@@ -1156,6 +1156,8 @@ are declared in tools/grit/grit_args.gni.
 
     <if expr="is_win">
       </if>
+    <if expr="is_android">
+      </if>
 
     <if expr="not is_android">
       </if>
@@ -1230,9 +1232,6 @@ are declared in tools/grit/grit_args.gni.
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all Private windows.">
-      Close Private
-    </message>
 
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the delete browsing data dialog which is shown in Private when users invokes a delete browsing data action in Private. The text describes how Private users can delete the browsing data by closing all Private windows.">
       To delete data, close all Private windows
@@ -1241,15 +1240,15 @@ are declared in tools/grit/grit_args.gni.
       This only affects Private windows
     </message>
     <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
-    Sites you visit aren’t saved in Private
-  </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
-    To delete Private browsing history from your device, close all Private tabs
-  </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
-    Close Private
-  </message>
-  <if expr="not is_android">
+      Sites you visit aren’t saved in Private
+    </message>
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+      To delete Private browsing history from your device, close all Private tabs
+    </message>
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+      Close Private
+    </message>
+    <if expr="not is_android">
       </if>
 
     <if expr="use_titlecase">

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/internal/android/BUILD.gn b/chrome/browser/download/internal/android/BUILD.gn
-index 89959608be066a43d37fbe1f0b245aea2c0f7f6f..00a9637e40b6833fc0d23063b65ac2f3e7d2bee9 100644
+index 5bf9a4a6af1eccee3284b36a117a7fbbba391b88..a02c6c1384c2f1f54e410a0e33013ecb52e86b98 100644
 --- a/chrome/browser/download/internal/android/BUILD.gn
 +++ b/chrome/browser/download/internal/android/BUILD.gn
-@@ -200,6 +200,7 @@ android_resources("java_resources") {
+@@ -203,6 +203,7 @@ android_resources("java_resources") {
      "java/res/values/ids.xml",
      "java/res/values/styles.xml",
    ]

@@ -96,10 +96,10 @@
   <message name="IDS_AUTOFILL_LOYALTY_CARD_GENERIC" desc="Generic loyalty card name." formatter_data="android_java">
     Loyalty card
   </message>
-  <message name="IDS_AUTOFILL_LOYALTY_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu suggestion text." translateable="false">
+  <message name="IDS_AUTOFILL_LOYALTY_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu suggestion text.">
     Loyalty cards
   </message>
-  <message name="IDS_AUTOFILL_LOYALTY_CARDS_ALL_YOUR_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu containing all loyalty cards suggestion text." translateable="false">
+  <message name="IDS_AUTOFILL_LOYALTY_CARDS_ALL_YOUR_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu containing all loyalty cards suggestion text.">
     All your loyalty cards
   </message>
   <message name="IDS_AUTOFILL_ADDRESS_SUMMARY_SEPARATOR" desc="The separator character used in the summary of an address." formatter_data="android_java">
@@ -220,8 +220,7 @@
       Manage passwords...
     </message>
 
-    <!-- TODO(crbug.com/404436027): Enable translatation after UX review is completed. -->
-    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" translateable="false" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
+    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
       Manage loyalty cards...
     </message>
   </if>
@@ -238,8 +237,7 @@
       Manage Passwords...
     </message>
 
-    <!-- TODO(crbug.com/404436027): Enable translatation after UX review is completed. -->
-    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" translateable="false" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
+    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
       Manage Loyalty Cards...
     </message>
   </if>
@@ -384,8 +382,6 @@
     <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_ERROR" desc="Validation error message for missing required address field." formatter_data="android_java">
       Enter <ph name="FIELD">$1<ex>ZIP code</ex></ph>
     </message>
-  </if>
-  <if expr="is_android">
     <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT" desc="Title of the option to use the default Brave autofill experience." formatter_data="android_java">
       Autofill with Brave
     </message>
@@ -397,6 +393,12 @@
     </message>
     <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN_DESCRIPTION" desc="Description shown on the option enabling the use of third-party autofill in Brave." formatter_data="android_java">
       To use another autofill service in Brave, turn it on in Android settings and here
+    </message>
+    <message name="IDS_PAYMENT_METHODS_SETTINGS_LOYALTY_CARDS_TITLE" desc="Title for the payment methods settings page row that links the user to the Brave Wallet app." formatter_data="android_java">
+      Loyalty cards
+    </message>
+    <message name="IDS_PAYMENT_METHODS_SETTINGS_LOYALTY_CARDS_DESCRIPTION" desc="Description shown below the loyalty cards link to the Brave Wallet app." formatter_data="android_java">
+      Manage your loyalty cards in Brave Wallet
     </message>
   </if>
 

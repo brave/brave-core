@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
-index 495a64fd10be3cd9dd0f8defd208fe2a8fb00232..9a2b37134888a88451ebee5af1f29182d2881288 100644
+index f26430db31c720103781abf08e04b3de7c90c40c..047db0b01484aa13d95fdd0cf83498eb6a616e20 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
-@@ -23,6 +23,7 @@ AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
+@@ -24,6 +24,7 @@ AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
      : AudioHandler(NodeType::kNodeTypeAnalyser, node, sample_rate),
        analyser_(
            node.context()->GetDeferredTaskHandler().RenderQuantumFrames()) {

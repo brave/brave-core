@@ -34,6 +34,7 @@ source_set("ntp_background") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
     "//components/infobars/content",
     "//components/infobars/core",

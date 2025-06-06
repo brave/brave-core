@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/local_dom_window.cc b/third_party/blink/renderer/core/frame/local_dom_window.cc
-index 23e8b0820df2546e0097d667758c818ef725a2e7..a36203830b80cd5c898cd25dc529aef780039575 100644
+index 028e8ffba334a07a29064795321a2f79d3519fd0..150f08088d9f873b178fc4af96a6769ef74aab28 100644
 --- a/third_party/blink/renderer/core/frame/local_dom_window.cc
 +++ b/third_party/blink/renderer/core/frame/local_dom_window.cc
 @@ -497,6 +497,7 @@ bool LocalDOMWindow::CanExecuteScripts(

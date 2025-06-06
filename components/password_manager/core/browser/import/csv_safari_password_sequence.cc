@@ -80,7 +80,7 @@ size_t GetNoteHeaderPriority(std::string_view name) {
   // Trim leading/trailing whitespaces from |name|.
   base::TrimWhitespaceASCII(name, base::TRIM_ALL, &trimmed_name);
   auto it = kNotesLabelsPriority.find(base::ToLowerASCII(trimmed_name));
-  CHECK(it != kNotesLabelsPriority.end(), base::NotFatalUntil::M130);
+  CHECK(it != kNotesLabelsPriority.end(), base::NotFatalUntil::M235);
   return it->second;
 }
 

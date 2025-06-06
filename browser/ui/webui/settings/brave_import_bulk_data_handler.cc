@@ -18,6 +18,7 @@
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -96,7 +97,8 @@ void BraveImportBulkDataHandler::PrepareProfile(
                       CHECK(created_profile);
                       // Migrate welcome page flag to new profiles.
                       created_profile->GetPrefs()->SetBoolean(
-                          prefs::kHasSeenWelcomePage, true);
+                          brave::welcome_ui::prefs::kHasSeenBraveWelcomePage,
+                          true);
                       std::move(initialized_callback).Run(created_profile);
                     },
                     std::move(profile_callback)));

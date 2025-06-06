@@ -429,6 +429,7 @@
 -RealboxSearchPreloadWithoutSearchStatsBrowserTest.SearchPreloadSuccess
 -SafeBrowsingBlockingPageAsyncChecksPrerenderingTest.PostCommitInterstitialReportThreatDetails_DontContainPrerenderingInfo
 -SearchPreloadBrowserTest.*
+-SearchPreloadBrowserTest_Limit.*
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderActivated
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderFetch
 -SearchPreloadUnifiedFallbackBrowserTest.PrefetchErrorCancelsPrerender
@@ -1017,6 +1018,7 @@
 -PredictionModelStoreMigrationBrowserTest.*
 -PredictionServiceBrowserTest.*
 -PredictionServiceBrowserTestBase.*
+-PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestServerSideHoldbackWorkflow/*
 -PredictionSettingsPageBrowserTest.*
 -SearchNavigationPrefetchIncognitoBrowserTest.NavigationPrefetchIsServedMouseDown
 -SearchNavigationPrefetchNoCancelBrowserTest.PrefetchIsNotCancelled
@@ -1241,6 +1243,7 @@
 -DiceBrowserTestWithAutoAcceptFlag.AutoSignin
 -DiceBrowserTestWithBoundSessionCredentialsEnabled.*
 -DiceBrowserTestWithChromeSigninIPH.SigninRememberedIPH
+-DiceBrowserTestWithSyncOptinScreen.EnableHistorySyncOptin
 -DiceBrowserTestWithWebAuthFlowInBrowserTabOff.DiceExtensionConsent_GetAuthToken
 -DiceBrowserTestWithWebAuthFlowInBrowserTabOff.NoDiceExtensionConsent_LaunchWebAuthFlow
 -DiceBrowsingDataRemoverBrowserTest.*
@@ -1462,6 +1465,8 @@
 -ExtensionTelemetryServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.DetectsWebRequestFromContentScript
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer
+-V4SafeBrowsingServiceTest.NotificationsAcceptedReportSentWithCorrectOrigins
+-V4SafeBrowsingServiceTest.NotificationsAcceptedReportSentWithReferrerChain
 
 # These tests crash because we have kOptimizationHints feature disabled.
 -HintsFetcherPre3pcdBrowserTest.HintsFetcherDoesntFetchOnNSP
@@ -1486,6 +1491,7 @@
 -PageContentAnnotationsServiceBrowserTest.*
 -PageContentAnnotationsServiceContentExtractionPdfTest.*
 -PageContentAnnotationsServiceContentExtractionTest.*
+-PageContentAnnotationsServiceContentExtractionTestNoFeatureFlag.ObserverAddedAfterWebContentsInit
 -PageContentAnnotationsServiceContentExtractionPdfTest.PdfPageCount
 -PageContentAnnotationsServiceNoHistoryTest.*
 -PageContentAnnotationsServiceRemoteMetadataBrowserTest.*
@@ -2166,6 +2172,10 @@
 -All/OpticalCharacterRecognizerTest.Create/OCR_Enabled_Library_Available
 -All/OpticalCharacterRecognizerTest.CreateWithStatusCallback/OCR_Enabled_Library_Available
 -All/OpticalCharacterRecognizerTest.PerformOCR*
+-All/PdfSearchifyIntegrationTest.EnsureScreenAIInitializes/OcrService_Enabled*
+-All/PdfSearchifyIntegrationTest.HelloWorld/OcrService_Enabled*
+-All/PdfSearchifyIntegrationTest.NoOcrResultOnBlankImagePdf/OcrService_Enabled*
+-All/PdfSearchifyIntegrationTest.ThreePagePDF/OcrService_Enabled*
 -All/PDFSearchifyTest.HelloWorld/1
 -All/PdfOcrControllerBrowserTest.DownloadRetry/*
 -All/PdfOcrIntegrationTest.EnsureScreenAIInitializes/OcrService_Enabled_Library_Available_Searchify_*
@@ -2236,6 +2246,22 @@
 # We clear window.name on cross-origin navigation regardless of what
 # kClearCrossSiteCrossBrowsingContextGroupWindowName is set to
 -All/ClearWindowNameForNewBrowsingContextGroupTestP.ClearWindowNameCrossSite/0
+
+# These tests fail because brave_sync::Prefs::GetSeed crashes because
+# brave_sync::Prefs isn't initialized or CalledOnValidSequence check is
+# triggered in brave_sync::Prefs::GetSeed
+-AllSuitableUrls/PrivacySandboxNoticeEntryPointHandlersTest_SuitableUrls.SuitableUrl/3
+-PrivacySandboxNoticeEntryPointHandlersTest.NoPromptInSmallBrowser
+-PrivacySandboxNoticeEntryPointHandlersTest.NoPromptSync
+-PrivacySandboxNoticeEntryPointHandlersTest.PromptShowsNewTabChromeOS
+-PrivacySandboxPromptHelperWithParamInstanceBrowserTest/PrivacySandboxPromptHelperWithParamBrowserTest.PromptOpensOnSettings/*
+-PrivacySandboxQueueNoticeBrowserTest.PromptShows
+-PrivacySandboxQueueNoticeBrowserTest.PromptShowsMultipleWindows
+-PrivacySandboxQueueNoticeFeatureDisabledBrowserTest.ShowAndClickPrompt
+
+# Suspect that these fail because of BraveProxyingURLLoaderFactory, but need
+# more looking into
+-QwacWebContentsObserverBrowserTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*

@@ -88,19 +88,25 @@ class BraveRenderViewContextMenuTest : public testing::Test {
       content::WebContents* web_contents,
       content::ContextMenuParams params,
       bool is_pwa_browser = false) {
+    ResetBrowser();
     auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
         *web_contents->GetPrimaryMainFrame(), params);
 
     Browser::CreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
         profile_.get(), true);
-    auto test_window = std::make_unique<TestBrowserWindow>();
-    create_params.window = test_window.get();
+    browser_window_ = std::make_unique<TestBrowserWindow>();
+    create_params.window = browser_window_.get();
     browser_.reset(Browser::Create(create_params));
     menu->SetBrowser(browser_.get());
 
     menu->Init();
     return menu;
+  }
+
+  void ResetBrowser() {
+    browser_.reset();
+    browser_window_.reset();
   }
 
   void SetUp() override {
@@ -129,6 +135,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     web_contents_.reset();
     client_.reset();
     browser_.reset();
+    browser_window_.reset();
     profile_.reset();
 
     // We run into a DCHECK on Windows. The scenario is addressed explicitly
@@ -145,6 +152,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
   std::unique_ptr<Browser> browser_;
+  std::unique_ptr<TestBrowserWindow> browser_window_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;
 };

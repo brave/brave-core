@@ -3,14 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/webui/chrome_urls/features.cc"
+#include "src/components/regional_capabilities/regional_capabilities_country_id.cc"
 
-#include "base/feature_override.h"
+namespace regional_capabilities {
 
-namespace chrome_urls {
+country_codes::CountryId CountryIdHolder::GetCountryCode() const {
+  return country_id_;
+}
 
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kInternalOnlyUisPref, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-
-}  // namespace chrome_urls
+}  // namespace regional_capabilities

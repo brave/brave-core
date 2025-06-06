@@ -827,6 +827,24 @@
   <message name="IDS_SETTINGS_CLEAR_PERIOD_15_MINUTES" desc="The option to delete browsing data from the last 15 minutes." translateable="false">
     Last 15 min
   </message>
+  <message name="IDS_SETTINGS_MANAGE_IN_GOOGLE_PASSWORD_MANAGER" desc="Description for the 'Passwords and Passkeys' option in 'Other Brave Data' page." translateable="false">
+    Manage in Brave Password Manager
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_IN_YOUR_GOOGLE_ACCOUNT" desc="Description for a feature that can be managed in the user's Brave account." translateable="false">
+    Manage in your Brave sync chain
+  </message>
+   <message name="IDS_SETTINGS_PASSWORDS_AND_PASSKEYS" desc="Label for the 'Passwords and Passkeys' option in 'Other Brave Data' page." translateable="false">
+    Passwords and passkeys
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_HISTORY" desc="Label for the 'Search history' option in 'Other Brave Data' page." translateable="false">
+    Search history
+  </message>
+    <message name="IDS_SETTINGS_OTHER_DATA_TITLE" desc="Title for the 'Other data' subpage that is linked from the clear Browse data dialog." translateable="false">
+    Other data
+  </message>
+  <message name="IDS_SETTINGS_MY_ACTIVITY" desc="Label for the 'My Activity' option in 'Other Brave Data' page." translateable="false">
+    My Activity
+  </message>
 
   <!-- Downloads Page -->
   <message name="IDS_SETTINGS_DOWNLOADS" desc="Name of the settings page which displays download preferences.">
@@ -1596,18 +1614,6 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_ALLOW_AGAIN_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is for the action to undo the revokation and allow the site permissions again.">
     Allow again
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_REMOVED_ONE_PERMISSION_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This text describes which permission was removed and is shown if there is exactly one permission.">
-    Removed <ph name="PERMISSION">$1<ex>location</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_REMOVED_TWO_PERMISSIONS_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed and is shown if there are exactly two permissions.">
-    Removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_REMOVED_THREE_PERMISSIONS_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed and is shown if there are exactly three permissions.">
-    Removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>, <ph name="PERMISSION_3">$3<ex>camera</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_REMOVED_FOUR_OR_MORE_PERMISSIONS_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed and is shown if there are four or more permissions. The number indicates the count of permisions that are not shown explicitly. The number is always two or larger.">
-    Removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>, and <ph name="COUNT">$3<ex>2</ex></ph> more
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_PRIMARY_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is the header of the module in the site settings page. The number represents the number of unused sites.">
     {NUM_SITES, plural,
      =1 {Permissions removed from 1 site}
@@ -2071,6 +2077,9 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH" desc="Label for a text input placeholder allowing the user to search/filter the displayed search engines">
     Search
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SUBTITLE_FOR_POLICY" desc="Subtitle for a dialog that allows editing/viewing an existing search engine that is created by policy.">
+    This setting is managed by your administrator
+  </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADD_SITE_SEARCH" desc="Title for a dialog that allows adding a new site search engine.">
     Add site search
   </message>
@@ -2088,6 +2097,9 @@
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_DELETE_CONFIRMATION_DESCRIPTION" desc="Description text for a dialog that confirms that a user wants to delete an existing search engine.">
     Are you sure you want to delete this search engine?
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_DELETE_CONFIRMATION_DESCRIPTION_FOR_POLICY" desc="Description text for a dialog that confirms that a user wants to delete an existing search engine that is created by policy.">
+    This setting was set up by your organization. Are you sure you want to delete this search engine?
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINES" desc="Label for 'Search Engines' section">
     Search engines
@@ -4225,11 +4237,6 @@
     {NUM_SITES, plural,
      =1 {You can stop this site from sending future notifications.}
      other {You can stop these sites from sending future notifications.}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_MENU_NOTIFICATION" desc="The unused site permissions module of Safety Hub revokes permissions of sites that the user hasn't visited in a while. This label is for the notification in Brave's three-dot menu indicating for how many sites the permission was revoked.">
-    {NUM_SITES, plural,
-      =1 {Removed permissions for 1 unused site}
-      other {Removed permissions for {NUM_SITES} unused sites}}
   </message>
   <message name="IDS_SETTINGS_SAFETY_HUB_REVOKED_PERMISSIONS_MENU_NOTIFICATION" desc="The revoked permissions module of Safety Hub revokes permissions of sites that the user hasn't visited in a while or that send abusive notifications. This label is for the notification in Brave's three-dot menu indicating for how many sites the permission was revoked.">
     {NUM_SITES, plural,

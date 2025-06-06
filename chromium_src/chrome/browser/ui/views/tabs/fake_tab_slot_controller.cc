@@ -11,3 +11,6 @@ bool FakeTabSlotController::IsTabTiled(const Tab* tab) const {
 bool FakeTabSlotController::IsFirstTabInTile(const Tab* tab) const {
   return false;
 }
+const Browser* FakeTabSlotController::GetBrowser() const {
+  return nullptr;
+}

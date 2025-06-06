@@ -38,7 +38,7 @@ class ShieldsPanelUI : public TopChromeWebUIController,
       mojo::PendingReceiver<brave_shields::mojom::PanelHandlerFactory>
           receiver);
 
-  static constexpr std::string GetWebUIName() { return "ShieldsPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "ShieldsPanel"; }
 
  private:
   void CreatePanelHandler(

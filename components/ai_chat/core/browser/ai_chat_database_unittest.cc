@@ -21,8 +21,8 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -47,17 +47,9 @@ class AIChatDatabaseTest : public testing::Test,
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
-    // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
 
     if (GetParam()) {
       db_->DeleteAllData();
@@ -87,7 +79,6 @@ class AIChatDatabaseTest : public testing::Test,
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 
@@ -712,18 +703,11 @@ class AIChatDatabaseMigrationTest : public testing::Test,
         /*is_sync_for_unittests=*/true);
 
     // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              CreateDatabase(base::StringPrintf(
-                  "aichat_database_dump_version_%d.sql", version()));
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    CreateDatabase(
+        base::StringPrintf("aichat_database_dump_version_%d.sql", version()));
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
   }
 
   void TearDown() override {
@@ -775,7 +759,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   base::FilePath database_dump_location_;
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 

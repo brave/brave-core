@@ -1794,6 +1794,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_LOCAL_PASSWORDS_CHECKING_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the check is in progress.">
         Checking passwords on this device…
       </message>
+      <message name="IDS_SAFETY_HUB_PASSWORDS_CHECKING_TITLE" desc="Title for the password check row in the Safety Check page indicating that the check is in progress.">
+        Checking passwords…
+      </message>
       <message name="IDS_SAFETY_HUB_PASSWORDS_COMPROMISED_TITLE" desc="Title for the password check row in the Safety Check page indicating that the user has account and local passwords which have been compromised.">
         {NUM_PASSWORDS, plural,
         =1 {1 compromised password}
@@ -2341,6 +2344,25 @@ Your Brave account may have other forms of browsing history like searches and ac
         Downloaded PDFs automatically open with <ph name="APP_NAME">%1$s<ex>Drive PDF Viewer</ex></ph>
       </message>
 
+      <!-- Download warning bypass dialog -->
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_TEXT" desc="Text of the dialog for asking user to confirm that they want to bypass a download warning.">
+        This file contains malware or comes from a suspicious site
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_ACTION_DOWNLOAD" desc="Label for the button to confirm that the user wants to bypass a download warning.">
+        Download anyway
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_ACTION_LEARN_MORE" desc="Label for the button to open a help page about download warnings.">
+        Learn more
+      </message>
+
+      <!-- Download Home dangerous warning -->
+      <message name="IDS_DOWNLOAD_WARNING_HEED_MENU_ACTION_DELETE" desc="Label for the menu item to heed a download warning shown in the downloads list by removing the file from download history.">
+        Delete from history
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_MENU_ACTION_DOWNLOAD" desc="Label for the menu item to bypass a download warning shown in the downloads list and download the dangerous file anyway.">
+        Download
+      </message>
+
       <!-- About Brave preferences -->
       <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Brave page. [CHAR_LIMIT=32]">
         About Brave
@@ -2578,6 +2600,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
         Payment methods, offers, and addresses using Google Pay
       </message>
+      <message name="IDS_SYNC_PAYMENTS_AND_INFO_INTEGRATION" desc="Title for preference which enables import of Brave Wallet data for Autofill. 'Brave Wallet' should not be translated as it is the product name.">
+        Payment methods and other info from Brave Wallet
+      </message>
       <message name="IDS_ACCOUNT_SETTINGS_TITLE" desc="Title for the account settings page. [CHAR_LIMIT=32]">
         Account
       </message>
@@ -2604,6 +2629,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_SECTION_PAYMENTS_TOGGLE" desc="Google Pay data for Autofill, one of the data types that we allow syncing. 'Google Pay' should not be translated as it is the product name. Shown on next to the toggle that controls whether Google Pay data for Autofill should be saved in the Brave sync chain and synced across devices.">
         Payment methods, offers, and addresses using Google Pay
+      </message>
+      <message name="IDS_ACCOUNT_SECTION_PAYMENTS_AND_INFO_TOGGLE" desc="Brave Wallet data for Autofill, one of the data types that we allow syncing. 'Brave Wallet' should not be translated as it is the product name. Shown on next to the toggle that controls whether payments and other data from Brave Wallet, for use in Autofill, should be saved in the Brave sync chain and synced across devices.">
+        Payment methods and other info from Brave Wallet
       </message>
       <message name="IDS_ACCOUNT_SECTION_SETTINGS_TOGGLE" desc="Settings, one of the data types that we allow syncing. Shown on next to the toggle that controls whether Settings should be saved in the Brave sync chain and synced across devices.">
         Settings
@@ -3600,6 +3628,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_DOWNLOAD_FILE_TYPE_NOT_SUPPORTED" desc="Error message shown to user when a file can't de downloaded due to it's file format (e.g. .pdf, .docx, .apk).">
         Cannot download file. File format not supported.
       </message>
+      <message name="IDS_DOWNLOAD_MANAGER_DANGEROUS_BLOCKED" desc="Caption shown below a file that was blocked for being dangerous.">
+        Dangerous download blocked
+      </message>
 
       <!-- Browsing History UI -->
       <message name="IDS_HISTORY_MANAGER_EMPTY_STATE" desc="Indicates that there are no browsing history items.">
@@ -4411,7 +4442,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR_LIMIT=27]" translateable="false">
         Show Paint Preview
       </message>
-      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR_LIMIT=24]">
+      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR_LIMIT=15]">
         Desktop site
       </message>
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE_ON" desc="Accessibility description for when Request Desktop Site is enabled.">
@@ -4473,6 +4504,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_REVIEW_PDF_WITH_AI" desc="Menu item to review a PDF file with AI.">
         Review PDF with AI
+      </message>
+      <message name="IDS_MENU_PIN_TAB" desc="Menu item for pinning a tab.">
+        Pin tab
       </message>
 
       <!-- Bookmarks strings -->
@@ -4938,11 +4972,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
       </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_COMPOSEPLATE" is_accessibility_with_no_ui="true" desc="Content description for the composeplate.">
+        Start search
+      </message>
       <message name="IDS_ACCESSIBILITY_BTN_LENS_CAMERA" desc="Content description for the Lens button. When the user taps the button, they can perform a 'search with your camera or photos', which opens the Google Lens app.">
         Search with your camera using Google Lens
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
         New Private tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_3PC_SETTINGS" desc="Content description of the cookie controls icon displayed on the new private tab which navigates to the third-party cookies settings.">
+        Third-party cookies settings
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_TAB" desc="Content description for the new tab button.">
         New tab
@@ -5556,7 +5596,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Open a new tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_REOPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut for reopening the last tab in the chrome app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Reopen the last closed tab
+        Reopen closed tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
@@ -5571,7 +5611,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Tab navigation shortcuts
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_OPEN_MENU" desc="A text label that appears next to a keyboard shortcut that opens the overflow menu in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the menu
+        Open Brave menu
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_NEXT_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the next tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to the next tab
@@ -5583,43 +5623,43 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Close current tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the Find Bar
+        Open Find Bar
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ADDRESS_BAR" desc="A text label that appears next to the keyboard that will let you focus on the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Jump to the address bar
+        Jump to address bar
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_SEARCH" desc="A text label that appears next to the keyboard that will focusa and clear the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Jump to search
+        Start new search
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open the bookmarks manager in Brave. On a tablet this is a new tab, on the phone this is a new activity. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the bookmarks manager
+        Open Bookmarks Manager
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_PAGE" desc="A text label that appears next to the keyboard shortcut that will bookmark the page that is currently on screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Bookmark the current page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_MANAGER" desc="A text label that appears next to the keyboard shorcut that will open up the history page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the history page
+        Open History
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_BACK" desc="A text label that appears next to the keyboard shorcut that will go to the previous page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Go to the previous page in History
+        Go to previous page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_FORWARD" desc="A text label that appears next to the keyboard shorcut that will go to the next page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Go to the next page in History
+        Go to next page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_SAVE_PAGE" desc="A text label that appears next to the keyboard shortcut that will save the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open options to save page
+        Open options to save
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_PRINT_PAGE" desc="A text label that appears next to the keyboard shortcut that will open the print page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open options to print page
+        Open options to print
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_IN" desc="A text label that appears next to the keyboard shortcut that will increase everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Make everything on the page bigger
+        Zoom in
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_OUT" desc="A text label that appears next to the keyboard shortcut that will decrease everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Make everything on the page smaller
+        Zoom out
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_RESET_ZOOM" desc="A text label that appears next to the keyboard shortcut that will reset the zoom back to the original size. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Return everything on the page to default size
+        Reset zoom
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_PAGE" desc="A text label that appears next to the keyboard shortcut that will reload the current page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reload the current page
@@ -5631,7 +5671,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Open the Brave Help Center in a new tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_BOOKMARK_BAR" desc="A text label that appears next to the keyboard shortcut that will toggle the bookmark bar. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Show or hide the bookmarks
+        Show or hide Bookmarks
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_DEVELOPER_TOOLS" desc="A text label that appears next to the keyboard shortcut that will open Developer Tools. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Developer Tools
@@ -5824,6 +5864,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_TAB_SWITCHER_XR" desc="The in-product-help message to notify the user about the new tab switcher on an XR device.">
         Your open tabs now have an updated look in XR
+      </message>
+      <message name="IDS_IPH_TAB_TEARING_XR" desc="The in-product-help message to notify the user about the new tab switcher on an XR device.">
+        Pinch, hold, and drag to open tabs in a new window
       </message>
 
       <!-- Search Widget strings -->
@@ -6777,6 +6820,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Data Sharing Owner Manage Flow -->
       <message name="IDS_COLLABORATION_MANAGE_GROUP_TITLE" desc="The Title for the manage flow dialog for a shared group.">
         Manage access
+      </message>
+      <message name="IDS_COLLABORATION_MANAGE_ICON" desc="The text for the manage icon." formatter_data="android_java">
+        Manage icon
       </message>
       <message name="IDS_COLLABORATION_MANAGE_STOP_SHARING_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
         Stop sharing
