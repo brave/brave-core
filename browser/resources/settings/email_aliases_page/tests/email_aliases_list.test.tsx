@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { AliasList, ListIntroduction } from '../content/email_aliases_list'
 import {
   Alias,
@@ -59,11 +59,7 @@ describe('AliasList', () => {
     }
   ]
 
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('renders the alias list', () => {
+  const renderAliasList = () => {
     render(
       <AliasList
         aliases={mockAliases}
@@ -71,12 +67,46 @@ describe('AliasList', () => {
         emailAliasesService={mockEmailAliasesService}
       />
     )
+  }
 
-    // Check if alias information is displayed correctly
-    expect(screen.getByText(/test1@brave\.com/)).toBeInTheDocument()
-    expect(screen.getByText(/Test Alias 1/)).toBeInTheDocument()
-    expect(screen.getByText(/test2@brave\.com/)).toBeInTheDocument()
-    expect(screen.getByText(/Test Alias 2/)).toBeInTheDocument()
+  const waitForTexts = async (expectedTexts: (string | RegExp)[]) => {
+    await waitFor(() => {
+      expectedTexts.forEach(text => {
+        expect(screen.getByText(text)).toBeInTheDocument()
+      })
+    })
+  }
+
+
+  const clickMenuItem = async (menuText: string) => {
+    const menuItemText = screen.queryAllByText(menuText)[0]
+    expect(menuItemText).toBeInTheDocument()
+
+    const menuItem = menuItemText?.closest('leo-menu-item')
+    expect(menuItem).toBeInTheDocument()
+
+    if (menuItem) {
+      await act(async () => {
+        fireEvent.click(menuItem)
+      })
+    }
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    // Mock dialog.showModal
+    HTMLDialogElement.prototype.showModal = jest.fn()
+    HTMLDialogElement.prototype.close = jest.fn()
+  })
+
+  it('renders the alias list', async () => {
+    renderAliasList()
+    await waitForTexts([
+      /test1@brave\.com/,
+      /Test Alias 1/,
+      /test2@brave\.com/,
+      /Test Alias 2/
+    ])
   })
 
   it('disables create button when max aliases reached', () => {
@@ -105,36 +135,36 @@ describe('AliasList', () => {
     )
 
     await act(async () => {
-      // Click create button
-      const createButton = screen.getByTitle('emailAliasesCreateAliasTitle')
+      const createButton = screen.getByText('emailAliasesCreateAliasLabel')
       clickLeoButton(createButton)
     })
 
     expect(mockOnCreateClicked).toHaveBeenCalled()
   })
 
-  it ('calls the deleteAlias API when delete button is clicked', async () => {
-    render(
-      <AliasList
-        aliases={mockAliases}
-        authEmail={mockAuthEmail}
-        emailAliasesService={mockEmailAliasesService}
-      />
-    )
+  it ('shows Edit Alias Modal when edit button is clicked', async () => {
+    renderAliasList()
 
-    // Click delete button
-    const deleteText = screen.queryAllByText('emailAliasesDelete')[0]
-    expect(deleteText).toBeInTheDocument()
+    await clickMenuItem('emailAliasesEdit')
 
-    const deleteMenuItem = deleteText?.closest('leo-menu-item')
-    expect(deleteMenuItem).toBeInTheDocument()
+    await waitForTexts([
+      'emailAliasesEditAliasTitle',
+      'emailAliasesCancelButton',
+      'emailAliasesSaveAliasButton'
+    ])
+    expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
+      .toBeInTheDocument()
+  })
 
-    if (deleteMenuItem) {
-      fireEvent.click(deleteMenuItem)
-    }
+  it ('shows Delete Alias Modal when delete button is clicked', async () => {
+    renderAliasList()
 
-    expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalledWith(
-      mockAliases[0].email
-    )
+    await clickMenuItem('emailAliasesDelete')
+
+    await waitForTexts([
+      'emailAliasesDeleteAliasTitle',
+      'emailAliasesCancelButton',
+      'emailAliasesDeleteAliasButton'
+    ])
   })
 })

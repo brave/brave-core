@@ -53,6 +53,12 @@ provideStrings({
   emailAliasesUpdateAliasError: 'Error saving alias. Check your internet ' +
     'connection and try again.',
   emailAliasesSaveAliasButton: 'Save',
+  emailAliasesDeleteAliasTitle: 'Delete email alias',
+  emailAliasesDeleteAliasDescription: 'Removing $1 as an alias will result ' +
+    'in the loss of your ability to receive emails.',
+  emailAliasesDeleteWarning: 'This action is irreversible. Please ensure you ' +
+    'want to proceed before continuing.',
+  emailAliasesDeleteAliasButton: 'Delete',
   emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a ' +
     'Brave account',
   emailAliasesEnterEmailToGetLoginLink: 'Enter your email address to get a ' +
@@ -263,7 +269,7 @@ export const Bubble = () => {
     <EmailAliasModal
       aliasCount={demoData.aliases.length}
       onReturnToMain={() => {}}
-      editState={{ mode: 'Create' }}
+      editing={false}
       mainEmail={demoData.email}
       bubble={true}
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
