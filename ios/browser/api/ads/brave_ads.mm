@@ -28,6 +28,7 @@
 #include "base/types/optional_ref.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -58,6 +59,7 @@
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -110,6 +112,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
+  std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -152,6 +155,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     [self initObservers];
 
     adsClientNotifier = std::make_unique<brave_ads::AdsClientNotifier>();
+
+    ProfileIOS* profile = [self getLastUsedProfile];
+    CHECK(profile);
+    virtualPrefProvider = std::make_unique<brave_ads::VirtualPrefProvider>(
+        self.localStatePrefService,
+        std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
   }
   return self;
 }
@@ -162,6 +171,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   [self stopComponentUpdaterTimer];
 
   [self stopNetworkMonitor];
+
+  virtualPrefProvider.reset();
 
   [self deallocAdsClientNotifier];
 
@@ -1435,7 +1446,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (base::Value::Dict)getVirtualPrefs {
-  return {};
+  if (virtualPrefProvider == nullptr) {
+    return {};
+  }
+
+  return virtualPrefProvider->GetPrefs();
 }
 
 - (void)log:(const char*)file

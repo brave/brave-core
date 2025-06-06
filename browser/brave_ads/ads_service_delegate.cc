@@ -5,31 +5,17 @@
 
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 
-#include <cstddef>
 #include <utility>
-#include <vector>
 
 #include "base/check_deref.h"
-#include "base/json/json_reader.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/version.h"
-#include "base/version_info/channel.h"
-#include "base/version_info/version_info.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
-#include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
-#include "chrome/common/channel_info.h"
-#include "components/search_engines/template_url_data.h"
-#include "components/search_engines/template_url_prepopulate_data.h"
-#include "components/search_engines/template_url_prepopulate_data_resolver.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
@@ -48,102 +34,7 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr char kSkuEnvironmentPrefix[] = "skus:";
-constexpr char kSkuOrdersKey[] = "orders";
-constexpr char kSkuOrderLocationKey[] = "location";
-constexpr char kSkuOrderCreatedAtKey[] = "created_at";
-constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
-constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
-constexpr char kSkuOrderStatusKey[] = "status";
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
-
-int GetVersionComponent(size_t index) {
-  const base::Version& version = version_info::GetVersion();
-  const std::vector<uint32_t>& version_components = version.components();
-  return index < version_components.size()
-             ? static_cast<int>(version_components[index])
-             : 0;
-}
-
-int GetMajorVersion() {
-  return GetVersionComponent(0);
-}
-
-int GetMinorVersion() {
-  return GetVersionComponent(1);
-}
-
-int GetBuildVersion() {
-  return GetVersionComponent(2);
-}
-
-int GetPatchVersion() {
-  return GetVersionComponent(3);
-}
-
-bool IsMobilePlatform() {
-  std::string_view operating_system_name = version_info::GetOSType();
-  return operating_system_name == "Android" || operating_system_name == "iOS";
-}
-
-std::string StripSkuEnvironmentPrefix(const std::string& environment) {
-  const size_t pos = environment.find(':');
-  return environment.substr(pos + 1);
-}
-
-std::string NormalizeSkuStatus(const std::string& status) {
-  // Normalize the status field to use consistent (US) spelling, as the JSON
-  // source localizes it (e.g., "cancelled" vs "canceled").
-  return status == "cancelled" ? "canceled" : status;
-}
-
-base::Value::Dict ParseSkuOrder(const base::Value::Dict& dict) {
-  base::Value::Dict order;
-
-  if (const std::string* const created_at =
-          dict.FindString(kSkuOrderCreatedAtKey)) {
-    order.Set(kSkuOrderCreatedAtKey, *created_at);
-  }
-
-  if (const std::string* const expires_at =
-          dict.FindString(kSkuOrderExpiresAtKey)) {
-    order.Set(kSkuOrderExpiresAtKey, *expires_at);
-  }
-
-  if (const std::string* const last_paid_at =
-          dict.FindString(kSkuOrderLastPaidAtKey)) {
-    order.Set(kSkuOrderLastPaidAtKey, *last_paid_at);
-  }
-
-  if (const std::string* const status = dict.FindString(kSkuOrderStatusKey)) {
-    const std::string normalized_status = NormalizeSkuStatus(*status);
-    order.Set(kSkuOrderStatusKey, normalized_status);
-  }
-
-  return order;
-}
-
-base::Value::Dict ParseSkuOrders(const base::Value::Dict& dict) {
-  base::Value::Dict orders;
-
-  for (const auto [/*id*/ _, value] : dict) {
-    const base::Value::Dict* const order = value.GetIfDict();
-    if (!order) {
-      continue;
-    }
-
-    const std::string* const location = order->FindString(kSkuOrderLocationKey);
-    if (!location || location->empty()) {
-      continue;
-    }
-
-    orders.Set(*location, ParseSkuOrder(*order));
-  }
-
-  return orders;
-}
-
 }  // namespace
 
 AdsServiceDelegate::AdsServiceDelegate(
@@ -160,49 +51,6 @@ AdsServiceDelegate::AdsServiceDelegate(
           std::move(notification_ad_platform_bridge)) {}
 
 AdsServiceDelegate::~AdsServiceDelegate() {}
-
-std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
-  auto* prepopulate_data_resolver =
-      TemplateURLPrepopulateData::ResolverFactory::GetForProfile(&*profile_);
-  const auto template_url_data = prepopulate_data_resolver->GetFallbackSearch();
-  const std::u16string& default_search_engine_name =
-      template_url_data ? template_url_data->short_name() : u"";
-  return base::UTF16ToUTF8(default_search_engine_name);
-}
-
-base::Value::Dict AdsServiceDelegate::GetSkus() const {
-  base::Value::Dict skus;
-
-  if (!local_state_->FindPreference(skus::prefs::kSkusState)) {
-    // No SKUs in local state.
-    return skus;
-  }
-
-  const base::Value::Dict& skus_state =
-      local_state_->GetDict(skus::prefs::kSkusState);
-  for (const auto [environment, value] : skus_state) {
-    if (!environment.starts_with(kSkuEnvironmentPrefix)) {
-      continue;
-    }
-
-    // Deserialize the SKUs data from a JSON string stored in local state into a
-    // dictionary object for further processing.
-    std::optional<base::Value::Dict> sku_state =
-        base::JSONReader::ReadDict(value.GetString());
-    if (!sku_state) {
-      continue;
-    }
-
-    const base::Value::Dict* const orders = sku_state->FindDict(kSkuOrdersKey);
-    if (!orders) {
-      continue;
-    }
-
-    skus.Set(StripSkuEnvironmentPrefix(environment), ParseSkuOrders(*orders));
-  }
-
-  return skus;
-}
 
 void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
@@ -325,30 +173,6 @@ bool AdsServiceDelegate::IsFullScreenMode() {
 #else
   return true;
 #endif
-}
-
-base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
-  return base::Value::Dict()
-      .Set("[virtual]:browser",
-           base::Value::Dict()
-               .Set("build_channel",
-                    version_info::GetChannelString(chrome::GetChannel()))
-               .Set("version", version_info::GetVersionNumber())
-               .Set("major_version", GetMajorVersion())
-               .Set("minor_version", GetMinorVersion())
-               .Set("build_version", GetBuildVersion())
-               .Set("patch_version", GetPatchVersion()))
-      .Set("[virtual]:operating_system",
-           base::Value::Dict()
-               .Set("locale", base::Value::Dict()
-                                  .Set("language", CurrentLanguageCode())
-                                  .Set("region", CurrentCountryCode()))
-               .Set("is_mobile_platform", IsMobilePlatform())
-               .Set("name", version_info::GetOSType()))
-      .Set(
-          "[virtual]:search_engine",
-          base::Value::Dict().Set("default_name", GetDefaultSearchEngineName()))
-      .Set("[virtual]:skus", GetSkus());
 }
 
 NotificationDisplayService*
