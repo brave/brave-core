@@ -19,6 +19,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/no_destructor.h"
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
