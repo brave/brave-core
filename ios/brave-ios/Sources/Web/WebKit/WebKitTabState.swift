@@ -46,6 +46,19 @@ class WebKitTabState: TabState, TabStateImpl {
   func updateSecureContentState() async {
     visibleSecureContentState = await secureContentState
   }
+
+  func updateSecureContentStateAndNotifyObserversIfNeeded() {
+    Task { @MainActor in
+      let currentState = visibleSecureContentState
+      await updateSecureContentState()
+      if currentState != visibleSecureContentState {
+        observers.forEach {
+          $0.tabDidChangeVisibleSecurityState(self)
+        }
+      }
+    }
+  }
+
   @MainActor private var secureContentState: SecureContentState {
     get async {
       guard let webView = webView, let committedURL = self.lastCommittedURL else {
@@ -129,15 +142,7 @@ class WebKitTabState: TabState, TabStateImpl {
       }
     }
 
-    Task { @MainActor in
-      let currentState = visibleSecureContentState
-      await updateSecureContentState()
-      if currentState != visibleSecureContentState {
-        observers.forEach {
-          $0.tabDidChangeVisibleSecurityState(self)
-        }
-      }
-    }
+    updateSecureContentStateAndNotifyObserversIfNeeded()
   }
 
   private func webViewIsLoadingDidChange(_ isLoading: Bool) {
@@ -180,12 +185,7 @@ class WebKitTabState: TabState, TabStateImpl {
   }
 
   private func webViewSecurityStateDidChange() {
-    Task { @MainActor in
-      await updateSecureContentState()
-      observers.forEach {
-        $0.tabDidChangeVisibleSecurityState(self)
-      }
-    }
+    updateSecureContentStateAndNotifyObserversIfNeeded()
   }
 
   private func webViewSampledPageTopColorDidChange() {
