@@ -612,10 +612,10 @@
     Error
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TEXT" desc="">
-    You've reached the maximum device limit for this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account could not be connected because you have already connected too many devices or profiles to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TITLE" desc="">
-    Device limit reached
+    Device limit exceeded
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_1" desc="">
     Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.
