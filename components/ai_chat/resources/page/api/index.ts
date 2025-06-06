@@ -19,7 +19,8 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
-  tabs: Mojom.TabData[]
+  tabs: Mojom.TabData[],
+  defaultTabContentId?: number
 }
 
 export const defaultUIState: State = {
@@ -71,6 +72,14 @@ class PageAPI extends API<State> {
     // to start as early as possible.
     // Premium state separately because it takes longer to fetch and we don't
     // need to wait for it.
+
+    this.uiObserver.onNewDefaultConversation.addListener((contentId: number) => {
+      console.error('New default conversation', contentId)
+      this.setPartialState({
+        defaultTabContentId: contentId
+      })
+    })
+
     const [
       { state },
       { isStandalone },
@@ -95,15 +104,12 @@ class PageAPI extends API<State> {
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
 
-    // If we're in standalone mode, listen for tab changes so we can show a picker.
-    if (isStandalone) {
-      Mojom.TabTrackerService.getRemote().addObserver(this.tabObserver.$.bindNewPipeAndPassRemote())
-      this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
-        this.setPartialState({
-          tabs
-        })
+    Mojom.TabTrackerService.getRemote().addObserver(this.tabObserver.$.bindNewPipeAndPassRemote())
+    this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
+      this.setPartialState({
+        tabs
       })
-    }
+    })
 
     this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
       this.setPartialState(state)

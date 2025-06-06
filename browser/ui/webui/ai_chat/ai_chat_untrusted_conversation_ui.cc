@@ -23,6 +23,8 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
@@ -174,7 +176,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome-untrusted://resources "
-      "chrome-untrusted://image;");
+      "chrome-untrusted://image chrome-untrusted://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' chrome-untrusted://resources;");
@@ -185,6 +187,10 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
   Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(profile,
+                              std::make_unique<FaviconSource>(
+                                  profile, chrome::FaviconUrlFormat::kFavicon2,
+                                  /*serve_untrusted=*/true));
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
 }

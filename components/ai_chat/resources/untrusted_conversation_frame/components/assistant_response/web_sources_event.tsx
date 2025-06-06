@@ -42,8 +42,8 @@ function WebSource (props: { source: mojom.WebSource }) {
 export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) {
   const [isExpanded, setIsExpanded] = React.useState(false)
 
-  const unhiddenSources = props.sources.slice(0, UNEXPANDED_SOURCES_COUNT)
-  const hiddenSources = props.sources.slice(UNEXPANDED_SOURCES_COUNT)
+  const unhiddenSources = props.sources?.slice(0, UNEXPANDED_SOURCES_COUNT)
+  const hiddenSources = props.sources?.slice(UNEXPANDED_SOURCES_COUNT)
 
   return (
     <div className={styles.sources}>

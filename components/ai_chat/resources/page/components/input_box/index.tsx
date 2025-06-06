@@ -13,7 +13,9 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import { AttachmentImageItem, AttachmentSpinnerItem } from '../attachment_item'
+import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import usePromise from '$web-common/usePromise'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 type Props = Pick<
   ConversationContext,
@@ -38,6 +40,9 @@ type Props = Pick<
   | 'conversationHistory'
   | 'associatedContentInfo'
   | 'isUploadingFiles'
+  | 'shouldSendPageContents'
+  | 'disassociateContent'
+  | 'associateDefaultContent'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -45,6 +50,18 @@ interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
+}
+
+function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean) {
+  const { result: attachmentsPlaceholder } = usePromise(() => PluralStringProxyImpl.getInstance().getPluralString('placeholderAttachedPagesLabel', attachmentsCount), [attachmentsCount])
+
+  if (conversationStarted) return getLocale('placeholderLabel')
+
+  if (shouldSendPageContents && attachmentsCount > 0) {
+    return attachmentsPlaceholder
+  }
+
+  return getLocale('initialPlaceholderLabel')
 }
 
 function InputBox(props: InputBoxProps) {
@@ -113,6 +130,12 @@ function InputBox(props: InputBoxProps) {
     }
   }, [props.context.pendingMessageImages])
 
+  const placeholderText = usePlaceholderText(
+    props.context.associatedContentInfo.length,
+    props.context.shouldSendPageContents,
+    props.conversationStarted
+  )
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -125,7 +148,10 @@ function InputBox(props: InputBoxProps) {
         </div>
       )}
       {(props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles) && (
+        props.context.isUploadingFiles ||
+        (props.context.associatedContentInfo &&
+          props.context.shouldSendPageContents &&
+          !props.conversationStarted)) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -134,6 +160,15 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
+           {props.context.shouldSendPageContents &&
+            !props.conversationStarted && props.context.associatedContentInfo.map((content) => (
+              <AttachmentPageItem
+                key={content.contentId}
+                title={content.title}
+                url={content.url.url}
+                remove={() => props.context.disassociateContent(content)}
+              />
+            ))}
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
           )}
@@ -148,13 +183,11 @@ function InputBox(props: InputBoxProps) {
       )}
       <div
         className={styles.growWrap}
-        data-replicated-value={props.context.inputText}
+        data-replicated-value={props.context.inputText || placeholderText}
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+          placeholder={placeholderText}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -211,6 +244,8 @@ function InputBox(props: InputBoxProps) {
             getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
+            associateDefaultContent={props.context.associateDefaultContent}
+            conversationStarted={props.conversationStarted}
             isMobile={props.context.isMobile}
           />
         </div>
