@@ -19,12 +19,6 @@ extension TabDataValues {
 
 class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
   private weak var tab: (any TabState)?
-  private lazy var refreshControl = UIRefreshControl(
-    frame: .zero,
-    primaryAction: .init(handler: { [weak self] _ in
-      self?.handleRefresh()
-    })
-  )
 
   init(tab: some TabState) {
     self.tab = tab
@@ -33,14 +27,26 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
     Preferences.General.enablePullToRefresh.observe(from: self)
   }
 
-  private func handleRefresh() {
-    tab?.reload()
+  deinit {
+    tab?.removeObserver(self)
   }
 
   private func updatePullToRefreshVisibility() {
-    guard let url = tab?.url, let scrollView = tab?.webViewProxy?.scrollView else { return }
-    scrollView.refreshControl =
-      url.isLocalUtility || !Preferences.General.enablePullToRefresh.value ? nil : refreshControl
+    guard let url = tab?.visibleURL, let scrollView = tab?.webViewProxy?.scrollView else { return }
+    let isRefreshControlVisible =
+      !url.isLocalUtility && Preferences.General.enablePullToRefresh.value
+    if isRefreshControlVisible {
+      if scrollView.refreshControl == nil {
+        scrollView.refreshControl = UIRefreshControl(
+          frame: .zero,
+          primaryAction: .init(handler: { [weak tab] _ in
+            tab?.reload()
+          })
+        )
+      }
+    } else {
+      scrollView.refreshControl = nil
+    }
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
@@ -52,6 +58,7 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
+    guard let refreshControl = tab.webViewProxy?.scrollView?.refreshControl else { return }
     refreshControl.endRefreshing()
   }
 
