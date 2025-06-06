@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
