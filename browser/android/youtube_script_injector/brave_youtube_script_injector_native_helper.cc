@@ -54,15 +54,15 @@ constexpr char16_t kYoutubeFullscreen[] =
     }
   }
 
-  // Click the fullscreen button and play the video and after a delay 
+  // Click the fullscreen button and play the video and after a delay
   // to ensure the video is ready.
   // This is necessary because sometimes (rarely) when switching to fullscreen
-  // mode a video might be paused automatically from the backend if the buffer 
+  // mode a video might be paused automatically from the backend if the buffer
   // was not ready.
   // The delay allows the video to load properly before attempting to play it.
-  // This is especially important for high quality videos, which may require 
+  // This is especially important for high quality videos, which may require
   // some time to buffer before they can be played.
-  // The delay is set to 500 milliseconds, which is a reasonable delay for 
+  // The delay is set to 500 milliseconds, which is a reasonable delay for
   // the videos to be ready for playback.
   function delayedPlayAndClick(fullscreenBtn, videoPlayer) {
     setTimeout(() => {
