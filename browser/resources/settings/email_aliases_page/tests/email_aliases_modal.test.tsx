@@ -48,8 +48,11 @@ describe('EmailAliasModal', () => {
     jest.clearAllMocks()
     mockEmailAliasesService.updateAlias = jest.fn().mockResolvedValue(
       Promise.resolve({ errorMessage: null }))
-    mockEmailAliasesService.deleteAlias = jest.fn().mockResolvedValue(
-      Promise.resolve({ errorMessage: null }))
+    mockEmailAliasesService.deleteAlias = jest.fn().mockImplementation(
+      async () => {
+        await new Promise(resolve => setTimeout(resolve, 0))
+        return { errorMessage: null }
+      })
     mockEmailAliasesService.generateAlias = jest.fn()
       .mockResolvedValue({
         result: {
@@ -136,9 +139,14 @@ describe('EmailAliasModal', () => {
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
     clickLeoButton(deleteButton)
 
+    await waitFor(() => {
+      expect(deleteButton).toHaveAttribute('isdisabled', 'true')
+    })
+
     // Check that deleteAlias was called
     await waitFor(() => {
       expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalled()
+      expect(deleteButton).toHaveAttribute('isdisabled', 'false')
     })
   })
 
