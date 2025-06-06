@@ -601,6 +601,20 @@
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
 
+# These fail because we override GetChromeChannel to always use
+# with_extended_stable = false and override channel info
+-Chromium/ChannelInfoTest.GetChannel/0
+-Chromium/ChannelInfoTest.GetChannelNameWith/0
+-Chromium/ChannelInfoTest.GetChannelNameWithout/0
+
+# These tests fail because we change install channels
+-BrowserReportGeneratorTest.GenerateBasicReport
+-BrowserReportGeneratorTest.GenerateBasicReportForProfileReporting
+-BrowserReportGeneratorTest.GenerateBasicReportWithUpdate
+
+# We disable HATS
+-HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
