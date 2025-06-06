@@ -86,6 +86,14 @@ import XCTest
     XCTAssertEqual(result, "user.pdf")
 
     str = "a"
+    result = str.truncatingMiddle(maxLength: 0)
+    XCTAssertEqual(result, "a")
+
+    str = "a"
+    result = str.truncatingMiddle(maxLength: -1)
+    XCTAssertEqual(result, "a")
+
+    str = "a"
     result = str.truncatingMiddle(maxLength: 1)
     XCTAssertEqual(result, "a")
 

@@ -92,4 +92,35 @@ extension String {
 
     return Image(uiImage: flagImage)
   }
+
+  // Truncates the string in the middle to the specified maxLength characters.
+  public func truncatingMiddle(maxLength: Int) -> String {
+    guard self.count > maxLength else {
+      return self
+    }
+
+    guard maxLength > 1 else {
+      return self
+    }
+
+    if maxLength == 2 {
+      let start = self.prefix(1)
+      let end = self.suffix(1)
+      return "\(start)…\(end)"
+    }
+
+    let halfLength = (maxLength - 1) / 2
+    let start = self.prefix(halfLength)
+    let end = self.suffix(maxLength - halfLength - 1)
+    return "\(start)…\(end)"
+  }
+
+  // Strips unicode control characters such as LTR, RTL, New-Lines, and illegal Characters
+  public var strippingUnicodeControlCharacters: String {
+    let validFilenameSet = CharacterSet(charactersIn: ":/")
+      .union(.newlines)
+      .union(.controlCharacters)
+      .union(.illegalCharacters)
+    return self.components(separatedBy: validFilenameSet).joined()
+  }
 }
