@@ -910,13 +910,7 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
 
   if (base::FeatureList::IsEnabled(
           features::kAllowSelfCustodyProvidersFeature)) {
-    auto& self_custody_dict = prefs_->GetDict(prefs::kSelfCustodyAvailable);
-
-    if (auto solana_entry =
-            self_custody_dict.FindBool(internal::constant::kWalletSolana);
-        solana_entry && *solana_entry) {
-      providers.push_back(internal::constant::kWalletSolana);
-    }
+    providers.push_back(internal::constant::kWalletSolana);
   }
 
   return providers;
