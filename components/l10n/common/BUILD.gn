@@ -21,6 +21,7 @@ static_library("common") {
     "//brave/components/sidebar/browser",
     "//brave/components/text_recognition/browser",
     "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/ui/webui/ai_chat",
     "//brave/test:*",
     "//chrome/browser",
   ]

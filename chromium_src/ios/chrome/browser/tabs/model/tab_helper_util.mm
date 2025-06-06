@@ -5,6 +5,7 @@
 
 #import "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
+#include "brave/ios/browser/api/ai_chat/ai_chat_tab_helper.h"
 #import "components/omnibox/common/omnibox_features.h"
 #include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
 #import "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
@@ -26,4 +27,6 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
 
   security_interstitials::IOSBlockingPageTabHelper::CreateForWebState(
       web_state);
+
+  ai_chat::AIChatTabHelper::CreateForWebState(web_state);
 }
