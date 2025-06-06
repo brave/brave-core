@@ -19,10 +19,10 @@ namespace {
 struct WindowsRecallData : public base::SupportsUserData::Data {
   static const int kKey = 0;  // Only address is used.
 
-  explicit WindowsRecallData(const bool enabled)
-      : is_windows_recall_enabled(enabled) {}
+  explicit WindowsRecallData(const bool disabled)
+      : is_windows_recall_disabled(disabled) {}
 
-  const bool is_windows_recall_enabled = false;
+  const bool is_windows_recall_disabled = true;
 };
 
 }  // namespace
@@ -41,24 +41,25 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBlockWindowsRecall, true);
 }
 
-WindowsRecallState GetWindowsRecallState(
-    content::BrowserContext* browser_context) {
-  if (!IsWindowsRecallAvailable() || browser_context->IsOffTheRecord()) {
-    return WindowsRecallState::kUnavailable;
+bool IsWindowsRecallDisabled(content::BrowserContext* browser_context) {
+  if (!IsWindowsRecallAvailable()) {
+    return false;
+  }
+  if (browser_context->IsOffTheRecord()) {
+    return true;
   }
 
-  bool enabled = false;
+  bool disabled = true;
   if (auto* windows_recall_data = static_cast<WindowsRecallData*>(
           browser_context->GetUserData(&WindowsRecallData::kKey))) {
-    enabled = windows_recall_data->is_windows_recall_enabled;
+    disabled = windows_recall_data->is_windows_recall_disabled;
   } else {
-    // Pref contains the blocked state, invert the value.
-    enabled = !user_prefs::UserPrefs::Get(browser_context)
+    disabled = user_prefs::UserPrefs::Get(browser_context)
                    ->GetBoolean(prefs::kBlockWindowsRecall);
     browser_context->SetUserData(&WindowsRecallData::kKey,
-                                 std::make_unique<WindowsRecallData>(enabled));
+                                 std::make_unique<WindowsRecallData>(disabled));
   }
-  return enabled ? WindowsRecallState::kEnabled : WindowsRecallState::kDisabled;
+  return disabled;
 }
 
 }  // namespace windows_recall

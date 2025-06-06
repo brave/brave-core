@@ -1345,19 +1345,13 @@ std::optional<GURL> BraveContentBrowserClient::SanitizeURL(
   return sanitized_url;
 }
 
-std::optional<bool> BraveContentBrowserClient::IsWindowsRecallEnabled(
+bool BraveContentBrowserClient::IsWindowsRecallDisabled(
     content::BrowserContext* browser_context) {
 #if BUILDFLAG(IS_WIN)
-  switch (windows_recall::GetWindowsRecallState(browser_context)) {
-    case windows_recall::WindowsRecallState::kUnavailable:
-      break;
-    case windows_recall::WindowsRecallState::kEnabled:
-      return true;
-    case windows_recall::WindowsRecallState::kDisabled:
-      return false;
-  }
+  return windows_recall::IsWindowsRecallDisabled(browser_context);
+#else
+  return false;
 #endif
-  return std::nullopt;
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(

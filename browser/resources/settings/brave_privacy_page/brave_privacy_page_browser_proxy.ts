@@ -8,7 +8,7 @@ import {loadTimeData} from '../i18n_setup.js';
 
 export interface BravePrivacyBrowserProxy {
   wasPushMessagingEnabledAtStartup(): boolean
-  wasWindowsRecallEnabledAtStartup(): boolean
+  wasWindowsRecallDisabledAtStartup(): boolean
 }
 
 export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
@@ -16,8 +16,8 @@ export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
     return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
   }
 
-  wasWindowsRecallEnabledAtStartup(): boolean {
-    return loadTimeData.getBoolean('windowsRecallEnabledAtStartup');
+  wasWindowsRecallDisabledAtStartup(): boolean {
+    return loadTimeData.getBoolean('windowsRecallDisabledAtStartup');
   }
 
   static getInstance(): BravePrivacyBrowserProxyImpl {

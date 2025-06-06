@@ -110,15 +110,10 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
 #if BUILDFLAG(IS_WIN)
   {
-    const auto windows_recall_state =
-        windows_recall::GetWindowsRecallState(profile);
-    data_source->AddBoolean(
-        "isWindowsRecallAvailable",
-        windows_recall_state !=
-            windows_recall::WindowsRecallState::kUnavailable);
-    data_source->AddBoolean(
-        "windowsRecallEnabledAtStartup",
-        windows_recall_state == windows_recall::WindowsRecallState::kEnabled);
+    data_source->AddBoolean("isWindowsRecallAvailable",
+                            windows_recall::IsWindowsRecallAvailable());
+    data_source->AddBoolean("windowsRecallDisabledAtStartup",
+                            windows_recall::IsWindowsRecallDisabled(profile));
   }
 #else
   data_source->AddBoolean("isWindowsRecallAvailable", false);
