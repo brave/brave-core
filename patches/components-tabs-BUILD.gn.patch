@@ -1,0 +1,12 @@
+diff --git a/components/tabs/BUILD.gn b/components/tabs/BUILD.gn
+index 8776c3f6299ed03f1075614288e916d846d360e7..283be25b736735125c9f2412b7bb4d3097855674 100644
+--- a/components/tabs/BUILD.gn
++++ b/components/tabs/BUILD.gn
+@@ -13,6 +13,7 @@ source_set("public") {
+     "//base",
+     "//components/tab_groups",
+   ]
++  import("//brave/components/tabs/sources.gni") sources += brave_components_tabs_sources public_deps += brave_components_tabs_public_deps
+ }
+ 
+ source_set("unit_tests") {

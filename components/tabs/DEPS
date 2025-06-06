@@ -1,0 +1,7 @@
+from brave_chromium_utils import inline_file
+inline_file("//components/tabs/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/components/tabs",
+  "+third_party/skia/include",
+]
