@@ -170,7 +170,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     frc = bookmarkManager.foldersFrc(excludedFolder: mode.folder)
     rootFolderName = bookmarkManager.mobileNode()?.title ?? Strings.bookmarkRootLevelCellTitle
 
-    if let mobileFolderId = bookmarkManager.mobileNode()?.objectID {
+    if let mobileFolderId = bookmarkManager.mobileNode()?.id {
       rootFolderId = mobileFolderId
     } else {
       Logger.module.error("Invalid MobileBookmarks Folder Id")
@@ -507,7 +507,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
       cell.indentationLevel = indentedFolder.indentationLevel
 
       // Folders with children folders have a different icon
-      let hasChildrenFolders = indentedFolder.folder.children?.contains(where: { $0.isFolder })
+      let hasChildrenFolders = indentedFolder.folder.children.contains(where: { $0.isFolder })
       if indentedFolder.folder.parent == nil {
         cell.customImage.image = UIImage(braveSystemNamed: "leo.product.bookmarks")
       } else {
@@ -516,10 +516,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
         )
       }
 
-      if let folder = saveLocation.getFolder, folder.objectID == indentedFolder.folder.objectID {
+      if let folder = saveLocation.getFolder, folder.id == indentedFolder.folder.id {
         cell.accessoryType = .checkmark
-      } else if case .rootLevel = saveLocation, indentedFolder.folder.objectID == self.rootFolderId
-      {
+      } else if case .rootLevel = saveLocation, indentedFolder.folder.id == self.rootFolderId {
         cell.accessoryType = .checkmark
       }
 
