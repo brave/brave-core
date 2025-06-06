@@ -235,7 +235,7 @@
         Wallet
       </message>
       <message name="IDS_TOGGLE_AI_CHAT" desc="The show Brave Leo AI Chat menu item (app menu)">
-        Leo
+        Leo AI
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
