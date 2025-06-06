@@ -84,7 +84,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
   source->AddLocalizedStrings(ai_chat::GetLocalizedStrings());
-  source->AddLocalizedStrings(ai_chat::kLocalizedStrings);
+  source->AddLocalizedStrings(webui::kAiChatStrings);
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);
