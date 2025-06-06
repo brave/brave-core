@@ -511,6 +511,14 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
+  if (this.getTargetOS() === 'linux' || this.getTargetOS() === 'android') {
+    args.dcheck_always_on = false
+    args.is_component_build = false
+    args.is_debug = false
+    args.is_ubsan = true
+    args.is_ubsan_no_recover = true
+  }
+
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
