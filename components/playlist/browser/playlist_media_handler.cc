@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "base/functional/callback.h"
-#include "base/functional/overloaded.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 
 namespace playlist {
 
@@ -60,18 +60,17 @@ void PlaylistMediaHandler::OnMediaDetected(
   }
 
   auto url = web_contents->GetLastCommittedURL();
-  std::visit(
-      base::Overloaded{[&](OnceCallback& on_media_detected_callback) {
-                         if (on_media_detected_callback) {
-                           std::move(on_media_detected_callback)
-                               .Run(std::move(url), std::move(items));
-                         }
-                       },
-                       [&](RepeatingCallback& on_media_detected_callback) {
-                         on_media_detected_callback.Run(std::move(url),
-                                                        std::move(items));
-                       }},
-      on_media_detected_callback_);
+  std::visit(absl::Overload{[&](OnceCallback& on_media_detected_callback) {
+                              if (on_media_detected_callback) {
+                                std::move(on_media_detected_callback)
+                                    .Run(std::move(url), std::move(items));
+                              }
+                            },
+                            [&](RepeatingCallback& on_media_detected_callback) {
+                              on_media_detected_callback.Run(std::move(url),
+                                                             std::move(items));
+                            }},
+             on_media_detected_callback_);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistMediaHandler);
