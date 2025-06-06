@@ -68,7 +68,7 @@ class P3ARemoteConfigManagerTest : public testing::Test,
     return it->second;
   }
 
-  const MetricConfig* GetBaseMetricConfig(
+  const MetricConfig* GetMetricConfig(
       std::string_view histogram_name) const override {
     auto it = kBaseConfigs.find(histogram_name);
     if (it == kBaseConfigs.end()) {

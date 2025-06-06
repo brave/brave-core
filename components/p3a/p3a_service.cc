@@ -88,11 +88,6 @@ P3AService::P3AService(PrefService& local_state,
 
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
-
-  pref_change_registrar_.Init(&local_state);
-  pref_change_registrar_.Add(
-      kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
-                                       base::Unretained(this)));
 }
 
 P3AService::~P3AService() = default;
@@ -214,6 +209,11 @@ void P3AService::Init(
   if (local_state_->GetBoolean(kP3AEnabled)) {
     message_manager_->Start(url_loader_factory_);
   }
+
+  pref_change_registrar_.Init(&*local_state_);
+  pref_change_registrar_.Add(
+      kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
+                                       base::Unretained(this)));
 }
 
 void P3AService::OnRotation(MetricLogType log_type, bool is_constellation) {
@@ -237,8 +237,7 @@ const MetricConfig* P3AService::GetMetricConfig(
     std::string_view histogram_name) const {
   // First check if there's a remote config for this metric
   if (remote_config_manager_) {
-    const auto* remote_config = remote_config_manager_->GetRemoteMetricConfig(
-        std::string(histogram_name));
+    const auto* remote_config = remote_config_manager_->GetRemoteMetricConfig(histogram_name);
     if (remote_config) {
       return remote_config;
     }
@@ -246,11 +245,6 @@ const MetricConfig* P3AService::GetMetricConfig(
 
   // Fall back to the base config if no remote config exists
   return GetBaseMetricConfig(histogram_name);
-}
-
-const MetricConfig* P3AService::GetBaseMetricConfig(
-    std::string_view histogram_name) const {
-  return p3a::GetBaseMetricConfig(histogram_name);
 }
 
 void P3AService::OnRemoteConfigLoaded() {

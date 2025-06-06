@@ -104,15 +104,22 @@ void RemoteConfigManager::SetMetricConfigs(
 
   VLOG(1) << "Loaded " << result->size() << " metric configurations";
 
-  activation_metric_names_.clear();
   metric_configs_.clear();
+  activation_metric_names_.clear();
+
+  for (const auto& entry : *result) {
+    if (!entry.second.activation_metric_name || !delegate_->GetLogTypeForHistogram(entry.first)) {
+      continue;
+    }
+    activation_metric_names_.insert(*entry.second.activation_metric_name);
+  }
 
   for (const auto& entry : *result) {
     if (!delegate_->GetLogTypeForHistogram(entry.first)) {
       continue;
     }
 
-    const auto* base_config = delegate_->GetBaseMetricConfig(entry.first);
+    const auto* base_config = delegate_->GetMetricConfig(entry.first);
     const auto& remote_config = entry.second;
     auto metric_config = base_config ? *base_config : MetricConfig{};
 
@@ -136,10 +143,10 @@ void RemoteConfigManager::SetMetricConfigs(
       metric_config.append_attributes = *remote_config.append_attributes;
     }
     if (remote_config.activation_metric_name) {
-      auto it =
-          activation_metric_names_.insert(*remote_config.activation_metric_name)
-              .first;
-      metric_config.activation_metric_name = *it;
+      auto it = activation_metric_names_.find(*remote_config.activation_metric_name);
+      if (it != activation_metric_names_.end()) {
+        metric_config.activation_metric_name = *it;
+      }
     }
     if (remote_config.cadence) {
       metric_config.cadence = remote_config.cadence;
