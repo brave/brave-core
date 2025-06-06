@@ -39,9 +39,20 @@ test('Test RenderLink component with citations.', async () => {
       allowedLinks={['https://brave.com']}
     />
   )
-  expect(screen.getByText('1')).toBeInTheDocument()
-  expect(screen.getByText('1').tagName).toBe('A')
-  expect(screen.getByText('1').className).toBe('conversationLink citation')
+
+  // Make sure the label is visible
+  const label = document.querySelector<HTMLDivElement>('leo-label')
+  expect(label).toBeInTheDocument()
+  expect(label).toBeVisible()
+  expect(label).toHaveTextContent('1')
+
+  // Make sure the citation is visible
+  const citation = document.querySelector<HTMLAnchorElement>('.citation')
+  expect(citation).toBeInTheDocument()
+  expect(citation).toBeVisible()
+  expect(citation).toHaveTextContent('1')
+  expect(citation?.tagName).toBe('A')
+  expect(citation?.className).toBe('citation')
 })
 
 test('Test RenderLink component with disableLinkRestrictions.', async () => {

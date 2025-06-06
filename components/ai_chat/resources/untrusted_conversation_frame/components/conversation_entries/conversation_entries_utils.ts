@@ -48,3 +48,9 @@ export const getReasoningText = (text: string) => {
 
   return result.trim()
 }
+
+export const removeReasoning = (text: string) => {
+  return text.includes('<think>') && text.includes('</think>')
+    ? text.split('</think>')[1]
+    : text
+}
