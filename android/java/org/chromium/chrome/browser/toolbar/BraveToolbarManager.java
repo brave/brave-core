@@ -200,7 +200,8 @@ public class BraveToolbarManager extends ToolbarManager
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier) {
+            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -245,7 +246,8 @@ public class BraveToolbarManager extends ToolbarManager
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
                 multiInstanceManager,
-                tabBookmarkerSupplier);
+                tabBookmarkerSupplier,
+                menuButtonVisibilityDelegate);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
