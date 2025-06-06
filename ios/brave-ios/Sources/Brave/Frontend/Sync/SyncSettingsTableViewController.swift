@@ -21,7 +21,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 {
 
   private enum Sections: Int, CaseIterable {
-    case deviceList, deviceActions, syncTypes, chainRemoval
+    case deviceList, syncTypes, otherActions
   }
 
   private enum SyncDataTypes: Int, CaseIterable {
@@ -69,7 +69,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   /// Standard navigation is disabled then.
   private var isModallyPresented = false
 
-  private var tableView = UITableView(frame: .zero, style: .grouped)
+  private var tableView = UITableView(frame: .zero, style: .insetGrouped)
   private let loadingView = UIView().then {
     $0.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
     $0.isHidden = true
@@ -121,7 +121,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     tableView.do {
       $0.dataSource = self
       $0.delegate = self
-      $0.tableHeaderView = makeInformationTextView(with: Strings.Sync.settingsHeader)
+      $0.tableHeaderView = makeInformationHeaderTextView(with: Strings.Sync.settingsHeader)
     }
 
     doLayout()
@@ -152,13 +152,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         action: #selector(doneTapped)
       )
     }
-
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      image: UIImage(systemName: "gearshape"),
-      style: .plain,
-      target: self,
-      action: #selector(onSyncInternalsTapped)
-    )
   }
 
   override func viewWillLayoutSubviews() {
@@ -354,19 +347,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   private func doneTapped() {
     navigationController?.dismiss(animated: true)
   }
-
-  @objc
-  private func onSyncInternalsTapped() {
-    let syncInternalsController = ChromeWebUIController(
-      braveCore: braveCoreMain,
-      isPrivateBrowsing: false
-    ).then {
-      $0.title = Strings.Sync.internalsTitle
-      $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
-    }
-
-    navigationController?.pushViewController(syncInternalsController, animated: true)
-  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -380,15 +360,23 @@ extension SyncSettingsTableViewController {
       return
     }
 
-    // Device Actions - Add New Device
-    if section == .deviceActions {
-      addAnotherDevice()
-      return
-    }
+    if section == .otherActions {
+      if indexPath.row == 0 {
+        // Sync internals
+        let syncInternalsController = ChromeWebUIController(
+          braveCore: braveCoreMain,
+          isPrivateBrowsing: false
+        ).then {
+          $0.title = Strings.Sync.internalsTitle
+          $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
+        }
 
-    // Delete Sync Chain
-    if section == .chainRemoval {
-      presentAlertPopup(for: .syncChainDeleteConfirmation)
+        navigationController?.pushViewController(syncInternalsController, animated: true)
+      }
+      if indexPath.row == 1 {
+        // Delete Sync Chain
+        presentAlertPopup(for: .syncChainDeleteConfirmation)
+      }
       return
     }
 
@@ -397,6 +385,7 @@ extension SyncSettingsTableViewController {
       !devices.isEmpty,
       let device = devices[safe: indexPath.row]
     else {
+      addAnotherDevice()
       return
     }
 
@@ -454,13 +443,11 @@ extension SyncSettingsTableViewController {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case Sections.deviceList.rawValue:
-      return devices.count
-    case Sections.deviceActions.rawValue:
-      return 1
+      return devices.count + 1
     case Sections.syncTypes.rawValue:
       return SyncDataTypes.allCases.count
-    case Sections.chainRemoval.rawValue:
-      return 1
+    case Sections.otherActions.rawValue:
+      return 2
     default:
       return 0
     }
@@ -487,7 +474,7 @@ extension SyncSettingsTableViewController {
   func tableView(_ tableView: UITableView, viewForFooterInSection sectionIndex: Int) -> UIView? {
     switch sectionIndex {
     case Sections.syncTypes.rawValue:
-      return makeInformationTextView(with: Strings.Sync.configurationInformationText)
+      return makeInformationFooterTextView(with: Strings.Sync.configurationInformationText)
     default:
       return nil
     }
@@ -510,6 +497,11 @@ extension SyncSettingsTableViewController {
 
     switch indexPath.section {
     case Sections.deviceList.rawValue:
+      if indexPath.row == devices.count {
+        configureButtonCell(cell, atIndexPath: indexPath)
+        return
+      }
+
       guard let device = devices[safe: indexPath.row] else {
         Logger.module.error("Invalid device to configure.")
         return
@@ -520,7 +512,7 @@ extension SyncSettingsTableViewController {
 
       cell.textLabel?.text = deviceName
       cell.textLabel?.textColor = .braveLabel
-    case Sections.deviceActions.rawValue, Sections.chainRemoval.rawValue:
+    case Sections.otherActions.rawValue:
       configureButtonCell(cell, atIndexPath: indexPath)
     case Sections.syncTypes.rawValue:
       configureToggleCell(cell, for: SyncDataTypes(rawValue: indexPath.row) ?? .bookmarks)
@@ -530,22 +522,23 @@ extension SyncSettingsTableViewController {
   }
 
   private func configureButtonCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-    cell.preservesSuperviewLayoutMargins = false
-    cell.separatorInset = UIEdgeInsets.zero
-    cell.layoutMargins = UIEdgeInsets.zero
-
-    cell.textLabel?.do {
-      $0.textAlignment = .center
-      $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
-    }
+    cell.accessoryType = .none
+    cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
 
     switch indexPath.section {
-    case Sections.deviceActions.rawValue:
+    case Sections.deviceList.rawValue:
       cell.textLabel?.text = Strings.Sync.addAnotherDevice
       cell.textLabel?.textColor = .braveBlurpleTint
-    case Sections.chainRemoval.rawValue:
-      cell.textLabel?.text = Strings.Sync.deleteAccount
-      cell.textLabel?.textColor = .braveErrorLabel
+      cell.accessoryType = .disclosureIndicator
+    case Sections.otherActions.rawValue:
+      if indexPath.row == 0 {
+        cell.textLabel?.text = Strings.Sync.internalsTitle
+        cell.textLabel?.textColor = .braveBlurpleTint
+        cell.accessoryType = .disclosureIndicator
+      } else if indexPath.row == 1 {
+        cell.textLabel?.text = Strings.Sync.deleteAccount
+        cell.textLabel?.textColor = .braveErrorLabel
+      }
     default:
       return
     }
@@ -580,15 +573,29 @@ extension SyncSettingsTableViewController {
     }
   }
 
-  private func makeInformationTextView(with info: String) -> UITextView {
+  private func makeInformationHeaderTextView(with info: String) -> UITextView {
     return UITextView().then {
       $0.text = info
-      $0.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+      $0.textContainerInset = UIEdgeInsets(top: 24, left: 36, bottom: 0, right: 36)
       $0.isEditable = false
       $0.isSelectable = false
-      $0.textColor = .secondaryBraveLabel
-      $0.textAlignment = .center
-      $0.font = UIFont.systemFont(ofSize: 15)
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.textAlignment = .natural
+      $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
+      $0.isScrollEnabled = false
+      $0.backgroundColor = .clear
+    }
+  }
+
+  private func makeInformationFooterTextView(with info: String) -> UITextView {
+    return UITextView().then {
+      $0.text = info
+      $0.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+      $0.isEditable = false
+      $0.isSelectable = false
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.textAlignment = .natural
+      $0.font = UIFont.preferredFont(forTextStyle: .footnote)
       $0.isScrollEnabled = false
       $0.backgroundColor = .clear
     }
