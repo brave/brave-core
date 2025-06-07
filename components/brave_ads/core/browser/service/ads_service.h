@@ -30,6 +30,7 @@ namespace brave_ads {
 
 class AdsService : public KeyedService {
  public:
+  // TODO(tmancey): Decouple.
   class Delegate {
    public:
     virtual ~Delegate() = default;
