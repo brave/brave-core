@@ -43,7 +43,7 @@ import styles from './style.module.scss'
 import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
-import { extractQuery } from '../filter_menu/query'
+import { useExtractedQuery } from '../filter_menu/query'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -189,6 +189,11 @@ function Main() {
     }
     return false
   }
+
+  const extractedQuery = useExtractedQuery(conversationContext.inputText, {
+    onlyAtStart: false,
+    triggerCharacter: '/',
+  })
 
   return (
     <main className={styles.main} ref={setMainElement}>
@@ -348,10 +353,7 @@ function Main() {
           <ToolsMenu
             isOpen={conversationContext.isToolsMenuOpen}
             setIsOpen={conversationContext.setIsToolsMenuOpen}
-            query={extractQuery(conversationContext.inputText, {
-              onlyAtStart: false,
-              triggerCharacter: '/',
-            })}
+            query={extractedQuery}
             categories={aiChatContext.actionList}
             handleClick={conversationContext.handleActionTypeClick}
           />

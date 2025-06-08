@@ -5,12 +5,12 @@
 import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled from "styled-components";
-import InputBox from '../../../../ai_chat/resources/page/components/input_box';
+import { extractQuery } from "../../../../ai_chat/resources/page/components/filter_menu/query";
 import ToolsMenu from "../../../../ai_chat/resources/page/components/filter_menu/tools_menu";
+import InputBox from '../../../../ai_chat/resources/page/components/input_box';
 import { useRewriterContext } from "../Context";
 import InitialText from "./InitialText";
 import NoContent from "./NoContent";
-import { extractQuery } from "../../../../ai_chat/resources/page/components/filter_menu/query";
 
 const FiltersContainer = styled.div`
   display: flex;
