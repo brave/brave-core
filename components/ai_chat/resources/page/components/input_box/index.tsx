@@ -46,7 +46,7 @@ type Props = Pick<
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
-interface InputBoxProps {
+export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown

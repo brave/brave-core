@@ -452,6 +452,19 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.disassociateTab(tab, context.conversationUuid!)
   }
 
+  const associateDefaultContent = React.useMemo(() => {
+    return aiChatContext.defaultTabContentId && !context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
+      ? () => {
+        const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
+        if (!tab) {
+          console.error('Could not find tab for content', aiChatContext.defaultTabContentId)
+          return
+        }
+        aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
+      }
+      : undefined
+  }, [aiChatContext.defaultTabContentId, aiChatContext.uiHandler, aiChatContext.tabs, context.associatedContentInfo, context.conversationUuid])
+
   // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
@@ -660,16 +673,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning,
     disassociateContent,
-    associateDefaultContent: aiChatContext.defaultTabContentId && !context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
-      ? () => {
-        const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
-        if (!tab) {
-          console.error('Could not find tab for content', aiChatContext.defaultTabContentId)
-          return
-        }
-        aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
-      }
-      : undefined,
+    associateDefaultContent,
   }
 
   return (
