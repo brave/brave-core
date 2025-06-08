@@ -433,6 +433,7 @@ leo_icons = [
   "web3-bridge.svg",
   "widget-generic.svg",
   "window-content.svg",
+  "window-edit.svg",
   "window-tab-close.svg",
   "window-tab-new.svg",
   "window.svg",
