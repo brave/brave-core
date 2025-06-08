@@ -1,11 +1,11 @@
-Total size 83410K
+Total size 83412K
 
 GROUP Adblock [8776K total]
    226K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.378 [adcocjohghhfpidemphmcmlmhnfgikei]
-    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.13398 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1445K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.14883 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.13399 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1445K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.14884 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     97K Brave Ad Block Updater (Regional Catalog) 1.0.77 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5712K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.12575 [iodkpdagapdfkphljnddpjlldadblomo]
+  5712K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.12576 [iodkpdagapdfkphljnddpjlldadblomo]
   1236K Brave Ad Block Updater (Resources) 1.0.107 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
@@ -19,8 +19,8 @@ GROUP Ntp [11921K total]
 GROUP Other [182K total]
    182K Brave Local Data Files Updater 1.0.1185 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [29053K total]
+GROUP large_files [29055K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6537K Default/RewardsCreators.db
-  1870K Safe Browsing/ChromeExtMalware.store.32_13393854462220001
- 17382K Safe Browsing/UrlSoceng.store.4_13393854796826283
+  1870K Safe Browsing/ChromeExtMalware.store.32_13393859518195240
+ 17384K Safe Browsing/UrlSoceng.store.4_13393859885869096
