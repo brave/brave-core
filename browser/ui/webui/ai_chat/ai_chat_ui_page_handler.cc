@@ -309,7 +309,6 @@ void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
 
-  // TODO: This is giving the old content_id, not the new one.
   chat_ui_->OnNewDefaultConversation(active_chat_tab_helper_->GetContentId());
 }
 

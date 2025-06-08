@@ -181,7 +181,6 @@ void ConversationHandler::BindUntrustedConversationUI(
       std::move(untrusted_conversation_ui_handler));
   std::move(callback).Run(GetStateForConversationEntries());
 
-  std::vector<mojom::AssociatedContentPtr> associated_content;
   if (associated_content_manager_->should_send()) {
     untrusted_conversation_ui_handlers_.Get(id)->AssociatedContentChanged(
         associated_content_manager_->GetAssociatedContent());
@@ -203,14 +202,6 @@ void ConversationHandler::OnAssociatedContentUpdated() {
         associated_content_manager_->should_send());
   }
 
-  OnStateForConversationEntriesChanged();
-  MaybeSeedOrClearSuggestions();
-  MaybeFetchOrClearContentStagedConversation();
-
-  for (auto& observer : observers_) {
-    observer.OnAssociatedContentUpdated(this);
-  }
-
   for (const auto& client : untrusted_conversation_ui_handlers_) {
     if (associated_content_manager_->should_send()) {
       client->AssociatedContentChanged(
@@ -218,6 +209,14 @@ void ConversationHandler::OnAssociatedContentUpdated() {
     } else {
       client->AssociatedContentChanged({});
     }
+  }
+
+  OnStateForConversationEntriesChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
+
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentUpdated(this);
   }
 }
 

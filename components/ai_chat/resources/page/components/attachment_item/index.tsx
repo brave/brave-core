@@ -27,7 +27,7 @@ type Props = {
   remove?: () => void
 }
 
-function AttachmentItem(props: Props) {
+export function AttachmentItem(props: Props) {
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
