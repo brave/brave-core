@@ -19,7 +19,7 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   actionList: Mojom.ActionGroup[]
-  tabs: Mojom.TabData[],
+  tabs: Mojom.TabData[]
   defaultTabContentId?: number
 }
 
@@ -74,7 +74,6 @@ class PageAPI extends API<State> {
     // need to wait for it.
 
     this.uiObserver.onNewDefaultConversation.addListener((contentId: number) => {
-      console.error('New default conversation', contentId)
       this.setPartialState({
         defaultTabContentId: contentId
       })

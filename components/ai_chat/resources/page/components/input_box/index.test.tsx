@@ -31,7 +31,7 @@ const defaultContext: InputBoxProps['context'] = {
   submitInputTextToAPI: () => {},
   updateShouldSendPageContents: () => {},
   uploadImage: () => {},
-  associatedContentInfo: undefined,
+  associatedContentInfo: [],
   handleVoiceRecognition: () => {}
 }
 
@@ -41,15 +41,14 @@ describe('input box', () => {
       <InputBox
         context={{
           ...defaultContext,
-          associatedContentInfo: {
+          associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
             contentUsedPercentage: 0.5,
-            isContentRefined: false,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
             uuid: '1234'
-          },
+          }],
           shouldSendPageContents: true
         }}
         conversationStarted={false}
@@ -67,15 +66,14 @@ describe('input box', () => {
       <InputBox
         context={{
           ...defaultContext,
-          associatedContentInfo: {
+          associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
             contentUsedPercentage: 0.5,
-            isContentRefined: false,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
             uuid: '1234'
-          },
+          }],
           shouldSendPageContents: false
         }}
         conversationStarted={false}
@@ -93,7 +91,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...defaultContext,
-          associatedContentInfo: undefined,
+          associatedContentInfo: [],
           shouldSendPageContents: true
         }}
         conversationStarted={false}
@@ -111,15 +109,14 @@ describe('input box', () => {
       <InputBox
         context={{
           ...defaultContext,
-          associatedContentInfo: {
+          associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
             contentUsedPercentage: 0.5,
-            isContentRefined: false,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
             uuid: '1234'
-          },
+          }],
           shouldSendPageContents: true
         }}
         conversationStarted
