@@ -13,8 +13,10 @@ import components.path_util as path_util
 
 from components.perf_test_utils import GetProcessOutput
 
-GH_BRAVE_CORE_GIT_URL = 'git@github.com:brave/brave-core.git'
-GH_BRAVE_VARIATIONS_GIT_URL = 'git@github.com:brave/brave-variations.git'
+GH_BRAVE_CORE_GIT_URL = os.getenv('GH_BRAVE_CORE_GIT_URL', 'git@github.com:brave/brave-core.git')
+
+GH_BRAVE_VARIATIONS_GIT_URL = os.getenv('GH_BRAVE_VARIATIONS_GIT_URL', 'git@github.com:brave/brave-variations.git')
+
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
 
 
@@ -39,7 +41,6 @@ def MakeGithubPR(branch: str, target: str, title: str, body: str,
   for arg in extra_args:
     args.append(arg)
   return GetProcessOutput(args, cwd=path_util.GetBraveDir())
-
 
 def PushChangesToBranch(files: Dict[str, str],
                         branch: str,
