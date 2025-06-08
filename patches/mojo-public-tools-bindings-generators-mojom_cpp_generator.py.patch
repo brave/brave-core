@@ -1,0 +1,20 @@
+diff --git a/mojo/public/tools/bindings/generators/mojom_cpp_generator.py b/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
+index c6af9c90483ee4cbd1cbb538393139cbde0dd7f6..7bfb45044c96ff8280a576347ce68a2d4f2e7c8f 100644
+--- a/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
++++ b/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
+@@ -677,11 +677,10 @@ class Generator(generator.Generator):
+   def _FormatConstantDeclaration(self, constant, nested=False):
+     if mojom.IsStringKind(constant.kind):
+       if nested:
+-        return "const char %s[%s]" % (constant.name,
+-                                      self._ConstantLength(constant))
+-      return "%sextern const char %s[%s]" % \
+-          ((self.export_attribute + " ") if self.export_attribute else "",
+-           constant.name, self._ConstantLength(constant))
++        return "constexpr char %s[] = %s" % (constant.name,
++                                             self._ConstantValue(constant))
++      return "inline constexpr char %s[] = %s" % \
++          (constant.name, self._ConstantValue(constant))
+     return "constexpr %s %s = %s" % (GetCppPodType(
+         constant.kind), constant.name, self._ConstantValue(constant))
+ 

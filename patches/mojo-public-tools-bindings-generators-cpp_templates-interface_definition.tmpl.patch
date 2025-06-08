@@ -1,0 +1,15 @@
+diff --git a/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl b/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
+index b254b745daa30bef72be4c5bb0d965cb839f1c34..4f1c1db6915689e0e68adde87cfcf8c7e7d06180 100644
+--- a/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
++++ b/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
+@@ -92,9 +92,7 @@ constexpr base::Token {{class_name}}::Uuid_;
+ 
+ {#--- Constants #}
+ {%-  for constant in interface.constants %}
+-{%-   if constant.kind|is_string_kind %}
+-const char {{interface.name}}::{{constant.name}}[{{constant|constant_length}}] = {{constant|constant_value}};
+-{%-   else %}
++{%-   if not constant.kind|is_string_kind %}
+ constexpr {{constant.kind|cpp_pod_type}} {{interface.name}}::{{constant.name}};
+ {%-   endif %}
+ {%- endfor %}
