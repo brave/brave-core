@@ -13,18 +13,6 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string, params: Record<string, string>) => {
-    return key
-  },
-  formatLocale: (key: string, params: Record<string, string>) => {
-    return key
-  }
-}))
-
 // Mock the clipboard API
 Object.assign(navigator, {
   clipboard: {

@@ -22,8 +22,7 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
       // Note: e.detail contains the CSS which fails to parse - we check it
       // includes @container to make sure we aren't suppressing other CSS errors
       if (e.type === 'css parsing' && e.detail.includes('@container')) {
-        console.error(e)
-        return;
+        return
       }
 
       throw e
