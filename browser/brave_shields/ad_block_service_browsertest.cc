@@ -26,7 +26,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
@@ -250,7 +250,8 @@ AdBlockServiceTest::InstallDefaultAdBlockResources(
       g_brave_browser_process->ad_block_service();
   base::ScopedAllowBlockingForTesting allow_blocking;
   service->default_resource_provider()->OnComponentReady(
-      component_updater::ComponentContentsAccessor::Create(component_path));
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
   return service->default_resource_provider();
 }
 
@@ -261,7 +262,8 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
       g_brave_browser_process->ad_block_service();
 
   service->default_resource_provider()->OnComponentReady(
-      component_updater::ComponentContentsAccessor::Create(component_path));
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -278,7 +280,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   auto& provider = component_providers.at(uuid);
   EXPECT_TRUE(provider);
   provider->OnComponentReady(
-      component_updater::ComponentContentsAccessor::Create(component_path));
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
 
   auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
@@ -354,7 +357,8 @@ void AdBlockServiceTest::InstallComponent(
     auto& provider = component_providers.at(catalog_entry.uuid);
     EXPECT_TRUE(provider);
     provider->OnComponentReady(
-        component_updater::ComponentContentsAccessor::Create(component_path));
+        component_updater::ComponentContentsReader::CreateBypassForTesting(
+            component_path));
 
     auto* engine = catalog_entry.first_party_protections
                        ? service->default_engine_.get()

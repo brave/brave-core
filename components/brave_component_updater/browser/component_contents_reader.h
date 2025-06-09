@@ -39,6 +39,8 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
 
   static std::unique_ptr<ComponentContentsReader> Create(
       const base::FilePath& component_root);
+  static std::unique_ptr<ComponentContentsReader> CreateBypassForTesting(
+      const base::FilePath& component_root);
 
   // This method is required for now, but will be removed.
   // Please, avoid reading signed component files directly.

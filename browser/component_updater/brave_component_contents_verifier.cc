@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/span_reader.h"
@@ -98,7 +99,12 @@ class ExtensionsTreeHashContentsVerifier
 
   std::unique_ptr<component_updater::ContentChecker> CreateContentChecker(
       const base::FilePath& relative_path) const override {
-    auto hashes = verified_contents_->GetRootHashes(relative_path);
+    std::vector<std::string> hashes;
+    if (!verified_contents_) {
+      CHECK_IS_TEST();
+    } else {
+      hashes = verified_contents_->GetRootHashes(relative_path);
+    }
     if (hashes.empty()) {
       // File is not signed.
       return nullptr;

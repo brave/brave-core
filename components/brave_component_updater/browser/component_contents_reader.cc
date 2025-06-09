@@ -76,6 +76,15 @@ std::unique_ptr<ComponentContentsReader> ComponentContentsReader::Create(
   return reader;
 }
 
+// static
+std::unique_ptr<ComponentContentsReader>
+ComponentContentsReader::CreateBypassForTesting(
+    const base::FilePath& component_root) {
+  // Doesn't check for |verifier_| is valid, it allows to read an unsigned
+  // component. But if component if signed it will check the signature.
+  return base::WrapUnique(new ComponentContentsReader(component_root));
+}
+
 const base::FilePath& ComponentContentsReader::GetComponentRootDeprecated()
     const {
   return component_root_;
