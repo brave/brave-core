@@ -1,20 +1,20 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 58f6a0f0216988838a96d453316c35f140e0eaa9..3f85346b4596bd810db5e45ab48dc87b7e63d0e0 100644
+index 53e8ce89fb5a7c5a6310e05c9ad046d19db7b80f..3a86e388995a137b0e6e8a556b19833dfb345b7e 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -678,6 +678,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-       prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
-
-   registry->RegisterTimePref(prefs::kLensOverlayLastPresented, base::Time());
+@@ -689,6 +689,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeed, 0);
+   registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeedV2,
+                                0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
-
+ 
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1088,6 +1089,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1107,6 +1108,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterTimePref(kSyncLastSyncedTime, base::Time());
    registry->RegisterTimePref(kSyncLastPollTime, base::Time());
    registry->RegisterTimeDeltaPref(kSyncPollInterval, base::TimeDelta());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
-
+ 
  // This method should be periodically pruned of year+ old migrations.
