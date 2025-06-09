@@ -13,6 +13,8 @@ namespace brave_component_updater {
 
 COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 BASE_DECLARE_FEATURE(kUseDevUpdaterUrl);
+
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 BASE_DECLARE_FEATURE(kComponentContentsVerifier);
 
 }  // namespace brave_component_updater

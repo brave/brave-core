@@ -10,7 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 namespace {
@@ -37,17 +37,17 @@ AdBlockDefaultResourceProvider::AdBlockDefaultResourceProvider(
 AdBlockDefaultResourceProvider::~AdBlockDefaultResourceProvider() = default;
 
 base::FilePath AdBlockDefaultResourceProvider::GetResourcesPath() {
-  if (!component_accessor_) {
+  if (!component_reader_) {
     return base::FilePath();
   }
 
-  return component_accessor_->GetComponentRoot().AppendASCII(
+  return component_reader_->GetComponentRootDeprecated().AppendASCII(
       kAdBlockResourcesFilename);
 }
 
 void AdBlockDefaultResourceProvider::OnComponentReady(
-    scoped_refptr<component_updater::ComponentContentsAccessor> accessor) {
-  component_accessor_ = std::move(accessor);
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  component_reader_ = std::move(reader);
 
   // Load the resources (as a string)
   LoadResources(
@@ -57,7 +57,7 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
 
 void AdBlockDefaultResourceProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
-  if (!component_accessor_) {
+  if (!component_reader_) {
     // If the component is not ready yet, run the callback with empty resources
     // to avoid blocking filter data loads.
     std::move(cb).Run("[]");
@@ -71,12 +71,8 @@ void AdBlockDefaultResourceProvider::LoadResources(
       },
       std::move(cb));
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          &component_updater::ComponentContentsAccessor::GetFileAsString,
-          base::RetainedRef(component_accessor_),
-          base::FilePath::FromASCII(kAdBlockResourcesFilename)),
+  component_reader_->GetFileAsString(
+      base::FilePath::FromASCII(kAdBlockResourcesFilename),
       std::move(handle_file_content));
 }
 

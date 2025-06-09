@@ -14,7 +14,7 @@
 #include "base/rand_util.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -42,10 +42,11 @@ void OnReadDATFileData(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
     uint8_t permission_mask,
+    const perfetto::Flow& flow,
     std::optional<DATFileDataBuffer> buffer) {
   std::move(cb).Run(
       base::BindOnce(&AddDATBufferToFilterSet, permission_mask,
-                     std::move(buffer).value_or(DATFileDataBuffer())));
+                     std::move(buffer).value_or(DATFileDataBuffer()), flow));
 }
 
 }  // namespace
@@ -98,27 +99,27 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
 }
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
-    scoped_refptr<component_updater::ComponentContentsAccessor> accessor) {
-  if (component_accessor_) {
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  if (component_reader_) {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
         base::GetDeletePathRecursivelyCallback(
-            component_accessor_->GetComponentRoot()));
+            component_reader_->GetComponentRootDeprecated()));
   }
-  component_accessor_ = std::move(accessor);
+  component_reader_ = std::move(reader);
 
   NotifyObservers(engine_is_default_);
 }
 
 bool AdBlockComponentFiltersProvider::IsInitialized() const {
-  return !!component_accessor_;
+  return !!component_reader_;
 }
 
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
-  if (!component_accessor_) {
+  if (!component_reader_) {
     return base::FilePath();
   }
-  return component_accessor_->GetComponentRoot().AppendASCII(kListFile);
+  return component_reader_->GetComponentRootDeprecated().AppendASCII(kListFile);
 }
 
 void AdBlockComponentFiltersProvider::LoadFilterSet(
@@ -128,20 +129,16 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
   TRACE_EVENT("brave.adblock", "AdBlockComponentFiltersProvider::LoadFilterSet",
               flow);
 
-  if (list_file_path.empty()) {
-  if (!component_accessor_) {
-    // If the component is not ready yet, provide a no-op callback immediately.
-    // An update will be pushed later to notify about the newly available list.
+  if (!component_reader_) {
+    // If the component is not ready yet, provide a no-op callback
+    // immediately. An update will be pushed later to notify about the newly
+    // available list.
     std::move(cb).Run(base::DoNothing());
     return;
   }
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          &component_updater::ComponentContentsAccessor::GetFileAsBytes,
-          base::RetainedRef(component_accessor_),
-          base::FilePath::FromASCII(kListFile)),
+  component_reader_->GetFileAsBytes(
+      base::FilePath::FromASCII(kListFile),
       base::BindOnce(&OnReadDATFileData, std::move(cb), permission_mask_,
                      flow));
 }

@@ -14,7 +14,6 @@
 #include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback_forward.h"
-#include "base/memory/weak_ptr.h"
 #include "base/task/task_runner.h"
 #include "base/task/task_traits.h"
 
@@ -36,6 +35,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
   ComponentContentsReader(ComponentContentsReader&&) = delete;
   ComponentContentsReader& operator=(const ComponentContentsReader&) = delete;
   ComponentContentsReader& operator=(ComponentContentsReader&&) = delete;
+  ~ComponentContentsReader();
 
   static std::unique_ptr<ComponentContentsReader> Create(
       const base::FilePath& component_root);
@@ -64,11 +64,9 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
 
  private:
   explicit ComponentContentsReader(const base::FilePath& component_root);
-  ~ComponentContentsReader();
 
   const base::FilePath component_root_;
   const std::unique_ptr<const class ContentsVerifier> verifier_;
-  base::WeakPtrFactory<ComponentContentsReader> weak_factor_{this};
 };
 
 }  // namespace component_updater

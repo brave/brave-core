@@ -12,13 +12,13 @@
 
 namespace component_updater {
 class ComponentUpdateService;
-class ComponentContentsAccessor;
+class ComponentContentsReader;
 }  // namespace component_updater
 
 namespace brave_shields {
 
 using OnComponentReadyCallback = base::RepeatingCallback<void(
-    scoped_refptr<component_updater::ComponentContentsAccessor>)>;
+    std::unique_ptr<component_updater::ComponentContentsReader>)>;
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
