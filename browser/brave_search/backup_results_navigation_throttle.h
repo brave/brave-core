@@ -10,16 +10,12 @@
 
 #include "content/public/browser/navigation_throttle.h"
 
-namespace content {
-class NavigationHandle;
-}  // namespace content
-
 namespace brave_search {
 
 class BackupResultsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit BackupResultsNavigationThrottle(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationThrottleRegistry& registry);
   ~BackupResultsNavigationThrottle() override;
 
   BackupResultsNavigationThrottle(const BackupResultsNavigationThrottle&) =
@@ -28,7 +24,7 @@ class BackupResultsNavigationThrottle : public content::NavigationThrottle {
       const BackupResultsNavigationThrottle&) = delete;
 
   static std::unique_ptr<BackupResultsNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
+  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry);
 
  private:
   // content::NavigationThrottle overrides:
