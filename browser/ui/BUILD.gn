@@ -1383,42 +1383,39 @@ source_set("brave_tab_features") {
 }
 
 source_set("unit_tests") {
-  testonly = true
-  sources = [
-    "brave_browser_command_controller_unittest.cc",
-    "brave_file_select_utils_unittest.cc",
-    "brave_layout_constants_unittest.cc",
-    "brave_scheme_utils_unittest.cc",
-  ]
-  deps = [
-    "//base/test:test_support",
-    "//brave/app:command_ids",
-    "//brave/components/l10n/common:test_support",
-    "//chrome/browser",
-    "//chrome/browser/ui",
-    "//chrome/browser/ui:ui_features",
-    "//chrome/browser/ui/tabs:tab_strip",
-    "//chrome/test:test_support",
-    "//components/javascript_dialogs",
-    "//testing/gmock",
-    "//testing/gtest",
-    "//ui/base:test_support",
-    "//ui/gfx",
-  ]
-
-  if (enable_brave_vpn) {
-    sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
-    deps += [
-      "//base",
-      "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/browser/connection:api",
-      "//brave/components/brave_vpn/browser/connection/ikev2:sim",
-      "//brave/components/skus/browser",
-      "//chrome/browser/prefs",
-      "//chrome/browser/themes",
-      "//skia",
-      "//third_party/abseil-cpp:absl",
+  if (!is_android) {
+    testonly = true
+    sources = [
+      "brave_file_select_utils_unittest.cc",
+      "brave_layout_constants_unittest.cc",
+      "brave_scheme_utils_unittest.cc",
     ]
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/l10n/common:test_support",
+      "//chrome/browser/ui",
+      "//components/javascript_dialogs",
+      "//testing/gmock",
+      "//testing/gtest",
+      "//ui/base:test_support",
+      "//ui/gfx",
+    ]
+
+    if (enable_brave_vpn) {
+      sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
+      deps += [
+        "//base",
+        "//brave/components/brave_vpn/browser",
+        "//brave/components/brave_vpn/browser/connection:api",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+        "//brave/components/skus/browser",
+        "//chrome/browser/prefs",
+        "//chrome/browser/themes",
+        "//chrome/test:test_support",
+        "//skia",
+        "//third_party/abseil-cpp:absl",
+      ]
+    }
   }
 }
 
