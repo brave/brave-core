@@ -13,7 +13,6 @@
 class GURL;
 
 namespace content {
-class NavigationHandle;
 class WebContents;
 }  // namespace content
 
@@ -22,11 +21,11 @@ namespace tor {
 class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
   static std::unique_ptr<OnionLocationNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
+  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
                          bool is_tor_disabled,
                          bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       bool is_tor_profile);
   ~OnionLocationNavigationThrottle() override;
 

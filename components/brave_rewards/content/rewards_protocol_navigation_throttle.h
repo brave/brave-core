@@ -10,15 +10,12 @@
 
 #include "content/public/browser/navigation_throttle.h"
 
-namespace content {
-class NavigationHandle;
-}  // namespace content
-
 namespace brave_rewards {
 
 class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
  public:
-  explicit RewardsProtocolNavigationThrottle(content::NavigationHandle* handle);
+  explicit RewardsProtocolNavigationThrottle(
+      content::NavigationThrottleRegistry& registry);
   ~RewardsProtocolNavigationThrottle() override;
 
   RewardsProtocolNavigationThrottle(const RewardsProtocolNavigationThrottle&) =
@@ -27,7 +24,7 @@ class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
       const RewardsProtocolNavigationThrottle&) = delete;
 
   static std::unique_ptr<RewardsProtocolNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationHandle* handle);
+  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

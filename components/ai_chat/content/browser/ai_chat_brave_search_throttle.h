@@ -25,7 +25,6 @@ enum class PermissionStatus : int32_t;
 
 namespace content {
 class WebContents;
-class NavigationHandle;
 }
 
 class PrefService;
@@ -50,13 +49,13 @@ class AIChatBraveSearchThrottle : public content::NavigationThrottle {
  public:
   AIChatBraveSearchThrottle(
       base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
-      content::NavigationHandle* handle,
+      content::NavigationThrottleRegistry& registry,
       AIChatService* ai_chat_service);
   ~AIChatBraveSearchThrottle() override;
 
   static std::unique_ptr<AIChatBraveSearchThrottle> MaybeCreateThrottleFor(
       base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       AIChatService* ai_chat_service,
       PrefService* pref_service);
 

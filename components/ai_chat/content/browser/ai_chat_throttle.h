@@ -10,20 +10,16 @@
 
 #include "content/public/browser/navigation_throttle.h"
 
-namespace content {
-class NavigationHandle;
-}  // namespace content
-
 namespace ai_chat {
 
 // Prevents navigation to certain AI Chat URLs
 class AIChatThrottle : public content::NavigationThrottle {
  public:
-  explicit AIChatThrottle(content::NavigationHandle* handle);
+  explicit AIChatThrottle(content::NavigationThrottleRegistry& registry);
   ~AIChatThrottle() override;
 
   static std::unique_ptr<AIChatThrottle> MaybeCreateThrottleFor(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationThrottleRegistry& registry);
 
   // content::NavigationThrottle:
   // ThrottleCheckResult WillProcessResponse() override;
