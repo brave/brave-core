@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getReasoningText } from './conversation_entries_utils'
+import { getReasoningText, removeReasoning } from './conversation_entries_utils'
 
 describe('getReasoningText', () => {
   it('Should extract reasoning text between start and end tags', () => {
@@ -30,5 +30,32 @@ describe('getReasoningText', () => {
   it('Should handle removing white space around reasoning text', () => {
     const input = '<think> Reasoning text here. </think>'
     expect(getReasoningText(input)).toBe('Reasoning text here.')
+  })
+})
+
+describe('removeReasoning', () => {
+  it('Should remove reasoning text between start and end tags', () => {
+    const input = '<think>Reasoning text here.</think> Rest of the text.'
+    expect(removeReasoning(input)).toBe(' Rest of the text.')
+  })
+
+  it('Should not fail if there is an empty string', () => {
+    const input = ''
+    expect(removeReasoning(input)).toBe('')
+  })
+
+  it('Should not fail if there is no reasoning text', () => {
+    const input = 'Rest of the text.'
+    expect(removeReasoning(input)).toBe('Rest of the text.')
+  })
+
+  it('should not fail if there is not ending tag', () => {
+    const input = '<think>Reasoning text here.'
+    expect(removeReasoning(input)).toBe('<think>Reasoning text here.')
+  })
+
+  it('should not fail if there is not starting tag', () => {
+    const input = 'Reasoning text here.</think>'
+    expect(removeReasoning(input)).toBe('Reasoning text here.</think>')
   })
 })
