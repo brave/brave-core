@@ -37,7 +37,8 @@
                           std::string_view interface_name);                  \
                                                                              \
  private:                                                                    \
-  std::map<std::string, std::set<std::string>, std::less<>> untrusted_callbacks_
+  std::map<std::string, std::set<std::string, std::less<>>, std::less<>>     \
+      untrusted_callbacks_
 
 #include "src/ios/web/public/web_state.h"  // IWYU pragma: export
 

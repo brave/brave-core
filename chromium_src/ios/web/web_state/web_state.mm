@@ -13,7 +13,7 @@ bool WebState::InterfaceBinder::IsAllowedForOrigin(
   DCHECK(!interface_name.empty());
   if (auto it = untrusted_callbacks_.find(origin.host_piece());
       it != untrusted_callbacks_.end()) {
-    return it->second.count(std::string(interface_name)) > 0;
+    return it->second.count(interface_name);
   }
   return false;
 }
@@ -23,7 +23,7 @@ void WebState::InterfaceBinder::RemoveUntrustedInterface(
     std::string_view interface_name) {
   if (auto it = untrusted_callbacks_.find(origin.host_piece());
       it != untrusted_callbacks_.end()) {
-    it->second.erase(std::string(interface_name));
+    it->second.erase(interface_name);
 
     if (it->second.empty()) {
       untrusted_callbacks_.erase(it);

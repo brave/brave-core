@@ -57,8 +57,8 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyFrameSrc() const {
     return frame_src;
   }
 
-  // The default for iOS is `frame-src 'none';` in url_data_manager_ios_backend.mm
-  // Desktop never sets a frame-src
+  // The default for iOS is `frame-src 'none';` in
+  // url_data_manager_ios_backend.mm Desktop never sets a frame-src
   return "";
 }
 
