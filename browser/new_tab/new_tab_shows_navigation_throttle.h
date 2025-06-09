@@ -15,7 +15,7 @@
 class NewTabShowsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit NewTabShowsNavigationThrottle(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationThrottleRegistry& registry);
   ~NewTabShowsNavigationThrottle() override;
 
   NewTabShowsNavigationThrottle(const NewTabShowsNavigationThrottle&) = delete;
@@ -23,7 +23,7 @@ class NewTabShowsNavigationThrottle : public content::NavigationThrottle {
       const NewTabShowsNavigationThrottle&) = delete;
 
   static std::unique_ptr<NewTabShowsNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationThrottleRegistry& registry);
 
  private:
   // content::NavigationThrottle overrides:

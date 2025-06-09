@@ -13,10 +13,6 @@
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
-namespace content {
-class NavigationHandle;
-}  // namespace content
-
 class TorLauncherFactory;
 
 namespace tor {
@@ -25,15 +21,15 @@ class TorNavigationThrottle : public content::NavigationThrottle,
                               public TorLauncherObserver {
  public:
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       bool is_tor_profile);
   // For tests to use its own McokTorLauncherFactory
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       TorLauncherFactory& tor_launcher_factory,
       bool is_tor_profile);
-  explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
-  TorNavigationThrottle(content::NavigationHandle* navigation_handle,
+  explicit TorNavigationThrottle(content::NavigationThrottleRegistry& registry);
+  TorNavigationThrottle(content::NavigationThrottleRegistry& registry,
                         TorLauncherFactory& tor_launcher_factory);
   TorNavigationThrottle(const TorNavigationThrottle&) = delete;
   TorNavigationThrottle& operator=(const TorNavigationThrottle&) = delete;
