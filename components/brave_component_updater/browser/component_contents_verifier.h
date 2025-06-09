@@ -13,11 +13,18 @@
 
 namespace component_updater {
 
+// Use on MAY_BLOCK.
+class ContentChecker {
+ public:
+  virtual ~ContentChecker() = default;
+  virtual bool VerifyContents(base::span<const uint8_t> contents) const = 0;
+};
+
 class ContentsVerifier {
  public:
   virtual ~ContentsVerifier() = default;
-  virtual bool VerifyContents(const base::FilePath& relative_path,
-                              base::span<const uint8_t> contents) const = 0;
+  virtual std::unique_ptr<ContentChecker> CreateContentChecker(
+      const base::FilePath& relative_path) const = 0;
 };
 
 using ContentsVerifierFactory =
