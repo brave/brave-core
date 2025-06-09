@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/types/to_address.h"
@@ -503,6 +504,13 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitViewWithSideBySide() {
+  // Some upstream unit test calls split tab apis w/o enabling SideBySide
+  // feature.
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   UpdateCommandEnabled(
       IDC_NEW_SPLIT_VIEW,
       brave::CanOpenNewSplitTabsWithSideBySide(base::to_address(browser_)));
