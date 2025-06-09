@@ -16,6 +16,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/string_view_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
