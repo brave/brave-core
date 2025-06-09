@@ -983,26 +983,25 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
       GetCenterPointInScreen(GetTabAt(browser(), 0));
   point_out_of_tabstrip.set_x(point_out_of_tabstrip.x() +
                               2 * GetTabAt(browser(), 0)->width());
-  MoveMouseTo(point_out_of_tabstrip, base::BindLambdaForTesting([&]() {
-                // Creating new browser during drag-and-drop will create
-                // a nested run loop. So we should do things within callback.
-                auto* browser_list = BrowserList::GetInstance();
-                EXPECT_EQ(2,
-                          std::ranges::count_if(*browser_list, [&](Browser* b) {
-                            return b->profile() == browser()->profile();
-                          }));
-                auto* new_browser = browser_list->GetLastActive();
-                auto* browser_view =
-                    BrowserView::GetBrowserViewForBrowser(new_browser);
-                auto* tab = browser_view->tabstrip()->tab_at(0);
-                ASSERT_TRUE(tab);
-                // During the tab detaching, mouse should be over the dragged
-                // tab.
-                EXPECT_TRUE(tab->IsMouseHovered());
-                EXPECT_TRUE(tab->dragging());
-                ReleaseMouse();
-                new_browser->window()->Close();
-              }));
+  MoveMouseTo(
+      point_out_of_tabstrip, base::BindLambdaForTesting([&]() {
+        // Creating new browser during drag-and-drop will create
+        // a nested run loop. So we should do things within callback.
+        auto* browser_list = BrowserList::GetInstance();
+        EXPECT_EQ(2, std::ranges::count_if(*browser_list, [&](Browser* b) {
+                    return b->profile() == browser()->profile();
+                  }));
+        auto* new_browser = browser_list->GetLastActive();
+        auto* browser_view = BrowserView::GetBrowserViewForBrowser(new_browser);
+        auto* tab = browser_view->tabstrip()->tab_at(0);
+        ASSERT_TRUE(tab);
+        // During the tab detaching, mouse should be over the dragged
+        // tab.
+        EXPECT_TRUE(tab->IsMouseHovered());
+        EXPECT_TRUE(tab->dragging());
+        ReleaseMouse();
+        new_browser->window()->Close();
+      }));
 }
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
@@ -1075,6 +1074,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
   // https://github.com/brave/brave-browser/issues/28877
   ToggleVerticalTabStrip();
   Browser::Create(Browser::CreateParams(browser()->profile(), true));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest,
+                       ToggleWithGroups) {
+  // Make sure browser works with both vertical tab and scrollable tab strip
+  // even with groups.
+  // https://github.com/brave/brave-browser/issues/46615
+  AddTabToNewGroup(browser(), 0);
+  ToggleVerticalTabStrip();  // To vertical tab strip
+  ToggleVerticalTabStrip();  // To horizontal tab strip
 }
 
 // * Non-type argument of 'float' or 'double' for template is unsupported

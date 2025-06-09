@@ -328,6 +328,44 @@ void BraveTabStrip::UpdateTabContainer() {
       GetDragContext()->DestroyLayer();
     }
 
+    // Update layout of TabContainer
+    auto* browser = GetBrowser();
+    DCHECK(browser);
+    if (using_vertical_tabs) {
+      auto* browser_view = static_cast<BraveBrowserView*>(
+          BrowserView::GetBrowserViewForBrowser(browser));
+      DCHECK(browser_view);
+      auto* vertical_region_view =
+          browser_view->vertical_tab_strip_widget_delegate_view()
+              ->vertical_tab_strip_region_view();
+      // `vertical_region_view` can be null if it's in destruction.
+      if (vertical_region_view) {
+        SetAvailableWidthCallback(base::BindRepeating(
+            &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
+            base::Unretained(vertical_region_view)));
+      }
+    } else {
+      if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
+        auto* browser_view = static_cast<BraveBrowserView*>(
+            BrowserView::GetBrowserViewForBrowser(browser));
+        DCHECK(browser_view);
+        auto* scroll_container = static_cast<TabStripScrollContainer*>(
+            browser_view->tab_strip_region_view()->tab_strip_container_);
+        DCHECK(scroll_container);
+        SetAvailableWidthCallback(base::BindRepeating(
+            &TabStripScrollContainer::GetTabStripAvailableWidth,
+            base::Unretained(scroll_container)));
+      } else {
+        SetAvailableWidthCallback(base::NullCallback());
+      }
+
+      if (should_use_compound_tab_container) {
+        // Upstream's compound tab container lay out its sub containers
+        // manually.
+        tab_container_->SetLayoutManager(nullptr);
+      }
+    }
+
     // Resets TabSlotViews for the new TabContainer.
     auto* model = GetBrowser()->tab_strip_model();
     std::vector<TabContainer::TabInsertionParams> added_tabs;
@@ -392,43 +430,6 @@ void BraveTabStrip::UpdateTabContainer() {
     if (const auto& selection_model = model->selection_model();
         selection_model.active().has_value()) {
       SetSelection(selection_model);
-    }
-  }
-
-  // Update layout of TabContainer
-  auto* browser = GetBrowser();
-  DCHECK(browser);
-  if (using_vertical_tabs) {
-    auto* browser_view = static_cast<BraveBrowserView*>(
-        BrowserView::GetBrowserViewForBrowser(browser));
-    DCHECK(browser_view);
-    auto* vertical_region_view =
-        browser_view->vertical_tab_strip_widget_delegate_view()
-            ->vertical_tab_strip_region_view();
-    // `vertical_region_view` can be null if it's in destruction.
-    if (vertical_region_view) {
-      SetAvailableWidthCallback(base::BindRepeating(
-          &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-          base::Unretained(vertical_region_view)));
-    }
-  } else {
-    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
-      auto* browser_view = static_cast<BraveBrowserView*>(
-          BrowserView::GetBrowserViewForBrowser(browser));
-      DCHECK(browser_view);
-      auto* scroll_container = static_cast<TabStripScrollContainer*>(
-          browser_view->tab_strip_region_view()->tab_strip_container_);
-      DCHECK(scroll_container);
-      SetAvailableWidthCallback(base::BindRepeating(
-          &TabStripScrollContainer::GetTabStripAvailableWidth,
-          base::Unretained(scroll_container)));
-    } else {
-      SetAvailableWidthCallback(base::NullCallback());
-    }
-
-    if (should_use_compound_tab_container) {
-      // Upstream's compound tab container lay out its sub containers manually.
-      tab_container_->SetLayoutManager(nullptr);
     }
   }
 
