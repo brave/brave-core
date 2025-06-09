@@ -14,8 +14,8 @@ bool TabModel::IsPartitionedTab() const {
 }
 
 void TabModel::SetPartitionedTabVisualData(
-    const std::optional<PartitionedTabVisualData>& data) {
-  partitioned_tab_visual_data_ = data;
+    std::optional<PartitionedTabVisualData> data) {
+  partitioned_tab_visual_data_ = std::move(data);
 }
 
 std::optional<PartitionedTabVisualData> TabModel::GetPartitionedTabVisualData()

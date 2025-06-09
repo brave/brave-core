@@ -12,7 +12,7 @@
 #define IsActivated                                                     \
   IsPartitionedTab() const override;                                    \
   void SetPartitionedTabVisualData(                                     \
-      const std::optional<PartitionedTabVisualData>& data);             \
+      std::optional<PartitionedTabVisualData> data);                    \
   std::optional<PartitionedTabVisualData> GetPartitionedTabVisualData() \
       const override;                                                   \
                                                                         \
