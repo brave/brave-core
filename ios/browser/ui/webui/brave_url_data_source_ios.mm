@@ -47,9 +47,6 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
         network::mojom::CSPDirectiveName::FrameAncestors));
   }
 
-  // Add the iOS default frame-src
-  csp_header.append(GetContentSecurityPolicyFrameSrc());
-
   return csp_header;
 }
 
@@ -60,8 +57,9 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyFrameSrc() const {
     return frame_src;
   }
 
-  // The default for iOS in url_data_manager_ios_backend.mm
-  return "frame-src 'none';";
+  // The default for iOS is `frame-src 'none';` in
+  // url_data_manager_ios_backend.mm Desktop never sets a frame-src
+  return "";
 }
 
 std::string BraveURLDataSourceIOS::GetContentSecurityPolicy(
