@@ -2,8 +2,8 @@ diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/Full
 index 901ec936674d00aba917d4ef0018b8986cad16b5..8310633d2a9b158a4047efb27090bdf2fdf55c31 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -310,6 +310,7 @@ public abstract class FullscreenHtmlApiHandlerBase
- 
+@@ -300,6 +300,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
 +                        BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
