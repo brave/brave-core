@@ -82,6 +82,7 @@
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
       "android/java/res/drawable/.*\\.xml",
+      "android/java/res/values/.*\\.xml",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
