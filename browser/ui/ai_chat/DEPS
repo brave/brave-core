@@ -1,7 +1,0 @@
-include_rules = [
-  "+brave/services/printing/public/mojom",
-  "+chrome/services/printing/public/mojom",
-  "+pdf",
-  "+printing",
-]
-

@@ -22,7 +22,6 @@ import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
-import("//printing/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 # See //chrome/browser/ui:ui_public_dependencies.
@@ -118,24 +117,6 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_browser_command",
       "//brave/components/webcompat_reporter/common:mojom",
       "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
-    ]
-  }
-
-  if (enable_print_preview) {
-    sources += [
-      "ai_chat/print_preview_extractor.cc",
-      "ai_chat/print_preview_extractor.h",
-    ]
-    deps += [
-      "//chrome/browser/pdf",
-      "//chrome/browser/pdf:pdf_pref_names",
-      "//chrome/services/printing/public/mojom",
-      "//components/pdf/browser",
-      "//components/printing/browser",
-      "//components/printing/common:mojo_interfaces",
-      "//components/services/print_compositor/public/mojom",
-      "//pdf:buildflags",
-      "//pdf:features",
     ]
   }
 
