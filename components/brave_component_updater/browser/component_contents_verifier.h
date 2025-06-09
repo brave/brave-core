@@ -8,19 +8,20 @@
 
 #include <memory>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 
 namespace component_updater {
 
 // Use on MAY_BLOCK.
-class ContentChecker {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ContentChecker {
  public:
   virtual ~ContentChecker() = default;
   virtual bool VerifyContents(base::span<const uint8_t> contents) const = 0;
 };
 
-class ContentsVerifier {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ContentsVerifier {
  public:
   virtual ~ContentsVerifier() = default;
   virtual std::unique_ptr<ContentChecker> CreateContentChecker(

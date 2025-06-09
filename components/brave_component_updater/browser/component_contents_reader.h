@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
@@ -24,7 +25,7 @@ namespace component_updater {
 // 'verified_contents.json' is missing or signature doesn't match the
 // content of the files then accessor doesn't return data from GetFile*
 // functions.
-class ComponentContentsReader {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
  public:
   using OnGetAsString =
       base::OnceCallback<void(std::optional<std::string> data)>;
