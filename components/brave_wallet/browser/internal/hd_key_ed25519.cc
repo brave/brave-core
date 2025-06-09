@@ -33,7 +33,7 @@ std::array<uint8_t, kEd25519KeyPairSize> DeriveKeyPairFromPrivateKey(
   std::array<uint8_t, kEd25519PublicKeySize> public_key_ignore;
   ED25519_keypair_from_seed(public_key_ignore.data(), key_pair.data(),
                             private_key.data());
-  DCHECK_EQ(private_key, base::span(key_pair).first<kEd25519PrivateKeySize>());
+  DCHECK(private_key == base::span(key_pair).first<kEd25519PrivateKeySize>());
   return key_pair;
 }
 
