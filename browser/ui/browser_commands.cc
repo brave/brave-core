@@ -190,6 +190,11 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
   void FileSelected(const ui::SelectedFileInfo& file, int index) override {
     bookmark_html_writer::WriteBookmarks(profile_, file.file_path,
                                          base::DoNothing());
+    file_selector_->ListenerDestroyed();
+    delete this;
+  }
+  void FileSelectionCanceled() override {
+    file_selector_->ListenerDestroyed();
     delete this;
   }
   void ShowFileDialog(Browser* browser) {
