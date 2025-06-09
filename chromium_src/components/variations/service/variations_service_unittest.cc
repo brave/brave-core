@@ -32,4 +32,8 @@ TEST_F(VariationsServiceTest, SetVariationsCountryWithNotModifiedResponse) {
   EXPECT_EQ(prefs_.GetString(prefs::kVariationsCountry), "FOO");
 }
 
+TEST_F(VariationsServiceTest, CheckIfTestIsRunning) {
+  FAIL() << "FOOBAR.This test is running";
+}
+
 }  // namespace variations

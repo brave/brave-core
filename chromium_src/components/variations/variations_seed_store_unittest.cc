@@ -82,4 +82,8 @@ TEST_F(VariationsSeedStoreTest, DoNotUpdateCountryOnSubsequentRequest) {
   EXPECT_EQ(prefs.GetString(prefs::kVariationsCountry), "FOO");
 }
 
+TEST_F(VariationsSeedStoreTest, CheckIfTestIsRunning) {
+  FAIL() << "FOOBAR.This test is running";
+}
+
 }  // namespace variations
