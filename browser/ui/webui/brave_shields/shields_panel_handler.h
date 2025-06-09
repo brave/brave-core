@@ -19,7 +19,6 @@ class WebUI;
 }  // namespace content
 
 class Profile;
-class BraveBrowserWindow;
 
 class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  public:
