@@ -22,6 +22,8 @@
 namespace brave_wallet {
 
 // https://cips.cardano.org/cip/CIP-30
+// This class implements API object which is available after
+// cardano.brave.enable() is called.
 class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                                  public content::RenderFrameObserver {
  public:

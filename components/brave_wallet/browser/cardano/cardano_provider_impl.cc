@@ -15,65 +15,78 @@ CardanoProviderImpl::CardanoProviderImpl() = default;
 CardanoProviderImpl::~CardanoProviderImpl() = default;
 
 void CardanoProviderImpl::Enable(EnableCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(true);
 }
 
 void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(true);
 }
 
 void CardanoProviderImpl::GetNetworkId(GetNetworkIdCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(0, std::nullopt);
 }
 
 void CardanoProviderImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run({"1", "2", "3"}, std::nullopt);
 }
 
 void CardanoProviderImpl::GetUnusedAddresses(
     GetUnusedAddressesCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run({"1", "2", "3"}, std::nullopt);
 }
 
 void CardanoProviderImpl::GetChangeAddress(GetChangeAddressCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run("1", std::nullopt);
 }
 
 void CardanoProviderImpl::GetRewardAddresses(
     GetRewardAddressesCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run({"2"}, std::nullopt);
 }
 
 void CardanoProviderImpl::GetBalance(GetBalanceCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run("2", std::nullopt);
 }
 
 void CardanoProviderImpl::GetUtxos(const std::optional<std::string>& amount,
                                    mojom::CardanoProviderPaginationPtr paginate,
                                    GetUtxosCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(std::vector<std::string>({"1", "2"}), std::nullopt);
 }
 
 void CardanoProviderImpl::SignTx(const std::string& tx_cbor,
                                  bool partial_sign,
                                  SignTxCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run("signed", std::nullopt);
 }
 
 void CardanoProviderImpl::SubmitTx(const std::string& signed_tx_cbor,
                                    SubmitTxCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run("txhash", std::nullopt);
 }
 
 void CardanoProviderImpl::SignData(const std::string& address,
                                    const std::string& payload_hex,
                                    SignDataCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(mojom::CardanoProviderSignatureResult::New("1", "2"),
                           std::nullopt);
 }
 
 void CardanoProviderImpl::GetCollateral(const std::string& amount,
                                         GetCollateralCallback callback) {
+  // Mocked values for development usage.
   std::move(callback).Run(std::vector<std::string>({"1", "2"}), std::nullopt);
 }
 
