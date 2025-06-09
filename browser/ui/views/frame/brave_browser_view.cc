@@ -824,8 +824,8 @@ void BraveBrowserView::HideSplitView() {
   UpdateContentsSeparatorVisibility();
 }
 
-void BraveBrowserView::UpdateActiveSplitView() {
-  BrowserView::UpdateActiveSplitView();
+void BraveBrowserView::UpdateActiveTabInSplitView() {
+  BrowserView::UpdateActiveTabInSplitView();
   GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 

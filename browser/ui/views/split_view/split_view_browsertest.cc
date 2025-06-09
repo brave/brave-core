@@ -265,9 +265,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(5, tab_strip_model->active_index());
   auto split_id = tab_strip_model->GetSplitForTab(4);
   ASSERT_TRUE(split_id);
-  tab_strip_model->SwapTabsInSplit(split_id.value());
+  tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(4, tab_strip_model->active_index());
-  tab_strip_model->SwapTabsInSplit(split_id.value());
+  tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(5, tab_strip_model->active_index());
 }
 

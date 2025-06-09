@@ -186,7 +186,7 @@ class BraveBrowserView : public BrowserView,
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
-  void UpdateActiveSplitView() override;
+  void UpdateActiveTabInSplitView() override;
 
   void OnSplitTabContentsUpdated(
       split_tabs::SplitTabId split_id,

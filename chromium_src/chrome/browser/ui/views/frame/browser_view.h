@@ -52,11 +52,11 @@
 #define LoadAccelerators virtual LoadAccelerators
 #define ShowSplitView virtual ShowSplitView
 #define HideSplitView virtual HideSplitView
-#define UpdateActiveSplitView virtual UpdateActiveSplitView
+#define UpdateActiveTabInSplitView virtual UpdateActiveTabInSplitView
 
 #include "src/chrome/browser/ui/views/frame/browser_view.h"  // IWYU pragma: export
 
-#undef UpdateActiveSplitView
+#undef UpdateActiveTabInSplitView
 #undef HideSplitView
 #undef ShowSplitView
 #undef LoadAccelerators
