@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/thread_pool.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
 namespace component_updater {
@@ -34,17 +35,26 @@ std::optional<DataType> Verify(std::optional<DataType> data,
 std::optional<std::vector<uint8_t>> ReadFileToBytesAndVerify(
     const base::FilePath& path,
     std::unique_ptr<ContentChecker> checker) {
-  return Verify(base::ReadFileToBytes(path), std::move(checker));
+  TRACE_EVENT_BEGIN("brave.adblock", "ReadDATFileData", "path",
+                    path.MaybeAsASCII());
+  auto data = Verify(base::ReadFileToBytes(path), std::move(checker));
+  TRACE_EVENT_END("brave.adblock", "size", (data ? data->size() : 0));
+  return data;
 }
 
 std::optional<std::string> ReadFileToStringAndVerify(
     const base::FilePath& path,
     std::unique_ptr<ContentChecker> checker) {
-  std::string data;
-  if (!base::ReadFileToString(path, &data)) {
+  TRACE_EVENT_BEGIN("brave.adblock", "GetDATFileAsString", "path",
+                    path.MaybeAsASCII());
+  std::string content;
+  if (!base::ReadFileToString(path, &content)) {
+    TRACE_EVENT_END("brave.adblock", "size", 0);
     return std::nullopt;
   }
-  return Verify<std::string>(std::move(data), std::move(checker));
+  auto data = Verify<std::string>(std::move(content), std::move(checker));
+  TRACE_EVENT_END("brave.adblock", "size", (data ? data->size() : 0));
+  return data;
 }
 
 }  // namespace
