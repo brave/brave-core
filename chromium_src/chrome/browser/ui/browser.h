@@ -34,4 +34,8 @@
 #undef FinishWarnBeforeClosing
 #undef ShouldShowBookmarkBar
 
+// Exposing this function from the anonymous namespace in the original file
+// so that it can be used in other parts of the codebase.
+bool IsShowingNTP_ChromiumImpl(content::WebContents* web_contents);
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

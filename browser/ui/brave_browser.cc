@@ -46,23 +46,6 @@ namespace {
 
 bool g_suppress_dialog_for_testing = false;
 
-bool IsNTP(content::WebContents* web_contents) {
-  // Use the committed entry so the bookmarks bar disappears at the same time
-  // the page does.
-  content::NavigationEntry* entry =
-      web_contents->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return false;
-  }
-  if (entry->IsInitialEntry()) {
-    entry = web_contents->GetController().GetVisibleEntry();
-  }
-  const GURL& url = entry->GetURL();
-  return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
-         NewTabPageThirdPartyUI::IsNewTabPageOrigin(url) ||
-         search::NavEntryIsInstantNTP(web_contents, entry);
-}
-
 }  // namespace
 
 // static
@@ -99,7 +82,7 @@ BraveBrowser::~BraveBrowser() = default;
 
 bool BraveBrowser::ShouldShowBookmarkBar() const {
   content::WebContents* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (web_contents && IsNTP(web_contents)) {
+  if (web_contents && IsShowingNTP_ChromiumImpl(web_contents)) {
     Profile* profile =
         Profile::FromBrowserContext(web_contents->GetBrowserContext());
     if (profile->IsGuestSession()) {

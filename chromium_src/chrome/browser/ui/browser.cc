@@ -29,3 +29,7 @@
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_CREATE
+
+bool IsShowingNTP_ChromiumImpl(content::WebContents* web_contents) {
+  return IsShowingNTP(web_contents);
+}
