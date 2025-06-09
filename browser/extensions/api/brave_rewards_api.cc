@@ -717,7 +717,11 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     base::Value::Dict dict;
     dict.Set("nextPaymentDate",
              statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
-    dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
+    auto& ad_type_map = statement->ads_summary_this_month;
+    dict.Set("adsReceivedThisMonth",
+             ad_type_map[brave_ads::mojom::AdType::kNotificationAd] +
+                 ad_type_map[brave_ads::mojom::AdType::kNewTabPageAd] +
+                 ad_type_map[brave_ads::mojom::AdType::kSearchResultAd]);
     dict.Set("minEarningsThisMonth", statement->min_earnings_this_month);
     dict.Set("maxEarningsThisMonth", statement->max_earnings_this_month);
     dict.Set("minEarningsLastMonth", statement->min_earnings_previous_month);
