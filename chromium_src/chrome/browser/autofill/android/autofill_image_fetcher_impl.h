@@ -6,19 +6,21 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_AUTOFILL_ANDROID_AUTOFILL_IMAGE_FETCHER_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_AUTOFILL_ANDROID_AUTOFILL_IMAGE_FETCHER_IMPL_H_
 
+#include "base/android/scoped_java_ref.h"
+#include "chrome/browser/profiles/profile_key.h"
 #include "components/autofill/core/browser/ui/autofill_image_fetcher_base.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 // Prevent getting images from a Google server.
-#define AutofillImageFetcherImpl AutofillImageFetcherImpl_ChromiumImpl
-#include "src/chrome/browser/autofill/android/autofill_image_fetcher_impl.h"  // IWYU pragma: export
-#undef AutofillImageFetcherImpl
 
 namespace autofill {
 
-class AutofillImageFetcherImpl : public AutofillImageFetcherImpl_ChromiumImpl {
+class AutofillImageFetcherImpl : public AutofillImageFetcherBase,
+                                 public KeyedService {
  public:
-  using AutofillImageFetcherImpl_ChromiumImpl::
-      AutofillImageFetcherImpl_ChromiumImpl;
+  explicit AutofillImageFetcherImpl(ProfileKey* key);
+  AutofillImageFetcherImpl(const AutofillImageFetcherImpl&) = delete;
+  AutofillImageFetcherImpl& operator=(const AutofillImageFetcherImpl&) = delete;
   ~AutofillImageFetcherImpl() override;
 
   // AutofillImageFetcherBase:
@@ -30,6 +32,13 @@ class AutofillImageFetcherImpl : public AutofillImageFetcherImpl_ChromiumImpl {
   void FetchValuableImagesForURLs(base::span<const GURL> image_urls) override;
   const gfx::Image* GetCachedImageForUrl(const GURL& image_url,
                                          ImageType image_type) const override;
+  base::android::ScopedJavaLocalRef<jobject> GetOrCreateJavaImageFetcher()
+      override;
+
+ private:
+  raw_ptr<ProfileKey> key_;
+
+  base::android::ScopedJavaGlobalRef<jobject> java_image_fetcher_;
 };
 
 }  // namespace autofill
