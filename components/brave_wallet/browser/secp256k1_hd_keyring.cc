@@ -69,7 +69,7 @@ std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
     return std::nullopt;
   }
 
-  const std::string address = GetAddressInternal(*hd_key);
+  std::string address = GetAddressInternal(*hd_key);
 
   if (base::Contains(imported_accounts_, address)) {
     return std::nullopt;

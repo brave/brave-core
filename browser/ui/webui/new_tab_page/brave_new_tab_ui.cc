@@ -60,11 +60,11 @@ using ntp_background_images::NTPCustomImagesSource;
 
 namespace {
 
-std::string GetSearchWidgetDefaultHost(
-    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
-  constexpr char kBraveSearchHost[] = "search.brave.com";
-  constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
+constexpr char kBraveSearchHost[] = "search.brave.com";
+constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
 
+std::string_view GetSearchWidgetDefaultHost(
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
   regional_capabilities::CountryIdHolder country_id =
       regional_capabilities->GetCountryId();
   regional_capabilities::CountryIdHolder japan_country_id(
