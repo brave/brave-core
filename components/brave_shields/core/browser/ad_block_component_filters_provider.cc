@@ -44,6 +44,8 @@ void OnReadDATFileData(
     uint8_t permission_mask,
     const perfetto::Flow& flow,
     std::optional<DATFileDataBuffer> buffer) {
+  TRACE_EVENT("brave.adblock",
+              "OnReadDATFileData_AdBlockComponentFiltersProvider", flow);
   std::move(cb).Run(
       base::BindOnce(&AddDATBufferToFilterSet, permission_mask,
                      std::move(buffer).value_or(DATFileDataBuffer()), flow));
@@ -100,6 +102,11 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
     std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  TRACE_EVENT("brave.adblock",
+              "AdBlockComponentFiltersProvider::OnComponentReady",
+              perfetto::TerminatingFlow::FromPointer(this), "path",
+              reader->GetComponentRootDeprecated().value());
+
   if (component_reader_) {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
