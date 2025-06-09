@@ -18,11 +18,13 @@
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
+#include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 
 namespace brave {
 
 void EnsureProfileKeyedServiceFactoriesBuilt() {
   ai_chat::ModelServiceFactory::GetInstance();
+  ai_chat::TabTrackerServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
   brave_ads::AdsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
