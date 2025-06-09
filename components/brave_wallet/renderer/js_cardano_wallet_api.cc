@@ -372,7 +372,6 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
     std::unique_ptr<base::Value> arg1_value =
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(0), isolate->GetCurrentContext());
-
     if (!arg1_value || !arg1_value->GetIfString()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
@@ -428,25 +427,27 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  if (args->GetAll().size() != 1 && args->GetAll().size() != 2) {
+  auto arguments = args->GetAll();
+
+  if (arguments.size() != 1 && arguments.size() != 2) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
 
   std::unique_ptr<base::Value> arg1_value =
       content::V8ValueConverter::Create()->FromV8Value(
-          args->GetAll().at(0), isolate->GetCurrentContext());
+          arguments.at(0), isolate->GetCurrentContext());
 
   if (!arg1_value || !arg1_value->GetIfString()) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
 
-  std::optional<bool> partial_sign;
-  if (args->GetAll().size() == 2) {
+  bool partial_sign = false;
+  if (arguments.size() == 2) {
     std::unique_ptr<base::Value> arg2_value =
         content::V8ValueConverter::Create()->FromV8Value(
-            args->GetAll().at(1), isolate->GetCurrentContext());
+            arguments.at(1), isolate->GetCurrentContext());
 
     if (!arg2_value || !arg2_value->GetIfBool()) {
       args->ThrowError();
@@ -457,7 +458,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
   }
 
   cardano_provider_->SignTx(
-      arg1_value->GetString(), partial_sign.value_or(false),
+      arg1_value->GetString(), partial_sign,
       base::BindOnce(&JSCardanoWalletApi::HandleStringResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -484,17 +485,19 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  if (args->GetAll().size() != 2) {
+  auto arguments = args->GetAll();
+
+  if (arguments.size() != 2) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
 
   std::unique_ptr<base::Value> arg1_value =
       content::V8ValueConverter::Create()->FromV8Value(
-          args->GetAll().at(0), isolate->GetCurrentContext());
+          arguments.at(0), isolate->GetCurrentContext());
   std::unique_ptr<base::Value> arg2_value =
       content::V8ValueConverter::Create()->FromV8Value(
-          args->GetAll().at(1), isolate->GetCurrentContext());
+          arguments.at(1), isolate->GetCurrentContext());
 
   if (!arg1_value || !arg2_value || !arg1_value->GetIfString() ||
       !arg2_value->GetIfString()) {
@@ -624,7 +627,6 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
   }
 
   auto arguments = args->GetAll();
-  std::optional<std::string> amount;
 
   if (arguments.size() != 1) {
     args->ThrowError();
@@ -645,10 +647,9 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
-  amount = *amount_property;
 
   cardano_provider_->GetCollateral(
-      amount.value(),
+      *amount_property,
       base::BindOnce(&JSCardanoWalletApi::HandleUtxoVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
