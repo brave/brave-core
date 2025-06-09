@@ -683,6 +683,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
   }
 
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
 
   let conversations: typeof CONVERSATIONS = []
 
@@ -709,7 +710,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
-    allActions: ACTIONS_LIST,
+    actionList: ACTIONS_LIST,
     tabs: [{
       id: 1,
       contentId: 1,
@@ -775,9 +776,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
     shouldSendPageContents: !!associatedContent,
     inputText,
-    actionList: ACTIONS_LIST,
     selectedActionType: undefined,
-    isToolsMenuOpen: false,
+    isToolsMenuOpen,
     isCurrentModelLeo: true,
     isCharLimitApproaching: inputText.length > 64,
     isCharLimitExceeded: inputText.length > 70,
@@ -799,7 +799,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     submitInputTextToAPI: () => { },
     resetSelectedActionType: () => { },
     handleActionTypeClick: () => { },
-    setIsToolsMenuOpen: () => { },
+    setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => { },
     handleFeedbackFormSubmit: () => Promise.resolve(),
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),

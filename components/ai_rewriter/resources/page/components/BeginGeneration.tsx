@@ -5,8 +5,9 @@
 import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled from "styled-components";
+import { extractQuery } from "../../../../ai_chat/resources/page/components/filter_menu/query";
+import ToolsMenu from "../../../../ai_chat/resources/page/components/filter_menu/tools_menu";
 import InputBox from '../../../../ai_chat/resources/page/components/input_box';
-import ToolsButtonMenu from "../../../../ai_chat/resources/page/components/tools_button_menu";
 import { useRewriterContext } from "../Context";
 import InitialText from "./InitialText";
 import NoContent from "./NoContent";
@@ -30,12 +31,15 @@ export default function BeginGeneration() {
   return <>
     <FiltersContainer>
       <InitialText />
-      <ToolsButtonMenu
-        isToolsMenuOpen={context.isToolsMenuOpen}
-        setIsToolsMenuOpen={context.setIsToolsMenuOpen}
-        actionList={context.actionList}
-        handleActionTypeClick={context.handleActionTypeClick}
-        inputText={context.instructionsText} />
+      <ToolsMenu
+        isOpen={context.isToolsMenuOpen}
+        setIsOpen={context.setIsToolsMenuOpen}
+        categories={context.actionList}
+        query={extractQuery(context.instructionsText, {
+          onlyAtStart: true,
+          triggerCharacter: '/',
+        })}
+        handleClick={context.handleActionTypeClick} />
       <InputBox
         conversationStarted
         context={{
