@@ -6,18 +6,15 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 
 #include "base/memory/raw_ptr.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
-#include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -135,6 +132,11 @@ class DecentralizedDnsNavigationThrottleSubframeTest
         ->InitializeRenderFrameIfNeeded();
     subframe_ = content::RenderFrameHostTester::For(main_rfh())
                     ->AppendChild("subframe");
+  }
+
+  void TearDown() override {
+    subframe_ = nullptr;
+    content::RenderViewHostTestHarness::TearDown();
   }
 
   PrefService* user_prefs() { return &prefs_; }
