@@ -11,7 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 constexpr char kListCatalogFile[] = "list_catalog.json";
@@ -55,13 +55,13 @@ void AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded(
 }
 
 void AdBlockFilterListCatalogProvider::OnComponentReady(
-    scoped_refptr<component_updater::ComponentContentsAccessor> accessor) {
-  component_accessor_ = std::move(accessor);
-    const base::FilePath& path) {
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  component_reader_ = std::move(reader);
+
   TRACE_EVENT("brave.adblock",
               "AdBlockFilterListCatalogProvider::OnComponentReady",
-              perfetto::Flow::FromPointer(this), "path", path.value());
-  component_path_ = path;
+              perfetto::Flow::FromPointer(this), "path",
+              component_reader_->GetComponentRootDeprecated());
 
   LoadFilterListCatalog(base::BindOnce(
       &AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded,
@@ -70,7 +70,7 @@ void AdBlockFilterListCatalogProvider::OnComponentReady(
 
 void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
     base::OnceCallback<void(const std::string& catalog_json)> cb) {
-  if (!component_accessor_) {
+  if (!component_reader_) {
     // If the component is not ready yet, don't run the callback. An update
     // should be pushed soon.
     return;
@@ -83,13 +83,8 @@ void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
       },
       std::move(cb));
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          &component_updater::ComponentContentsAccessor::GetFileAsString,
-          base::RetainedRef(component_accessor_),
-          base::FilePath::FromASCII(kListCatalogFile)),
-      std::move(on_load));
+  component_reader_->GetFileAsString(
+      base::FilePath::FromASCII(kListCatalogFile), std::move(on_load));
 }
 
 }  // namespace brave_shields

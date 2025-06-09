@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/files/file_util.h"
+#include "base/memory/ptr_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
@@ -58,7 +59,11 @@ ComponentContentsReader::~ComponentContentsReader() = default;
 // static
 std::unique_ptr<ComponentContentsReader> ComponentContentsReader::Create(
     const base::FilePath& component_root) {
-  return base::WrapUnique(new ComponentContentsReader(component_root));
+  auto reader = base::WrapUnique(new ComponentContentsReader(component_root));
+  if (reader->verifier_ && !reader->verifier_->IsValid()) {
+    return nullptr;
+  }
+  return reader;
 }
 
 const base::FilePath& ComponentContentsReader::GetComponentRootDeprecated()

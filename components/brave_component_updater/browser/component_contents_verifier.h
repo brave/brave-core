@@ -24,6 +24,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ContentChecker {
 class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ContentsVerifier {
  public:
   virtual ~ContentsVerifier() = default;
+  virtual bool IsValid() const = 0;
   virtual std::unique_ptr<ContentChecker> CreateContentChecker(
       const base::FilePath& relative_path) const = 0;
 };
@@ -32,6 +33,7 @@ using ContentsVerifierFactory =
     base::RepeatingCallback<std::unique_ptr<ContentsVerifier>(
         const base::FilePath& component_root)>;
 
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 void SetContentsVerifierFactory(ContentsVerifierFactory factory);
 
 // Uses factory set above to create the verifier.

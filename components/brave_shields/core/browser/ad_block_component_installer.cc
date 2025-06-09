@@ -15,7 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -67,7 +67,8 @@ class AdBlockComponentInstallerPolicy
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
   std::array<uint8_t, crypto::kSHA256Length> component_hash_;
-  mutable scoped_refptr<component_updater::ComponentContentsAccessor> accessor_;
+  mutable std::unique_ptr<component_updater::ComponentContentsReader>
+      component_reader_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -108,16 +109,16 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  CHECK(accessor_);
-  CHECK_EQ(accessor_->GetComponentRoot(), path);
-  ready_callback_.Run(std::move(accessor_));
+  CHECK(component_reader_);
+  ready_callback_.Run(std::move(component_reader_));
 }
 
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
-  accessor_ = component_updater::ComponentContentsAccessor::Create(install_dir);
-  return true;
+  component_reader_ =
+      component_updater::ComponentContentsReader::Create(install_dir);
+  return !!component_reader_;
 }
 
 base::FilePath AdBlockComponentInstallerPolicy::GetRelativeInstallDir() const {

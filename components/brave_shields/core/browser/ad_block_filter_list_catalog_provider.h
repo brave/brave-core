@@ -14,7 +14,7 @@
 
 namespace component_updater {
 class ComponentUpdateService;
-class ComponentContentsAccessor;
+class ComponentContentsReader;
 }  // namespace component_updater
 
 namespace brave_shields {
@@ -43,10 +43,9 @@ class AdBlockFilterListCatalogProvider {
  private:
   void OnFilterListCatalogLoaded(const std::string& catalog_json);
   void OnComponentReady(
-      scoped_refptr<component_updater::ComponentContentsAccessor> accessor);
+      std::unique_ptr<component_updater::ComponentContentsReader> reader);
 
-  scoped_refptr<component_updater::ComponentContentsAccessor>
-      component_accessor_;
+  std::unique_ptr<component_updater::ComponentContentsReader> component_reader_;
 
   base::ObserverList<Observer> observers_;
 

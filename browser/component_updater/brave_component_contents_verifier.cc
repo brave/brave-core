@@ -58,7 +58,7 @@ class ExtensionsTreeHashContentChecker
   ExtensionsTreeHashContentChecker(size_t block_size,
                                    std::vector<std::string> possible_hashes)
       : block_size_(block_size), possible_hashes_(std::move(possible_hashes)) {
-    СHECK(!possible_hashes_.empty());
+    CHECK(!possible_hashes_.empty());
   }
 
   ~ExtensionsTreeHashContentChecker() override = default;
@@ -93,6 +93,8 @@ class ExtensionsTreeHashContentsVerifier
       verified_contents_.reset();
     }
   }
+
+  bool IsValid() const override { return !!verified_contents_; }
 
   std::unique_ptr<component_updater::ContentChecker> CreateContentChecker(
       const base::FilePath& relative_path) const override {
