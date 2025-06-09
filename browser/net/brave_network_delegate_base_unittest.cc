@@ -16,8 +16,8 @@
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
 
+using brave::kTrackableSecurityHeaders;
 using brave::RemoveTrackableSecurityHeadersForThirdParty;
-using brave::TrackableSecurityHeaders;
 using net::HttpResponseHeaders;
 
 
@@ -68,7 +68,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeaders) {
   RemoveTrackableSecurityHeadersForThirdParty(request_url,
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
-  for (auto header : *TrackableSecurityHeaders()) {
+  for (auto header : kTrackableSecurityHeaders) {
     EXPECT_FALSE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));
@@ -86,7 +86,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeadersMixedCase) {
   RemoveTrackableSecurityHeadersForThirdParty(request_url,
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
-  for (auto header : *TrackableSecurityHeaders()) {
+  for (auto header : kTrackableSecurityHeaders) {
     EXPECT_FALSE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));
@@ -104,7 +104,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RetainTrackableSecurityHeaders) {
   RemoveTrackableSecurityHeadersForThirdParty(request_url,
                                               url::Origin::Create(tab_url),
                                               nullptr, &headers);
-  for (auto header : *TrackableSecurityHeaders()) {
+  for (auto header : kTrackableSecurityHeaders) {
     EXPECT_TRUE(headers->HasHeader(std::string(header)));
   }
   EXPECT_TRUE(headers->HasHeader(kAcceptLanguageHeader));

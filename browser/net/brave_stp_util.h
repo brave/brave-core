@@ -6,16 +6,19 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_STP_UTIL_H_
 #define BRAVE_BROWSER_NET_BRAVE_STP_UTIL_H_
 
+#include <array>
 #include <string_view>
 
-#include "base/containers/flat_set.h"
 #include "net/http/http_response_headers.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave {
 
-base::flat_set<std::string_view>* TrackableSecurityHeaders();
+inline constexpr auto kTrackableSecurityHeaders =
+    std::to_array<std::string_view>({"Strict-Transport-Security", "Expect-CT",
+                                     "Public-Key-Pins",
+                                     "Public-Key-Pins-Report-Only"});
 
 void RemoveTrackableSecurityHeadersForThirdParty(
     const GURL& request_url, const url::Origin& top_frame_origin,

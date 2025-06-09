@@ -13,14 +13,6 @@
 
 namespace brave {
 
-base::flat_set<std::string_view>* TrackableSecurityHeaders() {
-  static base::NoDestructor<base::flat_set<std::string_view>>
-      kTrackableSecurityHeaders(base::flat_set<std::string_view>{
-          "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
-          "Public-Key-Pins-Report-Only"});
-  return kTrackableSecurityHeaders.get();
-}
-
 void RemoveTrackableSecurityHeadersForThirdParty(
     const GURL& request_url, const url::Origin& top_frame_origin,
     const net::HttpResponseHeaders* original_response_headers,
@@ -39,7 +31,7 @@ void RemoveTrackableSecurityHeadersForThirdParty(
     *override_response_headers =
         new net::HttpResponseHeaders(original_response_headers->raw_headers());
   }
-  for (auto header : *TrackableSecurityHeaders()) {
+  for (auto header : kTrackableSecurityHeaders) {
     (*override_response_headers)->RemoveHeader(std::string(header));
   }
 }
