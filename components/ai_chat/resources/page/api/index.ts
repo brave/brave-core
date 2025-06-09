@@ -18,7 +18,7 @@ export type State = Mojom.ServiceState & {
   isPremiumUserDisconnected: boolean
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
-  allActions: Mojom.ActionGroup[]
+  actionList: Mojom.ActionGroup[]
   tabs: Mojom.TabData[]
 }
 
@@ -34,7 +34,7 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
-  allActions: [],
+  actionList: [],
   tabs: []
 }
 
@@ -75,7 +75,7 @@ class PageAPI extends API<State> {
       { state },
       { isStandalone },
       { conversations },
-      { actionList: allActions },
+      { actionList },
       premiumStatus
     ] = await Promise.all([
       this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
@@ -90,7 +90,7 @@ class PageAPI extends API<State> {
       initialized: true,
       isStandalone,
       conversations,
-      allActions
+      actionList
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
