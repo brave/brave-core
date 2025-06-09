@@ -142,6 +142,8 @@ export const Nfts = ({
     WalletSelectors.isRefreshingNetworksAndTokens,
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // local-storage
   const [hideUnownedNfts] = useSyncedLocalStorage<boolean>(
@@ -498,9 +500,9 @@ export const Nfts = ({
   return (
     <ContentWrapper
       fullWidth={true}
-      fullHeight={isPanel}
+      fullHeight={isAndroidOrPanel}
       justifyContent='flex-start'
-      isPanel={isPanel}
+      isAndroidOrPanel={isAndroidOrPanel}
     >
       <ControlBarWrapper
         justifyContent='space-between'

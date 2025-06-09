@@ -35,6 +35,7 @@ import { Row } from '../../shared/style'
 export const AccountsHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // State
   const [showPortfolioOverviewMenu, setShowPortfolioOverviewMenu] =
@@ -50,7 +51,7 @@ export const AccountsHeader = () => {
     showPortfolioOverviewMenu,
   )
 
-  return isPanel ? (
+  return isPanel || isAndroid ? (
     <DefaultPanelHeader
       title={getLocale('braveWalletTopNavAccounts')}
       expandRoute={WalletRoutes.Accounts}
