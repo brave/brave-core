@@ -11,9 +11,9 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
-#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -101,17 +101,19 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
   return v_lower;
 }
 
-std::optional<std::string> ChainIdToStripeChainId(const std::string& chain_id) {
-  static base::NoDestructor<base::flat_map<std::string, std::string>>
-      chain_id_lookup({{brave_wallet::mojom::kMainnetChainId, "ethereum"},
-                       {brave_wallet::mojom::kSolanaMainnet, "solana"},
-                       {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"},
-                       {brave_wallet::mojom::kBitcoinMainnet, "bitcoin"}});
-  if (!chain_id_lookup->contains(chain_id)) {
+std::optional<std::string_view> ChainIdToStripeChainId(
+    std::string_view chain_id) {
+  static constexpr auto kChainIdLookup =
+      base::MakeFixedFlatMap<std::string_view, std::string_view>(
+          {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
+           {brave_wallet::mojom::kSolanaMainnet, "solana"},
+           {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"},
+           {brave_wallet::mojom::kBitcoinMainnet, "bitcoin"}});
+  if (!kChainIdLookup.contains(chain_id)) {
     return std::nullopt;
   }
 
-  return chain_id_lookup->at(chain_id);
+  return kChainIdLookup.at(chain_id);
 }
 
 }  // namespace
@@ -416,7 +418,7 @@ void AssetRatioService::GetStripeBuyURL(
     const std::string& chain_id,
     const std::string& destination_currency) {
   // Convert the frontend supplied chain ID to the chain ID used by Stripe
-  std::optional<std::string> destination_network =
+  std::optional<std::string_view> destination_network =
       ChainIdToStripeChainId(chain_id);
   if (!destination_network) {
     std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
