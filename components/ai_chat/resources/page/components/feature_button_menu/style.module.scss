@@ -20,9 +20,9 @@
 
 .buttonMenu {
   line-height: 0;
-
   leo-menu-item {
     padding: var(--leo-spacing-m);
+    max-width: 270px;
   }
 }
 
