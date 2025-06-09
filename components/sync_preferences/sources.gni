@@ -5,15 +5,10 @@
 
 import("//brave/components/containers/buildflags/buildflags.gni")
 
-source_set("common_syncable_prefs_database") {
-  inputs = [
-    "common_syncable_prefs_database.cc",
-    "common_syncable_prefs_database.h",
-  ]
+brave_common_syncable_prefs_database_public_deps =
+    [ "//brave/components/containers/buildflags" ]
 
-  public_deps = [ "//brave/components/containers/buildflags" ]
-
-  if (enable_containers) {
-    public_deps += [ "//brave/components/containers/core/browser" ]
-  }
+if (enable_containers) {
+  brave_common_syncable_prefs_database_public_deps +=
+      [ "//brave/components/containers/core/browser" ]
 }
