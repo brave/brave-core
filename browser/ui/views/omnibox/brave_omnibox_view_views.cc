@@ -173,18 +173,18 @@ void BraveOmniboxViewViews::ExecuteCommand(int command_id, int event_flags) {
 
 std::optional<std::u16string>
 BraveOmniboxViewViews::GetClipboardTextForPasteAndSearch() {
-  const std::u16string clipboard_text = GetClipboardText();
+  std::u16string clipboard_text = GetClipboardText();
   if (clipboard_text.empty()) {
     return std::nullopt;
   }
 
   AutocompleteMatch match;
   model()->ClassifyString(clipboard_text, &match, nullptr);
-  if (AutocompleteMatch::IsSearchType(match.type)) {
-    return clipboard_text;
+  if (!AutocompleteMatch::IsSearchType(match.type)) {
+    return std::nullopt;
   }
 
-  return std::nullopt;
+  return clipboard_text;
 }
 
 void BraveOmniboxViewViews::UpdateContextMenu(
