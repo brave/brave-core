@@ -1065,6 +1065,19 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       styleSheetElm
     ];
     CC.cosmeticStyleSheet = styleSheetElm;
+
+    // Poll every 1sec to see if our stylesheet was removed from
+    // adoptedStyleSheets and re-add if missing.
+    window.setInterval(() => {
+      if (document.adoptedStyleSheets.includes(styleSheetElm)) {
+        return
+      }
+      // we were removed, re-add our styleSheetElm
+      document.adoptedStyleSheets = [
+        ...document.adoptedStyleSheets,
+        styleSheetElm
+      ];
+    }, 1000)
   }
 
   /**
