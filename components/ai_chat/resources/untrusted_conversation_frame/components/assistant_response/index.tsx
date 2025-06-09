@@ -13,6 +13,9 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import MarkdownRenderer from '../markdown_renderer'
 import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
+import {
+  removeReasoning //
+} from '../conversation_entries/conversation_entries_utils'
 
 function SearchSummary (props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
@@ -64,12 +67,12 @@ function AssistantEvent(props: {
                            `[${index + 1}]: ${url}`).join('\n') + '\n\n'
         : '';
 
-    // Replaces 2 consecutive citations with a separator so that
-    // they will both render as links.
-    const completion =
-      event.completionEvent.completion.replace(/(\[\d+\])(?=\[\d+\])/g,
-                                               '$1\u200B')
-    const fullText = `${numberedLinks}${completion}`;
+    // Replaces 2 consecutive citations with a separator and also
+    // adds a space before the citation and the text.
+     const completion =
+       event.completionEvent.completion.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+
+    const fullText = `${numberedLinks}${removeReasoning(completion)}`;
 
     return (
       <MarkdownRenderer
@@ -132,8 +135,10 @@ export default function AssistantResponse(props: {
   {
     !props.isEntryInProgress &&
     <>
-      {searchQueriesEvent && <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />}
       {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
+      {searchQueriesEvent &&
+        <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+      }
     </>
   }
   </>)
