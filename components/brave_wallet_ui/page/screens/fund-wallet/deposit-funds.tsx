@@ -113,6 +113,9 @@ import {
   PageTitleHeader, //
 } from '../../../components/desktop/card-headers/page-title-header'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
+import {
+  PanelActionHeader, //
+} from '../../../components/desktop/card-headers/panel-action-header'
 
 const zcashAddressOptions: zcashAddressOptionType[] = [
   {
@@ -138,7 +141,9 @@ export const DepositFundsScreen = () => {
   const history = useHistory()
 
   // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // render
   return (
@@ -148,14 +153,21 @@ export const DepositFundsScreen = () => {
         exact
       >
         <WalletPageWrapper
-          hideNav={isAndroid}
-          hideHeader={isAndroid}
+          hideNav={isAndroidOrPanel}
           wrapContentInBox={true}
           cardHeader={
-            <PageTitleHeader
-              title={getLocale('braveWalletDepositCryptoButton')}
-              onBack={history.goBack}
-            />
+            isAndroidOrPanel ? (
+              <PanelActionHeader
+                title={getLocale('braveWalletDepositCryptoButton')}
+                expandRoute={WalletRoutes.DepositFundsPage}
+                onBack={history.goBack}
+              />
+            ) : (
+              <PageTitleHeader
+                title={getLocale('braveWalletDepositCryptoButton')}
+                onBack={history.goBack}
+              />
+            )
           }
         >
           <DepositAccount />
@@ -164,15 +176,20 @@ export const DepositFundsScreen = () => {
 
       <Route path={WalletRoutes.DepositFundsPage}>
         <WalletPageWrapper
-          hideNav={isAndroid}
-          hideHeader={isAndroid}
+          hideNav={isAndroidOrPanel}
           wrapContentInBox={true}
           useFullHeight={true}
           cardHeader={
-            <PageTitleHeader
-              title={getLocale('braveWalletDepositCryptoButton')}
-              expandRoute={WalletRoutes.DepositFundsPage}
-            />
+            isAndroidOrPanel ? (
+              <PanelActionHeader
+                title={getLocale('braveWalletDepositCryptoButton')}
+                expandRoute={WalletRoutes.DepositFundsPage}
+              />
+            ) : (
+              <PageTitleHeader
+                title={getLocale('braveWalletDepositCryptoButton')}
+              />
+            )
           }
         >
           <AssetSelection />
@@ -195,6 +212,8 @@ function AssetSelection() {
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(
@@ -472,7 +491,7 @@ function AssetSelection() {
         <LeoSquaredButton
           onClick={nextStep}
           isDisabled={!isNextStepEnabled}
-          size={isPanel ? 'medium' : 'large'}
+          size={isAndroidOrPanel ? 'medium' : 'large'}
         >
           {selectedAsset
             ? getLocale('braveWalletButtonContinue')
