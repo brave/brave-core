@@ -134,14 +134,14 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
   }
 
   // Check if path is exactly "/watch" (case sensitive).
-  std::string path = url.path();
-  const std::string watch_path = "/watch";
+  const auto path = url.path_piece();
+  constexpr std::string_view watch_path = "/watch";
   if (path != watch_path) {
     return false;
   }
 
   // Check if query exists and contains a non-empty "v" parameter.
-  std::string query = url.query();
+  const auto query = url.query_piece();
   if (query.empty()) {
     return false;
   }
