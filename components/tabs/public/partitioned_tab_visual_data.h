@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_TABS_PUBLIC_PARTITIONED_TAB_VISUAL_DATA_H_
 #define BRAVE_COMPONENTS_TABS_PUBLIC_PARTITIONED_TAB_VISUAL_DATA_H_
 
+#include <string>
+
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/models/image_model.h"
 
@@ -18,6 +20,7 @@ namespace tabs {
 struct PartitionedTabVisualData final {
   SkColor background_color = SK_ColorTRANSPARENT;
   ui::ImageModel icon;
+  std::u16string tooltip_text;
 };
 
 }  // namespace tabs

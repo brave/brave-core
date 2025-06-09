@@ -5,26 +5,21 @@
 
 #include "chrome/browser/ui/tabs/tab_model.h"
 
-#include "brave/components/containers/core/common/features.h"
-
 #include "src/chrome/browser/ui/tabs/tab_model.cc"
 
 namespace tabs {
 
 bool TabModel::IsPartitionedTab() const {
-  CHECK(base::FeatureList::IsEnabled(containers::features::kBraveContainers));
   return partitioned_tab_visual_data_.has_value();
 }
 
 void TabModel::SetPartitionedTabVisualData(
     const std::optional<PartitionedTabVisualData>& data) {
-  CHECK(base::FeatureList::IsEnabled(containers::features::kBraveContainers));
   partitioned_tab_visual_data_ = data;
 }
 
 std::optional<PartitionedTabVisualData> TabModel::GetPartitionedTabVisualData()
     const {
-  CHECK(base::FeatureList::IsEnabled(containers::features::kBraveContainers));
   return partitioned_tab_visual_data_;
 }
 
