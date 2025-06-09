@@ -6,11 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_MODEL_H_
 
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "components/tabs/public/tab_interface.h"
 
 // Extends to support getter and setter for partitioned tabs.
-#if BUILDFLAG(ENABLE_CONTAINERS)
+#if !BUILDFLAG(IS_ANDROID)
 #define IsActivated                                                     \
   IsPartitionedTab() const override;                                    \
   void SetPartitionedTabVisualData(                                     \

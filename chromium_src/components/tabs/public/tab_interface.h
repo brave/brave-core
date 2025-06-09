@@ -6,10 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_INTERFACE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_INTERFACE_H_
 
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/tabs/public/partitioned_tab_visual_data.h"
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
+#if !BUILDFLAG(IS_ANDROID)
 // Extend the TabInterface to include partitioned tab functionality.
 #define IsActivated                               \
   IsPartitionedTab() const = 0;                   \
