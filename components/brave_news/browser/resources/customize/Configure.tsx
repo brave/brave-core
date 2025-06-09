@@ -11,16 +11,16 @@ import Toggle from '@brave/leo/react/toggle'
 import { spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
-import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
-import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
-import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
+import { useBraveNews } from '../shared/Context'
+import { BackArrow } from '../shared/Icons'
+import formatMessage from '$web-common/formatMessage'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
 import { PopularPage } from './Popular'
 import SourcesList from './SourcesList'
 import { SuggestionsPage } from './Suggestions'
 import Dropdown from '@brave/leo/react/dropdown'
-import { defaultState } from '../../../../storage/new_tab_storage'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 const Grid = styled.div`
   width: 100%;
@@ -112,6 +112,9 @@ export default function Configure() {
     setOpenArticlesInNewTab
   } = useBraveNews()
 
+  const feedV2Enabled =
+    loadTimeData.getBoolean('featureFlagBraveNewsFeedV2Enabled')
+
   // TODO(petemill): We'll probably need to have 2 toggles, or some other
   // way to know if brave news is "enabled" when Brave News is exposed
   // in places other than just the NTP. For now this is pretty tied to NTP.
@@ -151,7 +154,7 @@ export default function Configure() {
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
           <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
-          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
+          {feedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
             <span slot="label">{getLocale('braveNewsOpenArticlesIn')}</span>
             <span slot='value'>
               {openArticlesInNewTab ? getLocale('braveNewsOpenArticlesInNewTab') : getLocale('braveNewsOpenArticlesInCurrentTab')}

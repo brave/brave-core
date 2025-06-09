@@ -7,9 +7,9 @@ import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
 import styled from 'styled-components'
-import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
-import { channelIcons as ChannelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
-import { getTranslatedChannelName } from '../../../../../brave_news/browser/resources/shared/channel'
+import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'
+import { channelIcons as ChannelIcons } from '../shared/Icons'
+import { getTranslatedChannelName } from '../shared/channel'
 
 interface Props {
   publisherId: string

@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import ProgressRing from '@brave/leo/react/progressRing'
 import styled from 'styled-components'
-import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
-import LoadingComponent from '../../../loading'
+import { useBraveNews } from '../shared/Context'
 
 const Configure = React.lazy(() => import('./Configure'))
 
@@ -22,6 +22,15 @@ const Dialog = styled.dialog`
   padding: 0;
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
+`
+
+const Loading = styled.div`
+  --leo-progressring-size: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `
 
 export default function BraveNewsModal() {
@@ -49,7 +58,7 @@ export default function BraveNewsModal() {
   // Only render the dialog if it should be shown, since
   // it is a complex view.
   return shouldRender ? <Dialog ref={dialogRef as any}>
-    <React.Suspense fallback={<LoadingComponent />}>
+    <React.Suspense fallback={<Loading><ProgressRing /></Loading>}>
       <Configure />
     </React.Suspense>
   </Dialog> : null

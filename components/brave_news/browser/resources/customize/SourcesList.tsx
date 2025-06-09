@@ -9,7 +9,7 @@ import usePromise from '$web-common/usePromise'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
 import styled from 'styled-components'
-import { useBraveNews, useChannels } from '../../../../../brave_news/browser/resources/shared/Context'
+import { useBraveNews, useChannels } from '../shared/Context'
 import { ChannelListEntry, FeedListEntry } from './SourcesListEntry'
 
 const Title = styled.span`
