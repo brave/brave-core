@@ -140,7 +140,16 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
                           base::Unretained(this)));
 }
 
-AIChatUI::~AIChatUI() = default;
+AIChatUI::~AIChatUI() {
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::TabTrackerService::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::ParentUIFrame::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::Service::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::AIChatUIHandler::Name_);
+}
 
 void AIChatUI::BindInterfaceUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {

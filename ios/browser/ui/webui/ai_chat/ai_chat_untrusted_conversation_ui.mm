@@ -27,6 +27,7 @@
 #include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios.h"
@@ -169,7 +170,20 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                               base::Unretained(this)));
 }
 
-AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
+AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() {
+  const auto url = GURL(base::StrCat(
+      {kChromeUIUntrustedScheme, url::kStandardSchemeSeparator, GetHost()}));
+  web_ui()
+      ->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->RemoveUntrustedInterface(
+          url, ai_chat::mojom::UntrustedConversationHandler::Name_);
+  web_ui()
+      ->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->RemoveUntrustedInterface(url,
+                                 ai_chat::mojom::UntrustedUIHandler::Name_);
+}
 
 void AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
