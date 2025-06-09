@@ -640,16 +640,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        // When a tab is still loading we can safely assume the
-        // layout is hidden and we don't need to perform further actions.
-        if (tab.isLoading()) {
-            return;
-        }
-
         // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
         // mode. This can also happen when a tab is re-selected after a crash and it's showing
         // the crash custom view, or is in a frozen state (likely inactive or unloaded).
-        if (tab.isShowingCustomView() || tab.isShowingErrorPage() || tab.isFrozen()) {
+        if (tab.isLoading()
+                || tab.isShowingCustomView()
+                || tab.isShowingErrorPage()
+                || tab.isFrozen()) {
             mYouTubePipLayout.setVisibility(View.GONE);
             return;
         }
