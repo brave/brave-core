@@ -83,30 +83,15 @@
 
 .conversationLink {
   cursor: pointer;
-  background: none;
-  border: none;
-  margin: 0px;
-  padding: 0px;
   text-decoration: underline;
   color: var(--leo-color-text-primary);
   &:hover {
     color: var(--leo-color-text-interactive);
   }
+}
 
-  &.citation {
-    font-size: 0.75em;
-    vertical-align: super;
-    text-decoration: none;
-    color: var(--leo-color-text-secondary); /* make it more subtle */
-    margin-left: 0.15em;
-
-    &:first-child {
-      margin-left: 0; /* don't add space to the first one */
-    }
-
-    &:hover {
-      text-decoration: underline;
-      color: var(--leo-color-text-interactive);
-    }
-  }
+.citation {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--leo-color-text-secondary);
 }
