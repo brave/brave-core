@@ -19,24 +19,27 @@ namespace {
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
+  const videoPlaySelector = "video.html5-main-video";
+  const fullscreenButtonSelector = "button.fullscreen-icon";
+
   function triggerFullscreen() {
     // Always play video before entering fullscreen mode.
-    document.querySelector("video.html5-main-video")?.play();
+    document.querySelector(videoPlaySelector)?.play();
 
     // Check if the video is not in fullscreen mode already.
     if (!document.fullscreenElement) {
       // Create a MutationObserver to watch for changes in the DOM.
       const observer = new MutationObserver((_mutationsList, observer) => {
-        var fullscreenBtn = document.querySelector("button.fullscreen-icon");
-        var videoPlayer = document.querySelector("video.html5-main-video");
+        var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+        var videoPlayer = document.querySelector(videoPlaySelector);
         if (fullscreenBtn && videoPlayer) {
           observer.disconnect()
           delayedPlayAndClick(fullscreenBtn, videoPlayer);
         }
       });
 
-      var fullscreenBtn = document.querySelector("button.fullscreen-icon");
-      var videoPlayer = document.querySelector("video.html5-main-video");
+      var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+      var videoPlayer = document.querySelector(videoPlaySelector);
       // Check if fullscreen button and video are available.
       if (fullscreenBtn && videoPlayer) {
        delayedPlayAndClick(fullscreenBtn, videoPlayer);
