@@ -1181,7 +1181,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 return;
             }
             Tab currentTab = getToolbarDataProvider().getTab();
-            if (currentTab.isLoading()
+            if (currentTab == null ||
+                    currentTab.isLoading()
                     || currentTab.isShowingErrorPage()
                     || currentTab.isFrozen()
                     || currentTab.isShowingCustomView()) {
