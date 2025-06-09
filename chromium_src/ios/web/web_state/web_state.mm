@@ -25,6 +25,8 @@ void WebState::InterfaceBinder::RemoveUntrustedInterface(
       it != untrusted_callbacks_.end()) {
     if (auto jt = it->second.find(interface_name); jt != it->second.end()) {
       it->second.erase(jt);
+
+      RemoveInterface(interface_name);
     }
 
     if (it->second.empty()) {
