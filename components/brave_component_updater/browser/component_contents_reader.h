@@ -41,7 +41,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
       const base::FilePath& component_root);
 
   // This method is required for now, but will be removed.
-  // Please, avoid reading component's files directly.
+  // Please, avoid reading signed component files directly.
   const base::FilePath& GetComponentRootDeprecated() const;
 
   void GetFileAsString(
