@@ -23,7 +23,9 @@ void WebState::InterfaceBinder::RemoveUntrustedInterface(
     std::string_view interface_name) {
   if (auto it = untrusted_callbacks_.find(origin.host_piece());
       it != untrusted_callbacks_.end()) {
-    it->second.erase(interface_name);
+    if (auto jt = it->second.find(interface_name); jt != it->second.end()) {
+      it->second.erase(jt);
+    }
 
     if (it->second.empty()) {
       untrusted_callbacks_.erase(it);
