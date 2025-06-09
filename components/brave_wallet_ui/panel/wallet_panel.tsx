@@ -18,7 +18,7 @@ import store from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 import {
-  runLocalStorageMigrations //
+  runLocalStorageMigrations, //
 } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 

@@ -33,7 +33,7 @@ export class WalletPanelApiProxy extends WalletApiProxy {
       this.braveWalletService.$.bindNewPipeAndPassReceiver(),
       this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
       this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver(),
-      this.meldIntegrationService.$.bindNewPipeAndPassReceiver()
+      this.meldIntegrationService.$.bindNewPipeAndPassReceiver(),
     )
   }
 }
