@@ -45,7 +45,8 @@ describe('Relative dates format correctly', () => {
 
 describe('Test Timeline Date Format', () => {
   test('June 28, 2021', () => {
-    const date = new Date(1624897229773)
-    expect(formatTimelineDate(date)).toContain('6/28/2021')
+    const date = new Date(2021, 5, 28)
+    expect(formatTimelineDate(date, 'en-US')).toContain('6/28/2021')
+    expect(formatTimelineDate(date, 'en-CA')).toContain('2021-06-28')
   })
 })
