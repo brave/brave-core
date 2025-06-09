@@ -33,7 +33,11 @@
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
-  browser_ = chrome::FindLastActiveWithProfile(profile_);
+  if (auto* browser = chrome::FindLastActiveWithProfile(profile_)) {
+    browser_ = browser->AsWeakPtr();
+  } else {
+    LOG(WARNING) << "No active browser found";
+  }
 
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kShieldsPanelHost);
@@ -90,8 +94,7 @@ void ShieldsPanelUI::CreatePanelHandler(
   DCHECK(profile);
 
   panel_handler_ = std::make_unique<ShieldsPanelHandler>(
-      std::move(panel_receiver), this,
-      static_cast<BraveBrowserWindow*>(browser_->window()), profile);
+      std::move(panel_receiver), this, browser_, profile);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this, browser_->tab_strip_model());
 }

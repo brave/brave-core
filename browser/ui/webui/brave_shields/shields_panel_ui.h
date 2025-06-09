@@ -53,7 +53,7 @@ class ShieldsPanelUI : public TopChromeWebUIController,
       panel_factory_receiver_{this};
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
+  base::WeakPtr<Browser> browser_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
