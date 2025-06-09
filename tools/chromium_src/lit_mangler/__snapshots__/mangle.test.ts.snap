@@ -89,12 +89,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -            aria-label=\\"$i18n{toolbarButtonA11yLabel}\\">
 -          $i18n{toolbarHeader}
 -        </h2>
-+    <cr-button id=\\"toolbarButton\\" class=\\"section sp-card\\" @click=\\"\${this.onToolbarCustomizationButtonClick_}\\"><leo-icon name=\\"window-edit\\" slot=\\"prefix-icon\\"></leo-icon>
++    <cr-button id=\\"toolbarButton\\" class=\\"section sp-card\\" @click=\\"\${this.onToolbarCustomizationButtonClick_}\\">
 +      <sp-heading hide-back-button=\\"\\" id=\\"toolbar-customization-heading\\">
 +        <h2 slot=\\"heading\\" id=\\"toolbar-customization-inner-heading\\" aria-label=\\"$i18n{toolbarButtonA11yLabel}\\">$i18n{braveCustomizeMenuToolbarLabel}</h2>
        </sp-heading>
 -      <cr-icon icon=\\"cr:chevron-right\\" slot=\\"suffix-icon\\"></cr-icon>
-+      
++      <cr-icon icon=\\"window-edit\\" slot=\\"prefix-icon\\"></cr-icon>
      </cr-button>
       \${this.isSourceTabFirstPartyNtp_ ? html\`<hr class=\\"sp-cards-separator\\">
      <div id=\\"shortcuts\\" class=\\"section sp-card\\">

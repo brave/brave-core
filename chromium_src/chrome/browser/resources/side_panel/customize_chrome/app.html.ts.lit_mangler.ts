@@ -13,14 +13,16 @@ mangle(
       throw new Error('[Customize Chrome] #toolbarButton is gone.')
     }
 
-    // Remove existing chevron icon
-    el.querySelector('cr-icon[icon="cr:chevron-right"]')?.remove()
-
-    // Insert new icon at the start of the button
-    el.insertAdjacentHTML(
-      'afterbegin',
-      `<leo-icon name="window-edit" slot="prefix-icon"></leo-icon>`,
-    )
+    // Replace existing chevron icon with a new icon and put it at the start
+    // of the button.
+    const icon = el.querySelector('cr-icon[icon="cr:chevron-right"]')
+    if (!icon) {
+      throw new Error(
+        '[Customize Chrome] #toolbarButton does not have a chevron icon.',
+      )
+    }
+    icon.setAttribute('icon', 'window-edit')
+    icon.setAttribute('slot', 'prefix-icon')
   },
   (template) => template.text.includes('id="toolbarButton"'),
 )
