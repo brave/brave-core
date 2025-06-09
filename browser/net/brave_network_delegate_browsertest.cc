@@ -110,8 +110,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.com/*");
-    first_party_pattern_ =
-        ContentSettingsPattern::FromString("https://firstParty/*");
 
     wordpress_top_url_ =
         https_server_.GetURL("example.wordpress.com", "/cookie_iframe.html");
@@ -230,7 +228,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
  private:
   ContentSettingsPattern top_level_page_pattern_;
-  ContentSettingsPattern first_party_pattern_;
   ContentSettingsPattern iframe_pattern_;
 };
 

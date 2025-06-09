@@ -162,8 +162,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.test/*");
     iframe_pattern_ = ContentSettingsPattern::FromString("https://b.test/*");
-    first_party_pattern_ =
-        ContentSettingsPattern::FromString("https://firstParty/*");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -227,10 +225,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   const ContentSettingsPattern& top_level_page_pattern() {
     return top_level_page_pattern_;
-  }
-
-  const ContentSettingsPattern& first_party_pattern() {
-    return first_party_pattern_;
   }
 
   const ContentSettingsPattern& iframe_pattern() { return iframe_pattern_; }
@@ -426,7 +420,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   GURL same_origin_image_url_;
   GURL top_level_page_url_;
   ContentSettingsPattern top_level_page_pattern_;
-  ContentSettingsPattern first_party_pattern_;
   ContentSettingsPattern iframe_pattern_;
   mutable base::Lock last_referrers_lock_;
   std::map<GURL, std::string> last_referrers_;
