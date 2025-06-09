@@ -3,10 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_components_tabs_sources = [
-  "//brave/components/tabs/public/partitioned_tab_visual_data.h",
-  "//brave/components/tabs/public/tab_interface.cc",
-]
+brave_components_tabs_sources =
+    [ "//brave/components/tabs/public/partitioned_tab_visual_data.h" ]
 
 brave_components_tabs_public_deps = [
   "//skia",
