@@ -723,7 +723,10 @@ function initSlider(root: ShadowRoot, element: HTMLElement
           }
         }, delay);
       }
-      return lastResult;
+      if (lastResult !== null) {
+        return lastResult;
+      }
+      return func.apply(this, [e]);
     };
   }
 
