@@ -208,10 +208,9 @@ namespace ankr {
 
 namespace {
 
-std::optional<std::string> GetChainIdFromAnkrBlockchain(
-    const std::string& blockchain) {
-  auto& blockchains = GetAnkrBlockchains();
-  for (const auto& entry : blockchains) {
+std::optional<std::string_view> GetChainIdFromAnkrBlockchain(
+    std::string_view blockchain) {
+  for (const auto& entry : kAnkrBlockchains) {
     if (entry.second == blockchain) {
       return entry.first;
     }

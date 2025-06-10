@@ -94,7 +94,7 @@ void AssetDiscoveryTask::DiscoverAssets(
     }
     evm_chain_ids.push_back(chain_id.Clone());
 
-    if (GetAnkrBlockchains().contains(chain_id->chain_id)) {
+    if (kAnkrBlockchains.contains(chain_id->chain_id)) {
       ankr_evm_chain_ids.push_back(chain_id.Clone());
     } else {
       non_ankr_evm_chain_ids.push_back(chain_id.Clone());

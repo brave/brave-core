@@ -1417,7 +1417,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   void TestGetEthNftStandard(
       const std::string& contract_address,
       const std::string& chain_id,
-      std::vector<std::string>& interfaces,
+      base::span<const std::string_view> interfaces,
       const std::optional<std::string>& expected_standard,
       mojom::ProviderError expected_error,
       const std::string& expected_error_message) {
@@ -7471,7 +7471,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetEthNftStandard) {
-  std::vector<std::string> interfaces;
+  std::vector<std::string_view> interfaces;
   // Empty interface IDs yields invalid params error
   TestGetEthNftStandard(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", mojom::kMainnetChainId,
