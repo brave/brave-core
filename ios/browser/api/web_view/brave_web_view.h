@@ -90,6 +90,9 @@ CWV_EXPORT
     buildEditMenuWithBuilder:(id<UIMenuBuilder>)builder;
 @end
 
+// WebUI delegate to communicate from WebUI to Swift
+@protocol BraveWebUIMessagingTabHelperDelegate;
+
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle
 /// some Brave specific features
 CWV_EXPORT
@@ -101,6 +104,11 @@ CWV_EXPORT
 
 // This web view's UI delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
+
+// This web view's WebUI Tab Helper Delegate
+// This is used to communicate from a WebUI to Swift
+@property(nonatomic, weak, nullable) id<BraveWebUIMessagingTabHelperDelegate>
+    webUIDelegate;
 
 @end
 

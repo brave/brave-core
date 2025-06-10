@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
 #include "base/notreached.h"
+#include "brave/ios/web/webui/brave_webui_messaging_tab_helper.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -165,6 +166,24 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
   if ([self.navigationDelegate
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
+  }
+}
+
+#pragma mark - BraveWebUIMessagingTabHelperDelegate
+
+- (id<BraveWebUIMessagingTabHelperDelegate>)webUIDelegate {
+  auto* tab_helper = BraveWebUIMessagingTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    return tab_helper->GetBridgingDelegate();
+  }
+  return nullptr;
+}
+
+- (void)setWebUIDelegate:
+    (id<BraveWebUIMessagingTabHelperDelegate>)webUIDelegate {
+  auto* tab_helper = BraveWebUIMessagingTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    tab_helper->SetBridgingDelegate(webUIDelegate);
   }
 }
 
