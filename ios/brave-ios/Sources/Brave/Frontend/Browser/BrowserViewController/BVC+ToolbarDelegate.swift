@@ -28,7 +28,7 @@ import os.log
 
 extension BrowserViewController: TopToolbarDelegate {
 
-  func showTabTray(isExternallyPresented: Bool = false) {
+  func showTabTray() {
     if tabManager.tabsForCurrentMode.isEmpty {
       return
     }
@@ -44,7 +44,6 @@ extension BrowserViewController: TopToolbarDelegate {
     isTabTrayActive = true
 
     let tabTrayController = TabTrayController(
-      isExternallyPresented: isExternallyPresented,
       tabManager: tabManager,
       braveCore: profileController,
       windowProtection: windowProtection
@@ -56,12 +55,10 @@ extension BrowserViewController: TopToolbarDelegate {
     container.delegate = self
 
     if !UIAccessibility.isReduceMotionEnabled {
-      if !isExternallyPresented {
-        container.transitioningDelegate = tabTrayController
-      }
+      container.transitioningDelegate = tabTrayController
       container.modalPresentationStyle = .fullScreen
     }
-    present(container, animated: !isExternallyPresented)
+    present(container, animated: true)
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {

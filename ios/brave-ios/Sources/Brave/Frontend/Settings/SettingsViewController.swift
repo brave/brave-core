@@ -480,7 +480,6 @@ class SettingsViewController: TableViewController {
 
               let syncSettingsViewController = SyncSettingsTableViewController(
                 braveCoreMain: braveCore,
-                tabManager: tabManager,
                 windowProtection: windowProtection
               )
 
@@ -489,7 +488,6 @@ class SettingsViewController: TableViewController {
             } else {
               let syncWelcomeViewController = SyncWelcomeViewController(
                 braveCore: braveCore,
-                tabManager: tabManager,
                 windowProtection: windowProtection
               )
 

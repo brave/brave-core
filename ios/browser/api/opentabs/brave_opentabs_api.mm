@@ -74,6 +74,10 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
 
 #pragma mark - IOSOpenDistantSession
 
+@interface IOSOpenDistantSession ()
+@property(nonatomic) NSMutableArray* mTabs;
+@end
+
 @implementation IOSOpenDistantSession
 
 - (instancetype)initWithName:(nullable NSString*)name
@@ -100,10 +104,18 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
     openDistantSession.sessionTag = [self.sessionTag copy];
     openDistantSession.modifiedTime = [self.modifiedTime copy];
     openDistantSession.deviceFormFactor = self.deviceFormFactor;
-    openDistantSession.tabs = [self.tabs copy];
+    openDistantSession.tabs = [self.mTabs copy];
   }
 
   return openDistantSession;
+}
+
+- (NSArray<IOSOpenDistantTab*>*)tabs {
+  return [self.mTabs copy];
+}
+
+- (void)setTabs:(NSArray<IOSOpenDistantTab*>*)tabs {
+  self.mTabs = [tabs mutableCopy];
 }
 
 - (void)updateOpenDistantSessionModified:(NSDate*)modifiedTime {
@@ -141,7 +153,7 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
               title:base::SysUTF8ToNSString(tab_title)
               tabId:session_tab.tab_id.id()
          sessionTag:base::SysUTF8ToNSString(session_tag)];
-    [(NSMutableArray*)_tabs addObject:distant_tab];
+    [self.mTabs addObject:distant_tab];
   }
 }
 
