@@ -29,11 +29,11 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -51,9 +51,7 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
       web_ui, kRewriterUIHost, kAiRewriterUiGenerated, IDR_REWRITER_UI_HTML);
   DCHECK(source);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
-  }
+  source->AddLocalizedStrings(webui::kAiChatStrings);
 
   ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
                    ->GetDefaultAIEngine();

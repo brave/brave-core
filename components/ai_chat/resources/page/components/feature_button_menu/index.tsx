@@ -71,7 +71,7 @@ export default function FeatureMenu(props: Props) {
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
                 <p className={styles.modelSubtitle}>
-                  {getLocale(`braveLeoModelSubtitle-${model.key}`)}
+                  {getLocale(`CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`)}
                 </p>
               </div>
               {model.options.leoModelOptions?.access ===

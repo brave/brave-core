@@ -24,6 +24,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
@@ -158,9 +159,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
-  }
+  source->AddLocalizedStrings(webui::kAiChatStrings);
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);

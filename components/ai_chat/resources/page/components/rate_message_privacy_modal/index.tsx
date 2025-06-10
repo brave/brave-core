@@ -53,7 +53,7 @@ export default function RateMessagePrivacyModal() {
       </div>
       <div className={styles.description}>
         <span>
-          {formatLocale('rateMessagePrivacyModalDescription', {
+          {formatLocale(S.CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION, {
             $1: (content) => (
               <a
                 // While we preventDefault onClick, we still need to pass
