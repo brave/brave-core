@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 

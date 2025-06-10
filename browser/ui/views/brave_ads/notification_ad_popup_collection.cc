@@ -7,6 +7,8 @@
 
 #include <map>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 
 namespace brave_ads {

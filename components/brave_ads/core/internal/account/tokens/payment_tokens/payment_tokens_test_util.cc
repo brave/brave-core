@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"

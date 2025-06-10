@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"

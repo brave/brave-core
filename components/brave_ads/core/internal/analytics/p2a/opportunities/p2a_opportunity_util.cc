@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"

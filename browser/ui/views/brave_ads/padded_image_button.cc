@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"

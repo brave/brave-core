@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"

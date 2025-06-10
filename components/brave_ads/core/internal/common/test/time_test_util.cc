@@ -8,6 +8,7 @@
 #include <ctime>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/i18n/time_formatting.h"
 #include "base/time/time.h"
 

@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"

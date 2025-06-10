@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"

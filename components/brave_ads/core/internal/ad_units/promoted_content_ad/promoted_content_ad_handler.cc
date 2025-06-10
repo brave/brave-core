@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

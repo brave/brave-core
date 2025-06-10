@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
