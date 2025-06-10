@@ -28,95 +28,13 @@
 #include "ui/views/accessibility/view_accessibility.h"
 #include "url/gurl.h"
 
-namespace {
-
-class AIChatButtonMenuModel : public ui::SimpleMenuModel,
-                              public ui::SimpleMenuModel::Delegate {
- public:
-  explicit AIChatButtonMenuModel(Browser& browser)
-      : ui::SimpleMenuModel(this),
-        browser_(browser),
-        prefs_(*browser_->profile()->GetOriginalProfile()->GetPrefs()) {
-    Build();
-  }
-
-  AIChatButtonMenuModel(const AIChatButtonMenuModel&) = delete;
-  AIChatButtonMenuModel& operator=(const AIChatButtonMenuModel&) = delete;
-  ~AIChatButtonMenuModel() override = default;
-
- private:
-  enum ContextMenuCommand {
-    kOpenInFullPage,
-    kOpenInSidebar,
-    kAboutLeoAI,
-    kManageLeoAI,
-    kHideAIChatButton,
-  };
-
-  void Build() {
-    AddCheckItemWithStringId(ContextMenuCommand::kOpenInFullPage,
-                             IDS_OPEN_BRAVE_AI_CHAT_FULL_PAGE);
-    AddCheckItemWithStringId(ContextMenuCommand::kOpenInSidebar,
-                             IDS_OPEN_BRAVE_AI_CHAT_SIDE_PANEL);
-    AddItemWithStringId(ContextMenuCommand::kAboutLeoAI,
-                        IDS_ABOUT_BRAVE_AI_CHAT);
-    AddItemWithStringId(ContextMenuCommand::kManageLeoAI,
-                        IDS_MANAGE_BRAVE_AI_CHAT);
-    AddItemWithStringId(ContextMenuCommand::kHideAIChatButton,
-                        IDS_HIDE_BRAVE_AI_CHAT_ICON_ON_TOOLBAR);
-  }
-
-  // ui::SimpleMenuModel::Delegate:
-  void ExecuteCommand(int command_id, int event_flags) override {
-    switch (command_id) {
-      case ContextMenuCommand::kOpenInFullPage:
-        prefs_->SetBoolean(
-            ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, true);
-        break;
-      case ContextMenuCommand::kOpenInSidebar:
-        prefs_->SetBoolean(
-            ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, false);
-        break;
-      case ContextMenuCommand::kAboutLeoAI:
-        ShowSingletonTab(base::to_address(browser_), GURL(kAIChatAboutUrl));
-        break;
-      case ContextMenuCommand::kManageLeoAI:
-        ShowSingletonTab(base::to_address(browser_), GURL(kAIChatSettingsURL));
-        break;
-      case ContextMenuCommand::kHideAIChatButton:
-        prefs_->SetBoolean(ai_chat::prefs::kBraveAIChatShowToolbarButton,
-                           false);
-        break;
-      default:
-        NOTREACHED();
-    }
-  }
-
-  bool IsCommandIdChecked(int command_id) const override {
-    const bool open_in_full_page = prefs_->GetBoolean(
-        ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton);
-    if (command_id == ContextMenuCommand::kOpenInFullPage) {
-      return open_in_full_page;
-    }
-
-    if (command_id == ContextMenuCommand::kOpenInSidebar) {
-      return !open_in_full_page;
-    }
-
-    NOTREACHED();
-  }
-
-  raw_ref<Browser> browser_;
-  raw_ref<PrefService> prefs_;
-};
-
-}  // namespace
-
 AIChatButton::AIChatButton(Browser* browser)
     : ToolbarButton(base::BindRepeating(&AIChatButton::ButtonPressed,
                                         base::Unretained(this))),
-      browser_(*browser) {
-  SetMenuModel(std::make_unique<AIChatButtonMenuModel>(browser_.get()));
+      browser_(*browser),
+      prefs_(*browser_->profile()->GetOriginalProfile()->GetPrefs()) {
+  SetMenuModel(CreateMenuModel());
+
   SetVectorIcon(kLeoProductBraveLeoIcon);
 
   // Visibility is managed by |ToolbarView|.
@@ -149,6 +67,59 @@ void AIChatButton::ButtonPressed() {
     return;
   }
   ai_chat_metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kToolbarButton);
+}
+
+std::unique_ptr<ui::SimpleMenuModel> AIChatButton::CreateMenuModel() {
+  auto model = std::make_unique<ui::SimpleMenuModel>(this);
+  model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInFullPage,
+                                  IDS_OPEN_BRAVE_AI_CHAT_FULL_PAGE);
+  model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInSidebar,
+                                  IDS_OPEN_BRAVE_AI_CHAT_SIDE_PANEL);
+  model->AddItemWithStringId(ContextMenuCommand::kAboutLeoAI,
+                             IDS_ABOUT_BRAVE_AI_CHAT);
+  model->AddItemWithStringId(ContextMenuCommand::kManageLeoAI,
+                             IDS_MANAGE_BRAVE_AI_CHAT);
+  model->AddItemWithStringId(ContextMenuCommand::kHideAIChatButton,
+                             IDS_HIDE_BRAVE_AI_CHAT_ICON_ON_TOOLBAR);
+  return model;
+}
+
+void AIChatButton::ExecuteCommand(int command_id, int event_flags) {
+  switch (command_id) {
+    case ContextMenuCommand::kOpenInFullPage:
+      prefs_->SetBoolean(
+          ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, true);
+      break;
+    case ContextMenuCommand::kOpenInSidebar:
+      prefs_->SetBoolean(
+          ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, false);
+      break;
+    case ContextMenuCommand::kAboutLeoAI:
+      ShowSingletonTab(base::to_address(browser_), GURL(kAIChatAboutUrl));
+      break;
+    case ContextMenuCommand::kManageLeoAI:
+      ShowSingletonTab(base::to_address(browser_), GURL(kAIChatSettingsURL));
+      break;
+    case ContextMenuCommand::kHideAIChatButton:
+      prefs_->SetBoolean(ai_chat::prefs::kBraveAIChatShowToolbarButton, false);
+      break;
+    default:
+      NOTREACHED();
+  }
+}
+
+bool AIChatButton::IsCommandIdChecked(int command_id) const {
+  const bool open_in_full_page = prefs_->GetBoolean(
+      ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton);
+  if (command_id == ContextMenuCommand::kOpenInFullPage) {
+    return open_in_full_page;
+  }
+
+  if (command_id == ContextMenuCommand::kOpenInSidebar) {
+    return !open_in_full_page;
+  }
+
+  NOTREACHED();
 }
 
 BEGIN_METADATA(AIChatButton)

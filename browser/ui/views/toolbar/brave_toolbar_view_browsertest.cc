@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,9 +31,15 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -212,6 +219,49 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
   EXPECT_TRUE(prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton));
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
+                       AIChatButtonOpenTargetTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Load in full page is default.
+  EXPECT_TRUE(prefs->GetBoolean(
+      ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton));
+
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  AIChatButton* button = toolbar_view_->ai_chat_button();
+  auto* menu_model = static_cast<ui::SimpleMenuModel*>(button->menu_model());
+  auto open_in_full_page_cmd_index =
+      menu_model->GetIndexOfCommandId(AIChatButton::kOpenInFullPage);
+  auto open_in_sidebar_cmd_index =
+      menu_model->GetIndexOfCommandId(AIChatButton::kOpenInSidebar);
+  ASSERT_TRUE(open_in_full_page_cmd_index.has_value());
+  ASSERT_TRUE(open_in_sidebar_cmd_index.has_value());
+  EXPECT_TRUE(menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));
+  EXPECT_FALSE(menu_model->IsItemCheckedAt(open_in_sidebar_cmd_index.value()));
+
+  // Check loaded in full page.
+  auto* tab_strip_model = browser()->tab_strip_model();
+  button->ButtonPressed();
+  auto* web_contents = tab_strip_model->GetActiveWebContents();
+  EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
+
+  // Check loaded in sidebar.
+  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton,
+                    false);
+  EXPECT_FALSE(
+      menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));
+  EXPECT_TRUE(menu_model->IsItemCheckedAt(open_in_sidebar_cmd_index.value()));
+  SidePanelEntryKey ai_chat_key =
+      SidePanelEntry::Key(SidePanelEntryId::kChatUI);
+  auto* side_panel_coordinator =
+      browser()->GetFeatures().side_panel_coordinator();
+  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
+  button->ButtonPressed();
+  EXPECT_TRUE(side_panel_coordinator->IsSidePanelShowing());
+  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+}
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonVisibility) {
