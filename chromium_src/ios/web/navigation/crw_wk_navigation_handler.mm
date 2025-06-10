@@ -10,6 +10,19 @@
 
 #include "ios/web/common/user_agent.h"
 #import "ios/web/public/web_client.h"
+#include "ios/web/web_state/web_state_impl.h"
+
+namespace web {
+class WebState;
+}
+
+namespace brave {
+bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request);
+bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
+NSString* GetUserAgentForRequest(web::WebState* webState,
+                                 web::UserAgentType userAgentType,
+                                 NSURLRequest* request);
+}  // namespace brave
 
 #include <ios/web/navigation/crw_wk_navigation_handler.mm>
 
