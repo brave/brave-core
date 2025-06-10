@@ -75,8 +75,6 @@ class NTPBackgroundImagesService {
       bool super_referral,
       bool supports_rich_media) const;
 
-  bool overridden_component_path() const { return overridden_component_path_; }
-
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
@@ -205,9 +203,7 @@ class NTPBackgroundImagesService {
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
-  base::Time last_update_check_at_;
-
-  bool overridden_component_path_ = false;
+  std::optional<base::Time> last_updated_at_;
 
   const raw_ptr<component_updater::ComponentUpdateService>
       component_update_service_ = nullptr;

@@ -9,11 +9,8 @@
 namespace brave_ads {
 
 int GetMajorVersion();
-
 int GetMinorVersion();
-
 int GetBuildVersion();
-
 int GetPatchVersion();
 
 bool IsMobilePlatform();

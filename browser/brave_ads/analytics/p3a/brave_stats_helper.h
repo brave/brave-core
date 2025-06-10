@@ -54,8 +54,8 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
   base::ScopedObservation<ProfileManager, ProfileManagerObserver>
       profile_manager_observer_{this};
 
-  const raw_ptr<PrefService> local_state_ = nullptr;         // Not owned.
-  const raw_ptr<ProfileManager> profile_manager_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> local_state_;         // Not owned.
+  const raw_ptr<ProfileManager> profile_manager_;  // Not owned.
 
   base::Time testing_first_run_time_;
 };

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -181,7 +180,7 @@ class AdsServiceImplIOS : public AdsService {
       ParseAndSaveNewTabPageAdsCallback callback,
       bool success);
 
-  const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> prefs_;  // Not owned.
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
