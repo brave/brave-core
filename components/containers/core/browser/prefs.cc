@@ -19,7 +19,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                              user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }
 
-std::vector<mojom::ContainerPtr> GetContainerList(const PrefService& prefs) {
+std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
+    const PrefService& prefs) {
   std::vector<mojom::ContainerPtr> containers;
   for (const auto& container : prefs.GetList(prefs::kContainersList)) {
     if (!container.is_dict()) {
@@ -36,8 +37,8 @@ std::vector<mojom::ContainerPtr> GetContainerList(const PrefService& prefs) {
   return containers;
 }
 
-void SetContainerList(const std::vector<mojom::ContainerPtr>& containers,
-                      PrefService& prefs) {
+void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
+                          PrefService& prefs) {
   base::Value::List list;
   for (const auto& container : containers) {
     list.Append(base::Value::Dict()

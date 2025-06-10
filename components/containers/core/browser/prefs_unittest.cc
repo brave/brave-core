@@ -23,7 +23,7 @@ class ContainersPrefsTest : public testing::Test {
 };
 
 TEST_F(ContainersPrefsTest, GetEmptyContainerList) {
-  auto containers = GetContainerList(prefs_);
+  auto containers = GetContainersFromPrefs(prefs_);
   EXPECT_TRUE(containers.empty());
 }
 
@@ -34,9 +34,9 @@ TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
   test_containers.push_back(
       mojom::Container::New("test-id-2", "Test Container 2"));
 
-  SetContainerList(test_containers, prefs_);
+  SetContainersToPrefs(test_containers, prefs_);
 
-  auto retrieved_containers = GetContainerList(prefs_);
+  auto retrieved_containers = GetContainersFromPrefs(prefs_);
   ASSERT_EQ(retrieved_containers.size(), 2u);
 
   EXPECT_EQ(retrieved_containers[0]->id, "test-id-1");
@@ -58,13 +58,13 @@ TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
 
   prefs_.SetList(prefs::kContainersList, std::move(invalid_list));
 
-  auto containers = GetContainerList(prefs_);
+  auto containers = GetContainersFromPrefs(prefs_);
   EXPECT_TRUE(containers.empty());
 }
 
 TEST_F(ContainersPrefsTest, SetContainerListEmpty) {
   std::vector<mojom::ContainerPtr> empty_containers;
-  SetContainerList(empty_containers, prefs_);
+  SetContainersToPrefs(empty_containers, prefs_);
 
   const base::Value::List& list = prefs_.GetList(prefs::kContainersList);
   EXPECT_TRUE(list.empty());
