@@ -176,6 +176,9 @@ public class SearchViewController: UIViewController, LoaderListener {
   private struct OnYourDeviceItem {
     private(set) var site: Site?
     private(set) var playlistItem: PlaylistItem?
+    var sortReferenceDate: Date? {
+      return site?.dateAdded ?? playlistItem?.dateAdded ?? nil
+    }
 
     init(site: Site) {
       self.site = site
@@ -196,9 +199,19 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   private func updateAvailableOnYourDeviceItems() {
     let playlistItems = playlistFRC.fetchedObjects ?? []
-    allOnYourDeviceItems =
+    let result =
       allSiteData.map { OnYourDeviceItem(site: $0) }
       + playlistItems.map { OnYourDeviceItem(playlistItem: $0) }
+    allOnYourDeviceItems = result.sorted(by: {
+      if let lhsSortReferenceDate = $0.sortReferenceDate,
+        let rhsSortReferenceDate = $1.sortReferenceDate
+      {
+        return lhsSortReferenceDate > rhsSortReferenceDate
+      } else if let _ = $0.playlistItem {
+        return true
+      }
+      return false
+    })
     collectionView.reloadData()
   }
 
