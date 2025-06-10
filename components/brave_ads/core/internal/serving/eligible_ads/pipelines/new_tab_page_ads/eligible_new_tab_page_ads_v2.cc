@@ -6,13 +6,16 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v2.h"
 
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_split.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
@@ -30,6 +33,46 @@
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
+
+namespace {
+
+constexpr std::string_view kAdEventVirtualPrefQueryName = "ad_events";
+
+base::flat_set<std::string> GetAdEventVirtualPrefQueryIds(
+    const CreativeNewTabPageAdList& creative_ads) {
+  base::flat_set<std::string> ad_event_virtual_pref_query_ids;
+
+  for (const auto& creative_ad : creative_ads) {
+    for (const auto& [pref_path, condition] : creative_ad.condition_matchers) {
+      std::optional<std::string_view> pref_path_without_prefix =
+          base::RemovePrefix(pref_path, "[virtual]:");
+      if (!pref_path_without_prefix) {
+        // Not a virtual pref path.
+        continue;
+      }
+
+      const std::vector<std::string> components =
+          base::SplitString(*pref_path_without_prefix, "|",
+                            base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      if (components.empty()) {
+        // Invalid virtual pref query path.
+        continue;
+      }
+
+      if (components[0] == kAdEventVirtualPrefQueryName) {
+        if (components.size() == 3) {
+          // Only handle virtual pref query paths with exactly three components,
+          // i.e., `ad_events|<id>|<confirmation_type>`.
+          ad_event_virtual_pref_query_ids.insert(/*id*/ components[1]);
+        }
+      }
+    }
+  }
+
+  return ad_event_virtual_pref_query_ids;
+}
+
+}  // namespace
 
 EligibleNewTabPageAdsV2::EligibleNewTabPageAdsV2(
     const SubdivisionTargeting& subdivision_targeting,
@@ -128,7 +171,21 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
 void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
     CreativeNewTabPageAdList creative_ads,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  const base::Value::Dict virtual_prefs = GetAdsClient().GetVirtualPrefs();
+  const base::flat_set<std::string> ad_event_virtual_pref_query_ids =
+      GetAdEventVirtualPrefQueryIds(creative_ads);
+
+  ad_events_database_table_.GetVirtualPrefs(
+      ad_event_virtual_pref_query_ids,
+      base::BindOnce(&EligibleNewTabPageAdsV2::ApplyConditionMatcherCallback,
+                     weak_factory_.GetWeakPtr(), std::move(creative_ads),
+                     std::move(callback)));
+}
+
+void EligibleNewTabPageAdsV2::ApplyConditionMatcherCallback(
+    CreativeNewTabPageAdList creative_ads,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    base::Value::Dict virtual_prefs) {
+  virtual_prefs.Merge(GetAdsClient().GetVirtualPrefs());
 
   std::erase_if(creative_ads, [&virtual_prefs](
                                   const CreativeNewTabPageAdInfo& creative_ad) {
