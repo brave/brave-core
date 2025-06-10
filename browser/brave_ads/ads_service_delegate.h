@@ -11,7 +11,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "components/prefs/pref_service.h"
 
@@ -42,10 +41,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   ~AdsServiceDelegate() override;
 
-  std::string GetDefaultSearchEngineName();
-
-  base::Value::Dict GetSkus() const;
-
   // AdsService::Delegate:
   void MaybeInitNotificationHelper(base::OnceClosure callback) override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;
@@ -63,8 +58,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
   void CloseNotificationAd(const std::string& id, bool is_custom) override;
   void OpenNewTabWithUrl(const GURL& url) override;
   bool IsFullScreenMode() override;
-
-  base::Value::Dict GetVirtualPrefs() override;
 
  private:
   NotificationDisplayService* GetNotificationDisplayService();

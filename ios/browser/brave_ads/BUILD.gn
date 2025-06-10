@@ -9,13 +9,19 @@ source_set("brave_ads") {
     "ads_service_factory_ios.mm",
     "ads_service_impl_ios.h",
     "ads_service_impl_ios.mm",
+    "virtual_pref_provider_delegate_ios.h",
+    "virtual_pref_provider_delegate_ios.mm",
   ]
 
   deps = [
+    "//base/version_info",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/search_engines",
+    "//ios/chrome/browser/search_engines/model",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/chrome/common",
     "//ios/web/public",
     "//sql",
   ]
