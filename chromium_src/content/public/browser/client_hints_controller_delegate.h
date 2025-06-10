@@ -8,7 +8,7 @@
 
 #include "content/public/browser/content_browser_client.h"
 
-#define GetUserAgentMetadata() \
+#define GetUserAgentMetadata()                        \
   BraveGetUserAgentMetadata(bool showBraveBrand) = 0; \
   virtual blink::UserAgentMetadata GetUserAgentMetadata()
 

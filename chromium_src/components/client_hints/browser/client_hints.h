@@ -8,7 +8,7 @@
 
 #include "content/public/browser/client_hints_controller_delegate.h"
 
-#define GetUserAgentMetadata() \
+#define GetUserAgentMetadata()                             \
   BraveGetUserAgentMetadata(bool showBraveBrand) override; \
   blink::UserAgentMetadata GetUserAgentMetadata()
 
