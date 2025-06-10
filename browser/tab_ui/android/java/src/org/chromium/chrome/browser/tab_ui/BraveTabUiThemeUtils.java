@@ -19,17 +19,6 @@ public class BraveTabUiThemeUtils {
             boolean isIncognito,
             boolean isSelected,
             @Nullable @TabGroupColorId Integer colorId) {
-        // These checks are just making sure that these values are still used in Chromium to avoid
-        // lint issues.
-        assert R.color.empty_state_icon_bg_background_color > 0
-                : "Something has changed in the upstream!";
-        assert R.color.empty_state_icon_bg_foreground_color > 0
-                : "Something has changed in the upstream!";
-        assert R.color.empty_state_icon_color > 0 : "Something has changed in the upstream!";
-        assert R.color.empty_state_icon_bg_color > 0 : "Something has changed in the upstream!";
-        assert R.color.empty_state_icon_tabswitcher_bg_color > 0
-                : "Something has changed in the upstream!";
-
         if (isSelected) {
             return context.getColor(R.color.baseline_neutral_10);
         }
