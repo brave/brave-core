@@ -16,16 +16,15 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "ui/gfx/geometry/vector2d.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
     TopChromeWebUIController* webui_controller,
-    base::WeakPtr<Browser> browser,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      browser_(browser),
       profile_(profile) {}
 
 ShieldsPanelHandler::~ShieldsPanelHandler() = default;
@@ -48,12 +47,16 @@ void ShieldsPanelHandler::CloseUI() {
 }
 
 void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
-  if (!browser_) {
+  DCHECK(profile_);
+  CHECK(webui_controller_);
+  auto* browser = static_cast<Browser*>(webui::GetBrowserWindowInterface(
+      webui_controller_->web_ui()->GetWebContents()));
+  if (!browser) {
     std::move(callback).Run(std::nullopt);
     return;
   }
   auto* brave_browser_window =
-      static_cast<BraveBrowserWindow*>(browser_->window());
+      static_cast<BraveBrowserWindow*>(browser->window());
   if (brave_browser_window == nullptr) {
     std::move(callback).Run(std::nullopt);
     return;

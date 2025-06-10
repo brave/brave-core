@@ -11,7 +11,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-class Browser;
 class TopChromeWebUIController;
 
 namespace content {
@@ -25,7 +24,6 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   ShieldsPanelHandler(
       mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
       TopChromeWebUIController* webui_controller,
-      base::WeakPtr<Browser> browser,
       Profile* profile);
 
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
@@ -42,7 +40,6 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;
   raw_ptr<TopChromeWebUIController> const webui_controller_;
-  base::WeakPtr<Browser> browser_;
   raw_ptr<Profile> profile_ = nullptr;
 };
 

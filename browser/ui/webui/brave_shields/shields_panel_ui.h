@@ -18,8 +18,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-class Browser;
-
 namespace content {
 class BrowserContext;
 }
@@ -53,7 +51,6 @@ class ShieldsPanelUI : public TopChromeWebUIController,
       panel_factory_receiver_{this};
 
   raw_ptr<Profile> profile_ = nullptr;
-  base::WeakPtr<Browser> browser_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
