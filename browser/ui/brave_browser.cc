@@ -80,6 +80,9 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 
 BraveBrowser::~BraveBrowser() = default;
 
+// We have one more option for showing bookmarks bar. It's "only show bookmarks
+// bar on NTP". Even |kShowBookmarkBar| is false, we need to check
+// |kAlwaysShowBookmarkBarOnNTP| in NTP.
 bool BraveBrowser::ShouldShowBookmarkBar() const {
   content::WebContents* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents && IsShowingNTP_ChromiumImpl(web_contents)) {
