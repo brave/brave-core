@@ -19,7 +19,6 @@ include_rules = [
   "+brave/components/omnibox/browser/brave_omnibox_prefs.h",
   "+brave/components/p3a/metric_log_store.h",
   "+brave/components/p3a/rotation_scheduler.h",
-  "+brave/components/p3a/star_randomness_meta.h",
   "+brave/components/tor/buildflags/buildflags.h",
   "+brave/components/brave_vpn/common/brave_vpn_utils.h",
   "+brave/components/tor/pref_names.h",

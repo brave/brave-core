@@ -35,9 +35,7 @@ const size_t kExpressMaxEpochsToRetain = 21;
 
 ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              MetricLogType log_type)
-    : local_state_(local_state), log_type_(log_type) {
-  local_state.ClearPref(kExpressV1ConstellationLogsPrefName);
-}
+    : local_state_(local_state), log_type_(log_type) {}
 
 ConstellationLogStore::~ConstellationLogStore() = default;
 
@@ -51,9 +49,6 @@ void ConstellationLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kTypicalConstellationLogsPrefName);
   registry->RegisterDictionaryPref(kSlowConstellationLogsPrefName);
   registry->RegisterDictionaryPref(kExpressV2ConstellationLogsPrefName);
-  // Following pref is deprecated, added 12/2023
-  // TODO(djandries): remove by the end of Q1 2024
-  registry->RegisterDictionaryPref(kExpressV1ConstellationLogsPrefName);
 }
 
 const char* ConstellationLogStore::GetPrefName() const {

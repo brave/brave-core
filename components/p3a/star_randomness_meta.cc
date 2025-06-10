@@ -111,36 +111,6 @@ void StarRandomnessMeta::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kApprovedCertFPPrefName, "");
 }
 
-void StarRandomnessMeta::RegisterPrefsForMigration(
-    PrefRegistrySimple* registry) {
-  // Added 09/2023
-  registry->RegisterStringPref(kCurrentPKPrefName, std::string());
-  registry->RegisterIntegerPref(kCurrentEpochPrefName, -1);
-  registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
-}
-
-void StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(
-    PrefService* local_state) {
-  // Added 09/2023
-  ScopedDictPrefUpdate update(local_state, kRandomnessMetaDictPrefName);
-  base::Value::Dict* typical_dict =
-      update->EnsureDict(MetricLogTypeToString(MetricLogType::kTypical));
-
-  std::string current_pk = local_state->GetString(kCurrentPKPrefName);
-  int current_epoch = local_state->GetInteger(kCurrentEpochPrefName);
-  base::Time next_epoch_time = local_state->GetTime(kNextEpochTimePrefName);
-  if (!current_pk.empty() && current_epoch != -1 &&
-      !next_epoch_time.is_null()) {
-    typical_dict->Set(kCurrentPKPrefKey, current_pk);
-    typical_dict->Set(kCurrentEpochPrefKey, current_epoch);
-    typical_dict->Set(kNextEpochTimePrefKey,
-                      base::TimeToValue(next_epoch_time));
-    local_state->ClearPref(kCurrentPKPrefName);
-    local_state->ClearPref(kCurrentEpochPrefName);
-    local_state->ClearPref(kNextEpochTimePrefName);
-  }
-}
-
 bool StarRandomnessMeta::ShouldAttestEnclave() {
   return !config_->disable_star_attestation &&
          features::IsConstellationEnclaveAttestationEnabled();

@@ -43,14 +43,7 @@ inline constexpr char kLastExpressConstellationRotationTimeStampPref[] =
 inline constexpr char kDynamicMetricsDictPref[] = "p3a.dynamic_metrics";
 
 // Star randomness meta preference names
-inline constexpr char kCurrentPKPrefName[] =
-    "brave.p3a.current_pk";  // DEPRECATED
-inline constexpr char kCurrentEpochPrefName[] =
-    "brave.p3a.current_epoch";  // DEPRECATED
-inline constexpr char kNextEpochTimePrefName[] =
-    "brave.p3a.next_epoch_time";  // DEPRECATED
-inline constexpr char kApprovedCertFPPrefName[] =
-    "brave.p3a.approved_cert_fp";  // DEPRECATED
+inline constexpr char kApprovedCertFPPrefName[] = "brave.p3a.approved_cert_fp";
 inline constexpr char kRandomnessMetaDictPrefName[] =
     "brave.p3a.randomness_meta";
 
@@ -59,8 +52,6 @@ inline constexpr char kTypicalConstellationLogsPrefName[] =
     "p3a.constellation_logs";
 inline constexpr char kSlowConstellationLogsPrefName[] =
     "p3a.constellation_logs_slow";
-inline constexpr char kExpressV1ConstellationLogsPrefName[] =
-    "p3a.constellation_logs_express";  // DEPRECATED
 inline constexpr char kExpressV2ConstellationLogsPrefName[] =
     "p3a.constellation_logs_express_v2";
 
