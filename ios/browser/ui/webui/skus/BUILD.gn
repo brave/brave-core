@@ -21,6 +21,7 @@ source_set("skus") {
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//brave/ios/browser/skus",
+    "//brave/ios/browser/ui/webui:web_ui_sources",
     "//components/prefs",
     "//components/resources",
     "//ios/chrome/browser/shared/model/application_context",
