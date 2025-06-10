@@ -4,8 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 const NSSVG = 'http://www.w3.org/2000/svg'
 
-import { throttle } from 'lodash';
-
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
@@ -576,8 +574,8 @@ const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
 }
 
 const setupDragging = (root: ShadowRoot): void => {
-  const mainSection = root.getElementById('main-section') as HTMLElement | null;
-  const dragHeader = root.getElementById('drag-header') as HTMLElement | null;
+  const mainSection = root.getElementById('main-section') ;
+  const dragHeader = root.getElementById('drag-header') ;
 
   if (!mainSection || !dragHeader) return;
 
@@ -593,7 +591,7 @@ const setupDragging = (root: ShadowRoot): void => {
     const match = transform.match(/matrix\(.*,\s*([-\d.]+)\)$/);
     if (match) return parseFloat(match[1]);
     const parts = transform.split(',');
-    return parseFloat(parts[5]) || 0;
+    return parseFloat(parts[5]) ?? 0;
   };
 
   const handleDragStart = (e: TouchEvent): void => {
@@ -642,8 +640,8 @@ function initSlider(root: ShadowRoot, element: HTMLElement
   | null, options: SliderOptions = {}): SliderAPI | undefined {
   if (!element) return;
 
-  const min = parseInt(element.dataset.min || '0', 10);
-  const max = parseInt(element.dataset.max || '4', 10);
+  const min = parseInt(element.dataset.min ?? '0', 10);
+  const max = parseInt(element.dataset.max ?? '4', 10);
   const initialValue = 4
 
   const thumb = createThumbElement();
@@ -666,9 +664,6 @@ function initSlider(root: ShadowRoot, element: HTMLElement
 
     // Set track fill width
     element.style.setProperty('--track-fill-width', `${percentage}%`);
-    element.style.setProperty('--before-width', `${percentage}%`);
-
-    // Using ::before for the filled part
     element.style.setProperty('--before-width', `${percentage}%`);
 
     currentValue = value;
@@ -700,6 +695,37 @@ function initSlider(root: ShadowRoot, element: HTMLElement
     updateSlider(newValue);
   };
 
+  function throttle<T extends (e: MouseEvent | TouchEvent) => any>(
+    func: T,
+    delay: number
+  ): (this: ThisParameterType<T>, e: MouseEvent | TouchEvent) => ReturnType<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let lastArgs: [MouseEvent | TouchEvent] | null = null;
+    let lastThis: ThisParameterType<T> | null = null;
+    let lastResult: ReturnType<T> | null = null;
+
+    return function (this: ThisParameterType<T>, e: MouseEvent | TouchEvent): ReturnType<T> {
+      lastArgs = [e];
+      lastThis = this;
+      if (!timeoutId) {
+        lastResult = func.apply(lastThis, lastArgs);
+        timeoutId = setTimeout(() => {
+          timeoutId = null;
+          if (lastArgs !== null) {
+            setTimeout(() => {
+              const currentArgs = lastArgs!;
+              const currentThis = lastThis;
+              lastArgs = null;
+              lastThis = null;
+              func.apply(currentThis, currentArgs);
+            }, 0);
+          }
+        }, delay);
+      }
+      return lastResult;
+    };
+  }
+
   const throttledHandleMove = throttle(handleMove, 50);
   // Event handlers
   const handleStart = (e: MouseEvent | TouchEvent) => {
@@ -720,11 +746,10 @@ function initSlider(root: ShadowRoot, element: HTMLElement
     thumb.classList.remove('active');
 
     // Remove event listeners
-    document.removeEventListener('mousemove', handleMove);
-    document.removeEventListener('touchmove', handleMove);
+    document.removeEventListener('mousemove', throttledHandleMove);
+    document.removeEventListener('touchmove', throttledHandleMove);
     document.removeEventListener('mouseup', handleEnd);
     document.removeEventListener('touchend', handleEnd);
-    throttledHandleMove.flush()
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
