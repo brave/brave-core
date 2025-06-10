@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//extensions/buildflags/buildflags.gni")
+
 source_set("misc_metrics") {
   sources = [
     "//brave/browser/misc_metrics/process_misc_metrics.h",
@@ -54,16 +56,24 @@ static_library("misc_metrics_impl") {
     "//content/public/browser",
   ]
 
-  if (!is_android) {
+  if (enable_extensions) {
     sources += [
       "//brave/browser/misc_metrics/extension_metrics.cc",
       "//brave/browser/misc_metrics/extension_metrics.h",
+    ]
+
+    deps += [ "//brave/browser/extensions/manifest_v2" ]
+  }
+
+  if (!is_android) {
+    sources += [
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
       "//brave/browser/misc_metrics/vertical_tab_metrics.h",
     ]
     deps += [
+      "//brave/browser/extensions/manifest_v2",
       "//brave/browser/themes",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
@@ -117,7 +127,6 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [
-      "extension_metrics_unittest.cc",
       "profile_new_tab_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
       "usage_clock_unittest.cc",
@@ -129,6 +138,12 @@ source_set("unit_tests") {
       "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
       "//chrome/browser/themes",
     ]
+  }
+
+  if (enable_extensions) {
+    sources += [ "extension_metrics_unittest.cc" ]
+
+    deps += [ "//brave/browser/extensions/manifest_v2" ]
   }
 }
 

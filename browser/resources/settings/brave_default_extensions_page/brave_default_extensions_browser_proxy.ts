@@ -8,6 +8,7 @@ import {loadTimeData} from '../i18n_setup.js';
 
 export type ExtensionV2 = {
   id: string
+  sources: string
   name: string
   description: string
   installed: boolean
