@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
@@ -27,18 +28,23 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
+namespace {
+
+TabStripModel* GetTabStripModelForProfile() {
+  if (auto const* browser = BrowserList::GetInstance()->GetLastActive()) {
+    return browser->tab_strip_model();
+  }
+  return nullptr;
+}
+
+}  // namespace
+
 // Cache active Browser instance's TabStripModel to give
 // to ShieldsPanelDataHandler when this is created because
 // CreatePanelHandler() is run in async.
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
-  if (auto* browser = chrome::FindLastActiveWithProfile(profile_)) {
-    browser_ = browser->AsWeakPtr();
-  } else {
-    LOG(WARNING) << "No active browser found";
-  }
-
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kShieldsPanelHost);
 
@@ -94,9 +100,9 @@ void ShieldsPanelUI::CreatePanelHandler(
   DCHECK(profile);
 
   panel_handler_ = std::make_unique<ShieldsPanelHandler>(
-      std::move(panel_receiver), this, browser_, profile);
+      std::move(panel_receiver), this, profile);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this, browser_->tab_strip_model());
+      std::move(data_handler_receiver), this, GetTabStripModelForProfile());
 }
 
 ShieldsPanelUIConfig::ShieldsPanelUIConfig()
