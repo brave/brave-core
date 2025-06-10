@@ -48,6 +48,9 @@ class RemoteConfigManager {
 
   bool is_loaded() const { return is_loaded_; }
 
+  // Testing method to set the loaded state
+  void SetIsLoadedForTesting(bool is_loaded) { is_loaded_ = is_loaded; }
+
  private:
   void SetMetricConfigs(
       std::unique_ptr<base::flat_map<std::string, RemoteMetricConfig>> result);

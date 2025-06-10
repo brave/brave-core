@@ -109,10 +109,16 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // RemoteConfigManager::Delegate
   void OnRemoteConfigLoaded() override;
 
-  void DisableStarAttestationForTesting();
-
  private:
   friend class base::RefCountedThreadSafe<P3AService>;
+  friend class P3AServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest, MessageManagerStartedWhenP3AEnabled);
+  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
+                           MessageManagerNotStartedWhenP3ADisabled);
+  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
+                           MessageManagerStartsAndStopsOnPrefChange);
+  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest, MetricValueStored);
+
   ~P3AService() override;
 
   void InitCallback(std::string_view histogram_name);

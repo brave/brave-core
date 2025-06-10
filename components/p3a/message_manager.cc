@@ -341,4 +341,8 @@ void MessageManager::CleanupActivationDates() {
   }
 }
 
+bool MessageManager::IsActive() const {
+  return uploader_ != nullptr;
+}
+
 }  // namespace p3a

@@ -83,6 +83,8 @@ class MessageManager : public MetricLogStore::Delegate {
   void UpdateMetricValue(std::string_view histogram_name, size_t bucket);
   void RemoveMetricValue(std::string_view histogram_name);
 
+  bool IsActive() const;
+
  private:
   void StartScheduledUpload(MetricLogType log_type);
   void StartScheduledConstellationPrep(MetricLogType log_type);
