@@ -90,7 +90,7 @@ action("sign_app") {
   if (brave_android_pkcs11_provider != "" && brave_android_pkcs11_alias != "") {
     args += [
       "--pkcs11-provider=" + brave_android_pkcs11_provider,
-      "--pkcs11-alias=" + brave_android_pkcs11_alias
+      "--pkcs11-alias=" + brave_android_pkcs11_alias,
     ]
   }
 }
