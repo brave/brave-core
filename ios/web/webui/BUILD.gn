@@ -15,6 +15,12 @@ source_set("webui") {
     "brave_web_ui_ios_data_source.mm",
     "brave_webui_utils.h",
     "brave_webui_utils.mm",
+    "favicon_source.h",
+    "favicon_source.mm",
+    "sanitized_image_source.h",
+    "sanitized_image_source.mm",
+    "untrusted_sanitized_image_source.h",
+    "untrusted_sanitized_image_source.mm",
   ]
 
   deps = [
@@ -30,6 +36,7 @@ source_set("webui") {
     "//components/image_fetcher/ios",
     "//components/keyed_service/core",
     "//components/resources:components_resources_grit",
+    "//components/signin/public/identity_manager",
     "//ios/chrome/browser/favicon/model",
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/shared/model/profile",
@@ -40,8 +47,9 @@ source_set("webui") {
     "//ios/web/public",
     "//ios/web/public/webui",
     "//ios/web/webui",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
-    "//ui/resources",
+    "//ui/resources:ui_resources_grd",
   ]
 }
