@@ -39,7 +39,7 @@ EligibleInlineContentAdsV2::~EligibleInlineContentAdsV2() = default;
 void EligibleInlineContentAdsV2::GetForUserModel(
     UserModelInfo user_model,
     const std::string& dimensions,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
   ad_events_database_table_.GetUnexpired(
@@ -54,7 +54,7 @@ void EligibleInlineContentAdsV2::GetForUserModel(
 void EligibleInlineContentAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -70,7 +70,7 @@ void EligibleInlineContentAdsV2::GetSiteHistory(
     UserModelInfo user_model,
     const std::string& dimensions,
     const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "EligibleInlineContentAds::GetSiteHistory",
@@ -87,7 +87,7 @@ void EligibleInlineContentAdsV2::GetSiteHistoryCallback(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
     uint64_t trace_id,
     const SiteHistoryList& site_history) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
@@ -104,7 +104,7 @@ void EligibleInlineContentAdsV2::GetEligibleAds(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     const std::string& dimensions,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback) {
   creative_ads_database_table_.GetForDimensions(
       dimensions,
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
@@ -116,7 +116,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
     bool success,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
@@ -133,7 +133,7 @@ void EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd(
     const CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback) {
   TRACE_EVENT(kTraceEventCategory,
               "EligibleInlineContentAds::FilterAndMaybePredictCreativeAd",
               "creative_ads", creative_ads.size(), "ad_events",
