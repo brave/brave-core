@@ -10,7 +10,8 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class Browser;
+class Profile;
+class TabStripModel;
 class SidePanelEntryScope;
 
 // Gives reading list specific header view with web view.
@@ -18,7 +19,8 @@ class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
   METADATA_HEADER(BraveReadLaterSidePanelView, BraveSidePanelViewBase)
 
  public:
-  BraveReadLaterSidePanelView(Browser* browser,
+  BraveReadLaterSidePanelView(Profile* profile,
+                              TabStripModel* tab_strip_model,
                               SidePanelEntryScope& scope,
                               base::RepeatingClosure close_cb);
   ~BraveReadLaterSidePanelView() override;
