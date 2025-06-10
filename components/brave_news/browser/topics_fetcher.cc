@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"

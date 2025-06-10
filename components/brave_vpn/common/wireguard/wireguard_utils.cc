@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"

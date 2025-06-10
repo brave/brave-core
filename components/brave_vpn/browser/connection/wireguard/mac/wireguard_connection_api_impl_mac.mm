@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/base64.h"
-#include "base/notreached.h"
+#include "base/notimplemented.h"
 
 namespace brave_vpn {
 

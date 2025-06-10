@@ -9,9 +9,10 @@
 #include <tuple>
 #include <utility>
 
-#include "brave/components/brave_vpn/common/win/utils.h"
+#include "base/logging.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {

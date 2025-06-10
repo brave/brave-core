@@ -10,8 +10,11 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/dcheck_is_on.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"

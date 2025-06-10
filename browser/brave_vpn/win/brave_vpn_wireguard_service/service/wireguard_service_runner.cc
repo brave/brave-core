@@ -16,9 +16,11 @@
 #include <atlsecurity.h>
 #include <sddl.h>
 #include <wrl/module.h>
+
 #include <type_traits>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/run_loop.h"

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"

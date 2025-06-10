@@ -13,8 +13,10 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/logging.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"

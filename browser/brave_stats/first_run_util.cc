@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_stats/first_run_util.h"
 
+#include "base/check.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"

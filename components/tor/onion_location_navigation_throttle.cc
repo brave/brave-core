@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "content/public/browser/browser_context.h"

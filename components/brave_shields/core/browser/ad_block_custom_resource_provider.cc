@@ -10,6 +10,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
