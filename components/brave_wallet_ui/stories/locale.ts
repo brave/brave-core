@@ -1286,6 +1286,13 @@ provideStrings({
   braveWalletTransactionIntentSend: 'Send $1',
   braveWalletTransactionIntentSwap: 'Swap $1 to $2',
 
+  // Solana Associated Token Account
+  braveWalletCreatingAssociatedTokenAccount:
+    'Creating associated token account',
+  braveWalletFailedToCreateAssociatedTokenAccount:
+    'Failed to create associated token account',
+  braveWalletAssociatedTokenAccountCreated: 'Associated token account created',
+
   // Solana ProgramID Names
   braveWalletSolanaSystemProgram: 'System Program',
   braveWalletSolanaConfigProgram: 'Config Program',
