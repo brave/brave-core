@@ -87,7 +87,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/settings_page_handler.h"
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
 
@@ -246,16 +246,18 @@ void BraveSettingsUI::BindInterface(
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<containers::mojom::SettingsPageHandlerFactory>
+    mojo::PendingReceiver<containers::mojom::ContainersSettingsHandlerFactory>
         pending_receiver) {
-  containers_page_handler_factory_receiver_.reset();
-  containers_page_handler_factory_receiver_.Bind(std::move(pending_receiver));
+  containers_settings_handler_factory_receiver_.reset();
+  containers_settings_handler_factory_receiver_.Bind(
+      std::move(pending_receiver));
 }
 
-void BraveSettingsUI::CreateSettingsPageHandler(
-    mojo::PendingRemote<containers::mojom::SettingsPage> page,
-    mojo::PendingReceiver<containers::mojom::SettingsPageHandler> receiver) {
-  class NoOpDelegate : public containers::SettingsPageHandler::Delegate {
+void BraveSettingsUI::CreateContainersSettingsHandler(
+    mojo::PendingRemote<containers::mojom::ContainersSettingsObserver> observer,
+    mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+        settings) {
+  class NoOpDelegate : public containers::ContainersSettingsHandler::Delegate {
    public:
     void RemoveContainerData(const std::string& id,
                              base::OnceClosure callback) override {
@@ -266,11 +268,11 @@ void BraveSettingsUI::CreateSettingsPageHandler(
   };
 
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<containers::SettingsPageHandler>(
-          std::move(page),
+      std::make_unique<containers::ContainersSettingsHandler>(
+          std::move(observer),
           user_prefs::UserPrefs::Get(
               web_ui()->GetWebContents()->GetBrowserContext()),
           std::make_unique<NoOpDelegate>()),
-      std::move(receiver));
+      std::move(settings));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)

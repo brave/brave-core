@@ -883,7 +883,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kBraveContainers)) {
     content::RegisterWebUIControllerInterfaceBinder<
-        containers::mojom::SettingsPageHandlerFactory, BraveSettingsUI>(map);
+        containers::mojom::ContainersSettingsHandlerFactory, BraveSettingsUI>(
+        map);
   }
 #endif
 }

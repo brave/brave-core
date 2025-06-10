@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_SETTINGS_PAGE_HANDLER_H_
-#define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_SETTINGS_PAGE_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_
+#define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -17,10 +17,10 @@
 
 namespace containers {
 
-// Handles container management operations from the settings page. This class
-// implements the mojom::SettingsPageHandler interface to process requests from
-// settings page and manages container data persistence through prefs.
-class SettingsPageHandler : public mojom::SettingsPageHandler {
+// Handles container management operations from the settings UI. This class
+// implements the mojom::ContainersSettingsHandler interface to process requests
+// from settings UI and manages container data persistence through prefs.
+class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
  public:
   // Delegate interface for container data cleanup operations that need to be
   // handled by the browser process.
@@ -35,13 +35,15 @@ class SettingsPageHandler : public mojom::SettingsPageHandler {
                                      base::OnceClosure callback) = 0;
   };
 
-  SettingsPageHandler(mojo::PendingRemote<mojom::SettingsPage> page,
-                      PrefService* prefs,
-                      std::unique_ptr<Delegate> delegate);
-  ~SettingsPageHandler() override;
+  ContainersSettingsHandler(
+      mojo::PendingRemote<mojom::ContainersSettingsObserver> observer,
+      PrefService* prefs,
+      std::unique_ptr<Delegate> delegate);
+  ~ContainersSettingsHandler() override;
 
-  SettingsPageHandler(const SettingsPageHandler&) = delete;
-  SettingsPageHandler& operator=(const SettingsPageHandler&) = delete;
+  ContainersSettingsHandler(const ContainersSettingsHandler&) = delete;
+  ContainersSettingsHandler& operator=(const ContainersSettingsHandler&) =
+      delete;
 
   // mojom::SettingsPageHandler:
   //
@@ -63,7 +65,7 @@ class SettingsPageHandler : public mojom::SettingsPageHandler {
                               RemoveContainerCallback callback);
 
   // Interface to communicate with the settings page in the renderer.
-  mojo::Remote<mojom::SettingsPage> page_;
+  mojo::Remote<mojom::ContainersSettingsObserver> observer_;
 
   // Profile preferences service for container data persistence.
   raw_ptr<PrefService> prefs_ = nullptr;
@@ -74,9 +76,9 @@ class SettingsPageHandler : public mojom::SettingsPageHandler {
   // Watches for changes to container-related preferences.
   PrefChangeRegistrar pref_change_registrar_;
 
-  base::WeakPtrFactory<SettingsPageHandler> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ContainersSettingsHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace containers
 
-#endif  // BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_SETTINGS_PAGE_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_

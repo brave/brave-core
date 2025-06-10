@@ -40,10 +40,11 @@ class BraveSettingsUIConfig
                            chrome::kChromeUISettingsHost) {}
 };
 
-class BraveSettingsUI : public settings::SettingsUI
+class BraveSettingsUI
+    : public settings::SettingsUI
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-                        public containers::mojom::SettingsPageHandlerFactory
+      public containers::mojom::ContainersSettingsHandlerFactory
 #endif
 {
  public:
@@ -66,21 +67,22 @@ class BraveSettingsUI : public settings::SettingsUI
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
-      mojo::PendingReceiver<containers::mojom::SettingsPageHandlerFactory>
+      mojo::PendingReceiver<containers::mojom::ContainersSettingsHandlerFactory>
           pending_receiver);
-  // containers::mojom::SettingsPageHandlerFactory:
-  void CreateSettingsPageHandler(
-      mojo::PendingRemote<containers::mojom::SettingsPage> page,
-      mojo::PendingReceiver<containers::mojom::SettingsPageHandler> receiver)
-      override;
+  // containers::mojom::ContainersSettingsHandlerFactory:
+  void CreateContainersSettingsHandler(
+      mojo::PendingRemote<containers::mojom::ContainersSettingsObserver>
+          observer,
+      mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+          settings) override;
 #endif
 
  private:
   std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  mojo::Receiver<containers::mojom::SettingsPageHandlerFactory>
-      containers_page_handler_factory_receiver_{this};
+  mojo::Receiver<containers::mojom::ContainersSettingsHandlerFactory>
+      containers_settings_handler_factory_receiver_{this};
 #endif
 };
 
