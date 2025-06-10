@@ -17,6 +17,7 @@
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -293,26 +294,16 @@ T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
 
-std::optional<std::string> GetAnkrBlockchainFromChainId(
-    const std::string& chain_id) {
-  auto& blockchains = GetAnkrBlockchains();
-  if (blockchains.contains(chain_id)) {
-    return blockchains.at(chain_id);
-  }
-
-  return std::nullopt;
-}
-
 bool HasDuplicateNftIds(
     const std::vector<mojom::NftIdentifierPtr>& nft_identifiers) {
   return base::flat_set<mojom::NftIdentifierPtr>(CloneVector(nft_identifiers))
              .size() != nft_identifiers.size();
 }
 
-std::optional<std::string> GetEthBalanceScannerContractAddressForChain(
-    const std::string& chain_id) {
-  if (auto it = GetEthBalanceScannerContractAddresses().find(chain_id);
-      it != GetEthBalanceScannerContractAddresses().end()) {
+std::optional<std::string_view> GetEthBalanceScannerContractAddressForChain(
+    const std::string_view& chain_id) {
+  if (auto it = kEthBalanceScannerContractAddresses.find(chain_id);
+      it != kEthBalanceScannerContractAddresses.end()) {
     return it->second;
   }
   return std::nullopt;
@@ -1330,10 +1321,10 @@ void JsonRpcService::GetERC20TokenBalances(
     return;
   }
 
-  ProcessNextERC20Batch(token_addresses, user_address,
-                        *balance_scanner_contract_address, network_url,
-                        std::vector<mojom::ERC20BalanceResultPtr>(),
-                        std::move(callback));
+  ProcessNextERC20Batch(
+      token_addresses, user_address,
+      std::string(*balance_scanner_contract_address), network_url,
+      std::vector<mojom::ERC20BalanceResultPtr>(), std::move(callback));
 }
 
 void JsonRpcService::ProcessNextERC20Batch(
@@ -2392,7 +2383,7 @@ void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,
 
 void JsonRpcService::GetSupportsInterface(
     const std::string& contract_address,
-    const std::string& interface_id,
+    std::string_view interface_id,
     const std::string& chain_id,
     GetSupportsInterfaceCallback callback) {
   auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
@@ -2447,7 +2438,7 @@ void JsonRpcService::OnGetSupportsInterface(
 void JsonRpcService::GetEthNftStandard(
     const std::string& contract_address,
     const std::string& chain_id,
-    const std::vector<std::string>& interfaces,
+    base::span<const std::string_view> interfaces,
     GetEthNftStandardCallback callback,
     size_t index) {
   auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
@@ -2467,7 +2458,7 @@ void JsonRpcService::GetEthNftStandard(
   }
 
   // Check the next interface
-  const std::string& interface_id = interfaces[index];
+  std::string_view interface_id = interfaces[index];
   auto internal_callback = base::BindOnce(
       &JsonRpcService::OnGetEthNftStandard, weak_ptr_factory_.GetWeakPtr(),
       contract_address, chain_id, interfaces, index, std::move(callback));
@@ -2479,7 +2470,7 @@ void JsonRpcService::GetEthNftStandard(
 void JsonRpcService::OnGetEthNftStandard(
     const std::string& contract_address,
     const std::string& chain_id,
-    const std::vector<std::string>& interfaces,
+    base::span<const std::string_view> interfaces,
     size_t index,
     GetEthNftStandardCallback callback,
     bool is_supported,
@@ -2490,9 +2481,8 @@ void JsonRpcService::OnGetEthNftStandard(
     return;
   }
 
-  const std::string& interface_id_checked = interfaces[index];
   if (is_supported) {
-    std::move(callback).Run(interface_id_checked,
+    std::move(callback).Run(std::string(interfaces[index]),
                             mojom::ProviderError::kSuccess, "");
     return;
   }
@@ -3490,8 +3480,9 @@ void JsonRpcService::AnkrGetAccountBalances(
   // ignored.
   std::vector<std::string> blockchains;
   for (const auto& chain_id : chain_ids) {
-    if (auto blockchain = GetAnkrBlockchainFromChainId(chain_id->chain_id)) {
-      blockchains.push_back(*blockchain);
+    if (const auto* blockchain =
+            base::FindOrNull(kAnkrBlockchains, chain_id->chain_id)) {
+      blockchains.push_back(std::string(*blockchain));
     }
   }
 

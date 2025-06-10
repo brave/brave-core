@@ -184,8 +184,8 @@ GURL AssetRatioService::GetSardineBuyURL(const std::string& chain_id,
                                          const std::string& amount,
                                          const std::string& currency_code,
                                          const std::string& auth_token) {
-  std::string sardine_network_name =
-      GetSardineNetworkName(chain_id).value_or(std::string());
+  std::string_view sardine_network_name =
+      GetSardineNetworkName(chain_id).value_or(std::string_view());
   GURL url = GURL(kSardineStorefrontBaseURL);
   url = net::AppendQueryParameter(url, "address", address);
   url = net::AppendQueryParameter(url, "network", sardine_network_name);

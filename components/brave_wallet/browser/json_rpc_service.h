@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -389,7 +390,7 @@ class JsonRpcService : public mojom::JsonRpcService {
                               const std::string& error_message)>;
 
   void GetSupportsInterface(const std::string& contract_address,
-                            const std::string& interface_id,
+                            std::string_view interface_id,
                             const std::string& chain_id,
                             GetSupportsInterfaceCallback callback);
 
@@ -399,13 +400,13 @@ class JsonRpcService : public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetEthNftStandard(const std::string& contract_address,
                          const std::string& chain_id,
-                         const std::vector<std::string>& interfaces,
+                         base::span<const std::string_view> interfaces,
                          GetEthNftStandardCallback callback,
                          size_t index = 0);
 
   void OnGetEthNftStandard(const std::string& contract_address,
                            const std::string& chain_id,
-                           const std::vector<std::string>& interfaces,
+                           base::span<const std::string_view> interfaces,
                            size_t index,
                            GetEthNftStandardCallback callback,
                            bool is_supported,
