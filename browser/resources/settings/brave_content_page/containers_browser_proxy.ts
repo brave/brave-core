@@ -4,20 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  SettingsPageCallbackRouter,
-  SettingsPageHandlerFactory,
-  SettingsPageHandlerRemote,
+  ContainersSettingsObserverCallbackRouter,
+  ContainersSettingsHandlerFactory,
+  ContainersSettingsHandlerRemote,
 } from '../containers.mojom-webui.js'
 
 let instance: ContainersSettingsPageBrowserProxy | null = null
 
 export class ContainersSettingsPageBrowserProxy {
-  handler: SettingsPageHandlerRemote
-  callbackRouter: SettingsPageCallbackRouter
+  handler: ContainersSettingsHandlerRemote
+  callbackRouter: ContainersSettingsObserverCallbackRouter
 
   private constructor(
-    handler: SettingsPageHandlerRemote,
-    callbackRouter: SettingsPageCallbackRouter,
+    handler: ContainersSettingsHandlerRemote,
+    callbackRouter: ContainersSettingsObserverCallbackRouter,
   ) {
     this.handler = handler
     this.callbackRouter = callbackRouter
@@ -25,9 +25,9 @@ export class ContainersSettingsPageBrowserProxy {
 
   static getInstance(): ContainersSettingsPageBrowserProxy {
     if (!instance) {
-      const callbackRouter = new SettingsPageCallbackRouter()
-      const handler = new SettingsPageHandlerRemote()
-      SettingsPageHandlerFactory.getRemote().createSettingsPageHandler(
+      const callbackRouter = new ContainersSettingsObserverCallbackRouter()
+      const handler = new ContainersSettingsHandlerRemote()
+      ContainersSettingsHandlerFactory.getRemote().createContainersSettingsHandler(
         callbackRouter.$.bindNewPipeAndPassRemote(),
         handler.$.bindNewPipeAndPassReceiver(),
       )

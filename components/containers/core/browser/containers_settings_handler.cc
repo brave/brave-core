@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/containers/core/browser/settings_page_handler.h"
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
 
 #include <utility>
 
@@ -13,28 +13,31 @@
 
 namespace containers {
 
-SettingsPageHandler::SettingsPageHandler(
-    mojo::PendingRemote<mojom::SettingsPage> page,
+ContainersSettingsHandler::ContainersSettingsHandler(
+    mojo::PendingRemote<mojom::ContainersSettingsObserver> observer,
     PrefService* prefs,
     std::unique_ptr<Delegate> delegate)
-    : page_(std::move(page)), prefs_(prefs), delegate_(std::move(delegate)) {
+    : observer_(std::move(observer)),
+      prefs_(prefs),
+      delegate_(std::move(delegate)) {
   DCHECK(prefs_);
   DCHECK(delegate_);
   pref_change_registrar_.Init(prefs);
   // Watch for external changes to containers list (e.g. sync, other windows)
   pref_change_registrar_.Add(
       prefs::kContainersList,
-      base::BindRepeating(&SettingsPageHandler::OnContainersChanged,
+      base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
 }
 
-SettingsPageHandler::~SettingsPageHandler() {}
+ContainersSettingsHandler::~ContainersSettingsHandler() {}
 
-void SettingsPageHandler::GetContainers(GetContainersCallback callback) {
+void ContainersSettingsHandler::GetContainers(GetContainersCallback callback) {
   std::move(callback).Run(GetContainersFromPrefs(*prefs_));
 }
 
-void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
+void ContainersSettingsHandler::AddOrUpdateContainer(
+    mojom::ContainerPtr container) {
   CHECK(!container->name.empty());
 
   auto containers = GetContainersFromPrefs(*prefs_);
@@ -58,16 +61,17 @@ void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
   SetContainersToPrefs(std::move(containers), *prefs_);
 }
 
-void SettingsPageHandler::RemoveContainer(const std::string& id,
-                                          RemoveContainerCallback callback) {
+void ContainersSettingsHandler::RemoveContainer(
+    const std::string& id,
+    RemoveContainerCallback callback) {
   // First remove all container data (cookies, storage etc.) via the delegate.
   delegate_->RemoveContainerData(
       id,
-      base::BindOnce(&SettingsPageHandler::OnContainerDataRemoved,
+      base::BindOnce(&ContainersSettingsHandler::OnContainerDataRemoved,
                      weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
 }
 
-void SettingsPageHandler::OnContainerDataRemoved(
+void ContainersSettingsHandler::OnContainerDataRemoved(
     const std::string& id,
     RemoveContainerCallback callback) {
   // Update container list only after data cleanup is complete.
@@ -80,9 +84,9 @@ void SettingsPageHandler::OnContainerDataRemoved(
       FROM_HERE, std::move(callback), base::Seconds(5));
 }
 
-void SettingsPageHandler::OnContainersChanged() {
-  // Notify page about container list changes (from this window or others).
-  page_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+void ContainersSettingsHandler::OnContainersChanged() {
+  // Notify observer about container list changes (from this window or others).
+  observer_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
 }
 
 }  // namespace containers

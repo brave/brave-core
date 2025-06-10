@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/containers/core/browser/settings_page_handler.h"
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
 
 #include <memory>
 #include <string>
@@ -22,16 +22,17 @@ namespace containers {
 
 namespace {
 
-class MockSettingsPage : public mojom::SettingsPage {
+class MockContainersSettingsObserver
+    : public mojom::ContainersSettingsObserver {
  public:
-  MockSettingsPage() = default;
-  ~MockSettingsPage() override = default;
+  MockContainersSettingsObserver() = default;
+  ~MockContainersSettingsObserver() override = default;
 
-  mojo::PendingRemote<mojom::SettingsPage> BindAndGetRemote() {
+  mojo::PendingRemote<mojom::ContainersSettingsObserver> BindAndGetRemote() {
     return receiver_.BindNewPipeAndPassRemote();
   }
 
-  MockSettingsPage* operator->() {
+  MockContainersSettingsObserver* operator->() {
     if (receiver_.is_bound()) {
       receiver_.FlushForTesting();
     }
@@ -51,12 +52,12 @@ class MockSettingsPage : public mojom::SettingsPage {
   int containers_changed_count() const { return containers_changed_count_; }
 
  private:
-  mojo::Receiver<mojom::SettingsPage> receiver_{this};
+  mojo::Receiver<mojom::ContainersSettingsObserver> receiver_{this};
   std::vector<mojom::ContainerPtr> last_containers_;
   int containers_changed_count_ = 0;
 };
 
-class MockDelegate : public SettingsPageHandler::Delegate {
+class MockDelegate : public ContainersSettingsHandler::Delegate {
  public:
   void RemoveContainerData(const std::string& id,
                            base::OnceClosure callback) override {
@@ -74,7 +75,7 @@ class MockDelegate : public SettingsPageHandler::Delegate {
 
 }  // namespace
 
-class ContainersSettingsPageHandlerTest : public testing::Test {
+class ContainersSettingsHandlerTest : public testing::Test {
  public:
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
@@ -82,8 +83,8 @@ class ContainersSettingsPageHandlerTest : public testing::Test {
     auto delegate = std::make_unique<MockDelegate>();
     mock_delegate_ = delegate.get();
 
-    handler_ = std::make_unique<SettingsPageHandler>(
-        mock_page_.BindAndGetRemote(), &prefs_, std::move(delegate));
+    handler_ = std::make_unique<ContainersSettingsHandler>(
+        mock_observer_.BindAndGetRemote(), &prefs_, std::move(delegate));
   }
 
   void TearDown() override { mock_delegate_ = nullptr; }
@@ -91,12 +92,12 @@ class ContainersSettingsPageHandlerTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  MockSettingsPage mock_page_;
+  MockContainersSettingsObserver mock_observer_;
   raw_ptr<MockDelegate> mock_delegate_ = nullptr;
-  std::unique_ptr<SettingsPageHandler> handler_;
+  std::unique_ptr<ContainersSettingsHandler> handler_;
 };
 
-TEST_F(ContainersSettingsPageHandlerTest, AddContainer) {
+TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
 
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
@@ -106,10 +107,10 @@ TEST_F(ContainersSettingsPageHandlerTest, AddContainer) {
   EXPECT_FALSE(containers[0]->id.empty());  // Should have generated UUID
   EXPECT_EQ("Test Container", containers[0]->name);
 
-  EXPECT_EQ(1, mock_page_->containers_changed_count());
+  EXPECT_EQ(1, mock_observer_->containers_changed_count());
 }
 
-TEST_F(ContainersSettingsPageHandlerTest, UpdateContainer) {
+TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   // First add a container
   handler_->AddOrUpdateContainer(mojom::Container::New("", "Original Name"));
 
@@ -130,10 +131,10 @@ TEST_F(ContainersSettingsPageHandlerTest, UpdateContainer) {
   ASSERT_EQ(1u, containers.size());
   EXPECT_EQ("Updated Name", containers[0]->name);
 
-  EXPECT_EQ(2, mock_page_->containers_changed_count());
+  EXPECT_EQ(2, mock_observer_->containers_changed_count());
 }
 
-TEST_F(ContainersSettingsPageHandlerTest, UpdateNonExistingContainerIsNoOp) {
+TEST_F(ContainersSettingsHandlerTest, UpdateNonExistingContainerIsNoOp) {
   // Container ID is only generated on C++ side. It should be impossible to
   // add a container with ID passed from JS.
   handler_->AddOrUpdateContainer(
@@ -145,7 +146,7 @@ TEST_F(ContainersSettingsPageHandlerTest, UpdateNonExistingContainerIsNoOp) {
   EXPECT_EQ(0u, containers.size());
 }
 
-TEST_F(ContainersSettingsPageHandlerTest, RemoveContainer) {
+TEST_F(ContainersSettingsHandlerTest, RemoveContainer) {
   // Add a container
   handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
 
@@ -169,19 +170,19 @@ TEST_F(ContainersSettingsPageHandlerTest, RemoveContainer) {
   std::vector<mojom::ContainerPtr> containers2 = future3.Take();
   ASSERT_TRUE(containers2.empty());
 
-  EXPECT_EQ(2, mock_page_->containers_changed_count());
+  EXPECT_EQ(2, mock_observer_->containers_changed_count());
 }
 
-TEST_F(ContainersSettingsPageHandlerTest, ExternalContainerChanges) {
+TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   // Simulate external change to container list
   std::vector<mojom::ContainerPtr> containers;
   containers.push_back(mojom::Container::New("test-id", "Test Container"));
   SetContainersToPrefs(containers, prefs_);
 
-  EXPECT_EQ(1, mock_page_->containers_changed_count());
-  ASSERT_EQ(1u, mock_page_->last_containers().size());
-  EXPECT_EQ("test-id", mock_page_->last_containers()[0]->id);
-  EXPECT_EQ("Test Container", mock_page_->last_containers()[0]->name);
+  EXPECT_EQ(1, mock_observer_->containers_changed_count());
+  ASSERT_EQ(1u, mock_observer_->last_containers().size());
+  EXPECT_EQ("test-id", mock_observer_->last_containers()[0]->id);
+  EXPECT_EQ("Test Container", mock_observer_->last_containers()[0]->name);
 }
 
 }  // namespace containers
