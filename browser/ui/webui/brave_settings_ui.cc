@@ -259,7 +259,8 @@ void BraveSettingsUI::CreateSettingsPageHandler(
    public:
     void RemoveContainerData(const std::string& id,
                              base::OnceClosure callback) override {
-      // no-op for now.
+      // TODO(https://github.com/brave/brave-browser/issues/46352): Implement
+      // this.
       std::move(callback).Run();
     }
   };
