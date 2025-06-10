@@ -387,9 +387,10 @@ bool HasLocalStatePrefPath(const std::string& path) {
   return GetAdsClient().HasLocalStatePrefPath(path);
 }
 
-std::optional<base::Value> GetVirtualPref(const std::string& path) {
+std::optional<base::Value> GetVirtualPref(
+    const base::Value::Dict& virtual_prefs,
+    const std::string& path) {
   if (path.starts_with(kVirtualPrefPathPrefix)) {
-    const base::Value::Dict virtual_prefs = GetAdsClient().GetVirtualPrefs();
     if (const base::Value* const value = virtual_prefs.Find(path)) {
       return value->Clone();
     }

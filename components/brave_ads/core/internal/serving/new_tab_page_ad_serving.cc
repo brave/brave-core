@@ -135,7 +135,7 @@ void NewTabPageAdServing::GetEligibleAds(
 void NewTabPageAdServing::GetEligibleAdsCallback(
     MaybeServeNewTabPageAdCallback callback,
     uint64_t trace_id,
-    const CreativeNewTabPageAdList& creative_ads) const {
+    CreativeNewTabPageAdList creative_ads) const {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
       kTraceEventCategory, "NewTabPageAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id), "creative_ads",
