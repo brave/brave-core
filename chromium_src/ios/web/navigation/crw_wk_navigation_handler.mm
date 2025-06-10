@@ -9,6 +9,7 @@
 #import <WebKit/WebKit.h>
 
 #include "ios/web/common/user_agent.h"
+#include "ios/web/web_state/web_state_impl.h"
 
 namespace web {
 class WebState;
@@ -22,7 +23,10 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
                                  NSURLRequest* request);
 }  // namespace brave
 
+// Forward HasWebUI to our own Brave Implementation which allows multiple WebUIs
+#define HasWebUI HasBraveWebUI
 #include <ios/web/navigation/crw_wk_navigation_handler.mm>
+#undef HasWebUI
 
 // Setup a CRWWKNavigationHandler subclass so that we may integrate Brave
 // features that Chrome does not support or expose access to (such as the
