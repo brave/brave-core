@@ -61,108 +61,29 @@ net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation() {
     })");
 }
 
-net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
-    std::string_view upload_type,
-    bool is_constellation) {
-  if (is_constellation) {
-    if (upload_type == kP3ACreativeUploadType ||
-        upload_type == kP3AUploadType) {
-      return net::DefineNetworkTrafficAnnotation("p3a", R"(
-          semantics {
-            sender: "Brave Privacy-Preserving Product Analytics Uploader"
-            description:
-              "Report of anonymized usage statistics. For more info, see "
-              "https://brave.com/P3A"
-            trigger:
-              "Reports are automatically generated on startup and at intervals "
-              "while Brave is running."
-            data:
-              "A base64 encoded encrypted payload with anonymized usage data."
-              "Encryption is performed using STAR to protect user anonymity."
-              "See https://arxiv.org/abs/2109.10074 for more information."
-            destination: WEBSITE
-          }
-          policy {
-            cookies_allowed: NO
-            setting:
-              "Users can enable or disable it in brave://settings/privacy"
-             policy_exception_justification:
-               "Not implemented."
-          })");
-    }
-    DCHECK_EQ(upload_type, kP2AUploadType);
-    return net::DefineNetworkTrafficAnnotation("p2a", R"(
-        semantics {
-          sender: "Brave Privacy-Preserving Ad Analytics Uploader"
-          description:
-            "Report of anonymized usage statistics. For more info, see "
-            "https://github.com/brave/brave-browser/wiki/"
-            "Randomized-Response-for-Private-Advertising-Analytics"
-          trigger:
-            "Reports are automatically generated on startup and at intervals "
-            "while Brave is running."
-          data:
-            "A base64 encoded encrypted payload with anonymized usage data."
-            "Encryption is performed using STAR to protect user anonymity."
-            "See https://arxiv.org/abs/2109.10074 for more information."
-          destination: WEBSITE
-        }
-        policy {
-          cookies_allowed: NO
-          setting:
-            "Users can enable or disable it by enabling or disabling Brave "
-            "rewards or ads in brave://rewards."
-           policy_exception_justification:
-             "Not implemented."
-        })");
-  } else {
-    if (upload_type == kP3ACreativeUploadType ||
-        upload_type == kP3AUploadType) {
-      return net::DefineNetworkTrafficAnnotation("p3a", R"(
-          semantics {
-            sender: "Brave Privacy-Preserving Product Analytics Uploader"
-            description:
-              "Report of anonymized usage statistics. For more info, see "
-              "https://brave.com/P3A"
-            trigger:
-              "Reports are automatically generated on startup and at intervals "
-              "while Brave is running."
-            data:
-              "A json document with anonymized usage data."
-            destination: WEBSITE
-          }
-          policy {
-            cookies_allowed: NO
-            setting:
-              "Users can enable or disable it in brave://settings/privacy"
-             policy_exception_justification:
-               "Not implemented."
-          })");
-    }
-    DCHECK_EQ(upload_type, kP2AUploadType);
-    return net::DefineNetworkTrafficAnnotation("p2a", R"(
-        semantics {
-          sender: "Brave Privacy-Preserving Ad Analytics Uploader"
-          description:
-            "Report of anonymized usage statistics. For more info, see "
-            "https://github.com/brave/brave-browser/wiki/"
-            "Randomized-Response-for-Private-Advertising-Analytics"
-          trigger:
-            "Reports are automatically generated on startup and at intervals "
-            "while Brave is running."
-          data:
-            "A json document with anonymized usage data."
-          destination: WEBSITE
-        }
-        policy {
-          cookies_allowed: NO
-          setting:
-            "Users can enable or disable it by enabling or disabling Brave "
-            "rewards or ads in brave://rewards."
-           policy_exception_justification:
-             "Not implemented."
-        })");
-  }
+net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation() {
+  return net::DefineNetworkTrafficAnnotation("p3a", R"(
+      semantics {
+        sender: "Brave Privacy-Preserving Product Analytics Uploader"
+        description:
+          "Report of anonymized usage statistics. For more info, see "
+          "https://brave.com/P3A"
+        trigger:
+          "Reports are automatically generated on startup and at intervals "
+          "while Brave is running."
+        data:
+          "A base64 encoded encrypted payload with anonymized usage data."
+          "Encryption is performed using STAR to protect user anonymity."
+          "See https://arxiv.org/abs/2109.10074 for more information."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "Users can enable or disable it in brave://settings/privacy"
+          policy_exception_justification:
+            "Not implemented."
+      })");
 }
 
 }  // namespace p3a

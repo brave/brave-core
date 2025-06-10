@@ -31,7 +31,6 @@ class RotationScheduler {
  public:
   RotationScheduler(PrefService& local_state,
                     const P3AConfig* config,
-                    RotationCallback json_rotation_callback,
                     RotationCallback constellation_rotation_callback);
 
   ~RotationScheduler();
@@ -40,29 +39,22 @@ class RotationScheduler {
   RotationScheduler& operator=(const RotationScheduler&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   void InitConstellationTimer(MetricLogType log_type,
                               base::Time next_epoch_time);
 
-  base::Time GetLastJsonRotationTime(MetricLogType log_type);
   base::Time GetLastConstellationRotationTime(MetricLogType log_type);
 
  private:
-  void InitJsonTimer(MetricLogType log_type);
-  void UpdateJsonTimer(MetricLogType log_type);
-
-  void HandleJsonTimerTrigger(MetricLogType log_type);
   void HandleConstellationTimerTrigger(MetricLogType log_type);
 
   base::flat_map<MetricLogType, std::unique_ptr<base::WallClockTimer>>
-      json_rotation_timers_;
-  base::flat_map<MetricLogType, std::unique_ptr<base::WallClockTimer>>
       constellation_rotation_timers_;
 
-  RotationCallback json_rotation_callback_;
   RotationCallback constellation_rotation_callback_;
 
-  base::flat_map<MetricLogType, base::Time> last_json_rotation_times_;
   base::flat_map<MetricLogType, base::Time> last_constellation_rotation_times_;
 
   const raw_ref<PrefService, DanglingUntriaged> local_state_;
