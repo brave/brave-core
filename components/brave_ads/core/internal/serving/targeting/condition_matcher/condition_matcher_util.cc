@@ -47,15 +47,16 @@ bool MatchCondition(std::string_view value, std::string_view condition) {
 
 }  // namespace
 
-bool MatchConditions(const ConditionMatcherMap& condition_matchers) {
+bool MatchConditions(const base::Value::Dict& virtual_prefs,
+                     const ConditionMatcherMap& condition_matchers) {
   return std::ranges::all_of(
-      condition_matchers, [](const auto& condition_matcher) {
+      condition_matchers, [&virtual_prefs](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 
         const std::string stripped_pref_path =
             MaybeStripOperatorPrefix(pref_path);
         std::optional<std::string> value =
-            MaybeGetPrefValueAsString(stripped_pref_path);
+            MaybeGetPrefValueAsString(virtual_prefs, stripped_pref_path);
 
         if (HasNotOperator(pref_path)) {
           // Match if the pref path does not exist.

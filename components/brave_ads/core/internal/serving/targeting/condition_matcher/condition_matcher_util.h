@@ -9,6 +9,8 @@
 #include <map>
 #include <string>
 
+#include "base/values.h"
+
 namespace brave_ads {
 
 using ConditionMatcherMap =
@@ -193,7 +195,8 @@ using ConditionMatcherMap =
 // malformed condition matchers will be logged to the console, they are not
 // logged to the Rewards log.
 
-bool MatchConditions(const ConditionMatcherMap& condition_matchers);
+bool MatchConditions(const base::Value::Dict& virtual_prefs,
+                     const ConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads
 

@@ -62,8 +62,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_1}))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
@@ -93,8 +92,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
@@ -104,8 +102,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(

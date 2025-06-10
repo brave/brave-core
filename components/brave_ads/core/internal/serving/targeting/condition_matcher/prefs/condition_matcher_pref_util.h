@@ -9,6 +9,8 @@
 #include <optional>
 #include <string>
 
+#include "base/values.h"
+
 namespace brave_ads {
 
 // Get the pref value as a string from the provider for the given path. Handles
@@ -18,6 +20,7 @@ namespace brave_ads {
 // should be separated by `|`. Example `list|1` would return the second element
 // of a list.
 std::optional<std::string> MaybeGetPrefValueAsString(
+    const base::Value::Dict& virtual_prefs,
     const std::string& pref_path);
 
 }  // namespace brave_ads
