@@ -10,6 +10,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"

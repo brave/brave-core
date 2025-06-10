@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/no_destructor.h"

@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"

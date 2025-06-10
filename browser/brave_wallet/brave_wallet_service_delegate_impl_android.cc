@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"

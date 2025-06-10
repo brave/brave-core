@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"

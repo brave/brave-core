@@ -8,7 +8,9 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"

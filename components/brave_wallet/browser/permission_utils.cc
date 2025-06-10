@@ -8,6 +8,7 @@
 #include <optional>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"

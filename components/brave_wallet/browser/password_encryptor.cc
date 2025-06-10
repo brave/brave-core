@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "crypto/aead.h"

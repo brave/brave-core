@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/sequence_checker.h"

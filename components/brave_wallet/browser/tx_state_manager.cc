@@ -8,6 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/json/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"

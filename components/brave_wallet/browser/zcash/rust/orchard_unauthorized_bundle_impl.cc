@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/check_is_test.h"
-#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_authorized_bundle_impl.h"
 

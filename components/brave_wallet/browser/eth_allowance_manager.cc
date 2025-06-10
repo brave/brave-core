@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"

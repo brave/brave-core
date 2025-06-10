@@ -8,6 +8,9 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"

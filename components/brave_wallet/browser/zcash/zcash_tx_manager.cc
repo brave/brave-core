@@ -13,6 +13,8 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"

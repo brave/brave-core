@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"

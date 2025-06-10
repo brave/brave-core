@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"

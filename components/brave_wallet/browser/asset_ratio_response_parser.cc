@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
