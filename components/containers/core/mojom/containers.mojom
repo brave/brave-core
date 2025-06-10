@@ -17,8 +17,9 @@ struct Container {
 };
 
 // Factory interface to create handlers for the containers settings page. This
-// interface is implemented on the browser side and called by the renderer to
-// establish communication channels for container management.
+// interface is implemented on the browser side and called by the settings page
+// (webui, native android) to establish communication channels for container
+// management.
 interface SettingsPageHandlerFactory {
   // Creates a new settings page handler and establishes bidirectional
   // communication between the browser and renderer processes.
@@ -27,9 +28,9 @@ interface SettingsPageHandlerFactory {
       pending_receiver<SettingsPageHandler> page_handler);
 };
 
-// Interface for renderer -> browser communication. This interface allows the
-// renderer (UI) to perform CRUD operations on containers, with all operations
-// being handled in the browser process.
+// Interface for settings page -> browser communication. This interface allows
+// the settings page (webui, native android) to perform CRUD operations on
+// containers, with all operations being handled in the browser process.
 interface SettingsPageHandler {
   // Retrieves the current list of containers. Returns: Array of all configured
   // containers
@@ -44,11 +45,12 @@ interface SettingsPageHandler {
   RemoveContainer(string id) => ();
 };
 
-// Interface for browser -> renderer communication. This interface allows the
-// browser process to notify the renderer about changes to the containers list.
+// Interface for browser -> settings page communication. This interface allows
+// the browser process to notify the settings page about changes to the
+// containers list.
 interface SettingsPage {
-  // Notifies the renderer when the containers list is modified. This ensures
-  // the UI stays in sync with the browser-side container state.
+  // Notifies the settings page when the containers list is modified. This
+  // ensures the page stays in sync with the browser-side container state.
   // - `containers`: Updated list of all containers.
   OnContainersChanged(array<Container> containers);
 };

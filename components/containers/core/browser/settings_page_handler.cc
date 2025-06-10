@@ -81,7 +81,7 @@ void SettingsPageHandler::OnContainerDataRemoved(
 }
 
 void SettingsPageHandler::OnContainersChanged() {
-  // Notify WebUI about container list changes (from this window or others).
+  // Notify page about container list changes (from this window or others).
   page_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
 }
 
