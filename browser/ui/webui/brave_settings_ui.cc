@@ -262,8 +262,9 @@ void BraveSettingsUI::CreateContainersSettingsHandler(
     void RemoveContainerData(const std::string& id,
                              base::OnceClosure callback) override {
       // TODO(https://github.com/brave/brave-browser/issues/46352): Implement
-      // this.
-      std::move(callback).Run();
+      // this. For now simulate async data removal.
+      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+          FROM_HERE, std::move(callback), base::Seconds(2));
     }
   };
 
