@@ -203,8 +203,8 @@ void AIChatUntrustedConversationUI::BindInterfaceUntrustedConversationHandler(
   }
 
   ai_chat::AIChatService* service =
-      ai_chat::AIChatServiceFactory::GetForProfile(ProfileIOS::FromBrowserState(
-          web_ui()->GetWebState()->GetBrowserState()));
+      ai_chat::AIChatServiceFactory::GetForProfile(
+          ProfileIOS::FromWebUIIOS(web_ui()));
 
   if (!service) {
     return;
