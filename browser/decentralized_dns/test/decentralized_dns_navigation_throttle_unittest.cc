@@ -6,13 +6,13 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 
 #include "base/memory/raw_ptr.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
@@ -23,7 +23,13 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif
 
+namespace {
+
 constexpr char kTestProfileName[] = "TestProfile";
+constexpr char kExampleURL[] = "https://example.com";
+constexpr char kLocale[] = "en-US";
+
+}  // namespace
 
 namespace decentralized_dns {
 
@@ -39,11 +45,11 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
     local_state_ = profile_manager_.local_state();
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
-    locale_ = "en-US";
   }
 
   void TearDown() override { web_contents_.reset(); }
 
+  PrefService* user_prefs() { return user_prefs::UserPrefs::Get(profile_); }
   PrefService* local_state() { return local_state_->Get(); }
   content::WebContents* web_contents() { return web_contents_.get(); }
 
@@ -55,7 +61,7 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
 
   TestingProfile* profile() { return profile_; }
 
-  const std::string& locale() { return locale_; }
+  std::string locale() { return kLocale; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -70,7 +76,7 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
 TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   content::MockNavigationHandle test_handle(web_contents());
   auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, local_state(), locale());
+      &test_handle, user_prefs(), local_state(), locale());
   EXPECT_TRUE(throttle != nullptr);
 
   // Disable in OTR profile.
@@ -79,7 +85,7 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          &otr_test_handle, local_state(), locale());
+          &otr_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_otr, nullptr);
 
   // Disable in guest profiles.
@@ -89,7 +95,7 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   content::MockNavigationHandle guest_test_handle(guest_web_contents.get());
   auto throttle_in_guest =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          &guest_test_handle, local_state(), locale());
+          &guest_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_guest, nullptr);
 }
 
@@ -105,9 +111,61 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, NotInstantiatedInTor) {
   content::MockNavigationHandle tor_test_handle(tor_web_contents.get());
   auto throttle_in_tor =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          &tor_test_handle, local_state(), locale());
+          &tor_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_tor, nullptr);
 }
 #endif
+
+class DecentralizedDnsNavigationThrottleSubframeTest
+    : public content::RenderViewHostTestHarness {
+ public:
+  DecentralizedDnsNavigationThrottleSubframeTest()
+      : content::RenderViewHostTestHarness(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        local_state_(TestingBrowserProcess::GetGlobal()) {}
+  ~DecentralizedDnsNavigationThrottleSubframeTest() override = default;
+
+  void SetUp() override {
+    content::RenderViewHostTestHarness::SetUp();
+
+    content::RenderFrameHostTester::For(main_rfh())
+        ->InitializeRenderFrameIfNeeded();
+    subframe_ = content::RenderFrameHostTester::For(main_rfh())
+                    ->AppendChild("subframe");
+  }
+
+  void TearDown() override {
+    subframe_ = nullptr;
+    content::RenderViewHostTestHarness::TearDown();
+  }
+
+  PrefService* user_prefs() { return &prefs_; }
+  PrefService* local_state() { return local_state_.Get(); }
+  content::RenderFrameHost* subframe() { return subframe_; }
+  std::string locale() { return kLocale; }
+
+ private:
+  raw_ptr<content::RenderFrameHost> subframe_;
+
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  ScopedTestingLocalState local_state_;
+};
+
+TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
+  // Throttle is created for main frame.
+  {
+    content::MockNavigationHandle handle(GURL(kExampleURL), main_rfh());
+    auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
+        &handle, user_prefs(), local_state(), locale());
+    EXPECT_NE(throttle, nullptr);
+  }
+  // Throttle is not created for subframe.
+  {
+    content::MockNavigationHandle handle(GURL(kExampleURL), subframe());
+    auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
+        &handle, user_prefs(), local_state(), locale());
+    EXPECT_EQ(throttle, nullptr);
+  }
+}
 
 }  // namespace decentralized_dns
