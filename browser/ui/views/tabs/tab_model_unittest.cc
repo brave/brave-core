@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
 #include "chrome/browser/ui/tabs/test_util.h"
@@ -40,9 +39,6 @@ class TabModelUnitTest : public testing::Test {
     tab_strip_model_->AppendTab(std::move(tab_model), /* foreground = */
                                 true);
   }
-
-  base::test::ScopedFeatureList feature_list_{
-      containers::features::kBraveContainers};
 
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler rvh_test_enabler_;
