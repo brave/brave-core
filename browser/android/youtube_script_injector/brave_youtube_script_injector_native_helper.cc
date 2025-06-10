@@ -50,11 +50,11 @@ constexpr char16_t kYoutubeFullscreen[] =
         // clicking the movie player resume the UI.
         var moviePlayer = document.getElementById("movie_player");
         if (moviePlayer) {
-          // Auto-disconnect the observer after 6 seconds,
+          // Auto-disconnect the observer after 30 seconds,
           // a reasonable duration picked after some testing.
           observerTimeout = setTimeout(() => {
             observer.disconnect();
-          }, 6000);
+          }, 30000);
           // Start observing the DOM.
           observer.observe(document.body, { childList: true, subtree: false });
           // Make sure the player is in focus or responsive.
