@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/publisher_utils.h"

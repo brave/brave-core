@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"

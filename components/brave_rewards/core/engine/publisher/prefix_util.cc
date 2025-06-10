@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/sha2.h"
 

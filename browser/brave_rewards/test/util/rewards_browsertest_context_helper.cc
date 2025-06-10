@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/logging.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"

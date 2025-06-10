@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/patch_wallets.h"

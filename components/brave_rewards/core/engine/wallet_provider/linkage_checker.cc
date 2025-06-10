@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/notifications/notification_keys.h"

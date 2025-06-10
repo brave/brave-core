@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
 

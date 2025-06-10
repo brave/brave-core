@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/core/engine/util/request_signer.h"
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter='RewardsRequestSignerTest.*'

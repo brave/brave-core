@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
