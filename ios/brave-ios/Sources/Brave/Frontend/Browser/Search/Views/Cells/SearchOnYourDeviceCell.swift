@@ -43,17 +43,20 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     $0.alignment = .center
   }
 
-  private let imageContainerView = UIView().then {
+  private let imageContainerView = UIView()
+  private let siteImageContainerView = UIView().then {
     $0.layer.cornerRadius = 8.0
     $0.layer.cornerCurve = .continuous
     $0.backgroundColor = UIColor(braveSystemName: .containerHighlight)
-    $0.clipsToBounds = true
   }
-  private let imageView = UIImageView().then {
+  private let siteImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
   }
   private let thumbnailImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFill
+    $0.layer.cornerRadius = 4.0
+    $0.layer.cornerCurve = .continuous
+    $0.layer.masksToBounds = true
+    $0.contentMode = .scaleAspectFit
   }
 
   private let textStackView = UIStackView().then {
@@ -89,13 +92,6 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
-  private let durationFormatter = DateComponentsFormatter().then {
-    $0.maximumUnitCount = 3
-    $0.unitsStyle = .positional
-    $0.zeroFormattingBehavior = .pad
-    $0.allowedUnits = [.hour, .minute, .second]
-  }
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -104,8 +100,9 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     setTheme()
 
     contentView.addSubview(stackView)
-    imageContainerView.addSubview(imageView)
     imageContainerView.addSubview(thumbnailImageView)
+    imageContainerView.addSubview(siteImageContainerView)
+    siteImageContainerView.addSubview(siteImageView)
     stackView.addArrangedSubview(imageContainerView)
     stackView.addArrangedSubview(textStackView)
     stackView.addArrangedSubview(badgeImageView)
@@ -121,12 +118,18 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
       $0.width.height.equalTo(36.0)
     }
 
-    imageView.snp.makeConstraints {
+    siteImageContainerView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+    siteImageView.snp.makeConstraints {
       $0.size.equalTo(20.0)
       $0.center.equalToSuperview()
     }
     thumbnailImageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.width.equalToSuperview()
+      $0.height.equalTo(27.0)
+      $0.center.equalToSuperview()
     }
 
     badgeImageView.snp.makeConstraints {
@@ -181,11 +184,11 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   func setSite(_ site: Site, isPrivateBrowsing: Bool) {
-    imageView.loadFavicon(
+    siteImageView.loadFavicon(
       for: site.tileURL,
       isPrivateBrowsing: isPrivateBrowsing
     )
-    imageView.isHidden = false
+    siteImageContainerView.isHidden = false
     thumbnailImageView.isHidden = true
 
     if site.siteType == .tab {
@@ -236,13 +239,34 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
       }
     }
 
-    imageView.isHidden = true
+    siteImageContainerView.isHidden = true
     thumbnailImageView.isHidden = false
 
     titleLabel.text = item.name
-    if let formattedString = durationFormatter.string(from: item.duration) {
-      subtitleLabel.text = formattedString
+
+    let detailTextForPlaylistSuggestions = NSMutableAttributedString()
+    detailTextForPlaylistSuggestions.append(
+      NSAttributedString(
+        string: Strings.searchSuggestionOpenPlaylistActionTitle,
+        attributes: [
+          .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
+          .foregroundColor: UIColor(braveSystemName: .textSecondary),
+        ]
+      )
+    )
+    if item.duration != 0 {
+      detailTextForPlaylistSuggestions.append(
+        NSAttributedString(
+          string: " · \(TimestampFormatStyle.timestamp.format(Duration.seconds(item.duration)))",
+          attributes: [
+            .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
+            .foregroundColor: UIColor(braveSystemName: .textSecondary),
+          ]
+        )
+      )
     }
+    subtitleLabel.attributedText = detailTextForPlaylistSuggestions
+
     badgeImageView.image = UIImage(braveSystemNamed: "leo.product.playlist")
   }
 }
