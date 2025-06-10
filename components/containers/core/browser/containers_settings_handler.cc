@@ -78,10 +78,7 @@ void ContainersSettingsHandler::OnContainerDataRemoved(
   auto containers = GetContainersFromPrefs(*prefs_);
   std::erase_if(containers, [id](const auto& c) { return c->id == id; });
   SetContainersToPrefs(std::move(containers), *prefs_);
-  // TODO(https://github.com/brave/brave-browser/issues/46352): Replace with a
-  // sync call. For now we simulate async data removal.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, std::move(callback), base::Seconds(5));
+  std::move(callback).Run();
 }
 
 void ContainersSettingsHandler::OnContainersChanged() {
