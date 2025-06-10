@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/notimplemented.h"
 #include "base/types/expected.h"
 
 namespace brave_wallet {

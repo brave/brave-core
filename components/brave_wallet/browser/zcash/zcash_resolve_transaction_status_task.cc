@@ -8,6 +8,7 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 
 namespace brave_wallet {

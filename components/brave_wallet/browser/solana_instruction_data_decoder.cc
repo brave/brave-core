@@ -9,6 +9,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/no_destructor.h"

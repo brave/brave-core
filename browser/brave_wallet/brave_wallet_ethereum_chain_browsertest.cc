@@ -6,6 +6,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"

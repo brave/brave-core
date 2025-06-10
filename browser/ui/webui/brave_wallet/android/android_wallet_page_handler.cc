@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 
 AndroidWalletPageHandler::AndroidWalletPageHandler(

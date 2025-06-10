@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
+#include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/uuid.h"
 #include "base/values.h"

@@ -7,6 +7,9 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"

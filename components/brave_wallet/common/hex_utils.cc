@@ -7,6 +7,8 @@
 
 #include <optional>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"

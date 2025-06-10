@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"

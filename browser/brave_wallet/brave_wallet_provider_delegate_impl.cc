@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"

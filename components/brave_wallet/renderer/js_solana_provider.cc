@@ -9,7 +9,9 @@
 #include <tuple>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"

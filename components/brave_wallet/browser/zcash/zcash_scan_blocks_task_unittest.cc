@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/notreached.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"

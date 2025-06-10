@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"

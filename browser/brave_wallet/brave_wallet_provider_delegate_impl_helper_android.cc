@@ -8,7 +8,6 @@
 #include "base/android/callback_android.h"
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/android/chrome_jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"

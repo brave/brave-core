@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 
+#include "base/check_op.h"
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/strings/string_split.h"

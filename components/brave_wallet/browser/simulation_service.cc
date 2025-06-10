@@ -7,6 +7,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "base/values.h"

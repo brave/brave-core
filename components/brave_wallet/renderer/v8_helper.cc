@@ -8,6 +8,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"

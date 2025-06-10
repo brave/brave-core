@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

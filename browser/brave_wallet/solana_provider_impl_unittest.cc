@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"

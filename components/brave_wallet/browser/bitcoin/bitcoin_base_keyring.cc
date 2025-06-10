@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_base_keyring.h"
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {

@@ -10,6 +10,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/logging.h"

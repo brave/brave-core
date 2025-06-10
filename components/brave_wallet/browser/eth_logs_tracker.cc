@@ -8,6 +8,9 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/logging.h"
+
 namespace brave_wallet {
 
 EthLogsTracker::EthLogsTracker(JsonRpcService* json_rpc_service)

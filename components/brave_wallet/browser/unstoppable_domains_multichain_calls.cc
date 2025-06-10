@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "url/gurl.h"
 
 namespace brave_wallet::unstoppable_domains {

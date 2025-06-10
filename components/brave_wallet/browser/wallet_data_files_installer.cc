@@ -11,10 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"

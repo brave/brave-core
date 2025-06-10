@@ -8,6 +8,7 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/grit/brave_components_strings.h"

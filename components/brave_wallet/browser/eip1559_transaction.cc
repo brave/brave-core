@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"

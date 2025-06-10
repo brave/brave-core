@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/numerics/clamped_math.h"
 #include "base/rand_util.h"
 #include "base/types/expected.h"

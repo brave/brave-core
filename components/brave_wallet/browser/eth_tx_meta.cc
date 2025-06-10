@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
