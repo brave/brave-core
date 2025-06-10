@@ -27,7 +27,7 @@ constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
 constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
 constexpr char kSkuOrderStatusKey[] = "status";
 
-std::string StripSkuEnvironmentPrefix(const std::string& environment) {
+std::string RemoveSkuEnvironmentPrefix(const std::string& environment) {
   const size_t pos = environment.find(':');
   return environment.substr(pos + 1);
 }
@@ -112,7 +112,7 @@ base::Value::Dict GetSkus(PrefService* local_state) {
       continue;
     }
 
-    skus.Set(StripSkuEnvironmentPrefix(environment), ParseSkuOrders(*orders));
+    skus.Set(RemoveSkuEnvironmentPrefix(environment), ParseSkuOrders(*orders));
   }
 
   return skus;
@@ -129,7 +129,7 @@ VirtualPrefProvider::VirtualPrefProvider(PrefService* local_state,
 
 VirtualPrefProvider::~VirtualPrefProvider() = default;
 
-base::Value::Dict VirtualPrefProvider::GetPrefs() {
+base::Value::Dict VirtualPrefProvider::GetPrefs() const {
   return base::Value::Dict()
       .Set("[virtual]:browser",
            base::Value::Dict()

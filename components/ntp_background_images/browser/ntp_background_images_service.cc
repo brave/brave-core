@@ -6,7 +6,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 #include <memory>
-#include <optional>
 #include <utility>
 
 #include "base/command_line.h"
@@ -110,7 +109,6 @@ void NTPBackgroundImagesService::Init() {
       base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
           switches::kOverrideSponsoredImagesComponentPath));
   if (!override_sponsored_images_component_path.empty()) {
-    overridden_component_path_ = true;
     DVLOG(6)
         << "NTP Sponsored Images test data will be loaded from local path at: "
         << override_sponsored_images_component_path.LossyDisplayName();
@@ -133,7 +131,6 @@ void NTPBackgroundImagesService::Init() {
         base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
             switches::kOverrideSuperReferralsComponentPath));
     if (!override_super_referrals_component_path.empty()) {
-      overridden_component_path_ = true;
       DVLOG(6)
           << "NTP Super Referral test data will be loaded from local path at: "
           << override_super_referrals_component_path.LossyDisplayName();
@@ -147,12 +144,12 @@ void NTPBackgroundImagesService::Init() {
 
 void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
   // It means component is not ready.
-  if (last_update_check_at_.is_null()) {
+  if (!last_updated_at_) {
     return;
   }
 
   // If previous update check is missed, do update check now.
-  if (base::Time::Now() - last_update_check_at_ >
+  if (base::Time::Now() - *last_updated_at_ >
       features::kSponsoredImagesUpdateCheckAfter.Get()) {
     sponsored_images_update_check_callback_.Run();
   }
@@ -178,7 +175,7 @@ void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
 
 void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
     const std::string& component_id) {
-  last_update_check_at_ = base::Time::Now();
+  last_updated_at_ = base::Time::Now();
 
   CheckAndUpdateSponsoredImagesComponent(component_id);
 
@@ -229,7 +226,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
       base::Unretained(this), data->component_id.data());
 
-  last_update_check_at_ = base::Time::Now();
+  last_updated_at_ = base::Time::Now();
 
   ScheduleNextSponsoredImagesComponentUpdate();
 }

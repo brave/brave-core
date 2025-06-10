@@ -463,9 +463,9 @@ class AdsServiceImpl final : public AdsService,
 
   SimpleURLLoaderList url_loaders_;
 
-  const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> prefs_;  // Not owned.
 
-  const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> local_state_;  // Not owned.
 
   const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 
@@ -477,11 +477,10 @@ class AdsServiceImpl final : public AdsService,
                           ResourceComponentObserver>
       resource_component_observation_{this};
 
-  const raw_ptr<history::HistoryService> history_service_ =
-      nullptr;  // Not owned.
+  const raw_ptr<history::HistoryService> history_service_;  // Not owned.
 
-  const raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
-      nullptr;  // Not owned.
+  const raw_ptr<HostContentSettingsMap>
+      host_content_settings_map_;  // Not owned.
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       host_content_settings_map_observation_{this};
 

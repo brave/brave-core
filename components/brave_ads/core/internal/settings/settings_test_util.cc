@@ -19,8 +19,7 @@ void DisableBraveRewards() {
 }
 
 void DisconnectExternalBraveRewardsWallet() {
-  test::SetProfileStringPrefValue(brave_rewards::prefs::kExternalWalletType,
-                                  "");
+  SetProfileStringPrefValue(brave_rewards::prefs::kExternalWalletType, "");
 }
 
 void OptOutOfBraveNewsAds() {

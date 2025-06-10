@@ -7,7 +7,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/version_info/channel.h"
-#include "base/version_info/version_info.h"
 #include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_data.h"
