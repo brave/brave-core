@@ -99,6 +99,12 @@ void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
   legacy_user_agent_ = user_agent;
 }
 
+bool BraveWebClient::IsInsecureFormWarningEnabled(
+    web::BrowserState* browser_state) const {
+  // TODO: Remove when brave/brave-browser#46667 is implemented
+  return false;
+}
+
 void BraveWebClient::BuildEditMenu(web::WebState* web_state,
                                    id<UIMenuBuilder> builder) const {
   BraveWebView* webView =
