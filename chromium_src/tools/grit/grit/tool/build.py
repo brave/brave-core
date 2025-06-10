@@ -48,7 +48,10 @@ def _FormatWebuiHeader(root, *_args, **_kwargs):
                'std::to_array<LocalizedString>({\n')
 
         for name, ids_value in messages:
-            yield f'    {{"{name}", {ids_value}}},\n'
+            if root.IsAllowlistSupportEnabled():
+                yield f'    {{"{name}", (::ui::AllowlistedResource<{ids_value}>(), {ids_value})}},\n'
+            else:
+                yield f'    {{"{name}", {ids_value}}},\n'
 
         yield '});\n'
 
