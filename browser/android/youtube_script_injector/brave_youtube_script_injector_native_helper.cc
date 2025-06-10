@@ -49,14 +49,15 @@ constexpr char16_t kYoutubeFullscreen[] =
         // When fullscreen button is not available
         // clicking the movie player resume the UI.
         var moviePlayer = document.getElementById("movie_player");
-        if (moviePlayer) {
+        var playerContainer = document.getElementById("player-container-id");
+        if (moviePlayer && playerContainer) {
           // Auto-disconnect the observer after 30 seconds,
           // a reasonable duration picked after some testing.
           observerTimeout = setTimeout(() => {
             observer.disconnect();
           }, 30000);
           // Start observing the DOM.
-          observer.observe(document.body, { childList: true, subtree: false });
+          observer.observe(playerContainer, { childList: true, subtree: true });
           // Make sure the player is in focus or responsive.
           moviePlayer.click();
         }
