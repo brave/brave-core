@@ -135,8 +135,6 @@ std::optional<base::Value> MaybeGetPrefValue(
       }
 
       // Unknown pref path key.
-      BLOG(1, "Unknown condition matcher " << key << " key for " << pref_path
-                                           << " pref path");
       return std::nullopt;
     }
 
@@ -144,8 +142,6 @@ std::optional<base::Value> MaybeGetPrefValue(
     pref_value = MaybeGetNextPrefValue(*pref_value, key);
     if (!pref_value) {
       // Unknown pref path key.
-      BLOG(1, "Unknown condition matcher " << key << " key for " << pref_path
-                                           << " pref path");
       return std::nullopt;
     }
 
