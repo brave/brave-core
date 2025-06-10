@@ -40,7 +40,7 @@ EligibleNewTabPageAdsV2::~EligibleNewTabPageAdsV2() = default;
 
 void EligibleNewTabPageAdsV2::GetForUserModel(
     UserModelInfo user_model,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
   ad_events_database_table_.GetUnexpired(
@@ -54,7 +54,7 @@ void EligibleNewTabPageAdsV2::GetForUserModel(
 
 void EligibleNewTabPageAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -68,7 +68,7 @@ void EligibleNewTabPageAdsV2::GetForUserModelCallback(
 void EligibleNewTabPageAdsV2::GetSiteHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "EligibleNewTabPageAds::GetSiteHistory",
@@ -84,7 +84,7 @@ void EligibleNewTabPageAdsV2::GetSiteHistory(
 void EligibleNewTabPageAdsV2::GetSiteHistoryCallback(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
     uint64_t trace_id,
     const SiteHistoryList& site_history) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
@@ -100,7 +100,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback) {
   creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -111,7 +111,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
     bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
@@ -129,7 +129,7 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
     const CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback) {
   TRACE_EVENT(kTraceEventCategory,
               "EligibleNewTabPageAds::FilterAndMaybePredictCreativeAd",
               "creative_ads", creative_ads.size(), "ad_events",
