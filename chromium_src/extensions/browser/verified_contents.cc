@@ -5,6 +5,9 @@
 
 #include "extensions/browser/verified_contents.h"
 
+#include "base/memory/ptr_util.h"
+#include "extensions/common/extension.h"
+
 namespace {
 constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86,
@@ -34,20 +37,19 @@ constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
     0xc7, 0x02, 0x03, 0x01, 0x00, 0x01};
 }  // namespace
 
-namespace extensions {
-
-// static
-std::unique_ptr<VerifiedContents> VerifiedContents::Create(
-    base::span<const uint8_t> public_key,
-    std::string_view contents) {
-  if (auto verified_contents = Create_ChromiumImpl(public_key, contents)) {
-    // Ok, the verified contents have been signed by the WebStore key.
-    return verified_contents;
-  }
-  // On failure, retry with Brave key.
-  return Create_ChromiumImpl(kBraveVerifiedContentsPublicKey, contents);
-}
-
-}  // namespace extensions
+#define WrapUnique(...)                                                    \
+  WrapUnique(Create_ChromiumImpl(__VA_ARGS__, contents).release());        \
+  if (verified_contents) {                                                 \
+    return verified_contents;                                              \
+  }                                                                        \
+  return Create_ChromiumImpl(                                              \
+      new VerifiedContents(kBraveVerifiedContentsPublicKey), contents);    \
+  }                                                                        \
+                                                                           \
+  std::unique_ptr<VerifiedContents> VerifiedContents::Create_ChromiumImpl( \
+      VerifiedContents* vc, std::string_view contents) {                   \
+    std::unique_ptr<VerifiedContents> verified_contents(vc)
 
 #include "src/extensions/browser/verified_contents.cc"
+
+#undef WrapUnique

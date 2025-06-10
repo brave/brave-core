@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_BROWSER_VERIFIED_CONTENTS_H_
 #define BRAVE_CHROMIUM_SRC_EXTENSIONS_BROWSER_VERIFIED_CONTENTS_H_
 
-#define Create(...)                 \
-  Create_ChromiumImpl(__VA_ARGS__); \
+#define Create(...)                                                     \
+  Create_ChromiumImpl(VerifiedContents* vc, std::string_view contents); \
   static std::unique_ptr<VerifiedContents> Create(__VA_ARGS__)
 
 #include "src/extensions/browser/verified_contents.h"  // IWYU pragma: export
