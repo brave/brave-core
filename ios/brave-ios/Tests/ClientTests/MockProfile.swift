@@ -39,8 +39,4 @@ open class MockProfile: Profile {
   lazy public var searchEngines: SearchEngines = {
     return SearchEngines()
   }()
-
-  lazy public var prefs: Prefs = {
-    return MockProfilePrefs()
-  }()
 }
