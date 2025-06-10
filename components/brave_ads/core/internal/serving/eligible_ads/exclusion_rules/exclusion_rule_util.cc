@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/algorithm/count_if_until_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"

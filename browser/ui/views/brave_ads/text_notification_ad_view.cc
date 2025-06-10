@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/browser/ui/views/brave_ads/insets_util.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_control_buttons_view.h"

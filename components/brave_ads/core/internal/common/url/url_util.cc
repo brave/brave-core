@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util_internal.h"

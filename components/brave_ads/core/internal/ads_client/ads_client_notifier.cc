@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <memory>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"

@@ -9,6 +9,7 @@
 #include <limits>
 #include <string>
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/strcat.h"

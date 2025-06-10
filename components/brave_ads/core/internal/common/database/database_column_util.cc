@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"

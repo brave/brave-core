@@ -14,6 +14,7 @@
 #include <iterator>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"

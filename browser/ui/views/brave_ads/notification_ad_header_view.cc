@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/notification_ad_header_view.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/views/brave_ads/insets_util.h"
 #include "brave/browser/ui/views/brave_ads/spacer_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
