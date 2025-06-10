@@ -15,7 +15,6 @@
 #include "third_party/skia/modules/svg/include/SkSVGRenderContext.h"
 #include "third_party/skia/modules/svg/include/SkSVGSVG.h"
 #include "ui/gfx/image/image.h"
-
 #include "third_party/skia/include/core/SkSurface.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
