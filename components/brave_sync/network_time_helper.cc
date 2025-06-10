@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/sequence_checker.h"
 #include "base/task/single_thread_task_runner.h"

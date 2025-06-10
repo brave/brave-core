@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/omnibox/browser/leo_action.h"

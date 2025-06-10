@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/core/common/features.h"

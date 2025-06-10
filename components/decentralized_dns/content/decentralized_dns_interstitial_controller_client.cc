@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"

@@ -11,7 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"

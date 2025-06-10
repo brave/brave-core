@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"

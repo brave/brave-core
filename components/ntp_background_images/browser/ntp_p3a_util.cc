@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 
+#include "base/check.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"

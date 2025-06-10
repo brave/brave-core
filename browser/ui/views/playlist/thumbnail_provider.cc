@@ -9,10 +9,12 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/lru_cache.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"

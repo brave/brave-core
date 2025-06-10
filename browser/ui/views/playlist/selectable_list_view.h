@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/flat_set.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/components/playlist/browser/playlist_constants.h"

@@ -5,6 +5,7 @@
 
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <optional>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "build/build_config.h"

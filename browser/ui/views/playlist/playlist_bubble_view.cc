@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "ui/base/metadata/metadata_impl_macros.h"

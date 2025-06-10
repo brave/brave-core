@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/check.h"
 #include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 #include "components/content_settings/core/browser/content_settings_rule.h"
 

@@ -12,6 +12,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"

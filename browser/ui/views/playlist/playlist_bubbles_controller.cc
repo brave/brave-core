@@ -7,8 +7,8 @@
 
 #include <vector>
 
+#include "base/check.h"
 #include "base/memory/ptr_util.h"
-#include "base/notreached.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"

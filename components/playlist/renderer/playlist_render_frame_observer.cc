@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "brave/gin/converter_specializations.h"

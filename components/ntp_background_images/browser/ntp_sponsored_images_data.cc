@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"

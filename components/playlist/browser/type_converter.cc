@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"

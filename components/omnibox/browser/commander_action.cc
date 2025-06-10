@@ -5,6 +5,8 @@
 
 #include "brave/components/omnibox/browser/commander_action.h"
 
+#include "base/check.h"
+
 namespace commander {
 
 CommanderAction::CommanderAction(uint32_t command_index, uint32_t result_set_id)

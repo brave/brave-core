@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
