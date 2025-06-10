@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index 1ca99fc6f5f6bb245916db95f6ad980b6cd59c1d..3eeed8e2210268c6710cbf392ebba595ef561c38 100644
+index c0ee7ac4b14bf6e63fd5a8c0266f2d1f9dcfe2e4..ca1b6ad1fc29257a93369bbfa71004c938e793a4 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
 @@ -18,7 +18,7 @@
@@ -10,4 +10,4 @@ index 1ca99fc6f5f6bb245916db95f6ad980b6cd59c1d..3eeed8e2210268c6710cbf392ebba595
 +// class MultiContentsResizeArea;
  class MultiContentsViewDropTargetController;
  class MultiContentsViewMiniToolbar;
- 
+ class MultiContentsDropTargetView;
