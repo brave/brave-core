@@ -59,10 +59,9 @@ class NewTabPageAdServing final {
 
   void GetEligibleAds(MaybeServeNewTabPageAdCallback callback,
                       UserModelInfo user_model) const;
-  void GetEligibleAdsCallback(
-      MaybeServeNewTabPageAdCallback callback,
-      uint64_t trace_id,
-      const CreativeNewTabPageAdList& creative_ads) const;
+  void GetEligibleAdsCallback(MaybeServeNewTabPageAdCallback callback,
+                              uint64_t trace_id,
+                              CreativeNewTabPageAdList creative_ads) const;
 
   void ServeAd(const NewTabPageAdInfo& ad,
                MaybeServeNewTabPageAdCallback callback) const;

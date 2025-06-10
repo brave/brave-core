@@ -49,9 +49,11 @@ std::optional<std::string> ToString(const base::Value& value) {
                << base::to_underlying(value.type());
 }
 
-std::optional<base::Value> MaybeGetRootPrefValue(const std::string& pref_path) {
+std::optional<base::Value> MaybeGetRootPrefValue(
+    const base::Value::Dict& virtual_prefs,
+    const std::string& pref_path) {
   if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
-    return GetVirtualPref(pref_path);
+    return GetVirtualPref(virtual_prefs, pref_path);
   }
 
   if (std::optional<base::Value> pref_value = GetProfilePref(pref_path)) {
@@ -108,7 +110,9 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
   return std::nullopt;
 }
 
-std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
+std::optional<base::Value> MaybeGetPrefValue(
+    const base::Value::Dict& virtual_prefs,
+    const std::string& pref_path) {
   // Split the `pref_path` into individual keys using '|' as the delimiter.
   const std::vector<std::string> keys = base::SplitString(
       pref_path, "|", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -126,7 +130,7 @@ std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
     if (!pref_value) {
       // Attempt to get the root pref value using the current key.
       if (std::optional<base::Value> root_pref_value =
-              MaybeGetRootPrefValue(key)) {
+              MaybeGetRootPrefValue(virtual_prefs, key)) {
         pref_value = std::move(*root_pref_value);
         continue;
       }

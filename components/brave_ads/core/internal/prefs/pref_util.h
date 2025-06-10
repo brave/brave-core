@@ -76,7 +76,9 @@ bool FindLocalStatePref(const std::string& path);
 bool HasLocalStatePrefPath(const std::string& path);
 
 // Gets virtual preference values.
-std::optional<base::Value> GetVirtualPref(const std::string& path);
+std::optional<base::Value> GetVirtualPref(
+    const base::Value::Dict& virtual_prefs,
+    const std::string& path);
 
 }  // namespace brave_ads
 

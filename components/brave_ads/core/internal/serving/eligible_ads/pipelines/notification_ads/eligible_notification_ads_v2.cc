@@ -174,10 +174,6 @@ void EligibleNotificationAdsV2::FilterIneligibleCreativeAds(
     CreativeNotificationAdList& creative_ads,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history) {
-  if (creative_ads.empty()) {
-    return;
-  }
-
   NotificationAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       site_history);

@@ -180,10 +180,6 @@ void EligibleInlineContentAdsV2::FilterIneligibleCreativeAds(
     CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history) {
-  if (creative_ads.empty()) {
-    return;
-  }
-
   InlineContentAdExclusionRules exclusion_rules(
       ad_events, *subdivision_targeting_, *anti_targeting_resource_,
       site_history);

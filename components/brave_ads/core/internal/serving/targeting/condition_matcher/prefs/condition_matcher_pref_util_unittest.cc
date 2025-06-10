@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h"
 
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -20,7 +21,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetProfilePrefValueAsString) {
   test::RegisterProfileBooleanPref("boolean", true);
 
   // Act & Assert
-  EXPECT_EQ("1", MaybeGetPrefValueAsString("boolean"));
+  EXPECT_EQ("1", MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(),
+                                           "boolean"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetLocalStatePrefValueAsString) {
@@ -28,13 +30,15 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetLocalStatePrefValueAsString) {
   test::RegisterLocalStateBooleanPref("boolean", true);
 
   // Act & Assert
-  EXPECT_EQ("1", MaybeGetPrefValueAsString("boolean"));
+  EXPECT_EQ("1", MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(),
+                                           "boolean"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownPrefValueAsString) {
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValueAsString("foo.bar"));
-  EXPECT_FALSE(MaybeGetPrefValueAsString(""));
+  EXPECT_FALSE(
+      MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(), "foo.bar"));
+  EXPECT_FALSE(MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(), ""));
 }
 
 }  // namespace brave_ads

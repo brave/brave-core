@@ -27,7 +27,7 @@ class EligibleNewTabPageAdsBase {
 
   virtual void GetForUserModel(
       UserModelInfo user_model,
-      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback) = 0;
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback) = 0;
 
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
