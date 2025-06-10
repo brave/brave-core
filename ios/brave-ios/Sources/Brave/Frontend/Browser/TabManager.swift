@@ -82,7 +82,6 @@ class TabManager: NSObject {
   private(set) var isRestoring = false
   private(set) var isBulkDeleting = false
 
-  fileprivate let prefs: Prefs
   var selectedIndex: Int {
     return _selectedIndex
   }
@@ -116,7 +115,6 @@ class TabManager: NSObject {
 
   init(
     windowId: UUID,
-    prefs: Prefs,
     rewards: BraveRewards?,
     braveCore: BraveProfileController?,
     privateBrowsingManager: PrivateBrowsingManager
@@ -124,7 +122,6 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     self.windowId = windowId
-    self.prefs = prefs
     self.rewards = rewards
     self.braveCore = braveCore
     self.tabGeneratorAPI = braveCore?.tabGeneratorAPI

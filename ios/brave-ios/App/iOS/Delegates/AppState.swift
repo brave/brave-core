@@ -94,7 +94,7 @@ public class AppState {
     migration = Migration()
 
     // Perform Migrations
-    migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
+    migration.launchMigrations(keyPrefix: "profile", profile: profile)
 
     newsFeedDataSource = FeedDataSource()
 

@@ -14,7 +14,6 @@ import os.log
 
 /// A Profile manages access to the user's data.
 public protocol Profile: AnyObject {
-  var prefs: Prefs { get }
   var searchEngines: SearchEngines { get }
   var certStore: CertStore { get }
 
@@ -26,20 +25,6 @@ public protocol Profile: AnyObject {
   // I got really weird EXC_BAD_ACCESS errors on a non-null reference when I made this a getter.
   // Similar to <http://stackoverflow.com/questions/26029317/exc-bad-access-when-indirectly-accessing-inherited-member-in-swift>.
   func localName() -> String
-}
-
-private let prefKeyClientID = "PrefKeyClientID"
-extension Profile {
-  var clientID: String {
-    let clientID: String
-    if let id = prefs.stringForKey(prefKeyClientID) {
-      clientID = id
-    } else {
-      clientID = UUID().uuidString
-      prefs.setString(clientID, forKey: prefKeyClientID)
-    }
-    return clientID
-  }
 }
 
 open class BrowserProfile: Profile {
@@ -83,14 +68,6 @@ open class BrowserProfile: Profile {
 
   public lazy var searchEngines: SearchEngines = {
     return SearchEngines()
-  }()
-
-  func makePrefs() -> Prefs {
-    return NSUserDefaultsPrefs(prefix: self.localName())
-  }
-
-  public lazy var prefs: Prefs = {
-    return self.makePrefs()
   }()
 
   public lazy var certStore: CertStore = {

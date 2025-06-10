@@ -5,6 +5,7 @@
 
 import BraveShared
 import Foundation
+import Preferences
 import Shared
 import WebKit
 
@@ -139,8 +140,8 @@ public class ReaderModeHandler: InternalSchemeResponse {
         return defaultReaderModeStyle
       }
 
-      if let dict = profile.prefs.dictionaryForKey(readerModeProfileKeyStyle) {
-        if let style = ReaderModeStyle(dict: dict) {
+      if let encodedString = Preferences.ReaderMode.style.value {
+        if let style = ReaderModeStyle(encodedString: encodedString) {
           readerModeStyle = style
         }
       }

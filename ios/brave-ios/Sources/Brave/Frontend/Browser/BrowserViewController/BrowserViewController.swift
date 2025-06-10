@@ -315,7 +315,6 @@ public class BrowserViewController: UIViewController {
     // Initialize TabManager
     self.tabManager = TabManager(
       windowId: windowId,
-      prefs: profile.prefs,
       rewards: rewards,
       braveCore: profileController,
       privateBrowsingManager: privateBrowsingManager
