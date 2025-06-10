@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"

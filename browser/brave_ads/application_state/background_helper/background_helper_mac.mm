@@ -9,7 +9,6 @@
 
 #include "base/apple/foundation_util.h"
 #include "base/apple/osstatus_logging.h"
-#include "base/logging.h"
 #include "base/mac/mac_util.h"
 #include "base/memory/raw_ptr.h"
 

@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 
 namespace brave_ads {

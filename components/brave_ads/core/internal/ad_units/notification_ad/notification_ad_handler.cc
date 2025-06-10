@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"

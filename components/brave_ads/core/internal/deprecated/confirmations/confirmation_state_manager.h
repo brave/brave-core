@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"

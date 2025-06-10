@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/notification_ad_background_painter.h"
 
+#include "base/check.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"

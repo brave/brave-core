@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/trace_event/trace_event.h"

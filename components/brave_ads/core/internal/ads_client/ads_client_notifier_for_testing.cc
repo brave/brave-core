@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "url/gurl.h"
