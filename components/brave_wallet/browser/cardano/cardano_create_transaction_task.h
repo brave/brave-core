@@ -50,12 +50,12 @@ class CardanoCreateTransactionTask {
   CardanoTransaction::TxOutput CreateTargetOutput();
   CardanoTransaction::TxOutput CreateChangeOutput();
 
-  void ScheduleWorkOnTask();
-
   cardano_rpc::CardanoRpc* GetCardanoRpc();
 
-  void WorkOnTask();
+  void FetchAllRequiredData();
+
   void StopWithError(std::string error_string);
+  void StopWithResult(CardanoTransaction result);
 
   void OnGetLatestEpochParameters(base::expected<cardano_rpc::EpochParameters,
                                                  std::string> epoch_parameters);
@@ -63,6 +63,9 @@ class CardanoCreateTransactionTask {
   void OnGetUtxos(base::expected<UtxoMap, std::string> utxos);
   void OnDiscoverNextUnusedChangeAddress(
       base::expected<mojom::CardanoAddressPtr, std::string> address);
+  bool IsAllRequiredDataFetched();
+  void OnMaybeAllRequiredDataFetched();
+  void RunSolverForTransaction();
 
   const raw_ref<CardanoWalletService> cardano_wallet_service_;
   mojom::AccountIdPtr account_id_;
@@ -74,8 +77,6 @@ class CardanoCreateTransactionTask {
 
   std::optional<cardano_rpc::EpochParameters> latest_epoch_parameters_;
   std::optional<cardano_rpc::Block> latest_block_;
-
-  bool has_solved_transaction_ = false;
   std::optional<std::map<CardanoAddress, cardano_rpc::UnspentOutputs>>
       utxo_map_;
   Callback callback_;
