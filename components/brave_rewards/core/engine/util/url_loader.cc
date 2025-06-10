@@ -8,6 +8,7 @@
 #include <array>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/engine/initialization_manager.h"
 #include "brave/components/brave_rewards/core/engine/util/callback_helpers.h"

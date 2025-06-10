@@ -7,6 +7,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"

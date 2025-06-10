@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/engine/database/database_activity_info.h"

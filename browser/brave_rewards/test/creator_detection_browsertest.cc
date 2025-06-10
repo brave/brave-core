@@ -8,6 +8,7 @@
 #include <string_view>
 #include <tuple>
 
+#include "base/check.h"
 #include "base/memory/raw_ref.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"

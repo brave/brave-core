@@ -9,6 +9,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"

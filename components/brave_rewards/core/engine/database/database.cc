@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/logging.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
