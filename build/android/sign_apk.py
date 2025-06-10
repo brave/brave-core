@@ -9,6 +9,7 @@ import sys
 import subprocess
 import tempfile
 
+
 def main():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument('zipalign_path')
@@ -24,15 +25,15 @@ def main():
     argument_parser.add_argument('--pkcs11-alias', help='PKCS11 key alias')
     args = argument_parser.parse_args()
 
-    sign(args.zipalign_path, args.apksigner_path, args.jarsigner_path, \
-        args.unsigned_apk_paths, args.key_path, args.key_passwd, \
-        args.prvt_key_passwd, args.key_name, args.pkcs11_provider, \
-        args.pkcs11_alias)
+    sign(args.zipalign_path, args.apksigner_path, args.jarsigner_path,
+         args.unsigned_apk_paths, args.key_path, args.key_passwd,
+         args.prvt_key_passwd, args.key_name, args.pkcs11_provider,
+         args.pkcs11_alias)
 
 
-def sign(zipalign_path, apksigner_path, jarsigner_path, \
-    unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd, \
-    key_name, pkcs11_provider=None, pkcs11_alias=None):
+def sign(zipalign_path, apksigner_path, jarsigner_path,
+         unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd,
+         key_name, pkcs11_provider=None, pkcs11_alias=None):
     print(
         f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
 
@@ -65,8 +66,7 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                     if not os.path.exists(pkcs11_provider):
                         raise FileNotFoundError(
                             f"PKCS11 provider config file not found: "
-                            f"{pkcs11_provider}"
-                        )
+                            f"{pkcs11_provider}")
                     cmd_args = [
                         jarsigner_path, '-verbose', '-keystore', 'NONE',
                         '-storetype', 'PKCS11', '-providerClass',
@@ -86,9 +86,9 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                     ]
             try:
                 subprocess.run(cmd_args,
-                                        capture_output=True,
-                                        text=True,
-                                        check=True)
+                               capture_output=True,
+                               text=True,
+                               check=True)
                 print(f"Successfully signed: {unsigned_apk_path}")
             except subprocess.CalledProcessError as e:
                 print(f"ERROR: Signing failed for {unsigned_apk_path}")
@@ -99,6 +99,7 @@ def sign(zipalign_path, apksigner_path, jarsigner_path, \
                 raise
 
     print("APK signing process completed")
+
 
 if __name__ == '__main__':
     sys.exit(main())
