@@ -31,36 +31,38 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
 
   ~EligibleNewTabPageAdsV2() override;
 
-  void GetForUserModel(
-      UserModelInfo user_model,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
+  void GetForUserModel(UserModelInfo user_model,
+                       EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList>
+                           callback) override;
 
  private:
   void GetForUserModelCallback(
       UserModelInfo user_model,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
-  void GetSiteHistory(UserModelInfo user_model,
-                      const AdEventList& ad_events,
-                      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetSiteHistory(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback);
   void GetSiteHistoryCallback(
       UserModelInfo user_model,
       const AdEventList& ad_events,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
       uint64_t trace_id,
       const SiteHistoryList& site_history);
 
-  void GetEligibleAds(UserModelInfo user_model,
-                      const AdEventList& ad_events,
-                      const SiteHistoryList& site_history,
-                      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetEligibleAds(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      const SiteHistoryList& site_history,
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
@@ -72,7 +74,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       const CreativeNewTabPageAdList& creative_ads,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      EligibleAdsCallbackDeprecated<CreativeNewTabPageAdList> callback);
   void FilterIneligibleCreativeAds(CreativeNewTabPageAdList& creative_ads,
                                    const AdEventList& ad_events,
                                    const SiteHistoryList& site_history);

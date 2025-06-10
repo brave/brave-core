@@ -31,36 +31,38 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
 
   ~EligibleNotificationAdsV2() override;
 
-  void GetForUserModel(
-      UserModelInfo user_model,
-      EligibleAdsCallback<CreativeNotificationAdList> callback) override;
+  void GetForUserModel(UserModelInfo user_model,
+                       EligibleAdsCallbackDeprecated<CreativeNotificationAdList>
+                           callback) override;
 
  private:
   void GetForUserModelCallback(
       UserModelInfo user_model,
-      EligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
-  void GetSiteHistory(UserModelInfo user_model,
-                      const AdEventList& ad_events,
-                      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetSiteHistory(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback);
   void GetSiteHistoryCallback(
       UserModelInfo user_model,
       const AdEventList& ad_events,
-      EligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
       uint64_t trace_id,
       const SiteHistoryList& site_history);
 
-  void GetEligibleAds(UserModelInfo user_model,
-                      const AdEventList& ad_events,
-                      const SiteHistoryList& site_history,
-                      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetEligibleAds(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      const SiteHistoryList& site_history,
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
@@ -70,7 +72,7 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
       const CreativeNotificationAdList& creative_ads,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNotificationAdList> callback);
+      EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback);
   void FilterIneligibleCreativeAds(CreativeNotificationAdList& creative_ads,
                                    const AdEventList& ad_events,
                                    const SiteHistoryList& site_history);
