@@ -11,6 +11,8 @@
 namespace p3a {
 namespace features {
 
+// See https://github.com/brave/brave-browser/issues/31718 for more info.
+BASE_DECLARE_FEATURE(kConstellationEnclaveAttestation);
 
 // See https://github.com/brave/brave-browser/issues/35841 for more info.
 BASE_DECLARE_FEATURE(kNebula);

@@ -322,8 +322,4 @@ void P3AService::HandleHistogramChange(std::string_view histogram_name,
   message_manager_->UpdateMetricValue(histogram_name, bucket);
 }
 
-void P3AService::DisableStarAttestationForTesting() {
-  config_.disable_star_attestation = true;
-}
-
 }  // namespace p3a
