@@ -7,11 +7,13 @@
 
 #include <memory>
 
-#include "base/check.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "base/check.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
@@ -37,20 +39,6 @@ class BraveAccountDialogs : public ui::WebDialogDelegate {
 
 }  // namespace
 
-BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
-    : ConstrainedWebDialogUI(web_ui),
-      BraveAccountDialogsUIBase(Profile::FromWebUI(web_ui)) {}
-
-WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
-
-BraveAccountDialogsUIConfig::BraveAccountDialogsUIConfig()
-    : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountDialogsHost) {}
-
-bool BraveAccountDialogsUIConfig::IsWebUIEnabled(
-    content::BrowserContext* browser_context) {
-  return true;
-}
-
 void ShowBraveAccountDialogs(content::WebUI* web_ui) {
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui), std::make_unique<BraveAccountDialogs>(),
@@ -66,4 +54,19 @@ void ShowBraveAccountDialogs(content::WebUI* web_ui) {
   if (auto* layer = widget->GetLayer()) {
     layer->SetRoundedCornerRadius(gfx::RoundedCornersF(kDialogBorderRadius));
   }
+}
+#endif
+
+BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
+    : ConstrainedWebDialogUI(web_ui),
+      BraveAccountDialogsUIBase(Profile::FromWebUI(web_ui)) {}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
+
+BraveAccountDialogsUIConfig::BraveAccountDialogsUIConfig()
+    : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountDialogsHost) {}
+
+bool BraveAccountDialogsUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return true;
 }

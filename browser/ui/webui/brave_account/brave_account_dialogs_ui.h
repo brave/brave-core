@@ -36,6 +36,8 @@ class BraveAccountDialogsUIConfig
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
+#if !BUILDFLAG(IS_ANDROID)
 void ShowBraveAccountDialogs(content::WebUI* web_ui);
+#endif
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_H_

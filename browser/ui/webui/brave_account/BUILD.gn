@@ -10,17 +10,22 @@ source_set("brave_account") {
   ]
 
   deps = [
-    "//base",
     "//brave/components/brave_account",
     "//brave/components/constants",
     "//chrome/browser/profiles",
     "//chrome/browser/ui/webui",
     "//content/public/browser",
     "//content/public/common",
-    "//ui/compositor",
-    "//ui/gfx/geometry",
-    "//ui/views",
-    "//ui/web_dialogs",
-    "//url",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//base",
+      "//ui/compositor",
+      "//ui/gfx/geometry",
+      "//ui/views",
+      "//ui/web_dialogs",
+      "//url",
+    ]
+  }
 }
