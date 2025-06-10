@@ -178,7 +178,7 @@ export default function FeatureMenu(props: Props) {
           >
             <Icon name='lock-open' />
             <span className={styles.menuText}>
-              {getLocale('menuGoPremium')}
+              {getLocale(S.AI_CHAT_MENU_GO_PREMIUM)}
             </span>
           </div>
         </leo-menu-item>
