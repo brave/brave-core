@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/core/engine/util/request_signer.h"
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "crypto/sha2.h"
 #include "url/gurl.h"

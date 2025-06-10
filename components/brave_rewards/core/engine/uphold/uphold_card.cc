@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_rewards/core/engine/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 

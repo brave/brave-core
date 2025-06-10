@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_rewards/core/engine/rewards_engine_helper.h"
 
+#include "base/check.h"
+
 namespace brave_rewards::internal {
 
 RewardsEngineHelper::~RewardsEngineHelper() = default;

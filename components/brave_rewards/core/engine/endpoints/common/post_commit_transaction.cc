@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/check.h"
+
 namespace brave_rewards::internal::endpoints {
 PostCommitTransaction::PostCommitTransaction(
     RewardsEngine& engine,

@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/dcheck_is_on.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"

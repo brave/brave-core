@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 
+#include "base/check.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
 
 namespace brave_rewards::internal {

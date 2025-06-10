@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 
 namespace brave_rewards {

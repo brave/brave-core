@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"

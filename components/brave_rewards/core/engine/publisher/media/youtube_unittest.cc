@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/dcheck_is_on.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"

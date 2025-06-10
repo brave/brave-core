@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
