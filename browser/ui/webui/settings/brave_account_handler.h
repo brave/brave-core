@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_account/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 

@@ -314,7 +314,7 @@ source_set("ui") {
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:split_view",
       "//brave/common",
-      "//brave/components/brave_account:mojom",
+      "//brave/components/brave_account/mojom",
       "//brave/components/constants",
       "//brave/components/email_aliases:features",
       "//brave/components/misc_metrics",

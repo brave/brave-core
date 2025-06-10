@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//mojo/public/tools/bindings/mojom.gni")
-
 source_set("brave_account") {
   sources = [ "brave_account_dialogs_ui_base.h" ]
 
@@ -19,13 +17,4 @@ source_set("brave_account") {
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
   ]
-}
-
-mojom("mojom") {
-  assert(
-      !is_android && !is_ios,
-      "Mobile platforms should load the WebUI by navigating to it in a browser tab!")
-
-  sources = [ "brave_account.mojom" ]
-  webui_module_path = "/"
 }
