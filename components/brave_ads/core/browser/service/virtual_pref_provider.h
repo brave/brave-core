@@ -35,10 +35,11 @@ class VirtualPrefProvider final {
 
   ~VirtualPrefProvider();
 
-  base::Value::Dict GetPrefs();
+  base::Value::Dict GetPrefs() const;
 
  private:
-  const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> local_state_;  // Not owned.
+
   const std::unique_ptr<Delegate> delegate_;
 };
 

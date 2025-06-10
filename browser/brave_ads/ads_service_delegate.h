@@ -63,7 +63,7 @@ class AdsServiceDelegate : public AdsService::Delegate {
   NotificationDisplayService* GetNotificationDisplayService();
 
   const raw_ref<Profile> profile_;
-  const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
+  const raw_ptr<PrefService> local_state_;  // Not owned.
   const raw_ref<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_;
   std::unique_ptr<NotificationAdPlatformBridge>
