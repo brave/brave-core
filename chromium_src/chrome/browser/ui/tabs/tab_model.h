@@ -9,7 +9,6 @@
 #include "components/tabs/public/tab_interface.h"
 
 // Extends to support getter and setter for partitioned tabs.
-#if !BUILDFLAG(IS_ANDROID)
 #define IsActivated                                                     \
   IsPartitionedTab() const override;                                    \
   void SetPartitionedTabVisualData(                                     \
@@ -22,9 +21,6 @@
                                                                         \
  public:                                                                \
   bool IsActivated
-#else
-#define IsActivated IsActivated
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include "src/chrome/browser/ui/tabs/tab_model.h"  // IWYU pragma: export
 

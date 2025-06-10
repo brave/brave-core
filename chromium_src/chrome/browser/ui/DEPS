@@ -5,7 +5,6 @@ include_rules += [
   "+brave/components/brave_webtorrent/browser",
   "+brave/components/commander/common",
   "+brave/components/constants",
-  "+brave/components/containers/core/common",
   "+brave/components/tabs",
   "+brave/components/vector_icons",
 ]

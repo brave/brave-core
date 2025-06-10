@@ -8,16 +8,12 @@
 
 #include "brave/components/tabs/public/partitioned_tab_visual_data.h"
 
-#if !BUILDFLAG(IS_ANDROID)
 // Extend the TabInterface to include partitioned tab functionality.
 #define IsActivated                               \
   IsPartitionedTab() const = 0;                   \
   virtual std::optional<PartitionedTabVisualData> \
   GetPartitionedTabVisualData() const = 0;        \
   virtual bool IsActivated
-#else
-#define IsActivated IsActivated
-#endif
 
 #include "src/components/tabs/public/tab_interface.h"  // IWYU pragma: export
 
