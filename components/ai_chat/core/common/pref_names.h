@@ -95,6 +95,8 @@ inline constexpr char kBraveAIChatContextMenuEnabled[] =
 // Indicates whether a toolbar button can be shown on a normal browser UI
 inline constexpr char kBraveAIChatShowToolbarButton[] =
     "brave.ai_chat.show_toolbar_button";
+inline constexpr char kBraveAIChatOpenInFullPageFromToolbarButton[] =
+    "brave.ai_chat.open_in_full_page_from_toolbar_button";
 
 // Used to indicate whether the feature is enabled by group policy.
 inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";

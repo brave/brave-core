@@ -36,5 +36,6 @@ inline constexpr char kDevChannelDeprecationLearnMoreUrl[] =
     "Nightly-Beta-Release-";
 
 inline constexpr char kDownloadBraveUrl[] = "https://www.brave.com/download";
+inline constexpr char kAIChatAboutUrl[] = "https://brave.com/leo/";
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_URL_CONSTANTS_H_
