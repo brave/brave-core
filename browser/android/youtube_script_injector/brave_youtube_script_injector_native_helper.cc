@@ -28,11 +28,13 @@ constexpr char16_t kYoutubeFullscreen[] =
 
     // Check if the video is not in fullscreen mode already.
     if (!document.fullscreenElement) {
+      let observerTimeout;
       // Create a MutationObserver to watch for changes in the DOM.
       const observer = new MutationObserver((_mutationsList, observer) => {
         var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
         var videoPlayer = document.querySelector(videoPlaySelector);
         if (fullscreenBtn && videoPlayer) {
+          clearTimeout(observerTimeout);
           observer.disconnect()
           delayedPlayAndClick(fullscreenBtn, videoPlayer);
         }
@@ -48,6 +50,11 @@ constexpr char16_t kYoutubeFullscreen[] =
         // clicking the movie player resume the UI.
         var moviePlayer = document.getElementById("movie_player");
         if (moviePlayer) {
+          // Auto-disconnect the observer after 6 seconds,
+          // a reasonable duration picked after some testing.
+          observerTimeout = setTimeout(() => {
+            observer.disconnect();
+          }, 6000);
           // Start observing the DOM.
           observer.observe(document.body, { childList: true, subtree: false });
           // Make sure the player is in focus or responsive.
