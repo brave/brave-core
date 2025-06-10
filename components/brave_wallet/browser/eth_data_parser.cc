@@ -10,6 +10,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"

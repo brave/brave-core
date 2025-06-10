@@ -7,7 +7,9 @@
 #include <optional>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/logging.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"

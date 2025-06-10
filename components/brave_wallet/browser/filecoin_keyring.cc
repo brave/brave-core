@@ -10,10 +10,12 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/barrier_callback.h"
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/task/thread_pool.h"

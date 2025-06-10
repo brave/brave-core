@@ -5,7 +5,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "base/logging.h"
+#include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"

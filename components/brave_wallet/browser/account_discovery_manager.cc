@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"

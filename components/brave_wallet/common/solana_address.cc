@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"

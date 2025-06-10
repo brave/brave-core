@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <optional>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/common/solana_address.h"

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ref.h"

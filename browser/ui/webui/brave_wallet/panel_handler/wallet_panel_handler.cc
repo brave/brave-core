@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/callback.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"

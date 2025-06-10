@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"

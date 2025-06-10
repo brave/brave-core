@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"

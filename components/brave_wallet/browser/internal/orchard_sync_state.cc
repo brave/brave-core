@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/types/expected_macros.h"

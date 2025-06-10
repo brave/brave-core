@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/functional/bind.h"

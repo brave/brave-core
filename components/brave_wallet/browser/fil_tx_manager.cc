@@ -11,7 +11,10 @@
 #include <string>
 #include <utility>
 
-#include "base/notreached.h"
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/logging.h"
+#include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"

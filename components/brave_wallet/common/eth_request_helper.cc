@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"

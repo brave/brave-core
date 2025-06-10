@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/threading/scoped_blocking_call.h"

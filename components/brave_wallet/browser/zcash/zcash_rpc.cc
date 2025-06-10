@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"

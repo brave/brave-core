@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
 namespace brave_wallet {

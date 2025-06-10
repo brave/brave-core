@@ -7,6 +7,8 @@
 
 #include <variant>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"

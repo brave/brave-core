@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"

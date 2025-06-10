@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"

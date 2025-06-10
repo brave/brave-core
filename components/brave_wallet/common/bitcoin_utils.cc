@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"

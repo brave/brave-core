@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_scan_blocks_task.h"

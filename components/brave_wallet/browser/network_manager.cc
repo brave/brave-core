@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/extend.h"

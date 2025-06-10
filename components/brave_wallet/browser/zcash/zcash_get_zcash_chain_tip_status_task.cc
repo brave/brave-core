@@ -8,6 +8,8 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
+
 namespace brave_wallet {
 
 ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(

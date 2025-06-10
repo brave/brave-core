@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"

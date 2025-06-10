@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"

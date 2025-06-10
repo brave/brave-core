@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
