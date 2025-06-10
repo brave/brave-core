@@ -10,6 +10,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -1756,17 +1757,58 @@ inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
 
-std::optional<std::string> GetSardineNetworkName(std::string_view chain_id);
-const base::flat_map<std::string, std::string>&
-GetEthBalanceScannerContractAddresses();
-const std::vector<std::string>& GetEthSupportedNftInterfaces();
-// Returns the URL for the Ratios service.
-std::string GetAssetRatioBaseURL();
-const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
+inline constexpr auto kEthBalanceScannerContractAddresses =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>(
+        // Ref: https://github.com/brave/evm-scanner
+        {{mojom::kArbitrumMainnetChainId,
+          "0xfA542DD20c1997D6e8b24387D64CB8336197df3d"},
+         {mojom::kAvalancheMainnetChainId,
+          "0x827aa7e7C0C665df227Fae6dd155c0048fec6978"},
+         {mojom::kBaseMainnetChainId,
+          "0xF9164898C08f40DfB0999F94Bf9b9F73d66dfFeb"},
+         {mojom::kBnbSmartChainMainnetChainId,
+          "0x578E2574dDD2e609dDA7f6C8B2a90C540794B75e"},
+         {mojom::kMainnetChainId, "0x667e61DB0997B59681C15E07376185aE24f754Db"},
+         {mojom::kOptimismMainnetChainId,
+          "0x2D1AacdEcd43Be64d82c14E9a6072A29dc804cAe"},
+         {mojom::kPolygonMainnetChainId,
+          "0x0B7Dd2c628a6Ee40153D89ce68bdA82d4840CD34"}});
+
+// See https://api-docs.ankr.com/reference/post_ankr-getaccountbalance-1
+// for full list.
+inline constexpr auto kAnkrBlockchains =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>(
+        {{mojom::kArbitrumMainnetChainId, "arbitrum"},
+         {mojom::kAvalancheMainnetChainId, "avalanche"},
+         {mojom::kBaseMainnetChainId, "base"},
+         {mojom::kBnbSmartChainMainnetChainId, "bsc"},
+         {mojom::kMainnetChainId, "eth"},
+         {mojom::kFantomMainnetChainId, "fantom"},
+         {mojom::kFlareMainnetChainId, "flare"},
+         {mojom::kGnosisChainId, "gnosis"},
+         {mojom::kOptimismMainnetChainId, "optimism"},
+         {mojom::kPolygonMainnetChainId, "polygon"},
+         {mojom::kPolygonZKEVMChainId, "polygon_zkevm"},
+         {mojom::kRolluxMainnetChainId, "rollux"},
+         {mojom::kSyscoinMainnetChainId, "syscoin"},
+         {mojom::kZkSyncEraChainId, "zksync_era"}});
+
+inline constexpr auto kEthSupportedNftInterfaces =
+    std::to_array<std::string_view>({
+        kERC721InterfaceId,
+        kERC1155InterfaceId,
+    });
+
 // https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
 inline constexpr int kSolanaValidBlockHeightThreshold = 150;
 
-std::optional<std::string> GetZeroExAllowanceHolderAddress(
+std::optional<std::string_view> GetSardineNetworkName(
+    std::string_view chain_id);
+
+// Returns the URL for the Ratios service.
+std::string GetAssetRatioBaseURL();
+
+std::optional<std::string_view> GetZeroExAllowanceHolderAddress(
     std::string_view chain_id);
 
 }  // namespace brave_wallet

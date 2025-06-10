@@ -358,12 +358,11 @@ bool BraveWalletService::AddUserAssetInternal(mojom::BlockchainTokenPtr token) {
 
 void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
                                       AddUserAssetCallback callback) {
-  const auto& interfaces_to_check = GetEthSupportedNftInterfaces();
   if (token->is_nft && token->coin == mojom::CoinType::ETH) {
     const std::string contract_address = token->contract_address;
     const std::string chain_id = token->chain_id;
     json_rpc_service_->GetEthNftStandard(
-        contract_address, chain_id, interfaces_to_check,
+        contract_address, chain_id, kEthSupportedNftInterfaces,
         base::BindOnce(&BraveWalletService::OnGetEthNftStandard,
                        weak_ptr_factory_.GetWeakPtr(), std::move(token),
                        std::move(callback)));
@@ -1627,11 +1626,9 @@ void BraveWalletService::SetPrivateWindowsEnabled(bool enabled) {
 
 void BraveWalletService::GetBalanceScannerSupportedChains(
     GetBalanceScannerSupportedChainsCallback callback) {
-  const auto& contract_addresses = GetEthBalanceScannerContractAddresses();
-
   std::vector<std::string> chain_ids;
-  for (const auto& entry : contract_addresses) {
-    chain_ids.push_back(entry.first);
+  for (const auto& entry : kEthBalanceScannerContractAddresses) {
+    chain_ids.push_back(std::string(entry.first));
   }
 
   std::move(callback).Run(chain_ids);
@@ -1879,11 +1876,9 @@ void BraveWalletService::DiscoverEthAllowances(
 
 void BraveWalletService::GetAnkrSupportedChainIds(
     GetAnkrSupportedChainIdsCallback callback) {
-  const auto& blockchains = GetAnkrBlockchains();
-
   std::vector<std::string> chain_ids;
-  for (const auto& entry : blockchains) {
-    chain_ids.push_back(entry.first);
+  for (const auto& entry : kAnkrBlockchains) {
+    chain_ids.push_back(std::string(entry.first));
   }
 
   std::move(callback).Run(std::move(chain_ids));

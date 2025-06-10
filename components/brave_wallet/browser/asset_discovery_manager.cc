@@ -101,9 +101,9 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
 std::vector<mojom::ChainIdPtr>
 AssetDiscoveryManager::GetFungibleSupportedChains() {
   std::vector<mojom::ChainIdPtr> supported_chains;
-  for (const auto& entry : GetEthBalanceScannerContractAddresses()) {
+  for (const auto& entry : kEthBalanceScannerContractAddresses) {
     supported_chains.push_back(
-        mojom::ChainId::New(mojom::CoinType::ETH, entry.first));
+        mojom::ChainId::New(mojom::CoinType::ETH, std::string(entry.first)));
   }
 
   supported_chains.push_back(
