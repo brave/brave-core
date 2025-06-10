@@ -50,6 +50,8 @@ void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
         c = std::move(container);
         break;
       }
+      // If the container is not found, it means it was deleted. Update should
+      // never add a new container.
     }
   }
 
@@ -72,6 +74,8 @@ void SettingsPageHandler::OnContainerDataRemoved(
   auto containers = GetContainersFromPrefs(*prefs_);
   std::erase_if(containers, [id](const auto& c) { return c->id == id; });
   SetContainersToPrefs(std::move(containers), *prefs_);
+  // TODO(https://github.com/brave/brave-browser/issues/46352): Replace with a
+  // sync call. For now we simulate async data removal.
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, std::move(callback), base::Seconds(5));
 }
