@@ -37,6 +37,52 @@ constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
     0xc7, 0x02, 0x03, 0x01, 0x00, 0x01};
 }  // namespace
 
+/*
+  It's a trick to reimplement VerifiedContents::Create(...) function without
+  creating the git patch.
+
+  Original code:
+
+  ```
+  std::unique_ptr<VerifiedContents> VerifiedContents::Create(
+    base::span<const uint8_t> public_key,
+    std::string_view contents) {
+  // Note: VerifiedContents constructor is private.
+  auto verified_contents = base::WrapUnique(new VerifiedContents(public_key));
+  std::string payload;
+  if (!verified_contents->GetPayload(contents, &payload))
+  ```
+
+  Modified:
+
+  ```
+  std::unique_ptr<VerifiedContents> VerifiedContents::Create(
+    base::span<const uint8_t> public_key,
+    std::string_view contents) {
+  // Note: VerifiedContents constructor is private.
+  auto verified_contents = base::WrapUnique(
+      Create_ChromiumImpl(new VerifiedContents(public_key), contents)
+          .release());
+   if (verified_contents) {
+     // OK, |contents| signed by |public_key|. Use it.
+     return verified_contents;
+   }
+   // Trying Brave's key.
+   return Create_ChromiumImpl(
+      new VerifiedContents(kBraveVerifiedContentsPublicKey), contents);
+  }
+
+  // Checks whether the public key contained in |vc| is suitable for |contents|.
+  std ::unique_ptr<VerifiedContents> VerifiedContents ::Create_ChromiumImpl(
+    VerifiedContents* vc,
+    std ::string_view contents) {
+  std ::unique_ptr<VerifiedContents> verified_contents(vc);
+  std::string payload;
+  if (!verified_contents->GetPayload(contents, &payload))
+
+  ```
+*/
+
 #define WrapUnique(...)                                                    \
   WrapUnique(Create_ChromiumImpl(__VA_ARGS__, contents).release());        \
   if (verified_contents) {                                                 \
