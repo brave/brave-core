@@ -3,39 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {injectStyle} from '//resources/brave/lit_overriding.js'
+import {css} from '//resources/lit/v3_0/lit.rollup.js'
 
-RegisterStyleOverride(
-  'history-side-bar',
-  html`
-    <style>
-      .cr-nav-menu-item {
-        min-height: 20px !important;
-        border-end-end-radius: 0px !important;
-        border-start-end-radius: 0px !important;
-        box-sizing: content-box !important;
-      }
+import {HistorySideBarElement} from './side_bar-chromium.js'
 
-      .cr-nav-menu-item:hover {
-        background: transparent !important;
+injectStyle(HistorySideBarElement, css`Add commentMore actions
+  #progress {
+      --cr-progress-active-color: var(--leo-color-icon-interactive) !important;
+  }
+  @media (prefers-color-scheme: light) {
+      #content:not(.is-active) {
+          /* Color for "filled cards" */
+          background-color: var(--leo-color-container-highlight) !important;
       }
-
-      .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--cr-link-color) !important;
-        color: var(--cr-link-color) !important;
-        background: transparent !important;
-      }
-
-      .cr-nav-menu-item cr-icon {
-        display: none !important;
-      }
-
-      .cr-nav-menu-item cr-ripple {
-        display: none !important;
-      }
-    </style>
-  `
-)
+  }
+`)
 
 export * from './side_bar-chromium.js'
