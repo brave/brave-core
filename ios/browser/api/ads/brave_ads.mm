@@ -160,7 +160,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     ProfileIOS* profile = [self getLastUsedProfile];
     CHECK(profile);
     virtualPrefProvider = std::make_unique<brave_ads::VirtualPrefProvider>(
-        self.localStatePrefService,
+        self.profilePrefService, self.localStatePrefService,
         std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
   }
   return self;

@@ -20,6 +20,7 @@ source_set("service") {
     "//base",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/keyed_service/core",
     "//components/prefs",
