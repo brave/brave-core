@@ -31,9 +31,16 @@ def main():
          args.pkcs11_alias)
 
 
-def sign(zipalign_path, apksigner_path, jarsigner_path,
-         unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd,
-         key_name, pkcs11_provider=None, pkcs11_alias=None):
+def sign(zipalign_path,
+         apksigner_path,
+         jarsigner_path,
+         unsigned_apk_paths,
+         key_path,
+         key_passwd,
+         prvt_key_passwd,
+         key_name,
+         pkcs11_provider=None,
+         pkcs11_alias=None):
     print(
         f"Starting APK signing process for {len(unsigned_apk_paths)} file(s)")
 
