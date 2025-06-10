@@ -9,7 +9,7 @@ import {
   BraveWallet,
   HardwareWalletResponseCodeType,
   PanelTypes,
-  TransactionInfoLookup
+  TransactionInfoLookup,
 } from '../../constants/types'
 
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
@@ -27,5 +27,5 @@ export const setSelectedTransactionId = createAction<
   TransactionInfoLookup | undefined
 >('setSelectedTransactionId')
 export const setCloseOnDeactivate = createAction<boolean>(
-  'setCloseOnDeactivate'
+  'setCloseOnDeactivate',
 )
