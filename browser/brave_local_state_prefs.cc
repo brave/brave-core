@@ -37,7 +37,6 @@
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/rotation_scheduler.h"
-#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -98,7 +97,6 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
-  p3a::StarRandomnessMeta::RegisterPrefsForMigration(registry);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
   ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefsForMigration(

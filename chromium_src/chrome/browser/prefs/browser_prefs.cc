@@ -32,7 +32,6 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/rotation_scheduler.h"
-#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
@@ -230,7 +229,6 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
-  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(local_state);
   ntp_background_images::NTPP3AHelperImpl::MigrateObsoleteLocalStatePrefs(
