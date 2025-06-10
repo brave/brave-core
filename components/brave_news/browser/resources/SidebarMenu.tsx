@@ -5,8 +5,8 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import FeedNavigation from '../../../../brave_news/browser/resources/FeedNavigation';
-import SettingsButton from '../../../../brave_news/browser/resources/SettingsButton';
+import FeedNavigation from './FeedNavigation';
+import SettingsButton from './SettingsButton';
 import Icon from '@brave/leo/react/icon';
 
 const Container = styled.dialog`
