@@ -6,10 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_HANDLER_H_
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
+class Browser;
 class TopChromeWebUIController;
 
 namespace content {
@@ -23,6 +25,7 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   ShieldsPanelHandler(
       mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
       TopChromeWebUIController* webui_controller,
+      base::WeakPtr<Browser> browser,
       Profile* profile);
 
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
@@ -39,6 +42,7 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;
   raw_ptr<TopChromeWebUIController> const webui_controller_;
+  base::WeakPtr<Browser> browser_;
   raw_ptr<Profile> profile_ = nullptr;
 };
 
