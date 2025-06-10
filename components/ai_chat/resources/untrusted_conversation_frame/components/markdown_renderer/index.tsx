@@ -7,7 +7,7 @@ import * as React from 'react'
 import Markdown from 'react-markdown'
 import type { Root, Element as HastElement } from 'hast'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
-
+import Label from '@brave/leo/react/label'
 import { visit } from 'unist-util-visit'
 
 import styles from './style.module.scss'
@@ -15,10 +15,6 @@ import CaretSVG from '../svg/caret'
 import {
   useUntrustedConversationContext //
 } from '../../untrusted_conversation_context'
-
-const removeReasoning = (text: string) => {
-  return text.includes('<think>') ? text.split('</think>')[1] : text
-}
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block
@@ -115,14 +111,31 @@ export function RenderLink(props: RenderLinkProps) {
 
   const isCitation = typeof children === 'string' && /^\d+$/.test(children)
 
+  if (isCitation) {
+    return (
+      <Label>
+        <a
+          // While we preventDefault, we still need to pass the href
+          // here so we can continue to show link previews.
+          href={href}
+          className={styles.citation}
+          onClick={(e) => {
+            e.preventDefault()
+            handleLinkClicked()
+          }}
+        >
+          {children}
+        </a>
+      </Label>
+    )
+  }
+
   return (
     <a
       // While we preventDefault, we still need to pass the href
       // here so we can continue to show link previews.
       href={href}
-      className={`${styles.conversationLink}${
-        isCitation ? ` ${styles.citation}` : ''
-      }`}
+      className={styles.conversationLink}
       onClick={(e) => {
         e.preventDefault()
         handleLinkClicked()
@@ -169,7 +182,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         // if the component is allowed to show the text cursor.
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
         unwrapDisallowed={true}
-        children={removeReasoning(mainProps.text)}
+        children={mainProps.text}
         components={{
           p: (props) => (
             <CursorDecorator
