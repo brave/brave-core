@@ -147,7 +147,11 @@ repack("resources") {
 brave_grit("strings") {
   source = "brave_components_strings.grd"
 
-  outputs = [ "grit/brave_components_strings.h" ]
+  outputs = [
+    "grit/brave_components_strings.h",
+    "grit/brave_components_webui_strings.h",
+    "grit/brave_components_webui_strings.ts",
+  ]
 
   defines = [
     "enable_speedreader=$enable_speedreader",
