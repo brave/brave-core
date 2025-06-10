@@ -31,13 +31,13 @@ SettingsPageHandler::SettingsPageHandler(
 SettingsPageHandler::~SettingsPageHandler() {}
 
 void SettingsPageHandler::GetContainers(GetContainersCallback callback) {
-  std::move(callback).Run(GetContainerList(*prefs_));
+  std::move(callback).Run(GetContainersFromPrefs(*prefs_));
 }
 
 void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
   CHECK(!container->name.empty());
 
-  auto containers = GetContainerList(*prefs_);
+  auto containers = GetContainersFromPrefs(*prefs_);
 
   if (container->id.empty()) {
     // Create a new container if it doesn't have an ID.
@@ -53,7 +53,7 @@ void SettingsPageHandler::AddOrUpdateContainer(mojom::ContainerPtr container) {
     }
   }
 
-  SetContainerList(std::move(containers), *prefs_);
+  SetContainersToPrefs(std::move(containers), *prefs_);
 }
 
 void SettingsPageHandler::RemoveContainer(const std::string& id,
@@ -69,16 +69,16 @@ void SettingsPageHandler::OnContainerDataRemoved(
     const std::string& id,
     RemoveContainerCallback callback) {
   // Update container list only after data cleanup is complete.
-  auto containers = GetContainerList(*prefs_);
+  auto containers = GetContainersFromPrefs(*prefs_);
   std::erase_if(containers, [id](const auto& c) { return c->id == id; });
-  SetContainerList(std::move(containers), *prefs_);
+  SetContainersToPrefs(std::move(containers), *prefs_);
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, std::move(callback), base::Seconds(5));
 }
 
 void SettingsPageHandler::OnContainersChanged() {
   // Notify WebUI about container list changes (from this window or others).
-  page_->OnContainersChanged(GetContainerList(*prefs_));
+  page_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
 }
 
 }  // namespace containers

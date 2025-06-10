@@ -176,7 +176,7 @@ TEST_F(ContainersSettingsPageHandlerTest, ExternalContainerChanges) {
   // Simulate external change to container list
   std::vector<mojom::ContainerPtr> containers;
   containers.push_back(mojom::Container::New("test-id", "Test Container"));
-  SetContainerList(containers, prefs_);
+  SetContainersToPrefs(containers, prefs_);
 
   EXPECT_EQ(1, mock_page_->containers_changed_count());
   ASSERT_EQ(1u, mock_page_->last_containers().size());

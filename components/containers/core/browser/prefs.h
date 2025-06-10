@@ -22,11 +22,12 @@ namespace containers {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 // Returns the list of containers stored in preferences.
-std::vector<mojom::ContainerPtr> GetContainerList(const PrefService& prefs);
+std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
+    const PrefService& prefs);
 
 // Stores the provided list of containers in preferences.
-void SetContainerList(const std::vector<mojom::ContainerPtr>& containers,
-                      PrefService& prefs);
+void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
+                          PrefService& prefs);
 
 }  // namespace containers
 
