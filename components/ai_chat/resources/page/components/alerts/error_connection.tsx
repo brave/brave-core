@@ -19,13 +19,13 @@ function ErrorConnection (props: PromptAutoSuggestionProps) {
       <Alert
         type='error'
       >
-        {getLocale('errorNetworkLabel')}
+        {getLocale(S.CHAT_UI_ERROR_NETWORK)}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+            {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
         </Button>
       </Alert>
     </div>

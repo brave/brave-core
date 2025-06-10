@@ -49,7 +49,7 @@ export default function RateMessagePrivacyModal() {
         slot='title'
         className={styles.dialogTitle}
       >
-        {getLocale('rateMessagePrivacyModalTitle')}
+        {getLocale(S.CHAT_UI_PRIVACY_TITLE)}
       </div>
       <div className={styles.description}>
         <span>
@@ -83,14 +83,14 @@ export default function RateMessagePrivacyModal() {
               conversationContext.handleCloseRateMessagePrivacyModal()
             }
           >
-            {getLocale('cancelButtonLabel')}
+            {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
             kind='filled'
             size='medium'
             onClick={onClickSend}
           >
-            {getLocale('sendButtonLabel')}
+            {getLocale(S.CHAT_UI_SEND_BUTTON_LABEL)}
           </Button>
         </div>
       </div>
