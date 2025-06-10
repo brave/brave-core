@@ -24,6 +24,7 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit DecentralizedDnsNavigationThrottle(
       content::NavigationHandle* navigation_handle,
+      PrefService* user_prefs,
       PrefService* local_state,
       const std::string& locale);
   ~DecentralizedDnsNavigationThrottle() override;
@@ -35,6 +36,7 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
 
   static std::unique_ptr<DecentralizedDnsNavigationThrottle>
   MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
+                         PrefService* user_prefs,
                          PrefService* local_state,
                          const std::string& locale);
 
