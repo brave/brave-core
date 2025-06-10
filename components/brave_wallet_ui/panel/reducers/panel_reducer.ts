@@ -11,7 +11,7 @@ import {
   HardwareWalletResponseCodeType,
   PanelState,
   PanelTypes,
-  TransactionInfoLookup
+  TransactionInfoLookup,
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import { ShowConnectToSitePayload } from '../constants/action_types'
@@ -24,11 +24,11 @@ import { isValidPanelNavigationOption } from '../../options/nav-options'
 
 const defaultOriginInfo: BraveWallet.OriginInfo = {
   originSpec: '',
-  eTldPlusOne: ''
+  eTldPlusOne: '',
 }
 
 const persistedSelectedPanelType = window.localStorage.getItem(
-  LOCAL_STORAGE_KEYS.CURRENT_PANEL
+  LOCAL_STORAGE_KEYS.CURRENT_PANEL,
 ) as PanelTypes
 const selectedPanel = isValidPanelNavigationOption(persistedSelectedPanelType)
   ? persistedSelectedPanelType
@@ -40,7 +40,7 @@ const defaultState: PanelState = {
   selectedPanel,
   connectingAccounts: [],
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined
+  selectedTransactionId: undefined,
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -50,9 +50,9 @@ export const createPanelReducer = (initialState: PanelState) => {
     (state: PanelState, selectedPanel: PanelTypes) => {
       return {
         ...state,
-        selectedPanel
+        selectedPanel,
       }
-    }
+    },
   )
 
   reducer.on(
@@ -61,9 +61,9 @@ export const createPanelReducer = (initialState: PanelState) => {
       return {
         ...state,
         connectToSiteOrigin: payload.originInfo,
-        connectingAccounts: payload.accounts
+        connectingAccounts: payload.accounts,
       }
-    }
+    },
   )
 
   reducer.on(
@@ -71,22 +71,22 @@ export const createPanelReducer = (initialState: PanelState) => {
     (state: any, payload?: HardwareWalletResponseCodeType) => {
       return {
         ...state,
-        hardwareWalletCode: payload
+        hardwareWalletCode: payload,
       }
-    }
+    },
   )
 
   reducer.on(
     PanelActions.setSelectedTransactionId.type,
     (
       state: PanelState,
-      payload: TransactionInfoLookup | undefined
+      payload: TransactionInfoLookup | undefined,
     ): PanelState => {
       return {
         ...state,
-        selectedTransactionId: payload
+        selectedTransactionId: payload,
       }
-    }
+    },
   )
 
   return reducer

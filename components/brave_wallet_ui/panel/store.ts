@@ -26,7 +26,7 @@ import {
   makeKeyringServiceObserver,
   makeTxServiceObserver,
   makeBraveWalletServiceObserver,
-  makeBraveWalletServiceTokenObserver
+  makeBraveWalletServiceTokenObserver,
 } from '../common/wallet_api_proxy_observers'
 
 const store = configureStore({
@@ -36,18 +36,22 @@ const store = configureStore({
     accountsTab: accountsTabReducer,
     wallet: walletReducer,
     ui: uiReducer,
-    [walletApi.reducerPath]: walletApi.reducer
+    [walletApi.reducerPath]: walletApi.reducer,
   },
   preloadedState: {
     ui: {
       ...defaultUIState,
-      isPanel: true
-    }
+      isPanel: true,
+    },
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
-    }).concat(walletAsyncHandler, walletPanelAsyncHandler, walletApi.middleware)
+      serializableCheck: false,
+    }).concat(
+      walletAsyncHandler,
+      walletPanelAsyncHandler,
+      walletApi.middleware,
+    ),
 })
 
 export type RootStoreState = ReturnType<typeof store.getState>
@@ -58,7 +62,7 @@ proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
-  makeBraveWalletServiceTokenObserver(store)
+  makeBraveWalletServiceTokenObserver(store),
 )
 
 export const walletPanelApiProxy = proxy

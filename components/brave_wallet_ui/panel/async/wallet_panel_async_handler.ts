@@ -10,7 +10,7 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  PanelTypes
+  PanelTypes,
 } from '../../constants/types'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 import { cancelHardwareOperation } from '../../common/async/hardware'
@@ -38,7 +38,7 @@ handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
 
   await store.dispatch(PanelActions.navigateTo('main'))
   await store.dispatch(
-    PanelActions.setHardwareWalletInteractionError(undefined)
+    PanelActions.setHardwareWalletInteractionError(undefined),
   )
   apiProxy.panelHandler.setCloseOnDeactivate(true)
   apiProxy.panelHandler.showUI()
@@ -53,7 +53,7 @@ handler.on(
   async (store: Store, payload: PanelTypes) => {
     // navigating away from the current panel, store the last known location
     storeCurrentAndPreviousPanel(payload, store.getState().panel?.selectedPanel)
-  }
+  },
 )
 
 handler.on(
@@ -64,13 +64,13 @@ handler.on(
       // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
       await cancelHardwareOperation(
         payload.hardware.vendor,
-        payload.accountId.coin
+        payload.accountId.coin,
       )
     }
     // Navigating to main panel view will unmount ConnectHardwareWalletPanel
     // and therefore forfeit connecting to the hardware wallet.
     await store.dispatch(PanelActions.navigateToMain())
-  }
+  },
 )
 
 handler.on(
@@ -82,7 +82,7 @@ handler.on(
     await refreshWalletInfo(store)
     const apiProxy = getWalletPanelApiProxy()
     apiProxy.panelHandler.showUI()
-  }
+  },
 )
 
 handler.on(
@@ -91,14 +91,14 @@ handler.on(
     store.dispatch(PanelActions.navigateTo('connectWithSite'))
     const apiProxy = getWalletPanelApiProxy()
     apiProxy.panelHandler.showUI()
-  }
+  },
 )
 
 handler.on(
   PanelActions.setCloseOnDeactivate.type,
   async (store: Store, payload: boolean) => {
     getWalletPanelApiProxy().panelHandler.setCloseOnDeactivate(payload)
-  }
+  },
 )
 
 // Cross-slice action handlers
@@ -111,7 +111,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
   // Setup external events
   document.addEventListener('visibilitychange', () => {
     store.dispatch(
-      PanelActions.visibilityChanged(document.visibilityState === 'visible')
+      PanelActions.visibilityChanged(document.visibilityState === 'visible'),
     )
   })
 
@@ -124,7 +124,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
     const originInfo: BraveWallet.OriginInfo = {
       originSpec: originSpec,
-      eTldPlusOne: eTldPlusOne
+      eTldPlusOne: eTldPlusOne,
     }
 
     store.dispatch(PanelActions.showConnectToSite({ accounts, originInfo }))

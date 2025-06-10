@@ -12,19 +12,19 @@
   $Object.defineProperties(window.braveEthereum, {
     on: {
       value: BraveWeb3ProviderEventEmitter.on,
-      writable: false
+      writable: false,
     },
     emit: {
       value: BraveWeb3ProviderEventEmitter.emit,
-      writable: false
+      writable: false,
     },
     removeListener: {
       value: BraveWeb3ProviderEventEmitter.removeListener,
-      writable: false
+      writable: false,
     },
     removeAllListeners: {
       value: BraveWeb3ProviderEventEmitter.removeAllListeners,
-      writable: false
-    }
+      writable: false,
+    },
   })
 })()

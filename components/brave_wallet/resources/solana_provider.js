@@ -12,23 +12,23 @@
   $Object.defineProperties(window.braveSolana, {
     on: {
       value: SolanaEventEmitter.on,
-      writable: false
+      writable: false,
     },
     off: {
       value: SolanaEventEmitter.off,
-      writable: false
+      writable: false,
     },
     emit: {
       value: SolanaEventEmitter.emit,
-      writable: false
+      writable: false,
     },
     removeListener: {
       value: SolanaEventEmitter.removeListener,
-      writable: false
+      writable: false,
     },
     removeAllListeners: {
       value: SolanaEventEmitter.removeAllListeners,
-      writable: false
-    }
+      writable: false,
+    },
   })
 })()
