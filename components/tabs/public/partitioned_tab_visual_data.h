@@ -16,7 +16,7 @@ namespace tabs {
 // Represents the visual data for a partitioned tab in the tab strip.
 // There're two types of partition tabs:
 // 1. Container tabs
-// 2. Leo tabs
+// 2. AI chat tabs
 struct PartitionedTabVisualData final {
   SkColor background_color = SK_ColorTRANSPARENT;
   ui::ImageModel icon;
