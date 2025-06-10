@@ -19,7 +19,7 @@ namespace containers {
 
 // Handles container management operations from the settings page. This class
 // implements the mojom::SettingsPageHandler interface to process requests from
-// WebUI and manages container data persistence through prefs.
+// settings page and manages container data persistence through prefs.
 class SettingsPageHandler : public mojom::SettingsPageHandler {
  public:
   // Delegate interface for container data cleanup operations that need to be
