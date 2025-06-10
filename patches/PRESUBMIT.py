@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import chromium_presubmit_overrides
+import os
 
 PRESUBMIT_VERSION = '2.0.0'
 
@@ -45,4 +46,55 @@ def CheckPatchFile(input_api, output_api):
         output_api.PresubmitPromptWarning(
             'Patch should not add or remove empty lines at hunk boundaries',
             items)
+    ]
+
+
+def CheckPatchFileSource(input_api, output_api):
+    """Checks that the patchfile is patching the expected source."""
+    files_to_check = (r'.+\.patch$', )
+    files_to_skip = ()
+
+    file_filter = lambda f: input_api.FilterSourceFile(
+        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+
+    items = []
+    for f in input_api.AffectedSourceFiles(file_filter):
+        patch_filename = os.path.basename(f.LocalPath())
+        if not patch_filename.endswith('.patch'):
+            continue
+
+        contents = list(f.NewContents())
+        if not contents:
+            items.append(f'{f.LocalPath()}: empty patch file')
+            continue
+        first_line = contents[0].strip()
+        # Expecting: diff --git a/<path> b/<path>
+        if not first_line.startswith(
+                'diff --git a/') or ' b/' not in first_line:
+            items.append(
+                f'{f.LocalPath()}: first line does not contain a valid diff'
+                ' header.\n'
+                f'  Found:    {first_line}')
+            continue
+
+        try:
+            a_path = first_line.split('diff --git a/', 1)[1].split(' b/', 1)[0]
+        except Exception:
+            items.append(f'{f.LocalPath()}: failed to parse diff header.\n'
+                         f'  Found:    {first_line}')
+            continue
+
+        expected_patch_filename = a_path.replace('/', '-') + '.patch'
+        if patch_filename != expected_patch_filename:
+            items.append(
+                f'{f.LocalPath()}: patch filename does not match source file in'
+                ' diff header.\n'
+                f'  Expected: {expected_patch_filename}\n'
+                f'  Found:    {patch_filename}')
+
+    if not items:
+        return []
+    return [
+        output_api.PresubmitError(
+            'Patch filename does not match source file in diff header', items)
     ]
