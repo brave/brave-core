@@ -11,9 +11,10 @@
 #include "base/containers/span.h"
 #include "build/build_config.h"
 
+class BraveWebUIIOSDataSource;
+
 namespace web {
 class WebUIIOS;
-class WebUIIOSDataSource;
 }  // namespace web
 
 namespace webui {
@@ -23,10 +24,11 @@ struct ResourcePath;
 namespace brave {
 
 // Add brave resource path mapping and localized strings to new data source.
-web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
+BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
     const std::string& name,
     base::span<const webui::ResourcePath> resource_paths,
+    int html_resource_id,
     bool disable_trusted_types_csp = false);
 
 }  // namespace brave
