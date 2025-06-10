@@ -167,7 +167,7 @@ inline constexpr auto kCollectedSlowHistograms =
     {"Brave.AIChat.ContextMenu.LastUsageTime", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.LastUsageTime", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.UsageMonthly", MetricConfig{.ephemeral = true}},
-    {"Brave.Core.PrimaryLang", MetricConfig{.constellation_only = true}},
+    {"Brave.Core.PrimaryLang", MetricConfig{}},
     {"Brave.Core.ProfileCount", {}},
     {"Brave.Core.UsageMonthly", {}},
     {"Brave.Extensions.ManifestV2", {}},
@@ -205,7 +205,6 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.Core.UsageDaily", {}},
     {"Brave.DayZero.Variant", MetricConfig{
       .ephemeral = true,
-      .constellation_only = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kRef}
     }},
     {"Brave.PermissionLifetime.24Hours", MetricConfig{.ephemeral = true}},

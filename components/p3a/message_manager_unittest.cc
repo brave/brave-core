@@ -74,10 +74,9 @@ class P3AMessageManagerTest : public testing::Test,
     return GetBaseLogTypeForHistogram(histogram_name);
   }
 
-  void OnRotation(MetricLogType log_type, bool is_constellation) override {}
+  void OnRotation(MetricLogType log_type) override {}
 
-  void OnMetricCycled(const std::string& histogram_name,
-                      bool is_constellation) override {}
+  void OnMetricCycled(const std::string& histogram_name) override {}
 
  protected:
   void InitFeatures(bool is_constellation_enabled) {

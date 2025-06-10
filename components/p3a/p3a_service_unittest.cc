@@ -347,11 +347,7 @@ TEST_F(P3AServiceTest, MetricSentCallback) {
 
   base::CallbackListSubscription sub =
       p3a_service_->RegisterMetricCycledCallback(base::BindLambdaForTesting(
-          [&sent_histograms](const std::string& histogram_name,
-                             bool is_constellation) {
-            if (is_constellation) {
-              return;
-            }
+          [&sent_histograms](const std::string& histogram_name) {
             sent_histograms.push_back(histogram_name);
           }));
 
