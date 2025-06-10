@@ -574,8 +574,8 @@ const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
 }
 
 const setupDragging = (root: ShadowRoot): void => {
-  const mainSection = root.getElementById('main-section') ;
-  const dragHeader = root.getElementById('drag-header') ;
+  const mainSection = root.getElementById('main-section');
+  const dragHeader = root.getElementById('drag-header');
 
   if (!mainSection || !dragHeader) return;
 
@@ -704,7 +704,8 @@ function initSlider(root: ShadowRoot, element: HTMLElement
     let lastThis: ThisParameterType<T> | null = null;
     let lastResult: ReturnType<T> | null = null;
 
-    return function (this: ThisParameterType<T>, e: MouseEvent | TouchEvent): ReturnType<T> {
+    return function (this: ThisParameterType<T>, e: MouseEvent | TouchEvent)
+      : ReturnType<T> {
       lastArgs = [e];
       lastThis = this;
       if (!timeoutId) {
