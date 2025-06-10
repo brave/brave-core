@@ -49,7 +49,7 @@ constexpr char16_t kYoutubeFullscreen[] =
         var moviePlayer = document.getElementById("movie_player");
         if (moviePlayer) {
           // Start observing the DOM.
-          observer.observe(document.body, { childList: true, subtree: true });
+          observer.observe(document.body, { childList: true, subtree: false });
           // Make sure the player is in focus or responsive.
           moviePlayer.click();
         }
