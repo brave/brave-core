@@ -409,7 +409,7 @@ source_set("ui") {
       ]
 
       deps += [
-        "//brave/browser/extensions:extenions_manifest_v2",
+        "//brave/browser/extensions/manifest_v2",
         "//chrome/browser/extensions",
         "//extensions/browser",
         "//extensions/common",

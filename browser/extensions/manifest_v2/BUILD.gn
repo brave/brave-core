@@ -1,0 +1,28 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+assert(enable_extensions)
+
+source_set("manifest_v2") {
+  sources = [
+    "brave_extensions_manifest_v2_installer.cc",
+    "brave_extensions_manifest_v2_installer.h",
+  ]
+
+  deps = [
+    "//brave/components/constants:brave_service_key_helper",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles",
+    "//components/crx_file",
+    "//components/update_client",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//extensions/common:common",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+  ]
+}
