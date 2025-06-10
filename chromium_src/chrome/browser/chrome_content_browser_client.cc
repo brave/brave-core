@@ -3,10 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <iostream>
-
 #include "build/build_config.h"  // For IS_MAC
-#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/search/search.h"
 #include "content/public/browser/browser_url_handler.h"
 #include "extensions/buildflags/buildflags.h"
@@ -49,10 +46,3 @@ bool HandleNewTabURLReverseRewrite(GURL* url, content::BrowserContext* bc) {
 #if BUILDFLAG(IS_MAC)
 #undef ChromeBrowserMainPartsMac
 #endif  // BUILDFLAG(IS_MAC)
-
-blink::UserAgentMetadata ChromeContentBrowserClient::BraveGetUserAgentMetadata(
-    bool showBraveBrand) {
-  std::cout << "BraveGetUserAgentMetadata" << ", showBraveBrand="
-            << showBraveBrand << std::endl;
-  return GetUserAgentMetadata();
-}
