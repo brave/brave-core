@@ -6,10 +6,10 @@
 import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
-import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
-import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
-import { getLocale } from '../../../../../common/locale'
-import Button from '../../../../../web-components/button'
+import { useBraveNews } from '../shared/Context'
+import { BackArrow } from '../shared/Icons'
+import { getLocale } from '$web-common/locale'
+import Button from '$web-components/button'
 
 const BackButtonContainer = styled.div`
   all: unset;

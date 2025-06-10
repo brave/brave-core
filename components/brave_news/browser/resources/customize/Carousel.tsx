@@ -6,8 +6,8 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import Flex from '$web-common/Flex'
-import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
-import { ArrowRight } from '../../../../../brave_news/browser/resources/shared/Icons'
+import PublisherCard from '../shared/PublisherCard'
+import { ArrowRight } from '../shared/Icons'
 
 const CARD_SIZE = 208
 const CARD_SIZE_PX = `${CARD_SIZE}px`

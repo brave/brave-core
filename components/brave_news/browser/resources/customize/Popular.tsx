@@ -6,12 +6,12 @@
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
+import { useBraveNews } from '../shared/Context'
 import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
-import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
+import PublisherCard from '../shared/PublisherCard'
 
 const usePopularPublisherIds = () => {
   const { filteredPublisherIds, publishers, locale } = useBraveNews()
