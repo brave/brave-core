@@ -6,6 +6,7 @@
 import BraveShared
 import BraveVPN
 import Foundation
+import Preferences
 import Shared
 import SwiftUI
 import UIKit
@@ -58,6 +59,35 @@ class BrowserNavigationHelper {
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
+  }
+
+  func openSyncedTabsList() {
+    guard let bvc = bvc else { return }
+    let controller = UIHostingController(
+      rootView: SyncedTabsView(
+        openTabs: bvc.profileController.openTabsAPI,
+        urlActionHandler: bvc,
+        openSyncSettings: { [unowned bvc] in
+          let controller: UIViewController
+          if Preferences.Chromium.syncEnabled.value {
+            controller = SyncSettingsTableViewController(
+              isModallyPresented: true,
+              braveCoreMain: bvc.profileController,
+              windowProtection: bvc.windowProtection
+            )
+          } else {
+            controller = SyncWelcomeViewController(
+              braveCore: bvc.profileController,
+              windowProtection: bvc.windowProtection,
+              isModallyPresented: true
+            )
+          }
+          let container = UINavigationController(rootViewController: controller)
+          bvc.presentedViewController?.present(container, animated: true)
+        }
+      )
+    )
+    bvc.present(controller, animated: true)
   }
 
   func openDownloads(_ completion: @escaping (Bool) -> Void) {
