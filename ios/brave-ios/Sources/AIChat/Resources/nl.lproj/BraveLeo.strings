@@ -22,6 +22,12 @@
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Koppel aankoop aan Brave-account";
 
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "Maakt een snelkoppeling om Leo te starten vanuit de snelzoekbalk.";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "Toon in snelzoekbalk";
+
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Verloopt op";
 
@@ -88,6 +94,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Standaardmodel";
 
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "Toon niet meer";
+
 /* The text displayed under an edited user prompt/message beside a timestamp. */
 "aichat.editedMessageCaption" = "Bewerkt";
 
@@ -136,47 +145,65 @@
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Baseer antwoorden op de content van de pagina";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Haiku, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.";
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "Er is iets misgegaan tijdens de verwerking van je verzoek. Probeer het later nog eens.";
 
-/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku van Anthropic";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Razendsnelle chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Sonnet, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.";
 
-/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet van Anthropic";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Snelheid en intelligentie in balans";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word aangestuurd door DeepSeek R1, een model ontwikkeld door DeepSeek voor complexe redeneertaken.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Redeneermodel";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hallo, ik ben Leo. Ik ben de AI-assistent van Brave, mogelijk gemaakt door %@. Je kunt me alles vragen en ik doe mijn best om je een antwoord te geven.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost en die mogelijk is gemaakt door door Llama 3.1 8B, een krachtig en veelzijdig model gemaakt door Meta.";
-
-/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B van Meta";
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama 3.1 8B, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat voor algemene taken";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben mogelijk gemaakt door Mixtral 8x7B, een model dat Mistral AI heeft ontworpen voor het uitvoeren van geavanceerde taken.";
+"aichat.introMessageLlamaVisionMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama Vision, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.";
 
-/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
-"aichat.introMessageMixtralModelDescription" = "Mixtral van Mistral AI";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaVisionModelPurposeDescription" = "Beelden voor algemene taken";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben gebaseerd op Mixtral 8x7B, een krachtig model van Mistral AI voor geavanceerde toepassingen. Brave host dit model via zijn eigen veilige infrastructuur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageMixtralModelPurposeDescription" = "Chat voor geavanceerde taken";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Qwen 14B, een efficiënt en breed inzetbaar model ontwikkeld door Alibaba Cloud. Brave host dit model via zijn eigen veilige infrastructuur.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "Chat voor algemene doeleinden, codering en meer";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Chat";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "Dit model heeft een ongeldig eindpunt. Controleer je configuratie en probeer het opnieuw.";
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
@@ -189,6 +216,9 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo is uitgeschakeld";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "Upload afbeelding";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Zoeken naar betere antwoorden voor";
@@ -316,8 +346,11 @@
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Premium abonnement";
 
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "Stel een vervolgvraag";
+
 /* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "Voer hier een prompt in";
+"aichat.promptPlaceHolderDescription" = "Hoe kan ik je vandaag helpen?";
 
 /* The title of action for quick menu which displaying advanced settings */
 "aichat.quickMenuAdvancedSettingsActionTitle" = "Geavanceerde instellingen";
@@ -330,6 +363,12 @@
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Fout bij beoordeling van antwoord";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "Door aan te geven of je een antwoord goed of slecht vindt, stuur je je beoordeling, gesprek, model, taal, versie en premiumstatus naar Brave om Leo verder te verbeteren. [Meer informatie](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "Feedback over reactie";
 
 /* The title for button that refreshes user credentials */
 "aichat.refreshCredentialsActionTitle" = "Vernieuw";
@@ -369,6 +408,9 @@
 
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "Probeer opnieuw";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "Het eindpunt is momenteel overbelast. Probeer het later nog eens.";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Brave bewaart en deelt geen gesproken invoer.";

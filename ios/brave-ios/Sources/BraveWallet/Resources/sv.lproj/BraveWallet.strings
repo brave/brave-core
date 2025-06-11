@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "Skickar";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "Ett fel uppstod vid försök att skicka";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "Det uppstod ett fel vid försök att byta";
+"wallet.txStatusSendTxErrorMsg" = "Ett fel uppstod vid försök att skicka";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "Kunde inte skicka";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "Byta";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "Ett fel uppstod vid försök att byta";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "Det går inte att byta";

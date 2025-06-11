@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "Se trimite";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "A existat o eroare la încercarea de trimitere";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "A apărut o eroare la încercarea de a schimba";
+"wallet.txStatusSendTxErrorMsg" = "A existat o eroare la încercarea de trimitere";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "Nu s-a putut trimite";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "Se convertește";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "A existat o eroare la încercarea de swap";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "Nu se poate schimba";

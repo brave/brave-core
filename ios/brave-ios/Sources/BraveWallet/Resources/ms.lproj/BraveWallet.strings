@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "Menghantar";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "Terdapat ralat semasa cuba menghantar";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "Terdapat ralat semasa cuba menukar";
+"wallet.txStatusSendTxErrorMsg" = "Terdapat ralat semasa cuba menghantar";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "Tidak dapat menghantar";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "Membuat Pertukaran";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "Ralat berlaku semasa percubaan untuk swap";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "Tidak dapay menukar";

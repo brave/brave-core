@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Filă privată nouă";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Află mai multe / opțiuni de renunțare";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Imaginile de fundal sponsorizate susțin misiunea Brave de a construi un web independent, orientat către utilizator. Spre deosebire de marile companii d tehnologie, noi măsurăm performanța reclamelor în mod anonim, respectând confidențialitatea utilizatorilor.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Filă nouă";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Reîncărcă pagina";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Află mai multe / opțiuni de renunțare";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Îți mulțumim pentru susținerea Brave Search făcând clic pe un anunț privat. Spre deosebire de Big Tech, noi măsurăm performanța anunțurilor în mod anonim pentru a-ți menține confidențialitatea.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Selectează poziția barei";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Modul de navigare privată";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "A apărut o eroare în timpul descărcării fișierului. Te rugăm să încerci din nou mai târziu.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "A eșuat descărcarea fișierului";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Mărește";

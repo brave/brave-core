@@ -22,6 +22,12 @@
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Povežite kupnju sa svojim računom Brave";
 
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "Aktivira prečac za pokretanje Lea iz trake brzih pretraživača.";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "Pokaži u traci brzih pretraživača";
+
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Istječe";
 
@@ -88,6 +94,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Zadani model";
 
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "Ne prikazuj ponovo";
+
 /* The text displayed under an edited user prompt/message beside a timestamp. */
 "aichat.editedMessageCaption" = "Uređeno";
 
@@ -136,47 +145,65 @@
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Oblikujte odgovore na osnovi sadržaja stranice";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Dostupan sam u sklopu preglednika Brave i pokreće me model Claude Haiku društva Anthropic stvoren za zadatke obavljanja razgovora i obrađivanja teksta.";
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "Nešto je pošlo po krivu tijekom obrade vašeg zahtjeva. Pokušajte ponovno kasnije.";
 
-/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku stvaratelja Anthropic";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Haiku, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Haiku je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Iznimno brzo čavrljanje";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Bok, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Instant, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Instant je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
-/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet stvaratelja Anthropic";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Sonnet je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Ravnoteža brzine i inteligencije";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageDeepSeekR1MessageDescription" = "Pozdrav, ja sam Leo. Ja sam Braveov asistent potpuno zasnovan na umjetnoj inteligenciji. Pokreće me DeepSeek R1, model koji je kreirao DeepSeek kako bih obavljao zadatke dubinskog rasuđivanja.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model za rasuđivanje";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Bok, ja sam Leo. Ja sam pomoćnik potpomognut umjetnom inteligencijom (AI) kojeg je osmislilo društvo Brave. Pokreće me model %@. Pitajte me bilo što, a ja ću se potruditi odgovoriti.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Pomoćnik sam preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Llama 3.1 8B društva Meta izrađen za izvedbu i primjenu u raznim vrstama uporabe.";
-
-/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8b stvaratelja: Meta";
+"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Llama 3.1 8B koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama je smještena u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Opće čavrljanje";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Bok, ja sam Leo. U potpunosti sam hostirana umjetna inteligencija i pomoćnik od strane Brave. Pokreće me Mixtral 8x7B, model koji je stvorio Mistral AI za rješavanje naprednih zadataka.";
+"aichat.introMessageLlamaVisionMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Llama Vision koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama Vision je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
-/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
-"aichat.introMessageMixtralModelDescription" = "Mixtral stvaratelja: Mistral AI";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaVisionModelPurposeDescription" = "Vizualni model opće namjene ";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Mistra 8x7B koji je kreirao Mistral AI kako bih obavaljo napredne zadatke. Mistral je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageMixtralModelPurposeDescription" = "Napredni zadaci čavrljanja";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Qwen 14B koji je kreirao Alibaba Cloud, a izrađen je za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "Čavrljanje opće namjene, programiranje i još mnogo više";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Čavrljanje";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "API ključ koji je konfiguriran za ovaj model nije valjan. Provjerite konfiguraciju i probajte ponovo.";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "Ovaj model ima nevaljanju krajnju točku. Provjerite konfiguraciju i pokušajte ponovo.";
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
@@ -189,6 +216,9 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo onesposobljen";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "Učitaj sliku";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Unaprjeđeno traženje odgovora za";
@@ -316,8 +346,11 @@
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Pretplata Premium";
 
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "Zatraži komentar";
+
 /* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "Ovdje upišite upit";
+"aichat.promptPlaceHolderDescription" = "Kako vam danas mogu pomoći?";
 
 /* The title of action for quick menu which displaying advanced settings */
 "aichat.quickMenuAdvancedSettingsActionTitle" = "Napredne postavke";
@@ -330,6 +363,12 @@
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Pogreška ocjenjivanja odgovora";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "Označavanje odgovora sa „sviđa mi se” ili „ne sviđa mi se” šalje ocjenu, razgovor, model, jezik verziju i premium status Braveu kako bi se poboljšao Leo. [Doznajte više](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "Odgovor na povratnu informaciju";
 
 /* The title for button that refreshes user credentials */
 "aichat.refreshCredentialsActionTitle" = "Osvježi";
@@ -369,6 +408,9 @@
 
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "Pokušaj ponovo";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "Krajnja točka je trenutačno preopterećena. Pokušajte kasnije.";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "U pregledniku Brave ne pohranjuju se niti dijele vaši glasovni upisi.";

@@ -1199,7 +1199,7 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "Las contraseñas deben tener al menos 8 caracteres";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Introduce la contraseña";
+"wallet.passwordPlaceholder" = "Enter password";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "La contraseña verificada no coincide";
@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "Enviando";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "Hubo un error al intentar enviar";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "Hubo un error al intentar cambiar";
+"wallet.txStatusSendTxErrorMsg" = "Hubo un error al intentar enviar";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "No se puede enviar";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "Intercambiando";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "Hubo un error al intentar intercambiar";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "No se puede intercambiar";

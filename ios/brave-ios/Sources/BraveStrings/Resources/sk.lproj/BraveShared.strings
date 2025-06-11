@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuálne používané vyhľadávače";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Pridať vlastný vyhľadávač";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Napíšte vyhľadávaciu adresu URL a nahraďte dopyt s %1$s.\nNapríklad: https://youtube.com/search?q=%2$s \n(Ak stránka podporuje OpenSearch, pri úprave tohto poľa bude poskytnutá možnosť automatického pridania.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Vyhľadávač s rovnakým názvom už existuje.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Zadajte názov vyhľadávača";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nezabezpečená šablóna vlastného vyhľadávania pre";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Upraviť priečinok";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Upraviť rýchle vyhľadávače";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Povoliť obnovenie potiahnutím";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Hotovo";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Nájsť \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "Nájsť ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Ďalší výsledok na stránke";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Skryť sponzorované obrázky";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorované“ sú ďalšie značkové pozadia, na ktorých môžete zarábať s povolenými odmenami Brave.";
+"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky sú označené pozadia, ktoré sa zobrazujú na novootvorených kartách v prehliadači. Povolením týchto sponzorovaných obrázkov podporíte poslanie spoločnosti Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Zjistěte více.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Prečítajte si viac o odmenách Brave.";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Skrýt";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Vložiť a prejsť";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "na";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Skenovať QR kód";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Nedávne vyhľadávania vám umožňujú súkromný prístup k predchádzajúcim vyhľadávaniam. Chcete povoliť Nedávne vyhľadávania?";
+"RecentSearchSectionDescription" = "Chcete povoliť Nedávne vyhľadávania?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Nedávne vyhľadávania";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Nedávne vyhľadávania";
+"RecentSearchSectionTitle" = "Nedávne vyhľadávania umožňujú súkromný prístup k predošlým vyhľadávaniam.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Zobraziť";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Vyhľadáva sa návrh";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Otvorené karty, záložky a história";
+"SearchHistorySectionHeader" = "Na vašom zariadení";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Vymazať vyhľadávanie";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Vyhľadávanie";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Vyhľadať „%@“";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Pridať vlastný vyhľadávač";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Návrhy vyhľadávania";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Chcete povoliť Návrhy vyhľadávania?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Vyhľadávanie pomocou Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Nezabezpečené";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Vložiť a prejsť";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Zoznam";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Zastaviť";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Hlasové vyhľadávanie";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

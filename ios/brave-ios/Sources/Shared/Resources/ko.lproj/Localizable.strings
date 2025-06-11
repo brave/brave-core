@@ -97,12 +97,6 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "QR 코드 스캔";
 
-/* The text label of creative search result ad infobar message. */
-"SearchResultAdClickedInfoBarTitle" = "프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.";
-
-/* The text label of creative search result ad learn more / opt out choices link. */
-"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "자세히 알아보기 / 옵트아웃 옵션";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "일반";
 

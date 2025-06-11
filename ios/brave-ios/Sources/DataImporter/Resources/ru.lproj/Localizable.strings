@@ -23,7 +23,7 @@
 "importDataFileSelectorNavigationTitle" = "Импорт данных просмотра";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
-"importDataFileSelectorTitle" = "";
+"importDataFileSelectorTitle" = "Импорт закладок и многое другое";
 
 /* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
 "importDataViewTutorialButtonTitle" = "Как экспортировать из Safari";
@@ -98,7 +98,7 @@
 "multipleProfilesMessage" = "Выберите профиль, из которого вы хотите импортировать данные";
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
-"multipleProfilesTitle" = "";
+"multipleProfilesTitle" = "Обнаружено несколько профилей";
 
 /* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
 "personalImportTitle" = "Личное";

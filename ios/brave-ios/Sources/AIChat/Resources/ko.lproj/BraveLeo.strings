@@ -22,6 +22,12 @@
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "구매한 항목을 Brave 계정에 연결";
 
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "빠른 검색 엔진 표시줄에서 레오를 실행하는 바로 가기를 활성화합니다.";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "빠른 검색 엔진 표시줄에 표시";
+
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "만료";
 
@@ -88,6 +94,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "기본 모델";
 
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "다시 표시하지 않음";
+
 /* The text displayed under an edited user prompt/message beside a timestamp. */
 "aichat.editedMessageCaption" = "편집됨";
 
@@ -136,47 +145,65 @@
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "페이지 내용에 기반하여 새 답변 만들기";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Haiku를 사용하여 대화와 텍스트 작업을 처리합니다.";
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "요청을 처리하는 동안 문제가 발생했습니다. 나중에 다시 시도해 주세요.";
 
-/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku, Anthropic 제공";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "빛처럼 빠른 채팅";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Sonnet를 사용하여 대화와 텍스트 작업을 처리합니다.";
+"aichat.introMessageClaudeInstantMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
-/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet, Anthropic 제공";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "속도와 지능의 균형";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageDeepSeekR1MessageDescription" = "안녕하세요, 저는 레오예요. Brave가 완전히 자체 호스팅하는 AI 어시스턴트입니다. 저는 심층 추론 작업을 수행하기 위해 딥시크에서 개발한 딥시크 R1 모델을 기반으로 구동됩니다.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "추론 모델";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "안녕하세요, 전 Brave가 만든 AI 어시스턴트인 레오예요. 전 %@ 기반으로 작동합니다. 무엇이든 물어보시면 성심을 다해 답변해드릴게요.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "안녕하세요, 저는 레오예요. Brave가 완전히 호스팅하는 AI 어시스턴트입니다. 전 Meta가 만든 Llama 3.1 8B 기반으로 구동되어 성능이 뛰어나고 다양한 사용 사례에 적용 가능합니다.";
-
-/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B, Meta 제공";
+"aichat.introMessageLlamaMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "일반 목적의 채팅";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "안녕하세요, 저는 레오예요. Brave가 완전히 호스팅하는 AI 어시스턴트입니다. 전 Mistral AI가 만든 Mixtral 8x7B 기반으로 구동되어 복잡한 일도 처리 가능합니다.";
+"aichat.introMessageLlamaVisionMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 비전 모델을 기반으로 구동됩니다. 라마 비전은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
-/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
-"aichat.introMessageMixtralModelDescription" = "Mixtral, Mistral AI 제공";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaVisionModelPurposeDescription" = "일반 목적의 비전";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 고급 작업을 처리하기 위해 미스트랄 AI에서 개발한 미스트랄 8x7B 모델을 기반으로 구동됩니다. 미스트랄은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageMixtralModelPurposeDescription" = "진보된 채팅 작업";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원 14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "범용 채팅, 코딩 등";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "채팅";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "이 모델의 엔드포인트가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.";
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "레오";
@@ -189,6 +216,9 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo 비활성화됨";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "이미지 업로드";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "높은 수준의 답변 검색";
@@ -316,8 +346,11 @@
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "프리미엄 구독";
 
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "후속 조치 요청";
+
 /* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "여기 프롬프트 입력";
+"aichat.promptPlaceHolderDescription" = "무엇을 도와드릴까요?";
 
 /* The title of action for quick menu which displaying advanced settings */
 "aichat.quickMenuAdvancedSettingsActionTitle" = "고급 설정";
@@ -330,6 +363,12 @@
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "답변 평가 중 오류";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "답변에 '좋아요'나 '싫어요'를 누르면 레오를 개선하기 위해 등급, 대화, 모델, 언어, 버전, 프리미엄 상태가 Brave로 전송됩니다. [자세히 알아보기](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "응답 피드백";
 
 /* The title for button that refreshes user credentials */
 "aichat.refreshCredentialsActionTitle" = "새로고침";
@@ -369,6 +408,9 @@
 
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "재시도";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Brave는 음성 검색 내역을 저장하거나 공유하지 않습니다.";

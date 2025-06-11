@@ -97,12 +97,6 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Σάρωση Κωδικού QR";
 
-/* The text label of creative search result ad infobar message. */
-"SearchResultAdClickedInfoBarTitle" = "Σας ευχαριστούμε που υποστηρίζετε το Brave Search κάνοντας κλικ σε μια ιδιωτική διαφήμιση. Σε αντίθεση με την Big Tech, μετράμε την απόδοση των διαφημίσεων ανώνυμα για να διατηρήσουμε το απόρρητό σας.";
-
-/* The text label of creative search result ad learn more / opt out choices link. */
-"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Μάθετε περισσότερα / επιλογές εξαίρεσης";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Γενικά";
 

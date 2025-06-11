@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "แท็บส่วนตัวใหม่";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "ภาพพื้นหลังที่มีสปอนเซอร์ช่วยสนับสนุนภารกิจของ Brave ในการสร้างเว็บที่เป็นอิสระและยึดผู้ใช้เป็นศูนย์กลาง และไม่เหมือนกับบริษัทยักษ์ใหญ่ทางเทคโนโลยี เราวัดประสิทธิภาพของโฆษณาโดยไม่ระบุตัวตน เพื่อคุ้มครองความเป็นส่วนตัวของคุณ";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "แท็บใหม่";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "โหลดหน้าใหม่";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "ขอบคุณที่สนับสนุน Brave Search โดยการคลิกโฆษณาแบบส่วนตัว เราไม่เหมือนบริษัทยักษ์ใหญ่ด้านเทคโนโลยี เพราะเราวัดผลโฆษณาโดยไม่เปิดเผยตัวตน เพื่อรักษาความเป็นส่วนตัวของคุณ";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "เลือกแถบตำแหน่ง";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "โหมดการท่องเว็บแบบส่วนตัว";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "เกิดข้อผิดพลาดระหว่างดาวน์โหลดไฟล์ กรุณาลองใหม่อีกครั้งในภายหลัง";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "ไม่สามารถดาวน์โหลดไฟล์ได้";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "ซูมเข้า";

@@ -97,12 +97,6 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "扫描二维码";
 
-/* The text label of creative search result ad infobar message. */
-"SearchResultAdClickedInfoBarTitle" = "感谢您通过点击私人广告支持 Brave 搜索。与大型科技公司不同，我们以匿名方式衡量广告效果，以保护您的隐私。";
-
-/* The text label of creative search result ad learn more / opt out choices link. */
-"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "了解更多 / 退出选择";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "一般";
 
