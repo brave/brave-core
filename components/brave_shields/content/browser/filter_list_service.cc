@@ -105,6 +105,11 @@ void FilterListService::EnableSubscription(const GURL& sub_url, bool enabled) {
       sub_url, enabled);
 }
 
+void FilterListService::RefreshSubscription(const GURL& sub_url, bool from_ui) {
+  ad_block_service_->subscription_service_manager()->RefreshSubscription(
+      sub_url, from_ui);
+}
+
 void FilterListService::DeleteSubscription(const GURL& sub_url) {
   ad_block_service_->subscription_service_manager()->DeleteSubscription(
       sub_url);
