@@ -56,8 +56,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNotificationAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
@@ -87,8 +86,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoMatchingSegments) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNotificationAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
@@ -98,8 +96,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoMatchingSegments) {
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeNotificationAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(

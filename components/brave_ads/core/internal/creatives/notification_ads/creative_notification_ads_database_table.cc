@@ -167,10 +167,10 @@ void GetForSegmentsCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeNotificationAdList creative_ads =
+  CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 void GetAllCallback(
@@ -182,12 +182,12 @@ void GetAllCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeNotificationAdList creative_ads =
+  CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 }  // namespace

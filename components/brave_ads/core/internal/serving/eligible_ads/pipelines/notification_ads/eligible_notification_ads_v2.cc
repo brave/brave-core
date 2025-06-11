@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2.h"
 
+#include <cstddef>
 #include <optional>
 #include <utility>
 
@@ -38,7 +39,7 @@ EligibleNotificationAdsV2::~EligibleNotificationAdsV2() = default;
 
 void EligibleNotificationAdsV2::GetForUserModel(
     UserModelInfo user_model,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
   ad_events_database_table_.GetUnexpired(
@@ -52,7 +53,7 @@ void EligibleNotificationAdsV2::GetForUserModel(
 
 void EligibleNotificationAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -66,7 +67,7 @@ void EligibleNotificationAdsV2::GetForUserModelCallback(
 void EligibleNotificationAdsV2::GetSiteHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
       kTraceEventCategory, "EligibleNotificationAds::GetSiteHistory",
@@ -82,7 +83,7 @@ void EligibleNotificationAdsV2::GetSiteHistory(
 void EligibleNotificationAdsV2::GetSiteHistoryCallback(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     uint64_t trace_id,
     const SiteHistoryList& site_history) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
@@ -98,7 +99,7 @@ void EligibleNotificationAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -109,49 +110,54 @@ void EligibleNotificationAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     bool success,
     const SegmentList& /*segments*/,
-    const CreativeNotificationAdList& creative_ads) {
+    CreativeNotificationAdList creative_ads) {
   if (!success) {
     BLOG(0, "Failed to get ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  FilterAndMaybePredictCreativeAd(user_model, creative_ads, ad_events,
-                                  site_history, std::move(callback));
+  FilterAndMaybePredictCreativeAd(user_model, std::move(creative_ads),
+                                  ad_events, site_history, std::move(callback));
 }
 
 void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
     const UserModelInfo& user_model,
-    const CreativeNotificationAdList& creative_ads,
+    CreativeNotificationAdList creative_ads,
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
-    EligibleAdsCallbackDeprecated<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
+  const size_t creative_ad_count = creative_ads.size();
+
   TRACE_EVENT(kTraceEventCategory,
               "EligibleNotificationAds::FilterAndMaybePredictCreativeAd",
-              "creative_ads", creative_ads.size(), "ad_events",
-              ad_events.size(), "site_history", site_history.size());
+              "creative_ads", creative_ad_count, "ad_events", ad_events.size(),
+              "site_history", site_history.size());
 
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  CreativeNotificationAdList eligible_creative_ads = creative_ads;
-  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events, site_history);
+  NotificationAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      site_history);
+  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
+
+  PaceCreativeAds(creative_ads);
 
   const PrioritizedCreativeAdBuckets<CreativeNotificationAdList> buckets =
-      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+      SortCreativeAdsIntoBucketsByPriority(creative_ads);
 
   LogNumberOfCreativeAdsPerBucket(buckets);
 
   // For each bucket of prioritized ads attempt to predict the most suitable ad
   // for the user in priority order.
-  for (const auto& [priority, prioritized_eligible_creative_ads] : buckets) {
+  for (const auto& [priority, prioritized_creative_ads] : buckets) {
     std::optional<CreativeNotificationAdInfo> predicted_creative_ad =
-        MaybePredictCreativeAd(prioritized_eligible_creative_ads, user_model,
-                               ad_events);
+        MaybePredictCreativeAd(prioritized_creative_ads, user_model, ad_events);
     if (!predicted_creative_ad) {
       // Could not predict an ad for this bucket, so continue to the next
       // bucket.
@@ -166,20 +172,8 @@ void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
   }
 
   // Could not predict an ad for any of the buckets.
-  BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+  BLOG(1, "No eligible ads out of " << creative_ad_count << " ads");
   std::move(callback).Run(/*eligible_ads=*/{});
-}
-
-void EligibleNotificationAdsV2::FilterIneligibleCreativeAds(
-    CreativeNotificationAdList& creative_ads,
-    const AdEventList& ad_events,
-    const SiteHistoryList& site_history) {
-  NotificationAdExclusionRules exclusion_rules(
-      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-      site_history);
-  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  PaceCreativeAds(creative_ads);
 }
 
 }  // namespace brave_ads

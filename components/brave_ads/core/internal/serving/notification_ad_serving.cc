@@ -163,7 +163,7 @@ void NotificationAdServing::GetEligibleAds(UserModelInfo user_model) {
 
 void NotificationAdServing::GetEligibleAdsCallback(
     uint64_t trace_id,
-    const CreativeNotificationAdList& creative_ads) {
+    CreativeNotificationAdList creative_ads) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
       kTraceEventCategory, "NotificationAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id), "creative_ads",
