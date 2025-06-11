@@ -16,8 +16,10 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/p3a/nitro_utils/cose.h"

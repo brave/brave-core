@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/notreached.h"
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_service_keys/buildflags.h"

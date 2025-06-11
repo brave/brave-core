@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/notreached.h"
 #include "components/browsing_topics/common/common_types.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"

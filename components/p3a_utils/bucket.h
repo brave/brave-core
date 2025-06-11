@@ -8,6 +8,8 @@
 
 #include <algorithm>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/metrics/histogram_functions.h"
 
 namespace p3a_utils {

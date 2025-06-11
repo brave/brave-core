@@ -5,8 +5,10 @@
 
 #include "brave/components/sync/engine/brave_data_type_worker.h"
 
+#include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"

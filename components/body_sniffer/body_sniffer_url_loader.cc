@@ -9,7 +9,10 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/http/http_request_headers.h"

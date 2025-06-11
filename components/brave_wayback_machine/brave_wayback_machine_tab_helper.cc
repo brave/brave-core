@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"

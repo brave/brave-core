@@ -9,6 +9,8 @@
 #include <numeric>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "base/values.h"

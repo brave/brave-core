@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
+#include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "build/build_config.h"

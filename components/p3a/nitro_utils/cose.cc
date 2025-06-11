@@ -9,6 +9,8 @@
 #include <set>
 #include <string_view>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/time/time.h"

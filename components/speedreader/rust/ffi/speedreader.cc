@@ -7,7 +7,6 @@
 
 #include <iostream>
 
-#include "base/logging.h"
 #include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
 namespace speedreader {

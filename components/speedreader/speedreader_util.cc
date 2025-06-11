@@ -9,7 +9,9 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"

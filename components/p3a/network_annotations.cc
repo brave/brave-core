@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/check_op.h"
 #include "brave/components/p3a/uploader.h"
 
 namespace p3a {

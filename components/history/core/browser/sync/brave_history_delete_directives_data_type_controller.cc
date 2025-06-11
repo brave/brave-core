@@ -5,6 +5,7 @@
 
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h"
 
+#include "base/check.h"
 #include "components/history/core/browser/sync/history_delete_directives_data_type_controller.h"
 
 namespace history {

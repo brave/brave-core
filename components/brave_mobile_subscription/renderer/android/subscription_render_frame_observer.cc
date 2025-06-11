@@ -9,7 +9,9 @@
 #include <string_view>
 #include <vector>
 
+#include "base/check.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"

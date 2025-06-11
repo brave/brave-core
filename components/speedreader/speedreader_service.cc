@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/command_line.h"
+#include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/speedreader/common/features.h"

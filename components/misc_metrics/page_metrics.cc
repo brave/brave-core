@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
@@ -221,9 +222,8 @@ void PageMetrics::ReportPagesLoaded() {
   const char* pages_loaded_histogram_name = nullptr;
 
   if (profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
-    const std::string wallet_type =
-        profile_prefs_->GetString(brave_rewards::prefs::kExternalWalletType);
-    if (wallet_type.empty()) {
+    if (profile_prefs_->GetString(brave_rewards::prefs::kExternalWalletType)
+            .empty()) {
       pages_loaded_histogram_name = kPagesLoadedRewardsHistogramName;
     } else {
       pages_loaded_histogram_name = kPagesLoadedRewardsWalletHistogramName;

@@ -10,6 +10,8 @@
 
 #include "base/apple/foundation_util.h"
 #include "base/apple/scoped_cftyperef.h"
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "base/mac/mac_util.h"
 #include "base/strings/sys_string_conversions.h"

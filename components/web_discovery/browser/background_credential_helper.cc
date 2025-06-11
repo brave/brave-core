@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/span_rust.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"

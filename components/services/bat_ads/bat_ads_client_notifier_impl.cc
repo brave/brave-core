@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/check.h"
+
 namespace bat_ads {
 
 BatAdsClientNotifierImpl::BatAdsClientNotifierImpl(

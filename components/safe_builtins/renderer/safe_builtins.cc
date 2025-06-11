@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
-#include "base/notreached.h"
 #include "base/strings/stringprintf.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"

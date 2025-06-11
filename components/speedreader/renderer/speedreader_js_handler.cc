@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #include "content/public/renderer/render_frame.h"

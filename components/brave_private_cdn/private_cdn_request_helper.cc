@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_op.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"

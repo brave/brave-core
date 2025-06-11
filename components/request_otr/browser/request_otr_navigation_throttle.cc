@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/request_otr/browser/request_otr_blocking_page.h"

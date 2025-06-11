@@ -6,6 +6,8 @@
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 
 #include "base/base64.h"
+#include "base/check.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/crypto/crypto.h"

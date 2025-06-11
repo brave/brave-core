@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/components/request_otr/browser/request_otr_p3a.h"

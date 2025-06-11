@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/dcheck_is_on.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"

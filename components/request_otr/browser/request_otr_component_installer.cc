@@ -11,7 +11,6 @@
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"

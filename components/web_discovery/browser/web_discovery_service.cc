@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"

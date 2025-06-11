@@ -7,8 +7,10 @@
 
 #include <windows.foundation.collections.h>
 #include <windows.globalization.h>
+
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"

@@ -8,8 +8,9 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/logging.h"
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "base/notreached.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
