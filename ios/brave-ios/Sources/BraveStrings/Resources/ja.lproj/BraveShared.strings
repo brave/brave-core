@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "カスタム検索エンジンを追加";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "検索URLを入力しクエリを %1$s に置き換えてください。\n例: https://youtube.com/search?q=%2$s \n(サイトがOpenSearchをサポートしている場合、このフィールドを編集している際に、自動で追加する選択肢が与えられます)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "同じ名前の検索エンジンが既に存在します。";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "検索エンジン名を入力";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "カスタム検索テンプレートが安全ではありません:";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "フォルダを編集";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "クイック検索エンジンを編集";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "画面を下に引っ張って更新を有効にする";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "完了";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "\"%@\"を検索";
+/* Find `search query` */
+"FindInPageFormat" = " を検索";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "次のページ内検索結果";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "スポンサードイメージを非表示にする";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "「スポンサー付き」は、Brave Rewardsを有効にすると入手できる追加のブランド背景です。";
+"ntp.imageTypeSelectionDescription" = "スポンサー画像を有効にすると、ブラウザで新規タブを開いた時にブランドから提供された背景画像が表示されます。これにより、Braveのミッションがサポートされます。";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "以下について詳しく";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewardsについて詳しく知る";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "非表示";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "貼り付けて開く";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "on";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "QRコードをスキャンする";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "「最近の検索」機能により、あなたはプライバシーを守りながら過去の検索データを利用できます。最近の検索を有効にしますか？";
+"RecentSearchSectionDescription" = "最近の検索を有効にしますか？";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "最近の検索";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "最近の検索";
+"RecentSearchSectionTitle" = "最近の検索を有効にすると、過去の検索にプライベートにアクセスできます。";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "表示する";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "候補の検索";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "タブを開く & ブックマーク & 履歴";
+"SearchHistorySectionHeader" = "お使いのデバイス";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "検索を消去";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "検索";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "\"%@\"を検索";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "カスタム検索エンジンを追加する";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "検索候補";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "検索候補を有効にしますか？";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Braveで検索";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "保護されていません";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "貼り付けて開く";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "音声検索";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

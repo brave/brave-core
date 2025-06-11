@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Công cụ tìm kiếm hiện sử dụng";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Thêm công cụ tìm kiếm tùy chỉnh";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Nhập url tìm kiếm và thay thế truy vấn bằng %1$s.\nVí dụ: https://youtube.com/search?q=%2$s \n(Nếu trang web hỗ trợ OpenSearch, sẽ có tùy chọn tự động thêm khi chỉnh sửa trường này.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Công cụ tìm kiếm có cùng tên đã tồn tại.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Nhập tên công cụ tìm kiếm";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Mẫu tìm kiếm tùy chỉnh không bảo mật cho";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Chỉnh sửa thư mục";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Sửa công cụ tìm kiếm nhanh";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Bật kéo để làm mới";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Xong";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Tìm \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "Tìm ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Kết quả tiếp theo trong trang";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Ẩn hình được tài trợ";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "\"Được tài trợ\" là các hình nền với thông tin về thương hiệu bạn được nhận thêm khi bật Phần thưởng Brave.";
+"ntp.imageTypeSelectionDescription" = "Hình ảnh được tài trợ là hình nền có thương hiệu xuất hiện trong các thẻ mới mở trong trình duyệt. Bật Hình ảnh được tài trợ hỗ trợ sứ mệnh của Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Tìm hiểu thêm";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Tìm hiểu thêm về Phần thưởng Brave";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Ẩn";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Dán & truy cập";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "trên";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Quét mã QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Tìm kiếm gần đây cho phép bạn truy cập riêng tư vào các tìm kiếm trước đây. Bạn có muốn bật Tìm kiếm gần đây không?";
+"RecentSearchSectionDescription" = "Bạn có muốn bật Tìm kiếm gần đây?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Tìm kiếm gần đây";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Tìm kiếm gần đây";
+"RecentSearchSectionTitle" = "Tìm kiếm gần đây cho phép bạn xem một cách riêng tư các tìm kiếm trước đây.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Hiển thị";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Tìm gợi ý";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Mở Thẻ & Dấu trang & Lịch sử";
+"SearchHistorySectionHeader" = "Trên thiết bị của bạn";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Xóa tìm kiếm";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Tìm kiếm";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Tìm \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Thêm công cụ tìm kiếm tùy chỉnh";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Gợi ý tìm kiếm";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Bạn có muốn bật Gợi ý tìm kiếm?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Tìm kiếm với Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Không bảo mật";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Dán và truy cập";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Danh sách phát";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Dừng";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Tìm kiếm bằng giọng nói";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

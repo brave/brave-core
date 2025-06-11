@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Neuer privater Tab";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Mehr erfahren / Opt-out-Möglichkeiten";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Gesponserte Hintergrundbilder unterstützen Braves Mission, ein unabhängiges, nutzerzentriertes Web zu schaffen. Und im Gegensatz zu Big Tech messen wir die Werbeleistung anonym, um deine Privatsphäre zu wahren.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Neuer Tab";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Seite neu laden";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Mehr erfahren / Opt-out-Möglichkeiten";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Vielen Dank, dass du Brave Search mit einem Klick auf eine private Anzeige unterstützen. Im Gegensatz zu Big Tech messen wir die Anzeigenleistung anonym, um deine Privatsphäre zu schützen.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Standortleiste auswählen";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Privater Browsing-Modus";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Beim Herunterladen der Datei ist ein Fehler passiert. Bitte versuche es später noch einmal.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Herunterladen der Datei fehlgeschlagen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Vergrößern";

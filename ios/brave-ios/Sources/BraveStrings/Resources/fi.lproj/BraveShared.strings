@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Tällä hetkellä käytössä olevat hakukoneet";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Lisää oma hakukone";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Kirjoita haun URL-osoite ja korvaa kysely sanalla %1$s.\nEsimerkiksi: https://youtube.com/search?q=%2$s\n(Jos sivusto tukee OpenSearchia, vaihtoehto lisätään automaattisesti, kun muokkaat tätä kenttää.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Samanniminen hakukone on jo olemassa.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Kirjoita hakukoneen nimi";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Suojaamaton mukautettu hakumalli kohteelle";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Muokkaa kansiota";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Muokkaa pikahakukoneita";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ota Päivitä vetämällä -ominaisuus käyttöön";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Valmis";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Hae \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "Hae ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Seuraava sivun tulos";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Piilota maksetut kuvat";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponsoroidut ovat muita brändättyjä taustoja, joista voit ansaita, kun Brave-palkinnot on käytössä.";
+"ntp.imageTypeSelectionDescription" = "Sponsoroidut kuvat ovat brändättyjä taustakuvia, jotka näkyvät selaimen uusissa välilehdissä. Näiden sponsoroitujen kuvien ottaminen käyttöön tukee Braven tehtävää.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Lisätietoa";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lue lisää Brave-palkinnoista";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Piilota";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Liitä ja siirry";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "päällä";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Lue QR-koodi";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Viimeaikaiset haut mahdollistavat aiempien hakujen yksityisen käytön. Haluatko ottaa viimeaikaiset haut käyttöön?";
+"RecentSearchSectionDescription" = "Haluatko ottaa käyttöön Viimeisimmät haut?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Viimeaikaiset haut";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Viimeaikaiset haut";
+"RecentSearchSectionTitle" = "Viimeisimmät haut mahdollistavat aiempien hakujen yksityisen käytön.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Näytä";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Hakee ehdotusta";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Avaa välilehdet, kirjanmerkit ja historia";
+"SearchHistorySectionHeader" = "Laitteessasi";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Tyhjennä haku";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Haku";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Haku \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Lisää mukautettu hakukone";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Hakuehdotukset";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Haluatko ottaa hakuehdotukset käyttöön?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Hae Bravella";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Ei suojattu";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Liitä ja siirry";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Soittolista";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Pysäytä";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Äänihaku";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "新增自訂搜尋引擎";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "輸入搜尋網址，並將查詢內容改成「%1$s」。\n例如：https://youtube.com/search?q=%2$s \n(如果網站支援 OpenSearch，在您編輯此欄位時，畫面會顯示自動新增搜尋引擎的選項。)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "已存在名稱相同的搜尋引擎。";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "輸入搜尋引擎名稱";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "不安全的自訂搜尋範本";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "編輯資料夾";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "編輯快速搜尋引擎";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "啟用下拉重新整理";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "完成";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "找到「%@」";
+/* Find `search query` */
+"FindInPageFormat" = "尋找 ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "下一個頁面搜尋結果";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "「贊助」是您可透過啟用 Brave Rewards 獲得的額外品牌背景。";
+"ntp.imageTypeSelectionDescription" = "贊助圖片是出現在瀏覽器新開啟標籤頁中的品牌背景。啟用這些贊助圖片可支持 Brave 的使命。";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "了解更多";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "隱藏";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "貼上 & 前往";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "於";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "掃瞄 QR 碼";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "最近的搜尋可讓您私人存取過去的搜尋。您要啟用最近的搜尋嗎？";
+"RecentSearchSectionDescription" = "您要啟用「最近搜尋」功能嗎？";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "最近的搜尋";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "最近的搜尋";
+"RecentSearchSectionTitle" = "「最近搜尋」可讓您私下存取過去的搜尋。";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "顯示";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "開啟分頁 & 書籤 & 歷史記錄";
+"SearchHistorySectionHeader" = "在您的裝置上";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "清除搜尋";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "搜尋";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "搜尋 「%@」";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "新增自訂搜尋引擎";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "搜尋建議";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "您要啟用「搜尋建議」嗎？";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "使用 Brave 搜尋";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "不安全";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "貼上並前往";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "停止";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "語音搜尋";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
