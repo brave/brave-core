@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;

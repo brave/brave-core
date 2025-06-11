@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"

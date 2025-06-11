@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"

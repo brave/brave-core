@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/json/values_util.h"
-#include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"

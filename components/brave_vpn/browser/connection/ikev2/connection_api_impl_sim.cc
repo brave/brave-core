@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/logging.h"
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"

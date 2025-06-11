@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_vpn/browser/brave_vpn_metrics.h"
 
-#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"

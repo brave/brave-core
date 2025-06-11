@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"

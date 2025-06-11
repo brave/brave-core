@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/logging.h"
 #include "base/numerics/safe_math.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/task/bind_post_task.h"
 #include "components/history/core/browser/history_types.h"
 #include "content/public/browser/browser_thread.h"

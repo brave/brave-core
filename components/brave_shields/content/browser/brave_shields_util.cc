@@ -7,7 +7,10 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/span.h"
+#include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"

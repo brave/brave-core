@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_vpn/common/features.h"

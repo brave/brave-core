@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/i18n/rtl.h"

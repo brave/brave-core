@@ -20,6 +20,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"

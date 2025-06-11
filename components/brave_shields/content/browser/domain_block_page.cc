@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"

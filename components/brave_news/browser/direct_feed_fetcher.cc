@@ -12,6 +12,7 @@
 #include <variant>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_news/browser/lib.rs.h"

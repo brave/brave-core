@@ -10,6 +10,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/win/windows_types.h"
 #include "base/win/wrapped_window_proc.h"

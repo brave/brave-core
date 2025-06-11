@@ -15,6 +15,7 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool/thread_pool_instance.h"

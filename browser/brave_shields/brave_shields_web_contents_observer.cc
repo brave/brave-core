@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"

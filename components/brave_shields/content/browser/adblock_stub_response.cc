@@ -9,9 +9,11 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/span.h"
+#include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "net/base/data_url.h"
 #include "net/http/http_util.h"

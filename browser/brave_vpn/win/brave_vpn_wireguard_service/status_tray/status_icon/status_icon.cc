@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/strings/string_util_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/native_popup_menu.h"
