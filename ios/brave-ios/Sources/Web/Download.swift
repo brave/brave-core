@@ -79,13 +79,4 @@ open class Download: NSObject {
 
     return proposedPath
   }
-
-  // Used to avoid name spoofing using Unicode RTL char to change file extension
-  public static func stripUnicode(fromFilename string: String) -> String {
-    let validFilenameSet = CharacterSet(charactersIn: ":/")
-      .union(.newlines)
-      .union(.controlCharacters)
-      .union(.illegalCharacters)
-    return string.components(separatedBy: validFilenameSet).joined()
-  }
 }
