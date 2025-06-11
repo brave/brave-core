@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 
+#include <array>
 #include <optional>
 #include <utility>
 

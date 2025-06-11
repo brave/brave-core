@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/engine/migrations/pref_migration_manager.h"
 
+#include <array>
 #include <string>
 #include <utility>
 

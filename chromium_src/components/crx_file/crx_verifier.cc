@@ -5,6 +5,7 @@
 
 #include "components/crx_file/crx_verifier.h"
 
+#include <array>
 #include <utility>
 #include <vector>
 

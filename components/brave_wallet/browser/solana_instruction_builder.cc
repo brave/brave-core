@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 
+#include <array>
 #include <optional>
 #include <utility>
 

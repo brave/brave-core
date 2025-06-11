@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
 #include <algorithm>
-#include <array>
 #include <compare>
 #include <functional>
 #include <ios>

@@ -6,6 +6,7 @@
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <numeric>
 #include <utility>

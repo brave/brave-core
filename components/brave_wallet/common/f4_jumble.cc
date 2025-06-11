@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 
 #include <algorithm>
+#include <array>
 
 #include "base/containers/extend.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"

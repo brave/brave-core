@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNS_RESOLVER_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNS_RESOLVER_TASK_H_
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>

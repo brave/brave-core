@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <array>
 #include <optional>
 #include <set>
 #include <string>

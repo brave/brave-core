@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
 
+#include <array>
 #include <string>
 #include <vector>
 

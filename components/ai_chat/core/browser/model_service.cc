@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <ios>
 #include <iterator>

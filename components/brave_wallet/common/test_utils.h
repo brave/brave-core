@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_TEST_UTILS_H_
 
+#include <array>
 #include <string>
 #include <utility>
 #include <vector>

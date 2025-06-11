@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/secp256k1_signature.h"
 
+#include <array>
+
 #include "base/containers/to_vector.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

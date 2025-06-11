@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 #include <algorithm>
+#include <array>
 #include <string>
 #include <string_view>
 #include <utility>

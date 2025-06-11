@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_CHANNELS_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_CHANNELS_CONTROLLER_H_
 
+#include <array>
 #include <string>
 #include <vector>
 

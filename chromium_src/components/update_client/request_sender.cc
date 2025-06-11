@@ -9,6 +9,8 @@
 
 #include "components/update_client/request_sender.h"
 
+#include <array>
+
 #include "base/base64.h"
 
 namespace {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_file_select_utils.h"
 
+#include <array>
 #include <unordered_map>
 
 #include "base/i18n/rtl.h"

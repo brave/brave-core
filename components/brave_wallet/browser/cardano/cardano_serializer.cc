@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
 
+#include <array>
 #include <cstdint>
 #include <limits>
 #include <optional>

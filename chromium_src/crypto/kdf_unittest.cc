@@ -5,6 +5,8 @@
 
 #include "src/crypto/kdf_unittest.cc"
 
+#include <array>
+
 #include "base/strings/string_number_conversions.h"
 
 TEST(KDFTest, Pbkdf2HmacSha256KnownAnswers) {

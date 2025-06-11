@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 
+#include <array>
 #include <optional>
 #include <string_view>
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 
+#include <array>
 #include <memory>
 #include <utility>
 

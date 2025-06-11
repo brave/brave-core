@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
+#include <array>
 #include <cstddef>
 #include <memory>
 #include <optional>

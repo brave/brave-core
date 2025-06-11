@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_
 
 #include <algorithm>
+#include <array>
 #include <optional>
 #include <string>
 #include <utility>

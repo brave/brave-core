@@ -10,6 +10,7 @@
 
 #include <wrl/client.h>
 
+#include <array>
 #include <memory>
 #include <string_view>
 #include <utility>
