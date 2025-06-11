@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Trenutačno upotrebljavane tražilice";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Dodavanje prilagođene tražilice";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Upišite URL za pretraživanje i zamijenite upit sljedećim: %1$s.\nPrimjerice: https://youtube.com/search?q=%2$s\n(Ako se mrežnim mjestom podržava OpenSearch, tijekom uređivanja ovog polja dostupna je mogućnost za automatsko dodavanje.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Tražilica s jednakim imenom već postoji.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Unesite ime tražilice";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nesiguran predložak prilagođenog pretraživanja za:";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Uredi mapu";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Uredi brze tražilice";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Omogući povlačenje za osvježavanje";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Završeno";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Pronađi „%@”";
+/* Find `search query` */
+"FindInPageFormat" = "Pronađi ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Sljedeći rezultat na stranici";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Sakrij sponzorirane slike";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorirano” označava dodatne markirane pozadine koje može zaraditi kada su omogućene Nagrade Brave.";
+"ntp.imageTypeSelectionDescription" = "Sponzorirani vizuali su brendirane pozadine koje se pokazuju u novootvorenim karticama u pregledniku. Omogućite li ove sponzorirane vizuale pomoći ćete Braveovoj misiji.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Saznaj više";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Doznajte više o značajki Nagrade Brave";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Sakrij";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Zalijepi i idi";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "uključeno";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Skeniraj kôd QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Nedavnim pretraživanjima omogućava se privatan pristup prošlim pretraživanjima. Želite li omogućiti Nedavna pretraživanja?";
+"RecentSearchSectionDescription" = "Želite li omogućiti Nedavne pretrage?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Nedavna pretraživanja";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Nedavna pretraživanja";
+"RecentSearchSectionTitle" = "Funkcionalnost Nedavne pretrage omogućuje da privatno pristupite prošlim pretraživanjima.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Prikaži";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Pretraživanja za prijedlog";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Otvaranje kartica, knjižnih oznaka i povijesti";
+"SearchHistorySectionHeader" = "Na vašem uređaju";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Čišćenje pretraživanja";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Pretraži";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Traži „%@”";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Dodavanje prilagođene tražilice";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Prijedlozi za pretraživanje";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Želite li omogućiti Prijedloge pretrage?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Pretražujte preglednikom Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Nije sigurno";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Zalijepi i idi";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Popis za reprodukciju";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Zaustavi";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Glasovno pretraživanje";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

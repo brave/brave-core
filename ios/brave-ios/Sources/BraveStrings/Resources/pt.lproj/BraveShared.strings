@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Mecanismos de pesquisa usados no momento";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Adicionar um mecanismo de pesquisa personalizado";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Escreva o URL de pesquisa e substitua a consulta por %1$s.\nPor exemplo: https://youtube.com/search?q=%2$s \n(Se o site for compatível com OpenSearch, a opção de adicionar automaticamente será exibida durante a edição desse campo.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Já existe um mecanismo de pesquisa com o mesmo nome.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Digite o nome do mecanismo de pesquisa";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Modelo de pesquisa personalizada insegura para";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Editar pasta";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Editar mecanismos de pesquisa rápidos";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ativar o recurso \"puxar para atualizar\"";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Concluído";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Encontrar \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "Localizar ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Próximo resultado na página";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Ocultar imagens patrocinadas";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "'Patrocinado' são fundos adicionais que pode ganhar com a ativação de Brave Rewards.";
+"ntp.imageTypeSelectionDescription" = "As imagens patrocinadas são fundos de marca que aparecem em guias recém-abertas no navegador. Ao ativar essas imagens patrocinadas, você estará apoiando a missão do Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Saiba mais";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Saiba mais sobre o Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Ocultar";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Cole & Vá";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "em";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Ler código QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "As pesquisas recentes permitem que você acesse de modo privado as pesquisas anteriores. Você deseja ativar as pesquisas recentes?";
+"RecentSearchSectionDescription" = "Você gostaria de ativar as pesquisas recentes?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Pesquisas recentes";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Pesquisas recentes";
+"RecentSearchSectionTitle" = "As pesquisas recentes permitem que você acesse de modo privado as pesquisas anteriores.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Mostrar";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Pesquisa a sugestão";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Abrir Guias & Favoritos & Histórico";
+"SearchHistorySectionHeader" = "Em seu dispositivo";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Limpar pesquisa";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Pesquisa";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Pesquisar \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Adicionar mecanismo de pesquisa personalizado";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugestões de pesquisa";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Você gostaria de ativar a sugestão de pesquisa?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Pesquisar com o Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Não é seguro";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Colar e abrir";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Parar";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Pesquisa de voz";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

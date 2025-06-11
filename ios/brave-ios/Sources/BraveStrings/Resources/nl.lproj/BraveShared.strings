@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Momenteel gebruikte zoekmachines";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Voeg een aangepaste zoekmachine toe";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Typ de zoek-URL en vervang de query door %1$s.\nVoorbeeld: https://youtube.com/search?q=%2$s \n(Als de site ondersteuning biedt voor OpenSearch, wordt een optie voor automatisch toevoegen gegeven wanneer dit veld wordt bewerkt.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Er bestaat al een zoekmachine met die naam.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Voer de naam van een zoekmachine in";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Onbeveiligde aangepaste zoeksjabloon voor";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Wijzig map";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Wijzig snelzoekmachines";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Schakel 'Trek omlaag om te vernieuwen' in";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Gereed";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Zoek '%@'";
+/* Find `search query` */
+"FindInPageFormat" = "Zoek ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Volgend resultaat op pagina";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Verberg gesponsorde afbeeldingen";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "'Gesponsord' zijn aanvullende achtergronden met een merknaam die je kunt verdienen als Brave Rewards is ingeschakeld.";
+"ntp.imageTypeSelectionDescription" = "Gesponsorde afbeeldingen zijn merkachtergronden die zichtbaar zijn bij het openen van een nieuw tabblad in de browser. Door deze in te schakelen, draag je bij aan de missie van Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Meer informatie";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Meer informatie over Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Verberg";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Plak en ga";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "op";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Scan QR-code";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Via 'Recente zoekopdrachten' heb jij alleen toegang tot eerdere zoekopdrachten. Wil je 'Recente zoekopdrachten' inschakelen?";
+"RecentSearchSectionDescription" = "Wil je 'Recente zoekopdrachten' inschakelen?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Recente zoekopdrachten";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Recente zoekopdrachten";
+"RecentSearchSectionTitle" = "Met 'Recente zoekopdrachten' kun je je eerdere zoekopdrachten privé bekijken.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Toon";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Zoekopdrachten voor de suggestie";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Geopende tabbladen, bladwijzers en geschiedenis";
+"SearchHistorySectionHeader" = "Op je apparaat";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Wis zoekopdracht";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Zoeken";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Zoek '%@'";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Voeg aangepaste zoekmachine toe";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Zoeksuggesties";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Wil je zoeksuggesties inschakelen?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Zoek met Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Niet beveiligd";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Plak en ga";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Stop";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Gesproken zoekopdrachten";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

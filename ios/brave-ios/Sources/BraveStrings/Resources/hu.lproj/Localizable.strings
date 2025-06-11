@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Új privát lap";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "További információk / lemondási lehetőségek";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Új lap";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Oldal újratöltése";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "További információk / lemondási lehetőségek";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Köszönjük, hogy támogatja a Brave keresőmotort azzal, hogy rákattint egy privát hirdetésre. A nagy techcégekkel ellentétben mi anonim módon mérjük a hirdetések teljesítményét, hogy megőrizzük az Ön adatainak biztonságát.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Helysáv kiválasztása";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Privát böngészési mód";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Hiba történt a fájl letöltése közben. Kérjük, próbálja meg később újra.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Fájl letöltése sikertelen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Nagyítás";

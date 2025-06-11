@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuálně používané vyhledávače";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Přidat vlastní vyhledávací program";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Napište vyhledávací adresu URL a nahraďte dotaz %1$s.\nNapříklad: https://youtube.com/search?q=%2$s \n(Pokud stránka podporuje OpenSearch, bude při úpravě tohoto pole poskytnuta možnost automatického přidání.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Vyhledávač se stejným názvem již existuje.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Zadejte název vyhledávacího programu";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nezabezpečená šablona vlastního vyhledávání pro";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Upravit složku";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Upravit rychlé vyhledávání";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Povolit funkci Pro obnovení potáhněte";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Hotovo";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Najít „%@“";
+/* Find `search query` */
+"FindInPageFormat" = "Najít ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Další výsledek na stránce";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Skrýt sponzorované obrázky";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Brave.";
+"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky jsou značková pozadí, která se zobrazují v nově otevřených kartách v prohlížeči. Povolení těchto sponzorovaných obrázků podporuje poslání společnosti Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Zjistěte více.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Další informace o odměnách Brave";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Skrýt";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Vložit a přejít";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "zapnuto ";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Scan QR Code";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Nedávná vyhledávání vám umožní soukromý přístup k minulým vyhledáváním. Chcete povolit nedávná vyhledávání?";
+"RecentSearchSectionDescription" = "Chcete povolit funkci Nedávná vyhledávání?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Nedávná vyhledávání";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Nedávná vyhledávání";
+"RecentSearchSectionTitle" = "Funkce Nedávná vyhledávání umožňují soukromý přístup k minulým vyhledáváním.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Zobrazit";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Vyhledává návrh";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Otevřít karty a záložky a historii";
+"SearchHistorySectionHeader" = "Ve vašem zařízení";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Vymazat vyhledávání";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Search";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Hledat „%@“";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Přidat vlastní vyhledávač";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Návrhy vyhledávání";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Chcete povolit funkci Návrh vyhledávače?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Hledat vyhledávací službou Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Nezabezpečené";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Vložit a přejít";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Seznam stop";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Zastavit";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Hlasové vyhledávání";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

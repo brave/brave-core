@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Jelenleg használt keresők";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Egyéni keresőmotor hozzáadása";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Írja be a keresési URL-t, és cserélje le a lekérdezést erre: %1$s.\nPéldául: https://youtube.com/search?q=%2$s\n (Ha a webhely támogatja az OpenSearch szolgáltatást, a mező szerkesztése során lehetőség nyílik az automatikus hozzáadásra.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Már létezik azonos nevű keresőmotor.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Adja meg a keresőmotor nevét";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nem biztonságos egyéni keresősablon ehhez:";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Mappa szerkesztése";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Gyorskeresőmotorok szerkesztése";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Lefelé húzva frissítés engedélyezése";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Kész";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "„%@” megkeresése";
+/* Find `search query` */
+"FindInPageFormat" = "Keresés ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Következő oldalon belüli eredmény";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Szponzorált képek elrejtése";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "A „szponzorált” hátterek további márkás hátterek, amelyeket a Brave-jutalmak révén szerezhet meg.";
+"ntp.imageTypeSelectionDescription" = "A szponzorált képek egyedi hátterek, amelyek az új böngészőfülek megnyitásakor jelennek meg. Ezek engedélyezése támogatja a Brave küldetését.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Tudj meg többet";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Tudjon meg többet a Brave-jutalmakról";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Elrejtés";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Beillesztés& indítás";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "bekapcsolva";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "QR-kód beolvasása";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "A Legutóbbi keresések lehetővé teszik a korábbi keresések privát elérését. Szeretné engedélyezni a Legutóbbi kereséseket?";
+"RecentSearchSectionDescription" = "Szeretné engedélyezni a Legutóbbi keresések funkciót?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Legutóbbi keresések";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Legutóbbi keresések";
+"RecentSearchSectionTitle" = "A legutóbbi keresések segítségével privát módon tekintheti meg korábbi kereséseit.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Megjelenítés";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Javaslatot keres";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Lapok megnyitása& Könyvjelző, Előzmények";
+"SearchHistorySectionHeader" = "Az Ön készülékén";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Keresett kifejezés törlése";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Keresés ";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Keresés \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Egyéni keresőmotor hozzáadása";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Keresési javaslatok";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Szeretné engedélyezni a keresési javaslatokat?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Keresés a Brave-vel";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Nem biztonságos";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Beillesztés és indítás";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Lejátszási lista";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Leállítás";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Hangalapú keresés";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
