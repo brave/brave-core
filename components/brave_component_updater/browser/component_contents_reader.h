@@ -49,7 +49,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
   void GetFileAsString(
       const base::FilePath& relative_path,
       OnGetAsString on_data,
-      const base::TaskPriority priority = base::TaskPriority::BEST_EFFORT);
+      const base::TaskPriority priority = base::TaskTraits().priority());
 
   void GetFileAsString(const base::FilePath& relative_path,
                        OnGetAsString on_data,
@@ -58,7 +58,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) ComponentContentsReader {
   void GetFileAsBytes(
       const base::FilePath& relative_path,
       OnGetAsBytes on_data,
-      const base::TaskPriority priority = base::TaskPriority::BEST_EFFORT);
+      const base::TaskPriority priority = base::TaskTraits().priority());
 
   void GetFileAsBytes(const base::FilePath& relative_path,
                       OnGetAsBytes on_data,
