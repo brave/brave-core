@@ -11,19 +11,10 @@ namespace p3a::features {
 BASE_FEATURE(kConstellationEnclaveAttestation,
              "BraveP3AConstellationEnclaveAttestation",
              base::FEATURE_DISABLED_BY_DEFAULT);
-// Report P3A responses with "Nebula" differential privacy
-// sampling enabled. See https://github.com/brave/brave-browser/issues/35841
-BASE_FEATURE(kNebula,
-             "BraveP3ADifferentialSampling",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsConstellationEnclaveAttestationEnabled() {
   return base::FeatureList::IsEnabled(
       features::kConstellationEnclaveAttestation);
-}
-
-bool IsNebulaEnabled() {
-  return base::FeatureList::IsEnabled(features::kNebula);
 }
 
 }  // namespace p3a::features
