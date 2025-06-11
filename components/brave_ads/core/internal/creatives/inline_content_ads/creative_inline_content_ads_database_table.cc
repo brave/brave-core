@@ -199,10 +199,10 @@ void GetForSegmentsAndDimensionsCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeInlineContentAdList creative_ads =
+  CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 void GetForDimensionsCallback(
@@ -213,10 +213,10 @@ void GetForDimensionsCallback(
     return std::move(callback).Run(/*success=*/false, /*creative_ads=*/{});
   }
 
-  const CreativeInlineContentAdList creative_ads =
+  CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
-  std::move(callback).Run(/*success=*/true, creative_ads);
+  std::move(callback).Run(/*success=*/true, std::move(creative_ads));
 }
 
 void GetAllCallback(
@@ -228,12 +228,12 @@ void GetAllCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeInlineContentAdList creative_ads =
+  CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 }  // namespace

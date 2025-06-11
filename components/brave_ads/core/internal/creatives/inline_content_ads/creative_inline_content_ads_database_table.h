@@ -28,11 +28,11 @@ using GetCreativeInlineContentAdCallback =
 using GetCreativeInlineContentAdsCallback =
     base::OnceCallback<void(bool success,
                             const SegmentList& segments,
-                            const CreativeInlineContentAdList& creative_ads)>;
+                            CreativeInlineContentAdList creative_ads)>;
 
 using GetCreativeInlineContentAdsForDimensionsCallback =
     base::OnceCallback<void(bool success,
-                            const CreativeInlineContentAdList& creative_ads)>;
+                            CreativeInlineContentAdList creative_ads)>;
 
 class CreativeInlineContentAds final : public TableInterface {
  public:

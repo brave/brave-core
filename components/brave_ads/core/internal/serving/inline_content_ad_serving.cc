@@ -162,7 +162,7 @@ void InlineContentAdServing::GetEligibleAdsCallback(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     uint64_t trace_id,
-    const CreativeInlineContentAdList& creative_ads) const {
+    CreativeInlineContentAdList creative_ads) const {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
       kTraceEventCategory, "InlineContentAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id), "creative_ads",
