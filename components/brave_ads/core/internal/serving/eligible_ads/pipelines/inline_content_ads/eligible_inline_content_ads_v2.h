@@ -35,14 +35,13 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
   void GetForUserModel(
       UserModelInfo user_model,
       const std::string& dimensions,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback)
-      override;
+      EligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
   void GetForUserModelCallback(
       UserModelInfo user_model,
       const std::string& dimensions,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
@@ -50,12 +49,12 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       UserModelInfo user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback);
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
   void GetSiteHistoryCallback(
       UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
       uint64_t trace_id,
       const SiteHistoryList& site_history);
 
@@ -64,24 +63,21 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
       const std::string& dimensions,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback);
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
-      const CreativeInlineContentAdList& creative_ads);
+      CreativeInlineContentAdList creative_ads);
 
   void FilterAndMaybePredictCreativeAd(
       const UserModelInfo& user_model,
-      const CreativeInlineContentAdList& creative_ads,
+      CreativeInlineContentAdList creative_ads,
       const AdEventList& ad_events,
       const SiteHistoryList& site_history,
-      EligibleAdsCallbackDeprecated<CreativeInlineContentAdList> callback);
-  void FilterIneligibleCreativeAds(CreativeInlineContentAdList& creative_ads,
-                                   const AdEventList& ad_events,
-                                   const SiteHistoryList& site_history);
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
 
   const database::table::CreativeInlineContentAds creative_ads_database_table_;
 

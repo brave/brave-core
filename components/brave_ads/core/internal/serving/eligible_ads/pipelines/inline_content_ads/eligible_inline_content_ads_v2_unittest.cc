@@ -61,8 +61,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeInlineContentAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_1}))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
@@ -93,8 +92,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoMatchingSegments) {
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeInlineContentAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, /*dimensions=*/"200x100",
@@ -115,8 +113,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
 
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeInlineContentAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(UserModelInfo{},
@@ -127,8 +124,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act & Assert
   base::RunLoop run_loop;
-  base::MockCallback<EligibleAdsCallbackDeprecated<CreativeInlineContentAdList>>
-      callback;
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
