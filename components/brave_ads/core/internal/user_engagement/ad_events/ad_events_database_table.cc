@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -251,6 +252,18 @@ void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"campaign_id", "confirmation_type"});
 }
 
+void MigrateToV51(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Optimize database query for `GetVirtualPrefs` from schema 51.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"creative_set_id", "confirmation_type"});
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"creative_instance_id", "confirmation_type"});
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"advertiser_id", "confirmation_type"});
+}
+
 }  // namespace
 
 void AdEvents::RecordEvent(const AdEventInfo& ad_event,
@@ -405,6 +418,98 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  base::BindOnce(&GetCallback, std::move(callback)));
+}
+
+void AdEvents::GetVirtualPrefs(const base::flat_set<std::string>& ids,
+                               GetAdEventVirtualPrefsCallback callback) const {
+  if (ids.empty()) {
+    return std::move(callback).Run(/*virtual_prefs=*/{});
+  }
+
+  std::vector<std::string> quoted_ids;
+  quoted_ids.reserve(ids.size());
+  for (const auto& id : ids) {
+    quoted_ids.push_back(
+        base::ReplaceStringPlaceholders("'$1'", {id}, nullptr));
+  }
+
+  // Efficiently filter `ad_events` by UUID across four ID columns using OR
+  // conditions. All IDs are uuidv4, so values will always be different across
+  // columns. SQLite leverages the MULTI-INDEX OR optimization, utilizing
+  // indexes on each ID column (each indexed with `confirmation_type`) for fast
+  // lookups. A temporary B-tree is created for GROUP BY due to the computed
+  // `id` via CASE, which is expected. This approach prevents full table scans
+  // and maintains high performance even with large datasets.
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            id,
+            confirmation_type,
+            COUNT(*) AS count
+          FROM (
+            SELECT
+              CASE
+                WHEN campaign_id IN ($1) THEN campaign_id
+                WHEN creative_set_id IN ($1) THEN creative_set_id
+                WHEN creative_instance_id IN ($1) THEN creative_instance_id
+                WHEN advertiser_id IN ($1) THEN advertiser_id
+              END AS id,
+              confirmation_type
+            FROM ad_events
+            WHERE campaign_id IN ($1)
+              OR creative_set_id IN ($1)
+              OR creative_instance_id IN ($1)
+              OR advertiser_id IN ($1)
+          )
+          WHERE id IS NOT NULL
+          GROUP BY id, confirmation_type;
+        )",
+      {base::JoinString(quoted_ids, ", ")}, nullptr);
+  mojom_db_action->bind_column_types = {
+      mojom::DBBindColumnType::kString,  // id
+      mojom::DBBindColumnType::kString,  // confirmation_type
+      mojom::DBBindColumnType::kInt      // count
+  };
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  auto result_callback = base::BindOnce(
+      [](GetAdEventVirtualPrefsCallback callback,
+         mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+        if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
+          BLOG(0, "Failed to get ad event counts");
+          return std::move(callback).Run(/*ids=*/{});
+        }
+
+        CHECK(mojom_db_transaction_result->rows_union);
+        const auto& mojom_db_rows =
+            mojom_db_transaction_result->rows_union->get_rows();
+
+        base::Value::Dict virtual_prefs;
+
+        base::Value::Dict* ad_events_dict =
+            virtual_prefs.EnsureDict("[virtual]:ad_events");
+        for (const auto& row : mojom_db_rows) {
+          CHECK(row);
+          CHECK_EQ(3U, row->column_values_union.size());
+
+          const std::string id = ColumnString(row, 0);
+          const std::string confirmation_type = ColumnString(row, 1);
+          const int count = ColumnInt(row, 2);
+
+          base::Value::Dict* id_dict = ad_events_dict->EnsureDict(id);
+          id_dict->Set(confirmation_type, count);
+        }
+
+        return std::move(callback).Run(std::move(virtual_prefs));
+      },
+      std::move(callback));
+
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(result_callback));
 }
 
 void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
@@ -686,6 +791,14 @@ void AdEvents::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   // Optimize database query for `IsFirstTime` from schema 50.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"campaign_id", "confirmation_type"});
+
+  // Optimize database query for `GetVirtualPrefs` from schema 51.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"creative_set_id", "confirmation_type"});
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"creative_instance_id", "confirmation_type"});
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"advertiser_id", "confirmation_type"});
 }
 
 void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -710,6 +823,11 @@ void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
     case 50: {
       MigrateToV50(mojom_db_transaction);
+      break;
+    }
+
+    case 51: {
+      MigrateToV51(mojom_db_transaction);
       break;
     }
 

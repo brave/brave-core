@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -26,6 +28,8 @@ using IsFirstTimeCallback =
 
 using GetAdEventsCallback =
     base::OnceCallback<void(bool success, const AdEventList& ad_events)>;
+using GetAdEventVirtualPrefsCallback =
+    base::OnceCallback<void(base::Value::Dict virtual_prefs)>;
 
 class AdEvents final : public TableInterface {
  public:
@@ -45,6 +49,8 @@ class AdEvents final : public TableInterface {
            mojom::ConfirmationType mojom_confirmation_type,
            base::TimeDelta time_window,
            GetAdEventsCallback callback) const;
+  void GetVirtualPrefs(const base::flat_set<std::string>& ids,
+                       GetAdEventVirtualPrefsCallback callback) const;
 
   void GetUnexpired(GetAdEventsCallback callback) const;
   void GetUnexpired(mojom::AdType mojom_ad_type,

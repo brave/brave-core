@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -68,6 +69,10 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   void ApplyConditionMatcher(
       CreativeNewTabPageAdList creative_ads,
       EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void ApplyConditionMatcherCallback(
+      CreativeNewTabPageAdList creative_ads,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      base::Value::Dict virtual_prefs);
 
   void FilterIneligibleCreativeAds(
       CreativeNewTabPageAdList creative_ads,
