@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2018 The Chromium Authors. All rights reserved.
-
-     Use of this source code is governed by a BSD-style license that can be
-     found in the LICENSE file.
--->
+<!-- Copyright (c) 2018 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,38 +21,38 @@
 
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/forward_menu_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:src="@drawable/btn_forward"
             android:contentDescription="@string/accessibility_menu_forward" />
         
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/share_menu_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:src="@drawable/share_icon"
             android:contentDescription="@string/share" />
 
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/home_menu_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:src="@drawable/btn_toolbar_home"
             android:contentDescription="@string/accessibility_toolbar_btn_home" />
 
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/bookmark_this_page_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:src="@drawable/star_outline_24dp"
             android:contentDescription="@string/accessibility_menu_bookmark" />
 
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/offline_page_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:src="@drawable/ic_file_download_white_24dp"
             android:contentDescription="@string/download_page" />
 
         <!-- The src will be set in onFinishInflate. -->
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/reload_menu_id"
-            style="@style/OverflowMenuButton"
+            style="@style/BraveOverflowMenuButton"
             android:contentDescription="@string/accessibility_btn_refresh"
             tools:src="@drawable/btn_reload_stop" />
     </LinearLayout>

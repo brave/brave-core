@@ -370,10 +370,16 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  if (auto* tab_search_button = tab_strip_region_view_->GetTabSearchButton()) {
-    auto is_tab_search_visible =
-        GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-    tab_search_button->SetVisible(is_tab_search_visible);
+  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser());
+  const bool use_search_button =
+      browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
+  if (features::HasTabSearchToolbarButton()) {
+    if (auto* tab_search_button = toolbar()->tab_search_button()) {
+      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+    }
+  } else if (auto* tab_search_button =
+                 tab_strip_region_view_->GetTabSearchButton()) {
+    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 

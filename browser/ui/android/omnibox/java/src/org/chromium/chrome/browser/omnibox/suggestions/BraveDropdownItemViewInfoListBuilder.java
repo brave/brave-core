@@ -42,7 +42,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
     private @Nullable BraveLeoSuggestionProcessor mBraveLeoSuggestionProcessor;
     private UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
-    private @NonNull Supplier<Tab> mActivityTabSupplier;
+    private final @NonNull Supplier<Tab> mActivityTabSupplier;
     private static final List<String> sBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     private AutocompleteDelegate mAutocompleteDelegate;

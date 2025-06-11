@@ -40,8 +40,8 @@ class TestObserver : public importer::ImporterProgressObserver {
   ~TestObserver() override = default;
 
   void ImportStarted() override {}
-  void ImportItemStarted(importer::ImportItem item) override {}
-  void ImportItemEnded(importer::ImportItem item) override {}
+  void ImportItemStarted(user_data_importer::ImportItem item) override {}
+  void ImportItemEnded(user_data_importer::ImportItem item) override {}
   MOCK_METHOD(void, ImportEnded, (), (override));
 };
 
@@ -169,8 +169,8 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
 
       host->set_observer(&observer);
 
-      importer::SourceProfile source;
-      source.importer_type = importer::TYPE_CHROME;
+      user_data_importer::SourceProfile source;
+      source.importer_type = user_data_importer::TYPE_CHROME;
       source.source_path = source_profile->GetPath();
 
       bool extension_imported = false;
@@ -183,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
                 return extensions_import::ExtensionImportStatus::kOk;
               });
 
-      host->StartImportSettings(source, target, importer::EXTENSIONS,
+      host->StartImportSettings(source, target, user_data_importer::EXTENSIONS,
                                 new ProfileWriter(target));
       run_loop.Run();
       EXPECT_TRUE(extension_imported);
@@ -213,8 +213,8 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ReImportExtensions) {
 
     host->set_observer(&observer);
 
-    importer::SourceProfile source;
-    source.importer_type = importer::TYPE_CHROME;
+    user_data_importer::SourceProfile source;
+    source.importer_type = user_data_importer::TYPE_CHROME;
     source.source_path = source_profile->GetPath();
 
     extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
@@ -229,7 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ReImportExtensions) {
               return extensions_import::ExtensionImportStatus::kOk;
             });
 
-    host->StartImportSettings(source, target, importer::EXTENSIONS,
+    host->StartImportSettings(source, target, user_data_importer::EXTENSIONS,
                               new ProfileWriter(target));
     run_loop.Run();
   };

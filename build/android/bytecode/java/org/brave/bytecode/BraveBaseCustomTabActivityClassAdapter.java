@@ -36,5 +36,8 @@ public class BraveBaseCustomTabActivityClassAdapter extends BraveClassVisitor {
 
         deleteMethod(sFullScreenCustomTabActivityClassName, "getAppHeaderCoordinator");
         makePublicMethod(sBaseCustomTabActivityClassName, "getAppHeaderCoordinator");
+
+        deleteMethod(sFullScreenCustomTabActivityClassName, "getBrowserServicesThemeColorProvider");
+        makePublicMethod(sBaseCustomTabActivityClassName, "getBrowserServicesThemeColorProvider");
     }
 }

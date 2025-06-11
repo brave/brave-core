@@ -7,23 +7,26 @@
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #define DraggingTabsSession DraggingTabsSessionChromium
 
-// Remove drag threshold when it's vertical tab strip
-#define GetHorizontalDragThreshold()                         \
-  GetHorizontalDragThreshold() -                             \
-      (tabs::utils::ShouldShowVerticalTabs(                  \
-           BrowserView::GetBrowserViewForNativeWindow(       \
-               attached_context_->GetWidget()                \
-                   ->GetTopLevelWidget()                     \
-                   ->GetNativeWindow())                      \
-               ->browser())                                  \
-           ? attached_context_->GetHorizontalDragThreshold() \
-           : 0)
+// Remove the drag threshold when it's a vertical tab strip (we do this by
+// multiplying by 0; if it's not a vertical tab strip, we multiply by 1 so
+// nothing changes)
+#define GetStandardWidth(...)                          \
+  GetStandardWidth(__VA_ARGS__) *                      \
+      (tabs::utils::ShouldShowVerticalTabs(            \
+           BrowserView::GetBrowserViewForNativeWindow( \
+               attached_context_->GetWidget()          \
+                   ->GetTopLevelWidget()               \
+                   ->GetNativeWindow())                \
+               ->browser())                            \
+           ? 0                                         \
+           : 1)
 
 #include "src/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc"
 
-#undef GetHorizontalDragThreshold
+#undef GetStandardWidth
 #undef DraggingTabsSession

@@ -70,8 +70,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private @MonotonicNonNull Menu mMenu;
-    private AppMenuDelegate mAppMenuDelegate;
-    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final AppMenuDelegate mAppMenuDelegate;
+    private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
     public BraveTabbedAppMenuPropertiesDelegate(
             Context context,
@@ -488,7 +488,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    protected boolean shouldShowNewWindow() {
+    public boolean shouldShowNewWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
     }
 

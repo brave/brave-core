@@ -25,7 +25,6 @@
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/component_loader.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -41,6 +40,7 @@
 #include "components/webui/flags/flags_ui_constants.h"
 #include "components/webui/flags/pref_service_flags_storage.h"
 #include "content/public/browser/web_ui.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -247,8 +247,6 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
   CHECK(profile_);
   bool enabled = args[0].GetBool();
 
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ComponentLoader* loader =
       extensions::ComponentLoader::Get(profile_);
 
@@ -259,11 +257,12 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
           brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
       loader->Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
     }
-    service->EnableExtension(brave_webtorrent_extension_id);
+    extensions::ExtensionRegistrar::Get(profile_)->EnableExtension(
+        brave_webtorrent_extension_id);
   } else {
-    service->DisableExtension(
+    extensions::ExtensionRegistrar::Get(profile_)->DisableExtension(
         brave_webtorrent_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+        {extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY});
   }
 }
 
@@ -319,11 +318,9 @@ void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
       brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     return;
   }
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  service->DisableExtension(
+  extensions::ExtensionRegistrar::Get(profile_)->DisableExtension(
       kEthereumRemoteClientExtensionId,
-      extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
+      {extensions::disable_reason::DisableReason::DISABLE_USER_ACTION});
 }
 
 void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
@@ -345,14 +342,13 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
   CHECK(profile_);
   bool enabled = args[0].GetBool();
 
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
-    service->EnableExtension(kEthereumRemoteClientExtensionId);
+    extensions::ExtensionRegistrar::Get(profile_)->EnableExtension(
+        kEthereumRemoteClientExtensionId);
   } else {
-    service->DisableExtension(
+    extensions::ExtensionRegistrar::Get(profile_)->DisableExtension(
         kEthereumRemoteClientExtensionId,
-        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
+        {extensions::disable_reason::DisableReason::DISABLE_USER_ACTION});
   }
 }
 #endif

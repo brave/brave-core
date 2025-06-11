@@ -32,7 +32,7 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
     private final UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
     private final BraveLeoAutocompleteDelegate mDelegate;
     private final String mAskLeo;
-    private @NonNull Supplier<Tab> mActivityTabSupplier;
+    private final @NonNull Supplier<Tab> mActivityTabSupplier;
 
     public BraveLeoSuggestionProcessor(
             Context context,

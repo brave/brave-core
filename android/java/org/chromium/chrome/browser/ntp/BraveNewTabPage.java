@@ -42,7 +42,7 @@ import org.chromium.ui.base.WindowAndroid;
 
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 public class BraveNewTabPage extends NewTabPage {
-    private JankTracker mJankTracker;
+    private final JankTracker mJankTracker;
 
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;

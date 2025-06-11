@@ -885,9 +885,10 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="is_chromeos and not use_titlecase">
           </if>
-        <if expr="not is_chromeos">
-          </if>
-      </if> <if expr="is_chromeos">
+      </if> <if expr="(not is_android or enable_extensions_core) and not is_chromeos">
+        </if>
+
+      <if expr="is_chromeos">
         </if> <if expr="not is_android or enable_extensions_core">
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
@@ -942,6 +943,8 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_android">
         <if expr="is_chromeos">
           </if>
+      </if>
+      <if expr="not is_android or enable_extensions_core">
         </if>
 
       <if expr="not is_android">

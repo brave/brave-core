@@ -481,6 +481,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 #endif
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       BookmarksPanelShownAfterReadingListTest) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  panel_ui->Show(SidePanelEntryId::kReadingList);
+
+  // Check reading list panel is activated.
+  auto reading_list_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kReadingList);
+  ASSERT_TRUE(reading_list_item_index.has_value());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(reading_list_item_index); }));
+
+  // Check bookmarks panel is activated.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  auto bookmarks_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmarks_item_index.has_value());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(bookmarks_item_index); }));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);

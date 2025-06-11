@@ -29,8 +29,8 @@ public class HighlightView extends FrameLayout {
     private static final int ALPHA_60_PERCENT = 153;
     private static final int DEFAULT_ANIMATION_DURATION = 1000;
 
-    private Paint mEraserPaint;
-    private Paint mBasicPaint;
+    private final Paint mEraserPaint;
+    private final Paint mBasicPaint;
 
     private HighlightItem mItem;
     private int mItemWidth;

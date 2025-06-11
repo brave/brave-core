@@ -53,7 +53,7 @@ public class BraveNewsUtils {
     private static @Nullable List<Channel> sFollowingChannelList;
     private static @Nullable List<Publisher> sFollowingPublisherList;
     private static @Nullable List<String> sSuggestionsList;
-    private static HashMap<String, Integer> sChannelIcons = new HashMap<>();
+    private static final HashMap<String, Integer> sChannelIcons = new HashMap<>();
 
     public static String getPromotionIdItem(FeedItemsCard items) {
         String creativeInstanceId = "null";

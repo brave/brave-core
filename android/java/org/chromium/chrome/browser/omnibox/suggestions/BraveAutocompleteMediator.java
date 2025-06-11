@@ -8,11 +8,10 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 import android.os.Handler;
 
-import androidx.annotation.Nullable;
-
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -43,8 +42,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
-    private AutocompleteDelegate mDelegate;
-    private Supplier<Tab> mActivityTabSupplier;
+    private final AutocompleteDelegate mDelegate;
+    private final Supplier<@Nullable Tab> mActivityTabSupplier;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     @SuppressWarnings("NullAway") // Actual instance is at the parent
@@ -60,8 +59,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             PropertyModel listPropertyModel,
             Handler handler,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            Supplier<Tab> activityTabSupplier,
-            @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
+            Supplier<@Nullable Tab> activityTabSupplier,
+            Supplier<ShareDelegate> shareDelegateSupplier,
             LocationBarDataProvider locationBarDataProvider,
             Callback<Tab> bringTabToFrontCallback,
             Supplier<TabWindowManager> tabWindowManagerSupplier,

@@ -1,5 +1,5 @@
 diff --git a/ios/web_view/BUILD.gn b/ios/web_view/BUILD.gn
-index 7e4fbe764e299aa2f0dd2098c6ef750e38c6baf0..09d79a816a79e98a520b4f1cd9d07bf6b4303173 100644
+index 7da119cff870de363007868017bdbd5b3c5f7531..11055fa04f32a624dac707e2e48b455bea88adc5 100644
 --- a/ios/web_view/BUILD.gn
 +++ b/ios/web_view/BUILD.gn
 @@ -445,6 +445,7 @@ source_set("web_view_sources") {

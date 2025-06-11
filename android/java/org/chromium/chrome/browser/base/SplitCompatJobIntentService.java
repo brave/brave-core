@@ -17,7 +17,7 @@ import org.chromium.base.BundleUtils;
  * present in the base module, while the Impl can be in the chrome module.
  */
 public class SplitCompatJobIntentService extends JobIntentService {
-    private String mServiceClassName;
+    private final String mServiceClassName;
     private String mSplitName;
     private Impl mImpl;
 

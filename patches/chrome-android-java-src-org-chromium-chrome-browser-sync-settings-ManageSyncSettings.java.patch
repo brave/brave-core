@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index b0a7be5b3d6cd9d6634caee78841497eaafe77d7..410ff4e5c56bc2579c9b1a870c3c69f48674e8ea 100644
+index 1128c66fc477f07ee6c5420b13052b115f813d88..0305e5a9aa2c66fec7253b98864c94ededb3e6ef 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -65,7 +65,7 @@ import org.chromium.chrome.browser.ui.signin.SigninUtils;
@@ -11,7 +11,7 @@ index b0a7be5b3d6cd9d6634caee78841497eaafe77d7..410ff4e5c56bc2579c9b1a870c3c69f4
  import org.chromium.components.browser_ui.settings.ChromeBasePreference;
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -665,7 +665,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -656,7 +656,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
                                                  ? ConsentLevel.SIGNIN
                                                  : ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.

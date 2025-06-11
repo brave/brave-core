@@ -12,7 +12,7 @@
 
 BraveImporterObserver::BraveImporterObserver(
     ExternalProcessImporterHost* importer_host,
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t imported_items,
     ReportProgressCallback callback)
     : source_profile_(source_profile),
@@ -41,7 +41,8 @@ void BraveImporterObserver::ImportStarted() {
   callback_.Run(source_profile_, data);
 }
 
-void BraveImporterObserver::ImportItemStarted(importer::ImportItem item) {
+void BraveImporterObserver::ImportItemStarted(
+    user_data_importer::ImportItem item) {
   base::Value::Dict data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);
@@ -51,7 +52,8 @@ void BraveImporterObserver::ImportItemStarted(importer::ImportItem item) {
   callback_.Run(source_profile_, data);
 }
 
-void BraveImporterObserver::ImportItemEnded(importer::ImportItem item) {
+void BraveImporterObserver::ImportItemEnded(
+    user_data_importer::ImportItem item) {
   base::Value::Dict data;
   data.Set("importer_name", source_profile_.importer_name);
   data.Set("importer_type", source_profile_.importer_type);

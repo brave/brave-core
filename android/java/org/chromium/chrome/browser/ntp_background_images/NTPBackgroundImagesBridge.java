@@ -28,8 +28,8 @@ public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
-    private static List<TopSite> mTopSites = new ArrayList<>();
-    private static NewTabPageListener mNewTabPageListener;
+    private static final List<TopSite> sTopSites = new ArrayList<>();
+    private static NewTabPageListener sNewTabPageListener;
 
     public abstract static class NTPBackgroundImageServiceObserver {
         public abstract void onUpdated();
@@ -120,9 +120,9 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void getTopSites() {
-        mTopSites.clear();
-        NTPBackgroundImagesBridgeJni.get().getTopSites(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+        sTopSites.clear();
+        NTPBackgroundImagesBridgeJni.get()
+                .getTopSites(mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
     public String getReferralApiKey() {
@@ -131,17 +131,18 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
-        mNewTabPageListener = newTabPageListener;
+        sNewTabPageListener = newTabPageListener;
     }
 
     @CalledByNative
-    public static void loadTopSitesData(String name, String destinationUrl, String backgroundColor, String imagePath) {
-        mTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
+    public static void loadTopSitesData(
+            String name, String destinationUrl, String backgroundColor, String imagePath) {
+        sTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
     }
 
     @CalledByNative
     public static void topSitesLoaded() {
-        mNewTabPageListener.updateTopSites(mTopSites);
+        sNewTabPageListener.updateTopSites(sTopSites);
     }
 
     @CalledByNative

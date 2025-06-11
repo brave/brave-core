@@ -6,10 +6,10 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class TopSite {
-    private String mName;
-    private String mDestinationUrl;
-    private String mBackgroundColor;
-    private String mImagePath;
+    private final String mName;
+    private final String mDestinationUrl;
+    private final String mBackgroundColor;
+    private final String mImagePath;
 
     public TopSite(String name, String destinationUrl, String backgroundColor, String imagePath) {
         mName = name;

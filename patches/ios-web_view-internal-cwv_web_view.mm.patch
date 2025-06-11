@@ -1,8 +1,8 @@
 diff --git a/ios/web_view/internal/cwv_web_view.mm b/ios/web_view/internal/cwv_web_view.mm
-index 702c5657c5f656384b33942a472db818cb941f3e..09a22c5fb849ba5514b717ff97679d4c4eba9b11 100644
+index cd8e852b2d71f179fa15e2df56f71d9615fdeb98..14e6113fea0b279625f20b11a7775748e966299c 100644
 --- a/ios/web_view/internal/cwv_web_view.mm
 +++ b/ios/web_view/internal/cwv_web_view.mm
-@@ -1209,11 +1209,11 @@ class WebViewHolder : public web::WebStateUserData<WebViewHolder> {
+@@ -1210,11 +1210,11 @@ class WebViewHolder : public web::WebStateUserData<WebViewHolder> {
    if (![self isWebStateSafeToUse]) {
      return;
    }

@@ -43,10 +43,12 @@ select.md-select:not(.z) {
   border-color: var(--leo-color-divider-strong);
 }
 
+/*
 .md-select:open {
   outline: solid 2px var(--cr-focus-outline-color);
   outline-offset: -1px;
 }
+*/
 
 .md-select::picker(select) {
   margin-top: var(--leo-spacing-m);
@@ -89,9 +91,11 @@ select.md-select:not(.z) {
   transition: transform 0.12s ease-in-out;
 }
 
+/*
 .md-select:open::picker-icon {
   transform: rotate(180deg);
 }
+*/
 
 .md-select option:focus {
   background-color: var(--leo-color-container-interactive);

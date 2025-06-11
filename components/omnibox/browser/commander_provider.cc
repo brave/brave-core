@@ -52,10 +52,9 @@ void CommanderProvider::Start(const AutocompleteInput& input,
   }
 }
 
-void CommanderProvider::Stop(bool clear_cached_results,
-                             bool due_to_user_inactivity) {
+void CommanderProvider::Stop(AutocompleteStopReason stop_reason) {
   last_input_.clear();
-  AutocompleteProvider::Stop(clear_cached_results, due_to_user_inactivity);
+  AutocompleteProvider::Stop(stop_reason);
 }
 
 void CommanderProvider::OnCommanderUpdated() {

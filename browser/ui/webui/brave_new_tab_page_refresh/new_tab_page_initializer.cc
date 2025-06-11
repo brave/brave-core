@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
@@ -91,10 +92,9 @@ void NewTabPageInitializer::AddCSPOverrides() {
 void NewTabPageInitializer::AddLoadTimeValues() {
   auto* profile = GetProfile();
 
-  source_->AddBoolean(
-      "customBackgroundFeatureEnabled",
-      !profile->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
-          ThemePrefInMigration::kNtpCustomBackgroundDict)));
+  source_->AddBoolean("customBackgroundFeatureEnabled",
+                      !profile->GetPrefs()->IsManagedPreference(
+                          prefs::kNtpCustomBackgroundDict));
 
   source_->AddString("sponsoredRichMediaBaseUrl",
                      kNTPNewTabTakeoverRichMediaUrl);

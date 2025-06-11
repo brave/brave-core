@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [ac mainMenuCreated];
   [ac setLastProfile:browser()->profile()];
 
-  // Added one bookmark item.
+  // Add one bookmark item.
   constexpr char kPersistBookmarkURL[] = "http://www.cnn.com/";
   constexpr char16_t kPersistBookmarkTitle[] = u"CNN";
   BookmarkModel* bookmark_model = WaitForBookmarkModel(browser()->profile());
@@ -220,23 +220,33 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   NSMenu* normal_window_submenu = [ac bookmarkMenuBridge]->BookmarkMenu();
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
 
-  // Total 5 items - basic 3 items(Bookmark Manager, Bookmark This Tab... and
-  // Bookmark All Tabs..), separator and bookmark item. and check last item is
-  // bookmark item.
+  // Total 5 items - basic 3 items (Bookmark Manager, Bookmark This Tab... and
+  // Bookmark All Tabs..), separator, and "Other Bookmarks" (which contains the
+  // new bookmark item).
   EXPECT_EQ(5, [normal_window_submenu numberOfItems]);
-  EXPECT_EQ(
-      std::u16string(kPersistBookmarkTitle),
-      base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
+  EXPECT_TRUE([[normal_window_submenu itemAtIndex:4] hasSubmenu]);
+  NSMenu* other_bookmarks_submenu =
+      [[normal_window_submenu itemAtIndex:4] submenu];
+  // The "Other Bookmarks" menu is lazy loaded
+  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 0);
+  [ac bookmarkMenuBridge]->UpdateNonRootMenu(
+      other_bookmarks_submenu, BookmarkParentFolder::OtherFolder());
+  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 1);
+  EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
+            base::SysNSStringToUTF16(
+                [[other_bookmarks_submenu itemAtIndex:0] title]));
 
   // Create private browser and check bookmark menubar has same items.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());
   [ac setLastProfile:private_browser->profile()];
   NSMenu* private_browser_submenu = [ac bookmarkMenuBridge]->BookmarkMenu();
   [[private_browser_submenu delegate] menuNeedsUpdate:private_browser_submenu];
-  EXPECT_EQ(5, [private_browser_submenu numberOfItems]);
+  NSMenu* private_other_bookmarks_submenu =
+      [[private_browser_submenu itemAtIndex:4] submenu];
+  EXPECT_EQ([private_other_bookmarks_submenu numberOfItems], 1);
   EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
             base::SysNSStringToUTF16(
-                [[private_browser_submenu itemAtIndex:4] title]));
+                [[private_other_bookmarks_submenu itemAtIndex:0] title]));
 
   // Close private browser and check bookmark menubar still has same items.
   chrome::CloseWindow(private_browser);
@@ -245,9 +255,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [ac setLastProfile:browser()->profile()];
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
   EXPECT_EQ(5, [normal_window_submenu numberOfItems]);
-  EXPECT_EQ(
-      std::u16string(kPersistBookmarkTitle),
-      base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
+  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 1);
+  EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
+            base::SysNSStringToUTF16(
+                [[other_bookmarks_submenu itemAtIndex:0] title]));
 }
 
 #if BUILDFLAG(ENABLE_TOR)

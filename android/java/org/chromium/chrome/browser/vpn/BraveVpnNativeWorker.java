@@ -20,7 +20,7 @@ public class BraveVpnNativeWorker {
     private static final Object sLock = new Object();
     private static BraveVpnNativeWorker sInstance;
 
-    private List<BraveVpnObserver> mObservers;
+    private final List<BraveVpnObserver> mObservers;
 
     public static BraveVpnNativeWorker getInstance() {
         synchronized (sLock) {

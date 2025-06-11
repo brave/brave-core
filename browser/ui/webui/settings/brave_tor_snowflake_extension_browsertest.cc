@@ -67,14 +67,12 @@ class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
 
   void EnableSnowflake(bool enable) {
     if (enable) {
-      extensions::ExtensionSystem::Get(browser()->profile())
-          ->extension_service()
+      extensions::ExtensionRegistrar::Get(browser()->profile())
           ->EnableExtension(kSnowflakeExtensionId);
     } else {
-      extensions::ExtensionSystem::Get(browser()->profile())
-          ->extension_service()
+      extensions::ExtensionRegistrar::Get(browser()->profile())
           ->DisableExtension(kSnowflakeExtensionId,
-                             extensions::disable_reason::DISABLE_USER_ACTION);
+                             {extensions::disable_reason::DISABLE_USER_ACTION});
     }
   }
 
