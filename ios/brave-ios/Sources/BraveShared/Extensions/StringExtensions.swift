@@ -95,11 +95,7 @@ extension String {
 
   // Truncates the string in the middle to the specified maxLength characters.
   public func truncatingMiddle(maxLength: Int) -> String {
-    guard self.count > maxLength else {
-      return self
-    }
-
-    guard maxLength > 1 else {
+    guard maxLength > 1, count > maxLength else {
       return self
     }
 
