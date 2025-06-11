@@ -23,6 +23,7 @@ source_set("new_tab_takeover") {
     "//brave/components/ntp_background_images/browser",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/android/tab_model",
     "//content/public/browser",
     "//content/public/common",
     "//ui/webui",

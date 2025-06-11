@@ -32,7 +32,7 @@ public class BraveLeoRadioButtonGroupDefaultModelPreference extends Preference
     private RadioButtonWithDescriptionLayout mGroup;
     private ModelWithSubtitle[] mModels;
     private String mDefaultModelKey;
-    private Context mContext;
+    private final Context mContext;
     RadioButtonsDelegate mDelegate;
 
     public BraveLeoRadioButtonGroupDefaultModelPreference(Context context, AttributeSet attrs) {

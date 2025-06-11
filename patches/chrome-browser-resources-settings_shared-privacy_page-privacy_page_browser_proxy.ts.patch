@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts b/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
-index bbc0426516db825d840015851d561e07018ce983..81695e0277226b33330cac2daddedc126070b802 100644
+index 5079573fee626cf14ac97fd225f0a4c8282e0529..1c2c8d8c2bb821b23de2097bd6e366f9e5b1441a 100644
 --- a/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
 +++ b/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
 @@ -62,7 +62,7 @@ export interface SecureDnsSetting {
@@ -11,7 +11,7 @@ index bbc0426516db825d840015851d561e07018ce983..81695e0277226b33330cac2daddedc12
    getMetricsReporting(): Promise<MetricsReporting>;
    setMetricsReportingEnabled(enabled: boolean): void;
  
-@@ -91,7 +91,7 @@ export interface PrivacyPageBrowserProxy {
+@@ -85,7 +85,7 @@ export interface PrivacyPageBrowserProxy {
  }
  
  export class PrivacyPageBrowserProxyImpl implements PrivacyPageBrowserProxy {

@@ -37,11 +37,13 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -1143,8 +1145,11 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
       (*vertical_tab_on_right_ ? bounds_in_screen.right() - cursor_position
                                : cursor_position - bounds_in_screen.x()) -
       *resize_offset_ - GetInsets().width();
-  dest_width = std::clamp(dest_width, tab_style_->GetPinnedWidth() * 3,
-                          tab_style_->GetStandardWidth() * 2);
+  // Passed |true| but it doesn't have any meaning becuase we always use same
+  // width.
+  dest_width =
+      std::clamp(dest_width, tab_style_->GetPinnedWidth(/*is_split*/ true) * 3,
+                 tab_style_->GetStandardWidth(/*is_split*/ true) * 2);
   if (done_resizing) {
     resize_offset_ = std::nullopt;
   }
@@ -1206,7 +1211,13 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
   const bool use_search_button =
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-  if (auto* tab_search_button = original_region_view_->GetTabSearchButton()) {
+  if (features::HasTabSearchToolbarButton()) {
+    if (auto* tab_search_button =
+            browser_view_->toolbar()->tab_search_button()) {
+      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+    }
+  } else if (auto* tab_search_button =
+                 browser_view_->tab_strip_region_view()->GetTabSearchButton()) {
     tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }

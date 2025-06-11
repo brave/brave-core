@@ -56,7 +56,7 @@ public class BraveMediaNotificationControllerDelegate
             super.onDestroy();
         }
 
-        private BroadcastReceiver mAudioBecomingNoisyReceiver =
+        private final BroadcastReceiver mAudioBecomingNoisyReceiver =
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {

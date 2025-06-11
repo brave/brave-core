@@ -1,11 +1,11 @@
 diff --git a/components/crx_file/crx_verifier.cc b/components/crx_file/crx_verifier.cc
-index 730369f0b6cce6e4f6cd7984f992b39026075f45..f4f4616b078e4d76e539af477c350a3bcee031c3 100644
+index 1583bb1ec327c515ca43b5fad2e47dc1bba4e335..d7aa5f0e0963590e5bf8424e5822bf3f92cd0567 100644
 --- a/components/crx_file/crx_verifier.cc
 +++ b/components/crx_file/crx_verifier.cc
-@@ -199,6 +199,7 @@ VerifierResult VerifyCrx3(
+@@ -195,6 +195,7 @@ VerifierResult VerifyCrx3(
        found_publisher_key =
-           found_publisher_key || key_hash == publisher_key ||
-           (accept_publisher_test_key && key_hash == *publisher_test_key);
+           found_publisher_key || key_hash == kPublisherKeyHash ||
+           (accept_publisher_test_key && key_hash == kPublisherTestKeyHash);
 +      found_publisher_key = found_publisher_key || IsBravePublisher(key_hash);
        auto v = std::make_unique<crypto::SignatureVerifier>();
        if (!v->VerifyInit(proof_type.second, base::as_byte_span(sig),

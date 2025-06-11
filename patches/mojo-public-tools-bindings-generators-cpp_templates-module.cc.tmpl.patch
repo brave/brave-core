@@ -1,8 +1,8 @@
 diff --git a/mojo/public/tools/bindings/generators/cpp_templates/module.cc.tmpl b/mojo/public/tools/bindings/generators/cpp_templates/module.cc.tmpl
-index a8e46ca7250439e6ff430d942468d623a11777e9..7a6d05b4218ee0f91a0743fd4b9e1496d55e1e7f 100644
+index 1a52181fac36fdc54d7f97a626eb0acdcac8dc3d..2b038c7aed87887a97d43b5fec40403f027ae4dd 100644
 --- a/mojo/public/tools/bindings/generators/cpp_templates/module.cc.tmpl
 +++ b/mojo/public/tools/bindings/generators/cpp_templates/module.cc.tmpl
-@@ -53,19 +53,10 @@
+@@ -55,19 +55,10 @@
  
  {{namespace_begin(namespaces_as_array, variant)}}
  

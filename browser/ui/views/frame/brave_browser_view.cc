@@ -365,10 +365,16 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  if (auto* tab_search_button = tab_strip_region_view_->GetTabSearchButton()) {
-    auto is_tab_search_visible =
-        GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-    tab_search_button->SetVisible(is_tab_search_visible);
+  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser());
+  const bool use_search_button =
+      browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
+  if (features::HasTabSearchToolbarButton()) {
+    if (auto* tab_search_button = toolbar()->tab_search_button()) {
+      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+    }
+  } else if (auto* tab_search_button =
+                 tab_strip_region_view_->GetTabSearchButton()) {
+    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 
@@ -805,8 +811,8 @@ void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   }
 }
 
-void BraveBrowserView::ShowSplitView() {
-  BrowserView::ShowSplitView();
+void BraveBrowserView::ShowSplitView(bool focus_active_view) {
+  BrowserView::ShowSplitView(focus_active_view);
 
   UpdateContentsSeparatorVisibility();
   GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
@@ -818,16 +824,15 @@ void BraveBrowserView::HideSplitView() {
   UpdateContentsSeparatorVisibility();
 }
 
-void BraveBrowserView::UpdateActiveSplitView() {
-  BrowserView::UpdateActiveSplitView();
+void BraveBrowserView::UpdateActiveTabInSplitView() {
+  BrowserView::UpdateActiveTabInSplitView();
   GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 
-void BraveBrowserView::OnSplitTabContentsUpdated(
-    split_tabs::SplitTabId split_id,
-    std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
-    std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) {
-  BrowserView::OnSplitTabContentsUpdated(split_id, prev_tabs, new_tabs);
+void BraveBrowserView::UpdateContentsInSplitView(
+    const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
+    const std::vector<std::pair<tabs::TabInterface*, int>>& new_tabs) {
+  BrowserView::UpdateContentsInSplitView(prev_tabs, new_tabs);
   GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 

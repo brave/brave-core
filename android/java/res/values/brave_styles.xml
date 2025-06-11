@@ -509,4 +509,191 @@
     <item name="android:typeface">monospace</item>
   </style>
 
+    <!--
+        Styling for an icon in an app menu icon row.
+        This is a backport taken from upstream's
+        chrome/browser/ui/android/appmenu/java/res/values/styles.xml of the
+        revision previous to fa431a3660de796f7aa18130fd8a6da39f1cc1d7
+        to fix buttons align and colors at
+        brave/android/java/res/layout/icon_row_menu_footer.xml
+    -->
+    <style name="BraveOverflowMenuButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/listChoiceBackgroundIndicator</item>
+        <item name="android:scaleType">center</item>
+        <item name="tint">@color/default_icon_color_tint_list</item>
+    </style>
+
+    <!-- Brave News -->
+    <style name="BraveNewsAdLogoText">
+         <item name="android:textColor">@color/blurple</item>
+    </style>
+
+    <style name="BraveNewsAdTitleText">
+        <item name="android:textSize">@dimen/brave_news_ad_title_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsAdDescText">
+        <item name="android:textSize">@dimen/brave_news_ad_desc_textsize</item>
+        <item name="android:textColor">@color/news_time_color</item>
+    </style>
+
+    <style name="BraveNewsAdButtonText">
+        <item name="android:textSize">@dimen/brave_news_ad_button_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsMoreOffersTabletText">
+        <item name="android:textSize">@dimen/brave_news_more_offers_tablet_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+    <style name="BraveNewsMoreOffersPhoneText">
+        <item name="android:textSize">@dimen/brave_news_more_offers_phone_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsDealsTopText">
+        <item name="android:textSize">@dimen/brave_news_deals_top_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsPublisherGroupTopText">
+        <item name="android:textSize">@dimen/brave_news_publisher_group_top_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsCategoryGroupTopText">
+        <item name="android:textSize">@dimen/brave_news_category_group_top_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsDealsTitleTabletText">
+        <item name="android:textSize">@dimen/brave_news_deals_title_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsDealsTitlePhoneText">
+        <item name="android:textSize">@dimen/brave_news_deals_title_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsDealsDescTabletText">
+        <item name="android:textSize">@dimen/brave_news_deals_desc_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsDealsDescPhoneText">
+        <item name="android:textSize">@dimen/brave_news_deals_desc_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsHeadlineTitleTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_title_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsHeadlineTitlePhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_title_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsHeadlineDescTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_desc_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsHeadlineDescPhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_desc_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsHeadlinePublisherTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_publisher_tablet_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+    <style name="BraveNewsHeadlinePublisherPhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_publisher_phone_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsPromotedArticleTitleText">
+        <item name="android:textSize">@dimen/brave_news_promoted_article_title_textsize</item>
+    </style>
+
+    <style name="BraveNewsPromotedArticleDescText">
+        <item name="android:textSize">@dimen/brave_news_promoted_article_desc_textsize</item>
+    </style>
+
+    <style name="BraveNewsPromotedArticlePromotedText">
+        <item name="android:textSize">@dimen/brave_news_promoted_article_promoted_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsPromotedArticlePublisherText">
+        <item name="android:textSize">@dimen/brave_news_promoted_article_publisher_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsHeadlinePairedTitleTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_title_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsHeadlinePairedTitlePhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_title_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsHeadlinePairedDescTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_desc_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsHeadlinePairedDescPhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_desc_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsHeadlinePairedPublisherTabletText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_publisher_tablet_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+    <style name="BraveNewsHeadlinePairedPublisherPhoneText">
+        <item name="android:textSize">@dimen/brave_news_headline_paired_publisher_phone_textsize</item>
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsPublisherGroupNoText">
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsPublisherGroupTitleTabletText">
+        <item name="android:textSize">@dimen/brave_news_publisher_group_title_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsPublisherGroupTitlePhoneText">
+        <item name="android:textSize">@dimen/brave_news_publisher_group_title_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsPublisherGroupDescTabletText">
+        <item name="android:textSize">@dimen/brave_news_publisher_group_desc_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsPublisherGroupDescPhoneText">
+        <item name="android:textSize">@dimen/brave_news_publisher_group_desc_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsCategoryGroupSourceTabletText">
+        <item name="android:textSize">@dimen/brave_news_category_group_source_tablet_textsize</item>
+        <item name="android:textColor">@color/news_time_color</item>
+    </style>
+    <style name="BraveNewsCategoryGroupSourcePhoneText">
+        <item name="android:textSize">@dimen/brave_news_category_group_source_phone_textsize</item>
+        <item name="android:textColor">@color/news_time_color</item>
+    </style>
+
+    <style name="BraveNewsCategoryGroupTitleTabletText">
+        <item name="android:textSize">@dimen/brave_news_category_group_title_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsCategoryGroupTitlePhoneText">
+        <item name="android:textSize">@dimen/brave_news_category_group_title_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsCategoryGroupDescTabletText">
+        <item name="android:textSize">@dimen/brave_news_category_group_desc_tablet_textsize</item>
+    </style>
+    <style name="BraveNewsCategoryGroupDescPhoneText">
+        <item name="android:textSize">@dimen/brave_news_category_group_desc_phone_textsize</item>
+    </style>
+
+    <style name="BraveNewsTitleTextColor">
+        <item name="android:textColor">@color/news_text_color</item>
+    </style>
+
+    <style name="BraveNewsDescTextColor">
+        <item name="android:textColor">@color/news_time_color</item>
+    </style>
 </resources>

@@ -9,6 +9,7 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
@@ -32,7 +33,7 @@ public class BraveStatusMediator extends StatusMediator {
             LocationBarDataProvider locationBarDataProvider,
             PermissionDialogController permissionDialogController,
             OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
-            Supplier<Profile> profileSupplier,
+            ObservableSupplier<Profile> profileSupplier,
             PageInfoIphController pageInfoIphController,
             WindowAndroid windowAndroid,
             @Nullable

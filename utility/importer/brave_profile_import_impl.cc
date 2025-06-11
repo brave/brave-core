@@ -18,29 +18,30 @@
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "brave/utility/importer/chrome_importer.h"
 #include "build/build_config.h"
-#include "chrome/common/importer/importer_type.h"
 #include "chrome/common/importer/profile_import.mojom.h"
 #include "chrome/utility/importer/external_process_importer_bridge.h"
 #include "chrome/utility/importer/importer.h"
+#include "components/user_data_importer/common/importer_type.h"
 #include "content/public/utility/utility_thread.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/shared_remote.h"
 
 namespace {
 
-scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
+scoped_refptr<Importer> CreateImporterByType(
+    user_data_importer::ImporterType type) {
   switch (type) {
-    case importer::TYPE_CHROME:
+    case user_data_importer::TYPE_CHROME:
       return new ChromeImporter();
-    case importer::TYPE_EDGE_CHROMIUM:
+    case user_data_importer::TYPE_EDGE_CHROMIUM:
       return new ChromeImporter();
-    case importer::TYPE_VIVALDI:
+    case user_data_importer::TYPE_VIVALDI:
       return new ChromeImporter();
-    case importer::TYPE_OPERA:
+    case user_data_importer::TYPE_OPERA:
       return new ChromeImporter();
-    case importer::TYPE_YANDEX:
+    case user_data_importer::TYPE_YANDEX:
       return new ChromeImporter();
-    case importer::TYPE_WHALE:
+    case user_data_importer::TYPE_WHALE:
       return new ChromeImporter();
     default:
       break;
@@ -57,7 +58,7 @@ BraveProfileImportImpl::BraveProfileImportImpl(
 BraveProfileImportImpl::~BraveProfileImportImpl() = default;
 
 void BraveProfileImportImpl::StartImport(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t items,
     const base::flat_map<uint32_t, std::string>& localized_strings,
     mojo::PendingRemote<chrome::mojom::ProfileImportObserver> observer,
@@ -66,17 +67,18 @@ void BraveProfileImportImpl::StartImport(
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   if (source_profile.importer_name.starts_with(u"Chrome")) {
     command_line->AppendSwitch("import-chrome");
-  } else if (source_profile.importer_type == importer::TYPE_EDGE_CHROMIUM) {
+  } else if (source_profile.importer_type ==
+             user_data_importer::TYPE_EDGE_CHROMIUM) {
     command_line->AppendSwitch("import-edge");
   } else if (source_profile.importer_name.starts_with(u"Chromium")) {
     command_line->AppendSwitch("import-chromium");
-  } else if (source_profile.importer_type == importer::TYPE_OPERA) {
+  } else if (source_profile.importer_type == user_data_importer::TYPE_OPERA) {
     command_line->AppendSwitch("import-opera");
-  } else if (source_profile.importer_type == importer::TYPE_YANDEX) {
+  } else if (source_profile.importer_type == user_data_importer::TYPE_YANDEX) {
     command_line->AppendSwitch("import-yandex");
-  } else if (source_profile.importer_type == importer::TYPE_WHALE) {
+  } else if (source_profile.importer_type == user_data_importer::TYPE_WHALE) {
     command_line->AppendSwitch("import-whale");
-  } else if (source_profile.importer_type == importer::TYPE_VIVALDI) {
+  } else if (source_profile.importer_type == user_data_importer::TYPE_VIVALDI) {
     command_line->AppendSwitch("import-vivaldi");
   }
 
@@ -113,7 +115,7 @@ void BraveProfileImportImpl::CancelImport() {
 }
 
 void BraveProfileImportImpl::ReportImportItemFinished(
-    importer::ImportItem item) {
+    user_data_importer::ImportItem item) {
   items_to_import_ ^= item;  // Remove finished item from mask.
   if (items_to_import_ == 0) {
     ImporterCleanup();

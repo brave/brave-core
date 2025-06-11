@@ -20,17 +20,20 @@ namespace TemplateURLPrepopulateData {
 
 namespace {
 
-PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
-                                               const char16_t* const keyword,
-                                               const char* const favicon_url,
-                                               const char* const search_url,
-                                               const char* const encoding,
-                                               const char* const suggest_url,
-                                               SearchEngineType type,
-                                               const int id) {
+PrepopulatedEngine MakeBravePrepopulatedEngine(
+    const char16_t* const name,
+    const char16_t* const keyword,
+    const char* const favicon_url,
+    const char* const base_builtin_resource_id,
+    const char* const search_url,
+    const char* const encoding,
+    const char* const suggest_url,
+    SearchEngineType type,
+    const int id) {
   return {name,
           keyword,
           favicon_url,
+          base_builtin_resource_id,
           search_url,
           encoding,
           suggest_url,
@@ -85,6 +88,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
   return {name ? name : engine.name,
           keyword ? keyword : engine.keyword,
           engine.favicon_url,
+          engine.base_builtin_resource_id,
           search_url ? search_url : engine.search_url,
           engine.encoding,
           suggest_url ? suggest_url : engine.suggest_url,
@@ -115,6 +119,7 @@ const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
     u"DuckDuckGo",
     u":d",
     "https://duckduckgo.com/favicon.ico",
+    "IDR_SEARCH_ENGINE_DUCKDUCKGO",
     "https://duckduckgo.com/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
@@ -150,6 +155,7 @@ const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
     u"DuckDuckGo Lite",
     u":dl",
     "https://duckduckgo.com/favicon.ico",
+    "IDR_SEARCH_ENGINE_DUCKDUCKGO",
     "https://duckduckgo.com/lite/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
@@ -180,6 +186,7 @@ const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     u"Qwant",
     u":q",
     "https://www.qwant.com/favicon.ico",
+    "IDR_SEARCH_ENGINE_QWANT",
     "https://www.qwant.com/?q={searchTerms}&client=brz-brave",
     "UTF-8",
     "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
@@ -223,6 +230,7 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     u"Brave",
     u":br",
     "https://cdn.search.brave.com/serp/favicon.ico",
+    "IDR_SEARCH_ENGINE_BRAVE",
     "https://search.brave.com/search?q={searchTerms}&source="
 #if BUILDFLAG(IS_ANDROID)
     "android",

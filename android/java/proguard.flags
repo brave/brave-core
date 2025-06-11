@@ -101,3 +101,7 @@
 -keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
     *** dismissActivityIfNeeded(...);
 }
+
+-keep class org.chromium.chrome.browser.notifications.channels.SiteChannelsManager {
+    *** toChannelStatus(...);
+}

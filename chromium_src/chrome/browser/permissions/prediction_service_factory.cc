@@ -5,6 +5,7 @@
 
 #include "chrome/browser/permissions/prediction_service_factory.h"
 
+#include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_selections.h"
 
@@ -18,6 +19,12 @@ permissions::PredictionService* PredictionServiceFactory::GetForProfile(
 PredictionServiceFactory* PredictionServiceFactory::GetInstance() {
   static base::NoDestructor<PredictionServiceFactory> instance;
   return instance.get();
+}
+
+void PredictionServiceFactory::set_prediction_service_for_testing(
+    permissions::PredictionService* service) {
+  CHECK_IS_TEST();
+  prediction_service_for_testing_ = service;
 }
 
 PredictionServiceFactory::PredictionServiceFactory()

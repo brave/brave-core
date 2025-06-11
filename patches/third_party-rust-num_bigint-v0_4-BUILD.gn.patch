@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/num_bigint/v0_4/BUILD.gn b/third_party/rust/num_bigint/v0_4/BUILD.gn
+index 48bf24a05d49862b36c5f1ef3d12e6199790946e..8a2e61412d94b24433c55911c3e297a72b5b28ce 100644
+--- a/third_party/rust/num_bigint/v0_4/BUILD.gn
++++ b/third_party/rust/num_bigint/v0_4/BUILD.gn
+@@ -52,7 +52,7 @@ cargo_crate("lib") {
+   cargo_pkg_description = "Big integer implementation for Rust"
+   cargo_pkg_version = "0.4.6"
+ 
+-  allow_unsafe = false
++  allow_unsafe = true
+ 
+   deps = [
+     "//third_party/rust/num_integer/v0_1:lib",

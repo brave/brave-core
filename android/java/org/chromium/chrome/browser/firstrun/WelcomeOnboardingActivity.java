@@ -46,7 +46,6 @@ import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
@@ -367,8 +366,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         FirstRunStatus.setFirstRunFlowComplete(true);
 
-        ChromeSharedPreferences.getInstance()
-                .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
         FirstRunUtils.setEulaAccepted();
 
         finish();

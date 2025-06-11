@@ -61,17 +61,17 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Activity mActivity;
-    private RequestManager mGlide;
+    private final Activity mActivity;
+    private final RequestManager mGlide;
     private BraveNewsController mBraveNewsController;
-    private View mMvTilesContainerLayout;
-    private CopyOnWriteArrayList<FeedItemsCard> mNewsItems;
+    private final View mMvTilesContainerLayout;
+    private final CopyOnWriteArrayList<FeedItemsCard> mNewsItems;
     private NTPImage mNtpImage;
-    private SponsoredTab mSponsoredTab;
+    private final SponsoredTab mSponsoredTab;
     private Bitmap mSponsoredLogo;
     private Wallpaper mWallpaper;
-    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private OnBraveNtpListener mOnBraveNtpListener;
+    private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private final OnBraveNtpListener mOnBraveNtpListener;
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private boolean mIsNewsLoading;

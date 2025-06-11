@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index e6a284dd677f289b08b005068ed0ea5f9a010112..a05e9ffce2422ac6315485f6662af82cc9adfcbb 100644
+index 46f427b61e000ecc3e32eb45939a6590837b5bf2..9330e18d0f37310ba1f848bcdf683b3614a263c7 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -431,6 +431,7 @@ ImageData* BaseRenderingContext2D::getImageData(
+@@ -411,6 +411,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  perfetto::EventContext GetEventContext();
  
  ImageData* BaseRenderingContext2D::getImageDataInternal(
@@ -10,7 +10,7 @@ index e6a284dd677f289b08b005068ed0ea5f9a010112..a05e9ffce2422ac6315485f6662af82c
      int sx,
      int sy,
      int sw,
-@@ -613,6 +614,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+@@ -597,6 +598,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
        DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
      }
    }
@@ -18,7 +18,7 @@ index e6a284dd677f289b08b005068ed0ea5f9a010112..a05e9ffce2422ac6315485f6662af82c
  
    return image_data;
  }
-@@ -1280,6 +1282,7 @@ TextMetrics* BaseRenderingContext2D::measureText(const String& text) {
+@@ -1263,6 +1265,7 @@ TextMetrics* BaseRenderingContext2D::measureText(const String& text) {
        return MakeGarbageCollected<TextMetrics>();
      }
  

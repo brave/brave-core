@@ -14,14 +14,12 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.chrome.R;
 
-/**
- * The preference used to reset Brave Playlist.
- */
-public class BravePlaylistResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener {
-    private String TAG = "BravePlaylistResetPreference";
+/** The preference used to reset Brave Playlist. */
+public class BravePlaylistResetPreference extends Preference
+        implements Preference.OnPreferenceClickListener {
+    private static final String TAG = "BravePlaylistResetPreference";
 
-    private int mPrefAccentColor;
+    private final int mPrefAccentColor;
 
     /** Constructor for BravePlaylistResetPreference. */
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {

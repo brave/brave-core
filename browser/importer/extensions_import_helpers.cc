@@ -15,7 +15,6 @@
 #include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/common/importer/chrome_importer_utils.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/value_store/value_store.h"
@@ -23,6 +22,7 @@
 #include "components/value_store/value_store_factory_impl.h"
 #include "extensions/browser/api/storage/value_store_util.h"
 #include "extensions/browser/extension_file_task_runner.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -319,10 +319,9 @@ void ExtensionsImporter::OnExtensionInstalled(
     return std::move(on_extension)
         .Run(extension->id, ExtensionImportStatus::kOk);
   }
-  auto* service =
-      extensions::ExtensionSystem::Get(target_profile_)->extension_service();
-  service->DisableExtension(extension->id,
-                            extensions::disable_reason::DISABLE_RELOAD);
+  extensions::ExtensionRegistrar::Get(target_profile_)
+      ->DisableExtension(extension->id,
+                         {extensions::disable_reason::DISABLE_RELOAD});
   ImportExtensionSettings(extension->id, std::move(on_extension));
 }
 
@@ -353,9 +352,8 @@ void ExtensionsImporter::OnExtensionSettingsImported(
     return std::move(on_extension)
         .Run(extension->id, ExtensionImportStatus::kFailedToImportSettings);
   }
-  auto* service =
-      extensions::ExtensionSystem::Get(target_profile_)->extension_service();
-  service->EnableExtension(extension->id);
+  extensions::ExtensionRegistrar::Get(target_profile_)
+      ->EnableExtension(extension->id);
 
   if (!success) {
     return std::move(on_extension)

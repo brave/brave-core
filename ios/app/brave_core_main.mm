@@ -49,6 +49,7 @@
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
+#include "ios/chrome/browser/shared/model/profile/scoped_profile_keep_alive_ios.h"
 #include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
@@ -125,7 +126,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 #endif  // PA_BUILDFLAG(USE_PARTITION_ALLOC) && !BUILDFLAG(USE_BLINK)
 
     NSBundle* baseBundle = base::apple::OuterBundle();
-    base::apple::SetBaseBundleID(
+    base::apple::SetBaseBundleIDOverride(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
     // Register all providers before calling any Chromium code.
@@ -266,16 +267,17 @@ static bool CustomLogHandler(int severity,
   // state before creating the profile
   localState->SetString(prefs::kLastUsedProfile, profileName);
   profileManager->CreateProfileAsync(
-      profileName, base::BindOnce(^(ProfileIOS* profile) {
-        [self profileLoaded:profile completionHandler:completionHandler];
+      profileName, base::BindOnce(^(ScopedProfileKeepAliveIOS keep_alive) {
+        [self profileLoaded:std::move(keep_alive)
+            completionHandler:completionHandler];
       }));
 }
 
-- (void)profileLoaded:(ProfileIOS*)profile
+- (void)profileLoaded:(ScopedProfileKeepAliveIOS)profileKeepAlive
     completionHandler:(void (^)(BraveProfileController*))completionHandler {
-  CHECK(profile) << "A default profile must be loaded.";
-  self.profileController =
-      [[BraveProfileController alloc] initWithProfile:profile];
+  CHECK(profileKeepAlive.profile()) << "A default profile must be loaded.";
+  self.profileController = [[BraveProfileController alloc]
+      initWithProfileKeepAlive:std::move(profileKeepAlive)];
   completionHandler(self.profileController);
 }
 
@@ -350,7 +352,7 @@ static bool CustomLogHandler(int severity,
   [BraveCoreMain initializeICUForTesting];
 
   NSBundle* baseBundle = base::apple::OuterBundle();
-  base::apple::SetBaseBundleID(
+  base::apple::SetBaseBundleIDOverride(
       base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
   // Register all providers before calling any Chromium code.

@@ -32,17 +32,17 @@ import java.util.List;
 
 @NullMarked
 public class AlwaysOnPagerAdapter extends PagerAdapter {
-    private Context mContext;
+    private final Context mContext;
 
     private static final String AUTO_RECONNECT_VPN_LINK =
             "https://support.brave.com/hc/en-us/articles/29918727663373-How-do-I-connect-to-Brave-VPN-automatically#tab-2";
 
-    private List<Integer> mImageResources =
+    private final List<Integer> mImageResources =
             Arrays.asList(
                     R.drawable.ic_vpn_always_on_1,
                     R.drawable.ic_vpn_always_on_2,
                     R.drawable.ic_vpn_always_on_3);
-    private List<Integer> mTexts =
+    private final List<Integer> mTexts =
             Arrays.asList(
                     R.string.auto_reconnect_vpn_tutorial_text_1,
                     R.string.auto_reconnect_vpn_tutorial_text_2,

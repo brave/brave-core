@@ -395,8 +395,8 @@ void BraveSyncServiceImpl::OnGetTypeEntitiesCount(
   }
 }
 
-void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
-  SyncServiceImpl::OnSelectedTypesPrefChange();
+void BraveSyncServiceImpl::OnSelectedTypesChanged() {
+  SyncServiceImpl::OnSelectedTypesChanged();
 
   brave_sync::p3a::RecordEnabledTypes(
       GetUserSettings()->IsSyncEverythingEnabled(),

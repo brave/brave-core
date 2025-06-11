@@ -131,6 +131,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
       "//brave/build/android:jni_headers",
+      "//chrome/browser/ui/android/tab_model",
     ]
   }
 
@@ -163,8 +164,6 @@ source_set("ui") {
       "bookmark/bookmark_prefs_service_factory.h",
       "bookmark/brave_bookmark_prefs.cc",
       "bookmark/brave_bookmark_prefs.h",
-      "bookmark/brave_bookmark_tab_helper.cc",
-      "bookmark/brave_bookmark_tab_helper.h",
       "brave_browser.cc",
       "brave_browser.h",
       "brave_browser_actions.cc",
@@ -835,6 +834,7 @@ source_set("ui") {
     "//chrome/browser/search_engines",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/search_engines",
     "//chrome/browser/ui/webui",
     "//chrome/common",
     "//components/bookmarks/common",

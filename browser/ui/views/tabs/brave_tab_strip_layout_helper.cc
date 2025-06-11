@@ -59,8 +59,10 @@ void CalculatePinnedTabsBoundsInGrid(
     }
 
     // Update rect for the next pinned tabs. If overflowed, break into new line
+    // Passed |true| as |is_split| but it doesn't have any meaning becuase we
+    // always use same width.
     if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing <
-        width.value_or(tab_style->GetStandardWidth())) {
+        width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
       rect.set_x(rect.right() + kVerticalTabsSpacing);
     } else {
       // New line
@@ -120,12 +122,15 @@ int GetTabCornerRadius(const Tab& tab) {
   return brave_tabs::kTabBorderRadius;
 }
 
-std::vector<gfx::Rect> CalculateVerticalTabBounds(
+std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
     bool is_floating_mode) {
+  // We can return LayoutDomain::kInactiveWidthEqualsActiveWidth always because
+  // vertical tab uses same width for active and inactive tabs.
   if (tabs.empty()) {
-    return std::vector<gfx::Rect>();
+    return {std::vector<gfx::Rect>(),
+            LayoutDomain::kInactiveWidthEqualsActiveWidth};
   }
 
   std::vector<gfx::Rect> bounds;
@@ -133,7 +138,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
   CalculateVerticalLayout(tabs, width, &bounds);
 
   DCHECK_EQ(tabs.size(), bounds.size());
-  return bounds;
+  return {bounds, LayoutDomain::kInactiveWidthEqualsActiveWidth};
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(

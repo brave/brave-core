@@ -17,7 +17,7 @@ public class BraveNewsConnectionErrorHandler implements ConnectionErrorHandler {
         default void cleanUpBraveNewsController() {}
     }
 
-    private BraveNewsConnectionErrorHandlerDelegate mDelegate;
+    private final BraveNewsConnectionErrorHandlerDelegate mDelegate;
 
     public BraveNewsConnectionErrorHandler(BraveNewsConnectionErrorHandlerDelegate delegate) {
         assert delegate != null : "delegate has to be initialized";

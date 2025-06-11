@@ -84,24 +84,5 @@ RegisterPolymerTemplateModifications({
     } else {
       link.setAttribute('hidden', 'true')
     }
-    const enableCertManagementUIV2 = templateContent.
-      querySelector(
-        'template[is=dom-if][if="[[!enableCertManagementUIV2_]]"]'
-    )
-    if (!enableCertManagementUIV2) {
-        console.error(
-          '[Brave Settings Overrides] Could not find template with ' +
-          'if=[[!enableCertManagementUIV2]] on security page.')
-    } else {
-      const chromeCertificates = enableCertManagementUIV2.content.
-        getElementById('chromeCertificates')
-      if (!chromeCertificates) {
-        console.error(
-          '[Brave Settings Overrides] Could not find chromeCertificates id ' +
-          'on security page.')
-      } else {
-        chromeCertificates.setAttribute('hidden', 'true')
-      }
-    }
   }
 })

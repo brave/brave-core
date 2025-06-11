@@ -21,7 +21,7 @@ public class BraveWalletEthereumConnectedSitesListAdapter
         extends RecyclerView.Adapter<BraveWalletEthereumConnectedSitesListAdapter.ViewHolder> {
     private String[] mWebSites = new String[0];
     private Context mContext;
-    private BraveEthereumPermissionConnectedSitesDelegate mDelegate;
+    private final BraveEthereumPermissionConnectedSitesDelegate mDelegate;
 
     public interface BraveEthereumPermissionConnectedSitesDelegate {
         default void removePermission(String webSite){};

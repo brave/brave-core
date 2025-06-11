@@ -90,7 +90,8 @@ TEST_F(BraveTabTest, TabStyleTest) {
 
   // We use same width for split and non-split tab.
   auto* tab_style = tab.tab_style();
-  EXPECT_EQ(tab_style->GetStandardWidth(), tab_style->GetStandardSplitWidth());
-  EXPECT_EQ(tab_style->GetMinimumActiveWidth(),
-            tab_style->GetMinimumActiveSplitWidth());
+  EXPECT_EQ(tab_style->GetStandardWidth(/*is_split*/ true),
+            tab_style->GetStandardWidth(/*is_split*/ false));
+  EXPECT_EQ(tab_style->GetMinimumActiveWidth(/*is_split*/ true),
+            tab_style->GetMinimumActiveWidth(/*is_split*/ false));
 }

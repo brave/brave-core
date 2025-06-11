@@ -106,8 +106,6 @@ bool BraveSyncWorker::RequestSync() {
     sync_service_observer_.AddObservation(sync_service);
   }
 
-  sync_service->SetSyncFeatureRequested();
-
   return true;
 }
 
@@ -290,8 +288,6 @@ bool BraveSyncWorker::SetSetupComplete() {
   if (!sync_service) {
     return false;
   }
-
-  sync_service->SetSyncFeatureRequested();
 
   if (!sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
     sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(

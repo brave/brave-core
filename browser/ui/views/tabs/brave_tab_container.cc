@@ -33,11 +33,11 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/split_tab_data.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/grit/theme_resources.h"
+#include "components/tabs/public/split_tab_data.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_id.h"
@@ -163,11 +163,12 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     }
   }
 
-  const auto slots_bounds = layout_helper_->CalculateIdealBounds(
-      available_width_callback_.is_null() ||
-              base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)
-          ? std::nullopt
-          : std::optional<int>(available_width_callback_.Run()));
+  const auto [slots_bounds, layout_domain] =
+      layout_helper_->CalculateIdealBounds(
+          available_width_callback_.is_null() ||
+                  base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)
+              ? std::nullopt
+              : std::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
 
@@ -182,7 +183,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     height += tabs::kMarginForVerticalTabContainers;
   }
 
-  return gfx::Size(tab_style_->GetStandardWidth(), height);
+  // Passed |true| but it doesn't have any meaning becuase we always use same
+  // width.
+  return gfx::Size(tab_style_->GetStandardWidth(/*is_split*/ true), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -256,7 +259,7 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   bounds.set_height(tabs::kVerticalTabHeight);
   const auto tab_width = new_tab->data().pinned
                              ? tabs::kVerticalTabMinWidth
-                             : tab_style_->GetStandardWidth();
+                             : tab_style_->GetStandardWidth(true);
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)

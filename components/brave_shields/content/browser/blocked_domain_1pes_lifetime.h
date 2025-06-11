@@ -43,7 +43,7 @@ class BlockedDomain1PESLifetime final
 
  private:
   friend class RefCounted<BlockedDomain1PESLifetime>;
-  virtual ~BlockedDomain1PESLifetime();
+  ~BlockedDomain1PESLifetime();
 
   void Start1PESEnableRequest();
   void On1PESEnableRequestComplete(bool is_enabled);

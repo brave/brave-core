@@ -24,13 +24,14 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/tabs/public/split_tab_visual_data.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -203,6 +204,13 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsStackedAbove(
       secondary_location_bar_widget()->GetNativeView()));
 
+  // Chromium's mini toolbar should be hidden always as we're using own own mini
+  // urlbar.
+  EXPECT_FALSE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(0)->GetVisible());
+  EXPECT_FALSE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
+
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
@@ -257,9 +265,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(5, tab_strip_model->active_index());
   auto split_id = tab_strip_model->GetSplitForTab(4);
   ASSERT_TRUE(split_id);
-  tab_strip_model->SwapTabsInSplit(split_id.value());
+  tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(4, tab_strip_model->active_index());
-  tab_strip_model->SwapTabsInSplit(split_id.value());
+  tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(5, tab_strip_model->active_index());
 }
 

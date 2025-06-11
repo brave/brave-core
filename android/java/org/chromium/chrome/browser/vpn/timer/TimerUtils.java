@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TimerUtils {
-    private static int sVpnActionRequestCode = 1001;
+    private static final int sVpnActionRequestCode = 1001;
 
     public static void scheduleVpnAction(Context context, int minutes) {
         Intent vpnActionIntent = new Intent(context, TimerVpnActionReceiver.class);

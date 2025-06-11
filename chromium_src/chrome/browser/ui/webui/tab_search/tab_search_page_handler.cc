@@ -174,8 +174,9 @@ void TabSearchPageHandler::OnGetFocusTabs(
     tab_details_before_move.push_back(*details);
     // Store old window ID (session ID), tab ID, and tab strip index for
     // undo.
-    original_tabs_info_by_window_[details->browser->session_id()].push_back(
-        {tab_id, details->GetIndex()});
+    original_tabs_info_by_window_[details->tab->GetBrowserWindowInterface()
+                                      ->GetSessionID()]
+        .push_back({tab_id, details->GetIndex()});
   }
 
   if (tab_details_before_move.empty()) {
@@ -188,8 +189,9 @@ void TabSearchPageHandler::OnGetFocusTabs(
   Browser* new_browser = Browser::Create(create_params);
   for (const auto& details : tab_details_before_move) {
     std::unique_ptr<tabs::TabModel> tab =
-        details.browser->tab_strip_model()->DetachTabAtForInsertion(
-            details.GetIndex());
+        details.tab->GetBrowserWindowInterface()
+            ->GetTabStripModel()
+            ->DetachTabAtForInsertion(details.GetIndex());
     new_browser->tab_strip_model()->AppendTab(std::move(tab),
                                               false /* foreground */);
   }
@@ -231,8 +233,9 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
       }
 
       std::unique_ptr<tabs::TabModel> tab =
-          details->browser->tab_strip_model()->DetachTabAtForInsertion(
-              details->GetIndex());
+          details->tab->GetBrowserWindowInterface()
+              ->GetTabStripModel()
+              ->DetachTabAtForInsertion(details->GetIndex());
       target->tab_strip_model()->InsertDetachedTabAt(
           tab_info.index, std::move(tab), AddTabTypes::ADD_NONE);
     }

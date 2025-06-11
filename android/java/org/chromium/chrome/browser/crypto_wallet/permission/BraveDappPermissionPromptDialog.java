@@ -64,7 +64,7 @@ public class BraveDappPermissionPromptDialog
     private final Window mWindow;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
-    private String mFavIconURL;
+    private final String mFavIconURL;
     private MaterialCardView mCvFavContainer;
     private ImageView mFavIconImage;
     private RecyclerView mRecyclerView;

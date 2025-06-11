@@ -184,14 +184,14 @@ class BraveBrowserView : public BrowserView,
                                  bool update_devtools_web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
-  void ShowSplitView() override;
+  void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
-  void UpdateActiveSplitView() override;
+  void UpdateActiveTabInSplitView() override;
 
-  void OnSplitTabContentsUpdated(
-      split_tabs::SplitTabId split_id,
-      std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
-      std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) override;
+  void UpdateContentsInSplitView(
+      const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
+      const std::vector<std::pair<tabs::TabInterface*, int>>& new_tabs)
+      override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();

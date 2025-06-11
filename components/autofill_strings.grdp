@@ -93,6 +93,15 @@
   <message name="IDS_AUTOFILL_IBAN_GENERIC" desc="Generic IBAN name." formatter_data="android_java">
     Iban
   </message>
+  <message name="IDS_AUTOFILL_LOYALTY_CARD_GENERIC" desc="Generic loyalty card name." formatter_data="android_java">
+    Loyalty card
+  </message>
+  <message name="IDS_AUTOFILL_LOYALTY_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu suggestion text." translateable="false">
+    Loyalty cards
+  </message>
+  <message name="IDS_AUTOFILL_LOYALTY_CARDS_ALL_YOUR_CARDS_SUBMENU_TITLE" desc="The loyalty cards submenu containing all loyalty cards suggestion text." translateable="false">
+    All your loyalty cards
+  </message>
   <message name="IDS_AUTOFILL_ADDRESS_SUMMARY_SEPARATOR" desc="The separator character used in the summary of an address." formatter_data="android_java">
     , '''
   </message>
@@ -182,11 +191,15 @@
   </message>
 
   <!-- Autofill Identity Credentials Suggestions -->
-  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_MINOR_TEXT" desc="The minor text to display in an autofill suggestion (e.g. an email) that is verified by a third party website (e.g. google.com)." translateable="false">
+  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_PROVIDED_MINOR_TEXT" desc="The minor text to display in an autofill suggestion (e.g. an email) that is provided by a third party website (e.g. google.com)." translateable="false">
+    Provided by <ph name="IDP_ORIGIN">$1<ex>accounts.google.com</ex></ph>
+  </message>
+
+  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_VERIFIED_MINOR_TEXT" desc="The minor text to display in an autofill suggestion (e.g. an email) that is verified by a third party website (e.g. google.com)." translateable="false">
     Verified by <ph name="IDP_ORIGIN">$1<ex>accounts.google.com</ex></ph>
   </message>
 
-  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_EMAIL_LABEL" desc="The label text to display for verified autofill suggestions. If the user selects such email suggestion, the website receives cryptographic proof that the user has access to the email. The benefit for the user indicate in this message is that they can skip the manual process of receiving a confirmation email and pressing a link to prove ownership of the email." translateable="false">
+  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_VERIFIED_EMAIL_LABEL" desc="The label text to display for verified autofill suggestions. If the user selects such email suggestion, the website receives cryptographic proof that the user has access to the email. The benefit for the user indicate in this message is that they can skip the manual process of receiving a confirmation email and pressing a link to prove ownership of the email." translateable="false">
     Skip confirmation emails
   </message>
 
@@ -206,6 +219,11 @@
     <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
       Manage passwords...
     </message>
+
+    <!-- TODO(crbug.com/404436027): Enable translatation after UX review is completed. -->
+    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" translateable="false" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
+      Manage loyalty cards...
+    </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_AUTOFILL_MANAGE_ADDRESSES" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses in the user profile that can be used by Chrome Autofill.">
@@ -218,6 +236,11 @@
 
     <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
       Manage Passwords...
+    </message>
+
+    <!-- TODO(crbug.com/404436027): Enable translatation after UX review is completed. -->
+    <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" translateable="false" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
+      Manage Loyalty Cards...
     </message>
   </if>
 
@@ -386,6 +409,9 @@
   <if expr="is_android">
     <message name="IDS_MANUAL_FILLING_CREDIT_CARD_SHEET_ALL_ADDRESSES_LINK" desc="The text of the link in the address sheet that opens the address management section.">
       Manage payment methods
+    </message>
+    <message name="IDS_MANUAL_FILLING_CREDIT_CARD_SHEET_ALL_LOYALTY_CARDS_LINK" desc="The text of the link in the payments sheet that opens the Brave Wallet loyalty card section.">
+      Manage loyalty cards
     </message>
     <message name="IDS_MANUAL_FILLING_CREDIT_CARD_SHEET_EMPTY_MESSAGE" desc="Message indicating that no payment methods (e.g., credit cards) are available for filling.">
       No saved payment methods
@@ -589,13 +615,13 @@
     To get this address on all your devices, verify it's you
     </message>
     <message name="IDS_AUTOFILL_IPH_LOYALTY_CARD_SUGGESTION_TITLE" desc="IPH toast for a suggestion item with a loyalty card from Brave Wallet.">
-    Autofill loyalty cards from Brave Wallet
+    Now you can autofill loyalty cards from Brave Wallet
     </message>
     <message name="IDS_AUTOFILL_IPH_LOYALTY_CARD_SUGGESTION_BODY" desc="IPH toast for a suggestion item with a loyalty card from Brave Wallet.">
-    Manage in payment methods settings
+    Manage loyalty cards or turn these suggestions off in Brave Wallet
     </message>
     <message name="IDS_AUTOFILL_IPH_LOYALTY_CARD_SUGGESTION_SCREENREADER" is_accessibility_with_no_ui="true" desc="IPH toast for a suggestion item with a loyalty card from Brave Wallet.">
-    Autofill loyalty cards from Brave Wallet
+    Now you can autofill loyalty cards from Brave Wallet
   </message>
   </if>
 
@@ -610,4 +636,11 @@
   <message name="IDS_AUTOFILL_ADDRESS_EDIT_DIALOG_JAPANESE_ALTERNATIVE_NAME" desc="The label for the phonetic name field in japanese autofill profile. In Japanese it should be translated to 'ふりがな'.">
     Phonetic name
   </message>
+
+  <!-- Used on Android: -->
+  <if expr="is_android">
+  <message name="IDS_AUTOFILL_ADDRESS_EDIT_DIALOG_REQUIRED_FIELD_CONTENT_DESCRIPTION" desc="Content description for text edit field that is marked as 'required'. It is built from the label and a string that explicitly states that the field is required." formatter_data="android_java">
+    <ph name="FIELD_LABEL">%1$s<ex>City</ex></ph>, required
+  </message>
+  </if>
 </grit-part>

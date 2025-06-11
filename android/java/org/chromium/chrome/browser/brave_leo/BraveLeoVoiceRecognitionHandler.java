@@ -24,9 +24,9 @@ import java.util.List;
 
 public class BraveLeoVoiceRecognitionHandler {
     private static final String TAG = "LeoVoiceRecognition";
-    private WindowAndroid mWindowAndroid;
-    private WebContents mContextWebContents;
-    private String mConversationUuid;
+    private final WindowAndroid mWindowAndroid;
+    private final WebContents mContextWebContents;
+    private final String mConversationUuid;
 
     /** Callback for when we receive voice search results after initiating voice recognition. */
     class VoiceRecognitionCompleteCallback implements WindowAndroid.IntentCallback {

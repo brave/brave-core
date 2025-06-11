@@ -497,7 +497,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       break;
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
-      OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
+      ::OpenLinkInSplitView(source_web_contents_->GetWeakPtr(),
+                            params_.link_url);
       break;
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(

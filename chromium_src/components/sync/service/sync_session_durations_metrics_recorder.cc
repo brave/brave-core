@@ -48,4 +48,8 @@ SyncSessionDurationsMetricsRecorder::GetSigninStatus() const {
 bool SyncSessionDurationsMetricsRecorder::IsSyncing() const {
   return false;
 }
+
+void SyncSessionDurationsMetricsRecorder::OnIdentityManagerShutdown(
+    signin::IdentityManager* identity_manager) {}
+
 }  // namespace syncer
