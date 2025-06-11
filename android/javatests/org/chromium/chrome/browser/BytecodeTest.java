@@ -1357,7 +1357,7 @@ public class BytecodeTest {
                         LocationBarDataProvider.class,
                         PermissionDialogController.class,
                         OneshotSupplier.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         PageInfoIphController.class,
                         WindowAndroid.class,
                         Supplier.class));
