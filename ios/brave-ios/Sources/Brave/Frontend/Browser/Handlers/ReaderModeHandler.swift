@@ -10,14 +10,11 @@ import Shared
 import WebKit
 
 public class ReaderModeHandler: InternalSchemeResponse {
-  private let profile: Profile
   public static let path = InternalURL.Path.readermode.rawValue
   internal static var readerModeCache: ReaderModeCache = DiskReaderModeCache.sharedInstance
   private static let readerModeStyleHash = "sha256-L2W8+0446ay9/L1oMrgucknQXag570zwgQrHwE68qbQ="
 
-  public init(profile: Profile) {
-    self.profile = profile
-  }
+  public init() {}
 
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let _url = request.url,

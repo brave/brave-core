@@ -61,7 +61,7 @@ public class Migration {
 
   public init() {}
 
-  public func launchMigrations(keyPrefix: String, profile: Profile) {
+  public func launchMigrations(keyPrefix: String) {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()

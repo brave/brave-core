@@ -176,7 +176,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       SessionWindow.setSelected(windowId: windowUUID)
     }
 
-    AppState.shared.profile.reopen()
     AppState.shared.uptimeMonitor.beginMonitoring()
 
     appDelegate.receivedURLs = nil
@@ -198,7 +197,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneDidEnterBackground(_ scene: UIScene) {
-    AppState.shared.profile.shutdown()
     BraveVPN.sendVPNWorksInBackgroundNotification()
   }
 

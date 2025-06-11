@@ -214,7 +214,6 @@ class SearchEnginesTests: XCTestCase {
   }
 
   func testGetOrderedEngines() async {
-    let profile = MockProfile()
     // setup an existing search engine in the profile
     let engines = SearchEngines(locale: Locale(identifier: "pl_PL"))
     await engines.loadSearchEngines()
