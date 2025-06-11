@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Додати власну пошукову систему";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Пошукова система з таким же ім’ям уже існує.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Введіть назву пошукової системи";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Небезпечний шаблон користувацького пошуку для";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Редагування папки";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Редагувати систему швидкого пошуку";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Увімкнути функцію «Потягнути, щоб оновити»";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Завершено";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Знайти «%@»";
+/* Find `search query` */
+"FindInPageFormat" = "Знайти ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Наступний результат на сторінці";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "«Спонсорські» — це додаткові брендові фони, на яких ви можете заробляти, увімкнувши Brave Rewards.";
+"ntp.imageTypeSelectionDescription" = "Спонсоровані зображення — це брендовані фони, які з’являються у нових вкладках. Увімкнувши їх, ви підтримуєте місію Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Докладніше";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Приховати";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Вставити й перейти";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "у";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Сканувати QR-код";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Функція «Недавні пошукові запити» дозволяє отримати захищений доступ до історії пошуків. Увімкнути функцію?";
+"RecentSearchSectionDescription" = "Бажаєте увімкнути історію пошуку?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Недавні пошукові запити";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Недавні пошукові запити";
+"RecentSearchSectionTitle" = "Це дає змогу приватно переглядати історію ваших запитів.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Показати";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Відкриті вкладки, закладки та історія";
+"SearchHistorySectionHeader" = "На вашому пристрої";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Пошук";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Пошук \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Додавання користувацької пошукової системи";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Пошукові підказки";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Бажаєте увімкнути пошукові підказки?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Пошук у Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Не захищене";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Вставити і перейти";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Список відтворення";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Зупинити";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Голосовий пошук";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

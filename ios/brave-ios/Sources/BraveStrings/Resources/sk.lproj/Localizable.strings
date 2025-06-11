@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nová karta režimu Inkognito";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Ďalšie informácie / možnosti odhlásenia";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Sponzorované obrázky na pozadí podporujú poslanie spoločnosti Brave budovať nezávislý web, ktorý je zameraný na používateľa. Na rozdiel od veľkých technologických spoločností meriame výkon reklamy anonymne, aby sme zachovali vaše súkromie.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nová karta";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Znovu načítať stránku";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Ďalšie informácie / možnosti odhlásenia";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Ďakujeme, že podporujete Vyhľadávač Brave kliknutím na súkromnú reklamu. Na rozdiel od veľkých technologických firiem meriame výkon reklamy anonymne, aby sme zachovali vaše súkromie.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Vybrať polohu panela";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Súkromný režim prehliadania";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Pri sťahovaní súboru došlo k chybe. Skúste to prosím neskôr.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Nepodarilo sa stiahnuť súbor";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Priblížiť";

@@ -1199,7 +1199,7 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "Пароль должен содержать не менее 8 символов.";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Enter password";
+"wallet.passwordPlaceholder" = "Введите пароль";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "Пароли не совпадают.";
@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "Отправка";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "Произошла ошибка при попытке отправить";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "Произошла ошибка при попытке замены";
+"wallet.txStatusSendTxErrorMsg" = "Произошла ошибка при попытке отправить";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "Не удается отправить";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "Переключение";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "Произошла ошибка при попытке обмена";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "Не удалось поменять";

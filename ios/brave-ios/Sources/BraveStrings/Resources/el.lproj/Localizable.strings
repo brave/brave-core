@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Νέα Ιδιωτική καρτέλα";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Μάθετε περισσότερα / επιλογές εξαίρεσης";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Οι χορηγούμενες εικόνες παρασκηνίου υποστηρίζουν την αποστολή του Brave να δημιουργήσει ένα ανεξάρτητο, με προτεραιότητα στον χρήστη, διαδίκτυο. Και σε αντίθεση με τις εταιρείες Big Tech, μετράμε τις επιδόσεις των διαφημίσεων ανώνυμα για να διαφυλάξουμε το απόρρητό σας.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Νέα καρτέλα";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Επαναφόρτωση σελίδας";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Μάθετε περισσότερα / επιλογές εξαίρεσης";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Σας ευχαριστούμε που υποστηρίζετε το Brave Search κάνοντας κλικ σε μια ιδιωτική διαφήμιση. Σε αντίθεση με την Big Tech, μετράμε την απόδοση των διαφημίσεων ανώνυμα για να διατηρήσουμε το απόρρητό σας.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Γραμμή επιλογής τοποθεσίας";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Λειτουργία ιδιωτικής περιήγησης";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Παρουσιάστηκε σφάλμα κατά τη λήψη του αρχείου. Δοκιμάστε ξανά αργότερα.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Αποτυχία λήψης αρχείου";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Μεγέθυνση";

@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "เครื่องมือค้นหาที่ใช้อยู่ในขณะนี้";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "เพิ่มเครื่องมือค้นหาแบบกำหนดเอง";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "เขียน URL การค้นหาและแทนที่คำค้นหาด้วย %1$s\nตัวอย่างเช่น: https://youtube.com/search?q=%2$s\n(หากไซต์รองรับ OpenSearch จะเพิ่มตัวเลือกให้โดยอัตโนมัติขณะแก้ไขฟิลด์นี้)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "มีเครื่องมือค้นที่มีชื่อเดียวกันอยู่ก่อนแล้ว";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "ป้อนชื่อเครื่องมือค้นหา";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "เทมเพลตการค้นหาแบบกำหนดเองที่ไม่ปลอดภัยสำหรับ";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "แก้ไขโฟลเดอร์";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "แก้ไขเครื่องมือค้นหาด่วน";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "เปิดใช้การลากเพื่อรีเฟรช";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "เสร็จแล้ว";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "ค้นหา \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "ค้นหา ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "ผลลัพธ์ภายในหน้าถัดไป";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "ซ่อนรูปที่ได้รับการสนับสนุน";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "'ได้รับการสนับสนุน' คือพื้นหลังแบรนด์เพิ่มเติมที่คุณจะได้รับหากเปิดใช้งาน Brave Rewards";
+"ntp.imageTypeSelectionDescription" = "ภาพสปอนเซอร์คือภาพพื้นหลังที่มีแบรนด์ ซึ่งจะแสดงในแท็บใหม่ของเบราว์เซอร์ การเปิดใช้งานภาพสปอนเซอร์เหล่านี้ช่วยสนับสนุนภารกิจของ Brave";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "ดูข้อมูลเพิ่มเติม";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "ดูข้อมูลเพิ่มเติมเกี่ยวกับ Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "ซ่อน";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Paste & Go";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "เปิด";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "สแกน QR Code";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "การค้นหาล่าสุดจะทำให้คุณเข้าถึงการค้นหาในอดีตแบบเป็นส่วนตัว คุณต้องการเปิดใช้การค้นหาล่าสุดหรือไม่";
+"RecentSearchSectionDescription" = "คุณต้องการเปิดใช้งานการค้นหาล่าสุดหรือไม่";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "การค้นหาล่าสุด";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "การค้นหาล่าสุด";
+"RecentSearchSectionTitle" = "การค้นหาล่าสุดช่วยให้คุณเข้าถึงประวัติการค้นหาก่อนหน้าได้แบบส่วนตัว";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "แสดง";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "ค้นหาคำแนะนำ";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "เปิดแท็บ & บุ๊กมาร์ค & ประวัติ";
+"SearchHistorySectionHeader" = "บนอุปกรณ์ของคุณ";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "ล้างการค้นหา";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "ค้นหา";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "ค้นหา \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "เพิ่มเครื่องมือค้นหาแบบกำหนดเอง";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "คำแนะนำในการค้นหา";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "คุณต้องการเปิดใช้งานคำแนะนำการค้นหาหรือไม่";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "ค้นหาด้วย Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "ไม่ปลอดภัย";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Paste and Go";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "เพลย์ลิสต์";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "หยุด";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "การค้นหาด้วยเสียง";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

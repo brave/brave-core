@@ -97,12 +97,6 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Imbas Kod QR";
 
-/* The text label of creative search result ad infobar message. */
-"SearchResultAdClickedInfoBarTitle" = "Terima kasih kerana menyokong Carian Brave dengan mengklik iklan peribadi. Berbeza dengan Big Tech, kami menilai prestasi iklan secara tanpa nama untuk melindungi privasi anda.";
-
-/* The text label of creative search result ad learn more / opt out choices link. */
-"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Ketahui lebih lanjut / pilihan untuk keluar";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Umu";
 

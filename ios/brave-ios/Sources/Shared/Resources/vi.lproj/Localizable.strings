@@ -97,12 +97,6 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Quét mã QR";
 
-/* The text label of creative search result ad infobar message. */
-"SearchResultAdClickedInfoBarTitle" = "Cảm ơn vì đã ủng hộ Tìm kiếm Brave khi bấm vào quảng cáo riêng tư. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.";
-
-/* The text label of creative search result ad learn more / opt out choices link. */
-"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Tìm hiểu thêm / lựa chọn từ chối";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Chung";
 

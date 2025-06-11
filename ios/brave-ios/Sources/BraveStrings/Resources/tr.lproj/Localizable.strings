@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Yeni Gizli Sekme";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Daha fazla bilgi edinin / tercihleri devre dışı bırakın";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Sponsorlu arka plan görselleri Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu destekliyor. Ve Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Yeni Sekme";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Sayfayı Yeniden Yükle";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Daha fazla bilgi edinin / tercihleri devre dışı bırakın";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Özel bir reklama tıklayarak Brave Arama'yı desteklediğiniz için teşekkür ederiz. Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Konum Çubuğu Seç";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Gizli Gezinme Modu";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Dosya indirilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Dosya İndirilemedi";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Yakınlaştır";
