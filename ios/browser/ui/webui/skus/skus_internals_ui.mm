@@ -96,7 +96,10 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
                           base::Unretained(this)));
 }
 
-SkusInternalsUI::~SkusInternalsUI() {}
+SkusInternalsUI::~SkusInternalsUI() {
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      skus::mojom::SkusInternals::Name_);
+}
 
 void SkusInternalsUI::BindInterface(
     mojo::PendingReceiver<skus::mojom::SkusInternals> pending_receiver) {
