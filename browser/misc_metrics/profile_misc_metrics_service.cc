@@ -13,6 +13,8 @@
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -82,6 +84,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         prefs::kSearchSuggestEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+    pref_change_registrar_.Add(
+        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
   }
 #endif
   auto* personal_data_manager =
@@ -121,6 +127,14 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   UMA_HISTOGRAM_BOOLEAN(
       kSearchSuggestEnabledHistogramName,
       profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
+  if (base::FeatureList::IsEnabled(
+          ntp_background_images::features::
+              kBraveNTPBrandedWallpaperSurveyPanelist)) {
+    UMA_HISTOGRAM_BOOLEAN(kSurveyPanelistEnabledHistogramName,
+                          profile_prefs_->GetBoolean(
+                              ntp_background_images::prefs::
+                                  kNewTabPageSponsoredImagesSurveyPanelist));
+  }
 }
 
 ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {

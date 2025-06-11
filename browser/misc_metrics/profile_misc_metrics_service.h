@@ -37,6 +37,8 @@ class PageMetrics;
 
 inline constexpr char kSearchSuggestEnabledHistogramName[] =
     "Brave.Search.SearchSuggest";
+inline constexpr char kSurveyPanelistEnabledHistogramName[] =
+    "Brave.Ads.SurveyPanelistEnabled";
 
 class ProfileMiscMetricsService : public KeyedService {
  public:
