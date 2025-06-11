@@ -21,6 +21,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "components/favicon/core/favicon_service.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
@@ -30,6 +31,7 @@
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
 namespace {
@@ -169,6 +171,15 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 
 void AIChatUIPageHandler::UploadImage(bool use_media_capture,
                                       UploadImageCallback callback) {}
+
+void AIChatUIPageHandler::GetPluralString(const std::string& key,
+                                          int32_t count,
+                                          GetPluralStringCallback callback) {
+  auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                &webui::LocalizedString::name);
+  CHECK(iter != webui::kAiChatStrings.end());
+  std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
+}
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
   // TODO: Fix

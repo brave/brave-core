@@ -33,6 +33,7 @@
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -87,9 +88,7 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddResourcePath("manifest.webmanifest", IDR_AI_CHAT_UI_MANIFEST);
   source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name, l10n_util::GetStringUTF8(str.id));
-  }
+  source->AddLocalizedStrings(webui::kAiChatStrings);
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);

@@ -56,10 +56,6 @@ AIChatTabHelper::AIChatTabHelper(web::WebState* web_state)
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-void AIChatTabHelper::OnInterceptedPageContentChanged() {
-  MaybeSameDocumentIsNewPage();
-}
-
 void AIChatTabHelper::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
@@ -163,12 +159,6 @@ void AIChatTabHelper::OnFetchPageContentComplete(
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
-}
-
-void AIChatTabHelper::BindPageContentExtractorReceiver(
-    mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
-  page_content_extractor_receiver_.reset();
-  page_content_extractor_receiver_.Bind(std::move(receiver));
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(

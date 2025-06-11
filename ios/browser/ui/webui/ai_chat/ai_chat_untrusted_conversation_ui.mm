@@ -26,6 +26,7 @@
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/web_state.h"
@@ -72,17 +73,21 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
-    // Route the receiver to the parent frame
     auto* web_state = web_ui_->GetWebState();
     if (!web_state) {
       return;
     }
 
+    // Route the receiver to the parent frame
     // We should not be embedded on a non-WebUI page
-    CHECK(web::WebStateImpl::FromWebState(web_state)->HasWebUI());
+    auto* main_web_ui =
+        static_cast<web::WebStateImpl*>(web_state)->GetMainWebUI();
+    if (!main_web_ui) {
+      return;
+    }
 
     AIChatUI* ai_chat_ui_controller =
-        static_cast<AIChatUI*>(web_ui_->GetController());
+        static_cast<AIChatUI*>(main_web_ui->GetController());
     // We should not be embedded on any non AIChatUI page
     CHECK(ai_chat_ui_controller);
 
@@ -120,9 +125,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       web_ui, url.host(), kAiChatUiGenerated,
       IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
-  }
+  source->AddLocalizedStrings(webui::kAiChatStrings);
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);
