@@ -1,0 +1,12 @@
+diff --git a/components/permissions/content_setting_permission_context_base.h b/components/permissions/content_setting_permission_context_base.h
+index 3f43af8c5368bdfd56be2502c943c756155404da..930528ed605f86e10ef7d71ab3f1ce52a5bfeb32 100644
+--- a/components/permissions/content_setting_permission_context_base.h
++++ b/components/permissions/content_setting_permission_context_base.h
+@@ -174,6 +174,7 @@ class ContentSettingPermissionContextBase : public content_settings::Observer {
+     has_device_permission_for_test_ = has_permission;
+   }
+ 
++  BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_
+  protected:
+   virtual ContentSetting GetPermissionStatusInternal(
+       content::RenderFrameHost* render_frame_host,
