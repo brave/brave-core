@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
+index 060b0f1183a4e4d32dadb7cf607266d0355c2643..ee1ff46a855a3cbf0de69e6221187ac63e67f7c5 100644
+--- a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
++++ b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
+@@ -722,6 +722,15 @@ struct ToV8Traits<IDLNullable<IDLSequence<T>>> {
+       return v8::Null(script_state->GetIsolate());
+     return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);
+   }
++
++  template <typename ContainerType>
++  [[nodiscard]] static v8::Local<v8::Value> ToV8(
++      ScriptState* script_state,
++      const ContainerType* value) {
++    if (!value)
++      return v8::Null(script_state->GetIsolate());
++    return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);
++  }
+ };
+ 
+ // Nullable Frozen Array
