@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "components/permissions/permission_context_base.h"
+#include "components/permissions/content_setting_permission_context_base.h"
 
 namespace permissions {
 
@@ -33,7 +33,8 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
 
 }  // namespace permissions
 
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
+#define ContentSettingPermissionContextBase \
+  ContentSettingPermissionContextBase_ChromiumImpl
 
 #define ContentSettingsTypeToRequestTypeIfExists \
   ContentSettingsTypeToRequestTypeIfExists_BraveImpl
@@ -41,4 +42,4 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
 #include "src/components/permissions/permission_request_data.cc"
 
 #undef ContentSettingsTypeToRequestTypeIfExists
-#undef PermissionContextBase
+#undef ContentSettingPermissionContextBase

@@ -50,7 +50,7 @@ bool IsAccepted(PermissionRequest* request,
 BraveWalletPermissionContext::BraveWalletPermissionContext(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type)
-    : PermissionContextBase(
+    : ContentSettingPermissionContextBase(
           browser_context,
           content_settings_type,
           network::mojom::PermissionsPolicyFeature::kNotFound) {}
@@ -120,8 +120,8 @@ void BraveWalletPermissionContext::RequestPermission(
   // This will prevent PermissionRequestManager from reprioritize the request
   // queue.
   data->embedded_permission_element_initiated = true;
-  PermissionContextBase::RequestPermission(std::move(data),
-                                           std::move(callback));
+  ContentSettingPermissionContextBase::RequestPermission(std::move(data),
+                                                         std::move(callback));
 }
 
 // static
