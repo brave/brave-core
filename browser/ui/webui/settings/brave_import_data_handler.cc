@@ -68,8 +68,9 @@ BraveImportDataHandler::~BraveImportDataHandler() = default;
 void BraveImportDataHandler::StartImport(
     const importer::SourceProfile& source_profile,
     uint16_t imported_items) {
-  if (!imported_items)
+  if (!imported_items) {
     return;
+  }
   Profile* profile = Profile::FromWebUI(web_ui());
 #if BUILDFLAG(IS_MAC)
   CheckDiskAccess(imported_items, source_profile.source_path,
@@ -87,8 +88,9 @@ void BraveImportDataHandler::StartImportImpl(
     uint16_t imported_items,
     Profile* profile) {
   // If another import is already ongoing, let it finish silently.
-  if (import_observers_.count(source_profile.source_path))
+  if (import_observers_.count(source_profile.source_path)) {
     import_observers_.erase(source_profile.source_path);
+  }
 
   FireWebUIListener("import-data-status-changed", base::Value("inProgress"));
 
@@ -100,6 +102,10 @@ void BraveImportDataHandler::StartImportImpl(
           base::BindRepeating(&BraveImportDataHandler::NotifyImportProgress,
                               weak_factory_.GetWeakPtr()));
 
+  importer_host->set_parent_window(
+      web_ui()->GetWebContents()->GetTopLevelNativeWindow());
+  importer_host->set_parent_view(web_ui()->GetWebContents()->GetNativeView());
+
   importer_host->StartImportSettings(source_profile, profile, imported_items,
                                      new ProfileWriter(profile));
 }
@@ -108,8 +114,9 @@ void BraveImportDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
     const base::Value::Dict& info) {
   const std::string* event = info.FindString("event");
-  if (!event)
+  if (!event) {
     return;
+  }
   if (*event == "ImportItemEnded") {
     import_did_succeed_ = true;
   } else if (*event == "ImportEnded") {
@@ -169,8 +176,9 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     // to guide full disk access information to users.
     // Guide dialog will be opened after import dialog is closed.
     FireWebUIListener("import-data-status-changed", base::Value("failed"));
-    if (import_observers_.count(source_path))
+    if (import_observers_.count(source_path)) {
       import_observers_[source_path]->ImportEnded();
+    }
     // Observing web_contents is started here to know the closing timing of
     // import dialog.
     Observe(web_ui()->GetWebContents());
@@ -185,8 +193,9 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
 void BraveImportDataHandler::DidStopLoading() {
   Observe(nullptr);
 
-  if (!guide_dialog_is_requested_)
+  if (!guide_dialog_is_requested_) {
     return;
+  }
 
   guide_dialog_is_requested_ = false;
 

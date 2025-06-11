@@ -5,7 +5,11 @@
 
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { DefaultBrowserBrowserProxyImpl } from './default_browser_browser_proxy'
-import { ImportDataBrowserProxyImpl, BrowserProfile as _BrowserProfile } from './import_data_browser_proxy'
+import {
+  ImportDataBrowserProxyImpl,
+  ImportDataStatus,
+  BrowserProfile as _BrowserProfile,
+} from './import_data_browser_proxy'
 
 export enum P3APhase {
   Welcome = 0,
@@ -38,7 +42,11 @@ export interface WelcomeBrowserProxy {
   getWelcomeCompleteURL: () => Promise<string>
 }
 
-export { DefaultBrowserBrowserProxyImpl, ImportDataBrowserProxyImpl }
+export {
+  DefaultBrowserBrowserProxyImpl,
+  ImportDataBrowserProxyImpl,
+  ImportDataStatus,
+}
 
 export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
   recordP3A (phase: P3APhase) {
