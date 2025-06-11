@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
 
-#include <array>
 #include <functional>
 #include <string>
 #include <string_view>

@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
-#include <array>
 #include <cstdint>
 #include <functional>
 #include <ios>

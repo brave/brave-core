@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 
 #include <algorithm>
+#include <array>
 #include <limits>
 #include <memory>
 #include <string>

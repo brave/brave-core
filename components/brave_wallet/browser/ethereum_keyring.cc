@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
+#include <array>
 #include <optional>
 
 #include "base/base64.h"

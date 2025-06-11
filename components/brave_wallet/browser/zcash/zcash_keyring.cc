@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 

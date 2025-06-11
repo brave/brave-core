@@ -6,6 +6,7 @@
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
 #include <algorithm>
+#include <array>
 #include <optional>
 #include <string>
 

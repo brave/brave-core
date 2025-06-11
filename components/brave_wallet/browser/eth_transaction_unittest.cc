@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>

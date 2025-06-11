@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 
+#include <array>
 #include <cstdint>
 #include <memory>
 #include <optional>

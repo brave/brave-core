@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <utility>

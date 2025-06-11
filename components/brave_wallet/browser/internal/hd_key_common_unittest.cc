@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 
+#include <array>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

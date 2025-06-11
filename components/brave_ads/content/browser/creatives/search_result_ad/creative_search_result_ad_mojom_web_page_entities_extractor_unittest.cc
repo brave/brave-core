@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 
+#include <array>
+
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
 
+#include <array>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"

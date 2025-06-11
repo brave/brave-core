@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
+#include <array>
 #include <optional>
 
 #include "base/containers/span.h"

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 
+#include <array>
 #include <memory>
 #include <string>
 #include <vector>

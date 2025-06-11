@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 
+#include <array>
 #include <memory>
 #include <utility>
 #include <vector>

@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
-#include <array>
 #include <functional>
 #include <memory>
 #include <optional>

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 
+#include <array>
+
 #include "base/containers/flat_map.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

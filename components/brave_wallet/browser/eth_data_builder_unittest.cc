@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include <algorithm>
+#include <array>
 #include <optional>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

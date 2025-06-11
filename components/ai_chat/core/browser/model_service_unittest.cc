@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
+#include <array>
 #include <string>
 #include <string_view>
 #include <utility>

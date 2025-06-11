@@ -5,6 +5,8 @@
 
 #include "brave/components/web_discovery/browser/regex_util.h"
 
+#include <array>
+
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 

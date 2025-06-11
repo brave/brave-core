@@ -5,6 +5,7 @@
 
 #include "brave/net/http/partitioned_host_state_map.h"
 
+#include <array>
 #include <map>
 #include <string>
 #include <string_view>

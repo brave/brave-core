@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TEST_UTILS_H_
 
+#include <array>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"

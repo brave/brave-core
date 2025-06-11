@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
 
+#include <array>
 #include <utility>
 #include <vector>
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_gas_utils.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <optional>
 

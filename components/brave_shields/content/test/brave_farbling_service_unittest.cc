@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 
+#include <array>
 #include <memory>
 #include <tuple>
 

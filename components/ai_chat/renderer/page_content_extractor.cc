@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
-#include <array>
 #include <functional>
 #include <ios>
 #include <optional>

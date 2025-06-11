@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_HD_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_HD_KEYRING_H_
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>

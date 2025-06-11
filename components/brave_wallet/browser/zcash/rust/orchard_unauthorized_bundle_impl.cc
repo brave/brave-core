@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_unauthorized_bundle_impl.h"
 
+#include <array>
 #include <memory>
 #include <utility>
 #include <vector>

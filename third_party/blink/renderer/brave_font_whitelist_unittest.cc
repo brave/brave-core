@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/third_party/blink/renderer/brave_font_whitelist.h"
+
+#include <array>
 #include <string>
 #include <string_view>
 #include <tuple>
 #include <vector>
-
-#include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
 #include "base/containers/fixed_flat_set.h"
 #include "testing/gtest/include/gtest/gtest.h"

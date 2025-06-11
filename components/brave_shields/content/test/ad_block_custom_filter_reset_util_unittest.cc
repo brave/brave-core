@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
 
+#include <array>
 #include <optional>
 
 #include "base/containers/contains.h"
