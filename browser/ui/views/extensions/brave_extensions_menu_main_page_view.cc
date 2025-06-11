@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/extensions/brave_extensions_menu_main_page_view.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"

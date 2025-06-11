@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 
+#include "base/check.h"
 #include "cc/paint/paint_shader.h"
 #include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkColor.h"

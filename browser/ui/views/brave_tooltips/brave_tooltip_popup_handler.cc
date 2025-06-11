@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_popup.h"
 

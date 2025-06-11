@@ -9,6 +9,8 @@
 #include <memory>
 #include <tuple>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/skia_paint_util.h"

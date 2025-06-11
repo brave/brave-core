@@ -8,6 +8,7 @@
 #include <map>
 #include <utility>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/grit/brave_generated_resources.h"

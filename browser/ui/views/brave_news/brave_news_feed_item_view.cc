@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/grit/brave_components_strings.h"

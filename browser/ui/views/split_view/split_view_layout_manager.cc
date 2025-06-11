@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"

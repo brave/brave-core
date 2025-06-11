@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"

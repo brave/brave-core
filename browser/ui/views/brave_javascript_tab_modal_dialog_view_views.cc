@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"

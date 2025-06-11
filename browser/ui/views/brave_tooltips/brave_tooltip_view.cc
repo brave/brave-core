@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/check.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_popup.h"

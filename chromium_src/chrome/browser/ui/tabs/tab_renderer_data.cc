@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 
+#include "base/check.h"
+
 #define FromTabInModel FromTabInModel_ChromiumImpl
 #include "src/chrome/browser/ui/tabs/tab_renderer_data.cc"
 #undef FromTabInModel

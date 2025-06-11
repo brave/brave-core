@@ -7,6 +7,8 @@
 // therefore avoid undef before use.
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"

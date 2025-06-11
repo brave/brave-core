@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/dragging/dragging_tabs_session.h"
 
+#include "base/check.h"
 #include "chrome/browser/ui/views/tabs/dragging/drag_session_data.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "ui/gfx/geometry/point.h"

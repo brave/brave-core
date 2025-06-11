@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "base/check.h"
 #include "chrome/app/chrome_command_ids.h"
 
 static_assert(__OBJC__);

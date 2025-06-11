@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 
+#include "base/check.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"

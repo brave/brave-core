@@ -7,6 +7,7 @@
 
 #include <dwmapi.h>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/ui/brave_ui_features.h"

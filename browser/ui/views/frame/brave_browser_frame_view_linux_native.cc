@@ -8,6 +8,8 @@
 #include <numeric>
 #include <string>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"

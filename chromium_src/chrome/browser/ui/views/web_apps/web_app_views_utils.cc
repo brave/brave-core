@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/web_apps/web_app_views_utils.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 
 #define CreateOriginLabelFromStartUrl CreateOriginLabelFromStartUrl_ChromiumImpl

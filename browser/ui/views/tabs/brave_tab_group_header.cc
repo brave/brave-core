@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"

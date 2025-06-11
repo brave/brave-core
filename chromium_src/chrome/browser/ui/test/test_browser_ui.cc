@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/test/test_browser_ui.h"
 
+#include "base/logging.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // A workaround for Brave CIs.

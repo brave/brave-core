@@ -8,6 +8,8 @@
 #include <limits>
 #include <optional>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"

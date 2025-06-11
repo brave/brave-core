@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
