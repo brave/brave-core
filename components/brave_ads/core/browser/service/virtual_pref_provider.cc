@@ -12,6 +12,7 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -85,6 +86,8 @@ base::Value::Dict ParseSkuOrders(const base::Value::Dict& dict) {
 }
 
 base::Value::Dict GetSkus(PrefService* local_state) {
+  CHECK(local_state);
+
   base::Value::Dict skus;
 
   if (!local_state->FindPreference(skus::prefs::kSkusState)) {
@@ -118,11 +121,20 @@ base::Value::Dict GetSkus(PrefService* local_state) {
   return skus;
 }
 
+bool IsSurveyPanelist(PrefService* prefs) {
+  CHECK(prefs);
+
+  return prefs->GetBoolean(
+      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
+}
+
 }  // namespace
 
-VirtualPrefProvider::VirtualPrefProvider(PrefService* local_state,
+VirtualPrefProvider::VirtualPrefProvider(PrefService* prefs,
+                                         PrefService* local_state,
                                          std::unique_ptr<Delegate> delegate)
-    : local_state_(local_state), delegate_(std::move(delegate)) {
+    : prefs_(prefs), local_state_(local_state), delegate_(std::move(delegate)) {
+  CHECK(prefs_);
   CHECK(local_state_);
   CHECK(delegate_);
 }
@@ -146,6 +158,7 @@ base::Value::Dict VirtualPrefProvider::GetPrefs() const {
                                   .Set("region", CurrentCountryCode()))
                .Set("is_mobile_platform", IsMobilePlatform())
                .Set("name", version_info::GetOSType()))
+      .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(prefs_))
       .Set("[virtual]:search_engine",
            base::Value::Dict().Set("default_name",
                                    delegate_->GetDefaultSearchEngineName()))

@@ -15,6 +15,7 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -32,35 +33,39 @@ class VirtualPrefProviderDelegateMock : public VirtualPrefProvider::Delegate {
   MOCK_METHOD(std::string, GetDefaultSearchEngineName, (), (const));
 };
 
-class VirtualPrefProviderTest : public ::testing::Test {
+class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
  public:
-  VirtualPrefProviderTest() {
+  BraveAdsVirtualPrefProviderTest() {
+    prefs_.registry()->RegisterBooleanPref(
+        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
+        true);
+    local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
+
     auto delegate = std::make_unique<VirtualPrefProviderDelegateMock>();
     delegate_ = delegate.get();
-    provider_ = std::make_unique<VirtualPrefProvider>(&pref_service_,
+    provider_ = std::make_unique<VirtualPrefProvider>(&prefs_, &local_state_,
                                                       std::move(delegate));
-
-    pref_service_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
   }
 
-  ~VirtualPrefProviderTest() override {
+  ~BraveAdsVirtualPrefProviderTest() override {
     // Reset delegate to avoid dangling pointer.
     delegate_ = nullptr;
   }
-
-  TestingPrefServiceSimple& pref_service() { return pref_service_; }
 
   VirtualPrefProviderDelegateMock& delegate() const { return *delegate_; }
 
   VirtualPrefProvider& provider() const { return *provider_; }
 
- private:
-  TestingPrefServiceSimple pref_service_;
-  raw_ptr<VirtualPrefProviderDelegateMock> delegate_ = nullptr;
+ protected:
+  TestingPrefServiceSimple prefs_;
+  TestingPrefServiceSimple local_state_;
+
   std::unique_ptr<VirtualPrefProvider> provider_;
+
+  raw_ptr<VirtualPrefProviderDelegateMock> delegate_ = nullptr;
 };
 
-TEST_F(VirtualPrefProviderTest, BrowserBuildChannel) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildChannel) {
   // Arrange
   EXPECT_CALL(delegate(), GetChannel).WillOnce(testing::Return("release"));
 
@@ -74,7 +79,7 @@ TEST_F(VirtualPrefProviderTest, BrowserBuildChannel) {
   EXPECT_EQ(*build_channel, "release");
 }
 
-TEST_F(VirtualPrefProviderTest, BrowserVersion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserVersion) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   const std::string* version =
@@ -85,7 +90,7 @@ TEST_F(VirtualPrefProviderTest, BrowserVersion) {
   EXPECT_EQ(*version, version_info::GetVersionNumber());
 }
 
-TEST_F(VirtualPrefProviderTest, BrowserMajorVersion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMajorVersion) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   std::optional<int> major_version =
@@ -95,7 +100,7 @@ TEST_F(VirtualPrefProviderTest, BrowserMajorVersion) {
   EXPECT_EQ(major_version, GetMajorVersion());
 }
 
-TEST_F(VirtualPrefProviderTest, BrowserMinorVersion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserMinorVersion) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   std::optional<int> minor_version =
@@ -105,7 +110,7 @@ TEST_F(VirtualPrefProviderTest, BrowserMinorVersion) {
   EXPECT_EQ(minor_version, GetMinorVersion());
 }
 
-TEST_F(VirtualPrefProviderTest, BrowserBuildVersion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserBuildVersion) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   std::optional<int> build_version =
@@ -115,7 +120,7 @@ TEST_F(VirtualPrefProviderTest, BrowserBuildVersion) {
   EXPECT_EQ(build_version, GetBuildVersion());
 }
 
-TEST_F(VirtualPrefProviderTest, BrowserPatchVersion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, BrowserPatchVersion) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   std::optional<int> patch_version =
@@ -125,7 +130,7 @@ TEST_F(VirtualPrefProviderTest, BrowserPatchVersion) {
   EXPECT_EQ(patch_version, GetPatchVersion());
 }
 
-TEST_F(VirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
+TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
   // Arrange
   const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
 
@@ -139,7 +144,7 @@ TEST_F(VirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
   EXPECT_EQ(*language, "en");
 }
 
-TEST_F(VirtualPrefProviderTest, OperatingSystemLocaleRegion) {
+TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleRegion) {
   // Arrange
   const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
 
@@ -153,7 +158,7 @@ TEST_F(VirtualPrefProviderTest, OperatingSystemLocaleRegion) {
   EXPECT_EQ(*region, "KY");
 }
 
-TEST_F(VirtualPrefProviderTest, OperatingSystemIsMobilePlatform) {
+TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemIsMobilePlatform) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   std::optional<bool> is_mobile_platform = virtual_prefs.FindBoolByDottedPath(
@@ -163,7 +168,7 @@ TEST_F(VirtualPrefProviderTest, OperatingSystemIsMobilePlatform) {
   EXPECT_EQ(is_mobile_platform, IsMobilePlatform());
 }
 
-TEST_F(VirtualPrefProviderTest, OperatingSystemName) {
+TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemName) {
   // Act
   const base::Value::Dict virtual_prefs = provider().GetPrefs();
   const std::string* name =
@@ -174,7 +179,17 @@ TEST_F(VirtualPrefProviderTest, OperatingSystemName) {
   EXPECT_EQ(*name, version_info::GetOSType());
 }
 
-TEST_F(VirtualPrefProviderTest, SearchEngineDefaultName) {
+TEST_F(BraveAdsVirtualPrefProviderTest, IsSurveyPanelist) {
+  // Act
+  const base::Value::Dict virtual_prefs = provider().GetPrefs();
+  std::optional<bool> is_survey_panelist =
+      virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist");
+
+  // Assert
+  EXPECT_TRUE(is_survey_panelist);
+}
+
+TEST_F(BraveAdsVirtualPrefProviderTest, SearchEngineDefaultName) {
   // Arrange
   EXPECT_CALL(delegate(), GetDefaultSearchEngineName)
       .WillOnce(testing::Return("Brave"));
@@ -190,10 +205,10 @@ TEST_F(VirtualPrefProviderTest, SearchEngineDefaultName) {
   EXPECT_EQ(*default_search_engine_name, "Brave");
 }
 
-TEST_F(VirtualPrefProviderTest, PrefsWithSkus) {
+TEST_F(BraveAdsVirtualPrefProviderTest, PrefsWithSkus) {
   // Arrange
-  pref_service().SetDict(skus::prefs::kSkusState,
-                         base::Value::Dict().Set("skus:development", R"JSON({
+  local_state_.SetDict(skus::prefs::kSkusState,
+                       base::Value::Dict().Set("skus:development", R"JSON({
       "orders": {
         "f24787ab-7bc3-46b9-bc05-65befb360cb8": {
           "created_at": "2023-10-24T16:00:57.902289",

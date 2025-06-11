@@ -197,6 +197,7 @@ AdsServiceImpl::AdsServiceImpl(
       prefs_(prefs),
       local_state_(local_state),
       virtual_pref_provider_(std::make_unique<VirtualPrefProvider>(
+          prefs_,
           local_state_,
           std::move(virtual_pref_provider_delegate))),
       url_loader_(std::move(url_loader)),
