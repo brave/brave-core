@@ -54,3 +54,26 @@ mangle(
   },
   (template) => template.text.includes('class="intro-text"'),
 )
+
+// Move #resetToDefaultButton to the end
+mangle(
+  (element: DocumentFragment) => {
+    // Remove the reset button.
+    const resetButton = element.querySelector('#resetToDefaultButton')
+    if (!resetButton) {
+      throw new Error(
+        '[Customize Chrome > Toolbar] #resetToDefaultButton is gone.',
+      )
+    }
+
+    resetButton.remove()
+
+    const lastEl = element.querySelector('#pinningSelectionCard')
+    if (!lastEl) {
+      throw new Error(
+        '[Customize Chrome > Toolbar] #pinningSelectionCard is gone.',
+      )
+    }
+    lastEl.insertAdjacentElement('afterend', resetButton)
+  } /* omit selector to access the top level node */,
+)
