@@ -8,9 +8,18 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
 namespace brave_wallet {
 
-CardanoProviderImpl::CardanoProviderImpl() = default;
+CardanoProviderImpl::CardanoProviderImpl(
+    HostContentSettingsMap& host_content_settings_map,
+    BraveWalletService* brave_wallet_service,
+    std::unique_ptr<BraveWalletProviderDelegate> delegate)
+    : host_content_settings_map_(host_content_settings_map),
+      brave_wallet_service_(brave_wallet_service),
+      delegate_(std::move(delegate)) {}
 
 CardanoProviderImpl::~CardanoProviderImpl() = default;
 

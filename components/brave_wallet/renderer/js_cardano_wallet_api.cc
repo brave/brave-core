@@ -172,23 +172,23 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetNetworkId(v8::Isolate* isolate) {
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
   cardano_provider_->GetNetworkId(base::BindOnce(
       &JSCardanoWalletApi::OnGetNetworkId, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 void JSCardanoWalletApi::OnGetNetworkId(
@@ -220,25 +220,23 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUsedAddresses(
   if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
   }
-
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->GetUsedAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetUnusedAddresses(
@@ -246,25 +244,23 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUnusedAddresses(
   if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
   }
-
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->GetUnusedAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetChangeAddress(
@@ -273,23 +269,22 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetChangeAddress(
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->GetChangeAddress(base::BindOnce(
       &JSCardanoWalletApi::HandleStringResult, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetRewardAddresses(
@@ -298,24 +293,23 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetRewardAddresses(
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->GetRewardAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetBalance(v8::Isolate* isolate) {
@@ -323,23 +317,22 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetBalance(v8::Isolate* isolate) {
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->GetBalance(base::BindOnce(
       &JSCardanoWalletApi::HandleStringResult, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
@@ -349,14 +342,15 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
   auto* isolate = args->isolate();
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
 
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   auto arguments = args->GetAll();
 
@@ -405,7 +399,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
@@ -415,17 +409,16 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
 
   auto* isolate = args->isolate();
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   auto arguments = args->GetAll();
 
@@ -463,7 +456,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
@@ -473,17 +466,16 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
 
   auto* isolate = args->isolate();
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   auto arguments = args->GetAll();
 
@@ -511,7 +503,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 void JSCardanoWalletApi::OnSignData(
@@ -550,17 +542,16 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SubmitTx(gin::Arguments* args) {
 
   auto* isolate = args->isolate();
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   auto arguments = args->GetAll();
 
@@ -583,30 +574,27 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SubmitTx(gin::Arguments* args) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetExtensions(gin::Arguments* args) {
   auto* isolate = args->isolate();
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  std::ignore = resolver.ToLocalChecked()->Resolve(
+  std::ignore = resolver_local->Resolve(
       global_context.Get(isolate),
       content::V8ValueConverter::Create()->ToV8Value(
           base::ListValue(), isolate->GetCurrentContext()));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
@@ -617,14 +605,13 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
   auto* isolate = args->isolate();
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   auto arguments = args->GetAll();
 
@@ -654,7 +641,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 }  // namespace brave_wallet
