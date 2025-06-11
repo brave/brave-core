@@ -217,28 +217,28 @@
     Content
   </message>
   <if expr="enable_containers">
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_SECTION" desc="The label for section containing settings related to containers">
+    <message name="IDS_SETTINGS_CONTAINERS_SECTION_LABEL" desc="The label for section containing settings related to containers" formatter_data="webui=Containers">
       Containers
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_DESC" desc="The label for section containing settings related to containers">
+    <message name="IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION" desc="The description for section containing settings related to containers" formatter_data="webui=Containers">
       Organize your browsing with containers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER" desc="The label for dialog title for adding a container">
+    <message name="IDS_SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL" desc="The label for dialog title for adding a container" formatter_data="webui=Containers">
       Add new container
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER" desc="The label for dialog title for editing a container">
+    <message name="IDS_SETTINGS_CONTAINERS_EDIT_CONTAINER_LABEL" desc="The label for dialog title for editing a container" formatter_data="webui=Containers">
       Edit container
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER" desc="The label for dialog title for deleting a container">
+    <message name="IDS_SETTINGS_CONTAINERS_DELETE_CONTAINER_LABEL" desc="The label for dialog title for deleting a container" formatter_data="webui=Containers">
       Delete container
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER_DESCRIPTION" desc="The description for dialog title for deleting a container">
+    <message name="IDS_SETTINGS_CONTAINERS_DELETE_CONTAINER_DESCRIPTION" desc="The description for dialog title for deleting a container" formatter_data="webui=Containers">
       Are you sure you want to delete container <ph name="CONTAINER_NAME">"$1"<ex>"Work"</ex></ph>? This will remove all the data associated with it.
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME" desc="The label for container name input field">
+    <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL" desc="The label for container name input field" formatter_data="webui=Containers">
       Name
     </message>
-    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER" desc="The placeholder for container name input field">
+    <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER" desc="The placeholder for container name input field" formatter_data="webui=Containers">
       Give your container a name like Work or Personal
     </message>
   </if>

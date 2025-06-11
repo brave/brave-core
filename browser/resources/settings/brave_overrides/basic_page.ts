@@ -26,6 +26,7 @@ import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 // <if expr="enable_containers">
 import '../brave_content_page/containers.js'
+import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 // </if>
 
 import {
@@ -355,7 +356,7 @@ RegisterPolymerTemplateModifications({
       sectionContainers.content.appendChild(createNestedSectionElement(
         'containers',
         'content',
-        'contentSettingsContainersSection',
+        ContainersStrings.SETTINGS_CONTAINERS_SECTION_LABEL,
         'settings-brave-content-containers',
         {
           prefs: '{{prefs}}',

@@ -26,6 +26,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_generated_resources_webui_strings.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
@@ -335,22 +336,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
       {"contentSettingsContentSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
-#if BUILDFLAG(ENABLE_CONTAINERS)
-      {"contentSettingsContainersSection",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_SECTION},
-      {"containersAddContainer",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER},
-      {"containersEditContainer",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER},
-      {"containersContainerName",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME},
-      {"containersContainerNamePlaceholder",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER},
-      {"containersDeleteContainer",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER},
-      {"containersDeleteContainerDescription",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER_DESCRIPTION},
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
@@ -1055,11 +1040,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              kUnstoppableDomainsLearnMoreURL));
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  html_source->AddString("containersDesc",
-                         l10n_util::GetStringFUTF16(
-                             IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_DESC,
-                             kContainersLearnMoreURL));
-#endif
+  html_source->AddLocalizedStrings(webui::kContainersStrings);
+  html_source->AddString(
+      webui::IDSToName<IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION>(),
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION,
+                                 kContainersLearnMoreURL));
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddString(
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
