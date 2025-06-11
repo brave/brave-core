@@ -8,20 +8,45 @@ import("//build/config/android/rules.gni")
 
 testonly = true
 
+# Contain all source code that is used by tests in a different package.
+android_library("brave_test_java_helper") {
+  sources = [ "//chrome/android/javatests/src/org/chromium/chrome/browser/site_settings/SiteSettingsTestUtils.java" ]
+  public_deps = [
+    "//base:base_java_test_support",
+    "//chrome/android:chrome_java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/settings:factory_java",
+    "//chrome/browser/settings:test_support_java",
+    "//chrome/test/android:chrome_java_test_support_common",
+    "//components/browser_ui/settings/android:java",
+    "//components/browser_ui/site_settings/android:constants_java",
+    "//components/browser_ui/site_settings/android:java",
+    "//components/browser_ui/site_settings/android:java_resources",
+    "//components/browser_ui/widget/android:java",
+    "//components/browser_ui/widget/android:test_support_java",
+    "//components/browsing_data/core:java",
+    "//components/content_settings/android:content_settings_enums_java",
+    "//components/content_settings/android:java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_test_core_java",
+    "//third_party/androidx:androidx_test_monitor_java",
+    "//third_party/androidx:androidx_test_runner_java__classes",
+    "//third_party/junit:junit",
+  ]
+}
+
 android_library("brave_test_java_org.chromium.chrome.browser.download") {
   sources =
       [ "org/chromium/chrome/browser/download/BraveDownloadSettingsTest.java" ]
 
-  deps = [
-    "//base:base_java_test_support",
-    "//chrome/android:chrome_java",
-    "//chrome/browser/flags:java",
-    "//chrome/browser/settings:test_support_java",
-    "//chrome/test/android:chrome_java_test_support_common",
-    "//components/browser_ui/settings/android:java",
-    "//third_party/androidx:androidx_fragment_fragment_java",
-    "//third_party/androidx:androidx_preference_preference_java",
-    "//third_party/androidx:androidx_test_runner_java__classes",
-    "//third_party/junit:junit",
-  ]
+  deps = [ ":brave_test_java_helper" ]
+}
+
+android_library("brave_test_java_org.chromium.chrome.browser.site_settings") {
+  sources =
+      [ "org/chromium/chrome/browser/site_settings/BraveSiteSettingsTest.java" ]
+
+  deps = [ ":brave_test_java_helper" ]
 }
