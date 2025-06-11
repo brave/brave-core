@@ -138,7 +138,11 @@ void BraveWalletTabHelper::BindCardanoProvider(
   }
 
   tab_helper->cardano_provider_receivers_.Add(
-      std::make_unique<CardanoProviderImpl>(), std::move(receiver));
+      std::make_unique<CardanoProviderImpl>(
+          *host_content_settings_map, brave_wallet_service,
+          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
+                                                            frame_host)),
+      std::move(receiver));
 }
 
 void BraveWalletTabHelper::AddSolanaConnectedAccount(

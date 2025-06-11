@@ -93,23 +93,22 @@ v8::Local<v8::Promise> JSCardanoProvider::Enable(v8::Isolate* isolate) {
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->Enable(base::BindOnce(
       &JSCardanoProvider::OnEnableResponse, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 void JSCardanoProvider::OnEnableResponse(
@@ -137,8 +136,10 @@ void JSCardanoProvider::OnEnableResponse(
       return;
     }
     v8::Local<v8::Value> wallet_api_value = wallet_api.ToV8();
-    v8::Local<v8::Object> wallet_api_object =
-        wallet_api_value->ToObject(context).ToLocalChecked();
+    v8::Local<v8::Object> wallet_api_object;
+    if (!wallet_api_value->ToObject(context).ToLocal(&wallet_api_object)) {
+      return;
+    }
 
     // Non-function properties are readonly guaranteed by gin::Wrappable
     for (const std::string& method :
@@ -160,23 +161,22 @@ v8::Local<v8::Promise> JSCardanoProvider::IsEnabled(v8::Isolate* isolate) {
     return v8::Local<v8::Promise>();
   }
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(isolate->GetCurrentContext())
+           .ToLocal(&resolver_local)) {
     return v8::Local<v8::Promise>();
   }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
   cardano_provider_->IsEnabled(base::BindOnce(
       &JSCardanoProvider::OnIsEnableResponse, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
-  return resolver.ToLocalChecked()->GetPromise();
+  return resolver_local->GetPromise();
 }
 
 void JSCardanoProvider::OnIsEnableResponse(
@@ -217,8 +217,11 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Object> global = context->Global();
 
-  v8::Local<v8::Value> cardano_root =
-      global->Get(context, gin::StringToV8(isolate, kCardano)).ToLocalChecked();
+  v8::Local<v8::Value> cardano_root;
+  if (!global->Get(context, gin::StringToV8(isolate, kCardano))
+           .ToLocal(&cardano_root)) {
+    return;
+  }
 
   if (cardano_root->IsUndefined() || !cardano_root->IsObject()) {
     cardano_root = v8::Object::New(isolate);
@@ -234,13 +237,21 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
   }
   v8::Local<v8::Value> cardano_brave_provider_value =
       cardano_brave_provider.ToV8();
-  v8::Local<v8::Object> cardano_brave_provider_object =
-      cardano_brave_provider_value->ToObject(context).ToLocalChecked();
+  v8::Local<v8::Object> cardano_brave_provider_object;
+  if (!cardano_brave_provider_value->ToObject(context).ToLocal(
+          &cardano_brave_provider_object)) {
+    return;
+  }
+
+  v8::Local<v8::Object> cardano_root_object;
+  if (!cardano_root->ToObject(context).ToLocal(&cardano_root_object)) {
+    return;
+  }
 
   // Set window.cardano.brave
-  SetProviderNonWritable(
-      context, cardano_root->ToObject(context).ToLocalChecked(),
-      cardano_brave_provider_object, gin::StringToV8(isolate, kBrave), true);
+  SetProviderNonWritable(context, cardano_root_object,
+                         cardano_brave_provider_object,
+                         gin::StringToV8(isolate, kBrave), true);
 
   // Non-function properties are readonly guaranteed by gin::Wrappable
   for (const std::string& method : {"enable", "isEnabled"}) {
