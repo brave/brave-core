@@ -41,9 +41,15 @@ source_set("features") {
 }
 
 source_set("browser_tests") {
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  defines = [
+    "HAS_OUT_OF_PROC_TEST_RUNNER",
+    "BRAVE_JNI_UNUSED_FOR_TESTS",
+  ]
   testonly = true
-  sources = [ "youtube_script_injector_tab_helper_browsertest.cc" ]
+  sources = [
+    "brave_youtube_script_injector_native_helper_browsertest.cc",
+    "youtube_script_injector_tab_helper_browsertest.cc",
+  ]
 
   deps = [
     ":features",

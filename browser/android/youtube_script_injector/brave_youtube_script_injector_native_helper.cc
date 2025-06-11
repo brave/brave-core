@@ -113,7 +113,10 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     const base::android::JavaParamRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  SetFullscreen(web_contents);
+}
 
+void SetFullscreen(content::WebContents* web_contents) {
   content::RenderFrameHost* rfh = web_contents->GetPrimaryMainFrame();
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote;
