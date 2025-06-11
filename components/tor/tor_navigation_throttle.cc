@@ -18,25 +18,23 @@ namespace tor {
 bool TorNavigationThrottle::skip_wait_for_tor_connected_for_testing_ = false;
 
 // static
-std::unique_ptr<TorNavigationThrottle>
-TorNavigationThrottle::MaybeCreateThrottleFor(
+void TorNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_profile) {
   if (!is_tor_profile)
-    return nullptr;
-  return std::make_unique<TorNavigationThrottle>(registry);
+    return;
+  registry.AddThrottle(std::make_unique<TorNavigationThrottle>(registry));
 }
 
 // static
-std::unique_ptr<TorNavigationThrottle>
-TorNavigationThrottle::MaybeCreateThrottleFor(
+void TorNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     TorLauncherFactory& tor_launcher_factory,
     bool is_tor_profile) {
   if (!is_tor_profile)
-    return nullptr;
-  return std::make_unique<TorNavigationThrottle>(registry,
-                                                 tor_launcher_factory);
+    return;
+  registry.AddThrottle(
+      std::make_unique<TorNavigationThrottle>(registry, tor_launcher_factory));
 }
 
 TorNavigationThrottle::TorNavigationThrottle(

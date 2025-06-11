@@ -26,9 +26,8 @@ class DebounceNavigationThrottle : public content::NavigationThrottle {
   DebounceNavigationThrottle& operator=(const DebounceNavigationThrottle&) =
       delete;
 
-  static std::unique_ptr<DebounceNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
-      DebounceService* debounce_service);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                DebounceService* debounce_service);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

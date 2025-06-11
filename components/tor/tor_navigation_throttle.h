@@ -20,14 +20,12 @@ namespace tor {
 class TorNavigationThrottle : public content::NavigationThrottle,
                               public TorLauncherObserver {
  public:
-  static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
-      bool is_tor_profile);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                bool is_tor_profile);
   // For tests to use its own McokTorLauncherFactory
-  static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
-      TorLauncherFactory& tor_launcher_factory,
-      bool is_tor_profile);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                TorLauncherFactory& tor_launcher_factory,
+                                bool is_tor_profile);
   explicit TorNavigationThrottle(content::NavigationThrottleRegistry& registry);
   TorNavigationThrottle(content::NavigationThrottleRegistry& registry,
                         TorLauncherFactory& tor_launcher_factory);
