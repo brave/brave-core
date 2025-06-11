@@ -8,6 +8,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"

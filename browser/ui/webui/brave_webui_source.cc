@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"

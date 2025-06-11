@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_page_handler.h"
 #include "brave/components/brave_shields/core/common/features.h"

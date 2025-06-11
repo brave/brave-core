@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"

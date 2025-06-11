@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"

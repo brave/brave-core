@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/grit/theme_resources.h"

@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"

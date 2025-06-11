@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"

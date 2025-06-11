@@ -10,8 +10,10 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/values.h"
