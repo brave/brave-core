@@ -60,8 +60,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   GURL GetURL() const override;
   std::u16string GetTitle() const override;
   void GetContent(GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() const override;
-  bool GetCachedIsVideo() const override;
+  const PageContent& GetCachedPageContent() const override;
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback) override;
 
   base::WeakPtr<AssociatedContentDriver> GetWeakPtr() {
@@ -91,9 +90,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   // For example for sites where GetPageContent does not read the live DOM but
   // reads static JS from HTML that doesn't change for same-page navigation and
   // we need to intercept new JS data from subresource loads.
-  void OnPageContentUpdated(std::string content,
-                            bool is_video,
-                            std::string invalidation_token);
+  void OnPageContentUpdated(PageContent content);
 
   // Implementer should call this when a page navigation is detected and a new
   // conversation is expected.
@@ -106,9 +103,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
                            ParseSearchQuerySummaryResponse);
 
   void OnGeneratePageContentComplete(int64_t navigation_id,
-                                     std::string contents_text,
-                                     bool is_video,
-                                     std::string invalidation_token);
+                                     PageContent content);
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
                                              int64_t navigation_id);
 
@@ -128,9 +123,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
-  std::string cached_text_content_;
-  std::string content_invalidation_token_;
-  bool is_video_ = false;
+  PageContent cached_page_content_;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from

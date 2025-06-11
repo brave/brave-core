@@ -93,9 +93,9 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   base::MockCallback<GetPageContentCallback> callback2;
   base::MockCallback<GetPageContentCallback> callback3;
 
-  EXPECT_CALL(callback1, Run("content", false, "token")).Times(1);
-  EXPECT_CALL(callback2, Run("content", false, "token")).Times(1);
-  EXPECT_CALL(callback3, Run("content", false, "token")).Times(1);
+  EXPECT_CALL(callback1, Run(PageContent("content", false, "token"))).Times(1);
+  EXPECT_CALL(callback2, Run(PageContent("content", false, "token"))).Times(1);
+  EXPECT_CALL(callback3, Run(PageContent("content", false, "token"))).Times(1);
 
   // Should only ask content once
   base::RunLoop run_loop;
@@ -106,7 +106,8 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
             FROM_HERE, base::BindOnce(
                            [](GetPageContentCallback callback) {
-                             std::move(callback).Run("content", false, "token");
+                             std::move(callback).Run(
+                                 PageContent("content", false, "token"));
                            },
                            std::move(callback)));
       });

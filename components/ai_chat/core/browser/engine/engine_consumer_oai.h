@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -44,13 +45,11 @@ class EngineConsumerOAIRemote : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContentses page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContentses page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -79,6 +78,15 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildPageContentMessages_Truncates);
+
+  base::Value::List BuildPageContentMessages(
+      const PageContentses& page_contents,
+      int max_associated_content_length,
+      int video_message_id,
+      int page_message_id);
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -17,10 +18,14 @@
 #include "base/scoped_multi_source_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
+
+class ConversationHandler;
+
+using PageContentses = std::vector<std::reference_wrapper<const PageContent>>;
+using GetAllContentCallback = base::OnceCallback<void(PageContentses)>;
 
 // This class is responsible for managing the content associated with a
 // conversation. This includes:
@@ -63,18 +68,18 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
+  // Checks if the content has changed from what is stored in the cache.
+  void HasContentUpdated(base::OnceCallback<void(bool)> callback);
+
+  // Gets the content for this conversation.
   void GetContent(base::OnceClosure callback);
-  void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
+  void GetScreenshots(
+      mojom::ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
 
-  // Deprecated: Instead use GetCachedContent() - it should be preferred so that
-  // the engine layer can decide how to handle multiple pieces of content.
-  // TODO(fallaciousreasoning): We should remove this method and pass the vector
-  // directly to the engine layer.
-  std::string GetCachedTextContent() const;
-  std::vector<std::string_view> GetCachedContent() const;
+  PageContentses GetCachedContent() const;
 
   bool HasOpenAIChatPermission() const;
   bool HasNonArchiveContent() const;

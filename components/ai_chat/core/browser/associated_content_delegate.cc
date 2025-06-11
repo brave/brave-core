@@ -12,6 +12,19 @@
 
 namespace ai_chat {
 
+PageContent::PageContent(const PageContent&) = default;
+PageContent::PageContent(PageContent&&) = default;
+PageContent& PageContent::operator=(const PageContent&) = default;
+PageContent& PageContent::operator=(PageContent&&) = default;
+
+PageContent::PageContent() = default;
+PageContent::PageContent(std::string content,
+                         bool is_video,
+                         std::string invalidation_token)
+    : content(content),
+      is_video(is_video),
+      invalidation_token(invalidation_token) {}
+
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}
 
