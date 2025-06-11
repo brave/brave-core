@@ -10,6 +10,7 @@ package*.json @brave/js-deps-reviewers
 rewrite/ @bridiver @cdesouza-chromium
 
 # Views
+# Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 chromium_src/ui/views/view.h @bridiver @cdesouza-chromium
 
 # brave/browser/ui/BUILD.gn should not have new source files added to it. see
