@@ -1,24 +1,25 @@
 
 #include "ios/web/web_state/web_state_impl.h"
-#include "ios/web/public/web_state.h"
+
 #include "ios/web/public/navigation/web_state_policy_decider.h"
-#include "url/gurl.h"
-#include "url/origin.h"
-#include "ios/web/webui/web_ui_ios_impl.h"
+#include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
-#include "ios/web/webui/web_ui_ios_controller_factory_registry.h"
 #include "ios/web/web_state/web_state_impl_realized_web_state.h"
 #include "ios/web/web_state/web_state_impl_serialized_data.h"
+#include "ios/web/webui/web_ui_ios_controller_factory_registry.h"
+#include "ios/web/webui/web_ui_ios_impl.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
-#define TearDown TearDown(); \
-    this->TearDownBraveWebUI
+#define TearDown \
+  TearDown();    \
+  this->TearDownBraveWebUI
 #include "src/ios/web/web_state/web_state_impl.mm"
-#undef  TearDown
+#undef TearDown
 
 namespace web {
 
-std::unique_ptr<WebUIIOS> CreateWebUIIOS(
-    const GURL& url, WebStateImpl* owner) {
+std::unique_ptr<WebUIIOS> CreateWebUIIOS(const GURL& url, WebStateImpl* owner) {
   WebUIIOSControllerFactory* factory =
       WebUIIOSControllerFactoryRegistry::GetInstance();
   if (!factory) {
@@ -41,17 +42,17 @@ void WebStateImpl::TearDownBraveWebUI() {
 void WebStateImpl::CreateBraveWebUI(const GURL& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   (void)RealizedState();
-  
+
   if (HasBraveWebUI()) {
     for (auto& web_ui : brave_web_uis_) {
       if (web_ui->GetController()->GetHost() == url.host()) {
         return;
       }
     }
-    
-    //ClearWebUI();
+
+    // ClearWebUI();
   }
-  
+
   auto web_ui = CreateWebUIIOS(url, this);
   if (web_ui) {
     brave_web_uis_.emplace_back(std::move(web_ui));
@@ -61,7 +62,7 @@ void WebStateImpl::CreateBraveWebUI(const GURL& url) {
 void WebStateImpl::ClearBraveWebUI() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   (void)RealizedState();
-  
+
   brave_web_uis_.clear();
 }
 
@@ -70,12 +71,14 @@ bool WebStateImpl::HasBraveWebUI() const {
   return !brave_web_uis_.empty();
 }
 
-void WebStateImpl::HandleBraveWebUIMessage(const GURL& source_url, std::string_view message, const base::Value::List& args) {
+void WebStateImpl::HandleBraveWebUIMessage(const GURL& source_url,
+                                           std::string_view message,
+                                           const base::Value::List& args) {
   auto origin = url::Origin::Create(source_url);
   if (origin.opaque()) {
     return;
   }
-  
+
   for (auto& web_ui : brave_web_uis_) {
     if (web_ui->GetController()->GetHost() == origin.host()) {
       web_ui->ProcessWebUIIOSMessage(source_url, message, args);
@@ -90,4 +93,4 @@ web::WebUIIOS* WebStateImpl::GetMainWebUI() const {
   return nullptr;
 }
 
-} // namespace web
+}  // namespace web

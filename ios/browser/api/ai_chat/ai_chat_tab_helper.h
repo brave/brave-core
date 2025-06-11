@@ -37,23 +37,15 @@ class AIChatMetrics;
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public web::WebStateObserver,
                         public web::WebStateUserData<AIChatTabHelper>,
-                        public mojom::PageContentExtractorHost,
                         public AssociatedContentDriverIOS {
  public:
   using GetPageContentCallback = GetPageContentCallback;
-
-  static void BindPageContentExtractorHost(
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
   web::WebState* web_state() const { return web_state_; }
-
-  // mojom::PageContentExtractorHost
-  void OnInterceptedPageContentChanged() override;
 
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
@@ -124,10 +116,6 @@ class AIChatTabHelper : public web::WebStateObserver,
                                   bool is_video,
                                   std::string invalidation_token);
 
-  void BindPageContentExtractorReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
-
   void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
@@ -143,9 +131,6 @@ class AIChatTabHelper : public web::WebStateObserver,
   GetPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
-
-  mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
-      page_content_extractor_receiver_{this};
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
 };

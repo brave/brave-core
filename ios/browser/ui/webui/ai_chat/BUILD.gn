@@ -27,7 +27,7 @@ source_set("ai_chat") {
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/ios/browser/api/ai_chat",
-    "//brave/ios/browser/ui/webui:web_ui_sources",
+    "//brave/ios/browser/ui/webui:data_sources",
     "//components/favicon/core",
     "//components/prefs",
     "//components/resources",

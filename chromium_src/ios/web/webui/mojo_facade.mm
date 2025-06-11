@@ -6,8 +6,8 @@
 #include "ios/web/webui/mojo_facade.h"
 
 #include "base/check.h"
-#include "mojo/public/cpp/system/simple_watcher.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+#include "mojo/public/cpp/system/simple_watcher.h"
 
 // Parse the FrameId from the mojom message
 #define last_watch_id_                                \

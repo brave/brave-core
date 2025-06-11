@@ -43,6 +43,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   ~AIChatUIPageHandler() override;
 
   // mojom::AIChatUIHandler
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override;
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
