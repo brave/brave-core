@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"

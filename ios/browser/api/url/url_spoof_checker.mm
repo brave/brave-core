@@ -5,9 +5,9 @@
 
 #include "brave/ios/browser/api/url/url_spoof_checker.h"
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "build/build_config.h"
 #include "components/lookalikes/core/lookalike_url_ui_util.h"

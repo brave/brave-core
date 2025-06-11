@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"

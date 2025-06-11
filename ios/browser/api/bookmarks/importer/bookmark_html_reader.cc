@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback.h"
 #include "base/i18n/icu_string_conversions.h"

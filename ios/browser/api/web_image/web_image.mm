@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check_op.h"
 #include "brave/ios/browser/api/web_image/image_downloader.h"
 #include "brave/ios/browser/svg/svg_image.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"

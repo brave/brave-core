@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"

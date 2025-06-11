@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"

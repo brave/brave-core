@@ -5,6 +5,7 @@
 
 #include "brave/ios/app/brave_profile_controller.h"
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat+private.h"

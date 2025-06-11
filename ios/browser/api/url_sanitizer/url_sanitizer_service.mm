@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 
 #include <string>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 

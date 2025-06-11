@@ -9,6 +9,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
 #include "base/json/json_reader.h"

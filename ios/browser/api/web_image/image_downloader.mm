@@ -4,8 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/web_image/image_downloader.h"
-#import "brave/ios/browser/svg/svg_image.h"
 
+#include "base/check_op.h"
+#import "brave/ios/browser/svg/svg_image.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"

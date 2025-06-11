@@ -5,6 +5,7 @@
 
 #include "src/ios/web/webui/mojo_facade.mm"
 
+#include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 
 namespace web {

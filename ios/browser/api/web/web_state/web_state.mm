@@ -4,15 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/web/web_state/web_state.h"
-#include "brave/ios/browser/api/web/web_state/web_state_native.h"
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/browser/api/web/web_state/web_state_native.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/web_state/web_state_impl.h"
-
 #include "net/base/apple/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

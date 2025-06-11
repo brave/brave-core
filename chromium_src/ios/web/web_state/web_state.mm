@@ -5,6 +5,8 @@
 
 #include "src/ios/web/web_state/web_state.mm"
 
+#include "base/check.h"
+
 namespace web {
 bool WebState::InterfaceBinder::IsAllowedForOrigin(
     const GURL& origin,
