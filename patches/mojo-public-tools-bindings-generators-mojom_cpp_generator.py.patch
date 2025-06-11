@@ -1,8 +1,8 @@
 diff --git a/mojo/public/tools/bindings/generators/mojom_cpp_generator.py b/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
-index c6af9c90483ee4cbd1cbb538393139cbde0dd7f6..7bfb45044c96ff8280a576347ce68a2d4f2e7c8f 100644
+index 195fb9e4617ced93e0e8097951a261c03eae3944..caf848ad2ba7c61ee9d534e25cf5931f564c73e5 100644
 --- a/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
 +++ b/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
-@@ -677,11 +677,10 @@ class Generator(generator.Generator):
+@@ -746,11 +746,10 @@ class Generator(generator.Generator):
    def _FormatConstantDeclaration(self, constant, nested=False):
      if mojom.IsStringKind(constant.kind):
        if nested:

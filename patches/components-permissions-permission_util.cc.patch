@@ -9,20 +9,20 @@ index b379cc24f772260ea360779b26ca0836d21c89c4..f9960d6f4954b541aae87a94d53ba21d
 +  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
    return permissions::GetUmaValueForRequests(request_type);
  }
-
-@@ -192,6 +193,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
+ 
+@@ -210,6 +211,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
  #endif
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }
  }
-
-@@ -504,6 +506,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+ 
+@@ -522,6 +524,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOCAL_NETWORK_ACCESS;
      case PermissionType::NUM:
        break;
 +    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
    }
-
+ 
    return ContentSettingsType::DEFAULT;

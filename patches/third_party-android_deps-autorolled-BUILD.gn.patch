@@ -1,8 +1,8 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index 4e5b800f97ede555443ee63b12f607e61c175c08..84879ff7c5d5aff9684925fc125e33b3849d4cbd 100644
+index c55b900d70e0e9f5827e9f12afed86c0785268c1..246a5ef815315c28d71a1e5a5c964394734fb06c 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
-@@ -756,6 +756,7 @@ template("define_autorolled_targets") {
+@@ -733,6 +733,7 @@ template("define_autorolled_targets") {
            "//third_party/android_deps:javax_inject_javax_inject_java",
            "//third_party/androidx:androidx_annotation_annotation_java",
          ]

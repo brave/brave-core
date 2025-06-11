@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index c42b7cd02aa41916207b22bdd03a249742183b8d..9683c5aa692be7011837fed24ac1499c0eb28edc 100644
+index 30b23405ff3f2ef77604e35c7aec165f99f4a2f4..896e0905bb767daf16349b6230143887e5b07d2b 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
-@@ -185,6 +185,7 @@ float TabStyle::GetSelectedTabOpacity() const {
+@@ -192,6 +192,7 @@ float TabStyle::GetSelectedTabOpacity() const {
  
  // static
  const TabStyle* TabStyle::Get() {

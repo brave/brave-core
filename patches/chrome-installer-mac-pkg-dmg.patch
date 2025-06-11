@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/pkg-dmg b/chrome/installer/mac/pkg-dmg
-index 6807e3cd268a5a201b1dd4f933db4d1685b8971e..542e021b5e98fd06adb58662404017f6c8655e31 100755
+index 4f9d03636d1bed8e774f26eb7ca17c80c3d8c8be..74d11aba03a278c3fadbcc648e4886ee2c01c0ab 100755
 --- a/chrome/installer/mac/pkg-dmg
 +++ b/chrome/installer/mac/pkg-dmg
-@@ -331,6 +331,7 @@ my($ignore, $uname_r, $uname_s);
+@@ -334,6 +334,7 @@ my($ignore, $uname_r, $uname_s);
  if($uname_s ne 'Darwin') {
    print STDERR ($0.": warning, not running on Mac OS X, ".
     "this could be interesting.\n");

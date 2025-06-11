@@ -5,12 +5,12 @@ index f69a57b9c7e6d03538fb72f792ad83ee9cf7b286..5e84007cb6a8a19e65ab91a1d8aadb73
 @@ -96,7 +96,7 @@ cargo_crate("lib") {
        "Automata construction and matching using regular expressions."
    cargo_pkg_version = "0.4.9"
-
+ 
 -  allow_unsafe = false
 +  allow_unsafe = true
-
+ 
    features = [ "dfa-search" ]
-
+ 
 @@ -134,4 +134,6 @@ cargo_crate("lib") {
    executable_configs += _configs_to_add
    proc_macro_configs -= _configs_to_remove

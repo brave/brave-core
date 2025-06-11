@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index 47da4c42a8233c67c1f49cce06b8fd5f7cd85d41..384696ccd3995e1e6ba2e4da936bb7feda82dbd2 100644
+index 277df66772826d41bfc96e4963500f898441608d..3df79a1e86e8ace48f7fe4d737d17c2d8e97f6e3 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
-@@ -65,6 +65,7 @@ class ThemeMap {
+@@ -66,6 +66,7 @@ class ThemeMap {
        storage.emplace_back(resource.path, resource.id);
      }
  #endif

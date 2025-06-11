@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index ce05627280edc2fabeb70424fbae86a896da63bd..1533b072cdad08431980a100242032ca2bd9c383 100644
+index 733191ad2ef0e3704ed10b8dce8098e2becb1cc6..487ce1969bf6124c7d58bf53f8dc363079814612 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -439,6 +439,7 @@ public class ToolbarPhone extends ToolbarLayout
@@ -18,7 +18,7 @@ index ce05627280edc2fabeb70424fbae86a896da63bd..1533b072cdad08431980a100242032ca
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (isInTabSwitcherMode()) return;
  
-@@ -1377,6 +1379,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1375,6 +1377,7 @@ public class ToolbarPhone extends ToolbarLayout
              canvas.restore();
          }
  
@@ -26,7 +26,7 @@ index ce05627280edc2fabeb70424fbae86a896da63bd..1533b072cdad08431980a100242032ca
          // Draw the tab stack button and associated text if necessary.
          if (getTabSwitcherButtonCoordinator() != null && mUrlExpansionFraction != 1f) {
              // Draw the tab stack button image.
-@@ -1684,6 +1687,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1682,6 +1685,7 @@ public class ToolbarPhone extends ToolbarLayout
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
          mIsHomeButtonEnabled = homeButtonEnabled;
@@ -34,7 +34,7 @@ index ce05627280edc2fabeb70424fbae86a896da63bd..1533b072cdad08431980a100242032ca
          updateButtonVisibility();
      }
  
-@@ -1998,6 +2002,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1996,6 +2000,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

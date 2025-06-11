@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl b/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
-index b254b745daa30bef72be4c5bb0d965cb839f1c34..4f1c1db6915689e0e68adde87cfcf8c7e7d06180 100644
+index 306eac70aedbbc21343035d44dc606cec605a9c6..9bc6f7cfcb13a0b43dfd85127db86bb6e4d06b5b 100644
 --- a/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
 +++ b/mojo/public/tools/bindings/generators/cpp_templates/interface_definition.tmpl
 @@ -92,9 +92,7 @@ constexpr base::Token {{class_name}}::Uuid_;
