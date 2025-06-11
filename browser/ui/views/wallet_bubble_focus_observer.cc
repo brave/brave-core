@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 
+#include "base/check.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_dialog_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/controls/webview/webview.h"

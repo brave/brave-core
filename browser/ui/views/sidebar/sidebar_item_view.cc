@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/views/event_utils.h"

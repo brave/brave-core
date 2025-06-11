@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/memory/raw_ref.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"

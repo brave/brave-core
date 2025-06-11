@@ -5,7 +5,9 @@
 
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc"
 
+#include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"

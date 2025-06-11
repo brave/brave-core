@@ -5,6 +5,8 @@
 
 #define CurrentChannelLogoResourceId CurrentChannelLogoResourceId_Unused
 #include "src/chrome/browser/ui/webui/current_channel_logo.cc"
+
+#include "base/notreached.h"
 #undef CurrentChannelLogoResourceId
 
 namespace webui {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 
+#include "base/check.h"
 #include "ui/views/view.h"
 
 // static

@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"

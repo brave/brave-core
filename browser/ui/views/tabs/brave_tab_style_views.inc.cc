@@ -6,6 +6,9 @@
 // This file must be included inside tab_style_views.cc as classes here are
 // depending on what's defined in anonymous namespace of tab_style_views.cc
 
+#include "base/check.h"
+#include "base/dcheck_is_on.h"
+#include "base/logging.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"

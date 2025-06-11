@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/check.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
 #include "ui/base/l10n/l10n_util.h"

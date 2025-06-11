@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"

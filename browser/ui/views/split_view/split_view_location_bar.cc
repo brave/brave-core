@@ -10,6 +10,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/logging.h"
 #include "chrome/browser/ui/permission_bubble/permission_prompt.h"
 #include "components/permissions/request_type.h"
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "chrome/browser/ui/browser.h"
 #include "ui/compositor/layer.h"

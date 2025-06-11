@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/autofill/autofill_context_menu_manager.h"
 
+#include "base/check_op.h"
+
 #define AppendItems AppendItems_ChromiumImpl
 #include "src/chrome/browser/ui/autofill/autofill_context_menu_manager.cc"
 #undef AppendItems

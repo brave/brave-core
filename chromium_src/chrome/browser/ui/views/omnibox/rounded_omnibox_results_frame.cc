@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/check_op.h"
 #include "ui/views/layout/layout_provider.h"
 
 // Set our radius value directly as kOmniboxExpandedRadius is mapped to

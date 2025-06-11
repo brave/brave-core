@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"

@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 BraveInfoBarContainerView::BraveInfoBarContainerView(

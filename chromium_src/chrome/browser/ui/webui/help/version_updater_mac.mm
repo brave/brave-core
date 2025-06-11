@@ -8,8 +8,11 @@
 #include <memory>
 
 #include "base/apple/foundation_util.h"
+#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/sys_string_conversions.h"

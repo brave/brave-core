@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
+
 TextRecognitionDialogTracker::TextRecognitionDialogTracker(
     content::WebContents* web_contents)
     : content::WebContentsUserData<TextRecognitionDialogTracker>(

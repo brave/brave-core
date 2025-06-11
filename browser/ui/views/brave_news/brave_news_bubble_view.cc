@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/check.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/strings/utf_string_conversions.h"

@@ -8,8 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
-#include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"

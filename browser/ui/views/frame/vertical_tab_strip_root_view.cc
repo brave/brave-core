@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
 
+#include "base/check.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/view_utils.h"

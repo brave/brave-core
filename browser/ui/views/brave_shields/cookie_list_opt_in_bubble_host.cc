@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"

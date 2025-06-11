@@ -6,9 +6,11 @@
 #include "brave/browser/ui/views/commands/default_accelerators_mac.h"
 
 #import <Cocoa/Cocoa.h>
+
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"

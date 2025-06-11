@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "components/permissions/permission_uma_util.h"
 

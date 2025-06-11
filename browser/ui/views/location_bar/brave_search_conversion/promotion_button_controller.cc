@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/components/brave_search_conversion/features.h"

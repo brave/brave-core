@@ -9,6 +9,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
