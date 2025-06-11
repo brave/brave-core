@@ -35,11 +35,8 @@ BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
 
 BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
-    WebContentsFocusedCallback inactive_contents_focused_callback,
-    WebContentsResizeCallback contents_resize_callback)
-    : MultiContentsView(browser_view,
-                        inactive_contents_focused_callback,
-                        contents_resize_callback) {
+    std::unique_ptr<Delegate> delegate)
+    : MultiContentsView(browser_view, std::move(delegate)) {
   // Replace upstream's resize area with ours.
   // To prevent making |resize_area_| dangling pointer,
   // reset it after setting null to |resize_area_|.
@@ -130,7 +127,7 @@ float BraveMultiContentsView::GetCornerRadius() const {
 
 void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
-  contents_resize_callback_.Run(0.5);
+  delegate_->ResizeWebContents(0.5);
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {
