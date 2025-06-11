@@ -25,7 +25,7 @@ class BraveAvatarToolbarButtonDelegate final
   ui::ImageModel GetAvatarIcon(
       int icon_size,
       SkColor icon_color,
-      const ui::ColorProvider* color_provider) const override;
+      const ui::ColorProvider& color_provider) const override;
   std::u16string GetAvatarTooltipText() const override;
 
  private:
