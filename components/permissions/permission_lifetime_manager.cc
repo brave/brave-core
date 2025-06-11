@@ -115,6 +115,9 @@ void PermissionLifetimeManager::PermissionDecided(
 
   const ContentSettingsType content_type =
       permission_request.GetContentSettingsType();
+  if (content_type == ContentSettingsType::DEFAULT) {
+    return;
+  }
 
   DVLOG(1) << "PermissionLifetimeManager::PermissionDecided"
            << "\ntype: "

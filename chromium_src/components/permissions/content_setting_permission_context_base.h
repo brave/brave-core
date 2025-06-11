@@ -1,49 +1,52 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
+#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_H_
+#define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_H_
 
 #include "base/functional/callback.h"
 
 namespace permissions {
-class PermissionContextBase;
-using PermissionContextBase_BraveImpl = PermissionContextBase;
+class ContentSettingPermissionContextBase;
+using ContentSettingPermissionContextBase_BraveImpl =
+    ContentSettingPermissionContextBase;
 class PermissionLifetimeManager;
 }  // namespace permissions
 
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
+#define ContentSettingPermissionContextBase \
+  ContentSettingPermissionContextBase_ChromiumImpl
 #define PermissionDecided virtual PermissionDecided
-#define BRAVE_PERMISSION_CONTEXT_BASE_H_              \
-  friend PermissionContextBase_BraveImpl;             \
-                                                      \
- protected:                                           \
-  base::RepeatingCallback<PermissionLifetimeManager*( \
-      content::BrowserContext*)>                      \
+#define BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_  \
+  friend ContentSettingPermissionContextBase_BraveImpl; \
+                                                        \
+ protected:                                             \
+  base::RepeatingCallback<PermissionLifetimeManager*(   \
+      content::BrowserContext*)>                        \
       permission_lifetime_manager_factory_;
 #define CleanUpRequest virtual CleanUpRequest
 
-#include "src/components/permissions/permission_context_base.h"  // IWYU pragma: export
+#include "src/components/permissions/content_setting_permission_context_base.h"  // IWYU pragma: export
 
-#undef BRAVE_PERMISSION_CONTEXT_BASE_H_
+#undef BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_
 #undef CleanUpRequest
 #undef PermissionDecided
-#undef PermissionContextBase
+#undef ContentSettingPermissionContextBase
 
 #include <map>
 
 namespace permissions {
 
-class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
+class ContentSettingPermissionContextBase
+    : public ContentSettingPermissionContextBase_ChromiumImpl {
  public:
-  PermissionContextBase(
+  ContentSettingPermissionContextBase(
       content::BrowserContext* browser_context,
       ContentSettingsType content_settings_type,
       network::mojom::PermissionsPolicyFeature permissions_policy_feature);
 
-  ~PermissionContextBase() override;
+  ~ContentSettingPermissionContextBase() override;
 
   void SetPermissionLifetimeManagerFactory(
       const base::RepeatingCallback<
@@ -101,4 +104,4 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
 
 }  // namespace permissions
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_H_

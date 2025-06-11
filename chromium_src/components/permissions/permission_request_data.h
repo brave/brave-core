@@ -6,15 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_H_
 
-#ifndef PermissionContextBase
+#ifndef ContentSettingPermissionContextBase
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
+#define ContentSettingPermissionContextBase \
+  ContentSettingPermissionContextBase_ChromiumImpl
 #endif
 
 #include "src/components/permissions/permission_request_data.h"  // IWYU pragma: export
 
 #ifdef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE
-#undef PermissionContextBase
+#undef ContentSettingPermissionContextBase
 #endif
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_H_
