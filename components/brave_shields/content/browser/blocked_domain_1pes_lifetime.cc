@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/content/browser/blocked_domain_1pes_lifetime.h"
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"

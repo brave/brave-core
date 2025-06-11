@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/api/vpn_response_parser.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"

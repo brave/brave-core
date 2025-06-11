@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"

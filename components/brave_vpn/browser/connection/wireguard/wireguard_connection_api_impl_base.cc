@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
 
+#include "base/check.h"
+#include "base/logging.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"

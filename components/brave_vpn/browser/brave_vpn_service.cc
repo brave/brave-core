@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"

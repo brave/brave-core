@@ -9,6 +9,8 @@
 
 #include <ras.h>
 
+#include "base/check.h"
+
 namespace brave_vpn {
 
 namespace ras {

@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "base/check.h"
+#include "base/logging.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/ui/views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"

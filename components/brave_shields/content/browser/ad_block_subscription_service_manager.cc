@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/base64url.h"
+#include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_value_converter.h"

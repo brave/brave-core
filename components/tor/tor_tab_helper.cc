@@ -5,6 +5,7 @@
 
 #include "brave/components/tor/tor_tab_helper.h"
 
+#include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
 #include "content/public/browser/navigation_handle.h"
 

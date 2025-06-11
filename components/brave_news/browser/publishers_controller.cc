@@ -17,6 +17,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/logging.h"
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
