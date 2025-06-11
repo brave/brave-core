@@ -35,10 +35,8 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
                                      base::OnceClosure callback) = 0;
   };
 
-  ContainersSettingsHandler(
-      mojo::PendingRemote<mojom::ContainersSettingsObserver> observer,
-      PrefService* prefs,
-      std::unique_ptr<Delegate> delegate);
+  ContainersSettingsHandler(PrefService* prefs,
+                            std::unique_ptr<Delegate> delegate);
   ~ContainersSettingsHandler() override;
 
   ContainersSettingsHandler(const ContainersSettingsHandler&) = delete;
@@ -47,6 +45,8 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
 
   // mojom::SettingsPageHandler:
   //
+  // Establishes a connection with the UI for browser -> UI notifications.
+  void BindUI(mojo::PendingRemote<mojom::ContainersSettingsUI> ui) override;
   // Retrieves the current list of containers from preferences.
   void GetContainers(GetContainersCallback callback) override;
   // Creates a new container or updates an existing one.
@@ -65,7 +65,7 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
                               RemoveContainerCallback callback);
 
   // Interface to communicate with the settings page in the renderer.
-  mojo::Remote<mojom::ContainersSettingsObserver> observer_;
+  mojo::Remote<mojom::ContainersSettingsUI> ui_;
 
   // Profile preferences service for container data persistence.
   raw_ptr<PrefService> prefs_ = nullptr;

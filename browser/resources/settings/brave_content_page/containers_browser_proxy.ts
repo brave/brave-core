@@ -4,34 +4,34 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  ContainersSettingsObserverCallbackRouter,
-  ContainersSettingsHandlerFactory,
+  ContainersSettingsUICallbackRouter,
   ContainersSettingsHandlerRemote,
+  ContainersSettingsHandler,
 } from '../containers.mojom-webui.js'
 
-let instance: ContainersSettingsPageBrowserProxy | null = null
+let instance: ContainersSettingsHandlerBrowserProxy | null = null
 
-export class ContainersSettingsPageBrowserProxy {
+export class ContainersSettingsHandlerBrowserProxy {
   handler: ContainersSettingsHandlerRemote
-  callbackRouter: ContainersSettingsObserverCallbackRouter
+  callbackRouter: ContainersSettingsUICallbackRouter
 
   private constructor(
     handler: ContainersSettingsHandlerRemote,
-    callbackRouter: ContainersSettingsObserverCallbackRouter,
+    callbackRouter: ContainersSettingsUICallbackRouter,
   ) {
     this.handler = handler
     this.callbackRouter = callbackRouter
   }
 
-  static getInstance(): ContainersSettingsPageBrowserProxy {
+  static getInstance(): ContainersSettingsHandlerBrowserProxy {
     if (!instance) {
-      const callbackRouter = new ContainersSettingsObserverCallbackRouter()
-      const handler = new ContainersSettingsHandlerRemote()
-      ContainersSettingsHandlerFactory.getRemote().createContainersSettingsHandler(
-        callbackRouter.$.bindNewPipeAndPassRemote(),
-        handler.$.bindNewPipeAndPassReceiver(),
+      const handler = ContainersSettingsHandler.getRemote()
+      const callbackRouter = new ContainersSettingsUICallbackRouter()
+      handler.bindUI(callbackRouter.$.bindNewPipeAndPassRemote())
+      instance = new ContainersSettingsHandlerBrowserProxy(
+        handler,
+        callbackRouter,
       )
-      instance = new ContainersSettingsPageBrowserProxy(handler, callbackRouter)
     }
     return instance
   }

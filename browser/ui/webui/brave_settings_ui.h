@@ -40,13 +40,7 @@ class BraveSettingsUIConfig
                            chrome::kChromeUISettingsHost) {}
 };
 
-class BraveSettingsUI
-    : public settings::SettingsUI
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    ,
-      public containers::mojom::ContainersSettingsHandlerFactory
-#endif
-{
+class BraveSettingsUI : public settings::SettingsUI {
  public:
   explicit BraveSettingsUI(content::WebUI* web_ui);
   BraveSettingsUI(const BraveSettingsUI&) = delete;
@@ -67,23 +61,12 @@ class BraveSettingsUI
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
-      mojo::PendingReceiver<containers::mojom::ContainersSettingsHandlerFactory>
-          pending_receiver);
-  // containers::mojom::ContainersSettingsHandlerFactory:
-  void CreateContainersSettingsHandler(
-      mojo::PendingRemote<containers::mojom::ContainersSettingsObserver>
-          observer,
       mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
-          settings) override;
+          pending_receiver);
 #endif
 
  private:
   std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  mojo::Receiver<containers::mojom::ContainersSettingsHandlerFactory>
-      containers_settings_handler_factory_receiver_{this};
-#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

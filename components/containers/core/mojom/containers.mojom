@@ -16,21 +16,14 @@ struct Container {
   string name;
 };
 
-// Factory interface to create handlers for the containers settings page. This
-// interface is implemented on the browser side and called by the settings UI to
-// establish communication channels for container management.
-interface ContainersSettingsHandlerFactory {
-  // Creates a new settings page handler and establishes bidirectional
-  // communication between the browser and renderer processes.
-  CreateContainersSettingsHandler(
-      pending_remote<ContainersSettingsObserver> observer,
-      pending_receiver<ContainersSettingsHandler> settings);
-};
-
 // Interface for settings UI -> browser communication. This interface allows the
 // settings UI to perform CRUD operations on containers, with all operations
 // being handled in the browser process.
 interface ContainersSettingsHandler {
+  // Establishes a connection with the UI for browser -> UI notifications. This
+  // creates a 1-to-1 connection between the handler and the settings UI.
+  BindUI(pending_remote<ContainersSettingsUI> ui);
+
   // Retrieves the current list of containers. Returns: Array of all configured
   // containers
   GetContainers() => (array<Container> containers);
@@ -47,7 +40,7 @@ interface ContainersSettingsHandler {
 // Interface for browser -> settings UI communication. This interface allows the
 // browser process to notify the settings UI about changes to the containers
 // list.
-interface ContainersSettingsObserver {
+interface ContainersSettingsUI {
   // Notifies the settings UI when the containers list is modified. This ensures
   // the UI stays in sync with the browser-side container state.
   // - `containers`: Updated list of all containers.
