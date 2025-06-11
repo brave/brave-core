@@ -18,6 +18,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/content/browser/full_screenshotter.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -72,9 +73,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   class PageContentFetcherDelegate {
    public:
     using FetchPageContentCallback =
-        base::OnceCallback<void(std::string page_content,
-                                bool is_video,
-                                std::string invalidation_token)>;
+        base::OnceCallback<void(PageContent content)>;
 
     virtual ~PageContentFetcherDelegate() = default;
 
@@ -157,9 +156,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
       base::expected<std::vector<std::vector<uint8_t>>, std::string>);
 
   void OnFetchPageContentComplete(GetPageContentCallback callback,
-                                  std::string content,
-                                  bool is_video,
-                                  std::string invalidation_token);
+                                  PageContent page_content);
 
   void OnExtractPrintPreviewContentComplete(
       GetPageContentCallback callback,

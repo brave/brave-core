@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -78,8 +79,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<std::vector<std::string_view>> associated_content_value) {
-    }
+        std::optional<PageContentses> associated_content_value) {}
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
 
@@ -305,19 +305,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
-  void PerformQuestionGeneration(std::string page_content,
-                                 bool is_video,
-                                 std::string invalidation_token);
+  void PerformQuestionGeneration(PageContentses page_contents);
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
-  void GeneratePageContent(GetPageContentCallback callback);
-  // This method is the same as |GeneratePageContent| but without DCHECKs.
-  // Its used in tests.
-  void GeneratePageContentInternal(GetPageContentCallback callback);
-  void OnGeneratePageContentComplete(GetPageContentCallback callback,
-                                     std::string previous_content);
+  void GeneratePageContent(GetAllContentCallback callback);
+  // Same as above but without DCHECKS for testing.
+  void GeneratePageContentInternal(GetAllContentCallback callback);
+
+  void OnGeneratePageContentComplete(GetAllContentCallback callback,
+                                     bool content_changed);
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);

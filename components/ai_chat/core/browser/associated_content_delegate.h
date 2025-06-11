@@ -18,14 +18,36 @@
 
 namespace ai_chat {
 
+struct PageContent {
+  // Note: |content| is not sanitized for use in the backend. Run it through
+  // |EngineConsumer::SanitizeInput| before sending it.
+  std::string content = "";
+  bool is_video = false;
+  std::string invalidation_token = "";
+
+  PageContent();
+  PageContent(std::string content,
+              bool is_video,
+              std::string invalidation_token = "");
+
+  PageContent(const PageContent&);
+  PageContent(PageContent&&);
+  PageContent& operator=(const PageContent&);
+  PageContent& operator=(PageContent&&);
+
+  bool operator==(const PageContent& other) const {
+    return content == other.content && is_video == other.is_video &&
+           invalidation_token == other.invalidation_token;
+  }
+};
+
 // |invalidation_token| is an optional parameter that will be passed back on
 // the next call to |GetPageContent| so that the implementer may determine if
 // the page content is static or if it needs to be fetched again. Most page
 // content should be fetched again, but some pages are known to be static
 // during their lifetime and may have expensive content fetching, e.g. videos
 // with transcripts fetched over the network.
-using GetPageContentCallback = base::OnceCallback<
-    void(std::string content, bool is_video, std::string invalidation_token)>;
+using GetPageContentCallback = base::OnceCallback<void(PageContent)>;
 
 // TODO(petemill): consider making SearchQuerySummary generic (StagedEntries)
 // or a list of ConversationTurn objects.
@@ -61,8 +83,8 @@ class AssociatedContentDelegate {
   virtual void GetContent(GetPageContentCallback callback) = 0;
   // Get current cache of content, if available. Do not perform any fresh
   // fetch for the content.
-  virtual std::string_view GetCachedTextContent() const = 0;
-  virtual bool GetCachedIsVideo() const = 0;
+  virtual const PageContent& GetCachedPageContent() const = 0;
+
   // Get summarizer-key meta tag content from Brave Search SERP if exists and
   // use it to fetch search query and summary from Brave search chatllm
   // endpoint.

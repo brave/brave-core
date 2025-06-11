@@ -71,6 +71,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/content/browser:browser",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",

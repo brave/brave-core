@@ -24,9 +24,8 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -47,9 +46,9 @@ using mojom::ConversationTurn;
 
 base::Value::List BuildMessages(
     const mojom::CustomModelOptions& model_options,
-    const std::string& page_content,
+    base::Value::List page_content_messages,
     const std::optional<std::string>& selected_text,
-    const bool& is_video,
+    int max_associated_content_length,
     const EngineConsumer::ConversationHistory& conversation_history) {
   base::Value::List messages;
 
@@ -79,16 +78,7 @@ base::Value::List BuildMessages(
   }
 
   // Append page content, if exists
-  if (!page_content.empty()) {
-    const std::string prompt_segment_article = base::ReplaceStringPlaceholders(
-        l10n_util::GetStringUTF8(
-            is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
-                     : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
-        {page_content}, nullptr);
-
-    base::Value::Dict message;
-    message.Set("role", "user");
-    message.Set("content", prompt_segment_article);
+  for (auto& message : page_content_messages) {
     messages.Append(std::move(message));
   }
 
@@ -215,24 +205,22 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContentses page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  const std::string& truncated_page_content =
-      page_content.substr(0, max_associated_content_length_);
-  std::string content_segment = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(is_video
-                                   ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
-                                   : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
-      {truncated_page_content}, nullptr);
-
   base::Value::List messages;
+
+  for (auto& message :
+       BuildPageContentMessages(page_contents, max_associated_content_length_,
+                                IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT,
+                                IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT)) {
+    messages.Append(std::move(message));
+  }
 
   {
     base::Value::Dict message;
     message.Set("role", "user");
-    message.Set("content", base::StrCat({content_segment, kQuestionPrompt}));
+    message.Set("content", kQuestionPrompt);
     messages.Append(std::move(message));
   }
 
@@ -292,8 +280,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContentses page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -312,13 +299,14 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
         last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
-  const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_associated_content_length_ - selected_text->size()
-                       : max_associated_content_length_);
-
-  base::Value::List messages =
-      BuildMessages(model_options_, truncated_page_content, selected_text,
-                    is_video, conversation_history);
+  auto page_content_messages = BuildPageContentMessages(
+      page_contents,
+      max_associated_content_length_ - selected_text.value_or("").size(),
+      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
+  base::Value::List messages = BuildMessages(
+      model_options_, std::move(page_content_messages), selected_text,
+      max_associated_content_length_, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
@@ -336,6 +324,37 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
                                            const std::string& topic,
                                            GetFocusTabsCallback callback) {
   std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
+base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
+    const PageContentses& page_contents,
+    int max_associated_content_length,
+    int video_message_id,
+    int page_message_id) {
+  base::Value::List messages;
+
+  for (const auto& page_content : page_contents) {
+    std::string truncated_page_content =
+        page_content.get().content.substr(0, max_associated_content_length);
+    SanitizeInput(truncated_page_content);
+    max_associated_content_length -= truncated_page_content.size();
+
+    std::string prompt = base::ReplaceStringPlaceholders(
+        l10n_util::GetStringUTF8(page_content.get().is_video ? video_message_id
+                                                             : page_message_id),
+        {std::move(truncated_page_content)}, nullptr);
+
+    base::Value::Dict message;
+    message.Set("role", "user");
+    message.Set("content", std::move(prompt));
+    messages.Append(std::move(message));
+
+    if (max_associated_content_length <= 0) {
+      break;
+    }
+  }
+
+  return messages;
 }
 
 }  // namespace ai_chat

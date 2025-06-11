@@ -13,6 +13,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -242,13 +243,14 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>(kSuppliedText, false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(
+          PageContent(kSuppliedText, false, "")));
   if (print_preview_extractor_) {
     // Fallback won't initiate if we already have content
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
   }
   base::MockCallback<GetPageContentCallback> callback;
-  EXPECT_CALL(callback, Run(kExpectedText, false, ""));
+  EXPECT_CALL(callback, Run(PageContent(kExpectedText, false, "")));
   GetPageContent(callback.Get(), "");
 }
 
@@ -257,7 +259,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(PageContent("", false, "")));
   if (print_preview_extractor_) {
     // Fallback iniatiated on empty string then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
@@ -265,7 +267,8 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
   }
   base::MockCallback<GetPageContentCallback> callback;
   EXPECT_CALL(callback,
-              Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
+              Run(PageContent(print_preview_extractor_ ? kExpectedText : "",
+                              false, "")));
   GetPageContent(callback.Get(), "");
 }
 
@@ -274,8 +277,8 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(
-          base::test::RunOnceCallback<1>("       \n     \n  ", false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(
+          PageContent("       \n     \n  ", false, "")));
   if (print_preview_extractor_) {
     // Fallback iniatiated on white spaces and line breaks then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
@@ -283,7 +286,8 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
   }
   base::MockCallback<GetPageContentCallback> callback;
   EXPECT_CALL(callback,
-              Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
+              Run(PageContent(print_preview_extractor_ ? kExpectedText : "",
+                              false, "")));
   GetPageContent(callback.Get(), "");
 }
 
@@ -292,13 +296,13 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreviewFailed) {
   NavigateTo(GURL("https://www.brave.com"));
   // Fallback failed will not retrigger another fallback.
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(PageContent("", false, "")));
   if (print_preview_extractor_) {
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
   }
   base::MockCallback<GetPageContentCallback> callback;
-  EXPECT_CALL(callback, Run("", false, ""));
+  EXPECT_CALL(callback, Run(PageContent("", false, "")));
   GetPageContent(callback.Get(), "");
 }
 
@@ -306,13 +310,13 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>("", true, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(PageContent("", true, "")));
   if (print_preview_extractor_) {
     // Fallback won't initiate for video content.
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
   }
   base::MockCallback<GetPageContentCallback> callback;
-  EXPECT_CALL(callback, Run("", true, ""));
+  EXPECT_CALL(callback, Run(PageContent("", true, "")));
   GetPageContent(callback.Get(), "");
 }
 
@@ -329,9 +333,10 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
           .WillOnce(base::test::RunOnceCallback<0>(base::ok(kExpectedText)));
     } else {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-          .WillOnce(base::test::RunOnceCallback<1>(kExpectedText, false, ""));
+          .WillOnce(base::test::RunOnceCallback<1>(
+              PageContent(kExpectedText, false, "")));
     }
-    EXPECT_CALL(callback, Run(kExpectedText, false, ""));
+    EXPECT_CALL(callback, Run(PageContent(kExpectedText, false, "")));
     GetPageContent(callback.Get(), "");
   }
 }
@@ -347,10 +352,10 @@ TEST_P(AIChatTabHelperUnitTest,
         .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+        .WillOnce(base::test::RunOnceCallback<1>(PageContent()));
   }
   base::MockCallback<GetPageContentCallback> callback;
-  EXPECT_CALL(callback, Run("", false, ""));
+  EXPECT_CALL(callback, Run(PageContent()));
   GetPageContent(callback.Get(), "");
 }
 
@@ -372,7 +377,7 @@ TEST_P(AIChatTabHelperUnitTest,
 
     // Simulate page load should trigger check again and, even with
     // empty content, callback should run.
-    EXPECT_CALL(callback, Run("", false, ""));
+    EXPECT_CALL(callback, Run(PageContent("", false, "")));
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
@@ -386,13 +391,13 @@ TEST_P(AIChatTabHelperUnitTest,
     // re-try will wait for page load.
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillRepeatedly(
-            base::test::RunOnceCallbackRepeatedly<1>("", false, ""));
+            base::test::RunOnceCallbackRepeatedly<1>(PageContent()));
     GetPageContent(callback.Get(), "");
     testing::Mock::VerifyAndClearExpectations(&callback);
 
     // Simulate page load should trigger check again and, even with
     // empty content, callback should run.
-    EXPECT_CALL(callback, Run("", false, ""));
+    EXPECT_CALL(callback, Run(PageContent("", false, "")));
     SimulateLoadFinished();
 
     testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
@@ -408,7 +413,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_RetryAfterLoad) {
   // FetchPageContent will not wait for page load. Let's test that the
   // re-try will wait for page load.
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(PageContent("", false, "")));
   if (is_print_preview_supported_) {
     // Doesn't initialy ask for print preview extraction
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
@@ -427,15 +432,16 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_RetryAfterLoad) {
   if (is_print_preview_supported_) {
     // First it will try to see if after page load there is real content
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+        .WillOnce(base::test::RunOnceCallback<1>(PageContent("", false, "")));
     // And if it has no content, it will finally try print preview extraction
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_content)));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_content, false, ""));
+        .WillOnce(base::test::RunOnceCallback<1>(
+            PageContent(expected_content, false, "")));
   }
-  EXPECT_CALL(callback, Run(expected_content, false, ""));
+  EXPECT_CALL(callback, Run(PageContent(expected_content, false, "")));
   SimulateLoadFinished();
 
   testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
@@ -458,7 +464,7 @@ TEST_P(AIChatTabHelperUnitTest,
     EXPECT_CALL(callback, Run).Times(0);
     if (!is_print_preview_supported_) {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-          .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+          .WillOnce(base::test::RunOnceCallback<1>(PageContent("", false, "")));
     }
     GetPageContent(callback.Get(), "");
     testing::Mock::VerifyAndClearExpectations(&callback);
@@ -469,7 +475,7 @@ TEST_P(AIChatTabHelperUnitTest,
     if (is_print_preview_supported_) {
       EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
     }
-    EXPECT_CALL(callback, Run("", false, ""));
+    EXPECT_CALL(callback, Run(PageContent("", false, "")));
     NavigateTo(initial_url.Resolve("/2"), /*keep_loading=*/true,
                is_same_document);
     testing::Mock::VerifyAndClearExpectations(&callback);
@@ -489,7 +495,7 @@ TEST_P(AIChatTabHelperUnitTest, OnAllPDFPagesTextReceived) {
       {1, "Page 2 content"},
   };
 
-  base::test::TestFuture<std::string, bool, std::string> future;
+  base::test::TestFuture<PageContent> future;
   OnAllPDFPagesTextReceived(future.GetCallback(), page_texts);
 
   auto [content, is_video, invalidation_token] = future.Get();
@@ -499,7 +505,7 @@ TEST_P(AIChatTabHelperUnitTest, OnAllPDFPagesTextReceived) {
 }
 
 TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_FailedStatus) {
-  base::test::TestFuture<std::string, bool, std::string> future;
+  base::test::TestFuture<PageContent> future;
 
   OnGetPDFPageCount(future.GetCallback(),
                     pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed,
@@ -514,7 +520,7 @@ TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_FailedStatus) {
 TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
   ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
 
-  base::test::TestFuture<std::string, bool, std::string> future;
+  base::test::TestFuture<PageContent> future;
 
   OnGetPDFPageCount(future.GetCallback(),
                     pdf::mojom::PdfListener::GetPdfBytesStatus::kSuccess,
@@ -537,9 +543,10 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_NoFallbackWhenNotPDF) {
       ->SetMainFrameMimeType("text/html");
 
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>("HTML content", false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(
+          PageContent("HTML content", false, "")));
 
-  base::test::TestFuture<std::string, bool, std::string> future;
+  base::test::TestFuture<PageContent> future;
   GetPageContent(future.GetCallback(), "");
 
   auto [content, is_video, invalidation_token] = future.Get();
@@ -561,7 +568,7 @@ TEST_P(AIChatTabHelperUnitTest,
 
   const std::string expected_text =
       is_print_preview_supported_ ? "PDF content from print preview" : "";
-  base::test::TestFuture<std::string, bool, std::string> future;
+  base::test::TestFuture<PageContent> future;
 
   if (is_print_preview_supported_) {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
@@ -569,7 +576,8 @@ TEST_P(AIChatTabHelperUnitTest,
         .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_text)));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
+        .WillOnce(base::test::RunOnceCallback<1>(
+            PageContent(expected_text, false, "")));
   }
 
   GetPageContent(future.GetCallback(), "");

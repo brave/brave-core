@@ -20,6 +20,7 @@
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -103,7 +104,7 @@ void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   GetPageContent(
       base::BindOnce(&AssociatedContentDriver::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_),
-      content_invalidation_token_);
+      cached_page_content_.invalidation_token);
 }
 
 void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
@@ -112,34 +113,30 @@ void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
   if (navigation_id != current_navigation_id_) {
     return;
   }
-  std::move(callback).Run(cached_text_content_, is_video_,
-                          content_invalidation_token_);
+  std::move(callback).Run(cached_page_content_);
 }
 
 void AssociatedContentDriver::OnGeneratePageContentComplete(
     int64_t navigation_id,
-    std::string contents_text,
-    bool is_video,
-    std::string invalidation_token) {
+    PageContent content) {
   DVLOG(1) << "OnGeneratePageContentComplete";
-  DVLOG(4) << "Contents(is_video=" << is_video
-           << ", invalidation_token=" << invalidation_token
-           << "): " << contents_text;
+  DVLOG(4) << "Contents(is_video=" << content.is_video
+           << ", invalidation_token=" << content.invalidation_token
+           << "): " << content.content;
   if (navigation_id != current_navigation_id_) {
     return;
   }
 
   // If invalidation token matches existing token, then
   // content was not re-fetched and we can use our existing cache.
-  if (invalidation_token.empty() ||
-      (invalidation_token != content_invalidation_token_)) {
-    is_video_ = is_video;
+  if (content.invalidation_token.empty() ||
+      (content.invalidation_token != cached_page_content_.invalidation_token)) {
     // Cache page content on instance so we don't always have to re-fetch
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
-    cached_text_content_ = contents_text;
-    content_invalidation_token_ = invalidation_token;
-    if (contents_text.empty()) {
+    cached_page_content_ = std::move(content);
+
+    if (cached_page_content_.content.empty()) {
       DVLOG(1) << __func__ << ": No data";
     }
   }
@@ -148,12 +145,8 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   on_page_text_fetch_complete_ = nullptr;
 }
 
-std::string_view AssociatedContentDriver::GetCachedTextContent() const {
-  return cached_text_content_;
-}
-
-bool AssociatedContentDriver::GetCachedIsVideo() const {
-  return is_video_;
+const PageContent& AssociatedContentDriver::GetCachedPageContent() const {
+  return cached_page_content_;
 }
 
 void AssociatedContentDriver::GetStagedEntriesFromContent(
@@ -246,9 +239,7 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   // Reset state for next navigated Page
   current_navigation_id_ = navigation_id;
-  cached_text_content_.clear();
-  content_invalidation_token_.clear();
-  is_video_ = false;
+  cached_page_content_ = PageContent();
   api_request_helper_.reset();
 
   AssociatedContentDelegate::OnNewPage(navigation_id);

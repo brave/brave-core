@@ -27,14 +27,14 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void GetContent(GetPageContentCallback callback) override;
 
-  std::string_view GetCachedTextContent() const override {
-    return cached_text_content_;
+  const PageContent& GetCachedPageContent() const override {
+    return cached_page_content_;
   }
 
   MOCK_METHOD(GURL, GetURL, (), (const, override));
   MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
 
+  MOCK_METHOD(bool, GetIsVideo, (), (const));
   MOCK_METHOD(std::string, GetTextContent, (), (const));
 
   MOCK_METHOD(void,
@@ -49,7 +49,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
  private:
   int content_id_ = 0;
-  std::string cached_text_content_;
+  PageContent cached_page_content_;
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
 

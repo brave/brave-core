@@ -29,13 +29,13 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -189,7 +189,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   // ConversationEvent to JSON. It's convenient to test both here but more
   // exhaustive tests of  ConversationAPIClient are performed in its own
   // unit test suite.
-  std::string page_content(kTestingMaxAssociatedContentLength + 1, 'a');
+  PageContent page_content(
+      std::string(kTestingMaxAssociatedContentLength + 1, 'a'), false);
   std::string expected_page_content(kTestingMaxAssociatedContentLength, 'a');
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
@@ -235,7 +236,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, page_content, history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -243,6 +244,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
+  PageContent page_content("This is a page about The Mandalorian.", false);
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
@@ -283,8 +285,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", history, "", {},
-      std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -293,6 +294,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_HistoryWithSelectedText) {
+  PageContent page_content("This is my page. I have spoken.", false);
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
   EngineConsumer::ConversationHistory history;
@@ -346,8 +348,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      false, "This is my page. I have spoken.", history, "", {}, std::nullopt,
-      base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -464,7 +465,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -579,7 +580,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -758,7 +759,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -824,7 +825,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -834,6 +835,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   // Tests events building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
+  PageContent page_content("I have spoken.", false);
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
@@ -908,7 +910,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      false, "I have spoken.", history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -946,9 +948,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   turn->text =
       "Summarize the content of this page.";  // This text should be ignored
   history.push_back(std::move(turn));
+  PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
-      false, "This is a sample page content.", history, "", {}, std::nullopt,
-      base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1011,8 +1013,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(false, "", history, "", {}, std::nullopt,
-                                     base::DoNothing(), future.GetCallback());
+  engine_->GenerateAssistantResponse(PageContentses(), history, "", {},
+                                     std::nullopt, base::DoNothing(),
+                                     future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -1707,12 +1710,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
-  std::string page_content = "Sample page content.";
-  bool is_video = false;
+  PageContent page_content("Sample page content.", false);
+  PageContent video_content("Sample video content.", true);
+  PageContentses page_contents{page_content, video_content};
+
   std::string selected_language = "en-US";
 
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "Sample page content."},
+    {"role": "user", "type": "videoTranscript", "content": "Sample video content."},
     {"role": "user", "type": "requestSuggestedActions", "content": ""}
   ])";
 
@@ -1728,7 +1734,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation.size(), 3u);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -1739,7 +1745,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_TRUE(result.has_value());
@@ -1766,7 +1772,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1794,7 +1800,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1819,7 +1825,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1847,7 +1853,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1891,9 +1897,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
+  PageContent page_content("This is a test page content.", false);
+  PageContentses page_contents;
+  page_contents.push_back(page_content);
+
   engine_->GenerateAssistantResponse(
-      false, "This is a test page content.", std::move(history), "", {},
-      std::nullopt, base::DoNothing(),
+      std::move(page_contents), std::move(history), "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1913,7 +1923,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      false, "", std::move(history), "", {}, std::nullopt, base::DoNothing(),
+      {}, std::move(history), "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1969,8 +1979,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      false, "", std::move(history), "", {mock_tool->GetWeakPtr()},
-      std::nullopt, base::DoNothing(),
+      {}, std::move(history), "", {mock_tool->GetWeakPtr()}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();

@@ -47,16 +47,14 @@ class AssociatedArchiveContent : public AssociatedContentDelegate {
   std::u16string GetTitle() const override;
 
   void GetContent(GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() const override;
-  bool GetCachedIsVideo() const override;
+  const PageContent& GetCachedPageContent() const override;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr();
 
  private:
   GURL url_;
-  std::string text_content_;
   std::u16string title_;
-  bool is_video_;
+  PageContent cached_page_content_;
 };
 
 }  // namespace ai_chat

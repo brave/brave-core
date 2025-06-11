@@ -169,14 +169,14 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 
 void AIChatTabHelper::OnFetchPageContentComplete(
     GetPageContentCallback callback,
-    std::string content,
-    bool is_video,
-    std::string invalidation_token) {
+    PageContent page_content) {
+  auto& content = page_content.content;
+
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
   // Once page load is complete, try again. If it's still empty, fallback
   // to print preview extraction.
-  if (content.empty() && !is_video) {
+  if (content.empty() && !page_content.is_video) {
     // When page isn't loaded yet, wait until DidFinishLoad
     DVLOG(1) << __func__ << " empty content, will attempt fallback";
     if (MaybePrintPreviewExtract(callback)) {
@@ -189,14 +189,13 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     // When print preview extraction isn't available, return empty content
     DVLOG(1) << "no fallback available";
   }
-  std::move(callback).Run(std::move(content), is_video,
-                          std::move(invalidation_token));
+  std::move(callback).Run(std::move(page_content));
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
     GetPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run({});
   }
   pending_get_page_content_callback_ = std::move(callback);
 }
@@ -225,10 +224,10 @@ void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
     base::expected<std::string, std::string> result) {
   // Invalidation token not applicable for print preview OCR
   if (result.has_value()) {
-    std::move(callback).Run(std::move(result.value()), false, "");
+    std::move(callback).Run(PageContent(result.value(), false));
   } else {
     VLOG(1) << result.error();
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run({});
   }
 }
 
@@ -240,7 +239,7 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run({});
   }
 }
 
@@ -264,7 +263,7 @@ void AIChatTabHelper::OnPDFDocumentLoadComplete(
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (!pdf_helper) {
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run(PageContent("", false, ""));
     return;
   }
 
@@ -284,7 +283,7 @@ void AIChatTabHelper::OnGetPDFPageCount(
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
       !pdf_helper) {
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run(PageContent("", false, ""));
     return;
   }
 
@@ -328,7 +327,7 @@ void AIChatTabHelper::OnAllPDFPagesTextReceived(
     }
   }
 
-  std::move(callback).Run(std::move(content), false, "");
+  std::move(callback).Run(PageContent(std::move(content), false, ""));
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 

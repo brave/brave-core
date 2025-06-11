@@ -124,9 +124,8 @@ class AIChatBrowserTest : public InProcessBrowserTest {
         browser()->tab_strip_model()->GetActiveWebContents());
     page_content_fetcher_->FetchPageContent(
         "", base::BindLambdaForTesting(
-                [&run_loop, &content](std::string page_content, bool is_video,
-                                      std::string invalidation_token) {
-                  content = std::move(page_content);
+                [&run_loop, &content](PageContent page_content) {
+                  content = std::move(page_content.content);
                   run_loop.Quit();
                 }));
     run_loop.Run();
