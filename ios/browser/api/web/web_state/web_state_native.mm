@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/web/web_state/web_state_native.h"
 
+#include "base/check.h"
 #include "ios/chrome/browser/sessions/model/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"

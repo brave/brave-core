@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/unicode/NSString+Unicode.h"
 #include "third_party/icu/source/common/unicode/ubidi.h"

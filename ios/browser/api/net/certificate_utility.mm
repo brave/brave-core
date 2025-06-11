@@ -17,7 +17,6 @@
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
-#import "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "net/base/net_errors.h"
 #include "net/base/network_anonymization_key.h"

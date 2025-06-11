@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"

@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #import "base/values.h"
 #import "brave/ios/browser/api/web/web_state/web_state+private.h"
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"

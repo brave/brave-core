@@ -9,6 +9,7 @@
 #include <set>
 #include <string_view>
 
+#include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
 

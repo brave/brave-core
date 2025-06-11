@@ -7,7 +7,6 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "build/build_config.h"

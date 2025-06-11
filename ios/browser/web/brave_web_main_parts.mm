@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"

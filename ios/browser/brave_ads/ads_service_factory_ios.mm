@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
