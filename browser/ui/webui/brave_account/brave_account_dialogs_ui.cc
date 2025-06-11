@@ -70,5 +70,5 @@ BraveAccountDialogsUIConfig::BraveAccountDialogsUIConfig()
 
 bool BraveAccountDialogsUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return false;
+  return true;
 }
