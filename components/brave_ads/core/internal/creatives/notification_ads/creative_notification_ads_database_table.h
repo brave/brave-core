@@ -23,7 +23,7 @@ namespace brave_ads::database::table {
 using GetCreativeNotificationAdsCallback =
     base::OnceCallback<void(bool success,
                             const SegmentList& segments,
-                            const CreativeNotificationAdList& creative_ads)>;
+                            CreativeNotificationAdList creative_ads)>;
 
 class CreativeNotificationAds final : public TableInterface {
  public:

@@ -66,7 +66,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
 
   void GetEligibleAds(UserModelInfo user_model);
   void GetEligibleAdsCallback(uint64_t trace_id,
-                              const CreativeNotificationAdList& creative_ads);
+                              CreativeNotificationAdList creative_ads);
 
   void UpdateMaximumAdsPerHour();
 
