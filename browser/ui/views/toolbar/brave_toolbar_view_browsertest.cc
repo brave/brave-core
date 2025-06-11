@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 
   // Load in full page is default.
   EXPECT_TRUE(prefs->GetBoolean(
-      ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton));
+      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage));
 
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
@@ -248,7 +248,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
 
   // Check loaded in sidebar.
-  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton,
+  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
                     false);
   EXPECT_FALSE(
       menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));

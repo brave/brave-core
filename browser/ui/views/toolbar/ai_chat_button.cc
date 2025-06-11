@@ -50,7 +50,7 @@ AIChatButton::~AIChatButton() = default;
 void AIChatButton::ButtonPressed() {
   auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
   if (prefs->GetBoolean(
-          ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton)) {
+          ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage)) {
     brave::ShowFullpageChat(base::to_address(browser_));
   } else {
     chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
@@ -75,6 +75,7 @@ std::unique_ptr<ui::SimpleMenuModel> AIChatButton::CreateMenuModel() {
                                   IDS_OPEN_BRAVE_AI_CHAT_FULL_PAGE);
   model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInSidebar,
                                   IDS_OPEN_BRAVE_AI_CHAT_SIDE_PANEL);
+  model->AddSeparator(ui::NORMAL_SEPARATOR);
   model->AddItemWithStringId(ContextMenuCommand::kAboutLeoAI,
                              IDS_ABOUT_BRAVE_AI_CHAT);
   model->AddItemWithStringId(ContextMenuCommand::kManageLeoAI,
@@ -87,12 +88,12 @@ std::unique_ptr<ui::SimpleMenuModel> AIChatButton::CreateMenuModel() {
 void AIChatButton::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
     case ContextMenuCommand::kOpenInFullPage:
-      prefs_->SetBoolean(
-          ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, true);
+      prefs_->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
+                         true);
       break;
     case ContextMenuCommand::kOpenInSidebar:
-      prefs_->SetBoolean(
-          ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton, false);
+      prefs_->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
+                         false);
       break;
     case ContextMenuCommand::kAboutLeoAI:
       ShowSingletonTab(base::to_address(browser_), GURL(kAIChatAboutUrl));
@@ -110,7 +111,7 @@ void AIChatButton::ExecuteCommand(int command_id, int event_flags) {
 
 bool AIChatButton::IsCommandIdChecked(int command_id) const {
   const bool open_in_full_page = prefs_->GetBoolean(
-      ai_chat::prefs::kBraveAIChatOpenInFullPageFromToolbarButton);
+      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage);
   if (command_id == ContextMenuCommand::kOpenInFullPage) {
     return open_in_full_page;
   }
