@@ -14,12 +14,9 @@
 namespace containers {
 
 ContainersSettingsHandler::ContainersSettingsHandler(
-    mojo::PendingRemote<mojom::ContainersSettingsObserver> observer,
     PrefService* prefs,
     std::unique_ptr<Delegate> delegate)
-    : observer_(std::move(observer)),
-      prefs_(prefs),
-      delegate_(std::move(delegate)) {
+    : prefs_(prefs), delegate_(std::move(delegate)) {
   DCHECK(prefs_);
   DCHECK(delegate_);
   pref_change_registrar_.Init(prefs);
@@ -31,6 +28,12 @@ ContainersSettingsHandler::ContainersSettingsHandler(
 }
 
 ContainersSettingsHandler::~ContainersSettingsHandler() {}
+
+void ContainersSettingsHandler::BindUI(
+    mojo::PendingRemote<mojom::ContainersSettingsUI> ui) {
+  DCHECK(!ui_);
+  ui_.Bind(std::move(ui));
+}
 
 void ContainersSettingsHandler::GetContainers(GetContainersCallback callback) {
   std::move(callback).Run(GetContainersFromPrefs(*prefs_));
@@ -82,8 +85,10 @@ void ContainersSettingsHandler::OnContainerDataRemoved(
 }
 
 void ContainersSettingsHandler::OnContainersChanged() {
-  // Notify observer about container list changes (from this window or others).
-  observer_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+  // Notify UI about container list changes (from this window or others).
+  if (ui_) {
+    ui_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+  }
 }
 
 }  // namespace containers

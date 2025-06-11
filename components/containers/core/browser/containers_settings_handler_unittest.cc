@@ -22,13 +22,12 @@ namespace containers {
 
 namespace {
 
-class MockContainersSettingsObserver
-    : public mojom::ContainersSettingsObserver {
+class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
  public:
   MockContainersSettingsObserver() = default;
   ~MockContainersSettingsObserver() override = default;
 
-  mojo::PendingRemote<mojom::ContainersSettingsObserver> BindAndGetRemote() {
+  mojo::PendingRemote<mojom::ContainersSettingsUI> BindAndGetRemote() {
     return receiver_.BindNewPipeAndPassRemote();
   }
 
@@ -52,7 +51,7 @@ class MockContainersSettingsObserver
   int containers_changed_count() const { return containers_changed_count_; }
 
  private:
-  mojo::Receiver<mojom::ContainersSettingsObserver> receiver_{this};
+  mojo::Receiver<mojom::ContainersSettingsUI> receiver_{this};
   std::vector<mojom::ContainerPtr> last_containers_;
   int containers_changed_count_ = 0;
 };
@@ -83,8 +82,9 @@ class ContainersSettingsHandlerTest : public testing::Test {
     auto delegate = std::make_unique<MockDelegate>();
     mock_delegate_ = delegate.get();
 
-    handler_ = std::make_unique<ContainersSettingsHandler>(
-        mock_observer_.BindAndGetRemote(), &prefs_, std::move(delegate));
+    handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_,
+                                                           std::move(delegate));
+    handler_->BindUI(mock_observer_.BindAndGetRemote());
   }
 
   void TearDown() override { mock_delegate_ = nullptr; }

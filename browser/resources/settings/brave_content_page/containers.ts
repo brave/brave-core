@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
-import { ContainersSettingsPageBrowserProxy } from './containers_browser_proxy.js'
+import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import { Container } from '../containers.mojom-webui.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
@@ -46,7 +46,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  private browserProxy = ContainersSettingsPageBrowserProxy.getInstance()
+  private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
   accessor containersList_: Container[] = []
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
