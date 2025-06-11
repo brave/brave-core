@@ -847,7 +847,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mNtpAdapter.setImageCreditAlpha(1f);
         mNtpAdapter.setDisplayNewsFeed(mIsDisplayNewsFeed);
 
-        if (isOptin && mBraveNewsController != null && BraveNewsUtils.getLocale() == null) {
+        if (isOptin && mBraveNewsController != null && BraveNewsUtils.getLocale().isEmpty()) {
             BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null, null);
         }
     }
