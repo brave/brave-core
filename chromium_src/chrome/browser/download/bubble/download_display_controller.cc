@@ -7,8 +7,10 @@
 
 #define DownloadDisplayController DownloadDisplayControllerChromium
 
+#include "base/check.h"
 #include "chrome/browser/download/bubble/download_bubble_display_info.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
+
 #include "src/chrome/browser/download/bubble/download_display_controller.cc"
 
 #undef DownloadDisplayController

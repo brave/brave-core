@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/installer/setup/brand_behaviors.h"
-
 #include <string_view>
 
+#include "base/check_op.h"
+#include "base/dcheck_is_on.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "chrome/installer/setup/brand_behaviors.h"
 
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include "src/chrome/installer/setup/google_chrome_behaviors.cc"

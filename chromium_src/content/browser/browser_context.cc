@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "content/public/browser/browser_context.h"
+
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "base/memory/ref_counted.h"
 #include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
@@ -13,7 +16,6 @@
 #include "content/browser/renderer_host/navigation_controller_impl.h"
 #include "content/browser/renderer_host/render_view_host_delegate.h"
 #include "content/browser/site_instance_impl.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"

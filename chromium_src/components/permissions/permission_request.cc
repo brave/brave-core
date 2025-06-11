@@ -8,8 +8,10 @@
 #include <optional>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/notreached.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"

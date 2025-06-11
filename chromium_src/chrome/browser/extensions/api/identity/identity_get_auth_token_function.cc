@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/extensions/api/identity/identity_get_auth_token_function.h"
+
 #include <optional>
 
-#include "chrome/browser/extensions/api/identity/identity_get_auth_token_function.h"
+#include "base/check.h"
 #include "chrome/browser/extensions/api/identity/identity_token_cache.h"
 #include "google_apis/google_api_keys.h"
 

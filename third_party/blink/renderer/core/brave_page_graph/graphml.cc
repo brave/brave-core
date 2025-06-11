@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/libxml_utils.h"

@@ -23,6 +23,10 @@
   next_state_ = STATE_AUTH;
 
 #include "src/net/socket/socks5_client_socket.cc"
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/notreached.h"
 #undef BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_READ_COMPLETE_2
 #undef BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_READ_COMPLETE_1
 #undef BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_WRITE

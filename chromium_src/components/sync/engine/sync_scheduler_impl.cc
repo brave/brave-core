@@ -7,7 +7,9 @@
   HandleBraveConfigurationFailure(model_neutral_state);
 
 #include "src/components/sync/engine/sync_scheduler_impl.cc"
+
 #include "base/functional/callback_forward.h"
+#include "base/logging.h"
 
 #undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
 

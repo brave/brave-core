@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/permissions/permission_context_base.h"
+
+#include "base/check.h"
 #include "components/permissions/permissions_client.h"
 
 #define PermissionContextBase PermissionContextBase_ChromiumImpl

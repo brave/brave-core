@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 
 namespace blink::origin_trials {

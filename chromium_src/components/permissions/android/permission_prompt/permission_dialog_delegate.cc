@@ -8,6 +8,9 @@
       JNIEnv* env, const base::android::JavaRef<jobject>& obj); \
   virtual void CreateJavaDelegate
 #include "components/permissions/android/permission_prompt/permission_dialog_delegate.h"
+
+#include "base/check.h"
+#include "base/notreached.h"
 #undef CreateJavaDelegate
 
 #include "base/android/jni_array.h"

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include "base/check_op.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_document.h"

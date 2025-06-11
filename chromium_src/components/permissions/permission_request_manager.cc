@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 

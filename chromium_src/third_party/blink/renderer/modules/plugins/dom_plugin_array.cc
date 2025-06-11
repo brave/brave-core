@@ -5,7 +5,9 @@
 
 #include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
 
+#include "base/check_op.h"
 #include "base/compiler_specific.h"
+#include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"

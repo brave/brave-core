@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html.h"
 
+#include "base/check.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"

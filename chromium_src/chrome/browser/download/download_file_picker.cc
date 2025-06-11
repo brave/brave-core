@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"

@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/content_settings/core/browser/cookie_settings.h"
+
 #include <optional>
 
-#include "components/content_settings/core/browser/cookie_settings.h"
+#include "base/check.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 

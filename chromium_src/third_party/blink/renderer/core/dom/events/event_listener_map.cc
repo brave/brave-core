@@ -5,6 +5,8 @@
 
 #include "src/third_party/blink/renderer/core/dom/events/event_listener_map.cc"
 
+#include "base/check.h"
+
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 

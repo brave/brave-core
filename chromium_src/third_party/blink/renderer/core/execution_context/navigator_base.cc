@@ -6,6 +6,7 @@
 #include "third_party/blink/renderer/core/execution_context/navigator_base.h"
 
 #include "base/compiler_specific.h"
+#include "base/notreached.h"
 #include "base/system/sys_info.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"

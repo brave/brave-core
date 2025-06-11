@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/logging.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/brave_sync_stopped_reporter.h"

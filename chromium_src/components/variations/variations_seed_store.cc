@@ -6,6 +6,7 @@
 #include "components/variations/variations_seed_store.h"
 
 #include "base/check_is_test.h"
+#include "base/check_op.h"
 #include "crypto/signature_verifier.h"
 
 namespace variations {

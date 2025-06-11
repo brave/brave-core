@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <string_view>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/strings/strcat.h"
 
 #include "src/components/webui/flags/flags_state.cc"

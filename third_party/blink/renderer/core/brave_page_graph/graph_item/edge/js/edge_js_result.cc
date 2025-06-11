@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/js/edge_js_result.h"
 
+#include "base/check.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"

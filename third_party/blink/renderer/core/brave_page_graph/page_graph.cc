@@ -23,10 +23,11 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/dcheck_is_on.h"
+#include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"

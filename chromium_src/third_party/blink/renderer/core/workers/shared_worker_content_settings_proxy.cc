@@ -5,6 +5,7 @@
 
 #include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.cc"
 
+#include "base/check.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-blink.h"
 #include "mojo/public/cpp/bindings/string_traits_wtf.h"
 

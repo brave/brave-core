@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/thread.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"

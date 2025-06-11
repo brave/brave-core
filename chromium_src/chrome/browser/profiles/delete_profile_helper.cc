@@ -5,15 +5,12 @@
 
 #include <string_view>
 
+#include "base/logging.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "chrome/browser/sync/sync_service_factory.h"
-#include "components/sync/service/sync_user_settings.h"
-
-// Include to prevent redefining HasPrimaryAccount method at the header
-#include "components/signin/public/identity_manager/identity_manager.h"
-
-// Include to prevent redefining IdentityManager method at the header
 #include "chrome/browser/signin/identity_manager_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
+#include "components/signin/public/identity_manager/identity_manager.h"
+#include "components/sync/service/sync_user_settings.h"
 
 class Profile;
 

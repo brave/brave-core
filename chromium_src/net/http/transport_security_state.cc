@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "build/build_config.h"
 #include "net/base/network_anonymization_key.h"

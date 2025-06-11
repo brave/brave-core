@@ -7,8 +7,10 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/logging.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"

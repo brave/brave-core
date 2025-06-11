@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 

@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CRYPTO_KDF_H_
 #define BRAVE_CHROMIUM_SRC_CRYPTO_KDF_H_
 
+#include "base/check_op.h"
+
 #include "src/crypto/kdf.h"  // IWYU pragma: export
 
 namespace crypto::kdf {

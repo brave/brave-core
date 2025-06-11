@@ -5,6 +5,9 @@
 
 #include "content/browser/renderer_host/render_frame_host_impl.h"
 
+#include "base/check.h"
+#include "base/logging.h"
+
 #define BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL \
   SetEphemeralStorageToken(top_frame_origin);
 

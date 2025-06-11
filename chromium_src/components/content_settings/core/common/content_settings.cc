@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "base/check.h"
+
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
 #include "src/components/content_settings/core/common/content_settings.cc"

@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/debug/alias.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script_local.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"

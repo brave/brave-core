@@ -5,6 +5,8 @@
 
 #include "src/ui/views/widget/native_widget_mac.mm"
 
+#include "base/check.h"
+
 namespace views {
 
 void NativeWidgetMac::SetWindowTitleVisibility(bool visible) {
