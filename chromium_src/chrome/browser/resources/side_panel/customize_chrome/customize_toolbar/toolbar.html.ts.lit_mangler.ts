@@ -37,6 +37,36 @@ mangle(
   (template) => template.text.includes('id="tipCard"'),
 )
 
+// Move .intro-text out of the sp-card and insert it after the sp-card, wrapping
+// it with a new sp-card. The first sp-card is the one with the heading.
+mangle(
+  (element: DocumentFragment) => {
+    const introText = element.querySelector('.intro-text')
+    if (!introText) {
+      throw new Error('[Customize Chrome > Toolbar] .intro-text is gone.')
+    }
+
+    // Remove the intro text from its current position.
+    const firstSpCard = element.querySelector('.sp-card')
+    if (!firstSpCard) {
+      throw new Error('[Customize Chrome > Toolbar] .sp-card is gone.')
+    }
+    firstSpCard.removeChild(introText)
+
+    // As we are inserting the bundled HTML at build time, we don't have to sanitize the element.
+    // eslint-disable-next-line no-unsanitized/method
+    firstSpCard.insertAdjacentHTML(
+      'afterend',
+      /* html */ `
+      <div class="sp-card">
+        ${introText.outerHTML}
+      </div>
+    `,
+    )
+  },
+  /* omit selector to access the top level node */
+)
+
 // Insert tipCardLabel text after ".intro-text"
 mangle(
   (element: DocumentFragment) => {
