@@ -84,17 +84,15 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   content::MockNavigationThrottleRegistry registry(&test_handle);
-  std::unique_ptr<TorNavigationThrottle> throttle =
-      TorNavigationThrottle::MaybeCreateThrottleFor(
-          registry, tor_web_contents()->GetBrowserContext()->IsTor());
-  EXPECT_TRUE(throttle != nullptr);
+  TorNavigationThrottle::MaybeCreateAndAdd(
+      registry, tor_web_contents()->GetBrowserContext()->IsTor());
+  EXPECT_FALSE(registry.throttles().empty());
 
   content::MockNavigationHandle test_handle2(web_contents());
   content::MockNavigationThrottleRegistry registry2(&test_handle2);
-  std::unique_ptr<TorNavigationThrottle> throttle2 =
-      TorNavigationThrottle::MaybeCreateThrottleFor(
-          registry2, web_contents()->GetBrowserContext()->IsTor());
-  EXPECT_TRUE(throttle2 == nullptr);
+  TorNavigationThrottle::MaybeCreateAndAdd(
+      registry2, web_contents()->GetBrowserContext()->IsTor());
+  EXPECT_TRUE(registry2.throttles().empty());
 }
 
 TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
@@ -103,34 +101,39 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
   content::MockNavigationThrottleRegistry registry(&test_handle);
-  std::unique_ptr<TorNavigationThrottle> throttle =
-      TorNavigationThrottle::MaybeCreateThrottleFor(
-          registry, *GetTorLauncherFactory(),
-          tor_web_contents()->GetBrowserContext()->IsTor());
+  TorNavigationThrottle::MaybeCreateAndAdd(
+      registry, *GetTorLauncherFactory(),
+      tor_web_contents()->GetBrowserContext()->IsTor());
+  ASSERT_FALSE(registry.throttles().empty());
   GURL url("http://www.example.com");
   test_handle.set_url(url);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url;
 
   GURL url2("https://www.example.com");
   test_handle.set_url(url2);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url2;
 
   GURL url3("chrome://settings");
   test_handle.set_url(url3);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url3;
 
   GURL url4("chrome-extension://cldoidikboihgcjfkhdeidbpclkineef");
   test_handle.set_url(url4);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url4;
 
   // chrome-devtools migrates to devtools
   GURL url5("devtools://devtools/bundled/inspector.html");
   test_handle.set_url(url5);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url5;
 }
 
@@ -142,26 +145,26 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
   content::MockNavigationThrottleRegistry registry(&test_handle);
-  std::unique_ptr<TorNavigationThrottle> throttle =
-      TorNavigationThrottle::MaybeCreateThrottleFor(
-          registry, *GetTorLauncherFactory(),
-          tor_web_contents()->GetBrowserContext()->IsTor());
+  TorNavigationThrottle::MaybeCreateAndAdd(
+      registry, *GetTorLauncherFactory(),
+      tor_web_contents()->GetBrowserContext()->IsTor());
+  ASSERT_FALSE(registry.throttles().empty());
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action())
+            registry.throttles().back()->WillStartRequest().action())
       << url;
 
   GURL url2("mailto:example@www.example.com");
   test_handle.set_url(url2);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action())
+            registry.throttles().back()->WillStartRequest().action())
       << url2;
 
   GURL url3("magnet:?xt=urn:btih:***.torrent");
   test_handle.set_url(url3);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action())
+            registry.throttles().back()->WillStartRequest().action())
       << url3;
 }
 
@@ -171,26 +174,30 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
       .WillRepeatedly(testing::Return(false));
   content::MockNavigationHandle test_handle(tor_web_contents());
   content::MockNavigationThrottleRegistry registry(&test_handle);
-  std::unique_ptr<TorNavigationThrottle> throttle =
-      TorNavigationThrottle::MaybeCreateThrottleFor(
-          registry, *GetTorLauncherFactory(),
-          tor_web_contents()->GetBrowserContext()->IsTor());
+  TorNavigationThrottle::MaybeCreateAndAdd(
+      registry, *GetTorLauncherFactory(),
+      tor_web_contents()->GetBrowserContext()->IsTor());
+  ASSERT_FALSE(registry.throttles().empty());
   bool was_navigation_resumed = false;
-  throttle->set_resume_callback_for_testing(
+  registry.throttles().back()->set_resume_callback_for_testing(
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));
   GURL url("http://www.example.com");
   test_handle.set_url(url);
-  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::DEFER,
+            registry.throttles().back()->WillStartRequest().action())
       << url;
   GURL url2("chrome://newtab");
   test_handle.set_url(url2);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url2;
-  throttle->OnTorCircuitEstablished(true);
+  static_cast<TorNavigationThrottle*>(registry.throttles().back().get())
+      ->OnTorCircuitEstablished(true);
   EXPECT_TRUE(was_navigation_resumed);
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(true));
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED,
+            registry.throttles().back()->WillStartRequest().action())
       << url;
 }
 

@@ -53,7 +53,7 @@ class AIChatBraveSearchThrottle : public content::NavigationThrottle {
       AIChatService* ai_chat_service);
   ~AIChatBraveSearchThrottle() override;
 
-  static std::unique_ptr<AIChatBraveSearchThrottle> MaybeCreateThrottleFor(
+  static void MaybeCreateAndAdd(
       base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
       content::NavigationThrottleRegistry& registry,
       AIChatService* ai_chat_service,

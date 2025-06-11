@@ -23,8 +23,7 @@ class BackupResultsNavigationThrottle : public content::NavigationThrottle {
   BackupResultsNavigationThrottle& operator=(
       const BackupResultsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<BackupResultsNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
  private:
   // content::NavigationThrottle overrides:

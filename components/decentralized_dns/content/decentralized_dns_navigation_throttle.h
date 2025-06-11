@@ -30,11 +30,10 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
   DecentralizedDnsNavigationThrottle& operator=(
       const DecentralizedDnsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<DecentralizedDnsNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
-                         PrefService* user_prefs,
-                         PrefService* local_state,
-                         const std::string& locale);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                PrefService* user_prefs,
+                                PrefService* local_state,
+                                const std::string& locale);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;

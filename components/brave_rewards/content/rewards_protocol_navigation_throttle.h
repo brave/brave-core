@@ -23,8 +23,7 @@ class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
   RewardsProtocolNavigationThrottle& operator=(
       const RewardsProtocolNavigationThrottle&) = delete;
 
-  static std::unique_ptr<RewardsProtocolNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

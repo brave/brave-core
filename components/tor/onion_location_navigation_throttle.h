@@ -20,10 +20,9 @@ namespace tor {
 
 class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
-  static std::unique_ptr<OnionLocationNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
-                         bool is_tor_disabled,
-                         bool is_tor_profile);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                bool is_tor_disabled,
+                                bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
       bool is_tor_profile);

@@ -22,8 +22,7 @@ class NewTabShowsNavigationThrottle : public content::NavigationThrottle {
   NewTabShowsNavigationThrottle& operator=(
       const NewTabShowsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<NewTabShowsNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
  private:
   // content::NavigationThrottle overrides:

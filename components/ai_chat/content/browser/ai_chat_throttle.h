@@ -18,8 +18,7 @@ class AIChatThrottle : public content::NavigationThrottle {
   explicit AIChatThrottle(content::NavigationThrottleRegistry& registry);
   ~AIChatThrottle() override;
 
-  static std::unique_ptr<AIChatThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
   // content::NavigationThrottle:
   // ThrottleCheckResult WillProcessResponse() override;

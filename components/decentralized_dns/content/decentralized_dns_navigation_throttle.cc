@@ -25,8 +25,7 @@
 namespace decentralized_dns {
 
 // static
-std::unique_ptr<DecentralizedDnsNavigationThrottle>
-DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
+void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     PrefService* user_prefs,
     PrefService* local_state,
@@ -35,15 +34,15 @@ DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
   content::BrowserContext* context =
       navigation_handle.GetWebContents()->GetBrowserContext();
   if (context->IsOffTheRecord()) {
-    return nullptr;
+    return;
   }
 
   if (!navigation_handle.IsInMainFrame()) {
-    return nullptr;
+    return;
   }
 
-  return std::make_unique<DecentralizedDnsNavigationThrottle>(
-      registry, user_prefs, local_state, locale);
+  registry.AddThrottle(std::make_unique<DecentralizedDnsNavigationThrottle>(
+      registry, user_prefs, local_state, locale));
 }
 
 DecentralizedDnsNavigationThrottle::DecentralizedDnsNavigationThrottle(

@@ -89,19 +89,18 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationFromTab) {
   test_handle.set_page_transition(transition);
   content::MockNavigationThrottleRegistry registry(&test_handle);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(registry);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (IsAIChatHistoryEnabled()) {
-    EXPECT_EQ(throttle.get(), nullptr);
+    EXPECT_TRUE(registry.throttles().empty());
   } else {
-    EXPECT_NE(throttle.get(), nullptr);
+    ASSERT_FALSE(registry.throttles().empty());
     EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
-              throttle->WillStartRequest().action());
+              registry.throttles().back()->WillStartRequest().action());
   }
 #else
-  EXPECT_EQ(throttle.get(), nullptr);
+  EXPECT_TRUE(registry.throttles().empty());
 #endif
 }
 
@@ -117,13 +116,13 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationToFrame) {
   test_handle.set_page_transition(transition);
   content::MockNavigationThrottleRegistry registry(&test_handle);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(registry);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
 #if !BUILDFLAG(IS_ANDROID)
+  ASSERT_FALSE(registry.throttles().empty());
   EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
-            throttle->WillStartRequest().action());
+            registry.throttles().back()->WillStartRequest().action());
 #else
-  EXPECT_EQ(throttle.get(), nullptr);
+  EXPECT_TRUE(registry.throttles().empty());
 #endif
 }
 
@@ -143,9 +142,8 @@ TEST_P(AIChatThrottleUnitTest, AllowNavigationFromPanel) {
   test_handle.set_page_transition(transition);
   content::MockNavigationThrottleRegistry registry(&test_handle);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(registry);
-  EXPECT_EQ(throttle.get(), nullptr);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
+  EXPECT_TRUE(registry.throttles().empty());
 }
 
 }  // namespace ai_chat

@@ -44,7 +44,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   DomainBlockNavigationThrottle& operator=(
       const DomainBlockNavigationThrottle&) = delete;
 
-  static std::unique_ptr<DomainBlockNavigationThrottle> MaybeCreateThrottleFor(
+  static void MaybeCreateAndAdd(
       content::NavigationThrottleRegistry& registry,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
