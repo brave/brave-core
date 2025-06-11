@@ -150,7 +150,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             }
         }
 
-        if (BraveNewsUtils.getLocale() != null
+        if (!BraveNewsUtils.getLocale().isEmpty()
                 && BraveNewsUtils.getSuggestionsPublisherList().size() > 0) {
             mIsSuggestionAvailable = true;
         }
@@ -164,7 +164,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     public void onResume() {
         super.onResume();
 
-        if (BraveNewsUtils.getLocale() != null && mSwitchShowNews.isChecked()) {
+        if (!BraveNewsUtils.getLocale().isEmpty() && mSwitchShowNews.isChecked()) {
             updateFollowerCount();
 
             if (!mIsSuggestionAvailable) {
@@ -236,7 +236,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             if (BraveNewsUtils.getChannelIcons().size() == 0) {
                 BraveNewsUtils.setChannelIcons();
             }
-            if (BraveNewsUtils.getLocale() == null && mBraveNewsController != null) {
+            if (BraveNewsUtils.getLocale().isEmpty() && mBraveNewsController != null) {
                 BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, this, null);
             } else {
                 mTvSearch.setVisibility(View.VISIBLE);
