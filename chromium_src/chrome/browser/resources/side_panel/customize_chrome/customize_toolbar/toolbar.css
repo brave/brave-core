@@ -1,0 +1,70 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./toolbar-chromium.css.js
+ * #scheme=relative
+ * #include=toolbar-chromium
+ * #css_wrapper_metadata_end */
+
+/* except header*/
+.sp-card:not(:first-child) {
+  margin: 0;
+}
+
+.sp-cards-separator,
+hr.sp-hr {
+  display: none;
+}
+
+.intro-text {
+  color: --leo-color-text-primary;
+  font: var(--leo-font-default-regular);
+  font-weight: 600;
+  line-height: var(--leo-typography-line-height-default);
+  letter-spacing: var(--leo-typography-letter-spacing-default);
+  text-align: unset;
+  padding: 0;
+}
+
+#tipCardLabel {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-small-regular);
+  font-weight: 400;
+  line-height: var(--leo-typography-line-height-small);
+  letter-spacing: var(--leo-typography-letter-spacing-small);
+}
+
+.choose-icons-row {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-regular);
+  font-weight: 400;
+  letter-spacing: var(--leo-typography-letter-spacing-default);
+  line-height: var(--leo-typography-line-height-default);
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 44px;
+}
+
+.choose-icons-row.category-title {
+  color: var(--leo-color-text-interactive);
+  font: var(--leo-font-small-regular);
+  font-weight: 600;
+  letter-spacing: var(--leo-typography-letter-spacing-small);
+  line-height: var(--leo-typography-line-height-small);
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.choose-icons-row:not(.category-title) {
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+#resetToDefaultButton {
+  margin: var(--leo-spacing-m);
+  width: calc(100% - 2 * var(--leo-spacing-m));
+}
