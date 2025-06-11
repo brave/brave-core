@@ -65,6 +65,6 @@ hr.sp-hr {
 }
 
 #resetToDefaultButton {
-  margin: var(--leo-spacing-m);
-  width: calc(100% - 2 * var(--leo-spacing-m));
+  margin: var(--leo-spacing-xl);
+  width: calc(100% - 2 * var(--leo-spacing-xl));
 }
