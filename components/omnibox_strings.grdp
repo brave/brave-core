@@ -8,8 +8,17 @@
   <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
     <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
   </message>
-  <message name="IDS_AUTOCOMPLETE_SEARCH_IN_SIDE_PANEL_DESCRIPTION" desc="Description for search matches that open in side panel." translateable="false">
+  <message name="IDS_AUTOCOMPLETE_SEARCH_IN_SIDE_PANEL_DESCRIPTION" desc="Description for search matches that open in side panel.">
     Search in side panel
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL" desc="Label text for the action match that opens lens.">
+    Ask Brave about this page
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL_ALT" desc="Alternative label text for the action match that opens lens.">
+    Ask Google Lens about this page
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL_ALT2" desc="Second alternative label text for the action match that opens lens.">
+    Ask Brave Search about this page
   </message>
   <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
     &lt;Type search term&gt;
@@ -65,6 +74,9 @@
     <message name="IDS_OMNIBOX_EMPTY_HINT" desc="The text displayed in the omnibox when it is empty." formatter_data="android_java">
       Search or type URL
     </message>
+    <message name="IDS_OMNIBOX_EMPTY_HINT_WITH_DSE_NAME" desc="The text displayed in the omnibox when it is empty. Includes Default Search Engine name." formatter_data="android_java">
+      Search <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> or type URL
+    </message>
   </if>
   <if expr="is_android">
     <message name="IDS_OMNIBOX_ON_CCT_EMPTY_HINT" desc="Hint text shown in the Omnibox on a Custom Tab." formatter_data="android_java">
@@ -88,20 +100,107 @@
   <message name="IDS_OMNIBOX_READER_MODE" desc="Text shown in the omnibox to indicate a user is viewing the reader mode view of an article.">
     Reader Mode
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_DOCUMENT" desc="Google Docs product name, for use in omnibox Docs result descriptions.">
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_BUGANIZER" desc="Buganizer issue name, for use in omnibox content suggestion descriptions.">
+    Buganizer Issue
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_COMMA_SEPARATED_VALUES" desc="Comma-separated values file format name, for use in omnibox content suggestion descriptions.">
+    Comma-Separated Values
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_APPS_SCRIPT" desc="Brave Apps Script product name, for use in omnibox content suggestion descriptions.">
+    Brave Apps Script
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DOCS" desc="Google Docs product name, for use in omnibox content suggestion descriptions.">
     Google Docs
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_FORM" desc="Google Docs product name, for use in omnibox Form result descriptions.">
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRAWINGS" desc="Brave Drawings product name, for use in omnibox content suggestion descriptions.">
+    Brave Drawings
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRIVE" desc="Google Drive product name shown when the file type is unknown, for use in omnibox content suggestion descriptions.">
+    Google Drive
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRIVE_FOLDER" desc="Google Drive product name shown when the file is a folder, for use in omnibox content suggestion descriptions.">
+    Google Drive Folder
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_FORMS" desc="Brave Forms product name, for use in omnibox content suggestion descriptions.">
     Brave Forms
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_SPREADSHEET" desc="Brave Sheets product name, for use in omnibox Sheets result descriptions.">
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_JAMBOARD" desc="Brave Jamboard product name, for use in omnibox content suggestion descriptions.">
+    Brave Jamboard
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_PHOTOS" desc="Google Photos product name, for use in omnibox content suggestion descriptions.">
+    Google Photos
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SITES" desc="Brave Sites product name, for use in omnibox content suggestion descriptions.">
+    Brave Sites
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SHEETS" desc="Brave Sheets product name, for use in omnibox content suggestion descriptions.">
     Brave Sheets
   </message>
-    <message name="IDS_DRIVE_SUGGESTION_PRESENTATION" desc="Brave Slides product name, for use in omnibox Slides result descriptions.">
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SLIDES" desc="Brave Slides product name, for use in omnibox content suggestion descriptions.">
     Brave Slides
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_GENERAL" desc="Google Drive product name, for use in general omnibox Drive file result descriptions.">
-    Google Drive
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_JPEG" desc="JPEG image file format name, for use in omnibox content suggestion descriptions.">
+    JPEG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_PNG" desc="PNG image file format name, for use in omnibox content suggestion descriptions.">
+    PNG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_SVG" desc="SVG image file format name, for use in omnibox content suggestion descriptions.">
+    SVG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_JIRA" desc="Jira issue name, for use in omnibox content suggestion descriptions.">
+    Jira Issue
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_JSON" desc="JSON file format name, for use in omnibox content suggestion descriptions.">
+    JSON
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MARKDOWN" desc="Markdown file format name, for use in omnibox content suggestion descriptions.">
+    Markdown
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_EXCEL" desc="Microsoft Excel product name, for use in omnibox content suggestion descriptions.">
+    Microsoft Excel
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_POWERPOINT" desc="Microsoft PowerPoint product name, for use in omnibox content suggestion descriptions.">
+    Microsoft PowerPoint
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_WORD" desc="Microsoft Word product name, for use in omnibox content suggestion descriptions.">
+    Microsoft Word
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_PRESENTATION" desc="OpenDocument Presentation product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Presentation
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_SPREADSHEET" desc="OpenDocument Spreadsheet product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Spreadsheet
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_TEXT" desc="OpenDocument Text product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Text
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_PDF" desc="PDF file format name, for use in omnibox content suggestion descriptions.">
+    PDF
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_PLAIN_TEXT" desc="Plain text file format name, for use in omnibox content suggestion descriptions.">
+    Plain Text
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_RICH_TEXT_FORMAT" desc="Rich Text Format file format name, for use in omnibox content suggestion descriptions.">
+    Rich Text Format
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_SALESFORCE" desc="Salesforce product name, for use in omnibox content suggestion descriptions.">
+    Salesforce
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_SLACK" desc="Slack message name, for use in omnibox content suggestion descriptions.">
+    Slack Message
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_MP4" desc="MP4 video file format name, for use in omnibox content suggestion descriptions.">
+    MP4 Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_QUICKTIME" desc="QuickTime video file format name, for use in omnibox content suggestion descriptions.">
+    QuickTime Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_WEBM" desc="WebM video file format name, for use in omnibox content suggestion descriptions.">
+    WebM Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_ZIP_FILE" desc="ZIP archive file format name, for use in omnibox content suggestion descriptions.">
+    ZIP Archive
   </message>
   <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Google Drive omnibox results.">
     <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_OWNER">$2<ex>First Last</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$3<ex>Google Docs</ex></ph>
@@ -279,27 +378,6 @@
   </message>
   <message name="IDS_ACC_REMOVE_SUGGESTION_BUTTON" desc="Announcement when remove suggestion button is focused.">
     Remove Suggestion button, press Enter to remove this suggestion
-  </message>
-  <!-- Tooltip labels for the omnibox popup header show/hide toggle button. -->
-  <message name="IDS_TOOLTIP_HEADER_SHOW_SUGGESTIONS_BUTTON" desc="Tooltip for the Show Suggestions button on section headers.">
-    Show suggestions
-  </message>
-  <message name="IDS_TOOLTIP_HEADER_HIDE_SUGGESTIONS_BUTTON" desc="Tooltip for the Hide Suggestions button on section headers.">
-    Hide suggestions
-  </message>
-  <!-- Accessibility labels for the omnibox popup header show/hide toggle button. -->
-  <message name="IDS_ACC_HEADER_SHOW_SUGGESTIONS_BUTTON" desc="Announcement for the Show Suggestions button on section headers.">
-    Show the "<ph name="SECTION">$1<ex>related to recent searches</ex></ph>" section
-  </message>
-  <message name="IDS_ACC_HEADER_HIDE_SUGGESTIONS_BUTTON" desc="Announcement for the Hide Suggestions button on section headers.">
-    Hide the "<ph name="SECTION">$1<ex>related to recent searches</ex></ph>" section
-  </message>
-  <!-- Accessibility announcements made when suggestion sections are shown or hidden. -->
-  <message name="IDS_ACC_HEADER_SECTION_SHOWN" desc="Announcement that lets the user know the suggestions section has been Shown.">
-    "<ph name="SECTION">$1<ex>Related to recent searches</ex></ph>" section shown
-  </message>
-  <message name="IDS_ACC_HEADER_SECTION_HIDDEN" desc="Announcement that lets the user know the suggestions section has been Hidden.">
-    "<ph name="SECTION">$1<ex>Related to recent searches</ex></ph>" section hidden
   </message>
 
   <!-- Accessibility announcements made for the Brave tip IPH suggestions sometimes shown at the bottom of the Omnibox -->
