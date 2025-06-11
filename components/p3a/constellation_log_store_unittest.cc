@@ -8,6 +8,7 @@
 #include <memory>
 #include <set>
 
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "components/prefs/testing_pref_service.h"

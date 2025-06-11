@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_search_conversion/p3a.h"
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"

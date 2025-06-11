@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/scheduler.h"
 
+#include "base/check_op.h"
 #include "base/rand_util.h"
 #include "brave/vendor/brave_base/random.h"
 

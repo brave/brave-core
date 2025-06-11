@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_utils.h"

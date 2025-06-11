@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/types/expected.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"

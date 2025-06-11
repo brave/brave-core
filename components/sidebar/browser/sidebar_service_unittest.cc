@@ -11,6 +11,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/test/metrics/histogram_tester.h"

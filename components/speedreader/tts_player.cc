@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/tts_controller.h"

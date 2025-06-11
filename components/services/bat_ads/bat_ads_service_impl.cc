@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"

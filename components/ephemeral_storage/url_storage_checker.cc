@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "components/services/storage/public/mojom/local_storage_control.mojom.h"
 #include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"

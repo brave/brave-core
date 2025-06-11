@@ -10,6 +10,7 @@
 
 #include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"

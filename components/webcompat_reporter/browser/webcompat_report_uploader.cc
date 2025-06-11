@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/version_info/version_info.h"

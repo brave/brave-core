@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/child_process_monitor/child_process_monitor.h"
+
+#include "base/check.h"
+#include "base/logging.h"
 #include "base/process/process.h"
 #include "base/process/process_handle.h"
 #include "base/process/process_iterator.h"
@@ -21,7 +24,6 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/process/kill.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"

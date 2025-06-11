@@ -10,13 +10,13 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/sample_vector.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/no_destructor.h"
-#include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/trace_event/trace_event.h"

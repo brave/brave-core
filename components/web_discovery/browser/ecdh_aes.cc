@@ -9,6 +9,7 @@
 #include <array>
 
 #include "base/base64.h"
+#include "base/check_op.h"
 #include "base/containers/span_writer.h"
 #include "base/logging.h"
 #include "crypto/random.h"

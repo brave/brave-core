@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"  // IWYU pragma: keep
 #include "base/no_destructor.h"

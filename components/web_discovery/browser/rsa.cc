@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/threading/thread_restrictions.h"
 #include "crypto/rsa_private_key.h"
 #include "crypto/signature_creator.h"

@@ -10,8 +10,10 @@
 #include <set>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_store.h"

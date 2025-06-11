@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"

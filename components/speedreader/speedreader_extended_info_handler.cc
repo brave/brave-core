@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/supports_user_data.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"

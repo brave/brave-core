@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/check.h"
 #include "base/environment.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"

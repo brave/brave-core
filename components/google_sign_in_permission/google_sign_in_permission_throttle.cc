@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "components/user_prefs/user_prefs.h"

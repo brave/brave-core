@@ -5,8 +5,10 @@
 
 #include "brave/components/p3a/rotation_scheduler.h"
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/timer/wall_clock_timer.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"

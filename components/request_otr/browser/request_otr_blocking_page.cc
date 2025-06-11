@@ -8,6 +8,7 @@
 #include <ostream>
 #include <utility>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
