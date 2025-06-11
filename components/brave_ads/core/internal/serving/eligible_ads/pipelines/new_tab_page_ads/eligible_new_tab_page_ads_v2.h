@@ -64,7 +64,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
-      const CreativeNewTabPageAdList& creative_ads);
+      CreativeNewTabPageAdList creative_ads);
 
   void ApplyConditionMatcher(
       CreativeNewTabPageAdList creative_ads,
@@ -74,16 +74,6 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       base::Value::Dict virtual_prefs);
 
-  void FilterIneligibleCreativeAds(
-      CreativeNewTabPageAdList creative_ads,
-      const AdEventList& ad_events,
-      const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
-  void FilterIneligibleCreativeAdsCallback(
-      const AdEventList& ad_events,
-      const SiteHistoryList& site_history,
-      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-      CreativeNewTabPageAdList creative_ads);
 
   void FilterAndMaybePredictCreativeAd(
       UserModelInfo user_model,
@@ -94,6 +84,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   void FilterAndMaybePredictCreativeAdCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
+      const SiteHistoryList& site_history,
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       uint64_t trace_id,
       CreativeNewTabPageAdList creative_ads);

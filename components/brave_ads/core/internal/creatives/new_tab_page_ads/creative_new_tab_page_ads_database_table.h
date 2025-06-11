@@ -28,7 +28,7 @@ using GetCreativeNewTabPageAdCallback =
 using GetCreativeNewTabPageAdsCallback =
     base::OnceCallback<void(bool success,
                             const SegmentList& segments,
-                            const CreativeNewTabPageAdList& creative_ads)>;
+                            CreativeNewTabPageAdList creative_ads)>;
 
 class CreativeNewTabPageAds final : public TableInterface {
  public:
