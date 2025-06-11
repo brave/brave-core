@@ -18,10 +18,11 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "brave/components/p3a/managed/remote_config_manager.h"
+#include "brave/components/p3a/managed/remote_metric_manager.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
-#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
@@ -43,7 +44,8 @@ struct P3AConfig;
 // TODO(iefremov): It should be possible to get rid of refcounted here.
 class P3AService : public base::RefCountedThreadSafe<P3AService>,
                    public MessageManager::Delegate,
-                   public RemoteConfigManager::Delegate {
+                   public RemoteConfigManager::Delegate,
+                   public RemoteMetricManager::Delegate {
  public:
   P3AService(PrefService& local_state,
              std::string channel,
@@ -107,6 +109,11 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
     return remote_config_manager_.get();
   }
 
+  // Returns the RemoteMetricManager instance owned by this P3AService
+  RemoteMetricManager* remote_metric_manager() {
+    return remote_metric_manager_.get();
+  }
+
   // MessageManager::Delegate
   void OnRotation(MetricLogType log_type, bool is_constellation) override;
   void OnMetricCycled(const std::string& histogram_name,
@@ -118,7 +125,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   std::optional<MetricLogType> GetLogTypeForHistogram(
       std::string_view histogram_name) const override;
 
-  // RemoteConfigManager::Delegate
+  // RemoteConfigManager::Delegate:
   const MetricConfig* GetBaseMetricConfig(
       std::string_view histogram_name) const override;
   void OnRemoteConfigLoaded() override;
@@ -136,10 +143,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void OnP3AEnabledChanged();
 
   // Updates or removes a metric from the log.
-  void HandleHistogramChange(
+  void UpdateMetricValue(
       std::string_view histogram_name,
       size_t bucket,
-      std::optional<bool> only_update_for_constellation = std::nullopt);
+      std::optional<bool> only_update_for_constellation) override;
 
   // General prefs:
   bool initialized_ = false;
@@ -157,8 +164,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
       dynamic_metric_sample_callbacks_;
 
-  std::unique_ptr<MessageManager> message_manager_;
+  std::unique_ptr<RemoteMetricManager> remote_metric_manager_;
   std::unique_ptr<RemoteConfigManager> remote_config_manager_;
+  std::unique_ptr<MessageManager> message_manager_;
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.

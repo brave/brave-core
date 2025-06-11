@@ -6,6 +6,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
@@ -13,6 +14,7 @@
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -26,7 +28,6 @@
 #include "content/public/browser/browser_context.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #else
@@ -38,6 +39,7 @@ namespace misc_metrics {
 
 ProfileMiscMetricsService::ProfileMiscMetricsService(
     content::BrowserContext* context) {
+  context_path_ = context->GetPath();
   profile_prefs_ = user_prefs::UserPrefs::Get(context);
   auto* local_state = g_browser_process->local_state();
   if (profile_prefs_) {
@@ -91,6 +93,14 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     autofill_metrics_ =
         std::make_unique<AutofillMetrics>(personal_data_manager);
   }
+
+  if (profile_prefs_ && g_brave_browser_process->p3a_service() &&
+      g_brave_browser_process->p3a_service()->remote_metric_manager()) {
+    g_brave_browser_process->p3a_service()
+        ->remote_metric_manager()
+        ->HandleProfileLoad(profile_prefs_, context_path_);
+  }
+
   ReportSimpleMetrics();
 }
 
@@ -102,6 +112,13 @@ void ProfileMiscMetricsService::Shutdown() {
     extension_metrics_->Shutdown();
   }
 #endif
+
+  if (g_brave_browser_process->p3a_service() &&
+      g_brave_browser_process->p3a_service()->remote_metric_manager()) {
+    g_brave_browser_process->p3a_service()
+        ->remote_metric_manager()
+        ->HandleProfileUnload(context_path_);
+  }
 }
 
 PageMetrics* ProfileMiscMetricsService::GetPageMetrics() {

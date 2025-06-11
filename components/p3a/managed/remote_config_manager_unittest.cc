@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/remote_config_manager.h"
+#include "brave/components/p3a/managed/remote_config_manager.h"
 
 #include <memory>
 #include <string_view>
@@ -85,7 +85,8 @@ class P3ARemoteConfigManagerTest : public testing::Test,
     test_data_path_ =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA).AppendASCII("p3a");
 
-    remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+    remote_config_manager_ =
+        std::make_unique<RemoteConfigManager>(this, nullptr);
   }
 
   void TearDown() override { remote_config_manager_.reset(); }
