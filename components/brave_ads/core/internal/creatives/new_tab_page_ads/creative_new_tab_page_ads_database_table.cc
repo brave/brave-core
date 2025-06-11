@@ -201,10 +201,10 @@ void GetForSegmentsCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeNewTabPageAdList creative_ads =
+  CreativeNewTabPageAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 void GetForActiveCampaignsCallback(
@@ -216,12 +216,12 @@ void GetForActiveCampaignsCallback(
                                    /*creative_ads=*/{});
   }
 
-  const CreativeNewTabPageAdList creative_ads =
+  CreativeNewTabPageAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(mojom_db_transaction_result));
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  std::move(callback).Run(/*success=*/true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
 }
 
 std::string IsRichMediaAllowed() {
