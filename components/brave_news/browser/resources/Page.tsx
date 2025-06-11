@@ -8,17 +8,17 @@ import Icon from '@brave/leo/react/icon'
 import { radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
-import Feed from '../../../../brave_news/browser/resources/Feed'
-import NewsButton from '../../../../brave_news/browser/resources/NewsButton'
-import Variables from '../../../../brave_news/browser/resources/Variables'
-import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
-import { CLASSNAME_PAGE_STUCK } from '../page'
-import SettingsButton from '../../../../brave_news/browser/resources/SettingsButton'
+import Feed from './Feed'
+import NewsButton from './NewsButton'
+import Variables from './Variables'
+import { useBraveNews } from './shared/Context'
+import SettingsButton from './SettingsButton'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 const SidebarMenu = React.lazy(() => import('./SidebarMenu'))
-const FeedNavigation = React.lazy(() => import('../../../../brave_news/browser/resources/FeedNavigation'))
+const FeedNavigation = React.lazy(() => import('./FeedNavigation'))
 
+const CLASSNAME_PAGE_STUCK = 'page-stuck'
 const isSmallQuery = '(max-width: 1024px)'
 
 const Root = styled(Variables)`

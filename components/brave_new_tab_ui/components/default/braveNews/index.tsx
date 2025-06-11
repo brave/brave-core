@@ -10,16 +10,16 @@ import * as TodayActions from '../../../actions/today_actions'
 import { useNewTabPref } from '../../../hooks/usePref'
 import { defaultState } from '../../../storage/new_tab_storage'
 import CardLoading from './cards/cardLoading'
-import CardOptIn from './cards/cardOptIn'
+import CardOptIn from '../../../../brave_news/browser/resources/OptIn'
 import * as BraveNewsElement from './default'
 
 const Content = React.lazy(() => import('./content'))
-const FeedV2 = React.lazy(() => import('./FeedV2'))
+const FeedV2 = React.lazy(() => import('../../../../brave_news/browser/resources/Page'))
 
 // When FeedV2 is enabled, immediately start loading the Brave News chunk,
 // rather than waiting for the parent component to render.
 if (defaultState.featureFlagBraveNewsFeedV2Enabled) {
-  import('./FeedV2')
+  import('../../../../brave_news/browser/resources/Page')
 }
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
@@ -60,8 +60,7 @@ const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
 export default function BraveNewsSection(props: Props) {
   const dispatch = useDispatch()
-  const [optedIn, setOptedIn] = useNewTabPref('isBraveNewsOptedIn')
-  const [, setShowToday] = useNewTabPref('showToday')
+  const [optedIn] = useNewTabPref('isBraveNewsOptedIn')
 
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
@@ -128,11 +127,7 @@ export default function BraveNewsSection(props: Props) {
         ref={loadDataTrigger}
         style={{ position: 'sticky', top: '100px' }}
       />
-      {!optedIn &&
-        <>
-          <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
-        </>
-      }
+      {!optedIn && <CardOptIn />}
       {shouldDisplayContent && <React.Suspense fallback={defaultState.featureFlagBraveNewsFeedV2Enabled ? null : <CardLoading />}>
         {defaultState.featureFlagBraveNewsPromptEnabled
           && (defaultState.featureFlagBraveNewsFeedV2Enabled

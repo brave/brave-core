@@ -8,7 +8,6 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/BraveCoreThemeProvider'
 import BraveNewsLoadingCard from '../components/default/braveNews/cards/cardLoading'
 import BraveNewsErrorCard from '../components/default/braveNews/cards/cardError'
-import BraveNewsOptInCard from '../components/default/braveNews/cards/cardOptIn'
 import PublisherMeta from '../components/default/braveNews/cards/PublisherMeta'
 import DisplayAdCard from '../components/default/braveNews/cards/displayAd'
 import * as BraveNews from '../../brave_news/browser/resources/shared/api'
@@ -98,10 +97,6 @@ export const Loading = () => (
 
 export const Error = () => (
   <BraveNewsErrorCard onRefresh={() => console.log('refresh clicked')} />
-)
-
-export const OptIn = () => (
-  <BraveNewsOptInCard onOptIn={() => console.log('opt-in clicked')} onDisable={() => console.log('disable clicked')} />
 )
 
 const handleDisplayAdVisit = () => alert('handle visit')
