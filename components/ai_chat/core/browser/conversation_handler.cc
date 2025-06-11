@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <functional>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -32,6 +33,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
@@ -566,7 +568,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration();
+    PerformAssistantGeneration(associated_content_manager_->GetCachedContent());
   }
 }
 
@@ -833,11 +835,9 @@ void ConversationHandler::GenerateQuestions() {
 }
 
 void ConversationHandler::PerformQuestionGeneration(
-    std::string page_content,
-    bool is_video,
-    std::string invalidation_token) {
+    PageContentses page_contents) {
   engine_->GenerateQuestionSuggestions(
-      is_video, page_content, selected_language_,
+      std::move(page_contents), selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -984,17 +984,15 @@ void ConversationHandler::AddToConversationHistory(
 }
 
 void ConversationHandler::PerformAssistantGeneration(
-    std::string page_content /* = "" */,
-    bool is_video /* = false */,
-    std::string invalidation_token /* = "" */) {
+    PageContentses page_contents) {
   if (chat_history_.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, selected_language_, {} /* tools */,
-      std::nullopt /* preferred_tool_name */,
+      std::move(page_contents), chat_history_, selected_language_,
+      {} /* tools */, std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1222,7 +1220,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
   }
 }
 
-void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
+void ConversationHandler::GeneratePageContent(GetAllContentCallback callback) {
   VLOG(1) << __func__;
   DCHECK(associated_content_manager_->HasAssociatedContent())
       << "Shouldn't have been asked to generate page text when "
@@ -1236,28 +1234,19 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
 }
 
 void ConversationHandler::GeneratePageContentInternal(
-    GetPageContentCallback callback) {
-  // Keep hold of the current content so we can check if it changed
-  std::string current_content =
-      std::string(associated_content_manager_->GetCachedTextContent());
-  associated_content_manager_->GetContent(
+    GetAllContentCallback callback) {
+  associated_content_manager_->HasContentUpdated(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(current_content)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConversationHandler::OnGeneratePageContentComplete(
-    GetPageContentCallback callback,
-    std::string previous_content) {
-  auto contents_text = associated_content_manager_->GetCachedTextContent();
-  engine_->SanitizeInput(contents_text);
-
+    GetAllContentCallback callback,
+    bool content_changed) {
   // Keep is_content_different_ as true if it's the initial state
-  is_content_different_ =
-      is_content_different_ || contents_text != previous_content;
+  is_content_different_ = is_content_different_ || content_changed;
 
-  std::move(callback).Run(contents_text, associated_content_manager_->IsVideo(),
-                          "");
+  std::move(callback).Run(associated_content_manager_->GetCachedContent());
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1403,7 +1392,7 @@ void ConversationHandler::OnConversationEntryAdded(
     OnHistoryUpdate(nullptr);
     return;
   }
-  std::optional<std::vector<std::string_view>> associated_content_value;
+  std::optional<PageContentses> associated_content_value;
   if (is_content_different_ &&
       associated_content_manager_->HasAssociatedContent()) {
     associated_content_value = associated_content_manager_->GetCachedContent();

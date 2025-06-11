@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -77,14 +78,12 @@ class EngineConsumer {
   virtual ~EngineConsumer();
 
   virtual void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContentses page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) = 0;
 
   virtual void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContentses page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
