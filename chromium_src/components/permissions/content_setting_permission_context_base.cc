@@ -1,19 +1,20 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_context_base.h"
+#include "components/permissions/content_setting_permission_context_base.h"
 
 #include "base/check.h"
 #include "components/permissions/permissions_client.h"
 
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
+#define ContentSettingPermissionContextBase \
+  ContentSettingPermissionContextBase_ChromiumImpl
 #define CanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN) \
   BraveCanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN,  \
                                      content_settings_type_)
-#include "src/components/permissions/permission_context_base.cc"
-#undef PermissionContextBase
+#include "src/components/permissions/content_setting_permission_context_base.cc"
+#undef ContentSettingPermissionContextBase
 #undef CanBypassEmbeddingOriginCheck
 
 #include "brave/components/permissions/permission_lifetime_manager.h"
@@ -30,23 +31,25 @@ bool IsGroupedPermissionType(ContentSettingsType type) {
 
 namespace permissions {
 
-PermissionContextBase::PermissionContextBase(
+ContentSettingPermissionContextBase::ContentSettingPermissionContextBase(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type,
     network::mojom::PermissionsPolicyFeature permissions_policy_feature)
-    : PermissionContextBase_ChromiumImpl(browser_context,
-                                         content_settings_type,
-                                         permissions_policy_feature) {}
+    : ContentSettingPermissionContextBase_ChromiumImpl(
+          browser_context,
+          content_settings_type,
+          permissions_policy_feature) {}
 
-PermissionContextBase::~PermissionContextBase() = default;
+ContentSettingPermissionContextBase::~ContentSettingPermissionContextBase() =
+    default;
 
-void PermissionContextBase::SetPermissionLifetimeManagerFactory(
+void ContentSettingPermissionContextBase::SetPermissionLifetimeManagerFactory(
     const base::RepeatingCallback<
         PermissionLifetimeManager*(content::BrowserContext*)>& factory) {
   permission_lifetime_manager_factory_ = factory;
 }
 
-void PermissionContextBase::PermissionDecided(
+void ContentSettingPermissionContextBase::PermissionDecided(
     ContentSetting content_setting,
     bool is_one_time,
     bool is_final_decision,
@@ -81,7 +84,7 @@ void PermissionContextBase::PermissionDecided(
   }
 
   if (!IsGroupedPermissionType(content_settings_type())) {
-    PermissionContextBase_ChromiumImpl::PermissionDecided(
+    ContentSettingPermissionContextBase_ChromiumImpl::PermissionDecided(
         content_setting, is_one_time, is_final_decision, request_data);
     return;
   }
@@ -110,12 +113,12 @@ void PermissionContextBase::PermissionDecided(
   }
 }
 
-void PermissionContextBase::DecidePermission(
+void ContentSettingPermissionContextBase::DecidePermission(
     std::unique_ptr<permissions::PermissionRequestData> request_data,
     BrowserPermissionCallback callback) {
   auto id = request_data->id;
-  PermissionContextBase_ChromiumImpl::DecidePermission(std::move(request_data),
-                                                       std::move(callback));
+  ContentSettingPermissionContextBase_ChromiumImpl::DecidePermission(
+      std::move(request_data), std::move(callback));
 
   if (!IsGroupedPermissionType(content_settings_type())) {
     return;
@@ -140,12 +143,12 @@ void PermissionContextBase::DecidePermission(
   pending_requests_.erase(pending_request);
 }
 
-void PermissionContextBase::CleanUpRequest(
+void ContentSettingPermissionContextBase::CleanUpRequest(
     content::WebContents* web_contents,
     const PermissionRequestID& id,
     bool embedded_permission_element_initiated) {
   if (!IsGroupedPermissionType(content_settings_type())) {
-    PermissionContextBase_ChromiumImpl::CleanUpRequest(
+    ContentSettingPermissionContextBase_ChromiumImpl::CleanUpRequest(
         web_contents, id, embedded_permission_element_initiated);
     return;
   }
@@ -160,33 +163,36 @@ void PermissionContextBase::CleanUpRequest(
   }
 }
 
-PermissionContextBase::GroupedPermissionRequests::GroupedPermissionRequests() =
-    default;
-PermissionContextBase::GroupedPermissionRequests::~GroupedPermissionRequests() =
-    default;
+ContentSettingPermissionContextBase::GroupedPermissionRequests::
+    GroupedPermissionRequests() = default;
+ContentSettingPermissionContextBase::GroupedPermissionRequests::
+    ~GroupedPermissionRequests() = default;
 
-bool PermissionContextBase::GroupedPermissionRequests::IsDone() const {
+bool ContentSettingPermissionContextBase::GroupedPermissionRequests::IsDone()
+    const {
   return finished_request_count_ == requests_.size();
 }
 
-void PermissionContextBase::GroupedPermissionRequests::AddRequest(
+void ContentSettingPermissionContextBase::GroupedPermissionRequests::AddRequest(
     std::pair<base::WeakPtr<PermissionRequest>, BrowserPermissionCallback>
         request) {
   requests_.push_back(std::move(request));
 }
 
-BrowserPermissionCallback
-PermissionContextBase::GroupedPermissionRequests::GetNextCallback() {
+BrowserPermissionCallback ContentSettingPermissionContextBase::
+    GroupedPermissionRequests::GetNextCallback() {
   DCHECK(!IsDone());
   DCHECK(next_callback_index_ < requests_.size());
   return std::move(requests_[next_callback_index_++].second);
 }
 
-void PermissionContextBase::GroupedPermissionRequests::RequestFinished() {
+void ContentSettingPermissionContextBase::GroupedPermissionRequests::
+    RequestFinished() {
   finished_request_count_++;
 }
 
-bool PermissionContextBase::IsPendingGroupedRequestsEmptyForTesting() {
+bool ContentSettingPermissionContextBase::
+    IsPendingGroupedRequestsEmptyForTesting() {
   return pending_grouped_requests_.empty();
 }
 
