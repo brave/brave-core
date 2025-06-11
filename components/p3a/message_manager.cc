@@ -290,14 +290,6 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
 
   const auto* metric_config = delegate_->GetMetricConfig(log_key);
   bool is_nebula = metric_config && metric_config->nebula;
-  if (is_nebula && !features::IsNebulaEnabled()) {
-    // Do not report if Nebula feature is not enabled,
-    // mark request as successful to avoid transmission.
-    log_store->DiscardStagedLog();
-    scheduler->UploadFinished(true);
-    delegate_->OnMetricCycled(log_key);
-    return;
-  }
 
   if (!constellation_helper_->StartMessagePreparation(log_key, log_type, log,
                                                       is_nebula)) {
