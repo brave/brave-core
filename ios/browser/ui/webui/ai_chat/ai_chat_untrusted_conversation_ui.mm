@@ -72,17 +72,21 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
-    // Route the receiver to the parent frame
     auto* web_state = web_ui_->GetWebState();
     if (!web_state) {
       return;
     }
 
+    // Route the receiver to the parent frame
     // We should not be embedded on a non-WebUI page
-    CHECK(web::WebStateImpl::FromWebState(web_state)->HasWebUI());
+    auto* main_web_ui =
+        static_cast<web::WebStateImpl*>(web_state)->GetMainWebUI();
+    if (!main_web_ui) {
+      return;
+    }
 
     AIChatUI* ai_chat_ui_controller =
-        static_cast<AIChatUI*>(web_ui_->GetController());
+        static_cast<AIChatUI*>(main_web_ui->GetController());
     // We should not be embedded on any non AIChatUI page
     CHECK(ai_chat_ui_controller);
 
