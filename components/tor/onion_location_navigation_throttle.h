@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_TOR_ONION_LOCATION_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_TOR_ONION_LOCATION_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "content/public/browser/navigation_throttle.h"
 
 class GURL;
@@ -20,10 +18,9 @@ namespace tor {
 
 class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
-  static std::unique_ptr<OnionLocationNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
-                         bool is_tor_disabled,
-                         bool is_tor_profile);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                bool is_tor_disabled,
+                                bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
       bool is_tor_profile);
