@@ -6,14 +6,15 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_LOCALHOST_PERMISSION_CONTEXT_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_LOCALHOST_PERMISSION_CONTEXT_H_
 
-#include "components/permissions/permission_context_base.h"
+#include "components/permissions/content_setting_permission_context_base.h"
 #include "content/public/browser/browser_context.h"
 
 namespace permissions {
 
-class BraveLocalhostPermissionContext : public PermissionContextBase {
+class BraveLocalhostPermissionContext
+    : public ContentSettingPermissionContextBase {
  public:
-  // using PermissionContextBase::RequestPermission;
+  // using ContentSettingPermissionContextBase::RequestPermission;
   explicit BraveLocalhostPermissionContext(
       content::BrowserContext* browser_context);
   ~BraveLocalhostPermissionContext() override;

@@ -6,12 +6,13 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_OPEN_AI_CHAT_PERMISSION_CONTEXT_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_OPEN_AI_CHAT_PERMISSION_CONTEXT_H_
 
-#include "components/permissions/permission_context_base.h"
+#include "components/permissions/content_setting_permission_context_base.h"
 #include "content/public/browser/browser_context.h"
 
 namespace permissions {
 
-class BraveOpenAIChatPermissionContext : public PermissionContextBase {
+class BraveOpenAIChatPermissionContext
+    : public ContentSettingPermissionContextBase {
  public:
   explicit BraveOpenAIChatPermissionContext(
       content::BrowserContext* browser_context);
@@ -23,7 +24,7 @@ class BraveOpenAIChatPermissionContext : public PermissionContextBase {
       const BraveOpenAIChatPermissionContext&) = delete;
 
  private:
-  // PermissionContextBase:
+  // ContentSettingPermissionContextBase:
   ContentSetting GetPermissionStatusInternal(
       content::RenderFrameHost* render_frame_host,
       const GURL& requesting_origin,
