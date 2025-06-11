@@ -423,7 +423,7 @@ void ToggleVerticalTabStripExpanded(Browser* browser) {
 
 void ToggleActiveTabAudioMute(Browser* browser) {
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!contents || !contents->IsCurrentlyAudible()) {
+  if (!contents) {
     return;
   }
 
