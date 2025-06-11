@@ -257,7 +257,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     if item.duration != 0 {
       detailTextForPlaylistSuggestions.append(
         NSAttributedString(
-          string: " · \(TimestampFormatStyle.timestamp.format(Duration.seconds(item.duration)))",
+          string: " · \(Duration.seconds(item.duration).formatted(.timestamp))",
           attributes: [
             .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
             .foregroundColor: UIColor(braveSystemName: .textSecondary),
