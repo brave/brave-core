@@ -10,16 +10,20 @@ package*.json @brave/js-deps-reviewers
 rewrite/ @bridiver @cdesouza-chromium
 
 # Views
-chromium_src/ui/views/view.h @bridiver
+# Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
+chromium_src/ui/views/view.h @bridiver @cdesouza-chromium
 
-# brave/browser/ui/BUILD.gn should not have new files added to it
+# brave/browser/ui/BUILD.gn should not have new source files added to it. see
+# https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies-circular-dependencies
 browser/ui/BUILD.gn @bridiver
 
 # BraveBrowserProcess public interface
-browser/brave_browser_process.h @bridiver
+# Global services should use GlobalDesktopFeatures
+# https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity
+browser/brave_browser_process.h @bridiver @goodov
 
 # New WebUI should use RegisterChromeWebUIConfigs
-browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver
+browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver @petemill
 
 # BraveComponent is deprecated
 components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
@@ -208,7 +212,7 @@ android/java/org/chromium/chrome/browser/util @bridiver
 
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
-third_party/rust @bridiver
+third_party/rust @bridiver @cdesouza-chromium
 
 # include_rules
 DEPS @brave/deps-reviewers
@@ -222,15 +226,15 @@ docs/gni_sources.md @brave/sources-gni-reviewers
 **/*.rs @brave/rust-reviewers
 
 # Third-party binaries
-**/*.aar @bridiver
-**/*.jar @bridiver
-**/*.apk @bridiver
-**/*.dex @bridiver
-**/*.lib @bridiver
-**/*.so @bridiver
-**/*.o @bridiver
-**/*.dll @bridiver
-**/*.dylib @bridiver
+**/*.aar @brave/sec-team
+**/*.jar @brave/sec-team
+**/*.apk @brave/sec-team
+**/*.dex @brave/sec-team
+**/*.lib @brave/sec-team
+**/*.so @brave/sec-team
+**/*.o @brave/sec-team
+**/*.dll @brave/sec-team
+**/*.dylib @brave/sec-team
 
 # Strings
 **/*.grd @brave/string-reviewers-team
