@@ -5,18 +5,21 @@
 
 import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
+import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 
 export function getHtml(this: SettingsBraveContentContainersElement) {
   return html`<!--_html_template_start_-->
     <div class="cr-row first two-line">
       <div class="flex">
-        <div class="label">$i18nRaw{containersDesc}</div>
+        <div class="label">
+          $i18nRaw{SETTINGS_CONTAINERS_SECTION_DESCRIPTION}
+        </div>
       </div>
       <cr-button
         @click="${this.onAddContainerClick_}"
         size="small"
       >
-        $i18n{containersAddContainer}
+        $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
       </cr-button>
     </div>
 
@@ -71,8 +74,8 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                   required
                   auto-validate
                   pattern=".+"
-                  label="$i18n{containersContainerName}"
-                  placeholder="$i18n{containersContainerNamePlaceholder}"
+                  label="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL}"
+                  placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
                 >
                 </cr-input>
               </div>
@@ -104,11 +107,13 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
             @close="${this.onCancelDialog_}"
             ?no-cancel="${this.isRemoving_}"
           >
-            <div slot="title">$i18n{containersDeleteContainer}</div>
+            <div slot="title">
+              $i18n{SETTINGS_CONTAINERS_DELETE_CONTAINER_LABEL}
+            </div>
             <div slot="body">
               <div class="label">
                 ${this.i18n(
-                  'containersDeleteContainerDescription',
+                  ContainersStrings.SETTINGS_CONTAINERS_DELETE_CONTAINER_DESCRIPTION,
                   this.deletingContainer_.name,
                 )}
               </div>

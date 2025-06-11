@@ -13,6 +13,7 @@ import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
+import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 
 const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 
@@ -128,8 +129,8 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   getEditDialogTitle_(): string {
     return this.editingContainer_?.id
-      ? this.i18n('containersEditContainer')
-      : this.i18n('containersAddContainer')
+      ? this.i18n(ContainersStrings.SETTINGS_CONTAINERS_EDIT_CONTAINER_LABEL)
+      : this.i18n(ContainersStrings.SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL)
   }
 
   onIsRemovingChanged_(isRemoving: boolean) {

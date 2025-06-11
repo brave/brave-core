@@ -68,6 +68,8 @@ brave_grit("brave_generated_resources_grit") {
   output_dir = "$root_gen_dir/brave"
   outputs = [
     "grit/brave_generated_resources.h",
+    "grit/brave_generated_resources_webui_strings.h",
+    "grit/brave_generated_resources_webui_strings.ts",
 
     # This is needed for the includes and not the localized messages
     "brave_generated_resources.pak",
