@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import {
+  CrLitElement,
+  PropertyValues,
+} from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import { Container } from '../containers.mojom-webui.js'
 import { getCss } from './containers.css.js'
@@ -60,6 +63,13 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+    if (changedProperties.has('isRemoving_')) {
+      this.onIsRemovingChanged_(this.isRemoving_)
+    }
   }
 
   onContainersListUpdated_(containers: Container[]) {
