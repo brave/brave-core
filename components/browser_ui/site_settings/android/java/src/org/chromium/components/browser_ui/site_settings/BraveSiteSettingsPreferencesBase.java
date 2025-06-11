@@ -17,6 +17,9 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
     private static final String ADS_KEY = "ads";
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
     private static final String IDLE_DETECTION = "idle_detection";
+    private static final String DIVIDER_KEY = "divider";
+    private static final String PERMISSION_AUTOREVOCATION_KEY = "permission_autorevocation";
+    private static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -63,5 +66,23 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         removePreferenceIfPresent(IDLE_DETECTION);
         removePreferenceIfPresent(ADS_KEY);
         removePreferenceIfPresent(BACKGROUND_SYNC_KEY);
+
+        // We want to place these Settings at the bottom.
+        // See https://github.com/brave/brave-browser/issues/46547
+        // for the context
+        Preference prefDivider = getPreferenceScreen().findPreference(DIVIDER_KEY);
+        Preference prefPermissionAutorevocation =
+                getPreferenceScreen().findPreference(PERMISSION_AUTOREVOCATION_KEY);
+        assert prefDivider != null && prefPermissionAutorevocation != null
+                : "Remove the order adjustment if the prefs are removed from upstream";
+        if (prefDivider != null && prefPermissionAutorevocation != null) {
+            Preference prefSolanaConnectedSites =
+                    getPreferenceScreen().findPreference(SOLANA_CONNECTED_SITES_KEY);
+            assert prefSolanaConnectedSites != null
+                    : "Adjust if needed for the last pref in the site settings screen";
+            int solanaConnectedSitesOrder = prefSolanaConnectedSites.getOrder();
+            prefDivider.setOrder(solanaConnectedSitesOrder + 1);
+            prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
+        }
     }
 }
