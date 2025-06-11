@@ -13,12 +13,44 @@ mangle(
       '#miniToolbarBackground',
     )
     if (!miniToolbarBackground) {
-        throw new Error(
-            '[Customize Chrome > Toolbar] #miniToolbarBackground is gone.',
-        )
+      throw new Error(
+        '[Customize Chrome > Toolbar] #miniToolbarBackground is gone.',
+      )
     }
-    
+
     miniToolbarBackground.remove()
   },
   (template) => template.text.includes('id="miniToolbarBackground"'),
+)
+
+// Remove #tipCard
+mangle(
+  (element: DocumentFragment) => {
+    // Remove the tip card.
+    const tipCard = element.querySelector('#tipCard')
+    if (!tipCard) {
+      throw new Error('[Customize Chrome > Toolbar] #tipCard is gone.')
+    }
+
+    tipCard.remove()
+  },
+  (template) => template.text.includes('id="tipCard"'),
+)
+
+// Insert tipCardLabel text after ".intro-text"
+mangle(
+  (element: DocumentFragment) => {
+    const introText = element.querySelector('.intro-text')
+    if (!introText) {
+      throw new Error('[Customize Chrome > Toolbar] .intro-text is gone.')
+    }
+
+    introText.insertAdjacentHTML(
+      'afterend',
+      /* html */ `
+        <div id="tipCardLabel">$i18n{reorderTipLabel}</div>
+    `,
+    )
+  },
+  (template) => template.text.includes('class="intro-text"'),
 )
