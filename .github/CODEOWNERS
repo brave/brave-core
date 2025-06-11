@@ -12,10 +12,8 @@ rewrite/ @bridiver @cdesouza-chromium
 # Views
 chromium_src/ui/views/view.h @bridiver @cdesouza-chromium
 
-# brave/browser/ui/BUILD.gn should not have new source files added to it
-# TODO(bridiver) add link to
-# https://github.com/brave/brave-core/pull/28907/files and other code owners
-# when merged
+# brave/browser/ui/BUILD.gn should not have new source files added to it. see
+# https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies-circular-dependencies
 browser/ui/BUILD.gn @bridiver
 
 # BraveBrowserProcess public interface
