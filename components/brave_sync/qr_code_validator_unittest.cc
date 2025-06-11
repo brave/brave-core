@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/logging.h"
 #include "base/strings/stringize_macros.h"
 #include "base/time/time_override.h"
 #include "brave/components/brave_sync/qr_code_data.h"

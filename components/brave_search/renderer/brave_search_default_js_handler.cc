@@ -8,6 +8,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"

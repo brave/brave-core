@@ -12,6 +12,7 @@
 #include <optional>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password.h"
 

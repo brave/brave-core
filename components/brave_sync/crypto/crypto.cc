@@ -7,6 +7,8 @@
 
 #include <cmath>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"

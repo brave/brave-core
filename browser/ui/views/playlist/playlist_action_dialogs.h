@@ -12,6 +12,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/check.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"

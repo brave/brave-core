@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
 
+#include "base/check.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"

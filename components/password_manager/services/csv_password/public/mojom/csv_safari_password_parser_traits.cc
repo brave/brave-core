@@ -5,6 +5,8 @@
 
 #include "brave/components/password_manager/services/csv_password/public/mojom/csv_safari_password_parser_traits.h"
 
+#include "base/check.h"
+#include "base/notreached.h"
 #include "url/mojom/url_gurl_mojom_traits.h"
 
 namespace mojo {

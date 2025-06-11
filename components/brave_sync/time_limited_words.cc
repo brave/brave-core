@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/logging.h"

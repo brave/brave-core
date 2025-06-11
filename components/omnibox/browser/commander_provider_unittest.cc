@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
-#include "base/notreached.h"
+#include "base/notimplemented.h"
 #include "base/observer_list.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"

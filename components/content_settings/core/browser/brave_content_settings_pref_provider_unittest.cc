@@ -10,6 +10,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"

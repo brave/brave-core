@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/base64.h"
-#include "base/logging.h"
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"

@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"

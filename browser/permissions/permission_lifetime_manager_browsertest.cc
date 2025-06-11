@@ -10,6 +10,7 @@
 
 #include "base/command_line.h"
 #include "base/json/json_file_value_serializer.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"

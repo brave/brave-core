@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "url/gurl.h"

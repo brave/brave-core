@@ -5,6 +5,7 @@
 
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"

@@ -9,8 +9,12 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/notreached.h"
 #include "base/task/thread_pool.h"
 #include "base/uuid.h"
 #include "brave/components/playlist/browser/mime_util.h"

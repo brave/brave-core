@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
