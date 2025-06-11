@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"

@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/extension_metrics.h"
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"

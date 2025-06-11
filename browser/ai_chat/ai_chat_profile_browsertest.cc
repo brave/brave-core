@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/notreached.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"

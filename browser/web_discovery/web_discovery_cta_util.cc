@@ -5,9 +5,9 @@
 
 #include "brave/browser/web_discovery/web_discovery_cta_util.h"
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/json/values_util.h"
-#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/time/clock.h"
 #include "base/values.h"

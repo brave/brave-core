@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/rust/url/v2/crate/parse.h"
-
 #include <string>
 
+#include "base/check.h"
+#include "base/i18n/icu_util.h"
+#include "brave/third_party/rust/url/v2/crate/parse.h"
 #include "brave/third_party/rust/url/v2/crate/src/lib.rs.h"
 #include "url/gurl.h"
-#include "base/i18n/icu_util.h"
 
 namespace parse {
 

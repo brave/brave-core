@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "base/check.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "ui/native_theme/native_theme.h"
 

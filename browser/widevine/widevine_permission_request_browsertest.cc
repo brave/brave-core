@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_utils.h"

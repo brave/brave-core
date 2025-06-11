@@ -5,7 +5,6 @@
 
 #include "base/command_line.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/test/launcher/unit_test_launcher.h"
 #include "base/test/test_io_thread.h"
 #include "brave/test/base/brave_unit_test_suite.h"

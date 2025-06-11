@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
+#include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"

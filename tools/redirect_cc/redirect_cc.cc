@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"

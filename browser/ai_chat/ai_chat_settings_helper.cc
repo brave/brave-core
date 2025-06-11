@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"

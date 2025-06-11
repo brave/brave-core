@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"

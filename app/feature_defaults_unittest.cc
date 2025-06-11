@@ -7,7 +7,6 @@
 #include "base/feature_list.h"
 #include "base/feature_override.h"
 #include "base/features.h"
-#include "base/logging.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"

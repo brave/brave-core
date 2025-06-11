@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_shell_integration.h"
+
+#include "base/notreached.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)

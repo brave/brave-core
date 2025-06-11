@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"

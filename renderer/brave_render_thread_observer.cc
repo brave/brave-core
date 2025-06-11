@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 

@@ -11,6 +11,7 @@
 #include <utility>
 #include <variant>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"

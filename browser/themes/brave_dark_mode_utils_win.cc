@@ -5,6 +5,7 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 
+#include "base/check.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "ui/native_theme/native_theme_win.h"
 

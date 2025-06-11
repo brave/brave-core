@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"

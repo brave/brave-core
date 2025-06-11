@@ -5,6 +5,7 @@
 
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 
+#include "base/check.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"

@@ -7,7 +7,9 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/day_zero_browser_ui_expt/pref_names.h"

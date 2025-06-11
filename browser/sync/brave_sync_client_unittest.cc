@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"

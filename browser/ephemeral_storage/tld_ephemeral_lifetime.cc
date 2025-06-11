@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <map>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 

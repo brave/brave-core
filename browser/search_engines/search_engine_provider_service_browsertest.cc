@@ -6,6 +6,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"

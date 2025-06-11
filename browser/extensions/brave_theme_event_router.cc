@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/extensions/api/brave_theme.h"
 #include "chrome/browser/profiles/profile.h"

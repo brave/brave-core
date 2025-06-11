@@ -5,6 +5,7 @@
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 
+#include "base/check.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/importer/extensions_import_helpers.h"
 #include "brave/grit/brave_generated_resources.h"

@@ -5,6 +5,7 @@
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
+#include "base/check.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"

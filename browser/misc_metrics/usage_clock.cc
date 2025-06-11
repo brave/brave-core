@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/usage_clock.h"
 
+#include "base/check.h"
 #include "base/time/tick_clock.h"
 #include "base/time/time.h"
 

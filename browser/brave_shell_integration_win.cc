@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"

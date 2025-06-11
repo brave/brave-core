@@ -15,6 +15,7 @@
 
 #include "base/apple/foundation_util.h"
 #include "base/apple/scoped_objc_class_swizzler.h"
+#include "base/check.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"

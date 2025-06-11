@@ -16,6 +16,7 @@
 #include "base/apple/bundle_locations.h"
 #include "base/apple/foundation_util.h"
 #include "base/apple/osstatus_logging.h"
+#include "base/check.h"
 #include "base/file_version_info.h"
 #include "base/functional/bind.h"
 #include "base/location.h"

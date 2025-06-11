@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/auto_reset.h"
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "crypto/sha2.h"
 #include "net/base/net_export.h"

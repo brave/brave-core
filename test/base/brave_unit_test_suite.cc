@@ -5,7 +5,6 @@
 
 #include "brave/test/base/brave_unit_test_suite.h"
 
-#include "base/logging.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"

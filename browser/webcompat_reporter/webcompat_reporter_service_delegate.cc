@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"

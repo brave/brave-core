@@ -8,6 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"

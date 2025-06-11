@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_file.h"
+#include "base/logging.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "brave/components/constants/brave_paths.h"

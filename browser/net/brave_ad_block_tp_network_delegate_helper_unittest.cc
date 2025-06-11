@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"

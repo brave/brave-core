@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/android/jni_string.h"
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "chrome/android/chrome_jni_headers/BraveFeatureUtil_jni.h"
 #include "chrome/browser/about_flags.h"

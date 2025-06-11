@@ -9,6 +9,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/check.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "build/buildflag.h"
 #include "content/public/common/isolated_world_ids.h"

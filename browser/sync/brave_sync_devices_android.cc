@@ -10,7 +10,10 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"

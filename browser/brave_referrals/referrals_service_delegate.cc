@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/path_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"

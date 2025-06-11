@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
