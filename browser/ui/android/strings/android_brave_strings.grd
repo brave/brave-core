@@ -1064,6 +1064,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_NEWS_TITLE" desc="Title for Brave news settings">
         Brave News
       </message>
+      <message name="IDS_CUSTOMIZE_MENU_TITLE" desc="Title for customize menu settings">
+        Customize menu
+      </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
       </message>
