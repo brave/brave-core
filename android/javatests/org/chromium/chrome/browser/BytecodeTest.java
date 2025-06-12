@@ -646,13 +646,14 @@ public class BytecodeTest {
                         Integer.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider", // presubmit: ignore-long-line
                         "getActionButtonTintList",
                         MethodModifier.STATIC,
                         ColorStateList.class,
                         Context.class,
                         boolean.class,
-                        boolean.class));
+                        boolean.class,
+                        Integer.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
