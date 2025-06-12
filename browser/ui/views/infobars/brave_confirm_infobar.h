@@ -42,6 +42,8 @@ class BraveConfirmInfoBar : public InfoBarView {
   // InfoBarView:
   int GetContentMinimumWidth() const override;
 
+  void MaybeLayoutMultiLineLabelAndLink();
+
   void OkButtonPressed();
   void CancelButtonPressed();
   void ExtraButtonPressed();
