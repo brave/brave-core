@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -34,7 +35,7 @@ BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
 
 BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
-    std::unique_ptr<Delegate> delegate)
+    std::unique_ptr<MultiContentsViewDelegate> delegate)
     : MultiContentsView(browser_view, std::move(delegate)) {
   // Replace upstream's resize area with ours.
   // To prevent making |resize_area_| dangling pointer,
