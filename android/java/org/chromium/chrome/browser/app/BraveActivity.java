@@ -481,6 +481,8 @@ public abstract class BraveActivity extends ChromeActivity
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
+        } else if (id == R.id.brave_customize_menu_id) {
+            openCustomizeMenu();
         } else {
             return false;
         }
@@ -2089,6 +2091,11 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null) {
             BraveLeoUtils.openLeoUrlForTab(currentTab.getWebContents());
         }
+    }
+
+    private void openCustomizeMenu() {
+        // Temp toast - Make sure to remove it.
+        Toast.makeText(this, "Open customize menu", Toast.LENGTH_SHORT).show();
     }
 
     public void showRewardsPage() {
