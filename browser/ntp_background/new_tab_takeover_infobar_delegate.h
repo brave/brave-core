@@ -6,18 +6,28 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_H_
 
+#include <string>
+#include <vector>
+
 #include "base/memory/raw_ptr.h"
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar_delegate.h"
 
 class PrefService;
+class GURL;
+enum class WindowOpenDisposition;
 
 namespace content {
 class WebContents;
 }  // namespace content
 
+namespace ui {
+class ImageModel;
+}  // namespace ui
+
 namespace ntp_background_images {
 
-class NewTabTakeoverInfoBarDelegate : public ConfirmInfoBarDelegate {
+class NewTabTakeoverInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   explicit NewTabTakeoverInfoBarDelegate(PrefService* prefs);
 
@@ -41,6 +51,10 @@ class NewTabTakeoverInfoBarDelegate : public ConfirmInfoBarDelegate {
   GURL GetLinkURL() const override;
   bool LinkClicked(WindowOpenDisposition disposition) override;
   void InfoBarDismissed() override;
+
+  // BraveConfirmInfoBarDelegate:
+  std::vector<int> GetButtonsOrder() const override;
+  bool ShouldSupportMultiLine() const override;
 
  private:
   const raw_ptr<PrefService> prefs_;
