@@ -20,6 +20,7 @@
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "base/no_destructor.h"
 
 constexpr char kBraveUserAgentExceptionsFile[] = "brave-checks.txt";
 
@@ -32,7 +33,8 @@ BraveUserAgentExceptions* BraveUserAgentExceptions::GetInstance() {
           brave_user_agent::features::kUseBraveUserAgent)) {
     return nullptr;
   }
-  return base::Singleton<BraveUserAgentExceptions>::get();
+  static base::NoDestructor<BraveUserAgentExceptions> instance;
+  return instance.get();
 }
 
 BraveUserAgentExceptions::BraveUserAgentExceptions() = default;

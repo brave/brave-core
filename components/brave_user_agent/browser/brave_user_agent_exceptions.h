@@ -11,9 +11,13 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -35,6 +39,7 @@ class BraveUserAgentExceptions {
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveUserAgentExceptionsUnitTest,
                            TestCanShowBraveDomainsLoaded);
+  friend base::NoDestructor<BraveUserAgentExceptions>;
   BraveUserAgentExceptions();
   void OnExceptedDomainsLoaded(const std::string& contents);
 
