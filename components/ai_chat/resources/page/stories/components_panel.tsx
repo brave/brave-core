@@ -532,7 +532,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentType: Mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
-  url: { url: 'https://www.example.com/a' },
+  url: { url: 'https://www.example.com/areallylongurlthatwillbetruncatedintheinputbox' },
   contentId: 1,
 }
 
