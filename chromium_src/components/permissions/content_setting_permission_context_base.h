@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_H_
 
 #include "base/functional/callback.h"
+#include "components/permissions/permission_context_base.h"
 
 namespace permissions {
 class ContentSettingPermissionContextBase;
@@ -17,21 +18,11 @@ class PermissionLifetimeManager;
 
 #define ContentSettingPermissionContextBase \
   ContentSettingPermissionContextBase_ChromiumImpl
-#define PermissionDecided virtual PermissionDecided
-#define BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_  \
-  friend ContentSettingPermissionContextBase_BraveImpl; \
-                                                        \
- protected:                                             \
-  base::RepeatingCallback<PermissionLifetimeManager*(   \
-      content::BrowserContext*)>                        \
-      permission_lifetime_manager_factory_;
-#define CleanUpRequest virtual CleanUpRequest
-
+#define BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_ \
+  friend ContentSettingPermissionContextBase_BraveImpl;
 #include "src/components/permissions/content_setting_permission_context_base.h"  // IWYU pragma: export
 
 #undef BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_
-#undef CleanUpRequest
-#undef PermissionDecided
 #undef ContentSettingPermissionContextBase
 
 #include <map>
@@ -97,6 +88,9 @@ class ContentSettingPermissionContextBase
   void CleanUpRequest(content::WebContents* web_contents,
                       const PermissionRequestID& id,
                       bool embedded_permission_element_initiated) override;
+
+  base::RepeatingCallback<PermissionLifetimeManager*(content::BrowserContext*)>
+      permission_lifetime_manager_factory_;
 
   std::map<std::string, std::unique_ptr<GroupedPermissionRequests>>
       pending_grouped_requests_;
