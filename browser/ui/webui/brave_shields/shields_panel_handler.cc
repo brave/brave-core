@@ -25,7 +25,10 @@ ShieldsPanelHandler::ShieldsPanelHandler(
     Profile* profile)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      profile_(profile) {}
+      profile_(profile) {
+  CHECK(profile_);
+  CHECK(webui_controller_);
+}
 
 ShieldsPanelHandler::~ShieldsPanelHandler() = default;
 
@@ -47,23 +50,20 @@ void ShieldsPanelHandler::CloseUI() {
 }
 
 void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
-  DCHECK(profile_);
-  CHECK(webui_controller_);
-  auto* browser = static_cast<Browser*>(webui::GetBrowserWindowInterface(
-      webui_controller_->web_ui()->GetWebContents()));
-  if (!browser) {
+  auto* browser_window_interface = webui::GetBrowserWindowInterface(
+      webui_controller_->web_ui()->GetWebContents());
+  if (!browser_window_interface) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto* brave_browser_window =
-      static_cast<BraveBrowserWindow*>(browser->window());
-  if (brave_browser_window == nullptr) {
+  auto const* browser = browser_window_interface->GetBrowserForMigrationOnly();
+  if (!browser || !browser->window()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  gfx::Vector2d vec =
-      gfx::Vector2d(brave_browser_window->GetShieldsBubbleRect().x(),
-                    brave_browser_window->GetShieldsBubbleRect().y());
+  auto* browser_window = BraveBrowserWindow::From(browser->window());
+  gfx::Vector2d vec = gfx::Vector2d(browser_window->GetShieldsBubbleRect().x(),
+                                    browser_window->GetShieldsBubbleRect().y());
   std::move(callback).Run(vec);
 }
 
