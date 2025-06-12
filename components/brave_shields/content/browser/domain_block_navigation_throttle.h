@@ -19,6 +19,10 @@
 
 class HostContentSettingsMap;
 
+namespace content {
+class NavigationHandle;
+}  // namespace content
+
 namespace ephemeral_storage {
 class EphemeralStorageService;
 }  // namespace ephemeral_storage
@@ -32,7 +36,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
  public:
   struct BlockResult;
   explicit DomainBlockNavigationThrottle(
-      content::NavigationThrottleRegistry& registry,
+      content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
@@ -45,7 +49,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       const DomainBlockNavigationThrottle&) = delete;
 
   static std::unique_ptr<DomainBlockNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
+      content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,

@@ -42,19 +42,21 @@ namespace brave_rewards {
 // static
 std::unique_ptr<RewardsProtocolNavigationThrottle>
 RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationThrottleRegistry& registry) {
+    content::NavigationHandle* navigation_handle) {
   auto* pref_service = user_prefs::UserPrefs::Get(
-      registry.GetNavigationHandle().GetWebContents()->GetBrowserContext());
+      navigation_handle->GetWebContents()->GetBrowserContext());
   if (!pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {
     return nullptr;
   }
 
-  return std::make_unique<RewardsProtocolNavigationThrottle>(registry);
+  return std::make_unique<RewardsProtocolNavigationThrottle>(navigation_handle);
 }
 
 RewardsProtocolNavigationThrottle::RewardsProtocolNavigationThrottle(
-    content::NavigationThrottleRegistry& registry)
-    : NavigationThrottle(registry) {}
+    NavigationHandle* handle)
+    : NavigationThrottle(handle) {
+  CHECK(handle);
+}
 
 RewardsProtocolNavigationThrottle::~RewardsProtocolNavigationThrottle() =
     default;

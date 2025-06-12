@@ -16,21 +16,20 @@ namespace brave_search {
 
 std::unique_ptr<BackupResultsNavigationThrottle>
 BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationThrottleRegistry& registry) {
-  auto* context =
-      registry.GetNavigationHandle().GetWebContents()->GetBrowserContext();
+    content::NavigationHandle* navigation_handle) {
+  auto* context = navigation_handle->GetWebContents()->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
   if (!profile->IsOffTheRecord() ||
       !profile->GetOTRProfileID().IsSearchBackupResults()) {
     return nullptr;
   }
 
-  return std::make_unique<BackupResultsNavigationThrottle>(registry);
+  return std::make_unique<BackupResultsNavigationThrottle>(navigation_handle);
 }
 
 BackupResultsNavigationThrottle::BackupResultsNavigationThrottle(
-    content::NavigationThrottleRegistry& registry)
-    : NavigationThrottle(registry) {}
+    content::NavigationHandle* navigation_handle)
+    : NavigationThrottle(navigation_handle) {}
 BackupResultsNavigationThrottle::~BackupResultsNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult

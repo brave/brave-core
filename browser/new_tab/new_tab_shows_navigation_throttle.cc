@@ -20,20 +20,19 @@
 // static
 std::unique_ptr<NewTabShowsNavigationThrottle>
 NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationThrottleRegistry& registry) {
-  auto& navigation_handle = registry.GetNavigationHandle();
-  auto* context = navigation_handle.GetWebContents()->GetBrowserContext();
+    content::NavigationHandle* navigation_handle) {
+  auto* context = navigation_handle->GetWebContents()->GetBrowserContext();
   if (!Profile::FromBrowserContext(context)->IsRegularProfile() ||
-      !NewTabUI::IsNewTab(navigation_handle.GetURL())) {
+      !NewTabUI::IsNewTab(navigation_handle->GetURL())) {
     return nullptr;
   }
 
-  return std::make_unique<NewTabShowsNavigationThrottle>(registry);
+  return std::make_unique<NewTabShowsNavigationThrottle>(navigation_handle);
 }
 
 NewTabShowsNavigationThrottle::NewTabShowsNavigationThrottle(
-    content::NavigationThrottleRegistry& registry)
-    : NavigationThrottle(registry) {}
+    content::NavigationHandle* navigation_handle)
+    : NavigationThrottle(navigation_handle) {}
 NewTabShowsNavigationThrottle::~NewTabShowsNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult

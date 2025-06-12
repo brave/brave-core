@@ -11,15 +11,18 @@
 #include "base/memory/raw_ref.h"
 #include "content/public/browser/navigation_throttle.h"
 
+namespace content {
+class NavigationHandle;
+}
+
 namespace debounce {
 
 class DebounceService;
 
 class DebounceNavigationThrottle : public content::NavigationThrottle {
  public:
-  explicit DebounceNavigationThrottle(
-      content::NavigationThrottleRegistry& registry,
-      DebounceService& debounce_service);
+  explicit DebounceNavigationThrottle(content::NavigationHandle* handle,
+                                      DebounceService& debounce_service);
   ~DebounceNavigationThrottle() override;
 
   DebounceNavigationThrottle(const DebounceNavigationThrottle&) = delete;
@@ -27,7 +30,7 @@ class DebounceNavigationThrottle : public content::NavigationThrottle {
       delete;
 
   static std::unique_ptr<DebounceNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
+      content::NavigationHandle* handle,
       DebounceService* debounce_service);
 
   // Implements content::NavigationThrottle.

@@ -35,7 +35,7 @@ namespace request_otr {
 // static
 std::unique_ptr<RequestOTRNavigationThrottle>
 RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationThrottleRegistry& registry,
+    content::NavigationHandle* navigation_handle,
     RequestOTRService* request_otr_service,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* pref_service,
@@ -56,16 +56,15 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
   }
 
   // If this is the system profile, then we don't need the throttle.
-  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   if (profile_metrics::GetBrowserProfileType(
-          navigation_handle.GetWebContents()->GetBrowserContext()) ==
+          navigation_handle->GetWebContents()->GetBrowserContext()) ==
       profile_metrics::BrowserProfileType::kSystem) {
     return nullptr;
   }
   DCHECK(ephemeral_storage_service);
 
   // Don't block subframes.
-  if (!navigation_handle.IsInMainFrame()) {
+  if (!navigation_handle->IsInMainFrame()) {
     return nullptr;
   }
 
@@ -77,17 +76,17 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
   }
 
   return std::make_unique<RequestOTRNavigationThrottle>(
-      registry, request_otr_service, ephemeral_storage_service, pref_service,
-      locale);
+      navigation_handle, request_otr_service, ephemeral_storage_service,
+      pref_service, locale);
 }
 
 RequestOTRNavigationThrottle::RequestOTRNavigationThrottle(
-    content::NavigationThrottleRegistry& registry,
+    content::NavigationHandle* navigation_handle,
     RequestOTRService* request_otr_service,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* pref_service,
     const std::string& locale)
-    : content::NavigationThrottle(registry),
+    : content::NavigationThrottle(navigation_handle),
       request_otr_service_(request_otr_service),
       ephemeral_storage_service_(ephemeral_storage_service),
       pref_service_(pref_service),

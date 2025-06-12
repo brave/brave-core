@@ -12,6 +12,10 @@
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
 
+namespace content {
+class NavigationHandle;
+}  // namespace content
+
 class PrefService;
 
 namespace decentralized_dns {
@@ -19,7 +23,7 @@ namespace decentralized_dns {
 class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit DecentralizedDnsNavigationThrottle(
-      content::NavigationThrottleRegistry& registry,
+      content::NavigationHandle* navigation_handle,
       PrefService* user_prefs,
       PrefService* local_state,
       const std::string& locale);
@@ -31,7 +35,7 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
       const DecentralizedDnsNavigationThrottle&) = delete;
 
   static std::unique_ptr<DecentralizedDnsNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
+  MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
                          PrefService* user_prefs,
                          PrefService* local_state,
                          const std::string& locale);
