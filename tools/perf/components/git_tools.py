@@ -72,7 +72,7 @@ def PushChangesToBranch(files: Dict[str, str],
       raise ValueError("GitHub username or token not set in environment variables")
     
     # Construct the URL with authentication
-    auth_url = f'https://{github_username}:{github_token}@{GH_BRAVE_CORE_GIT_URL.split("@")[1]}'
+    auth_url = f'https://{github_username}:{github_token}@github.com/brave/brave-core.git'
     
     success, _ = GetProcessOutput(
         ['git', 'push', auth_url, f'{branch}:{branch}'], cwd)
