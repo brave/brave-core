@@ -453,13 +453,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const associateDefaultContent = React.useMemo(() => {
-    return aiChatContext.defaultTabContentId && !context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
+    const existingAttachedContent = context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
+    const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
+
+    return aiChatContext.defaultTabContentId && !existingAttachedContent && tab
       ? () => {
-        const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
-        if (!tab) {
-          console.error('Could not find tab for content', aiChatContext.defaultTabContentId)
-          return
-        }
         aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
       }
       : undefined

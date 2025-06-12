@@ -33,6 +33,9 @@
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
   padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
+
+  container-name: input-container;
+  container-type: inline-size;
 }
 
 .siteTitleContainer {
