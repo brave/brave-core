@@ -57,7 +57,7 @@ addTrezorCommandHandler(
   (command: UnlockCommand): Promise<UnlockResponsePayload> => {
     return new Promise(async (resolve) => {
       TrezorConnect.init({
-        connectSrc: 'https://connect.trezor.io/9/',
+        connectSrc: 'https://connect.trezor.io/9.1.11/',
         lazyLoad: false,
         manifest: {
           email: 'support@brave.com',
