@@ -139,7 +139,37 @@ export const zcashEndpoints = ({
       },
       providesTags: ['IsShieldingAvailable'],
     }),
+    getAvailableShieldedAccount: query<
+      BraveWallet.ZCashAccountInfo | null,
+      BraveWallet.AccountId[]
+    >({
+      queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { zcashWalletService } = baseQuery(undefined).data
 
+          const accountInfos = await mapLimit(
+            args,
+            10,
+            async (accountId: BraveWallet.AccountId) =>
+              await zcashWalletService.getZCashAccountInfo(accountId),
+          )
+
+          return {
+            data:
+              accountInfos.filter(
+                (info) => info.accountInfo?.accountShieldBirthday,
+              )[0]?.accountInfo ?? null,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error getting available shielded account: ',
+            error,
+          )
+        }
+      },
+      providesTags: ['AvailableShieldedAccount'],
+    }),
     getChainTipStatus: query<
       BraveWallet.ZCashChainTipStatus | null,
       BraveWallet.AccountId

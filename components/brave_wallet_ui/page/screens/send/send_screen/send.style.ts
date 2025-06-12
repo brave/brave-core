@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Alert from '@brave/leo/react/alert'
 
 // Shared Styles
 import { Text, Row } from '../../../../components/shared/style'
@@ -21,4 +22,8 @@ export const ToText = styled(Text)`
 
 export const ToRow = styled(Row)`
   min-height: 26px;
+`
+
+export const ShieldingFundsAlert = styled(Alert)`
+  width: 100%;
 `
