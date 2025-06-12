@@ -1408,11 +1408,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                               captchaId:base::SysUTF8ToNSString(captcha_id)];
 }
 
-- (void)recordP2AEvents:(const std::vector<std::string>&)events {
-  // TODO(https://github.com/brave/brave-browser/issues/33786): Unify Brave Ads
-  // P3A analytics.
-}
-
 - (bool)findProfilePref:(const std::string&)path {
   return !!self.profilePrefService->FindPreference(path);
 }

@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -157,8 +156,6 @@ void NotificationAdHandler::OnBrowserDidEnterBackground() {
 void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
   BLOG(1, "Opportunity arose to serve a notification ad");
-
-  RecordP2AAdOpportunity(mojom::AdType::kNotificationAd, segments);
 }
 
 void NotificationAdHandler::OnDidServeNotificationAd(

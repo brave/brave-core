@@ -34,8 +34,6 @@ class BraveAdsPromotedContentAdIntegrationTest : public test::TestBase {
          {{net::HTTP_OK,
            /*response_body=*/"/catalog_with_promoted_content_ad.json"}}}};
     test::MockUrlResponses(ads_client_mock_, url_responses);
-
-    EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
   }
 
   void TriggerPromotedContentAdEventAndVerifiyExpectations(

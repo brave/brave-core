@@ -10,7 +10,6 @@
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -159,8 +158,6 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(int32_t tab_id) {
 
 void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
   BLOG(1, "Opportunity arose to serve an inline content ad");
-
-  RecordP2AAdOpportunity(mojom::AdType::kInlineContentAd, /*segments=*/{});
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(

@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
@@ -130,8 +129,6 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
 
 void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd() {
   BLOG(1, "Opportunity arose to serve a new tab page ad");
-
-  RecordP2AAdOpportunity(mojom::AdType::kNewTabPageAd, /*segments=*/{});
 }
 
 void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {

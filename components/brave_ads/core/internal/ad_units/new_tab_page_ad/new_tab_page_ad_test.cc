@@ -12,7 +12,6 @@
 #include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
@@ -147,10 +146,6 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_,
-              RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                  mojom::AdType::kNewTabPageAd, /*segments=*/{})));
-
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
@@ -168,8 +163,6 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
@@ -191,8 +184,6 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   MockCreativeNewTabPageAds();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
