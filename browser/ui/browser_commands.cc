@@ -53,7 +53,6 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
-#include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -66,6 +65,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
+#include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
@@ -1243,8 +1243,9 @@ void SplitTabsWithSideBySide(Browser* browser) {
   const int non_active_index_from_selected_indices =
       active_index == selected_indices[0] ? selected_indices[1]
                                           : selected_indices[0];
-  tab_strip_model->AddToNewSplit({non_active_index_from_selected_indices},
-                                 split_tabs::SplitTabLayout::kVertical);
+  tab_strip_model->AddToNewSplit(
+      {non_active_index_from_selected_indices},
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kVertical));
 }
 
 void RemoveSplitWithSideBySide(Browser* browser) {
@@ -1268,7 +1269,7 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
 
   auto split_id = tab_strip_model->GetSplitForTab(active_index);
   CHECK(split_id.has_value());
-  tab_strip_model->SwapTabsInSplit(*split_id);
+  tab_strip_model->ReverseTabsInSplit(*split_id);
 }
 
 }  // namespace brave

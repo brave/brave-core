@@ -37,7 +37,6 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -146,32 +145,8 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   }
 }
 
-void BraveBrowserCommandController::OnSplitTabCreated(
-    std::vector<std::pair<tabs::TabInterface*, int>> tabs,
-    split_tabs::SplitTabId split_id,
-    SplitTabAddReason reason,
-    split_tabs::SplitTabVisualData visual_data) {
-  UpdateCommandForSplitViewWithSideBySide();
-}
-
-void BraveBrowserCommandController::OnSplitTabRemoved(
-    std::vector<std::pair<tabs::TabInterface*, int>> tabs,
-    split_tabs::SplitTabId split_id,
-    SplitTabRemoveReason reason) {
-  UpdateCommandForSplitViewWithSideBySide();
-}
-
-void BraveBrowserCommandController::OnSplitTabVisualsChanged(
-    split_tabs::SplitTabId split_id,
-    split_tabs::SplitTabVisualData old_visual_data,
-    split_tabs::SplitTabVisualData new_visual_data) {
-  UpdateCommandForSplitViewWithSideBySide();
-}
-
-void BraveBrowserCommandController::OnSplitTabContentsUpdated(
-    split_tabs::SplitTabId split_id,
-    std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
-    std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) {
+void BraveBrowserCommandController::OnSplitTabChanged(
+    const SplitTabChange& change) {
   UpdateCommandForSplitViewWithSideBySide();
 }
 

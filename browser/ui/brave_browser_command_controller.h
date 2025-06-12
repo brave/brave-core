@@ -67,21 +67,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void OnTabGroupChanged(const TabGroupChange& change) override;
-  void OnSplitTabCreated(std::vector<std::pair<tabs::TabInterface*, int>> tabs,
-                         split_tabs::SplitTabId split_id,
-                         SplitTabAddReason reason,
-                         split_tabs::SplitTabVisualData visual_data) override;
-  void OnSplitTabRemoved(std::vector<std::pair<tabs::TabInterface*, int>> tabs,
-                         split_tabs::SplitTabId split_id,
-                         SplitTabRemoveReason reason) override;
-  void OnSplitTabVisualsChanged(
-      split_tabs::SplitTabId split_id,
-      split_tabs::SplitTabVisualData old_visual_data,
-      split_tabs::SplitTabVisualData new_visual_data) override;
-  void OnSplitTabContentsUpdated(
-      split_tabs::SplitTabId split_id,
-      std::vector<std::pair<tabs::TabInterface*, int>> prev_tabs,
-      std::vector<std::pair<tabs::TabInterface*, int>> new_tabs) override;
+  void OnSplitTabChanged(const SplitTabChange& change) override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;
