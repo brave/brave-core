@@ -20,6 +20,7 @@
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 
 namespace component_updater {
 
@@ -35,6 +36,7 @@ void RegisterComponentsForUpdate() {
     p3a::RegisterP3AComponent(
         cus, p3a_service->remote_config_manager()->GetWeakPtr());
   }
+  brave_user_agent::RegisterBraveUserAgentComponent(cus);
 }
 
 }  // namespace component_updater
