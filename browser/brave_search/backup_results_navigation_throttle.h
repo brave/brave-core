@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_SEARCH_BACKUP_RESULTS_NAVIGATION_THROTTLE_H_
 #define BRAVE_BROWSER_BRAVE_SEARCH_BACKUP_RESULTS_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "content/public/browser/navigation_throttle.h"
 
 namespace brave_search {

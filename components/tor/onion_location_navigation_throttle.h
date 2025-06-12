@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_TOR_ONION_LOCATION_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_TOR_ONION_LOCATION_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "content/public/browser/navigation_throttle.h"
 
 class GURL;

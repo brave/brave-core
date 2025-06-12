@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_DEBOUNCE_CONTENT_BROWSER_DEBOUNCE_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_DEBOUNCE_CONTENT_BROWSER_DEBOUNCE_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "base/memory/raw_ref.h"
 #include "content/public/browser/navigation_throttle.h"
 
