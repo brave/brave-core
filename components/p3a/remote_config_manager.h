@@ -32,7 +32,7 @@ class RemoteConfigManager {
 
     virtual std::optional<MetricLogType> GetLogTypeForHistogram(
         std::string_view histogram_name) const = 0;
-    virtual const MetricConfig* GetBaseMetricConfig(
+    virtual const MetricConfig* GetMetricConfig(
         std::string_view histogram_name) const = 0;
     virtual void OnRemoteConfigLoaded() = 0;
   };

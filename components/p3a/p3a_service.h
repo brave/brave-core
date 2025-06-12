@@ -119,8 +119,6 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       std::string_view histogram_name) const override;
 
   // RemoteConfigManager::Delegate
-  const MetricConfig* GetBaseMetricConfig(
-      std::string_view histogram_name) const override;
   void OnRemoteConfigLoaded() override;
 
   void DisableStarAttestationForTesting();
