@@ -1,26 +1,26 @@
-Total size 83580K
+Total size 84325K
 
-GROUP Adblock [8788K total]
+GROUP Adblock [8791K total]
    226K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.378 [adcocjohghhfpidemphmcmlmhnfgikei]
-    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.13462 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1445K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.14965 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.13470 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1445K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.14974 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     97K Brave Ad Block Updater (Regional Catalog) 1.0.77 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5725K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.12661 [iodkpdagapdfkphljnddpjlldadblomo]
+  5728K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.12671 [iodkpdagapdfkphljnddpjlldadblomo]
   1236K Brave Ad Block Updater (Resources) 1.0.107 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
     68K Brave Ads Resources 1.0.109 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [12090K total]
+GROUP Ntp [12830K total]
  11624K Brave NTP background images 1.0.19 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   466K Brave NTP sponsored images 1.0.2054 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1206K Brave NTP sponsored images 1.0.2055 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [182K total]
    182K Brave Local Data Files Updater 1.0.1191 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [29044K total]
+GROUP large_files [29043K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6537K Default/RewardsCreators.db
-  1870K Safe Browsing/ChromeExtMalware.store.32_13394164988076941
- 17373K Safe Browsing/UrlSoceng.store.4_13394164987925494
+  1870K Safe Browsing/ChromeExtMalware.store.32_13394201895312865
+ 17372K Safe Browsing/UrlSoceng.store.4_13394201895165851
