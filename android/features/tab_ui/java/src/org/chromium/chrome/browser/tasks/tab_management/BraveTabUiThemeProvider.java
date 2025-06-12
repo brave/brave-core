@@ -11,16 +11,18 @@ import android.content.res.ColorStateList;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.tab_ui.R;
 
 @NullMarked
 public class BraveTabUiThemeProvider {
     public static ColorStateList getActionButtonTintList(
-            Context context, boolean isIncognito, boolean isSelected) {
+            Context context, boolean isIncognito, boolean isSelected, @Nullable Integer colorId) {
         if (isSelected) {
             return AppCompatResources.getColorStateList(context, R.color.baseline_neutral_10);
         }
 
-        return TabUiThemeProvider.getActionButtonTintList(context, isIncognito, isSelected);
+        return TabUiThemeProvider.getActionButtonTintList(
+                context, isIncognito, isSelected, colorId);
     }
 }
