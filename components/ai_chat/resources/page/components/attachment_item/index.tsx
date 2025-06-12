@@ -33,13 +33,11 @@ export function AttachmentItem(props: Props) {
       <div className={styles.leftSide}>
         {props.icon}
         <div className={styles.info}>
-          <Tooltip
-            mode='mini'
-            text={props.title}
-          >
+          <Tooltip mode='mini'>
             <div className={styles.forEllipsis}>
               <span className={styles.title}>{props.title}</span>
             </div>
+            <div className={styles.tooltipContent} slot="content">{props.title}</div>
           </Tooltip>
           {props.subtitle && (
             <span
@@ -128,12 +126,16 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
     </div>}
     title={props.title}
     subtitle={<>
-      {props.remove && <Tooltip mode='mini' text={getLocale('pageAttachmentTooltipInfo')}>
+      {props.remove && <Tooltip mode='mini'>
         <Icon name='info-outline' />
+        <div className={styles.tooltipContent} slot="content">
+          {getLocale('pageAttachmentTooltipInfo')}
+        </div>
       </Tooltip>}
-      <span className={styles.subtitleText}>
-        {sansSchemeUrl}
-      </span>
+      <Tooltip mode='mini' className={styles.subtitleText}>
+        <div>{sansSchemeUrl}</div>
+        <div className={styles.tooltipContent} slot="content">{props.url}</div>
+      </Tooltip>
     </>}
     remove={props.remove} />
 }

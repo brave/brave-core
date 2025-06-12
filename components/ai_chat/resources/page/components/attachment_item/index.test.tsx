@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { AttachmentItem, AttachmentSpinnerItem } from '.'
+import { AttachmentItem, AttachmentPageItem, AttachmentSpinnerItem } from '.'
 
 describe('attachment item', () => {
   it('renders title, subtitle and thumbnail', () => {
@@ -16,7 +16,7 @@ describe('attachment item', () => {
         icon={<img src='https://example.com/image.jpg' />}
       />
     )
-    expect(screen.getByText('Title')).toBeInTheDocument()
+    expect(screen.getByText('Title', { selector: '.title' })).toBeInTheDocument()
     expect(screen.getByText('Subtitle')).toBeInTheDocument()
     expect(
       container.querySelector('img[src="https://example.com/image.jpg"]')
@@ -34,9 +34,8 @@ describe('attachment item', () => {
       />
     )
 
-    const tooltip = container.querySelector('leo-tooltip')
+    const tooltip = container.querySelector('leo-tooltip [slot="content"]')
     expect(tooltip).toBeTruthy()
-    expect(tooltip?.getAttribute('text')).toBe('Title')
     expect(tooltip?.textContent).toBe('Title')
   })
 
@@ -81,8 +80,34 @@ describe('attachment spinner item', () => {
   it('renders a loading spinner and title', async () => {
     const { container } = render(<AttachmentSpinnerItem title='Loading...' />)
     const spinner = container.querySelector('leo-progressring')
-    expect(screen.getByText('Loading...')).toBeInTheDocument()
+    expect(screen.getByText('Loading...', { selector: '.title' })).toBeInTheDocument()
     expect(spinner).toBeInTheDocument()
     expect(spinner).toBeVisible()
+  })
+})
+
+describe('attachment page item', () => {
+  it('renders a page item', () => {
+    const { container } = render(<AttachmentPageItem title='Title' url='https://example.com' />)
+    expect(screen.getByText('Title', { selector: '.title' })).toBeInTheDocument()
+    expect(screen.getByText('https://example.com', { selector: 'leo-tooltip [slot="content"]' })).toBeInTheDocument()
+    expect(screen.getByText('example.com', { selector: '.subtitleText div:first-child' })).toBeInTheDocument()
+    expect(container.querySelector('img[src*="example.com"]')).toBeInTheDocument()
+  })
+
+  it('scheme is not hidden in tooltip', () => {
+    render(<AttachmentPageItem title='Title' url='https://example.com' />)
+    expect(screen.getByText('https://example.com', { selector: 'leo-tooltip [slot="content"]' })).toBeInTheDocument()
+  })
+
+  it('does not hide non-http(s) urls', () => {
+    render(<AttachmentPageItem title='Title' url='brave://newtab' />)
+    expect(screen.getByText('brave://newtab', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+
+    render(<AttachmentPageItem title='Title' url='file:///path/to/file.txt' />)
+    expect(screen.getByText('file:///path/to/file.txt', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+
+    render(<AttachmentPageItem title='Title' url='ftp:///path/to/file.txt' />)
+    expect(screen.getByText('ftp:///path/to/file.txt', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
   })
 })

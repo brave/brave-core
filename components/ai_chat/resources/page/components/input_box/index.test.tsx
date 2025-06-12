@@ -55,7 +55,7 @@ describe('input box', () => {
       />
     )
 
-    expect(screen.queryByText('Associated Content')).toBeInTheDocument()
+    expect(screen.getByText('Associated Content', { selector: '.title'})).toBeInTheDocument()
     expect(
       container.querySelector('img[src*="//favicon2"]')
     ).toBeInTheDocument()

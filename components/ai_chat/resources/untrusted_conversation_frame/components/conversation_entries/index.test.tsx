@@ -159,7 +159,7 @@ describe('conversation entries', () => {
       </MockDataProvider>
     )
 
-    expect(screen.queryByText('Associated Content')).toBeInTheDocument()
+    expect(screen.getByText('Associated Content', { selector: '.title'})).toBeInTheDocument()
     expect(
       container.querySelector('img[src*="//favicon2"]')
     ).toBeInTheDocument()
@@ -228,7 +228,8 @@ describe('conversation entries', () => {
       </MockDataProvider>
     )
 
-    expect(screen.queryAllByText('Associated Content').length).toBe(1)
+    // One for the text, one for the tooltip
+    expect(screen.queryAllByText('Associated Content').length).toBe(2)
     expect(
       Array.from(container.querySelectorAll('img[src*="//favicon2"]')).length
     ).toBe(1)

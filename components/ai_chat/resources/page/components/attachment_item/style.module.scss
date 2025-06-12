@@ -105,9 +105,20 @@
 }
 
 .subtitleText {
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
     overflow: hidden;
+
+    & div:first-child {
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      overflow: hidden;
+    }
+}
+
+.tooltipContent {
+  max-width: 95cqi;
+  word-break: break-word;
+  text-overflow: wrap;
 }
 
 .removeButton {
