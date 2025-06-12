@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Şu anda kullanılan arama motorları";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Özel bir arama motoru ekleyin";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Arama URL'sini yazın ve sorguyu %s ile değiştirin.\\nÖrneğin: https://youtube.com/search?q= %s \\n(Site OpenSearch'i destekliyorsa, bu alan düzenlenirken otomatik olarak ekleme seçeneği sağlanır.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Aynı isimde bir arama motoru zaten var.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Arama motoru adını girin";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Güvenli Olmayan Özel Arama Şablonu:";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Klasörü düzenle";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Hızlı arama motorlarını düzenle";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Çekerek Yenilemeyi Etkinleştir";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Bitti";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "\"%@\" öğesini bul";
+/* Find `search query` */
+"FindInPageFormat" = "Bul ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Sonraki sayfa içi sonuç";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Sponsorlu resimleri gizle";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "\"Sponsorlular\", Brave Ödülleri etkinleştirildiğinde elde edebileceğiniz ek markalı arka planlardır.";
+"ntp.imageTypeSelectionDescription" = "Sponsorlu görseller, tarayıcıda yeni açılan sekmelerde görünen markalı arka planlardır. Bu Sponsorlu Görselleri etkinleştirmek Brave'in misyonunu destekler.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Daha fazla bilgi edinin";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards hakkında daha fazla bilgi edinin";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Gizle";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Yapıştır & Git";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "üzerinde";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "QR Kodunu Tara";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Son Aramalar, geçmiş aramalara özel olarak erişmenize izin verir. Son Aramalar'ı etkinleştirmek istiyor musunuz?";
+"RecentSearchSectionDescription" = "Son Aramaları etkinleştirmek ister misiniz?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Son Aramalar";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Son Aramalar";
+"RecentSearchSectionTitle" = "Son Aramalar, geçmiş aramalara gizli olarak erişmenizi sağlar.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Göster";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Öneriyi arar";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Açık Sekmeler & Yer İşaretleri & Geçmiş";
+"SearchHistorySectionHeader" = "Cihazınızda";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Aramayı Temizle";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Ara";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Ara: \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Özel Arama Motoru Ekle";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Arama Önerileri";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Arama Önerisini etkinleştirmek ister misiniz?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave ile Ara";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Güvenli Değil";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Yapıştır ve Git";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Oynatma Listesi";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Dur";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Sesli Arama";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

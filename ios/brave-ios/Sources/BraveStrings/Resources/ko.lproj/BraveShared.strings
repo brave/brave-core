@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "사용자 지정 검색 엔진 추가";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "검색 URL을 기입하고 검색어를 %1$s(으)로 대체하세요.\n예: https://youtube.com/search?q=%2$s \n(사이트에서 OpenSearch를 지원하는 경우 이 필드를 편집할 때 자동 추가 옵션이 제공됩니다.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "동일한 이름의 검색 엔진이 이미 존재합니다.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "검색 엔진 이름 입력";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "비보안 맞춤 검색 템플릿 -";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "폴더 편집";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "빠른 검색 엔진 편집";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "밀어서 새로고침 활성화";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "완료";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "\"%@\" 찾기";
+/* Find `search query` */
+"FindInPageFormat" = "찾기 ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "다음 페이지 결과";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "'스폰서'는 브랜드의 후원을 받았다는 의미로, Brave Rewards 적립이 가능합니다.";
+"ntp.imageTypeSelectionDescription" = "스폰서 이미지는 브라우저에서 새로 여는 탭에 표시되는 브랜드 배경입니다. 이러한 스폰서 이미지를 활성화하면 Brave가 사명을 수행하는 데 도움이 됩니다.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "자세히 알아보기";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards 자세히 알아보기";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "숨기기";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "붙여넣기 및 이동";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "위에";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "QR 코드 스캔";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "최근 검색어에서는 과거에 사용한 검색어를 비공개로 확인할 수 있습니다. 최근 검색어를 활성화하시겠습니까?";
+"RecentSearchSectionDescription" = "최근 검색을 사용하시겠습니까?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "최근 검색어";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "최근 검색어";
+"RecentSearchSectionTitle" = "최근 검색을 사용하면 과거 검색에 비공개로 액세스할 수 있습니다.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "표시";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "추천 검색어 검색";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "탭, 북마크 및 기록 열기";
+"SearchHistorySectionHeader" = "내 기기";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "검색어 지우기";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "검색";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "\"%@\" 검색";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "맞춤 검색 엔진 추가";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "추천 검색어";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "추천 검색어를 사용하시겠습니까?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave로 검색";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "안전하지 않음";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "붙여넣기 및 이동";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "재생목록";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "중지";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "음성 검색";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

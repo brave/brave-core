@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "새 비공개 탭";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "자세히 알아보기 / 옵트아웃 옵션";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "새 탭";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "페이지 다시 로드";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "자세히 알아보기 / 옵트아웃 옵션";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "주소창 선택";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "비공개 브라우징 모드";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "파일을 다운로드하는 동안 오류가 발생했습니다. 나중에 다시 시도하세요.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "파일 다운로드 실패";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "확대";

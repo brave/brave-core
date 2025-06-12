@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nowa karta w trybie prywatnym";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Dowiedz się więcej / zrezygnuj z opcji";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Sponsorowane obrazy tła wspierają misję Brave polegającą na budowaniu niezależnej, zorientowanej na użytkownika sieci. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nowa karta";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Wczytaj stronę ponownie";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Dowiedz się więcej / zrezygnuj z opcji";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Dziękujemy za wsparcie Brave Search poprzez kliknięcie prywatnej reklamy. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Wybierz pasek lokalizacji";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Prywatny tryb przeglądania";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Wystąpił błąd podczas pobierania pliku. Proszę spróbować ponownie później.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Nie udało się pobrać pliku";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Powiększ";

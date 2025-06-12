@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nouvel onglet de navigation privée";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "En savoir plus / Me désinscrire";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Les arrière-plans sponsorisés aident Brave à créer un Web plus indépendant et pensé pour les utilisateurs. Contrairement aux grandes entreprises de la tech, les performances des annonces sont analysées de manière anonyme pour préserver votre vie privée.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nouvel onglet";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Recharger la page";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "En savoir plus / Me désinscrire";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Merci de soutenir le moteur de recherche Brave en cliquant sur une annonce privée. Contrairement aux grandes entreprises de la tech, nous mesurons les performances des annonces de manière anonyme pour préserver votre vie privée.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Sélectionner la barre d'emplacement";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Mode de navigation privé";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Une erreur est survenue lors du téléchargement du fichier. Veuillez réessayer plus tard.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Impossible de télécharger le fichier";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Zoom avant";

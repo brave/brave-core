@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nova guia privada";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "As imagens de fundo patrocinadas apoiam a missão do Brave de criar uma web independente que prioriza o usuário. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anônima para preservar sua privacidade.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nova aba";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Recarregar página";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Obrigado por apoiar a Pesquisa Brave clicando em um anúncio privado. Ao contrário da Big Tech, medimos o desempenho de anúncios anonimamente para preservar sua privacidade.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Selecionar barra de local";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Modo de navegação privada";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Ocorreu um erro ao baixar o arquivo. Tente novamente mais tarde.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Não foi possível baixar o arquivo";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Ampliar";

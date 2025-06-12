@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nuova scheda privata";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Scopri di più / Scelte di opt-out";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Le immagini di sfondo sponsorizzate supportano l'impegno di Brave nel creare un Web indipedente in cui l'utente sia al primo posto. Al contrario delle Big Tech, misuriamo le prestazioni degli annunci in modo anonimo, rispettando la tua privacy.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nuova scheda";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Ricarica la pagina";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Scopri di più / Scelte di opt-out";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Grazie per aver sostenuto Ricerca Brave cliccando su un annuncio privato. A differenza delle aziende Big Tech, misuriamo le prestazioni degli annunci in modo anonimo per tutelare la tua privacy.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Seleziona la barra di posizione";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Modalità di navigazione privata";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Si è verificato un errore durante il download del file. Riprova più tardi.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Download fallito";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Aumenta lo zoom";

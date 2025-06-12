@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Uusi yksityinen välilehti";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Lisätietoja / opt out -valinnat";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Sponsoroidut taustakuvat ovat osa Braven missiota rakentaa riippumatonta, käyttäjälähtöistä verkkoa. Toisin kuin suuret teknologiayritykset, me mittaamme mainosten suorituskykyä anonyymisti suojataksemme yksityisyyttäsi.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Uusi välilehti";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Lataa sivu uudelleen";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Lisätietoja / opt out -valinnat";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Kiitos, että tuet Braven hakua klikkaamalla yksityistä mainosta. Me mittaamme mainosten suorituskykyä anonyymisti yksityisyytesi säilyttämiseksi toisin kuin suuret teknologiayritykset.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Valitse sijaintipalkki";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Yksityinen selaustila";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Tapahtui virhe ladatessa tiedostoa. Yritä myöhemmin uudelleen.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Tiedostoa ei voitu ladata";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Lähennä";
