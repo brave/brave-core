@@ -61,6 +61,7 @@ source_set("browser_tests") {
       "//brave/components/brave_rewards/core/mojom:engine",
       "//brave/components/l10n/common:test_support",
       "//brave/components/ntp_background_images/common",
+      "//chrome/browser/ui/browser_window",
       "//components/policy/core/browser",
       "//components/policy/core/common:test_support",
       "//components/user_prefs",

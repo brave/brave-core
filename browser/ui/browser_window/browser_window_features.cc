@@ -7,7 +7,9 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -55,6 +57,12 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
   if (tabs::features::IsBraveSplitViewEnabled()) {
     split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
+  }
+
+  if (brave_rewards::RewardsServiceFactory::GetForProfile(
+          browser->GetProfile())) {
+    rewards_panel_coordinator_ =
+        std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
   }
 }
 

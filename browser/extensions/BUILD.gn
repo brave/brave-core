@@ -143,6 +143,7 @@ source_set("extensions") {
     "//chrome/browser/extensions:chrome_extensions_browser_client",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",

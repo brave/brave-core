@@ -12,6 +12,7 @@ source_set("unit_tests") {
       "//base",
       "//brave/components/brave_rewards/core:features",
       "//chrome/browser/ui",
+      "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
     ]
   }

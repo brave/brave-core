@@ -20,6 +20,7 @@ source_set("impl") {
 
   deps = [
     "//base",
+    "//brave/browser/brave_rewards",
     "//brave/browser/ui:brave_tab_features",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:split_view",
