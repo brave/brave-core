@@ -6,13 +6,15 @@
 package org.chromium.chrome.browser.tab_ui;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 
 import androidx.annotation.ColorInt;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.build.annotations.Nullable;
 import org.chromium.components.tab_groups.TabGroupColorId;
 
-public class BraveTabUiThemeUtils {
+public class BraveTabCardThemeUtil {
     @ColorInt
     public static int getTitleTextColor(
             Context context,
@@ -23,7 +25,7 @@ public class BraveTabUiThemeUtils {
             return context.getColor(R.color.baseline_neutral_10);
         }
 
-        return TabUiThemeUtils.getTitleTextColor(context, isIncognito, isSelected, colorId);
+        return TabCardThemeUtil.getTitleTextColor(context, isIncognito, isSelected, colorId);
     }
 
     @ColorInt
@@ -36,7 +38,19 @@ public class BraveTabUiThemeUtils {
             return context.getColor(R.color.baseline_primary_80);
         }
 
-        return TabUiThemeUtils.getCardViewBackgroundColor(
+        return TabCardThemeUtil.getCardViewBackgroundColor(
                 context, isIncognito, isSelected, colorId);
+    }
+
+    public static ColorStateList getActionButtonTintList(
+            Context context,
+            boolean isIncognito,
+            boolean isSelected,
+            @Nullable @TabGroupColorId Integer colorId) {
+        if (isSelected) {
+            return AppCompatResources.getColorStateList(context, R.color.baseline_neutral_10);
+        }
+
+        return TabCardThemeUtil.getActionButtonTintList(context, isIncognito, isSelected, colorId);
     }
 }
