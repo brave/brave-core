@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 #define BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -28,6 +29,8 @@ class BraveConfirmInfoBarDelegate : public ConfirmInfoBarDelegate {
   virtual std::vector<int> GetButtonsOrder() const;
   virtual bool IsProminent(int id) const;
   virtual bool ExtraButtonPressed();
+  virtual bool ShouldSupportMultiLine() const;
+  virtual size_t GetMaxLines() const;
 
   int GetButtons() const override;
 
