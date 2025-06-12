@@ -133,7 +133,6 @@ void SaveCatalogCallback(const CatalogInfo& catalog,
   if (success) {
     SetCatalogId(catalog.id);
     SetCatalogVersion(catalog.version);
-    SetCatalogPing(catalog.ping);
 
     const CreativesInfo creatives = BuildCreatives(catalog);
     database::SaveCreativeNotificationAds(creatives.notification_ads);

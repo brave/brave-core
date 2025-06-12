@@ -127,6 +127,10 @@ void Catalog::OnNotifyPrefDidChange(const std::string& path) {
 void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
   SetCatalogLastUpdated(base::Time::Now());
 
+  // Update the ping after fetching, even if saving fails or the catalog is
+  // unchanged, to allow server-side control.
+  SetCatalogPing(catalog.ping);
+
   if (!HasCatalogChanged(catalog.id)) {
     return BLOG(1, "Catalog id " << catalog.id << " is up to date");
   }
