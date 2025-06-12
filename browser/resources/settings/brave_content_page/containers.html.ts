@@ -73,7 +73,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                   autofocus
                   required
                   auto-validate
-                  pattern=".+"
+                  pattern="^.*\\S.*$"
                   label="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL}"
                   placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
                 >
@@ -90,7 +90,8 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               <cr-button
                 class="action-button"
                 @click="${this.onSaveContainerFromDialog_}"
-                ?disabled="${!this.editingContainer_.name}"
+                ?disabled="${!this.editingContainer_?.name
+                || this.isEditDialogNameInvalid_}"
               >
                 $i18n{save}
               </cr-button>
