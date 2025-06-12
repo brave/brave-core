@@ -210,7 +210,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
-      base::FeatureList::IsEnabled(containers::features::kBraveContainers));
+      base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
 }
 
