@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CONTENT_REWARDS_PROTOCOL_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CONTENT_REWARDS_PROTOCOL_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "content/public/browser/navigation_throttle.h"
 
 namespace brave_rewards {

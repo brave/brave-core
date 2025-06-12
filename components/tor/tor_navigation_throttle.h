@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_TOR_TOR_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/tor/tor_launcher_observer.h"
