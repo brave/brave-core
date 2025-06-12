@@ -5,28 +5,23 @@
 
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
-#include <functional>
 #include <memory>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/checked_iterators.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
@@ -437,18 +432,6 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
     std::move(callback).Run("", false, "");
-    return;
-  }
-
-  if (IsPdf(web_contents_)) {
-    std::string pdf_content;
-    auto* pdf_root = GetPdfRoot(primary_rfh);
-    if (pdf_root) {
-      pdf_content = ExtractPdfContent(pdf_root);
-    }
-
-    // No need to proceed renderer content fetching because we won't get any.
-    std::move(callback).Run(pdf_content, false, "");
     return;
   }
 

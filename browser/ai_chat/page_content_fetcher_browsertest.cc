@@ -201,48 +201,6 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
   FetchPageContent(FROM_HERE, kGithubPatch, false);
 }
 
-IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
-  constexpr char kExpectedText[] = "This is the way\nI have spoken";
-  auto* chat_tab_helper =
-      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
-  ASSERT_TRUE(chat_tab_helper);
-  auto run_loop = std::make_unique<base::RunLoop>();
-  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop, &kExpectedText] {
-        FetchPageContent(FROM_HERE, kExpectedText, false, false);
-        run_loop->Quit();
-      }));
-  NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
-  run_loop->Run();
-
-  run_loop = std::make_unique<base::RunLoop>();
-  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop] {
-        FetchPageContent(FROM_HERE, "", false, false);
-        run_loop->Quit();
-      }));
-  NavigateURL(https_server_.GetURL("a.com", "/empty_pdf.pdf"));
-  run_loop->Run();
-
-  // Test pdf tab loaded in background.
-  ui_test_utils::NavigateToURLWithDisposition(
-      browser(), https_server_.GetURL("a.com", "/dummy.pdf"),
-      WindowOpenDisposition::NEW_BACKGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  ASSERT_EQ(2, browser()->tab_strip_model()->count());
-  run_loop = std::make_unique<base::RunLoop>();
-  chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
-      browser()->tab_strip_model()->GetWebContentsAt(1));
-  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop, &kExpectedText] {
-        FetchPageContent(FROM_HERE, kExpectedText, false, false);
-        run_loop->Quit();
-      }));
-  browser()->tab_strip_model()->ActivateTabAt(1);
-  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  run_loop->Run();
-}
-
 IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
   // ID and expected result for cases in summarizer_key_meta.html.
   std::vector<std::pair<std::string, std::string>> test_cases = {

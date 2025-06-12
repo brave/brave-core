@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//pdf/features.gni")
 
 static_library("browser") {
   sources = [
@@ -49,8 +50,14 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//services/strings:strings_grit",
-    "//ui/accessibility:ax_base",
     "//ui/base",
     "//url",
   ]
+
+  if (enable_pdf) {
+    deps += [
+      "//components/pdf/browser",
+      "//pdf/mojom",
+    ]
+  }
 }

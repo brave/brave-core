@@ -28,21 +28,19 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "pdf/buildflags.h"
 #include "url/gurl.h"
 
-namespace gfx {
-class Image;
-}  // namespace gfx
+#if BUILDFLAG(ENABLE_PDF)
+#include "pdf/mojom/pdf.mojom.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
+
 namespace mojo {
 template <typename T>
 class PendingAssociatedReceiver;
 }  // namespace mojo
-namespace ui {
-struct AXUpdatesAndEvents;
-}  // namespace ui
 
 namespace content {
-class ScopedAccessibilityMode;
 class NavigationEntry;
 class RenderFrameHost;
 class WebContents;
@@ -113,7 +111,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
-  void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
   void SetPageContentFetcherDelegateForTesting(
       std::unique_ptr<PageContentFetcherDelegate> delegate) {
     page_content_fetcher_delegate_ = std::move(delegate);
@@ -138,36 +135,17 @@ class AIChatTabHelper : public content::WebContentsObserver,
   friend class ::AIChatUIBrowserTest;
   friend class AIChatTabHelperUnitTest;
 
-  // To observe PDF InnerWebContents for "Finished loading PDF" event which
-  // means PDF content has been loaded to an accessibility tree.
-  class PDFA11yInfoLoadObserver : public content::WebContentsObserver {
-   public:
-    ~PDFA11yInfoLoadObserver() override;
-    explicit PDFA11yInfoLoadObserver(content::WebContents* web_contents,
-                                     AIChatTabHelper* helper);
-
-   private:
-    void AccessibilityEventReceived(
-        const ui::AXUpdatesAndEvents& details) override;
-    raw_ptr<AIChatTabHelper> helper_;
-  };
-
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
   AIChatTabHelper(content::WebContents* web_contents,
                   std::unique_ptr<PrintPreviewExtractionDelegate>
                       print_preview_extraction_delegate);
 
-  void OnPDFA11yInfoLoaded();
-
   // content::WebContentsObserver
   void WebContentsDestroyed() override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
-  void InnerWebContentsAttached(
-      content::WebContents* inner_web_contents,
-      content::RenderFrameHost* render_frame_host) override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 
@@ -207,8 +185,18 @@ class AIChatTabHelper : public content::WebContentsObserver,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
 
-  // Traverse through a11y tree to check existence of status node.
-  void CheckPDFA11yTree();
+#if BUILDFLAG(ENABLE_PDF)
+  void OnPDFDocumentLoadComplete(GetPageContentCallback callback);
+
+  void OnGetPDFPageCount(GetPageContentCallback callback,
+                         pdf::mojom::PdfListener::GetPdfBytesStatus status,
+                         const std::vector<uint8_t>& bytes,
+                         uint32_t page_count);
+
+  void OnAllPDFPagesTextReceived(
+      GetPageContentCallback callback,
+      const std::vector<std::pair<size_t, std::string>>& page_texts);
+#endif  // BUILDFLAG(ENABLE_PDF)
 
   bool MaybePrintPreviewExtract(GetPageContentCallback& callback);
 
@@ -219,12 +207,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;
   std::u16string previous_page_title_;
-  bool is_pdf_a11y_info_loaded_ = false;
-  uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
-
-  raw_ptr<content::WebContents, DanglingUntriaged> inner_web_contents_ =
-      nullptr;
 
   // TODO(petemill): Use signal to allow for multiple callbacks
   GetPageContentCallback pending_get_page_content_callback_;
@@ -232,11 +215,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::unique_ptr<PrintPreviewExtractionDelegate>
       print_preview_extraction_delegate_;
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
-  std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
-  base::OnceClosure on_pdf_a11y_info_loaded_cb_;
-
-  // A scoper only used for PDF viewing.
-  std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
 
