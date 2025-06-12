@@ -5,6 +5,7 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"

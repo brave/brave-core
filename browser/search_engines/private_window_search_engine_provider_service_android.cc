@@ -5,6 +5,7 @@
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service_android.h"
 
+#include "base/check.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"

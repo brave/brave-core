@@ -8,6 +8,8 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
+#include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/version.h"
 #include "components/grit/brave_components_resources.h"

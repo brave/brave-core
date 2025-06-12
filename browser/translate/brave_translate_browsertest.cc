@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"

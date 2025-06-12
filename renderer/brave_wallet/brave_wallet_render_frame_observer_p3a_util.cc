@@ -5,6 +5,7 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer_p3a_util.h"
 
+#include "base/check.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"

@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/rust/idna/v1/crate/idna.h"
-
 #include <string>
 
+#include "base/check.h"
 #include "base/i18n/icu_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/third_party/rust/idna/v1/crate/idna.h"
 #include "brave/third_party/rust/idna/v1/crate/src/lib.rs.h"
 #include "url/url_canon.h"
 

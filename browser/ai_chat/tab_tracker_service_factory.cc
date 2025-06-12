@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"

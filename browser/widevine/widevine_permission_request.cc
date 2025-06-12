@@ -5,6 +5,7 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 
+#include "base/check.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/permissions/permission_widevine_utils.h"

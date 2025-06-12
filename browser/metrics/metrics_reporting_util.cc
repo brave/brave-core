@@ -5,7 +5,6 @@
 
 #include "brave/browser/metrics/metrics_reporting_util.h"
 
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/metrics/brave_metrics_service_accessor.h"

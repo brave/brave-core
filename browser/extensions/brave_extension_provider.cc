@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/notreached.h"
 #include "extensions/common/constants.h"
 
 namespace extensions {

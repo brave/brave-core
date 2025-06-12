@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/i18n/time_formatting.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"

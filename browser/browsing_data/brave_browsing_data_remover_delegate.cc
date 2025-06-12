@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"

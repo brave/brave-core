@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"

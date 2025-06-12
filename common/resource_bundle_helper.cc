@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "build/build_config.h"

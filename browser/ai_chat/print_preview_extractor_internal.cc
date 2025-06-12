@@ -12,7 +12,10 @@
 #include <variant>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/check_op.h"
+#include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"

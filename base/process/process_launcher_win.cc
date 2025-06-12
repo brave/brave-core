@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/notreached.h"
 #include "base/process/launch.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/scoped_process_information.h"

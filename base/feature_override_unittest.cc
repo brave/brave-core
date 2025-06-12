@@ -7,9 +7,10 @@
 
 #include <optional>
 
+#include "base/check.h"
+#include "base/dcheck_is_on.h"
 #include "base/debug/debugging_buildflags.h"
 #include "base/feature_list.h"
-#include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/test/mock_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"

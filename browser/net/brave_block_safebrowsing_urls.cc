@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"

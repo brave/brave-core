@@ -8,7 +8,9 @@
 #include <array>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/json/json_file_value_serializer.h"
+#include "base/logging.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"

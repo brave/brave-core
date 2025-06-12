@@ -8,7 +8,9 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/constants.h"

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"

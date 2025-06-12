@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted_memory.h"

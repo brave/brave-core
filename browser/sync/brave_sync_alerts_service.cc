@@ -5,6 +5,7 @@
 
 #include "brave/browser/sync/brave_sync_alerts_service.h"
 
+#include "base/check.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"

@@ -10,7 +10,9 @@
 #include <string_view>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"

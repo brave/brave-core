@@ -7,6 +7,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"

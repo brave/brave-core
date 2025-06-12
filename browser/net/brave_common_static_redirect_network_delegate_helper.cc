@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"

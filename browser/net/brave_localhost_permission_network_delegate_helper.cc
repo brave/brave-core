@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/check_op.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

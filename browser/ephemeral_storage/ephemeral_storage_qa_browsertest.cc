@@ -5,6 +5,7 @@
 
 #include <array>
 
+#include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"

@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "build/build_config.h"

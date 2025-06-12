@@ -6,6 +6,7 @@
 #include "brave/app/command_utils.h"
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/logging.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
 #include "build/buildflag.h"
