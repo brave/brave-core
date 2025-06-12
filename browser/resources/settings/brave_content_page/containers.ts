@@ -75,6 +75,20 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   onContainersListUpdated_(containers: Container[]) {
     this.containersList_ = containers
+    if (
+      this.editingContainer_
+      && this.editingContainer_.id
+      && !containers.some((c) => c.id === this.editingContainer_?.id)
+    ) {
+      this.editingContainer_ = undefined
+    }
+    if (
+      this.deletingContainer_
+      && !containers.some((c) => c.id === this.deletingContainer_?.id)
+    ) {
+      this.deletingContainer_ = undefined
+      this.isRemoving_ = false
+    }
   }
 
   onAddContainerClick_() {
