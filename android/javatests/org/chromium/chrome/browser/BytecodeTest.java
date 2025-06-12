@@ -62,6 +62,7 @@ import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
@@ -1285,7 +1286,9 @@ public class BytecodeTest {
                         DesktopWindowStateManager.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        MenuButtonCoordinator.VisibilityDelegate.class));
+                        MenuButtonCoordinator.VisibilityDelegate.class,
+                        TopControlsStacker.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1685,6 +1688,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ManualFillingComponentSupplier.class,
                         EdgeToEdgeManager.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1887,7 +1891,7 @@ public class BytecodeTest {
 
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
+                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
                         Context.class,
                         TabSwitcherPaneCoordinatorFactory.class,
@@ -1898,7 +1902,8 @@ public class BytecodeTest {
                         UserEducationHelper.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        TabGroupCreationUiDelegate.class));
+                        TabGroupCreationUiDelegate.class,
+                        ObservableSupplier.class));
 
         Assert.assertTrue(
                 constructorsMatch(
