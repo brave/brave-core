@@ -153,20 +153,23 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 
 /**
  * @note This function creates a default filename like
- * "bookmarks_10_31_24.html", for example, if the date was October 31, 2024.
+ * "2024_10_31_Brave_browser_bookmarks.html", for example, if the date is
+ * October 31, 2024.
  *
  * @note This function mimics the behavior of a function with the same name in
- * the Chromium source code.
+ * the Chromium source code, but uses a Brave-specific filename format.
  *
  * @see
  * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
  */
 base::FilePath GetDefaultFilepathForBookmarkExport() {
-  std::string bookmarks_MM_DD_YY = l10n_util::GetStringFUTF8(
-      IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
-      base::TimeFormatShortDateNumeric(base::Time::Now()));
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  std::string YYYY_MM_DD_bookmarks =
+      base::StringPrintf("%04d_%02d_%02d_Brave_browser_bookmarks.html",
+                         exploded.year, exploded.month, exploded.day_of_month);
 
-  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_MM_DD_YY);
+  base::FilePath path = base::FilePath::FromUTF8Unsafe(YYYY_MM_DD_bookmarks);
   base::FilePath::StringType path_str = path.value();
   base::i18n::ReplaceIllegalCharactersInPath(&path_str, '_');
   base::FilePath default_path;
