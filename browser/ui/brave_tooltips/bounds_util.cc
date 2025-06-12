@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 
+#include "base/check.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect.h"
 

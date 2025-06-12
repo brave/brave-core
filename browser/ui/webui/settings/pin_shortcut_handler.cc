@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_shell_integration.h"
 #include "chrome/browser/profiles/profile.h"

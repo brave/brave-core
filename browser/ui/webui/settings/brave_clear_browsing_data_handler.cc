@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/settings/brave_clear_browsing_data_handler.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"

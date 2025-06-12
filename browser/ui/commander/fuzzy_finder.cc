@@ -12,6 +12,8 @@
 
 #include <algorithm>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/i18n/case_conversion.h"
 #include "base/i18n/char_iterator.h"

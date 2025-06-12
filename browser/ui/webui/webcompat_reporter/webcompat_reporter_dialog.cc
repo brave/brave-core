@@ -12,7 +12,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/values.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"

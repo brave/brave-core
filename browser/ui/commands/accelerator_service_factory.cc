@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/commands/accelerator_service.h"

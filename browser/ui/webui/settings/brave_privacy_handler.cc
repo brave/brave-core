@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/utils.h"

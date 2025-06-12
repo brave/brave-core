@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_split.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"

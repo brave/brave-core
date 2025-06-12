@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"

@@ -8,6 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/logging.h"
 #include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"

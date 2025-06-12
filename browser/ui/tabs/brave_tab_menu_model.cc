@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"

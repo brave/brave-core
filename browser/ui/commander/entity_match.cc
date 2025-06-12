@@ -12,6 +12,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
