@@ -10,12 +10,8 @@
 
 #define ContentSettingPermissionContextBase \
   ContentSettingPermissionContextBase_ChromiumImpl
-#define CanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN) \
-  BraveCanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN,  \
-                                     content_settings_type_)
 #include "src/components/permissions/content_setting_permission_context_base.cc"
 #undef ContentSettingPermissionContextBase
-#undef CanBypassEmbeddingOriginCheck
 
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
