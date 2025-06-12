@@ -5,7 +5,6 @@
 
 #include <algorithm>
 
-#include "base/check_deref.h"
 #include "base/containers/adapters.h"
 
 #define GetSearchProvidersUsingKeywordResult \

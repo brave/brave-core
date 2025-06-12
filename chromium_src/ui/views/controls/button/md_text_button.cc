@@ -8,6 +8,7 @@
 #include <optional>
 #include <tuple>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"

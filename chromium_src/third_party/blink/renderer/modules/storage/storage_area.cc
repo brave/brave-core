@@ -5,6 +5,7 @@
 
 #include "src/third_party/blink/renderer/modules/storage/storage_area.cc"
 
+#include "base/check.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 
 namespace blink {

@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/auto_reset.h"
+#include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"

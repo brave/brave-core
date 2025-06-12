@@ -5,6 +5,8 @@
 
 #include "components/regional_capabilities/regional_capabilities_utils.h"
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"

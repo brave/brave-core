@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "base/check.h"
+
 #define GetRendererContentSettingRules \
   GetRendererContentSettingRules_ChromiumImpl
 

@@ -5,6 +5,7 @@
 
 #include "src/components/sync/service/glue/sync_engine_impl.cc"
 
+#include "base/check.h"
 #include "base/task/bind_post_task.h"
 
 namespace syncer {

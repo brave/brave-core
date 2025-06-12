@@ -7,6 +7,7 @@
 
 #include <array>
 
+#include "base/check_op.h"
 #include "base/values.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"

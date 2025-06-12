@@ -5,6 +5,8 @@
 
 #include "components/crx_file/crx_creator.h"
 
+#include "base/check.h"
+
 namespace crx_file {
 
 class CrxFileHeader;

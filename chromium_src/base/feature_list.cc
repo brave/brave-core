@@ -8,11 +8,12 @@
 #include <algorithm>
 #include <optional>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/dcheck_is_on.h"
 #include "base/feature_override.h"
-#include "base/logging.h"
 #include "base/no_destructor.h"
 
 namespace base {

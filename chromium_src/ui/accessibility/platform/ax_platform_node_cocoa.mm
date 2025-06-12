@@ -5,6 +5,7 @@
 
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/logging.h"
 
 // Assumed to be a temporary fix for
 // https://github.com/brave/brave-browser/issues/13778

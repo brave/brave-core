@@ -5,6 +5,7 @@
 
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 
+#include "base/check.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {

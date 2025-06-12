@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
+#include "base/check.h"
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "skia/ext/skia_utils_base.h"
 #include "third_party/blink/renderer/core/core_probe_sink.h"

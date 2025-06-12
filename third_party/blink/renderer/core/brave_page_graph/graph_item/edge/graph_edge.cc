@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/graph_item.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"

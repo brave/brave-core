@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <string_view>
 
+#include "base/check.h"
+#include "base/dcheck_is_on.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl

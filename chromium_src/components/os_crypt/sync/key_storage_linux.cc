@@ -5,6 +5,8 @@
 
 #include "components/os_crypt/sync/key_storage_linux.h"
 
+#include "base/logging.h"
+
 #define BRAVE_KEY_STORAGE_LINUX                             \
   const char KeyStorageLinux::kFolderName[] = "Brave Keys"; \
   const char KeyStorageLinux::kKey[] = "Brave Safe Storage";

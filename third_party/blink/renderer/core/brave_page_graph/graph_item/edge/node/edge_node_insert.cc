@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 
+#include "base/check.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"

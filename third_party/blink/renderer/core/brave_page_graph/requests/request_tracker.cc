@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"

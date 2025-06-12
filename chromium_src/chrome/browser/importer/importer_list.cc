@@ -5,6 +5,7 @@
 
 #include "chrome/browser/importer/importer_list.h"
 
+#include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
