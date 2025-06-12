@@ -308,7 +308,7 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabUiThemeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabCardThemeUtil"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
@@ -627,7 +627,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
                         "getTitleTextColor",
                         MethodModifier.STATIC,
                         int.class,
@@ -637,7 +637,7 @@ public class BytecodeTest {
                         Integer.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
                         "getCardViewBackgroundColor",
                         MethodModifier.STATIC,
                         int.class,
@@ -647,7 +647,7 @@ public class BytecodeTest {
                         Integer.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
                         "getActionButtonTintList",
                         MethodModifier.STATIC,
                         ColorStateList.class,
