@@ -26,7 +26,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -188,7 +188,7 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 
 }  // namespace
 
-class CardanoProviderRendererTest : public InProcessBrowserTest {
+class CardanoProviderRendererTest : public PlatformBrowserTest {
  public:
   CardanoProviderRendererTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
@@ -199,22 +199,22 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
