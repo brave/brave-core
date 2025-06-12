@@ -18,10 +18,6 @@
 
 class PrefService;
 
-namespace content {
-class NavigationHandle;
-}  // namespace content
-
 namespace ephemeral_storage {
 class EphemeralStorageService;
 }  // namespace ephemeral_storage
@@ -33,7 +29,7 @@ class RequestOTRService;
 class RequestOTRNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit RequestOTRNavigationThrottle(
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       RequestOTRService* request_otr_service,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* pref_service,
@@ -45,7 +41,7 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
       delete;
 
   static std::unique_ptr<RequestOTRNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationHandle* navigation_handle,
+      content::NavigationThrottleRegistry& registry,
       RequestOTRService* request_otr_service,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* pref_service,
