@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Thẻ riêng tư mới";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Tìm hiểu thêm / lựa chọn từ chối";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Hình nền được tài trợ hỗ trợ sứ mệnh xây dựng một nền tảng web độc lập và ưu tiên người dùng của Brave. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Thẻ mới";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Tải lại trang";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Tìm hiểu thêm / lựa chọn từ chối";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Cảm ơn vì đã ủng hộ Tìm kiếm Brave khi bấm vào quảng cáo riêng tư. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Chọn thanh vị trí";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Chế độ duyệt riêng tư";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Đã xảy ra lỗi trong quá trình tải tệp. Vui lòng thử lại sau.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Tải tệp không thành công";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Phóng to";

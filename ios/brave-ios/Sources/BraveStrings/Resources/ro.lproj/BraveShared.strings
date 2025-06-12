@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motoare de căutare folosite în prezent";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Adaugă un motor de căutare personalizat";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Scrie URL-ul de căutare și înlocuiește interogarea cu %1$s.\nDe exemplu: https://youtube.com/search?q=%2$s \n(Dacă site-ul suportă OpenSearch, va fi furnizată o opțiune de adăugare automată atunci când editezi acest câmp.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Există deja un motor de căutare cu același nume.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Introdu numele motorului de căutare";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Șablon personalizat de căutare nesigur pentru";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Editează dosar";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Editare motoare de căutare rapidă";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Activează Trage-pentru-actualizare";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Finalizat";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Găsește \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "Găsește ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Rezultatul următor în pagină";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Ascunde imaginile sponsorizate";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Imaginile „Sponsorizate” reprezintă fundaluri reclamă suplimentare din care poți câștiga având activată funcția Brave Rewards.";
+"ntp.imageTypeSelectionDescription" = "Imaginile sponsorizate sunt fundaluri care apar în filele nou deschise în browser. Activarea acestor imagini sponsorizate sprijină misiunea Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Află mai multe";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Află mai multe despre Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Ascunde";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Lipește și accesează";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "pornit";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Scanează codul QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Funcționalitatea Căutări Recente îți permite să accesezi în mod privat căutările anterioare. Vrei să activezi Căutări Recente?";
+"RecentSearchSectionDescription" = "Vrei să activezi Căutări recente?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Căutări Recente";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Căutări Recente";
+"RecentSearchSectionTitle" = "Căutările recente îți permit să accesezi în mod privat căutările anterioare.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Afișează";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Caută sugestia oferită";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "File deschise, Marcaje și Istoric";
+"SearchHistorySectionHeader" = "Pe dispozitivul tău";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Șterge căutarea";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Căutare";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Caută \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Adaugă motor de căutare personalizat";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugestii de căutare";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Doriți să activezi sugestiile de Căutare?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Caută cu Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Nu este sigur";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Lipește și accesează";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Oprește";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Căutare vocală";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

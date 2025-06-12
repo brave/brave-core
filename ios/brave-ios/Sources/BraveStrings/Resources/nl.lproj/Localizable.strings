@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nieuw privétabblad";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Meer informatie / afmeldingsopties";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Dankzij gesponsorde achtergrondafbeeldingen kan Brave bouwen aan een onafhankelijk web waarin de gebruiker centraal staat. En anders dan bij Big Tech gebeurt het meten van advertenties bij ons volledig anoniem: jouw privacy komt op de eerste plaats.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nieuw tabblad";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Laad pagina opnieuw";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Meer informatie / afmeldingsopties";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Bedankt dat je Brave Search steunt door op een privé-advertentie te klikken. In tegenstelling tot Big Tech meten wij de prestaties van advertenties anoniem om jouw privacy te verzekeren.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Selecteer locatiebalk";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Privé browsen";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Er deed zich een fout voor tijdens de download van het bestand. Probeer het later opnieuw.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Download van bestand mislukt";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Zoom in";

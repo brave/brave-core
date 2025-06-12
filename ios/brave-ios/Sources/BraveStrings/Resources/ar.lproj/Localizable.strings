@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "علامة تبويب خاصة جديدة";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "معرفة المزيد / خيارات إلغاء الاشتراك";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "تدعم صور الخلفية المدعومة Brave في مهمتها المتمثلة في بناء شبكة ويب مستقلة ترتكز على المستخدم أولًا. وعلى عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بشكل مجهول للحفاظ على خصوصيتكم.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "علامة تبويب جديدة";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "إعادة تحميل الصفحة";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "معرفة المزيد / خيارات إلغاء الاشتراك";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "شكراً لدعمك Brave Search بالنقر على إعلان خاص. على عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بكل سريّة للحفاظ على خصوصيتك.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "حدد شريط الموقع";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "وضع التصفح الخاص";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "حدث خطأ أثناء تنزيل الملف. يرجى إعادة المحاولة لاحقًا.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "تعذر تنزيل الملف";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "تكبير";

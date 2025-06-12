@@ -2077,12 +2077,8 @@
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
 "wallet.txStatusSending" = "正在傳送";
 
-/* The message after the title when a send transaction failed to be confirmed on the blockchain.
-The message after the title when a swap transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSendTxErrorMsg" = "嘗試傳送時發生錯誤";
-
 /* The message after the title when a send transaction failed to be confirmed on the blockchain. */
-"wallet.txStatusSwapTxErrorMsg" = "嘗試交換時出錯";
+"wallet.txStatusSendTxErrorMsg" = "嘗試傳送時發生錯誤";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "無法傳送";
@@ -2101,6 +2097,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
 "wallet.txStatusSwapping" = "兌換";
+
+/* The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "嘗試交換時發生錯誤";
 
 /* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSwapTxErrorTitle" = "無法交換";

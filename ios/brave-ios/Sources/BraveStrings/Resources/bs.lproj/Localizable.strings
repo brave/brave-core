@@ -31,6 +31,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nova privatna kartica";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Doznajte više / mogućnosti odjave";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "Sponzorirane pozadine podržavaju Braveovu misiju da izgradi nezavisni internet koji je prvenstveno usmjeren na korisnike. I za razliku od velikih tehnoloških korporacija mi anonimno mjerimo performanse oglasa kako bismo sačuvali vašu privatnost.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nova kartica";
 
@@ -57,6 +63,12 @@
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Ponovno učitaj stranicu";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Doznajte više / mogućnosti odjave";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Hvala što podržavate Brave Search tako što klikate privatne oglase. Za razliku od velikih tehnoloških tvrtki mi anonimno mjerimo performanse oglasa kako bismo zaštitili vašu privatnost.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Odaberi traku lokacije";
@@ -141,6 +153,12 @@
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Način privatnog pregledavanja";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Nastala je pogreška pri preuzimanju dokumenta. Pokušajte ponovno poslije.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Preuzimanje dokumenta nije uspjelo";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Povećaj";

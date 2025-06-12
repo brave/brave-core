@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Legg til en tilpasset søkemotor";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Skriv søkeadressen og erstatt spørringen med %1$s.\nFor eksempel: https://youtube.com/search?q=%2$s \n(Hvis nettstedet støtter OpenSearch, vil det gis et alternativ for å legge til automatisk når du redigerer dette feltet.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Det finnes allerede en annen søkemotor med samme navn.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Skriv inn navnet på søkemotoren";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Usikker egendefinert søkemal for";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Rediger mappe";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Rediger søkemotorer";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Aktiver Dra-for-oppdatering";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Ferdig";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Finn «%@»";
+/* Find `search query` */
+"FindInPageFormat" = "Finn ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Neste resultat på side";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Skjul sponsede bilder";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "«Sponset» er ytterligere merkeprofilerte bakgrunner du kan tjene på med Brave-belønninger aktivert.";
+"ntp.imageTypeSelectionDescription" = "Sponsede bilder er bakgrunner som vises i nye faner i nettleseren din. Når du aktiverer slike bilder, bidrar du til å støtte Braves overordnede mål.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Lær mer";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lær mer om Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Skjul";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Lim inn og gå videre";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "på";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Skann QR-kode";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Nylige søk lar deg få privat tilgang til tidligere søk. Vil du aktivere nylige søk?";
+"RecentSearchSectionDescription" = "Ønsker du å aktivere Nylige søk?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Nylige søk";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Nylige søk";
+"RecentSearchSectionTitle" = "Nylige søk gir deg privat tilgang til tidligere søk.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Vis";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Søker etter forslaget";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Åpne faner, bokmerker og logg";
+"SearchHistorySectionHeader" = "På enheten din";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Fjern søk";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Søk";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Søk etter «%@»";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Legg til tilpasset søkemotor";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Søkeforslag";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Vil du aktivere søkeforslag?";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Søk med Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Ikke sikker";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Lim inn og gå videre";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Spilleliste";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Stopp";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Talesøk";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */
