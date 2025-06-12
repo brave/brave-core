@@ -112,7 +112,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull ObservableSupplier<Integer> overviewColorSupplier,
             @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
-            @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier) {
+            @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -160,7 +161,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 overviewColorSupplier,
                 manualFillingComponentSupplier,
                 edgeToEdgeManager,
-                bookmarkManagerOpenerSupplier);
+                bookmarkManagerOpenerSupplier,
+                xrSpaceModeObservableSupplier);
 
         mActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
