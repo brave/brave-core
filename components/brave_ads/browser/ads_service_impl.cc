@@ -46,7 +46,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
@@ -353,9 +352,8 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 
   // The user has not joined Brave Rewards, so we only start the service if the
   // user has opted in to Brave News, new tab takeover, or search result ads.
-  return UserHasOptedInToBraveNewsAds() ||
-         (ShouldAlwaysRunService() && (UserHasOptedInToNewTabPageAds() ||
-                                       UserHasOptedInToSearchResultAds()));
+  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNewTabPageAds() ||
+         UserHasOptedInToSearchResultAds();
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {

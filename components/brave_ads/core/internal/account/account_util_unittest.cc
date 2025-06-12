@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -194,9 +193,6 @@ TEST_F(BraveAdsAccountUtilTest,
 TEST_F(BraveAdsAccountUtilTest,
        OnlyAllowSearchResultAdConversionDepositForNonRewardsUser) {
   // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      {kShouldAlwaysTriggerBraveSearchResultAdEventsFeature});
-
   test::DisableBraveRewards();
 
   // Act & Assert

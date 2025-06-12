@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -45,11 +44,8 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
     }
 
     case mojom::AdType::kSearchResultAd: {
-      // Only allow conversion deposits for non-Rewards users if
-      // brave://flags/#brave-ads-should-always-trigger-search-result-ad-events
-      // is enabled.
-      return ShouldAlwaysTriggerSearchResultAdEvents() &&
-             mojom_confirmation_type == mojom::ConfirmationType::kConversion;
+      // Only allow conversion deposits for non-Rewards users.
+      return mojom_confirmation_type == mojom::ConfirmationType::kConversion;
     }
 
     case mojom::AdType::kUndefined: {

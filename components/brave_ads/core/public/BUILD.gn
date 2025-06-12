@@ -29,7 +29,6 @@ source_set("headers") {
     "ads_client/ads_client_notifier_interface.h",
     "ads_client/ads_client_notifier_observer.h",
     "ads_constants.h",
-    "ads_feature.h",
     "ads_observer.h",
     "ads_util.h",
     "common/functional/once_closure_task_queue.h",
