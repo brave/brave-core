@@ -298,6 +298,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
+        MenuItem braveCustomizeMenu =
+                menu.add(Menu.NONE, R.id.brave_customize_menu_id, 0, R.string.customize_menu_title);
+        if (shouldShowIconBeforeItem()) {
+            braveCustomizeMenu.setIcon(
+                    AppCompatResources.getDrawable(mContext, R.drawable.ic_window_screwdriver));
+        }
+
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
         if (shouldShowIconBeforeItem()) {
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
@@ -361,6 +368,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.exit_id);
         mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
         mMenu.removeItem(R.id.request_vpn_location_id);
+        mMenu.removeItem(R.id.brave_customize_menu_id);
     }
 
     @Override
