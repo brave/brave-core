@@ -21,7 +21,7 @@ std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
 WebDiscoveryInfoBarView::WebDiscoveryInfoBarView(
     std::unique_ptr<WebDiscoveryInfoBarDelegate> delegate)
     : InfoBarView(std::move(delegate)) {
-  content_view_ = AddChildView(
+  content_view_ = AddContentChildView(
       std::make_unique<WebDiscoveryInfoBarContentView>(GetDelegate()));
 }
 
