@@ -6,18 +6,28 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE_H_
 #define BRAVE_BROWSER_BRAVE_ADS_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE_H_
 
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include <string>
+#include <vector>
+
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar_delegate.h"
 
 class PrefService;
+class GURL;
+enum class WindowOpenDisposition;
 
 namespace content {
 class WebContents;
 }  // namespace content
 
+namespace ui {
+class ImageModel;
+}  // namespace ui
+
 namespace brave_ads {
 
 class CreativeSearchResultAdClickedInfoBarDelegate
-    : public ConfirmInfoBarDelegate {
+    : public BraveConfirmInfoBarDelegate {
  public:
   CreativeSearchResultAdClickedInfoBarDelegate();
 
@@ -39,6 +49,10 @@ class CreativeSearchResultAdClickedInfoBarDelegate
   std::u16string GetLinkText() const override;
   GURL GetLinkURL() const override;
   bool LinkClicked(WindowOpenDisposition disposition) override;
+
+  // BraveConfirmInfoBarDelegate:
+  std::vector<int> GetButtonsOrder() const override;
+  bool ShouldSupportMultiLine() const override;
 };
 
 }  // namespace brave_ads
