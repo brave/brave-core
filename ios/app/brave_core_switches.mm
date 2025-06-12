@@ -50,8 +50,6 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AJsonUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP3AJsonUploadUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ACreativeUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP3ACreativeUploadUrl);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP2AJsonUploadServerURL =
-    base::SysUTF8ToNSString(p3a::switches::kP2AJsonUploadUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AConstellationUploadServerHost =
     base::SysUTF8ToNSString(p3a::switches::kP3AConstellationUploadHost);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADisableStarAttestation =
