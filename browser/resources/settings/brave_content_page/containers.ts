@@ -14,6 +14,7 @@ import { getHtml } from './containers.html.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 
 const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 
@@ -47,6 +48,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       isRemoving_: {
         type: Boolean,
       },
+      isEditDialogNameInvalid_: {
+        type: Boolean,
+      },
     }
   }
 
@@ -55,6 +59,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isRemoving_ = false
+  accessor isEditDialogNameInvalid_ = false
 
   override connectedCallback() {
     super.connectedCallback()
@@ -116,10 +121,12 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   onContainerNameInput_(e: InputEvent) {
     assert(this.editingContainer_)
+    const input = e.target as CrInputElement
     this.editingContainer_ = {
       ...this.editingContainer_,
-      name: (e.target as HTMLInputElement).value,
+      name: input.value,
     }
+    this.isEditDialogNameInvalid_ = input.invalid
   }
 
   onSaveContainerFromDialog_() {
