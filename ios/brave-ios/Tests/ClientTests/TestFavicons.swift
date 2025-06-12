@@ -11,7 +11,7 @@ import XCTest
 
 @testable import Brave
 
-@MainActor class TestFavicons: ProfileTest {
+@MainActor class TestFavicons: XCTestCase {
 
   override func setUp() {
     super.setUp()

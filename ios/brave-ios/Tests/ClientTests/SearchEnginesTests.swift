@@ -214,9 +214,7 @@ class SearchEnginesTests: XCTestCase {
   }
 
   func testGetOrderedEngines() async {
-    let profile = MockProfile()
     // setup an existing search engine in the profile
-    profile.prefs.setObject(["Google"], forKey: "search.orderedEngineNames")
     let engines = SearchEngines(locale: Locale(identifier: "pl_PL"))
     await engines.loadSearchEngines()
     XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")

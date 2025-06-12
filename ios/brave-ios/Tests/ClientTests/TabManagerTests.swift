@@ -132,10 +132,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     super.setUp()
 
     DataController.shared.initializeOnce()
-    let profile = MockProfile()
     manager = TabManager(
       windowId: testWindowId,
-      prefs: profile.prefs,
       rewards: nil,
       braveCore: nil,
       privateBrowsingManager: privateBrowsingManager

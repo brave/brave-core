@@ -88,18 +88,18 @@ public class AppState {
     }
 
     // Setup Profile
-    profile = BrowserProfile(localName: "profile")
+    profile = BrowserProfile()
 
     // Setup Migrations
     migration = Migration()
 
     // Perform Migrations
-    migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
+    migration.launchMigrations(keyPrefix: "profile")
 
     newsFeedDataSource = FeedDataSource()
 
     // Setup Custom URL scheme handlers
-    setupCustomSchemeHandlers(profile: profile)
+    setupCustomSchemeHandlers()
   }
 
   public enum State {
@@ -204,11 +204,11 @@ public class AppState {
     return braveCoreMain
   }
 
-  private func setupCustomSchemeHandlers(profile: Profile) {
+  private func setupCustomSchemeHandlers() {
     let responders: [(String, InternalSchemeResponse)] = [
       (AboutHomeHandler.path, AboutHomeHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
+      (ReaderModeHandler.path, ReaderModeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
       (HTTPBlockedHandler.path, HTTPBlockedHandler()),

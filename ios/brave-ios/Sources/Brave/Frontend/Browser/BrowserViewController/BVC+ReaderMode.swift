@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import Preferences
 import Shared
 import Storage
 import Web
@@ -48,8 +49,7 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
     didConfigureStyle style: ReaderModeStyle
   ) {
     // Persist the new style to the profile
-    let encodedStyle: [String: Any] = style.encodeAsDictionary()
-    profile.prefs.setObject(encodedStyle, forKey: readerModeProfileKeyStyle)
+    Preferences.ReaderMode.style.value = style.encode()
     // Change the reader mode style on all tabs that have reader mode active
     for tabIndex in 0..<tabManager.count {
       if let tab = tabManager[tabIndex] {
@@ -81,8 +81,8 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
     }
 
     var readerModeStyle = defaultReaderModeStyle
-    if let dict = profile.prefs.dictionaryForKey(readerModeProfileKeyStyle) {
-      if let style = ReaderModeStyle(dict: dict as [String: AnyObject]) {
+    if let encodedString = Preferences.ReaderMode.style.value {
+      if let style = ReaderModeStyle(encodedString: encodedString) {
         readerModeStyle = style
       }
     }
@@ -232,8 +232,8 @@ extension BrowserViewController {
     guard notification.name == .dynamicFontChanged else { return }
 
     var readerModeStyle = defaultReaderModeStyle
-    if let dict = profile.prefs.dictionaryForKey(readerModeProfileKeyStyle) {
-      if let style = ReaderModeStyle(dict: dict as [String: AnyObject]) {
+    if let encodedString = Preferences.ReaderMode.style.value {
+      if let style = ReaderModeStyle(encodedString: encodedString) {
         readerModeStyle = style
       }
     }

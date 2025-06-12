@@ -380,6 +380,10 @@ extension Preferences {
     static let reddit = Option<Bool>(key: "website-redirect.reddit", default: false)
     static let npr = Option<Bool>(key: "website-redirect.npr", default: false)
   }
+
+  final public class ReaderMode {
+    static let style = Option<String?>(key: "readermode.style", default: nil)
+  }
 }
 
 extension Preferences {
