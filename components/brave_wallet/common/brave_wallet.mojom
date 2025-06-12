@@ -10,7 +10,6 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
-
 const int8 kAccountNameMaxCharacterLength = 30;
 
 // Used to notify the renderer of provider information for use in
@@ -176,6 +175,44 @@ interface EthereumProvider {
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+};
+
+struct CardanoProviderSignatureResult {
+  string key;
+  string signature;
+};
+
+struct CardanoProviderPagination {
+  uint32 page;
+  uint32 limit;
+};
+
+// https://cips.cardano.org/cip/CIP-30
+interface CardanoProvider {
+  Enable() => (bool success);
+  IsEnabled() => (bool enabled);
+
+  GetNetworkId() =>
+    (int32 network_id, string? error_message);
+  GetUsedAddresses() =>
+    (array<string> used_addresses, string? error_message);
+  GetUnusedAddresses() =>
+    (array<string> unused_addresses, string? error_message);
+  GetChangeAddress() =>
+    (string change_address, string? error_message);
+  GetRewardAddresses() =>
+    (array<string> reward_addresses, string? error_message);
+  GetBalance() =>
+    (string cbor_balance, string? error_message);
+  GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
+    (array<string>? utxos, string? error_message);
+  SignTx(string tx_cbor, bool partial_sign) =>
+    (string signed_tx_cbor, string? error_message);
+  SubmitTx(string signed_tx_cbor) =>
+    (string tx_hash, string? error_message);
+  SignData(string address, string payload_hex) =>
+    (CardanoProviderSignatureResult result, string? error_message);
+  GetCollateral(string amount) => (array<string>? utxos, string? error_message);
 };
 
 struct ChainId {

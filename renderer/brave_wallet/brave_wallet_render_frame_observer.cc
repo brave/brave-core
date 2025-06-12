@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "build/buildflag.h"
 #include "content/public/common/isolated_world_ids.h"
@@ -91,6 +92,8 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
+  // TODO(https://github.com/brave/brave-browser/issues/46374): Add check for
+  // Cardano here
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.install_window_brave_ethereum_provider &&
       !dynamic_params.install_window_ethereum_provider &&
@@ -117,6 +120,14 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
       dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/46374): Add check for
+  // Cardano setting
+  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
+                                                         "cardano") &&
+      dynamic_params.install_window_brave_cardano_provider) {
+    JSCardanoProvider::Install(render_frame());
   }
 }
 
