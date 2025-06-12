@@ -468,9 +468,10 @@
     *** getActionButtonTintList(...);
 }
 
--keep class org.chromium.chrome.browser.tab_ui.TabUiThemeUtils {
+-keep class org.chromium.chrome.browser.tab_ui.TabCardThemeUtil {
     *** getTitleTextColor(...);
     *** getCardViewBackgroundColor(...);
+    *** getActionButtonTintList(...);
 }
 
 -keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
