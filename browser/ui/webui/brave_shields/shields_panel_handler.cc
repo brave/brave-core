@@ -62,9 +62,8 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
     return;
   }
   auto* browser_window = BraveBrowserWindow::From(browser->window());
-  gfx::Vector2d vec = gfx::Vector2d(browser_window->GetShieldsBubbleRect().x(),
-                                    browser_window->GetShieldsBubbleRect().y());
-  std::move(callback).Run(vec);
+  auto rect = browser_window->GetShieldsBubbleRect();
+  std::move(callback).Run(gfx::Vector2d(rect.x(), rect.y()));
 }
 
 void ShieldsPanelHandler::SetAdvancedViewEnabled(bool is_enabled) {
