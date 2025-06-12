@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
@@ -497,4 +498,89 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // Toggle back
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
   ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
+
+class BraveBrowserCommandControllerWithSideBySideTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerWithSideBySideTest() {
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {features::kSideBySide}, {});
+  }
+  ~BraveBrowserCommandControllerWithSideBySideTest() override = default;
+
+  TabStripModel* tab_strip_model() { return browser()->tab_strip_model(); }
+
+  CommandUpdater* command_updater() { return browser()->command_controller(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
+                       SplitViewCommandsTest) {
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  ASSERT_EQ(2, tab_strip_model()->count());
+  EXPECT_EQ(1, tab_strip_model()->active_index());
+
+  // When active tab is not split tab, only |IDC_NEW_SPLIT_VIEW|
+  // command is enabled.
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // When active tab is split tab, only |IDC_BREAK_TILE| and
+  // |IDC_SWAP_SPLIT_VIEW| commands are enabled.
+  command_updater()->ExecuteCommand(IDC_NEW_SPLIT_VIEW);
+  EXPECT_EQ(3, tab_strip_model()->count());
+  EXPECT_EQ(2, tab_strip_model()->active_index());
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // Only |IDC_NEW_SPLIT_VIEW| is enabled after removing split tabs from active
+  // tab.
+  command_updater()->ExecuteCommand(IDC_BREAK_TILE);
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // |IDC_TILE_TABS| is enabled after selecting two tabs at index 0 and 1.
+  tab_strip_model()->ActivateTabAt(0);
+  tab_strip_model()->SelectTabAt(1);
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // |IDC_TILE_TABS| is disabled if selected tabs count is not 2.
+  tab_strip_model()->SelectTabAt(2);
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+  tab_strip_model()->DeselectTabAt(2);
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // Create split tabs with two selected tabs at index 0 and 1.
+  //  When active tab is split tab, only |IDC_BREAK_TILE| and
+  // |IDC_SWAP_SPLIT_VIEW| commands are enabled.
+  command_updater()->ExecuteCommand(IDC_TILE_TABS);
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+
+  // Swap doesn't change commands status.
+  command_updater()->ExecuteCommand(IDC_SWAP_SPLIT_VIEW);
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_NEW_SPLIT_VIEW));
+  EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
+  EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
 }

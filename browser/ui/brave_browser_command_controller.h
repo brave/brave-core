@@ -8,6 +8,8 @@
 
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
@@ -65,6 +67,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void OnTabGroupChanged(const TabGroupChange& change) override;
+  void OnSplitTabChanged(const SplitTabChange& change) override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;
@@ -109,6 +112,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   void UpdateCommandsForSend();
   void UpdateCommandsForPin();
   void UpdateCommandForSplitView();
+
+  // Rename to UpdateCommandForSplitView when we enable
+  // SideBySide by default.
+  void UpdateCommandForSplitViewWithSideBySide();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
