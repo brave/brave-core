@@ -30,7 +30,7 @@ class BraveMultiContentsView : public MultiContentsView,
   static BraveMultiContentsView* From(MultiContentsView* view);
 
   BraveMultiContentsView(BrowserView* browser_view,
-                         std::unique_ptr<Delegate> delegate);
+                         std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
   void UpdateSecondaryLocationBar();
