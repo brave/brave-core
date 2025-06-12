@@ -41,7 +41,6 @@ def MakeGithubPR(branch: str, target: str, title: str, body: str,
   return GetProcessOutput(args, cwd=path_util.GetBraveDir())
 
 
-
 def PushChangesToBranch(files: Dict[str, str],
                         branch: str,
                         commit_message: str,
