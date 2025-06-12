@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "base/logging.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/time/time.h"
@@ -28,7 +27,6 @@
 
 namespace {
 const base::TimeDelta kPredicateCheckFrequency = base::Milliseconds(200);
-}  // namespace
 
 class TestPredicateWaiter {
  public:
@@ -46,7 +44,7 @@ class TestPredicateWaiter {
     timer_.Start(FROM_HERE, kPredicateCheckFrequency, this,
                  &TestPredicateWaiter::CheckPredicate);
     run_loop_.Run();
-    ASSERT_TRUE(is_fulfilled_.Run());
+    is_fulfilled_.Run();
   }
 
  private:
@@ -63,6 +61,8 @@ class TestPredicateWaiter {
   base::RepeatingTimer timer_;
   base::RunLoop run_loop_;
 };
+
+}  // namespace
 
 class BraveYouTubeScriptInjectorNativeHelperBrowserTest
     : public PlatformBrowserTest {
@@ -131,6 +131,13 @@ class BraveYouTubeScriptInjectorNativeHelperBrowserTest
     return fulfilled;
   }
 
+  bool IsVideoPlaying() {
+    return content::EvalJs(web_contents(),
+                           "document.querySelector('video.html5-main-video')."
+                           "paused === false")
+        .ExtractBool();
+  }
+
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
@@ -139,8 +146,6 @@ class BraveYouTubeScriptInjectorNativeHelperBrowserTest
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-// TESTS
-
 IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
                        SetFullscreenFromPausedVideo) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
@@ -148,11 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
                                                       true);
 
   // Video is not playing initially.
-  ASSERT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === true")
-          .ExtractBool());
+  ASSERT_FALSE(IsVideoPlaying());
 
   // The document is not in fullscreen mode.
   ASSERT_TRUE(
@@ -167,12 +168,10 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  // Check the video is still playing.
-  EXPECT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === false")
-          .ExtractBool());
+  // Check the video is playing.
+  EXPECT_TRUE(WaitForJsResult(
+      web_contents(),
+      "document.querySelector('video.html5-main-video').paused === false"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
@@ -192,12 +191,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
       "document.querySelector('video.html5-main-video').play()"));
   youtube_script_injector::SetFullscreen(web_contents());
 
-  // Check the video is playing.
-  EXPECT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === false")
-          .ExtractBool());
+  EXPECT_TRUE(IsVideoPlaying());
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
 
@@ -205,12 +199,8 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  // Check the video is still playing.
-  EXPECT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === false")
-          .ExtractBool());
+  // Check again the video is still playing.
+  EXPECT_TRUE(IsVideoPlaying());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
@@ -220,11 +210,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
                                                       true);
 
   // Video is not playing.
-  ASSERT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === true")
-          .ExtractBool());
+  ASSERT_FALSE(IsVideoPlaying());
   // Simulate fullscreen button click to enter fullscreen mode.
   ASSERT_TRUE(content::ExecJs(
       web_contents(),
@@ -237,12 +223,9 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
 
   youtube_script_injector::SetFullscreen(web_contents());
 
-  // Check the video is now playing.
-  EXPECT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === false")
-          .ExtractBool());
+  EXPECT_TRUE(WaitForJsResult(
+      web_contents(),
+      "document.querySelector('video.html5-main-video').paused === false"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
@@ -317,10 +300,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  // Check the video is playing.
-  EXPECT_TRUE(
-      content::EvalJs(
-          web_contents(),
-          "document.querySelector('video.html5-main-video').paused === false")
-          .ExtractBool());
+  EXPECT_TRUE(WaitForJsResult(
+      web_contents(),
+      "document.querySelector('video.html5-main-video').paused === false"));
 }
