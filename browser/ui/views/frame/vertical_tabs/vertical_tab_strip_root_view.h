@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
 
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
@@ -15,7 +15,6 @@
 class VerticalTabStripRootView : public BrowserRootView {
   METADATA_HEADER(VerticalTabStripRootView, BrowserRootView)
  public:
-
   VerticalTabStripRootView(BrowserView* browser_view, views::Widget* widget);
 
   ~VerticalTabStripRootView() override;
@@ -29,4 +28,4 @@ class VerticalTabStripRootView : public BrowserRootView {
   void PaintChildren(const views::PaintInfo& paint_info) override;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_ROOT_VIEW_H_
