@@ -73,7 +73,6 @@ function findMangledFileAndOriginalFile(
     ]
 
     mangledPath = path.join(genPath, ...newPathParts)
-    console.log(`Trying to find mangled file at: ${mangledPath}`)
 
     attempts++
   }
