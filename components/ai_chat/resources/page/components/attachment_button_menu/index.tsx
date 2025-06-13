@@ -33,12 +33,7 @@ export default function AttachmentButtonMenu(props: Props) {
   )
 
   const isMenuDisabled = totalUploadedImages >= MAX_IMAGES
-
-  const hasAssociatedContent = !!props.associatedContentInfo
-  const isLastTurnBraveSearchSERPSummary = props.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
-  const canAttachPageContents = (props.conversationHistory.length === 0 ||
-    isLastTurnBraveSearchSERPSummary) &&
-    hasAssociatedContent
+  const hasAssociatedContent = props.associatedContentInfo.length > 0
 
   return (
     <>
@@ -83,15 +78,17 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         }
-        {canAttachPageContents && !props.conversationStarted && props.associateDefaultContent && <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
-          <div className={styles.buttonContent}>
-            <Icon
-              className={styles.buttonIcon}
-              name='window-tab'
-            />
-            {getLocale('currentTabContentsButtonLabel')}
-          </div>
-        </leo-menu-item>}
+        {!props.conversationStarted && props.associateDefaultContent && (
+          <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='window-tab'
+              />
+              {getLocale(S.AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL)}
+            </div>
+          </leo-menu-item>
+        )}
       </ButtonMenu>
     </>
   )
