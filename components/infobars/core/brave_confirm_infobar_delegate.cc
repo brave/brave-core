@@ -45,3 +45,12 @@ bool BraveConfirmInfoBarDelegate::InterceptClosing() {
 bool BraveConfirmInfoBarDelegate::ExtraButtonPressed() {
   return true;
 }
+
+bool BraveConfirmInfoBarDelegate::ShouldSupportMultiLine() const {
+  return false;
+}
+
+size_t BraveConfirmInfoBarDelegate::GetMaxLines() const {
+  // Return 0 to indicate that there is no limit on the number of lines.
+  return 0;
+}
