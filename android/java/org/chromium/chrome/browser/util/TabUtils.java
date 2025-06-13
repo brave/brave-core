@@ -157,7 +157,7 @@ public class TabUtils {
                                     });
                             return true;
                         } else if (id == R.id.view_bookmarks) {
-                            activity.showBookmarkManager(currentTab.getProfile());
+                            activity.showBookmarkManager(currentTab.getProfile(), currentTab);
                             return true;
                         }
                         return false;
