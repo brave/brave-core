@@ -95,4 +95,7 @@
     <dimen name="brave_news_category_group_title_phone_textsize">13sp</dimen>
     <dimen name="brave_news_category_group_desc_tablet_textsize">15sp</dimen>
     <dimen name="brave_news_category_group_desc_phone_textsize">11sp</dimen>
+
+    <!-- Quick Action Search Widget -->
+    <dimen name="quick_action_search_widget_small_margin_vertical">12dp</dimen>
 </resources>
