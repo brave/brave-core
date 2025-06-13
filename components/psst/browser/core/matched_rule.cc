@@ -39,7 +39,7 @@ std::unique_ptr<MatchedRule> MatchedRule::Create(
   }
 
   return base::WrapUnique<MatchedRule>(new MatchedRule(
-      rule.Name(), user_script.value(), policy_script.value(), rule.Version()));
+      rule.name(), user_script.value(), policy_script.value(), rule.version()));
 }
 
 }  // namespace psst

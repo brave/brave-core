@@ -21,6 +21,7 @@
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
+#include "brave/components/psst/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -44,11 +45,12 @@ std::string ReadFile(const base::FilePath& file_path) {
 
 // static
 PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
+  CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
   static base::NoDestructor<PsstRuleRegistry> instance;
   return instance.get();
 }
 
-void PsstRuleRegistry::SetOnLoadCallbackForTest(
+void PsstRuleRegistry::SetOnLoadCallbackForTesting(
     base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
         callback) {
   onload_test_callback_ = std::move(callback);

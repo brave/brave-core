@@ -124,7 +124,10 @@ class PsstTabWebContentsObserverFeatureEnabledUnitTest
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
     : public PsstTabWebContentsObserverFeatureEnabledUnitTest {
  public:
-  void SetUp() override { content::RenderViewHostTestHarness::SetUp(); }
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
+    content::RenderViewHostTestHarness::SetUp();
+  }
 };
 
 TEST_F(PsstTabWebContentsObserverFeatureEnabledUnitTest, CreateObserver) {

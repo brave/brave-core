@@ -38,7 +38,7 @@ constexpr char kResetPageTitleScript[] =
     R"(document.title='NO_TITLE'; document.title)";
 constexpr char kGetCurrentUrlScript[] = R"(window.location.href)";
 
-GURL url(const GURL& destination_url, const GURL& navigation_url) {
+GURL GetTestUrl(const GURL& destination_url, const GURL& navigation_url) {
   std::string encoded_destination;
   base::Base64UrlEncode(destination_url.spec(),
                         base::Base64UrlEncodePolicy::OMIT_PADDING,
@@ -159,10 +159,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptsOnlyInPrimaryMainFrame) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
-  const GURL ifrave_url =
+  const GURL iframe_url =
       GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
-  const GURL navigate_url = url(
-      ifrave_url, GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html"));
+  const GURL navigate_url = GetTestUrl(
+      iframe_url, GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html"));
   std::u16string expected_title(u"iframe test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), navigate_url));

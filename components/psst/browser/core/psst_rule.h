@@ -58,10 +58,12 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
   bool ShouldInsertScript(const GURL& url) const;
 
   // Getters.
-  const std::string& Name() const { return name_; }
-  const base::FilePath& PolicyScriptPath() const { return policy_script_path_; }
-  const base::FilePath& UserScriptPath() const { return user_script_path_; }
-  int Version() const { return version_; }
+  const std::string& name() const { return name_; }
+  const base::FilePath& policy_script_path() const {
+    return policy_script_path_;
+  }
+  const base::FilePath& user_script_path() const { return user_script_path_; }
+  int version() const { return version_; }
 
  private:
   PsstRule();

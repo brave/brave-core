@@ -28,9 +28,6 @@ class PsstScriptsHandler {
       const int32_t world_id);
 
   virtual void Start() = 0;
-
- protected:
-  PsstScriptsHandler() = default;
 };
 
 }  // namespace psst
