@@ -30,6 +30,8 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -51,8 +53,9 @@ EngineConsumerConversationAPI::EngineConsumerConversationAPI(
     const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
-    ModelService* model_service)
-    : EngineConsumer(model_service) {
+    ModelService* model_service,
+    PrefService* pref_service)
+    : EngineConsumer(model_service), pref_service_(pref_service) {
   DCHECK(!model_options.name.empty());
   model_name_ = model_options.name;
   api_ = std::make_unique<ConversationAPIClient>(
@@ -187,6 +190,59 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
+std::optional<ConversationEvent>
+EngineConsumerConversationAPI::GetUserMemoryEvent() const {
+  bool customization_enabled =
+      pref_service_->GetBoolean(prefs::kBraveAIChatUserCustomizationEnabled);
+  bool memory_enabled =
+      pref_service_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
+  if (!customization_enabled && !memory_enabled) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict user_memory;
+  if (customization_enabled) {
+    const std::string& name =
+        pref_service_->GetString(prefs::kBraveAIChatUserCustomizationName);
+    const std::string& job =
+        pref_service_->GetString(prefs::kBraveAIChatUserCustomizationJob);
+    const std::string& tone =
+        pref_service_->GetString(prefs::kBraveAIChatUserCustomizationTone);
+    const std::string& other =
+        pref_service_->GetString(prefs::kBraveAIChatUserCustomizationOther);
+    if (!name.empty()) {
+      user_memory.Set("name", name);
+    }
+    if (!job.empty()) {
+      user_memory.Set("job", job);
+    }
+    if (!tone.empty()) {
+      user_memory.Set("tone", tone);
+    }
+    if (!other.empty()) {
+      user_memory.Set("other", other);
+    }
+  }
+
+  if (memory_enabled) {
+    const base::Value::List& memories =
+        pref_service_->GetList(prefs::kBraveAIChatUserMemories);
+    if (!memories.empty()) {
+      user_memory.Set("memories", memories.Clone());
+    }
+  }
+
+  if (user_memory.empty()) {
+    return std::nullopt;
+  }
+
+  return std::optional<ConversationEvent>(ConversationEvent(
+      ConversationEventRole::User, ConversationEventType::UserMemory,
+      std::vector<std::string>(),  // Empty content
+      "",                          // Empty topic
+      std::move(user_memory)));
+}
+
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
@@ -202,6 +258,12 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
 
   std::vector<ConversationEvent> conversation;
+
+  // user memory
+  if (auto event = GetUserMemoryEvent()) {
+    conversation.push_back(std::move(*event));
+  }
+
   // associated content
   if (!page_content.empty()) {
     conversation.push_back(
