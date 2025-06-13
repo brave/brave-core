@@ -5,13 +5,13 @@
 
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
+import { BraveAccountDialogElement } from './brave_account_dialog.js'
 
-export function getHtml(this: SettingsBraveAccountDialogElement) {
+export function getHtml(this: BraveAccountDialogElement) {
   return html`<!--_html_template_start_-->
-    <cr-dialog id="dialog" show-on-attach>
-      <div slot="header">
-        <div class="buttons">
+    <div class="header">
+      <div class="navigation-buttons">
+        <if expr="not is_android and not is_ios">
           ${this.showBackButton
             ? html`<leo-button kind="plain-faint"
                                size="tiny"
@@ -21,13 +21,14 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
             : nothing}
           <leo-button kind="plain-faint"
                       size="tiny"
-                      @click=${() => this.$.dialog.cancel()}>
+                      @click=${() => this.fire('close-button-clicked')}>
             <leo-icon name="close"></leo-icon>
           </leo-button>
+          </if>
         </div>
         <div class="logo"></div>
       </div>
-      <div slot="body">
+      <div class="body">
         <div class="title-and-description">
           <div class="title">${this.dialogTitle}</div>
           <div class="description">${this.dialogDescription}</div>
@@ -36,9 +37,20 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
             : nothing}
         </div>
         <slot name="inputs"></slot>
+        <div class="action-buttons">
         <slot name="buttons"></slot>
+        <if expr="is_android or is_ios">
+          ${this.showBackButton
+            ? html`<leo-button
+                kind="plain-faint"
+                @click=${() => this.fire('back-button-clicked')}
+              >
+                $i18n{braveAccountBackButtonLabel}
+              </leo-button>`
+            : nothing}
+        </if>
       </div>
-      <slot name="footer" slot="footer"></slot>
-    </cr-dialog>
+    </div>
+    <slot name="footer"></slot>
   <!--_html_template_end_-->`
 }

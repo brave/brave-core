@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   BraveAccountBrowserProxy,
@@ -17,7 +17,7 @@ import { isEmailValid } from './brave_account_common.js'
 // @ts-ignore
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
 
-class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
+class PasswordStrengthMeter extends CrLitElement {
   static get is() {
     return 'password-strength-meter'
   }
@@ -27,6 +27,7 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
       :host {
         align-items: center;
         display: flex;
+        gap: var(--leo-spacing-m);
         justify-content: space-between;
         width: 100%;
       }
@@ -49,9 +50,9 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
       .bar {
         background-color: var(--secondary-color);
         border-radius: var(--leo-radius-m);
+        flex-grow: 1;
         height: 4px;
         transition: 750ms;
-        width: 376px;
       }
 
       .strength {
@@ -76,7 +77,7 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
         <div class="strength" style="--strength: ${this.strength}"></div>
       </div>
       <div class="text">
-        ${this.i18n(`braveAccountPasswordStrengthMeter${this.category}`)}
+        ${loadTimeData.getString(`braveAccountPasswordStrengthMeter${this.category}`)}
       </div>
     `
   }
@@ -111,9 +112,9 @@ declare global {
 customElements.define(
   PasswordStrengthMeter.is, PasswordStrengthMeter)
 
-export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
+export class BraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
-    return 'settings-brave-account-create-dialog'
+    return 'brave-account-create-dialog'
   }
 
   static override get styles() {
@@ -144,7 +145,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.browserProxy.handler.getPasswordStrength(this.password).then(
+    this.browserProxy.password_strength_meter.getPasswordStrength(this.password).then(
       (value: { strength: number }) =>
         this.passwordStrength = value.strength
     )
@@ -187,12 +188,12 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-create-dialog':
-    SettingsBraveAccountCreateDialogElement
+    'brave-account-create-dialog':
+    BraveAccountCreateDialogElement
   }
 }
 
 customElements.define(
-  SettingsBraveAccountCreateDialogElement.is,
-  SettingsBraveAccountCreateDialogElement
+  BraveAccountCreateDialogElement.is,
+  BraveAccountCreateDialogElement
 )

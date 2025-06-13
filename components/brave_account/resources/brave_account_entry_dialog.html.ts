@@ -6,23 +6,21 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
-import { SettingsBraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
+import { BraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
 
-export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
+export function getHtml(this: BraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog
+    <brave-account-dialog
       dialog-description="$i18n{braveAccountEntryDialogDescription}"
       dialog-title="$i18n{braveAccountEntryDialogTitle}"
     >
-      <div slot="buttons">
-        <leo-button @click=${() => this.fire('create-button-clicked')}>
+        <leo-button slot="buttons" @click=${() => this.fire('create-button-clicked')}>
           $i18n{braveAccountCreateBraveAccountButtonLabel}
         </leo-button>
-        <leo-button kind="outline"
+        <leo-button slot="buttons" kind="outline"
                     @click=${() => this.fire('sign-in-button-clicked')}>
           $i18n{braveAccountAlreadyHaveAccountSignInButtonLabel}
         </leo-button>
-      </div>
       <div slot="footer">
         <div class="footer-text">
           $i18nRaw{braveAccountSelfCustodyDescription}
@@ -32,6 +30,6 @@ export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
           $i18n{braveAccountSelfCustodyButtonLabel}
         </leo-button>
       </div>
-    </settings-brave-account-dialog>
+    </brave-account-dialog>
   <!--_html_template_end_-->`
 }
