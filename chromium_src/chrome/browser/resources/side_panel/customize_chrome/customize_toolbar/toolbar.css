@@ -15,17 +15,13 @@
   margin: 0;
 }
 
-.sp-cards-separator,
-hr.sp-hr {
+.sp-cards-separator, hr.sp-hr {
   display: none;
 }
 
 .intro-text {
-  color: --leo-color-text-primary;
-  font: var(--leo-font-default-regular);
-  font-weight: 600;
-  line-height: var(--leo-typography-line-height-default);
-  letter-spacing: var(--leo-typography-letter-spacing-default);
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-semibold);
   text-align: unset;
   padding: 0;
 }
@@ -33,28 +29,18 @@ hr.sp-hr {
 #tipCardLabel {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-small-regular);
-  font-weight: 400;
-  line-height: var(--leo-typography-line-height-small);
-  letter-spacing: var(--leo-typography-letter-spacing-small);
 }
 
 .choose-icons-row {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-default-regular);
-  font-weight: 400;
-  letter-spacing: var(--leo-typography-letter-spacing-default);
-  line-height: var(--leo-typography-line-height-default);
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-block: 0;
   height: 44px;
 }
 
 .choose-icons-row.category-title {
   color: var(--leo-color-text-interactive);
-  font: var(--leo-font-small-regular);
-  font-weight: 600;
-  letter-spacing: var(--leo-typography-letter-spacing-small);
-  line-height: var(--leo-typography-line-height-small);
+  font: var(--leo-font-small-semibold);
   display: flex;
   align-items: center;
   margin: 0;
