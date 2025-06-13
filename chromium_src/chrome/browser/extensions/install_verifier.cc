@@ -43,12 +43,22 @@
 // All above headers copied from original install_verifier.cc are
 // included to prevent below GOOGLE_CHROME_BUILD affect them.
 
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+
 // `VerifyStatus::ENFORCE` is only defaulted for google chrome.
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
+
+#define IsUnpackedLocation(...)      \
+  IsUnpackedLocation(__VA_ARGS__) || \
+      extensions_mv2::IsKnownMV2Extension(extension->id())
+
 #include "src/chrome/browser/extensions/install_verifier.cc"
+
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif
+
+#undef IsUnpackedLocation
