@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
@@ -200,7 +201,10 @@ public class BraveToolbarManager extends ToolbarManager
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier) {
+            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate,
+            TopControlsStacker topControlsStacker,
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -245,7 +249,10 @@ public class BraveToolbarManager extends ToolbarManager
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
                 multiInstanceManager,
-                tabBookmarkerSupplier);
+                tabBookmarkerSupplier,
+                menuButtonVisibilityDelegate,
+                topControlsStacker,
+                xrSpaceModeObservableSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

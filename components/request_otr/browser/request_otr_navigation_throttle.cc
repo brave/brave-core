@@ -33,9 +33,8 @@
 namespace request_otr {
 
 // static
-std::unique_ptr<RequestOTRNavigationThrottle>
-RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle,
+void RequestOTRNavigationThrottle::MaybeCreateAndAdd(
+    content::NavigationThrottleRegistry& registry,
     RequestOTRService* request_otr_service,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* pref_service,
@@ -46,47 +45,48 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
   // is disabled, don't bother creating throttle.
   if (!base::FeatureList::IsEnabled(
           request_otr::features::kBraveRequestOTRTab)) {
-    return nullptr;
+    return;
   }
   DCHECK(request_otr_service);
 
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
-    return nullptr;
+    return;
   }
 
   // If this is the system profile, then we don't need the throttle.
+  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   if (profile_metrics::GetBrowserProfileType(
-          navigation_handle->GetWebContents()->GetBrowserContext()) ==
+          navigation_handle.GetWebContents()->GetBrowserContext()) ==
       profile_metrics::BrowserProfileType::kSystem) {
-    return nullptr;
+    return;
   }
   DCHECK(ephemeral_storage_service);
 
   // Don't block subframes.
-  if (!navigation_handle->IsInMainFrame()) {
-    return nullptr;
+  if (!navigation_handle.IsInMainFrame()) {
+    return;
   }
 
   // If user preference is 'never go off the record', don't bother creating
   // throttle.
   if (pref_service->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever)) {
-    return nullptr;
+    return;
   }
 
-  return std::make_unique<RequestOTRNavigationThrottle>(
-      navigation_handle, request_otr_service, ephemeral_storage_service,
-      pref_service, locale);
+  registry.AddThrottle(std::make_unique<RequestOTRNavigationThrottle>(
+      registry, request_otr_service, ephemeral_storage_service, pref_service,
+      locale));
 }
 
 RequestOTRNavigationThrottle::RequestOTRNavigationThrottle(
-    content::NavigationHandle* navigation_handle,
+    content::NavigationThrottleRegistry& registry,
     RequestOTRService* request_otr_service,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* pref_service,
     const std::string& locale)
-    : content::NavigationThrottle(navigation_handle),
+    : content::NavigationThrottle(registry),
       request_otr_service_(request_otr_service),
       ephemeral_storage_service_(ephemeral_storage_service),
       pref_service_(pref_service),

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_value_test_util_internal.h"
 
+#include <ostream>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"

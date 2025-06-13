@@ -15,6 +15,7 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
+#include "content/public/test/mock_navigation_throttle_registry.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -86,20 +87,22 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationFromTab) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (IsAIChatHistoryEnabled()) {
-    EXPECT_EQ(throttle.get(), nullptr);
+    EXPECT_TRUE(registry.throttles().empty());
   } else {
-    EXPECT_NE(throttle.get(), nullptr);
+    ASSERT_FALSE(registry.throttles().empty());
     EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
-              throttle->WillStartRequest().action());
+              registry.throttles().back()->WillStartRequest().action());
   }
 #else
-  EXPECT_EQ(throttle.get(), nullptr);
+  EXPECT_TRUE(registry.throttles().empty());
 #endif
 }
 
@@ -113,14 +116,17 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationToFrame) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
 #if !BUILDFLAG(IS_ANDROID)
+  ASSERT_FALSE(registry.throttles().empty());
   EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
-            throttle->WillStartRequest().action());
+            registry.throttles().back()->WillStartRequest().action());
 #else
-  EXPECT_EQ(throttle.get(), nullptr);
+  EXPECT_TRUE(registry.throttles().empty());
 #endif
 }
 
@@ -138,10 +144,12 @@ TEST_P(AIChatThrottleUnitTest, AllowNavigationFromPanel) {
 #endif
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
-  std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
-  EXPECT_EQ(throttle.get(), nullptr);
+  AIChatThrottle::MaybeCreateAndAdd(registry);
+  EXPECT_TRUE(registry.throttles().empty());
 }
 
 }  // namespace ai_chat

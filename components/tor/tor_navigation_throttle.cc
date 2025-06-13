@@ -18,38 +18,36 @@ namespace tor {
 bool TorNavigationThrottle::skip_wait_for_tor_connected_for_testing_ = false;
 
 // static
-std::unique_ptr<TorNavigationThrottle>
-TorNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle,
+void TorNavigationThrottle::MaybeCreateAndAdd(
+    content::NavigationThrottleRegistry& registry,
     bool is_tor_profile) {
   if (!is_tor_profile)
-    return nullptr;
-  return std::make_unique<TorNavigationThrottle>(navigation_handle);
+    return;
+  registry.AddThrottle(std::make_unique<TorNavigationThrottle>(registry));
 }
 
 // static
-std::unique_ptr<TorNavigationThrottle>
-TorNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle,
+void TorNavigationThrottle::MaybeCreateAndAdd(
+    content::NavigationThrottleRegistry& registry,
     TorLauncherFactory& tor_launcher_factory,
     bool is_tor_profile) {
   if (!is_tor_profile)
-    return nullptr;
-  return std::make_unique<TorNavigationThrottle>(navigation_handle,
-                                                 tor_launcher_factory);
+    return;
+  registry.AddThrottle(
+      std::make_unique<TorNavigationThrottle>(registry, tor_launcher_factory));
 }
 
 TorNavigationThrottle::TorNavigationThrottle(
-    content::NavigationHandle* navigation_handle)
-    : content::NavigationThrottle(navigation_handle),
+    content::NavigationThrottleRegistry& registry)
+    : content::NavigationThrottle(registry),
       tor_launcher_factory_(*TorLauncherFactory::GetInstance()) {
   tor_launcher_factory_->AddObserver(this);
 }
 
 TorNavigationThrottle::TorNavigationThrottle(
-    content::NavigationHandle* navigation_handle,
+    content::NavigationThrottleRegistry& registry,
     TorLauncherFactory& tor_launcher_factory)
-    : content::NavigationThrottle(navigation_handle),
+    : content::NavigationThrottle(registry),
       tor_launcher_factory_(tor_launcher_factory) {
   tor_launcher_factory_->AddObserver(this);
 }

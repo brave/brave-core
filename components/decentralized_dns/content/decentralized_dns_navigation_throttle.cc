@@ -25,32 +25,32 @@
 namespace decentralized_dns {
 
 // static
-std::unique_ptr<DecentralizedDnsNavigationThrottle>
-DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle,
+void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
+    content::NavigationThrottleRegistry& registry,
     PrefService* user_prefs,
     PrefService* local_state,
     const std::string& locale) {
+  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   content::BrowserContext* context =
-      navigation_handle->GetWebContents()->GetBrowserContext();
+      navigation_handle.GetWebContents()->GetBrowserContext();
   if (context->IsOffTheRecord()) {
-    return nullptr;
+    return;
   }
 
-  if (!navigation_handle->IsInMainFrame()) {
-    return nullptr;
+  if (!navigation_handle.IsInMainFrame()) {
+    return;
   }
 
-  return std::make_unique<DecentralizedDnsNavigationThrottle>(
-      navigation_handle, user_prefs, local_state, locale);
+  registry.AddThrottle(std::make_unique<DecentralizedDnsNavigationThrottle>(
+      registry, user_prefs, local_state, locale));
 }
 
 DecentralizedDnsNavigationThrottle::DecentralizedDnsNavigationThrottle(
-    content::NavigationHandle* navigation_handle,
+    content::NavigationThrottleRegistry& registry,
     PrefService* user_prefs,
     PrefService* local_state,
     const std::string& locale)
-    : content::NavigationThrottle(navigation_handle),
+    : content::NavigationThrottle(registry),
       user_prefs_(user_prefs),
       local_state_(local_state),
       locale_(locale) {}

@@ -6,19 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CONTENT_REWARDS_PROTOCOL_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CONTENT_REWARDS_PROTOCOL_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "content/public/browser/navigation_throttle.h"
-
-namespace content {
-class NavigationHandle;
-}  // namespace content
 
 namespace brave_rewards {
 
 class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
  public:
-  explicit RewardsProtocolNavigationThrottle(content::NavigationHandle* handle);
+  explicit RewardsProtocolNavigationThrottle(
+      content::NavigationThrottleRegistry& registry);
   ~RewardsProtocolNavigationThrottle() override;
 
   RewardsProtocolNavigationThrottle(const RewardsProtocolNavigationThrottle&) =
@@ -26,8 +21,7 @@ class RewardsProtocolNavigationThrottle : public content::NavigationThrottle {
   RewardsProtocolNavigationThrottle& operator=(
       const RewardsProtocolNavigationThrottle&) = delete;
 
-  static std::unique_ptr<RewardsProtocolNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationHandle* handle);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 091f7a093cea0283913385ee4238dfb670246f20..dee31f4064856a46cde730d19d05f769757a69de 100644
+index 040ccbf4c9d6551eabbf5ce46e934007daee8f41..131bc76447246af9ffee3d903a71e5340e9c300e 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -25,6 +25,7 @@ import '../site_settings/geolocation_page.js';

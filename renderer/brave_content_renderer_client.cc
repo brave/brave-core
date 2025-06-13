@@ -271,17 +271,17 @@ void BraveContentRendererClient::RunScriptsAtDocumentEnd(
   ChromeContentRendererClient::RunScriptsAtDocumentEnd(render_frame);
 }
 
-void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+void BraveContentRendererClient::WillPrepareForEvaluationOnWorkerThread(
     blink::WebServiceWorkerContextProxy* context_proxy,
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url,
     const blink::ServiceWorkerToken& service_worker_token) {
-  brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
+  brave_search_service_worker_holder_.WillPrepareForEvaluationOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url);
-  ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+  ChromeContentRendererClient::WillPrepareForEvaluationOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url, service_worker_token);
 }

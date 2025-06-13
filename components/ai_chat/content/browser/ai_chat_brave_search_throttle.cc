@@ -33,33 +33,33 @@ class RenderFrameHost;
 namespace ai_chat {
 
 // static
-std::unique_ptr<AIChatBraveSearchThrottle>
-AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
+void AIChatBraveSearchThrottle::MaybeCreateAndAdd(
     base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
-    content::NavigationHandle* navigation_handle,
+    content::NavigationThrottleRegistry& registry,
     AIChatService* ai_chat_service,
     PrefService* pref_service) {
-  auto* web_contents = navigation_handle->GetWebContents();
+  auto* web_contents = registry.GetNavigationHandle().GetWebContents();
   if (!web_contents) {
-    return nullptr;
+    return;
   }
 
   if (!open_leo_delegate || !ai_chat_service ||
       !IsAIChatEnabled(pref_service) ||
       !features::IsOpenAIChatFromBraveSearchEnabled() ||
-      !IsOpenAIChatButtonFromBraveSearchURL(navigation_handle->GetURL())) {
-    return nullptr;
+      !IsOpenAIChatButtonFromBraveSearchURL(
+          registry.GetNavigationHandle().GetURL())) {
+    return;
   }
 
-  return std::make_unique<AIChatBraveSearchThrottle>(
-      std::move(open_leo_delegate), navigation_handle, ai_chat_service);
+  registry.AddThrottle(std::make_unique<AIChatBraveSearchThrottle>(
+      std::move(open_leo_delegate), registry, ai_chat_service));
 }
 
 AIChatBraveSearchThrottle::AIChatBraveSearchThrottle(
     base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
-    content::NavigationHandle* handle,
+    content::NavigationThrottleRegistry& registry,
     AIChatService* ai_chat_service)
-    : content::NavigationThrottle(handle),
+    : content::NavigationThrottle(registry),
       open_ai_chat_delegate_(std::move(open_leo_delegate)),
       ai_chat_service_(ai_chat_service) {
   CHECK(open_ai_chat_delegate_);
