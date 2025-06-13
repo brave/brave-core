@@ -148,8 +148,8 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
 
   // Key-value pairs are '&' delimited and the keys/values are '=' delimited.
   // Example: "https://www.youtube.com/watch?v=abcdefg&somethingElse=12345".
-  std::vector<std::pair<std::string, std::string>> key_value_pairs;
-  base::SplitStringIntoKeyValuePairs(query, '=', '&', &key_value_pairs);
+  std::vector<std::pair<std::string_view, std::string_view>> key_value_pairs;
+  base::SplitStringIntoKeyValueViewPairs(query, '=', '&', &key_value_pairs);
 
   std::string video_id;
   for (const auto& pair : key_value_pairs) {
