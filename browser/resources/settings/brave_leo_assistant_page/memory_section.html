@@ -1,0 +1,274 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<style include="cr-shared-style settings-shared">
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+  }
+
+  .memory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .memory:last-of-type {
+    border-bottom: none;
+  }
+
+  .list-container {
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl)
+  }
+
+  .action-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl) var(--leo-spacing-m) var(--leo-spacing-2xl);
+  }
+
+  .label-secondary {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+
+  .memory-actions {
+    display: flex;
+    height: 36px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+  }
+
+  settings-toggle-button {
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl);
+  }
+
+  .empty-memories-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    border-radius: var(--leo-radius-m);
+    border: 1px solid var(--leo-color-divider-subtle);
+    width: 100%;
+    padding: var(--leo-spacing-4xl) 0px;
+    justify-content: center;
+  }
+
+  .empty-memories-title {
+    color: var(--leo-color-text-tertiary);
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .empty-memories-desc {
+    color: var(--leo-color-text-tertiary);
+    text-align: center;
+    font-weight: 400;
+  }
+
+  cr-dialog [slot="title"] {
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-heading-h3);
+    display: flex;
+    padding: var(--leo-spacing-2xl);
+    align-items: flex-start;
+    gap: var(--leo-spacing-xl);
+    align-self: stretch;
+  }
+
+  cr-dialog [slot="body"] {
+    display: flex;
+    padding: var(--leo-spacing-m) var(--leo-spacing-2xl);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--leo-spacing-2xl);
+    align-self: stretch;
+  }
+
+  cr-dialog [slot="button-container"] {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--leo-spacing-m);
+  }
+
+  /* Avoid stretching the buttons */
+  .action-box leo-button,
+  cr-dialog [slot="button-container"] leo-button {
+    width: auto !important;
+    min-width: unset !important;
+    flex: 0 0 auto !important;
+  }
+
+  .delete-button {
+    --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  }
+
+  .error-message {
+    --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-s);
+    color: var(--leo-color-systemfeedback-error-text);
+    font: var(--leo-font-small-regular);
+  }
+
+  .memory-input {
+    width: 100%;
+  }
+</style>
+
+<div class="settings-box header">
+  <div class="flex">
+    <div class="main-header">$i18n{braveLeoAssistantYourMemoriesTitle}</div>
+    <div class="label secondary">
+      <span>$i18nRaw{braveLeoAssistantYourMemoriesDesc}</span>
+    </div>
+  </div>
+</div>
+
+<settings-toggle-button id="userMemoryEnabled"
+    icon="database"
+    pref="{{prefs.brave.ai_chat.user_memory_enabled}}"
+    label="$i18n{braveLeoAssistantUserMemoryEnabledLabel}">
+</settings-toggle-button>
+
+<template is="dom-if" if="[[prefs.brave.ai_chat.user_memory_enabled.value]]" restamp>
+  <div class="list-container">
+    <template
+      is="dom-if"
+      if="[[!hasMemories_(memoriesList_)]]"
+    >
+      <div class="empty-memories-table">
+        <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
+        <div class="empty-memories-desc">
+          $i18n{braveLeoAssistantMemoryListEmptyDescription}
+        </div>
+      </div>
+    </template>
+
+    <template
+      is="dom-if"
+      if="[[hasMemories_(memoriesList_)]]"
+    >
+      <div class="list">
+        <template
+          is="dom-repeat"
+          items="[[memoriesList_]]"
+        >
+          <div class="memory">
+            <div class="memory-info">
+              <div class="label">[[item]]</div>
+            </div>
+            <div class="memory-actions">
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleEdit_">
+                <leo-icon name="edit-pencil"></leo-icon>
+              </leo-button>
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleDelete_">
+                <leo-icon name="trash"></leo-icon>
+              </leo-button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+
+  <div class="action-box">
+    <leo-button
+      on-click="handleAddNewMemory_"
+      kind="outline"
+      class="action-button">
+      $i18n{braveLeoAssistantAddNewMemoryButtonLabel}
+    </leo-button>
+    <leo-button
+      on-click="handleDeleteAllMemories_"
+      kind="plain"
+      class="delete-button"
+      isDisabled$="[[!hasMemories_(memoriesList_)]]">
+      $i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}
+    </leo-button>
+  </div>
+</template>
+
+<template
+  is="dom-if"
+  if="[[showMemoryDialog_]]"
+  restamp
+>
+  <cr-dialog id="memoryDialog" show-on-attach show-close-button on-close="onDialogCancel_">
+    <div slot="title">[[getDialogTitle_(editingMemoryItem_)]]</div>
+    <div slot="body">
+      <leo-input required type="text"
+        value="[[editingMemory_]]" on-input="onDialogInput_"
+        showErrors$="[[isTooLong(editingMemory_)]]"
+        placeholder="$i18n{braveLeoAssistantMemoryInputPlaceholder}"
+        class="memory-input">
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(editingMemory_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
+        </div>
+      </leo-input>
+    </div>
+    <div slot="button-container">
+      <leo-button kind="plain-faint" on-click="onDialogCancel_">$i18n{cancel}</leo-button>
+      <leo-button class="action-button" on-click="onDialogSave_" isDisabled$="[[!isMemoryInputValid_]]">$i18n{save}</leo-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showDeleteDialog_]]" restamp>
+  <cr-dialog show-on-attach show-close-button on-close="onDeleteDialogCancel_">
+    <div slot="title">$i18n{braveLeoAssistantDeleteMemoryConfirmationTitle}</div>
+    <div slot="body">
+      $i18n{braveLeoAssistantDeleteMemoryConfirmation}
+    </div>
+    <div slot="button-container">
+      <leo-button kind="plain-faint" on-click="onDeleteDialogCancel_">$i18n{cancel}</leo-button>
+      <leo-button class="delete-button" on-click="onDeleteDialogConfirm_">
+        $i18n{delete}
+      </leo-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showDeleteAllDialog_]]" restamp>
+  <cr-dialog id="deleteAllDialog" show-on-attach show-close-button on-close="onDeleteAllDialogCancel_">
+    <div slot="title">$i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}</div>
+    <div slot="body">
+      $i18n{braveLeoAssistantDeleteAllMemoriesConfirmation}
+    </div>
+    <div slot="button-container">
+      <leo-button kind="plain-faint" on-click="onDeleteAllDialogCancel_">$i18n{cancel}</leo-button>
+      <leo-button class="delete-button" on-click="onDeleteAllDialogConfirm_">
+        $i18n{delete}
+      </leo-button>
+    </div>
+  </cr-dialog>
+</template>

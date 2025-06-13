@@ -31,6 +31,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
@@ -265,6 +266,15 @@ void BraveSettingsUI::BindInterface(
   auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
       web_ui()->GetWebContents()->GetBrowserContext());
   mojo::MakeSelfOwnedReceiver(std::move(helper), std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
+        pending_receiver) {
+  auto handler = std::make_unique<ai_chat::CustomizationSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(
