@@ -17,14 +17,12 @@ class WebUI;
 }  // namespace content
 
 class Profile;
-class BraveBrowserWindow;
 
 class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  public:
   ShieldsPanelHandler(
       mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
       TopChromeWebUIController* webui_controller,
-      BraveBrowserWindow* brave_browser_window,
       Profile* profile);
 
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
@@ -41,7 +39,6 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;
   raw_ptr<TopChromeWebUIController> const webui_controller_;
-  raw_ptr<BraveBrowserWindow> brave_browser_window_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
 };
 

@@ -63,6 +63,10 @@ function Scroller (props: Props) {
 
   const updatePanelRect = async () => {
     const { vec } = await getPanelBrowserAPI().panelHandler.getPosition()
+    if (!vec) {
+      return
+    }
+
     const windowInnerHeight = await getWindowInnerHeight()
 
     // We read width/height from window object because

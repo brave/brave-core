@@ -24,7 +24,7 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  GetPosition() => (gfx.mojom.Vector2d vec);
+  GetPosition() => (gfx.mojom.Vector2d? vec);
   SetAdvancedViewEnabled(bool is_enabled);
   GetAdvancedViewEnabled() => (bool is_enabled);
 };
