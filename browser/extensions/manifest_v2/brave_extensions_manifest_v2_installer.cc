@@ -35,9 +35,14 @@ namespace extensions_mv2 {
 
 namespace {
 
-bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
-  return kPreconfiguredManifestV2Extensions.contains(id);
-}
+constexpr auto kPreconfiguredManifestV2Extensions =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 kNoScriptId,
+                                                 kAdGuardId,
+                                                 kUMatrixId,
+                                                 kUBlockId,
+                                             });
 
 GURL GetUpdaterExtensionDownloadUrl(
     const extensions::ExtensionId& extenion_id) {
@@ -98,6 +103,10 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 }
 
 }  // namespace
+
+bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
+  return kPreconfiguredManifestV2Extensions.contains(id);
+}
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,
