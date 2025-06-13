@@ -100,7 +100,7 @@ namespace brave_shields {
 // static
 std::unique_ptr<DomainBlockNavigationThrottle>
 DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationThrottleRegistry& registry,
+    content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
@@ -114,22 +114,22 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     return nullptr;
   }
   // Don't block subframes.
-  if (!registry.GetNavigationHandle().IsInMainFrame()) {
+  if (!navigation_handle->IsInMainFrame()) {
     return nullptr;
   }
   return std::make_unique<DomainBlockNavigationThrottle>(
-      registry, ad_block_service, ad_block_custom_filters_provider,
+      navigation_handle, ad_block_service, ad_block_custom_filters_provider,
       ephemeral_storage_service, content_settings, locale);
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
-    content::NavigationThrottleRegistry& registry,
+    content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale)
-    : content::NavigationThrottle(registry),
+    : content::NavigationThrottle(navigation_handle),
       ad_block_service_(ad_block_service),
       ad_block_custom_filters_provider_(ad_block_custom_filters_provider),
       ephemeral_storage_service_(ephemeral_storage_service),

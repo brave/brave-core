@@ -15,7 +15,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
-#include "content/public/test/mock_navigation_throttle_registry.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -76,19 +75,17 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
 
 TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   content::MockNavigationHandle test_handle(web_contents());
-  content::MockNavigationThrottleRegistry registry(&test_handle);
   auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-      registry, user_prefs(), local_state(), locale());
+      &test_handle, user_prefs(), local_state(), locale());
   EXPECT_TRUE(throttle != nullptr);
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
       profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true), nullptr);
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
-  content::MockNavigationThrottleRegistry otr_registry(&otr_test_handle);
   auto throttle_in_otr =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          otr_registry, user_prefs(), local_state(), locale());
+          &otr_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_otr, nullptr);
 
   // Disable in guest profiles.
@@ -96,10 +93,9 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   auto guest_web_contents =
       content::WebContentsTester::CreateTestWebContents(guest_profile, nullptr);
   content::MockNavigationHandle guest_test_handle(guest_web_contents.get());
-  content::MockNavigationThrottleRegistry guest_registry(&guest_test_handle);
   auto throttle_in_guest =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          guest_registry, user_prefs(), local_state(), locale());
+          &guest_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_guest, nullptr);
 }
 
@@ -113,10 +109,9 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, NotInstantiatedInTor) {
   auto tor_web_contents =
       content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
   content::MockNavigationHandle tor_test_handle(tor_web_contents.get());
-  content::MockNavigationThrottleRegistry tor_registry(&tor_test_handle);
   auto throttle_in_tor =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-          tor_registry, user_prefs(), local_state(), locale());
+          &tor_test_handle, user_prefs(), local_state(), locale());
   EXPECT_EQ(throttle_in_tor, nullptr);
 }
 #endif
@@ -160,17 +155,15 @@ TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
   // Throttle is created for main frame.
   {
     content::MockNavigationHandle handle(GURL(kExampleURL), main_rfh());
-    content::MockNavigationThrottleRegistry registry(&handle);
     auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-        registry, user_prefs(), local_state(), locale());
+        &handle, user_prefs(), local_state(), locale());
     EXPECT_NE(throttle, nullptr);
   }
   // Throttle is not created for subframe.
   {
     content::MockNavigationHandle handle(GURL(kExampleURL), subframe());
-    content::MockNavigationThrottleRegistry registry(&handle);
     auto throttle = DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-        registry, user_prefs(), local_state(), locale());
+        &handle, user_prefs(), local_state(), locale());
     EXPECT_EQ(throttle, nullptr);
   }
 }
