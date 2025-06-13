@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
+
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
@@ -15,7 +17,6 @@ import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
 import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
 import usePromise from '$web-common/usePromise'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 type Props = Pick<
   ConversationContext,
@@ -136,6 +137,11 @@ function InputBox(props: InputBoxProps) {
     props.conversationStarted
   )
 
+  const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
+  const showPageAttachments = props.context.associatedContentInfo.length > 0
+    && props.context.shouldSendPageContents
+    && !props.conversationStarted
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -147,11 +153,7 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles ||
-        (props.context.associatedContentInfo &&
-          props.context.shouldSendPageContents &&
-          !props.conversationStarted)) && (
+      {(showImageAttachments || showPageAttachments) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -160,19 +162,18 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-           {props.context.shouldSendPageContents &&
-            !props.conversationStarted && props.context.associatedContentInfo.map((content) => (
-              <AttachmentPageItem
-                key={content.contentId}
-                title={content.title}
-                url={content.url.url}
-                remove={() => props.context.disassociateContent(content)}
-              />
-            ))}
+          {showPageAttachments && props.context.associatedContentInfo.map((content) => (
+            <AttachmentPageItem
+              key={content.contentId}
+              title={content.title}
+              url={content.url.url}
+              remove={() => props.context.disassociateContent(content)}
+            />
+          ))}
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
           )}
-          {props.context.pendingMessageImages?.map((img, i) => (
+          {showImageAttachments && props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
               uploadedImage={img}
@@ -212,12 +213,11 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                e.stopPropagation()
-                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-              }
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }
             }
             title={getLocale('toolsMenuButtonLabel')}
           >

@@ -73,7 +73,7 @@ class PageAPI extends API<State> {
     // Premium state separately because it takes longer to fetch and we don't
     // need to wait for it.
 
-    this.uiObserver.onNewDefaultConversation.addListener((contentId: number) => {
+    this.uiObserver.onNewDefaultConversation.addListener((contentId?: number) => {
       this.setPartialState({
         defaultTabContentId: contentId
       })
