@@ -34,14 +34,7 @@ inline constexpr char kUBlockId[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe";
 inline constexpr char kUMatrixId[] = "fplfeajmkijmaeldaknocljmmoebdgmk";
 inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
 
-inline constexpr auto kPreconfiguredManifestV2Extensions =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 kNoScriptId,
-                                                 kAdGuardId,
-                                                 kUMatrixId,
-                                                 kUBlockId,
-                                             });
+bool IsKnownMV2Extension(const extensions::ExtensionId& id);
 
 class ExtensionManifestV2Installer {
  public:
