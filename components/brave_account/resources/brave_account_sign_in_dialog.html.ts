@@ -7,11 +7,11 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
 import { onEyeIconClicked } from './brave_account_common.js'
-import { SettingsBraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
+import { BraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 
-export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
+export function getHtml(this: BraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog
+    <brave-account-dialog
       dialog-description="$i18n{braveAccountSignInDialogDescription}"
       dialog-title="$i18n{braveAccountSignInDialogTitle}"
       show-back-button
@@ -40,12 +40,10 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
           </leo-icon>
         </leo-input>
       </div>
-      <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
+        <leo-button slot="buttons" ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
                     @click=${() => this.fire('sign-in-button-clicked')}>
           $i18n{braveAccountSignInButtonLabel}
         </leo-button>
-      </div>
-    </settings-brave-account-dialog>
+    </brave-account-dialog>
   <!--_html_template_end_-->`
 }

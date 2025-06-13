@@ -6,11 +6,11 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { onEyeIconClicked } from './brave_account_common.js'
-import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
+import { BraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
 
-export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
+export function getHtml(this: BraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog
+    <brave-account-dialog
       dialog-description="$i18n{braveAccountCreateDialogDescription}"
       dialog-title="$i18n{braveAccountCreateDialogTitle}"
       show-back-button
@@ -78,8 +78,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div>$i18nRaw{braveAccountConsentCheckboxLabel}</div>
         </leo-checkbox>
       </div>
-      <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailValid
+        <leo-button slot="buttons" ?isDisabled=${!this.isEmailValid
                                || this.isEmailValid && this.isEmailBraveAlias
                                || this.passwordStrength !== 100
                                || this.passwordConfirmation !== this.password
@@ -87,7 +86,6 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     @click=${() => this.fire('create-account-button-clicked')}>
           $i18n{braveAccountCreateAccountButtonLabel}
         </leo-button>
-      </div>
-    </settings-brave-account-dialog>
+    </brave-account-dialog>
   <!--_html_template_end_-->`
 }
