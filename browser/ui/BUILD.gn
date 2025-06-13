@@ -1099,12 +1099,6 @@ source_set("ui") {
       "views/brave_news/brave_news_action_icon_view.h",
       "views/brave_news/brave_news_bubble_controller.cc",
       "views/brave_news/brave_news_bubble_controller.h",
-      "views/frame/vertical_tab_strip_region_view.cc",
-      "views/frame/vertical_tab_strip_region_view.h",
-      "views/frame/vertical_tab_strip_root_view.cc",
-      "views/frame/vertical_tab_strip_root_view.h",
-      "views/frame/vertical_tab_strip_widget_delegate_view.cc",
-      "views/frame/vertical_tab_strip_widget_delegate_view.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
       "views/location_bar/brave_search_conversion/promotion_button_controller.cc",
@@ -1124,10 +1118,6 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
-
-    if (is_mac) {
-      sources += [ "views/frame/vertical_tab_strip_region_view_mac.mm" ]
-    }
 
     if (enable_extensions) {
       sources += [

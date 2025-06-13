@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -16,13 +16,15 @@ static_assert(BUILDFLAG(IS_APPLE));
 namespace {
 
 NSMenuItem* findMenuItemWithCommandRecursively(NSMenu* menu, int commandId) {
-  if (NSMenuItem* menuItem = [menu itemWithTag:commandId])
+  if (NSMenuItem* menuItem = [menu itemWithTag:commandId]) {
     return menuItem;
+  }
 
   for (NSMenuItem* item in [menu itemArray]) {
     if (NSMenu* submenu = [item submenu]) {
-      if (submenu == [NSApp servicesMenu])
+      if (submenu == [NSApp servicesMenu]) {
         continue;
+      }
 
       if (NSMenuItem* result =
               findMenuItemWithCommandRecursively(submenu, commandId)) {
@@ -40,14 +42,18 @@ NSString* keyCombinationForMenuItem(NSMenuItem* item) {
 
   // Appended "+" after the modifier as key combination
   // is splited to each part and rendered separately.
-  if (modifiers & NSEventModifierFlagCommand)
+  if (modifiers & NSEventModifierFlagCommand) {
     [string appendString:@"\u2318+"];
-  if (modifiers & NSEventModifierFlagControl)
+  }
+  if (modifiers & NSEventModifierFlagControl) {
     [string appendString:@"\u2303+"];
-  if (modifiers & NSEventModifierFlagOption)
+  }
+  if (modifiers & NSEventModifierFlagOption) {
     [string appendString:@"\u2325+"];
-  if (modifiers & NSEventModifierFlagShift)
+  }
+  if (modifiers & NSEventModifierFlagShift) {
     [string appendString:@"\u21E7+"];
+  }
 
   [string appendString:[item.keyEquivalent uppercaseString]];
   return string;
