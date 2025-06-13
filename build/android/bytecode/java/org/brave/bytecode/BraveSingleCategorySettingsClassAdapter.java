@@ -29,5 +29,7 @@ public class BraveSingleCategorySettingsClassAdapter extends BraveClassVisitor {
                 sSingleCategorySettingsClassName,
                 "resetList",
                 sBraveSingleCategorySettingsClassName);
+
+        deleteField(sSingleCategorySettingsClassName, "mCategory");
     }
 }
