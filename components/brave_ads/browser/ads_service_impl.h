@@ -377,10 +377,6 @@ class AdsServiceImpl final : public AdsService,
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
 
-  // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
-  // business logic.
-  void RecordP2AEvents(const std::vector<std::string>& events) override;
-
   void FindProfilePref(const std::string& path,
                        FindProfilePrefCallback callback) override;
   void GetProfilePref(const std::string& path,

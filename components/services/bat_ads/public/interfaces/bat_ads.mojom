@@ -99,8 +99,6 @@ interface BatAdsClient {
 
   ShowScheduledCaptcha(string payment_id, string captcha_id);
 
-  RecordP2AEvents(array<string> events);
-
   [Sync]
   FindProfilePref(string path) => (bool value);
   [Sync]

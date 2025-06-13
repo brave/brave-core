@@ -28,10 +28,6 @@ class BraveAdsSearchResultAdForNonRewardsIntegrationTest
     test::DisableBraveRewards();
   }
 
-  void SetUpMocks() override {
-    EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-  }
-
   void TriggerSearchResultAdEventAndVerifyExpectations(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,

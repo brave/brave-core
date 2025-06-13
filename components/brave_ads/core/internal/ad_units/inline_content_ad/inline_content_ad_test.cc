@@ -11,7 +11,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -73,10 +72,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   test::ForcePermissionRules();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_,
-              RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                  mojom::AdType::kInlineContentAd, /*segments=*/{})));
-
   base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Ne(std::nullopt)))
@@ -92,8 +87,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
       {kInlineContentAdServingFeature});
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
   base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)))
@@ -113,8 +106,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   test::OptOutOfBraveNewsAds();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
   base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)))

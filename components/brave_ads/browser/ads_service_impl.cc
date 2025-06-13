@@ -31,7 +31,6 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -1168,8 +1167,6 @@ void AdsServiceImpl::ShutdownAdsCallback(ShutdownCallback callback,
 void AdsServiceImpl::ShutdownAdsService() {
   TRACE_EVENT("brave.ads", "AdsServiceImpl::ShutdownAdsService");
   if (is_bat_ads_initialized_) {
-    SuspendP2AHistograms();
-
     VLOG(2) << "Shutting down Bat Ads Service";
   }
 
@@ -1826,13 +1823,6 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
-  for (const auto& event : events) {
-    RecordAndEmitP2AHistogramName(prefs_,
-                                  /*name*/ event);
-  }
 }
 
 void AdsServiceImpl::FindProfilePref(const std::string& path,

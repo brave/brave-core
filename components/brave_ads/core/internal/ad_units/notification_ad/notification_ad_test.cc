@@ -49,8 +49,6 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   test::ForcePermissionRules();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
-
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -66,8 +64,6 @@ TEST_F(BraveAdsNotificationAdIntegrationTest,
       {kNotificationAdServingFeature});
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   ServeAd();

@@ -182,7 +182,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
   task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 50));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 3U);
-  EXPECT_EQ(p2a_json_sent_metrics_.size(), 4U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
   for (const auto& test_histogram : test_histograms) {
@@ -200,7 +200,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
                                   base::Seconds(kUploadIntervalSeconds * 50));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 3U);
-  EXPECT_EQ(p2a_json_sent_metrics_.size(), 4U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
   for (const auto& test_histogram : test_histograms) {
