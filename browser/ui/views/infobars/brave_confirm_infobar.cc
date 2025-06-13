@@ -8,12 +8,14 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/base/window_open_disposition.h"
+#include "ui/gfx/text_constants.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/md_text_button.h"
@@ -36,7 +38,11 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
     std::unique_ptr<BraveConfirmInfoBarDelegate> delegate)
     : InfoBarView(std::move(delegate)) {
   auto* delegate_ptr = GetDelegate();
+  CHECK(delegate_ptr);
+
   label_ = AddChildView(CreateLabel(delegate_ptr->GetMessageText()));
+  label_->SetMultiLine(delegate_ptr->ShouldSupportMultiLine());
+  label_->SetMaxLines(delegate_ptr->GetMaxLines());
   label_->SetElideBehavior(delegate_ptr->GetMessageElideBehavior());
 
   const auto create_button =
@@ -100,6 +106,9 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   }
 
   link_ = AddChildView(CreateLink(delegate_ptr->GetLinkText()));
+  link_->SetMultiLine(delegate_ptr->ShouldSupportMultiLine());
+  link_->SetMaxLines(delegate_ptr->GetMaxLines());
+  link_->SetHorizontalAlignment(gfx::ALIGN_CENTER);
 
   if (delegate_ptr->HasCheckbox()) {
     checkbox_ = AddChildView(std::make_unique<views::Checkbox>(
@@ -144,6 +153,8 @@ void BraveConfirmInfoBar::Layout(PassKey) {
   views.push_back(link_.get());
   AssignWidths(&views, std::max(0, GetEndX() - x - NonLabelWidth()));
 
+  MaybeLayoutMultiLineLabelAndLink();
+
   ChromeLayoutProvider* layout_provider = ChromeLayoutProvider::Get();
 
   label_->SetPosition(gfx::Point(x, OffsetY(label_)));
@@ -173,6 +184,34 @@ void BraveConfirmInfoBar::Layout(PassKey) {
   }
 
   link_->SetPosition(gfx::Point(GetEndX() - link_->width(), OffsetY(link_)));
+}
+
+void BraveConfirmInfoBar::MaybeLayoutMultiLineLabelAndLink() {
+  if (!GetDelegate()->ShouldSupportMultiLine()) {
+    return;
+  }
+
+  CHECK(label_);
+  CHECK(link_);
+
+  const int available_width = GetEndX() - GetStartX() - NonLabelWidth();
+  label_->SizeToFit(std::max(0, available_width - link_->width()));
+
+  // When label and link have different line counts, adjust their widths
+  // proportionally to their text lengths to maintain a balanced layout.
+  if (label_->GetRequiredLines() != link_->GetRequiredLines()) {
+    const size_t text_size = label_->GetText().size() + link_->GetText().size();
+    const int label_width =
+        available_width * label_->GetText().size() / text_size;
+    label_->SizeToFit(label_width);
+    link_->SizeToFit(available_width - label_width);
+  }
+
+  const int max_height = std::max(label_->height(), link_->height());
+  const int target_height = std::max(
+      max_height,
+      ChromeLayoutProvider::Get()->GetDistanceMetric(DISTANCE_INFOBAR_HEIGHT));
+  SetTargetHeight(target_height);
 }
 
 void BraveConfirmInfoBar::CheckboxPressed() {
