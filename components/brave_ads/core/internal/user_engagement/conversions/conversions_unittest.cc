@@ -25,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -562,12 +561,8 @@ TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
 
 TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeatures(
-      /*enabled_features=*/
-      {kShouldAlwaysTriggerBraveSearchResultAdEventsFeature,
-       kConversionsFeature},
-      /*disabled_features=*/{});
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kConversionsFeature});
 
   test::DisableBraveRewards();
 

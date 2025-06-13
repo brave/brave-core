@@ -56,10 +56,6 @@ OBJC_EXPORT
 /// Returns `true` if the ads service is running otherwise returns `false`.
 - (BOOL)isServiceRunning;
 
-/// Returns `true` if always run the ads service, even if Brave Private Ads are
-/// disabled.
-+ (BOOL)shouldAlwaysRunService;
-
 /// Returns `true` if should show Sponsored Images & Videos option in settings.
 /// This function will be deprecated once Sponsored Video is available globally.
 - (BOOL)shouldShowSponsoredImagesAndVideosSetting;

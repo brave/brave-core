@@ -35,14 +35,6 @@ public class BraveRewards: PreferencesObserver {
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
-    braveNewsObservation = Preferences.BraveNews.isEnabled.$value
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] value in
-        if !value {
-          self?.proposeAdsShutdown()
-        }
-      }
-
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
@@ -115,23 +107,6 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
-  private var braveNewsObservation: AnyCancellable?
-
-  private var shouldShutdownAds: Bool {
-    ads.isServiceRunning() && !shouldStartAds
-  }
-
-  /// Propose that the ads service should be shutdown based on whether or not that all features
-  /// that use it are disabled
-  private func proposeAdsShutdown() {
-    if !shouldShutdownAds { return }
-    ads.shutdownService {
-      self.ads = BraveAds(
-        stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path
-      )
-    }
-  }
-
   // MARK: - State
 
   /// Whether or not rewards is enabled
@@ -151,22 +126,12 @@ public class BraveRewards: PreferencesObserver {
         }
         if !newValue {
           self.ads.isEnabled = newValue
-          self.proposeAdsShutdown()
           self.isTurningOnRewards = false
         } else {
           self.fetchWalletAndInitializeAds(toggleAds: true)
         }
       }
     }
-  }
-
-  public var shouldStartAds: Bool {
-    // Start Brave Ads if one of the following is true:
-    // - Brave Rewards is enabled.
-    // - Brave News is enabled.
-    // - `ShouldAlwaysRunBraveAdsService` feature is enabled.
-    return ads.isEnabled || Preferences.BraveNews.isEnabled.value
-      || BraveAds.shouldAlwaysRunService()
   }
 
   private(set) var isTurningOnRewards: Bool = false

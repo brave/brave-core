@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -45,11 +44,8 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
 
     case mojom::AdType::kSearchResultAd: {
       // Only if:
-      // - The user has opted into search result ads and has either joined Brave
-      //   Rewards or search result ad events should always be triggered.
-      return UserHasOptedInToSearchResultAds() &&
-             (UserHasJoinedBraveRewards() ||
-              ShouldAlwaysTriggerSearchResultAdEvents());
+      // - The user has opted into search result ads.
+      return UserHasOptedInToSearchResultAds();
     }
 
     case mojom::AdType::kUndefined: {
