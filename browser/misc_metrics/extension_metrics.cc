@@ -77,8 +77,7 @@ void ExtensionMetrics::OnExtensionLoaded(
   }
 
   // Check if this is a pre-configured Manifest V2 extension
-  if (extensions_mv2::kPreconfiguredManifestV2Extensions.contains(
-          extension->id())) {
+  if (extensions_mv2::IsKnownMV2Extension(extension->id())) {
     select_manifest_v2_extensions_loaded_.insert(extension->id());
   }
 
@@ -99,8 +98,7 @@ void ExtensionMetrics::OnExtensionUninstalled(
   }
 
   // Check if this is a pre-configured Manifest V2 extension
-  if (extensions_mv2::kPreconfiguredManifestV2Extensions.contains(
-          extension->id())) {
+  if (extensions_mv2::IsKnownMV2Extension(extension->id())) {
     select_manifest_v2_extensions_loaded_.erase(extension->id());
   }
 
