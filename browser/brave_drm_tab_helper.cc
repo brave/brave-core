@@ -5,20 +5,24 @@
 
 #include "brave/browser/brave_drm_tab_helper.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/crx_update_item.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/check_is_test.h"
@@ -93,7 +97,8 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
 #else
   // If the user already opted in, don't offer it.
   PrefService* prefs =
-      static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
   if (IsWidevineEnabled() || !prefs->GetBoolean(kAskEnableWidvine)) {
     return false;
   }
@@ -122,7 +127,14 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
-    RequestWidevinePermission(web_contents(), for_restart);
+    PrefService* prefs =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+            ->GetPrefs();
+    permissions::PermissionRequestManager::FromWebContents(web_contents())
+        ->AddRequest(
+            web_contents()->GetPrimaryMainFrame(),
+            std::make_unique<WidevinePermissionRequest>(
+                prefs, web_contents()->GetLastCommittedURL(), for_restart));
   }
 }
 
@@ -134,8 +146,16 @@ void BraveDrmTabHelper::OnEvent(const update_client::CrxUpdateItem& item) {
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux. This restart permission request is only shown if
     // this tab asks widevine explicitely.
-    if (is_widevine_requested_)
-      RequestWidevinePermission(web_contents(), true /* for_restart*/);
+    if (is_widevine_requested_) {
+      PrefService* prefs =
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+              ->GetPrefs();
+      permissions::PermissionRequestManager::FromWebContents(web_contents())
+          ->AddRequest(web_contents()->GetPrimaryMainFrame(),
+                       std::make_unique<WidevinePermissionRequest>(
+                           prefs, web_contents()->GetLastCommittedURL(),
+                           /*for_restart=*/true));
+    }
 #else
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.
