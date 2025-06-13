@@ -95,13 +95,13 @@ TEST_F(MatchedRuleTest, LoadSimpleMatchedRule) {
   auto matched_rule = MatchedRule::Create(
       std::make_unique<RuleDataReader>(GetBasePath()), psst_rules->front());
 
-  EXPECT_TRUE(matched_rule.has_value());
+  EXPECT_TRUE(matched_rule);
 
-  const auto user_script = matched_rule->UserScript();
+  const auto user_script = matched_rule->user_script();
   ASSERT_FALSE(user_script.empty());
   EXPECT_EQ(user_script, ReadFile(GetScriptsPath().Append(
                              base::FilePath::FromUTF8Unsafe("user.js"))));
-  const auto policy_script = matched_rule->PolicyScript();
+  const auto policy_script = matched_rule->policy_script();
   ASSERT_FALSE(policy_script.empty());
   EXPECT_EQ(policy_script, ReadFile(GetScriptsPath().Append(
                                base::FilePath::FromUTF8Unsafe("policy.js"))));
@@ -117,7 +117,7 @@ TEST_F(MatchedRuleTest, TryToLoadMatchedRuleWithNoUserOrPolicyScript) {
   auto matched_rule_no_user_script =
       MatchedRule::Create(std::make_unique<RuleDataReader>(GetBasePath()),
                           psst_rules_no_user_script->front());
-  EXPECT_FALSE(matched_rule_no_user_script.has_value());
+  EXPECT_FALSE(matched_rule_no_user_script);
 
   const auto psst_rules_no_policy_script =
       PsstRule::ParseRules(kPsstJsonFileNoPolicyScriptContent);
@@ -128,7 +128,7 @@ TEST_F(MatchedRuleTest, TryToLoadMatchedRuleWithNoUserOrPolicyScript) {
   auto matched_rule_no_policy_script =
       MatchedRule::Create(std::make_unique<RuleDataReader>(GetBasePath()),
                           psst_rules_no_policy_script->front());
-  EXPECT_FALSE(matched_rule_no_policy_script.has_value());
+  EXPECT_FALSE(matched_rule_no_policy_script);
 }
 
 }  // namespace psst

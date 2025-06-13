@@ -64,7 +64,6 @@ PsstRule::PsstRule(const PsstRule& other) {
   exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
   name_ = other.name_;
   user_script_path_ = other.user_script_path_;
-  //  test_script_path_ = other.test_script_path_;
   policy_script_path_ = other.policy_script_path_;
   version_ = other.version_;
 }

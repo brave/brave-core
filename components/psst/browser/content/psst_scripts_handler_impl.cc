@@ -81,23 +81,25 @@ void PsstScriptsHandlerImpl::Start() {
 }
 
 void PsstScriptsHandlerImpl::InsertUserScript(
-    const std::optional<MatchedRule>& rule) {
+    std::unique_ptr<MatchedRule> rule) {
   if (!rule) {
     return;
   }
 
-  InsertScriptInPage(rule->UserScript(), std::nullopt /* no params */,
-                     base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
-                                    weak_factory_.GetWeakPtr(), rule.value()));
+  InsertScriptInPage(
+      rule->user_script(), std::nullopt /* no params */,
+      base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
+                     weak_factory_.GetWeakPtr(), std::move(rule)));
 }
 
-void PsstScriptsHandlerImpl::OnUserScriptResult(const MatchedRule& rule,
-                                                base::Value script_result) {
-  if (!script_result.is_dict()) {
+void PsstScriptsHandlerImpl::OnUserScriptResult(
+    std::unique_ptr<MatchedRule> rule,
+    base::Value script_result) {
+  if (rule && !script_result.is_dict()) {
     return;
   }
 
-  InsertScriptInPage(rule.PolicyScript(), std::nullopt, base::DoNothing());
+  InsertScriptInPage(rule->policy_script(), std::nullopt, base::DoNothing());
 }
 
 void PsstScriptsHandlerImpl::InsertScriptInPage(

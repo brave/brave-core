@@ -8,8 +8,8 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <utility>
 
+#include "base/memory/ptr_util.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 
 namespace psst {
@@ -24,10 +24,9 @@ MatchedRule::MatchedRule(const std::string& name,
       version_(version) {}
 
 MatchedRule::~MatchedRule() = default;
-MatchedRule::MatchedRule(const MatchedRule&) = default;
 
 // static
-std::optional<MatchedRule> MatchedRule::Create(
+std::unique_ptr<MatchedRule> MatchedRule::Create(
     std::unique_ptr<RuleDataReader> rule_reader,
     const PsstRule& rule) {
   CHECK(rule_reader);
@@ -36,11 +35,11 @@ std::optional<MatchedRule> MatchedRule::Create(
   auto policy_script = rule_reader->ReadPolicyScript(rule);
 
   if (!user_script || !policy_script) {
-    return std::nullopt;
+    return nullptr;
   }
 
-  return MatchedRule(rule.Name(), user_script.value(), policy_script.value(),
-                     rule.Version());
+  return base::WrapUnique<MatchedRule>(new MatchedRule(
+      rule.Name(), user_script.value(), policy_script.value(), rule.Version()));
 }
 
 }  // namespace psst

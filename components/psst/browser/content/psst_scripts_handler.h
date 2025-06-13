@@ -18,12 +18,9 @@ class WebContents;
 
 namespace psst {
 
-class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
+class PsstScriptsHandler {
  public:
-  PsstScriptsHandler(const PsstScriptsHandler&) = delete;
-  PsstScriptsHandler& operator=(const PsstScriptsHandler&) = delete;
-
-  virtual ~PsstScriptsHandler();
+  virtual ~PsstScriptsHandler() = default;
 
   static std::unique_ptr<PsstScriptsHandler> Create(
       content::WebContents* contents,
@@ -33,7 +30,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
   virtual void Start() = 0;
 
  protected:
-  PsstScriptsHandler();
+  PsstScriptsHandler() = default;
 };
 
 }  // namespace psst

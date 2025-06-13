@@ -23,11 +23,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) RuleDataReader {
   explicit RuleDataReader(const base::FilePath& component_path);
   RuleDataReader(const RuleDataReader&) = delete;
   RuleDataReader& operator=(const RuleDataReader&) = delete;
-  virtual ~RuleDataReader() = default;
+  ~RuleDataReader() = default;
 
-  virtual std::optional<std::string> ReadUserScript(const PsstRule& rule) const;
-  virtual std::optional<std::string> ReadPolicyScript(
-      const PsstRule& rule) const;
+  std::optional<std::string> ReadUserScript(const PsstRule& rule) const;
+  std::optional<std::string> ReadPolicyScript(const PsstRule& rule) const;
 
  private:
   base::FilePath prefix_;
