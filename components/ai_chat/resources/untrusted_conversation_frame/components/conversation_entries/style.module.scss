@@ -86,3 +86,16 @@
   overflow-y: auto;
   gap: var(--leo-spacing-s);
 }
+
+.loading {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  // Added padding to the top to avoid layout shift between this
+  // loading spinner and the "Improving answer with Brave Search…"
+  // loading spinner.
+  padding-top: 10px;
+  --leo-progressring-color: var(--leo-color-icon-interactive);
+  --leo-progressring-size: 15px;
+  --leo-icon-size: 20px;
+}
