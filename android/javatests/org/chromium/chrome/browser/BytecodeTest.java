@@ -1001,7 +1001,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
                         "hideOverview",
                         MethodModifier.REGULAR,
-                        void.class));
+                        void.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
