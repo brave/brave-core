@@ -6,30 +6,32 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
 
-#include <string>
-
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class WebUI;
+}  // namespace content
 
 namespace brave_account {
 class BraveAccountHandler : public mojom::BraveAccountHandler {
  public:
   explicit BraveAccountHandler(
-      mojo::PendingReceiver<mojom::BraveAccountHandler> handler);
+      mojo::PendingReceiver<mojom::BraveAccountHandler> handler,
+      content::WebUI* web_ui);
 
   BraveAccountHandler(const BraveAccountHandler&) = delete;
   BraveAccountHandler& operator=(const BraveAccountHandler&) = delete;
 
   ~BraveAccountHandler() override;
 
-  void GetPasswordStrength(
-      const std::string& password,
-      mojom::BraveAccountHandler::GetPasswordStrengthCallback callback)
-      override;
+  void OpenDialog() override;
 
  private:
   mojo::Receiver<mojom::BraveAccountHandler> handler_;
+  raw_ptr<content::WebUI> web_ui_;
 };
 }  // namespace brave_account
 

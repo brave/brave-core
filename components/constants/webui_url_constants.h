@@ -11,6 +11,8 @@
 #include "base/containers/fixed_flat_set.h"
 #include "build/build_config.h"
 
+inline constexpr char kBraveAccountDialogsHost[] = "account-dialogs";
+inline constexpr char kBraveAccountDialogsURL[] = "chrome://account-dialogs/";
 inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";
