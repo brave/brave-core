@@ -26,7 +26,7 @@ bool RewardsPanelCoordinator::IsRewardsPanelURLForTesting(const GURL& url) {
 }
 
 bool RewardsPanelCoordinator::OpenRewardsPanel() {
-  if (browser_window_interface_->IsMinimized()) {
+  if (browser_window_interface_->GetWindow()->IsMinimized()) {
     browser_window_interface_->ActivateWindow();
   }
 
