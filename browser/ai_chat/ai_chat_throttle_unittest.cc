@@ -87,7 +87,9 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationFromTab) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
   AIChatThrottle::MaybeCreateAndAdd(registry);
 
@@ -114,7 +116,9 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationToFrame) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
   AIChatThrottle::MaybeCreateAndAdd(registry);
 #if !BUILDFLAG(IS_ANDROID)
@@ -140,7 +144,9 @@ TEST_P(AIChatThrottleUnitTest, AllowNavigationFromPanel) {
 #endif
 
   test_handle.set_page_transition(transition);
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
 
   AIChatThrottle::MaybeCreateAndAdd(registry);
   EXPECT_TRUE(registry.throttles().empty());

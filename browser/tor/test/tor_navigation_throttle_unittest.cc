@@ -83,13 +83,17 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 // Tests TorNavigationThrottle::MaybeCreateThrottleFor with tor enabled/disabled
 TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(tor_web_contents());
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   TorNavigationThrottle::MaybeCreateAndAdd(
       registry, tor_web_contents()->GetBrowserContext()->IsTor());
   EXPECT_FALSE(registry.throttles().empty());
 
   content::MockNavigationHandle test_handle2(web_contents());
-  content::MockNavigationThrottleRegistry registry2(&test_handle2);
+  content::MockNavigationThrottleRegistry registry2(
+      &test_handle2,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   TorNavigationThrottle::MaybeCreateAndAdd(
       registry2, web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(registry2.throttles().empty());
@@ -100,7 +104,9 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   TorNavigationThrottle::MaybeCreateAndAdd(
       registry, *GetTorLauncherFactory(),
       tor_web_contents()->GetBrowserContext()->IsTor());
@@ -144,7 +150,9 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   TorNavigationThrottle::MaybeCreateAndAdd(
       registry, *GetTorLauncherFactory(),
       tor_web_contents()->GetBrowserContext()->IsTor());
@@ -173,7 +181,9 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(false));
   content::MockNavigationHandle test_handle(tor_web_contents());
-  content::MockNavigationThrottleRegistry registry(&test_handle);
+  content::MockNavigationThrottleRegistry registry(
+      &test_handle,
+      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   TorNavigationThrottle::MaybeCreateAndAdd(
       registry, *GetTorLauncherFactory(),
       tor_web_contents()->GetBrowserContext()->IsTor());
