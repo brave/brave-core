@@ -44,7 +44,7 @@ GURL url(const GURL& destination_url, const GURL& navigation_url) {
                         base::Base64UrlEncodePolicy::OMIT_PADDING,
                         &encoded_destination);
   const std::string query =
-      base::StringPrintf("url=%s", encoded_destination.c_str());
+      base::JoinString({"url", encoded_destination.c_str()}, "=");
   GURL::Replacements replacement;
   replacement.SetQueryStr(query);
   return navigation_url.ReplaceComponents(replacement);
