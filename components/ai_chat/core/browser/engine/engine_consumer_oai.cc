@@ -253,9 +253,14 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
 void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
     GenerationResult result) {
-  if (!result.has_value() || result->empty()) {
+  if (!result.has_value()) {
     // Query resulted in error
     std::move(callback).Run(base::unexpected(std::move(result.error())));
+    return;
+  }
+
+  if (result->empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
     return;
   }
 
