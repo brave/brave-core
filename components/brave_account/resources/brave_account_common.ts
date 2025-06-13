@@ -7,10 +7,12 @@ export function onEyeIconClicked(event: Event) {
   event.preventDefault()
   let type = 'password'
   const target = event.target as Element
-  target.setAttribute('name',
+  target.setAttribute(
+    'name',
     target.getAttribute('name') === 'eye-off'
-      ? (type = 'text', 'eye-on')
-      : 'eye-off')
+      ? ((type = 'text'), 'eye-on')
+      : 'eye-off',
+  )
   target.parentElement!.setAttribute('type', type)
 }
 

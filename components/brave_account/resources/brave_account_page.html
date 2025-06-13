@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="$i18n{language}">
+  <head>
+    <meta charset="utf-8">
+    <title>$i18n{braveAccountPageTitle}</title>
+    <if expr="is_android or is_ios">
+      <meta name="viewport" content="width=device-width, user-scalable=no">
+    </if>
+  </head>
+  <body>
+    <link rel="stylesheet" href="//resources/brave/css/reset.css">
+    <link rel="stylesheet" href="//resources/css/text_defaults.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/inter.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/manrope.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/poppins.css">
+    <link rel="stylesheet" href="//resources/brave/leo/css/variables.css">
+    <link rel="stylesheet" href="brave_account_page.css">
+    <script type="module" src="./strings.m.js"></script>
+    <script type="module" src="//resources/brave/leo.bundle.js"></script>
+    <script type="module" src="brave_account_dialogs.js"></script>
+    <if expr="is_ios">
+      <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
+      <script src="//resources/js/ios/mojo_api.js"></script>
+      <!-- <script src="//resources/js/ios/web_ui.js"></script> -->
+    </if>
+    <brave-account-dialogs></brave-account-dialogs>
+  </body>
+</html>
