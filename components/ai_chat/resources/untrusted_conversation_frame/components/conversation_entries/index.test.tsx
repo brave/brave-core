@@ -14,15 +14,6 @@ import {
 } from '../../untrusted_conversation_context'
 import ConversationEntries from '.'
 
-interface AssistantResponseProps {
-  entry: Mojom.ConversationTurn
-  isEntryInProgress: boolean
-  allowedLinks: string[]
-  isLeoModel: boolean
-}
-
-const assistantResponseMock =
-  jest.fn((props: AssistantResponseProps) => <div />)
 import { ActionType, CharacterType, ContentType } from '../../../common/mojom'
 
 function MockDataProvider(
@@ -39,7 +30,14 @@ function MockDataProvider(
     </UntrustedConversationReactContext.Provider>
   )
 }
-const assistantResponseMock = jest.fn((props: any) => <div />)
+
+interface AssistantResponseProps {
+  entry: Mojom.ConversationTurn
+  isEntryInProgress: boolean
+  allowedLinks: string[]
+  isLeoModel: boolean
+}
+const assistantResponseMock = jest.fn((props: AssistantResponseProps) => <div />)
 
 jest.mock('../assistant_response', () => ({
   __esModule: true,

@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -91,7 +92,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
   plural_string_handler->AddLocalizedString(
-      "placeholderAttachedPagesLabel",
+      "CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL",
       IDS_CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
 

@@ -20,6 +20,10 @@ export type State = Mojom.ServiceState & {
   isHistoryFeatureEnabled: boolean
   actionList: Mojom.ActionGroup[]
   tabs: Mojom.TabData[]
+
+  // This is the content of the tab that this conversation is shown next to (if
+  // any). If the user creates a new conversation this will be used as the
+  // default tab content.
   defaultTabContentId?: number
 }
 
@@ -73,7 +77,7 @@ class PageAPI extends API<State> {
     // Premium state separately because it takes longer to fetch and we don't
     // need to wait for it.
 
-    this.uiObserver.onNewDefaultConversation.addListener((contentId: number) => {
+    this.uiObserver.onNewDefaultConversation.addListener((contentId?: number) => {
       this.setPartialState({
         defaultTabContentId: contentId
       })

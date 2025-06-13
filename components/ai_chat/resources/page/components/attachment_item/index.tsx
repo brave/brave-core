@@ -129,7 +129,7 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
       {props.remove && <Tooltip mode='mini'>
         <Icon name='info-outline' />
         <div className={styles.tooltipContent} slot="content">
-          {getLocale('pageAttachmentTooltipInfo')}
+          {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
         </div>
       </Tooltip>}
       <Tooltip mode='mini' className={styles.subtitleText}>

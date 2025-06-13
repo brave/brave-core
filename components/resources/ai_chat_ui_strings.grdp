@@ -29,8 +29,8 @@
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL" desc="Placeholder text for when there are attached pages in the input box" formatter_data="webui=AiChat">
     {PAGE_COUNT, plural,
-      =1 {Ask a question about this page's contents}
-      other {Ask a question about these pages' contents}
+      =1 {Ask a question about the content of this page}
+      other {Ask a question about the content of these pages}
     }
   </message>
   <message name="IDS_CHAT_UI_INITIAL_PLACEHOLDER_LABEL" desc="Placeholder text for the initial input box on a new chat" formatter_data="webui=AiChat">
