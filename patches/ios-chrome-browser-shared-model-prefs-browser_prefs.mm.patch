@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 53e8ce89fb5a7c5a6310e05c9ad046d19db7b80f..3a86e388995a137b0e6e8a556b19833dfb345b7e 100644
+index b21d3d959586c77b6cb42ec309b208edf1506966..72679ffb1a14dfdc42606894fd3caf6f0dd974a6 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -689,6 +689,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -681,6 +681,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeed, 0);
    registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeedV2,
                                 0);
@@ -10,7 +10,7 @@ index 53e8ce89fb5a7c5a6310e05c9ad046d19db7b80f..3a86e388995a137b0e6e8a556b19833d
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1107,6 +1108,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1086,6 +1087,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterTimePref(kSyncLastSyncedTime, base::Time());
    registry->RegisterTimePref(kSyncLastPollTime, base::Time());
    registry->RegisterTimeDeltaPref(kSyncPollInterval, base::TimeDelta());

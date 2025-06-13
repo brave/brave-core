@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 8a75c71497b1669211db607aa92d64df1731c37d..67bf16332b0514a42f92724c46211d355479d1dd 100644
+index 6f804aa5167ebc34e78bab5a694dd1b65dc3e0b6..ed4dae95d2991ed80fde2e5ddc0c8f882eb9876c 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -363,6 +363,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -353,6 +353,7 @@ class CORE_EXPORT HTMLCanvasElement final
    void SetHitTestRegions(VectorOf<ElementHitTestRegion> hit_test_regions);
    const VectorOf<ElementHitTestRegion>& GetHitTestRegions() const;
  
