@@ -14,6 +14,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
+#include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -64,6 +65,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
 
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
+  } else if (url_host == kBraveAccountHost) {
+    return &NewWebUIIOS<BraveAccountUI>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
   }
