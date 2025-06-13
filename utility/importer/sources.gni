@@ -30,6 +30,7 @@ if (!is_android) {
     "//chrome/app:branded_strings",
     "//components/os_crypt/sync",
     "//components/password_manager/core/browser",
+    "//components/user_data_importer/common",
     "//components/webdata/common",
   ]
 }

@@ -44,7 +44,7 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
   frame_view->SetDisplayVisibleArrow(true);
   delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
-  frame_view->SetCornerRadius(6);
+  frame_view->SetRoundedCorners(gfx::RoundedCornersF(6));
 
   return bubble;
 }
@@ -58,7 +58,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
       animation_(base::Milliseconds(kFadeoutDurationInMs), 60, this) {
   // This bubble uses same color for all themes.
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
-  set_background_color(kBubbleBackground);
+  SetBackgroundColor(kBubbleBackground);
   set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));

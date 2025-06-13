@@ -4,10 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 /* #css_wrapper_metadata_start
- * #type=style
+ * #type=style-lit
  * #import=./print_preview_shared-chromium.css.js
  * #include=print-preview-shared-chromium
  * #css_wrapper_metadata_end */
 
-/* Intentionally left empty as it is generated at build time from the equivalent
- * Lit version. */
+print-preview-settings-section [slot=controls] > .md-select {
+  margin: 1px var(--print-preview-sidebar-margin);
+}

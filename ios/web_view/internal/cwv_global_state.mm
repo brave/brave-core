@@ -8,6 +8,9 @@
 
 #import "ios/web_view/public/cwv_global_state.h"
 
+@implementation CWVEarlyInitFlags
+@end
+
 @implementation CWVGlobalState {
   NSString* _customUserAgent;
   NSString* _userAgentProduct;
@@ -52,6 +55,9 @@
 }
 
 - (void)earlyInit {
+}
+
+- (void)earlyInitWithFlags:(CWVEarlyInitFlags*)flags {
 }
 
 - (void)start {

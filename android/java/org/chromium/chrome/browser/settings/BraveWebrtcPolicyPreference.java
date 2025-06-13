@@ -43,7 +43,7 @@ public class BraveWebrtcPolicyPreference
     private RadioButtonWithDescription mSettingRadioButton;
     private RadioButtonWithDescriptionLayout mGroup;
     private TextView mLearnMore;
-    private ArrayList<RadioButtonWithDescription> mButtons;
+    private final ArrayList<RadioButtonWithDescription> mButtons;
     protected static final String FALLBACK_SUPPORT_URL =
             "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 

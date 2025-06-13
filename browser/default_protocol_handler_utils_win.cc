@@ -28,7 +28,6 @@
 #include "base/strings/cstring_view.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util_win.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/win/atl.h"
@@ -39,6 +38,7 @@
 #include "base/win/windows_version.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/shell_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // Most of source code in this file comes from firefox's SetDefaultBrowser -
 // https://github.com/mozilla/gecko-dev/blob/master/toolkit/mozapps/defaultagent/SetDefaultBrowser.cpp

@@ -1,9 +1,9 @@
 diff --git a/tools/crates/gnrt/lib/paths.rs b/tools/crates/gnrt/lib/paths.rs
-index fd56a1c56c1ab3d05860c38a90a087795dabb7c4..57b1accc6e065190f4c73f1b1133fd2298221439 100644
+index ceb04c8ce4762494f5f439ad7ec1183ff4dddd04..a19d79ab015a7461cb5334cc3a96351b206d8ed1 100644
 --- a/tools/crates/gnrt/lib/paths.rs
 +++ b/tools/crates/gnrt/lib/paths.rs
 @@ -122,7 +122,7 @@ pub fn get_vendor_dir_for_package(name: &str, version: &semver::Version) -> Stri
-     format!("{}-{}", name, epoch)
+     format!("{name}-{epoch}")
  }
  
 -static RUST_THIRD_PARTY_DIR: &str = "third_party/rust";

@@ -17,6 +17,8 @@ class BraveStarView : public StarView {
   BraveStarView(const BraveStarView&) = delete;
   BraveStarView& operator=(const BraveStarView&) = delete;
 
+  void OnBubbleWidgetChanged(views::Widget* widget);
+
  protected:
   // views::View:
   void UpdateImpl() override;

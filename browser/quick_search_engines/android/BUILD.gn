@@ -36,6 +36,7 @@ android_library("java") {
     "//chrome/browser/search_engines/android:java",
     "//chrome/browser/settings:java",
     "//chrome/browser/ui/android/favicon:java",
+    "//components/browser_ui/settings/android:java",
     "//components/favicon/android:java",
     "//components/regional_capabilities/android:java",
     "//components/search_engines/android:java",

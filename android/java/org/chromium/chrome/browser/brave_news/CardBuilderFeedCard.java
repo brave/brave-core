@@ -90,18 +90,18 @@ public class CardBuilderFeedCard {
 
     public static final int CARDTYPE_BRAVE_RATING = 100;
 
-    private LinearLayout mLinearLayout;
-    private Activity mActivity;
-    private FeedItemsCard mNewsItem;
-    private BraveNewsController mBraveNewsController;
-    private int mType;
-    private int mPosition;
-    private int mHorizontalMargin;
-    private int mDeviceWidth;
+    private final LinearLayout mLinearLayout;
+    private final Activity mActivity;
+    private final FeedItemsCard mNewsItem;
+    private final BraveNewsController mBraveNewsController;
+    private final int mType;
+    private final int mPosition;
+    private final int mHorizontalMargin;
+    private final int mDeviceWidth;
     private boolean mIsPromo;
     private String mCreativeInstanceId;
     private String mOffersCategory;
-    private RequestManager mGlide;
+    private final RequestManager mGlide;
 
     private static final String TAG = "BN";
     private static final int MARGIN_VERTICAL = 10;
@@ -277,7 +277,7 @@ public class CardBuilderFeedCard {
             adLogo.setGravity(Gravity.END);
             adLogo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_rewards, 0, 0, 0);
             adLogo.setText(R.string.brave_news_ad);
-            adLogo.setTextColor(mActivity.getColor(R.color.blurple));
+            adLogo.setTextAppearance(R.style.BraveNewsAdLogoText);
             GradientDrawable gd = new GradientDrawable();
             gd.setColor(mActivity.getColor(R.color.news_text_color));
             gd.setCornerRadius(15);
@@ -310,11 +310,11 @@ public class CardBuilderFeedCard {
                             TableRow.LayoutParams.MATCH_PARENT,
                             TableRow.LayoutParams.WRAP_CONTENT,
                             1.0f);
-            adTitle.setTextSize(17);
+            adTitle.setTextAppearance(R.style.BraveNewsAdTitleText);
+
             adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
             adTitle.setTypeface(null, Typeface.BOLD);
             adTitle.setMaxLines(3);
-            adTitle.setTextColor(mActivity.getColor(R.color.news_text_color));
             adTitle.setEllipsize(TextUtils.TruncateAt.END);
             adTitle.setLayoutParams(adItemsParams);
             adTitle.setText(adData.title);
@@ -327,14 +327,12 @@ public class CardBuilderFeedCard {
             adItemsParams.width = 0;
             adDesc.setLayoutParams(adItemsParams);
 
-            adDesc.setTextColor(mActivity.getColor(R.color.news_time_color));
-            adDesc.setTextSize(12);
+            adDesc.setTextAppearance(R.style.BraveNewsAdDescText);
             adDesc.setText(adData.description);
 
             adButtonParams.width = TableRow.LayoutParams.WRAP_CONTENT;
             adButtonParams.height = 80; // TableRow.LayoutParams.WRAP_CONTENT;
             adButton.setPadding(30, 0, 30, 0);
-            adButton.setTextSize(13);
             adButton.setAllCaps(false);
             GradientDrawable adButtonBG = new GradientDrawable();
             adButtonBG.setColor(mActivity.getColor(android.R.color.transparent));
@@ -342,7 +340,7 @@ public class CardBuilderFeedCard {
             adButtonBG.setStroke(1, mActivity.getColor(R.color.news_text_color));
             adButton.setBackground(adButtonBG);
             adButton.setText(adData.ctaText);
-            adButton.setTextColor(mActivity.getColor(R.color.news_text_color));
+            adButton.setTextAppearance(R.style.BraveNewsAdButtonText);
             adButton.setLayoutParams(adButtonParams);
 
             View.OnClickListener listener = v -> {
@@ -470,11 +468,17 @@ public class CardBuilderFeedCard {
                     moreOffersLayout.setLayoutParams(moreOffersLayoutParams);
 
                     moreOffersTextParams.gravity = Gravity.CENTER_VERTICAL;
-                    moreOffersText.setText(mActivity.getResources().getString(
-                            R.string.brave_news_more_offers_title));
-                    moreOffersText.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
+                    moreOffersText.setText(
+                            mActivity
+                                    .getResources()
+                                    .getString(R.string.brave_news_more_offers_title));
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        moreOffersText.setTextAppearance(R.style.BraveNewsMoreOffersTabletText);
+                    } else {
+                        moreOffersText.setTextAppearance(R.style.BraveNewsMoreOffersPhoneText);
+                    }
+
                     moreOffersText.setTypeface(null, Typeface.BOLD);
-                    moreOffersText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     moreOffersText.setLayoutParams(moreOffersTextParams);
 
                     moreOffersArrow.setImageResource(R.drawable.ic_chevron_right);
@@ -503,8 +507,8 @@ public class CardBuilderFeedCard {
 
                     rowTop.setLayoutParams(tableParamsTopNews);
                     setTextFromFeed(topText, DEALS, 0);
-                    topText.setTextSize(17);
-                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
+                    topText.setTextAppearance(R.style.BraveNewsDealsTopText);
+
                     topText.setTypeface(null, Typeface.BOLD);
 
                     layout1.setOrientation(LinearLayout.VERTICAL);
@@ -542,8 +546,8 @@ public class CardBuilderFeedCard {
                     rowTop.setLayoutParams(tableParamsTopNews);
 
                     setTextFromFeed(topText, PUBLISHER, 0);
-                    topText.setTextSize(20);
-                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
+                    topText.setTextAppearance(R.style.BraveNewsPublisherGroupTopText);
+
                     topText.setTypeface(null, Typeface.BOLD);
 
                     addElementsToSingleLayout(row1, 0, type, position);
@@ -606,8 +610,7 @@ public class CardBuilderFeedCard {
                     rowTop.setLayoutParams(tableParamsTopNews);
 
                     setTextFromFeed(topText, CATEGORY, 0);
-                    topText.setTextSize(26);
-                    topText.setTextColor(mActivity.getColor(R.color.news_text_color));
+                    topText.setTextAppearance(R.style.BraveNewsCategoryGroupTopText);
                     topText.setTypeface(null, Typeface.BOLD);
 
                     rowTableParams.bottomMargin = 2 * MARGIN_VERTICAL;
@@ -809,7 +812,11 @@ public class CardBuilderFeedCard {
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 18 : 14);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        title.setTextAppearance(R.style.BraveNewsDealsTitleTabletText);
+                    } else {
+                        title.setTextAppearance(R.style.BraveNewsDealsTitlePhoneText);
+                    }
                     title.setTypeface(null, Typeface.BOLD);
                     title.setPadding(0, 10, 0, 0);
                     title.setLayoutParams(titleParams);
@@ -820,7 +827,11 @@ public class CardBuilderFeedCard {
                     descParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     setTextFromFeed(desc, DESC, index);
-                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        desc.setTextAppearance(R.style.BraveNewsDealsDescTabletText);
+                    } else {
+                        desc.setTextAppearance(R.style.BraveNewsDealsDescPhoneText);
+                    }
                     desc.setMaxLines(3);
                     desc.setEllipsize(TextUtils.TruncateAt.END);
 
@@ -861,7 +872,11 @@ public class CardBuilderFeedCard {
                     image.setLayoutParams(imageParams);
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 21 : 17);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        title.setTextAppearance(R.style.BraveNewsHeadlineTitleTabletText);
+                    } else {
+                        title.setTextAppearance(R.style.BraveNewsHeadlineTitlePhoneText);
+                    }
                     title.setTypeface(null, Typeface.BOLD);
                     title.setMaxLines(5);
                     title.setEllipsize(TextUtils.TruncateAt.END);
@@ -873,21 +888,29 @@ public class CardBuilderFeedCard {
                     descParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     setTextFromFeed(desc, TIME, index);
-                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        desc.setTextAppearance(R.style.BraveNewsHeadlineDescTabletText);
+                    } else {
+                        desc.setTextAppearance(R.style.BraveNewsHeadlineDescPhoneText);
+                    }
                     desc.setLayoutParams(descParams);
                     desc.setPadding(50, 0, 50, 30);
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
 
-                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
-                    publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        publisher.setTextAppearance(R.style.BraveNewsHeadlinePublisherTabletText);
+                    } else {
+                        publisher.setTextAppearance(R.style.BraveNewsHeadlinePublisherPhoneText);
+                    }
+
                     publisherParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     publisherParams.bottomMargin = 10;
                     publisher.setPadding(50, 0, 50, 0);
 
                     publisherParams.bottomMargin = 4 * MARGIN_VERTICAL;
-                    ;
+
                     publisher.setLayoutParams(publisherParams);
 
                     break;
@@ -933,7 +956,7 @@ public class CardBuilderFeedCard {
 
                     titleParams.rightMargin = 20;
                     titleParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    title.setTextSize(17);
+                    title.setTextAppearance(R.style.BraveNewsPromotedArticleTitleText);
                     title.setTypeface(null, Typeface.BOLD);
                     title.setMaxLines(5);
                     titleParams.bottomMargin = MARGIN_VERTICAL;
@@ -944,7 +967,7 @@ public class CardBuilderFeedCard {
                     descParams.weight = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     setTextFromFeed(desc, TIME, index);
-                    desc.setTextSize(11);
+                    desc.setTextAppearance(R.style.BraveNewsPromotedArticleDescText);
                     desc.setLayoutParams(descParams);
                     desc.setPadding(50, 0, 50, 30);
 
@@ -976,8 +999,7 @@ public class CardBuilderFeedCard {
                     promoted.setText(
                             mActivity.getResources().getString(R.string.brave_news_promoted_title));
 
-                    promoted.setTextColor(mActivity.getColor(R.color.news_text_color));
-                    promoted.setTextSize(12);
+                    promoted.setTextAppearance(R.style.BraveNewsPromotedArticlePromotedText);
                     promoted.setLayoutParams(promotedParams);
                     promotedLayoutParams.bottomMargin = 4 * MARGIN_VERTICAL;
 
@@ -986,8 +1008,7 @@ public class CardBuilderFeedCard {
                     promotedLogoLayout.setLayoutParams(promotedLayoutParams);
 
                     setTextFromFeed(publisher, PUBLISHER, 0);
-                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
-                    publisher.setTextSize(12);
+                    publisher.setTextAppearance(R.style.BraveNewsPromotedArticlePublisherText);
                     publisherParams.width = 0;
                     publisherParams.weight = 2;
 
@@ -1026,7 +1047,11 @@ public class CardBuilderFeedCard {
                     layout.addView(image);
 
                     title.setLayoutParams(titleParams);
-                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        title.setTextAppearance(R.style.BraveNewsHeadlinePairedTitleTabletText);
+                    } else {
+                        title.setTextAppearance(R.style.BraveNewsHeadlinePairedTitlePhoneText);
+                    }
                     title.setTypeface(null, Typeface.BOLD);
                     title.setMaxLines(5);
                     titleParams.bottomMargin = MARGIN_VERTICAL;
@@ -1036,7 +1061,12 @@ public class CardBuilderFeedCard {
 
                     descParams.weight = 1;
                     descParams.height = 0;
-                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        desc.setTextAppearance(R.style.BraveNewsHeadlinePairedDescTabletText);
+                    } else {
+                        desc.setTextAppearance(R.style.BraveNewsHeadlinePairedDescPhoneText);
+                    }
+
                     setTextFromFeed(desc, TIME, index);
                     desc.setLayoutParams(descParams);
                     desc.setPadding(50, 0, 50, 0);
@@ -1044,8 +1074,13 @@ public class CardBuilderFeedCard {
                     layout.addView(desc);
 
                     setTextFromFeed(publisher, PUBLISHER, index);
-                    publisher.setTextColor(mActivity.getColor(R.color.news_text_color));
-                    publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        publisher.setTextAppearance(
+                                R.style.BraveNewsHeadlinePairedPublisherTabletText);
+                    } else {
+                        publisher.setTextAppearance(
+                                R.style.BraveNewsHeadlinePairedPublisherPhoneText);
+                    }
 
                     publisherParams.gravity = Gravity.BOTTOM;
                     publisher.setGravity(Gravity.BOTTOM);
@@ -1081,7 +1116,8 @@ public class CardBuilderFeedCard {
                             TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
                     no.setText(String.valueOf(index + 1));
-                    no.setTextColor(mActivity.getColor(R.color.news_text_color));
+                    no.setTextAppearance(R.style.BraveNewsPublisherGroupNoText);
+
                     noParams.width = 0;
                     noParams.weight = 1;
                     noParams.gravity = Gravity.CENTER_VERTICAL;
@@ -1097,7 +1133,12 @@ public class CardBuilderFeedCard {
 
                     titleRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 15);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        title.setTextAppearance(R.style.BraveNewsPublisherGroupTitleTabletText);
+                    } else {
+                        title.setTextAppearance(R.style.BraveNewsPublisherGroupTitlePhoneText);
+                    }
+
                     titleRowParams.bottomMargin = MARGIN_VERTICAL;
                     title.setTypeface(null, Typeface.BOLD);
                     title.setLayoutParams(titleRowParams);
@@ -1109,7 +1150,11 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(desc, TIME, index);
                     descRowParams.bottomMargin = 20;
-                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 14 : 12);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        desc.setTextAppearance(R.style.BraveNewsPublisherGroupDescTabletText);
+                    } else {
+                        desc.setTextAppearance(R.style.BraveNewsPublisherGroupDescPhoneText);
+                    }
                     desc.setLayoutParams(descRowParams);
                     layoutSingleCard.addView(desc);
 
@@ -1139,16 +1184,23 @@ public class CardBuilderFeedCard {
                     sourceRowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
                     sourceRowParams.setMargins(0, 0, 0, MARGIN_VERTICAL);
                     source.setLayoutParams(sourceRowParams);
-                    source.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        source.setTextAppearance(R.style.BraveNewsCategoryGroupSourceTabletText);
+                    } else {
+                        source.setTextAppearance(R.style.BraveNewsCategoryGroupSourcePhoneText);
+                    }
                     source.setTypeface(null, Typeface.BOLD);
                     setTextFromFeed(source, PUBLISHER, index);
-                    source.setTextColor(mActivity.getColor(R.color.news_time_color));
                     layoutSingleCard.addView(source);
 
                     titleRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     titleRowParams.rightMargin = ConfigurationUtils.isTablet(mActivity) ? 8 : 13;
-                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        title.setTextAppearance(R.style.BraveNewsCategoryGroupTitleTabletText);
+                    } else {
+                        title.setTextAppearance(R.style.BraveNewsCategoryGroupTitlePhoneText);
+                    }
                     title.setTypeface(null, Typeface.BOLD);
                     titleRowParams.bottomMargin = MARGIN_VERTICAL;
                     title.setLayoutParams(titleRowParams);
@@ -1160,7 +1212,11 @@ public class CardBuilderFeedCard {
                     descRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     desc.setPadding(0, 0, 0, 0);
-                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
+                    if (ConfigurationUtils.isTablet(mActivity)) {
+                        desc.setTextAppearance(R.style.BraveNewsCategoryGroupDescTabletText);
+                    } else {
+                        desc.setTextAppearance(R.style.BraveNewsCategoryGroupDescPhoneText);
+                    }
                     descRowParams.bottomMargin = MARGIN_VERTICAL;
                     setTextFromFeed(desc, TIME, index);
                     desc.setLayoutParams(descRowParams);
@@ -1192,8 +1248,8 @@ public class CardBuilderFeedCard {
                     break;
             }
 
-            title.setTextColor(mActivity.getColor(R.color.news_text_color));
-            desc.setTextColor(mActivity.getColor(R.color.news_time_color));
+            title.setTextAppearance(R.style.BraveNewsTitleTextColor);
+            desc.setTextAppearance(R.style.BraveNewsDescTextColor);
 
             setTextFromFeed(title, TITLE, index);
 

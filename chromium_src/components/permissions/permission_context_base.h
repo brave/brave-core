@@ -49,8 +49,9 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
       const base::RepeatingCallback<
           PermissionLifetimeManager*(content::BrowserContext*)>& factory);
 
-  void DecidePermission(permissions::PermissionRequestData request_data,
-                        BrowserPermissionCallback callback) override;
+  void DecidePermission(
+      std::unique_ptr<permissions::PermissionRequestData> request_data,
+      BrowserPermissionCallback callback) override;
 
   bool IsPendingGroupedRequestsEmptyForTesting();
 
@@ -69,12 +70,11 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     GroupedPermissionRequests();
     ~GroupedPermissionRequests();
 
-    using GroupedRequests =
-        std::vector<std::pair<std::unique_ptr<PermissionRequest>,
-                              BrowserPermissionCallback>>;
+    using GroupedRequests = std::vector<
+        std::pair<base::WeakPtr<PermissionRequest>, BrowserPermissionCallback>>;
 
     bool IsDone() const;
-    void AddRequest(std::pair<std::unique_ptr<PermissionRequest>,
+    void AddRequest(std::pair<base::WeakPtr<PermissionRequest>,
                               BrowserPermissionCallback> request);
     BrowserPermissionCallback GetNextCallback();
     void RequestFinished();
@@ -87,12 +87,10 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     size_t next_callback_index_ = 0;
   };
 
-  void PermissionDecided(const PermissionRequestID& id,
-                         const GURL& requesting_origin,
-                         const GURL& embedding_origin,
-                         ContentSetting content_setting,
+  void PermissionDecided(ContentSetting content_setting,
                          bool is_one_time,
-                         bool is_final_decision) override;
+                         bool is_final_decision,
+                         const PermissionRequestData& request_data) override;
   void CleanUpRequest(content::WebContents* web_contents,
                       const PermissionRequestID& id,
                       bool embedded_permission_element_initiated) override;

@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index bec50719d7d05cd61d929470801ebe9487bb50fc..07c0c3f7398f7795ca6d53947acf86898a6f8057 100644
+index 50c4f5395c5e56f90e1793ab34d1bf71847abd9f..0bb4f15b6f6502baa8c0a30080d370f84f8098d9 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
-@@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
+@@ -213,8 +213,9 @@ pub fn build_rule_from_dep(
          let mut aliases = Vec::new();
          for dep in &normal_deps {
              let target_name = NormalizedName::from_crate_name(&dep.package_name).to_string();

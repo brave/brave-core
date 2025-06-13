@@ -17,7 +17,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
     // Own members.
-    private Profile mProfile;
+    private final Profile mProfile;
 
     // To delete in bytecode, members from parent class will be used instead.
     private FeedSurfaceCoordinator mCoordinator;

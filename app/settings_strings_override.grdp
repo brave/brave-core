@@ -66,11 +66,6 @@
   <if expr="not is_chromeos">
     </if>
 
-  <if expr="use_nss_certs">
-    <if expr="is_chromeos">
-      </if>
-  </if>
-
   <if expr="not is_chromeos">
     </if>
   <if expr="not is_chromeos">

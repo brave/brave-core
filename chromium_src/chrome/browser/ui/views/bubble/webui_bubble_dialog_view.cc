@@ -10,10 +10,7 @@
 #endif
 
 // In the `WebUIBubbleDialogView` constructor, give the bubble rounded corners.
-// `SetPaintClientToLayer` is required for proper cross-platform rounded corner
-// clipping. See `BubbleDialogDelegate::CreateClientView` for more.
 #define SetLayoutManager(LAYOUT) \
-  SetPaintClientToLayer(true);   \
   set_use_round_corners(true);   \
   set_corner_radius(16);         \
   SetLayoutManager(LAYOUT)

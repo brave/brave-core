@@ -1,16 +1,16 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index 5a3c601b50583b0918cd9ec39bcb1095e001a007..49046dc8b5b77fcbdf3246ca7e6ab9904a6a9125 100644
+index 6b924743d6e2f53392d4fe324b6006e5ecb742c9..14d6569fdbfffed466d6c622c27ebf0eadf4d6a6 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
-@@ -3714,16 +3714,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
+@@ -3802,16 +3802,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.
 -  if (blink::IsRendererDebugURL(params.url)) {
 +  const GURL url = params.url.SchemeIs(url::kJavaScriptScheme) ? params.url : pending_entry_->GetURL();
 +  if (blink::IsRendererDebugURL(url)) {
-     // Renderer-debug URLs won't go through NavigationThrottlers so we have to
-     // check them explicitly. See bug 913334.
+     // Renderer-debug URLs won't go through NavigationThrottles so we have to
+     // check them explicitly. See crbug.com/40605746.
      if (GetContentClient()->browser()->ShouldBlockRendererDebugURL(
 -            params.url, browser_context_, node->current_frame_host())) {
 +            url, browser_context_, node->current_frame_host())) {

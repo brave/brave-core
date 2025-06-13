@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/strings/stringprintf.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/ai_chat/core/browser/constants.h"

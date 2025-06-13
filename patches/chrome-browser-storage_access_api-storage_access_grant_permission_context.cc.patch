@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
-index ee3413efce5bbe9370b58ece44ee0d201511fe3a..89844a06ffe54159e5142ab10d023370fb17e24e 100644
+index a7d5a207b7b08ddf4304db709be7550bb1fd2227..667fd0b3d5ccfbc8ce0ab5ebd412b7e4554228a6 100644
 --- a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
 +++ b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
-@@ -457,6 +457,7 @@ void StorageAccessGrantPermissionContext::CheckForAutoGrantOrAutoDenial(
+@@ -479,6 +479,7 @@ void StorageAccessGrantPermissionContext::CheckForAutoGrantOrAutoDenial(
          break;
      }
    }

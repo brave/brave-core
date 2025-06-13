@@ -254,7 +254,7 @@ export function getList(this: string[]) {
     const sourceFile = ts.createSourceFile('test.ts', exampleHtml, ts.ScriptTarget.Latest)
 
     it('should be able to load the template', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
 
@@ -279,7 +279,7 @@ export function getList(this: string[]) {
     })
 
     it('should be able to inject placeholders', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -318,7 +318,7 @@ export function getList(this: string[]) {
     })
 
     it('should mangle the first template if none is specified', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -331,7 +331,7 @@ export function getList(this: string[]) {
     })
 
     it('should be possible to select a template by predicate', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -341,7 +341,7 @@ export function getList(this: string[]) {
     })
 
     it('should be possible to pass in a template to mangle', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -351,7 +351,7 @@ export function getList(this: string[]) {
     })
 
     it('should throw an error if no template is found', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -359,7 +359,7 @@ export function getList(this: string[]) {
     })
 
     it('should be possible to mangle the template', () => {
-        const result: HTMLTemplateTags = { text: exampleHtml, children: [] }
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [] }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
@@ -404,5 +404,24 @@ export function getList(this: string[]) {
     </div>\`;
 }
 `)
+    })
+
+    it('should be possible to mangle all matching templates', () => {
+        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [
+            { id: 1, text: '<div>Hello</div>', children: [] },
+            { id: 2, text: '<div>Hello</div>', children: [] },
+        ] }
+        utilsForTest.resetTemplateId()
+        utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
+        utilsForTest.injectPlaceholders(result)
+        utilsForTest.setResult(result)
+
+        utilsForTest.mangleAll(e => {
+            e.querySelector('div')!.textContent = 'World'
+        }, t => t.text.includes('Hello'))
+
+        for (const template of utilsForTest.findTemplates(t => t.text.includes('Hello'))) {
+            expect(template.text).toBe('<div>World</div>')
+        }
     })
 })

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.h b/chrome/browser/ui/tabs/tab_style.h
-index dc95be78deca586504832cffc60f25eac9fbf7f9..23b395b473476ae5d37b6f5d2b5ad90199076174 100644
+index b2dcced3575a18131a634b4ddba46baec958dc85..d8a9ce61a27dfb45f9b5e04ab6a96d785232b38a 100644
 --- a/chrome/browser/ui/tabs/tab_style.h
 +++ b/chrome/browser/ui/tabs/tab_style.h
 @@ -111,7 +111,7 @@ class TabStyle {

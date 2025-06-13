@@ -208,7 +208,7 @@ extension BrowserViewController {
         let vc = UIHostingController(
           rootView: HistoryView(
             model: HistoryModel(
-              api: self.braveCore.historyAPI,
+              api: self.profileController.historyAPI,
               tabManager: self.tabManager,
               toolbarUrlActionsDelegate: self,
               dismiss: { [weak self] in self?.dismiss(animated: true) },
@@ -248,7 +248,7 @@ extension BrowserViewController {
     let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
     let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
     let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
-    let walletP3A = braveCore.braveWalletAPI.walletP3A()
+    let walletP3A = profileController.braveWalletAPI.walletP3A()
 
     var keyringStore: KeyringStore? = walletStore?.keyringStore
     if keyringStore == nil {
@@ -269,7 +269,7 @@ extension BrowserViewController {
     var cryptoStore: CryptoStore? = walletStore?.cryptoStore
     if cryptoStore == nil {
       cryptoStore = CryptoStore.from(
-        ipfsApi: braveCore.ipfsAPI,
+        ipfsApi: profileController.ipfsAPI,
         walletP3A: walletP3A,
         privateMode: isPrivateMode
       )
@@ -281,7 +281,8 @@ extension BrowserViewController {
       feedDataSource: self.feedDataSource,
       rewards: self.rewards,
       windowProtection: self.windowProtection,
-      braveCore: self.braveCore,
+      p3aUtils: self.braveCore.p3aUtils,
+      braveCore: self.profileController,
       attributionManager: attributionManager,
       keyringStore: keyringStore,
       cryptoStore: cryptoStore
@@ -296,7 +297,7 @@ extension BrowserViewController {
     walletStore.origin = nil
     let vc = WalletHostingViewController(
       walletStore: walletStore,
-      webImageDownloader: braveCore.webImageDownloader
+      webImageDownloader: profileController.webImageDownloader
     )
     vc.delegate = self
     self.dismiss(animated: true) {
@@ -812,7 +813,7 @@ extension BrowserViewController {
         let vc = UIHostingController(
           rootView: HistoryView(
             model: HistoryModel(
-              api: self.braveCore.historyAPI,
+              api: self.profileController.historyAPI,
               tabManager: self.tabManager,
               toolbarUrlActionsDelegate: self,
               dismiss: { [weak self] in self?.dismiss(animated: true) },

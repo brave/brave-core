@@ -46,13 +46,13 @@ class AdBlockSubscriptionDownloadManager final : public KeyedService {
 
   // Starts a download for |download_url|. Will schedule a higher priority
   // download if |from_ui| is true.
-  virtual void StartDownload(const GURL& download_url, bool from_ui);
+  void StartDownload(const GURL& download_url, bool from_ui);
 
   // Cancels all pending downloads.
-  virtual void CancelAllPendingDownloads();
+  void CancelAllPendingDownloads();
 
   // Returns whether the downloader can be used for downloads.
-  virtual bool IsAvailableForDownloads() const;
+  bool IsAvailableForDownloads() const;
 
   void set_subscription_path_callback(
       base::RepeatingCallback<base::FilePath(const GURL&)>

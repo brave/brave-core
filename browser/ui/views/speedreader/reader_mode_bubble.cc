@@ -88,7 +88,6 @@ void ReaderModeBubble::Init() {
       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
       kBoxLayoutChildSpacing));
 
-  SetPaintClientToLayer(true);
   set_use_round_corners(true);
   set_corner_radius(kCornerRadius);
 

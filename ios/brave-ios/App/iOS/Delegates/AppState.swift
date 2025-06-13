@@ -32,10 +32,8 @@ public class AppState {
   public static let shared = AppState()
 
   public let braveCore: BraveCoreMain
-  public let dau: DAU
   public let migration: Migration
   public let profile: Profile
-  public let rewards: Brave.BraveRewards
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
   private var didBecomeActive = false
@@ -89,22 +87,15 @@ public class AppState {
       $0.scheduleLowPriorityStartupTasks()
     }
 
-    // Setup DAU
-    dau = DAU(braveCoreStats: braveCore.braveStats)
-
     // Setup Profile
     profile = BrowserProfile(localName: "profile")
 
     // Setup Migrations
-    migration = Migration(braveCore: braveCore)
+    migration = Migration()
 
     // Perform Migrations
     migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
 
-    // Setup Rewards & Ads
-    let configuration = BraveRewards.Configuration.current()
-    Self.migrateAdsConfirmations(for: configuration)
-    rewards = BraveRewards(configuration: configuration)
     newsFeedDataSource = FeedDataSource()
 
     // Setup Custom URL scheme handlers
@@ -226,40 +217,6 @@ public class AppState {
 
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
-    }
-  }
-
-  private static func migrateAdsConfirmations(for configuruation: Brave.BraveRewards.Configuration)
-  {
-    // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
-    // estimated payout remain correct.
-    //
-    // This hack is unfortunately neccessary due to a missed migration path when moving
-    // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
-    // state file and save it as a new file under the ads directory.
-    let base = configuruation.storageURL
-    let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
-    let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
-    let fm = FileManager.default
-
-    if !fm.fileExists(atPath: ledgerStateContainer.path)
-      || fm.fileExists(atPath: adsConfirmations.path)
-    {
-      // Nothing to migrate or already migrated
-      return
-    }
-
-    do {
-      let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
-      guard let confirmations = contents?["confirmations.json"] as? String else {
-        adsRewardsLog.debug("No confirmations found to migrate in ledger's state container")
-        return
-      }
-      try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
-    } catch {
-      adsRewardsLog.error(
-        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
-      )
     }
   }
 }

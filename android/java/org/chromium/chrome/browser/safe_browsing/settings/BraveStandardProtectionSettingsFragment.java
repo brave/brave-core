@@ -20,6 +20,5 @@ public class BraveStandardProtectionSettingsFragment extends StandardProtectionS
                 new SafeBrowsingBridge(ProfileManager.getLastUsedRegularProfile());
         safeBrowsingBridge.setSafeBrowsingExtendedReportingEnabled(false);
         getPreferenceScreen().removePreference(mExtendedReportingPreference);
-        getPreferenceScreen().removePreference(mPasswordLeakDetectionPreference);
     }
 }

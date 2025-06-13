@@ -22,12 +22,12 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
     private BottomControlsStacker mBottomControlsStacker;
 
     // Own members.
-    private ObservableSupplierImpl<Boolean> mTabGroupUiVisibleSupplier =
+    private final ObservableSupplierImpl<Boolean> mTabGroupUiVisibleSupplier =
             new ObservableSupplierImpl<>();
-    private ObservableSupplierImpl<Boolean> mBottomToolbarVisibleSupplier =
+    private final ObservableSupplierImpl<Boolean> mBottomToolbarVisibleSupplier =
             new ObservableSupplierImpl<>();
-    private int mBottomControlsHeightSingle;
-    private int mBottomControlsHeightDouble;
+    private final int mBottomControlsHeightSingle;
+    private final int mBottomControlsHeightDouble;
 
     BraveBottomControlsMediator(
             WindowAndroid windowAndroid,
