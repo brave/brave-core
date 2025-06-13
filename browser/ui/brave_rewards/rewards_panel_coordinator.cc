@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "ui/base/base_window.h"
 
 namespace brave_rewards {
 
@@ -27,7 +28,7 @@ bool RewardsPanelCoordinator::IsRewardsPanelURLForTesting(const GURL& url) {
 
 bool RewardsPanelCoordinator::OpenRewardsPanel() {
   if (browser_window_interface_->GetWindow()->IsMinimized()) {
-    browser_window_interface_->ActivateWindow();
+    browser_window_interface_->GetWindow()->Activate();
   }
 
   for (auto& observer : observers_) {
