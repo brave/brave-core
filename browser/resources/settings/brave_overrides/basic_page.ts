@@ -22,6 +22,7 @@ import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
+import '../brave_leo_assistant_page/personalization.js'
 import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 // <if expr="enable_containers">
@@ -302,6 +303,20 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionLeoPersonalization = document.createElement('template')
+      sectionLeoPersonalization.setAttribute('is', 'dom-if')
+      sectionLeoPersonalization.setAttribute('restamp', 'true')
+      sectionLeoPersonalization
+        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
+      sectionLeoPersonalization.content.appendChild(createNestedSectionElement(
+        'leoAssistant',
+        'leoAssistant',
+        'braveLeoAssistantPersonalizationLabel',
+        'brave-leo-personalization',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionLeoCustomModels = document.createElement('template')
       sectionLeoCustomModels.setAttribute('is', 'dom-if')
       sectionLeoCustomModels.setAttribute('restamp', 'true')
@@ -462,6 +477,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionLeoAssist)
       // Insert Surevy Panelist
       last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
+      // Insert Leo Personalization
+      last = last.insertAdjacentElement('afterend', sectionLeoPersonalization)
       // Insert Custom Models List
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
