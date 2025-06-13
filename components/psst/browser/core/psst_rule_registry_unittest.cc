@@ -17,11 +17,11 @@
 #include "base/path_service.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -61,7 +61,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   using LoadRulesTestCallback = base::MockCallback<base::OnceCallback<
       void(const std::string& data, const std::vector<PsstRule>& rules)>>;
   using CheckIfMatchTestCallback = base::MockCallback<
-      base::OnceCallback<void(const std::optional<MatchedRule>&)>>;
+      base::OnceCallback<void(std::unique_ptr<MatchedRule>)>>;
 
   base::FilePath GetTestDataDirBase() const { return test_data_dir_base_; }
   base::FilePath GetScriptsTestDataDir() const {
@@ -74,7 +74,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
   base::FilePath test_data_dir_base_;
 };
@@ -108,13 +108,13 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
-      .WillOnce([&](const std::optional<MatchedRule>& matched_rule) {
+      .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
         ASSERT_TRUE(matched_rule);
-        EXPECT_EQ(matched_rule->Name(), "a");
-        EXPECT_EQ(matched_rule->UserScript(),
+        EXPECT_EQ(matched_rule->name(), "a");
+        EXPECT_EQ(matched_rule->user_script(),
                   ReadFile(scripts_path.Append(
                       base::FilePath::FromUTF8Unsafe(kPsstUserScriptName))));
-        EXPECT_EQ(matched_rule->PolicyScript(),
+        EXPECT_EQ(matched_rule->policy_script(),
                   ReadFile(scripts_path.Append(
                       base::FilePath::FromUTF8Unsafe(kPsstPolicyScriptName))));
         run_loop.Quit();
@@ -239,7 +239,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
-      .WillOnce([&](const std::optional<MatchedRule>& matched_rule) {
+      .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
         // Rule has not been loaded correctly(wrong scripts path), so it should
         // not be matched.
         ASSERT_FALSE(matched_rule);

@@ -40,12 +40,6 @@ std::string ReadFile(const base::FilePath& file_path) {
   return contents;
 }
 
-std::optional<MatchedRule> CreateMatchedRule(
-    std::unique_ptr<RuleDataReader> rule_data_reader,
-    const PsstRule& rule) {
-  return MatchedRule::Create(std::move(rule_data_reader), rule);
-}
-
 }  // namespace
 
 // static
@@ -65,12 +59,12 @@ PsstRuleRegistry::~PsstRuleRegistry() = default;
 
 void PsstRuleRegistry::CheckIfMatch(
     const GURL& url,
-    base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) {
+    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) {
   for (const PsstRule& rule : rules_) {
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&CreateMatchedRule,
+          base::BindOnce(&MatchedRule::Create,
                          std::make_unique<RuleDataReader>(component_path_),
                          rule),
           std::move(cb));

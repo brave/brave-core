@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
 
+#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -37,9 +38,10 @@ class PsstScriptsHandlerImpl : public PsstScriptsHandler {
   void Start() override;
 
  private:
-  void InsertUserScript(const std::optional<MatchedRule>& rule);
+  void InsertUserScript(std::unique_ptr<MatchedRule> rule);
 
-  void OnUserScriptResult(const MatchedRule& rule, base::Value script_result);
+  void OnUserScriptResult(std::unique_ptr<MatchedRule> rule,
+                          base::Value script_result);
 
   void InsertScriptInPage(const std::string& script,
                           std::optional<base::Value> value,

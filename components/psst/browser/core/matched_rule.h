@@ -22,18 +22,18 @@ class RuleDataReader;
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
  public:
   ~MatchedRule();
-  MatchedRule(const MatchedRule&);
+  MatchedRule(const MatchedRule&) = delete;
   MatchedRule& operator=(const MatchedRule&) = delete;
 
-  static std::optional<MatchedRule> Create(
+  static std::unique_ptr<MatchedRule> Create(
       std::unique_ptr<RuleDataReader> rule_reader,
       const PsstRule& rule);
 
   // Getters.
-  const std::string& UserScript() const { return user_script_; }
-  const std::string& PolicyScript() const { return policy_script_; }
-  int Version() const { return version_; }
-  const std::string& Name() const { return name_; }
+  const std::string& user_script() const { return user_script_; }
+  const std::string& policy_script() const { return policy_script_; }
+  int version() const { return version_; }
+  const std::string& name() const { return name_; }
 
  private:
   friend class RuleDataReaderUnitTest;

@@ -9,7 +9,6 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_scripts_handler.cc",
     "psst_scripts_handler.h",
     "psst_scripts_handler_impl.cc",
     "psst_scripts_handler_impl.h",
@@ -30,21 +29,5 @@ component("content") {
     "//components/sessions",
     "//components/user_prefs:user_prefs",
     "//url",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/psst/browser/content",
-    "//brave/components/psst/common:common",
-    "//chrome/browser/prefs",
-    "//chrome/test:test_support",
-    "//content/test:test_support",
-    "//url:url",
   ]
 }

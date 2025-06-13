@@ -30,15 +30,15 @@ class PsstShouldProcessPageChecker {
   PsstShouldProcessPageChecker& operator=(const PsstShouldProcessPageChecker&) =
       delete;
 
-  virtual bool ShouldProcess(content::NavigationEntry* entry) const = 0;
+  virtual bool ShouldProcess(const content::NavigationHandle* handle) const = 0;
 };
 
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
  public:
-  static std::unique_ptr<PsstTabWebContentsObserver> CreateForWebContents(
+  static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
-      PrefService* prefs,
+      content::BrowserContext* browser_context,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -54,11 +54,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
       std::unique_ptr<PsstScriptsHandler> script_handler);
 
   // content::WebContentsObserver overrides
-  void PrimaryPageChanged(content::Page& page) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-
-  void SetScriptHandlerForTesting(
-      std::unique_ptr<PsstScriptsHandler> script_handler);
+  void DidFinishNavigation(content::NavigationHandle* handle) override;
 
   std::unique_ptr<PsstShouldProcessPageChecker> page_checker_;
   std::unique_ptr<PsstScriptsHandler> script_handler_;
@@ -68,9 +65,15 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
 
   friend class PsstTabWebContentsObserverUnitTest;
   FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           PrimaryPageChanged);
+                           ShouldNotProcessRestoredNavigationEntry);
   FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           DocumentOnLoadCompletedScriptStart);
+                           ShouldNotProcessIfNotPrimaryMainFrame);
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           ShouldNotProcessIfNavigationNotCommitted);
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           ShouldNotProcessIfSameDocumentNavigation);
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           StartScriptHandlerIfEnabled);
   FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverBrowserTest,
                            RuleMatchTestScriptTrue);
   friend class PsstTabWebContentsObserverBrowserTest;

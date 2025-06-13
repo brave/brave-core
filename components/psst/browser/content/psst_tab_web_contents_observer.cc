@@ -14,9 +14,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/page.h"
 
 namespace psst {
 
@@ -29,17 +27,32 @@ class PsstShouldProcessPageCheckerImpl : public PsstShouldProcessPageChecker {
   PsstShouldProcessPageCheckerImpl& operator=(
       const PsstShouldProcessPageCheckerImpl&) = delete;
 
-  bool ShouldProcess(content::NavigationEntry* entry) const override {
-    return entry && !entry->IsRestored();
+  bool ShouldProcess(const content::NavigationHandle* handle) const override {
+    if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
+        handle->IsSameDocument()) {
+      return false;
+    }
+
+    // We only want to process pages that are not restored.
+    return handle->GetRestoreType() == content::RestoreType::kNotRestored;
   }
 };
 
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
-PsstTabWebContentsObserver::CreateForWebContents(content::WebContents* contents,
-                                                 PrefService* prefs,
-                                                 const int32_t world_id) {
+PsstTabWebContentsObserver::MaybeCreateForWebContents(
+    content::WebContents* contents,
+    content::BrowserContext* browser_context,
+    const int32_t world_id) {
   CHECK(contents);
+  CHECK(browser_context);
+
+  if (browser_context->IsOffTheRecord() ||
+      !base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    return nullptr;
+  }
+
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   CHECK(prefs);
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
@@ -60,10 +73,9 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
-void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  // Continue to process if the page is not restored.
-  should_process_ = page_checker_->ShouldProcess(
-      page.GetMainDocument().GetController().GetLastCommittedEntry());
+void PsstTabWebContentsObserver::DidFinishNavigation(
+    content::NavigationHandle* handle) {
+  should_process_ = page_checker_->ShouldProcess(handle);
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
@@ -76,11 +88,6 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
   }
 
   script_handler_->Start();
-}
-
-void PsstTabWebContentsObserver::SetScriptHandlerForTesting(
-    std::unique_ptr<PsstScriptsHandler> script_handler) {
-  script_handler_ = std::move(script_handler);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PsstTabWebContentsObserver);
