@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry.h"
 
 #include "base/apple/foundation_util.h"
+#include "base/hash/hash.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
@@ -62,16 +63,13 @@
 }
 
 - (BOOL)isEqual:(nullable id)object {
-  if (object == nil) {
+  if (!object ||
+      ![object isKindOfClass:[AdblockFilterListCatalogEntry class]]) {
     return NO;
   }
 
   if (self == object) {
     return YES;
-  }
-
-  if (![object isKindOfClass:[AdblockFilterListCatalogEntry class]]) {
-    return NO;
   }
 
   auto* entry =
@@ -92,11 +90,11 @@
 }
 
 - (NSUInteger)hash {
-  return [self.uuid hash] ^ [self.url hash] ^ [self.title hash] ^
-         [self.languages hash] ^ [self.supportURL hash] ^ [self.desc hash] ^
-         self.hidden ^ self.defaultEnabled ^ self.firstPartyProtections ^
-         self.permissionMask ^ [self.platforms hash] ^ [self.componentId hash] ^
-         [self.base64PublicKey hash];
+  return base::HashCombine(
+      0ull, self.uuid.hash, self.url.hash, self.title.hash, self.languages.hash,
+      self.supportURL.hash, self.desc.hash, self.hidden, self.defaultEnabled,
+      self.firstPartyProtections, self.permissionMask, self.platforms.hash,
+      self.componentId.hash, self.base64PublicKey.hash);
 }
 
 @end

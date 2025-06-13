@@ -14,9 +14,9 @@ struct MediaSettingsView: View {
   @ObservedObject var keepYouTubeInBrave = Preferences.General.keepYouTubeInBrave
   @ObservedObject var filterListStorage = FilterListStorage.shared
 
-  @State var youtubeRecommendationsBlocking: Bool = false
-  @State var youtubeDistractingElementsBlocking: Bool = false
-  @State var youtubeShortsBlocking: Bool = false
+  @State var youtubeRecommendationsBlocking = false
+  @State var youtubeDistractingElementsBlocking = false
+  @State var youtubeShortsBlocking = false
 
   var body: some View {
     Form {
@@ -86,25 +86,25 @@ struct MediaSettingsView: View {
         for: AdblockFilterListCatalogEntry.youtubeShortsComponentID
       )
     }
-    .onChange(of: youtubeRecommendationsBlocking) { oldValue, newValue in
+    .onChange(of: youtubeRecommendationsBlocking) { _, newValue in
       FilterListStorage.shared.ensureFilterList(
         for: AdblockFilterListCatalogEntry.youtubeMobileRecommendationsComponentID,
         isEnabled: newValue
       )
     }
-    .onChange(of: youtubeDistractingElementsBlocking) { oldValue, newValue in
+    .onChange(of: youtubeDistractingElementsBlocking) { _, newValue in
       FilterListStorage.shared.ensureFilterList(
         for: AdblockFilterListCatalogEntry.youtubeDistractingElementsComponentID,
         isEnabled: newValue
       )
     }
-    .onChange(of: youtubeShortsBlocking) { oldValue, newValue in
+    .onChange(of: youtubeShortsBlocking) { _, newValue in
       FilterListStorage.shared.ensureFilterList(
         for: AdblockFilterListCatalogEntry.youtubeShortsComponentID,
         isEnabled: newValue
       )
     }
-    .onChange(of: filterListStorage.filterLists) { oldValue, newValue in
+    .onChange(of: filterListStorage.filterLists) { _, newValue in
       for filterList in newValue {
         switch filterList.entry.componentId {
         case AdblockFilterListCatalogEntry.youtubeDistractingElementsComponentID:
