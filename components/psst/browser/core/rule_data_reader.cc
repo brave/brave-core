@@ -32,16 +32,16 @@ RuleDataReader::RuleDataReader(const base::FilePath& component_path)
 std::optional<std::string> RuleDataReader::ReadUserScript(
     const PsstRule& rule) const {
   const auto user_script_path = base::FilePath(prefix_)
-                                    .AppendASCII(rule.Name())
-                                    .Append(rule.UserScriptPath());
+                                    .AppendASCII(rule.name())
+                                    .Append(rule.user_script_path());
   return ReadFile(user_script_path);
 }
 
 std::optional<std::string> RuleDataReader::ReadPolicyScript(
     const PsstRule& rule) const {
   const auto policy_script_path = base::FilePath(prefix_)
-                                      .AppendASCII(rule.Name())
-                                      .Append(rule.PolicyScriptPath());
+                                      .AppendASCII(rule.name())
+                                      .Append(rule.policy_script_path());
   return ReadFile(policy_script_path);
 }
 

@@ -29,12 +29,12 @@ class PsstShouldProcessPageCheckerImpl : public PsstShouldProcessPageChecker {
 
   bool ShouldProcess(const content::NavigationHandle* handle) const override {
     if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
-        handle->IsSameDocument()) {
+        handle->IsSameDocument() ||
+        handle->GetRestoreType() == content::RestoreType::kRestored) {
       return false;
     }
 
-    // We only want to process pages that are not restored.
-    return handle->GetRestoreType() == content::RestoreType::kNotRestored;
+    return true;
   }
 };
 

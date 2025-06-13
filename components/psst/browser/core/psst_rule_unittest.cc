@@ -51,11 +51,11 @@ TEST_F(PsstRuleUnitTest, LoadRuleWithExclude) {
       PsstRule::ParseRules(kPsstJsonFileContent);
   ASSERT_EQ(psst_rules_with_exclude->size(), 1u);
 
-  EXPECT_EQ(psst_rules_with_exclude->front().Name(), "a");
-  EXPECT_EQ(psst_rules_with_exclude->front().Version(), 1);
-  EXPECT_EQ(psst_rules_with_exclude->front().UserScriptPath().value(),
+  EXPECT_EQ(psst_rules_with_exclude->front().name(), "a");
+  EXPECT_EQ(psst_rules_with_exclude->front().version(), 1);
+  EXPECT_EQ(psst_rules_with_exclude->front().user_script_path().value(),
             FILE_PATH_LITERAL("user.js"));
-  EXPECT_EQ(psst_rules_with_exclude->front().PolicyScriptPath().value(),
+  EXPECT_EQ(psst_rules_with_exclude->front().policy_script_path().value(),
             FILE_PATH_LITERAL("policy.js"));
 
   EXPECT_TRUE(psst_rules_with_exclude->front().ShouldInsertScript(
@@ -69,11 +69,11 @@ TEST_F(PsstRuleUnitTest, LoadRuleNoExclude) {
       PsstRule::ParseRules(kPsstJsonFileContentNoExclude);
   ASSERT_EQ(psst_rules_with_exclude->size(), 1u);
 
-  EXPECT_EQ(psst_rules_with_exclude->front().Name(), "b");
-  EXPECT_EQ(psst_rules_with_exclude->front().Version(), 2);
-  EXPECT_EQ(psst_rules_with_exclude->front().UserScriptPath().value(),
+  EXPECT_EQ(psst_rules_with_exclude->front().name(), "b");
+  EXPECT_EQ(psst_rules_with_exclude->front().version(), 2);
+  EXPECT_EQ(psst_rules_with_exclude->front().user_script_path().value(),
             FILE_PATH_LITERAL("user_script.js"));
-  EXPECT_EQ(psst_rules_with_exclude->front().PolicyScriptPath().value(),
+  EXPECT_EQ(psst_rules_with_exclude->front().policy_script_path().value(),
             FILE_PATH_LITERAL("policy_script.js"));
 
   EXPECT_TRUE(psst_rules_with_exclude->front().ShouldInsertScript(

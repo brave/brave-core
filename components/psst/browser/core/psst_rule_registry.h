@@ -63,7 +63,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
                            RuleReferencesToNotExistedPath);
 
   void OnLoadRules(const std::string& data);
-  void SetOnLoadCallbackForTest(
+  void SetOnLoadCallbackForTesting(
       base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
           callback);
   std::optional<base::OnceCallback<void(const std::string&,

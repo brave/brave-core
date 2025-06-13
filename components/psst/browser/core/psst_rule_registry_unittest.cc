@@ -83,7 +83,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
   PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTest(mock_callback.Get());
+    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -134,7 +134,7 @@ TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
   PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -155,7 +155,7 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
   PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -174,7 +174,7 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
   PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -197,7 +197,7 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
       base::FilePath(FILE_PATH_LITERAL("non-existing-path"));
   PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -217,7 +217,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTest(mock_callback.Get());
+    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -254,7 +254,7 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTest(mock_callback.Get());
+    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
