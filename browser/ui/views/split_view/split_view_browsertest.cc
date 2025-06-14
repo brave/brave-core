@@ -31,7 +31,9 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -109,6 +111,13 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
     return brave_multi_contents_view()->secondary_location_bar_widget_.get();
   }
 
+  bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    return permissions::PermissionRequestManager::FromWebContents(
+               tab_strip_model->GetWebContentsAt(index))
+        ->tab_is_hidden_for_testing();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -183,6 +192,48 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
+                       PermissionBubbleManagerTest) {
+  chrome::NewSplitTab(browser());
+  EXPECT_EQ(1, tab_strip()->GetActiveIndex());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(0)->IsActivated());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsActivated());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(2)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(2)->IsSplit());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(0)->IsActivated());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_FALSE(tab_strip_model->GetTabAtIndex(2)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
 }
 
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
