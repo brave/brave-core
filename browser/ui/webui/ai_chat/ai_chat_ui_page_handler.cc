@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -308,7 +309,11 @@ void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
-  chat_ui_->OnNewDefaultConversation();
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::OnFilesSelected() {
@@ -327,6 +332,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
