@@ -19,6 +19,7 @@ public struct Site: Hashable {
   public var title: String
   public var siteType: SiteType = .unknown
   public var tabID: String?
+  public var dateAdded: Date?
   var tileURL: URL {
     return URL(string: url)?.domainURL ?? URL(string: "about:blank")!
   }
@@ -60,7 +61,12 @@ class FrequencyQuery {
 
         continuation.resume(
           returning: sites.map {
-            Site(url: $0.url ?? "", title: $0.title ?? "", siteType: .bookmark)
+            Site(
+              url: $0.url ?? "",
+              title: $0.title ?? "",
+              siteType: .bookmark,
+              dateAdded: $0.bookmarkNode.dateAdded
+            )
           }
         )
       }
@@ -78,7 +84,12 @@ class FrequencyQuery {
 
         continuation.resume(
           returning: sites.map {
-            Site(url: $0.url.absoluteString, title: $0.title ?? "", siteType: .history)
+            Site(
+              url: $0.url.absoluteString,
+              title: $0.title ?? "",
+              siteType: .history,
+              dateAdded: $0.dateAdded
+            )
           }
         )
       }
@@ -128,7 +139,8 @@ class FrequencyQuery {
             url: url.absoluteString,
             title: tab.displayTitle,
             siteType: .tab,
-            tabID: tab.id.uuidString
+            tabID: tab.id.uuidString,
+            dateAdded: tab.lastActiveTime
           )
         )
       }
