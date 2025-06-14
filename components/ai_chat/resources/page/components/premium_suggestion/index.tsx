@@ -21,23 +21,23 @@ interface PremiumSuggestionProps {
 
 const featuresList = [
   {
-    title: getLocale('premiumFeature_1'),
-    desc: getLocale('premiumFeature_1_desc'),
+    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_1),
+    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_1_DESC),
     icon: 'widget-generic'
   },
   {
-    title: getLocale('premiumFeature_2'),
-    desc: getLocale('premiumFeature_2_desc'),
+    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_2),
+    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_2_DESC),
     icon: 'idea'
   },
   {
-    title: getLocale('premiumFeature_3'),
-    desc: getLocale('premiumFeature_3_desc'),
+    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_3),
+    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_3_DESC),
     icon: 'edit-pencil'
   },
   {
-    title: getLocale('premiumFeature_4'),
-    desc: getLocale('premiumFeature_4_desc'),
+    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_4),
+    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_4_DESC),
     icon: 'message-bubble-comments'
   }
 ]
@@ -46,13 +46,13 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
   const aiChatContext = useAIChat()
   const buttonRef = React.useRef<HTMLButtonElement>()
 
-  const pricingInfo = formatMessage(getLocale('premiumPricing'), {
+  const pricingInfo = formatMessage(getLocale(S.CHAT_UI_PREMIUM_PRICING), {
     placeholders: {
       $1: <data>14.99</data>
     }
   })
 
-  const pricingAnnualInfo = formatMessage(getLocale('premiumAnnualPricing'), {
+  const pricingAnnualInfo = formatMessage(getLocale(S.CHAT_UI_PREMIUM_ANNUAL_PRICING), {
     placeholders: {
       $1: <data>149.99</data>
     }
@@ -89,24 +89,24 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           <div className={styles.priceList}>
             <button className={styles.priceButton} tabIndex={-1}>
               <div className={styles.bestValueColumn}>
-                <span className={styles.priceButtonLabel}>{getLocale('oneYearLabel')}</span>
-                <Label color='green'>{getLocale('bestValueLabel')}</Label>
+                <span className={styles.priceButtonLabel}>{getLocale(S.CHAT_UI_ONE_YEAR_LABEL)}</span>
+                <Label color='green'>{getLocale(S.CHAT_UI_BEST_VALUE_LABEL)}</Label>
               </div>
               <span className={styles.price}>{pricingAnnualInfo}</span>
             </button>
             <button className={classnames(styles.priceButton, styles.priceButtonMonthly)} tabIndex={-1}>
-              <span className={styles.priceButtonLabel}>{getLocale('monthlyLabel')}</span>
+              <span className={styles.priceButtonLabel}>{getLocale(S.CHAT_UI_MONTHLY_LABEL)}</span>
               <span className={styles.price}>{pricingInfo}</span>
             </button>
           </div>
           <div className={styles.subscriptionPolicy}>
-            {getLocale('subscriptionPolicyInfo')}
+            {getLocale(S.CHAT_UI_SUBSCRIPTION_POLICY_INFO)}
           </div>
         </div>
       )}
       <div className={styles.actions}>
         <Button onClick={aiChatContext.goPremium} ref={buttonRef}>
-          {getLocale('upgradeButtonLabel')}
+          {getLocale(S.CHAT_UI_UPGRADE_BUTTON_LABEL)}
         </Button>
         {props.secondaryActionButton}
       </div>

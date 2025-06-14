@@ -1,6 +1,6 @@
 {
-  "short_name": "$i18n{siteTitle}",
-  "name": "$i18n{pwaTitle}",
+  "short_name": "$i18n{CHAT_UI_TITLE}",
+  "name": "$i18n{CHAT_UI_PWA_TITLE}",
   "icons": [
     {
       "src": "/pwa_icon.svg",

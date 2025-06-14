@@ -179,7 +179,7 @@ function ConversationEntries() {
                           {latestEdit && (
                             <div className={styles.editLabel}>
                               <span className={styles.editLabelText}>
-                                {getLocale('editedLabel')}
+                                {getLocale(S.CHAT_UI_EDITED_LABEL)}
                               </span>
                             </div>
                           )}

@@ -2,6 +2,16 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+ // When building Storybook in transpileOnly mode `const enums` are not
+ // preserved - to get around this we create a proxy which will return the
+ // correct string key.
+(globalThis as any).S = new Proxy({}, {
+  get: (target, prop) => {
+    return prop
+  }
+})
+
+
 let locale: Record<string, string> = {
   about: 'about',
   accept: 'Accept',

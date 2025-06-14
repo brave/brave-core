@@ -32,16 +32,16 @@ function AssistantReasoning(props: QuoteProps) {
         )}
         <span className={styles.reasoningLabel}>
           {props.isReasoning
-            ? getLocale('reasoningLabel')
-            : getLocale('reasoningCompleteLabel')}
+            ? getLocale(S.CHAT_UI_REASONING_LABEL)
+            : getLocale(S.CHAT_UI_REASONING_COMPLETE_LABEL)}
         </span>
         <button
           className={styles.showHide}
           onClick={() => setShowDetails((prev) => !prev)}
         >
           {showDetails
-            ? getLocale('hideDetailsButtonLabel')
-            : getLocale('showDetailsButtonLabel')}
+            ? getLocale(S.CHAT_UI_HIDE_DETAILS_BUTTON_LABEL)
+            : getLocale(S.CHAT_UI_SHOW_DETAILS_BUTTON_LABEL)}
         </button>
       </div>
       {showDetails && (

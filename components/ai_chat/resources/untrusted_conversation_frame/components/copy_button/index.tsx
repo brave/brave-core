@@ -39,7 +39,7 @@ function CopyButton(props: Props) {
         size='small'
         kind='plain-faint'
         onClick={handleClick}
-        title={getLocale('copyButtonLabel')}
+        title={getLocale(S.CHAT_UI_COPY_BUTTON_LABEL)}
       >
         <Icon name='copy' />
       </Button>

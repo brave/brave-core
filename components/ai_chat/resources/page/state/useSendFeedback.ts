@@ -75,7 +75,7 @@ export default function useSendFeedback(
       if (!response.ratingId) {
         showAlert({
           type: 'error',
-          content: getLocale('ratingError'),
+          content: getLocale(S.CHAT_UI_RATING_ERROR),
           actions: []
         })
         setRatingTurnUuid(undefined)
@@ -84,7 +84,7 @@ export default function useSendFeedback(
       if (isLiked) {
         showAlert({
           type: 'info',
-          content: getLocale('answerLiked'),
+          content: getLocale(S.CHAT_UI_ANSWER_LIKED),
           actions: []
         })
       } else {
@@ -93,10 +93,10 @@ export default function useSendFeedback(
         feedbackId.current = response.ratingId
         showAlert({
           type: 'info',
-          content: getLocale('answerDisliked'),
+          content: getLocale(S.CHAT_UI_ANSWER_DISLIKED),
           actions: [
             {
-              text: getLocale('addFeedbackButtonLabel'),
+              text: getLocale(S.CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL),
               kind: 'plain-faint',
               action: () => setIsFeedbackFormVisible(true)
             }
@@ -138,7 +138,7 @@ export default function useSendFeedback(
       if (!response.isSuccess) {
         showAlert({
           type: 'error',
-          content: getLocale('feedbackError'),
+          content: getLocale(S.CHAT_UI_FEEDBACK_SUBMIT_ERROR),
           actions: []
         })
         return
@@ -146,7 +146,7 @@ export default function useSendFeedback(
 
       showAlert({
         type: 'success',
-        content: getLocale('feedbackSent'),
+        content: getLocale(S.CHAT_UI_FEEDBACK_SENT),
         actions: []
       })
       setIsFeedbackFormVisible(false)

@@ -318,13 +318,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     const originalTitle = document.title
     const conversationTitle = aiChatContext.conversations.find(c =>
       c.uuid === context.conversationUuid
-    )?.title || getLocale('conversationListUntitled')
+    )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
     function setTitle(isPWA: boolean) {
       if (isPWA) {
         document.title = conversationTitle
       } else {
-        document.title = `${getLocale('siteTitle')} - ${conversationTitle}`
+        document.title = `${getLocale(S.CHAT_UI_TITLE)} - ${conversationTitle}`
       }
     }
 

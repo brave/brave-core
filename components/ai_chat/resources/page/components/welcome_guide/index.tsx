@@ -19,35 +19,35 @@ function WelcomeGuide() {
   return (
     <div className={styles.box}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{getLocale('welcomeGuideTitle')}</h1>
-        <h2 className={styles.subtitle}>{getLocale('welcomeGuideSubtitle')}</h2>
+        <h1 className={styles.title}>{getLocale(S.CHAT_UI_WELCOME_GUIDE_TITLE)}</h1>
+        <h2 className={styles.subtitle}>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SUBTITLE)}</h2>
       </div>
       <div className={`${styles.card} ${styles.siteHelpCard}`}>
         <h4 className={styles.cardTitle}>
-          {getLocale('welcomeGuideSiteHelpCardTitle')}
+          {getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE)}
         </h4>
         {conversationContext.associatedContentInfo &&
         conversationContext.shouldSendPageContents ? (
           <>
-            <p>{getLocale('welcomeGuideSiteHelpCardDescWithAction')}</p>
+            <p>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION)}</p>
             <div className={styles.actions}>
               <Button
                 kind='outline'
                 onClick={summarizeNow}
               >
-                {getLocale('summarizePageButtonLabel')}
+                {getLocale(S.CHAT_UI_SUMMARIZE_BUTTON_LABEL)}
               </Button>
             </div>
           </>
         ) : (
-          <p>{getLocale('welcomeGuideSiteHelpCardDesc')}</p>
+          <p>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_DESC)}</p>
         )}
       </div>
       <div className={`${styles.card} ${styles.chatCard}`}>
         <h4 className={styles.cardTitle}>
-          {getLocale('welcomeGuideShatCardTitle')}
+          {getLocale(S.CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE)}
         </h4>
-        <p>{getLocale('welcomeGuideShatCardDesc')}</p>
+        <p>{getLocale(S.CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC)}</p>
       </div>
     </div>
   )

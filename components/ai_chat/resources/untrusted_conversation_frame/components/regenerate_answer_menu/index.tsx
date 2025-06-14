@@ -47,7 +47,7 @@ export function RegenerateAnswerMenu(props: Props) {
       onClose={onClose}
     >
       <div className={styles.menuHeader}>
-        {getLocale('regenerateAnswerMenuTitle')}
+        {getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TITLE)}
       </div>
       <div className={styles.headerGap} />
       <Button
@@ -56,7 +56,7 @@ export function RegenerateAnswerMenu(props: Props) {
         size='small'
         kind='plain-faint'
         onClick={isOpen ? onClose : onOpen}
-        title={getLocale('regenerateAnswerMenuTooltip').replace(
+        title={getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP).replace(
           '$1',
           modelDisplayName,
         )}
@@ -85,7 +85,7 @@ export function RegenerateAnswerMenu(props: Props) {
                 mode='loud'
                 color='primary'
               >
-                {getLocale('currentLabel')}
+                {getLocale(S.CHAT_UI_CURRENT_LABEL)}
               </Label>
             )}
           </leo-menu-item>
@@ -98,7 +98,7 @@ export function RegenerateAnswerMenu(props: Props) {
           data-key='retrySameModel'
         >
           <Icon name='refresh' />
-          {getLocale('retrySameModelButtonLabel')}
+          {getLocale(S.CHAT_UI_RETRY_SAME_MODEL_BUTTON_LABEL)}
         </leo-menu-item>
       </div>
     </ButtonMenu>

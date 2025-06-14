@@ -15,13 +15,13 @@ export default function LongPageInfo() {
   let warningText
   if (context.trimmedTokens > 0 && context.totalTokens > 0) {
       const percentage = 100 - Math.floor((Number(context.trimmedTokens) / Number(context.totalTokens)) * 100)
-      warningText = formatMessage(getLocale('trimmedTokensWarning'), {
+      warningText = formatMessage(getLocale(S.CHAT_UI_TRIMMED_TOKENS_WARNING), {
         placeholders: {
           $1: percentage + '%'
         }
       })
   } else {
-    warningText = formatMessage(getLocale('pageContentTooLongWarning'), {
+    warningText = formatMessage(getLocale(S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING), {
         placeholders: {
           $1: context.contentUsedPercentage + '%'
         }

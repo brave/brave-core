@@ -135,7 +135,7 @@ function InputBox(props: InputBoxProps) {
           ref={attachmentWrapperRef}
         >
           {props.context.isUploadingFiles && (
-            <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
+            <AttachmentSpinnerItem title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)} />
           )}
           {props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
@@ -153,8 +153,8 @@ function InputBox(props: InputBoxProps) {
         <textarea
           ref={maybeAutofocus}
           placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+            ? S.CHAT_UI_PLACEHOLDER_LABEL
+            : S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -186,7 +186,7 @@ function InputBox(props: InputBoxProps) {
                 props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
               }
             }
-            title={getLocale('toolsMenuButtonLabel')}
+            title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
           >
             <Icon
               className={classnames({
@@ -201,7 +201,7 @@ function InputBox(props: InputBoxProps) {
               kind='plain-faint'
               onClick={handleMic}
               disabled={props.context.shouldDisableUserInput}
-              title={getLocale('useMicButtonLabel')}
+              title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
             >
               <Icon name='microphone' />
             </Button>
@@ -220,7 +220,7 @@ function InputBox(props: InputBoxProps) {
               fab
               kind='plain-faint'
               onClick={handleStopGenerating}
-              title={getLocale('stopGenerationButtonLabel')}
+              title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
             >
               <Icon name='stop-circle' />
             </Button>
@@ -230,7 +230,7 @@ function InputBox(props: InputBoxProps) {
               kind='plain-faint'
               onClick={handleSubmit}
               disabled={props.context.shouldDisableUserInput}
-              title={getLocale('sendChatButtonLabel')}
+              title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
             >
               <Icon name='send' />
             </Button>

@@ -295,13 +295,13 @@ function Main() {
             {shouldShowPremiumSuggestionForModel && (
               <div className={styles.promptContainer}>
                 <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
+                  title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
                       onClick={() => conversationContext.switchToBasicModel()}
                     >
-                      {getLocale('switchToBasicModelButtonLabel')}
+                      {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
                     </Button>
                   }
                 />
@@ -310,13 +310,13 @@ function Main() {
             {shouldShowPremiumSuggestionStandalone && (
               <div className={styles.promptContainer}>
                 <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
+                  title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
                       onClick={() => aiChatContext.dismissPremiumPrompt()}
                     >
-                      {getLocale('dismissButtonLabel')}
+                      {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
                     </Button>
                   }
                 />

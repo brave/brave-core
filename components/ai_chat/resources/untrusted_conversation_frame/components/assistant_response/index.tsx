@@ -29,7 +29,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
   }
 
-  const message = formatMessage(getLocale('searchQueries'), {
+  const message = formatMessage(getLocale(S.CHAT_UI_SEARCH_QUERIES), {
     placeholders: {
       $1: props.searchQueries.map((query, i, a) => (
         <React.Fragment key={i}>
@@ -45,7 +45,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     <div className={styles.searchSummary}>
       <Icon name="brave-icon-search-color" />
       <span>
-        {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale('learnMore')}</a>
+        {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale(S.CHAT_UI_LEARN_MORE)}</a>
       </span>
     </div>
   )

@@ -50,7 +50,7 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
 
   return (
     <div className={styles.sources}>
-      <h4>{getLocale('sources')}</h4>
+      <h4>{getLocale(S.CHAT_UI_SOURCES)}</h4>
       <ul>
         {unhiddenSources.map((source, index) =>
           <WebSource
@@ -63,7 +63,7 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
           <li>
             <button name='expand' onClick={() => setIsExpanded(true)}>
               <Icon className={styles.expandIcon} name='plus-add' />
-              {formatMessage(getLocale('expandSources'), { placeholders: { $1: hiddenSources.length } })}
+              {formatMessage(getLocale(S.CHAT_UI_EXPAND_SOURCES), { placeholders: { $1: hiddenSources.length } })}
             </button>
           </li>
         )}

@@ -18,7 +18,7 @@ export default function DeleteConversationModal() {
   const title = aiChatContext.conversations.find(
         (conversation) =>
           conversation.uuid === aiChatContext.deletingConversationId
-      )?.title || getLocale('conversationListUntitled')
+      )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
   return (
     <Dialog
@@ -31,11 +31,11 @@ export default function DeleteConversationModal() {
         slot='title'
         className={styles.deleteConversationDialogTitle}
       >
-        {getLocale('menuDeleteConversation')}
+        {getLocale(S.CHAT_UI_MENU_DELETE_CONVERSATION)}
       </div>
       <div className={styles.deleteConversationBody}>
         <div className={styles.conversationNameWrapper}>{title}</div>
-        {getLocale('deleteConversationWarning')}
+        {getLocale(S.CHAT_UI_DELETE_CONVERSATION_WARNING)}
       </div>
       <div
         slot='actions'
@@ -47,7 +47,7 @@ export default function DeleteConversationModal() {
             size='medium'
             onClick={() => aiChatContext.setDeletingConversationId(null)}
           >
-            {getLocale('cancelButtonLabel')}
+            {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
             kind='filled'
@@ -61,7 +61,7 @@ export default function DeleteConversationModal() {
               }
             }}
           >
-            {getLocale('deleteButtonLabel')}
+            {getLocale(S.CHAT_UI_DELETE_BUTTON_LABEL)}
           </Button>
         </div>
       </div>

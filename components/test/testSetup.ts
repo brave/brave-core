@@ -18,3 +18,11 @@ jest.mock('$web-common/locale', () => ({
     return key
   }
 }))
+
+// Mock the string keys - this gets around the fact that `const enums` are
+// compiled away by jest's typescript transform.
+;(globalThis as any).S = new Proxy({}, {
+  get: (target, prop) => {
+    return prop
+  }
+})
