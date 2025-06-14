@@ -9,10 +9,10 @@ assert(enable_psst)
 
 component("core") {
   output_name = "psst_browser_core"
-  public_deps = [ ":impl" ]
+  public_deps = [ ":core_impl" ]
 }
 
-source_set("impl") {
+source_set("core_impl") {
   visibility = [ ":*" ]
   defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
   sources = [
@@ -53,7 +53,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    ":impl",
+    ":core_impl",
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/psst/common",
