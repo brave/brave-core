@@ -48,10 +48,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -82,6 +84,11 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
+#include "brave/components/containers/core/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -200,6 +207,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isEmailAliasesFeatureEnabled",
       base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddBoolean(
+      "isContainersEnabled",
+      base::FeatureList::IsEnabled(containers::features::kContainers));
+#endif
 }
 
 // static
@@ -231,3 +243,27 @@ void BraveSettingsUI::BindInterface(
   brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
       std::move(pending_receiver));
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+        pending_receiver) {
+  class NoOpDelegate : public containers::ContainersSettingsHandler::Delegate {
+   public:
+    void RemoveContainerData(const std::string& id,
+                             base::OnceClosure callback) override {
+      // TODO(https://github.com/brave/brave-browser/issues/46352): Implement
+      // this. For now simulate async data removal.
+      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+          FROM_HERE, std::move(callback), base::Seconds(2));
+    }
+  };
+
+  auto handler = std::make_unique<containers::ContainersSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()),
+      std::make_unique<NoOpDelegate>());
+  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)

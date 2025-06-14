@@ -1,0 +1,184 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import {
+  CrLitElement,
+  PropertyValues,
+} from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
+import { Container } from '../containers.mojom-webui.js'
+import { getCss } from './containers.css.js'
+import { getHtml } from './containers.html.js'
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { assert } from '//resources/js/assert.js'
+import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+
+const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
+
+/**
+ * 'settings-brave-content-containers' is the settings page containing settings for Containers
+ */
+export class SettingsBraveContentContainersElement extends SettingsBraveContentContainersElementBase {
+  static get is() {
+    return 'settings-brave-content-containers'
+  }
+
+  static override get styles() {
+    return getCss()
+  }
+
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      containersList_: {
+        type: Array,
+      },
+      editingContainer_: {
+        type: Object,
+      },
+      deletingContainer_: {
+        type: Object,
+      },
+      isRemoving_: {
+        type: Boolean,
+      },
+      isEditDialogNameInvalid_: {
+        type: Boolean,
+      },
+    }
+  }
+
+  private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
+  accessor containersList_: Container[] = []
+  accessor editingContainer_: Container | undefined
+  accessor deletingContainer_: Container | undefined
+  accessor isRemoving_ = false
+  accessor isEditDialogNameInvalid_ = false
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.browserProxy.handler.getContainers().then(({ containers }) => {
+      this.onContainersListUpdated_(containers)
+    })
+    this.browserProxy.callbackRouter.onContainersChanged.addListener(
+      this.onContainersListUpdated_.bind(this),
+    )
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+    if (changedProperties.has('isRemoving_')) {
+      this.onIsRemovingChanged_(this.isRemoving_)
+    }
+  }
+
+  onContainersListUpdated_(containers: Container[]) {
+    this.containersList_ = containers
+    if (
+      this.editingContainer_
+      && this.editingContainer_.id
+      && !containers.some((c) => c.id === this.editingContainer_?.id)
+    ) {
+      this.editingContainer_ = undefined
+    }
+    if (
+      this.deletingContainer_
+      && !containers.some((c) => c.id === this.deletingContainer_?.id)
+    ) {
+      this.deletingContainer_ = undefined
+      this.isRemoving_ = false
+    }
+  }
+
+  onAddContainerClick_() {
+    this.editingContainer_ = { id: '', name: '' }
+  }
+
+  onEditContainerClick_(e: Event) {
+    const id = (e.currentTarget as HTMLElement).dataset['id']
+    assert(id)
+    this.editingContainer_ = this.containersList_.find((c) => c.id === id)
+  }
+
+  onDeleteContainerClick_(e: Event) {
+    const id = (e.currentTarget as HTMLElement).dataset['id']
+    assert(id)
+    this.deletingContainer_ = this.containersList_.find((c) => c.id === id)
+  }
+
+  onCancelDialog_() {
+    this.editingContainer_ = undefined
+    if (!this.isRemoving_) {
+      this.deletingContainer_ = undefined
+    }
+  }
+
+  onContainerNameInput_(e: InputEvent) {
+    assert(this.editingContainer_)
+    const input = e.target as CrInputElement
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      name: input.value,
+    }
+    this.isEditDialogNameInvalid_ = input.invalid
+  }
+
+  onSaveContainerFromDialog_() {
+    assert(this.editingContainer_)
+    this.browserProxy.handler.addOrUpdateContainer(this.editingContainer_)
+    this.editingContainer_ = undefined
+  }
+
+  async onDeleteContainerFromDialog_() {
+    assert(this.deletingContainer_)
+    try {
+      this.isRemoving_ = true
+      await this.browserProxy.handler.removeContainer(
+        this.deletingContainer_.id,
+      )
+    } finally {
+      this.isRemoving_ = false
+      this.deletingContainer_ = undefined
+    }
+  }
+
+  getEditDialogTitle_(): string {
+    return this.editingContainer_?.id
+      ? this.i18n(ContainersStrings.SETTINGS_CONTAINERS_EDIT_CONTAINER_LABEL)
+      : this.i18n(ContainersStrings.SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL)
+  }
+
+  onIsRemovingChanged_(isRemoving: boolean) {
+    // Disable the delete dialog X button when removing a container. We do it
+    // manually because the dialog does not offer a way to disable this button
+    // via property.
+    const dialog = this.shadowRoot?.querySelector('#deleteContainerDialog')
+    if (dialog) {
+      const closeButton = dialog.shadowRoot?.querySelector('cr-icon-button')
+      if (closeButton) {
+        if (isRemoving) {
+          closeButton.setAttribute('disabled', 'true')
+        } else {
+          closeButton.removeAttribute('disabled')
+        }
+      }
+    }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-content-containers': SettingsBraveContentContainersElement
+  }
+}
+
+customElements.define(
+  SettingsBraveContentContainersElement.is,
+  SettingsBraveContentContainersElement,
+)
