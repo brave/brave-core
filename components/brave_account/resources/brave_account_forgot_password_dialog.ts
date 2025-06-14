@@ -5,16 +5,13 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { getCss } from './brave_account_sign_in_dialog.css.js'
-import { getHtml } from './brave_account_sign_in_dialog.html.js'
+import { getCss } from './brave_account_forgot_password_dialog.css.js'
+import { getHtml } from './brave_account_forgot_password_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
 
-// @ts-ignore
-import { Login } from 'chrome://resources/brave/opaque_ke.bundle.js'
-
-export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
+export class BraveAccountForgotPasswordDialogElement extends CrLitElement {
   static get is() {
-    return 'settings-brave-account-sign-in-dialog'
+    return 'brave-account-forgot-password-dialog'
   }
 
   static override get styles() {
@@ -29,7 +26,6 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     return {
       email: { type: String },
       isEmailValid: { type: Boolean },
-      isPasswordValid: { type: Boolean },
     }
   }
 
@@ -38,24 +34,17 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     this.isEmailValid = isEmailValid(this.email)
   }
 
-  protected onPasswordInput(detail: { value: string }) {
-    this.isPasswordValid = detail.value.length !== 0
-  }
-
   protected accessor email: string = ''
   protected accessor isEmailValid: boolean = false
-  protected accessor isPasswordValid: boolean = false
-  protected login = new Login()
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-sign-in-dialog':
-    SettingsBraveAccountSignInDialogElement
+    'brave-account-forgot-password-dialog': BraveAccountForgotPasswordDialogElement
   }
 }
 
 customElements.define(
-  SettingsBraveAccountSignInDialogElement.is,
-  SettingsBraveAccountSignInDialogElement
+  BraveAccountForgotPasswordDialogElement.is,
+  BraveAccountForgotPasswordDialogElement,
 )
