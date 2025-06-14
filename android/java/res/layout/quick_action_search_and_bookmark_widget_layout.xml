@@ -8,10 +8,13 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/quick_action_search_and_bookmark_widget_background"
+    android:background="@drawable/quick_action_search_widget_background"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="@dimen/quick_action_search_widget_small_margin"
+    android:paddingVertical=
+      "@dimen/quick_action_search_widget_small_margin_vertical"
+    android:theme="@style/Theme.Chromium.Widget" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +24,24 @@
         <LinearLayout
             android:id="@+id/layoutSearchWithBrave"
             android:layout_width="0dp"
-            android:layout_height="44dp"
-            android:orientation="horizontal"
+            android:layout_height=
+              "@dimen/quick_action_search_widget_small_search_bar_height"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
             android:layout_weight="1"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            android:background="@drawable/quick_action_search_widget_small_search_bar_background"
             tools:ignore="UseCompoundDrawables">
             
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="10dp"
+                android:layout_width=
+                  "@dimen/quick_action_search_widget_small_search_bar_icon_size"
+                android:layout_height=
+                  "@dimen/quick_action_search_widget_small_search_bar_icon_size"
+                android:layout_marginVertical="@dimen/quick_action_search_widget_small_search_bar_icon_margin"
+                android:layout_marginStart="@dimen/quick_action_search_widget_small_search_bar_icon_margin"
+                android:layout_marginEnd="@dimen/quick_action_search_widget_small_search_bar_icon_margin_text"
                 android:src="@mipmap/app_icon"
                 android:layout_gravity="center_vertical"
                 android:importantForAccessibility="no"/>
@@ -40,7 +50,6 @@
                 android:id="@+id/tvSearchWithBrave"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
                 android:textSize="16sp"
                 android:text="@string/search_with_brave"
@@ -48,29 +57,19 @@
                 tools:ignore="UseCompatTextViewDrawableXml" />
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ivVoiceSearch"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
             android:contentDescription="@string/accessibility_toolbar_btn_mic"
-            android:padding="12dp"
-            android:src="@drawable/btn_mic"
-            android:tint="@color/quick_action_search_and_bookmark_widget_tint"
-            tools:ignore="UseAppTint" />
+            android:src="@drawable/btn_mic"/>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ivIncognito"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/quick_action_search_and_bookmark_widget_search_bg"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
             android:contentDescription="@string/button_new_incognito_tab"
-            android:padding="12dp"
-            android:src="@drawable/brave_menu_new_private_tab"
-            android:tint="@color/quick_action_search_and_bookmark_widget_tint"
-            tools:ignore="UseAppTint" />
+            android:src="@drawable/brave_menu_new_private_tab"/>
     </LinearLayout>
 
     <LinearLayout
@@ -78,6 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/quick_action_search_widget_small_search_bar_background_inset_vertical"
+        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
         android:visibility="gone"
         android:orientation="horizontal">
 
@@ -206,6 +207,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/quick_action_search_widget_small_search_bar_background_inset_vertical"
+        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
         android:visibility="gone"
         android:orientation="horizontal">
 
@@ -334,6 +337,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/quick_action_search_widget_small_search_bar_background_inset_vertical"
+        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
         android:visibility="gone"
         android:orientation="horizontal">
 
@@ -462,6 +467,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/quick_action_search_widget_small_search_bar_background_inset_vertical"
+        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
         android:visibility="gone"
         android:orientation="horizontal">
 
