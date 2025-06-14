@@ -4,6 +4,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/resources/android",
   "+components/strings/grit/components_strings.h",
+  "+components/tabs/public",
   "+components/vector_icons",
   "+third_party/widevine/cdm",
   "+ui/gfx",

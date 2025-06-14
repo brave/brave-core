@@ -73,6 +73,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "components/permissions/permission_request_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -886,6 +887,22 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
 #endif
+
+  // Need to call its OnVisibilityChanged() as it handles request queue
+  // based on tab hidden state. In OnVisiblityChanged(), we update
+  // |tab_is_hidden_| state properly based on tab activation state.
+  if ((split_view_ && split_view_->IsSplitViewActive()) ||
+      (multi_contents_view_ && multi_contents_view_->IsInSplitView())) {
+    if (old_contents) {
+      permissions::PermissionRequestManager::FromWebContents(old_contents)
+          ->OnVisibilityChanged(old_contents->GetVisibility());
+    }
+
+    if (new_contents) {
+      permissions::PermissionRequestManager::FromWebContents(new_contents)
+          ->OnVisibilityChanged(new_contents->GetVisibility());
+    }
+  }
 }
 
 void BraveBrowserView::UpdateContentsSeparatorVisibility() {

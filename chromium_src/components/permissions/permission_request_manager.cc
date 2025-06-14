@@ -6,13 +6,20 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "components/tabs/public/tab_interface.h"
 
 #define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
   if (!ShouldBeGrouppedInRequests(request.get()))
 
+// |tab_is_hidden_| should be updated after upstream sets.
+#define BRAVE_ON_VISIBILITY_CHANGED UpdateTabIsHiddenWithTabActivationState();
+
 #include "src/components/permissions/permission_request_manager.cc"
+
+#undef BRAVE_ON_VISIBILITY_CHANGED
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
 
 #include "url/origin.h"
@@ -93,6 +100,22 @@ void PermissionRequestManager::AcceptDenyCancel(
     action = PermissionAction::DENIED;
   }
   CurrentRequestsDecided(action);
+}
+
+void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
+  if (!tab) {
+    return;
+  }
+
+  // In split view, permission manager can have invalid tab hidden state.
+  // If it's inactive split tab, permission manager should set false
+  // to |tab_is_hidden_| to prevent launching permission bubble from
+  // that inactive split tab. Otherwise, it launches permission bubble even
+  // it's inactive tab.
+  if (!tab_is_hidden_ && !tab->IsActivated()) {
+    tab_is_hidden_ = true;
+  }
 }
 
 }  // namespace permissions
