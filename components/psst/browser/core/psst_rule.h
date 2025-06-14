@@ -6,17 +6,13 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
 
-#include <memory>
 #include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/component_export.h"
-#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
-#include "base/values.h"
 #include "extensions/common/url_pattern_set.h"
 
 class GURL;

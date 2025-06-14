@@ -39,6 +39,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       content::BrowserContext* browser_context,
+      PrefService* prefs,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;

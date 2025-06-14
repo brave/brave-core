@@ -22,8 +22,6 @@
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace psst {

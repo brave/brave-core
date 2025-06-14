@@ -15,10 +15,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
-#include "brave/components/psst/common/pref_names.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace psst {
 

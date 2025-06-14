@@ -12,7 +12,6 @@
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 
@@ -43,17 +42,16 @@ std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
     content::BrowserContext* browser_context,
+    PrefService* prefs,
     const int32_t world_id) {
   CHECK(contents);
   CHECK(browser_context);
+  CHECK(prefs);
 
   if (browser_context->IsOffTheRecord() ||
       !base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     return nullptr;
   }
-
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  CHECK(prefs);
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(

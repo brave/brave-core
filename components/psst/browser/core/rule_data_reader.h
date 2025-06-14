@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
@@ -18,7 +17,7 @@ namespace psst {
 // Represents the reader of the rule data files (user.js and policy.js) for a
 // given rule. The data files are stored in the component directory under
 // "scripts/<rule_name>/user.js" and "scripts/<rule_name>/policy.js".
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) RuleDataReader {
+class RuleDataReader {
  public:
   explicit RuleDataReader(const base::FilePath& component_path);
   RuleDataReader(const RuleDataReader&) = delete;
