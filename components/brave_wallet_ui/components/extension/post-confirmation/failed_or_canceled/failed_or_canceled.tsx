@@ -29,6 +29,7 @@ import {
 // Utils
 import { getLocale } from '$web-common/locale'
 import {
+  getIsSolanaAssociatedTokenAccountCreation,
   isBridgeTransaction,
   isSwapTransaction,
 } from '../../../../utils/tx-utils'
@@ -71,6 +72,8 @@ export const TransactionFailedOrCanceled = (props: Props) => {
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isBridge = isBridgeTransaction(transaction)
   const isSwap = isSwapTransaction(transaction)
+  const isSolanaATACreation =
+    getIsSolanaAssociatedTokenAccountCreation(transaction)
 
   const providerError = transactionProviderErrorRegistry[transaction.id]
   const errorCode =
@@ -126,10 +129,12 @@ export const TransactionFailedOrCanceled = (props: Props) => {
           />
         </ErrorOrSuccessIconWrapper>
         <Title>
-          {getLocale('braveWalletUnableToSendSwapOrBridge').replace(
-            '$1',
-            getLocale(sendSwapOrBridgeLocale).toLocaleLowerCase(),
-          )}
+          {isSolanaATACreation
+            ? getLocale('braveWalletTransactionFailedTitle')
+            : getLocale('braveWalletUnableToSendSwapOrBridge').replace(
+                '$1',
+                getLocale(sendSwapOrBridgeLocale).toLocaleLowerCase(),
+              )}
         </Title>
         <TransactionIntent transaction={transaction} />
         <Text
