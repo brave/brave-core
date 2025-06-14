@@ -17,6 +17,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_store.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -26,11 +27,6 @@ namespace p3a {
 
 namespace {
 
-constexpr char kTypicalPrefName[] = "p3a.constellation_logs";
-constexpr char kSlowPrefName[] = "p3a.constellation_logs_slow";
-constexpr char kExpressV1PrefName[] = "p3a.constellation_logs_express";
-constexpr char kExpressV2PrefName[] = "p3a.constellation_logs_express_v2";
-
 }  // namespace
 
 const size_t kTypicalMaxEpochsToRetain = 4;
@@ -39,9 +35,7 @@ const size_t kExpressMaxEpochsToRetain = 21;
 
 ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              MetricLogType log_type)
-    : local_state_(local_state), log_type_(log_type) {
-  local_state.ClearPref(kExpressV1PrefName);
-}
+    : local_state_(local_state), log_type_(log_type) {}
 
 ConstellationLogStore::~ConstellationLogStore() = default;
 
@@ -52,22 +46,19 @@ bool ConstellationLogStore::LogKeyCompare::operator()(const LogKey& lhs,
 }
 
 void ConstellationLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(kTypicalPrefName);
-  registry->RegisterDictionaryPref(kSlowPrefName);
-  registry->RegisterDictionaryPref(kExpressV2PrefName);
-  // Following pref is deprecated, added 12/2023
-  // TODO(djandries): remove by the end of Q1 2024
-  registry->RegisterDictionaryPref(kExpressV1PrefName);
+  registry->RegisterDictionaryPref(kTypicalConstellationLogsPrefName);
+  registry->RegisterDictionaryPref(kSlowConstellationLogsPrefName);
+  registry->RegisterDictionaryPref(kExpressV2ConstellationLogsPrefName);
 }
 
 const char* ConstellationLogStore::GetPrefName() const {
   switch (log_type_) {
     case MetricLogType::kTypical:
-      return kTypicalPrefName;
+      return kTypicalConstellationLogsPrefName;
     case MetricLogType::kExpress:
-      return kExpressV2PrefName;
+      return kExpressV2ConstellationLogsPrefName;
     case MetricLogType::kSlow:
-      return kSlowPrefName;
+      return kSlowConstellationLogsPrefName;
   }
 }
 

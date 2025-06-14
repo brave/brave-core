@@ -36,7 +36,6 @@ class MetricLogStore : public metrics::LogStore {
     virtual std::string SerializeLog(std::string_view histogram_name,
                                      uint64_t value,
                                      MetricLogType log_type,
-                                     bool is_constellation,
                                      const std::string& upload_type) = 0;
     // Returns std::nullopt if the metric is obsolete and should be cleaned up.
     virtual std::optional<MetricLogType> GetLogTypeForHistogram(
@@ -47,7 +46,6 @@ class MetricLogStore : public metrics::LogStore {
 
   MetricLogStore(Delegate& delegate,
                  PrefService& local_state,
-                 bool is_constellation,
                  MetricLogType type);
   ~MetricLogStore() override;
 
@@ -55,6 +53,10 @@ class MetricLogStore : public metrics::LogStore {
   MetricLogStore& operator=(const MetricLogStore&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
+
+  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   void UpdateValue(const std::string& histogram_name, uint64_t value);
   // Removes and also unstages the metric value if it is known and/or staged.
@@ -118,8 +120,6 @@ class MetricLogStore : public metrics::LogStore {
   // Not used for now.
   std::string staged_log_hash_;
   std::string staged_log_signature_;
-
-  bool is_constellation_;
 };
 
 }  // namespace p3a

@@ -130,9 +130,6 @@ void RemoteMetricConfig::RegisterJSONConverter(
     base::JSONValueConverter<RemoteMetricConfig>* converter) {
   converter->RegisterCustomValueField(
       "ephemeral", &RemoteMetricConfig::ephemeral, &GetOptionalBool);
-  converter->RegisterCustomValueField("constellation_only",
-                                      &RemoteMetricConfig::constellation_only,
-                                      &GetOptionalBool);
   converter->RegisterCustomValueField("nebula", &RemoteMetricConfig::nebula,
                                       &GetOptionalBool);
   converter->RegisterCustomValueField(

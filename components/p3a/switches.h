@@ -42,7 +42,6 @@ inline constexpr char kP3AFakeExpressStarEpoch[] =
 // i.e. with localhost services
 inline constexpr char kP3AJsonUploadUrl[] = "p3a-json-upload-url";
 inline constexpr char kP3ACreativeUploadUrl[] = "p3a-creative-upload-url";
-inline constexpr char kP2AJsonUploadUrl[] = "p2a-json-upload-url";
 inline constexpr char kP3AConstellationUploadHost[] =
     "p3a-constellation-upload-host";
 

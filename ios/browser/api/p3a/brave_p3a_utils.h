@@ -26,19 +26,15 @@ OBJC_EXPORT
 @property(nonatomic) bool isP3AEnabled;
 @property(nonatomic) bool isNoticeAcknowledged;
 - (nullable P3ACallbackRegistration*)registerRotationCallback:
-    (void (^)(P3AMetricLogType logType, BOOL isConstellation))callback;
+    (void (^)(P3AMetricLogType logType))callback;
 - (nullable P3ACallbackRegistration*)registerMetricCycledCallback:
-    (void (^)(NSString* histogramName, BOOL isConstellation))callback;
+    (void (^)(NSString* histogramName))callback;
 - (void)registerDynamicMetric:(NSString*)histogramName
                       logType:(P3AMetricLogType)logType;
 - (void)registerDynamicMetric:(NSString*)histogramName
                       logType:(P3AMetricLogType)logType
               mainThreadBound:(BOOL)mainThreadBound;
 - (void)removeDynamicMetric:(NSString*)histogramName;
-- (void)updateMetricValueForSingleFormat:(NSString*)histogramName
-                                  bucket:(size_t)bucket
-                         isConstellation:(BOOL)isConstellation
-    NS_SWIFT_NAME(updateMetricValueForSingleFormat(name:bucket:isConstellation:));
 - (instancetype)init NS_UNAVAILABLE;
 @end
 

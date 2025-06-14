@@ -50,8 +50,6 @@ struct MetricConfig {
   // Once the metric value has been sent, the value will be removed from the log
   // store
   bool ephemeral = false;
-  // Should only be sent via Constellation
-  bool constellation_only = false;
   // Should only be sent via Nebula
   bool nebula = false;
   // Avoid reporting "other" for countries not included in the allowlist
@@ -84,7 +82,6 @@ struct RemoteMetricConfig {
   RemoteMetricConfig& operator=(const RemoteMetricConfig&);
 
   std::optional<bool> ephemeral;
-  std::optional<bool> constellation_only;
   std::optional<bool> nebula;
   std::optional<bool> disable_country_strip;
   std::optional<MetricAttributes> attributes;

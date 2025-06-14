@@ -15,9 +15,7 @@ namespace p3a {
 net::NetworkTrafficAnnotationTag GetRandomnessRequestAnnotation();
 net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation();
 
-net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
-    std::string_view upload_type,
-    bool is_constellation);
+net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation();
 
 }  // namespace p3a
 

@@ -75,35 +75,31 @@ NSString* const P3ACreativeMetricPrefix =
 }
 
 - (P3ACallbackRegistration*)registerRotationCallback:
-    (void (^)(P3AMetricLogType logType, BOOL isConstellation))callback {
+    (void (^)(P3AMetricLogType logType))callback {
   if (!_p3aService) {
     return nil;
   }
   return [[P3ACallbackRegistration alloc]
       initWithSubscription:_p3aService->RegisterRotationCallback(
-                               base::BindRepeating(^(
-                                   p3a::MetricLogType log_type,
-                                   bool is_constellation) {
-                                 callback(
-                                     static_cast<P3AMetricLogType>(log_type),
-                                     is_constellation);
-                               }))];
+                               base::BindRepeating(
+                                   ^(p3a::MetricLogType log_type) {
+                                     callback(static_cast<P3AMetricLogType>(
+                                         log_type));
+                                   }))];
 }
 
 - (P3ACallbackRegistration*)registerMetricCycledCallback:
-    (void (^)(NSString* histogramName, BOOL isConstellation))callback {
+    (void (^)(NSString* histogramName))callback {
   if (!_p3aService) {
     return nil;
   }
   return [[P3ACallbackRegistration alloc]
       initWithSubscription:_p3aService->RegisterMetricCycledCallback(
-                               base::BindRepeating(^(
-                                   const std::string& histogram_name,
-                                   bool is_constellation) {
-                                 callback(
-                                     base::SysUTF8ToNSString(histogram_name),
-                                     is_constellation);
-                               }))];
+                               base::BindRepeating(
+                                   ^(const std::string& histogram_name) {
+                                     callback(base::SysUTF8ToNSString(
+                                         histogram_name));
+                                   }))];
 }
 
 - (void)registerDynamicMetric:(NSString*)histogramName
@@ -129,16 +125,6 @@ NSString* const P3ACreativeMetricPrefix =
     return;
   }
   _p3aService->RemoveDynamicMetric(base::SysNSStringToUTF8(histogramName));
-}
-
-- (void)updateMetricValueForSingleFormat:(NSString*)histogramName
-                                  bucket:(size_t)bucket
-                         isConstellation:(BOOL)isConstellation {
-  if (!_p3aService) {
-    return;
-  }
-  _p3aService->UpdateMetricValueForSingleFormat(
-      base::SysNSStringToUTF8(histogramName), bucket, isConstellation);
 }
 
 void UmaHistogramExactLinear(NSString* name,
