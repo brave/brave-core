@@ -34,7 +34,7 @@
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
   virtual blink::UserAgentMetadata BraveGetUserAgentMetadata(                \
-      bool showBraveBrand);                                                  \
+      GURL top_url);                                                  \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export

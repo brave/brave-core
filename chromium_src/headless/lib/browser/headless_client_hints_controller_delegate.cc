@@ -11,7 +11,7 @@ namespace headless {
 
 blink::UserAgentMetadata
 HeadlessClientHintsControllerDelegate::BraveGetUserAgentMetadata(
-    bool showBraveBrand) {
+    GURL top_url) {
   return GetUserAgentMetadata();
 }
 

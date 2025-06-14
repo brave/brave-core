@@ -9,7 +9,7 @@
 #include "content/public/browser/content_browser_client.h"
 
 #define GetUserAgentMetadata()                        \
-  BraveGetUserAgentMetadata(bool showBraveBrand) = 0; \
+  BraveGetUserAgentMetadata(GURL top_url) = 0; \
   virtual blink::UserAgentMetadata GetUserAgentMetadata()
 
 #include "src/content/public/browser/client_hints_controller_delegate.h"  // IWYU pragma: export

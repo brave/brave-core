@@ -5,11 +5,15 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 
+#include <iostream>
 #include <memory>
 #include <set>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <thread>
+#include <dlfcn.h>
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -34,6 +38,13 @@ BraveUserAgentExceptions* BraveUserAgentExceptions::GetInstance() {
     return nullptr;
   }
   static base::NoDestructor<BraveUserAgentExceptions> instance;
+  void* fn_addr = reinterpret_cast<void*>(reinterpret_cast<void (*)()>(&BraveUserAgentExceptions::GetInstance));
+  Dl_info info;
+  dladdr(fn_addr, &info);
+  std::cout << "GetInstance in " << (info.dli_fname ? info.dli_fname : "unknown") << std::endl;
+  std::cout << "BraveUserAgentExceptions::GetInstance" << ", instance="
+            << instance.get() << ", pid=" << getpid()
+            << ", thread=" << std::this_thread::get_id() << std::endl;
   return instance.get();
 }
 
@@ -58,7 +69,8 @@ void BraveUserAgentExceptions::OnExceptedDomainsLoaded(
 
 void BraveUserAgentExceptions::OnComponentReady(const base::FilePath& path) {
   component_path_ = path;
-
+  std::cout << "BraveUserAgentExceptions::OnComponentReady"
+            << ", path=" << path << ", this=" << this << std::endl;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
@@ -69,6 +81,13 @@ void BraveUserAgentExceptions::OnComponentReady(const base::FilePath& path) {
 }
 
 bool BraveUserAgentExceptions::CanShowBrave(const GURL& url) {
+  Dl_info info;
+  void* fn_addr = reinterpret_cast<void*>(reinterpret_cast<void (*)()>(&BraveUserAgentExceptions::GetInstance));
+  dladdr(fn_addr, &info);
+  std::cout << "CanShowBrave in " << (info.dli_fname ? info.dli_fname : "unknown") << std::endl;
+  std::cout << "CanShowBrave" << ", url=" << url << ", this=" << this
+            << ", pid=" << getpid() << ", thread=" << std::this_thread::get_id()
+            << ", is_ready_=" << (is_ready_ ? "true" : "false") << std::endl;
   if (!is_ready_) {
     // We don't have the exceptions list loaded yet. To avoid breakage,
     // show Brave for any website.
@@ -77,6 +96,8 @@ bool BraveUserAgentExceptions::CanShowBrave(const GURL& url) {
 
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  std::cout << "domain=" << domain << std::endl;
 
   // Show Brave only if the domain is not on the exceptions list.
   return !base::Contains(excepted_domains_, domain);

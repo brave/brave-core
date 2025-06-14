@@ -50,7 +50,7 @@ std::optional<GURL> ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
 }
 
 blink::UserAgentMetadata ContentBrowserClient::BraveGetUserAgentMetadata(
-    bool showBraveBrand) {
+    GURL top_url) {
   return GetUserAgentMetadata();
 }
 

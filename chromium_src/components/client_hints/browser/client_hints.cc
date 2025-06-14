@@ -7,6 +7,8 @@
 
 #include "src/components/client_hints/browser/client_hints.cc"
 
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
+
 namespace client_hints {
 
 namespace {
@@ -25,9 +27,11 @@ void removeBrandFromVersionList(blink::UserAgentBrandList& brand_version_list) {
 }  // namespace
 
 blink::UserAgentMetadata ClientHints::BraveGetUserAgentMetadata(
-    bool showBraveBrand) {
+    GURL top_url) {
+  auto* brave_user_agent_exceptions = brave_user_agent::BraveUserAgentExceptions::GetInstance();
+  bool canShowBrave = brave_user_agent_exceptions->CanShowBrave(top_url);
   auto metadata = GetUserAgentMetadata();
-  if (!showBraveBrand) {
+  if (!canShowBrave) {
     removeBrandFromVersionList(metadata.brand_version_list);
     removeBrandFromVersionList(metadata.brand_full_version_list);
   }

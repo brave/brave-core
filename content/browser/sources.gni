@@ -10,4 +10,5 @@ brave_content_browser_deps = [
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/speech_to_text",
+  "//brave/components/brave_user_agent/browser:browser",
 ]

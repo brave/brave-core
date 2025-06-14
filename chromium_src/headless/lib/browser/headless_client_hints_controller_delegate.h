@@ -10,7 +10,7 @@
 #include "headless/public/headless_browser.h"
 
 #define GetUserAgentMetadata()                             \
-  BraveGetUserAgentMetadata(bool showBraveBrand) override; \
+  BraveGetUserAgentMetadata(GURL top_url) override; \
   blink::UserAgentMetadata GetUserAgentMetadata()
 
 #include "src/headless/lib/browser/headless_client_hints_controller_delegate.h"  // IWYU pragma: export
