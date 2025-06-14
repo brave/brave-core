@@ -32,9 +32,6 @@ const start = (
   if (options.disable_pdfjs_extension) {
     braveArgs.push('--disable-pdfjs-extension')
   }
-  if (options.disable_webtorrent_extension) {
-    braveArgs.push('--disable-webtorrent-extension')
-  }
   if (options.ui_mode) {
     braveArgs.push(`--ui-mode=${options.ui_mode}`)
   }

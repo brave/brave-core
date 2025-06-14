@@ -81,7 +81,6 @@ include_rules += [
   "+brave/components/body_sniffer",
   "+brave/components/brave_search/browser",
   "+brave/components/brave_search/common",
-  "+brave/components/brave_webtorrent/browser",
   "+brave/components/cosmetic_filters/browser",
   "+brave/components/cosmetic_filters/common",
   "+brave/components/decentralized_dns/content",
