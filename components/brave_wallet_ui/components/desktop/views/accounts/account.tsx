@@ -168,7 +168,7 @@ export const Account = () => {
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+
   // mutations
   const [startShieldSync] = useStartShieldSyncMutation()
   const [stopShieldSync] = useStopShieldSyncMutation()
@@ -628,8 +628,6 @@ export const Account = () => {
           account={selectedAccount}
           onClickMenuOption={onClickMenuOption}
           tokenBalancesRegistry={tokenBalancesRegistry}
-          isAndroid={isAndroid}
-          isPanel={isPanel}
         />
       }
     >

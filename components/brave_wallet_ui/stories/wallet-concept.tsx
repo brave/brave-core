@@ -10,6 +10,7 @@ import Container from '../page/container'
 
 type StorybookWalletConceptArgs = {
   isPanel: boolean
+  isAndroid: boolean
 }
 
 const panelViewport = {
@@ -20,6 +21,13 @@ const panelViewport = {
       height: '650px',
     },
   },
+  android: {
+    name: 'Android',
+    styles: {
+      width: '360px',
+      height: '740px',
+    },
+  },
 }
 
 export default {
@@ -28,6 +36,7 @@ export default {
     isPanel: { control: { type: 'boolean', onboard: false } },
     onboarding: { control: { type: 'boolean', onboard: false } },
     locked: { control: { type: 'boolean', lock: false } },
+    isAndroid: { control: { type: 'boolean', android: false } },
   },
   parameters: {
     viewport: {
@@ -41,7 +50,7 @@ export default {
 export const _DesktopWalletConcept = {
   render: (args: StorybookWalletConceptArgs) => {
     // Props
-    const { isPanel } = args
+    const { isPanel, isAndroid } = args
 
     return (
       <WalletPageStory
@@ -53,6 +62,7 @@ export const _DesktopWalletConcept = {
         }}
         uiStateOverride={{
           isPanel: isPanel,
+          isAndroid: isAndroid,
         }}
       >
         <Container />

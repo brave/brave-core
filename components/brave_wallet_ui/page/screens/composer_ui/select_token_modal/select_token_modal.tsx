@@ -219,6 +219,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Selectors
     const isPanel = useSafeUISelector(UISelectors.isPanel)
+    const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+    const isAndroidOrPanel = isAndroid || isPanel
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -732,7 +734,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // render
 
-    if (!isPanel && pendingSelectedAsset) {
+    if (!isAndroidOrPanel && pendingSelectedAsset) {
       return (
         <PopupModal
           title=''
@@ -759,7 +761,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }
 
-    if (!isPanel && tokenDetails) {
+    if (!isAndroidOrPanel && tokenDetails) {
       return (
         <PopupModal
           title=''
@@ -786,7 +788,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           )}
           width='560px'
           height='90vh'
-          ref={isPanel ? undefined : forwardedRef}
+          ref={isAndroidOrPanel ? undefined : forwardedRef}
         >
           {onSelectSendOption && selectedSendOption && (
             <Row
@@ -850,7 +852,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             {tokenList}
           </ScrollContainer>
         </PopupModal>
-        {isPanel && (
+        {isAndroidOrPanel && (
           <BottomSheet
             onClose={handleOnBack}
             isOpen={pendingSelectedAsset !== undefined}
@@ -873,7 +875,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             )}
           </BottomSheet>
         )}
-        {isPanel && (
+        {isAndroidOrPanel && (
           <BottomSheet
             onClose={() => setTokenDetails(undefined)}
             isOpen={tokenDetails !== undefined}
