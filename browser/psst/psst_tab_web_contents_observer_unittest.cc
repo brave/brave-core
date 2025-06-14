@@ -59,7 +59,8 @@ class PsstTabWebContentsObserverUnitTest
     auto script_handler = std::make_unique<MockPsstScriptsHandler>();
     script_handler_ = script_handler.get();
     observer_ = PsstTabWebContentsObserver::MaybeCreateForWebContents(
-        web_contents(), profile(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        web_contents(), profile(), profile()->GetPrefs(),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
     observer_->script_handler_ = std::move(script_handler);
     page_checker_ = observer_->page_checker_.get();
   }
@@ -132,14 +133,17 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 
 TEST_F(PsstTabWebContentsObserverFeatureEnabledUnitTest, CreateObserver) {
   EXPECT_TRUE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-      web_contents(), profile(), ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+      web_contents(), profile(), profile()->GetPrefs(),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL));
   EXPECT_FALSE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-      web_contents(), otr_profile(), ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+      web_contents(), otr_profile(), otr_profile()->GetPrefs(),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, CreateObserver) {
   EXPECT_FALSE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-      web_contents(), profile(), ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+      web_contents(), profile(), profile()->GetPrefs(),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,

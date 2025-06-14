@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/component_export.h"
-
 class PrefService;
 
 namespace content {

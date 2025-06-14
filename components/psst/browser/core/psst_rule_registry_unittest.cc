@@ -8,19 +8,16 @@
 #include <cstddef>
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

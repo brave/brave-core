@@ -14,13 +14,11 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace psst {
 

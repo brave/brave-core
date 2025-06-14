@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/psst/buildflags/buildflags.gni")
+
+assert(enable_psst)
+
 component("content") {
   output_name = "psst_browser_content"
 
@@ -25,9 +29,6 @@ component("content") {
   deps = [
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
-    "//components/prefs:prefs",
-    "//components/sessions",
-    "//components/user_prefs:user_prefs",
-    "//url",
+    "//components/prefs",
   ]
 }

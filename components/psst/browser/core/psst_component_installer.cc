@@ -5,20 +5,14 @@
 
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
-#include "base/debug/task_trace.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
-#include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
