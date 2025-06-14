@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -184,6 +185,11 @@ class ViewCounterServiceTest : public testing::Test {
   ~ViewCounterServiceTest() override = default;
 
   void SetUp() override {
+#if !BUILDFLAG(IS_LINUX)
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kBraveNTPSuperReferralWallpaper);
+#endif
+
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
@@ -425,6 +431,8 @@ class ViewCounterServiceTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 
+  base::test::ScopedFeatureList scoped_feature_list_;
+
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 
@@ -495,11 +503,7 @@ TEST_F(ViewCounterServiceTest, ActiveOptedInWithNTPBackgoundOption) {
 
   // Even with bg images turned off, SR wallpaper should be active.
   SetSuperReferralVisibility(true);
-#if BUILDFLAG(IS_LINUX)
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
-#else   // BUILDFLAG(IS_LINUX)
   EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
-#endif  // !BUILDFLAG(IS_LINUX)
 
   SetSuperReferralVisibility(false);
   EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
@@ -535,11 +539,7 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
   // Active if SR is only opted in.
   SetSponsoredImagesVisibility(false);
   SetSuperReferralVisibility(true);
-#if BUILDFLAG(IS_LINUX)
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
-#else   // BUILDFLAG(IS_LINUX)
   EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
-#endif  // !BUILDFLAG(IS_LINUX)
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
