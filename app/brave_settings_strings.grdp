@@ -735,6 +735,14 @@
       Never
     </message>
   </if>
+  <if expr="is_win">
+    <message name="IDS_SETTINGS_BLOCK_WINDOWS_RECALL_LABEL" desc="Windows Recall setting label">
+      Block Microsoft Recall
+    </message>
+    <message name="IDS_SETTINGS_BLOCK_WINDOWS_RECALL_SUBLABEL" desc="Windows Recall setting sub-label">
+      Block the Recall feature on Microsoft Windows computers from automatically taking screenshots of any open Brave tabs.
+    </message>
+  </if>
   <!-- Data collection -->
   <message name="IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION" desc="Open Data collection settings section">
     Data collection

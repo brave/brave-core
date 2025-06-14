@@ -58,6 +58,10 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -322,6 +326,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if !BUILDFLAG(IS_ANDROID)
   (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  (*s_brave_allowlist)[windows_recall::prefs::kBlockWindowsRecall] =
       settings_api::PrefType::kBoolean;
 #endif
 
