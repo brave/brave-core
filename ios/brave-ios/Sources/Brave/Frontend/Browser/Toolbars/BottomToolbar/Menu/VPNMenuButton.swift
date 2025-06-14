@@ -74,6 +74,9 @@ struct VPNMenuButton: View {
         openVPNAuthenticationInNewTab: {
           openURL(.brave.braveVPNRefreshCredentials)
         },
+        openDirectCheckoutInNewTab: {
+          openURL(.brave.braveVPNCheckoutURL)
+        },
         installVPNProfile: {
           installVPNProfile()
         }

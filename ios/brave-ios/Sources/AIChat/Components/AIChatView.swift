@@ -383,6 +383,10 @@ public struct AIChatView: View {
         refreshCredentials: {
           openURL(.brave.braveLeoRefreshCredentials)
           dismiss()
+        },
+        openDirectCheckout: {
+          openURL(.brave.braveLeoCheckoutURL)
+          dismiss()
         }
       )
     }
