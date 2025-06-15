@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 53e8ce89fb5a7c5a6310e05c9ad046d19db7b80f..3a86e388995a137b0e6e8a556b19833dfb345b7e 100644
+index a0e56db759429f155e7367e185c475b3b4c53d0b..7a1f2770c15a4af29c87180c0312bd5e18371b6b 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -689,6 +689,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeed, 0);
-   registry->RegisterUint64Pref(kVariationsLimitedEntropySyntheticTrialSeedV2,
-                                0);
+@@ -682,6 +682,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // Deprecated 06/2025.
+   registry->RegisterBooleanPref(
+       prefs::kIosCredentialProviderPromoHasRegisteredWithPromoManager, false);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1107,6 +1108,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1087,6 +1088,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterTimePref(kSyncLastSyncedTime, base::Time());
    registry->RegisterTimePref(kSyncLastPollTime, base::Time());
    registry->RegisterTimeDeltaPref(kSyncPollInterval, base::TimeDelta());
