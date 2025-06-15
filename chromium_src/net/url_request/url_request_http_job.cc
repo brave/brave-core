@@ -24,9 +24,24 @@
 
 namespace net {
 
+namespace {
+
+// This function acts as a trampoline between
+// `URLRequestHttpJob::CreateCookieOptions` and the `CreateCookieOptions`
+// declared in the annonymous namespace inside `net::`. This is necessary
+// because otherwise there's no way for `URLRequestHttpJob::CreateCookieOptions`
+// to capture calls to `CreateCookieOptions` and at the same time be able to
+// call it in the annonymous namespace.
+CookieOptions CreateCookieOptionsCaller(
+    CookieOptions::SameSiteCookieContext same_site_context) {
+  return CreateCookieOptions(same_site_context);
+}
+
+}  // namespace
+
 CookieOptions URLRequestHttpJob::CreateCookieOptions(
     CookieOptions::SameSiteCookieContext same_site_context) const {
-  CookieOptions cookie_options = ::CreateCookieOptions(same_site_context);
+  CookieOptions cookie_options = CreateCookieOptionsCaller(same_site_context);
   FillEphemeralStorageParams(
       request_->url(), request_->site_for_cookies(),
       request_->isolation_info().top_frame_origin(),
