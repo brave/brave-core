@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import '../../common/strings'
+
 import * as React from 'react'
 import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
@@ -19,7 +21,6 @@ import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
 import Main from '../components/main'
-import './story_utils/locale'
 import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
