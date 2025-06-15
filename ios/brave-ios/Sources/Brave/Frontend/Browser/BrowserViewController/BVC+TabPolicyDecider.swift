@@ -739,6 +739,11 @@ extension BrowserViewController {
       return false
     }
 
+    // If the request is not from the main-frame, deny it
+    if !requestInfo.isMainFrame {
+      return false
+    }
+
     // Check if the current url of the caller has changed
     if let domain = tab.visibleURL?.baseDomain,
       domain != tab.externalAppURLDomain
