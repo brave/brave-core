@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/BUILD.gn b/chrome/browser/ui/android/appmenu/internal/BUILD.gn
-index 39c8e0da1fb600fd9929533b98d9e48c23a181e5..6213296ac3d33c8143e3a16d4c2dcfd509a946b9 100644
+index 71f01d1585172b03be421b0ca8bab360bfe56e5c..941438ebd4ff460528e8bfdb7de21017f9ce85ad 100644
 --- a/chrome/browser/ui/android/appmenu/internal/BUILD.gn
 +++ b/chrome/browser/ui/android/appmenu/internal/BUILD.gn
 @@ -22,6 +22,7 @@ android_library("java") {
