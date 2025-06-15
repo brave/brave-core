@@ -38,18 +38,18 @@ export default function Attachments() {
     return <div className={styles.root}>
         <div className={styles.header}>
             <Flex direction='row' justify='space-between' align='center'>
-                <h4>{getLocale('attachmentsTitle')}</h4>
+                <h4>{getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}</h4>
                 <Button fab kind='plain-faint' size='small' onClick={() => conversation.setShowAttachments(false)}>
                     <Icon name='close' />
                 </Button>
             </Flex>
-            <span className={styles.description}>{getLocale('attachmentsDescription')}</span>
+            <span className={styles.description}>{getLocale(S.CHAT_UI_ATTACHMENTS_DESCRIPTION)}</span>
         </div>
         <div className={styles.tabSearchContainer}>
             <Flex direction='row' justify='space-between' align='center'>
-                <h5>{getLocale('attachmentsBrowserTabsTitle')}</h5>
+                <h5>{getLocale(S.CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE)}</h5>
             </Flex>
-            <Input placeholder={getLocale('searchTabsPlaceholder')} value={search} onInput={e => setSearch(e.value)}>
+            <Input placeholder={getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)} value={search} onInput={e => setSearch(e.value)}>
                 <Icon name='search' slot='icon-after' />
             </Input>
             <div className={styles.tabList}>

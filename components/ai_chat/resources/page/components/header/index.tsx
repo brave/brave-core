@@ -24,11 +24,11 @@ const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.l
 </div>
 
 const getTitle = (activeConversation?: Conversation) => activeConversation?.title
-  || getLocale('conversationListUntitled')
+  || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
-const newChatButtonLabel = getLocale('newChatButtonLabel')
-const closeButtonLabel = getLocale('closeLabel')
-const openFullPageButtonLabel = getLocale('openFullPageLabel')
+const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
+const closeButtonLabel = getLocale(S.CHAT_UI_LABEL_CLOSE)
+const openFullPageButtonLabel = getLocale(S.CHAT_UI_OPEN_LABEL)
 
 export const ConversationHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
@@ -54,7 +54,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
             kind='plain-faint'
             fab
             onClick={() => location.href = tabAssociatedChatId}
-            title={getLocale('goBackToActiveConversationButton')}
+            title={getLocale(S.AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON)}
           >
             <Icon name='arrow-left' />
           </Button>}
@@ -104,8 +104,8 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
             {supportsAttachments && aiChatContext.tabs.length > 0 && <Button
               fab
               kind={conversationContext.showAttachments ? 'plain' : 'plain-faint'}
-              aria-label={getLocale('attachmentsTitle')}
-              title={getLocale('attachmentsTitle')}
+              aria-label={getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}
+              title={getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}
               onClick={() => conversationContext.setShowAttachments(!conversationContext.showAttachments)}
             >
               <Icon name='attachment' />

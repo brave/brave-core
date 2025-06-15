@@ -26,9 +26,9 @@ export default function LongConversationInfo() {
         <Icon name='info-outline' />
       </div>
       <div className={styles.infoText}>
-        {getLocale('errorContextLimitReaching')}
+        {getLocale(S.CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING)}
         <Button kind="plain-faint" className={styles.link} onClick={handleClearChat}>
-          <span>{getLocale('clearChatButtonLabel')}</span>
+          <span>{getLocale(S.CHAT_UI_CLEAR_CHAT_BUTTON_LABEL)}</span>
         </Button>
       </div>
     </div>

@@ -31,7 +31,7 @@ export function GenerateSuggestionsButton() {
       className={styles.questionButton}
     >
       <span className={styles.generateButtonText}>
-        {getLocale('suggestQuestionsLabel')}
+        {getLocale(S.CHAT_UI_SUGGEST_QUESTIONS_LABEL)}
       </span>
     </SuggestionButton>
   )

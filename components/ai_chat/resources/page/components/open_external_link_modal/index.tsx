@@ -50,15 +50,15 @@ export default function OpenExternalLinkModal() {
         slot='title'
         className={styles.dialogTitle}
       >
-        {getLocale('openExternalLink')}
+        {getLocale(S.CHAT_UI_OPEN_EXTERNAL_LINK)}
       </div>
       <div className={styles.description}>
-        {getLocale('openExternalLinkInfo')}
+        {getLocale(S.CHAT_UI_OPEN_EXTERNAL_LINK_INFO)}
         <Checkbox
           checked={ignoreChecked}
           onChange={({ checked }) => setIgnoreChecked(checked)}
         >
-          <span>{getLocale('openExternalLinkCheckboxLabel')}</span>
+          <span>{getLocale(S.CHAT_UI_OPEN_EXTERNAL_LINK_CHECKBOX_LABEL)}</span>
         </Checkbox>
       </div>
       <div
@@ -73,14 +73,14 @@ export default function OpenExternalLinkModal() {
               conversationContext.setGeneratedUrlToBeOpened(undefined)
             }
           >
-            {getLocale('cancelButtonLabel')}
+            {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
             kind='filled'
             size='medium'
             onClick={onOpenClicked}
           >
-            {getLocale('openLabel')}
+            {getLocale(S.CHAT_UI_OPEN_LABEL)}
           </Button>
         </div>
       </div>
