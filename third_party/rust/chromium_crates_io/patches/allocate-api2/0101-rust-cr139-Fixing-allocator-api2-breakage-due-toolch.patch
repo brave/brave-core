@@ -1,0 +1,82 @@
+From 8b4dc5a829daa4e1496dd062ef5d9f17fd3fed14 Mon Sep 17 00:00:00 2001
+From: Claudio DeSouza <cdesouza@brave.com>
+Date: Sun, 15 Jun 2025 23:33:12 +0100
+Subject: [PATCH] [rust][cr139] Fixing `allocator-api2` breakage due toolchain
+ update
+
+It looks like the toolchain update has revealed some broken code in this
+crate. This change is a patch that incorporate a suggested fix pushed in
+a PR to this crate.
+
+https://github.com/zakarumych/allocator-api2/pull/36
+
+Chromium changes:
+https://chromium.googlesource.com/chromium/src/+/1d4f52c873dffdb76f37ee95c001a940a7eaba96
+
+commit 1d4f52c873dffdb76f37ee95c001a940a7eaba96
+Author: Hans Wennborg <hans@chromium.org>
+Date:   Fri Jun 13 08:44:13 2025 -0700
+
+    Roll clang+rust llvmorg-21-init-11777-gfd3fecfc-1 : llvmorg-21-init-15009-g841a7f08-1 / 4a0969e06dbeaaa43914d2d00b2e843d49aa3886-1 : 0b65d0db5f77c44bf37b4a25489562d68c14aecf-1
+
+    https://chromium.googlesource.com/external/github.com/llvm/llvm-project/+log/fd3fecfc..841a7f08
+
+    https://chromium.googlesource.com/external/github.com/rust-lang/rust/+log/4a0969e06dbe..0b65d0db5f77
+
+    Ran: ./tools/clang/scripts/upload_revision.py 841a7f0897272f6412bc2e42a7dd695bf1e8a8cf
+
+    Bug: 417956700, 424424323, 417996267
+    Change-Id: Ib28070bfae9c58cd840294a9caf2baf61dd9f0a5
+    Tricium: skip
+    Disable-Rts: True
+    Cq-Include-Trybots: chromium/try:chromeos-amd64-generic-cfi-thin-lto-rel
+    Cq-Include-Trybots: chromium/try:dawn-win10-x86-deps-rel
+    Cq-Include-Trybots: chromium/try:linux-chromeos-dbg
+    Cq-Include-Trybots: chromium/try:linux_chromium_cfi_rel_ng
+    Cq-Include-Trybots: chromium/try:linux_chromium_chromeos_msan_rel_ng
+    Cq-Include-Trybots: chromium/try:linux_chromium_msan_rel_ng
+    Cq-Include-Trybots: chromium/try:mac11-arm64-rel,mac_chromium_asan_rel_ng
+    Cq-Include-Trybots: chromium/try:ios-catalyst,win-asan,android-official
+    Cq-Include-Trybots: chromium/try:fuchsia-arm64-cast-receiver-rel
+    Cq-Include-Trybots: chromium/try:mac-official,linux-official
+    Cq-Include-Trybots: chromium/try:win-official,win32-official
+    Cq-Include-Trybots: chromium/try:win-arm64-rel
+    Cq-Include-Trybots: chromium/try:linux-swangle-try-x64,win-swangle-try-x86
+    Cq-Include-Trybots: chromium/try:android-cronet-riscv64-dbg
+    Cq-Include-Trybots: chromium/try:android-cronet-riscv64-rel
+    Cq-Include-Trybots: chrome/try:iphone-device,ipad-device
+    Cq-Include-Trybots: chrome/try:linux-chromeos-chrome
+    Cq-Include-Trybots: chrome/try:win-chrome,win64-chrome,linux-chrome,mac-chrome
+    Cq-Include-Trybots: chrome/try:linux-pgo,mac-pgo,win32-pgo,win64-pgo
+    Cq-Include-Trybots: luci.chromium.try:linux-cast-x64-rel
+    Cq-Include-Trybots: chromium/try:android-rust-arm32-rel
+    Cq-Include-Trybots: chromium/try:android-rust-arm64-dbg
+    Cq-Include-Trybots: chromium/try:android-rust-arm64-rel
+    Cq-Include-Trybots: chromium/try:linux-rust-x64-dbg
+    Cq-Include-Trybots: chromium/try:linux-rust-x64-rel
+    Cq-Include-Trybots: chromium/try:mac-rust-x64-dbg
+    Cq-Include-Trybots: chromium/try:win-rust-x64-dbg
+    Cq-Include-Trybots: chromium/try:win-rust-x64-rel
+    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/6633422
+    Reviewed-by: Nico Weber <thakis@chromium.org>
+    Cr-Commit-Position: refs/heads/main@{#1473597}
+---
+ .../vendor/allocator-api2-v0_2/src/stable/vec/mod.rs            | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/mod.rs b/brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/mod.rs
+index 12df8a6b824..42d60ce5685 100644
+--- a/brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/mod.rs
++++ b/brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/mod.rs
+@@ -1899,7 +1899,7 @@ impl<T, A: Allocator> Vec<T, A> {
+     #[cfg(not(no_global_oom_handling))]
+     #[inline(always)]
+     unsafe fn append_elements(&mut self, other: *const [T]) {
+-        let count = unsafe { (*other).len() };
++        let count = other.len();
+         self.reserve(count);
+         let len = self.len();
+         unsafe { ptr::copy_nonoverlapping(other as *const T, self.as_mut_ptr().add(len), count) };
+-- 
+2.43.0
+
