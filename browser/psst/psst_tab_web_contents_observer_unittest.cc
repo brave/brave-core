@@ -112,7 +112,7 @@ class PsstTabWebContentsObserverFeatureEnabledUnitTest
     return static_cast<Profile*>(web_contents()->GetBrowserContext());
   }
 
-  Profile* otr_profile() {
+  Profile* create_otr_profile() {
     TestingProfile::Builder profile_builder;
     return profile_builder.BuildIncognito(
         static_cast<TestingProfile*>(profile()));
@@ -135,8 +135,10 @@ TEST_F(PsstTabWebContentsObserverFeatureEnabledUnitTest, CreateObserver) {
   EXPECT_TRUE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
       web_contents(), profile(), profile()->GetPrefs(),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  auto* otr_profile = create_otr_profile();
   EXPECT_FALSE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-      web_contents(), otr_profile(), otr_profile()->GetPrefs(),
+      web_contents(), otr_profile, otr_profile->GetPrefs(),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
