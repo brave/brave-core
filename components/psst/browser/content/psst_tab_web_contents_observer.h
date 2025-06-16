@@ -16,26 +16,15 @@ class PrefService;
 
 namespace psst {
 
-class PsstScriptsHandler;
-class PsstRuleRegistry;
-
-FORWARD_DECLARE_TEST(PsstTabWebContentsObserverBrowserTest,
-                     RuleMatchTestScriptTrue);
-
-class PsstShouldProcessPageChecker {
- public:
-  PsstShouldProcessPageChecker() = default;
-  virtual ~PsstShouldProcessPageChecker() = default;
-  PsstShouldProcessPageChecker(const PsstShouldProcessPageChecker&) = delete;
-  PsstShouldProcessPageChecker& operator=(const PsstShouldProcessPageChecker&) =
-      delete;
-
-  virtual bool ShouldProcess(const content::NavigationHandle* handle) const = 0;
-};
-
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
  public:
+  class ScriptsHandler {
+   public:
+    virtual ~ScriptsHandler() = default;
+    virtual void Start() = 0;
+  };
+
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       content::BrowserContext* browser_context,
@@ -48,36 +37,19 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
       delete;
 
  private:
-  PsstTabWebContentsObserver(
-      content::WebContents* web_contents,
-      PrefService* prefs,
-      std::unique_ptr<PsstShouldProcessPageChecker> page_checker,
-      std::unique_ptr<PsstScriptsHandler> script_handler);
+  friend class PsstTabWebContentsObserverUnitTestBase;
+
+  PsstTabWebContentsObserver(content::WebContents* web_contents,
+                             PrefService* prefs,
+                             std::unique_ptr<ScriptsHandler> script_handler);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
-  std::unique_ptr<PsstShouldProcessPageChecker> page_checker_;
-  std::unique_ptr<PsstScriptsHandler> script_handler_;
+  std::unique_ptr<ScriptsHandler> script_handler_;
   const raw_ptr<PrefService> prefs_;
-  const raw_ptr<PsstRuleRegistry> psst_rule_registry_;
   bool should_process_ = false;
-
-  friend class PsstTabWebContentsObserverUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           ShouldNotProcessRestoredNavigationEntry);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           ShouldNotProcessIfNotPrimaryMainFrame);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           ShouldNotProcessIfNavigationNotCommitted);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           ShouldNotProcessIfSameDocumentNavigation);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
-                           StartScriptHandlerIfEnabled);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverBrowserTest,
-                           RuleMatchTestScriptTrue);
-  friend class PsstTabWebContentsObserverBrowserTest;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
