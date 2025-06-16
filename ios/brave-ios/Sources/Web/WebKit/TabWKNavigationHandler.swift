@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import CertificateUtilities
 import Foundation
 import OSLog
@@ -80,6 +81,23 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       @unknown default: .other
       }
 
+    var isCrossOriginTargetFrame = false
+    var isCrossOriginCrossWindow = false
+
+    if let targetFrame = navigationAction.targetFrame {
+      let sourceFrame = navigationAction.sourceFrame
+      let sourceOrigin = URLOrigin(wkSecurityOrigin: sourceFrame.securityOrigin)
+      let targetOrigin = URLOrigin(wkSecurityOrigin: targetFrame.securityOrigin)
+
+      if sourceFrame.webView == targetFrame.webView && sourceFrame != targetFrame {
+        isCrossOriginTargetFrame = !sourceOrigin.isEqual(targetOrigin)
+      }
+
+      if sourceFrame.webView != targetFrame.webView {
+        isCrossOriginCrossWindow = !sourceOrigin.isEqual(targetOrigin)
+      }
+    }
+
     let policy =
       await tab.shouldAllowRequest(
         navigationAction.request,
@@ -87,7 +105,10 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
           navigationType: navigationType,
           isMainFrame: isMainFrame,
           isNewWindow: navigationAction.targetFrame == nil,
-          isUserInitiated: !navigationAction.isSyntheticClick
+          isUserInitiated: !navigationAction.isSyntheticClick,
+          isCrossOriginFrame: isCrossOriginTargetFrame,
+          isCrossOriginWindow: isCrossOriginCrossWindow,
+          hasUserTappedRecently: !navigationAction.isSyntheticClick
         )
       )
 

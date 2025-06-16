@@ -739,8 +739,14 @@ extension BrowserViewController {
       return false
     }
 
-    // If the request is not from the main-frame, deny it
-    if !requestInfo.isMainFrame {
+    // If the request is cross origin frame, block it.
+    // If the request is cross origin window, block it.
+    if requestInfo.isCrossOriginFrame || requestInfo.isCrossOriginWindow {
+      return false
+    }
+
+    // If the request is from a sub-frame and not user-initiated, block it.
+    if !requestInfo.isMainFrame && !requestInfo.isUserInitiated {
       return false
     }
 
