@@ -2,11 +2,18 @@ mod credentials;
 mod orders;
 
 use std::cell::RefCell;
+use std::collections::VecDeque;
 use std::fmt;
+use std::sync::Arc;
+use std::sync::Mutex;
 
 use tracing::{event, Level};
+#[cfg(not(test))]
+use tracing_subscriber::fmt::format::DefaultFields;
 
 use crate::cache::CacheNode;
+#[cfg(not(test))]
+use crate::log::RingBufferLayer;
 use crate::models::*;
 use crate::{HTTPClient, StorageClient};
 
@@ -21,6 +28,7 @@ pub struct SDK<U> {
     pub base_url: String,
     pub remote_sdk_url: String,
     pub cache: RefCell<CacheNode<http::Response<Vec<u8>>>>,
+    pub log_buffer: Option<Arc<Mutex<VecDeque<char>>>>,
 }
 
 impl<U> fmt::Debug for SDK<U> {
@@ -61,7 +69,28 @@ where
             base_url: base_url.to_string(),
             remote_sdk_url: remote_sdk_url.to_string(),
             cache: RefCell::new(CacheNode::default()),
+            log_buffer: None,
         }
+    }
+
+    #[cfg(not(test))]
+    pub fn create_log_buffer_layer(
+        &mut self,
+        main_capacity: usize,
+        span_capacity: usize,
+    ) -> RingBufferLayer<DefaultFields> {
+        let buf = Arc::new(Mutex::new(VecDeque::new()));
+        self.log_buffer = Some(buf.clone());
+        RingBufferLayer::new(buf, DefaultFields::new(), main_capacity, span_capacity)
+    }
+
+    pub fn get_logs(&self) -> String {
+        if let Some(buf) = &self.log_buffer {
+            if let Ok(buf) = buf.lock() {
+                return buf.iter().collect();
+            }
+        }
+        "".to_string()
     }
 
     pub async fn initialize(&self) {
