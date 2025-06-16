@@ -7,14 +7,13 @@
 #define BRAVE_COMPONENTS_GOOGLE_SIGN_IN_PERMISSION_GOOGLE_SIGN_IN_PERMISSION_THROTTLE_H_
 
 #include <memory>
-#include <string>
 #include <vector>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/mojom/permissions/permission_status.mojom.h"
 
 namespace google_sign_in_permission {
 
@@ -39,6 +38,10 @@ class GoogleSignInPermissionThrottle : public blink::URLLoaderThrottle {
                         bool* defer) override;
 
  private:
+  void OnPermissionRequestStatus(
+      content::NavigationEntry* pending_entry,
+      const std::vector<blink::mojom::PermissionStatus>& permission_statuses);
+
   const content::WebContents::Getter wc_getter_;
   base::WeakPtrFactory<GoogleSignInPermissionThrottle> weak_factory_{this};
 };
