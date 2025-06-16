@@ -163,8 +163,10 @@ void BraveToolbarView::Init() {
   // buttons. Upstream conditionally creates |toolbar_divider_|, they check
   // whether it's null or not. So safe to make remove here.
   if (toolbar_divider_) {
+    // RemoveChildView doesn't delete the removed view, so we have to do it
+    // manually. Otherwise, the view object will leak.
     container_view->RemoveChildView(toolbar_divider_.get());
-    toolbar_divider_ = nullptr;
+    toolbar_divider_.ClearAndDelete();
   }
 
   // Track changes in profile count
