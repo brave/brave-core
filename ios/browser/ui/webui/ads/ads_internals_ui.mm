@@ -64,7 +64,10 @@ AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
                           weak_ptr_factory_.GetWeakPtr()));
 }
 
-AdsInternalsUI::~AdsInternalsUI() {}
+AdsInternalsUI::~AdsInternalsUI() {
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      bat_ads::mojom::AdsInternals::Name_);
+}
 
 void AdsInternalsUI::BindInterface(
     mojo::PendingReceiver<bat_ads::mojom::AdsInternals> pending_receiver) {
