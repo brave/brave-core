@@ -95,6 +95,9 @@ describe('reduceAddress', () => {
     expect(reduceAddress('t1U9yhDa5XEjgfnTgZoKddeSiEN1aoLkQxq')).toBe(
       't1U9yh***kQxq',
     )
+    expect(reduceAddress('t2Q4M1Q2vL3Xy5R6s7U8p9Z0aB1cD2eF3gH4jK5')).toBe(
+      't2Q4M1***4jK5',
+    )
     expect(reduceAddress('t3Vz22vK5z2LcKEdg16Yv4FFneEL1zg9ojd')).toBe(
       't3Vz22***9ojd',
     )

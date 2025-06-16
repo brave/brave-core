@@ -21,6 +21,7 @@ const prefixes = [
   'u1',
   'utest1',
   't1',
+  't2',
   't3',
   'tm',
 
