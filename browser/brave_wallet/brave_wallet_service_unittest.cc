@@ -1994,13 +1994,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateEip1559ForCustomNetworks) {
               "0xe708": true
             })"));
 
-  EXPECT_FALSE(*network_manager_->IsEip1559Chain("0x4e454152"));
-  EXPECT_TRUE(*network_manager_->IsEip1559Chain("0x1"));
-  EXPECT_TRUE(*network_manager_->IsEip1559Chain("0xe708"));
-  EXPECT_FALSE(*network_manager_->IsEip1559Chain(mojom::kLocalhostChainId));
+  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x4e454152"));
+  EXPECT_TRUE(network_manager_->IsEip1559Chain("0x1"));
+  EXPECT_TRUE(network_manager_->IsEip1559Chain("0xe708"));
+  EXPECT_FALSE(network_manager_->IsEip1559Chain(mojom::kLocalhostChainId));
 
   // solana does not get into this list.
-  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x66").has_value());
+  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x66"));
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));

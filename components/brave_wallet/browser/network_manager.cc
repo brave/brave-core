@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/network_manager.h"
 
+#include <algorithm>
 #include <optional>
+#include <ranges>
 #include <string_view>
 #include <utility>
 
@@ -15,11 +17,16 @@
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/extend.h"
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/no_destructor.h"
+#include "base/not_fatal_until.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
+#include "base/version_info/version_info.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -29,20 +36,26 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 namespace {
 
-std::optional<bool> GetEip1559ForKnownChain(std::string_view chain_id_lwr) {
-  static base::NoDestructor<base::flat_map<std::string_view, bool>> values([] {
-    base::flat_map<std::string_view, bool> values({
-        {mojom::kMainnetChainId, true},  //
+struct CaseInsensitiveCompare {
+  constexpr bool operator()(std::string_view lhs, std::string_view rhs) const {
+    return base::CompareCaseInsensitiveASCII(lhs, rhs) < 0;
+  }
+};
+
+constexpr auto kEip1559ForKnownChains =
+    base::MakeFixedFlatMap<std::string_view, bool>({
+        {mojom::kMainnetChainId, true},
         {mojom::kPolygonMainnetChainId, true},
         {mojom::kAvalancheMainnetChainId, true},
-        {mojom::kOptimismMainnetChainId, true},  //
-        {mojom::kSepoliaChainId, true},          //
+        {mojom::kOptimismMainnetChainId, true},
+        {mojom::kSepoliaChainId, true},
         {mojom::kFilecoinEthereumMainnetChainId, true},
         {mojom::kFilecoinEthereumTestnetChainId, true},
         {mojom::kBnbSmartChainMainnetChainId, false},
@@ -50,59 +63,99 @@ std::optional<bool> GetEip1559ForKnownChain(std::string_view chain_id_lwr) {
         {mojom::kNeonEVMMainnetChainId, false},
         {mojom::kLocalhostChainId, false},
     });
-    return values;
-  }());
 
-  auto it = values->find(chain_id_lwr);
-  if (it == values->end()) {
-    return std::nullopt;
-  }
+constexpr auto kChainSubdomains =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>(
+        {
+            {mojom::kMainnetChainId, "ethereum-mainnet"},
+            {mojom::kSepoliaChainId, "ethereum-sepolia"},
+            {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
+            {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
+            {mojom::kBaseMainnetChainId, "base-mainnet"},
+            {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
+            {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
 
-  return it->second;
-}
+            // SVM chains.
+            {mojom::kSolanaMainnet, "solana-mainnet"},
+
+            // Bitcoin chains.
+            {mojom::kBitcoinMainnet, "bitcoin-mainnet"},
+
+            // Cardano chains.
+            {mojom::kCardanoMainnet, "cardano-mainnet"},
+            {mojom::kCardanoTestnet, "cardano-preprod"},
+        },
+        CaseInsensitiveCompare());
 
 constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
 constexpr char kSolanaLocalhostURL[] = "http://localhost:8899/";
 constexpr char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
-const std::string GetChainSubdomain(std::string_view chain_id) {
-  static base::NoDestructor<base::flat_map<std::string, std::string>>
-      subdomains({
-          // EVM chains.
-          {mojom::kMainnetChainId, "ethereum-mainnet"},
-          {mojom::kSepoliaChainId, "ethereum-sepolia"},
-          {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
-          {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
-          {mojom::kBaseMainnetChainId, "base-mainnet"},
-          {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
-          {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
+enum class ToLowerCaseReason {
+  kGetURLForKnownChainId,
+  kGetCurrentChainIdFromPrefs,
+  kIsEip1559Chain,
+  kSetEip1559ForCustomChain,
+  kGetHiddenNetworks,
+  kAddHiddenNetwork
+};
 
-          // SVM chains.
-          {mojom::kSolanaMainnet, "solana-mainnet"},
-
-          // Bitcoin chains.
-          {mojom::kBitcoinMainnet, "bitcoin-mainnet"},
-
-          // Cardano chains.
-          {mojom::kCardanoMainnet, "cardano-mainnet"},
-          {mojom::kCardanoTestnet, "cardano-preprod"},
-      });
-
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (subdomains->contains(chain_id_lower)) {
-    return subdomains->at(chain_id_lower);
+// A helper to check if there are any cases where the chain id is not lowercase,
+// to investigate why these conversions are required in the first place.
+// TODO(https://github.com/brave/brave-browser/issues/46940): Adding these
+// dumps in all places where this conversion is being done in this file to
+// better understand why this conversion is required in the first place, and
+// if we can completely eliminate them.
+std::string MakeChainIdLowerCase(std::string_view chain_id,
+                                 ToLowerCaseReason reason) {
+  if (!std::ranges::any_of(chain_id, base::IsAsciiUpper<char>)) {
+    return std::string(chain_id);
   }
 
-  return "";
+  // Only dumbing for M138 so it doesn't keep rolling if we forget about it
+  // (hopefully we won't though).
+  if (version_info::GetMajorVersionNumberAsInt() ==
+      base::to_underlying(base::NotFatalUntil::M138)) {
+    SCOPED_CRASH_KEY_STRING256("wallet", "MakeChainIdLowerCaseChain", chain_id);
+    switch (reason) {
+      case ToLowerCaseReason::kGetURLForKnownChainId:
+        base::debug::DumpWithoutCrashing();
+        break;
+      case ToLowerCaseReason::kGetCurrentChainIdFromPrefs:
+        base::debug::DumpWithoutCrashing();
+        break;
+      case ToLowerCaseReason::kIsEip1559Chain:
+        base::debug::DumpWithoutCrashing();
+        break;
+      case ToLowerCaseReason::kSetEip1559ForCustomChain:
+        base::debug::DumpWithoutCrashing();
+        break;
+      case ToLowerCaseReason::kGetHiddenNetworks:
+        base::debug::DumpWithoutCrashing();
+        break;
+      case ToLowerCaseReason::kAddHiddenNetwork:
+        base::debug::DumpWithoutCrashing();
+        break;
+    }
+  }
+
+  return base::ToLowerASCII(chain_id);
 }
 
 std::optional<GURL> GetURLForKnownChainId(std::string_view chain_id) {
-  auto subdomain = brave_wallet::GetChainSubdomain(chain_id);
-  if (subdomain.empty()) {
+  // TODO(https://github.com/brave/brave-browser/issues/46940): kChainSubdomains
+  // has a case-insensitive lookup. This conversion to lowercase is not
+  // necessary at all, but it is being kept here for the sake of checking if the
+  // conversion ever is needed to begin with.
+  auto chain_id_lower =
+      MakeChainIdLowerCase(chain_id, ToLowerCaseReason::kGetURLForKnownChainId);
+  const auto* subdomain =
+      base::FindOrNull(kChainSubdomains, std::string_view(chain_id_lower));
+  if (!subdomain) {
     return std::nullopt;
   }
-  return GURL(
-      base::StringPrintf("https://%s.wallet.brave.com", subdomain.c_str()));
+
+  return GURL(absl::StrFormat("https://%s.wallet.brave.com", *subdomain));
 }
 
 const mojom::NetworkInfo* GetEthMainnet() {
@@ -740,7 +793,8 @@ std::string GetCurrentChainIdFromPrefs(PrefService* prefs,
     return std::string();
   }
 
-  return base::ToLowerASCII(*chain_id);
+  return MakeChainIdLowerCase(*chain_id,
+                              ToLowerCaseReason::kGetCurrentChainIdFromPrefs);
 }
 
 std::string GetCurrentChainIdFromPrefs(
@@ -762,7 +816,8 @@ std::string GetCurrentChainIdFromPrefs(
     return GetCurrentChainIdFromPrefs(prefs, coin);
   }
 
-  return base::ToLowerASCII(*chain_id_str);
+  return MakeChainIdLowerCase(*chain_id_str,
+                              ToLowerCaseReason::kGetCurrentChainIdFromPrefs);
 }
 
 }  // namespace
@@ -1070,20 +1125,22 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllChains() {
   return result;
 }
 
-std::optional<bool> NetworkManager::IsEip1559Chain(
-
-    std::string_view chain_id) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
+bool NetworkManager::IsEip1559Chain(std::string_view chain_id) {
+  auto chain_id_lwr =
+      MakeChainIdLowerCase(chain_id, ToLowerCaseReason::kIsEip1559Chain);
   if (auto is_eip_1559 = prefs_->GetDict(kBraveWalletEip1559CustomChains)
                              .FindBool(chain_id_lwr)) {
     return is_eip_1559.value();
   }
-  return GetEip1559ForKnownChain(chain_id_lwr);
+  const auto* known_chain =
+      base::FindOrNull(kEip1559ForKnownChains, chain_id_lwr);
+  return known_chain ? *known_chain : false;
 }
 
 void NetworkManager::SetEip1559ForCustomChain(std::string_view chain_id,
                                               std::optional<bool> is_eip1559) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
+  auto chain_id_lwr = MakeChainIdLowerCase(
+      chain_id, ToLowerCaseReason::kSetEip1559ForCustomChain);
   ScopedDictPrefUpdate update(prefs_, kBraveWalletEip1559CustomChains);
   if (is_eip1559.has_value()) {
     update->Set(chain_id_lwr, is_eip1559.value());
@@ -1132,7 +1189,8 @@ std::vector<std::string> NetworkManager::GetHiddenNetworks(
 
   for (const auto& it : *hidden_networks_list) {
     if (auto* chain_id = it.GetIfString()) {
-      result.push_back(base::ToLowerASCII(*chain_id));
+      result.push_back(MakeChainIdLowerCase(
+          *chain_id, ToLowerCaseReason::kGetHiddenNetworks));
     }
   }
 
@@ -1143,7 +1201,8 @@ void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
                                       std::string_view chain_id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletHiddenNetworks);
   base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  std::string chain_id_lower =
+      MakeChainIdLowerCase(chain_id, ToLowerCaseReason::kAddHiddenNetwork);
   if (!base::Contains(*list, base::Value(chain_id_lower))) {
     list->Append(chain_id_lower);
   }
