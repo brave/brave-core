@@ -1054,44 +1054,29 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     return hasChanges
   }
 
-  /// Moves the stylesheet to the bottom of the page
-  const moveStyle = () => {
-    const styleElm = CC.cosmeticStyleSheet
-    const targetElm = document.body
-    styleElm.parentElement.removeChild(styleElm)
-    targetElm.appendChild(styleElm)
-  }
-
   /**
-   * Create a stylesheet and append it to the bottom of the body element.
+   * Create a CSSStyleSheet and append it to the document's adoptedStyleSheets.
    * The stylesheet is stored on `cosmeticStyleSheet` for future reference.
    */
   const createStylesheet = () => {
-    const targetElm = document.body
-    const styleElm = document.createElement('style')
-    styleElm.setAttribute('type', 'text/css')
-    targetElm.appendChild(styleElm)
-    CC.cosmeticStyleSheet = styleElm
-    // The previous `nextElementSibling` we moved our stylesheet below
-    let prevNextElementSibling = null;
+    const styleSheetElm = new CSSStyleSheet();
+    document.adoptedStyleSheets = [
+      ...document.adoptedStyleSheets,
+      styleSheetElm
+    ];
+    CC.cosmeticStyleSheet = styleSheetElm;
 
-    // Start a timer that moves the stylesheet down
+    // Poll every 1sec to see if our stylesheet was removed from
+    // adoptedStyleSheets and re-add if missing.
     window.setInterval(() => {
-      if (styleElm.nextElementSibling === null
-          || styleElm.parentElement !== targetElm) {
+      if (document.adoptedStyleSheets.includes(styleSheetElm)) {
         return
       }
-      if (styleElm.nextElementSibling !==  null) {
-        // if we already moved below this element
-        if (prevNextElementSibling === styleElm.nextElementSibling) {
-          // Avoid a loop where we are repeatedly swapping places with another
-          // element. This can happen with `darkreader` (night mode) for
-          // example and cause unwanted animations to repeat.
-          return
-        }
-        prevNextElementSibling = styleElm.nextElementSibling;
-      }
-      moveStyle()
+      // we were removed, re-add our styleSheetElm
+      document.adoptedStyleSheets = [
+        ...document.adoptedStyleSheets,
+        styleSheetElm
+      ];
     }, 1000)
   }
 
@@ -1114,7 +1099,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       return rule !== undefined && !rule.startsWith(':')
     }).join('')
 
-    CC.cosmeticStyleSheet.innerText = ruleText
+    CC.cosmeticStyleSheet.replaceSync(ruleText);
   }
 
   /**
