@@ -336,6 +336,11 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
 void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string& pref_name) {
 #if !BUILDFLAG(IS_IOS)
+  if (!base::FeatureList::IsEnabled(
+          features::kBraveNTPSuperReferralWallpaper)) {
+    return MarkThisInstallIsNotSuperReferralForever();
+  }
+
   DCHECK_EQ(kReferralPromoCode, pref_name);
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(6) << "Got referral promo code: " << new_referral_code;
