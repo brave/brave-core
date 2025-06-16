@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
@@ -70,5 +71,5 @@ BraveAccountDialogsUIConfig::BraveAccountDialogsUIConfig()
 
 bool BraveAccountDialogsUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return false;
+  return brave_account::features::IsBraveAccountEnabled();
 }

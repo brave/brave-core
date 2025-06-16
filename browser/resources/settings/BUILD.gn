@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/brave_account/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -87,6 +88,7 @@ preprocess_if_expr("preprocess") {
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_web_discovery_native=$enable_web_discovery_native",
+    "enable_brave_account=$enable_brave_account",
   ]
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"

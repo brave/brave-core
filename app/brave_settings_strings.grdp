@@ -26,20 +26,22 @@
     Get started
   </message>
 
-  <!-- <Brave Account Row> -->
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE" translateable="false" desc="Title of the Brave Account row in the Get Started section">
-    Sign in or create a Brave account
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION" translateable="false" desc="Description of the Brave Account row in the Get Started section">
-    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Entry' dialog">
-    Get started
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to their Brave Account settings">
-    Manage account
-  </message>
-  <!-- </Brave Account Row> -->
+  <if expr="enable_brave_account">
+    <!-- <Brave Account Row> -->
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE" translateable="false" desc="Title of the Brave Account row in the Get Started section">
+      Sign in or create a Brave account
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION" translateable="false" desc="Description of the Brave Account row in the Get Started section">
+      A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Entry' dialog">
+      Get started
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to their Brave Account settings">
+      Manage account
+    </message>
+    <!-- </Brave Account Row> -->
+  </if>
 
   <!-- Settings / Get started / Profile name and icon -->
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">

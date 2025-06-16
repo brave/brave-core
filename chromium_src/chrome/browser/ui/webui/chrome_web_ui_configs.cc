@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/buildflags.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
@@ -28,12 +29,15 @@
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui_config.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 #endif
 
 namespace {
@@ -86,7 +90,6 @@ void RegisterChromeWebUIConfigs() {
 #else   // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<NewTabTakeoverUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
-  map.AddWebUIConfig(std::make_unique<BraveAccountDialogsUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());
 
@@ -96,5 +99,11 @@ void RegisterChromeWebUIConfigs() {
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   map.AddWebUIConfig(std::make_unique<BraveEducationPageUIConfig>());
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    map.AddWebUIConfig(std::make_unique<BraveAccountDialogsUIConfig>());
+  }
 #endif
 }

@@ -31,6 +31,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -200,6 +201,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isEmailAliasesFeatureEnabled",
       base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+  html_source->AddBoolean("isBraveAccountEnabled",
+                          brave_account::features::IsBraveAccountEnabled());
 }
 
 // static

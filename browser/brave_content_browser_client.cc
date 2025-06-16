@@ -44,7 +44,6 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
-#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -60,6 +59,7 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_account/buildflags.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -243,7 +243,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -268,6 +267,14 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
+#include "brave/components/brave_account/features.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 namespace {
 
@@ -644,8 +651,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  registry.ForWebUI<BraveAccountDialogsUI>()
-      .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountDialogsUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
+#endif
 }
 
 std::optional<base::UnguessableToken>

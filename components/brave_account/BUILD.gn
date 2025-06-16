@@ -3,6 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_account/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_BRAVE_ACCOUNT=$enable_brave_account" ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
 source_set("brave_account") {
   sources = [ "brave_account_dialogs_ui_base.h" ]
 
