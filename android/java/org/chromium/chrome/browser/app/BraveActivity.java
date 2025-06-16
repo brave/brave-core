@@ -75,6 +75,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.customize_menu.CustomizableBraveMenu;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
@@ -504,7 +505,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
         } else if (id == R.id.brave_customize_menu_id) {
-            openCustomizeMenu();
+            CustomizableBraveMenu.openCustomizeMenuSettings(this);
         } else {
             return false;
         }
@@ -2133,11 +2134,6 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null) {
             BraveLeoUtils.openLeoUrlForTab(currentTab.getWebContents());
         }
-    }
-
-    private void openCustomizeMenu() {
-        // Temp toast - Make sure to remove it.
-        Toast.makeText(this, "Open customize menu", Toast.LENGTH_SHORT).show();
     }
 
     public void showRewardsPage() {
