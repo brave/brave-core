@@ -27,19 +27,22 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'site-list-entry': (templateContent) => {
-    let resetSite = templateContent.querySelector(
-      'cr-icon-button[id="resetSite"]'
-    )
-    if (!resetSite) {
-      console.error(
-        '[Brave Settings Overrides] Could not find reset site button'
-      )
+    const resetSiteTemplate = templateContent.querySelector(
+        'template[is="dom-if"][if="[[shouldShowResetButton_(model, readOnlyList)]]"]')
+    if (!resetSiteTemplate) {
+      console.error('[Settings] Could not find resetSite template')
       return
+    } else {
+      const resetSite = resetSiteTemplate.content.querySelector('#resetSite')
+      if (!resetSite) {
+        console.error('[Settings] Could not find reset site button')
+        return
+      }
+      resetSite.setAttribute('disabled', '[[shouldDisableReset_(model)]]')
+      resetSite.setAttribute('on-mouseenter', 'onResetSiteShowTooltip_')
+      resetSite.setAttribute('iron-icon', 'trash')
+      resetSite.removeAttribute('class')
     }
-    resetSite.setAttribute('disabled', '[[shouldDisableReset_(model)]]')
-    resetSite.setAttribute('on-mouseenter', 'onResetSiteShowTooltip_')
-    resetSite.setAttribute('iron-icon', 'trash')
-    resetSite.removeAttribute('class')
   }
 })
 

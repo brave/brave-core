@@ -37,14 +37,14 @@ class BraveProfileImportImpl : public brave::mojom::ProfileImport {
  private:
   // brave::mojom::ProfileImport overrides:
   void StartImport(
-      const importer::SourceProfile& source_profile,
+      const user_data_importer::SourceProfile& source_profile,
       uint16_t items,
       const base::flat_map<uint32_t, std::string>& localized_strings,
       mojo::PendingRemote<chrome::mojom::ProfileImportObserver> observer,
       mojo::PendingRemote<brave::mojom::ProfileImportObserver> brave_observer)
       override;
   void CancelImport() override;
-  void ReportImportItemFinished(importer::ImportItem item) override;
+  void ReportImportItemFinished(user_data_importer::ImportItem item) override;
 
   void ImporterCleanup();
 
@@ -55,7 +55,7 @@ class BraveProfileImportImpl : public brave::mojom::ProfileImport {
   // directly back to the ProfileImportProcessHost.
   scoped_refptr<BraveExternalProcessImporterBridge> bridge_;
 
-  // A bitmask of importer::ImportItem.
+  // A bitmask of user_data_importer::ImportItem.
   uint16_t items_to_import_ = 0;
 
   // Importer of the appropriate type (Firefox, Safari, IE, etc.)

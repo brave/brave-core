@@ -697,10 +697,10 @@ Brave is unable to recover your settings.
       </if>
         <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
           Brave isn't your default browser
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PIN_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser and can be pinned to the taskbar.">
-        Set Brave as your default browser and pin it to your taskbar
-      </message>
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_PIN_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser and can be pinned to the taskbar.">
+          Set Brave as your default browser and pin it to your taskbar
+        </message>
       <if expr="is_win or is_macosx">
         <message name="IDS_PDF_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the default PDF viewer.">
           Set Brave as your default PDF viewer
@@ -1002,18 +1002,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
           You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
-        </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_TITLE" desc="The title of the dialog to confirm adding a new work profile with the signed-in enterprise account">
-          Add Work Profile to this browser
-        </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
-          You are adding a work profile to this browser and giving your administrator control over just the work profile.
-        </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_ISOLATION_NOTICE" desc="Notice that work profiles are separated from any personal profile">
-          This work profile is completely separate from your personal profile.
-        </message>
-        <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_EXPLANATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
-          Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords, and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
         <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_KNOWN_DOMAIN_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
           Your organization, <ph name="MANAGER">$1<ex>manager.com</ex></ph>, requires you to sign into Brave
@@ -1779,6 +1767,18 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_SEARCH_LANGUAGE_PICKER_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the button that opens a searchbox on the language picker so the user can search through the defined languages to find one that matches the text they enter into the searchbox.">
           Search language list
         </message>
+        <message name="IDS_LENS_OVERLAY_TOP_LEFT_CORNER_SLIDER_ACCESSIBILITY_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the slider controlling the top left corner of the search area. Includes the coordinates of the left and top edges of the search area expressed as percentages of the image area.">
+          top left corner of search area: left <ph name="LEFT"><ex>15</ex>$1</ph>%, top <ph name="TOP"><ex>65</ex>$2</ph>%
+        </message>
+        <message name="IDS_LENS_OVERLAY_TOP_RIGHT_CORNER_SLIDER_ACCESSIBILITY_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the slider controlling the top right corner of the search area. Includes the coordinates of the right and top edges of the search area expressed as percentages of the image area.">
+          top right corner of search area: right <ph name="RIGHT"><ex>15</ex>$1</ph>%, top <ph name="TOP"><ex>65</ex>$2</ph>%
+        </message>
+        <message name="IDS_LENS_OVERLAY_BOTTOM_RIGHT_CORNER_SLIDER_ACCESSIBILITY_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the slider controlling the bottom right corner of the search area. Includes the coordinates of the right and bottom edges of the search area expressed as percentages of the image area.">
+          bottom right corner of search area: right <ph name="RIGHT"><ex>15</ex>$1</ph>%, bottom <ph name="BOTTOM"><ex>65</ex>$2</ph>%
+        </message>
+        <message name="IDS_LENS_OVERLAY_BOTTOM_LEFT_CORNER_SLIDER_ACCESSIBILITY_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the slider controlling the bottom left corner of the search area. Includes the coordinates of the left and bottom edges of the search area expressed as percentages of the image area.">
+          bottom left corner of search area: left <ph name="LEFT"><ex>15</ex>$1</ph>%, bottom <ph name="BOTTOM"><ex>65</ex>$2</ph>%
+        </message>
 
         <!-- IPH Strings -->
         <message name="IDS_LENS_OVERLAY_TRANSLATE_BUTTON_IPH" desc="Text that appears in the IPH toast informing the user about the availability of the new translate screen chip in the Lens Overlay that adds functionality to translate the entire screen.">
@@ -1793,6 +1793,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_CONTENT_LENS_OVERLAY_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox">
           Image Search
+        </message>
+        <message name="IDS_CONTENT_LENS_OVERLAY_HOMEWORK_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox offering homework help">
+          Homework help
         </message>
         <message name="IDS_SIDE_PANEL_LENS_OVERLAY_TOOLBAR_TOOLTIP" desc="The tooltip for the Lens overlay toolbar button.">
           Search with Image Search
@@ -2035,8 +2038,14 @@ Brave is unable to recover your settings.
         <message name="IDS_FRE_DEFAULT_BROWSER_TITLE" desc="Title for the page that prompts user to set Brave as their default browser in the first run experience.">
           Set Brave as your default browser
         </message>
+        <message name="IDS_FRE_DEFAULT_BROWSER_AND_PINNING_TITLE" desc="Title for the page that prompts user to set Brave as their default browser and pin to taskbar in the first run experience.">
+          Use Brave by default and get it pinned
+        </message>
         <message name="IDS_FRE_DEFAULT_BROWSER_SUBTITLE_NEW" desc="Subtitle for the page that prompts user to set Brave as their default browser in the first run experience.">
           Use Brave anytime you click links in messages, documents, and other apps
+        </message>
+        <message name="IDS_FRE_DEFAULT_BROWSER_AND_PINNING_SUBTITLE" desc="Subtitle for the page that prompts user to set Brave as their default browser and pin to taskbar in the first run experience.">
+          Open links in Brave from any app. Plus for easy access, it gets pinned to your taskbar.
         </message>
         <message name="IDS_FRE_DEFAULT_BROWSER_ILLUSTRATION_ALT_TEXT" desc="Alt text for the illustration in the page that prompts user to set Brave as their default browser.">
           Brave logo inside a computer screen.

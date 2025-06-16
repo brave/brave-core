@@ -162,21 +162,19 @@ public class CameraSource {
      * native code later (avoids a potential copy).
      */
     @SuppressWarnings("ArrayAsKeyOfSetOrMap")
-    private Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
+    private final Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
 
-    //==============================================================================================
+    // ============================================================================================
     // Builder
-    //==============================================================================================
+    // ============================================================================================
 
-    /**
-     * Builder for configuring and creating an associated camera source.
-     */
+    /** Builder for configuring and creating an associated camera source. */
     public static class Builder {
         private final Detector<?> mDetector;
-        private CameraSource mCameraSource = new CameraSource();
+        private final CameraSource mCameraSource = new CameraSource();
 
         /**
-         * Creates a camera source builder with the supplied context and detector.  Camera preview
+         * Creates a camera source builder with the supplied context and detector. Camera preview
          * images will be streamed to the associated detector upon starting the camera source.
          */
         public Builder(Context context, Detector<?> detector) {
@@ -851,13 +849,13 @@ public class CameraSource {
     }
 
     /**
-     * Stores a preview size and a corresponding same-aspect-ratio picture size.  To avoid distorted
+     * Stores a preview size and a corresponding same-aspect-ratio picture size. To avoid distorted
      * preview images on some devices, the picture size must be set to a size that is the same
-     * aspect ratio as the preview size or the preview may end up being distorted.  If the picture
+     * aspect ratio as the preview size or the preview may end up being distorted. If the picture
      * size is null, then there is no picture size with the same aspect ratio as the preview size.
      */
     private static class SizePair {
-        private Size mPreview;
+        private final Size mPreview;
         private Size mPicture;
 
         public SizePair(Camera.Size previewSize,
@@ -1051,17 +1049,17 @@ public class CameraSource {
 
     /**
      * This runnable controls access to the underlying receiver, calling it to process frames when
-     * available from the camera.  This is designed to run detection on frames as fast as possible
+     * available from the camera. This is designed to run detection on frames as fast as possible
      * (i.e., without unnecessary context switching or waiting on the next frame).
-     * <p/>
-     * While detection is running on a frame, new frames may be received from the camera.  As these
-     * frames come in, the most recent frame is held onto as pending.  As soon as detection and its
-     * associated processing are done for the previous frame, detection on the mostly recently
+     *
+     * <p>While detection is running on a frame, new frames may be received from the camera. As
+     * these frames come in, the most recent frame is held onto as pending. As soon as detection and
+     * its associated processing are done for the previous frame, detection on the mostly recently
      * received frame will immediately start on the same thread.
      */
     private class FrameProcessingRunnable implements Runnable {
         private Detector<?> mDetector;
-        private long mStartTimeMillis = SystemClock.elapsedRealtime();
+        private final long mStartTimeMillis = SystemClock.elapsedRealtime();
 
         // This lock guards all of the member variables below.
         private final Object mLock = new Object();

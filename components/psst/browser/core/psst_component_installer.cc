@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -39,7 +40,6 @@ namespace {
 //        |_ policy.js
 // See psst_rule.cc for the format of psst.json.
 
-constexpr size_t kHashSize = 32;
 constexpr char kPsstComponentName[] =
     "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
 constexpr char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
@@ -84,15 +84,15 @@ class PsstComponentInstallerPolicy
  private:
   const std::string component_id_;
   const std::string component_name_;
-  uint8_t component_hash_[kHashSize];
+  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
 PsstComponentInstallerPolicy::PsstComponentInstallerPolicy()
     : component_id_(kPsstComponentId), component_name_(kPsstComponentName) {
   // Generate hash from public key.
-  std::string decoded_public_key;
-  base::Base64Decode(kPsstComponentBase64PublicKey, &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
+  auto decoded_public_key = base::Base64Decode(kPsstComponentBase64PublicKey);
+  CHECK(decoded_public_key);
+  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
 }
 
 bool PsstComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
@@ -130,7 +130,7 @@ base::FilePath PsstComponentInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void PsstComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
+  *hash = base::ToVector(component_hash_);
 }
 
 std::string PsstComponentInstallerPolicy::GetName() const {

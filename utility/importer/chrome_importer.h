@@ -21,7 +21,9 @@
 #include "chrome/utility/importer/importer.h"
 #include "components/favicon_base/favicon_usage_data.h"
 
+namespace user_data_importer {
 struct ImportedBookmarkEntry;
+}  // namespace user_data_importer
 
 namespace sql {
 class Database;
@@ -34,7 +36,7 @@ class ChromeImporter : public Importer {
   ChromeImporter& operator=(const ChromeImporter&) = delete;
 
   // Importer:
-  void StartImport(const importer::SourceProfile& source_profile,
+  void StartImport(const user_data_importer::SourceProfile& source_profile,
                    uint16_t items,
                    ImporterBridge* bridge) override;
 
@@ -68,7 +70,7 @@ class ChromeImporter : public Importer {
       const base::Value::Dict* folder,
       const std::vector<std::u16string>& parent_path,
       bool is_in_toolbar,
-      std::vector<ImportedBookmarkEntry>* bookmarks);
+      std::vector<user_data_importer::ImportedBookmarkEntry>* bookmarks);
 
   std::u16string importer_name_;
 };

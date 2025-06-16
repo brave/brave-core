@@ -18,7 +18,7 @@ import os.log
 
 extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
-    tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
+    tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
     tab.playlist = .init(tab: tab)

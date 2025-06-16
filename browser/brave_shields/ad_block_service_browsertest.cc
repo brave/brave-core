@@ -17,7 +17,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
@@ -58,6 +57,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"

@@ -55,4 +55,44 @@
     <dimen name="new_tab_page_incognito_title_text_size">28sp</dimen>
     <dimen name="new_tab_page_incognito_logo_size">42sp</dimen>
     <dimen name="new_tab_page_incognito_icon_size">32sp</dimen>
+
+    <!-- Brave News cards-->
+    <dimen name="brave_news_ad_title_textsize">17sp</dimen>
+    <dimen name="brave_news_ad_desc_textsize">12sp</dimen>
+    <dimen name="brave_news_ad_button_textsize">13sp</dimen>
+    <dimen name="brave_news_more_offers_tablet_textsize">17sp</dimen>
+    <dimen name="brave_news_more_offers_phone_textsize">13sp</dimen>
+    <dimen name="brave_news_deals_top_textsize">17sp</dimen>
+    <dimen name="brave_news_publisher_group_top_textsize">20sp</dimen>
+    <dimen name="brave_news_category_group_top_textsize">26sp</dimen>
+    <dimen name="brave_news_deals_title_tablet_textsize">18sp</dimen>
+    <dimen name="brave_news_deals_title_phone_textsize">14sp</dimen>
+    <dimen name="brave_news_deals_desc_tablet_textsize">16sp</dimen>
+    <dimen name="brave_news_deals_desc_phone_textsize">12sp</dimen>
+    <dimen name="brave_news_headline_title_tablet_textsize">21sp</dimen>
+    <dimen name="brave_news_headline_title_phone_textsize">17sp</dimen>
+    <dimen name="brave_news_headline_desc_tablet_textsize">15sp</dimen>
+    <dimen name="brave_news_headline_desc_phone_textsize">11sp</dimen>
+    <dimen name="brave_news_headline_publisher_tablet_textsize">16sp</dimen>
+    <dimen name="brave_news_headline_publisher_phone_textsize">12sp</dimen>
+    <dimen name="brave_news_promoted_article_title_textsize">17sp</dimen>
+    <dimen name="brave_news_promoted_article_desc_textsize">11sp</dimen>
+    <dimen name="brave_news_promoted_article_promoted_textsize">12sp</dimen>
+    <dimen name="brave_news_promoted_article_publisher_textsize">12sp</dimen>
+    <dimen name="brave_news_headline_paired_title_tablet_textsize">17sp</dimen>
+    <dimen name="brave_news_headline_paired_title_phone_textsize">13sp</dimen>
+    <dimen name="brave_news_headline_paired_desc_tablet_textsize">15sp</dimen>
+    <dimen name="brave_news_headline_paired_desc_phone_textsize">11sp</dimen>
+    <dimen name="brave_news_headline_paired_publisher_tablet_textsize">16sp</dimen>
+    <dimen name="brave_news_headline_paired_publisher_phone_textsize">12sp</dimen>
+    <dimen name="brave_news_publisher_group_title_tablet_textsize">17sp</dimen>
+    <dimen name="brave_news_publisher_group_title_phone_textsize">15sp</dimen>
+    <dimen name="brave_news_publisher_group_desc_tablet_textsize">14sp</dimen>
+    <dimen name="brave_news_publisher_group_desc_phone_textsize">12sp</dimen>
+    <dimen name="brave_news_category_group_source_tablet_textsize">16sp</dimen>
+    <dimen name="brave_news_category_group_source_phone_textsize">12sp</dimen>
+    <dimen name="brave_news_category_group_title_tablet_textsize">17sp</dimen>
+    <dimen name="brave_news_category_group_title_phone_textsize">13sp</dimen>
+    <dimen name="brave_news_category_group_desc_tablet_textsize">15sp</dimen>
+    <dimen name="brave_news_category_group_desc_phone_textsize">11sp</dimen>
 </resources>

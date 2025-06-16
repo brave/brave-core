@@ -577,7 +577,7 @@ extension BrowserViewController {
   ) -> (any TabState)? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
-      isUserInitiated || braveCore.defaultHostContentSettings.popupsAllowed,
+      isUserInitiated || profileController.defaultHostContentSettings.popupsAllowed,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
       print("Denying popup from request: \(request); is user initiated: \(isUserInitiated)")
@@ -624,13 +624,15 @@ extension BrowserViewController {
         return mobile
       }
       return traitCollection.userInterfaceIdiom == .pad
-        && braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? desktop : mobile
+        && profileController.defaultHostContentSettings.defaultPageMode == .desktop
+        ? desktop : mobile
     case .desktop: return desktop
     case .mobile: return mobile
     }
   }
 
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
-    return braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? .desktop : .mobile
+    return profileController.defaultHostContentSettings.defaultPageMode == .desktop
+      ? .desktop : .mobile
   }
 }

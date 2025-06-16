@@ -113,9 +113,9 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
   NotifyListeners(/* updated_matches= */ true);
 }
 
-void LeoProvider::Stop(bool clear_cached_results, bool due_to_user_inactivity) {
+void LeoProvider::Stop(AutocompleteStopReason stop_reason) {
   matches_.clear();
-  AutocompleteProvider::Stop(clear_cached_results, due_to_user_inactivity);
+  AutocompleteProvider::Stop(stop_reason);
 }
 
 LeoProvider::~LeoProvider() = default;

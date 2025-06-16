@@ -30,8 +30,8 @@ import java.util.Locale;
 public class SolanaInstructionPresenter {
     public List<SolanaInstructionAccountPresenter> mAccountDatas;
     public boolean mIsUnknown;
-    private boolean isDecodedDataPresent;
-    private SolanaInstruction mSolanaInstruction;
+    private boolean mIsDecodedDataPresent;
+    private final SolanaInstruction mSolanaInstruction;
     private Integer mInstructionType;
     private String mFromPubKey;
     private String mToPubKey;
@@ -42,13 +42,13 @@ public class SolanaInstructionPresenter {
         mSolanaInstruction = solanaInstruction;
         mAccountDatas = new ArrayList<>();
         if (solanaInstruction.accountMetas != null && !mIsUnknown) {
-            isDecodedDataPresent = solanaInstruction.decodedData != null;
+            mIsDecodedDataPresent = solanaInstruction.decodedData != null;
             boolean isAccountParamsPresent =
-                    isDecodedDataPresent && solanaInstruction.decodedData.accountParams != null;
+                    mIsDecodedDataPresent && solanaInstruction.decodedData.accountParams != null;
             int accountParamLen =
                     isAccountParamsPresent ? solanaInstruction.decodedData.accountParams.length : 0;
             boolean isSignerPresent = false;
-            if (isDecodedDataPresent && isAccountParamsPresent) {
+            if (mIsDecodedDataPresent && isAccountParamsPresent) {
                 for (int i = 0; i < solanaInstruction.accountMetas.length; i++) {
                     SolanaAccountMeta solanaAccountMeta = solanaInstruction.accountMetas[i];
                     SolanaInstructionAccountParam solanaInstructionAccountParam = null;
@@ -180,7 +180,7 @@ public class SolanaInstructionPresenter {
 
     public List<TwoLineItemText> accountParamDataToList() {
         List<TwoLineItemText> twoLineItemDataSources = new ArrayList<>();
-        if (isDecodedDataPresent && mSolanaInstruction.decodedData.params != null) {
+        if (mIsDecodedDataPresent && mSolanaInstruction.decodedData.params != null) {
             for (SolanaInstructionParam instructionParam : mSolanaInstruction.decodedData.params) {
                 String value = instructionParam.value;
                 if (instructionParam.name.equalsIgnoreCase(WalletConstants.SOL_LAMPORTS)) {
@@ -212,7 +212,7 @@ public class SolanaInstructionPresenter {
 
     // Get lamport from decoded data params
     public String getLamportAmount() {
-        if (isDecodedDataPresent && mSolanaInstruction.decodedData.params != null) {
+        if (mIsDecodedDataPresent && mSolanaInstruction.decodedData.params != null) {
             for (SolanaInstructionParam instructionParam : mSolanaInstruction.decodedData.params) {
                 if (instructionParam.name.equalsIgnoreCase(WalletConstants.SOL_LAMPORTS)) {
                     return instructionParam.value;
@@ -224,7 +224,7 @@ public class SolanaInstructionPresenter {
 
     public Integer getInstructionType() {
         if (mInstructionType != null) return mInstructionType;
-        if (isDecodedDataPresent) {
+        if (mIsDecodedDataPresent) {
             mInstructionType = mSolanaInstruction.decodedData.instructionType;
             return mInstructionType;
         }
@@ -286,18 +286,18 @@ public class SolanaInstructionPresenter {
     }
 
     private boolean isAccountMetaPresent() {
-        return isDecodedDataPresent
+        return mIsDecodedDataPresent
                 && mSolanaInstruction.decodedData.accountParams != null
                 && mSolanaInstruction.accountMetas != null;
     }
 
     private static class SolanaInstructionAccountPresenter {
-        private String mPubKey;
-        private SolanaAccountMeta mSolanaAccountMeta;
-        private String mLocalizeAccountHeader;
+        private final String mPubKey;
+        private final SolanaAccountMeta mSolanaAccountMeta;
+        private final String mLocalizeAccountHeader;
 
         @SuppressWarnings("UnusedVariable")
-        private String mAccountHeader;
+        private final String mAccountHeader;
 
         private SolanaInstructionAccountPresenter(
                 String pubKey,

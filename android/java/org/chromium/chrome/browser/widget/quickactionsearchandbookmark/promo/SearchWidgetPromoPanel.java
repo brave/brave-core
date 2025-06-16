@@ -18,8 +18,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 
 public class SearchWidgetPromoPanel implements View.OnClickListener {
-    private PopupWindow mPopupWindow;
-    private Context mContext;
+    private final PopupWindow mPopupWindow;
+    private final Context mContext;
 
     public SearchWidgetPromoPanel(@NonNull Context context) {
         mContext = context;
@@ -33,15 +33,17 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
 
     @Override
     public void onClick(@NonNull View view) {
-        if (view.getId() == R.id.btAddWidget)
+        if (view.getId() == R.id.btAddWidget) {
             BraveSearchWidgetUtils.requestPinAppWidget();
-        else if (view.getId() == R.id.tvNotNow)
+        } else if (view.getId() == R.id.tvNotNow) {
             BraveSearchWidgetUtils.setShouldShowWidgetPromo(false);
+        }
         mPopupWindow.dismiss();
     }
 
     public void showIfNeeded(@NonNull View anchorView) {
-        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext))
+        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext)) {
             mPopupWindow.showAsDropDown(anchorView);
+        }
     }
 }

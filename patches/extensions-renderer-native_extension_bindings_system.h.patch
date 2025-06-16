@@ -1,5 +1,5 @@
 diff --git a/extensions/renderer/native_extension_bindings_system.h b/extensions/renderer/native_extension_bindings_system.h
-index 5010170d5e0e4c9054b1c9f87ad26bdc8700eb16..4b18d393e6fee5b21f0178dc67de8482b8a55a19 100644
+index 16553de1df6e1130c251a91f1d2698512c7c56d9..194a2b3fb6fb7347ce87a7646ccd6dba35a2c9eb 100644
 --- a/extensions/renderer/native_extension_bindings_system.h
 +++ b/extensions/renderer/native_extension_bindings_system.h
 @@ -50,6 +50,7 @@ class NativeExtensionBindingsSystem {

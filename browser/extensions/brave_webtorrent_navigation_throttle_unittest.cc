@@ -25,6 +25,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
@@ -49,12 +50,10 @@ class MockBrowserClient : public content::ContentBrowserClient {
 
   // Only construct an BraveWebTorrentNavigationThrottle so that we can test it
   // in isolation.
-  std::vector<std::unique_ptr<NavigationThrottle>> CreateThrottlesForNavigation(
-      content::NavigationHandle* handle) override {
-    std::vector<std::unique_ptr<NavigationThrottle>> throttles;
-    throttles.push_back(
-        std::make_unique<BraveWebTorrentNavigationThrottle>(handle));
-    return throttles;
+  void CreateThrottlesForNavigation(
+      content::NavigationThrottleRegistry& registry) override {
+    registry.AddThrottle(std::make_unique<BraveWebTorrentNavigationThrottle>(
+        &registry.GetNavigationHandle()));
   }
 };
 

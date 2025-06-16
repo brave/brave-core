@@ -188,7 +188,8 @@ class Patchfile:
                     raise e
 
                 # All other errors are considered broken patches.
-                if 'patch with only garbage' not in reason:
+                if ('patch with only garbage' not in reason
+                        and 'corrupt patch at line' not in reason):
                     # Not clear if we could have other reasons for broken
                     # patches, but it is better to flag it to keep an eye out
                     # for it.

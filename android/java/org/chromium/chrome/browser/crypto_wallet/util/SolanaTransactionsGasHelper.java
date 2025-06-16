@@ -16,8 +16,8 @@ import java.util.HashMap;
 
 public class SolanaTransactionsGasHelper {
     private final WeakReference<BraveWalletBaseActivity> mActivity;
-    private TransactionInfo[] mTransactionInfos;
-    private HashMap<String, Long> mPerTxFee;
+    private final TransactionInfo[] mTransactionInfos;
+    private final HashMap<String, Long> mPerTxFee;
 
     public SolanaTransactionsGasHelper(
             BraveWalletBaseActivity activity, TransactionInfo[] transactionInfos) {
@@ -59,11 +59,12 @@ public class SolanaTransactionsGasHelper {
             estimatesContext.txMetaId = txInfo.id;
             estimatesContexts.add(estimatesContext);
 
-            if (mActivity.get() != null)
+            if (mActivity.get() != null) {
                 mActivity
                         .get()
                         .getSolanaTxManagerProxy()
                         .getSolanaTxFeeEstimation(txInfo.chainId, txInfo.id, estimatesContext);
+            }
         }
 
         estimatesMultiResponse.setWhenAllCompletedAction(

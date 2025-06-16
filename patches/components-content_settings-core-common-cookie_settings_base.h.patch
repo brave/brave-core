@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index f833b36dd3d91fdc31aff2823284bab74d30cbb2..c2499b73d910903a402409ac44a840249934ec19 100644
+index 8cca39941c30e9bd119f569da4de1a9798894887..e9d2d4cd68d9e8057702254ec45dd47b9e364d7d 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
 @@ -79,7 +79,7 @@ class CookieSettingsBase {

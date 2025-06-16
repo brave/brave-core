@@ -1,11 +1,11 @@
 diff --git a/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc b/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
-index 6d4e5f7db77605c228b259663a2485f49fd826a4..5150a085715eac8c17e20893a586d8050a8e4970 100644
+index 39cf5f33c8a613f83ad60f07e3f7c4a96839d221..ac0cccc75f252a0d53df8f08010c7e3a01c101dc 100644
 --- a/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
 +++ b/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
-@@ -36,7 +36,7 @@ constexpr AddressImportRequirement kMinimumAddressRequirementViolations[] = {
- std::vector<autofill_metrics::AddressProfileImportRequirementMetric>
- ValidateProfileImportRequirements(const AutofillProfile& profile,
-                                   LogBuffer* import_log_buffer) {
+@@ -44,7 +44,7 @@ ValidateProfileImportRequirements(const AutofillProfile& profile,
+   SCOPED_CRASH_KEY_STRING32(
+       "Autofill", "countrycode",
+       base::UTF16ToUTF8(profile.GetInfo(ADDRESS_HOME_COUNTRY, "en-US")));
 -  CHECK(profile.HasInfo(ADDRESS_HOME_COUNTRY));
 +  if (!profile.HasInfo(ADDRESS_HOME_COUNTRY)) return {}; // NOTE(bsclifton): disabled with https://github.com/brave/brave-browser/issues/45546
  

@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -64,11 +63,8 @@ BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy()
     : component_id_(kBraveUserAgentExceptionsComponentId),
       component_name_(kBraveUserAgentExceptionsComponentName) {
   // Generate hash from public key.
-  std::string decoded_public_key;
-  base::Base64Decode(kBraveUserAgentExceptionsComponentBase64PublicKey,
-                     &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_.data(),
-                           component_hash_.size());
+  component_hash_ =
+      crypto::SHA256Hash(kBraveUserAgentExceptionsComponentPublicKey);
 }
 
 BraveUserAgentComponentInstallerPolicy::

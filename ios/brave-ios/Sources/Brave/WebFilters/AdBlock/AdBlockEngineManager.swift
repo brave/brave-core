@@ -458,7 +458,7 @@ import os
     }
   }
 
-  private func loadCachedInfo(
+  nonisolated private func loadCachedInfo(
     cacheFolderURL: URL
   ) async -> GroupedAdBlockEngine.FilterListGroup? {
     let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
