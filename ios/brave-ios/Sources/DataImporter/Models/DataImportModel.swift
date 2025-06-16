@@ -285,16 +285,54 @@ class DataImportModel: ObservableObject {
   }
 
   private func importProfile(_ profile: [String: URL]) async throws {
-    if let bookmarks = profile["Bookmarks"] {
-      try await importBookmarks(bookmarks)
+    // Safari localizes the file names.
+    // In Russian for example, "PaymentCards.csv", "Закладки.html", "История.json"
+    // So we need to enumerate all such files and `try` to import them.
+
+    let importFile = {
+      (files: [URL], doImport: (URL) async throws -> Void, error: Error) async throws -> Void in
+      for file in files {
+        do {
+          try await doImport(file)
+          return
+        } catch {
+          Logger.module.error("[DataImportModel] - Failed to import file: \(error)")
+        }
+      }
+
+      throw error
     }
 
-    if let history = profile["History"] {
-      try await importHistory(history)
+    // Try to import bookmarks
+    let bookmarks = profile.values.filter({ $0.pathExtension.lowercased() == "html" })
+    if !bookmarks.isEmpty {
+      try await importFile(bookmarks, importBookmarks, DataImportError.failedToImportBookmarks)
     }
 
-    if let passwords = profile["Passwords"] {
-      try await importPasswords(passwords)
+    // Try to import history
+    let history = profile.values.filter({ $0.pathExtension.lowercased() == "json" })
+    if !history.isEmpty {
+      try await importFile(history, importHistory, DataImportError.failedToImportHistory)
+    }
+
+    // Try to import passwords
+    let passwords = profile.values.filter({ $0.pathExtension.lowercased() == "csv" })
+    if !passwords.isEmpty {
+      for passwordFile in passwords {
+        do {
+          try await importPasswords(passwordFile)
+          return
+        } catch let error as DataImportError {
+          if case .failedToImportPasswords = error {
+            Logger.module.error("[DataImportModel] - Failed to import file: \(error)")
+            continue
+          }
+
+          throw error
+        }
+      }
+
+      throw DataImportError.failedToImportPasswords
     }
   }
 

@@ -107,12 +107,28 @@ public class BookmarksImportExportUtility {
         }
       }
 
-      let bookmarksFileURL = zipFileExtractedURL.appending(path: "Bookmarks")
-        .appendingPathExtension(
-          "html"
-        )
+      // File names in the zip file are localized, so we iterate all html files
+      // and try to import
+      let contents = try? await AsyncFileManager.default.contentsOfDirectory(
+        at: zipFileExtractedURL,
+        includingPropertiesForKeys: nil
+      )
+      let potentialBookmarksFiles =
+        contents?.filter { $0.pathExtension.lowercased() == "html" } ?? []
 
-      return await doImport(bookmarksFileURL, bookmarksFileURL.path)
+      // If there's no files to import, return true anyway
+      // as it is fine to have not export bookmarks in the zip file
+      if potentialBookmarksFiles.isEmpty {
+        return true
+      }
+
+      for bookmarksFileURL in potentialBookmarksFiles {
+        if await doImport(bookmarksFileURL, bookmarksFileURL.path) {
+          return true
+        }
+      }
+
+      return false
     }
 
     return await doImport(path, path.path)
