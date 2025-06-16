@@ -252,8 +252,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    public MVCListAdapter.ModelList buildMenuModelList(AppMenuHandler handler) {
-        MVCListAdapter.ModelList modelList = super.buildMenuModelList(handler);
+    public MVCListAdapter.ModelList buildMenuModelList() {
+        MVCListAdapter.ModelList modelList = super.buildMenuModelList();
 
         int menuGroup = getMenuGroup();
         if (menuGroup == MenuGroup.PAGE_MENU) {
