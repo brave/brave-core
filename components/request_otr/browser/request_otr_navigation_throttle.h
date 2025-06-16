@@ -40,7 +40,7 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
   RequestOTRNavigationThrottle& operator=(const RequestOTRNavigationThrottle&) =
       delete;
 
-  static std::unique_ptr<RequestOTRNavigationThrottle> MaybeCreateThrottleFor(
+  static void MaybeCreateAndAdd(
       content::NavigationThrottleRegistry& registry,
       RequestOTRService* request_otr_service,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,

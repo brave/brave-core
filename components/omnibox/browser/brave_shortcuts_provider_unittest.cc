@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"

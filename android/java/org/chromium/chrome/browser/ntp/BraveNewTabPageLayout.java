@@ -111,6 +111,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1185,7 +1186,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             Profile profile,
             WindowAndroid windowAndroid,
             boolean isTablet,
-            ObservableSupplier<Integer> tabStripHeightSupplier) {
+            ObservableSupplier<Integer> tabStripHeightSupplier,
+            Supplier<GURL> composeplateUrlSupplier) {
         super.initialize(
                 manager,
                 activity,
@@ -1199,7 +1201,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 profile,
                 windowAndroid,
                 isTablet,
-                tabStripHeightSupplier);
+                tabStripHeightSupplier,
+                composeplateUrlSupplier);
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mIsTablet = isTablet;

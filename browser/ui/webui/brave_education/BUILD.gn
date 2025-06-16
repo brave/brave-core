@@ -37,6 +37,7 @@ source_set("brave_education") {
     "//brave/browser/resources/brave_education:resources",
     "//brave/browser/ui/webui/brave_browser_command",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",

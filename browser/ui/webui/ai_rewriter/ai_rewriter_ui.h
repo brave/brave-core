@@ -33,7 +33,7 @@ namespace ai_rewriter {
 class AIRewriterUI : public ConstrainedWebDialogUI,
                      public mojom::AIRewriterPageHandler {
  public:
-  static constexpr std::string GetWebUIName() { return "AIRewriterPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "AIRewriterPanel"; }
 
   explicit AIRewriterUI(content::WebUI* web_ui);
   AIRewriterUI(const AIRewriterUI&) = delete;

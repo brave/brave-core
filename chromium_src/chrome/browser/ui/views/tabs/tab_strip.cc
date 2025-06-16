@@ -68,3 +68,7 @@ bool TabStrip::IsTabTiled(const Tab* tab) const {
 bool TabStrip::IsFirstTabInTile(const Tab* tab) const {
   return false;
 }
+
+const Browser* TabStrip::GetBrowser() const {
+  return controller_->GetBrowser();
+}

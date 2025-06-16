@@ -22,7 +22,8 @@ PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
   return std::make_unique<BravePrivacySandboxSettings>(
       std::make_unique<PrivacySandboxSettingsDelegate>(
           profile,
-          tpcd::experiment::ExperimentManagerImpl::GetForProfile(profile)),
+          tpcd::experiment::ExperimentManagerImpl::GetForProfile(profile),
+          GetSingletonPrivacySandboxCountries()),
       HostContentSettingsMapFactory::GetForProfile(profile),
       CookieSettingsFactory::GetForProfile(profile).get(),
       TrackingProtectionSettingsFactory::GetForProfile(profile),

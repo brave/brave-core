@@ -19,6 +19,12 @@ class PrerenderManager : public content::WebContentsUserData<PrerenderManager> {
 
   ~PrerenderManager() override;
 
+  // Calling this method will start prerendering a prewarm page. Prerendered
+  // page will close at the next call. Returns true if a new prerender is
+  // started.
+  // TODO(https://crbug.com/423465927): Decide a better timing to close.
+  bool StartPrewarmSearchResult();
+
   // Calling this method will lead to the cancellation of the previous prerender
   // if the given `canonical_search_url` differs from the ongoing one's.
   void StartPrerenderSearchResult(

@@ -1,0 +1,12 @@
+diff --git a/components/permissions/content_setting_permission_context_base.h b/components/permissions/content_setting_permission_context_base.h
+index 30bb4bcc559864fd253ab77c11808e3a6ba65fa5..ba3c24fec8e13bcc35541fc9511c310e9df72ce3 100644
+--- a/components/permissions/content_setting_permission_context_base.h
++++ b/components/permissions/content_setting_permission_context_base.h
+@@ -26,6 +26,7 @@ class ContentSettingPermissionContextBase : public PermissionContextBase {
+   void ResetPermission(const GURL& requesting_origin,
+                        const GURL& embedding_origin) override;
+ 
++  BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_
+  protected:
+   // Store the decided permission state. Virtual since the permission might be
+   // stored with different restrictions (for example for desktop notifications).

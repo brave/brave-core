@@ -24,40 +24,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
-// This method is overriden because otherwise we would have to call
-// `SetProfileIdentityInfo` a second time, and this leaves
-// `profile_background_container_`, and `heading_label_` dangling in
-// `ProfileMenuViewBase` for a while in between
-// `identity_info_container_->RemoveAllChildViews()` being called, and the new
-// pointers being assigned to those members.
-void BraveProfileMenuView::SetProfileIdentityInfo(
-    const ui::ImageModel& image_model,
-    const std::u16string& title,
-    const std::u16string& subtitle,
-    const gfx::VectorIcon* header_art_icon) {
-  // For non-guest sessions, we want to eliminate the subtitle
-  // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in"). In order to do that, we
-  // must fetch the desired title here so that we can pass it in along with the
-  // given subtitle below.
-  Profile* profile = browser()->profile();
-  std::u16string desired_title = title;
-  if (!profile->IsGuestSession()) {
-    ProfileAttributesEntry* profile_attributes =
-        g_browser_process->profile_manager()
-            ->GetProfileAttributesStorage()
-            .GetProfileAttributesWithPath(profile->GetPath());
-    desired_title = profile_attributes->GetName();
-  }
-
-  // We never show the profile name (displayed above the user avatar) nor the
-  // edit buttons, so pass in default values for those parameters.
-  ProfileMenuView::SetProfileIdentityInfo(image_model, title, subtitle,
-                                          header_art_icon);
-}
-
 // We don't want feature buttons to manage google account
 void BraveProfileMenuView::BuildFeatureButtons() {
-  Profile* profile = browser()->profile();
+  Profile* profile = browser().profile();
   int window_count = chrome::GetBrowserCount(profile);
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
     window_count += chrome::GetBrowserCount(
