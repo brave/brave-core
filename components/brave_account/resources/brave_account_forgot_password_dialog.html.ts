@@ -17,17 +17,25 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
-                   @input=${this.onEmailInput}>
-          <div class="label ${this.email.length !== 0 && !this.isEmailValid ?
-                              'error' : ''}">
+        <leo-input
+          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          @input=${this.onEmailInput}
+        >
+          <div
+            class="label ${this.email.length !== 0 && !this.isEmailValid
+              ? 'error'
+              : ''}"
+          >
             $i18n{braveAccountEmailInputLabel}
           </div>
         </leo-input>
       </div>
-        <leo-button slot="buttons" ?isDisabled=${!this.isEmailValid}>
-          $i18n{braveAccountResetPasswordButtonLabel}
-        </leo-button>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid}
+      >
+        $i18n{braveAccountResetPasswordButtonLabel}
+      </leo-button>
     </brave-account-dialog>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }

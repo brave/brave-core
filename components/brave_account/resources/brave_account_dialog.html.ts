@@ -13,31 +13,35 @@ export function getHtml(this: BraveAccountDialogElement) {
       <div class="navigation-buttons">
         <if expr="not is_android and not is_ios">
           ${this.showBackButton
-            ? html`<leo-button kind="plain-faint"
-                               size="tiny"
-                               @click=${() => this.fire('back-button-clicked')}>
-                     <leo-icon name="arrow-left"></leo-icon>
-                   </leo-button>`
+            ? html`<leo-button
+                kind="plain-faint"
+                size="tiny"
+                @click=${() => this.fire('back-button-clicked')}
+              >
+                <leo-icon name="arrow-left"></leo-icon>
+              </leo-button>`
             : nothing}
-          <leo-button kind="plain-faint"
-                      size="tiny"
-                      @click=${() => this.fire('close-button-clicked')}>
+          <leo-button
+            kind="plain-faint"
+            size="tiny"
+            @click=${() => this.fire('close-button-clicked')}
+          >
             <leo-icon name="close"></leo-icon>
           </leo-button>
-          </if>
-        </div>
-        <div class="logo"></div>
+        </if>
       </div>
-      <div class="body">
-        <div class="title-and-description">
-          <div class="title">${this.dialogTitle}</div>
-          <div class="description">${this.dialogDescription}</div>
-          ${this.alertMessage.length !== 0
-            ? html`<leo-alert>${this.alertMessage}</leo-alert>`
-            : nothing}
-        </div>
-        <slot name="inputs"></slot>
-        <div class="action-buttons">
+      <div class="logo"></div>
+    </div>
+    <div class="body">
+      <div class="title-and-description">
+        <div class="title">${this.dialogTitle}</div>
+        <div class="description">${this.dialogDescription}</div>
+        ${this.alertMessage.length !== 0
+          ? html`<leo-alert>${this.alertMessage}</leo-alert>`
+          : nothing}
+      </div>
+      <slot name="inputs"></slot>
+      <div class="action-buttons">
         <slot name="buttons"></slot>
         <if expr="is_android or is_ios">
           ${this.showBackButton
@@ -52,5 +56,5 @@ export function getHtml(this: BraveAccountDialogElement) {
       </div>
     </div>
     <slot name="footer"></slot>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }

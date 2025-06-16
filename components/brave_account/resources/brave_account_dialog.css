@@ -39,7 +39,7 @@ leo-icon {
   background-image: url('full_brave_brand.svg');
   background-size: cover;
   height: var(--leo-spacing-4xl);
-  width: calc(var(--leo-spacing-4xl) * 129/40);
+  width: calc(var(--leo-spacing-4xl) * 129 / 40);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,7 +49,8 @@ leo-icon {
 }
 
 .body {
-  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
+  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+    var(--leo-spacing-2xl);
 }
 
 .title-and-description {
@@ -68,7 +69,7 @@ leo-icon {
   font: var(--leo-font-default-regular);
 }
 
-:host ::slotted([slot=inputs]) {
+:host ::slotted([slot='inputs']) {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-2xl);

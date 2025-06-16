@@ -17,33 +17,47 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
-                   @input=${this.onEmailInput}>
-          <div class="label ${this.email.length !== 0 && !this.isEmailValid ?
-                              'error' : ''}">
+        <leo-input
+          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          @input=${this.onEmailInput}
+        >
+          <div
+            class="label ${this.email.length !== 0 && !this.isEmailValid
+              ? 'error'
+              : ''}"
+          >
             $i18n{braveAccountEmailInputLabel}
           </div>
         </leo-input>
-        <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
-                   type="password"
-                   @input=${this.onPasswordInput}>
+        <leo-input
+          placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
+          type="password"
+          @input=${this.onPasswordInput}
+        >
           <div class="password">
             <div class="label">$i18n{braveAccountPasswordInputLabel}</div>
-            <div class="forgot-password"
-                 @click=${() => this.fire('forgot-password-button-clicked')}>
+            <div
+              class="forgot-password"
+              @click=${() => this.fire('forgot-password-button-clicked')}
+            >
               $i18n{braveAccountForgotPasswordButtonLabel}
             </div>
           </div>
-          <leo-icon name="eye-off"
-                    slot="right-icon"
-                    @click=${onEyeIconClicked}>
+          <leo-icon
+            name="eye-off"
+            slot="right-icon"
+            @click=${onEyeIconClicked}
+          >
           </leo-icon>
         </leo-input>
       </div>
-        <leo-button slot="buttons" ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
-                    @click=${() => this.fire('sign-in-button-clicked')}>
-          $i18n{braveAccountSignInButtonLabel}
-        </leo-button>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
+        @click=${() => this.fire('sign-in-button-clicked')}
+      >
+        $i18n{braveAccountSignInButtonLabel}
+      </leo-button>
     </brave-account-dialog>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }
