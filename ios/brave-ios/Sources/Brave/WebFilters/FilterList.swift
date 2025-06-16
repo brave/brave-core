@@ -6,7 +6,7 @@
 import BraveCore
 import Foundation
 
-struct FilterList: Identifiable {
+struct FilterList: Identifiable, Equatable {
   var id: String { return entry.uuid }
   let order: Int
   let entry: AdblockFilterListCatalogEntry

@@ -2313,6 +2313,60 @@ extension Strings {
         comment: "Title for the quality settings view"
       )
 
+    public static let blockYoutubeRecommendationsTitle =
+      NSLocalizedString(
+        "settings.blockYoutubeRecommendationsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Block YouTube Recommended Content",
+        comment: "Title beside the toggle for blocking YouTube recommendations"
+      )
+
+    public static let blockYoutubeRecommendationsDesc =
+      NSLocalizedString(
+        "settings.blockYoutubeRecommendationsDesc",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Blocks the up next and end card elements on youtube.com",
+        comment: "Description beside the toggle for blocking YouTube recommendations"
+      )
+
+    public static let blockYouTubeDistractingElementsTitle =
+      NSLocalizedString(
+        "settings.blockYouTubeDistractingElementsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Block YouTube Distracting Elements",
+        comment: "Title beside the toggle for blocking YouTube distracting elements"
+      )
+
+    public static let blockYouTubeDistractingElementsDesc =
+      NSLocalizedString(
+        "settings.blockYouTubeDistractingElementsDesc",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Block YouTube Distracting Elements",
+        comment: "Description beside the toggle for blocking YouTube distracting elements"
+      )
+
+    public static let blockYouTubeShortsTitle =
+      NSLocalizedString(
+        "settings.blockYouTubeShortsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Block YouTube Shorts",
+        comment: "Title beside the toggle for blocking YouTube shorts"
+      )
+
+    public static let blockYouTubeShortsDesc =
+      NSLocalizedString(
+        "settings.blockYouTubeShortsDesc",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Blocks Shorts from the home page, trending page and search results on youtube.com",
+        comment: "Description beside the toggle for blocking YouTube shorts"
+      )
+
     public static let sendUsagePingTitle =
       NSLocalizedString(
         "settings.sendUsagePingTitle",

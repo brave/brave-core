@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry.h"
 
+#include "base/apple/foundation_util.h"
+#include "base/hash/hash.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
@@ -58,6 +60,41 @@
       brave::ns_to_vector<std::string>(self.platforms),
       base::SysNSStringToUTF8(self.componentId),
       base::SysNSStringToUTF8(self.base64PublicKey));
+}
+
+- (BOOL)isEqual:(nullable id)object {
+  if (!object ||
+      ![object isKindOfClass:[AdblockFilterListCatalogEntry class]]) {
+    return NO;
+  }
+
+  if (self == object) {
+    return YES;
+  }
+
+  auto* entry =
+      base::apple::ObjCCastStrict<AdblockFilterListCatalogEntry>(object);
+  return [self.uuid isEqualToString:entry.uuid] &&
+         [self.url isEqualToString:entry.url] &&
+         [self.title isEqualToString:entry.title] &&
+         [self.languages isEqual:entry.languages] &&
+         [self.supportURL isEqualToString:entry.supportURL] &&
+         [self.desc isEqualToString:entry.desc] &&
+         self.hidden == entry.hidden &&
+         self.defaultEnabled == entry.defaultEnabled &&
+         self.firstPartyProtections == entry.firstPartyProtections &&
+         self.permissionMask == entry.permissionMask &&
+         [self.platforms isEqual:entry.platforms] &&
+         [self.componentId isEqualToString:entry.componentId] &&
+         [self.base64PublicKey isEqualToString:entry.base64PublicKey];
+}
+
+- (NSUInteger)hash {
+  return base::HashCombine(
+      0ull, self.uuid.hash, self.url.hash, self.title.hash, self.languages.hash,
+      self.supportURL.hash, self.desc.hash, self.hidden, self.defaultEnabled,
+      self.firstPartyProtections, self.permissionMask, self.platforms.hash,
+      self.componentId.hash, self.base64PublicKey.hash);
 }
 
 @end
