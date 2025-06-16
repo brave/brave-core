@@ -11,6 +11,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import SecureLink from '$web-common/SecureLink'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { useBraveNews } from './shared/Context'
+import { NEWS_FEED_CLASS } from './Feed'
 
 import optInImage from './braveNewsLogo.svg'
 
@@ -67,7 +68,7 @@ export default function OptIn() {
   const { toggleBraveNewsOnNTP } = useBraveNews()
 
   return (
-    <Container data-theme='dark'>
+    <Container data-theme='dark' className={NEWS_FEED_CLASS}>
       <div className='graphic' />
       <h3>{getLocale('braveNewsIntroTitle')}</h3>
       <div>

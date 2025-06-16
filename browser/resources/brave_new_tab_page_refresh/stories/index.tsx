@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+import './news_mock'
 import './storybook_locale'
 
 import { NewTabProvider } from '../context/new_tab_context'

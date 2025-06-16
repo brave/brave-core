@@ -25,68 +25,9 @@ export type StringKey =
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
   'hideTopSitesLabel' |
-  'newsAddSourcesButtonLabel' |
-  'newsBackButtonLabel' |
-  'newsCaughtUpText' |
-  'newsChannelBrave' |
-  'newsChannelBusiness' |
-  'newsChannelCars' |
-  'newsChannelCelebrities' |
-  'newsChannelCrypto' |
-  'newsChannelCulture' |
-  'newsChannelEducation' |
-  'newsChannelEntertainment' |
-  'newsChannelFashion' |
-  'newsChannelFilmAndTV' |
-  'newsChannelFood' |
-  'newsChannelFun' |
-  'newsChannelGaming' |
-  'newsChannelHealth' |
-  'newsChannelHome' |
-  'newsChannelLifestyle' |
-  'newsChannelMusic' |
-  'newsChannelPolitics' |
-  'newsChannelRegionalNews' |
-  'newsChannelScience' |
-  'newsChannelSports' |
-  'newsChannelTravel' |
-  'newsChannelTechnology' |
-  'newsChannelTopNews' |
-  'newsChannelTopSources' |
-  'newsChannelUKNews' |
-  'newsChannelUSNews' |
-  'newsChannelWeather' |
-  'newsChannelWorldNews' |
-  'newsConnectionErrorText' |
-  'newsConnectionErrorTitle' |
-  'newsContentAvailableButtonLabel' |
-  'newsDiscoverTitle' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
-  'newsFeedAllTitle' |
-  'newsFeedChannelsTitle' |
-  'newsFeedFollowingTitle' |
-  'newsFeedPublishersTitle' |
-  'newsHidePublisherLabel' |
-  'newsNoArticlesText' |
-  'newsNoArticlesTitle' |
-  'newsNoFeedsText' |
-  'newsNoFeedsTitle' |
-  'newsNoMatchingFeedsText' |
-  'newsQueryTooShortText' |
-  'newsRefreshButtonLabel' |
-  'newsSearchFeedsButtonLabel' |
-  'newsSettingsChannelsTitle' |
-  'newsSettingsDiscoverTitle' |
-  'newsSettingsFollowingTitle' |
-  'newsSettingsPopularTitle' |
-  'newsSettingsQueryPlaceholder' |
-  'newsSettingsSourcesTitle' |
-  'newsSettingsSuggestionsText' |
-  'newsSettingsSuggestionsTitle' |
   'newsSettingsTitle' |
-  'newsUnfollowButtonLabel' |
-  'newsViewAllButtonLabel' |
   'newsWidgetTitle' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
@@ -113,7 +54,6 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
-  'showNewsWidgetLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesEarningText' |
@@ -159,9 +99,6 @@ export type StringKey =
   'vpnStatusDisconnecting' |
   'vpnWidgetTitle' |
   'widgetSettingsTitle'
-
-export type PluralStringKey =
-  'newsSourceCountText'
 
 export function getString(key: StringKey) {
   return getLocale(key)
