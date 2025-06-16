@@ -20,7 +20,6 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser/tor",
-    "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/constants",
     "//brave/components/tor",
     "//brave/components/tor:test_support",

@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -70,7 +69,6 @@ brave_browser_net_deps = [
   "//brave/components/brave_wallet/browser",
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/common:mojom",
-  "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/constants",
   "//brave/components/constants:brave_service_key_helper",
   "//brave/components/decentralized_dns/content",
@@ -107,16 +105,4 @@ brave_browser_net_deps = [
 
 if (enable_extensions) {
   brave_browser_net_deps += [ "//extensions/common:common_constants" ]
-}
-
-if (enable_brave_webtorrent) {
-  brave_browser_net_sources += [
-    "//brave/browser/net/brave_torrent_redirect_network_delegate_helper.cc",
-    "//brave/browser/net/brave_torrent_redirect_network_delegate_helper.h",
-  ]
-
-  brave_browser_net_deps += [
-    "//brave/components/brave_webtorrent/browser/",
-    "//extensions/browser",
-  ]
 }
