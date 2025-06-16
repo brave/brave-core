@@ -307,8 +307,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .shouldShowTranslateMenuItem(any(Tab.class));
 
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
-        MVCListAdapter.ModelList modelList =
-                mTabbedAppMenuPropertiesDelegate.getMenuItems(mAppMenuHandler);
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
         Integer[] expectedItems = {
             R.id.new_tab_menu_id,
@@ -340,8 +339,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         .withAutoDarkEnabled());
 
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
-        MVCListAdapter.ModelList modelList =
-                mTabbedAppMenuPropertiesDelegate.getMenuItems(mAppMenuHandler);
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
         List<Integer> expectedItems = new ArrayList<>();
 
