@@ -50,7 +50,8 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
         pref_service_.registry());
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*component_update_service=*/nullptr, &pref_service_);
+        /*variations_service*/ nullptr, /*component_update_service=*/nullptr,
+        &pref_service_);
     url_data_source_ = std::make_unique<NTPSponsoredRichMediaSource>(
         background_images_service_.get());
 

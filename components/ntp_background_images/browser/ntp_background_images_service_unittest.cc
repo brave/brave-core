@@ -12,7 +12,6 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -418,7 +417,6 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
     PrefRegistrySimple* const pref_registry = pref_service_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefs(pref_registry);
     brave::RegisterPrefsForBraveReferralsService(pref_registry);
-    brave_l10n::RegisterL10nLocalStatePrefs(pref_registry);
   }
 
   void TearDown() override {
@@ -429,7 +427,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
   void Init() {
     service_ = std::make_unique<NTPBackgroundImagesServiceForTesting>(
-        /*component_update_service=*/nullptr, &pref_service_);
+        /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
+        &pref_service_);
     service_->Init();
     service_->AddObserver(&observer_);
   }
