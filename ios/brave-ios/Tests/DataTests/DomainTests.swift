@@ -124,6 +124,47 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
   }
 
+  @MainActor func testAllDomainsWithShredLevelAppExit() {
+    // `.never` is default value
+    ShieldPreferences.shredLevel = .never
+    // Add some mock data
+    let appExitDomainURL = URL(string: "https://brave.com")!
+    let appExitDomain = Domain.getOrCreate(forUrl: appExitDomainURL, persistent: true)
+    appExitDomain.shredLevel = .appExit
+    let secureDomainURL = URL(string: "https://github.com")!
+    _ = Domain.getOrCreate(forUrl: secureDomainURL, persistent: true)
+
+    // Verify only `appExitDomain` is returned
+    let allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
+    XCTAssertEqual(
+      allDomainsWithShredLevelAppExit.first?.url,
+      appExitDomainURL.domainURL.absoluteString
+    )
+  }
+
+  @MainActor func testAllDomainsWithShredLevelAppExitGlobalPref() {
+    ShieldPreferences.shredLevel = .appExit
+    // Add some mock data
+    let domainURL = URL(string: "https://brave.com")!
+    let domain = Domain.getOrCreate(forUrl: domainURL, persistent: true)
+    domain.shredLevel = .appExit
+    // Add secure & insecure Domain object for same baseDomain, but set
+    // explicit shred level on secure version to verify explicit opt-out for
+    // baseDomain matches will be filtered out of default value shred level
+    // matches. See brave-browser#46560.
+    let insecureDomainURL = URL(string: "http://github.com")!
+    _ = Domain.getOrCreate(forUrl: insecureDomainURL, persistent: true)
+    let secureDomainURL = URL(string: "https://github.com")!
+    let secureDomain = Domain.getOrCreate(forUrl: secureDomainURL, persistent: true)
+    secureDomain.shredLevel = .never
+
+    // verify insecureDomain is filtered out because baseDomain matches
+    let allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.first?.url, "https://brave.com")
+  }
+
   func testWalletEthDappPermission() {
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
     let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
