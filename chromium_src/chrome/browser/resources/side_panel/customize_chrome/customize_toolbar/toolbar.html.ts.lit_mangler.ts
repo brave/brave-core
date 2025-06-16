@@ -107,3 +107,21 @@ mangle(
     lastEl.insertAdjacentElement('afterend', resetButton)
   } /* omit selector to access the top level node */,
 )
+
+// Insert close button to the sp-heading element
+mangle(
+  (element: DocumentFragment) => {
+    // Remove the "Choose which icons to show on the toolbar" text.
+    const el = element.querySelector('sp-heading')
+    if (!el) {
+      throw new Error('[Customize Chrome > Toolbar] sp-heading is gone.')
+    }
+
+    el.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+        <close-panel-button id="closeButton" iron-icon="close" slot="buttons" />`,
+    )
+  },
+  (template) => template.text.includes('sp-heading'),
+)
