@@ -73,6 +73,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
       GetTermsOfServiceUpdateRequiredCallback callback) override;
   void AcceptTermsOfServiceUpdate(
       AcceptTermsOfServiceUpdateCallback callback) override;
+  void GetSelfCustodyProviderInvites(
+      GetSelfCustodyProviderInvitesCallback callback) override;
   void GetSelfCustodyInviteDismissed(
       GetSelfCustodyInviteDismissedCallback callback) override;
   void DismissSelfCustodyInvite(
