@@ -43,6 +43,10 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if !BUILDFLAG(IS_LINUX)
+#include "base/test/scoped_feature_list.h"
+#endif  // !BUILDFLAG(IS_LINUX)
+
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -184,6 +188,11 @@ class ViewCounterServiceTest : public testing::Test {
   ~ViewCounterServiceTest() override = default;
 
   void SetUp() override {
+#if !BUILDFLAG(IS_LINUX)
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kBraveNTPSuperReferralWallpaper);
+#endif  // !BUILDFLAG(IS_LINUX)
+
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
@@ -424,6 +433,10 @@ class ViewCounterServiceTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+
+#if !BUILDFLAG(IS_LINUX)
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif  // !BUILDFLAG(IS_LINUX)
 
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
