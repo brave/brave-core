@@ -12,7 +12,6 @@ import { useBackgroundState, useBackgroundActions } from '../../context/backgrou
 import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
-import { optional } from '../../lib/optional'
 import { BackgroundTypePanel } from './background_type_panel'
 import { Link } from '../common/link'
 import formatMessage from '$web-common/formatMessage'
@@ -40,7 +39,7 @@ export function BackgroundPanel() {
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
   const [panelType, setPanelType] =
-    React.useState(optional<SelectedBackgroundType>())
+    React.useState<SelectedBackgroundType | null>(null)
   const [uploading, setUploading] = React.useState(false)
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ export function BackgroundPanel() {
   }, [selectedBackground, customBackgrounds])
 
   function setPanel(type?: SelectedBackgroundType) {
-    setPanelType(optional(type))
+    setPanelType(type ?? null)
   }
 
   function getTypePreviewValue(type: SelectedBackgroundType) {
@@ -125,11 +124,11 @@ export function BackgroundPanel() {
     }
   }
 
-  if (panelType.hasValue()) {
+  if (panelType !== null) {
     return (
       <div data-css-scope={style.scope}>
         <BackgroundTypePanel
-          backgroundType={panelType.value()}
+          backgroundType={panelType}
           renderUploadOption={() => (
             <button onClick={showCustomBackgroundChooser}>
               {renderUploadPreview()}

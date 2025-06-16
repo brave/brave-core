@@ -14,7 +14,6 @@ import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
 import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
-import { Optional } from '../../lib/optional'
 import { SafeImage } from '../common/safe_image'
 
 import { style } from './search_results.style'
@@ -65,7 +64,7 @@ export type ResultOption = URLResultOption | MatchResultOption
 
 interface Props {
   options: ResultOption[]
-  selectedOption: Optional<number>
+  selectedOption: number | null
   onOptionClick: (option: ResultOption, event: ClickEvent) => void
   onSearchSuggestionsEnabled: () => void
 }
@@ -121,7 +120,7 @@ export function SearchResults(props: Props) {
       {renderSearchSuggestionsPrompt()}
       <div className='result-options'>
         {options.map((option, index) => {
-          const isSelected = selectedOption.valueOr(-1) === index
+          const isSelected = (selectedOption ?? -1) === index
           const className = isSelected ? 'selected' : ''
           const onClick = (event: React.MouseEvent) => {
             props.onOptionClick(option, event)

@@ -114,15 +114,15 @@ export function RewardsWidget() {
           </div>
           <div className='balance'>
             {
-              balance.hasValue() && <>
+              balance !== null && <>
                 <span className='bat-amount'>
-                  {batAmountFormatter.format(balance.value())}
+                  {batAmountFormatter.format(balance)}
                 </span>
                 <span className='bat-label'>BAT</span>
                 <span className='exchange'>
                   ≈ {
                     exchangeAmountFormatter.format(
-                        balance.value() * exchangeRate)
+                        balance * exchangeRate)
                   } USD
                 </span>
               </>
