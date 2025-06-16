@@ -1141,6 +1141,14 @@ extension Strings {
     comment:
       "Action title for Switching to an existing tab for the suggestion item shown on the table list"
   )
+  public static let searchSuggestionOpenPlaylistActionTitle = NSLocalizedString(
+    "searchSuggestionOpenPlaylistActionTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Open in Playlist",
+    comment:
+      "Action title for open a playlist item in Playlist."
+  )
   public static let tabToolbarNotSecureTitle = NSLocalizedString(
     "tabToolbarNotSecureTitle",
     tableName: "BraveShared",
