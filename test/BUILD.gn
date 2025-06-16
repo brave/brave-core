@@ -61,6 +61,8 @@ static_library("brave_test_support_unit") {
     # via an override for testing_profile.{h,cc} for upstream tests to build.
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
+    "base/components_unit_test.cc",
+    "base/components_unit_test.h",
     "base/run_all_unittests.cc",
   ]
 
@@ -77,8 +79,10 @@ static_library("brave_test_support_unit") {
     ":test_support",
     "//brave/common",
     "//brave/components/constants",
+    "//chrome/browser/ui",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
+    "//content/public/common",
     "//mojo/core/embedder",
   ]
 
@@ -346,7 +350,7 @@ test("brave_unit_tests") {
 
   if (enable_psst) {
     deps += [
-      "//brave/browser/psst:unit_tests",
+      "//brave/components/psst/browser/content:unit_tests",
       "//brave/components/psst/browser/core:unit_tests",
     ]
   }

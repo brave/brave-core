@@ -10,21 +10,21 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/psst/browser/content/psst_scripts_handler.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-
-namespace content {
-class RenderFrameHost;
-}  // namespace content
 
 namespace psst {
 
 class MatchedRule;
 
-class PsstScriptsHandlerImpl : public PsstScriptsHandler {
+class PsstScriptsHandlerImpl
+    : public PsstTabWebContentsObserver::ScriptsHandler {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(::base::Value)>;
 

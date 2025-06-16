@@ -5,17 +5,11 @@
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
-#include <memory>
-#include <optional>
-
-#include "base/base64.h"
 #include "base/base64url.h"
-#include "base/containers/contains.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/psst/browser/content/psst_scripts_handler.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
@@ -26,7 +20,6 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -66,28 +59,13 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
 
-    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
     PsstRuleRegistry::GetInstance()->LoadRules(
         test_data_dir.AppendASCII("psst-component-data"));
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    PlatformBrowserTest::SetUpCommandLine(command_line);
-    mock_cert_verifier_.SetUpCommandLine(command_line);
-  }
-
-  void SetUpInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
-    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
-  }
-
-  void TearDownInProcessBrowserTestFixture() override {
-    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
@@ -98,10 +76,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
- private:
+ protected:
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
-  content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 // TESTS
@@ -179,6 +156,19 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+class PsstTabWebContentsObserverBrowserTestDisabled
+    : public PsstTabWebContentsObserverBrowserTest {
+ public:
+  PsstTabWebContentsObserverBrowserTestDisabled() {
+    feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTestDisabled,
+                       PsstTabWebContentsObserverNotCreated) {
+  ASSERT_TRUE(false);
 }
 
 }  // namespace psst

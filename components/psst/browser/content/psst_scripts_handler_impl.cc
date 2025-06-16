@@ -45,14 +45,6 @@ std::string GetScriptWithParams(const std::string& script,
 
 }  // namespace
 
-std::unique_ptr<PsstScriptsHandler> PsstScriptsHandler::Create(
-    content::WebContents* contents,
-    PrefService* prefs,
-    const int32_t world_id) {
-  return std::make_unique<PsstScriptsHandlerImpl>(
-      prefs, contents, contents->GetPrimaryMainFrame(), world_id);
-}
-
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     PrefService* prefs,
     content::WebContents* web_contents,
@@ -63,7 +55,8 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
       web_contents_(web_contents->GetWeakPtr()),
       world_id_(world_id) {
   CHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
-  CHECK(render_frame_host);
+  CHECK(render_frame_host_id_);
+  CHECK(web_contents_);
   CHECK(prefs_);
 }
 
