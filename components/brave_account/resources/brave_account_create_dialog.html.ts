@@ -16,61 +16,84 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
-                   showErrors
-                   @input=${this.onEmailInput}>
-          <div class="label ${this.email.length !== 0 && !this.isEmailValid
-                           || this.isEmailValid && this.isEmailBraveAlias ?
-                              'error' : ''}">
+        <leo-input
+          placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+          showErrors
+          @input=${this.onEmailInput}
+        >
+          <div
+            class="label ${(this.email.length !== 0 && !this.isEmailValid)
+            || (this.isEmailValid && this.isEmailBraveAlias)
+              ? 'error'
+              : ''}"
+          >
             $i18n{braveAccountEmailInputLabel}
           </div>
-          <div class="dropdown ${this.isEmailValid && this.isEmailBraveAlias ?
-                                 'visible' : ''}"
-               id="brave-alias-dropdown"
-               slot="errors">
+          <div
+            class="dropdown ${this.isEmailValid && this.isEmailBraveAlias
+              ? 'visible'
+              : ''}"
+            id="brave-alias-dropdown"
+            slot="errors"
+          >
             <leo-icon name="warning-triangle-filled"></leo-icon>
             <div>$i18n{braveAccountEmailInputErrorMessage}</div>
           </div>
         </leo-input>
-        <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
-                   showErrors
-                   type="password"
-                   @input=${this.onPasswordInput}>
+        <leo-input
+          placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
+          showErrors
+          type="password"
+          @input=${this.onPasswordInput}
+        >
           <div class="label">$i18n{braveAccountCreatePasswordInputLabel}</div>
-          <leo-icon name="eye-off"
-                    slot="right-icon"
-                    @click=${onEyeIconClicked}>
+          <leo-icon
+            name="eye-off"
+            slot="right-icon"
+            @click=${onEyeIconClicked}
+          >
           </leo-icon>
-          <div slot="errors" class="dropdown ${this.passwordStrength !== 0 ?
-                                               'visible' : ''}"
-                             id="password-dropdown">
+          <div
+            slot="errors"
+            class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
+            id="password-dropdown"
+          >
             <password-strength-meter strength=${this.passwordStrength}>
             </password-strength-meter>
           </div>
         </leo-input>
-        <leo-input placeholder="$i18n{braveAccountConfirmPasswordInputPlaceholder}"
-                   showErrors
-                   type="password"
-                   @input=${this.onConfirmPasswordInput}>
-          <div class="label ${this.passwordConfirmation.length !== 0
-                           && this.passwordConfirmation !== this.password ?
-                              'error' : ''}">
+        <leo-input
+          placeholder="$i18n{braveAccountConfirmPasswordInputPlaceholder}"
+          showErrors
+          type="password"
+          @input=${this.onConfirmPasswordInput}
+        >
+          <div
+            class="label ${this.passwordConfirmation.length !== 0
+            && this.passwordConfirmation !== this.password
+              ? 'error'
+              : ''}"
+          >
             $i18n{braveAccountConfirmPasswordInputLabel}
           </div>
-          <leo-icon name="eye-off"
-                    slot="right-icon"
-                    @click=${onEyeIconClicked}>
+          <leo-icon
+            name="eye-off"
+            slot="right-icon"
+            @click=${onEyeIconClicked}
+          >
           </leo-icon>
-          <div class="dropdown ${this.passwordConfirmation.length !== 0 ?
-                                 'visible' : ''}"
-               id="password-confirmation-dropdown"
-               slot="errors">
+          <div
+            class="dropdown ${this.passwordConfirmation.length !== 0
+              ? 'visible'
+              : ''}"
+            id="password-confirmation-dropdown"
+            slot="errors"
+          >
             <leo-icon name=${this.getIconName()}></leo-icon>
             <div>
               ${this.icon === 'check-circle-filled'
                 ? html`$i18n{braveAccountConfirmPasswordInputSuccessMessage}`
-                : html`$i18n{braveAccountConfirmPasswordInputErrorMessage}`
-              }
+                : html`$i18n{braveAccountConfirmPasswordInputErrorMessage}`}
             </div>
           </div>
         </leo-input>
@@ -78,14 +101,17 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
           <div>$i18nRaw{braveAccountConsentCheckboxLabel}</div>
         </leo-checkbox>
       </div>
-        <leo-button slot="buttons" ?isDisabled=${!this.isEmailValid
-                               || this.isEmailValid && this.isEmailBraveAlias
-                               || this.passwordStrength !== 100
-                               || this.passwordConfirmation !== this.password
-                               || !this.isCheckboxChecked}
-                    @click=${() => this.fire('create-account-button-clicked')}>
-          $i18n{braveAccountCreateAccountButtonLabel}
-        </leo-button>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid
+        || (this.isEmailValid && this.isEmailBraveAlias)
+        || this.passwordStrength !== 100
+        || this.passwordConfirmation !== this.password
+        || !this.isCheckboxChecked}
+        @click=${() => this.fire('create-account-button-clicked')}
+      >
+        $i18n{braveAccountCreateAccountButtonLabel}
+      </leo-button>
     </brave-account-dialog>
-  <!--_html_template_end_-->`
+    <!--_html_template_end_-->`
 }

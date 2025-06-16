@@ -8,13 +8,13 @@ import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   BraveAccountBrowserProxy,
-  BraveAccountBrowserProxyImpl
+  BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
 
-// @ts-ignore
+// @ts-expect-error
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
 
 class PasswordStrengthMeter extends CrLitElement {
@@ -32,17 +32,17 @@ class PasswordStrengthMeter extends CrLitElement {
         width: 100%;
       }
 
-      :host([category=Weak]) {
+      :host([category='Weak']) {
         --primary-color: var(--leo-color-systemfeedback-error-icon);
         --secondary-color: var(--leo-color-systemfeedback-error-background);
       }
 
-      :host([category=Medium]) {
+      :host([category='Medium']) {
         --primary-color: var(--leo-color-systemfeedback-warning-icon);
         --secondary-color: var(--leo-color-systemfeedback-warning-background);
       }
 
-      :host([category=Strong]) {
+      :host([category='Strong']) {
         --primary-color: var(--leo-color-systemfeedback-success-icon);
         --secondary-color: var(--leo-color-systemfeedback-success-background);
       }
@@ -74,10 +74,15 @@ class PasswordStrengthMeter extends CrLitElement {
   override render() {
     return html`
       <div class="bar">
-        <div class="strength" style="--strength: ${this.strength}"></div>
+        <div
+          class="strength"
+          style="--strength: ${this.strength}"
+        ></div>
       </div>
       <div class="text">
-        ${loadTimeData.getString(`braveAccountPasswordStrengthMeter${this.category}`)}
+        ${loadTimeData.getString(
+          `braveAccountPasswordStrengthMeter${this.category}`,
+        )}
       </div>
     `
   }
@@ -91,11 +96,8 @@ class PasswordStrengthMeter extends CrLitElement {
 
   override updated(changedProperties: Map<PropertyKey, unknown>) {
     if (changedProperties.has('strength')) {
-      this.category = this.strength < 60
-        ? 'Weak'
-        : this.strength < 100
-          ? 'Medium'
-          : 'Strong'
+      this.category =
+        this.strength < 60 ? 'Weak' : this.strength < 100 ? 'Medium' : 'Strong'
     }
   }
 
@@ -109,8 +111,7 @@ declare global {
   }
 }
 
-customElements.define(
-  PasswordStrengthMeter.is, PasswordStrengthMeter)
+customElements.define(PasswordStrengthMeter.is, PasswordStrengthMeter)
 
 export class BraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
@@ -140,15 +141,17 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   protected onEmailInput(detail: { value: string }) {
     this.email = detail.value.trim()
     this.isEmailValid = isEmailValid(this.email)
-    this.isEmailBraveAlias = (/@bravealias\.com$/i).test(this.email)
+    this.isEmailBraveAlias = /@bravealias\.com$/i.test(this.email)
   }
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.browserProxy.password_strength_meter.getPasswordStrength(this.password).then(
-      (value: { strength: number }) =>
-        this.passwordStrength = value.strength
-    )
+    this.browserProxy.password_strength_meter
+      .getPasswordStrength(this.password)
+      .then(
+        (value: { strength: number }) =>
+          (this.passwordStrength = value.strength),
+      )
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -164,9 +167,10 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   // a workaround is not needed.
   protected getIconName() {
     if (this.passwordConfirmation.length !== 0) {
-      this.icon = this.passwordConfirmation === this.password
-        ? 'check-circle-filled'
-        : 'warning-triangle-filled'
+      this.icon =
+        this.passwordConfirmation === this.password
+          ? 'check-circle-filled'
+          : 'warning-triangle-filled'
     }
 
     return this.icon
@@ -188,12 +192,11 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'brave-account-create-dialog':
-    BraveAccountCreateDialogElement
+    'brave-account-create-dialog': BraveAccountCreateDialogElement
   }
 }
 
 customElements.define(
   BraveAccountCreateDialogElement.is,
-  BraveAccountCreateDialogElement
+  BraveAccountCreateDialogElement,
 )
