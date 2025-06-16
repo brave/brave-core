@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
@@ -40,7 +41,7 @@
 
 namespace {
 
-static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
+constexpr auto kVettedSearchEngines = base::MakeFixedFlatSet<std::string_view>(
     {"duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia",
      "brave"});
 
@@ -150,11 +151,11 @@ bool IsVettedSearchEngine(const GURL& url) {
       url, net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   if (domain_and_registry.length() > registry_len + 1) {
-    std::string host = domain_and_registry.substr(
-        0, domain_and_registry.length() - registry_len - 1);
-    for (size_t i = 0; i < g_vetted_search_engines->size(); i++) {
-      if ((*g_vetted_search_engines)[i] == host)
-        return true;
+    std::string_view host =
+        std::string_view(domain_and_registry)
+            .substr(0, domain_and_registry.length() - registry_len - 1);
+    if (kVettedSearchEngines.contains(host)) {
+      return true;
     }
   }
 
