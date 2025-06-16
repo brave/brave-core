@@ -67,6 +67,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       requestOTRAction_: String,
+      isWindowsRecallAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: () => {
+          return loadTimeData.getBoolean('isWindowsRecallAvailable')
+        }
+      },
     }
   }
 
@@ -76,11 +83,16 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   private declare isRequestOTRFeatureEnabled_: boolean
   private declare requestOTRActions_: Object[]
   private declare requestOTRAction_: String
+  private declare isWindowsRecallAvailable_: boolean
 
   browserProxy_: BravePrivacyBrowserProxy = BravePrivacyBrowserProxyImpl.getInstance()
 
   shouldShowRestart_(enabled: boolean) {
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup()
+  }
+
+  shouldShowRestartWindowsRecall_(disabled: boolean) {
+    return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
   }
 
   restartBrowser_(e: Event) {
