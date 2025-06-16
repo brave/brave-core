@@ -4,9 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 
 source_set("youtube_script_injector") {
   sources = [
+    "brave_youtube_script_injector_native_helper.cc",
+    "brave_youtube_script_injector_native_helper.h",
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
   ]
@@ -16,9 +19,12 @@ source_set("youtube_script_injector") {
   deps = [
     ":features",
     "//base",
+    "//brave/browser/android/youtube_script_injector:jni_headers",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/constants",
+    "//brave/components/script_injector/common/mojom",
     "//chrome/browser/profiles:profile",
+    "//chrome/common",
     "//components/prefs",
     "//net",
     "//url",
@@ -35,9 +41,15 @@ source_set("features") {
 }
 
 source_set("browser_tests") {
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  defines = [
+    "HAS_OUT_OF_PROC_TEST_RUNNER",
+    "BRAVE_JNI_UNUSED_FOR_TESTS",
+  ]
   testonly = true
-  sources = [ "youtube_script_injector_tab_helper_browsertest.cc" ]
+  sources = [
+    "brave_youtube_script_injector_native_helper_browsertest.cc",
+    "youtube_script_injector_tab_helper_browsertest.cc",
+  ]
 
   deps = [
     ":features",
@@ -47,6 +59,21 @@ source_set("browser_tests") {
     "//chrome/test:test_support",
     "//net:test_support",
     "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+generate_jni("jni_headers") {
+  sources = [ "java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "youtube_script_injector_tab_helper_unittest.cc" ]
+
+  deps = [
+    ":youtube_script_injector",
+    "//base/test:test_support",
     "//testing/gtest",
   ]
 }
