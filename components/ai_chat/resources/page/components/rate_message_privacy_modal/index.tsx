@@ -49,7 +49,7 @@ export default function RateMessagePrivacyModal() {
         slot='title'
         className={styles.dialogTitle}
       >
-        {getLocale(S.CHAT_UI_PRIVACY_TITLE)}
+        {getLocale(S.CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_TITLE)}
       </div>
       <div className={styles.description}>
         <span>
