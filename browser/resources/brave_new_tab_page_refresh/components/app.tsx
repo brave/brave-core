@@ -13,12 +13,18 @@ import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
 import { WidgetStack } from './widgets/widget_stack'
+import { NewsFeed } from './news/news_feed'
+import useMediaQuery from '$web-common/useMediaQuery'
 
-import { style } from './app.style'
+import { style, threeColumnBreakpoint } from './app.style'
+
+const threeColumnQuery = `(width > ${threeColumnBreakpoint})`
 
 export function App() {
   const [settingsView, setSettingsView] =
     React.useState<SettingsView | null>(null)
+
+  const threeColumnWidth = useMediaQuery(threeColumnQuery)
 
   React.useEffect(() => {
     const params = new URLSearchParams(location.search)
@@ -26,13 +32,14 @@ export function App() {
     if (settingsArg === null) {
       return
     }
-    setSettingsView('background')
+    setSettingsView(settingsArg === 'BraveNews' ? 'news' : 'background')
     history.pushState(null, '', '/')
   }, [])
 
   return (
     <div data-css-scope={style.scope}>
       <Background />
+      <div className='background-filter allow-background-pointer-events' />
       <div className='top-controls'>
         <button
           className='clock'
@@ -61,10 +68,20 @@ export function App() {
           <BackgroundCaption />
         </div>
         <div className='widget-container'>
-          <WidgetStack name='left' tabs={['stats']} />
+          {
+            threeColumnWidth ?
+              <>
+                <WidgetStack name='left' tabs={['stats']} />
+                <WidgetStack name='center' tabs={['news']} />
+              </> :
+              <WidgetStack name='left' tabs={['stats', 'news']} />
+          }
           <WidgetStack name='right' tabs={['vpn', 'rewards', 'talk']} />
         </div>
       </main>
+      <div className='news-container'>
+        <NewsFeed />
+      </div>
       <SettingsModal
         isOpen={settingsView !== null}
         initialView={settingsView}

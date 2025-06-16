@@ -40,5 +40,8 @@ export const style = scoped.css`
     max-height: var(--widget-height, unset);
     overflow-y: auto;
     scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 `

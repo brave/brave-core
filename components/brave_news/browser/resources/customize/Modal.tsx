@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import ProgressRing from '@brave/leo/react/progressRing'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
@@ -11,17 +12,18 @@ import { useBraveNews } from '../shared/Context'
 const Configure = React.lazy(() => import('./Configure'))
 
 const Dialog = styled.dialog`
-  font-family: ${p => p.theme.fontFamily.body};
+  font: ${font.default.regular};
   border-radius: 8px;
   border: none;
+  margin: auto;
   width: min(100vw, 1049px);
   height: min(100vh, 712px);
   z-index: 1000;
   background: white;
   overflow: hidden;
   padding: 0;
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
+  background-color: ${color.container.background};
+  color:  ${color.text.primary};
 `
 
 const Loading = styled.div`

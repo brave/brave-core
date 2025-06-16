@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 import { useNewTabState } from '../../context/new_tab_context'
 import { useRewardsState } from '../../context/rewards_context'
 import { useVpnState } from '../../context/vpn_context'
@@ -14,10 +15,11 @@ import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
 import { VpnWidget } from './vpn_widget'
 import { StatsWidget } from './stats_widget'
+import { NewsWidget } from './news_widget'
 
 import { style } from './widget_stack.style'
 
-type TabName = 'rewards' | 'talk' | 'vpn' | 'stats'
+type TabName = 'rewards' | 'talk' | 'vpn' | 'stats' | 'news'
 
 interface Props {
   name: string
@@ -31,6 +33,7 @@ export function WidgetStack(props: Props) {
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
+  const showNews = useBraveNews().isShowOnNTPPrefEnabled
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
@@ -41,6 +44,7 @@ export function WidgetStack(props: Props) {
         case 'talk': return showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
         case 'stats': return showShieldsStats
+        case 'news': return showNews
       }
     })
   }, [
@@ -50,11 +54,11 @@ export function WidgetStack(props: Props) {
     showRewardsWidget,
     vpnFeatureEnabled,
     showVpnWidget,
-    showShieldsStats
+    showShieldsStats,
+    showNews
   ])
 
   React.useEffect(() => {
-    storeCurrentTab(props.name, currentTab)
     if (currentTab && !visibleTabs.includes(currentTab)) {
       setCurrentTab(null)
     }
@@ -65,7 +69,10 @@ export function WidgetStack(props: Props) {
       <button
         key={tab}
         className={tab === activeTab ? 'active' : ''}
-        onClick={() => setCurrentTab(tab)}
+        onClick={() => {
+          storeCurrentTab(props.name, tab)
+          setCurrentTab(tab)
+        }}
       >
         {renderProductIcon(tab)}
       </button>
@@ -78,6 +85,7 @@ export function WidgetStack(props: Props) {
       case 'talk': return <Icon name='product-brave-talk' />
       case 'vpn': return <Icon name='product-vpn' />
       case 'stats': return <Icon name='bar-chart' />
+      case 'news': return <Icon name='product-brave-news' />
     }
   }
 
@@ -87,6 +95,7 @@ export function WidgetStack(props: Props) {
       case 'talk': return <TalkWidget />
       case 'vpn': return <VpnWidget />
       case 'stats': return <StatsWidget />
+      case 'news': return <NewsWidget />
     }
   }
 
@@ -124,6 +133,7 @@ function tabNameIdentity(tabName: TabName): TabName {
     case 'rewards':
     case 'talk':
     case 'stats':
+    case 'news':
       return tabName
   }
 }
