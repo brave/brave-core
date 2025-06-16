@@ -275,8 +275,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bytes"
-version = "1.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "1.10.1"
 
 [[package]]
 name = "cbc"
@@ -2497,7 +2496,3 @@ dependencies = [
  "memuse",
  "subtle",
 ]
-
-[[patch.unused]]
-name = "anyhow"
-version = "1.0.98"
