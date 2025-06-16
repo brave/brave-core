@@ -185,7 +185,7 @@ provideStrings({
   braveWalletWelcomeImportWalletDescription: 'Import your existing wallet.',
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
   braveWalletCopyright:
-    '©2024 Brave Software Inc. Brave and the Brave logo are registered '
+    '©2025 Brave Software Inc. Brave and the Brave logo are registered '
     + 'trademarks of Brave Software, Inc. Other product names and logos may be '
     + 'trademarks of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
