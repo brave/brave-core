@@ -27,6 +27,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.brave.browser.customize_menu.CustomizableBraveMenu;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -69,7 +70,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
-    private @MonotonicNonNull Menu mMenu;
+    private @MonotonicNonNull CustomizableBraveMenu mMenu;
     private final AppMenuDelegate mAppMenuDelegate;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
@@ -116,7 +117,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         maybeReplaceIcons(menu);
 
-        mMenu = menu;
+        mMenu = new CustomizableBraveMenu(menu);
 
         if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
@@ -190,7 +191,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // To make logic simple, below three items are added whenever menu gets visible
         // and removed when menu is dismissed.
 
-        if (!shouldShowPageMenu()) return;
+        if (!shouldShowPageMenu()) {
+            mMenu.applyCustomization();
+            return;
+        }
 
         if (isMenuButtonInBottomToolbar()) {
             // Do not show icon row on top when menu itself is on bottom
@@ -351,6 +355,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 hasItemBetweenDividers = true;
             }
         }
+
+        mMenu.applyCustomization();
     }
 
     @Override
