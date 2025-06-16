@@ -9,16 +9,27 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/customize_menu/CustomizableBraveMenu.java",
     "java/src/org/chromium/brave/browser/customize_menu/settings/CustomizeMenuPreferenceFragment.java",
+    "java/src/org/chromium/brave/browser/customize_menu/settings/CustomizeMenuPreference.java",
   ]
 
   deps = [
+    ":java_resources",
     "//base:base_java",
     "//brave/build/android:android_brave_strings_grd",
     "//chrome/browser/preferences:java",
     "//chrome/browser/settings:java",
     "//components/browser_ui/settings/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
   ]
 
   resources_package = "org.chromium.brave.browser.customize_menu"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/xml/brave_customize_menu_preferences.xml",
+    "java/res/layout/customize_menu_preference_layout.xml",
+  ]
 }

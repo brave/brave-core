@@ -12,6 +12,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.customize_menu.R;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 /**
  * Customize menu preference settings fragment where a user can toggle the visibility of supported
@@ -30,7 +31,9 @@ public class CustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment 
     }
 
     @Override
-    public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {}
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_customize_menu_preferences);
+    }
 
     @Override
     public ObservableSupplier<String> getPageTitle() {
