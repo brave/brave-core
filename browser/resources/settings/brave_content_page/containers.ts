@@ -8,7 +8,10 @@ import {
   PropertyValues,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
-import { Container } from '../containers.mojom-webui.js'
+import {
+  Container,
+  ContainerOperationError,
+} from '../containers.mojom-webui.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
@@ -45,11 +48,14 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       deletingContainer_: {
         type: Object,
       },
-      isRemoving_: {
-        type: Boolean,
-      },
       isEditDialogNameInvalid_: {
         type: Boolean,
+      },
+      editDialogError_: {
+        type: String,
+      },
+      deleteDialogError_: {
+        type: String,
       },
     }
   }
@@ -58,8 +64,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   accessor containersList_: Container[] = []
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
-  accessor isRemoving_ = false
   accessor isEditDialogNameInvalid_ = false
+  accessor editDialogError_: string | undefined
+  accessor deleteDialogError_: string | undefined
 
   override connectedCallback() {
     super.connectedCallback()
@@ -71,52 +78,32 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     )
   }
 
-  override updated(changedProperties: PropertyValues<this>) {
-    super.updated(changedProperties)
-    if (changedProperties.has('isRemoving_')) {
-      this.onIsRemovingChanged_(this.isRemoving_)
-    }
-  }
-
   onContainersListUpdated_(containers: Container[]) {
     this.containersList_ = containers
-    if (
-      this.editingContainer_
-      && this.editingContainer_.id
-      && !containers.some((c) => c.id === this.editingContainer_?.id)
-    ) {
-      this.editingContainer_ = undefined
-    }
-    if (
-      this.deletingContainer_
-      && !containers.some((c) => c.id === this.deletingContainer_?.id)
-    ) {
-      this.deletingContainer_ = undefined
-      this.isRemoving_ = false
-    }
   }
 
   onAddContainerClick_() {
     this.editingContainer_ = { id: '', name: '' }
+    this.editDialogError_ = undefined
   }
 
   onEditContainerClick_(e: Event) {
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
     this.editingContainer_ = this.containersList_.find((c) => c.id === id)
+    this.editDialogError_ = undefined
   }
 
   onDeleteContainerClick_(e: Event) {
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
     this.deletingContainer_ = this.containersList_.find((c) => c.id === id)
+    this.deleteDialogError_ = undefined
   }
 
   onCancelDialog_() {
     this.editingContainer_ = undefined
-    if (!this.isRemoving_) {
-      this.deletingContainer_ = undefined
-    }
+    this.deletingContainer_ = undefined
   }
 
   onContainerNameInput_(e: InputEvent) {
@@ -129,22 +116,38 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.isEditDialogNameInvalid_ = input.invalid
   }
 
-  onSaveContainerFromDialog_() {
+  async onSaveContainerFromDialog_() {
     assert(this.editingContainer_)
-    this.browserProxy.handler.addOrUpdateContainer(this.editingContainer_)
-    this.editingContainer_ = undefined
+    if (!this.editingContainer_.id) {
+      const { error } = await this.browserProxy.handler.addContainer(
+        this.editingContainer_,
+      )
+      if (!error) {
+        this.editingContainer_ = undefined
+      } else {
+        this.editDialogError_ = this.formatError_(error)
+      }
+    } else {
+      const { error } = await this.browserProxy.handler.updateContainer(
+        this.editingContainer_,
+      )
+      if (!error) {
+        this.editingContainer_ = undefined
+      } else {
+        this.editDialogError_ = this.formatError_(error)
+      }
+    }
   }
 
   async onDeleteContainerFromDialog_() {
     assert(this.deletingContainer_)
-    try {
-      this.isRemoving_ = true
-      await this.browserProxy.handler.removeContainer(
-        this.deletingContainer_.id,
-      )
-    } finally {
-      this.isRemoving_ = false
+    const { error } = await this.browserProxy.handler.removeContainer(
+      this.deletingContainer_.id,
+    )
+    if (!error) {
       this.deletingContainer_ = undefined
+    } else {
+      this.deleteDialogError_ = this.formatError_(error)
     }
   }
 
@@ -154,21 +157,25 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       : this.i18n(ContainersStrings.SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL)
   }
 
-  onIsRemovingChanged_(isRemoving: boolean) {
-    // Disable the delete dialog X button when removing a container. We do it
-    // manually because the dialog does not offer a way to disable this button
-    // via property.
-    const dialog = this.shadowRoot?.querySelector('#deleteContainerDialog')
-    if (dialog) {
-      const closeButton = dialog.shadowRoot?.querySelector('cr-icon-button')
-      if (closeButton) {
-        if (isRemoving) {
-          closeButton.setAttribute('disabled', 'true')
-        } else {
-          closeButton.removeAttribute('disabled')
-        }
-      }
+  private formatError_(error: ContainerOperationError): string {
+    let errorMessage = ''
+    switch (error) {
+      case ContainerOperationError.kNotFound:
+        // This is the only error we expect in normal operation.
+        errorMessage = this.i18n(
+          ContainersStrings.SETTINGS_CONTAINERS_ERROR_NOT_FOUND,
+        )
+        break
+      default:
+        // These errors are not expected and should be fixed. Just display the
+        // error code for debugging.
+        errorMessage = ContainerOperationError[error]
+        break
     }
+    return this.i18n(
+      ContainersStrings.SETTINGS_CONTAINERS_ERROR_TEMPLATE,
+      errorMessage,
+    )
   }
 }
 

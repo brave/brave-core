@@ -13,6 +13,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -21,6 +22,21 @@
 namespace containers {
 
 namespace {
+
+constexpr struct {
+  const char* name;
+  const bool is_valid;
+} kContainerTestNames[] = {
+    {"Test", true},
+    {"Test Container", true},
+    {"  Test Container  ", true},
+    {"  Test  Container  ", true},
+    {"", false},
+    {"   ", false},
+    {"\n\t\r", false},
+    {" \n\t\r ", false},
+    {"  Test \n \r \t Container  ", false},
+};
 
 class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
  public:
@@ -56,22 +72,6 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
   int containers_changed_count_ = 0;
 };
 
-class MockDelegate : public ContainersSettingsHandler::Delegate {
- public:
-  void RemoveContainerData(const std::string& id,
-                           base::OnceClosure callback) override {
-    last_removed_container_id_ = id;
-    std::move(callback).Run();
-  }
-
-  const std::string& last_removed_container_id() const {
-    return last_removed_container_id_;
-  }
-
- private:
-  std::string last_removed_container_id_;
-};
-
 }  // namespace
 
 class ContainersSettingsHandlerTest : public testing::Test {
@@ -79,26 +79,32 @@ class ContainersSettingsHandlerTest : public testing::Test {
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
 
-    auto delegate = std::make_unique<MockDelegate>();
-    mock_delegate_ = delegate.get();
-
-    handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_,
-                                                           std::move(delegate));
+    handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_);
     handler_->BindUI(mock_observer_.BindAndGetRemote());
   }
-
-  void TearDown() override { mock_delegate_ = nullptr; }
 
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   MockContainersSettingsObserver mock_observer_;
-  raw_ptr<MockDelegate> mock_delegate_ = nullptr;
   std::unique_ptr<ContainersSettingsHandler> handler_;
 };
 
+TEST_F(ContainersSettingsHandlerTest, IsContainerNameValid) {
+  for (const auto& test_name : kContainerTestNames) {
+    EXPECT_EQ(ContainersSettingsHandler::IsContainerNameValid(test_name.name),
+              test_name.is_valid)
+        << test_name.name << " should be "
+        << (test_name.is_valid ? "valid" : "invalid");
+  }
+}
+
 TEST_F(ContainersSettingsHandlerTest, AddContainer) {
-  handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      error_future;
+  handler_->AddContainer(mojom::Container::New("", "Test Container"),
+                         error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
 
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
   handler_->GetContainers(future.GetCallback());
@@ -108,11 +114,32 @@ TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   EXPECT_EQ("Test Container", containers[0]->name);
 
   EXPECT_EQ(1, mock_observer_->containers_changed_count());
+
+  // Invalid ID.
+  handler_->AddContainer(mojom::Container::New("test-id", ""),
+                         error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kIdShouldBeEmpty,
+            error_future.Take());
+
+  // Invalid name.
+  for (const auto& test_name : kContainerTestNames) {
+    handler_->AddContainer(mojom::Container::New("", test_name.name),
+                           error_future.GetCallback());
+    EXPECT_EQ(test_name.is_valid
+                  ? std::nullopt
+                  : std::optional<mojom::ContainerOperationError>(
+                        mojom::ContainerOperationError::kInvalidName),
+              error_future.Take());
+  }
 }
 
 TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   // First add a container
-  handler_->AddOrUpdateContainer(mojom::Container::New("", "Original Name"));
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      error_future;
+  handler_->AddContainer(mojom::Container::New("", "Original Name"),
+                         error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
 
   // Get the container with generated ID
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
@@ -122,7 +149,8 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
 
   // Update the container
   auto updated = mojom::Container::New(containers[0]->id, "Updated Name");
-  handler_->AddOrUpdateContainer(std::move(updated));
+  handler_->UpdateContainer(std::move(updated), error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
 
   // Verify update
   handler_->GetContainers(future.GetCallback());
@@ -132,23 +160,38 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   EXPECT_EQ("Updated Name", containers[0]->name);
 
   EXPECT_EQ(2, mock_observer_->containers_changed_count());
-}
 
-TEST_F(ContainersSettingsHandlerTest, UpdateNonExistingContainerIsNoOp) {
-  // Container ID is only generated on C++ side. It should be impossible to
-  // add a container with ID passed from JS.
-  handler_->AddOrUpdateContainer(
-      mojom::Container::New("non-existing-id", "Updated Name"));
+  // Not found.
+  handler_->UpdateContainer(mojom::Container::New("non-existing-id", "name"),
+                            error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
 
-  base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
-  handler_->GetContainers(future.GetCallback());
-  std::vector<mojom::ContainerPtr> containers = future.Take();
-  EXPECT_EQ(0u, containers.size());
+  // Empty ID.
+  handler_->UpdateContainer(mojom::Container::New("", "name"),
+                            error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kIdShouldBeSet,
+            error_future.Take());
+
+  // Invalid name.
+  for (const auto& test_name : kContainerTestNames) {
+    handler_->UpdateContainer(
+        mojom::Container::New(containers[0]->id, test_name.name),
+        error_future.GetCallback());
+    EXPECT_EQ(test_name.is_valid
+                  ? std::nullopt
+                  : std::optional<mojom::ContainerOperationError>(
+                        mojom::ContainerOperationError::kInvalidName),
+              error_future.Take());
+  }
 }
 
 TEST_F(ContainersSettingsHandlerTest, RemoveContainer) {
   // Add a container
-  handler_->AddOrUpdateContainer(mojom::Container::New("", "Test Container"));
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      error_future;
+  handler_->AddContainer(mojom::Container::New("", "Test Container"),
+                         error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
 
   // Get the container with generated ID
   std::string container_id;
@@ -159,18 +202,26 @@ TEST_F(ContainersSettingsHandlerTest, RemoveContainer) {
   container_id = containers[0]->id;
 
   // Remove the container
-  base::test::TestFuture<void> future2;
-  handler_->RemoveContainer(container_id, future2.GetCallback());
-  future2.Get();
-  EXPECT_EQ(container_id, mock_delegate_->last_removed_container_id());
+  handler_->RemoveContainer(container_id, error_future.GetCallback());
+  ASSERT_EQ(std::nullopt, error_future.Take());
 
   // Verify container was removed
-  base::test::TestFuture<std::vector<mojom::ContainerPtr>> future3;
-  handler_->GetContainers(future3.GetCallback());
-  std::vector<mojom::ContainerPtr> containers2 = future3.Take();
-  ASSERT_TRUE(containers2.empty());
+  handler_->GetContainers(future.GetCallback());
+  containers = future.Take();
+  ASSERT_TRUE(containers.empty());
 
   EXPECT_EQ(2, mock_observer_->containers_changed_count());
+}
+
+TEST_F(ContainersSettingsHandlerTest, RemoveInvalidContainer) {
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      error_future;
+  handler_->RemoveContainer("", error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kIdShouldBeSet,
+            error_future.Take());
+
+  handler_->RemoveContainer("non-existing-id", error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
 }
 
 TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {

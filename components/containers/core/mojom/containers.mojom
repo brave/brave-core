@@ -16,6 +16,18 @@ struct Container {
   string name;
 };
 
+// Represents an error that occurred during a container CRUD operation.
+enum ContainerOperationError {
+  // The container ID is set, but the operation expects it to be empty.
+  kIdShouldBeEmpty = 1,
+  // The container ID is not set, but the operation expects it to be non-empty.
+  kIdShouldBeSet,
+  // The container name is invalid.
+  kInvalidName,
+  // The container was not found.
+  kNotFound,
+};
+
 // Interface for settings UI -> browser communication. This interface allows the
 // settings UI to perform CRUD operations on containers, with all operations
 // being handled in the browser process.
@@ -28,13 +40,14 @@ interface ContainersSettingsHandler {
   // containers
   GetContainers() => (array<Container> containers);
 
-  // Creates a new container or updates an existing one. A new container must
-  // have an empty ID, and an existing container must have a non-empty ID.
-  AddOrUpdateContainer(Container container);
+  // Creates a new container.
+  AddContainer(Container container) => (ContainerOperationError? error);
 
-  // Removes a container by its ID. Returns async response to block UI until
-  // completion, because the data removal might take some time.
-  RemoveContainer(string id) => ();
+  // Updates an existing container.
+  UpdateContainer(Container container) => (ContainerOperationError? error);
+
+  // Removes a container by its ID.
+  RemoveContainer(string id) => (ContainerOperationError? error);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the

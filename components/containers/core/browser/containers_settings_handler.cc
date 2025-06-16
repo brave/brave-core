@@ -5,20 +5,19 @@
 
 #include "brave/components/containers/core/browser/containers_settings_handler.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/uuid.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace containers {
 
-ContainersSettingsHandler::ContainersSettingsHandler(
-    PrefService* prefs,
-    std::unique_ptr<Delegate> delegate)
-    : prefs_(prefs), delegate_(std::move(delegate)) {
+ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
+    : prefs_(prefs) {
   DCHECK(prefs_);
-  DCHECK(delegate_);
   pref_change_registrar_.Init(prefs);
   // Watch for external changes to containers list (e.g. sync, other windows)
   pref_change_registrar_.Add(
@@ -39,49 +38,74 @@ void ContainersSettingsHandler::GetContainers(GetContainersCallback callback) {
   std::move(callback).Run(GetContainersFromPrefs(*prefs_));
 }
 
-void ContainersSettingsHandler::AddOrUpdateContainer(
-    mojom::ContainerPtr container) {
-  CHECK(!container->name.empty());
-
-  auto containers = GetContainersFromPrefs(*prefs_);
-
-  if (container->id.empty()) {
-    // Create a new container if it doesn't have an ID.
-    container->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
-    containers.push_back(std::move(container));
-  } else {
-    // Update an existing container.
-    for (auto& c : containers) {
-      if (c->id == container->id) {
-        c = std::move(container);
-        break;
-      }
-      // If the container is not found, it means it was deleted. Update should
-      // never add a new container.
-    }
+void ContainersSettingsHandler::AddContainer(mojom::ContainerPtr container,
+                                             AddContainerCallback callback) {
+  if (!container->id.empty()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kIdShouldBeEmpty);
+    return;
   }
 
+  if (!IsContainerNameValid(container->name)) {
+    std::move(callback).Run(mojom::ContainerOperationError::kInvalidName);
+    return;
+  }
+
+  auto containers = GetContainersFromPrefs(*prefs_);
+  container->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  containers.push_back(std::move(container));
   SetContainersToPrefs(std::move(containers), *prefs_);
+  std::move(callback).Run(std::nullopt);
+}
+
+void ContainersSettingsHandler::UpdateContainer(
+    mojom::ContainerPtr container,
+    UpdateContainerCallback callback) {
+  if (container->id.empty()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kIdShouldBeSet);
+    return;
+  }
+
+  if (!IsContainerNameValid(container->name)) {
+    std::move(callback).Run(mojom::ContainerOperationError::kInvalidName);
+    return;
+  }
+
+  auto containers = GetContainersFromPrefs(*prefs_);
+  auto it = std::ranges::find(containers, container->id, &mojom::Container::id);
+  if (it == containers.end()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+  *it = std::move(container);
+  SetContainersToPrefs(std::move(containers), *prefs_);
+  std::move(callback).Run(std::nullopt);
 }
 
 void ContainersSettingsHandler::RemoveContainer(
     const std::string& id,
     RemoveContainerCallback callback) {
-  // First remove all container data (cookies, storage etc.) via the delegate.
-  delegate_->RemoveContainerData(
-      id,
-      base::BindOnce(&ContainersSettingsHandler::OnContainerDataRemoved,
-                     weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
+  if (id.empty()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kIdShouldBeSet);
+    return;
+  }
+
+  auto containers = GetContainersFromPrefs(*prefs_);
+  auto it = std::ranges::find(containers, id, &mojom::Container::id);
+  if (it == containers.end()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+
+  containers.erase(it);
+  SetContainersToPrefs(std::move(containers), *prefs_);
+
+  std::move(callback).Run(std::nullopt);
 }
 
-void ContainersSettingsHandler::OnContainerDataRemoved(
-    const std::string& id,
-    RemoveContainerCallback callback) {
-  // Update container list only after data cleanup is complete.
-  auto containers = GetContainersFromPrefs(*prefs_);
-  std::erase_if(containers, [id](const auto& c) { return c->id == id; });
-  SetContainersToPrefs(std::move(containers), *prefs_);
-  std::move(callback).Run();
+// static
+bool ContainersSettingsHandler::IsContainerNameValid(std::string_view name) {
+  // A string that is not empty and does not contain only whitespace.
+  return re2::RE2::FullMatch(name, re2::RE2("^.*\\S.*$"));
 }
 
 void ContainersSettingsHandler::OnContainersChanged() {

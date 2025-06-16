@@ -79,6 +79,11 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                 >
                 </cr-input>
               </div>
+              ${this.editDialogError_
+                ? html`
+                    <div class="error-message">${this.editDialogError_}</div>
+                  `
+                : nothing}
             </div>
             <div slot="button-container">
               <cr-button
@@ -106,7 +111,6 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
             show-close-button
             show-on-attach
             @close="${this.onCancelDialog_}"
-            ?no-cancel="${this.isRemoving_}"
           >
             <div slot="title">
               $i18n{SETTINGS_CONTAINERS_DELETE_CONTAINER_LABEL}
@@ -118,19 +122,22 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                   this.deletingContainer_.name,
                 )}
               </div>
+              ${this.deleteDialogError_
+                ? html`
+                    <div class="error-message">${this.deleteDialogError_}</div>
+                  `
+                : nothing}
             </div>
             <div slot="button-container">
               <cr-button
                 class="cancel-button"
                 @click="${this.onCancelDialog_}"
-                ?disabled="${this.isRemoving_}"
               >
                 $i18n{cancel}
               </cr-button>
               <cr-button
                 class="tonal-button"
                 @click="${this.onDeleteContainerFromDialog_}"
-                ?disabled="${this.isRemoving_}"
               >
                 $i18n{delete}
               </cr-button>

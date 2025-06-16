@@ -248,21 +248,9 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
         pending_receiver) {
-  class NoOpDelegate : public containers::ContainersSettingsHandler::Delegate {
-   public:
-    void RemoveContainerData(const std::string& id,
-                             base::OnceClosure callback) override {
-      // TODO(https://github.com/brave/brave-browser/issues/46352): Implement
-      // this. For now simulate async data removal.
-      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-          FROM_HERE, std::move(callback), base::Seconds(2));
-    }
-  };
-
   auto handler = std::make_unique<containers::ContainersSettingsHandler>(
       user_prefs::UserPrefs::Get(
-          web_ui()->GetWebContents()->GetBrowserContext()),
-      std::make_unique<NoOpDelegate>());
+          web_ui()->GetWebContents()->GetBrowserContext()));
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 

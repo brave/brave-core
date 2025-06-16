@@ -22,21 +22,7 @@ namespace containers {
 // from settings UI and manages container data persistence through prefs.
 class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
  public:
-  // Delegate interface for container data cleanup operations that need to be
-  // handled by the browser process.
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-
-    // Removes all data associated with the specified container.
-    // - `id`: The ID of the container whose data should be removed.
-    // - `callback`: Called when data removal is complete
-    virtual void RemoveContainerData(const std::string& id,
-                                     base::OnceClosure callback) = 0;
-  };
-
-  ContainersSettingsHandler(PrefService* prefs,
-                            std::unique_ptr<Delegate> delegate);
+  explicit ContainersSettingsHandler(PrefService* prefs);
   ~ContainersSettingsHandler() override;
 
   ContainersSettingsHandler(const ContainersSettingsHandler&) = delete;
@@ -50,28 +36,28 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Retrieves the current list of containers from preferences.
   void GetContainers(GetContainersCallback callback) override;
   // Creates a new container or updates an existing one.
-  void AddOrUpdateContainer(mojom::ContainerPtr container) override;
+  void AddContainer(mojom::ContainerPtr container,
+                    AddContainerCallback callback) override;
+  // Updates an existing container.
+  void UpdateContainer(mojom::ContainerPtr container,
+                       UpdateContainerCallback callback) override;
   // Removes a container and all its associated data. Returns async response
   // after data cleanup is complete.
   void RemoveContainer(const std::string& id,
                        RemoveContainerCallback callback) override;
 
+  // Returns true if the container name is valid.
+  static bool IsContainerNameValid(std::string_view name);
+
  private:
   // Called when the containers list in preferences changes.
   void OnContainersChanged();
-
-  // Called when container data removal is complete.
-  void OnContainerDataRemoved(const std::string& id,
-                              RemoveContainerCallback callback);
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::ContainersSettingsUI> ui_;
 
   // Profile preferences service for container data persistence.
   raw_ptr<PrefService> prefs_ = nullptr;
-
-  // Delegate for browser-side container operations.
-  std::unique_ptr<Delegate> delegate_;
 
   // Watches for changes to container-related preferences.
   PrefChangeRegistrar pref_change_registrar_;

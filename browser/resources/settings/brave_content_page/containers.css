@@ -18,6 +18,10 @@
   min-height: var(--cr-section-two-line-min-height);
 }
 
+.error-message {
+  color: var(--leo-color-schemes-error);
+}
+
 .list {
   display: flex;
   flex-direction: column;
