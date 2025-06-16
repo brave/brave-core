@@ -22,9 +22,14 @@ export const style = scoped.css`
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    gap: 24px;
     color: ${color.primitive.neutral[90]};
     font: ${font.xSmall.regular};
+
+    > div {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
   }
 
   .ads-blocked {
