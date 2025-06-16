@@ -163,7 +163,7 @@ void BraveToolbarView::Init() {
   // buttons. Upstream conditionally creates |toolbar_divider_|, they check
   // whether it's null or not. So safe to make remove here.
   if (toolbar_divider_) {
-    container_view->RemoveChildView(toolbar_divider_.get());
+    auto view = container_view->RemoveChildViewT(toolbar_divider_.get());
     toolbar_divider_ = nullptr;
   }
 
