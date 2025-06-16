@@ -26,34 +26,6 @@ using blink::URLLoaderThrottle;
 
 namespace google_sign_in_permission {
 
-namespace {
-
-void OnPermissionRequestStatus(
-    content::NavigationEntry* pending_entry,
-    content::WebContents::Getter wc_getter,
-    const GURL& request_initiator_url,
-    URLLoaderThrottle::Delegate* delegate,
-    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
-  DCHECK_EQ(1u, permission_statuses.size());
-
-  auto* contents = wc_getter.Run();
-  if (!contents || !pending_entry) {
-    return;
-  }
-
-  // Check if current pending navigation is the one we started out with.
-  // This is done to prevent us from accessing a deleted Delegate, if
-  // the user navigated away while the prompt was still up, or closed the
-  // window
-  if (pending_entry != contents->GetController().GetPendingEntry()) {
-    return;
-  }
-  // Now that we have complete the permission request, resume navigation.
-  delegate->Resume();
-}
-
-}  // namespace
-
 GoogleSignInPermissionThrottle::GoogleSignInPermissionThrottle(
     const content::WebContents::Getter& wc_getter)
     : wc_getter_(wc_getter) {}
@@ -99,9 +71,30 @@ void GoogleSignInPermissionThrottle::WillStartRequest(
 
   GetPermissionAndMaybeCreatePrompt(
       contents, request_initiator_url, defer,
-      base::BindOnce(&OnPermissionRequestStatus,
-                     contents->GetController().GetPendingEntry(), wc_getter_,
-                     request_initiator_url, delegate_));
+      base::BindOnce(&GoogleSignInPermissionThrottle::OnPermissionRequestStatus,
+                     weak_factory_.GetWeakPtr(),
+                     contents->GetController().GetPendingEntry()));
+}
+
+void GoogleSignInPermissionThrottle::OnPermissionRequestStatus(
+    content::NavigationEntry* pending_entry,
+    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+  DCHECK_EQ(1u, permission_statuses.size());
+
+  auto* contents = wc_getter_.Run();
+  if (!contents) {
+    return;
+  }
+
+  // Check if current pending navigation is the one we started out with.
+  // This is done to prevent us from accessing a deleted Delegate, if
+  // the user navigated away while the prompt was still up, or closed the
+  // window
+  if (pending_entry != contents->GetController().GetPendingEntry()) {
+    return;
+  }
+  // Now that we have complete the permission request, resume navigation.
+  delegate_->Resume();
 }
 
 }  // namespace google_sign_in_permission
