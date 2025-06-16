@@ -11,7 +11,7 @@
 
 namespace containers::features {
 
-COMPONENT_EXPORT(CONTAINERS_FEATURES) BASE_DECLARE_FEATURE(kBraveContainers);
+COMPONENT_EXPORT(CONTAINERS_FEATURES) BASE_DECLARE_FEATURE(kContainers);
 
 }  // namespace containers::features
 
