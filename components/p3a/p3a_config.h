@@ -26,12 +26,6 @@ struct P3AConfig {
   // Fake STAR epoch for testing purposes.
   base::flat_map<MetricLogType, std::optional<uint8_t>> fake_star_epochs;
 
-  // Endpoint for uploading P3A metrics in JSON format
-  GURL p3a_json_upload_url;
-  // Endpoint for uploading NTP-SI/creative P3A metrics in JSON format
-  GURL p3a_creative_upload_url;
-  // Endpoint for uploading P2A metrics in JSON format
-  GURL p2a_json_upload_url;
   // Host for uploading P3A metrics encrypted by Constellation/STAR
   std::string p3a_constellation_upload_host;
   // Host for generating randomness points for STAR encryption of measurements

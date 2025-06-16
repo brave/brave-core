@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -47,21 +46,13 @@ MessageManager::MessageManager(PrefService& local_state,
   message_meta_.Init(&local_state, channel, first_run_time);
   CleanupActivationDates();
 
-  // Init log stores.
+  // Init constellation log stores only
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (!features::IsJSONDeprecated(log_type)) {
-      json_log_stores_[log_type] = std::make_unique<MetricLogStore>(
-          *this, *local_state_, false, log_type);
-      json_log_stores_[log_type]->LoadPersistedUnsentLogs();
-    }
-    if (features::IsConstellationEnabled()) {
-      constellation_prep_log_stores_[log_type] =
-          std::make_unique<MetricLogStore>(*this, *local_state_, true,
-                                           log_type);
-      constellation_prep_log_stores_[log_type]->LoadPersistedUnsentLogs();
-      constellation_send_log_stores_[log_type] =
-          std::make_unique<ConstellationLogStore>(*local_state_, log_type);
-    }
+    constellation_prep_log_stores_[log_type] =
+        std::make_unique<MetricLogStore>(*this, *local_state_, log_type);
+    constellation_prep_log_stores_[log_type]->LoadPersistedUnsentLogs();
+    constellation_send_log_stores_[log_type] =
+        std::make_unique<ConstellationLogStore>(*local_state_, log_type);
   }
 }
 
@@ -77,7 +68,7 @@ void MessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
 void MessageManager::Start(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   RemoveObsoleteLogs();
-  // Init other components.
+
   uploader_ = std::make_unique<Uploader>(
       url_loader_factory,
       base::BindRepeating(&MessageManager::OnLogUploadComplete,
@@ -92,37 +83,23 @@ void MessageManager::Start(
                           base::Unretained(this)),
       config_.get());
 
-  for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (!features::IsJSONDeprecated(log_type)) {
-      json_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
-          base::BindRepeating(&MessageManager::StartScheduledUpload,
-                              base::Unretained(this), false, log_type),
-          config_->randomize_upload_interval, config_->average_upload_interval);
-      json_upload_schedulers_[log_type]->Start();
-    }
-  }
-
   rotation_scheduler_ = std::make_unique<RotationScheduler>(
       *local_state_, config_.get(),
-      base::BindRepeating(&MessageManager::DoJsonRotation,
-                          base::Unretained(this)),
       base::BindRepeating(&MessageManager::DoConstellationRotation,
                           base::Unretained(this)));
 
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (features::IsConstellationEnabled()) {
-      constellation_prep_schedulers_[log_type] = std::make_unique<Scheduler>(
-          base::BindRepeating(&MessageManager::StartScheduledConstellationPrep,
-                              base::Unretained(this), log_type),
-          config_->randomize_upload_interval, config_->average_upload_interval);
-      constellation_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
-          base::BindRepeating(&MessageManager::StartScheduledUpload,
-                              base::Unretained(this), true, log_type),
-          config_->randomize_upload_interval, config_->average_upload_interval);
+    constellation_prep_schedulers_[log_type] = std::make_unique<Scheduler>(
+        base::BindRepeating(&MessageManager::StartScheduledConstellationPrep,
+                            base::Unretained(this), log_type),
+        config_->randomize_upload_interval, config_->average_upload_interval);
+    constellation_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
+        base::BindRepeating(&MessageManager::StartScheduledUpload,
+                            base::Unretained(this), log_type),
+        config_->randomize_upload_interval, config_->average_upload_interval);
 
-      constellation_upload_schedulers_[log_type]->Start();
-      constellation_helper_->UpdateRandomnessServerInfo(log_type);
-    }
+    constellation_upload_schedulers_[log_type]->Start();
+    constellation_helper_->UpdateRandomnessServerInfo(log_type);
   }
 }
 
@@ -130,40 +107,26 @@ void MessageManager::Stop() {
   uploader_ = nullptr;
   constellation_helper_ = nullptr;
   rotation_scheduler_ = nullptr;
-  json_upload_schedulers_.clear();
   constellation_prep_schedulers_.clear();
   constellation_upload_schedulers_.clear();
 }
 
 void MessageManager::RemoveObsoleteLogs() {
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (json_log_stores_[log_type]) {
-      json_log_stores_[log_type]->RemoveObsoleteLogs();
-    }
     if (constellation_prep_log_stores_[log_type]) {
       constellation_prep_log_stores_[log_type]->RemoveObsoleteLogs();
     }
   }
 }
 
-void MessageManager::UpdateMetricValue(
-    std::string_view histogram_name,
-    size_t bucket,
-    std::optional<bool> only_update_for_constellation) {
+void MessageManager::UpdateMetricValue(std::string_view histogram_name,
+                                       size_t bucket) {
   auto log_type = delegate_->GetLogTypeForHistogram(histogram_name);
   if (!log_type) {
     return;
   }
-  bool update_for_all = !only_update_for_constellation.has_value();
-  if (features::IsConstellationEnabled() &&
-      (update_for_all || *only_update_for_constellation)) {
-    constellation_prep_log_stores_[*log_type]->UpdateValue(
-        std::string(histogram_name), bucket);
-  }
-  auto* json_log_store = json_log_stores_[*log_type].get();
-  if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
-    json_log_store->UpdateValue(std::string(histogram_name), bucket);
-  }
+  constellation_prep_log_stores_[*log_type]->UpdateValue(
+      std::string(histogram_name), bucket);
   const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
   if (metric_config && metric_config->record_activation_date && bucket >= 1) {
     // Record activation date for metric, for retention measurement purposes
@@ -174,36 +137,14 @@ void MessageManager::UpdateMetricValue(
   }
 }
 
-void MessageManager::RemoveMetricValue(
-    std::string_view histogram_name,
-    std::optional<bool> only_update_for_constellation) {
-  bool update_for_all = !only_update_for_constellation.has_value();
+void MessageManager::RemoveMetricValue(std::string_view histogram_name) {
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    auto* json_log_store = json_log_stores_[log_type].get();
-    if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
-      json_log_store->RemoveValueIfExists(std::string(histogram_name));
-    }
-    if (features::IsConstellationEnabled() &&
-        (update_for_all || *only_update_for_constellation)) {
-      constellation_prep_log_stores_[log_type]->RemoveValueIfExists(
-          std::string(histogram_name));
-    }
+    constellation_prep_log_stores_[log_type]->RemoveValueIfExists(
+        std::string(histogram_name));
   }
-}
-
-void MessageManager::DoJsonRotation(MetricLogType log_type) {
-  VLOG(2) << "MessageManager doing json rotation at " << base::Time::Now();
-  auto* log_store = json_log_stores_[log_type].get();
-  if (log_store) {
-    log_store->ResetUploadStamps();
-  }
-  delegate_->OnRotation(log_type, false);
 }
 
 void MessageManager::DoConstellationRotation(MetricLogType log_type) {
-  if (!features::IsConstellationEnabled()) {
-    return;
-  }
   constellation_prep_schedulers_[log_type]->Stop();
   VLOG(2) << "MessageManager doing Constellation rotation at "
           << base::Time::Now();
@@ -212,29 +153,19 @@ void MessageManager::DoConstellationRotation(MetricLogType log_type) {
 
 void MessageManager::OnLogUploadComplete(bool is_ok,
                                          int response_code,
-                                         bool is_constellation,
                                          MetricLogType log_type) {
   VLOG(2) << "MessageManager::UploadFinished ok = " << is_ok
           << " HTTP response = " << response_code;
   if (config_->ignore_server_errors) {
     is_ok = true;
   }
-  metrics::LogStore* log_store;
-  Scheduler* scheduler;
-  if (is_constellation) {
-    log_store =
-        (metrics::LogStore*)constellation_send_log_stores_[log_type].get();
-    scheduler = constellation_upload_schedulers_[log_type].get();
-  } else {
-    log_store = (metrics::LogStore*)json_log_stores_[log_type].get();
-    scheduler = json_upload_schedulers_[log_type].get();
-    CHECK(log_store);
-    if (is_ok) {
-      delegate_->OnMetricCycled(json_log_stores_[log_type]->staged_log_key(),
-                                false);
-    }
-  }
+
+  auto* log_store = constellation_send_log_stores_[log_type].get();
+  Scheduler* scheduler = constellation_upload_schedulers_[log_type].get();
+
+  CHECK(log_store);
   CHECK(scheduler);
+
   if (is_ok) {
     log_store->MarkStagedLogAsSent();
     log_store->DiscardStagedLog();
@@ -262,13 +193,13 @@ void MessageManager::OnNewConstellationMessage(
   }
   constellation_prep_log_stores_[log_type]->DiscardStagedLog();
   constellation_prep_schedulers_[log_type]->UploadFinished(true);
-  delegate_->OnMetricCycled(histogram_name, true);
+  delegate_->OnMetricCycled(histogram_name);
 }
 
 void MessageManager::OnRandomnessServerInfoReady(
     MetricLogType log_type,
     RandomnessServerInfo* server_info) {
-  if (server_info == nullptr || !features::IsConstellationEnabled()) {
+  if (server_info == nullptr) {
     return;
   }
   VLOG(2) << "MessageManager::OnRandomnessServerInfoReady; epoch change = "
@@ -277,7 +208,7 @@ void MessageManager::OnRandomnessServerInfoReady(
     // a detected epoch change means that we can rotate
     // the preparation store
     constellation_prep_log_stores_[log_type]->ResetUploadStamps();
-    delegate_->OnRotation(log_type, true);
+    delegate_->OnRotation(log_type);
   }
   constellation_send_log_stores_[log_type]->SetCurrentEpoch(
       server_info->current_epoch);
@@ -287,75 +218,51 @@ void MessageManager::OnRandomnessServerInfoReady(
                                               server_info->next_epoch_time);
 }
 
-void MessageManager::StartScheduledUpload(bool is_constellation,
-                                          MetricLogType log_type) {
+void MessageManager::StartScheduledUpload(MetricLogType log_type) {
   CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
-  metrics::LogStore* log_store;
-  Scheduler* scheduler;
+
+  auto* log_store = constellation_send_log_stores_[log_type].get();
+  Scheduler* scheduler = constellation_upload_schedulers_[log_type].get();
   std::string logging_prefix =
-      base::StrCat({"MessageManager::StartScheduledUpload (",
-                    is_constellation ? "Constellation" : "JSON", ", ",
+      base::StrCat({"MessageManager::StartScheduledUpload ( Constellation, ",
                     MetricLogTypeToString(log_type), ")"});
 
-  if (is_constellation) {
-    CHECK(features::IsConstellationEnabled());
-    log_store = constellation_send_log_stores_[log_type].get();
-    scheduler = constellation_upload_schedulers_[log_type].get();
-  } else {
-    log_store = json_log_stores_[log_type].get();
-    scheduler = json_upload_schedulers_[log_type].get();
-  }
   CHECK(log_store);
   CHECK(scheduler);
 
-  if (!is_constellation &&
-      base::Time::Now() -
-              rotation_scheduler_->GetLastJsonRotationTime(log_type) <
-          kPostRotationUploadDelay) {
-    // We should delay JSON uploads right after a rotation to give
-    // rotation callbacks a chance to record relevant metrics.
-    scheduler->UploadFinished(true);
-    return;
-  }
-
   VLOG(2) << logging_prefix << " at " << base::Time::Now();
+
   if (!log_store->has_unsent_logs()) {
-    // We continue to schedule next uploads since new histogram values can
-    // come up at any moment. Maybe it's worth to add a method with more
-    // appropriate name for this situation.
     scheduler->UploadFinished(true);
-    // Nothing to stage.
     VLOG(2) << logging_prefix << " - Nothing to stage.";
     return;
   }
+
   if (!log_store->has_staged_log()) {
     log_store->StageNextLog();
   }
 
   const std::string log = log_store->staged_log();
-  const std::string upload_type =
-      is_constellation
-          ? constellation_send_log_stores_[log_type]->staged_log_type()
-          : json_log_stores_[log_type]->staged_log_type();
-  bool is_nebula = false;
-  if (is_constellation) {
-    const auto* metric_config = delegate_->GetMetricConfig(
-        constellation_send_log_stores_[log_type]->staged_log_histogram_name());
-    is_nebula = metric_config && metric_config->nebula;
-  }
+  const std::string upload_type = log_store->staged_log_type();
+
+  const auto* metric_config =
+      delegate_->GetMetricConfig(log_store->staged_log_histogram_name());
+  bool is_nebula = metric_config && metric_config->nebula;
 
   VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes";
-  uploader_->UploadLog(log, upload_type, is_constellation, is_nebula, log_type);
+
+  uploader_->UploadLog(log, upload_type, is_nebula, log_type);
 }
 
 void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
-  CHECK(features::IsConstellationEnabled());
   CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
+
   auto* scheduler = constellation_prep_schedulers_[log_type].get();
   auto* log_store = constellation_prep_log_stores_[log_type].get();
   std::string logging_prefix =
       base::StrCat({"MessageManager::StartScheduledConstellationPrep (",
                     MetricLogTypeToString(log_type), ") - "});
+
   if (base::Time::Now() -
           rotation_scheduler_->GetLastConstellationRotationTime(log_type) <
       kPostRotationUploadDelay) {
@@ -364,11 +271,11 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
     scheduler->UploadFinished(true);
     return;
   }
-  VLOG(2) << "MessageManager::StartScheduledConstellationPrep - starting";
+
+  VLOG(2) << logging_prefix << " - starting";
   if (!log_store->has_unsent_logs()) {
     scheduler->UploadFinished(true);
-    VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Nothing to "
-               "stage.";
+    VLOG(2) << logging_prefix << " - Nothing to stage.";
     return;
   }
   if (!log_store->has_staged_log()) {
@@ -377,20 +284,12 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
 
   const std::string& log = log_store->staged_log();
   const std::string& log_key = log_store->staged_log_key();
-  VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Requesting "
-             "randomness for histogram: "
-          << log_key << " " << log;
+  VLOG(2) << logging_prefix
+          << " - Requesting randomness for histogram: " << log_key << " "
+          << log;
 
   const auto* metric_config = delegate_->GetMetricConfig(log_key);
   bool is_nebula = metric_config && metric_config->nebula;
-  if (is_nebula && !features::IsNebulaEnabled()) {
-    // Do not report if Nebula feature is not enabled,
-    // mark request as successful to avoid transmission.
-    log_store->DiscardStagedLog();
-    scheduler->UploadFinished(true);
-    delegate_->OnMetricCycled(log_key, true);
-    return;
-  }
 
   if (!constellation_helper_->StartMessagePreparation(log_key, log_type, log,
                                                       is_nebula)) {
@@ -406,23 +305,20 @@ std::optional<MetricLogType> MessageManager::GetLogTypeForHistogram(
 std::string MessageManager::SerializeLog(std::string_view histogram_name,
                                          const uint64_t value,
                                          MetricLogType log_type,
-                                         bool is_constellation,
                                          const std::string& upload_type) {
   message_meta_.Update();
 
-  if (is_constellation) {
-    const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
-    return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
-                                           upload_type, metric_config);
-  } else {
-    base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
-        histogram_name, value, log_type, message_meta_, upload_type);
-    std::string p3a_json_message;
-    const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
-    DCHECK(ok);
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+  return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
+                                         upload_type, metric_config);
+}
 
-    return p3a_json_message;
-  }
+bool MessageManager::IsEphemeralMetric(
+    const std::string& histogram_name) const {
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+
+  return (metric_config && metric_config->ephemeral) ||
+         delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 
 void MessageManager::CleanupActivationDates() {
@@ -437,12 +333,8 @@ void MessageManager::CleanupActivationDates() {
   }
 }
 
-bool MessageManager::IsEphemeralMetric(
-    const std::string& histogram_name) const {
-  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
-
-  return (metric_config && metric_config->ephemeral) ||
-         delegate_->GetDynamicMetricLogType(histogram_name).has_value();
+bool MessageManager::IsActive() const {
+  return uploader_ != nullptr;
 }
 
 }  // namespace p3a

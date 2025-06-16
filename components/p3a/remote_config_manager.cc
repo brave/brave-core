@@ -127,9 +127,6 @@ void RemoteConfigManager::SetMetricConfigs(
 
     metric_config.ephemeral =
         remote_config.ephemeral.value_or(metric_config.ephemeral);
-    metric_config.constellation_only =
-        remote_config.constellation_only.value_or(
-            metric_config.constellation_only);
     metric_config.nebula = remote_config.nebula.value_or(metric_config.nebula);
     metric_config.disable_country_strip =
         remote_config.disable_country_strip.value_or(

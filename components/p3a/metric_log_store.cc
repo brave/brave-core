@@ -16,6 +16,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -24,18 +25,10 @@
 namespace p3a {
 
 namespace {
-constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";
-constexpr char kSlowJsonLogPrefName[] = "p3a.logs_slow";
-constexpr char kExpressJsonLogPrefName[] = "p3a.logs_express";
-constexpr char kTypicalConstellationPrepPrefName[] =
-    "p3a.logs_constellation_prep";
-constexpr char kSlowConstellationPrepPrefName[] =
-    "p3a.logs_constellation_prep_slow";
-constexpr char kExpressConstellationPrepPrefName[] =
-    "p3a.logs_constellation_prep_express";
-constexpr char kLogValueKey[] = "value";
-constexpr char kLogSentKey[] = "sent";
-constexpr char kLogTimestampKey[] = "timestamp";
+
+inline constexpr char kLogValueKey[] = "value";
+inline constexpr char kLogSentKey[] = "sent";
+inline constexpr char kLogTimestampKey[] = "timestamp";
 
 void RecordSentAnswersCount(uint64_t answers_count) {
   int answer = 0;
@@ -49,10 +42,6 @@ void RecordSentAnswersCount(uint64_t answers_count) {
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.P3A.SentAnswersCount", answer, 3);
 }
 
-bool IsMetricP2A(const std::string& histogram_name) {
-  return histogram_name.starts_with("Brave.P2A");
-}
-
 bool IsMetricCreative(const std::string& histogram_name) {
   return histogram_name.starts_with(kCreativeMetricPrefix) ||
          histogram_name.starts_with(kCampaignMetricPrefix);
@@ -61,9 +50,7 @@ bool IsMetricCreative(const std::string& histogram_name) {
 }  // namespace
 
 std::string GetUploadType(const std::string& histogram_name) {
-  if (IsMetricP2A(histogram_name)) {
-    return kP2AUploadType;
-  } else if (IsMetricCreative(histogram_name)) {
+  if (IsMetricCreative(histogram_name)) {
     return kP3ACreativeUploadType;
   }
   return kP3AUploadType;
@@ -71,55 +58,44 @@ std::string GetUploadType(const std::string& histogram_name) {
 
 MetricLogStore::MetricLogStore(Delegate& delegate,
                                PrefService& local_state,
-                               bool is_constellation,
                                MetricLogType type)
-    : delegate_(delegate),
-      local_state_(local_state),
-      type_(type),
-      is_constellation_(is_constellation) {}
+    : delegate_(delegate), local_state_(local_state), type_(type) {}
 
 MetricLogStore::~MetricLogStore() = default;
 
 void MetricLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(kTypicalJsonLogPrefName);
-  registry->RegisterDictionaryPref(kExpressJsonLogPrefName);
-  registry->RegisterDictionaryPref(kSlowJsonLogPrefName);
   registry->RegisterDictionaryPref(kTypicalConstellationPrepPrefName);
   registry->RegisterDictionaryPref(kExpressConstellationPrepPrefName);
   registry->RegisterDictionaryPref(kSlowConstellationPrepPrefName);
 }
 
+void MetricLogStore::RegisterLocalStatePrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Added 06/2025
+  registry->RegisterDictionaryPref(kTypicalJsonLogPrefName);
+  registry->RegisterDictionaryPref(kExpressJsonLogPrefName);
+  registry->RegisterDictionaryPref(kSlowJsonLogPrefName);
+}
+
+void MetricLogStore::MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  local_state->ClearPref(kTypicalJsonLogPrefName);
+  local_state->ClearPref(kExpressJsonLogPrefName);
+  local_state->ClearPref(kSlowJsonLogPrefName);
+}
+
 const char* MetricLogStore::GetPrefName() const {
-  if (is_constellation_) {
-    switch (type_) {
-      case MetricLogType::kTypical:
-        return kTypicalConstellationPrepPrefName;
-      case MetricLogType::kExpress:
-        return kExpressConstellationPrepPrefName;
-      case MetricLogType::kSlow:
-        return kSlowConstellationPrepPrefName;
-    }
-  } else {
-    switch (type_) {
-      case MetricLogType::kTypical:
-        return kTypicalJsonLogPrefName;
-      case MetricLogType::kExpress:
-        return kExpressJsonLogPrefName;
-      case MetricLogType::kSlow:
-        return kSlowJsonLogPrefName;
-    }
+  switch (type_) {
+    case MetricLogType::kTypical:
+      return kTypicalConstellationPrepPrefName;
+    case MetricLogType::kExpress:
+      return kExpressConstellationPrepPrefName;
+    case MetricLogType::kSlow:
+      return kSlowConstellationPrepPrefName;
   }
 }
 
 void MetricLogStore::UpdateValue(const std::string& histogram_name,
                                  uint64_t value) {
-  if (is_constellation_) {
-    if (IsMetricP2A(histogram_name)) {
-      // Only creative or normal P3A metrics are currently supported for
-      // Constellation.
-      return;
-    }
-  }
   LogEntry& entry = log_[histogram_name];
   entry.value = value;
 
@@ -240,9 +216,9 @@ void MetricLogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ = delegate_->SerializeLog(staged_entry_key_, staged_entry_value,
-                                        type_, is_constellation_,
-                                        GetUploadType(staged_entry_key_));
+  staged_log_ =
+      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, type_,
+                              GetUploadType(staged_entry_key_));
 
   VLOG(2) << "MetricLogStore::StageNextLog: staged " << staged_entry_key_;
 }
