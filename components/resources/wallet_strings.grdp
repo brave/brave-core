@@ -749,6 +749,9 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION" desc="Transaction intent for dapp interactions">Dapp interaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for creating associated token account">Creating associated token account</message>
+  <message name="IDS_BRAVE_WALLET_FAILED_TO_CREATE_ASSOCIATED_TOKEN_ACCOUNT" desc="Transaction intent for failed to create associated token account">Failed to create associated token account</message>
+  <message name="IDS_BRAVE_WALLET_ASSOCIATED_TOKEN_ACCOUNT_CREATED" desc="Transaction intent for associated token account created">Associated token account created</message>
   <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">Sign in with Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE" desc="Sign in with Brave Wallet Message">You are signing into <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>. Brave Wallet will share your wallet address with <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>.</message>
   <message name="IDS_BRAVE_WALLET_SEE_DETAILS" desc="Sign in with Brave Wallet See details button">See details</message>

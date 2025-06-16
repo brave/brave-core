@@ -27,6 +27,7 @@ import {
 import { mockEthMainnet } from '../stories/mock-data/mock-networks'
 import {
   createMockTransactionInfo,
+  mockATAInstruction,
   mockBtcSendTransaction,
   mockEthSendTransaction,
   mockFilSendTransaction,
@@ -42,6 +43,7 @@ import {
   findTransactionToken,
   getETHSwapTransactionBuyAndSellTokens,
   getIsRevokeApprovalTx,
+  getIsSolanaAssociatedTokenAccountCreation,
   getTransactionGas,
   getTransactionStatusString,
   getTransactionTypeName,
@@ -854,5 +856,112 @@ describe('getTransactionTypeName', () => {
     expect(getTransactionTypeName(999)).toBe(
       getLocale('braveWalletTransactionTypeNameOther'),
     )
+  })
+})
+
+describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
+  it('should return true for ATACreation transaction', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [mockATAInstruction],
+          },
+        },
+      }),
+    ).toBe(true)
+  })
+
+  it('should return false for ATACreation with different payer', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        fromAccountId: {
+          ...mockSolanaAccount.accountId,
+          address: 'different_address',
+        },
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [mockATAInstruction],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a non ATACreation program id', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+                programId: 'different_program_id',
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a ATACreation transaction with data', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+                data: [1],
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a ATACreation with instructions', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+              },
+              {
+                ...mockATAInstruction,
+                accountMetas: [
+                  {
+                    pubkey: BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
+                    isSigner: true,
+                    isWritable: true,
+                    addrTableLookupIndex: undefined,
+                  },
+                ],
+                programId: BraveWallet.SOLANA_STAKE_PROGRAM_ID,
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
   })
 })

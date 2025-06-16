@@ -21,6 +21,7 @@ import {
   getTransactionToAddress,
   isBridgeTransaction,
   isSwapTransaction,
+  getIsSolanaAssociatedTokenAccountCreation,
 } from '../../../../utils/tx-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { getAddressLabel } from '../../../../utils/account-utils'
@@ -72,6 +73,8 @@ export const TransactionIntent = (props: Props) => {
   const txToAddress = getTransactionToAddress(transaction)
   const isSOLSwapOrBridge =
     txCoinType === BraveWallet.CoinType.SOL && isSwapOrBridge
+  const isSolanaATACreation =
+    getIsSolanaAssociatedTokenAccountCreation(transaction)
 
   const { account: txAccount } = useAccountQuery(transaction.fromAccountId)
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -269,6 +272,15 @@ export const TransactionIntent = (props: Props) => {
   ])
 
   const descriptionLocale = React.useMemo(() => {
+    if (isSolanaATACreation && transactionFailed) {
+      return 'braveWalletFailedToCreateAssociatedTokenAccount'
+    }
+    if (isSolanaATACreation && transactionConfirmed) {
+      return 'braveWalletAssociatedTokenAccountCreated'
+    }
+    if (isSolanaATACreation) {
+      return 'braveWalletCreatingAssociatedTokenAccount'
+    }
     if (transactionFailed && isSOLSwapOrBridge) {
       return 'braveWalletErrorAttemptingToTransactOnNetwork'
     }
@@ -309,6 +321,7 @@ export const TransactionIntent = (props: Props) => {
     isERC20Approval,
     isSOLSwapOrBridge,
     isShieldingFunds,
+    isSolanaATACreation,
   ])
 
   const description = formatLocale(

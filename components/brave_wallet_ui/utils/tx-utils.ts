@@ -416,6 +416,9 @@ export const findTransactionToken = <
   // Native Asset Send
   if (
     tx.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+    || tx.txType
+      === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction
+    || tx.txType === BraveWallet.TransactionType.SolanaDappSignTransaction
     || tx.txType === BraveWallet.TransactionType.ETHSend
     || tx.txDataUnion.filTxData
     || tx.txDataUnion.btcTxData
@@ -1961,4 +1964,78 @@ export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
     default:
       return getLocale('braveWalletTransactionTypeNameOther')
   }
+}
+
+export const getIsSolanaAssociatedTokenAccountCreation = (
+  transaction: TransactionInfo,
+) => {
+  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
+  // If the transaction is not a Solana transaction, return false
+  if (
+    txCoinType !== BraveWallet.CoinType.SOL
+    || transaction.txType
+      !== BraveWallet.TransactionType.SolanaDappSignAndSendTransaction
+    || !transaction.txDataUnion.solanaTxData?.staticAccountKeys.includes(
+      BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
+    )
+  ) {
+    return false
+  }
+
+  // Get the typed instructions from the transaction
+  const instructions = getTypedSolanaTxInstructions(
+    transaction.txDataUnion.solanaTxData,
+  )
+
+  // If there are no instructions, return false
+  if (!instructions) {
+    return false
+  }
+
+  // Get the user address from the transaction
+  const userAddress = transaction.fromAccountId.address.toLowerCase()
+
+  // Look for an instruction that creates an associated token account
+  return instructions.some((instruction) => {
+    const { accountMetas, data, programId } = instruction
+
+    // Instruction must have the associated token program id
+    if (programId !== BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID) {
+      return false
+    }
+
+    // If the instruction has data, return false
+    // (ATA creation is typically 0 bytes)
+    if (data.length !== 0) {
+      return false
+    }
+
+    // If the instruction has less than 5 account metas, return false
+    if (accountMetas.length < 5) {
+      return false
+    }
+
+    const payer = accountMetas[0].pubkey.toLowerCase()
+    const owner = accountMetas[2].pubkey.toLowerCase()
+
+    // If the payer and owner is not the user address, return false
+    if (payer !== userAddress && owner !== userAddress) {
+      return false
+    }
+
+    // Check if this is the only instruction involving the
+    // Associated Token Program
+    const otherInstructionsWithATP = instructions.filter(
+      (otherInstruction) =>
+        otherInstruction !== instruction
+        && otherInstruction.accountMetas.some(
+          (meta) =>
+            meta.pubkey === BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
+        ),
+    )
+
+    // If there are other instructions involving the Associated Token Program
+    // return false
+    return otherInstructionsWithATP.length === 0
+  })
 }
