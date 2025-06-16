@@ -64,16 +64,14 @@ export default function ModelIntro() {
                   tags: {
                     $1: (content) => {
                       return (
-                        <a
+                        <button
                           key={content}
                           onClick={() =>
                             aiChatContext.uiHandler?.openModelSupportUrl()
                           }
-                          href='#'
-                          target='_blank'
                         >
                           {content}
-                        </a>
+                        </button>
                       )
                     }
                   }
