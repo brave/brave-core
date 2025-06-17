@@ -13,8 +13,8 @@ import {
   UntrustedConversationReactContext
 } from '../../untrusted_conversation_context'
 import ConversationEntries from '.'
-
 import { ActionType, CharacterType, ContentType } from '../../../common/mojom'
+import type { AssistantResponseProps } from '../assistant_response'
 
 function MockDataProvider(
   props: React.PropsWithChildren<Partial<UntrustedConversationContext>>
@@ -31,64 +31,75 @@ function MockDataProvider(
   )
 }
 
-interface AssistantResponseProps {
-  entry: Mojom.ConversationTurn
-  isEntryInProgress: boolean
-  allowedLinks: string[]
-  isLeoModel: boolean
-}
 const assistantResponseMock = jest.fn((props: AssistantResponseProps) => <div />)
 
 jest.mock('../assistant_response', () => ({
   __esModule: true,
   default: (props: AssistantResponseProps) => {
     assistantResponseMock(props)
+    console.log('assistantResponseMock', props)
     return <div />
   }
 }))
 
 describe('ConversationEntries allowedLinks per response', () => {
-    const turn1 = {
-      characterType: Mojom.CharacterType.ASSISTANT,
-      events: [
-        { completionEvent: { completion: 'Response 1' } },
-        {
-          sourcesEvent: {
+  const assistantTurn1 = {
+    characterType: Mojom.CharacterType.ASSISTANT,
+    events: [
+      { completionEvent: { completion: 'Response 1' } },
+      {
+        sourcesEvent: {
           sources: [{ url: { url: 'https://a.com' }, title: 'Title 1', faviconUrl: { url: 'https://a.com/favicon.ico' } }]
         }
       }
     ]
   }
 
-    const turn2 = {
-      characterType: Mojom.CharacterType.ASSISTANT,
-      events: [
-        { completionEvent: { completion: 'Response 2' } },
-        {
-          sourcesEvent: {
+  const humanTurn1: Partial<Mojom.ConversationTurn> = {
+    characterType: Mojom.CharacterType.HUMAN,
+    text: 'Question 1',
+  }
+
+  const assistantTurn2 = {
+    characterType: Mojom.CharacterType.ASSISTANT,
+    events: [
+      { completionEvent: { completion: 'Response 2' } },
+      {
+        sourcesEvent: {
           sources: [{ url: { url: 'https://b.com' }, title: 'Title 2', faviconUrl: { url: 'https://b.com/favicon.ico' } }]
         }
       }
     ]
   }
 
-  const mockContext: Partial<UntrustedConversationContext> = {
-    conversationHistory: [turn1, turn2] as any,
-    isGenerating: false,
-    isMobile: false,
-    isLeoModel: true,
-    allModels: [],
-    canSubmitUserEntries: true,
-    trimmedTokens: BigInt(0),
-    totalTokens: BigInt(100),
-    contentUsedPercentage: 100
-  }
+  let mockContext: Partial<UntrustedConversationContext>
 
   beforeEach(() => {
     assistantResponseMock.mockClear()
+    mockContext = {
+      conversationHistory: [assistantTurn1, humanTurn1, assistantTurn2] as any,
+      isGenerating: false,
+      isMobile: false,
+      isLeoModel: true,
+      allModels: [],
+      canSubmitUserEntries: true,
+      trimmedTokens: BigInt(0),
+      totalTokens: BigInt(100),
+      contentUsedPercentage: 100
+    }
   })
 
   it('passes correct allowedLinks to each AssistantResponse', () => {
+    render(<MockDataProvider {...mockContext}>
+      <ConversationEntries />
+    </MockDataProvider>)
+    expect(assistantResponseMock).toHaveBeenCalledTimes(2)
+    expect(assistantResponseMock.mock.calls[0][0]?.allowedLinks).toEqual(['https://a.com'])
+    expect(assistantResponseMock.mock.calls[1][0]?.allowedLinks).toEqual(['https://b.com'])
+  })
+
+  it('passes correct allowedLinks for a combined AssistantResponse group', () => {
+    mockContext.conversationHistory = [humanTurn1, assistantTurn1, assistantTurn2] as any
     render(<MockDataProvider {...mockContext}>
       <ConversationEntries />
     </MockDataProvider>)

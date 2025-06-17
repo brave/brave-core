@@ -17,7 +17,8 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
   sourcesEvent: undefined,
-  contentReceiptEvent: undefined
+  contentReceiptEvent: undefined,
+  toolUseEvent: undefined
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
@@ -45,6 +46,8 @@ test('AssistantResponse should include expandable sources', async () => {
     createdTime: { internalValue: BigInt('13278618001000000') },
     edits: undefined,
     fromBraveSearchSERP: false,
+    uploadedFiles: undefined,
+    modelKey: undefined,
     events: [
       getCompletionEvent('test completion'),
       getWebSourcesEvent([
@@ -60,7 +63,12 @@ test('AssistantResponse should include expandable sources', async () => {
     ]
   }
   render(<AssistantResponse
-            entry={testEntry} isEntryInProgress={false} allowedLinks={[]} />)
+            events={testEntry.events!}
+            isEntryActive={false}
+            isLeoModel={true}
+            isEntryInProgress={false}
+            allowedLinks={[]}
+          />)
   // There should be the first items showing
   let links = screen.getAllByRole('link')
   expect(links).toHaveLength(4)

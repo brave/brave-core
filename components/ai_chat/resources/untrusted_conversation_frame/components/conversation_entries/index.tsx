@@ -20,7 +20,7 @@ import LongPageInfo from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
-import { getReasoningText } from './conversation_entries_utils'
+import { getReasoningText, groupConversationEntries } from './conversation_entries_utils'
 import { getImageFiles } from '../../../common/conversation_history_utils'
 import styles from './style.module.scss'
 
@@ -59,12 +59,24 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
+  // Render events from consecutive assistant entries in the same parent element for style purposes.
+  // Keep their grouping so that we can still know which events are part of "active" entries.
+  const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
+    () => groupConversationEntries(conversationContext.conversationHistory),
+    [conversationContext.conversationHistory]
+  )
+
+  console.log('groupedEntries', groupedEntries)
+
   return (
     <>
       <div>
-        {conversationContext.conversationHistory.map((turn, index) => {
-          const isLastEntry =
-            (index === conversationContext.conversationHistory.length - 1)
+        {groupedEntries.map((group, index) => {
+          const turn = group[0]
+          const latestEdit = turn.edits?.at(-1)
+          const latestTurn = latestEdit ?? turn
+          const lastEditedTime = latestTurn.createdTime
+          const isLastEntry = (index === groupedEntries.length - 1)
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
@@ -77,21 +89,13 @@ function ConversationEntries() {
             isAIAssistant &&
             ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
               (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
+          // TODO(petemill): editInputId should be uuid of entry
           const showEditInput = editInputId === index
           const showEditIndicator = !showEditInput && !!turn.edits?.length
-          const latestEdit = turn.edits?.at(-1)
-          const latestTurn = latestEdit ?? turn
-          const allowedLinksForTurn: string[] =
-            latestTurn.events?.flatMap(event =>
-              event.sourcesEvent?.sources?.map(
-                source => source.url.url
-              ) || []
-            ) || []
-          const latestTurnText = isAIAssistant
-            ? getCompletion(latestTurn)
-            : latestTurn.text
-          const lastEditedTime = latestTurn.createdTime
-          const hasReasoning = latestTurnText.includes('<think>')
+
+          // Can't edit or copy complicated structured content
+          const canEditOrCopyContent = group.length === 1 &&
+              !group[0].events?.some(event => !!event.toolUseEvent)
 
           const turnModelKey = turn.modelKey
             ? conversationContext.allModels
@@ -116,7 +120,7 @@ function ConversationEntries() {
               if (!event?.completionEvent) return
               navigator.clipboard.writeText(event.completionEvent.completion)
             } else {
-              navigator.clipboard.writeText(latestTurnText)
+              navigator.clipboard.writeText(latestTurn.text)
             }
           }
 
@@ -129,7 +133,7 @@ function ConversationEntries() {
 
           return (
             <div
-              key={index}
+              key={turn.uuid || index}
               className={turnContainer}
             >
               <div
@@ -150,23 +154,44 @@ function ConversationEntries() {
                     isAIAssistant ? styles.message : styles.humanMessage
                   }
                 >
-                  {isAIAssistant && hasReasoning && (
-                    <AssistantReasoning
-                      text={getReasoningText(latestTurnText)}
-                      isReasoning={
-                        isEntryInProgress &&
-                        !latestTurnText.includes('</think>')
-                      }
-                    />
-                  )}
-                  {isAIAssistant && !showEditInput && (
-                    <AssistantResponse
-                      entry={latestTurn}
-                      isEntryInProgress={isEntryInProgress}
-                      allowedLinks={allowedLinksForTurn}
-                      isLeoModel={conversationContext.isLeoModel}
-                    />
-                  )}
+                  {isAIAssistant && !showEditInput &&
+                    group.map((entry, i) => {
+                      const isThisGroupInProgress = isEntryInProgress && (i === group.length - 1)
+                      const isThisGroupActive = isLastEntry && (i === group.length - 1)
+                      const latestEdit = entry.edits?.at(-1)
+                      const latestTurn = latestEdit ?? entry
+                      const allowedLinksForTurn: string[] =
+                        latestTurn.events?.flatMap(event =>
+                          event.sourcesEvent?.sources?.map(
+                            source => source.url.url
+                          ) || []
+                        ) || []
+                      const latestTurnText = getCompletion(latestTurn)
+                      const hasReasoning = latestTurnText.includes('<think>')
+                      console.log('entry', entry)
+                      return (
+                        <React.Fragment key={entry.uuid || i}>
+                          {hasReasoning && (
+                            <AssistantReasoning
+                              text={getReasoningText(latestTurnText)}
+                              isReasoning={
+                                isEntryInProgress &&
+                                !latestTurnText.includes('</think>')
+                              }
+                            />
+                          )}
+                          <AssistantResponse
+                            key={entry.uuid || i}
+                            events={entry.events!.filter(Boolean)}
+                            isEntryActive={isThisGroupActive}
+                            isEntryInProgress={isThisGroupInProgress}
+                            allowedLinks={allowedLinksForTurn}
+                            isLeoModel={conversationContext.isLeoModel}
+                          />
+                        </React.Fragment>
+                      )
+                    })
+                  }
                   {isHuman && !turn.selectedText && !showEditInput && (
                     <>
                       {hoverMenuButtonId === index ? (
@@ -182,7 +207,7 @@ function ConversationEntries() {
                       )}
                       <div className={styles.humanMessageBubble}>
                         <div className={styles.humanTextRow}>
-                          {latestTurnText}
+                          {latestTurn.text}
                           {latestEdit && (
                             <div className={styles.editLabel}>
                               <span className={styles.editLabelText}>
@@ -211,8 +236,8 @@ function ConversationEntries() {
                   )}
                   {showEditInput && (
                     <EditInput
-                      text={latestTurnText}
-                      onSubmit={(text) => handleEditSubmit(index, text)}
+                      text={latestTurn.text}
+                      onSubmit={(text) => handleEditSubmit(index, text)} // TODO: uuid
                       onCancel={() => setEditInputId(undefined)}
                       isSubmitDisabled={
                         !conversationContext.canSubmitUserEntries
@@ -235,8 +260,8 @@ function ConversationEntries() {
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
                       turnModelKey={turnModelKey}
-                      onEditAnswerClicked={() => setEditInputId(index)}
-                      onCopyTextClicked={handleCopyText}
+                      onEditAnswerClicked={canEditOrCopyContent ? () => setEditInputId(index) : undefined}
+                      onCopyTextClicked={canEditOrCopyContent ? handleCopyText : undefined}
                     />
                   )}
                 {isGeneratingResponse && (
