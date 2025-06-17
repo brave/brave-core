@@ -59,11 +59,11 @@ void NewTabPageInitializer::Initialize() {
                                 IDR_BRAVE_NEW_TAB_PAGE_HTML);
   }
 
-  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
   AddCSPOverrides();
   AddLoadTimeValues();
   AddStrings();
   AddPluralStrings();
+  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
 
   AddFaviconDataSource();
   AddCustomImageDataSource();
