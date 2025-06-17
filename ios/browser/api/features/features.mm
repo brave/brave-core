@@ -27,6 +27,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
@@ -341,6 +342,11 @@
 + (Feature*)kUseChromiumWebViews {
   return
       [[Feature alloc] initWithFeature:&brave::features::kUseChromiumWebViews];
+}
+
++ (Feature*)kBraveAllowExternalPurchaseLinks {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];
 }
 
 @end

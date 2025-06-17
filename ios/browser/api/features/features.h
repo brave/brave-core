@@ -81,6 +81,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViews;
+@property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
 @end
 
 NS_ASSUME_NONNULL_END
