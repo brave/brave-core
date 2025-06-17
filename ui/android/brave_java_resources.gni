@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Keep btn_close as a bitmap, otherwise code
+# TintedDrawable.constructTintedDrawable(context, R.drawable.btn_close)
+# causes exception at upstream code
+# AssertionError: TintedDrawable doesn't support VectorDrawables!
+# Please use UiUtils.getTintedDrawable() instead.
+brave_ui_android_java_resources = [
+  "java/res/drawable-hdpi/btn_close.png",
+  "java/res/drawable-mdpi/btn_close.png",
+  "java/res/drawable-xhdpi/btn_close.png",
+  "java/res/drawable-xxhdpi/btn_close.png",
+  "java/res/drawable-xxxhdpi/btn_close.png",
+]

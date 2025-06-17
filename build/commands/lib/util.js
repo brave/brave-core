@@ -1052,6 +1052,11 @@ const util = {
         'res',
       )
 
+      const uiAndroidResSource =
+          path.join(config.braveCoreDir, "ui", "android", "java", "res")
+      const uiAndroidResDest =
+          path.join(config.srcDir, "ui", "android", "java", "res")
+
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
         [androidTranslateResSource]: [androidTranslateResDest],
@@ -1073,6 +1078,7 @@ const util = {
         [androidBrowserHubInternalResSource]: [
           androidBrowserHubInternalResDest,
         ],
+        [uiAndroidResSource]: [uiAndroidResDest],
       }
 
       console.log('copy Android app icons and app resources')
@@ -1104,6 +1110,32 @@ const util = {
         },
       )
       removeUnlistedAndroidResources(braveOverwrittenFiles)
+
+      console.log('Remove unlisted overridden pngs')
+      const overriddenPngsToRemove = [
+        path.join(androidToolbarResDest,
+            "drawable-hdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-mdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-xhdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-xxhdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-xxxhdpi", "btn_toolbar_reload.png"),
+
+        path.join(androidToolbarResDest,
+            "drawable-ldrtl-hdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-ldrtl-mdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-ldrtl-xhdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-ldrtl-xxhdpi", "btn_toolbar_reload.png"),
+        path.join(androidToolbarResDest,
+            "drawable-ldrtl-xxxhdpi", "btn_toolbar_reload.png"),
+      ]
+      overriddenPngsToRemove.forEach((path) => fs.removeSync(path));
     }
     Log.progressFinish('update branding')
   },
