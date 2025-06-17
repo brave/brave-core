@@ -17,8 +17,8 @@
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/common/yt_util.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
-#include "brave/components/ai_chat/renderer/yt_util.h"
 #include "url/gurl.h"
 
 namespace network {

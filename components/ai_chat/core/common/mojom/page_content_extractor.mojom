@@ -13,10 +13,17 @@ enum PageContentType {
   VideoTranscriptVTT
 };
 
+// Configuration for YouTube InnerTube API
+struct YoutubeInnerTubeConfig {
+  string api_key;
+  string video_id;
+};
+
 // Items either have content or a url to retrieve content
 union PageContentData {
   string content;
   url.mojom.Url content_url;
+  YoutubeInnerTubeConfig youtube_inner_tube_config;
 };
 
 struct PageContent {
