@@ -16,7 +16,7 @@ include_rules = [
 
   # Temporary workaround because component tests run in chrome_test_suite
   # https://github.com/brave/brave-browser/issues/46891
-  "+brave/components/test/base/components_unit_test.h",
+  "!brave/components/test/base/components_unit_test.h",
 ]
 
 specific_include_rules = {
