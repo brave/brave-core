@@ -99,7 +99,10 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
           navigationType: navigationType,
           isMainFrame: navigationAction.isTargetFrameMain,
           isNewWindow: navigationAction.navigationType == .newWindow,
-          isUserInitiated: navigationAction.isUserInitiated
+          isUserInitiated: navigationAction.isUserInitiated,
+          isCrossOriginFrame: navigationAction.isTargetFrameCrossOrigin,
+          isCrossOriginWindow: navigationAction.isTargetWindowCrossOrigin,
+          hasUserTappedRecently: navigationAction.hasTappedRecently
         )
       )
       decisionHandler(policy == .allow ? .allow : .cancel)

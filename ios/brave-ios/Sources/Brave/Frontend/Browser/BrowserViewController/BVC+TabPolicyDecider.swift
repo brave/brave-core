@@ -739,6 +739,17 @@ extension BrowserViewController {
       return false
     }
 
+    // If the request is cross origin frame, block it.
+    // If the request is cross origin window, block it.
+    if requestInfo.isCrossOriginFrame || requestInfo.isCrossOriginWindow {
+      return false
+    }
+
+    // If the request is from a sub-frame and not user-initiated, block it.
+    if !requestInfo.isMainFrame && !requestInfo.isUserInitiated {
+      return false
+    }
+
     // Check if the current url of the caller has changed
     if let domain = tab.visibleURL?.baseDomain,
       domain != tab.externalAppURLDomain

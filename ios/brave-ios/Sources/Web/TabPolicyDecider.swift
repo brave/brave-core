@@ -120,6 +120,9 @@ public struct WebRequestInfo {
   public var isMainFrame: Bool
   public var isNewWindow: Bool
   public var isUserInitiated: Bool
+  public var isCrossOriginFrame: Bool
+  public var isCrossOriginWindow: Bool
+  public var hasUserTappedRecently: Bool
 }
 
 /// Information about a navigation response that can be used to make policy decisions
