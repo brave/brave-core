@@ -28,7 +28,7 @@ source_set("hd_key") {
 
   visibility = [
     "//brave/components/brave_wallet/browser:hd_keyring",
-    "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser:unit_tests",
   ]
 
   deps = [
