@@ -123,6 +123,7 @@ provideStrings({
   CHAT_UI_MENU_MANAGE_SUBSCRIPTION: 'Manage subscription',
   CHAT_UI_TOOLS_MENU_BUTTON_LABEL: 'Leo tools',
   CHAT_UI_ATTACHMENT_MENU_BUTTON_LABEL: 'Attachment',
+  CHAT_UI_TABS_MENU_TITLE: 'Add tab contents for context',
   CHAT_UI_UPLOAD_FILE_BUTTON_LABEL: 'Upload file...',
   CHAT_UI_UPLOADING_FILE_LABEL: 'Uploading file...',
   CHAT_UI_TAKE_A_PICTURE_BUTTON_LABEL: 'Take a picture...',
