@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/test/base/components_unit_test.h"
+#include "brave/components/test/base/components_unit_test.h"
 
 #include "chrome/browser/ui/webui/chrome_web_ui_controller_factory.h"
 #include "content/public/browser/web_ui_controller.h"
