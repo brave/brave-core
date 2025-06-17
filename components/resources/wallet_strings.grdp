@@ -184,7 +184,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION" desc="Onboarding welcome screen, new wallet action description">Get started with Brave Wallet in minutes.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE" desc="Onboarding welcome screen, import wallet action title">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_WATCH_ONLY_TITLE" desc="Onboarding welcome screen, create watch only wallet">I need a watch-only wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2024 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2025 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text">or</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Onboarding welcome screen, import wallet action description">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
