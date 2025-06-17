@@ -186,4 +186,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         assert false : "Make sure mMediator is properly patched in bytecode.";
         return null;
     }
+
+    public boolean isInTabSwitcherMode() {
+        return mBottomToolbarCoordinator != null && mBottomToolbarCoordinator.isInTabSwitcherMode();
+    }
 }
