@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_TEST_BASE_COMPONENTS_UNIT_TEST_H_
-#define BRAVE_TEST_BASE_COMPONENTS_UNIT_TEST_H_
+#ifndef BRAVE_COMPONENTS_TEST_BASE_COMPONENTS_UNIT_TEST_H_
+#define BRAVE_COMPONENTS_TEST_BASE_COMPONENTS_UNIT_TEST_H_
 
 #include <memory>
 
-#include "content/public/test/scoped_web_ui_controller_factory_registration.h"
+namespace content {
+class ScopedWebUIControllerFactoryRegistration;
+}
 
 // Workaround for components running inside chrome unit test suit. This class
 // unregisters problematic factories like ChromeWebUIControllerFactory
@@ -28,4 +30,4 @@ class ComponentsUnitTest {
       factory_registration_;
 };
 
-#endif  // BRAVE_TEST_BASE_COMPONENTS_UNIT_TEST_H_
+#endif  // BRAVE_COMPONENTS_TEST_BASE_COMPONENTS_UNIT_TEST_H_

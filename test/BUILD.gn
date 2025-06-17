@@ -61,8 +61,9 @@ static_library("brave_test_support_unit") {
     # via an override for testing_profile.{h,cc} for upstream tests to build.
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
+
+    # implementation of components/test/base/components_unit_test.h
     "base/components_unit_test.cc",
-    "base/components_unit_test.h",
     "base/run_all_unittests.cc",
   ]
 
