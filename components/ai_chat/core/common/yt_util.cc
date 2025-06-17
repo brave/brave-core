@@ -16,6 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
+#include "services/data_decoder/public/cpp/safe_xml_parser.h"
 
 namespace ai_chat {
 
@@ -97,6 +98,149 @@ std::optional<std::string> ParseAndChooseCaptionTrackUrl(
   }
 
   return ChooseCaptionTrackUrl(*caption_tracks);
+}
+
+std::string ParseYoutubeTranscriptXml(const base::Value& root) {
+  std::string transcript_text;
+
+  // Example Youtube transcript XML:
+  //
+  // <?xml version="1.0" encoding="utf-8"?>
+  // <transcript>
+  //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute
+  //   Papers with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
+  //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
+  //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I
+  //   think this changes everything. Well, almost  everything, as you will
+  //   see in a moment. And this  </text>
+  // </transcript>
+  if (data_decoder::IsXmlElementNamed(root, "transcript")) {
+    // Existing YouTube transcript XML logic
+    const base::Value::List* children =
+        data_decoder::GetXmlElementChildren(root);
+    if (!children) {
+      return transcript_text;
+    }
+    for (const auto& child : *children) {
+      if (!data_decoder::IsXmlElementNamed(child, "text")) {
+        continue;
+      }
+      std::string text;
+      if (!data_decoder::GetXmlElementText(child, &text)) {
+        continue;
+      }
+      if (!transcript_text.empty()) {
+        transcript_text += " ";
+      }
+      transcript_text += text;
+    }
+  } else if (data_decoder::IsXmlElementNamed(root, "timedtext")) {
+    // Handle <timedtext> format ex.
+    // <timedtext format="3">
+    // <head>
+    // <ws id="0"/>
+    // <ws id="1" mh="2" ju="0" sd="3"/>
+    // <wp id="0"/>
+    // <wp id="1" ap="6" ah="20" av="100" rc="2" cc="40"/>
+    // </head>
+    // <body>
+    // <w t="0" id="1" wp="1" ws="1"/>
+    // <p t="160" d="4080" w="1">
+    // <s ac="0">hi</s>
+    // <s t="160" ac="0"> everyone</s>
+    // <s t="1120" ac="0"> so</s>
+    // <s t="1320" ac="0"> recently</s>
+    // <s t="1720" ac="0"> I</s>
+    // <s t="1840" ac="0"> gave</s>
+    // <s t="1999" ac="0"> a</s>
+    // </p>
+    // <p t="2270" d="1970" w="1" a="1"> </p>
+    // <p t="2280" d="4119" w="1">
+    // <s ac="0">30-minute</s>
+    // <s t="520" ac="0"> talk</s>
+    // <s t="720" ac="0"> on</s>
+    // <s t="879" ac="0"> large</s>
+    // <s t="1159" ac="0"> language</s>
+    // <s t="1480" ac="0"> models</s>
+    // </p>
+    // <p t="4230" d="2169" w="1" a="1"> </p>
+    // ...
+    // <p t="3585359" d="4321" w="1">
+    // <s ac="0">keep</s>
+    // <s t="161" ac="0"> track</s>
+    // <s t="440" ac="0"> of</s>
+    // <s t="1440" ac="0"> bye</s>
+    // </p>
+    // </body>
+    // </timedtext>
+    // or
+    // <timedtext format="3">
+    // <body>
+    // <p t="13460" d="2175">Chris Anderson: This is such a strange thing.</p>
+    // <p t="15659" d="3158">Your software, Linux, is in millions of
+    // computers,</p>
+    // <p t="18841" d="3547">it probably powers much of the Internet.</p>
+    // <p t="22412" d="1763">And I think that there are, like,</p>
+    // <p t="24199" d="3345">a billion and a half active Android devices out
+    // there.</p>
+    // <p t="27568" d="2601">Your software is in every single one of them.</p>
+    // <p t="30808" d="1150">It's kind of amazing.</p>
+    // <p t="31982" d="5035">You must have some amazing software headquarters
+    // driving all this.</p>
+    // <p t="37041" d="3306">That's what I thought -- and I was shocked when I
+    // saw a picture of it.</p>
+    // <p t="40371" d="1200">I mean, this is --</p>
+    // <p t="41595" d="2250">this is the Linux world headquarters.</p>
+    // ...
+    // </body>
+    // </timedtext>
+    const base::Value::List* children =
+        data_decoder::GetXmlElementChildren(root);
+    if (!children) {
+      return transcript_text;
+    }
+    for (const auto& child : *children) {
+      if (!data_decoder::IsXmlElementNamed(child, "body")) {
+        continue;
+      }
+      const base::Value::List* body_children =
+          data_decoder::GetXmlElementChildren(child);
+      if (!body_children) {
+        continue;
+      }
+      for (const auto& p : *body_children) {
+        if (!data_decoder::IsXmlElementNamed(p, "p")) {
+          continue;
+        }
+
+        const base::Value::List* s_children =
+            data_decoder::GetXmlElementChildren(p);
+        bool all_s = s_children &&
+                     std::ranges::all_of(*s_children, [](const base::Value& s) {
+                       return data_decoder::IsXmlElementNamed(s, "s");
+                     });
+
+        if (all_s && s_children && !s_children->empty()) {
+          // All children are <s>
+          for (const auto& s : *s_children) {
+            std::string s_text;
+            if (data_decoder::GetXmlElementText(s, &s_text)) {
+              transcript_text += s_text;
+            }
+          }
+        } else {
+          // Not all children are <s>, so treat as direct text
+          std::string p_text;
+          if (data_decoder::GetXmlElementText(p, &p_text)) {
+            transcript_text += p_text;
+          }
+        }
+        transcript_text += " ";  // Space between <p> blocks
+      }
+    }
+  }
+
+  return transcript_text;
 }
 
 }  // namespace ai_chat
