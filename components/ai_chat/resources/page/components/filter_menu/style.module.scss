@@ -8,11 +8,18 @@
 }
 
 .highlightFirstItem {
-  leo-menu-item {
+  &:not(:focus-within) leo-menu-item {
     &:first-of-type {
       background: var(--leo-color-container-interactive);
       color: var(--leo-color-text-interactive);
     }
+  }
+
+  leo-menu-item:focus-visible {
+    box-shadow: none;
+    border: none;
+    background: var(--leo-color-container-interactive);
+    color: var(--leo-color-text-interactive);
   }
 }
 
