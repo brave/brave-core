@@ -88,7 +88,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 base::Value::List ConversationEventsToList(
-    const std::vector<ConversationEvent>& conversation) {
+    std::vector<ConversationEvent> conversation) {
   static const base::NoDestructor<std::map<mojom::CharacterType, std::string>>
       kRoleMap({{mojom::CharacterType::HUMAN, "user"},
                 {mojom::CharacterType::ASSISTANT, "assistant"}});
@@ -231,13 +231,13 @@ void ConversationAPIClient::PerformRequest(
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
-    const std::vector<ConversationEvent>& conversation,
+    std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
-  dict.Set("events", ConversationEventsToList(conversation));
+  dict.Set("events", ConversationEventsToList(std::move(conversation)));
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("selected_language", selected_language);
   dict.Set("system_language",

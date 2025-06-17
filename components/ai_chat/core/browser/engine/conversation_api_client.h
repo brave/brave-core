@@ -119,7 +119,7 @@ class ConversationAPIClient {
 
  protected:
   std::string CreateJSONRequestBody(
-      const std::vector<ConversationEvent>& conversation,
+      std::vector<ConversationEvent> conversation,
       const std::string& selected_language,
       const std::optional<std::string>& model_name,
       const bool is_sse_enabled);
