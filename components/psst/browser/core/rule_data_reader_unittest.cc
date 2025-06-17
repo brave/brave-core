@@ -14,11 +14,9 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/gurl.h"
 
 namespace psst {
 
@@ -75,9 +73,10 @@ std::string ReadFile(const base::FilePath& file_path) {
 class RuleDataReaderUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    base::FilePath test_data_dir(
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
-    test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
+    test_data_dir_base_ =
+        test_data_dir.AppendASCII("brave/components/test/data/psst");
 
     psst_rules_ = PsstRule::ParseRules(kPsstJsonFileContent);
     ASSERT_EQ(psst_rules_->size(), 3U);

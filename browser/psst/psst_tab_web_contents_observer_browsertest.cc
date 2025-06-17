@@ -55,7 +55,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir =
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
@@ -65,7 +65,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(https_server_.Start());
 
     PsstRuleRegistry::GetInstance()->LoadRules(
-        test_data_dir.AppendASCII("psst-component-data"));
+        test_data_dir.AppendASCII("brave/components/test/data/psst"));
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }

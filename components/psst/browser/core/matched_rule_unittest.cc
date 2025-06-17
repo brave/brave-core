@@ -5,10 +5,10 @@
 
 #include "brave/components/psst/browser/core/matched_rule.h"
 
+#include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -71,9 +71,10 @@ std::string ReadFile(const base::FilePath& file_path) {
 class MatchedRuleTest : public testing::Test {
  public:
   void SetUp() override {
-    base::FilePath test_data_dir(
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
-    test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
+    test_data_dir_base_ =
+        test_data_dir.AppendASCII("brave/components/test/data/psst");
   }
 
   const base::FilePath& GetBasePath() { return test_data_dir_base_; }

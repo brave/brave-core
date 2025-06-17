@@ -55,7 +55,6 @@ source_set("unit_tests") {
   deps = [
     ":core_impl",
     "//base/test:test_support",
-    "//brave/components/constants",
     "//brave/components/psst/common",
     "//testing/gmock",
     "//testing/gtest",

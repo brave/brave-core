@@ -14,9 +14,8 @@ include_rules = [
   # In most cases you want l10n_util - see comments in the source
   "-brave/components/l10n",
 
-  # Temporary workaround because component tests run in chrome_test_suite
-  # https://github.com/brave/brave-browser/issues/46891
-  "!brave/components/test/base/components_unit_test.h",
+  # This is equivalent to chrome/test/base
+  "-brave/test/base",
 ]
 
 specific_include_rules = {
