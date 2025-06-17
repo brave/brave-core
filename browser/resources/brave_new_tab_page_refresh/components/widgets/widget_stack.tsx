@@ -58,12 +58,6 @@ export function WidgetStack(props: Props) {
     showNews
   ])
 
-  React.useEffect(() => {
-    if (currentTab && !visibleTabs.includes(currentTab)) {
-      setCurrentTab(null)
-    }
-  }, [currentTab, visibleTabs])
-
   function renderTabButton(tab: TabName) {
     return (
       <button
@@ -103,7 +97,8 @@ export function WidgetStack(props: Props) {
     return null
   }
 
-  const activeTab = currentTab || visibleTabs[0]
+  const activeTab =
+    currentTab && visibleTabs.includes(currentTab) ? currentTab : visibleTabs[0]
 
   return (
     <NtpWidget>

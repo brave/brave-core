@@ -8,7 +8,6 @@ import { RewardsPageProxy } from '../../../../components/brave_rewards/resources
 import { externalWalletFromExtensionData } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
-import { Optional } from '../lib/optional'
 import { debounce } from '$web-common/debounce'
 import { RewardsState, RewardsActions, defaultRewardsActions } from './rewards_state'
 
@@ -54,10 +53,7 @@ export function createRewardsHandler(
 
   async function updateBalance() {
     const { balance } = await rewardsHandler.getAvailableBalance()
-    store.update({
-      rewardsBalance:
-          new Optional(typeof balance === 'number' ? balance : undefined)
-    })
+    store.update({ rewardsBalance: balance })
   }
 
   async function loadData() {
