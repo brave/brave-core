@@ -3,23 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <string>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "components/tabs/public/tab_interface.h"
 
 #define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
   if (!ShouldBeGrouppedInRequests(request.get()))
 
 // |tab_is_hidden_| should be updated after upstream sets.
-#define BRAVE_ON_VISIBILITY_CHANGED UpdateTabIsHiddenWithTabActivationState();
+#define BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED \
+  UpdateTabIsHiddenWithTabActivationState();
 
 #include "src/components/permissions/permission_request_manager.cc"
 
-#undef BRAVE_ON_VISIBILITY_CHANGED
+#undef BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
 
 #include "url/origin.h"
@@ -102,9 +103,16 @@ void PermissionRequestManager::AcceptDenyCancel(
   CurrentRequestsDecided(action);
 }
 
+void PermissionRequestManager::OnTabActiveStateChanged(bool active) {
+  tab_is_activated_ = active;
+
+  // OnVisibilityChanged() has logic for |tab_is_hidden_| state changes.
+  // Tab activation state could affect |tab_is_hidden_| state.
+  OnVisibilityChanged(web_contents()->GetVisibility());
+}
+
 void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
-  if (!tab) {
+  if (!tab_is_activated_.has_value()) {
     return;
   }
 
@@ -113,7 +121,7 @@ void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
   // to |tab_is_hidden_| to prevent launching permission bubble from
   // that inactive split tab. Otherwise, it launches permission bubble even
   // it's inactive tab.
-  if (!tab_is_hidden_ && !tab->IsActivated()) {
+  if (!tab_is_hidden_ && !tab_is_activated_.value()) {
     tab_is_hidden_ = true;
   }
 }

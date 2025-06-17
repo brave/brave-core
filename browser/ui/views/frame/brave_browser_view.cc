@@ -888,20 +888,18 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   UpdateReaderModeToolbar();
 #endif
 
-  // Need to call its OnVisibilityChanged() as it handles request queue
-  // based on tab hidden state. In OnVisiblityChanged(), we update
-  // |tab_is_hidden_| state properly based on tab activation state.
-  if ((split_view_ && split_view_->IsSplitViewActive()) ||
-      (multi_contents_view_ && multi_contents_view_->IsInSplitView())) {
-    if (old_contents) {
-      permissions::PermissionRequestManager::FromWebContents(old_contents)
-          ->OnVisibilityChanged(old_contents->GetVisibility());
-    }
+  if (old_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(old_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(false);
+  }
 
-    if (new_contents) {
-      permissions::PermissionRequestManager::FromWebContents(new_contents)
-          ->OnVisibilityChanged(new_contents->GetVisibility());
-    }
+  if (new_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(new_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(true);
   }
 }
 

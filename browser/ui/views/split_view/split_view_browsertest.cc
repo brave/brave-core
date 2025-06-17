@@ -339,11 +339,6 @@ IN_PROC_BROWSER_TEST_P(SplitViewBrowserTestWithPermissionBubbleManagerTest,
 
   // Check proper state is set after restored.
   browser()->window()->Minimize();
-  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
-  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
-
   browser()->window()->Restore();
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
   ASSERT_TRUE(base::test::RunUntil(

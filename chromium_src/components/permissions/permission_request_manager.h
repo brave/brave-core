@@ -14,6 +14,7 @@ class SplitViewBrowserTestWithPermissionBubbleManagerTest;
                    const std::vector<PermissionRequest*>& denied_requests,     \
                    const std::vector<PermissionRequest*>& cancelled_requests); \
   bool ShouldGroupRequests(PermissionRequest* a, PermissionRequest* b) const;  \
+  void OnTabActiveStateChanged(bool active);                                   \
                                                                                \
  private:                                                                      \
   void UpdateTabIsHiddenWithTabActivationState();                              \
@@ -25,6 +26,7 @@ class SplitViewBrowserTestWithPermissionBubbleManagerTest;
   }                                                                            \
                                                                                \
  public:                                                                       \
+  std::optional<bool> tab_is_activated_;                                       \
   void set_view_factory_for_testing
 
 #include "src/components/permissions/permission_request_manager.h"  // IWYU pragma: export
