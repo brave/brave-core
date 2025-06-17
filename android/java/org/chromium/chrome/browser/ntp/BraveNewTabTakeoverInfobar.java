@@ -58,7 +58,7 @@ public class BraveNewTabTakeoverInfobar {
                     @Override
                     public boolean onInfoBarLinkClicked() {
                         suppressInfobar();
-                        TabUtils.openUrlInSameTab(LEARN_MORE_URL);
+                        TabUtils.openUrlInNewTab(/* isIncognito= */ false, LEARN_MORE_URL);
                         // Return false to immediately close the infobar. This is different
                         // from ConfirmInfoBarDelegate where we return true to close the
                         // infobar.
