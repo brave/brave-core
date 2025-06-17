@@ -4,6 +4,7 @@ include_rules = [
   "+cc/task/core",
   "+cc/task/text",
   "+crypto",
+  "+components/grit/brave_components_strings.h",
   "+components/os_crypt/async",
   "+components/os_crypt/sync",
   "+services/data_decoder/public",
