@@ -11,9 +11,14 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
   return html`<!--_html_template_start_-->
     <div class="cr-row first two-line">
       <div class="flex">
-        <div class="label">
-          $i18nRaw{SETTINGS_CONTAINERS_SECTION_DESCRIPTION}
-        </div>
+        <localized-link
+          id="learn-more"
+          .localizedString="${this.i18nAdvanced(
+            ContainersStrings.SETTINGS_CONTAINERS_SECTION_DESCRIPTION,
+          )}"
+          .linkUrl="${this.i18n('containersLearnMoreURL')}"
+        >
+        </localized-link>
       </div>
       <cr-button
         @click="${this.onAddContainerClick_}"

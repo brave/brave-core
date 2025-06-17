@@ -1041,10 +1041,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddLocalizedStrings(webui::kContainersStrings);
-  html_source->AddString(
-      webui::IDSToName<IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION>(),
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION,
-                                 kContainersLearnMoreURL));
+  html_source->AddString("containersLearnMoreURL", kContainersLearnMoreURL);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddString(
       "ensOffchainLookupDesc",
