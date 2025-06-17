@@ -11,7 +11,7 @@ vendor/omaha/
 .gclient_*
 .tags*
 .cipd
-/.clang-format
+/chromium_src/.clang-format
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_wallet/browser/zcash/rust/librustzcash/src/

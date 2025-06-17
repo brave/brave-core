@@ -42,6 +42,14 @@ def add_chromium_src_include_categories_rule(data):
     # wildcard rule.
     include_categories.insert(wildcard_rule_idx, chromium_src_rule)
 
+    # Put original source file #include last.
+    lowest_rule_priority = max(rule['Priority'] for rule in include_categories)
+    chromium_src_source_rule = {
+        'Regex': r'^<.*\.(c|cc|cpp|m|mm)>',
+        'Priority': lowest_rule_priority + 1,
+    }
+    include_categories.insert(0, chromium_src_source_rule)
+
 
 def load_clang_format(path):
     with open(path, 'r') as file:
