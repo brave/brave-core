@@ -16,13 +16,17 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/yt_util.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
@@ -208,107 +212,95 @@ class PageContentFetcherInternal {
       return;
     }
     // If it's video, we expect content url
-    DCHECK(data->content->is_content_url());
-    auto content_url = data->content->get_content_url();
-    if (content_url.is_empty() || !content_url.is_valid() ||
-        !content_url.SchemeIs(url::kHttpsScheme)) {
-      VLOG(1) << "Invalid content_url";
-      SendResultAndDeleteSelf(std::move(callback), "", "", true);
-      return;
-    }
-    // Subsequent calls do not need to re-fetch if the url stays the same
-    auto new_invalidation_token = content_url.spec();
-    if (new_invalidation_token == invalidation_token) {
-      VLOG(2) << "Not fetching content since invalidation token matches: "
-              << invalidation_token;
-      SendResultAndDeleteSelf(std::move(callback), "", new_invalidation_token,
-                              true);
-      return;
-    }
-    DVLOG(1) << "Making video transcript fetch to " << content_url.spec();
-    // Handle transcript url result - fetch content.
-    auto request = std::make_unique<network::ResourceRequest>();
-    request->url = content_url;
-    request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-    request->method = net::HttpRequestHeaders::kGetMethod;
-    auto loader = network::SimpleURLLoader::Create(
-        std::move(request), GetVideoNetworkTrafficAnnotationTag());
-    loader->SetRetryOptions(
-        1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
-               network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-    loader->SetAllowHttpErrorResults(true);
-    auto* loader_ptr = loader.get();
-    bool is_youtube =
-        data->type == ai_chat::mojom::PageContentType::VideoTranscriptYouTube;
-    auto on_response =
-        base::BindOnce(&PageContentFetcherInternal::OnTranscriptFetchResponse,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(loader), is_youtube, new_invalidation_token);
-    loader_ptr->DownloadToString(url_loader_factory_.get(),
-                                 std::move(on_response), 2 * 1024 * 1024);
-  }
-
- private:
-  void DeleteSelf() { delete this; }
-
-  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
-                               std::string content = "",
-                               std::string invalidation_token = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video, invalidation_token);
-    delete this;
-  }
-
-  void OnYoutubeTranscriptXMLParsed(
-      FetchPageContentCallback callback,
-      std::string invalidation_token,
-      base::expected<base::Value, std::string> result) {
-    // Example Youtube transcript XML:
-    //
-    // <?xml version="1.0" encoding="utf-8"?>
-    // <transcript>
-    //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute
-    //   Papers with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
-    //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
-    //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I
-    //   think this changes everything. Well, almost  everything, as you will
-    //   see in a moment. And this  </text>
-    // </transcript>
-
-    if (!result.has_value() ||
-        !data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
-      VLOG(1) << "Could not find transcript element.";
-      return;
-    }
-
-    std::string transcript_text;
-    const base::Value::List* children =
-        data_decoder::GetXmlElementChildren(result.value());
-    if (!children) {
-      return;
-    }
-
-    for (const auto& child : *children) {
-      if (!data_decoder::IsXmlElementNamed(child, "text")) {
-        continue;
+    if (data->content->is_content_url()) {
+      auto content_url = data->content->get_content_url();
+      if (content_url.is_empty() || !content_url.is_valid() ||
+          !content_url.SchemeIs(url::kHttpsScheme)) {
+        VLOG(1) << "Invalid content_url";
+        SendResultAndDeleteSelf(std::move(callback), "", "", true);
+        return;
       }
-
-      std::string text;
-      if (!data_decoder::GetXmlElementText(child, &text)) {
-        continue;
+      // Subsequent calls do not need to re-fetch if the url stays the same
+      auto new_invalidation_token = content_url.spec();
+      if (new_invalidation_token == invalidation_token) {
+        VLOG(2) << "Not fetching content since invalidation token matches: "
+                << invalidation_token;
+        SendResultAndDeleteSelf(std::move(callback), "", new_invalidation_token,
+                                true);
+        return;
       }
+      DVLOG(1) << "Making video transcript fetch to " << content_url.spec();
+      // Handle transcript url result - fetch content.
+      auto request = std::make_unique<network::ResourceRequest>();
+      request->url = content_url;
+      request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+      request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+      request->method = net::HttpRequestHeaders::kGetMethod;
+      auto loader = network::SimpleURLLoader::Create(
+          std::move(request), GetVideoNetworkTrafficAnnotationTag());
+      loader->SetRetryOptions(
+          1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
+                 network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+      loader->SetAllowHttpErrorResults(true);
+      auto* loader_ptr = loader.get();
+      bool is_youtube =
+          data->type == ai_chat::mojom::PageContentType::VideoTranscriptYouTube;
+      auto on_response =
+          base::BindOnce(&PageContentFetcherInternal::OnTranscriptFetchResponse,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         std::move(loader), is_youtube, new_invalidation_token);
+      loader_ptr->DownloadToString(url_loader_factory_.get(),
+                                   std::move(on_response), 2 * 1024 * 1024);
+    } else if (data->content->is_youtube_inner_tube_config()) {
+      const auto& config = data->content->get_youtube_inner_tube_config();
+      DVLOG(1) << "Making InnerTube API request for video " << config->video_id;
 
-      if (!transcript_text.empty()) {
-        // Add a space as a separator betwen texts.
-        transcript_text += " ";
+      auto url = GURL(base::StringPrintf(
+          "https://www.youtube.com/youtubei/v1/player?key=%s",
+          config->api_key.c_str()));
+      auto new_invalidation_token = url.spec();
+      if (new_invalidation_token == invalidation_token) {
+        VLOG(2) << "Not fetching content since invalidation token matches: "
+                << invalidation_token;
+        SendResultAndDeleteSelf(std::move(callback), "", new_invalidation_token,
+                                true);
+        return;
       }
+      // Make InnerTube API request
+      auto request = std::make_unique<network::ResourceRequest>();
+      request->url = url;
+      request->method = net::HttpRequestHeaders::kPostMethod;
+      request->headers.SetHeader(net::HttpRequestHeaders::kContentType,
+                                 "application/json");
+      request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+      request->credentials_mode = network::mojom::CredentialsMode::kOmit;
 
-      transcript_text += text;
+      auto loader = network::SimpleURLLoader::Create(
+          std::move(request), GetVideoNetworkTrafficAnnotationTag());
+
+      // Set up request body
+      base::Value::Dict body;
+      body.Set("videoId", config->video_id);
+      base::Value::Dict context;
+      base::Value::Dict client;
+      client.Set("clientName", "ANDROID");
+      client.Set("clientVersion", "20.10.38");
+      context.Set("client", std::move(client));
+      body.Set("context", std::move(context));
+
+      std::string body_str;
+      base::JSONWriter::Write(body, &body_str);
+      loader->AttachStringForUpload(body_str, "application/json");
+
+      auto* loader_ptr = loader.get();
+      auto on_response = base::BindOnce(
+          &PageContentFetcherInternal::OnInnerTubePlayerJsonResponse,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+          std::move(loader), new_invalidation_token);
+
+      loader_ptr->DownloadToString(url_loader_factory_.get(),
+                                   std::move(on_response), 2 * 1024 * 1024);
     }
-
-    SendResultAndDeleteSelf(std::move(callback), transcript_text,
-                            invalidation_token, true);
   }
 
   void OnTranscriptFetchResponse(
@@ -371,6 +363,240 @@ class PageContentFetcherInternal {
     }
     DVLOG(2) << "Got patch: " << patch_content;
     SendResultAndDeleteSelf(std::move(callback), patch_content, "", false);
+  }
+
+  void OnInnerTubePlayerJsonResponse(
+      FetchPageContentCallback callback,
+      std::unique_ptr<network::SimpleURLLoader> loader,
+      std::string invalidation_token,
+      std::unique_ptr<std::string> response_body) {
+    if (!response_body || loader->NetError() != net::OK) {
+      SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
+                              true);
+      return;
+    }
+    // Sanitize the response body
+    api_request_helper::ParseJsonNonBlocking(
+        *response_body,
+        base::BindOnce(&PageContentFetcherInternal::OnInnerTubePlayerJsonParsed,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                       invalidation_token));
+  }
+
+  void OnInnerTubePlayerJsonParsed(
+      FetchPageContentCallback callback,
+      std::string invalidation_token,
+      base::expected<base::Value, std::string> result) {
+    if (!result.has_value() || !result->is_dict()) {
+      SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
+                              true);
+      return;
+    }
+    auto* caption_tracks = result->GetDict().FindListByDottedPath(
+        "captions.playerCaptionsTracklistRenderer.captionTracks");
+    if (!caption_tracks) {
+      SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
+                              true);
+      return;
+    }
+    auto base_url = ai_chat::ChooseCaptionTrackUrl(*caption_tracks);
+    if (!base_url) {
+      SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
+                              true);
+      return;
+    }
+    DVLOG(1) << "Fetching transcript from baseUrl: " << *base_url;
+    // Now fetch the transcript from baseUrl
+    auto request = std::make_unique<network::ResourceRequest>();
+    request->url = GURL(*base_url);
+    request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+    request->method = net::HttpRequestHeaders::kGetMethod;
+    auto transcript_loader = network::SimpleURLLoader::Create(
+        std::move(request), GetVideoNetworkTrafficAnnotationTag());
+    transcript_loader->SetRetryOptions(
+        1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
+               network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+    transcript_loader->SetAllowHttpErrorResults(true);
+
+    auto* loader_ptr = transcript_loader.get();
+    auto on_response =
+        base::BindOnce(&PageContentFetcherInternal::OnTranscriptFetchResponse,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(transcript_loader), true, invalidation_token);
+
+    loader_ptr->DownloadToString(url_loader_factory_.get(),
+                                 std::move(on_response), 2 * 1024 * 1024);
+  }
+
+ private:
+  void DeleteSelf() { delete this; }
+
+  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
+                               std::string content = "",
+                               std::string invalidation_token = "",
+                               bool is_video = false) {
+    std::move(callback).Run(content, is_video, invalidation_token);
+    delete this;
+  }
+
+  void OnYoutubeTranscriptXMLParsed(
+      FetchPageContentCallback callback,
+      std::string invalidation_token,
+      base::expected<base::Value, std::string> result) {
+    if (!result.has_value()) {
+      SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
+                              true);
+      return;
+    }
+
+    const base::Value& root = result.value();
+    std::string transcript_text;
+
+    // Example Youtube transcript XML:
+    //
+    // <?xml version="1.0" encoding="utf-8"?>
+    // <transcript>
+    //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute
+    //   Papers with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
+    //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
+    //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I
+    //   think this changes everything. Well, almost  everything, as you will
+    //   see in a moment. And this  </text>
+    // </transcript>
+    if (data_decoder::IsXmlElementNamed(root, "transcript")) {
+      // Existing YouTube transcript XML logic
+      const base::Value::List* children =
+          data_decoder::GetXmlElementChildren(root);
+      if (!children) {
+        SendResultAndDeleteSelf(std::move(callback), transcript_text,
+                                invalidation_token, true);
+        return;
+      }
+      for (const auto& child : *children) {
+        if (!data_decoder::IsXmlElementNamed(child, "text")) {
+          continue;
+        }
+        std::string text;
+        if (!data_decoder::GetXmlElementText(child, &text)) {
+          continue;
+        }
+        if (!transcript_text.empty()) {
+          transcript_text += " ";
+        }
+        transcript_text += text;
+      }
+    } else if (data_decoder::IsXmlElementNamed(root, "timedtext")) {
+      // Handle <timedtext> format ex.
+      // <timedtext format="3">
+      // <head>
+      // <ws id="0"/>
+      // <ws id="1" mh="2" ju="0" sd="3"/>
+      // <wp id="0"/>
+      // <wp id="1" ap="6" ah="20" av="100" rc="2" cc="40"/>
+      // </head>
+      // <body>
+      // <w t="0" id="1" wp="1" ws="1"/>
+      // <p t="160" d="4080" w="1">
+      // <s ac="0">hi</s>
+      // <s t="160" ac="0"> everyone</s>
+      // <s t="1120" ac="0"> so</s>
+      // <s t="1320" ac="0"> recently</s>
+      // <s t="1720" ac="0"> I</s>
+      // <s t="1840" ac="0"> gave</s>
+      // <s t="1999" ac="0"> a</s>
+      // </p>
+      // <p t="2270" d="1970" w="1" a="1"> </p>
+      // <p t="2280" d="4119" w="1">
+      // <s ac="0">30-minute</s>
+      // <s t="520" ac="0"> talk</s>
+      // <s t="720" ac="0"> on</s>
+      // <s t="879" ac="0"> large</s>
+      // <s t="1159" ac="0"> language</s>
+      // <s t="1480" ac="0"> models</s>
+      // </p>
+      // <p t="4230" d="2169" w="1" a="1"> </p>
+      // ...
+      // <p t="3585359" d="4321" w="1">
+      // <s ac="0">keep</s>
+      // <s t="161" ac="0"> track</s>
+      // <s t="440" ac="0"> of</s>
+      // <s t="1440" ac="0"> bye</s>
+      // </p>
+      // </body>
+      // </timedtext>
+      // or
+      // <timedtext format="3">
+      // <body>
+      // <p t="13460" d="2175">Chris Anderson: This is such a strange thing.</p>
+      // <p t="15659" d="3158">Your software, Linux, is in millions of
+      // computers,</p>
+      // <p t="18841" d="3547">it probably powers much of the Internet.</p>
+      // <p t="22412" d="1763">And I think that there are, like,</p>
+      // <p t="24199" d="3345">a billion and a half active Android devices out
+      // there.</p>
+      // <p t="27568" d="2601">Your software is in every single one of them.</p>
+      // <p t="30808" d="1150">It's kind of amazing.</p>
+      // <p t="31982" d="5035">You must have some amazing software headquarters
+      // driving all this.</p>
+      // <p t="37041" d="3306">That's what I thought -- and I was shocked when I
+      // saw a picture of it.</p>
+      // <p t="40371" d="1200">I mean, this is --</p>
+      // <p t="41595" d="2250">this is the Linux world headquarters.</p>
+      // ...
+      // </body>
+      // </timedtext>
+      const base::Value::List* children =
+          data_decoder::GetXmlElementChildren(root);
+      if (!children) {
+        SendResultAndDeleteSelf(std::move(callback), transcript_text,
+                                invalidation_token, true);
+        return;
+      }
+      for (const auto& child : *children) {
+        if (!data_decoder::IsXmlElementNamed(child, "body")) {
+          continue;
+        }
+        const base::Value::List* body_children =
+            data_decoder::GetXmlElementChildren(child);
+        if (!body_children) {
+          continue;
+        }
+        for (const auto& p : *body_children) {
+          if (!data_decoder::IsXmlElementNamed(p, "p")) {
+            continue;
+          }
+
+          const base::Value::List* s_children =
+              data_decoder::GetXmlElementChildren(p);
+          bool all_s =
+              s_children &&
+              std::ranges::all_of(*s_children, [](const base::Value& s) {
+                return data_decoder::IsXmlElementNamed(s, "s");
+              });
+
+          if (all_s && s_children && !s_children->empty()) {
+            // All children are <s>
+            for (const auto& s : *s_children) {
+              std::string s_text;
+              if (data_decoder::GetXmlElementText(s, &s_text)) {
+                transcript_text += s_text;
+              }
+            }
+          } else {
+            // Not all children are <s>, so treat as direct text
+            std::string p_text;
+            if (data_decoder::GetXmlElementText(p, &p_text)) {
+              transcript_text += p_text;
+            }
+          }
+          transcript_text += " ";  // Space between <p> blocks
+        }
+      }
+    }
+
+    SendResultAndDeleteSelf(std::move(callback), transcript_text,
+                            invalidation_token, true);
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

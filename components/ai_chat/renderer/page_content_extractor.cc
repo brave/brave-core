@@ -28,8 +28,8 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/utils.h"
+#include "brave/components/ai_chat/core/common/yt_util.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
-#include "brave/components/ai_chat/renderer/yt_util.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -55,10 +55,28 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char16_t kYoutubeTranscriptUrlExtractionScript[] =
+constexpr char16_t kYoutubeInnerTubeConfigExtractionScript[] =
     uR"JS(
       (function() {
-        return ytplayer?.config?.args?.raw_player_response?.captions?.playerCaptionsTracklistRenderer?.captionTracks
+        // Get API key from ytcfg or fallback to regex
+        const apiKey = ytcfg?.data_?.INNERTUBE_API_KEY || (() => {
+          const scripts = document.querySelectorAll('script');
+          for (const script of scripts) {
+            const match = script.textContent?.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+            if (match) return match[1];
+          }
+          return null;
+        })();
+        // Get video ID from URL
+        const videoId = new URLSearchParams(window.location.search).get('v');
+        if (!videoId || !apiKey) return null;
+
+        // Return the API request configuration
+        return {
+          type: 'youtube_inner_tube',
+          apiKey: apiKey,
+          videoId: videoId
+        };
       })()
     )JS";
 
@@ -171,9 +189,9 @@ void PageContentExtractor::ExtractPageContent(
       // Do Youtube extraction
       v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
       blink::WebScriptSource source = blink::WebScriptSource(
-          blink::WebString::FromUTF16(kYoutubeTranscriptUrlExtractionScript));
+          blink::WebString::FromUTF16(kYoutubeInnerTubeConfigExtractionScript));
       auto script_callback = base::BindOnce(
-          &PageContentExtractor::OnJSTranscriptUrlResult,
+          &PageContentExtractor::OnJSYoutubeInnerTubeConfigResult,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
           ai_chat::mojom::PageContentType::VideoTranscriptYouTube);
       // Main world so that we can access a global variable
@@ -265,6 +283,39 @@ void PageContentExtractor::OnDistillResult(
   auto result = mojom::PageContent::New();
   result->type = std::move(mojom::PageContentType::Text);
   result->content = mojom::PageContentData::NewContent(content.value());
+  std::move(callback).Run(std::move(result));
+}
+
+void PageContentExtractor::OnJSYoutubeInnerTubeConfigResult(
+    ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback,
+    ai_chat::mojom::PageContentType type,
+    std::optional<base::Value> value,
+    base::TimeTicks start_time) {
+  DVLOG(2) << "InnerTube config extraction script completed and took"
+           << (base::TimeTicks::Now() - start_time).InMillisecondsF() << "ms"
+           << "\nResult: " << (value ? value->DebugString() : "[undefined]");
+
+  // Handle no result from script
+  if (!value.has_value() || !value->is_dict()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Handle InnerTube API request
+  const auto& dict = value->GetDict();
+  const std::string* api_key = dict.FindString("apiKey");
+  const std::string* video_id = dict.FindString("videoId");
+
+  if (!api_key || !video_id) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Return the configuration for the browser process to make the API request
+  auto result = ai_chat::mojom::PageContent::New();
+  result->type = std::move(type);
+  result->content = mojom::PageContentData::NewYoutubeInnerTubeConfig(
+      mojom::YoutubeInnerTubeConfig::New(*api_key, *video_id));
   std::move(callback).Run(std::move(result));
 }
 

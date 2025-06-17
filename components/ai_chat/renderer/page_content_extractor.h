@@ -59,6 +59,11 @@ class PageContentExtractor
       ai_chat::mojom::PageContentType type,
       std::optional<base::Value> value,
       base::TimeTicks start_time);
+  void OnJSYoutubeInnerTubeConfigResult(
+      ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback,
+      ai_chat::mojom::PageContentType type,
+      std::optional<base::Value> value,
+      base::TimeTicks start_time);
   void OnDistillResult(
       mojom::PageContentExtractor::ExtractPageContentCallback callback,
       const std::optional<std::string>& content);
