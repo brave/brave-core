@@ -14,9 +14,13 @@ constexpr char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
 
 PrerenderManager::~PrerenderManager() = default;
 
-bool PrerenderManager::StartPrewarmSearchResult() {
+bool PrerenderManager::MaybeStartPrewarmSearchResult() {
   return false;
 }
+
+void PrerenderManager::StopPrewarmSearchResultForTesting() {}
+
+void PrerenderManager::SetPrewarmUrlForTesting(const GURL& url) {}
 
 base::WeakPtr<content::PrerenderHandle>
 PrerenderManager::StartPrerenderDirectUrlInput(
