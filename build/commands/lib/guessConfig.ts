@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config'
-import path from 'path'
+import path from 'path/posix'
 import fs from 'fs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
