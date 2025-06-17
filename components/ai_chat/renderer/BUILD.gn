@@ -12,8 +12,6 @@ static_library("renderer") {
     "page_content_extractor.h",
     "page_text_distilling.cc",
     "page_text_distilling.h",
-    "yt_util.cc",
-    "yt_util.h",
   ]
 
   deps = [
@@ -38,10 +36,7 @@ static_library("renderer") {
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
-    sources = [
-      "ai_chat_resource_sniffer_throttle_unittest.cc",
-      "yt_util_unittest.cc",
-    ]
+    sources = [ "ai_chat_resource_sniffer_throttle_unittest.cc" ]
 
     deps = [
       "//base/test:test_support",
