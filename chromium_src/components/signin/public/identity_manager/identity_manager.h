@@ -14,7 +14,7 @@
   PrepareForAddingNewAccount_Unused(); \
   void PrepareForAddingNewAccount
 
-#include "src/components/signin/public/identity_manager/identity_manager.h"  // IWYU pragma: export
+#include <components/signin/public/identity_manager/identity_manager.h>  // IWYU pragma: export
 
 #undef PrepareForAddingNewAccount
 #undef GetAccountsInCookieJar

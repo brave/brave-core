@@ -15,7 +15,7 @@
 
 #define AlertIndicatorButton AlertIndicatorButtonBase
 
-#include "src/chrome/browser/ui/views/tabs/alert_indicator_button.cc"
+#include <chrome/browser/ui/views/tabs/alert_indicator_button.cc>
 
 #undef AlertIndicatorButton
 

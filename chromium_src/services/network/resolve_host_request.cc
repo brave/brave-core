@@ -9,5 +9,5 @@
     response_client->OnTextResults(*internal_request_->GetTextResults()); \
   }
 
-#include "src/services/network/resolve_host_request.cc"
+#include <services/network/resolve_host_request.cc>
 #undef BRAVE_RESOLVE_HOST_REQUEST_START

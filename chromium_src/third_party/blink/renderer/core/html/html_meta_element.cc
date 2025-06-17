@@ -9,5 +9,5 @@
 
 #define ScriptEnabled() ScriptEnabled(document.Url())
 
-#include "src/third_party/blink/renderer/core/html/html_meta_element.cc"
+#include <third_party/blink/renderer/core/html/html_meta_element.cc>
 #undef ScriptEnabled

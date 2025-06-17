@@ -8,7 +8,7 @@
 
 #define AllowScript() AllowScript(const KURL& url)
 
-#include "src/third_party/blink/renderer/core/loader/base_fetch_context.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/loader/base_fetch_context.h>  // IWYU pragma: export
 #undef AllowScript
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_BASE_FETCH_CONTEXT_H_

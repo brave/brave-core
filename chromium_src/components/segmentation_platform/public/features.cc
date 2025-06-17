@@ -5,7 +5,7 @@
 
 #include "components/segmentation_platform/public/features.h"
 
-#include "src/components/segmentation_platform/public/features.cc"
+#include <components/segmentation_platform/public/features.cc>
 
 #include "base/feature_override.h"
 

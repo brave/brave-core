@@ -25,7 +25,7 @@ FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest, ResetProgressMarkerMaxPeriod);
 
 #define OnCommitResponse virtual OnCommitResponse
 
-#include "src/components/sync/engine/data_type_worker.h"  // IWYU pragma: export
+#include <components/sync/engine/data_type_worker.h>  // IWYU pragma: export
 
 #undef OnCommitResponse
 #undef BRAVE_MODEL_TYPE_WORKER_H_

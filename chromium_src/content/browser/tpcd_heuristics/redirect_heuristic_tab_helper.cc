@@ -6,7 +6,7 @@
 #include "content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.h"
 
 #define RedirectHeuristicTabHelper RedirectHeuristicTabHelper_ChromiumImpl
-#include "src/content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.cc"
+#include <content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.cc>
 #undef RedirectHeuristicTabHelper
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RedirectHeuristicTabHelper);

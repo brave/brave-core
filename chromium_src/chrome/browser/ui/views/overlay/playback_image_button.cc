@@ -11,7 +11,7 @@
 #define kPauseIcon kLeoPauseFilledIcon
 #define kReplayIcon kLeoReloadIcon
 
-#include "src/chrome/browser/ui/views/overlay/playback_image_button.cc"
+#include <chrome/browser/ui/views/overlay/playback_image_button.cc>
 
 #undef kReplayIcon
 #undef kPauseIcon

@@ -10,7 +10,7 @@
   IsProfilerEnabledForCurrentProcessAndThread_ChromiumImpl(__VA_ARGS__) const; \
   bool IsProfilerEnabledForCurrentProcessAndThread(__VA_ARGS__)
 
-#include "src/chrome/common/profiler/thread_profiler_configuration.h"  // IWYU pragma: export
+#include <chrome/common/profiler/thread_profiler_configuration.h>  // IWYU pragma: export
 
 #undef IsProfilerEnabledForCurrentProcessAndThread
 

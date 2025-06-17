@@ -10,7 +10,7 @@
   RecordAcceptLanguageAndXmlHtmlLangMetric(__VA_ARGS__); \
   static void RecordAcceptLanguageAndXmlHtmlLangMetric_ChromiumImpl(__VA_ARGS__)
 
-#include "src/third_party/blink/public/web/web_language_detection_details.h"  // IWYU pragma: export
+#include <third_party/blink/public/web/web_language_detection_details.h>  // IWYU pragma: export
 
 #undef RecordAcceptLanguageAndXmlHtmlLangMetric
 

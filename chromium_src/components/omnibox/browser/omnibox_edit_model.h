@@ -21,7 +21,7 @@
   GetSuperGIcon_Unused(__VA_ARGS__) const; \
   ui::ImageModel GetSuperGIcon(__VA_ARGS__)
 
-#include "src/components/omnibox/browser/omnibox_edit_model.h"  // IWYU pragma: export
+#include <components/omnibox/browser/omnibox_edit_model.h>  // IWYU pragma: export
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo

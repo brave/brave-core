@@ -16,7 +16,7 @@
 
 #include <optional>
 
-#include "src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h>  // IWYU pragma: export
 
 #undef getSupportedExtensions
 #undef getExtension

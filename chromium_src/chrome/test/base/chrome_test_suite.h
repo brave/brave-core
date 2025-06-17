@@ -9,7 +9,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_test_utils.h"
 
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
-#include "src/chrome/test/base/chrome_test_suite.h"  // IWYU pragma: export
+#include <chrome/test/base/chrome_test_suite.h>  // IWYU pragma: export
 #undef ChromeTestSuite
 
 class ChromeTestSuite : public ChromeTestSuite_ChromiumImpl {

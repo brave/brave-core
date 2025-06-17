@@ -14,7 +14,7 @@ std::u16string GetFailedUrlString(GURL failed_url);
 #define failed_url_string(FORMATTED_URL) \
   failed_url_string = error_page::GetFailedUrlString(failed_url);
 
-#include "src/components/error_page/common/localized_error.cc"
+#include <components/error_page/common/localized_error.cc>
 
 #undef failed_url_string
 

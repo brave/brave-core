@@ -11,7 +11,7 @@
 
 #define GetStarterPackEngines GetStarterPackEngines_ChromiumImpl
 
-#include "src/components/search_engines/template_url_starter_pack_data.cc"
+#include <components/search_engines/template_url_starter_pack_data.cc>
 #undef GetStarterPackEngines
 
 namespace {

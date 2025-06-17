@@ -50,7 +50,7 @@ int MaybeAddCopyCleanLinkItem(
 #define IDS_SHARING_HUB_COPY_LINK_LABEL \
   MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_)
 
-#include "src/chrome/browser/sharing_hub/sharing_hub_model.cc"
+#include <chrome/browser/sharing_hub/sharing_hub_model.cc>
 
 #undef IDS_SHARING_HUB_COPY_LINK_LABEL
 #define IDS_SHARING_HUB_COPY_LINK_LABEL GetOriginalSharingHubCopyLinkID()

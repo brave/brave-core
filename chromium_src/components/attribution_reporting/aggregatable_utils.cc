@@ -8,7 +8,7 @@
 #include "components/attribution_reporting/aggregatable_utils.h"
 
 #define GetNullAggregatableReports GetNullAggregatableReports_ChromiumImpl
-#include "src/components/attribution_reporting/aggregatable_utils.cc"
+#include <components/attribution_reporting/aggregatable_utils.cc>
 #undef GetNullAggregatableReports
 
 namespace attribution_reporting {

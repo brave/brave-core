@@ -58,6 +58,6 @@ blink::WebWindowFeatures MaybeFarbleWindowFeatures(
   }                                                               \
   WebWindowFeatures GetWindowFeaturesFromString_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/page/create_window.cc"
+#include <third_party/blink/renderer/core/page/create_window.cc>
 
 #undef GetWindowFeaturesFromString

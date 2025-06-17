@@ -13,6 +13,6 @@
   ECDSA_SHA256:      \
   case crypto::SignatureVerifier::ECDSA_SHA384
 
-#include "src/components/enterprise/client_certificates/core/key_upload_client.cc"
+#include <components/enterprise/client_certificates/core/key_upload_client.cc>
 
 #undef ECDSA_SHA256

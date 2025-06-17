@@ -8,7 +8,7 @@
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 
 #define RegisterWidevineCdmComponent RegisterWidevineCdmComponent_ChromiumImpl
-#include "src/chrome/browser/component_updater/widevine_cdm_component_installer.cc"
+#include <chrome/browser/component_updater/widevine_cdm_component_installer.cc>
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/widevine/widevine_utils.h"

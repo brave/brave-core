@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include "src/content/browser/preloading/prefetch/prefetch_features.cc"
+#include <content/browser/preloading/prefetch/prefetch_features.cc>
 
 namespace features {
 

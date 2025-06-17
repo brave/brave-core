@@ -20,7 +20,7 @@
        ->ShouldCaptionButtonsBeDrawnOverToolbar() ||         \
    ShouldBrowserCustomDrawTitlebar(browser_view))
 
-#include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.cc"
+#include <chrome/browser/ui/views/frame/browser_caption_button_container_win.cc>
 
 #undef ShouldBrowserCustomDrawTitlebar
 #undef BrowserCaptionButtonContainer

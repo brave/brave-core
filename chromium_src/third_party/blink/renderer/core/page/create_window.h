@@ -15,7 +15,7 @@
                                            LocalDOMWindow* dom_window);  \
   CORE_EXPORT WebWindowFeatures GetWindowFeaturesFromString
 
-#include "src/third_party/blink/renderer/core/page/create_window.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/page/create_window.h>  // IWYU pragma: export
 
 #undef GetWindowFeaturesFromString
 

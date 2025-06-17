@@ -9,5 +9,5 @@
   ECDSA_SHA256:      \
   case crypto::SignatureVerifier::ECDSA_SHA384
 
-#include "src/chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc"
+#include <chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc>
 #undef ECDSA_SHA256

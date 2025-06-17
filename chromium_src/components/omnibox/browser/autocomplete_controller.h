@@ -10,7 +10,7 @@
   OmniboxPromotionTest;            \
   friend class AutocompleteControllerTest
 
-#include "src/components/omnibox/browser/autocomplete_controller.h"  // IWYU pragma: export
+#include <components/omnibox/browser/autocomplete_controller.h>  // IWYU pragma: export
 
 namespace ai_chat {
 void MaybeShowLeoMatch(AutocompleteResult* result);

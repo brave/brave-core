@@ -29,5 +29,5 @@ void SetTorCircuitIsolation(const ProxyConfigWithAnnotation& config,
                            network_anonymization_key, result, this); \
   }
 
-#include "src/net/proxy_resolution/configured_proxy_resolution_service.cc"
+#include <net/proxy_resolution/configured_proxy_resolution_service.cc>
 #undef BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define AddCoreDefaultColorMixer AddCoreDefaultColorMixer_Chromium
-#include "src/ui/color/core_default_color_mixer.cc"
+#include <ui/color/core_default_color_mixer.cc>
 #undef AddCoreDefaultColorMixer
 
 namespace ui {

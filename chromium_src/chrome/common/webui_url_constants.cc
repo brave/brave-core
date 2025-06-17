@@ -12,6 +12,6 @@
       kTorInternalsHost, kSkusInternalsHost, kAdsInternalsHost,               \
       kNewTabTakeoverHost
 
-#include "src/chrome/common/webui_url_constants.cc"
+#include <chrome/common/webui_url_constants.cc>
 
 #undef kChromeUIAttributionInternalsHost

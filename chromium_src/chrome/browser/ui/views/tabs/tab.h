@@ -26,7 +26,7 @@ class BraveTab;
 #define MaybeAdjustLeftForPinnedTab virtual MaybeAdjustLeftForPinnedTab
 #define IsActive virtual IsActive
 
-#include "src/chrome/browser/ui/views/tabs/tab.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab.h>  // IWYU pragma: export
 
 #undef IsActive
 #undef MaybeAdjustLeftForPinnedTab

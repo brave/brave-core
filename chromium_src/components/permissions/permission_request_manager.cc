@@ -18,7 +18,7 @@
 #define BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED \
   UpdateTabIsHiddenWithTabActivationState();
 
-#include "src/components/permissions/permission_request_manager.cc"
+#include <components/permissions/permission_request_manager.cc>
 
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN

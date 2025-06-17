@@ -8,7 +8,7 @@
 
 #define ReportSyncStopped virtual ReportSyncStopped
 
-#include "src/components/sync/service/sync_stopped_reporter.h"  // IWYU pragma: export
+#include <components/sync/service/sync_stopped_reporter.h>  // IWYU pragma: export
 
 #undef ReportSyncStopped
 

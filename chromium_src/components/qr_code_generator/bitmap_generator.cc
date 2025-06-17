@@ -41,7 +41,7 @@ ImageSkia CreateVectorIcon(const IconDescription& params) {
 
 #endif
 
-#include "src/components/qr_code_generator/bitmap_generator.cc"
+#include <components/qr_code_generator/bitmap_generator.cc>
 
 #if BUILDFLAG(IS_IOS)
 #undef UI_GFX_PAINT_VECTOR_ICON_H_

@@ -25,7 +25,7 @@
   html_source->AddLocalizedString("appManagementOpenModeLabel",         \
                                   IDS_APP_MANAGEMENT_OPEN_MODE)
 
-#include "src/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc"
+#include <chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc>
 
 #undef AddLocalizedStrings
 #undef SetupWebUIDataSource

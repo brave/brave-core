@@ -6,7 +6,7 @@
 #include "chrome/browser/metrics/chrome_metrics_service_client.h"
 
 #define ChromeMetricsServiceClient ChromeMetricsServiceClient_ChromiumImpl
-#include "src/chrome/browser/metrics/chrome_metrics_service_client.cc"
+#include <chrome/browser/metrics/chrome_metrics_service_client.cc>
 #undef ChromeMetricsServiceClient
 
 ChromeMetricsServiceClient::ChromeMetricsServiceClient(

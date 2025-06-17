@@ -9,7 +9,7 @@
 
 #define AddPlugins AddPlugins_ChromiumImpl
 
-#include "src/chrome/common/chrome_content_client.cc"
+#include <chrome/common/chrome_content_client.cc>
 
 #undef AddPlugins
 

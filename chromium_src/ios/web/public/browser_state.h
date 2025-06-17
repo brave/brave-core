@@ -28,7 +28,7 @@ class PrefService;
     return nullptr;           \
   }                           \
   void Unused()
-#include "src/ios/web/public/browser_state.h"  // IWYU pragma: export
+#include <ios/web/public/browser_state.h>  // IWYU pragma: export
 #undef GetURLLoaderFactory
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_BROWSER_STATE_H_

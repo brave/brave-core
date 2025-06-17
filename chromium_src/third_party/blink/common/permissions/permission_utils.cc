@@ -93,7 +93,7 @@
   case PermissionName::BRAVE_CARDANO:                                       \
     return PermissionType::BRAVE_CARDANO;
 
-#include "src/third_party/blink/common/permissions/permission_utils.cc"
+#include <third_party/blink/common/permissions/permission_utils.cc>
 #undef BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE
 #undef kDisplayCapture
 #undef PERMISSION_UTIL_GET_PERMISSION_STRING

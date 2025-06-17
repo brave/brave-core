@@ -11,7 +11,7 @@
       JNIEnv* env, const base::android::JavaParamRef<jobjectArray>& gaia_ids); \
   void KeepAccountSettingsPrefsOnlyForUsers
 
-#include "src/components/sync/android/sync_service_android_bridge.h"  // IWYU pragma: export
+#include <components/sync/android/sync_service_android_bridge.h>  // IWYU pragma: export
 
 #undef KeepAccountSettingsPrefsOnlyForUsers
 

@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 
-#include "src/chrome/browser/ui/views/page_action/page_action_icon_view.cc"
+#include <chrome/browser/ui/views/page_action/page_action_icon_view.cc>
 
 void PageActionIconView::SetLoadingIndicator(
     std::unique_ptr<PageActionIconLoadingIndicatorView> indicator) {

@@ -28,7 +28,7 @@ struct BraveContentAutofillClientUnused {
 }  // namespace autofill
 
 #define AutofillClient BraveContentAutofillClientUnused, public AutofillClient
-#include "src/components/autofill/content/browser/content_autofill_client.h"  // IWYU pragma: export
+#include <components/autofill/content/browser/content_autofill_client.h>  // IWYU pragma: export
 #undef AutofillClient
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_AUTOFILL_CONTENT_BROWSER_CONTENT_AUTOFILL_CLIENT_H_

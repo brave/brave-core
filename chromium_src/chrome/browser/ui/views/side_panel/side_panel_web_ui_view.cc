@@ -6,7 +6,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.cc"
+#include <chrome/browser/ui/views/side_panel/side_panel_web_ui_view.cc>
 
 void SidePanelWebUIView::AddedToWidget() {
   if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {

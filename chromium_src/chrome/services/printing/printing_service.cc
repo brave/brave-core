@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/chrome/services/printing/printing_service.cc"
+#include <chrome/services/printing/printing_service.cc>
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "brave/services/printing/pdf_to_bitmap_converter.h"

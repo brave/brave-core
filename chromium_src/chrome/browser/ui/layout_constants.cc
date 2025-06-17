@@ -34,6 +34,6 @@ gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
                                                    \
   gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset
 
-#include "src/chrome/browser/ui/layout_constants.cc"
+#include <chrome/browser/ui/layout_constants.cc>
 #undef LayoutInset
 #undef LayoutConstant

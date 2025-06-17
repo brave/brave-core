@@ -13,7 +13,7 @@
       override;                                                             \
   void UpdatePrerenderURL
 
-#include "src/content/public/test/fake_local_frame.h"  // IWYU pragma: export
+#include <content/public/test/fake_local_frame.h>  // IWYU pragma: export
 #undef UpdatePrerenderURL
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_TEST_FAKE_LOCAL_FRAME_H_

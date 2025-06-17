@@ -15,7 +15,7 @@
 
 #define IsQueryPotentiallyPrivate virtual IsQueryPotentiallyPrivate
 
-#include "src/components/omnibox/browser/search_provider.h"  // IWYU pragma: export
+#include <components/omnibox/browser/search_provider.h>  // IWYU pragma: export
 
 #undef IsQueryPotentiallyPrivate
 #undef DoHistoryQuery

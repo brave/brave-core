@@ -18,7 +18,7 @@ void MaybeOnWidevineRequest(MediaKeySystemAccessInitializer* initializer,
 #define BRAVE_NAVIGATOR_REQUEST_MEDIA_KEY_SYSTEM_ACCESS \
   MaybeOnWidevineRequest(initializer, window->GetFrame());
 
-#include "src/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc"
+#include <third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc>
 
 #include "base/check.h"
 #undef BRAVE_NAVIGATOR_REQUEST_MEDIA_KEY_SYSTEM_ACCESS

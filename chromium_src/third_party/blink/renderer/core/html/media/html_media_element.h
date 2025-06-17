@@ -14,7 +14,7 @@
   RequestFullscreen() override {}    \
   void RequestEnterPictureInPicture
 
-#include "src/third_party/blink/renderer/core/html/media/html_media_element.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/html/media/html_media_element.h>  // IWYU pragma: export
 
 #undef RequestEnterPictureInPicture
 

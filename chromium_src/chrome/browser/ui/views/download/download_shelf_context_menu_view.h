@@ -14,7 +14,7 @@
  protected:          \
   void OnMenuClosed
 
-#include "src/chrome/browser/ui/views/download/download_shelf_context_menu_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/download/download_shelf_context_menu_view.h>  // IWYU pragma: export
 
 #undef OnMenuClosed
 #undef DownloadShelfContextMenuView

@@ -25,7 +25,7 @@
   blink::DOMNodeId initiator_dom_node_id_ = blink::kInvalidDOMNodeId
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/svg/svg_resource_document_content.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/svg/svg_resource_document_content.h>  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef AsyncLoadingFinished

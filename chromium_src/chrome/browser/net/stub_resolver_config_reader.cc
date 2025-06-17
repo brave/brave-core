@@ -133,7 +133,7 @@ SecureDnsConfig::ManagementMode MaybeOverrideForcedManagementMode(
                              is_managed),                                      \
       ADDITIONAL_DNS_TYPES_ENABLED)
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "src/chrome/browser/net/stub_resolver_config_reader.cc"
+#include <chrome/browser/net/stub_resolver_config_reader.cc>
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef ConfigureStubHostResolver
 #undef SecureDnsConfig

@@ -14,7 +14,7 @@
   }                                                   \
   gfx::NativeView parent_view_ = gfx::NativeView()
 
-#include "src/chrome/browser/importer/external_process_importer_host.h"  // IWYU pragma: export
+#include <chrome/browser/importer/external_process_importer_host.h>  // IWYU pragma: export
 
 #undef NotifyImportEnded
 

@@ -16,7 +16,7 @@
  private:                                                             \
   void InstallLoadingIndicator
 
-#include "src/chrome/browser/ui/views/page_action/page_action_icon_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/page_action/page_action_icon_view.h>  // IWYU pragma: export
 
 #undef InstallLoadingIndicator
 

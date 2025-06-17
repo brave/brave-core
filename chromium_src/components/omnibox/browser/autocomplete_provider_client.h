@@ -11,7 +11,7 @@
   virtual std::u16string GetClipboardText() const; \
   virtual void StartServiceWorker
 
-#include "src/components/omnibox/browser/autocomplete_provider_client.h"  // IWYU pragma: export
+#include <components/omnibox/browser/autocomplete_provider_client.h>  // IWYU pragma: export
 
 #undef StartServiceWorker
 

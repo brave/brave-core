@@ -8,7 +8,7 @@
 #include "brave/app/brave_main_delegate.h"
 
 #define ChromeMainDelegate BraveMainDelegate
-#include "src/chrome/test/base/chrome_test_launcher.h"  // IWYU pragma: export
+#include <chrome/test/base/chrome_test_launcher.h>  // IWYU pragma: export
 #undef ChromeMainDelegate
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_LAUNCHER_H_

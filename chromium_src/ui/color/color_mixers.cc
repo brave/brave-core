@@ -12,6 +12,6 @@
   AddBraveRefColorMixer(__VA_ARGS__); \
   nala::AddNalaColorMixer(__VA_ARGS__)
 
-#include "src/ui/color/color_mixers.cc"
+#include <ui/color/color_mixers.cc>
 
 #undef AddRefColorMixer

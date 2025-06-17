@@ -13,7 +13,7 @@
 #define SidePanelCoordinator BraveSidePanelCoordinator
 #define BookmarksSidePanelCoordinator BraveBookmarksSidePanelCoordinator
 
-#include "src/chrome/browser/ui/browser_window/browser_window_features.cc"
+#include <chrome/browser/ui/browser_window/browser_window_features.cc>
 
 #undef BookmarksSidePanelCoordinator
 #undef SidePanelCoordinator

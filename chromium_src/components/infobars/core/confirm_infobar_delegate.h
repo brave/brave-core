@@ -13,7 +13,7 @@
 #define BUTTON_CANCEL BUTTON_EXTRA = 1 << 2, BUTTON_CANCEL
 #endif
 
-#include "src/components/infobars/core/confirm_infobar_delegate.h"  // IWYU pragma: export
+#include <components/infobars/core/confirm_infobar_delegate.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 #undef BUTTON_CANCEL

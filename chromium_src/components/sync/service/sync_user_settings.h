@@ -17,7 +17,7 @@
       const std::vector<GaiaId>& available_gaia_ids) {} \
   virtual void KeepAccountSettingsPrefsOnlyForUsers
 
-#include "src/components/sync/service/sync_user_settings.h"  // IWYU pragma: export
+#include <components/sync/service/sync_user_settings.h>  // IWYU pragma: export
 
 #undef KeepAccountSettingsPrefsOnlyForUsers
 

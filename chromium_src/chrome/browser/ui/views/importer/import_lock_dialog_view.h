@@ -13,7 +13,7 @@
   static void Show(gfx::NativeView parent_view, __VA_ARGS__); \
   ui::mojom::ModalType GetModalType() const override
 
-#include "src/chrome/browser/ui/views/importer/import_lock_dialog_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/importer/import_lock_dialog_view.h>  // IWYU pragma: export
 
 #undef Show
 

@@ -16,7 +16,7 @@
   std::optional<sync_preferences::SyncablePrefMetadata>    \
   GetSyncablePrefMetadata(__VA_ARGS__)
 
-#include "src/chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"  // IWYU pragma: export
+#include <chrome/browser/sync/prefs/chrome_syncable_prefs_database.h>  // IWYU pragma: export
 #undef GetSyncablePrefMetadata
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PREFS_CHROME_SYNCABLE_PREFS_DATABASE_H_

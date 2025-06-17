@@ -24,7 +24,7 @@
   IsAutocompleteEnabled() const override; \
   bool IsAutocompleteEnabled_Unused
 
-#include "src/chrome/browser/ui/autofill/chrome_autofill_client.h"  // IWYU pragma: export
+#include <chrome/browser/ui/autofill/chrome_autofill_client.h>  // IWYU pragma: export
 #undef IsAutocompleteEnabled
 #undef IsAutofillEnabled
 #undef GetAutofillOptimizationGuide

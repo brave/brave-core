@@ -12,7 +12,7 @@
 #define AnnotateAndMoveUserBlockedCookies \
   AnnotateAndMoveUserBlockedEphemeralCookies
 
-#include "src/services/network/network_service_network_delegate.cc"
+#include <services/network/network_service_network_delegate.cc>
 
 #undef AnnotateAndMoveUserBlockedCookies
 #undef IsPrivacyModeEnabled

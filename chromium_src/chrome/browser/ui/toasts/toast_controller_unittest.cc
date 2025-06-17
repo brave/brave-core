@@ -10,7 +10,7 @@
 // their identifiers here so we can continue to run the upstream tests.
 #define kLinkCopied kLinkToHighlightCopied
 #define kImageCopied kClearBrowsingData
-#include "src/chrome/browser/ui/toasts/toast_controller_unittest.cc"
+#include <chrome/browser/ui/toasts/toast_controller_unittest.cc>
 #undef kImageCopied
 #undef kLinkCopied
 

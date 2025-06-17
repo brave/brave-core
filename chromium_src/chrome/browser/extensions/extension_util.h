@@ -8,7 +8,7 @@
 
 #define GetInstallPromptPermissionSetForExtension \
   GetInstallPromptPermissionSetForExtension_ChromiumImpl
-#include "src/chrome/browser/extensions/extension_util.h"  // IWYU pragma: export
+#include <chrome/browser/extensions/extension_util.h>  // IWYU pragma: export
 #undef GetInstallPromptPermissionSetForExtension
 
 namespace extensions {

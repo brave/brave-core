@@ -40,7 +40,7 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
   }                                                                         \
   if (false
 
-#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc"
+#include <chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc>
 
 #undef GetAllForeignSessions
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES

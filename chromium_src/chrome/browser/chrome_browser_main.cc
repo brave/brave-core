@@ -8,6 +8,6 @@
 
 #define BrowserProcessImpl BraveBrowserProcessImpl
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl
-#include "src/chrome/browser/chrome_browser_main.cc"
+#include <chrome/browser/chrome_browser_main.cc>
 #undef ChromeBrowserMainParts
 #undef BrowserProcessImpl

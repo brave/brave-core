@@ -9,7 +9,7 @@
 // Subclass AffiliationServiceImpl so that we can disable prefetch. This
 // functionality requires Google API key.
 #define AffiliationServiceImpl AffiliationServiceImpl_ChromiumImpl
-#include "src/components/affiliations/core/browser/affiliation_service_impl.h"  // IWYU pragma: export
+#include <components/affiliations/core/browser/affiliation_service_impl.h>  // IWYU pragma: export
 #undef AffiliationServiceImpl
 
 namespace affiliations {

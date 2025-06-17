@@ -20,7 +20,7 @@ using SanitizedImageSource_BraveImpl = SanitizedImageSource;
   friend SanitizedImageSource_BraveImpl; \
   virtual void OnImageLoaded
 
-#include "src/chrome/browser/ui/webui/sanitized_image_source.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/sanitized_image_source.h>  // IWYU pragma: export
 
 #undef OnImageLoaded
 #undef SanitizedImageSource

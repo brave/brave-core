@@ -10,7 +10,7 @@
   LaunchUrl_ChromiumImpl(__VA_ARGS__); \
   static void LaunchUrl(__VA_ARGS__)
 
-#include "src/chrome/browser/external_protocol/external_protocol_handler.h"  // IWYU pragma: export
+#include <chrome/browser/external_protocol/external_protocol_handler.h>  // IWYU pragma: export
 
 #undef LaunchUrl
 

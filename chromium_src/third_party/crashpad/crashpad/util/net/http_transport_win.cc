@@ -41,4 +41,4 @@ void BraveSetSessionOptions(HINTERNET hSession) {
 }  // namespace
 
 // The original file is patched to call the above function.
-#include "src/third_party/crashpad/crashpad/util/net/http_transport_win.cc"
+#include <third_party/crashpad/crashpad/util/net/http_transport_win.cc>

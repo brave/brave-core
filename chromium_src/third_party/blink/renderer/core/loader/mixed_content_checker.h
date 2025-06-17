@@ -30,7 +30,7 @@
       WebContentSettingsClient* settings_client, LocalFrame* frame);       \
   static void UpgradeInsecureRequest_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/loader/mixed_content_checker.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/loader/mixed_content_checker.h>  // IWYU pragma: export
 
 #undef UpgradeInsecureRequest
 

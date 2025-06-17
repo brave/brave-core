@@ -15,7 +15,7 @@
 
 #define GetTargetBounds virtual GetTargetBounds
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h>  // IWYU pragma: export
 
 #undef OmniboxSuggestionButtonRowBrowserTest
 #undef GetTargetBounds

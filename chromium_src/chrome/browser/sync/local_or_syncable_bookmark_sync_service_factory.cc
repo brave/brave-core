@@ -20,7 +20,7 @@
   }                                                        \
   void LocalOrSyncableBookmarkSyncServiceFactory_Unused()
 #endif
-#include "src/chrome/browser/sync/local_or_syncable_bookmark_sync_service_factory.cc"
+#include <chrome/browser/sync/local_or_syncable_bookmark_sync_service_factory.cc>
 #if !BUILDFLAG(IS_ANDROID)
 #undef ProfileKeyedServiceFactory
 #endif

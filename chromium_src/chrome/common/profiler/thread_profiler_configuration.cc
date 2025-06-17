@@ -8,7 +8,7 @@
 #define IsProfilerEnabledForCurrentProcessAndThread \
   IsProfilerEnabledForCurrentProcessAndThread_ChromiumImpl
 
-#include "src/chrome/common/profiler/thread_profiler_configuration.cc"
+#include <chrome/common/profiler/thread_profiler_configuration.cc>
 
 #undef IsProfilerEnabledForCurrentProcessAndThread
 

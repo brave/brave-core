@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/ui/views/widget/native_widget_mac.mm"
+#include <ui/views/widget/native_widget_mac.mm>
 
 #include "base/check.h"
 

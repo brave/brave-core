@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_INSTALL_WORKER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_INSTALL_WORKER_H_
 
-#include "src/chrome/installer/setup/install_worker.h"  // IWYU pragma: export
+#include <chrome/installer/setup/install_worker.h>  // IWYU pragma: export
 
 namespace installer {
 

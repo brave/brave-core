@@ -5,7 +5,7 @@
 
 #include "components/autofill/content/browser/content_autofill_client.h"
 
-#include "src/components/autofill/content/browser/content_autofill_client.cc"
+#include <components/autofill/content/browser/content_autofill_client.cc>
 
 namespace autofill {
 

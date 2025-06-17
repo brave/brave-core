@@ -21,7 +21,7 @@ std::string GetAPIKey() {
 #define NetworkSpeechRecognitionEngineImpl \
   NetworkSpeechRecognitionEngineImpl_ChromiumImpl
 
-#include "src/content/browser/speech/network_speech_recognition_engine_impl.cc"
+#include <content/browser/speech/network_speech_recognition_engine_impl.cc>
 
 #undef NetworkSpeechRecognitionEngineImpl
 

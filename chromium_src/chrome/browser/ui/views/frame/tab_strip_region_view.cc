@@ -14,7 +14,7 @@
 
 #define NewTabButton BraveNewTabButton
 
-#include "src/chrome/browser/ui/views/frame/tab_strip_region_view.cc"
+#include <chrome/browser/ui/views/frame/tab_strip_region_view.cc>
 
 #undef NewTabButton
 #undef kButtonSize

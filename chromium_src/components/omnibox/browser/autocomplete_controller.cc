@@ -120,7 +120,7 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
   SortBraveSearchPromotionMatch(&internal_result_); \
   MaybeShowCommands(&internal_result_, input_);
 
-#include "src/components/omnibox/browser/autocomplete_controller.cc"
+#include <components/omnibox/browser/autocomplete_controller.cc>
 
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER

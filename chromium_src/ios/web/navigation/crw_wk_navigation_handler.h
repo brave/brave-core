@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_NAVIGATION_CRW_WK_NAVIGATION_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_NAVIGATION_CRW_WK_NAVIGATION_HANDLER_H_
 
-#include "src/ios/web/navigation/crw_wk_navigation_handler.h"  // IWYU pragma: export
+#include <ios/web/navigation/crw_wk_navigation_handler.h>  // IWYU pragma: export
 
 @interface BraveCRWWKNavigationHandler : CRWWKNavigationHandler
 @end

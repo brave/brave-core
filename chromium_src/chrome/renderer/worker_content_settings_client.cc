@@ -19,7 +19,7 @@
 
 #define WorkerContentSettingsClient WorkerContentSettingsClient_ChromiumImpl
 
-#include "src/chrome/renderer/worker_content_settings_client.cc"
+#include <chrome/renderer/worker_content_settings_client.cc>
 
 #undef WorkerContentSettingsClient
 

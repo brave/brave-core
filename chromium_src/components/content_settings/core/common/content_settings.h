@@ -17,7 +17,7 @@
   return SettingSource::kRemoteList; \
   case ProviderType::kNotificationAndroidProvider
 
-#include "src/components/content_settings/core/common/content_settings.h"  // IWYU pragma: export
+#include <components/content_settings/core/common/content_settings.h>  // IWYU pragma: export
 
 #undef kNotificationAndroidProvider
 #undef kTpcdGrant

@@ -27,7 +27,7 @@
   IsBraveComponent() const;              \
   virtual bool AllowUpdatesOnMeteredConnections
 
-#include "src/components/component_updater/component_installer.h"  // IWYU pragma: export
+#include <components/component_updater/component_installer.h>  // IWYU pragma: export
 
 #undef OnUpdateError
 #undef AllowUpdatesOnMeteredConnections

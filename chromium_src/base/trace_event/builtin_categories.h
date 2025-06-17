@@ -19,7 +19,7 @@
   perfetto::Category("brave"), perfetto::Category("brave.adblock"), \
       perfetto::Category("brave.ads"),
 
-#include "src/base/trace_event/builtin_categories.h"  // IWYU pragma: export
+#include <base/trace_event/builtin_categories.h>  // IWYU pragma: export
 
 #undef BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES
 

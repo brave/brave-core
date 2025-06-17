@@ -10,5 +10,5 @@
   brave::EnsureBrowserContextKeyedServiceFactoriesBuilt(); \
   WebDataServiceFactory
 
-#include "src/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc"
+#include <chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc>
 #undef WebDataServiceFactory

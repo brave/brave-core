@@ -15,7 +15,7 @@ constexpr int kDangerousVerboseState = IDS_DANGEROUS_VERBOSE_STATE;
 #undef IDS_DANGEROUS_VERBOSE_STATE
 #define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState) && (false
 
-#include "src/chrome/browser/ui/views/location_bar/location_icon_view.cc"
+#include <chrome/browser/ui/views/location_bar/location_icon_view.cc>
 
 #undef IDS_DANGEROUS_VERBOSE_STATE
 

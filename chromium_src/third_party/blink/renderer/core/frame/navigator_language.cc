@@ -8,7 +8,7 @@
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #define NavigatorLanguage NavigatorLanguage_ChromiumImpl
-#include "src/third_party/blink/renderer/core/frame/navigator_language.cc"
+#include <third_party/blink/renderer/core/frame/navigator_language.cc>
 #undef NavigatorLanguage
 
 namespace blink {

@@ -14,6 +14,6 @@
 // tracker does not leak screenY to content.
 #define screenY() screenY_ChromiumImpl()
 
-#include "src/third_party/blink/renderer/core/loader/anchor_element_interaction_tracker.cc"
+#include <third_party/blink/renderer/core/loader/anchor_element_interaction_tracker.cc>
 
 #undef screenY

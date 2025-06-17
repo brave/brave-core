@@ -187,7 +187,7 @@ void UpdateBraveVpn(const base::FilePath& target_path,
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#include "src/chrome/installer/setup/install_worker.cc"
+#include <chrome/installer/setup/install_worker.cc>
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef AddUpdateDowngradeVersionItem
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)

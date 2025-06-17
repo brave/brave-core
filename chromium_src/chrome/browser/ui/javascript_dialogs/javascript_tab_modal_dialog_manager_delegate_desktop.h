@@ -18,7 +18,7 @@
       base::OnceClosure dialog_closed_callback);                              \
   base::WeakPtr<javascript_dialogs::TabModalDialogView> CreateNewDialog
 
-#include "src/chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"  // IWYU pragma: export
+#include <chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h>  // IWYU pragma: export
 
 #undef CreateNewDialog
 

@@ -12,7 +12,7 @@ void SetPasswordSyncAllowed(bool allowed);
   SetPasswordSyncAllowed_ChromiumImpl(bool allowed); \
   void SetPasswordSyncAllowed
 
-#include "src/components/sync/service/sync_prefs.h"  // IWYU pragma: export
+#include <components/sync/service/sync_prefs.h>  // IWYU pragma: export
 
 #undef SetPasswordSyncAllowed
 

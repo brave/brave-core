@@ -10,5 +10,5 @@
   RequestFullscreen() override {} \
   void RequestPlay
 
-#include "src/content/browser/media/session/media_session_controller_unittest.cc"
+#include <content/browser/media/session/media_session_controller_unittest.cc>
 #undef RequestPlay

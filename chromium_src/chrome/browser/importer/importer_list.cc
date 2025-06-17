@@ -137,7 +137,7 @@ void DetectChromeProfiles(
 #define IDS_IMPORT_FROM_EDGE_OLD IDS_IMPORT_FROM_EDGE
 #undef IDS_IMPORT_FROM_EDGE
 #define IDS_IMPORT_FROM_EDGE IDS_BRAVE_IMPORT_FROM_EDGE
-#include "src/chrome/browser/importer/importer_list.cc"
+#include <chrome/browser/importer/importer_list.cc>
 #undef IDS_IMPORT_FROM_EDGE
 #define IDS_IMPORT_FROM_EDGE IDS_IMPORT_FROM_EDGE_OLD
 #undef IDS_IMPORT_FROM_EDGE_OLD

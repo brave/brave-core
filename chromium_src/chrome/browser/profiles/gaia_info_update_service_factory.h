@@ -14,7 +14,7 @@
       content::BrowserContext* context) const;        \
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
-#include "src/chrome/browser/profiles/gaia_info_update_service_factory.h"  // IWYU pragma: export
+#include <chrome/browser/profiles/gaia_info_update_service_factory.h>  // IWYU pragma: export
 #undef BuildServiceInstanceForBrowserContext
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_GAIA_INFO_UPDATE_SERVICE_FACTORY_H_

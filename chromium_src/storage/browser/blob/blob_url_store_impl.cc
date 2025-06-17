@@ -9,7 +9,7 @@
 
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
 
-#include "src/storage/browser/blob/blob_url_store_impl.cc"
+#include <storage/browser/blob/blob_url_store_impl.cc>
 
 #undef BlobURLStoreImpl
 

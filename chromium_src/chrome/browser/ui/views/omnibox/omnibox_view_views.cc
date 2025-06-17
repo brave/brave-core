@@ -7,5 +7,5 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
 #define OmniboxPopupViewViews BraveOmniboxPopupViewViews
-#include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.cc"
+#include <chrome/browser/ui/views/omnibox/omnibox_view_views.cc>
 #undef OmniboxPopupViewViews

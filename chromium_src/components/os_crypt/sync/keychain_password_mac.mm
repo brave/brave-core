@@ -18,7 +18,7 @@ KeychainPassword::KeychainNameType& GetBraveAccountName();
 
 #define BRAVE_GET_SERVICE_NAME return GetBraveServiceName();
 #define BRAVE_GET_ACCOUNT_NAME return GetBraveAccountName();
-#include "src/components/os_crypt/sync/keychain_password_mac.mm"
+#include <components/os_crypt/sync/keychain_password_mac.mm>
 #undef BRAVE_GET_SERVICE_NAME
 #undef BRAVE_GET_ACCOUNT_NAME
 

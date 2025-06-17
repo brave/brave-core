@@ -15,5 +15,5 @@
       return false;                                       \
   }
 
-#include "src/third_party/blink/common/client_hints/client_hints.cc"
+#include <third_party/blink/common/client_hints/client_hints.cc>
 #undef BRAVE_CLIENT_HINTS_IS_CLIENT_HINT_SENT_BY_DEFAULT

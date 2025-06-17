@@ -14,7 +14,7 @@
 #define screenX() screenX_ChromiumImpl()
 #define screenY() screenY_ChromiumImpl()
 
-#include "src/third_party/blink/renderer/core/events/pointer_event_factory.cc"
+#include <third_party/blink/renderer/core/events/pointer_event_factory.cc>
 
 #undef screenX
 #undef screenY

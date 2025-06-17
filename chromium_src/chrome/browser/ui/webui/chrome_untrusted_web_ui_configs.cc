@@ -33,7 +33,7 @@
 #define RegisterChromeUntrustedWebUIConfigs \
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl
 
-#include "src/chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc"
+#include <chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc>
 
 #undef RegisterChromeUntrustedWebUIConfigs
 

@@ -13,7 +13,7 @@
   GetAutocompleteClassifier() override;               \
   void OpenLeo(const std::u16string& query) override; \
   bool IsLeoProviderEnabled
-#include "src/ios/chrome/browser/autocomplete/model/autocomplete_provider_client_impl.h"  // IWYU pragma: export
+#include <ios/chrome/browser/autocomplete/model/autocomplete_provider_client_impl.h>  // IWYU pragma: export
 #undef GetAutocompleteClassifier
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_AUTOCOMPLETE_MODEL_AUTOCOMPLETE_PROVIDER_CLIENT_IMPL_H_

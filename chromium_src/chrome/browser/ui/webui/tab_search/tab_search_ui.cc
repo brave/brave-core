@@ -11,7 +11,7 @@
 #include "brave/grit/brave_generated_resources.h"
 
 #define TabSearchUI TabSearchUI_ChromiumImpl
-#include "src/chrome/browser/ui/webui/tab_search/tab_search_ui.cc"
+#include <chrome/browser/ui/webui/tab_search/tab_search_ui.cc>
 #undef TabSearchUI
 
 TabSearchUI::TabSearchUI(content::WebUI* web_ui)

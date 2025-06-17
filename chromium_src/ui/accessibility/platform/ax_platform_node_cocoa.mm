@@ -30,5 +30,5 @@
     return nil;                                                     \
   }
 
-#include "src/ui/accessibility/platform/ax_platform_node_cocoa.mm"
+#include <ui/accessibility/platform/ax_platform_node_cocoa.mm>
 #undef BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE

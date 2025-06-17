@@ -13,7 +13,7 @@
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
 
-#include "src/components/content_settings/core/browser/cookie_settings.cc"
+#include <components/content_settings/core/browser/cookie_settings.cc>
 
 #undef ShutdownOnUIThread
 

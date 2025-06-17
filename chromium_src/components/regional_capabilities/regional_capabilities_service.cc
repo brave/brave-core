@@ -7,7 +7,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
-#include "src/components/regional_capabilities/regional_capabilities_service.cc"
+#include <components/regional_capabilities/regional_capabilities_service.cc>
 
 namespace regional_capabilities {
 

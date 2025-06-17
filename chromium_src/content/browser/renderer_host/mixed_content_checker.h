@@ -13,7 +13,7 @@
                                                                                \
   RenderFrameHostImpl* InWhichFrameIsContentMixed
 
-#include "src/content/browser/renderer_host/mixed_content_checker.h"  // IWYU pragma: export
+#include <content/browser/renderer_host/mixed_content_checker.h>  // IWYU pragma: export
 
 #undef InWhichFrameIsContentMixed
 

@@ -10,7 +10,7 @@
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
 #define keyboard keyboard_ChromiumImpl
-#include "src/third_party/blink/renderer/modules/keyboard/navigator_keyboard.cc"
+#include <third_party/blink/renderer/modules/keyboard/navigator_keyboard.cc>
 #undef keyboard
 
 namespace blink {

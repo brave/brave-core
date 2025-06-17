@@ -17,7 +17,7 @@
     return;                                                                   \
   }
 
-#include "src/content/browser/file_system_access/file_system_access_handle_base.cc"
+#include <content/browser/file_system_access/file_system_access_handle_base.cc>
 #undef GetChildURL
 #undef DoMove
 #undef DoRename

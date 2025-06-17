@@ -12,7 +12,7 @@
       const FeatureEntry& entry, const std::set<std::string>& enabled_entries) \
       const
 
-#include "src/components/webui/flags/flags_state.h"  // IWYU pragma: export
+#include <components/webui/flags/flags_state.h>  // IWYU pragma: export
 
 #undef GetFlagFeatureEntries
 

@@ -7,7 +7,7 @@
 
 #define IsMemoryAllocatorDumpNameInAllowlist \
   IsMemoryAllocatorDumpNameInAllowlist_ChromiumImpl
-#include "src/base/trace_event/memory_infra_background_allowlist.cc"
+#include <base/trace_event/memory_infra_background_allowlist.cc>
 #undef IsMemoryAllocatorDumpNameInAllowlist
 
 namespace base::trace_event {

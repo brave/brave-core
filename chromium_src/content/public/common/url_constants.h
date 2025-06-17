@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 
-#include "src/content/public/common/url_constants.h"  // IWYU pragma: export
+#include <content/public/common/url_constants.h>  // IWYU pragma: export
 
 namespace content {
 inline constexpr char kBraveUIScheme[] = "brave";

@@ -14,7 +14,7 @@
       bool* was_blocked);                                                     \
   virtual WebContents* AddNewContents
 
-#include "src/content/public/browser/web_contents_delegate.h"  // IWYU pragma: export
+#include <content/public/browser/web_contents_delegate.h>  // IWYU pragma: export
 
 #undef AddNewContents
 

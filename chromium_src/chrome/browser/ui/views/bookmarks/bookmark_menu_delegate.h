@@ -14,7 +14,7 @@
   GetMaxWidthForMenu_UnUsed(__VA_ARGS__); \
   int GetMaxWidthForMenu(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.h>  // IWYU pragma: export
 #undef GetMaxWidthForMenu
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_MENU_DELEGATE_H_

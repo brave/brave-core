@@ -10,6 +10,6 @@
   return "SHA384";     \
   case crypto::SignatureVerifier::RSA_PKCS1_SHA1
 
-#include "src/components/signin/public/base/session_binding_utils.cc"
+#include <components/signin/public/base/session_binding_utils.cc>
 
 #undef RSA_PKCS1_SHA1

@@ -16,7 +16,7 @@ class BraveLocationBarView;
   friend class BraveLocationBarView; \
   void UpdateLabelColors
 
-#include "src/chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/location_bar/icon_label_bubble_view.h>  // IWYU pragma: export
 
 #undef UpdateLabelColors
 

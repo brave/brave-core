@@ -31,6 +31,6 @@
   E_CPONLY(kColorRefTertiary35)          \
   E_CPONLY(kColorRefTertiary98)
 
-#include "src/ui/color/color_id.h"  // IWYU pragma: export
+#include <ui/color/color_id.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_COLOR_COLOR_ID_H_

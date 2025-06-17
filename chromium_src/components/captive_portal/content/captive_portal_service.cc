@@ -8,5 +8,5 @@
 #define DISABLED_FOR_TESTING \
   DISABLED_FOR_TESTING;      \
   true
-#include "src/components/captive_portal/content/captive_portal_service.cc"
+#include <components/captive_portal/content/captive_portal_service.cc>
 #undef DISABLED_FOR_TESTING

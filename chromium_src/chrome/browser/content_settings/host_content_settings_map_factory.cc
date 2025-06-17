@@ -18,7 +18,7 @@
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
 
-#include "src/chrome/browser/content_settings/host_content_settings_map_factory.cc"
+#include <chrome/browser/content_settings/host_content_settings_map_factory.cc>
 
 #undef BuildServiceInstanceFor
 

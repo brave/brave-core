@@ -11,7 +11,7 @@
 #define kOmniboxExpandedRadius kOmniboxExpandedRadius) ? 4 : 4; \
   DCHECK_EQ(corner_radius, 4
 
-#include "src/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc"
+#include <chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc>
 
 #undef kOmniboxExpandedRadius
 

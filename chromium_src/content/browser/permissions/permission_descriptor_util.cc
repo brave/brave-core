@@ -52,6 +52,6 @@
         blink::mojom::PermissionName::BRAVE_CARDANO);                         \
   case blink::PermissionType::NUM
 
-#include "src/content/browser/permissions/permission_descriptor_util.cc"
+#include <content/browser/permissions/permission_descriptor_util.cc>
 
 #undef NUM

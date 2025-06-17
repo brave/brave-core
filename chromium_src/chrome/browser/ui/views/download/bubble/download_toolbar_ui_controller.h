@@ -23,7 +23,7 @@
 // download in progress.
 #define UpdateIcon virtual UpdateIcon
 
-#include "src/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h>  // IWYU pragma: export
 #undef UpdateIcon
 #undef UpdateIconDormant
 #undef DownloadToolbarUIController

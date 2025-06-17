@@ -8,7 +8,7 @@
 #include "components/send_tab_to_self/entry_point_display_reason.h"
 
 #define GetEntryPointDisplayReason GetEntryPointDisplayReason_ChromiumImpl
-#include "src/components/send_tab_to_self/entry_point_display_reason.cc"
+#include <components/send_tab_to_self/entry_point_display_reason.cc>
 #undef GetEntryPointDisplayReason
 
 namespace send_tab_to_self::internal {

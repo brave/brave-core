@@ -10,7 +10,7 @@
 
 #define BuildServiceInstanceForBrowserContext \
   BuildServiceInstanceForBrowserContext_ChromiumImpl
-#include "src/chrome/browser/profiles/gaia_info_update_service_factory.cc"
+#include <chrome/browser/profiles/gaia_info_update_service_factory.cc>
 #undef BuildServiceInstanceForBrowserContext
 
 std::unique_ptr<KeyedService>

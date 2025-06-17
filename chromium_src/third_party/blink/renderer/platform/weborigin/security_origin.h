@@ -21,7 +21,7 @@
 
 #include "base/check.h"
 
-#include "src/third_party/blink/renderer/platform/weborigin/security_origin.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/platform/weborigin/security_origin.h>  // IWYU pragma: export
 
 #undef SerializesAsNull
 

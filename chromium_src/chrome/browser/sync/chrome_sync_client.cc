@@ -11,7 +11,7 @@
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_
 #endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
 
-#include "src/chrome/browser/sync/chrome_sync_client.cc"
+#include <chrome/browser/sync/chrome_sync_client.cc>
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_
 #undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_

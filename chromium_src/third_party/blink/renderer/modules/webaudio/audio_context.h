@@ -15,7 +15,7 @@
   RequestFullscreen() override {}    \
   void RequestEnterPictureInPicture
 
-#include "src/third_party/blink/renderer/modules/webaudio/audio_context.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/webaudio/audio_context.h>  // IWYU pragma: export
 
 #undef RequestEnterPictureInPicture
 

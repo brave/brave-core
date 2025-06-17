@@ -38,7 +38,7 @@ void BraveAdjustTextForCopy(GURL* url) {
 #define CanPasteAndGo CanPasteAndGo_Chromium
 #define PasteAndGo PasteAndGo_Chromium
 #define GetSuperGIcon GetSuperGIcon_Unused
-#include "src/components/omnibox/browser/omnibox_edit_model.cc"
+#include <components/omnibox/browser/omnibox_edit_model.cc>
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo

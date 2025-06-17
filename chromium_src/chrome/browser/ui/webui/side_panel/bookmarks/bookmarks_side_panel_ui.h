@@ -9,7 +9,7 @@
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
 #define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
 
-#include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h>  // IWYU pragma: export
 
 #undef BookmarksSidePanelUIConfig
 #undef BookmarksSidePanelUI

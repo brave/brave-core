@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/toasts/toast_controller.h"
 
 #define MaybeShowToast MaybeShowToast_ChromiumImpl
-#include "src/chrome/browser/ui/toasts/toast_controller.cc"
+#include <chrome/browser/ui/toasts/toast_controller.cc>
 #undef MaybeShowToast
 
 bool ToastController::MaybeShowToast(ToastParams params) {

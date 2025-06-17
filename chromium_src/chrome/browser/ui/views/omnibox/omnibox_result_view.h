@@ -13,7 +13,7 @@
 #define OnSelectionStateChanged virtual OnSelectionStateChanged
 #define GetIcon virtual GetIcon
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/omnibox/omnibox_result_view.h>  // IWYU pragma: export
 
 #undef GetIcon
 #undef OnSelectionStateChanged

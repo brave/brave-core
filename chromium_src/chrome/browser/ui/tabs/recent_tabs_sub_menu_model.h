@@ -13,7 +13,7 @@
   std::unique_ptr<sessions::SessionTab> stub_tab_; \
   friend class BraveRecentTabsSubMenuModel
 
-#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h"  // IWYU pragma: export
+#include <chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h>  // IWYU pragma: export
 
 #undef local_tab_cancelable_task_tracker_
 

@@ -20,7 +20,7 @@
 
 #define UpdateTabStripMargin virtual UpdateTabStripMargin
 
-#include "src/chrome/browser/ui/views/frame/tab_strip_region_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/tab_strip_region_view.h>  // IWYU pragma: export
 
 #undef UpdateTabStripMargin
 #undef IsPositionInWindowCaption

@@ -22,7 +22,7 @@ using DraggingTabsSessionBrave = DraggingTabsSession;
   friend DraggingTabsSessionBrave; \
   virtual gfx::Point GetAttachedDragPoint
 
-#include "src/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h>  // IWYU pragma: export
 
 #undef GetAttachedDragPoint
 #undef DraggingTabsSession

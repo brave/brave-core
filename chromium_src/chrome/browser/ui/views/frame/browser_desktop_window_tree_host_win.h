@@ -17,7 +17,7 @@ using BrowserDesktopWindowTreeHostWin_BraveImpl =
   UpdateWorkspace();      \
   friend BrowserDesktopWindowTreeHostWin_BraveImpl
 
-#include "src/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h>  // IWYU pragma: export
 
 #undef BrowserDesktopWindowTreeHostWin
 #undef UpdateWorkspace

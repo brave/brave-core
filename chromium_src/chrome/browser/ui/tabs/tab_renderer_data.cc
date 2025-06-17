@@ -8,7 +8,7 @@
 #include "base/check.h"
 
 #define FromTabInModel FromTabInModel_ChromiumImpl
-#include "src/chrome/browser/ui/tabs/tab_renderer_data.cc"
+#include <chrome/browser/ui/tabs/tab_renderer_data.cc>
 #undef FromTabInModel
 
 #include "brave/browser/ui/tabs/features.h"

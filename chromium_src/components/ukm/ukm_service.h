@@ -18,7 +18,7 @@ FORWARD_DECLARE_TEST(ChromeMetricsServiceClientTest,
   cloned_install_subscription_;                              \
   FRIEND_TEST_ALL_PREFIXES(::ChromeMetricsServiceClientTest, \
                            BraveTestRegisterUKMProviders)
-#include "src/components/ukm/ukm_service.h"  // IWYU pragma: export
+#include <components/ukm/ukm_service.h>  // IWYU pragma: export
 #undef cloned_install_subscription_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_UKM_UKM_SERVICE_H_

@@ -12,7 +12,7 @@ class Browser;
   CreateExtraView(__VA_ARGS__); \
   std::unique_ptr<views::View> CreateFootnoteView(Browser* browser)
 
-#include "src/chrome/browser/ui/views/device_chooser_content_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/device_chooser_content_view.h>  // IWYU pragma: export
 
 #undef CreateExtraView
 

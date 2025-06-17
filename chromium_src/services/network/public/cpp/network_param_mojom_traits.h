@@ -17,7 +17,7 @@
     return host_port_pair.password();            \
   }
 
-#include "src/services/network/public/cpp/network_param_mojom_traits.h"  // IWYU pragma: export
+#include <services/network/public/cpp/network_param_mojom_traits.h>  // IWYU pragma: export
 
 #undef BRAVE_STRUCT_TRAITS_HOST_PORT_PAIR
 

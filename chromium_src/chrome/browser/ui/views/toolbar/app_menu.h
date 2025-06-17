@@ -15,7 +15,7 @@
                                                    \
   virtual void RunMenu
 
-#include "src/chrome/browser/ui/views/toolbar/app_menu.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/app_menu.h>  // IWYU pragma: export
 
 #undef RunMenu
 

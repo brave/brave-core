@@ -14,7 +14,7 @@ class TargetConfig;
   SetupBasicInterceptions_ChromiumImpl(__VA_ARGS__); \
   bool SetupBasicInterceptions(__VA_ARGS__, const TargetConfig* config)
 
-#include "src/sandbox/win/src/policy_broker.h"  // IWYU pragma: export
+#include <sandbox/win/src/policy_broker.h>  // IWYU pragma: export
 
 #undef SetupBasicInterceptions
 

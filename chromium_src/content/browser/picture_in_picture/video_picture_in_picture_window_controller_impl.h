@@ -13,7 +13,7 @@
   RequestFullscreen() override; \
   void NextSlide
 
-#include "src/content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.h"  // IWYU pragma: export
+#include <content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.h>  // IWYU pragma: export
 
 #undef NextSlide
 

@@ -13,7 +13,7 @@
       const url::Origin& origin, bool video);                    \
   void SetOriginCanReadEnumerateDevicesAudioLabels
 
-#include "src/android_webview/browser/aw_permission_manager.h"  // IWYU pragma: export
+#include <android_webview/browser/aw_permission_manager.h>  // IWYU pragma: export
 
 #undef SetOriginCanReadEnumerateDevicesAudioLabels
 

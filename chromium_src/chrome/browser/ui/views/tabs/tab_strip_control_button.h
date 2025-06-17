@@ -10,7 +10,7 @@
 #define UpdateInkDrop virtual UpdateInkDrop
 #define GetForegroundColor virtual GetForegroundColor
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_control_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_strip_control_button.h>  // IWYU pragma: export
 
 #undef GetForegroundColor
 #undef UpdateInkDrop

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.cc"
+#include <third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.cc>
 
 #include "base/check.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-blink.h"

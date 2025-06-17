@@ -13,7 +13,7 @@
 #include "chrome/installer/setup/brand_behaviors.h"
 
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
-#include "src/chrome/installer/setup/google_chrome_behaviors.cc"
+#include <chrome/installer/setup/google_chrome_behaviors.cc>
 #undef DoPostUninstallOperations
 
 namespace installer {

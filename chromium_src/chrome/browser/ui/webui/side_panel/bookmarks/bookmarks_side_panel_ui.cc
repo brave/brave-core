@@ -12,7 +12,7 @@
 #define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
 
-#include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc"
+#include <chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc>
 
 #undef BookmarksSidePanelUIConfig
 #undef BookmarksSidePanelUI

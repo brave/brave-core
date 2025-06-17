@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_entry.cc"
+#include <chrome/browser/ui/views/side_panel/side_panel_entry.cc>
 
 bool SidePanelEntry::IsBeingObservedBy(SidePanelEntryObserver* observer) {
   return observers_.HasObserver(observer);

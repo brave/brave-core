@@ -22,7 +22,7 @@
 
 #include <optional>
 
-#include "src/components/permissions/request_type.h"  // IWYU pragma: export
+#include <components/permissions/request_type.h>  // IWYU pragma: export
 
 #undef kStorageAccess
 #undef ContentSettingsTypeToRequestType

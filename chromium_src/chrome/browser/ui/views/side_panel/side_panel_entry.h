@@ -10,7 +10,7 @@
   SupportsNewTabButton(__VA_ARGS__); \
   bool IsBeingObservedBy(SidePanelEntryObserver* observer)
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_entry.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/side_panel_entry.h>  // IWYU pragma: export
 
 #undef SupportsNewTabButton
 

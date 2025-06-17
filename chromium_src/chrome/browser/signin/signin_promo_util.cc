@@ -12,7 +12,7 @@
 // - ShouldShowSignInPromoCommon, that function is disabled via the above patch,
 // - ShouldShowExtensionSyncPromo, that function is replaced above.
 #define ShouldShowSyncPromo ShouldShowSyncPromo_UnUsed
-#include "src/chrome/browser/signin/signin_promo_util.cc"
+#include <chrome/browser/signin/signin_promo_util.cc>
 #undef ShouldShowSyncPromo
 #undef ShouldShowExtensionSyncPromo
 #undef SHOULD_SHOW_SIGNIN_PROMO_COMMON

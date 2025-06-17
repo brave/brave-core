@@ -24,7 +24,7 @@ class PublicKeyWrapper {
   VerifyInit(signature_algorithm, signature,                        \
              PublicKeyWrapper::GetPublicKey(public_key_info))
 
-#include "src/components/variations/variations_seed_store.cc"
+#include <components/variations/variations_seed_store.cc>
 
 #undef VerifyInit
 

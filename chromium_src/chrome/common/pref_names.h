@@ -16,6 +16,6 @@ namespace prefs {
 inline constexpr char kBraveVpnDnsConfig[] = "brave.brave_vpn.dns_config";
 }  // namespace prefs
 
-#include "src/chrome/common/pref_names.h"  // IWYU pragma: export
+#include <chrome/common/pref_names.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_PREF_NAMES_H_

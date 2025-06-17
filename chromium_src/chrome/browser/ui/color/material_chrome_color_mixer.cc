@@ -8,7 +8,7 @@
 #include "brave/browser/ui/color/material_brave_color_mixer.h"
 
 #define AddMaterialChromeColorMixer AddMaterialChromeColorMixer_ChromiumImpl
-#include "src/chrome/browser/ui/color/material_chrome_color_mixer.cc"
+#include <chrome/browser/ui/color/material_chrome_color_mixer.cc>
 #undef AddMaterialChromeColorMixer
 
 void AddMaterialChromeColorMixer(ui::ColorProvider* provider,

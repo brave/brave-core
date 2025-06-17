@@ -8,7 +8,7 @@
 #include "brave/components/playlist/common/features.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
-#include "src/chrome/browser/ui/views/side_panel/side_panel_util.cc"
+#include <chrome/browser/ui/views/side_panel/side_panel_util.cc>
 #undef PopulateGlobalEntries
 
 // static

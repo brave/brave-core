@@ -128,6 +128,6 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
       NOTREACHED();                                                            \
   }
 
-#include "src/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc"
+#include <third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc>
 #undef BRAVE_WEBGL2_RENDERING_CONTEXT_BASE
 #undef BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER

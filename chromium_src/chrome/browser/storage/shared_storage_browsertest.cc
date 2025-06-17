@@ -6,5 +6,5 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #define ChromeContentBrowserClient BraveContentBrowserClient
-#include "src/chrome/browser/storage/shared_storage_browsertest.cc"
+#include <chrome/browser/storage/shared_storage_browsertest.cc>
 #undef ChromeContentBrowserClient

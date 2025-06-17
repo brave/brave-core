@@ -35,7 +35,7 @@ bool HandleNewTabURLReverseRewrite(GURL* url, content::BrowserContext* bc) {
 }
 }  // namespace search
 
-#include "src/chrome/browser/chrome_content_browser_client.cc"
+#include <chrome/browser/chrome_content_browser_client.cc>
 #undef HandleNewTabURLRewrite
 #undef HandleNewTabURLReverseRewrite
 #if !BUILDFLAG(ENABLE_EXTENSIONS)

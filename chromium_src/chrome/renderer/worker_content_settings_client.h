@@ -17,7 +17,7 @@ class WorkerContentSettingsClient_BraveImpl;
 
 #define WorkerContentSettingsClient WorkerContentSettingsClient_ChromiumImpl
 
-#include "src/chrome/renderer/worker_content_settings_client.h"  // IWYU pragma: export
+#include <chrome/renderer/worker_content_settings_client.h>  // IWYU pragma: export
 
 #undef EnsureContentSettingsManager
 #undef WorkerContentSettingsClient

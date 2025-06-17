@@ -9,5 +9,5 @@
   WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs(       \
       brave_scheme);                                                     \
 
-#include "src/content/renderer/render_thread_impl.cc"
+#include <content/renderer/render_thread_impl.cc>
 #undef REGISTER_BRAVE_SCHEMES_DISPLAY_ISOLATED_AND_NO_JS

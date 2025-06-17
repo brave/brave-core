@@ -20,7 +20,7 @@
       std::make_unique<BraveAvatarToolbarButton>(browser_view_)); \
   if (false)
 
-#include "src/chrome/browser/ui/views/toolbar/toolbar_view.cc"
+#include <chrome/browser/ui/views/toolbar/toolbar_view.cc>
 #undef BRAVE_TOOLBAR_VIEW_INIT
 #undef BrowserAppMenuButton
 #if BUILDFLAG(ENABLE_EXTENSIONS)

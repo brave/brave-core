@@ -17,7 +17,7 @@
 #endif
 
 #define AddRestoredTab AddRestoredTab_ChromiumImpl
-#include "src/chrome/browser/ui/browser_tabrestore.cc"
+#include <chrome/browser/ui/browser_tabrestore.cc>
 #undef AddRestoredTab
 
 namespace {

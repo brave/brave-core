@@ -21,7 +21,7 @@
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/browser.cc"
+#include <chrome/browser/ui/browser.cc>
 
 #undef BrowserActions
 #undef BrowserTabStripModelDelegate

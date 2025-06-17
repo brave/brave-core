@@ -13,6 +13,6 @@
         base::ToLowerASCII(brave_l10n::GetDefaultISOCountryCodeString())); \
   }
 
-#include "src/chrome/browser/metrics/chrome_feature_list_creator.cc"
+#include <chrome/browser/metrics/chrome_feature_list_creator.cc>
 
 #undef BRAVE_CHROME_FEATURE_LIST_CREATOR_SETUP_INITIAL_PREFS

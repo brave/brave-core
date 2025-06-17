@@ -17,6 +17,6 @@
     }                                                                     \
   })
 
-#include "src/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc"
+#include <third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc>
 
 #undef BRAVE_MODULE_TREE_LINKER_FETCH_DESCENDANTS

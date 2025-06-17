@@ -41,7 +41,7 @@
   }                                                     \
   RemoteSuggestionsService* GetRemoteSuggestionsService
 
-#include "src/components/omnibox/browser/mock_autocomplete_provider_client.h"  // IWYU pragma: export
+#include <components/omnibox/browser/mock_autocomplete_provider_client.h>  // IWYU pragma: export
 
 #undef GetRemoteSuggestionsService
 #undef GetTopSites

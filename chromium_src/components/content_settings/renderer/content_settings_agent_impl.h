@@ -15,7 +15,7 @@
   HasContentSettingsRules() const override; \
   bool ShouldAutoupgradeMixedContent
 
-#include "src/components/content_settings/renderer/content_settings_agent_impl.h"  // IWYU pragma: export
+#include <components/content_settings/renderer/content_settings_agent_impl.h>  // IWYU pragma: export
 #undef ShouldAutoupgradeMixedContent
 #undef BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
 

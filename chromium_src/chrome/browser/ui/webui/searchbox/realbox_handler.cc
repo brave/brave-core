@@ -39,6 +39,6 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
                           match.keyword)),                               \
           CALLBACK)
 
-#include "src/chrome/browser/ui/webui/searchbox/realbox_handler.cc"
+#include <chrome/browser/ui/webui/searchbox/realbox_handler.cc>
 
 #undef OpenURL

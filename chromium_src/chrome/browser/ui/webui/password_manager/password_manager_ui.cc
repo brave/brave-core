@@ -26,6 +26,6 @@ void BraveAddPasswordManagerResources(content::WebUIDataSource* source,
                           IDR_BRAVE_PASSWORD_MANAGER_LOGO);   \
   BraveAddPasswordManagerResources(source, profile);
 
-#include "src/chrome/browser/ui/webui/password_manager/password_manager_ui.cc"
+#include <chrome/browser/ui/webui/password_manager/password_manager_ui.cc>
 
 #undef SetupWebUIDataSource

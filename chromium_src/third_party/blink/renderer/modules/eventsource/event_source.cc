@@ -19,7 +19,7 @@
 #define DidFail DidFail_ChromiumImpl
 #define DidFailRedirectCheck DidFailRedirectCheck_ChromiumImpl
 
-#include "src/third_party/blink/renderer/modules/eventsource/event_source.cc"
+#include <third_party/blink/renderer/modules/eventsource/event_source.cc>
 
 #undef ConnectTimerFired
 #undef close

@@ -247,4 +247,4 @@ bool InvokeGoogleUpdateForRenameBrave() {
 
 }  // namespace
 
-#include "src/chrome/browser/first_run/upgrade_util_win.cc"  // IWYU pragma: export
+#include <chrome/browser/first_run/upgrade_util_win.cc>  // IWYU pragma: export

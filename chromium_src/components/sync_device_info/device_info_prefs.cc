@@ -7,7 +7,7 @@
 
 #define RegisterProfilePrefs RegisterProfilePrefs_ChromiumImpl
 
-#include "src/components/sync_device_info/device_info_prefs.cc"
+#include <components/sync_device_info/device_info_prefs.cc>
 
 #undef RegisterProfilePrefs
 

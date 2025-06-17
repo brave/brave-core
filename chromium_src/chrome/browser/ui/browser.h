@@ -22,7 +22,7 @@
   friend class BookmarkPrefsService;        \
   friend class BraveBrowser
 
-#include "src/chrome/browser/ui/browser.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser.h>  // IWYU pragma: export
 
 #undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow

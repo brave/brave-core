@@ -10,7 +10,7 @@
 #include "content/public/browser/browser_context.h"
 
 #define MediaRouterEnabled MediaRouterEnabled_ChromiumImpl
-#include "src/chrome/browser/media/router/media_router_feature.cc"
+#include <chrome/browser/media/router/media_router_feature.cc>
 #undef MediaRouterEnabled
 
 namespace media_router {

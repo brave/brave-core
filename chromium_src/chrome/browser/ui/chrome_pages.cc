@@ -8,7 +8,7 @@
   GURL GetSettingsUrl_ChromiumImpl(std::string_view sub_page) {
 // BRAVE_GET_SETTINGS_URL
 
-#include "src/chrome/browser/ui/chrome_pages.cc"
+#include <chrome/browser/ui/chrome_pages.cc>
 
 #undef BRAVE_GET_SETTINGS_URL
 

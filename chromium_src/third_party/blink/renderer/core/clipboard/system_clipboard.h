@@ -12,7 +12,7 @@
   CommitWrite();    \
   void SanitizeOnNextWriteText
 
-#include "src/third_party/blink/renderer/core/clipboard/system_clipboard.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/clipboard/system_clipboard.h>  // IWYU pragma: export
 
 #undef CommitWrite
 

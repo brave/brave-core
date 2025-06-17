@@ -14,7 +14,7 @@
 
 #endif  // #if BUILDFLAG(IS_ANDROID)
 
-#include "src/chrome/browser/ui/webui/favicon_source.cc"
+#include <chrome/browser/ui/webui/favicon_source.cc>
 
 #if BUILDFLAG(IS_ANDROID)
 #undef IDR_DEFAULT_FAVICON_DARK_64

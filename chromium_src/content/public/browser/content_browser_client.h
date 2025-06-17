@@ -35,7 +35,7 @@
                                           const GURL&);                      \
   virtual void SetBrowserStartupIsCompleteForTesting
 
-#include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export
+#include <content/public/browser/content_browser_client.h>  // IWYU pragma: export
 
 #undef SetBrowserStartupIsCompleteForTesting
 

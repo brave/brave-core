@@ -9,6 +9,6 @@
 #define OverrideDefaultButton(__VA_ARGS__) \
   OverrideDefaultButton(ui::mojom::DialogButton::kNone)
 
-#include "src/chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc"
+#include <chrome/browser/ui/views/web_apps/web_app_diy_install_dialog.cc>
 
 #undef OverrideDefaultButton

@@ -13,7 +13,7 @@
   StartAutocomplete_ChromiumImpl(const AutocompleteInput& input) const; \
   void StartAutocomplete
 
-#include "src/components/omnibox/browser/omnibox_controller.h"  // IWYU pragma: export
+#include <components/omnibox/browser/omnibox_controller.h>  // IWYU pragma: export
 #undef StartAutocomplete
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_CONTROLLER_H_

@@ -15,7 +15,7 @@
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 #define InitPostWindowConstruction virtual InitPostWindowConstruction
 
-#include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser_window/public/browser_window_features.h>  // IWYU pragma: export
 
 #undef InitPostWindowConstruction
 #undef InitPostBrowserViewConstruction

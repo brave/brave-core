@@ -21,7 +21,7 @@ class BraveSyncAuthManager;
   friend BraveSyncAuthManager;     \
   virtual SyncAccountInfo DetermineAccountToUse
 
-#include "src/components/sync/service/sync_auth_manager.h"  // IWYU pragma: export
+#include <components/sync/service/sync_auth_manager.h>  // IWYU pragma: export
 
 #undef RequestAccessToken
 #undef DetermineAccountToUse

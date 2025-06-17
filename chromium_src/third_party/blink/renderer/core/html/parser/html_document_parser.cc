@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/core/html/parser/html_document_parser.cc"
+#include <third_party/blink/renderer/core/html/parser/html_document_parser.cc>
 
 namespace blink {
 

@@ -9,7 +9,7 @@
 #define SetupBasicInterceptions(...) \
   SetupBasicInterceptions(__VA_ARGS__, config())
 
-#include "src/sandbox/win/src/sandbox_policy_base.cc"
+#include <sandbox/win/src/sandbox_policy_base.cc>
 
 #undef SetupBasicInterceptions
 

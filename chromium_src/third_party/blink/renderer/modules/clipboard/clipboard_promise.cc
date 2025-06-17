@@ -11,6 +11,6 @@
   SanitizeOnNextWriteText(); \
   system_clipboard->WritePlainText(__VA_ARGS__)
 
-#include "src/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc"
+#include <third_party/blink/renderer/modules/clipboard/clipboard_promise.cc>
 
 #undef WritePlainText

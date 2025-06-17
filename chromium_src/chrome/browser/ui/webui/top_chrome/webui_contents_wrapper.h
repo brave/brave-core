@@ -42,7 +42,7 @@
   webui_resizes_host_;             \
   std::vector<int32_t> popup_ids_; \
   base::WeakPtr<content::WebContentsDelegate> browser_delegate_
-#include "src/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h>  // IWYU pragma: export
 #undef webui_resizes_host_
 #undef PrimaryPageChanged
 #undef HideCustomContextMenu

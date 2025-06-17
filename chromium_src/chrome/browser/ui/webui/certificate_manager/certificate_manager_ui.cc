@@ -19,5 +19,5 @@ constexpr char kBraveCRSLearnMoreLink[] =
 #define AddString(NAME, VALUE) \
   AddString(NAME, +VALUE == +kCRSLearnMoreLink ? kBraveCRSLearnMoreLink : VALUE)
 
-#include "src/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc"
+#include <chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc>
 #undef AddString

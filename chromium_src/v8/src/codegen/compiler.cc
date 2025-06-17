@@ -19,6 +19,6 @@
     }                                                           \
   })
 
-#include "src/v8/src/codegen/compiler.cc"
+#include <v8/src/codegen/compiler.cc>
 
 #undef BRAVE_COMPILER_GET_FUNCTION_FROM_EVAL

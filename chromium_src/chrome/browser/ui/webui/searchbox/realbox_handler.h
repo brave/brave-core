@@ -12,7 +12,7 @@
   UpdateSelection(__VA_ARGS__); \
   friend class BraveRealboxHandlerTest
 
-#include "src/chrome/browser/ui/webui/searchbox/realbox_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/searchbox/realbox_handler.h>  // IWYU pragma: export
 
 #undef UpdateSelection
 

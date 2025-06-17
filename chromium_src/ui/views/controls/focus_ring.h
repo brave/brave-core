@@ -11,7 +11,7 @@
   SkColor GetPaintColor(FocusRing* focus_ring, bool valid); \
   void RefreshLayer
 
-#include "src/ui/views/controls/focus_ring.h"  // IWYU pragma: export
+#include <ui/views/controls/focus_ring.h>  // IWYU pragma: export
 
 #undef RefreshLayer
 

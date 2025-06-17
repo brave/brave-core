@@ -6,5 +6,5 @@
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 
 #define ProfileResetter BraveProfileResetter
-#include "src/chrome/browser/ui/webui/settings/reset_settings_handler.cc"
+#include <chrome/browser/ui/webui/settings/reset_settings_handler.cc>
 #undef ProfileResetter

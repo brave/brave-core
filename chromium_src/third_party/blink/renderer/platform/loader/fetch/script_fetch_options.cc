@@ -9,7 +9,7 @@
 #define CreateFetchParameters CreateFetchParameters_ChromiumImpl
 #endif
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc"
+#include <third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef CreateFetchParameters

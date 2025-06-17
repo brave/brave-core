@@ -6,5 +6,5 @@
 #include "brave/components/sync/engine/brave_data_type_worker.h"
 
 #define DataTypeWorker BraveDataTypeWorker
-#include "src/components/sync/engine/data_type_registry.cc"
+#include <components/sync/engine/data_type_registry.cc>
 #undef DataTypeWorker

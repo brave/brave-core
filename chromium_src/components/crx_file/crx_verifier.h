@@ -8,7 +8,7 @@
 
 #include "base/containers/span.h"
 
-#include "src/components/crx_file/crx_verifier.h"  // IWYU pragma: export
+#include <components/crx_file/crx_verifier.h>  // IWYU pragma: export
 
 namespace crx_file {
 

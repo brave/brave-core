@@ -17,7 +17,7 @@ class BraveBackToTabLabelButton;
 #define BackToTabLabelButton BraveBackToTabLabelButton
 #define ControlsHitTestContainsPoint virtual ControlsHitTestContainsPoint
 
-#include "src/chrome/browser/ui/views/overlay/video_overlay_window_views.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/overlay/video_overlay_window_views.h>  // IWYU pragma: export
 
 #undef ControlsHitTestContainsPoint
 #undef BackToTabLabelButton

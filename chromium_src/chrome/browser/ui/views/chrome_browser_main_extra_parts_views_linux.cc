@@ -14,7 +14,7 @@
 #define DarkModeManagerLinux BraveDarkModeManagerLinux
 #endif
 
-#include "src/chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.cc"
+#include <chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.cc>
 
 #if BUILDFLAG(USE_DBUS)
 #undef DarkModeManagerLinux

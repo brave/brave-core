@@ -6,7 +6,7 @@
 #include "brave/browser/mac/keystone_glue.h"
 
 #define GetBrand GetBrand_ChromiumImpl
-#include "src/chrome/browser/google/google_brand_mac.mm"
+#include <chrome/browser/google/google_brand_mac.mm>
 #undef GetBrand
 
 namespace google_brand {

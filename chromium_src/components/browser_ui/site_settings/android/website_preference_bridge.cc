@@ -26,7 +26,7 @@
 #define JNI_WebsitePreferenceBridge_ClearCookieData \
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl
 
-#include "src/components/browser_ui/site_settings/android/website_preference_bridge.cc"
+#include <components/browser_ui/site_settings/android/website_preference_bridge.cc>
 
 #undef BACKGROUND_SYNC
 #undef CLIPBOARD_READ_WRITE

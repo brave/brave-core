@@ -23,7 +23,7 @@
   JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl \
       [[maybe_unused]]
 
-#include "src/components/external_intents/android/intercept_navigation_delegate_impl.cc"
+#include <components/external_intents/android/intercept_navigation_delegate_impl.cc>
 
 #undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
 

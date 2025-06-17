@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/android/hats/hats_service_android.h"
 
 #define HatsServiceAndroid HatsServiceAndroid_ChromiumImpl
-#include "src/chrome/browser/ui/android/hats/hats_service_android.cc"
+#include <chrome/browser/ui/android/hats/hats_service_android.cc>
 #undef HatsServiceAndroid
 
 HatsServiceAndroid::HatsServiceAndroid(Profile* profile)

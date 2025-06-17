@@ -10,7 +10,7 @@
   Create_ChromiumImpl(VerifiedContents* vc, std::string_view contents); \
   static std::unique_ptr<VerifiedContents> Create(__VA_ARGS__)
 
-#include "src/extensions/browser/verified_contents.h"  // IWYU pragma: export
+#include <extensions/browser/verified_contents.h>  // IWYU pragma: export
 
 #undef Create
 

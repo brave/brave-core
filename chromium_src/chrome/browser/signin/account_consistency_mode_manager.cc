@@ -14,6 +14,6 @@
 #define BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD
 #endif
 
-#include "src/chrome/browser/signin/account_consistency_mode_manager.cc"
+#include <chrome/browser/signin/account_consistency_mode_manager.cc>
 
 #undef BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD

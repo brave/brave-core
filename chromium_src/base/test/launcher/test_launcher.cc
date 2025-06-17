@@ -10,7 +10,7 @@
 #define TestLauncher TestLauncher_ChromiumImpl
 #define AddTestResult(...) AddTestResult(OnTestResult(__VA_ARGS__));
 
-#include "src/base/test/launcher/test_launcher.cc"
+#include <base/test/launcher/test_launcher.cc>
 
 #undef TestLauncher
 #undef AddTestResult

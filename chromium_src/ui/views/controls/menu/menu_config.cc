@@ -9,7 +9,7 @@
 
 #define instance instance_ChromiumImpl
 
-#include "src/ui/views/controls/menu/menu_config.cc"
+#include <ui/views/controls/menu/menu_config.cc>
 
 #undef instance
 

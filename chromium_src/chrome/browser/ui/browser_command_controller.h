@@ -13,7 +13,7 @@
   friend class BraveBrowserCommandController; \
   void OnTabStripModelChanged
 
-#include "src/chrome/browser/ui/browser_command_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser_command_controller.h>  // IWYU pragma: export
 
 #undef OnTabStripModelChanged
 

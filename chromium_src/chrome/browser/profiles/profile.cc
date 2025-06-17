@@ -13,7 +13,7 @@
 
 #define IsIncognitoProfile IsIncognitoProfile_ChromiumImpl
 #define IsPrimaryOTRProfile IsPrimaryOTRProfile_ChromiumImpl
-#include "src/chrome/browser/profiles/profile.cc"
+#include <chrome/browser/profiles/profile.cc>
 #undef IsIncognitoProfile
 #undef IsPrimaryOTRProfile
 #undef BRAVE_ALLOWS_BROWSER_WINDOWS

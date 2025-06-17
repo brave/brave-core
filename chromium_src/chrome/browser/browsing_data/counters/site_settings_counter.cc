@@ -45,6 +45,6 @@ int GetBraveShieldsDefaultsCount(base::Time period_start,
   ReportResult(__VA_ARGS__ - GetBraveShieldsDefaultsCount( \
                                  period_start, period_end, map_.get()))
 
-#include "src/chrome/browser/browsing_data/counters/site_settings_counter.cc"
+#include <chrome/browser/browsing_data/counters/site_settings_counter.cc>
 
 #undef ReportResult

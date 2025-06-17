@@ -7,7 +7,7 @@
 #define BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SET_ARROW \
   bubble->SetArrow(views::BubbleBorder::TOP_LEFT);
 
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc"
+#include <chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc>
 
 #undef BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SET_ARROW
 #undef StarView

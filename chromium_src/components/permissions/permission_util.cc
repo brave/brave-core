@@ -62,7 +62,7 @@
   case PermissionType::BRAVE_CARDANO:                            \
     return ContentSettingsType::BRAVE_CARDANO;
 
-#include "src/components/permissions/permission_util.cc"
+#include <components/permissions/permission_util.cc>
 #undef PermissionUtil
 #undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
 #undef BRAVE_GET_UMA_VALUE_FOR_REQUESTS

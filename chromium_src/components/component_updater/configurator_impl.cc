@@ -7,7 +7,7 @@
 
 #define EnabledBackgroundDownloader EnabledBackgroundDownloader_Unused
 #define EnabledCupSigning EnabledCupSigning_Unused
-#include "src/components/component_updater/configurator_impl.cc"
+#include <components/component_updater/configurator_impl.cc>
 #undef EnabledCupSigning
 #undef EnabledBackgroundDownloader
 

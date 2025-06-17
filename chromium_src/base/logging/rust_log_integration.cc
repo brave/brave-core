@@ -8,7 +8,7 @@
 #include "base/logging.h"
 
 #define print_rust_log print_rust_log_chromium_impl
-#include "src/base/logging/rust_log_integration.cc"
+#include <base/logging/rust_log_integration.cc>
 #undef print_rust_log
 
 namespace logging {

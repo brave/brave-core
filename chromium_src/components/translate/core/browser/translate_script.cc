@@ -22,7 +22,7 @@ std::string GetAPIKey() {
 }  // namespace translate::google_apis
 
 #define TranslateScript ChromiumTranslateScript
-#include "src/components/translate/core/browser/translate_script.cc"
+#include <components/translate/core/browser/translate_script.cc>
 #undef TranslateScript
 
 namespace translate {

@@ -14,7 +14,7 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) {} \
   virtual void DisableProtocolEventForwarding
 
-#include "src/components/sync/engine/sync_engine.h"  // IWYU pragma: export
+#include <components/sync/engine/sync_engine.h>  // IWYU pragma: export
 
 #undef DisableProtocolEventForwarding
 

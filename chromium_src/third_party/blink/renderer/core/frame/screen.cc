@@ -6,5 +6,5 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 
 #define GetScreenInfos BraveGetScreenInfos
-#include "src/third_party/blink/renderer/core/frame/screen.cc"
+#include <third_party/blink/renderer/core/frame/screen.cc>
 #undef GetScreenInfos

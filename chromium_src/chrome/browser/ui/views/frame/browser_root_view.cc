@@ -18,6 +18,6 @@
     ConvertPointToTarget(THIS, target_v, POINT);                       \
   }
 
-#include "src/chrome/browser/ui/views/frame/browser_root_view.cc"
+#include <chrome/browser/ui/views/frame/browser_root_view.cc>
 
 #undef ConvertPointToTarget

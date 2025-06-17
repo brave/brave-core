@@ -10,7 +10,7 @@
   AddButtonItemAt(int command_id, ButtonMenuItemModel* model, size_t index); \
   void AddButtonItem
 
-#include "src/ui/menus/simple_menu_model.h"  // IWYU pragma: export
+#include <ui/menus/simple_menu_model.h>  // IWYU pragma: export
 
 #undef AddButtonItem
 

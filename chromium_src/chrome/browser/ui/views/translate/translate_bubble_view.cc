@@ -12,7 +12,7 @@ std::unique_ptr<views::ImageView> TranslateBubbleView::CreateTranslateIcon() {
 }
 
 #define TranslateBubbleView TranslateBubbleView_ChromiumImpl
-#include "src/chrome/browser/ui/views/translate/translate_bubble_view.cc"
+#include <chrome/browser/ui/views/translate/translate_bubble_view.cc>
 #undef TranslateBubbleView
 
 BEGIN_METADATA(TranslateBubbleView)

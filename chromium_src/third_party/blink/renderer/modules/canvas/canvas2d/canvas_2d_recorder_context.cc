@@ -7,7 +7,7 @@
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
-#include "src/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.cc"
+#include <third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.cc>
 
 namespace {
 

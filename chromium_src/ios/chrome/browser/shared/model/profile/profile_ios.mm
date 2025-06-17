@@ -26,6 +26,6 @@ auto CreateRequestContext_Brave(ProfileIOS* profile) {
 
 #define CreateRequestContext CreateRequestContext_Brave(this)
 
-#include "src/ios/chrome/browser/shared/model/profile/profile_ios.mm"
+#include <ios/chrome/browser/shared/model/profile/profile_ios.mm>
 
 #undef CreateRequestContext

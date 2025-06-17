@@ -6,7 +6,7 @@
 #import "ios/chrome/browser/shared/public/features/features.h"
 
 #define IsTabGroupSyncEnabled IsTabGroupSyncEnabled_ChromiumImpl
-#include "src/ios/chrome/browser/shared/public/features/features.mm"
+#include <ios/chrome/browser/shared/public/features/features.mm>
 #undef IsTabGroupSyncEnabled
 
 bool IsTabGroupSyncEnabled() {

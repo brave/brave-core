@@ -24,5 +24,5 @@ bool DummyMimeUtilUsage() {
 
 #define Java_MimeUtils_canAutoOpenMimeType \
   Java_BraveMimeUtils_canAutoOpenMimeType
-#include "src/chrome/browser/download/android/download_utils.cc"
+#include <chrome/browser/download/android/download_utils.cc>
 #undef Java_MimeUtils_canAutoOpenMimeType

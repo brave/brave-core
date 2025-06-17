@@ -14,7 +14,7 @@
       bool is_brave_rich_suggestion = false);                                 \
   static bool ParseSuggestResults_Chromium
 
-#include "src/components/omnibox/browser/search_suggestion_parser.h"  // IWYU pragma: export
+#include <components/omnibox/browser/search_suggestion_parser.h>  // IWYU pragma: export
 
 #undef ParseSuggestResults
 

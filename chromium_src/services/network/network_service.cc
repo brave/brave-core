@@ -6,7 +6,7 @@
 #include "services/network/network_service.h"
 
 #define UpdateKeyPinsList UpdateKeyPinsList_Unused
-#include "src/services/network/network_service.cc"
+#include <services/network/network_service.cc>
 #undef UpdateKeyPinsList
 
 #include "brave/net/dns/secure_dns_counter.h"

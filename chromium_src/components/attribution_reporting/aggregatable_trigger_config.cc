@@ -8,7 +8,7 @@
 #include <optional>
 
 #define Create Create_Unused
-#include "src/components/attribution_reporting/aggregatable_trigger_config.cc"
+#include <components/attribution_reporting/aggregatable_trigger_config.cc>
 #undef Create
 
 namespace attribution_reporting {

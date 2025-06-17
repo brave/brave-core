@@ -9,5 +9,5 @@
 #define SetUpCommandLine(COMMAND_LINE) \
   SetUpCommandLine(COMMAND_LINE);      \
   BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true)
-#include "src/chrome/test/base/in_process_browser_test.cc"
+#include <chrome/test/base/in_process_browser_test.cc>
 #undef SetUpCommandLine

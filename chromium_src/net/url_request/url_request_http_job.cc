@@ -16,7 +16,7 @@
 #define AddHSTSHeader(host, value) \
   AddHSTSHeader(request_->isolation_info(), host, value)
 
-#include "src/net/url_request/url_request_http_job.cc"
+#include <net/url_request/url_request_http_job.cc>
 
 #undef AddHSTSHeader
 #undef ShouldSSLErrorsBeFatal

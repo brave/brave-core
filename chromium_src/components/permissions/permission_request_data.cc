@@ -38,7 +38,7 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
 #define ContentSettingsTypeToRequestTypeIfExists \
   ContentSettingsTypeToRequestTypeIfExists_BraveImpl
 
-#include "src/components/permissions/permission_request_data.cc"
+#include <components/permissions/permission_request_data.cc>
 
 #undef ContentSettingsTypeToRequestTypeIfExists
 #undef PermissionContextBase

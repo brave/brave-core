@@ -9,7 +9,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #define IsCommandIdChecked IsCommandIdChecked_ChromiumImpl
-#include "src/chrome/browser/ui/views/frame/system_menu_model_delegate.cc"
+#include <chrome/browser/ui/views/frame/system_menu_model_delegate.cc>
 #undef IsCommandIdChecked
 
 bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {

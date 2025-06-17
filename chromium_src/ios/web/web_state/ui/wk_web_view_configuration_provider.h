@@ -16,7 +16,7 @@
 #define ResetWithWebViewConfiguration \
   Unused() {}                         \
   virtual void ResetWithWebViewConfiguration
-#include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.h"  // IWYU pragma: export
+#include <ios/web/web_state/ui/wk_web_view_configuration_provider.h>  // IWYU pragma: export
 #undef ResetWithWebViewConfiguration
 #undef browser_state_
 

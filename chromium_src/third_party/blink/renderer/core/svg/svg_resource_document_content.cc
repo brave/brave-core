@@ -18,7 +18,7 @@
   void InvalidateContainer(__VA_ARGS__)
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/svg/svg_resource_document_content.cc"
+#include <third_party/blink/renderer/core/svg/svg_resource_document_content.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef InvalidateContainer

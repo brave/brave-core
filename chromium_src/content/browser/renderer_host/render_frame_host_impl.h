@@ -26,7 +26,7 @@
   BindTrustTokenQueryAnswerer(__VA_ARGS__); \
   void BindTrustTokenQueryAnswerer_ChromiumImpl(__VA_ARGS__)
 
-#include "src/content/browser/renderer_host/render_frame_host_impl.h"  // IWYU pragma: export
+#include <content/browser/renderer_host/render_frame_host_impl.h>  // IWYU pragma: export
 
 #undef BindTrustTokenQueryAnswerer
 #undef embedding_token_

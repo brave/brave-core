@@ -11,7 +11,7 @@
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#include "src/chrome/browser/ui/views/device_chooser_content_view.cc"
+#include <chrome/browser/ui/views/device_chooser_content_view.cc>
 
 std::unique_ptr<views::View> DeviceChooserContentView::CreateFootnoteView(
     Browser* browser) {

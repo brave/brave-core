@@ -10,6 +10,6 @@
       .WithRegular(ProfileSelection::kOwnInstance) \
       .WithGuest(ProfileSelection::kOwnInstance)
 
-#include "src/chrome/browser/search_engines/template_url_service_factory.cc"
+#include <chrome/browser/search_engines/template_url_service_factory.cc>
 
 #undef WithAshInternals

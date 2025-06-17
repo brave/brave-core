@@ -12,7 +12,7 @@
   IsCommandIdChecked_ChromiumImpl(int command_id) const; \
   bool IsCommandIdChecked
 
-#include "src/chrome/browser/ui/views/frame/system_menu_model_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/system_menu_model_delegate.h>  // IWYU pragma: export
 
 #undef IsCommandIdChecked
 

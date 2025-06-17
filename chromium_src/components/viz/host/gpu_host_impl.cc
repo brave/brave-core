@@ -5,7 +5,7 @@
 
 #include "components/viz/host/gpu_host_impl.h"
 
-#include "src/components/viz/host/gpu_host_impl.cc"
+#include <components/viz/host/gpu_host_impl.cc>
 
 namespace viz {
 

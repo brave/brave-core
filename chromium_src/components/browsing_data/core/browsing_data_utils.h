@@ -10,7 +10,7 @@
 #define MAX_VALUE BRAVE_AI_CHAT = 9, MAX_VALUE = BRAVE_AI_CHAT, UNUSED
 // LINT.ThenChange(/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts:BrowsingDataType)
 
-#include "src/components/browsing_data/core/browsing_data_utils.h"  // IWYU pragma: export
+#include <components/browsing_data/core/browsing_data_utils.h>  // IWYU pragma: export
 
 #undef MAX_VALUE
 

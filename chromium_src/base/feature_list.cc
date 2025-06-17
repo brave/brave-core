@@ -137,7 +137,7 @@ FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
 #define IsFeatureOverridden IsFeatureOverridden_ChromiumImpl
 #define GetStateIfOverridden GetStateIfOverridden_ChromiumImpl
 
-#include "src/base/feature_list.cc"
+#include <base/feature_list.cc>
 
 #undef GetStateIfOverridden
 #undef IsFeatureOverridden

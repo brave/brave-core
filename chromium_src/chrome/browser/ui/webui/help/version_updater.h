@@ -14,7 +14,7 @@
   virtual void PromoteUpdater
 #endif
 
-#include "src/chrome/browser/ui/webui/help/version_updater.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/help/version_updater.h>  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #undef PromoteUpdater

@@ -9,7 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 
-#include "src/chrome/browser/ui/page_info/chrome_page_info_delegate.cc"
+#include <chrome/browser/ui/page_info/chrome_page_info_delegate.cc>
 
 bool ChromePageInfoDelegate::BraveShouldShowPermission(
     ContentSettingsType type) {

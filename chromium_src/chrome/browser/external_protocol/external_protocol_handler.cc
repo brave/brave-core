@@ -14,7 +14,7 @@
 
 #define LaunchUrl LaunchUrl_ChromiumImpl
 
-#include "src/chrome/browser/external_protocol/external_protocol_handler.cc"
+#include <chrome/browser/external_protocol/external_protocol_handler.cc>
 
 #undef LaunchUrl
 

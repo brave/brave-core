@@ -5,7 +5,7 @@
 
 #include "ui/views/widget/desktop_aura/desktop_window_tree_host.h"
 
-#include "src/ui/views/widget/desktop_aura/desktop_window_tree_host.cc"
+#include <ui/views/widget/desktop_aura/desktop_window_tree_host.cc>
 
 namespace views {
 

@@ -14,7 +14,7 @@
   content_->set_initiator_dom_node_id(Options().initiator_info.dom_node_id)
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/loader/resource/svg_document_resource.cc"
+#include <third_party/blink/renderer/core/loader/resource/svg_document_resource.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef GetResponse

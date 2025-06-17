@@ -30,7 +30,7 @@
 
 #include <optional>
 
-#include "src/services/network/cookie_settings.h"  // IWYU pragma: export
+#include <services/network/cookie_settings.h>  // IWYU pragma: export
 
 #undef CreateDeleteCookieOnExitPredicate
 

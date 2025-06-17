@@ -12,6 +12,6 @@
   UpdateTextColor() override {} \
   void UpdateBackgroundColor
 
-#include "src/components/user_education/views/help_bubble_view.cc"
+#include <components/user_education/views/help_bubble_view.cc>
 
 #undef UpdateBackgroundColor

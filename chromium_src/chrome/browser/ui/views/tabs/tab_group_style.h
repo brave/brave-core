@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_STYLE_H_
 
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
-#include "src/chrome/browser/ui/views/tabs/tab_group_style.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_group_style.h>  // IWYU pragma: export
 #undef TabGroupStyle
 
 class TabGroupStyle : public TabGroupStyle_ChromiumImpl {

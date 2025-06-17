@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-#include "src/components/omnibox/common/omnibox_features.h"  // IWYU pragma: export
+#include <components/omnibox/common/omnibox_features.h>  // IWYU pragma: export
 
 namespace omnibox {
 

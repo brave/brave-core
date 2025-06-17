@@ -20,7 +20,7 @@
   resource_loader_options.initiator_info
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/loader/image_loader.cc"
+#include <third_party/blink/renderer/core/loader/image_loader.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef initiator_info

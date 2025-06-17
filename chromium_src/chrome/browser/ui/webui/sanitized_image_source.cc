@@ -15,7 +15,7 @@
 
 #define SanitizedImageSource SanitizedImageSource_Chromium
 
-#include "src/chrome/browser/ui/webui/sanitized_image_source.cc"
+#include <chrome/browser/ui/webui/sanitized_image_source.cc>
 
 #undef SanitizedImageSource
 

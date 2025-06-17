@@ -50,7 +50,7 @@ FocusRingTheme& GetFocusRingTheme() {
 
 }  // namespace
 
-#include "src/ui/views/controls/focus_ring.cc"
+#include <ui/views/controls/focus_ring.cc>
 
 namespace views {
 

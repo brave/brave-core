@@ -12,7 +12,7 @@
   friend class BraveComponentLoader;          \
   void AddNetworkSpeechSynthesisExtension
 
-#include "src/chrome/browser/extensions/component_loader.h"  // IWYU pragma: export
+#include <chrome/browser/extensions/component_loader.h>  // IWYU pragma: export
 #undef AddDefaultComponentExtensions
 #undef AddNetworkSpeechSynthesisExtension
 

@@ -9,7 +9,7 @@
 
 #define BookmarkContextMenu BraveBookmarkContextMenu
 #define GetMaxWidthForMenu GetMaxWidthForMenu_UnUsed
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc"
+#include <chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc>
 #undef GetMaxWidthForMenu
 #undef BookmarkContextMenu
 

@@ -11,7 +11,7 @@
   friend class BraveDarkModeManagerLinux; \
   virtual void SetColorScheme
 
-#include "src/chrome/browser/ui/views/dark_mode_manager_linux.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/dark_mode_manager_linux.h>  // IWYU pragma: export
 
 #undef SetColorScheme
 

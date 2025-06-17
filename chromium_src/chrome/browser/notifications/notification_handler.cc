@@ -6,5 +6,5 @@
 #include "chrome/browser/notifications/notification_handler.h"
 
 #define NotificationHandler NotificationHandler_ChromiumImpl
-#include "src/chrome/browser/notifications/notification_handler.cc"
+#include <chrome/browser/notifications/notification_handler.cc>
 #undef NotificationHandler

@@ -11,7 +11,7 @@
                                 std::string_view country_code, __VA_ARGS__); \
   void UpdateSeedDateAndLogDayChange(__VA_ARGS__)
 
-#include "src/components/variations/variations_seed_store.h"  // IWYU pragma: export
+#include <components/variations/variations_seed_store.h>  // IWYU pragma: export
 
 #undef UpdateSeedDateAndLogDayChange
 

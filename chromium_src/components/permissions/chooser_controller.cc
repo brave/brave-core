@@ -6,7 +6,7 @@
 #include <optional>
 
 #include "components/permissions/chooser_controller.h"
-#include "src/components/permissions/chooser_controller.cc"
+#include <components/permissions/chooser_controller.cc>
 
 namespace permissions {
 

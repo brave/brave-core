@@ -18,7 +18,7 @@
 #define GetMinimumActiveWidth virtual GetMinimumActiveWidth
 #define GetStandardWidth virtual GetStandardWidth
 
-#include "src/chrome/browser/ui/tabs/tab_style.h"  // IWYU pragma: export
+#include <chrome/browser/ui/tabs/tab_style.h>  // IWYU pragma: export
 
 #undef GetStandardWidth
 #undef GetMinimumActiveWidth

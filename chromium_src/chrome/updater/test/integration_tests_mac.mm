@@ -37,7 +37,7 @@ std::optional<base::FilePath> GetWakeTaskPlistPath_BraveImpl(
 
 #define GetWakeTaskPlistPath GetWakeTaskPlistPath_BraveImpl
 #define ExpectInstalled ExpectInstalled_ChromiumImpl
-#include "src/chrome/updater/test/integration_tests_mac.mm"
+#include <chrome/updater/test/integration_tests_mac.mm>
 #undef GetWakeTaskPlistPath
 #undef ExpectInstalled
 

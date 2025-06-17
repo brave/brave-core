@@ -12,7 +12,7 @@
   GetRegionalPrepopulatedEngines();    \
   TemplateURLPrepopulateData::BravePrepopulatedEngineID GetRegionalDefaultEngine
 
-#include "src/components/regional_capabilities/regional_capabilities_service.h"  // IWYU pragma: export
+#include <components/regional_capabilities/regional_capabilities_service.h>  // IWYU pragma: export
 #undef GetRegionalPrepopulatedEngines
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_REGIONAL_CAPABILITIES_REGIONAL_CAPABILITIES_SERVICE_H_

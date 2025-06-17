@@ -12,7 +12,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
-#include "src/components/translate/core/browser/translate_prefs.cc"
+#include <components/translate/core/browser/translate_prefs.cc>
 #undef TranslatePrefs
 
 namespace translate {

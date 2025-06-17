@@ -16,7 +16,7 @@
       CookieOptions::SameSiteCookieContext same_site_context) const; \
   void NotifyBeforeStartTransactionCallback
 
-#include "src/net/url_request/url_request_http_job.h"  // IWYU pragma: export
+#include <net/url_request/url_request_http_job.h>  // IWYU pragma: export
 
 #undef NotifyBeforeStartTransactionCallback
 

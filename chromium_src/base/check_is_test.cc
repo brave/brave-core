@@ -5,7 +5,7 @@
 
 #include "base/check_is_test.h"
 
-#include "src/base/check_is_test.cc"
+#include <base/check_is_test.cc>
 
 namespace {
 bool g_this_is_a_brave_test = false;

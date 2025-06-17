@@ -9,7 +9,7 @@
 #define CookieMonster ChromiumCookieMonster
 #include <optional>
 
-#include "src/net/cookies/cookie_monster.h"  // IWYU pragma: export
+#include <net/cookies/cookie_monster.h>  // IWYU pragma: export
 #undef CookieMonster
 
 namespace net {

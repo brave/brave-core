@@ -8,6 +8,6 @@
 
 extern const char kChromeUIUntrustedScheme[];
 
-#include "src/ios/components/webui/web_ui_url_constants.h"  // IWYU pragma: export
+#include <ios/components/webui/web_ui_url_constants.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_COMPONENTS_WEBUI_WEB_UI_URL_CONSTANTS_H_

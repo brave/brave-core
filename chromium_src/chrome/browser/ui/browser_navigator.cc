@@ -53,7 +53,7 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
   if (!IsURLAllowedInIncognitoBraveImpl(url)) \
     return false;
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
-#include "src/chrome/browser/ui/browser_navigator.cc"
+#include <chrome/browser/ui/browser_navigator.cc>
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
 #undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
 #undef url_typed_with_http_scheme

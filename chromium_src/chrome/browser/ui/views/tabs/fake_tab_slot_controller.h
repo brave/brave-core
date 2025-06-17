@@ -13,7 +13,7 @@
   bool IsFirstTabInTile(const Tab* tab) const override; \
   bool IsGroupCollapsed
 
-#include "src/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
 #undef IsGroupCollapsed
 

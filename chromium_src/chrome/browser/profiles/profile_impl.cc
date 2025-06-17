@@ -10,7 +10,7 @@
 #define ShouldRestoreOldSessionCookies \
   ShouldRestoreOldSessionCookies_ChromiumImpl
 
-#include "src/chrome/browser/profiles/profile_impl.cc"
+#include <chrome/browser/profiles/profile_impl.cc>
 
 #undef ShouldRestoreOldSessionCookies
 

@@ -16,7 +16,7 @@
 // and close all with the bubble together.
 
 #define AddNewContents AddNewContents_ChromiumImpl
-#include "src/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc"
+#include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc>
 #undef AddNewContents
 
 void WebUIContentsWrapper::SetWebContentsAddNewContentsDelegate(

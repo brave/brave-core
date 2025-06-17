@@ -10,7 +10,7 @@
   QueueReport_Unused(Report* report); \
   void QueueReport
 
-#include "src/third_party/blink/renderer/core/frame/reporting_observer.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/frame/reporting_observer.h>  // IWYU pragma: export
 
 #undef QueueReport
 

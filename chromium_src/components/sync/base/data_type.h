@@ -8,7 +8,7 @@
 
 #define LowPriorityUserTypes LowPriorityUserTypes_ChromiumImpl
 
-#include "src/components/sync/base/data_type.h"  // IWYU pragma: export
+#include <components/sync/base/data_type.h>  // IWYU pragma: export
 
 #undef LowPriorityUserTypes
 

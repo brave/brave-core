@@ -18,7 +18,7 @@ constexpr int kNewWindowCmdID = IDC_NEW_WINDOW;
       {IDC_COMMANDER, ui::EF_COMMAND_DOWN | ui::EF_SHIFT_DOWN, ui::VKEY_P}, { \
     kNewWindowCmdID
 
-#include "src/chrome/browser/ui/cocoa/accelerators_cocoa.mm"
+#include <chrome/browser/ui/cocoa/accelerators_cocoa.mm>
 
 #undef IDC_NEW_WINDOW
 #define IDC_NEW_WINDOW kNewWindowCmdID

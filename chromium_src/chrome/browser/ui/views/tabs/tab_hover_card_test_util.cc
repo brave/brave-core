@@ -12,4 +12,4 @@
 // member access into incomplete type error.
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 
-#include "src/chrome/browser/ui/views/tabs/tab_hover_card_test_util.cc"
+#include <chrome/browser/ui/views/tabs/tab_hover_card_test_util.cc>

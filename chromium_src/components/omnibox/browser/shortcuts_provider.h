@@ -11,7 +11,7 @@
   friend class BraveShortcutsProvider; \
   void DoAutocomplete
 
-#include "src/components/omnibox/browser/shortcuts_provider.h"  // IWYU pragma: export
+#include <components/omnibox/browser/shortcuts_provider.h>  // IWYU pragma: export
 
 #undef DoAutocomplete
 

@@ -15,5 +15,5 @@ bool IsSignedExchangeReportingForDistributorsEnabled() {
 
 #define IsSignedExchangeReportingForDistributorsEnabled \
   IsSignedExchangeReportingForDistributorsEnabled_Chromium
-#include "src/content/browser/web_package/signed_exchange_utils.cc"
+#include <content/browser/web_package/signed_exchange_utils.cc>
 #undef IsSignedExchangeReportingForDistributorsEnabled

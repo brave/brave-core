@@ -7,7 +7,7 @@
 
 #define SetPasswordSyncAllowed SetPasswordSyncAllowed_ChromiumImpl
 
-#include "src/components/sync/service/sync_prefs.cc"
+#include <components/sync/service/sync_prefs.cc>
 
 #undef SetPasswordSyncAllowed
 

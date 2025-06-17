@@ -7,6 +7,6 @@
 
 #define BrowserFrameMac BraveBrowserFrameMac
 
-#include "src/chrome/browser/ui/views/frame/native_browser_frame_factory_mac.mm"
+#include <chrome/browser/ui/views/frame/native_browser_frame_factory_mac.mm>
 
 #undef BrowserFrameMac

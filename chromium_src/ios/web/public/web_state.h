@@ -41,7 +41,7 @@
   std::map<std::string, std::set<std::string, std::less<>>, std::less<>>     \
       untrusted_callbacks_
 
-#include "src/ios/web/public/web_state.h"  // IWYU pragma: export
+#include <ios/web/public/web_state.h>  // IWYU pragma: export
 
 #undef callbacks_
 

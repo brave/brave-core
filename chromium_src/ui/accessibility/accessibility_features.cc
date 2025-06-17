@@ -13,7 +13,7 @@
   IsScreenAIMainContentExtractionEnabled_ChromiumImpl
 #endif
 
-#include "src/ui/accessibility/accessibility_features.cc"
+#include <ui/accessibility/accessibility_features.cc>
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef IsScreenAIMainContentExtractionEnabled

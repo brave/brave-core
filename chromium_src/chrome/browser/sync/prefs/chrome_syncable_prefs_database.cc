@@ -203,7 +203,7 @@ const auto& BraveSyncablePreferences() {
 }  // namespace browser_sync
 
 #define GetSyncablePrefMetadata GetSyncablePrefMetadata_ChromiumImpl
-#include "src/chrome/browser/sync/prefs/chrome_syncable_prefs_database.cc"
+#include <chrome/browser/sync/prefs/chrome_syncable_prefs_database.cc>
 #undef GetSyncablePrefMetadata
 
 namespace browser_sync {

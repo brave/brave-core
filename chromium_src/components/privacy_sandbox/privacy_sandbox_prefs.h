@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_PRIVACY_SANDBOX_PREFS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_PRIVACY_SANDBOX_PREFS_H_
 
-#include "src/components/privacy_sandbox/privacy_sandbox_prefs.h"  // IWYU pragma: export
+#include <components/privacy_sandbox/privacy_sandbox_prefs.h>  // IWYU pragma: export
 
 namespace prefs {
 

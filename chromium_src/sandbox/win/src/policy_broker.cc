@@ -7,7 +7,7 @@
 
 #define SetupBasicInterceptions SetupBasicInterceptions_ChromiumImpl
 
-#include "src/sandbox/win/src/policy_broker.cc"
+#include <sandbox/win/src/policy_broker.cc>
 
 #undef SetupBasicInterceptions
 

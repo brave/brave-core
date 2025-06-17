@@ -15,7 +15,7 @@
   bool IsWebUIMessageAllowedForFrame(const GURL& origin, NSString* prompt); \
   std::string HandleMojoMessage
 
-#include "src/ios/web/webui/mojo_facade.h"  // IWYU pragma: export
+#include <ios/web/webui/mojo_facade.h>  // IWYU pragma: export
 
 #undef HandleMojoMessage
 

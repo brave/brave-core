@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/stack_allocated.h"
 
-#include "src/base/debug/alias.h"  // IWYU pragma: export
+#include <base/debug/alias.h>  // IWYU pragma: export
 
 namespace base::debug {
 

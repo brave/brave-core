@@ -13,7 +13,7 @@
   friend class BraveBrowserAppMenuButton; \
   void UpdateTextAndHighlightColor
 
-#include "src/chrome/browser/ui/views/toolbar/browser_app_menu_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/browser_app_menu_button.h>  // IWYU pragma: export
 
 #undef UpdateTextAndHighlightColor
 #undef UpdateLayoutInsets

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define ShowSingletonTab ShowSingletonTab_ChromiumImpl
-#include "src/chrome/browser/ui/singleton_tabs.cc"
+#include <chrome/browser/ui/singleton_tabs.cc>
 #undef ShowSingletonTab
 
 // ShowSingletonTab functions (for Browser and Profile) are used to display

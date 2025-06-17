@@ -13,7 +13,7 @@ void BraveLogServerCardUnmaskAttempt(
 }  // namespace autofill::autofill_metrics
 
 #define LogServerCardUnmaskAttempt BraveLogServerCardUnmaskAttempt
-#include "src/components/autofill/core/browser/payments/credit_card_access_manager.cc"
+#include <components/autofill/core/browser/payments/credit_card_access_manager.cc>
 #undef LogServerCardUnmaskAttempt
 
 namespace autofill::autofill_metrics {

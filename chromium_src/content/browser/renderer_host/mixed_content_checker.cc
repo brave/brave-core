@@ -6,7 +6,7 @@
 #include "content/browser/renderer_host/mixed_content_checker.h"
 
 
-#include "src/content/browser/renderer_host/mixed_content_checker.cc"
+#include <content/browser/renderer_host/mixed_content_checker.cc>
 
 namespace content {
 

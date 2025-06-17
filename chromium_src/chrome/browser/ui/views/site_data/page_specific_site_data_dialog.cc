@@ -8,5 +8,5 @@
 #include "chrome/common/webui_url_constants.h"
 
 #define kOnDeviceSiteDataSubpage kCookieSettingsSubPage
-#include "src/chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc"
+#include <chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc>
 #undef kOnDeviceSiteDataSubpage

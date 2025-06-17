@@ -55,7 +55,7 @@
 #define UpdateActiveTabInSplitView virtual UpdateActiveTabInSplitView
 #define UpdateContentsInSplitView virtual UpdateContentsInSplitView
 
-#include "src/chrome/browser/ui/views/frame/browser_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
 #undef UpdateActiveTabInSplitView
 #undef UpdateContentsInSplitView

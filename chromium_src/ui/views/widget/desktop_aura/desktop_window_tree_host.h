@@ -10,7 +10,7 @@
   GetSingletonDesktopNativeCursorManager();      \
   virtual SkColor GetBackgroundColor(SkColor requested_color) const
 
-#include "src/ui/views/widget/desktop_aura/desktop_window_tree_host.h"  // IWYU pragma: export
+#include <ui/views/widget/desktop_aura/desktop_window_tree_host.h>  // IWYU pragma: export
 
 #undef GetSingletonDesktopNativeCursorManager
 

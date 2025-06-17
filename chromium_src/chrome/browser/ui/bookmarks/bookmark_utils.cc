@@ -50,7 +50,7 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
   }                                                                        \
   void ToggleBookmarkBarWhenVisible_ChromiumImpl
 
-#include "src/chrome/browser/ui/bookmarks/bookmark_utils.cc"
+#include <chrome/browser/ui/bookmarks/bookmark_utils.cc>
 #undef ToggleBookmarkBarWhenVisible
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar

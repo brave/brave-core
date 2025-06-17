@@ -9,5 +9,5 @@
   ECDSA_SHA256:      \
   case crypto::SignatureVerifier::ECDSA_SHA384
 
-#include "src/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc"
+#include <chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc>
 #undef ECDSA_SHA256

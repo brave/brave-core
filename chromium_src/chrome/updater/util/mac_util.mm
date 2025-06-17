@@ -8,7 +8,7 @@
 #include "chrome/updater/updater_scope.h"
 
 #define RemoveWakeJobFromLaunchd RemoveWakeJobFromLaunchd_Unused
-#include "src/chrome/updater/util/mac_util.mm"
+#include <chrome/updater/util/mac_util.mm>
 #undef RemoveWakeJobFromLaunchd
 
 namespace updater {

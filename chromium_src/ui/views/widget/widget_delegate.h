@@ -53,7 +53,7 @@ class VerticalTabStripWidgetDelegateView;
   friend class ::VerticalTabStripWidgetDelegateView; \
   static WdvPassKey CreatePassKey
 
-#include "src/ui/views/widget/widget_delegate.h"  // IWYU pragma: export
+#include <ui/views/widget/widget_delegate.h>  // IWYU pragma: export
 
 #undef set_desired_bounds_delegate
 #undef CreatePassKey

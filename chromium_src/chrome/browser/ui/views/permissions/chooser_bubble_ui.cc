@@ -98,7 +98,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
   SetExtraView(__VA_ARGS__); \
   SetFootnoteView(device_chooser_content_view_->CreateFootnoteView(browser))
 
-#include "src/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc"
+#include <chrome/browser/ui/views/permissions/chooser_bubble_ui.cc>
 
 #undef SetExtraView
 #undef BubbleDialogDelegateView

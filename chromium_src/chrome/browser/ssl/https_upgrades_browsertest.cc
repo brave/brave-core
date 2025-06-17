@@ -11,5 +11,5 @@
 #define InitWithFeatures(...) \
   InitWithFeaturesAndDisable(net::features::kBraveHttpsByDefault, __VA_ARGS__)
 
-#include "src/chrome/browser/ssl/https_upgrades_browsertest.cc"
+#include <chrome/browser/ssl/https_upgrades_browsertest.cc>
 #undef InitWithFeatures

@@ -19,7 +19,7 @@
 
 #define TransportSecurityState TransportSecurityState_ChromiumImpl
 
-#include "src/net/http/transport_security_state.cc"
+#include <net/http/transport_security_state.cc>
 
 #undef BRAVE_ENABLE_STATIC_PINS
 

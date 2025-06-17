@@ -10,6 +10,6 @@
   source->AddLocalizedString("braveCustomizeMenuToolbarLabel", \
                              IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL)
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc"
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc>
 
 #undef AddLocalizedStrings

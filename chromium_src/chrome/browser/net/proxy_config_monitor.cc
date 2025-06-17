@@ -37,5 +37,5 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
 #define BRAVE_PROXY_CONFIG_MONITOR
 #endif
 
-#include "src/chrome/browser/net/proxy_config_monitor.cc"
+#include <chrome/browser/net/proxy_config_monitor.cc>
 #undef BRAVE_PROXY_CONFIG_MONITOR

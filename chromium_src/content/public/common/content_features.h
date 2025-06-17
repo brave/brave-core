@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_CONTENT_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_CONTENT_FEATURES_H_
 
-#include "src/content/public/common/content_features.h"  // IWYU pragma: export
+#include <content/public/common/content_features.h>  // IWYU pragma: export
 
 namespace features {
 

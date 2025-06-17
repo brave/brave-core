@@ -10,5 +10,5 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 
 #define PermissionStatus mojom::blink::PermissionStatus
-#include "src/third_party/blink/renderer/core/frame/cached_permission_status.cc"
+#include <third_party/blink/renderer/core/frame/cached_permission_status.cc>
 #undef PermissionStatus

@@ -39,5 +39,5 @@ void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
           curr_family->FamilyName()))               \
     result = nullptr;
 
-#include "src/third_party/blink/renderer/platform/fonts/font_fallback_list.cc"
+#include <third_party/blink/renderer/platform/fonts/font_fallback_list.cc>
 #undef BRAVE_GET_FONT_DATA

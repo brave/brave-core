@@ -72,7 +72,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 
 #define IsRequestablePermissionType IsRequestablePermissionType_ChromiumImpl
 
-#include "src/components/permissions/request_type.cc"
+#include <components/permissions/request_type.cc>
 
 #undef IsRequestablePermissionType
 #undef RequestTypeToContentSettingsType

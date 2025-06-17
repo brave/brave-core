@@ -25,7 +25,7 @@
                                  const AutocompleteInput* input);    \
   void ConvertOpenTabMatches
 
-#include "src/components/omnibox/browser/autocomplete_result.h"  // IWYU pragma: export
+#include <components/omnibox/browser/autocomplete_result.h>  // IWYU pragma: export
 
 #undef ConvertOpenTabMatches
 #undef SortAndCull

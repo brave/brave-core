@@ -13,7 +13,7 @@
   DefaultCacheIdentifier().empty() ? GetContextCacheIdentifier() \
                                    : GetContextCacheIdentifier
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/resource_fetcher.cc"
+#include <third_party/blink/renderer/platform/loader/fetch/resource_fetcher.cc>
 
 #undef DefaultCacheIdentifier
 

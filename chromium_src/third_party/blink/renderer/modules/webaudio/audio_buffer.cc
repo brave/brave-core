@@ -30,7 +30,7 @@
         dst.first(count));                                                \
   }
 
-#include "src/third_party/blink/renderer/modules/webaudio/audio_buffer.cc"
+#include <third_party/blink/renderer/modules/webaudio/audio_buffer.cc>
 
 #undef BRAVE_AUDIOBUFFER_GETCHANNELDATA
 #undef BRAVE_AUDIOBUFFER_COPYFROMCHANNEL

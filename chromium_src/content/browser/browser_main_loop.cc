@@ -11,6 +11,6 @@
     parts_->PreShutdown();              \
   }
 
-#include "src/content/browser/browser_main_loop.cc"  // IWYU pragma: export
+#include <content/browser/browser_main_loop.cc>  // IWYU pragma: export
 
 #undef OnPreShutdownForCurrentThread

@@ -16,6 +16,6 @@
   if (!response_body) {                        \
   void
 
-#include "src/ios/web/webui/url_fetcher_block_adapter.mm"
+#include <ios/web/webui/url_fetcher_block_adapter.mm>
 
 #undef GetFinalURL

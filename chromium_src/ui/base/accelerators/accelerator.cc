@@ -55,6 +55,6 @@ std::vector<std::u16string> BraveGetLongFormModifiers(bool shift,
   return BraveGetLongFormModifiers(IsShiftDown(), IsCtrlDown(), IsAltDown(), \
                                    IsCmdDown(), IsFunctionDown());
 
-#include "src/ui/base/accelerators/accelerator.cc"
+#include <ui/base/accelerators/accelerator.cc>
 
 #undef BRAVE_UI_BASE_ACCELERATOR_GET_LONG_FORM_MODIFIERS

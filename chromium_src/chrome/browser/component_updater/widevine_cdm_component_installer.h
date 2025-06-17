@@ -12,7 +12,7 @@
   RegisterWidevineCdmComponent(           \
       cus, base::OnceCallback<void()> callback = base::DoNothing())
 
-#include "src/chrome/browser/component_updater/widevine_cdm_component_installer.h"  // IWYU pragma: export
+#include <chrome/browser/component_updater/widevine_cdm_component_installer.h>  // IWYU pragma: export
 
 #undef RegisterWidevineCdmComponent
 

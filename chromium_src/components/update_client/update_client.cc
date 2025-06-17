@@ -8,7 +8,7 @@
 #include "base/logging.h"
 
 #define UpdateClientFactory UpdateClientFactory_ChromiumImpl
-#include "src/components/update_client/update_client.cc"
+#include <components/update_client/update_client.cc>
 #undef UpdateClientFactory
 
 #include "base/logging.h"

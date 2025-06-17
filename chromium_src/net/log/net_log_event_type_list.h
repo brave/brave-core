@@ -7,7 +7,7 @@
 // NOLINT(build/header_guard)
 // no-include-guard-because-multiply-included
 
-#include "src/net/log/net_log_event_type_list.h"  // IWYU pragma: export
+#include <net/log/net_log_event_type_list.h>  // IWYU pragma: export
 
 // The time spent sending authentication to the SOCKS server
 EVENT_TYPE(SOCKS5_AUTH_WRITE)

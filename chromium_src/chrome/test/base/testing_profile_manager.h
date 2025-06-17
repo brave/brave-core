@@ -12,7 +12,7 @@
   SetProfileAsLastUsed(Profile* last_active); \
   void DeleteProfileAttributesStorage
 
-#include "src/chrome/test/base/testing_profile_manager.h"  // IWYU pragma: export
+#include <chrome/test/base/testing_profile_manager.h>  // IWYU pragma: export
 
 #undef DeleteProfileAttributesStorage
 

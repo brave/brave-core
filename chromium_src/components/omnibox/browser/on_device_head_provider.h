@@ -10,7 +10,7 @@
   OnDeviceHeadProviderTest;      \
   friend class BraveOnDeviceHeadProvider
 
-#include "src/components/omnibox/browser/on_device_head_provider.h"  // IWYU pragma: export
+#include <components/omnibox/browser/on_device_head_provider.h>  // IWYU pragma: export
 
 #undef OnDeviceHeadProviderTest
 

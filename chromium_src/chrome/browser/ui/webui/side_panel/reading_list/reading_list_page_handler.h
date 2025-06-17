@@ -11,7 +11,7 @@
   friend class BraveReadingListPageHandler; \
   void UpdateCurrentPageActionButton
 
-#include "src/chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h>  // IWYU pragma: export
 
 #undef UpdateCurrentPageActionButton
 

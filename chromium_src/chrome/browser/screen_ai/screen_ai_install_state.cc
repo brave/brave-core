@@ -6,7 +6,7 @@
 #include "chrome/browser/screen_ai/screen_ai_install_state.h"
 
 #define ShouldInstall ShouldInstall_ChromiumImpl
-#include "src/chrome/browser/screen_ai/screen_ai_install_state.cc"
+#include <chrome/browser/screen_ai/screen_ai_install_state.cc>
 #undef ShouldInstall
 
 namespace screen_ai {

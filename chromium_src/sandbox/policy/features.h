@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_SANDBOX_POLICY_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_SANDBOX_POLICY_FEATURES_H_
 
-#include "src/sandbox/policy/features.h"  // IWYU pragma: export
+#include <sandbox/policy/features.h>  // IWYU pragma: export
 
 namespace sandbox::policy::features {
 

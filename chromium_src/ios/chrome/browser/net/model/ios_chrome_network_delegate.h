@@ -13,7 +13,7 @@ using IOSChromeNetworkDelegate_BraveImpl = IOSChromeNetworkDelegate;
 #define BRAVE_IOS_CHROME_NETWORK_DELEGATE_H \
   friend IOSChromeNetworkDelegate_BraveImpl;
 
-#include "src/ios/chrome/browser/net/model/ios_chrome_network_delegate.h"  // IWYU pragma: export
+#include <ios/chrome/browser/net/model/ios_chrome_network_delegate.h>  // IWYU pragma: export
 #undef IOSChromeNetworkDelegate
 #undef BRAVE_IOS_CHROME_NETWORK_DELEGATE_H
 

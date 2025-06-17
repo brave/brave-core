@@ -8,5 +8,5 @@
 #include "base/apple/foundation_util.h"
 
 #define ObjCCastStrict ObjCCast
-#include "src/ui/display/ios/screen_ios.mm"
+#include <ui/display/ios/screen_ios.mm>
 #undef ObjCCastStrict

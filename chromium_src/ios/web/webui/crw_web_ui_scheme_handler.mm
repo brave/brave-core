@@ -27,7 +27,7 @@
   didReceiveResponse:[strongSelf processResponse:response fetcher:fetcher]]; \
         [strongSelf dummy
 
-#include "src/ios/web/webui/crw_web_ui_scheme_handler.mm"
+#include <ios/web/webui/crw_web_ui_scheme_handler.mm>
 
 #undef didReceiveResponse
 

@@ -30,7 +30,7 @@ class BraveGoogleKeysInfoBarDelegate {
 #define ObsoleteSystemInfoBarDelegate BraveObsoleteSystemInfoBarDelegate
 #endif
 
-#include "src/chrome/browser/ui/startup/infobar_utils.cc"
+#include <chrome/browser/ui/startup/infobar_utils.cc>
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #undef ObsoleteSystemInfoBarDelegate

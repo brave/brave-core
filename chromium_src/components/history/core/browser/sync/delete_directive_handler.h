@@ -10,7 +10,7 @@
   CreateUrlDeleteDirective_ChromiumImpl(const GURL& url); \
   bool CreateTimeRangeDeleteDirective
 
-#include "src/components/history/core/browser/sync/delete_directive_handler.h"  // IWYU pragma: export
+#include <components/history/core/browser/sync/delete_directive_handler.h>  // IWYU pragma: export
 
 #undef CreateTimeRangeDeleteDirective
 

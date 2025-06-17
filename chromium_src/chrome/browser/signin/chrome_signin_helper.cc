@@ -8,6 +8,6 @@
 // removed at upstream and defaulted to true. It is false at Brave.
 #define BRAVE_PROCESS_MIRROR_HEADERS_IF_FALSE if (false)
 
-#include "src/chrome/browser/signin/chrome_signin_helper.cc"
+#include <chrome/browser/signin/chrome_signin_helper.cc>
 
 #undef BRAVE_PROCESS_MIRROR_HEADERS_IF_FALSE

@@ -42,7 +42,7 @@ bool ShouldReplaceSecureDNSDisabledDescription() {
 
 #define AddSecureDnsStrings AddSecureDnsStrings_ChromiumImpl
 
-#include "src/chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc"
+#include <chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc>
 
 #undef AddSecureDnsStrings
 namespace settings {

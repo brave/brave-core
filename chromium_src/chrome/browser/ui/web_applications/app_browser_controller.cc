@@ -8,7 +8,7 @@
 #include "brave/browser/ui/brave_scheme_utils.h"
 
 #define FormatUrlOrigin FormatUrlOrigin_ChromiumImpl
-#include "src/chrome/browser/ui/web_applications/app_browser_controller.cc"
+#include <chrome/browser/ui/web_applications/app_browser_controller.cc>
 #undef FormatUrlOrigin
 
 namespace web_app {

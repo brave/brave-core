@@ -17,7 +17,7 @@
   GetWindowCountUnused() const;          \
   friend class BraveAvatarToolbarButton; \
   int GetWindowCount
-#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h>  // IWYU pragma: export
 #undef GetAvatarIcon
 #undef GetAvatarTooltipText
 #undef GetWindowCount

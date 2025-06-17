@@ -10,7 +10,7 @@
   ancestorOrigins_ChromiumImpl() const; \
   DOMStringList* ancestorOrigins()
 
-#include "src/third_party/blink/renderer/core/frame/location.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/frame/location.h>  // IWYU pragma: export
 
 #undef ancestorOrigins
 

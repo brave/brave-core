@@ -8,5 +8,5 @@
 // Use upstream version of TransportSerurityState to reference
 // TransportSecurityState::Delegate without build issues.
 #define TransportSecurityState TransportSecurityState_ChromiumImpl
-#include "src/net/http/transport_security_persister.cc"
+#include <net/http/transport_security_persister.cc>
 #undef TransportSecurityState

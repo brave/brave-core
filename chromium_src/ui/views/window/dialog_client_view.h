@@ -19,7 +19,7 @@ class WebDiscoveryDialogClientView;
  private:                                        \
   virtual void SetupLayout
 
-#include "src/ui/views/window/dialog_client_view.h"  // IWYU pragma: export
+#include <ui/views/window/dialog_client_view.h>  // IWYU pragma: export
 
 #undef SetupLayout
 
