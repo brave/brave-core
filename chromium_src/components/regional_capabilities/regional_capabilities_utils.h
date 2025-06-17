@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_REGIONAL_CAPABILITIES_REGIONAL_CAPABILITIES_UTILS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_REGIONAL_CAPABILITIES_REGIONAL_CAPABILITIES_UTILS_H_
 
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
-
 #include <components/regional_capabilities/regional_capabilities_utils.h>  // IWYU pragma: export
+
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 
 namespace regional_capabilities {
 

@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <components/plus_addresses/features.cc>
-
 #include "base/feature_override.h"
 #include "build/build_config.h"
+
+#include <components/plus_addresses/features.cc>
 
 namespace plus_addresses::features {
 

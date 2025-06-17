@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include <chrome/browser/ui/ui_features.cc>
-
 #include "base/feature_override.h"
+
+#include <chrome/browser/ui/ui_features.cc>
 
 namespace features {
 

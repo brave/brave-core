@@ -28,9 +28,9 @@
       net::CookieAccessResultList& excluded_cookies) const;           \
   DeleteCookiePredicate CreateDeleteCookieOnExitPredicate
 
-#include <optional>
-
 #include <services/network/cookie_settings.h>  // IWYU pragma: export
+
+#include <optional>
 
 #undef CreateDeleteCookieOnExitPredicate
 

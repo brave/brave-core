@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_COMMON_OMNIBOX_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_COMMON_OMNIBOX_FEATURES_H_
 
-#include "base/feature_list.h"
-
 #include <components/omnibox/common/omnibox_features.h>  // IWYU pragma: export
+
+#include "base/feature_list.h"
 
 namespace omnibox {
 

@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CRX_FILE_CRX_VERIFIER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CRX_FILE_CRX_VERIFIER_H_
 
-#include "base/containers/span.h"
-
 #include <components/crx_file/crx_verifier.h>  // IWYU pragma: export
+
+#include "base/containers/span.h"
 
 namespace crx_file {
 

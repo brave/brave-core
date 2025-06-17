@@ -15,9 +15,9 @@
       HttpRequestHeaders* request_headers, bool* should_clear_upload); \
   NET_EXPORT static void UpdateHttpRequest
 
-#include <optional>
-
 #include <net/url_request/redirect_util.h>  // IWYU pragma: export
+
+#include <optional>
 #undef UpdateHttpRequest
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_URL_REQUEST_REDIRECT_UTIL_H_
