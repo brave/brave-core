@@ -57,14 +57,17 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     PrefService* prefs,
     content::WebContents* web_contents,
     const content::RenderFrameHost* render_frame_host,
+    std::unique_ptr<ConsentDialogDelegate> consent_dialog_delegate,
     const int32_t world_id)
     : prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents->GetWeakPtr()),
-      world_id_(world_id) {
+      world_id_(world_id),
+      consent_dialog_delegate_(std::move(consent_dialog_delegate)) {
   CHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
   CHECK(render_frame_host);
   CHECK(prefs_);
+  CHECK(consent_dialog_delegate_);
 }
 
 PsstScriptsHandlerImpl::~PsstScriptsHandlerImpl() = default;

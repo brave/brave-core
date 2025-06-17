@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/psst/browser/content/consent_dialog_delegate.h"
 #include "brave/components/psst/browser/content/psst_scripts_handler.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
@@ -32,6 +33,7 @@ class PsstScriptsHandlerImpl : public PsstScriptsHandler {
       PrefService* prefs,
       content::WebContents* web_contents,
       const content::RenderFrameHost* render_frame_host,
+      std::unique_ptr<ConsentDialogDelegate> consent_dialog_delegate,
       const int32_t world_id);
   ~PsstScriptsHandlerImpl() override;
 
@@ -52,6 +54,7 @@ class PsstScriptsHandlerImpl : public PsstScriptsHandler {
   const content::GlobalRenderFrameHostId render_frame_host_id_;
   base::WeakPtr<content::WebContents> web_contents_;
   const int32_t world_id_;
+  std::unique_ptr<ConsentDialogDelegate> consent_dialog_delegate_;
 
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
