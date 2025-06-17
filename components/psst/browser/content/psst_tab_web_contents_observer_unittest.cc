@@ -12,7 +12,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
-#include "brave/components/test/base/components_unit_test.h"
 #include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
@@ -38,11 +37,9 @@ class MockPsstScriptsHandler
 };
 
 class PsstTabWebContentsObserverUnitTestBase
-    : public content::RenderViewHostTestHarness,
-      public ComponentsUnitTest {
+    : public content::RenderViewHostTestHarness {
  public:
   void SetUp() override {
-    ComponentsUnitTest::SetUp();
     content::RenderViewHostTestHarness::SetUp();
 
     psst::RegisterProfilePrefs(prefs_.registry());

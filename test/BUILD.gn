@@ -62,8 +62,6 @@ static_library("brave_test_support_unit") {
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
 
-    # implementation of components/test/base/components_unit_test.h
-    "base/components_unit_test.cc",
     "base/run_all_unittests.cc",
   ]
 
