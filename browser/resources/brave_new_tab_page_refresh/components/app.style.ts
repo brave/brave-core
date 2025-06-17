@@ -7,7 +7,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
-export const threeColumnBreakpoint = '1335px'
+export const threeColumnBreakpoint = '1420px'
 
 export const style = scoped.css`
   & {
@@ -162,7 +162,7 @@ export const style = scoped.css`
 
   .widget-container {
     --widget-height: 128px;
-    --widget-width: 420px;
+    --widget-width: 450px;
     --widget-flex-basis: var(--widget-width);
 
     anchor-name: --ntp-widget-container;
