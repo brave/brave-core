@@ -250,10 +250,6 @@
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];
 }
 
-+ (Feature*)kConstellation {
-  return [[Feature alloc] initWithFeature:&p3a::features::kConstellation];
-}
-
 + (Feature*)kConstellationEnclaveAttestation {
   return [[Feature alloc]
       initWithFeature:&p3a::features::kConstellationEnclaveAttestation];
@@ -295,18 +291,8 @@
       initWithFeature:&brave_wallet::features::kNativeBraveWalletFeature];
 }
 
-+ (Feature*)kOtherJSONDeprecation {
-  return
-      [[Feature alloc] initWithFeature:&p3a::features::kOtherJSONDeprecation];
-}
-
 + (Feature*)kSkusFeature {
   return [[Feature alloc] initWithFeature:&skus::features::kSkusFeature];
-}
-
-+ (Feature*)kTypicalJSONDeprecation {
-  return
-      [[Feature alloc] initWithFeature:&p3a::features::kTypicalJSONDeprecation];
 }
 
 + (Feature*)kUseDevUpdaterUrl {

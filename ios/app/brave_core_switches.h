@@ -97,11 +97,6 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3ACreativeUploadServerURL NS_SWIFT_NAME(p3aCreativeUploadServerURL);
-/// Overrides the P2A JSON backend URL.
-///
-/// Expected value: A URL string
-OBJC_EXPORT const BraveCoreSwitchKey
-    BraveCoreSwitchKeyP2AJsonUploadServerURL NS_SWIFT_NAME(p2aJsonUploadServerURL);
 /// Overrides the P3A Constellation backend URL.
 ///
 /// Expected value: A URL string
