@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
@@ -28,6 +30,48 @@ class AIChatBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("ai_chat"));
+
+    // Add handler for YouTube player endpoint
+    https_server_.RegisterRequestHandler(base::BindLambdaForTesting(
+        [test_data_dir](const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          if (base::StartsWith(request.relative_url, "/youtubei/v1/player")) {
+            auto response =
+                std::make_unique<net::test_server::BasicHttpResponse>();
+
+            // Get the key parameter
+            std::string key;
+            if (request.GetURL().has_query()) {
+              const std::string& query_str = request.GetURL().query();
+              if (base::StartsWith(query_str, "key=")) {
+                key = query_str.substr(4);  // Skip "key="
+              }
+            }
+
+            base::FilePath player_dir = test_data_dir.AppendASCII("ai_chat")
+                                            .AppendASCII("youtubei")
+                                            .AppendASCII("v1")
+                                            .AppendASCII("player_dir");
+
+            // Determine which file to serve
+            base::FilePath file_path;
+            if (!key.empty()) {
+              file_path = player_dir.AppendASCII(base::StrCat({key, ".json"}));
+            } else {
+              file_path = player_dir.AppendASCII("default.json");
+            }
+
+            // Read and serve the file
+            std::string file_contents;
+            EXPECT_TRUE(base::ReadFileToString(file_path, &file_contents));
+            response->set_code(net::HTTP_OK);
+            response->set_content_type("application/json");
+            response->set_content(file_contents);
+            return response;
+          }
+          return nullptr;  // Let the server handle other requests
+        }));
+
     https_server_.StartAcceptingConnections();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
@@ -82,7 +126,7 @@ class AIChatBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
-  const GURL url("https://www.youtube.com/youtube.html");
+  const GURL url("https://www.youtube.com/youtube.html?v=brave5566");
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::CURRENT_TAB,
