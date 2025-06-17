@@ -77,7 +77,6 @@ class RewardsServiceTest : public testing::Test {
   }
 
   void TearDown() override {
-    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
     rewards_service_->RemoveObserver(observer_.get());
     rewards_service_ = nullptr;
     profile_.reset();
