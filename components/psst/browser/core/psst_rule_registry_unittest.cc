@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_forward.h"
@@ -16,7 +17,6 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -26,7 +26,7 @@
 namespace psst {
 
 namespace {
-// Test PSST rules file: brave/test/data/psst-component-data/psst.json
+// Test PSST rules file: brave/components/test/data/psst/psst.json
 constexpr size_t kTestPsstRulesCount = 3;
 constexpr char kPsstUserScriptName[] = "user.js";
 constexpr char kPsstPolicyScriptName[] = "policy.js";
@@ -48,11 +48,11 @@ using OnRuleMatchedCallback = base::RepeatingCallback<void(
 class PsstRuleRegistryUnitTest : public testing::Test {
  public:
   void SetUp() override {
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
+    test_data_dir_base_ =
+        test_data_dir.AppendASCII("brave/components/test/data/psst");
     scoped_feature_list_.InitAndEnableFeature(features::kEnablePsst);
-
-    base::FilePath test_data_dir(
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
-    test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
   }
 
   using LoadRulesTestCallback = base::MockCallback<base::OnceCallback<

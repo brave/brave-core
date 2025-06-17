@@ -12,7 +12,6 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -61,7 +60,6 @@ static_library("brave_test_support_unit") {
     # via an override for testing_profile.{h,cc} for upstream tests to build.
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
-
     "base/run_all_unittests.cc",
   ]
 
@@ -78,10 +76,8 @@ static_library("brave_test_support_unit") {
     ":test_support",
     "//brave/common",
     "//brave/components/constants",
-    "//chrome/browser/ui",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
-    "//content/public/common",
     "//mojo/core/embedder",
   ]
 
@@ -357,10 +353,11 @@ test("brave_unit_tests") {
     "//brave/components/brave_stats/browser",
   ]
 
-  if (enable_psst) {
+  if (is_win) {
     deps += [
-      "//brave/components/psst/browser/content:unit_tests",
-      "//brave/components/psst/browser/core:unit_tests",
+      "//brave/browser/day_zero_browser_ui_expt:unit_tests",
+      "//brave/components/windows_recall",
+      "//brave/components/windows_recall:unit_tests",
     ]
   }
 
