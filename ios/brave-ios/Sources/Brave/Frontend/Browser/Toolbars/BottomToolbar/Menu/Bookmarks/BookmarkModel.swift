@@ -9,6 +9,7 @@ import BraveCore
 import Growth
 
 enum BookmarkItemSelection {
+  case openAll
   case openInNewTab
   case openInNewPrivateTab
   case copyLink
@@ -124,6 +125,25 @@ class BookmarkModel: NSObject, ObservableObject {
     return items
   }
 
+  func bookmarks(in folder: Bookmarkv2) -> [URL] {
+    guard folder.isFolder else {
+      return []
+    }
+
+    var urls: [URL] = []
+    var children = folder.children
+
+    while !children.isEmpty {
+      let bookmarkItem = children.removeFirst()
+      if bookmarkItem.isFolder {
+        children.insert(contentsOf: bookmarkItem.children, at: 0)
+      } else if let bookmarkURL = bookmarkItem.url, let url = URL(string: bookmarkURL) {
+        urls.append(url)
+      }
+    }
+    return urls
+  }
+
   func move(nodes: [Bookmarkv2], to index: Int) {
     nodes.enumerated().forEach({
       if let parent = $0.element.parent?.bookmarkNode ?? api?.mobileNode {
@@ -150,6 +170,9 @@ class BookmarkModel: NSObject, ObservableObject {
     }
 
     switch selection {
+    case .openAll:
+      dismiss()
+      toolbarUrlActionsDelegate?.batchOpen(bookmarks(in: node))
     case .openInNewTab:
       dismiss()
       toolbarUrlActionsDelegate?.openInNewTab(url, isPrivate: false)

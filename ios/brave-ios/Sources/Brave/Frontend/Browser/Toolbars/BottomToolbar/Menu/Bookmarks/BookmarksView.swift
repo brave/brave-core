@@ -7,11 +7,37 @@ import BraveCore
 import BraveShared
 import BraveStrings
 import Data
+import DataImporter
 import DesignSystem
 import Favicon
 import Preferences
 import Shared
 import SwiftUI
+import UniformTypeIdentifiers
+
+private class BookmarkFile: ReferenceFileDocument {
+  typealias Snapshot = BookmarkFile
+  static var readableContentTypes: [UTType] { [.html] }
+  static var writableContentTypes: [UTType] { [.html] }
+
+  let fileURL: URL
+
+  init(fileURL: URL) {
+    self.fileURL = fileURL
+  }
+
+  required init(configuration: ReadConfiguration) throws {
+    throw CocoaError(.fileReadUnsupportedScheme)
+  }
+
+  func snapshot(contentType: UTType) throws -> Snapshot {
+    return self
+  }
+
+  func fileWrapper(snapshot: Snapshot, configuration: WriteConfiguration) throws -> FileWrapper {
+    return try FileWrapper(url: snapshot.fileURL, options: [])
+  }
+}
 
 /// View Model that holds all the information required to render a list of bookmarks
 private class BookmarkViewModel: ObservableObject {
@@ -120,7 +146,14 @@ private struct BookmarksListView: View {
   @ObservedObject
   var viewModel: BookmarkViewModel
 
-  @State private var showImportExport = false
+  @State private var showShare = false
+  @State private var showImport = false
+  @State private var showExport = false
+  @State private var importExportResult: ImportExportResult = .init(
+    showAlert: false,
+    title: "",
+    message: ""
+  )
   @State private var showCreateFolder = false
   @State private var createFolderName = ""
 
@@ -177,44 +210,47 @@ private struct BookmarksListView: View {
           }
           .listRowBackground(Color.clear)
           .contextMenu {
-            Section {
+            if node.isFolder {
               Button {
-                model.handleBookmarkItemSelection(.openInNewTab, node: node)
+                model.handleBookmarkItemSelection(.openAll, node: node)
               } label: {
-                Label(Strings.openNewTabButtonTitle, systemImage: "plus.square.on.square")
+                Label(
+                  String(format: Strings.openAllBookmarks, model.bookmarks(in: node).count),
+                  systemImage: "plus.square.on.square"
+                )
               }
-
-              if !model.isPrivateBrowsing {
+            } else {
+              Section {
                 Button {
-                  model.handleBookmarkItemSelection(.openInNewPrivateTab, node: node)
+                  model.handleBookmarkItemSelection(.openInNewTab, node: node)
                 } label: {
-                  Label(
-                    Strings.openNewPrivateTabButtonTitle,
-                    systemImage: "plus.square.fill.on.square.fill"
-                  )
+                  Label(Strings.openNewTabButtonTitle, systemImage: "plus.square.on.square")
                 }
-              }
-            }
-            Section {
-              Button {
-                model.handleBookmarkItemSelection(.copyLink, node: node)
-              } label: {
-                Label(Strings.copyLinkActionTitle, systemImage: "doc.on.doc")
+
+                if !model.isPrivateBrowsing {
+                  Button {
+                    model.handleBookmarkItemSelection(.openInNewPrivateTab, node: node)
+                  } label: {
+                    Label(
+                      Strings.openNewPrivateTabButtonTitle,
+                      systemImage: "plus.square.fill.on.square.fill"
+                    )
+                  }
+                }
               }
 
-              Button {
-                model.handleBookmarkItemSelection(.shareLink, node: node)
-              } label: {
-                Label(Strings.shareLinkActionTitle, systemImage: "square.and.arrow.up")
-              }
-            }
-            Section {
-              Button(role: .destructive) {
-                withAnimation {
-                  model.delete(nodes: [node])
+              Section {
+                Button {
+                  model.handleBookmarkItemSelection(.copyLink, node: node)
+                } label: {
+                  Label(Strings.copyLinkActionTitle, systemImage: "doc.on.doc")
                 }
-              } label: {
-                Label(Strings.History.deleteFromHistory, braveSystemImage: "leo.trash")
+
+                Button {
+                  model.handleBookmarkItemSelection(.shareLink, node: node)
+                } label: {
+                  Label(Strings.shareLinkActionTitle, systemImage: "square.and.arrow.up")
+                }
               }
             }
           }
@@ -255,40 +291,37 @@ private struct BookmarksListView: View {
       }
 
       ToolbarItemGroup(placement: .bottomBar) {
-        HStack {
+        Button {
+          if viewModel.folder == nil {
+            showShare = true
+          } else {
+            showCreateFolder = true
+          }
+        } label: {
+          Label {
+            Text("CREATE NEW BOOKMARKS FOLDER")  // TODO: Localize
+          } icon: {
+            Image(braveSystemName: viewModel.folder == nil ? "leo.share.macos" : "leo.folder.new")
+              .foregroundStyle(Color(braveSystemName: .iconInteractive))
+          }
+          .labelStyle(.iconOnly)
+        }
+
+        Spacer()
+
+        if viewModel.folder != nil && !viewModel.items.isEmpty {
           Button {
-            if viewModel.folder == nil {
-              showImportExport = true
-            } else {
-              showCreateFolder = true
-            }
+            editMode = editMode.isEditing ? .inactive : .active
           } label: {
             Label {
-              Text("CREATE NEW BOOKMARKS FOLDER")  // TODO: Localize
+              Text("EDIT BOOKMARKS")  // TODO: Localize
             } icon: {
-              Image(braveSystemName: viewModel.folder == nil ? "leo.share.macos" : "leo.folder.new")
+              Image(braveSystemName: "leo.edit.pencil")
                 .foregroundStyle(Color(braveSystemName: .iconInteractive))
             }
             .labelStyle(.iconOnly)
           }
-
-          Spacer()
-
-          if viewModel.folder != nil {
-            Button {
-              editMode = editMode.isEditing ? .inactive : .active
-            } label: {
-              Label {
-                Text("EDIT BOOKMARKS")  // TODO: Localize
-              } icon: {
-                Image(braveSystemName: "leo.edit.pencil")
-                  .foregroundStyle(Color(braveSystemName: .iconInteractive))
-              }
-              .labelStyle(.iconOnly)
-            }
-          }
         }
-        .frame(maxWidth: .infinity)
       }
     }
     .alert(
@@ -314,22 +347,98 @@ private struct BookmarksListView: View {
     )
     .confirmationDialog(
       "",
-      isPresented: $showImportExport,
+      isPresented: $showShare,
       actions: {
         Button {
-
+          showImport = true
         } label: {
           Text(Strings.bookmarksImportAction)
         }
 
         Button {
+          Task { @MainActor in
+            let exporter = BookmarksImportExportUtility()
+            if await exporter.exportBookmarks(to: bookmarkFile.fileURL) {
+              showExport = true
+            } else {
 
+            }
+          }
         } label: {
           Text(Strings.bookmarksExportAction)
         }
       }
     )
-    .onChange(of: searchText) { searchText in
+    .fileImporter(
+      isPresented: $showImport,
+      allowedContentTypes: [.html],
+      allowsMultipleSelection: false,
+      onCompletion: {
+        switch $0 {
+        case .success(let urls):
+          Task { @MainActor in
+            let importer = BookmarksImportExportUtility()
+            if let url = urls.first, await importer.importBookmarks(from: url) {
+              importExportResult = .init(
+                showAlert: true,
+                title: "Success",
+                message: "Your bookmarks has been imported successfully"
+              )
+            } else {
+              importExportResult = .init(
+                showAlert: true,
+                title: "Error",
+                message: "Sorry, an error occurred while importing your bookmarks"
+              )
+            }
+          }
+        case .failure(let error):
+          print(error)
+          importExportResult = .init(
+            showAlert: true,
+            title: "Error",
+            message: "Sorry, an error occurred while importing your bookmarks"
+          )
+        }
+      }
+    )
+    .fileExporter(
+      isPresented: $showExport,
+      document: bookmarkFile,
+      contentType: .html,
+      onCompletion: {
+        switch $0 {
+        case .success(_):
+          importExportResult = .init(
+            showAlert: true,
+            title: "Success",
+            message: "Your bookmarks has been exported successfully"
+          )
+        case .failure(let error):
+          print(error)
+          importExportResult = .init(
+            showAlert: true,
+            title: "Error",
+            message: "Sorry, an error occurred while exporting your bookmarks"
+          )
+        }
+      }
+    )
+    .alert(
+      importExportResult.title,
+      isPresented: $importExportResult.showAlert,
+      actions: {
+        Button {
+
+        } label: {
+          Text(Strings.OBErrorOkay)
+        }
+      },
+      message: {
+        Text(importExportResult.message)
+      }
+    )
+    .onChange(of: searchText) { _, searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(
         withTimeInterval: 0.1,
@@ -353,6 +462,20 @@ private struct BookmarksListView: View {
         await viewModel.refresh()
       }
     }
+  }
+
+  private var bookmarkFile: BookmarkFile {
+    BookmarkFile(
+      fileURL: FileManager.default.temporaryDirectory
+        .appendingPathComponent("Bookmarks")
+        .appendingPathExtension("html")
+    )
+  }
+
+  private struct ImportExportResult {
+    var showAlert: Bool
+    var title: String
+    var message: String
   }
 }
 
