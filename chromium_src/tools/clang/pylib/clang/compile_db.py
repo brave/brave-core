@@ -48,8 +48,8 @@ def ProcessCompileDatabase(original_function,
 def _FilterFlags(original_function, command, additional_filtered_flags):
     flags = original_function(command, additional_filtered_flags)
     flags_to_restore = [
-        # Clangd 15+ is required, VSCode extension includes it.
         ' -Xclang -fexperimental-max-bitint-width=256',
+        ' -Xclang -iquote../../brave/chromium_src',
     ]
 
     for flag_to_restore in flags_to_restore:
