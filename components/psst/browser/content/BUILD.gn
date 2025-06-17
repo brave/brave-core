@@ -41,7 +41,6 @@ source_set("unit_tests") {
   deps = [
     "//brave/components/psst/browser/content",
     "//brave/components/psst/common",
-    "//brave/test:brave_test_support_unit",
     "//components/sync_preferences:test_support",
     "//content/public/browser",
     "//content/test:test_support",
