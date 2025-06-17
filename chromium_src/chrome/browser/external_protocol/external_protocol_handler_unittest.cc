@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 
+#include <memory>
+
+#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -16,11 +17,9 @@ class ExternalProtocolHandlerTest : public testing::Test {
  protected:
   void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
 
-  void TearDown() override {
-    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
-  }
-
   content::BrowserTaskEnvironment task_environment_;
+  ScopedTestingLocalState scoped_testing_local_state_{
+      TestingBrowserProcess::GetGlobal()};
   std::unique_ptr<TestingProfile> profile_;
 };
 
