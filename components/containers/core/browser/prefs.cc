@@ -24,12 +24,14 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
   std::vector<mojom::ContainerPtr> containers;
   for (const auto& container : prefs.GetList(prefs::kContainersList)) {
     if (!container.is_dict()) {
+      LOG(ERROR) << "Container is not a dictionary";
       continue;
     }
     const base::Value::Dict& dict = container.GetDict();
     auto* id = dict.FindString("id");
     auto* name = dict.FindString("name");
     if (!id || !name) {
+      LOG(ERROR) << "Container is missing id or name";
       continue;
     }
     containers.push_back(mojom::Container::New(*id, *name));
