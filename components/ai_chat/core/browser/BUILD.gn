@@ -32,6 +32,8 @@ static_library("browser") {
     "constants.h",
     "conversation_handler.cc",
     "conversation_handler.h",
+    "conversation_tools.cc",
+    "conversation_tools.h",
     "engine/conversation_api_client.cc",
     "engine/conversation_api_client.h",
     "engine/conversation_api_parsing.cc",

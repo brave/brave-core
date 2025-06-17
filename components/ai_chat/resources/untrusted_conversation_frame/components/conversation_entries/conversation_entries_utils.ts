@@ -3,7 +3,30 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export const getReasoningText = (text: string) => {
+import * as Mojom from '../../../common/mojom'
+
+/**
+ * Combines events of entries if there are multiple consecutive assistant entries.
+ * @param allEntries Flat list of conversation entries
+ */
+export function groupConversationEntries(allEntries: Mojom.ConversationTurn[]): Mojom.ConversationTurn[][] {
+  // TODO: test
+  const groupedEntries: Mojom.ConversationTurn[][] = []
+  for (const entry of allEntries) {
+    const lastEntry = groupedEntries[groupedEntries.length - 1]
+    if (!groupedEntries.length || !lastEntry?.length || entry.characterType !== Mojom.CharacterType.ASSISTANT || lastEntry[0]?.characterType !== Mojom.CharacterType.ASSISTANT) {
+      groupedEntries.push([entry])
+      continue
+    }
+    if (entry.characterType === Mojom.CharacterType.ASSISTANT && lastEntry[0]?.characterType === Mojom.CharacterType.ASSISTANT) {
+      groupedEntries[groupedEntries.length - 1].push(entry)
+      continue
+    }
+  }
+  return groupedEntries
+}
+
+export function getReasoningText(text: string) {
   const startTag = '<think>'
   const endTag = '</think>'
   let result = ''

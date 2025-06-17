@@ -101,7 +101,11 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {
 
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
-  ASSERT_EQ(result.size(), 0u);
+  ASSERT_EQ(result.size(), 1u);
+
+  EXPECT_MOJOM_EQ(result[0], mojom::ToolUseEvent::New(
+                                 "get_weather", "",
+                                 "{\"location\":\"New York\"}", std::nullopt));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
@@ -120,7 +124,11 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionName) {
 
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
-  ASSERT_EQ(result.size(), 0u);
+  ASSERT_EQ(result.size(), 1u);
+
+  EXPECT_MOJOM_EQ(result[0], mojom::ToolUseEvent::New(
+                                 "", "call_123", "{\"location\":\"New York\"}",
+                                 std::nullopt));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingFunctionObject) {
