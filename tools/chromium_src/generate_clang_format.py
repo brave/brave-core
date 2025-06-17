@@ -22,25 +22,31 @@ def add_chromium_src_include_categories_rule(data):
     # Find the IncludeCategories list.
     include_categories = data['IncludeCategories']
 
-    # Find the '.*' rule (wildcard regex).
-    for idx, rule in enumerate(include_categories):
+    for rule in include_categories:
         if rule['Regex'] == '.*':
-            wildcard_rule_idx = idx
             wildcard_rule_priority = rule['Priority']
             break
     else:
         raise RuntimeError("Couldn't find the '.*' rule in IncludeCategories")
 
-    # Create chromium_src rule with a lower priority than the wildcard rule.
+    # Increase the priority of all rules that are greater than the wildcard rule
+    # to give space for the chromium_src rule.
+    for rule in include_categories:
+        if rule['Priority'] > wildcard_rule_priority:
+            rule['Priority'] += 1
+
+    # Create chromium_src rule to group non-header files after the wildcard
+    # rule. Header files are matched automatically as "main" files and put at
+    # the top of the file.
     chromium_src_rule = {
-        'Regex': '^"(src\/|..\/gen\/).*',
+        'Regex': r'^(<.*\.(c|cc|cpp|m|mm)>|"..\/gen\/.*")',
         'Priority': wildcard_rule_priority + 1,
     }
 
-    # Insert the chromium_src rule before the wildcard rule. This is required
-    # for regex to work correctly, otherwise everything will be matched by the
-    # wildcard rule.
-    include_categories.insert(wildcard_rule_idx, chromium_src_rule)
+    # Insert the chromium_src rule before all rules. This is required for regex
+    # to work correctly, otherwise everything will be matched by the following
+    # rules.
+    include_categories.insert(0, chromium_src_rule)
 
 
 def load_clang_format(path):
