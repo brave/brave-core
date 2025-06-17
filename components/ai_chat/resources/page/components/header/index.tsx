@@ -7,7 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { Conversation } from '../../../common/mojom'
-import getAPI from '../../api'
 import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
 import styles from './style.module.scss'
 import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
@@ -97,7 +96,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 kind='plain-faint'
                 aria-label={openFullPageButtonLabel}
                 title={openFullPageButtonLabel}
-                onClick={() => getAPI().uiHandler.openConversationFullPage(conversationContext.conversationUuid!)}
+                onClick={() => aiChatContext.api.actions.uiHandler.openConversationFullPage(conversationContext.conversationUuid)}
               >
                 <Icon name='expand' />
               </Button>}
@@ -118,7 +117,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 aria-label={closeButtonLabel}
                 title={closeButtonLabel}
                 className={styles.closeButton}
-                onClick={() => getAPI().uiHandler.closeUI()}
+                onClick={() => aiChatContext.api.actions.uiHandler.closeUI()}
               >
                 <Icon name='close' />
               </Button>

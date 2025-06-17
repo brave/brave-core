@@ -8,23 +8,24 @@ import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
-import getAPI from './api'
-import { AIChatContextProvider, ConversationEntriesProps, useAIChat } from './state/ai_chat_context'
+import createAIChatAPI from './api'
+import { AIChatProvider, ConversationEntriesProps, useAIChat } from './state/ai_chat_context'
 import {
-  ConversationContextProvider,
-  useConversation
+  ConversationProvider,
+  useConversation,
+  useConversationState
 } from './state/conversation_context'
 import Main from './components/main'
 import FullScreen from './components/full_page'
 import Loading from './components/loading'
-import { ActiveChatProviderFromUrl } from './state/active_chat_context'
+import { ActiveChatProviderFromUrl, useActiveChat } from './state/active_chat_context'
 
 import '../common/strings'
 
 setIconBasePath('chrome://resources/brave-icons')
 
-// Make sure we're fetching data as early as possible
-const api = getAPI()
+// Default parameters connects to the real mojo interfaces
+const api = createAIChatAPI()
 
 function App() {
   React.useEffect(() => {
@@ -32,13 +33,21 @@ function App() {
   }, [])
 
   return (
-    <AIChatContextProvider conversationEntriesComponent={ConversationEntries}>
+    <AIChatProvider api={api} conversationEntriesComponent={ConversationEntries}>
       <ActiveChatProviderFromUrl>
-        <ConversationContextProvider>
-            <Content />
-        </ConversationContextProvider>
+        <MainConversation />
       </ActiveChatProviderFromUrl>
-    </AIChatContextProvider>
+    </AIChatProvider>
+  )
+}
+
+function MainConversation() {
+  // Get conversation based on the URL and set on this part of the tree
+  const selectedConversationDetails = useActiveChat()
+  return (
+    <ConversationProvider {...selectedConversationDetails}>
+      <Content />
+    </ConversationProvider>
   )
 }
 
@@ -57,7 +66,11 @@ function Content() {
 }
 
 function ConversationEntries(props: ConversationEntriesProps) {
-  const conversationContext = useConversation()
+  const aiChatContext = useAIChat()
+
+  const { api: conversationApi } = useConversation()
+  const state = useConversationState()
+
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
   const [hasLoaded, setHasLoaded] = React.useState(false)
@@ -74,50 +87,46 @@ function ConversationEntries(props: ConversationEntriesProps) {
     if (iframeRef.current) {
       iframeRef.current.style.height = '0px'
     }
-  }, [conversationContext.conversationUuid, props.onIsContentReady])
+  }, [state.conversationUuid, props.onIsContentReady])
 
-  // The iframe has loaded if there're no conversation entries,
-  // it will never grow until a user action happens.
+  const conversationHasEntries =
+    !!conversationApi.useGetConversationHistory().getConversationHistoryData.length
+
+  // Mark that iframe has loaded if there're no conversation entries,
+  // since we won't get ChildHeightChanged notification in that case.
   React.useEffect(() => {
     // conversationUuid populated is a sign that data has been fetched
-    if (!hasNotifiedContentReady.current && conversationContext.conversationUuid &&
-        !conversationContext.conversationHistory.length && hasLoaded) {
+    if (!hasNotifiedContentReady.current && state.conversationUuid &&
+        !conversationHasEntries && hasLoaded) {
       hasNotifiedContentReady.current = true
       props.onIsContentReady(true)
     }
   }, [
-    conversationContext.conversationUuid,
-    conversationContext.conversationHistory.length,
+    state.conversationUuid,
+    conversationHasEntries,
     hasLoaded
   ])
 
-  React.useEffect(() => {
-    const listener = (height: number) => {
-      // Use the first height change to notify that the iframe has rendered,
-      // in lieu of an actual "has rendered the conversation entries" event
-      // which, if we get any bugs with this and need to add complexity, might
-      // be simpler to implement excplicitly, from child -> parent.
-      if (!hasNotifiedContentReady.current && height > 0) {
-        hasNotifiedContentReady.current = true
-        props.onIsContentReady(true)
-      }
-      if (iframeRef.current) {
-        iframeRef.current.style.height = height + 'px'
-        props.onHeightChanged()
-      }
+  // When height of frame content changes, update the iframe height
+  aiChatContext.api.useChildHeightChanged((height) => {
+    // Use the first height change to notify that the iframe has rendered,
+    // in lieu of an actual "has rendered the conversation entries" event
+    // which, if we get any bugs with this and need to add complexity, might
+    // be simpler to implement explicitly, from child -> parent.
+    if (!hasNotifiedContentReady.current && height) {
+      hasNotifiedContentReady.current = true
+      props.onIsContentReady(true)
     }
-    const id = api.conversationEntriesFrameObserver.childHeightChanged.addListener(listener)
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(id)
+    if (height && iframeRef.current) {
+      iframeRef.current.style.height = height + 'px'
     }
-  }, [props.onHeightChanged, props.onIsContentReady])
+  }, [props.onIsContentReady])
 
   return (
     <iframe
       sandbox='allow-scripts allow-same-origin'
       allow='clipboard-write'
-      src={'chrome-untrusted://leo-ai-conversation-entries/' + conversationContext.conversationUuid}
+      src={'chrome-untrusted://leo-ai-conversation-entries/' + state.conversationUuid}
       ref={iframeRef}
       onLoad={() => setHasLoaded(true)}
     />

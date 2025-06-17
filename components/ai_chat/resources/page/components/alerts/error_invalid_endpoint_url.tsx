@@ -14,7 +14,7 @@ export default function ErrorInvalidEndpointURL() {
   const aiChatContext = useAIChat()
 
   const handleConfigureClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
+    aiChatContext.api.actions.uiHandler.openAIChatSettings()
   }
 
   return (

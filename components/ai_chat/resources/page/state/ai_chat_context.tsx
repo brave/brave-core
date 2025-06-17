@@ -4,75 +4,30 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import useAPIState from '../../common/useAPIState'
-import * as Mojom from '../../common/mojom'
-import getAPI, * as AIChat from '../api'
+import generateReactContextForAPI from '$web-common/api/react_api'
+import { loadTimeData } from '$web-common/loadTimeData'
 import useMediaQuery from '$web-common/useMediaQuery'
+import { AIChatAPI } from '../api'
 
 export interface ConversationEntriesProps {
   onIsContentReady: (isContentReady: boolean) => void
-  onHeightChanged: () => void
 }
 
 type AIChatContextProps = {
+  api: AIChatAPI
   conversationEntriesComponent: (props: ConversationEntriesProps) => React.ReactElement
 }
-
-type AIChatContextInternal = AIChatContextProps & {
-  initialized: boolean
-  goPremium: () => void
-  managePremium: () => void
-  handleAgreeClick: () => void
-  enableStoragePref: () => void
-  dismissStorageNotice: () => void
-  dismissPremiumPrompt: () => void
-  userRefreshPremiumSession: () => void
-  uiHandler?: Mojom.AIChatUIHandlerRemote
-  service?: Mojom.ServiceRemote
-
-  editingConversationId: string | null
-  setEditingConversationId: (uuid: string | null) => void,
-  deletingConversationId: string | null
-  setDeletingConversationId: (uuid: string | null) => void
-
-  showSidebar: boolean,
-  toggleSidebar: () => void
-}
-
-export type AIChatContext = AIChat.State & AIChatContextInternal
-
-const defaultContext: AIChatContext = {
-  ...AIChat.defaultUIState,
-  initialized: false,
-  goPremium: () => { },
-  managePremium: () => { },
-  handleAgreeClick: () => { },
-  enableStoragePref: () => { },
-  dismissStorageNotice: () => { },
-  dismissPremiumPrompt: () => { },
-  userRefreshPremiumSession: () => { },
-
-  editingConversationId: null,
-  setEditingConversationId: () => { },
-  deletingConversationId: null,
-  setDeletingConversationId: () => { },
-
-  showSidebar: false,
-  toggleSidebar: () => { },
-
-  conversationEntriesComponent: () => <></>
-}
-
-export const AIChatReactContext =
-  React.createContext<AIChatContext>(defaultContext)
 
 export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
 
-export function AIChatContextProvider(props: React.PropsWithChildren<AIChatContextProps>) {
-  const api = getAPI()
-  const context = useAPIState(api, defaultContext)
+export default function useProvideAIChatContext(props: AIChatContextProps) {
+  // This hook should only have any state or anything
+  // worth memoizing across the app.
+  // Anything that changes will cause the entire tree underneath
+  // to re-render.
+  const { api } = props
   const [editingConversationId, setEditingConversationId] =
     React.useState<string | null>(null)
   const [deletingConversationId, setDeletingConversationId] =
@@ -80,17 +35,80 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
-  const store: AIChatContext = {
-    ...context,
-    goPremium: () => api.uiHandler.goPremium(),
-    managePremium: () => api.uiHandler.managePremium(),
-    dismissStorageNotice: () => api.service.dismissStorageNotice(),
-    enableStoragePref: () => api.service.enableStoragePref(),
-    dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
-    userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
-    handleAgreeClick: () => api.service.markAgreementAccepted(),
-    uiHandler: api.uiHandler,
-    service: api.service,
+  const { getConversationsData, isPlaceholderData: isConversationsLoading } = api.useGetConversations()
+
+  const store = {
+    api: props.api,
+    initialized: api.isStandalone.current !== undefined && !isConversationsLoading,
+    isMobile: loadTimeData.getBoolean('isMobile'),
+    isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+
+    // TODO(petemill): consumers should consume directly from
+    // api's hooks for better performance, so that every component
+    // is not re-rendered when the state of every endpoint changes.
+
+    /**
+     * @deprecated use api.useTabs() instead
+     */
+    tabs: api.useTabs().data!,
+
+    /**
+     * @deprecated use api.useState() instead
+     */
+    ...api.useState().data!,
+
+    /**
+     * @deprecated use api.useGetPremiumStatus() instead
+     */
+    ...api.useGetPremiumStatus().data!,
+
+    /**
+     * @deprecated use api.useGetPremiumStatus() instead
+     */
+    actionList: api.useGetActionMenuList().data,
+
+    isStandalone: api.useIsStandalone().data,
+
+    /**
+     * @deprecated use api.useGetConversations() instead
+     */
+    conversations: getConversationsData,
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    goPremium: () => api.actions.uiHandler.goPremium(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    managePremium: () => api.actions.uiHandler.managePremium(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    dismissStorageNotice: () => api.actions.service.dismissStorageNotice(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    enableStoragePref: () => api.actions.service.enableStoragePref(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    dismissPremiumPrompt: () => api.actions.service.dismissPremiumPrompt(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    userRefreshPremiumSession: () => api.actions.uiHandler.refreshPremiumSession(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    handleAgreeClick: () => api.actions.service.markAgreementAccepted(),
+
     editingConversationId,
     setEditingConversationId,
     deletingConversationId,
@@ -100,13 +118,13 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     conversationEntriesComponent: props.conversationEntriesComponent,
   }
 
-  return (
-    <AIChatReactContext.Provider value={store}>
-      {props.children}
-    </AIChatReactContext.Provider>
-  )
+
+  return store
 }
 
-export function useAIChat() {
-  return React.useContext(AIChatReactContext)
-}
+export type AIChatContext = ReturnType<typeof useProvideAIChatContext>
+
+export const {
+  useAPI: useAIChat,
+  Provider: AIChatProvider
+} = generateReactContextForAPI<AIChatContextProps, AIChatContext>(useProvideAIChatContext)

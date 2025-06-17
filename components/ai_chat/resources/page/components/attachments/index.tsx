@@ -19,9 +19,9 @@ function TabItem({ tab }: { tab: TabData }) {
     const { conversationUuid, associatedContentInfo } = useConversation()
     return <Checkbox className={styles.tabItem} checked={associatedContentInfo.some(c => c.contentId === tab.contentId)} onChange={(e) => {
         if (e.checked) {
-            aiChat.uiHandler?.associateTab(tab, conversationUuid!)
+            aiChat.api.actions.uiHandler.associateTab(tab, conversationUuid)
         } else {
-            aiChat.uiHandler?.disassociateTab(tab, conversationUuid!)
+            aiChat.api.actions.uiHandler.disassociateTab(tab, conversationUuid)
         }
     }}>
         <span className={styles.title}>{tab.title}</span>

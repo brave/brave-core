@@ -26,7 +26,7 @@ export default function FeatureMenu(props: Props) {
   const conversationContext = useConversation()
 
   const handleSettingsClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
+    aiChatContext.api.actions.uiHandler.openAIChatSettings()
   }
 
   // If conversation has been started, then it has been committed
@@ -40,6 +40,8 @@ export default function FeatureMenu(props: Props) {
   const leoModels = conversationContext.allModels.filter(
     (model) => model.options.leoModelOptions
   )
+
+  const isTemporaryChat = conversationContext.api.useGetStateData().temporary
 
   const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
     conversationContext.setTemporary(detail.checked)
@@ -122,7 +124,7 @@ export default function FeatureMenu(props: Props) {
       {!hasConversationStarted && (
         <leo-menu-item
           data-is-interactive="true"
-          onClick={() => handleTemporaryChatToggle({ checked: !conversationContext.isTemporaryChat })}
+          onClick={() => handleTemporaryChatToggle({ checked: !isTemporaryChat })}
         >
           <div className={classnames(
             styles.menuItemWithIcon,
@@ -135,7 +137,7 @@ export default function FeatureMenu(props: Props) {
             <Toggle
               size='small'
               onChange={handleTemporaryChatToggle}
-              checked={conversationContext.isTemporaryChat}
+              checked={isTemporaryChat}
             >
             </Toggle>
           </div>
@@ -143,7 +145,7 @@ export default function FeatureMenu(props: Props) {
       )}
 
       {aiChatContext.isStandalone && hasConversationStarted && <>
-        <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid!)}>
+        <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid)}>
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem
@@ -154,7 +156,7 @@ export default function FeatureMenu(props: Props) {
             </div>
           </div>
         </leo-menu-item>
-        <leo-menu-item onClick={() => aiChatContext.setDeletingConversationId(conversationContext.conversationUuid!)}>
+        <leo-menu-item onClick={() => aiChatContext.setDeletingConversationId(conversationContext.conversationUuid)}>
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem
