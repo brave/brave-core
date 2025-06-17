@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -201,6 +202,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   size_t GetConversationHistorySize() override;
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
+  // mojom::UntrustedConversationHandler
+  void RespondToToolUseRequest(
+      const std::string& tool_id,
+      std::optional<std::vector<mojom::ContentBlockPtr>> output_json) override;
+
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
   void MaybeFetchOrClearContentStagedConversation();
@@ -221,6 +227,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
+
+  void SetToolsForTesting(
+      std::vector<std::unique_ptr<Tool>> tools_for_testing) {
+    tools_for_testing_ = std::move(tools_for_testing);
+  }
 
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
@@ -286,6 +297,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
+  void PerformAssistantGenerationWithPossibleContent();
   void PerformAssistantGeneration(std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
@@ -327,6 +339,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
+  mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
+  void MaybeRespondToNextToolUseRequest();
+  void OnToolUseComplete(
+      const std::string& tool_use_id,
+      std::optional<std::vector<mojom::ContentBlockPtr>> output);
+
+  // We don't own all the available tools for the conversation as:
+  // - The available tools can change over time.
+  // - Some tools are provided by other classes.
+  // Instead, we build a list from all the available tool sources, given
+  // the current conversation state.
+  std::vector<base::WeakPtr<Tool>> GetTools();
+
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
   std::string model_key_;
@@ -341,11 +366,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
 
-  // TODO(petemill): Tracking whether the UI is open
-  // for a conversation might not be neccessary anymore as there
-  // are no automatic actions that occur anymore now that content
-  // fetching is on-deman.
-  // bool is_conversation_active_ = false;
+  // Are we currently performing a loop of tool uses?
+  bool is_tool_use_in_progress_ = false;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|
@@ -358,10 +380,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   // previous one.
   bool is_content_different_ = true;
 
+  // Whether further assistant responses should be appended to the last or
+  // created in a new sibling ConversationEntry.
+  bool needs_new_entry_ = false;
+
   bool is_print_preview_fallback_requested_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
+
+  // For testing only
+  std::vector<std::unique_ptr<Tool>> tools_for_testing_;
 
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;

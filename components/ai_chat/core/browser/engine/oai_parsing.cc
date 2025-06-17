@@ -27,31 +27,21 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const auto& tool_call = tool_call_raw.GetDict();
 
     // Most APIs that have partial chunk responses seem to initially always have
-    // the tool name and id, and only chunk the arguments json. So, for now, we
-    // can continue to have validation here and ignore calls that don't have
-    // required fields.
+    // the tool name and id, and only chunk the arguments json. So whilst id and
+    // name are required for the completed event, we can't rely on them being
+    // present for parsing.
 
     const base::Value::Dict* function = tool_call.FindDict("function");
     if (!function) {
       DLOG(ERROR) << "No function info found in tool call.";
       continue;
     }
-    // Tool call results can be partial and should be added to the previous
-    // event by the event handler.
+
     const std::string* id = tool_call.FindString("id");
-    if (!id) {
-      DLOG(ERROR) << "No id found in tool call.";
-      continue;
-    }
-
     const std::string* name = function->FindString("name");
-    if (!name) {
-      DLOG(ERROR) << "No name found in tool call.";
-      continue;
-    }
 
-    mojom::ToolUseEventPtr tool_use_event =
-        mojom::ToolUseEvent::New(*name, *id, "", std::nullopt);
+    mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
+        name ? *name : "", id ? *id : "", "", std::nullopt);
 
     const std::string* arguments_raw = function->FindString("arguments");
     if (arguments_raw) {

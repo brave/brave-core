@@ -469,6 +469,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-tools",                                               \
+          "Brave AI Chat Tools",                                               \
+          "Conversations can provide Tools to the AI to perform more "         \
+          "specific actions.",                                                 \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-host-specific-distillation",                               \
           "Brave AI Host-Specific Distillation",                               \
           "Enables support for host-specific distillation scripts",            \

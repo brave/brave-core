@@ -11,6 +11,10 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
+// Share some tool names between the browser and the UI so that
+// custom user actions and UI representations can be created.
+const string kUserChoiceToolName = "user_choice_tool";
+
 enum CharacterType {
   HUMAN,
   ASSISTANT
@@ -616,6 +620,10 @@ interface UntrustedConversationHandler {
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   ModifyConversation(uint32 turn_index, string new_text);
+
+  // Allows a client to provide an answer to a tool use request
+  // as a result of a user action.
+  RespondToToolUseRequest(string tool_id, array<ContentBlock>? output_json);
 
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
