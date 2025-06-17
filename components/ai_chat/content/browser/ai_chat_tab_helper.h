@@ -26,8 +26,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "url/gurl.h"
 
 namespace gfx {
@@ -57,15 +55,9 @@ class AIChatMetrics;
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
-                        public mojom::PageContentExtractorHost,
                         public AssociatedContentDriver {
  public:
   using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
-
-  static void BindPageContentExtractorHost(
-      content::RenderFrameHost* rfh,
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
 
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
@@ -126,9 +118,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   GetPrintPreviewExtractionDelegateForTesting() {
     return print_preview_extraction_delegate_.get();
   }
-
-  // mojom::PageContentExtractorHost
-  void OnInterceptedPageContentChanged() override;
 
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
@@ -203,10 +192,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
       GetPageContentCallback callback,
       base::expected<std::string, std::string>);
 
-  void BindPageContentExtractorReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
-
   // Traverse through a11y tree to check existence of status node.
   void CheckPDFA11yTree();
 
@@ -239,9 +224,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
-
-  mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
-      page_content_extractor_receiver_{this};
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();
