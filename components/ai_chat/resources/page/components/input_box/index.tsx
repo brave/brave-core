@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
@@ -45,7 +43,7 @@ type Props = Pick<
   | 'disassociateContent'
   | 'associateDefaultContent'
 > &
-  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
+  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement' | 'getPluralString'>
 
 export interface InputBoxProps {
   context: Props
@@ -53,8 +51,8 @@ export interface InputBoxProps {
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
-function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean) {
-  const { result: attachmentsPlaceholder } = usePromise(() => PluralStringProxyImpl.getInstance().getPluralString(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount), [attachmentsCount])
+function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
+  const { result: attachmentsPlaceholder } = usePromise(async () => getter(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount), [attachmentsCount, getter])
 
   if (conversationStarted) return getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)
 
@@ -134,7 +132,8 @@ function InputBox(props: InputBoxProps) {
   const placeholderText = usePlaceholderText(
     props.context.associatedContentInfo.length,
     props.context.shouldSendPageContents,
-    props.conversationStarted
+    props.conversationStarted,
+    props.context.getPluralString
   )
 
   const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles

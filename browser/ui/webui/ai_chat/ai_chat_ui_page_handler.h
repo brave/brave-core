@@ -60,6 +60,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ShowSoftKeyboard() override;
   void UploadImage(bool use_media_capture,
                    UploadImageCallback callback) override;
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;

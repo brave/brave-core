@@ -732,6 +732,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
       url: { url: 'https://search.brave.com' },
       title: 'Brave Search',
     }],
+    getPluralString: () => Promise.resolve(''),
     goPremium: () => { },
     managePremium: () => { },
     handleAgreeClick: () => { },

@@ -29,10 +29,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -73,8 +71,7 @@ content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
 #endif
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
-    : ui::MojoWebUIController(web_ui, /*enable_chrome_send=*/true),
-      profile_(Profile::FromWebUI(web_ui)) {
+    : ui::MojoWebUIController(web_ui), profile_(Profile::FromWebUI(web_ui)) {
   DCHECK(profile_);
   DCHECK(profile_->IsRegularProfile());
 
@@ -89,12 +86,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
   source->AddLocalizedStrings(webui::kAiChatStrings);
-
-  auto plural_string_handler = std::make_unique<PluralStringHandler>();
-  plural_string_handler->AddLocalizedString(
-      "CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL",
-      IDS_CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL);
-  web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);

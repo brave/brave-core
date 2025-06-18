@@ -66,7 +66,8 @@ export default function BeginGeneration() {
           pendingMessageImages: [],
           isUploadingFiles: false,
           shouldSendPageContents: false,
-          disassociateContent: () => {}
+          disassociateContent: () => {},
+          getPluralString: () => Promise.resolve('')
         }} />
     </FiltersContainer>
     <NoContent />

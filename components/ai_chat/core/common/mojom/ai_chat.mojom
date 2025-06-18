@@ -411,6 +411,9 @@ interface AIChatUIHandler {
   UploadImage(bool use_media_capture)
       => (array<UploadedFile>? uploaded_images);
 
+  // Get a plural string for the given key and count.
+  GetPluralString(string key, int32 count) => (string plural_string);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
