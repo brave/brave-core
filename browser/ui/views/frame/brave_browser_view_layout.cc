@@ -47,6 +47,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
     views::View* contents_container,
+    MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
     views::View* unified_side_panel,
     views::View* right_aligned_side_panel_separator,
@@ -66,6 +67,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           infobar_container,
           (browser_view ? browser_view->GetContentsContainerForLayoutManager()
                         : browser_view),
+          multi_contents_view,
           left_aligned_side_panel_separator,
           unified_side_panel,
           right_aligned_side_panel_separator,
