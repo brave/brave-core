@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5 b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-index 5df4b6510abab7b111f07cd18fc2712371167269..4b76eab91c72dbbbb2ae638eb52cae325e0f67da 100644
+index 5df4b6510abab7b111f07cd18fc2712371167269..bca6d2b5b2c7e513022d8d0eaa563e51958a28d2 100644
 --- a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
 +++ b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
 @@ -609,6 +609,14 @@
