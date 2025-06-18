@@ -69,11 +69,11 @@ import { FancyElement } from './fancy-chromium.js'
 
 declare module './item-chromium.js' {
   interface FancyElement {
-    isBraveAndFancy(): boolean
+    isBraveAndFancy: () => boolean
   }
 }
 
-ExtensionsItemElement.isBraveAndFancy = () => true;
+FancyElement.prototype.isBraveAndFancy = () => true;
 
 export * from './fancy-chromium.js'
 ```
