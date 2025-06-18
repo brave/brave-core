@@ -7,6 +7,7 @@ include_rules = [
   "+components/prefs",
   "+components/sessions/content",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
