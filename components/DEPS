@@ -21,6 +21,7 @@ include_rules = [
 include_rules += [
   "-components/content_settings",
   "-components/grit",
+  "-components/history",
   "-components/keyed_service",
   "-components/omnibox",
   "-components/prefs",

@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/test",
   "+components/content_settings",
+  "+components/history",
   "+components/prefs",
   "+components/security_interstitials",
 ]
