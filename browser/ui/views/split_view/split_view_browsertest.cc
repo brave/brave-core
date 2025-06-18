@@ -18,8 +18,10 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -31,7 +33,9 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -270,6 +274,82 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(5, tab_strip_model->active_index());
 }
+
+class SplitViewBrowserTestWithPermissionBubbleManagerTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SplitViewBrowserTestWithPermissionBubbleManagerTest() {
+    if (IsSideBySideEnabled()) {
+      scoped_features_.InitWithFeatures(
+          /*enabled_features*/ {features::kSideBySide}, {});
+    }
+  }
+  ~SplitViewBrowserTestWithPermissionBubbleManagerTest() override = default;
+
+  bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    return permissions::PermissionRequestManager::FromWebContents(
+               tab_strip_model->GetWebContentsAt(index))
+        ->tab_is_hidden_for_testing();
+  }
+
+  void NewSplitTab() {
+    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
+                          : brave::NewSplitViewForTab(browser());
+  }
+
+  bool IsSideBySideEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_P(SplitViewBrowserTestWithPermissionBubbleManagerTest,
+                       GetTabIsHiddenTest) {
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+
+  // Final state is arrived in async sometimes.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
+
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsActivated());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(0); }));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  // Check proper state is set after restored.
+  browser()->window()->Minimize();
+  browser()->window()->Restore();
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SplitViewBrowserTestWithPermissionBubbleManagerTest,
+    ::testing::Bool());
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:

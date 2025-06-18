@@ -73,6 +73,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "components/permissions/permission_request_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -886,6 +887,20 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
 #endif
+
+  if (old_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(old_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(false);
+  }
+
+  if (new_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(new_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(true);
+  }
 }
 
 void BraveBrowserView::UpdateContentsSeparatorVisibility() {
