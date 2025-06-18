@@ -51,14 +51,19 @@ class BrowserNavigationHelper {
 
   func openBookmarks() {
     guard let bvc = bvc else { return }
-    let vc = BookmarksViewController(
-      folder: bvc.bookmarkManager.lastVisitedFolder(),
-      bookmarkManager: bvc.bookmarkManager,
-      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
+    let vc = UIHostingController(
+      rootView: BookmarksView(
+        model: BookmarkModel(
+          api: bvc.profileController.bookmarksAPI,
+          tabManager: bvc.tabManager,
+          bookmarksManager: bvc.bookmarkManager,
+          toolbarUrlActionsDelegate: bvc,
+          dismiss: { [weak bvc] in bvc?.dismiss(animated: true) }
+        )
+      )
     )
-    vc.toolbarUrlActionsDelegate = bvc
 
-    open(vc, doneButton: DoneButton(style: .done, position: .right))
+    bvc.present(vc, animated: true)
   }
 
   func openSyncedTabsList() {

@@ -5,11 +5,14 @@
 
 import BraveCore
 import BraveStrings
+import Data
 import DesignSystem
-import Favicon
+import Shared
 import SwiftUI
+import Web
 
-struct BookmarksAddEditFolderView: View {
+struct BookmarksAddTabsView: View {
+
   @Environment(\.dismiss)
   private var dismiss
 
@@ -17,7 +20,7 @@ struct BookmarksAddEditFolderView: View {
   private var model: BookmarkModel
 
   @State
-  private var folder: BookmarkNode?
+  var tabs: [any TabState]
 
   @State
   private var selectedParentFolder: BookmarkNode?
@@ -35,17 +38,20 @@ struct BookmarksAddEditFolderView: View {
     model.mobileBookmarksFolder
   }
 
-  init(model: BookmarkModel, folder: BookmarkNode? = nil) {
+  private var manuallyDismiss: (() -> Void)?
+
+  init(model: BookmarkModel, tabs: [any TabState], dismiss: (() -> Void)? = nil) {
     self.model = model
-    self.folder = folder
-    self.selectedParentFolder = folder?.parent
-    self.title = folder?.title ?? Strings.newFolderDefaultName
+    self.manuallyDismiss = dismiss
+    self.tabs = tabs
+    self.selectedParentFolder = model.mobileBookmarksFolder
+    self.title = Strings.savedTabsFolderTitle
   }
 
   var body: some View {
     List {
       Section {
-        TextField("", text: $title, prompt: Text(Strings.bookmarkTitlePlaceholderText))
+        TextField("", text: $title, prompt: Text(title))
       }
 
       Section {
@@ -93,23 +99,37 @@ struct BookmarksAddEditFolderView: View {
     .background(Color(.braveGroupedBackground))
     .listStyle(.grouped)
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(folder == nil ? Strings.newFolderTitle : Strings.editFolderTitle)
+    .navigationTitle(Strings.newFolderTitle)
     .toolbar {
       ToolbarItemGroup(placement: .topBarTrailing) {
         Button(Strings.saveButtonTitle) {
-          if folder == nil {
-            model.addFolder(title: title, in: selectedParentFolder ?? defaultRootFolder)
-          } else {
-            folder?.title = title
+          if let newFolder = model.addFolder(
+            title: title,
+            in: selectedParentFolder ?? defaultRootFolder
+          ) {
+            for tab in tabs {
+              if tab.isPrivate {
+                if let url = tab.visibleURL, url.isWebPage(),
+                  !(InternalURL(url)?.isAboutHomeURL ?? false)
+                {
+                  model.addBookmark(url: url, title: tab.title, in: newFolder)
+                }
+              } else if let fetchedTab = SessionTab.from(tabId: tab.id), let tabURL = fetchedTab.url
+              {
+                if tabURL.isWebPage(), !(InternalURL(tabURL)?.isAboutHomeURL ?? false) {
+                  model.addBookmark(url: tabURL, title: fetchedTab.title, in: newFolder)
+                }
+              }
+            }
           }
 
-          dismiss()
+          manuallyDismiss?() ?? dismiss()
         }
       }
     }
     .onAppear {
       Task {
-        self.folders = await model.folders(excluding: self.folder)
+        self.folders = await model.folders()
       }
     }
   }
