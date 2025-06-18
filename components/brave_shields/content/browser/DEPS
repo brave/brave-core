@@ -4,6 +4,7 @@ include_rules = [
   "+components/content_settings/core",
   "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
   "+components/prefs",
   "+content/public/browser",
   "+content/public/common",
