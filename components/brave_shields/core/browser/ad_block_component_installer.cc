@@ -27,8 +27,6 @@ namespace brave_shields {
 
 namespace {
 
-constexpr size_t kHashSize = 32;
-
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
