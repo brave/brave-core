@@ -2,6 +2,7 @@ include_rules = [
   "+components/content_settings",
   "+components/keyed_service",
   "+components/prefs",
+  "+components/user_prefs",
   "+content/public/browser",
   "+services/network/public",
   "+third_party/blink/public/mojom/dom_storage/storage_area.mojom.h",
