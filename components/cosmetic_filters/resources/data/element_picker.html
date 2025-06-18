@@ -6,6 +6,8 @@
     --title-bar-dark: #303034;
     --white: #ffffff;
     --black: #0f172a;
+    --primary: var(--primary-light);
+    --title-bar: var(--title-bar-light);
 
     background: transparent;
     color: black;
@@ -16,6 +18,12 @@
     overflow: hidden;
   }
 
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --primary: var(--primary-dark);
+      --title-bar: var(--title-bar-dark);
+    }
+  }
 
   #rules-box {
     height: 8em;
@@ -35,11 +43,11 @@
     overflow: auto;
     overflow-wrap: break-word;
     background-color: white;
+    color: var(--text-color);
   }
 
   #main-section.dark>#rules-box>textarea {
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), white 10%);
-    color: white;
+    background-color: var(--dynamic-bg-color);
   }
 
   #main-section {
@@ -49,7 +57,7 @@
     bottom: 4px;
     left: unset;
     right: 4px;
-    width: 360px;
+    width: min(360px, calc(100vw - 32px));
     box-sizing: border-box;
     padding-top: 56px;
     padding-right: 16px;
@@ -65,11 +73,7 @@
     height: 56px;
     min-width: auto;
     border-radius: 12px;
-    background-color: var(--primary-light) !important;
-  }
-
-  #main-section.desktop.minimized.dark {
-    background-color: var(--primary-dark) !important;
+    background-color: var(--primary) !important;
   }
 
   @media (orientation: portrait) {
@@ -101,7 +105,6 @@
     left: 0;
     width: 100%;
     height: 28px;
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), black 10%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -111,10 +114,11 @@
   #main-section.desktop .drag-header {
     height: 48px;
     justify-content: right;
+    background-color: var(--dynamic-bg-color);
   }
 
   #main-section.desktop .drag-header.dark {
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), white 10%);
+    background-color: var(--dynamic-bg-color);
   }
 
   #main-section:not(.desktop) .drag-indicator {
@@ -140,31 +144,16 @@
     padding-right: 16px;
     font-size: 16px;
     font-weight: 400;
+    color: var(--text-color);
   }
 
-  #main-section.desktop #title.light {
-    color: var(--black);
-  }
-
-  #main-section.desktop #title.dark {
-    color: var(--white);
-  }
-
-  #main-section.desktop #btnQuit,
+  #main-section.desktop #btn-quit,
   #main-section:not(.desktop) .minimize-dlg-btn,
   #main-section:not(.desktop) .close-dlg-btn {
     display: none;
   }
 
-  #main-section.desktop .close-dlg-btn svg {
-    width: 25px;
-    height: 25px;
-    margin-right: 20px;
-    cursor: pointer;
-    position: unset;
-  }
-
-  #main-section.desktop .minimize-dlg-btn svg {
+  .title-control-btn svg {
     width: 25px;
     height: 25px;
     margin-right: 20px;
@@ -250,7 +239,7 @@
   }
 
   .secondary-button {
-    background-color: #FFFFFF;
+    background-color: var(--dynamic-secondary-btn-bg-color);
     color: #4036d3;
     cursor: pointer;
     padding: 4px 6px;
@@ -260,12 +249,10 @@
 
   .secondary-button.dark {
     color: var(--primary-dark);
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), white 3%) !important;
   }
 
   .secondary-button.light {
     color: var(--primary-light);
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), black 3%) !important;
   }
 
   .secondary-button.disable.dark {
@@ -308,103 +295,43 @@
     fill: rgba(121, 116, 224, 0.25);
   }
 
-  .slider {
-    position: relative;
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
     width: 100%;
-    height: 8px;
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), black 10%);
-    border-radius: 4px;
+    height: 10px;
+    background: transparent;
+    margin: 10px 0;
     cursor: pointer;
-    touch-action: none;
   }
 
-  .slider.dark {
-    background-color: color-mix(in srgb, var(--dynamic-color-rgb), white 10%);
-  }
-
-  .slider::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background-color: var(--primary-light);
-    border-radius: 4px;
-    pointer-events: none;
-    transition: width 0.1s ease;
-  }
-
-  .slider.dark::before {
-    background-color: var(--primary-dark);
-  }
-
-  /* Segment markers */
-  .slider::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+  input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 100%;
-    background-image: linear-gradient(to right,
-        transparent 25.5%,
-        var(--theme-background-color) 24%,
-        var(--theme-background-color) 26%,
-        transparent 26%,
-        transparent 50.5%,
-        var(--theme-background-color) 49%,
-        var(--theme-background-color) 51%,
-        transparent 51%,
-        transparent 75.5%,
-        var(--theme-background-color) 74%,
-        var(--theme-background-color) 76%,
-        transparent 76%);
-    pointer-events: none;
+    height: 10px;
+    border-radius: 5px;
+    transition: background-image 0.2s ease-in-out;
+    background-image:
+        linear-gradient(to right,
+            transparent calc(100%/3 - 1px), var(--theme-background-color) calc(100%/3 - 1px), var(--theme-background-color) calc(100%/3 + 1px), transparent calc(100%/3 + 1px),
+            transparent calc(200%/3 - 1px), var(--theme-background-color) calc(200%/3 - 1px), var(--theme-background-color) calc(200%/3 + 1px), transparent calc(200%/3 + 1px)
+        ),
+        linear-gradient(to right, var(--primary) 0%, var(--primary) var(--value, 0%), transparent var(--value, 0%), transparent 100%);
+    background-size: 100% 100%, 100% 100%;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-color: var(--dynamic-bg-color);
   }
 
-  .slider-thumb {
-    position: absolute;
-    top: 50%;
-    width: 18px;
-    height: 18px;
-    background-color: var(--primary-light);
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 2px solid var(--primary);
+    height: 24px;
+    width: 24px;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: grab;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-    z-index: 10;
-  }
-
-  .slider-thumb.dark {
-    background-color: var(--primary-dark);
-  }
-
-  .slider-thumb:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-    background-color: var(--primary-light);
-  }
-
-  .slider-thumb.active {
-    cursor: grabbing;
-    transform: translate(-50%, -50%) scale(1.15);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .slider:focus .slider-thumb {
-    box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary-light);
-  }
-
-  @media (max-width: 768px) {
-    .slider {
-      height: 6px;
-    }
-
-    .slider-thumb {
-      width: 20px;
-      height: 20px;
-    }
+    background: var(--primary);
+    margin-top: -7px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease-in-out, border-color 0.2s ease-in-out;
   }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
@@ -419,14 +346,14 @@
   <div id="drag-header" class="drag-header theme-managed">
     <div id="title" class="theme-managed">Block Element</div>
     <div class="drag-indicator"></div>
-    <div id="minimize-dlg-btn" class="minimize-dlg-btn">
+    <div id="minimize-dlg-btn" class="title-control-btn minimize-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <path fill="#62757E" fill-rule="evenodd"
           d="M10.566 11.357a.8.8 0 0 0 .8-.8V5.12a.8.8 0 0 0-1.6 0v3.515l-5.4-5.4a.8.8 0 0 0-1.132 1.13l5.392 5.392H5.18a.8.8 0 0 0 0 1.6zm2.868 1.286a.8.8 0 0 0-.8.8v5.437a.8.8 0 1 0 1.6 0v-3.515l5.4 5.4a.8.8 0 0 0 1.132-1.13l-5.392-5.392h3.446a.8.8 0 0 0 0-1.6z"
           clip-rule="evenodd">
       </svg>
     </div>
-    <div id="close-btn" class="close-dlg-btn">
+    <div id="close-btn" class="title-control-btn close-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <path fill="#62757E"
           d="M5.287 5.287a.85.85 0 0 0 0 1.202L10.797 12l-5.51 5.511a.85.85 0 0 0 1.202 1.202L12 13.203l5.51 5.51a.85.85 0 0 0 1.202-1.203L13.202 12l5.51-5.51a.85.85 0 0 0-1.202-1.202L12 10.798 6.489 5.287a.85.85 0 0 0-1.202 0">
@@ -438,17 +365,18 @@
   </div>
   <div>
     <div id="slider-container">
-      <div id="custom-slider" class="slider theme-managed" data-min="0" data-max="4" data-value="4"></div>
+      <!-- <div id="custom-slider"  data-min="0" data-max="4" data-value="4"></div> -->
+      <input id="custom-slider" class="slider theme-managed" type="range" min="0" max="3" value="3">
     </div>
     <div id="buttons">
       <div class="buttons-line">
-        <button id="btnCreate" class="button block-button theme-managed disabled light">Select element you want to
+        <button id="btn-create" class="button block-button theme-managed disabled light">Select element you want to
           block</button>
       </div>
       <div class="buttons-line">
-        <button id="btnManage" class="button secondary-button theme-managed disabled light">Manage filters</button>
-        <button id="btnShowRulesBox" class="button secondary-button theme-managed disabled light">Show rules</button>
-        <button id="btnQuit"
+        <button id="btn-manage" class="button secondary-button theme-managed disabled light">Manage filters</button>
+        <button id="btn-show-rules-box" class="button secondary-button theme-managed disabled light">Show rules</button>
+        <button id="btn-quit"
           class="button secondary-button theme-managed disabled secondary-button-bordered light">Cancel</button>
       </div>
     </div>
