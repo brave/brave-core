@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/containers/core/browser/pref_names.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,8 +19,12 @@ namespace containers {
 
 class ContainersPrefsTest : public testing::Test {
  protected:
-  void SetUp() override { RegisterProfilePrefs(prefs_.registry()); }
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(features::kContainers);
+    RegisterProfilePrefs(prefs_.registry());
+  }
 
+  base::test::ScopedFeatureList feature_list_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/containers/core/browser/pref_names.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -21,6 +22,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
     const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
   std::vector<mojom::ContainerPtr> containers;
   for (const auto& container : prefs.GetList(prefs::kContainersList)) {
     if (!container.is_dict()) {
@@ -41,6 +43,7 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
 
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
   base::Value::List list;
   for (const auto& container : containers) {
     list.Append(base::Value::Dict()

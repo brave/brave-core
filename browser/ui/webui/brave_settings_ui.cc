@@ -248,10 +248,12 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
         pending_receiver) {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return;
+  }
   auto handler = std::make_unique<containers::ContainersSettingsHandler>(
       user_prefs::UserPrefs::Get(
           web_ui()->GetWebContents()->GetBrowserContext()));
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
-
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)

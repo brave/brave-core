@@ -10,9 +10,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -77,6 +79,7 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
 class ContainersSettingsHandlerTest : public testing::Test {
  public:
   void SetUp() override {
+    feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
 
     handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_);
@@ -84,6 +87,7 @@ class ContainersSettingsHandlerTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   MockContainersSettingsObserver mock_observer_;
