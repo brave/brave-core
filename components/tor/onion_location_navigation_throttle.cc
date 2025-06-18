@@ -39,16 +39,15 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 }  // namespace
 
 // static
-std::unique_ptr<OnionLocationNavigationThrottle>
-OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
+void OnionLocationNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_disabled,
     bool is_tor_profile) {
   if (is_tor_disabled || !registry.GetNavigationHandle().IsInMainFrame()) {
-    return nullptr;
+    return;
   }
-  return std::make_unique<OnionLocationNavigationThrottle>(registry,
-                                                           is_tor_profile);
+  registry.AddThrottle(std::make_unique<OnionLocationNavigationThrottle>(
+      registry, is_tor_profile));
 }
 
 OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
