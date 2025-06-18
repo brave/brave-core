@@ -23,7 +23,7 @@
 namespace ai_chat {
 
 // static
-std::unique_ptr<AIChatThrottle> AIChatThrottle::MaybeCreateThrottleFor(
+void AIChatThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry) {
   // The throttle's only purpose is to deny navigation in a Tab.
 
@@ -32,7 +32,7 @@ std::unique_ptr<AIChatThrottle> AIChatThrottle::MaybeCreateThrottleFor(
   content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(
           navigation_handle.GetWebContents()->GetBrowserContext()))) {
-    return nullptr;
+    return;
   }
 
   const GURL& url = navigation_handle.GetURL();
@@ -43,7 +43,7 @@ std::unique_ptr<AIChatThrottle> AIChatThrottle::MaybeCreateThrottleFor(
   // We allow main page navigation only if the full-page feature is enabled
   // via the AIChatHistory feature flag.
   if (is_main_page_url && features::IsAIChatHistoryEnabled()) {
-    return nullptr;
+    return;
   }
 
   bool is_ai_chat_frame =
@@ -52,21 +52,21 @@ std::unique_ptr<AIChatThrottle> AIChatThrottle::MaybeCreateThrottleFor(
 
   // We need this throttle to work only for AI Chat related URLs
   if (!is_main_page_url && !is_ai_chat_frame) {
-    return nullptr;
+    return;
   }
 
 // On Android, we only have full page chat, so we always allow loading. On
 // desktop we just disallow PAGE_TRANSITION_FROM_ADDRESS_BAR.
 #if BUILDFLAG(IS_ANDROID)
-  return nullptr;
+  return;
 #else
   ui::PageTransition transition = navigation_handle.GetPageTransition();
   if (!ui::PageTransitionTypeIncludingQualifiersIs(
           ui::PageTransitionGetQualifier(transition),
           ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR)) {
-    return nullptr;
+    return;
   }
-  return std::make_unique<AIChatThrottle>(registry);
+  registry.AddThrottle(std::make_unique<AIChatThrottle>(registry));
 #endif  // BUILDFLAG(IS_ANDROID)
 }
 

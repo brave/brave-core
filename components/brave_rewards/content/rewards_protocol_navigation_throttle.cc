@@ -40,16 +40,16 @@ using content::WebContents;
 namespace brave_rewards {
 
 // static
-std::unique_ptr<RewardsProtocolNavigationThrottle>
-RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
+void RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry) {
   auto* pref_service = user_prefs::UserPrefs::Get(
       registry.GetNavigationHandle().GetWebContents()->GetBrowserContext());
   if (!pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {
-    return nullptr;
+    return;
   }
 
-  return std::make_unique<RewardsProtocolNavigationThrottle>(registry);
+  registry.AddThrottle(
+      std::make_unique<RewardsProtocolNavigationThrottle>(registry));
 }
 
 RewardsProtocolNavigationThrottle::RewardsProtocolNavigationThrottle(
