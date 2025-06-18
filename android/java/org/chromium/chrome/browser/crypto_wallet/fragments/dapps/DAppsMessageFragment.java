@@ -24,7 +24,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 /** Fragment to show DApps-related messages */
 public class DAppsMessageFragment extends BaseDAppsFragment {
     private static final String TAG = "DAppsMessageFragment";
-    private SignMessageRequest mCurrentSignMessageRequest;
+    private final SignMessageRequest mCurrentSignMessageRequest;
     private boolean mUnicodeEscapeVersion;
     private TextView mSignMessageText;
 

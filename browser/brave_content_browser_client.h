@@ -22,6 +22,7 @@ class PrefChangeRegistrar;
 
 namespace content {
 class BrowserContext;
+class NavigationThrottleRegistry;
 class RenderProcessHost;
 }  // namespace content
 
@@ -145,8 +146,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   static bool HandleURLOverrideRewrite(
       GURL* url,
       content::BrowserContext* browser_context);
-  std::vector<std::unique_ptr<content::NavigationThrottle>>
-  CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
+  void CreateThrottlesForNavigation(
+      content::NavigationThrottleRegistry& registry) override;
   std::vector<url::Origin> GetOriginsRequiringDedicatedProcess() override;
   // We use this for the Google Sign-In feature
   bool CanCreateWindow(content::RenderFrameHost* opener,

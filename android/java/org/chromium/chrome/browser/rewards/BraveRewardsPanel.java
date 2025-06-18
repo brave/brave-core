@@ -162,7 +162,7 @@ public class BraveRewardsPanel
     private LinearLayout mRewardsMainLayout;
     private @Nullable BraveActivity mBraveActivity;
     private final ChromeTabbedActivity mActivity;
-    private BraveRewardsHelper mIconFetcher;
+    private final BraveRewardsHelper mIconFetcher;
 
     private LinearLayout mRewardsSummaryDetailLayout;
     private LinearLayout mPayoutStatusBannerLayout;
@@ -180,7 +180,7 @@ public class BraveRewardsPanel
 
     private String mCurrentNotificationId;
 
-    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
+    private final BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private int mCurrentTabId;
     private @Nullable TextView mPublisherAttention;

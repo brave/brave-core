@@ -21,6 +21,7 @@ if (is_android || is_ios) {
 
     deps = [
       "//base",
+      "//build:chromeos_buildflags",
       "//components/url_pattern_index",
       "//device/vr/buildflags",
       "//extensions/buildflags",

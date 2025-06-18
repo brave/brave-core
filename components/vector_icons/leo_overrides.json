@@ -95,5 +95,6 @@
   "//components/vector_icons/settings.icon": "leo_settings",
   "//components/vector_icons/submenu_arrow_chrome_refresh.icon": "leo_carat_right",
   "//components/vector_icons/submenu_arrow.icon": "leo_carat_right",
+  "//components/vector_icons/tab_search.icon": "leo_window_search",
   "//components/vector_icons/translate.icon": "leo_product_translate"
 }

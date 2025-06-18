@@ -65,22 +65,6 @@ void AggregationServiceImpl::AssembleReport(
     AggregatableReportRequest report_request,
     AssemblyCallback callback) {}
 
-void AggregationServiceImpl::SendReport(
-    const GURL url,
-    const AggregatableReport& report,
-    std::optional<AggregatableReportRequest::DelayType> delay_type,
-    SendCallback callback) {
-  std::move(callback).Run(AggregatableReportSender::RequestStatus::kOk);
-}
-
-void AggregationServiceImpl::SendReport(
-    const GURL url,
-    const base::Value& contents,
-    std::optional<AggregatableReportRequest::DelayType> delay_type,
-    SendCallback callback) {
-  std::move(callback).Run(AggregatableReportSender::RequestStatus::kOk);
-}
-
 const base::SequenceBound<AggregationServiceStorage>&
 AggregationServiceImpl::GetStorage() {
   return storage_;

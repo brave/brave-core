@@ -24,16 +24,6 @@ RegisterPolymerTemplateModifications({
         '[Brave Settings Overrides] Could not find template with ' +
         'if*=!is3pcdRedesignEnabledTemplate on cookies page.')
     } else {
-      const blockThirdPartyIncognitoRadioButton =
-        isNot3pcdRedesignEnabledTemplate.content.
-          getElementById('blockThirdPartyIncognito')
-      if (!blockThirdPartyIncognitoRadioButton) {
-        console.error(
-          '[Brave Settings Overrides] Could not find ' +
-          'blockThirdPartyIncognito id on cookies page.')
-      } else {
-        blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
-      }
       const generalControls = isNot3pcdRedesignEnabledTemplate.content.
           getElementById('generalControls')
       if (!generalControls) {
@@ -43,6 +33,15 @@ RegisterPolymerTemplateModifications({
       } else {
         generalControls.setAttribute('hidden', 'true')
       }
+    }
+    const additionalProtections = templateContent.
+      getElementById('additionalProtections')
+    if (!additionalProtections) {
+      console.error(
+        '[Brave Settings Overrides] Could not find additionalProtections ' +
+        'id on cookies page.')
+    } else {
+      additionalProtections.setAttribute('hidden', 'true')
     }
     const siteDataTrigger = templateContent.getElementById('site-data-trigger')
     if (!siteDataTrigger) {

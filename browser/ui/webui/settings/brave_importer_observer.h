@@ -17,18 +17,18 @@ class ExternalProcessImporterHost;
 class BraveImporterObserver : public importer::ImporterProgressObserver {
  public:
   using ReportProgressCallback = base::RepeatingCallback<void(
-      const importer::SourceProfile& source_profile,
+      const user_data_importer::SourceProfile& source_profile,
       const base::Value::Dict&)>;
 
   BraveImporterObserver(ExternalProcessImporterHost* host,
-                        const importer::SourceProfile& source_profile,
+                        const user_data_importer::SourceProfile& source_profile,
                         uint16_t imported_items,
                         ReportProgressCallback callback);
   ~BraveImporterObserver() override;
 
   void ImportStarted() override;
-  void ImportItemStarted(importer::ImportItem item) override;
-  void ImportItemEnded(importer::ImportItem item) override;
+  void ImportItemStarted(user_data_importer::ImportItem item) override;
+  void ImportItemEnded(user_data_importer::ImportItem item) override;
   void ImportEnded() override;
 
  private:
@@ -36,7 +36,7 @@ class BraveImporterObserver : public importer::ImporterProgressObserver {
 
   ExternalProcessImporterHost* GetImporterHostForTesting();
 
-  importer::SourceProfile source_profile_;
+  user_data_importer::SourceProfile source_profile_;
   uint16_t imported_items_ = 0;
   ReportProgressCallback callback_;
   // By some reasons ImportStarted event is called few times from different

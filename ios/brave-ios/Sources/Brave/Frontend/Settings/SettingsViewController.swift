@@ -61,7 +61,7 @@ class SettingsViewController: TableViewController {
   private let tabManager: TabManager
   private let rewards: BraveRewards?
   private let feedDataSource: FeedDataSource
-  private let braveCore: BraveCoreMain
+  private let braveCore: BraveProfileController
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
@@ -89,7 +89,8 @@ class SettingsViewController: TableViewController {
     feedDataSource: FeedDataSource,
     rewards: BraveRewards? = nil,
     windowProtection: WindowProtection?,
-    braveCore: BraveCoreMain,
+    p3aUtils: BraveP3AUtils,
+    braveCore: BraveProfileController,
     attributionManager: AttributionManager,
     keyringStore: KeyringStore? = nil,
     cryptoStore: CryptoStore? = nil
@@ -104,7 +105,7 @@ class SettingsViewController: TableViewController {
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
     self.syncProfileServices = braveCore.syncProfileService
-    self.p3aUtilities = braveCore.p3aUtils
+    self.p3aUtilities = p3aUtils
     self.deAmpPrefs = braveCore.deAmpPrefs
     self.attributionManager = attributionManager
     self.keyringStore = keyringStore
@@ -331,6 +332,7 @@ class SettingsViewController: TableViewController {
                   feedDataSource: self.feedDataSource,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
                   braveCore: braveCore,
+                  p3aUtils: p3aUtilities,
                   rewards: rewards,
                   webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
                     privateMode: false

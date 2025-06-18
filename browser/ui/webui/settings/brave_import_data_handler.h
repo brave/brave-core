@@ -41,26 +41,28 @@ class BraveImportDataHandler : public ImportDataHandler,
  protected:
   using ContinueImportCallback = base::OnceCallback<void()>;
 
-  const importer::SourceProfile& GetSourceProfileAt(int browser_index);
+  const user_data_importer::SourceProfile& GetSourceProfileAt(
+      int browser_index);
   void HandleImportData(const base::Value::List& args);
   // ImportDataHandler overrides:
-  void StartImport(const importer::SourceProfile& source_profile,
+  void StartImport(const user_data_importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
 
-  void StartImportImpl(const importer::SourceProfile& source_profile,
+  void StartImportImpl(const user_data_importer::SourceProfile& source_profile,
                        uint16_t imported_items,
                        Profile* profile);
   virtual void NotifyImportProgress(
-      const importer::SourceProfile& source_profile,
+      const user_data_importer::SourceProfile& source_profile,
       const base::Value::Dict& info);
-  virtual void OnImportEnded(const importer::SourceProfile& source_profile);
+  virtual void OnImportEnded(
+      const user_data_importer::SourceProfile& source_profile);
 
-  void OnStartImport(const importer::SourceProfile& source_profile,
+  void OnStartImport(const user_data_importer::SourceProfile& source_profile,
                      uint16_t imported_items);
 #if BUILDFLAG(IS_MAC)
   void CheckDiskAccess(uint16_t imported_items,
                        base::FilePath source_path,
-                       importer::ImporterType importer_type,
+                       user_data_importer::ImporterType importer_type,
                        ContinueImportCallback callback);
   void OnGetDiskAccessPermission(ContinueImportCallback callback,
                                  base::FilePath source_path,

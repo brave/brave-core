@@ -37,7 +37,7 @@ namespace {
 void RecordInitialP3AValues() {
 #if !BUILDFLAG(IS_ANDROID)
   if (first_run::IsChromeFirstRun()) {
-    RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
+    RecordImporterP3A(user_data_importer::ImporterType::TYPE_UNKNOWN);
   }
 
   BraveNewTabMessageHandler::RecordInitialP3AValues(

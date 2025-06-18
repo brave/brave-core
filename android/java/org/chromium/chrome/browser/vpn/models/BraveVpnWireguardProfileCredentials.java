@@ -6,14 +6,18 @@
 package org.chromium.chrome.browser.vpn.models;
 
 public class BraveVpnWireguardProfileCredentials {
-    private String mApiAuthToken;
-    private String mClientId;
-    private String mMappedIpv4Address;
-    private String mMappedIpv6Address;
-    private String mServerPublicKey;
+    private final String mApiAuthToken;
+    private final String mClientId;
+    private final String mMappedIpv4Address;
+    private final String mMappedIpv6Address;
+    private final String mServerPublicKey;
 
-    public BraveVpnWireguardProfileCredentials(String apiAuthToken, String clientId,
-            String mappedIpv4Address, String mappedIpv6Address, String serverPublicKey) {
+    public BraveVpnWireguardProfileCredentials(
+            String apiAuthToken,
+            String clientId,
+            String mappedIpv4Address,
+            String mappedIpv6Address,
+            String serverPublicKey) {
         this.mApiAuthToken = apiAuthToken;
         this.mClientId = clientId;
         this.mMappedIpv4Address = mappedIpv4Address;

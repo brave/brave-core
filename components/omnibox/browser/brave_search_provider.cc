@@ -6,12 +6,13 @@
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/buildflags/buildflags.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
-#include "components/omnibox/browser/omnibox_view.h"
+#include "components/omnibox/browser/omnibox_text_util.h"
 #include "components/omnibox/browser/search_provider.h"
 #include "components/prefs/pref_service.h"
 
@@ -70,7 +71,7 @@ bool BraveSearchProvider::IsQueryPotentiallyPrivate() const {
 
   // GetClipboardText() returns after sanitize.
   const auto clipboard_text = client()->GetClipboardText();
-  const auto input_text = OmniboxView::SanitizeTextForPaste(input_.text());
+  const auto input_text = omnibox::SanitizeTextForPaste(input_.text());
   if (input_text.empty()) {
     return false;
   }

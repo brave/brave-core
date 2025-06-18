@@ -42,7 +42,7 @@ public class RetentionNotificationUtil {
     public static final String DORMANT_USERS_DAY_25 = "dormant_users_days_25";
     public static final String DORMANT_USERS_DAY_40 = "dormant_users_days_40";
 
-    private static Map<String, RetentionNotification> sNotificationMap =
+    private static final Map<String, RetentionNotification> sNotificationMap =
             Map.ofEntries(
                     Map.entry(
                             HOUR_3,

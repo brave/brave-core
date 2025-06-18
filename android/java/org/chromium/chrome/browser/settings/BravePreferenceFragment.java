@@ -50,6 +50,11 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     }
 
     @Override
+    public @AnimationType int getAnimationType() {
+        return AnimationType.PROPERTY;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();

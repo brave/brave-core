@@ -53,7 +53,7 @@ class TabTrayController: AuthenticationController {
   }
 
   let tabManager: TabManager
-  let braveCore: BraveCoreMain
+  let braveCore: BraveProfileController
 
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   private var syncServicStateListener: AnyObject?
@@ -218,7 +218,7 @@ class TabTrayController: AuthenticationController {
   init(
     isExternallyPresented: Bool = false,
     tabManager: TabManager,
-    braveCore: BraveCoreMain,
+    braveCore: BraveProfileController,
     windowProtection: WindowProtection?
   ) {
     self.isExternallyPresented = isExternallyPresented

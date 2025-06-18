@@ -9,7 +9,7 @@
 #include <optional>
 #include <vector>
 
-#include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 
 namespace gfx {
 class Rect;
@@ -32,7 +32,7 @@ inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
 int GetTabCornerRadius(const Tab& tab);
 
-std::vector<gfx::Rect> CalculateVerticalTabBounds(
+std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
     bool is_floating_mode);

@@ -11,5 +11,7 @@ void BraveStarView::UpdateImpl() {
   SetVisible(false);
 }
 
+void BraveStarView::OnBubbleWidgetChanged(views::Widget* widget) {}
+
 BEGIN_METADATA(BraveStarView)
 END_METADATA

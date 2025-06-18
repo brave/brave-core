@@ -398,7 +398,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
-        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_password);
+        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_brave_password);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_site_settings);
         updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_payment_methods);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_downloads);

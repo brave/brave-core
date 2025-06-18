@@ -12,7 +12,7 @@
 
 #include "base/values.h"
 #include "build/build_config.h"
-#include "chrome/common/importer/importer_type.h"
+#include "components/user_data_importer/common/importer_type.h"
 #include "extensions/buildflags/buildflags.h"
 
 namespace base {
@@ -42,7 +42,7 @@ base::FilePath GetOperaSnapUserDataFolder();
 #endif
 base::Value::List GetChromeSourceProfiles(const base::FilePath& local_state);
 bool ChromeImporterCanImport(const base::FilePath& profile,
-                             importer::ImporterType type,
+                             user_data_importer::ImporterType type,
                              uint16_t* services_supported);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

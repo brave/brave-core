@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/in_process_importer_bridge.h b/chrome/browser/importer/in_process_importer_bridge.h
-index 49700b2f8a384246278da08a6f04a0b111e93c18..17301825bf0f0c0dcaa25746ad66943d97b17379 100644
+index 61190844025f04ef83bcfe2c056f9f61661ca132..49f75bcbb4b1c6ae09488d8968dfea2bef2b77e1 100644
 --- a/chrome/browser/importer/in_process_importer_bridge.h
 +++ b/chrome/browser/importer/in_process_importer_bridge.h
-@@ -58,6 +58,7 @@ class InProcessImporterBridge : public ImporterBridge {
+@@ -60,6 +60,7 @@ class InProcessImporterBridge : public ImporterBridge {
    std::u16string GetLocalizedString(int message_id) override;
    // End ImporterBridge implementation.
  

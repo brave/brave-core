@@ -25,7 +25,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveRadioButtonGroupCustomHomepageThemePreference
         extends RadioButtonGroupThemePreference {
 
-    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     public BraveRadioButtonGroupCustomHomepageThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -13,10 +13,12 @@ import BrowserIntentsModels
 import Combine
 import CoreSpotlight
 import Data
+import DesignSystem
 import Growth
 import Preferences
 import Shared
 import Storage
+import SwiftUI
 import UIKit
 import os.log
 
@@ -29,14 +31,72 @@ extension Logger {
   }
 }
 
+/// State that must be associated with a profile-specific data
+struct ProfileState {
+  var rewards: Brave.BraveRewards
+  var migrations: BraveProfileMigrations
+  var dau: DAU
+  var attributionManager: AttributionManager
+
+  init(profileController: BraveProfileController) {
+    // Setup DAU
+    dau = DAU(braveCoreStats: profileController.braveStats)
+
+    // Setup Attribution manager
+    attributionManager = AttributionManager(
+      dau: dau,
+      urp: UserReferralProgram.shared
+    )
+
+    // Setup Rewards & Ads
+    let configuration = BraveRewards.Configuration.current()
+    Migration.migrateAdsConfirmations(for: configuration)
+    rewards = BraveRewards(configuration: configuration)
+
+    // Setup BraveCore profile migrations
+    migrations = BraveProfileMigrations(profileController: profileController)
+    migrations.launchMigrations()
+  }
+}
+
+struct SceneState {
+  var window: UIWindow
+  var windowScene: UIWindowScene
+  var connectionOptions: UIScene.ConnectionOptions
+}
+
+// A SwiftUI version of the LaunchScreen.storyboard used for the app's launch
+private struct LaunchScreen: View {
+  var body: some View {
+    VStack(spacing: 0) {
+      Color.clear
+        .frame(height: 44)
+        .background(Color(uiColor: .systemGray6))
+      Color(uiColor: .braveSeparator)
+        .frame(height: 1)
+      Spacer()
+      Color(uiColor: .braveSeparator)
+        .frame(height: 1)
+      Color.clear
+        .frame(height: 44)
+        .background(Color(uiColor: .systemGray6))
+    }
+    .background(Color(uiColor: .systemBackground))
+  }
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // This property must be non-null because even though it's optional,
   // Chromium force unwraps it and uses it. For this reason, we always set this window property to the scene's main window.
-  internal var window: UIWindow?
+  var window: UIWindow?
   private var windowProtection: WindowProtection?
   static var shouldHandleUrpLookup = false
   static var shouldHandleInstallAttributionFetch = false
+
+  // We currently only load a single (default) profile, so no need to create multiple states per
+  // window/scene created.
+  private static var profileState: ProfileState?
 
   private var cancellables: Set<AnyCancellable> = []
 
@@ -47,22 +107,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
 
-    let attributionManager = AttributionManager(
-      dau: AppState.shared.dau,
-      urp: UserReferralProgram.shared
-    )
-
-    let browserViewController = createBrowserWindow(
-      scene: windowScene,
-      braveCore: AppState.shared.braveCore,
-      profile: AppState.shared.profile,
-      attributionManager: attributionManager,
-      migration: AppState.shared.migration,
-      rewards: AppState.shared.rewards,
-      newsFeedDataSource: AppState.shared.newsFeedDataSource,
-      userActivity: connectionOptions.userActivities.first
-    )
-
     let conditions = scene.activationConditions
     conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
     if let windowId = session.userInfo?["WindowID"] as? String {
@@ -70,157 +114,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       conditions.prefersToActivateForTargetContentIdentifierPredicate = preferPredicate
     }
 
-    Preferences.General.themeNormalMode.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    browserViewController.privateBrowsingManager.$isPrivateBrowsing
-      .removeDuplicates()
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    // Handle URP Lookup at first launch
-    if SceneDelegate.shouldHandleUrpLookup {
-      SceneDelegate.shouldHandleUrpLookup = false
-
-      attributionManager.handleReferralLookup { [weak browserViewController] url in
-        browserViewController?.openReferralLink(url: url)
-      }
+    // Assign each browser a window of its own
+    let window = UIWindow(windowScene: windowScene).then {
+      $0.backgroundColor = UIColor(braveSystemName: .iosBrowserChromeBackgroundIos)
+      $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
+      $0.tintColor = .braveBlurpleTint
     }
+    window.rootViewController = UIHostingController(rootView: LaunchScreen())
+    window.makeKeyAndVisible()
+    self.window = window
 
-    // Setup Playlist Car-Play
-    // TODO: Decide what to do if we have multiple windows
-    // as it is only possible to have a single car-play instance.
-    // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
-    // instance instead of a `BrowserViewController`.
-    PlaylistCoordinator.shared.do {
-      $0.browserController = browserViewController
-    }
-
-    self.present(
-      browserViewController: browserViewController,
+    let sceneState = SceneState(
+      window: window,
       windowScene: windowScene,
       connectionOptions: connectionOptions
     )
 
-    // Handle Install Attribution Fetch at first launch
-    if SceneDelegate.shouldHandleInstallAttributionFetch {
-      SceneDelegate.shouldHandleInstallAttributionFetch = false
+    Task { @MainActor in
+      let (profileController, profileState) = await loadDefaultProfile()
+      Self.profileState = profileState
+      let browserViewController = prepareBrowserViewController(
+        profileController: profileController,
+        profileState: profileState,
+        sceneState: sceneState
+      )
+      let container = UINavigationController(rootViewController: browserViewController)
+      container.isNavigationBarHidden = true
+      container.edgesForExtendedLayout = []
+      window.rootViewController = container
+      window.backgroundColor = .black
 
-      // First time user should send dau ping after onboarding last stage _ p3a consent screen
-      // The reason p3a user consent is necesserray to call search ad install attribution API methods
-      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
-        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share private and anonymous product insights
-        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
-          Task { @MainActor in
-            do {
-              try await attributionManager.handleSearchAdsInstallAttribution()
-            } catch {
-              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
-              // Sending default organic install code for dau
-              attributionManager.setupReferralCodeAndPingServer()
-            }
-          }
-        } else {
-          // Sending default organic install code for dau
-          attributionManager.setupReferralCodeAndPingServer()
-        }
-      }
-    }
+      self.windowProtection = WindowProtection(windowScene: windowScene)
+      browserViewController.windowProtection = windowProtection
 
-    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
-      // Similarly to referral lookup, this prefrence should be set if it is a new user
-      // Trigger install attribution fetch only first launch
-      Preferences.URP.installAttributionLookupOutstanding.value =
-        Preferences.General.isFirstLaunch.value
-    }
-
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
-    PrivacyReportsManager.consolidateData()
-    PrivacyReportsManager.scheduleProcessingBlockedRequests(
-      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
-    )
-    PrivacyReportsManager.scheduleVPNAlertsTask()
-
-    // Handle Custom Activity and Intents
-    if let currentActivity = connectionOptions.userActivities.first {
-      handleCustomUserActivityActions(scene, userActivity: currentActivity)
-    }
-  }
-
-  private func present(
-    browserViewController: BrowserViewController,
-    windowScene: UIWindowScene,
-    connectionOptions: UIScene.ConnectionOptions
-  ) {
-    // Assign each browser a navigation controller
-    let navigationController = UINavigationController(rootViewController: browserViewController)
-      .then {
-        $0.isNavigationBarHidden = true
-        $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-      }
-
-    // Assign each browser a window of its own
-    let window = UIWindow(windowScene: windowScene).then {
-      $0.backgroundColor = .black
-      $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
-      $0.tintColor = .braveBlurpleTint
-
-      $0.rootViewController = navigationController
-    }
-
-    self.window = window
-
-    // TODO: Refactor to accept a UIWindowScene
-    // Then store the `windowProtection` in the `BrowserViewController` directly.
-    // As each instance should have its own protection?
-    self.windowProtection = WindowProtection(windowScene: windowScene)
-    window.makeKeyAndVisible()
-
-    // Open shared URLs on launch if there are any
-    if !connectionOptions.urlContexts.isEmpty {
-      self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
-    }
-
-    if let shortcutItem = connectionOptions.shortcutItem {
-      QuickActions.sharedInstance.launchedShortcutItem = shortcutItem
-    }
-
-    if let response = connectionOptions.notificationResponse {
-      if response.notification.request.identifier
-        == BrowserViewController.defaultBrowserNotificationId
-      {
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-          Logger.module.error("[SCENE] - Failed to unwrap iOS settings URL")
-          return
-        }
-        UIApplication.shared.open(settingsUrl)
-      } else if response.notification.request.identifier == PrivacyReportsManager.notificationID {
-        browserViewController.openPrivacyReport()
-      }
+      performPostSceneConnectionTasks(
+        profileState: profileState,
+        sceneState: sceneState,
+        browserViewController: browserViewController
+      )
     }
   }
 
@@ -229,6 +160,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneDidBecomeActive(_ scene: UIScene) {
+    // Warning: The scene may be active without a profile being loaded on first launch
     scene.userActivity?.becomeCurrent()
 
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
@@ -244,39 +176,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       SessionWindow.setSelected(windowId: windowUUID)
     }
 
-    Preferences.AppState.backgroundedCleanly.value = false
     AppState.shared.profile.reopen()
     AppState.shared.uptimeMonitor.beginMonitoring()
 
     appDelegate.receivedURLs = nil
     UIApplication.shared.applicationIconBadgeNumber = 0
 
-    // handle quick actions is available
-    let quickActions = QuickActions.sharedInstance
-    if let shortcut = quickActions.launchedShortcutItem {
-      // dispatch asynchronously so that BVC is all set up for handling new tabs
-      // when we try and open them
-
-      if let browserViewController = scene.browserViewController {
-        quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
-      }
-
-      quickActions.launchedShortcutItem = nil
-    }
-
-    // We try to send DAU ping each time the app goes to foreground to work around network edge cases
-    // (offline, bad connection etc.).
-    // Also send the ping only after the URP lookup and install attribution has processed.
-    if Preferences.URP.referralLookupOutstanding.value == true,
-      Preferences.URP.installAttributionLookupOutstanding.value == true
-    {
-      AppState.shared.dau.sendPingToServer()
-    }
-
-    Task { @MainActor in
-      let isPrivateBrowsing =
-        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+    if let browserViewController = scene.browserViewController {
+      Preferences.AppState.backgroundedCleanly.value = false
+      sendDAUPingIfNeeded()
+      refreshSKUsCredentials(in: scene)
+      handleQuickActionsIfNeeded(browserViewController: browserViewController)
     }
   }
 
@@ -285,12 +195,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
     scene.userActivity?.resignCurrent()
     AppState.shared.uptimeMonitor.pauseMonitoring()
-  }
-
-  func sceneWillEnterForeground(_ scene: UIScene) {
-    if let scene = scene as? UIWindowScene {
-      scene.browserViewController?.windowProtection = windowProtection
-    }
   }
 
   func sceneDidEnterBackground(_ scene: UIScene) {
@@ -362,6 +266,224 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 extension SceneDelegate {
+
+  @MainActor private func loadDefaultProfile() async -> (BraveProfileController, ProfileState) {
+    let braveCore = AppState.shared.braveCore
+    if let profileController = braveCore.profileController, let profileState = Self.profileState {
+      return (profileController, profileState)
+    }
+    // Setup default profile & profile state
+    let defaultProfileController = await braveCore.loadDefaultProfile()
+    let profileState = ProfileState(profileController: defaultProfileController)
+    return (defaultProfileController, profileState)
+  }
+
+  @objc private func enableUserSelectedTypesForSync() {
+    guard let profileController = AppState.shared.braveCore.profileController,
+      profileController.syncAPI.isInSyncGroup
+    else {
+      Logger.module.info("Sync is not active")
+      return
+    }
+
+    profileController.syncAPI.enableSyncTypes(
+      syncProfileService: profileController.syncProfileService
+    )
+  }
+
+  private func setupThemeObservation(
+    on browserViewController: BrowserViewController,
+    windowScene: UIWindowScene
+  ) {
+    Preferences.General.themeNormalMode.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
+      }
+      .store(in: &cancellables)
+
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
+      }
+      .store(in: &cancellables)
+
+    browserViewController.privateBrowsingManager.$isPrivateBrowsing
+      .removeDuplicates()
+      .receive(on: RunLoop.main)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
+      }
+      .store(in: &cancellables)
+  }
+
+  private func prepareBrowserViewController(
+    profileController: BraveProfileController,
+    profileState: ProfileState,
+    sceneState: SceneState
+  ) -> BrowserViewController {
+    let windowScene = sceneState.windowScene
+
+    let browserViewController = createBrowserWindow(
+      scene: windowScene,
+      braveCore: AppState.shared.braveCore,
+      profileController: profileController,
+      profile: AppState.shared.profile,
+      attributionManager: profileState.attributionManager,
+      rewards: profileState.rewards,
+      newsFeedDataSource: AppState.shared.newsFeedDataSource,
+      userActivity: sceneState.connectionOptions.userActivities.first
+    )
+
+    // Setup Playlist Car-Play
+    // TODO: Decide what to do if we have multiple windows
+    // as it is only possible to have a single car-play instance.
+    // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
+    // instance instead of a `BrowserViewController`.
+    PlaylistCoordinator.shared.do {
+      $0.browserController = browserViewController
+    }
+
+    return browserViewController
+  }
+
+  private func performPostSceneConnectionTasks(
+    profileState: ProfileState,
+    sceneState: SceneState,
+    browserViewController: BrowserViewController
+  ) {
+    let connectionOptions = sceneState.connectionOptions
+    let windowScene = sceneState.windowScene
+
+    setupThemeObservation(on: browserViewController, windowScene: windowScene)
+
+    // Open shared URLs on launch if there are any
+    if !connectionOptions.urlContexts.isEmpty {
+      self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
+    }
+
+    if let shortcutItem = connectionOptions.shortcutItem {
+      QuickActions.sharedInstance.launchedShortcutItem = shortcutItem
+    }
+
+    if let response = connectionOptions.notificationResponse {
+      if response.notification.request.identifier
+        == BrowserViewController.defaultBrowserNotificationId
+      {
+        if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+          UIApplication.shared.open(settingsUrl)
+        }
+      } else if response.notification.request.identifier == PrivacyReportsManager.notificationID {
+        browserViewController.openPrivacyReport()
+      }
+    }
+
+    // Handle URP Lookup at first launch
+    if SceneDelegate.shouldHandleUrpLookup {
+      SceneDelegate.shouldHandleUrpLookup = false
+
+      profileState.attributionManager.handleReferralLookup { [weak browserViewController] url in
+        browserViewController?.openReferralLink(url: url)
+      }
+    }
+
+    // Handle Install Attribution Fetch at first launch
+    if SceneDelegate.shouldHandleInstallAttributionFetch {
+      SceneDelegate.shouldHandleInstallAttributionFetch = false
+      let attributionManager = profileState.attributionManager
+
+      // First time user should send dau ping after onboarding last stage _ p3a consent screen
+      // The reason p3a user consent is necesserray to call search ad install attribution API methods
+      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
+        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
+        // User has not opted in to share private and anonymous product insights
+        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
+          Task { @MainActor in
+            do {
+              try await attributionManager.handleSearchAdsInstallAttribution()
+            } catch {
+              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
+              // Sending default organic install code for dau
+              attributionManager.setupReferralCodeAndPingServer()
+            }
+          }
+        } else {
+          // Sending default organic install code for dau
+          attributionManager.setupReferralCodeAndPingServer()
+        }
+      }
+    }
+
+    // Adding Observer to enable sync types
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(enableUserSelectedTypesForSync),
+      name: BraveServiceStateObserver.coreServiceLoadedNotification,
+      object: nil
+    )
+
+    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+      // Similarly to referral lookup, this prefrence should be set if it is a new user
+      // Trigger install attribution fetch only first launch
+      Preferences.URP.installAttributionLookupOutstanding.value =
+        Preferences.General.isFirstLaunch.value
+    }
+
+    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+    PrivacyReportsManager.consolidateData()
+    PrivacyReportsManager.scheduleProcessingBlockedRequests(
+      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
+    )
+    PrivacyReportsManager.scheduleVPNAlertsTask()
+
+    // Handle Custom Activity and Intents
+    if let currentActivity = sceneState.connectionOptions.userActivities.first {
+      handleCustomUserActivityActions(sceneState.windowScene, userActivity: currentActivity)
+    }
+
+    if sceneState.windowScene.activationState == .foregroundActive {
+      // Perform any actions that would also execute in sceneDidBecomeActive
+      Preferences.AppState.backgroundedCleanly.value = false
+      sendDAUPingIfNeeded()
+      refreshSKUsCredentials(in: sceneState.windowScene)
+      handleQuickActionsIfNeeded(browserViewController: browserViewController)
+    }
+  }
+
+  private func handleQuickActionsIfNeeded(browserViewController: BrowserViewController) {
+    // handle quick actions is available
+    let quickActions = QuickActions.sharedInstance
+    if let shortcut = quickActions.launchedShortcutItem {
+      // dispatch asynchronously so that BVC is all set up for handling new tabs
+      // when we try and open them
+      quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
+      quickActions.launchedShortcutItem = nil
+    }
+  }
+
+  private func sendDAUPingIfNeeded() {
+    guard let profileState = Self.profileState else { return }
+    // We try to send DAU ping each time the app goes to foreground to work around network edge cases
+    // (offline, bad connection etc.).
+    // Also send the ping only after the URP lookup and install attribution has processed.
+    if Preferences.URP.referralLookupOutstanding.value == true,
+      Preferences.URP.installAttributionLookupOutstanding.value == true
+    {
+      profileState.dau.sendPingToServer()
+    }
+  }
+
+  private func refreshSKUsCredentials(in scene: UIWindowScene) {
+    Task { @MainActor in
+      let isPrivateBrowsing =
+        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+    }
+  }
 
   private func handleCustomUserActivityActions(_ scene: UIScene, userActivity: NSUserActivity) {
     guard let scene = scene as? UIWindowScene else {
@@ -564,14 +686,13 @@ extension SceneDelegate {
   private func createBrowserWindow(
     scene: UIWindowScene,
     braveCore: BraveCoreMain,
+    profileController: BraveProfileController,
     profile: Profile,
     attributionManager: AttributionManager,
-    migration: Migration?,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,
     userActivity: NSUserActivity?
   ) -> BrowserViewController {
-
     let privateBrowsingManager = PrivateBrowsingManager()
 
     // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
@@ -633,8 +754,8 @@ extension SceneDelegate {
       profile: profile,
       attributionManager: attributionManager,
       braveCore: braveCore,
+      profileController: profileController,
       rewards: rewards,
-      migration: migration,
       crashedLastSession: crashedLastSession,
       newsFeedDataSource: newsFeedDataSource,
       privateBrowsingManager: privateBrowsingManager

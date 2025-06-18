@@ -26,7 +26,7 @@ public class BraveShieldsScreenshotUtil {
 
     private static class PngConvertorTask implements Runnable {
         private static final int PNG_QUALITY = 100;
-        private Bitmap mBitmap;
+        private final Bitmap mBitmap;
         private final BraveShieldsScreenshotUtilCallback mCallback;
 
         public PngConvertorTask(

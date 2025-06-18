@@ -121,6 +121,11 @@
     </if>
   </if>
 
+  <!-- Delete Browsing Data -->
+  <message name="IDS_SETTINGS_MANAGE_OTHER_GOOGLE_DATA_SUB_LABEL" desc="Sub-label for the 'Manage other Brave Data' option in the 'Delete Browsing Data' dialog, explaining to the user that search history and passwords can only be deleted outside of Brave." translateable="false">
+    Search history and passwords can only be deleted outside Brave.
+  </message>
+
   <!-- Preloading Page-->
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_WHEN_ON_BULLET_TWO" desc="Bullet point in the standard preloading and when on column. Informs the user about what the standard preloading setting does.">
     Brave preloads pages you're likely to visit, so that they load more quickly when you visit them
@@ -394,14 +399,6 @@
   <!-- Reset Page -->
   <message name="IDS_SETTINGS_RESET_PROFILE_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
     Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
-
-  <!-- Brave Root Store -->
-  <message name="IDS_SETTINGS_CHROME_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
-    Certificates managed by Brave
-  </message>
-  <message name="IDS_SETTINGS_CHROME_CERTIFICATES_DESCRIPTION" desc="Secondary, continued explanation of how to manage SSL certificates and settings in Privacy options">
-    Information about how Brave manages its root certificates
   </message>
 
   <!-- Safety Hub -->

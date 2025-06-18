@@ -45,11 +45,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private OptionalBrowsingModeButtonController mOptionalButtonController;
 
     // Own members.
-    private ToolbarLayout mBraveToolbarLayout;
-    private MenuButtonCoordinator mBraveMenuButtonCoordinator;
+    private final ToolbarLayout mBraveToolbarLayout;
+    private final MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
-    private ObservableSupplier<Integer> mConstraintsProxy;
-    private ToolbarControlContainer mControlContainer;
+    private final ObservableSupplier<Integer> mConstraintsProxy;
+    private final ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
     public BraveTopToolbarCoordinator(
@@ -66,6 +66,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             ObservableSupplier<Integer> tabCountSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
+            ObservableSupplier<Boolean> homepageNonNtpSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
@@ -80,6 +81,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
             ObservableSupplier<Tab> tabSupplier,
+            ObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator) {
         super(
                 controlContainer,
@@ -95,6 +97,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabSwitcherButtonCoordinator,
                 tabCountSupplier,
                 homepageEnabledSupplier,
+                homepageNonNtpSupplier,
                 resourceManagerSupplier,
                 historyDelegate,
                 initializeWithIncognitoColors,
@@ -108,6 +111,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 onLongClickListener,
                 progressBar,
                 tabSupplier,
+                toolbarNavControlsEnabledSupplier,
                 backButtonCoordinator);
 
         mBraveToolbarLayout = toolbarLayout;

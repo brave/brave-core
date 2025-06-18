@@ -18,7 +18,6 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

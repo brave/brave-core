@@ -81,6 +81,8 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
+      "android/java/res/drawable/.*\\.xml",
+      "android/java/res/values/.*\\.xml",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
@@ -91,6 +93,13 @@
     ],
     "CheckNoJsInIos": ["ios/brave-ios/"],
     "CheckNoDeprecatedCss": ["ios/brave-ios/"],
+    "CheckLicense":[
+      // These have AOSP license header
+      "android/java/org/chromium/chrome/browser/qrreader/BarcodeTracker.java",
+      "android/java/org/chromium/chrome/browser/qrreader/BarcodeTrackerFactory.java",
+      "android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
+      "android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
+    ],
 
     // Checks to be fixed.
     "CheckUnwantedDependencies": [".*\\.java"],

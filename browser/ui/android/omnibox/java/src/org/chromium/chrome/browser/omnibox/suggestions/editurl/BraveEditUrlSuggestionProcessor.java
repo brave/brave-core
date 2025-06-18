@@ -70,6 +70,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     OmniboxSuggestionType.URL_WHAT_YOU_TYPED,
                     suggestion.getSubtypes(),
                     suggestion.isSearchSuggestion(),
+                    suggestion.getIconType(),
                     suggestion.getTransition(),
                     suggestion.getDisplayText(),
                     suggestion.getDisplayTextClassifications(),
@@ -90,7 +91,8 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getActions(),
                     suggestion.allowedToBeDefaultMatch(),
                     suggestion.getInlineAutocompletion(),
-                    suggestion.getAdditionalText());
+                    suggestion.getAdditionalText(),
+                    suggestion.getTabGroupUuid());
         }
         return suggestion;
     }

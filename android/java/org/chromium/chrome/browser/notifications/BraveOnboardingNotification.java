@@ -34,9 +34,9 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
 
     private static final int BRAVE_ONBOARDING_NOTIFICATION_ID = -2;
     public static String BRAVE_ONBOARDING_NOTIFICATION_TAG = "brave_onboarding_notification_tag";
-    private static String BRAVE_ONBOARDING_ORIGIN_EN = "https://brave.com/my-first-ad/";
-    private static String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
-    private static String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
+    private static final String BRAVE_ONBOARDING_ORIGIN_EN = "https://brave.com/my-first-ad/";
+    private static final String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
+    private static final String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
     public static final String DEEP_LINK = "deep_link";
     public static final String USE_CUSTOM_NOTIFICATION = "use_custom_notification";
 

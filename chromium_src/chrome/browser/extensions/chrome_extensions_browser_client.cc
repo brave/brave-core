@@ -6,8 +6,12 @@
 #include "chrome/browser/extensions/chrome_extensions_browser_client.h"
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
+#include "brave/browser/extensions/updater/brave_update_client_config.h"
 #include "chrome/browser/extensions/api/chrome_extensions_api_client.h"
+#include "chrome/browser/extensions/updater/chrome_update_client_config.h"
 
 #define ChromeExtensionsAPIClient BraveExtensionsAPIClient
+#define ChromeUpdateClientConfig BraveUpdateClientConfig
 #include "src/chrome/browser/extensions/chrome_extensions_browser_client.cc"
+#undef ChromeUpdateClientConfig
 #undef ChromeExtensionsAPIClient

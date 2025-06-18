@@ -36,6 +36,7 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
@@ -127,10 +128,9 @@ BraveNewTabUI::BraveNewTabUI(
       "trusted-types static-types lottie-worker-script-loader lit-html-desktop "
       "default; ");
 
-  source->AddBoolean(
-      "featureCustomBackgroundEnabled",
-      !profile->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
-          ThemePrefInMigration::kNtpCustomBackgroundDict)));
+  source->AddBoolean("featureCustomBackgroundEnabled",
+                     !profile->GetPrefs()->IsManagedPreference(
+                         prefs::kNtpCustomBackgroundDict));
 
   // Let frontend know about feature flags
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",

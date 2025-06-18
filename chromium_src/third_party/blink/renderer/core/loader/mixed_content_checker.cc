@@ -41,11 +41,23 @@ bool IsOnion(const T& obj) {
   if (auto result = IsMixedContentForOnion(security_origin, url)) \
     return *result;
 
+#define BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT_RESTRICTED_IN_FRAME_CONTEXT \
+  if (IsOnion(*top.GetSecurityContext()                                          \
+                   ->GetSecurityOrigin()                                         \
+                   ->GetOriginOrPrecursorOriginIfOpaque()) ||                    \
+      IsOnion(*frame->GetSecurityContext()                                       \
+                   ->GetSecurityOrigin()                                         \
+                   ->GetOriginOrPrecursorOriginIfOpaque())) {                    \
+    return true;                                                                 \
+  }
+
 #define UpgradeInsecureRequest UpgradeInsecureRequest_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/loader/mixed_content_checker.cc"
 
 #undef UpgradeInsecureRequest
+
+#undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT_RESTRICTED_IN_FRAME_CONTEXT
 
 #undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
 
@@ -72,13 +84,14 @@ void MixedContentChecker::UpgradeInsecureRequest(
     const FetchClientSettingsObject* fetch_client_settings_object,
     ExecutionContext* execution_context_for_logging,
     mojom::RequestContextFrameType frame_type,
-    WebContentSettingsClient* settings_client) {
+    WebContentSettingsClient* settings_client,
+    LocalFrame* frame) {
   // Do not upgrade resource from .onion sites because we treat them as secure.
   if (IsOnion(resource_request.Url()))
     return;
   UpgradeInsecureRequest_ChromiumImpl(
       resource_request, fetch_client_settings_object,
-      execution_context_for_logging, frame_type, settings_client);
+      execution_context_for_logging, frame_type, settings_client, frame);
 }
 
 }  // namespace blink

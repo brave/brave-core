@@ -269,7 +269,6 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   // we will set the result at BraveSyncHandler::OnJoinChainResult.
   // Otherwise we will not let to send request to the server.
 
-  sync_service->SetSyncFeatureRequested();
   sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
