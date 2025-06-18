@@ -46,7 +46,6 @@ mangle(
 // Insert a close button into the sp-heading element.
 mangle(
   (element: DocumentFragment) => {
-    // Remove the "Choose which icons to show on the toolbar" text.
     const el = element.querySelector('sp-heading')
     if (!el) {
       throw new Error('[Customize Chrome] sp-heading is gone.')

@@ -9,7 +9,7 @@ import { CrLitElement, html } from '//resources/lit/v3_0/lit.rollup.js';
 
 export * from './app-chromium.js'
 
-export class ClosePanelButton extends CrLitElement {
+class ClosePanelButton extends CrLitElement {
   static get is() {
     return 'close-panel-button'
   }

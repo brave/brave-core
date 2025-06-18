@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/task/current_thread.h"
 #include "base/test/bind.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -34,29 +35,6 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
     return GetSidePanelUI(browser())->GetWebContentsForTest(
         SidePanelEntryId::kCustomizeChrome);
   }
-
-  void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run()) {
-      return;
-    }
-
-    base::RepeatingTimer scheduler;
-    scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition] {
-                      if (condition.Run()) {
-                        run_loop_->Quit();
-                      }
-                    }));
-    RunLoop();
-  }
-
-  void RunLoop() {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
-
- private:
-  std::unique_ptr<base::RunLoop> run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest, CloseButton) {
@@ -75,9 +53,7 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest, CloseButton) {
       customize_chrome_side_panel_controller->IsCustomizeChromeEntryShowing());
   content::WebContents* web_contents = GetCustomizeChromeWebContents();
   ASSERT_TRUE(web_contents);
-
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !web_contents->IsLoading(); }));
+  content::WaitForLoadStop(web_contents);
 
   // clicking the close button should close the side panel.
   // And the render frame will be deleted, so the returned result will be false.
@@ -88,7 +64,7 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest, CloseButton) {
           .shadowRoot.querySelector("#closeButton").click();)-js-"));
 
   // Double check that the side panel is closed.
-  WaitUntil(base::BindLambdaForTesting([&]() {
+  ASSERT_TRUE(base::test::RunUntil([&]() {
     return !customize_chrome_side_panel_controller
                 ->IsCustomizeChromeEntryShowing();
   }));
