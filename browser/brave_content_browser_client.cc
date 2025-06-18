@@ -1184,6 +1184,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 void BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationThrottleRegistry& registry) {
+  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
   registry.MaybeAddThrottle(
@@ -1192,7 +1193,6 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 
-  content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   content::BrowserContext* context =
       navigation_handle.GetWebContents()->GetBrowserContext();
 #if !BUILDFLAG(IS_ANDROID)
