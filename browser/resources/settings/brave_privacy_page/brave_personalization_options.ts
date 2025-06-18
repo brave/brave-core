@@ -5,16 +5,21 @@
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {BaseMixin} from '../base_mixin.js'
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './brave_personalization_options.html.js'
 import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 
+import {assert} from 'chrome://resources/js/assert.js';
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+
 import '../privacy_page/do_not_track_toggle.js'
 
-const SettingsBravePersonalizationOptionsBase = BaseMixin(PolymerElement) as {
-  new(): PolymerElement
+const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
+  PolymerElement,
+) as {
+  new (): PolymerElement & WebUiListenerMixinInterface
 }
 
 export class SettingsBravePersonalizationOptions extends SettingsBravePersonalizationOptionsBase {
@@ -74,6 +79,12 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
         }
       },
+      windowsRecallDisabledPref_: {
+        type: Object,
+        value: () => {
+          return {}
+        }
+      }
     }
   }
 
@@ -84,6 +95,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   private declare requestOTRActions_: Object[]
   private declare requestOTRAction_: String
   private declare isWindowsRecallAvailable_: boolean
+  private declare windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
 
   browserProxy_: BravePrivacyBrowserProxy = BravePrivacyBrowserProxyImpl.getInstance()
 
@@ -93,6 +105,23 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   shouldShowRestartWindowsRecall_(disabled: boolean) {
     return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
+  }
+
+  windowsRecallDisabledChange_(event: Event) {
+    const target = event.target
+    assert(target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setWindowsRecallDisabled(
+      (target as SettingsToggleButtonElement).checked,
+    )
+  }
+
+  setWindowsRecallDisabled_(disabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: disabled
+    }
+    this.windowsRecallDisabledPref_ = pref
   }
 
   restartBrowser_(e: Event) {
@@ -116,6 +145,16 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     } else {
       console.log(
         '[Brave Settings Overrides] Could not find element with id doNotTrack')
+    }
+
+    if (this.isWindowsRecallAvailable_) {
+      this.addWebUiListener(
+        'windows-recall-disabled-changed',
+        this.setWindowsRecallDisabled_.bind(this),
+      )
+      this.browserProxy_
+        .isWindowsRecallDisabled()
+        .then(this.setWindowsRecallDisabled_.bind(this))
     }
   }
 }

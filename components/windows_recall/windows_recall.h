@@ -7,10 +7,7 @@
 #define BRAVE_COMPONENTS_WINDOWS_RECALL_WINDOWS_RECALL_H_
 
 class PrefRegistrySimple;
-
-namespace content {
-class BrowserContext;
-}
+class PrefService;
 
 namespace windows_recall {
 
@@ -18,10 +15,10 @@ namespace prefs {
 inline constexpr char kBlockWindowsRecall[] = "brave.block_windows_recall";
 }
 
-void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 bool IsWindowsRecallAvailable();
-bool IsWindowsRecallDisabled(content::BrowserContext* browser_context);
+bool IsWindowsRecallDisabled(PrefService* local_state);
 
 }  // namespace windows_recall
 

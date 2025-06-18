@@ -11,8 +11,7 @@ bool WebContentsImpl::ShouldDoLearning() {
   if (!ShouldDoLearning_ChromiumImpl()) {
     return false;
   }
-  return !GetContentClient()->browser()->IsWindowsRecallDisabled(
-      GetBrowserContext());
+  return !GetContentClient()->browser()->IsWindowsRecallDisabled();
 }
 
 bool WebContentsImpl::GetShouldDoLearningForTesting() {

@@ -1345,10 +1345,10 @@ std::optional<GURL> BraveContentBrowserClient::SanitizeURL(
   return sanitized_url;
 }
 
-bool BraveContentBrowserClient::IsWindowsRecallDisabled(
-    content::BrowserContext* browser_context) {
+bool BraveContentBrowserClient::IsWindowsRecallDisabled() {
 #if BUILDFLAG(IS_WIN)
-  return windows_recall::IsWindowsRecallDisabled(browser_context);
+  return windows_recall::IsWindowsRecallDisabled(
+      g_browser_process->local_state());
 #else
   return false;
 #endif
