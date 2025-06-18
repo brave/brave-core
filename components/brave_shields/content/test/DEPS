@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/content_settings",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
