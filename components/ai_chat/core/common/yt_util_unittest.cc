@@ -200,19 +200,6 @@ class YTTranscriptTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(YTTranscriptTest, ParseTranscriptFormat) {
-  constexpr char kTranscriptXml[] = R"(<?xml version="1.0" encoding="utf-8"?>
-<transcript>
-  <text start="0" dur="5.1">First line of text.</text>
-  <text start="5.1" dur="5.28">Second line of text.</text>
-  <text start="10.38" dur="7.38">Third line of text.</text>
-</transcript>)";
-  base::Value result = ParseXmlSynchronously(kTranscriptXml);
-  std::string transcript = ParseYoutubeTranscriptXml(result);
-  EXPECT_EQ(transcript,
-            "First line of text. Second line of text. Third line of text.");
-}
-
 TEST_F(YTTranscriptTest, ParseTimedtextFormatWithS) {
   constexpr char kTimedtextWithSXml[] =
       R"(<?xml version="1.0" encoding="utf-8"?>
@@ -224,7 +211,7 @@ TEST_F(YTTranscriptTest, ParseTimedtextFormatWithS) {
 </timedtext>)";
   base::Value result = ParseXmlSynchronously(kTimedtextWithSXml);
   std::string transcript = ParseYoutubeTranscriptXml(result);
-  EXPECT_EQ(transcript, "First part of text. Second part of text. ");
+  EXPECT_EQ(transcript, "First part of text. Second part of text.");
 }
 
 TEST_F(YTTranscriptTest, ParseTimedtextFormatDirectText) {
@@ -240,17 +227,7 @@ TEST_F(YTTranscriptTest, ParseTimedtextFormatDirectText) {
   base::Value result = ParseXmlSynchronously(kTimedtextDirectTextXml);
   std::string transcript = ParseYoutubeTranscriptXml(result);
   EXPECT_EQ(transcript,
-            "First line of text. Second line of text. Third line of text. ");
-}
-
-TEST_F(YTTranscriptTest, ParseEmptyTranscript) {
-  constexpr char kEmptyTranscriptXml[] =
-      R"(<?xml version="1.0" encoding="utf-8"?>
-<transcript>
-</transcript>)";
-  base::Value result = ParseXmlSynchronously(kEmptyTranscriptXml);
-  std::string transcript = ParseYoutubeTranscriptXml(result);
-  EXPECT_TRUE(transcript.empty());
+            "First line of text. Second line of text. Third line of text.");
 }
 
 TEST_F(YTTranscriptTest, ParseEmptyTimedtext) {

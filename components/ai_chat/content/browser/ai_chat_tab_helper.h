@@ -26,19 +26,12 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "pdf/buildflags.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "pdf/mojom/pdf.mojom.h"
 #endif  // BUILDFLAG(ENABLE_PDF)
-
-namespace mojo {
-template <typename T>
-class PendingAssociatedReceiver;
-}  // namespace mojo
 
 namespace content {
 class NavigationEntry;
@@ -55,15 +48,9 @@ class AIChatMetrics;
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
-                        public mojom::PageContentExtractorHost,
                         public AssociatedContentDriver {
  public:
   using GetPageContentCallback = GetPageContentCallback;
-
-  static void BindPageContentExtractorHost(
-      content::RenderFrameHost* rfh,
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
 
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
@@ -124,9 +111,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
     return print_preview_extraction_delegate_.get();
   }
 
-  // mojom::PageContentExtractorHost
-  void OnInterceptedPageContentChanged() override;
-
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
@@ -181,10 +165,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
       GetPageContentCallback callback,
       base::expected<std::string, std::string>);
 
-  void BindPageContentExtractorReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
-          receiver);
-
 #if BUILDFLAG(ENABLE_PDF)
   void OnPDFDocumentLoadComplete(GetPageContentCallback callback);
 
@@ -217,9 +197,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
-
-  mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
-      page_content_extractor_receiver_{this};
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

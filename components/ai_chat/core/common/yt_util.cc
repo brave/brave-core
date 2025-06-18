@@ -103,38 +103,7 @@ std::optional<std::string> ParseAndChooseCaptionTrackUrl(
 std::string ParseYoutubeTranscriptXml(const base::Value& root) {
   std::string transcript_text;
 
-  // Example Youtube transcript XML:
-  //
-  // <?xml version="1.0" encoding="utf-8"?>
-  // <transcript>
-  //   <text start="0" dur="5.1">Dear Fellow Scholars, this is Two Minute
-  //   Papers with Dr. Károly Zsolnai-Fehér.</text> <text start="5.1"
-  //   dur="5.28">ChatGPT has just been supercharged with  browsing support, I
-  //   tried it myself too,  </text> <text start="10.38" dur="7.38">and I
-  //   think this changes everything. Well, almost  everything, as you will
-  //   see in a moment. And this  </text>
-  // </transcript>
-  if (data_decoder::IsXmlElementNamed(root, "transcript")) {
-    // Existing YouTube transcript XML logic
-    const base::Value::List* children =
-        data_decoder::GetXmlElementChildren(root);
-    if (!children) {
-      return transcript_text;
-    }
-    for (const auto& child : *children) {
-      if (!data_decoder::IsXmlElementNamed(child, "text")) {
-        continue;
-      }
-      std::string text;
-      if (!data_decoder::GetXmlElementText(child, &text)) {
-        continue;
-      }
-      if (!transcript_text.empty()) {
-        transcript_text += " ";
-      }
-      transcript_text += text;
-    }
-  } else if (data_decoder::IsXmlElementNamed(root, "timedtext")) {
+  if (data_decoder::IsXmlElementNamed(root, "timedtext")) {
     // Handle <timedtext> format ex.
     // <timedtext format="3">
     // <head>
@@ -221,6 +190,9 @@ std::string ParseYoutubeTranscriptXml(const base::Value& root) {
                      });
 
         if (all_s && s_children && !s_children->empty()) {
+          if (!transcript_text.empty()) {
+            transcript_text += " ";
+          }
           // All children are <s>
           for (const auto& s : *s_children) {
             std::string s_text;
@@ -232,10 +204,12 @@ std::string ParseYoutubeTranscriptXml(const base::Value& root) {
           // Not all children are <s>, so treat as direct text
           std::string p_text;
           if (data_decoder::GetXmlElementText(p, &p_text)) {
+            if (!transcript_text.empty()) {
+              transcript_text += " ";
+            }
             transcript_text += p_text;
           }
         }
-        transcript_text += " ";  // Space between <p> blocks
       }
     }
   }
