@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
@@ -141,8 +140,6 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        NotAllowedDomain) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
   const GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
@@ -155,8 +152,6 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        BrokenSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
@@ -289,45 +284,6 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  content::WebContents* web_contents =
-      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
-
-  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
-        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
-      });
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
-                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
-        EXPECT_EQ(mojom_ad_event_type,
-                  mojom::SearchResultAdEventType::kClicked);
-
-        // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
-
-        EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
-                                         mojom_creative_ad->placement_id));
-        run_loop.Quit();
-      });
-
-  EXPECT_TRUE(content::ExecJs(web_contents,
-                              "document.getElementById('ad_link_1').click();"));
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
-                       SearchResultAdOpenedInSameTabForNonRewardsUser) {
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
-
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
@@ -362,47 +318,6 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
 IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  content::WebContents* web_contents =
-      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
-                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
-        EXPECT_EQ(mojom_ad_event_type,
-                  mojom::SearchResultAdEventType::kClicked);
-
-        // We clicked on the second ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(2U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
-
-        // VerifyCreativeAdMetadataExpectations(
-        //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
-        EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
-                                         mojom_creative_ad->placement_id));
-        run_loop.Quit();
-      });
-
-  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
-        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
-      });
-
-  EXPECT_TRUE(content::ExecJs(web_contents,
-                              "document.getElementById('ad_link_2').click();"));
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
-                       SearchResultAdOpenedInNewTabForNonRewardsUsre) {
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
@@ -440,51 +355,6 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
 IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewTabByRightClick) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
-
-  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
-        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
-      });
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
-                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
-        EXPECT_EQ(mojom_ad_event_type,
-                  mojom::SearchResultAdEventType::kClicked);
-
-        // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
-
-        // VerifyCreativeAdMetadataExpectations(
-        //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
-        EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
-                                         mojom_creative_ad->placement_id));
-        run_loop.Quit();
-      });
-
-  const GURL url =
-      https_server().GetURL(kAllowedDomain, kSearchResultClickedUrlPath);
-  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(
-    SampleBraveAdsCreativeSearchResultAdTabHelperTest,
-    SearchResultAdOpenedInNewTabByRightClickForNonRewardsUser) {
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
@@ -525,50 +395,6 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewWindow) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
-
-  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
-        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
-      });
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
-                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
-        EXPECT_EQ(mojom_ad_event_type,
-                  mojom::SearchResultAdEventType::kClicked);
-
-        // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
-
-        // VerifyCreativeAdMetadataExpectations(
-        //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
-        EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
-                                         mojom_creative_ad->placement_id));
-        run_loop.Quit();
-      });
-
-  const GURL url =
-      https_server().GetURL(kAllowedDomain, kSearchResultClickedUrlPath);
-  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_WINDOW,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
-                       SearchResultAdOpenedInNewWindowForNonRewardsUser) {
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
-
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 

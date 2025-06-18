@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/logging.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"

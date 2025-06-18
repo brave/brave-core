@@ -796,6 +796,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           &brave_wallet::BraveWalletTabHelper::BindEthereumProvider));
       map->Add<brave_wallet::mojom::SolanaProvider>(base::BindRepeating(
           &brave_wallet::BraveWalletTabHelper::BindSolanaProvider));
+      if (brave_wallet::IsCardanoDAppSupportEnabled()) {
+        map->Add<brave_wallet::mojom::CardanoProvider>(base::BindRepeating(
+            &brave_wallet::BraveWalletTabHelper::BindCardanoProvider));
+      }
     }
   }
 
@@ -1140,50 +1144,47 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 void BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationThrottleRegistry& registry) {
-  ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
-
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
+  registry.MaybeAddThrottle(
+      brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
+          registry));
+
+  ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
+
   content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   content::BrowserContext* context =
       navigation_handle.GetWebContents()->GetBrowserContext();
-
-  registry.MaybeAddThrottle(
-      brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle));
-
 #if !BUILDFLAG(IS_ANDROID)
   registry.MaybeAddThrottle(
-      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle));
+      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(registry));
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   registry.AddThrottle(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(
-          &navigation_handle));
+          registry));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
   registry.MaybeAddThrottle(tor::TorNavigationThrottle::MaybeCreateThrottleFor(
-      &navigation_handle, context->IsTor()));
+      registry, context->IsTor()));
   registry.MaybeAddThrottle(
       tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle, TorProfileServiceFactory::IsTorDisabled(context),
+          registry, TorProfileServiceFactory::IsTorDisabled(context),
           context->IsTor()));
 #endif
 
   registry.MaybeAddThrottle(
       decentralized_dns::DecentralizedDnsNavigationThrottle::
-          MaybeCreateThrottleFor(&navigation_handle,
-                                 user_prefs::UserPrefs::Get(context),
+          MaybeCreateThrottleFor(registry, user_prefs::UserPrefs::Get(context),
                                  g_browser_process->local_state(),
                                  g_browser_process->GetApplicationLocale()));
 
   // Debounce
   registry.MaybeAddThrottle(
       debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle,
+          registry,
           debounce::DebounceServiceFactory::GetForBrowserContext(context)));
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
@@ -1193,7 +1194,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   if (host_content_settings_map) {
     registry.MaybeAddThrottle(
         brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-            &navigation_handle, g_brave_browser_process->ad_block_service(),
+            registry, g_brave_browser_process->ad_block_service(),
             g_brave_browser_process->ad_block_service()
                 ->custom_filters_provider(),
             EphemeralStorageServiceFactory::GetForContext(context),
@@ -1205,7 +1206,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   // Request Off-The-Record
   registry.MaybeAddThrottle(
       request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle,
+          registry,
           request_otr::RequestOTRServiceFactory::GetForBrowserContext(context),
           EphemeralStorageServiceFactory::GetForContext(context),
           Profile::FromBrowserContext(context)->GetPrefs(),
@@ -1214,20 +1215,20 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     registry.MaybeAddThrottle(
-        ai_chat::AIChatThrottle::MaybeCreateThrottleFor(&navigation_handle));
+        ai_chat::AIChatThrottle::MaybeCreateThrottleFor(registry));
   }
 
 #if !BUILDFLAG(IS_ANDROID)
   registry.MaybeAddThrottle(
       ai_chat::AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
-          base::BindOnce(&ai_chat::OpenAIChatForTab), &navigation_handle,
+          base::BindOnce(&ai_chat::OpenAIChatForTab), registry,
           ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
           user_prefs::UserPrefs::Get(context)));
 #endif
 
   registry.MaybeAddThrottle(
       brave_search::BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
-          &navigation_handle));
+          registry));
 }
 
 bool PreventDarkModeFingerprinting(WebContents* web_contents,

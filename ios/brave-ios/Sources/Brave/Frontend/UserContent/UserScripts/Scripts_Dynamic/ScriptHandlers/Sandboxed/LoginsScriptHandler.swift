@@ -51,7 +51,7 @@ class LoginsScriptHandler: TabContentScript {
     // the system from terminating our app due to background disk access.
     //
     // See https://bugzilla.mozilla.org/show_bug.cgi?id=1307822 for details.
-    guard UIApplication.shared.applicationState == .active && !profile.isShutdown else {
+    guard UIApplication.shared.applicationState == .active else {
       return
     }
 

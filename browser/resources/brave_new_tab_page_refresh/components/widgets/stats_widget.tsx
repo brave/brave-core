@@ -38,24 +38,26 @@ export function StatsWidget() {
         {getString('statsTitle')}
       </div>
       <div className='data'>
-        <div className='ads-blocked'>
-          <div className='value'>
-            {stats && adsBlockedFormatter.format(stats.adsBlocked)}
+        <div>
+          <div className='ads-blocked'>
+            <div className='value'>
+              {stats && adsBlockedFormatter.format(stats.adsBlocked)}
+            </div>
+            {getString('statsAdsBlockedText')}
           </div>
-          {getString('statsAdsBlockedText')}
-        </div>
-        <div className='bandwidth-saved'>
-          <div className='value'>
-            {stats && renderUnits(formatBandwidth(stats.bandwidthSavedBytes))}
+          <div className='bandwidth-saved'>
+            <div className='value'>
+              {stats && renderUnits(formatBandwidth(stats.bandwidthSavedBytes))}
+            </div>
+            {getString('statsBandwidthSavedText')}
           </div>
-          {getString('statsBandwidthSavedText')}
-        </div>
-        <div className='time-saved'>
-          <div className='value'>
-            {stats &&
-              renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
+          <div className='time-saved'>
+            <div className='value'>
+              {stats &&
+                renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
+            </div>
+            {getString('statsTimeSavedText')}
           </div>
-          {getString('statsTimeSavedText')}
         </div>
       </div>
     </div>

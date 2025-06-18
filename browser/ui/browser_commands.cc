@@ -13,10 +13,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
+#include "base/logging.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -193,6 +197,11 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
   void FileSelected(const ui::SelectedFileInfo& file, int index) override {
     bookmark_html_writer::WriteBookmarks(profile_, file.file_path,
                                          base::DoNothing());
+    file_selector_->ListenerDestroyed();
+    delete this;
+  }
+  void FileSelectionCanceled() override {
+    file_selector_->ListenerDestroyed();
     delete this;
   }
   void ShowFileDialog(Browser* browser) {

@@ -61,7 +61,7 @@ public class Migration {
 
   public init() {}
 
-  public func launchMigrations(keyPrefix: String, profile: Profile) {
+  public func launchMigrations(keyPrefix: String) {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
@@ -69,6 +69,7 @@ public class Migration {
     Preferences.migrateBackgroundSponsoredImages()
     Preferences.migrateBookmarksButtonInToolbar()
     Preferences.migrateShortcutsButtonOniPad()
+    Preferences.migrateReaderModeStyle()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -278,6 +279,11 @@ extension Preferences {
       key: "migration.shortcuts-button-on-ipad",
       default: false
     )
+
+    static let migratedReaderModeStyle = Option<Bool>(
+      key: "migration.reader-mode-style",
+      default: false
+    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -453,6 +459,21 @@ extension Preferences {
     }
 
     Migration.migratedShortcutsButtonOniPad.value = true
+  }
+
+  fileprivate class func migrateReaderModeStyle() {
+    guard !Migration.migratedReaderModeStyle.value,
+      let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
+    else {
+      return
+    }
+
+    if let style = userDefaults.object(forKey: "profile.readermode.style") as? [String: Any] {
+      Preferences.ReaderMode.style.value = ReaderModeStyle(dict: style)?.encode()
+      userDefaults.removeObject(forKey: "profile.readermode.style")
+    }
+
+    Migration.migratedReaderModeStyle.value = true
   }
 }
 

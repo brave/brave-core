@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
@@ -69,6 +70,8 @@ function ConversationEntries() {
           const isEntryInProgress =
             isLastEntry && isAIAssistant && conversationContext.isGenerating
           const isHuman = turn.characterType === Mojom.CharacterType.HUMAN
+          const isGeneratingResponse =
+            isHuman && isLastEntry && conversationContext.isGenerating
           const showLongPageContentInfo =
             id === 1 &&
             isAIAssistant &&
@@ -179,7 +182,7 @@ function ConversationEntries() {
                           {latestEdit && (
                             <div className={styles.editLabel}>
                               <span className={styles.editLabelText}>
-                                {getLocale('editedLabel')}
+                                {getLocale(S.CHAT_UI_EDITED_LABEL)}
                               </span>
                             </div>
                           )}
@@ -227,6 +230,9 @@ function ConversationEntries() {
                       onCopyTextClicked={handleCopyText}
                     />
                   )}
+                {isGeneratingResponse && (
+                  <div className={styles.loading}><ProgressRing /></div>
+                )}
               </div>
             </div>
           )

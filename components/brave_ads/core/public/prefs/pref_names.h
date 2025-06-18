@@ -77,9 +77,6 @@ inline constexpr char kEnabledForLastProfile[] =
 inline constexpr char kEverEnabledForAnyProfile[] =
     "brave.brave_ads.ever_enabled_any_profile";
 
-// P2A prefs.
-inline constexpr char kP2APrefPathPrefix[] = "brave.weekly_storage.";
-
 // We don't prefix `brave.brave_ads` to this pref path because we don't want
 // them cleared if the user clears ads data or resets Brave Rewards.
 inline constexpr char kShouldShowSearchResultAdClickedInfoBar[] =

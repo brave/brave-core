@@ -17,11 +17,9 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
@@ -75,6 +73,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "components/permissions/permission_request_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -263,12 +262,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
   // Show the correct value in settings on initial start
   UpdateSearchTabsButtonState();
-
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(browser_->profile());
-  if (rewards_service) {
-    brave_rewards::RewardsPanelCoordinator::CreateForBrowser(browser_.get());
-  }
 
   brave_shields::CookieListOptInBubbleHost::MaybeCreateForBrowser(
       browser_.get());
@@ -894,6 +887,20 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
 #endif
+
+  if (old_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(old_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(false);
+  }
+
+  if (new_contents) {
+    auto* manager =
+        permissions::PermissionRequestManager::FromWebContents(new_contents);
+    CHECK(manager);
+    manager->OnTabActiveStateChanged(true);
+  }
 }
 
 void BraveBrowserView::UpdateContentsSeparatorVisibility() {

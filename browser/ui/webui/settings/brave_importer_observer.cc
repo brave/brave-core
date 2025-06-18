@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/logging.h"
+#include "base/check.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 
 BraveImporterObserver::BraveImporterObserver(

@@ -38,7 +38,6 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -197,10 +196,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (BOOL)isServiceRunning {
   return adsClientNotifier != nil && adsService != nil &&
          adsService->IsInitialized();
-}
-
-+ (BOOL)shouldAlwaysRunService {
-  return brave_ads::ShouldAlwaysRunService();
 }
 
 - (BOOL)shouldShowSponsoredImagesAndVideosSetting {
@@ -1406,11 +1401,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   [self.captchaHandler
       handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
                               captchaId:base::SysUTF8ToNSString(captcha_id)];
-}
-
-- (void)recordP2AEvents:(const std::vector<std::string>&)events {
-  // TODO(https://github.com/brave/brave-browser/issues/33786): Unify Brave Ads
-  // P3A analytics.
 }
 
 - (bool)findProfilePref:(const std::string&)path {

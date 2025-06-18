@@ -2,6 +2,8 @@ include_rules = [
   "+brave/components/constants",
   "+brave/content/public/browser/devtools",
   "+components/content_settings/core",
+  "+components/grit/brave_components_resources.h",
+  "+components/grit/brave_components_strings.h",
   "+content/public/browser",
   "+content/public/common",
   "+crypto",

@@ -33,11 +33,12 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
   NTPP3AHelperImpl(PrefService* local_state,
                    p3a::P3AService* p3a_service,
                    NTPBackgroundImagesService* ntp_background_images_service,
-                   PrefService* prefs,
-                   bool use_uma_for_testing = false);
+                   PrefService* prefs);
   ~NTPP3AHelperImpl() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   void RecordView(const std::string& creative_instance_id,
                   const std::string& campaign_id) override;
@@ -53,18 +54,15 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
   // See BraveP3AService::RegisterDynamicMetric and
   // BraveP3AService::RegisterMetricCycledCallback header comments for more
   // info.
-  void OnP3ARotation(p3a::MetricLogType log_type, bool is_constellation);
-  void OnP3AMetricCycled(const std::string& histogram_name,
-                         bool is_constellation);
+  void OnP3ARotation(p3a::MetricLogType log_type);
+  void OnP3AMetricCycled(const std::string& histogram_name);
 
  private:
   void MaybeLand(const GURL& url);
   void MaybeLandCallback(const std::string& creative_instance_id,
                          const GURL& url);
 
-  void RecordCreativeMetric(const std::string& histogram_name,
-                            int count,
-                            bool is_constellation);
+  void RecordCreativeMetric(const std::string& histogram_name, int count);
   void RemoveMetricIfInstanceDoesNotExist(
       const std::string& histogram_name,
       const std::string& event_type,
@@ -94,9 +92,6 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
   base::ScopedObservation<NTPBackgroundImagesService,
                           NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};
-
-  const bool is_json_deprecated_;
-  bool use_uma_for_testing_;
 };
 
 }  // namespace ntp_background_images

@@ -29,7 +29,9 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/extensions/window_controller.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/event_router.h"
@@ -62,7 +64,7 @@ RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
   auto* browser = chrome::FindBrowserWithTab(web_contents);
-  return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
+  return browser ? browser->GetFeatures().rewards_panel_coordinator() : nullptr;
 }
 
 RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {

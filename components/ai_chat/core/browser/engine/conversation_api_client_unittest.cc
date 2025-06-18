@@ -70,40 +70,39 @@ namespace ai_chat {
 
 namespace {
 
-const std::pair<std::vector<ConversationAPIClient::ConversationEvent>,
-                std::string>&
+std::pair<std::vector<ConversationAPIClient::ConversationEvent>, std::string>
 GetMockEventsAndExpectedEventsBody() {
-  static base::NoDestructor<std::pair<
-      std::vector<ConversationAPIClient::ConversationEvent>, std::string>>
-      mock_events_and_expected_events_body{
-          std::vector<ConversationAPIClient::ConversationEvent>{
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::PageText,
-               {"This is a page about The Mandalorian."}},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::PageExcerpt,
-               {"The Mandalorian"}},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::ChatMessage,
-               {"Est-ce lié à une série plus large?"}},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
-               {"GetSuggestedTopicsForFocusTabs"}},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::DedupeTopics,
-               {"DedupeTopics"}},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::GetFocusTabsForTopic,
-               {"GetFocusTabsForTopics"},
-               "C++"},
-              {mojom::CharacterType::HUMAN,
-               ConversationAPIClient::UploadImage,
-               {"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
-                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
-                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"}},
-          },
-          R"([
+  std::pair<std::vector<ConversationAPIClient::ConversationEvent>, std::string>
+      mock_events_and_expected_events_body;
+
+  std::vector<ConversationAPIClient::ConversationEvent> events;
+  events.emplace_back(
+      mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
+      std::vector<std::string>{"This is a page about The Mandalorian."});
+  events.emplace_back(mojom::CharacterType::HUMAN,
+                      ConversationAPIClient::PageExcerpt,
+                      std::vector<std::string>{"The Mandalorian"});
+  events.emplace_back(
+      mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
+      std::vector<std::string>{"Est-ce lié à une série plus large?"});
+  events.emplace_back(
+      mojom::CharacterType::HUMAN,
+      ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
+      std::vector<std::string>{"GetSuggestedTopicsForFocusTabs"});
+  events.emplace_back(mojom::CharacterType::HUMAN,
+                      ConversationAPIClient::DedupeTopics,
+                      std::vector<std::string>{"DedupeTopics"});
+  events.emplace_back(mojom::CharacterType::HUMAN,
+                      ConversationAPIClient::GetFocusTabsForTopic,
+                      std::vector<std::string>{"GetFocusTabsForTopics"}, "C++");
+  events.emplace_back(
+      mojom::CharacterType::HUMAN, ConversationAPIClient::UploadImage,
+      std::vector<std::string>{"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                               "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                               "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                               "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"});
+
+  const std::string expected_events_body = R"([
       {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
       {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
       {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
@@ -114,9 +113,9 @@ GetMockEventsAndExpectedEventsBody() {
        "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                    "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
       }
-    ])"};
+    ])";
 
-  return *mock_events_and_expected_events_body;
+  return std::make_pair(std::move(events), expected_events_body);
 }
 
 }  // namespace
@@ -272,10 +271,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   //  - ConversationEvent is correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
-  const std::vector<ConversationAPIClient::ConversationEvent>& events =
-      GetMockEventsAndExpectedEventsBody().first;
-  const std::string& expected_events_body =
-      GetMockEventsAndExpectedEventsBody().second;
+  auto events_and_body = GetMockEventsAndExpectedEventsBody();
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      std::move(events_and_body.first);
+  std::string expected_events_body = events_and_body.second;
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
@@ -472,7 +471,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
 
   // Begin request
   client_->PerformRequest(
-      events, "",
+      std::move(events), "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -492,10 +491,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   //  - ConversationEvent is correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
-  const std::vector<ConversationAPIClient::ConversationEvent>& events =
-      GetMockEventsAndExpectedEventsBody().first;
-  const std::string& expected_events_body =
-      GetMockEventsAndExpectedEventsBody().second;
+  auto events_and_body = GetMockEventsAndExpectedEventsBody();
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      std::move(events_and_body.first);
+  std::string expected_events_body = events_and_body.second;
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
@@ -592,7 +591,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 
   // Begin request
   client_->PerformRequest(
-      events, "",
+      std::move(events), "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -607,7 +606,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 TEST_F(ConversationAPIUnitTest,
        PerformRequest_WithModelNameOverride_Streaming) {
   // Tests that the model name override is correctly passed to the API
-  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+  std::vector<ConversationAPIClient::ConversationEvent> events =
       GetMockEventsAndExpectedEventsBody().first;
   std::string override_model_name = "llama-3-8b-instruct";
 
@@ -667,7 +666,7 @@ TEST_F(ConversationAPIUnitTest,
 
   // Begin request with model override
   client_->PerformRequest(
-      events, "",
+      std::move(events), "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -682,7 +681,7 @@ TEST_F(ConversationAPIUnitTest,
 TEST_F(ConversationAPIUnitTest,
        PerformRequest_WithModelNameOverride_NonStreaming) {
   // Tests that the non-streaming version (Request) is called with null callback
-  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+  std::vector<ConversationAPIClient::ConversationEvent> events =
       GetMockEventsAndExpectedEventsBody().first;
   std::string override_model_name = "llama-3-8b-instruct";
 
@@ -735,7 +734,7 @@ TEST_F(ConversationAPIUnitTest,
       });
 
   // Begin request with model override but NULL data_received_callback
-  client_->PerformRequest(events, "", base::NullCallback(),
+  client_->PerformRequest(std::move(events), "", base::NullCallback(),
                           base::BindOnce(&MockCallbacks::OnCompleted,
                                          base::Unretained(&mock_callbacks)),
                           override_model_name);
@@ -766,7 +765,7 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
 
   // Begin request
   client_->PerformRequest(
-      events, "",
+      std::move(events), "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

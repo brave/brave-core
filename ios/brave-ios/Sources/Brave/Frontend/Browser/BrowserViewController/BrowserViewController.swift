@@ -315,7 +315,6 @@ public class BrowserViewController: UIViewController {
     // Initialize TabManager
     self.tabManager = TabManager(
       windowId: windowId,
-      prefs: profile.prefs,
       rewards: rewards,
       braveCore: profileController,
       privateBrowsingManager: privateBrowsingManager
@@ -359,13 +358,10 @@ public class BrowserViewController: UIViewController {
     }
 
     rewards.ads.captchaHandler = self
-    if rewards.shouldStartAds {
-      // Only start rewards service automatically if ads is enabled
-      if rewards.isEnabled {
-        rewards.startRewardsService(nil)
-      } else {
-        rewards.ads.initialize { _ in }
-      }
+    if rewards.isEnabled {
+      rewards.startRewardsService(nil)
+    } else {
+      rewards.ads.initialize { _ in }
     }
 
     self.feedDataSource.getAdsAPI = {

@@ -1,4 +1,7 @@
 include_rules = [
+  "+components/grit/components_resources.h",
+  "+components/grit/brave_components_resources.h",
+  "+components/grit/brave_components_strings.h",
   "+ui/base",
   "+third_party/re2",
 ]

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { keyframes } from 'styled-components'
+import { CLASSNAME_PAGE_STUCK } from '../page'
 
 const blurOut = keyframes`
   from {
@@ -27,6 +28,22 @@ export const Section = styled('section')`
   transition: margin 2s ease-out;
   [data-show-news-prompt] & {
     margin-top: -100px;
+  }
+
+  .brave-news-sidebar, .brave-news-feed-controls {
+    visibility: hidden;
+  }
+
+  .${CLASSNAME_PAGE_STUCK} & {
+    .brave-news-sidebar {
+      visibility: visible;
+      opacity: calc(var(--ntp-extra-content-effect-multiplier));
+    }
+
+    .brave-news-feed-controls {
+      visibility: visible;
+      opacity: calc((var(--ntp-scroll-percent) - 0.5) / 0.5);
+    }
   }
 `
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_pages.h"
 
+#include "base/check.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/ai_chat/core/common/features.h"

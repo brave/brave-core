@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_scheme_utils.h"

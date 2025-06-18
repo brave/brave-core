@@ -2,7 +2,19 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import braveComponentsStrings from 'gen/components/grit/brave_components_webui_mock_strings'
+
+ // When building Storybook in transpileOnly mode `const enums` are not
+ // preserved - to get around this we create a proxy which will return the
+ // correct string key.
+(globalThis as any).S = new Proxy({}, {
+  get: (target, prop) => {
+    return prop
+  }
+})
+
 let locale: Record<string, string> = {
+  ...braveComponentsStrings,
   about: 'about',
   accept: 'Accept',
   activityCopy:
@@ -267,12 +279,6 @@ let locale: Record<string, string> = {
   tosAndPp:
     'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   editCardsTitle: 'Edit Cards',
-  placeholderLabel: 'Ask follow up',
-  initialPlaceholderLabel: 'How can I help you today?',
-  searchTabsPlaceholder: 'Search tabs',
-  attachmentsTitle: 'Attachments',
-  attachmentsDescription: 'Add your browser tabs to give Leo more context for the conversation',
-  attachmentsBrowserTabsTitle: 'Browser tabs',
 }
 
 export function provideStrings(strings: Record<string, string>) {

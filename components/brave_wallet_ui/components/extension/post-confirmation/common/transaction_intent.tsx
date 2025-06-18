@@ -21,6 +21,7 @@ import {
   getTransactionToAddress,
   isBridgeTransaction,
   isSwapTransaction,
+  getIsSolanaAssociatedTokenAccountCreation,
 } from '../../../../utils/tx-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { getAddressLabel } from '../../../../utils/account-utils'
@@ -48,6 +49,9 @@ import {
   useSwapTransactionParser, //
 } from '../../../../common/hooks/use-swap-tx-parser'
 import { useExplorer } from '../../../../common/hooks/explorer'
+import {
+  useIsSendingToInternalShieldedAddress, //
+} from '../../../../common/hooks/use_is_sending_to_internal_shielded_address'
 
 // Styled Components
 import { Button, ExplorerIcon } from './common.style'
@@ -72,6 +76,8 @@ export const TransactionIntent = (props: Props) => {
   const txToAddress = getTransactionToAddress(transaction)
   const isSOLSwapOrBridge =
     txCoinType === BraveWallet.CoinType.SOL && isSwapOrBridge
+  const isSolanaATACreation =
+    getIsSolanaAssociatedTokenAccountCreation(transaction)
 
   const { account: txAccount } = useAccountQuery(transaction.fromAccountId)
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -100,8 +106,15 @@ export const TransactionIntent = (props: Props) => {
       : skipToken,
   )
 
+  const isSendingToInternalShieldedAddress =
+    useIsSendingToInternalShieldedAddress(
+      getZCashTransactionTypeResult.txType ?? undefined,
+      txToAddress,
+    )
+
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+    || isSendingToInternalShieldedAddress
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
@@ -269,6 +282,15 @@ export const TransactionIntent = (props: Props) => {
   ])
 
   const descriptionLocale = React.useMemo(() => {
+    if (isSolanaATACreation && transactionFailed) {
+      return 'braveWalletFailedToCreateAssociatedTokenAccount'
+    }
+    if (isSolanaATACreation && transactionConfirmed) {
+      return 'braveWalletAssociatedTokenAccountCreated'
+    }
+    if (isSolanaATACreation) {
+      return 'braveWalletCreatingAssociatedTokenAccount'
+    }
     if (transactionFailed && isSOLSwapOrBridge) {
       return 'braveWalletErrorAttemptingToTransactOnNetwork'
     }
@@ -309,6 +331,7 @@ export const TransactionIntent = (props: Props) => {
     isERC20Approval,
     isSOLSwapOrBridge,
     isShieldingFunds,
+    isSolanaATACreation,
   ])
 
   const description = formatLocale(

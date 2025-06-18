@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/webui/playlist_active_tab_tracker.h"
 
+#include <vector>
+
+#include "base/check.h"
 #include "brave/browser/ui/playlist/playlist_browser_finder.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "chrome/browser/ui/browser.h"

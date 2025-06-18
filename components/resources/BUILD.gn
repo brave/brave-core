@@ -151,6 +151,7 @@ brave_grit("strings") {
     "grit/brave_components_strings.h",
     "grit/brave_components_webui_strings.h",
     "grit/brave_components_webui_strings.ts",
+    "grit/brave_components_webui_mock_strings.ts",
   ]
 
   defines = [

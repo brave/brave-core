@@ -14,7 +14,6 @@ import {
   braveSearchHost } from '../../state/search_state'
 
 import { useSearchState, useSearchActions } from '../../context/search_context'
-import { optional } from '../../lib/optional'
 import { urlFromInput } from '../../lib/url_input'
 import { getString } from '../../lib/strings'
 import { Popover } from '../common/popover'
@@ -42,7 +41,8 @@ export function SearchBox(props: Props) {
 
   const [query, setQuery] = React.useState('')
   const [expanded, setExpanded] = React.useState(false)
-  const [selectedOption, setSelectedOption] = React.useState(optional<number>())
+  const [selectedOption, setSelectedOption] =
+      React.useState<number | null>(null)
   const [showEngineOptions, setShowEngineOptions] = React.useState(false)
   const [currentEngine, setCurrentEngine] =
       React.useState(lastUsedSearchEngine || defaultSearchEngine)
@@ -74,13 +74,13 @@ export function SearchBox(props: Props) {
   React.useEffect(() => {
     const optionSelected = resultOptions.some((option, index) => {
       if (option.kind === 'url' || option.match.allowedToBeDefaultMatch) {
-        setSelectedOption(optional(index))
+        setSelectedOption(index)
         return true
       }
       return false
     })
     if (!optionSelected) {
-      setSelectedOption(optional())
+      setSelectedOption(null)
     }
   }, [resultOptions])
 
@@ -142,19 +142,17 @@ export function SearchBox(props: Props) {
 
   function updateSelectedOption(step: number) {
     if (resultOptions.length === 0) {
-      setSelectedOption(optional())
+      setSelectedOption(null)
       return
     }
-    let index = selectedOption.valueOr(-1) + step
-    if (!selectedOption.hasValue() && step <= 0) {
-      index += 1
-    }
+    const defaultIndex = step > 0 ? -1 : 0
+    let index = (selectedOption ?? defaultIndex) + step
     if (index < 0) {
       index = resultOptions.length - 1
     } else if (index >= resultOptions.length) {
       index = 0
     }
-    setSelectedOption(optional(index))
+    setSelectedOption(index)
   }
 
   function onOptionClick(option: ResultOption, event: ClickEvent) {
@@ -178,8 +176,8 @@ export function SearchBox(props: Props) {
 
   function onKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Enter') {
-      if (selectedOption.hasValue()) {
-        const option = resultOptions[selectedOption.value()]
+      if (selectedOption !== null) {
+        const option = resultOptions[selectedOption]
         onOptionClick(option, { ...event, button: 0 })
       } else if (query) {
         actions.openSearch(query, currentEngine, { ...event, button: 0 })

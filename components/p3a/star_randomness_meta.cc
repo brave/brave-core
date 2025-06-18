@@ -19,6 +19,7 @@
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/nitro_utils/attestation.h"
+#include "brave/components/p3a/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -31,19 +32,9 @@ namespace p3a {
 
 namespace {
 
-constexpr char kCurrentPKPrefName[] = "brave.p3a.current_pk";  // DEPRECATED
-constexpr char kCurrentEpochPrefName[] =
-    "brave.p3a.current_epoch";  // DEPRECATED
-constexpr char kNextEpochTimePrefName[] =
-    "brave.p3a.next_epoch_time";  // DEPRECATED
-constexpr char kApprovedCertFPPrefName[] =
-    "brave.p3a.approved_cert_fp";  // DEPRECATED
-
-constexpr char kRandomnessMetaDictPrefName[] =
-    "brave.p3a.randomness_meta";  // DEPRECATED
-constexpr char kCurrentPKPrefKey[] = "current_pk";
-constexpr char kCurrentEpochPrefKey[] = "current_epoch";
-constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
+inline constexpr char kCurrentPKPrefKey[] = "current_pk";
+inline constexpr char kCurrentEpochPrefKey[] = "current_epoch";
+inline constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
 
 // A generous arbitrary limit, 128KB
 constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
@@ -118,36 +109,6 @@ StarRandomnessMeta::~StarRandomnessMeta() = default;
 void StarRandomnessMeta::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kRandomnessMetaDictPrefName);
   registry->RegisterStringPref(kApprovedCertFPPrefName, "");
-}
-
-void StarRandomnessMeta::RegisterPrefsForMigration(
-    PrefRegistrySimple* registry) {
-  // Added 09/2023
-  registry->RegisterStringPref(kCurrentPKPrefName, std::string());
-  registry->RegisterIntegerPref(kCurrentEpochPrefName, -1);
-  registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
-}
-
-void StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(
-    PrefService* local_state) {
-  // Added 09/2023
-  ScopedDictPrefUpdate update(local_state, kRandomnessMetaDictPrefName);
-  base::Value::Dict* typical_dict =
-      update->EnsureDict(MetricLogTypeToString(MetricLogType::kTypical));
-
-  std::string current_pk = local_state->GetString(kCurrentPKPrefName);
-  int current_epoch = local_state->GetInteger(kCurrentEpochPrefName);
-  base::Time next_epoch_time = local_state->GetTime(kNextEpochTimePrefName);
-  if (!current_pk.empty() && current_epoch != -1 &&
-      !next_epoch_time.is_null()) {
-    typical_dict->Set(kCurrentPKPrefKey, current_pk);
-    typical_dict->Set(kCurrentEpochPrefKey, current_epoch);
-    typical_dict->Set(kNextEpochTimePrefKey,
-                      base::TimeToValue(next_epoch_time));
-    local_state->ClearPref(kCurrentPKPrefName);
-    local_state->ClearPref(kCurrentEpochPrefName);
-    local_state->ClearPref(kNextEpochTimePrefName);
-  }
 }
 
 bool StarRandomnessMeta::ShouldAttestEnclave() {

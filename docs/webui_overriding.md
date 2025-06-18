@@ -56,6 +56,31 @@ CSS file or a Polymer CSS file (you need to make sure `type` is correct in the
 }
 ```
 
+## Lit Functions
+
+Adding a new function to a Lit component can be complicated because the types
+for the HTML template depend on what's exported, so naively super classing
+the upstream component does not work. The best approach is to use
+[declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)
+and modify the prototype of the upstream class.
+
+```ts
+import { FancyElement } from './fancy-chromium.js'
+
+declare module './item-chromium.js' {
+  interface FancyElement {
+    isBraveAndFancy: () => boolean
+  }
+}
+
+FancyElement.prototype.isBraveAndFancy = () => true;
+
+export * from './fancy-chromium.js'
+```
+
+See [this PR](https://github.com/brave/brave-core/pull/29598/files) for a real
+example.
+
 ## Lit Mangling
 
 Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
@@ -151,3 +176,9 @@ the upstream build for that WebUI.
 
 See `//brave/browser/resources/settings/BUILD.gn` and
 `//brave/browser/resources/settings/settings.gni` for how to get this setup.
+
+## Strings
+
+When using translated strings you should follow the guidance in the
+[webui strings explainer](./webui_strings_explainer.md) to reduce boilerplate
+and ensure we catch misspelt strings.

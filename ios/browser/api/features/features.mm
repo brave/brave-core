@@ -27,6 +27,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
@@ -250,10 +251,6 @@
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];
 }
 
-+ (Feature*)kConstellation {
-  return [[Feature alloc] initWithFeature:&p3a::features::kConstellation];
-}
-
 + (Feature*)kConstellationEnclaveAttestation {
   return [[Feature alloc]
       initWithFeature:&p3a::features::kConstellationEnclaveAttestation];
@@ -295,18 +292,8 @@
       initWithFeature:&brave_wallet::features::kNativeBraveWalletFeature];
 }
 
-+ (Feature*)kOtherJSONDeprecation {
-  return
-      [[Feature alloc] initWithFeature:&p3a::features::kOtherJSONDeprecation];
-}
-
 + (Feature*)kSkusFeature {
   return [[Feature alloc] initWithFeature:&skus::features::kSkusFeature];
-}
-
-+ (Feature*)kTypicalJSONDeprecation {
-  return
-      [[Feature alloc] initWithFeature:&p3a::features::kTypicalJSONDeprecation];
 }
 
 + (Feature*)kUseDevUpdaterUrl {
@@ -355,6 +342,11 @@
 + (Feature*)kUseChromiumWebViews {
   return
       [[Feature alloc] initWithFeature:&brave::features::kUseChromiumWebViews];
+}
+
++ (Feature*)kBraveAllowExternalPurchaseLinks {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];
 }
 
 @end

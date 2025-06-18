@@ -6,10 +6,6 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 class PrefRegistrySimple;
 
 // On Android, kWidevineEnabled is written through EnableWidevineCdm() for the
@@ -17,8 +13,6 @@ class PrefRegistrySimple;
 void EnableWidevineCdm();
 void DisableWidevineCdm();
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);
-void RequestWidevinePermission(content::WebContents* web_contents,
-                               bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);
 bool IsWidevineEnabled();
 void SetWidevineEnabled(bool opted_in);

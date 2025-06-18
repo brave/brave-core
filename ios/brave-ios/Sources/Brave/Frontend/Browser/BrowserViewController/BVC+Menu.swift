@@ -738,6 +738,16 @@ extension BrowserViewController {
               isPrivileged: false
             )
           },
+          openDirectCheckoutInNewTab: { [weak self] in
+            guard let self else { return }
+
+            popToBVC()
+            openURLInNewTab(
+              .brave.braveVPNCheckoutURL,
+              isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+              isPrivileged: false
+            )
+          },
           installVPNProfile: { [weak self] in
             guard let self else { return }
             self.popToBVC()

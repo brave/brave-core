@@ -73,8 +73,6 @@ class BatAdsClientMojoBridge final : public brave_ads::AdsClient {
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
 
-  void RecordP2AEvents(const std::vector<std::string>& events) override;
-
   bool FindProfilePref(const std::string& path) const override;
   std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void SetProfilePref(const std::string& path, base::Value value) override;

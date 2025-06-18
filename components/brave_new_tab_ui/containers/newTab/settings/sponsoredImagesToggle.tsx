@@ -132,7 +132,9 @@ export default function SponsoredImageToggle (
             }
             {' '}
             <LearnMoreLink
-              href={loadTimeData.getString('newTabTakeoverLearnMoreLinkUrl')}>
+              href={loadTimeData.getString('newTabTakeoverLearnMoreLinkUrl')}
+              target='_blank'
+              rel='noopener noreferrer'>
               {getLocale('sponsoredImageLearnMore')}
             </LearnMoreLink>
           </LearnMoreText>

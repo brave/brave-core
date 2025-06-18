@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -217,13 +216,9 @@ TEST_F(BraveAdsConversionsUtilTest,
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
 }
 
-TEST_F(
-    BraveAdsConversionsUtilTest,
-    IsAllowedToConvertSearchResultAdEventForNonRewardsUserIfShouldAlwaysTriggerSearchResultAdEvents) {
+TEST_F(BraveAdsConversionsUtilTest,
+       IsAllowedToConvertSearchResultAdEventForNonRewardsUser) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
@@ -234,25 +229,6 @@ TEST_F(
 
   // Act & Assert
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertSearchResultAdEventForNonRewardsUser) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
-  test::DisableBraveRewards();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kClicked,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
 }
 
 TEST_F(BraveAdsConversionsUtilTest, DidAdEventOccurWithinObservationWindow) {

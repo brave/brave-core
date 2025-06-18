@@ -49,8 +49,9 @@
         // "motionmark_ramp_images" is disabled, not enough buffer
       ]
     },
-    {
-      "name": "apk_size",
-    },
+    // temporarily disabled: https://github.com/brave/brave-browser/issues/46786
+    // {
+    //   "name": "apk_size",
+    // },
   ]
 }

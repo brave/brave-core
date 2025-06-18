@@ -15,6 +15,7 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
+#include "content/public/test/mock_navigation_throttle_registry.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -86,9 +87,10 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationFromTab) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(&test_handle);
 
   std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
+      AIChatThrottle::MaybeCreateThrottleFor(registry);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (IsAIChatHistoryEnabled()) {
@@ -113,9 +115,10 @@ TEST_P(AIChatThrottleUnitTest, CancelNavigationToFrame) {
       ui::PageTransition::PAGE_TRANSITION_TYPED);
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(&test_handle);
 
   std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
+      AIChatThrottle::MaybeCreateThrottleFor(registry);
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
             throttle->WillStartRequest().action());
@@ -138,9 +141,10 @@ TEST_P(AIChatThrottleUnitTest, AllowNavigationFromPanel) {
 #endif
 
   test_handle.set_page_transition(transition);
+  content::MockNavigationThrottleRegistry registry(&test_handle);
 
   std::unique_ptr<AIChatThrottle> throttle =
-      AIChatThrottle::MaybeCreateThrottleFor(&test_handle);
+      AIChatThrottle::MaybeCreateThrottleFor(registry);
   EXPECT_EQ(throttle.get(), nullptr);
 }
 

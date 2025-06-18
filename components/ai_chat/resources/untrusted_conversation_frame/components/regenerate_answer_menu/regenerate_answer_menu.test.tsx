@@ -126,8 +126,8 @@ describe('regenerate answer menu', () => {
     const menu = await getAndTestMenu()
 
     // Covers that onOpen was called
-    expect(menu).toHaveTextContent('regenerateAnswerMenuTitle')
-    expect(menu).toHaveTextContent('retrySameModelButtonLabel')
+    expect(menu).toHaveTextContent(S.CHAT_UI_REGENERATE_ANSWER_MENU_TITLE)
+    expect(menu).toHaveTextContent(S.CHAT_UI_RETRY_SAME_MODEL_BUTTON_LABEL)
     expect(menu).toHaveTextContent('Model One')
     expect(menu).toHaveTextContent('Model Two')
 
@@ -148,7 +148,7 @@ describe('regenerate answer menu', () => {
     // Make sure the model one option is selected
     const modelOneOption = getAndTestModelOption('1')
     expect(modelOneOption).toHaveAttribute('aria-selected', 'true')
-    expect(modelOneOption).toHaveTextContent('currentLabel')
+    expect(modelOneOption).toHaveTextContent(S.CHAT_UI_CURRENT_LABEL)
 
     // Click the retry same model button and make sure the onRegenerate
     // function is called with model one
@@ -172,12 +172,12 @@ describe('regenerate answer menu', () => {
     // Make sure the model one option is selected
     const modelOneOption = getAndTestModelOption('1')
     expect(modelOneOption).toHaveAttribute('aria-selected', 'true')
-    expect(modelOneOption).toHaveTextContent('currentLabel')
+    expect(modelOneOption).toHaveTextContent(S.CHAT_UI_CURRENT_LABEL)
 
     // Make sure the model two option is not selected
     const modelTwoOption = getAndTestModelOption('2')
     expect(modelTwoOption).not.toHaveAttribute('aria-selected')
-    expect(modelTwoOption).not.toHaveTextContent('currentLabel')
+    expect(modelTwoOption).not.toHaveTextContent(S.CHAT_UI_CURRENT_LABEL)
 
     // Select the model two option
     await act(async () => {
@@ -194,7 +194,7 @@ describe('regenerate answer menu', () => {
     expect(menu).toBeInTheDocument()
     expect(menu).toHaveAttribute('isOpen', 'true')
     expect(modelTwoOption).toHaveAttribute('aria-selected', 'true')
-    expect(modelTwoOption).toHaveTextContent('currentLabel')
+    expect(modelTwoOption).toHaveTextContent(S.CHAT_UI_CURRENT_LABEL)
   })
 
   it('handles invalid turnModelKey gracefully', async () => {

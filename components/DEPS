@@ -15,6 +15,13 @@ include_rules = [
   "-brave/components/l10n",
 ]
 
+# Work in progress: https://github.com/brave/brave-browser/issues/46907
+# This list disallows implicitly depend on some chromium components. Eventually
+# would removed and "+components" above would be changed to "-components"
+include_rules += [
+  "-components/grit",
+]
+
 specific_include_rules = {
   # IMPORTANT: Do not add new browser tests that depend on //chrome or
   # //brave/browser/ to //brave/components.

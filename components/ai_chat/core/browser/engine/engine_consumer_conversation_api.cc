@@ -126,12 +126,13 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::vector<ConversationEvent> conversation = {
-      {mojom::CharacterType::HUMAN, ConversationEventType::UserText, {text}},
-      {mojom::CharacterType::HUMAN,
-       ConversationEventType::RequestRewrite,
-       {question}}};
-
+  std::vector<ConversationEvent> conversation;
+  conversation.emplace_back(mojom::CharacterType::HUMAN,
+                            ConversationEventType::UserText,
+                            std::vector<std::string>{text});
+  conversation.emplace_back(mojom::CharacterType::HUMAN,
+                            ConversationEventType::RequestRewrite,
+                            /*Content=*/std::vector<std::string>{question});
   api_->PerformRequest(std::move(conversation), selected_language,
                        std::move(received_callback),
                        std::move(completed_callback));
@@ -142,11 +143,12 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     const std::string& page_content,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  std::vector<ConversationEvent> conversation{
-      GetAssociatedContentConversationEvent(page_content, is_video),
-      {mojom::CharacterType::HUMAN,
-       ConversationEventType::RequestSuggestedActions,
-       {""}}};
+  std::vector<ConversationEvent> conversation;
+  conversation.emplace_back(
+      GetAssociatedContentConversationEvent(page_content, is_video));
+  conversation.emplace_back(mojom::CharacterType::HUMAN,
+                            ConversationEventType::RequestSuggestedActions,
+                            std::vector<std::string>{""});
 
   auto on_response = base::BindOnce(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,

@@ -29,10 +29,9 @@ class P3AMetricLogStoreTest : public testing::Test,
   std::string SerializeLog(std::string_view histogram_name,
                            uint64_t value,
                            MetricLogType log_type,
-                           bool is_constellation,
                            const std::string& upload_type) override {
     return std::string(histogram_name) + "_" + base::NumberToString(value) +
-           "_" + base::NumberToString(is_constellation) + "_" + upload_type;
+           "_" + upload_type;
   }
 
   std::optional<MetricLogType> GetLogTypeForHistogram(
@@ -56,7 +55,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   }
 
   void SetUpLogStore() {
-    log_store = std::make_unique<MetricLogStore>(*this, local_state, false,
+    log_store = std::make_unique<MetricLogStore>(*this, local_state,
                                                  MetricLogType::kTypical);
   }
 

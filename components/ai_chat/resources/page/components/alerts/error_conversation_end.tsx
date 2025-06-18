@@ -18,13 +18,13 @@ function ErrorConversationEnd() {
       <Alert
         type='error'
       >
-        {getLocale('errorConversationEnd')}
+        {getLocale(S.CHAT_UI_CONVERSATION_END_ERROR)}
         <Button
           slot='actions'
           kind='plain-faint'
           onClick={createNewConversation}
         >
-          {getLocale('menuNewChat')}
+          {getLocale(S.CHAT_UI_MENU_NEW_CHAT)}
         </Button>
       </Alert>
     </div>

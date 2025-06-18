@@ -5,6 +5,8 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 
+#include <memory>
+
 #include "base/check.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -18,7 +20,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -26,18 +27,21 @@
 bool WidevinePermissionRequest::is_test_ = false;
 
 WidevinePermissionRequest::WidevinePermissionRequest(
-    content::WebContents* web_contents,
+    PrefService* prefs,
+    const GURL& requesting_origin,
     bool for_restart)
     : PermissionRequest(
           std::make_unique<permissions::PermissionRequestData>(
               std::make_unique<permissions::ContentSettingPermissionResolver>(
                   permissions::RequestType::kWidevine),
               false,
-              web_contents->GetVisibleURL()),
+              requesting_origin),
           base::BindRepeating(&WidevinePermissionRequest::PermissionDecided,
                               base::Unretained(this))),
-      web_contents_(web_contents),
-      for_restart_(for_restart) {}
+      prefs_(prefs),
+      for_restart_(for_restart) {
+  CHECK(prefs);
+}
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
@@ -83,9 +87,7 @@ void WidevinePermissionRequest::PermissionDecided(
     }
     // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
-    Profile* profile =
-        static_cast<Profile*>(web_contents_->GetBrowserContext());
-    profile->GetPrefs()->SetBoolean(kAskEnableWidvine, !get_dont_ask_again());
+    prefs_->SetBoolean(kAskEnableWidvine, !get_dont_ask_again());
     // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);

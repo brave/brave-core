@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "محركات البحث المستخدمة حاليًا";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "إضافة محرك بحث مخصص";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "اكتب عنوان url للبحث واستبدل الاستعلام بـ %1$s.\nعلى سبيل المثال: https://youtube.com/search?q=%2$s \n(إذا كان الموقع يدعم OpenSearch، فسيتم توفير خيار للإضافة تلقائيًا أثناء تحرير هذا الحقل.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "محرك بحث بنفس الاسم موجود بالفعل.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "قم بإدخال اسم محرك البحث";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "قالب بحث مخصص غير آمن لـ";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "تعديل مجلد";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "تعديل محركات البحث السريع";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "تمكين السحب للتحديث";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "تم";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "بحث عن \"%@\"";
+/* Find `search query` */
+"FindInPageFormat" = "بحث عن ";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "النتيجة التالية في الصفحة";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "إخفاء الصور الدعائية";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "\"برعاية\" هي خلفيات إضافية ذات علامات تجارية يمكنك الربح منها مع تمكين Brave Rewards.";
+"ntp.imageTypeSelectionDescription" = "الصور الدعائية هي خلفيات ذات علامة تجارية تظهر في علامات التبويب المفتوحة حديثًا في المتصفح. يدعم تمكين هذه الصور الدعائية Brave في مهمتها.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "اعرف المزيد";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "تعرف على المزيد حول Brave Rewards";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "إخفاء";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "لصق والانتقال";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "مُشغَّل";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "مسح كود الاستجابة السريعة QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "تتيح لك عمليات البحث الأخيرة الوصول بشكل خاص إلى عمليات البحث السابقة. هل ترغب في تمكين عمليات البحث الأخيرة؟";
+"RecentSearchSectionDescription" = "هل ترغب في تمكين عمليات البحث الأخيرة؟";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "عمليات البحث الأخيرة";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "عمليات البحث الأخيرة";
+"RecentSearchSectionTitle" = "تتيح لك عمليات البحث الأخيرة الوصول بشكل خاص إلى عمليات البحث السابقة.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "عرض";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "للبحث عن الاقتراح";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "علامات التبويب المفتوحة والإشارات المرجعية والسجل";
+"SearchHistorySectionHeader" = "على جهازك";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "مسح البحث";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "بحث";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "بحث عن \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "إضافة محرك بحث مخصص";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "اقتراحات البحث";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "هل ترغب في تمكين اقتراحات البحث؟";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "بحث باستخدام Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "غير آمن";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "لصق والانتقال";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "قائمة التشغيل";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "إيقاف";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "البحث الصوتي";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

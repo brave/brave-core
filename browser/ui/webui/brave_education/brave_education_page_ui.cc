@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/browser/ui/webui/brave_education/brave_education_handler.h"
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"

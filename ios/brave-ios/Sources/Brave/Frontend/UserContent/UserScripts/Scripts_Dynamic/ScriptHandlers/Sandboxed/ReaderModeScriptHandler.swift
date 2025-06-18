@@ -8,8 +8,6 @@ import Web
 import WebKit
 import os.log
 
-let readerModeProfileKeyStyle = "readermode.style"
-
 enum ReaderModeMessageType: String {
   case stateChange = "ReaderModeStateChange"
   case pageEvent = "ReaderPageEvent"
@@ -134,6 +132,15 @@ struct ReaderModeStyle {
     self.theme = theme
     self.fontType = fontType
     self.fontSize = fontSize
+  }
+
+  init?(encodedString: String) {
+    guard let data = encodedString.data(using: .utf8),
+      let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+    else {
+      return nil
+    }
+    self.init(dict: dict)
   }
 
   /// Initialize the style from a dictionary, taken from the profile. Returns nil if the object cannot be decoded.

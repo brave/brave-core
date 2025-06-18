@@ -185,7 +185,7 @@ provideStrings({
   braveWalletWelcomeImportWalletDescription: 'Import your existing wallet.',
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
   braveWalletCopyright:
-    '©2024 Brave Software Inc. Brave and the Brave logo are registered '
+    '©2025 Brave Software Inc. Brave and the Brave logo are registered '
     + 'trademarks of Brave Software, Inc. Other product names and logos may be '
     + 'trademarks of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
@@ -433,6 +433,9 @@ provideStrings({
   braveWalletFilImportPrivateKeyFormatDescription:
     'NOTE: Private key must be provided as a hex-encoded JSON that contains '
     + 'private key and protocol information. $1Learn more$1.',
+  braveWalletFilExportPrivateKeyFormatDescription:
+    'NOTE: Private key is provided as a hex-encoded JSON that contains private '
+    + 'key and protocol information. $1Learn more$1.',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
@@ -1286,6 +1289,13 @@ provideStrings({
   braveWalletTransactionIntentSend: 'Send $1',
   braveWalletTransactionIntentSwap: 'Swap $1 to $2',
 
+  // Solana Associated Token Account
+  braveWalletCreatingAssociatedTokenAccount:
+    'Creating associated token account',
+  braveWalletFailedToCreateAssociatedTokenAccount:
+    'Failed to create associated token account',
+  braveWalletAssociatedTokenAccountCreated: 'Associated token account created',
+
   // Solana ProgramID Names
   braveWalletSolanaSystemProgram: 'System Program',
   braveWalletSolanaConfigProgram: 'Config Program',
@@ -1555,6 +1565,10 @@ provideStrings({
   braveWalletReviewShield: 'Review shield',
   braveWalletShielding: 'Shielding',
   braveWalletShieldZEC: 'Shield ZEC',
+  braveWalletShieldFunds: 'Shield funds',
+  braveWalletShieldingFundsAlertDescription:
+    'You are sending funds from your transparent account to your shielded'
+    + 'account.',
 
   // Page Not Found
   braveWalletPageNotFoundTitle:

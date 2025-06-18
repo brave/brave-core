@@ -32,7 +32,7 @@ class RemoteConfigManager {
 
     virtual std::optional<MetricLogType> GetLogTypeForHistogram(
         std::string_view histogram_name) const = 0;
-    virtual const MetricConfig* GetBaseMetricConfig(
+    virtual const MetricConfig* GetMetricConfig(
         std::string_view histogram_name) const = 0;
     virtual void OnRemoteConfigLoaded() = 0;
   };
@@ -47,6 +47,9 @@ class RemoteConfigManager {
   base::WeakPtr<RemoteConfigManager> GetWeakPtr();
 
   bool is_loaded() const { return is_loaded_; }
+
+  // Testing method to set the loaded state
+  void SetIsLoadedForTesting(bool is_loaded) { is_loaded_ = is_loaded; }
 
  private:
   void SetMetricConfigs(

@@ -324,11 +324,7 @@ extension Preferences {
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
 
     /// A Codable json representation of NewTabPageP3AHelperStorage
-    public static let sponsoredImageEventCountJSON = Option<String?>(
-      key: "newtabpage.si-p3a.event-count",
-      default: nil
-    )
-    public static let sponsoredImageEventCountConstellation = Option<String?>(
+    public static let sponsoredImageEventCount = Option<String?>(
       key: "newtabpage.si-p3a.event-count-constellation",
       default: nil
     )
@@ -379,6 +375,10 @@ extension Preferences {
   final public class WebsiteRedirects {
     static let reddit = Option<Bool>(key: "website-redirect.reddit", default: false)
     static let npr = Option<Bool>(key: "website-redirect.npr", default: false)
+  }
+
+  final public class ReaderMode {
+    static let style = Option<String?>(key: "readermode.style", default: nil)
   }
 }
 

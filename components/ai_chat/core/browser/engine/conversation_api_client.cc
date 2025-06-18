@@ -88,7 +88,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 base::Value::List ConversationEventsToList(
-    const std::vector<ConversationEvent>& conversation) {
+    std::vector<ConversationEvent> conversation) {
   static const base::NoDestructor<std::map<mojom::CharacterType, std::string>>
       kRoleMap({{mojom::CharacterType::HUMAN, "user"},
                 {mojom::CharacterType::ASSISTANT, "assistant"}});
@@ -189,11 +189,12 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     : role(role), type(type), content(content), topic(topic) {}
 ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
 ConversationAPIClient::ConversationEvent::~ConversationEvent() = default;
+
 ConversationAPIClient::ConversationEvent::ConversationEvent(
-    const ConversationEvent&) = default;
-ConversationAPIClient::ConversationEvent&
-ConversationAPIClient::ConversationEvent::operator=(const ConversationEvent&) =
-    default;
+    ConversationAPIClient::ConversationEvent&& other) = default;
+
+ConversationAPIClient::ConversationEvent& ConversationEvent::operator=(
+    ConversationAPIClient::ConversationEvent&& other) = default;
 
 ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
@@ -215,7 +216,7 @@ void ConversationAPIClient::ClearAllQueries() {
 }
 
 void ConversationAPIClient::PerformRequest(
-    const std::vector<ConversationEvent>& conversation,
+    std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
@@ -230,13 +231,13 @@ void ConversationAPIClient::PerformRequest(
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
-    const std::vector<ConversationEvent>& conversation,
+    std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
-  dict.Set("events", ConversationEventsToList(conversation));
+  dict.Set("events", ConversationEventsToList(std::move(conversation)));
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("selected_language", selected_language);
   dict.Set("system_language",
@@ -255,7 +256,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 }
 
 void ConversationAPIClient::PerformRequestWithCredentials(
-    const std::vector<ConversationEvent>& conversation,
+    std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
     const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,

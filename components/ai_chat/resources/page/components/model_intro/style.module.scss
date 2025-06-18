@@ -55,8 +55,14 @@
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-primary);
 
-  a {
+  button {
+    cursor: pointer;
+    font: inherit;
     display: block;
+    background: none;
+    border: none;
     color: var(--leo-color-text-interactive);
+    padding: 0;
+    text-decoration: underline;
   }
 }

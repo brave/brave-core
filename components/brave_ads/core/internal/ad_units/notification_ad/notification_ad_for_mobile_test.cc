@@ -7,7 +7,6 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -52,10 +51,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   test::ForcePermissionRules();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_,
-              RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                  mojom::AdType::kNotificationAd, /*segments=*/{})));
-
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
@@ -76,8 +71,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
-
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   ServeAd();
 }

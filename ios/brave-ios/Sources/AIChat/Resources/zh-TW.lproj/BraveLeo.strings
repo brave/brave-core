@@ -22,6 +22,12 @@
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "將購買交易連結至您的 Brave 帳戶";
 
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "啟用捷徑從快速搜尋引擎列啟動 Leo。";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "在快速搜尋引擎列顯示";
+
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "到期日";
 
@@ -88,6 +94,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "預設模型";
 
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "不要再顯示";
+
 /* The text displayed under an edited user prompt/message beside a timestamp. */
 "aichat.editedMessageCaption" = "已編輯";
 
@@ -136,47 +145,65 @@
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "根據頁面内容產生回答";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Haiku 提供技術支援，可勝任對話和文字處理工作。";
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "處理您的請求時發生錯誤。請稍後再試。";
 
-/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeHaikuModelDescription" = "由 Anthropic 建置的 Claude Haiku";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "嗨，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Haiku 模型提供技術支援，可勝任對話與文字處理工作。Claude Haiku 透過我們自己的安全基礎架構由 Brave 託管。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "快速流暢的聊天";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Sonnet 提供技術支援，可勝任對話和文字處理工作。";
+"aichat.introMessageClaudeInstantMessageDescription" = "嗨，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Instant 模型提供技術支援，可勝任對話與文字處理工作。Claude Instant 透過我們自己的安全基礎架構由 Brave 託管。";
 
-/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeSonnetModelDescription" = "由 Anthropic 建置的 Claude Sonnet";
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "嗨，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Sonnet 模型提供技術支援，可勝任對話與文字處理工作。Claude Sonnet 透過我們自己的安全基礎架構由 Brave 託管。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "兼顧速度與智慧";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageDeepSeekR1MessageDescription" = "嗨，我是 Leo。我是 Brave 的完全託管型 AI 助理，由 DeepSeek R1 提供技術支援，這是 DeepSeek 為執行深度推理任務而建立的模型。 ";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "推理模型";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Brave 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "您好，我是 Leo。我是 Brave 的完全託管型人工智慧助理。我由 Llama 3.1 8B 提供技術支援，Llama 3.1 8B 是由 Meta 建立的模型，效能卓越且適用於許多使用案例。";
-
-/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "由 Meta 建立的 Llama 3.1 8b";
+"aichat.introMessageLlamaMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama 3.1 8B 提供技術支援，效能強大，可適用於許多使用案例。Llama 透過我們自己的安全基礎架構由 Brave 託管。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "一般目的聊天";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "您好，我是 Leo。我是完全託管於 Brave 的 AI 助理，由 Mixtral 8x7B 提供技術支援，這是 Mistral AI 建立的模型，可用於處理進階工作。";
+"aichat.introMessageLlamaVisionMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama Vision 提供技術支援，效能強大，可適用於許多使用案例。Llama Vision 透過我們自己的安全基礎架構由 Brave 託管。";
 
-/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
-"aichat.introMessageMixtralModelDescription" = "由 Mistral AI 建置的 Mixtral";
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaVisionModelPurposeDescription" = "一般目的視覺";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Mistral AI 建立的模型 Mixtral 8x7B 提供技術支援，可處理進階工作。Mixtral 透過我們自己的安全基礎架構由 Brave 託管。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageMixtralModelPurposeDescription" = "進階聊天任務";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 14B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "一般用途的聊天、編碼等";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "聊天";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "為此模型設定的 API 金鑰無效。請檢查您的設定並重試。";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "此模型的端點無效。請檢查您的設定並重試。";
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
@@ -189,6 +216,9 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "利奥残疾人";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "上傳圖片";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "改善以下的搜尋結果：";
@@ -316,8 +346,11 @@
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Premium 訂閱";
 
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "詢問後續";
+
 /* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "在此處輸入提示";
+"aichat.promptPlaceHolderDescription" = "今天有什麼能幫到您的？";
 
 /* The title of action for quick menu which displaying advanced settings */
 "aichat.quickMenuAdvancedSettingsActionTitle" = "進階設定";
@@ -330,6 +363,12 @@
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "為回答評分時發生錯誤";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "喜歡或不喜歡某個答案會將評分、對話、型號、語言、版本和等級狀態傳送至 Brave，以改善 Leo。 [了解更多](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "回應意見回饋";
 
 /* The title for button that refreshes user credentials */
 "aichat.refreshCredentialsActionTitle" = "重新整理";
@@ -369,6 +408,9 @@
 
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "重試";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "端點目前已超載。請稍後再試。";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Brave 不會儲存或分享您的語音搜尋。";

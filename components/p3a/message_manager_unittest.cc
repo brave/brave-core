@@ -43,10 +43,8 @@ namespace {
 constexpr uint8_t kInitialEpoch = 2;
 constexpr size_t kUploadIntervalSeconds = 120;
 constexpr base::TimeDelta kEpochLenTimeDelta = base::Days(4);
-constexpr char kTestJsonHost[] = "https://localhost:8443";
 constexpr char kTestStarRandomnessHost[] = "https://localhost:9443";
 constexpr char kTestStarUploadHost[] = "https://localhost:10443";
-constexpr char kP2APrefix[] = "Brave.P2A";
 
 }  // namespace
 
@@ -58,6 +56,15 @@ class P3AMessageManagerTest : public testing::Test,
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
+
+  void SetUp() override {
+    scoped_feature_list_.InitWithFeatures(
+        {features::kConstellationEnclaveAttestation}, {});
+    base::Time future_mock_time;
+    if (base::Time::FromString("2050-01-04", &future_mock_time)) {
+      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
+    }
+  }
 
   std::optional<MetricLogType> GetDynamicMetricLogType(
       std::string_view histogram_name) const override {
@@ -74,38 +81,16 @@ class P3AMessageManagerTest : public testing::Test,
     return GetBaseLogTypeForHistogram(histogram_name);
   }
 
-  void OnRotation(MetricLogType log_type, bool is_constellation) override {}
+  void OnRotation(MetricLogType log_type) override {}
 
-  void OnMetricCycled(const std::string& histogram_name,
-                      bool is_constellation) override {}
+  void OnMetricCycled(const std::string& histogram_name) override {}
 
  protected:
-  void InitFeatures(bool is_constellation_enabled) {
-    if (is_constellation_enabled) {
-      scoped_feature_list_.InitWithFeatures(
-          {features::kConstellation,
-           features::kConstellationEnclaveAttestation},
-          {});
-    } else {
-      scoped_feature_list_.InitWithFeatures(
-          {}, {features::kConstellation,
-               features::kConstellationEnclaveAttestation});
-    }
-    base::Time future_mock_time;
-    if (base::Time::FromString("2050-01-04", &future_mock_time)) {
-      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
-    }
-  }
-
   void SetUpManager() {
     p3a_config_.disable_star_attestation = true;
     p3a_config_.star_randomness_host = kTestStarRandomnessHost;
     p3a_config_.randomize_upload_interval = false;
     p3a_config_.average_upload_interval = base::Seconds(kUploadIntervalSeconds);
-    p3a_config_.p3a_json_upload_url =
-        GURL(std::string(kTestJsonHost) + "/p3a_json");
-    p3a_config_.p2a_json_upload_url =
-        GURL(std::string(kTestJsonHost) + "/p2a_json");
     p3a_config_.p3a_constellation_upload_host = kTestStarUploadHost;
 
     local_state_ = std::make_unique<TestingPrefServiceSimple>();
@@ -150,12 +135,6 @@ class P3AMessageManagerTest : public testing::Test,
                 request.url.spec(), response,
                 interceptor_status_code_from_randomness_);
             return;
-          } else if (request.url == p3a_config_.p3a_json_upload_url) {
-            EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
-            StoreJsonMetricInMap(request, false);
-          } else if (request.url == p3a_config_.p2a_json_upload_url) {
-            EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
-            StoreJsonMetricInMap(request, true);
           } else if (request.url.spec().starts_with(
                          std::string(kTestStarUploadHost))) {
             std::string log_type_str = request.url.path();
@@ -188,32 +167,17 @@ class P3AMessageManagerTest : public testing::Test,
   }
 
   void ResetInterceptorStores() {
-    p3a_json_sent_metrics_.clear();
-    p2a_json_sent_metrics_.clear();
     p3a_constellation_sent_messages_.clear();
     info_request_made_.clear();
     points_requests_made_.clear();
   }
 
-  base::TimeDelta GetJsonRotationTimeDelta(MetricLogType log_type) {
-    switch (log_type) {
-      case MetricLogType::kExpress:
-        return base::Days(1);
-      case MetricLogType::kTypical:
-        return base::Days(7);
-      case MetricLogType::kSlow:
-        return base::Days(31);
-    }
-  }
-
   std::vector<std::string> GetTestHistogramNames(MetricLogType log_type,
-                                                 size_t p3a_count,
-                                                 size_t p2a_count) {
+                                                 size_t p3a_count) {
     auto histograms_begin = kCollectedExpressHistograms.cbegin();
     auto histograms_end = kCollectedExpressHistograms.cend();
     std::vector<std::string> result;
     size_t p3a_i = 0;
-    size_t p2a_i = 0;
     switch (log_type) {
       case MetricLogType::kExpress:
         histograms_begin = kCollectedExpressHistograms.cbegin();
@@ -232,19 +196,13 @@ class P3AMessageManagerTest : public testing::Test,
     }
     for (auto histogram_i = histograms_begin; histogram_i != histograms_end;
          histogram_i++) {
-      if (histogram_i->first.rfind(kP2APrefix, 0) == 0) {
-        if (p2a_i < p2a_count) {
-          result.push_back(std::string(histogram_i->first));
-          p2a_i++;
-        }
-      } else if (p3a_i < p3a_count &&
-                 (histogram_i->first.starts_with("Brave.Core") ||
-                  log_type == MetricLogType::kExpress)) {
+      if (p3a_i < p3a_count && (histogram_i->first.starts_with("Brave.Core") ||
+                                log_type == MetricLogType::kExpress)) {
         result.push_back(std::string(histogram_i->first));
         p3a_i++;
       }
 
-      if (p2a_i >= p2a_count && p3a_i >= p3a_count) {
+      if (p3a_i >= p3a_count) {
         break;
       }
     }
@@ -259,16 +217,12 @@ class P3AMessageManagerTest : public testing::Test,
   std::unique_ptr<MessageManager> message_manager_;
   std::unique_ptr<TestingPrefServiceSimple> local_state_;
 
-  base::flat_map<std::string, size_t> p3a_json_sent_metrics_;
-  base::flat_map<std::string, size_t> p2a_json_sent_metrics_;
-
   base::flat_map<MetricLogType, base::flat_set<std::string>>
       p3a_constellation_sent_messages_;
 
   bool interceptor_invalid_response_from_randomness_ = false;
   bool interceptor_invalid_response_from_randomness_non_json_ = false;
   net::HttpStatusCode interceptor_status_code_from_randomness_ = net::HTTP_OK;
-  bool ignore_json_duplicates_ = false;
 
   base::flat_map<MetricLogType, bool> info_request_made_;
   base::flat_map<MetricLogType, size_t> points_requests_made_;
@@ -284,128 +238,16 @@ class P3AMessageManagerTest : public testing::Test,
         .As<network::DataElementBytes>()
         .AsStringPiece();
   }
-
-  void StoreJsonMetricInMap(const network::ResourceRequest& request,
-                            bool is_p2a) {
-    std::string_view body = ExtractBodyFromRequest(request);
-    base::Value::Dict parsed_log = base::test::ParseJsonDict(body);
-    std::string* metric_name = parsed_log.FindString("metric_name");
-    ASSERT_TRUE(metric_name);
-    std::optional<int> metric_value = parsed_log.FindInt("metric_value");
-    ASSERT_TRUE(metric_value);
-
-    if (is_p2a) {
-      if (!ignore_json_duplicates_) {
-        EXPECT_EQ(p2a_json_sent_metrics_.find(*metric_name),
-                  p2a_json_sent_metrics_.end());
-      }
-      p2a_json_sent_metrics_[*metric_name] = *metric_value;
-    } else {
-      if (!ignore_json_duplicates_) {
-        EXPECT_EQ(p3a_json_sent_metrics_.find(*metric_name),
-                  p3a_json_sent_metrics_.end());
-      }
-      p3a_json_sent_metrics_[*metric_name] = *metric_value;
-    }
-  }
 };
 
-TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
-  InitFeatures(true);
-  for (MetricLogType log_type : kAllMetricLogTypes) {
-    size_t p2a_count = log_type == MetricLogType::kTypical ? 4 : 0;
-    SetUpManager();
-    ResetInterceptorStores();
-    std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, p2a_count);
-
-    for (size_t i = 0; i < test_histograms.size(); i++) {
-      message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
-    }
-
-    task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 50));
-
-    EXPECT_EQ(p3a_json_sent_metrics_.size(), 3U);
-    EXPECT_EQ(p2a_json_sent_metrics_.size(), p2a_count);
-
-    for (size_t i = 0; i < test_histograms.size(); i++) {
-      if (test_histograms[i].rfind(kP2APrefix, 0) == 0) {
-        ASSERT_EQ(p2a_json_sent_metrics_.find(test_histograms[i])->second,
-                  i + 1);
-      } else {
-        ASSERT_EQ(p3a_json_sent_metrics_.find(test_histograms[i])->second,
-                  i + 1);
-      }
-    }
-
-    if (log_type == MetricLogType::kExpress) {
-      // Most express metrics are ephemeral, so they won't be sent again.
-      // No need to run tests below.
-      continue;
-    }
-
-    ResetInterceptorStores();
-    task_environment_.FastForwardBy(GetJsonRotationTimeDelta(log_type) +
-                                    base::Seconds(kUploadIntervalSeconds * 50));
-
-    EXPECT_EQ(p3a_json_sent_metrics_.size(), 3U);
-    EXPECT_EQ(p2a_json_sent_metrics_.size(), p2a_count);
-    for (size_t i = 0; i < test_histograms.size(); i++) {
-      if (test_histograms[i].rfind(kP2APrefix, 0) == 0) {
-        ASSERT_EQ(p2a_json_sent_metrics_.find(test_histograms[i])->second,
-                  i + 1);
-      } else {
-        ASSERT_EQ(p3a_json_sent_metrics_.find(test_histograms[i])->second,
-                  i + 1);
-      }
-    }
-  }
-}
-
-TEST_F(P3AMessageManagerTest, UpdateLogsAndDontSendConstellation) {
-  ignore_json_duplicates_ = true;
-  // don't perform any constellation activity if feature is disabled
-  InitFeatures(false);
-  SetUpManager();
-  for (MetricLogType log_type : kAllMetricLogTypes) {
-    ResetInterceptorStores();
-    ASSERT_FALSE(info_request_made_[log_type]);
-
-    std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 7, 0);
-
-    for (size_t i = 0; i < test_histograms.size(); i++) {
-      message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
-    }
-
-    task_environment_.FastForwardBy(
-        base::Seconds(kUploadIntervalSeconds * 100));
-
-    EXPECT_EQ(points_requests_made_[log_type], 0U);
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 0U);
-
-    ResetInterceptorStores();
-    current_epoch_++;
-    next_epoch_time_ += kEpochLenTimeDelta;
-    task_environment_.FastForwardBy(
-        kEpochLenTimeDelta + base::Seconds(kUploadIntervalSeconds * 100));
-
-    ASSERT_FALSE(info_request_made_[log_type]);
-    EXPECT_EQ(points_requests_made_[log_type], 0U);
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 0U);
-  }
-}
-
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
-  ignore_json_duplicates_ = true;
-  InitFeatures(true);
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
     ASSERT_TRUE(info_request_made_[log_type]);
 
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 0);
+        GetTestHistogramNames(log_type, 3);
 
     for (size_t i = 0; i < test_histograms.size(); i++) {
       message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
@@ -448,15 +290,13 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
 }
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
-  ignore_json_duplicates_ = true;
-  InitFeatures(true);
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
     ASSERT_TRUE(info_request_made_[log_type]);
 
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 0);
+        GetTestHistogramNames(log_type, 3);
 
     for (size_t i = 0; i < test_histograms.size(); i++) {
       message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
@@ -524,15 +364,13 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
 
 TEST_F(P3AMessageManagerTest,
        UpdateLogsAndSendConstellationInvalidClientRequest) {
-  ignore_json_duplicates_ = true;
-  InitFeatures(true);
   for (MetricLogType log_type : kAllMetricLogTypes) {
     ResetInterceptorStores();
     SetUpManager();
     ASSERT_TRUE(info_request_made_[log_type]);
 
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 0);
+        GetTestHistogramNames(log_type, 3);
 
     for (size_t i = 0; i < test_histograms.size(); i++) {
       message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
@@ -581,8 +419,6 @@ TEST_F(P3AMessageManagerTest,
 }
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
-  ignore_json_duplicates_ = true;
-  InitFeatures(true);
   for (MetricLogType log_type : kAllMetricLogTypes) {
     interceptor_status_code_from_randomness_ = net::HTTP_OK;
     ResetInterceptorStores();
@@ -590,7 +426,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
     ASSERT_TRUE(info_request_made_[log_type]);
 
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 0);
+        GetTestHistogramNames(log_type, 3);
 
     for (size_t i = 0; i < test_histograms.size(); i++) {
       message_manager_->UpdateMetricValue(test_histograms[i], i + 1);
@@ -639,11 +475,10 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
 }
 
 TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
-  InitFeatures(true);
   SetUpManager();
   for (MetricLogType log_type : kAllMetricLogTypes) {
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 3);
+        GetTestHistogramNames(log_type, 3);
 
     for (const std::string& histogram_name : test_histograms) {
       message_manager_->UpdateMetricValue(histogram_name, 5);
@@ -657,8 +492,6 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
         base::Seconds(kUploadIntervalSeconds * 100));
 
     EXPECT_EQ(points_requests_made_[log_type], 0U);
-    EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
-    EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
 
     current_epoch_++;
     next_epoch_time_ += kEpochLenTimeDelta;
@@ -671,11 +504,10 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
-  InitFeatures(true);
   SetUpManager();
   for (MetricLogType log_type : kAllMetricLogTypes) {
     std::vector<std::string> test_histograms =
-        GetTestHistogramNames(log_type, 3, 3);
+        GetTestHistogramNames(log_type, 3);
 
     for (const std::string& histogram_name : test_histograms) {
       message_manager_->UpdateMetricValue(histogram_name, 5);
@@ -688,8 +520,6 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
         base::Seconds(kUploadIntervalSeconds * 100));
 
     EXPECT_EQ(points_requests_made_[log_type], 0U);
-    EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
-    EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
     EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 0U);
 
     current_epoch_++;
@@ -703,7 +533,6 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
-  InitFeatures(true);
   SetUpManager();
 
   message_manager_->Stop();
@@ -711,13 +540,10 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
   task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
 
   EXPECT_TRUE(points_requests_made_.empty());
-  EXPECT_TRUE(p3a_json_sent_metrics_.empty());
-  EXPECT_TRUE(p2a_json_sent_metrics_.empty());
   EXPECT_TRUE(p3a_constellation_sent_messages_.empty());
 }
 
 TEST_F(P3AMessageManagerTest, ActivationDate) {
-  InitFeatures(true);
   SetUpManager();
 
   MessageMetainfo meta;
@@ -773,7 +599,6 @@ TEST_F(P3AMessageManagerTest, ActivationDate) {
 }
 
 TEST_F(P3AMessageManagerTest, ActivationDateCleanup) {
-  InitFeatures(true);
   SetUpManager();
 
   MessageMetainfo meta;
@@ -792,6 +617,32 @@ TEST_F(P3AMessageManagerTest, ActivationDateCleanup) {
 
   CreateAndStartManager();
   EXPECT_FALSE(meta.GetActivationDate(metric_name));
+}
+
+TEST_F(P3AMessageManagerTest, EphemeralMetricOnlySentOnce) {
+  SetUpManager();
+
+  ResetInterceptorStores();
+
+  message_manager_->UpdateMetricValue("Brave.Today.UsageDaily", 1);
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(points_requests_made_[MetricLogType::kExpress], 1U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kExpress].size(),
+            1U);
+
+  ResetInterceptorStores();
+
+  current_epoch_++;
+  next_epoch_time_ += kEpochLenTimeDelta;
+  task_environment_.FastForwardBy(kEpochLenTimeDelta +
+                                  base::Seconds(kUploadIntervalSeconds * 100));
+
+  ASSERT_TRUE(info_request_made_[MetricLogType::kExpress]);
+  EXPECT_EQ(points_requests_made_[MetricLogType::kExpress], 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kExpress].size(),
+            0U);
 }
 
 }  // namespace p3a

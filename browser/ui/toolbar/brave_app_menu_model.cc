@@ -9,6 +9,8 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"

@@ -21,68 +21,68 @@ function getCategoryAndItem(actionType: Mojom.ActionType): {
 } {
   switch (actionType) {
       case Mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
-        return { category: undefined, item: getLocale('summarizeLabel')}
+        return { category: undefined, item: getLocale(S.AI_CHAT_CONTEXT_SUMMARIZE_TEXT)}
       case Mojom.ActionType.EXPLAIN:
-        return { category: undefined, item: getLocale('explainLabel')}
+        return { category: undefined, item: getLocale(S.AI_CHAT_CONTEXT_EXPLAIN)}
       case Mojom.ActionType.CREATE_TAGLINE:
         return {
-          category: getLocale('createCategoryTitle'),
-          item: getLocale('taglineLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CREATE),
+          item: getLocale(S.AI_CHAT_CONTEXT_CREATE_TAGLINE)
         }
       case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
         return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaShortLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST),
+          item: getLocale(S.AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)
         }
       case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
         return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaLongLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST),
+          item: getLocale(S.AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG)
         }
       case Mojom.ActionType.PARAPHRASE:
         return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('paraphraseLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_REWRITE),
+          item: getLocale(S.AI_CHAT_CONTEXT_PARAPHRASE)
         }
       case Mojom.ActionType.IMPROVE:
         return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('improveLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_REWRITE),
+          item: getLocale(S.AI_CHAT_CONTEXT_IMPROVE)
         }
       case Mojom.ActionType.ACADEMICIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('academicizeLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_TONE),
+          item: getLocale(S.AI_CHAT_CONTEXT_ACADEMICIZE)
         }
       case Mojom.ActionType.PROFESSIONALIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('professionalizeLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_TONE),
+          item: getLocale(S.AI_CHAT_CONTEXT_PROFESSIONALIZE)
         }
       case Mojom.ActionType.PERSUASIVE_TONE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('persuasiveToneLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_TONE),
+          item: getLocale(S.AI_CHAT_CONTEXT_PERSUASIVE_TONE)
         }
       case Mojom.ActionType.CASUALIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('casualizeLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_TONE),
+          item: getLocale(S.AI_CHAT_CONTEXT_CASUALIZE)
         }
       case Mojom.ActionType.FUNNY_TONE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('funnyToneLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_TONE),
+          item: getLocale(S.AI_CHAT_CONTEXT_FUNNY_TONE)
         }
       case Mojom.ActionType.SHORTEN:
         return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('shortenLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_LENGTH),
+          item: getLocale(S.AI_CHAT_CONTEXT_SHORTEN)
         }
       case Mojom.ActionType.EXPAND:
         return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('expandLabel')
+          category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_LENGTH),
+          item: getLocale(S.AI_CHAT_CONTEXT_EXPAND)
         }
       default:
         return { category: undefined, item: undefined }

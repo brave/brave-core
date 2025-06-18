@@ -369,8 +369,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   #endif
 
   func applicationWillTerminate(_ application: UIApplication) {
-    AppState.shared.profile.shutdown()
-
     SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
     // Clean up BraveCore

@@ -9,7 +9,7 @@ import SwiftUI
 struct BraveVPNPremiumUpsellView: View {
 
   var body: some View {
-    VStack(spacing: 10) {
+    VStack(spacing: 8) {
       BraveVPNUpsellTopicView(topicType: .privacy)
       BraveVPNUpsellTopicView(topicType: .location)
       BraveVPNUpsellTopicView(topicType: .server)

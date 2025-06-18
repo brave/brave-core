@@ -47,10 +47,6 @@ constexpr char kLandsEventType[] = "lands";
 constexpr char kAwareEventType[] = "aware";
 constexpr char kViewedEventType[] = "viewed";
 
-constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
-constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
-constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
-
 }  // namespace
 
 class NTPP3AHelperImplTest : public testing::Test {
@@ -71,9 +67,6 @@ class NTPP3AHelperImplTest : public testing::Test {
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
 
     p3a::P3AConfig config;
-    config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
-    config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
-    config.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
     base::Time install_time;
     ASSERT_TRUE(base::Time::FromString("2049-01-01", &install_time));
     p3a_service_ = scoped_refptr(new p3a::P3AService(
@@ -81,8 +74,7 @@ class NTPP3AHelperImplTest : public testing::Test {
 
     ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
         &local_state_, p3a_service_.get(),
-        g_brave_browser_process->ntp_background_images_service(), &prefs_,
-        true);
+        g_brave_browser_process->ntp_background_images_service(), &prefs_);
   }
 
   void TearDown() override {
@@ -103,17 +95,11 @@ class NTPP3AHelperImplTest : public testing::Test {
   }
 
   void NotifyRotation() {
-    ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
-                                   /*is_constellation=*/true);
-    ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
-                                   /*is_constellation=*/false);
+    ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress);
   }
 
   void NotifyMetricCycle(const std::string& histogram_name) {
-    ntp_p3a_helper_->OnP3AMetricCycled(histogram_name,
-                                       /*is_constellation=*/true);
-    ntp_p3a_helper_->OnP3AMetricCycled(histogram_name,
-                                       /*is_constellation=*/false);
+    ntp_p3a_helper_->OnP3AMetricCycled(histogram_name);
   }
 
   content::BrowserTaskEnvironment task_environment_;

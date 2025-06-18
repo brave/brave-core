@@ -18,6 +18,7 @@ public struct BraveVPNPaywallView: View {
 
   private let openVPNAuthenticationInNewTab: () -> Void
   private let installVPNProfile: () -> Void
+  private var openDirectCheckoutInNewTab: () -> Void
 
   @State private var selectedTierType: BraveVPNSubscriptionTier = .yearly
   @State private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
@@ -29,18 +30,21 @@ public struct BraveVPNPaywallView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @Environment(\.verticalSizeClass) private var verticalSizeClass
   @Environment(\.pixelLength) private var pixelLength
+  @Environment(\.allowExternalPurchaseLinks) private var allowExternalPurchaseLinks
 
   public init(
     openVPNAuthenticationInNewTab: @escaping (() -> Void),
+    openDirectCheckoutInNewTab: @escaping () -> Void,
     installVPNProfile: @escaping () -> Void
   ) {
     self.iapObserverManager = BraveVPNIAPObserverManager(iapObserver: BraveVPN.iapObserver)
     self.openVPNAuthenticationInNewTab = openVPNAuthenticationInNewTab
+    self.openDirectCheckoutInNewTab = openDirectCheckoutInNewTab
     self.installVPNProfile = installVPNProfile
   }
 
   public var body: some View {
-    VStack(spacing: 8.0) {
+    VStack(spacing: 0) {
       ScrollView {
         Group {
           if sizeCategory.isAccessibilityCategory
@@ -54,8 +58,7 @@ public struct BraveVPNPaywallView: View {
           }
         }
       }
-      paywallActionView
-        .padding(.bottom, 24)
+      paywallActionContainerView
     }
     .navigationTitle(Strings.VPN.vpnName)
     .navigationBarTitleDisplayMode(.inline)
@@ -105,7 +108,7 @@ public struct BraveVPNPaywallView: View {
 
   private var horizontalContentView: some View {
     HStack {
-      VStack(alignment: .leading, spacing: 40) {
+      VStack(alignment: .leading, spacing: 34) {
         BraveVPNPremiumUpsellView()
         BraveVPNPoweredBrandView()
         Spacer()
@@ -182,44 +185,152 @@ public struct BraveVPNPaywallView: View {
     }
   }
 
-  private var paywallActionView: some View {
-    VStack(spacing: 16) {
-      separatorView
-      Button {
-        addPaymentForSubcription(type: selectedTierType)
-      } label: {
-        HStack {
-          if iapObserverManager.paymentStatus == .ongoing {
-            ProgressView()
-              .tint(Color.white)
-              .padding()
-          } else {
-            Text(
-              freeTrialUsed.value
-                ? Strings.VPN.activateSubscriptionAction.capitalized
-                : Strings.VPN.freeTrialPeriodAction.capitalized
-            )
-            .font(.headline)
-            .foregroundColor(Color(.white))
+  private var standardPaywallActionView: some View {
+    Button {
+      addPaymentForSubcription(type: selectedTierType)
+    } label: {
+      HStack {
+        if iapObserverManager.paymentStatus == .ongoing {
+          ProgressView()
+            .tint(Color.white)
             .padding()
-          }
-        }
-        .frame(maxWidth: .infinity)
-        .background(
-          LinearGradient(
-            gradient:
-              Gradient(colors: [
-                Color(UIColor(rgb: 0xFF4000)),
-                Color(UIColor(rgb: 0xFF1F01)),
-              ]),
-            startPoint: .init(x: 0.26, y: 0.0),
-            endPoint: .init(x: 0.26, y: 1.0)
+        } else {
+          Text(
+            freeTrialUsed.value
+              ? Strings.VPN.activateSubscriptionAction.capitalized
+              : Strings.VPN.freeTrialPeriodAction.capitalized
           )
-        )
+          .font(.headline)
+          .foregroundColor(Color(.white))
+          .padding()
+        }
       }
-      .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-      .disabled(iapObserverManager.paymentStatus == .ongoing)
-      .padding(.horizontal, 16)
+      .frame(maxWidth: .infinity)
+      .background(
+        LinearGradient(
+          colors: [
+            Color(braveSystemName: .primitiveBrandsRorange2),
+            Color(braveSystemName: .primitiveBrandsRorange3),
+          ],
+          startPoint: .top,
+          endPoint: .bottom
+        ),
+        in: .rect(cornerRadius: 12, style: .continuous)
+      )
+    }
+    .disabled(iapObserverManager.paymentStatus == .ongoing)
+    .padding(16)
+    .overlay(alignment: .top) {
+      separatorView
+    }
+  }
+
+  private var externalPurchasesAllowedActionView: some View {
+    VStack(spacing: 16) {
+      VStack(spacing: 0) {
+        Text(Strings.Paywall.startTrialTitle)
+          .font(.callout.weight(.semibold))
+        Text(Strings.Paywall.startTrialSubtitle)
+          .font(.footnote)
+      }
+      .multilineTextAlignment(.center)
+      VStack {
+        Button {
+          addPaymentForSubcription(type: selectedTierType)
+        } label: {
+          HStack {
+            Text(Strings.Paywall.appStoreCheckoutOptionTitle)
+              .font(.callout.weight(.semibold))
+              .multilineTextAlignment(.leading)
+            Spacer()
+            Text(Strings.Paywall.appStoreCheckoutOptionSubtitle)
+              .font(.footnote)
+              .multilineTextAlignment(.trailing)
+          }
+          .opacity(iapObserverManager.paymentStatus == .ongoing ? 0 : 1)
+          .overlay {
+            if iapObserverManager.paymentStatus == .ongoing {
+              ProgressView()
+                .tint(Color.white)
+                .padding()
+            }
+          }
+          .frame(maxWidth: .infinity)
+          .padding(12)
+          .frame(minHeight: 52)
+          .background(
+            Color(braveSystemName: .primitiveBlurple35),
+            in: .rect(cornerRadius: 12, style: .continuous)
+          )
+        }
+        .disabled(iapObserverManager.paymentStatus == .ongoing)
+        Button {
+          openDirectCheckoutInNewTab()
+        } label: {
+          HStack {
+            Text(Strings.Paywall.braveAccountCheckoutOptionTitle)
+              .font(.callout.weight(.semibold))
+              .multilineTextAlignment(.leading)
+            Spacer()
+            Text(
+              LocalizedStringKey(
+                String.localizedStringWithFormat(
+                  Strings.Paywall.braveAccountCheckoutOptionSubtitle,
+                  ExternalPurchaseLinksSupport.discountCode,
+                  ExternalPurchaseLinksSupport.discountAmount.formatted(.percent)
+                )
+              )
+            )
+            .multilineTextAlignment(.trailing)
+            .font(.footnote)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(12)
+          .frame(minHeight: 52)
+          .background(
+            LinearGradient(
+              colors: [
+                Color(braveSystemName: .primitiveBrandsRorange2),
+                Color(braveSystemName: .primitiveBrandsRorange3),
+              ],
+              startPoint: .top,
+              endPoint: .bottom
+            ),
+            in: .rect(cornerRadius: 12, style: .continuous)
+          )
+        }
+      }
+    }
+    .foregroundStyle(Color.white)
+    .frame(maxWidth: .infinity)
+    .padding(16)
+    .background(
+      LinearGradient(
+        colors: [
+          Color(braveSystemName: .primitiveBlurple20),
+          Color(braveSystemName: .primitiveBlurple10),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+      )
+      .shadow(.drop(color: Color(braveSystemName: .primitiveBlurple5), radius: 16)),
+      in: .rect(
+        topLeadingRadius: 16,
+        bottomLeadingRadius: 0,
+        bottomTrailingRadius: 0,
+        topTrailingRadius: 16,
+        style: .continuous
+      )
+    )
+    .dynamicTypeSize(DynamicTypeSize.xSmall..<DynamicTypeSize.accessibility1)
+    .fixedSize(horizontal: false, vertical: true)
+  }
+
+  @ViewBuilder private var paywallActionContainerView: some View {
+    if allowExternalPurchaseLinks {
+      externalPurchasesAllowedActionView
+    } else {
+      standardPaywallActionView
     }
   }
 
@@ -284,10 +395,20 @@ public struct BraveVPNPaywallView: View {
 }
 
 #if DEBUG
-#Preview("VPNSubscriptionPaywall") {
+#Preview("External Purchases") {
   BraveVPNPaywallView(
     openVPNAuthenticationInNewTab: {},
+    openDirectCheckoutInNewTab: {},
     installVPNProfile: {}
   )
+  .environment(\.allowExternalPurchaseLinks, true)
+}
+#Preview("Standard Purchases") {
+  BraveVPNPaywallView(
+    openVPNAuthenticationInNewTab: {},
+    openDirectCheckoutInNewTab: {},
+    installVPNProfile: {}
+  )
+  .environment(\.allowExternalPurchaseLinks, false)
 }
 #endif

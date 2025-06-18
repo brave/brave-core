@@ -64,7 +64,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
       const std::string& path) override;
   void ClearLocalStatePref(const std::string& path) override;
   bool HasLocalStatePrefPath(const std::string& path) const override;
-  void RecordP2AEvents(const std::vector<std::string>& events) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

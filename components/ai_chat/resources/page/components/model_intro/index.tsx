@@ -19,13 +19,11 @@ function getCategoryName(category: Mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
   // on the enum name rather than the number value, e.g. "CHAT" vs 0
   const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory)[category]
-  const key = `modelCategory-${categoryKey.toLowerCase()}`
-  return getLocale(key)
+  return getLocale('CHAT_UI_MODEL_CATEGORY_' + categoryKey)
 }
 
 function getIntroMessage(model: Mojom.Model) {
-  const key = `introMessage-${model.key}`
-  return getLocale(key)
+  return getLocale(`CHAT_UI_INTRO_MESSAGE_${model.key.toUpperCase().replaceAll('-', '_')}`)
 }
 
 export default function ModelIntro() {
@@ -66,16 +64,14 @@ export default function ModelIntro() {
                   tags: {
                     $1: (content) => {
                       return (
-                        <a
+                        <button
                           key={content}
                           onClick={() =>
                             aiChatContext.uiHandler?.openModelSupportUrl()
                           }
-                          href='#'
-                          target='_blank'
                         >
                           {content}
-                        </a>
+                        </button>
                       )
                     }
                   }

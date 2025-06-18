@@ -131,7 +131,16 @@ function getChromiumGnArgs() {
   }
 
   if (targetOs === 'mac') {
-    args.use_system_xcode = true
+    const hermeticSdkPath = path.join(
+      config.srcDir,
+      'build',
+      'mac_files',
+      'xcode_binaries',
+    )
+    if (!fs.existsSync(hermeticSdkPath)) {
+      throw new Error('mac sdk is not found, run `npm run sync` to fix')
+    }
+    args.use_system_xcode = false
   }
 
   return args

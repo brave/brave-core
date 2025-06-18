@@ -25,7 +25,6 @@ constexpr auto kBaseConfigs =
     base::MakeFixedFlatMap<std::string_view, MetricConfig>({
         {"Brave.Uptime.BrowserOpenMinutes",
          MetricConfig{
-             .constellation_only = true,
              .append_attributes =
                  MetricAttributesToAppend{MetricAttribute::kDateOfInstall},
          }},
@@ -68,7 +67,7 @@ class P3ARemoteConfigManagerTest : public testing::Test,
     return it->second;
   }
 
-  const MetricConfig* GetBaseMetricConfig(
+  const MetricConfig* GetMetricConfig(
       std::string_view histogram_name) const override {
     auto it = kBaseConfigs.find(histogram_name);
     if (it == kBaseConfigs.end()) {
@@ -107,7 +106,6 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
   ASSERT_TRUE(uptime_config);
   EXPECT_TRUE(uptime_config->ephemeral);
   EXPECT_TRUE(uptime_config->nebula);
-  EXPECT_FALSE(uptime_config->constellation_only);
   EXPECT_TRUE(uptime_config->disable_country_strip);
   EXPECT_TRUE(uptime_config->record_activation_date);
   ASSERT_TRUE(uptime_config->attributes.has_value());
@@ -131,7 +129,6 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
   ASSERT_TRUE(shields_config);
   EXPECT_FALSE(shields_config->ephemeral);
   EXPECT_FALSE(shields_config->nebula);
-  EXPECT_TRUE(shields_config->constellation_only);
   EXPECT_FALSE(shields_config->disable_country_strip);
   EXPECT_FALSE(shields_config->record_activation_date);
   ASSERT_TRUE(shields_config->cadence.has_value());
@@ -142,7 +139,6 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
   ASSERT_TRUE(rewards_config);
   EXPECT_FALSE(rewards_config->ephemeral);
   EXPECT_FALSE(rewards_config->nebula);
-  EXPECT_FALSE(rewards_config->constellation_only);
   ASSERT_TRUE(rewards_config->attributes.has_value());
   EXPECT_EQ(
       (*rewards_config->attributes)[0].value_or(MetricAttribute::kMaxValue),

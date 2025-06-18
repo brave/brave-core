@@ -155,7 +155,3 @@ bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
 base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
   return [bridge_ getVirtualPrefs];
 }
-
-void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
-  [bridge_ recordP2AEvents:events];
-}

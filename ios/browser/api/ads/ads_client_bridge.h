@@ -59,7 +59,6 @@
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
 - (base::Value::Dict)getVirtualPrefs;
-- (void)recordP2AEvents:(const std::vector<std::string>&)events;
 
 @end
 

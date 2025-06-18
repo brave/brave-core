@@ -9,6 +9,8 @@ import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
+import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
+
 import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
@@ -23,6 +25,7 @@ export type SettingsView =
   'background' |
   'search' |
   'top-sites' |
+  'news' |
   'clock' |
   'widgets'
 
@@ -33,6 +36,7 @@ interface Props {
 }
 
 export function SettingsModal(props: Props) {
+  const braveNews = useBraveNews()
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
 
   const [currentView, setCurrentView] =
@@ -40,7 +44,12 @@ export function SettingsModal(props: Props) {
 
   React.useEffect(() => {
     if (props.isOpen) {
-      setCurrentView(props.initialView || 'background')
+      if (props.initialView === 'news') {
+        braveNews.setCustomizePage('news')
+        setCurrentView('background')
+      } else {
+        setCurrentView(props.initialView ?? 'background')
+      }
     }
   }, [props.isOpen, props.initialView])
 
@@ -59,6 +68,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
       case 'top-sites': return <TopSitesPanel />
+      case 'news': return null
       case 'clock': return <ClockPanel />
       case 'widgets': return <WidgetsPanel />
     }
@@ -69,6 +79,7 @@ export function SettingsModal(props: Props) {
       case 'background': return getString('backgroundSettingsTitle')
       case 'search': return getString('searchSettingsTitle')
       case 'top-sites': return getString('topSitesSettingsTitle')
+      case 'news': return getString('newsSettingsTitle')
       case 'clock': return getString('clockSettingsTitle')
       case 'widgets': return getString('widgetSettingsTitle')
     }
@@ -79,6 +90,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <Icon name='image' />
       case 'search': return <Icon name='search' />
       case 'top-sites': return <Icon name='window-content' />
+      case 'news': return <Icon name='product-brave-news' />
       case 'clock': return <Icon name='clock' />
       case 'widgets': return <Icon name='browser-ntp-widget' />
     }
@@ -91,7 +103,13 @@ export function SettingsModal(props: Props) {
     return (
       <NavigationItem
         isCurrent={view === currentView}
-        onClick={() => setCurrentView(view)}
+        onClick={() => {
+          if (view === 'news') {
+            braveNews.setCustomizePage('news')
+          } else {
+            setCurrentView(view)
+          }
+        }}
       >
         {getNavItemIcon(view)}
         {getNavItemText(view)}
@@ -101,7 +119,18 @@ export function SettingsModal(props: Props) {
 
   return (
     <div data-css-scope={style.scope}>
-      <Dialog isOpen={props.isOpen} showClose onClose={props.onClose}>
+      <Dialog
+        isOpen={props.isOpen}
+        showClose
+        onClose={() => {
+          // If the News dialog is open, keep the settings dialog open so that
+          // closing the News dialog will bring the user back to the settings
+          // dialog.
+          if (!braveNews.customizePage) {
+            props.onClose()
+          }
+        }}
+      >
         <h3>
           {getString('settingsTitle')}
         </h3>
@@ -111,6 +140,7 @@ export function SettingsModal(props: Props) {
               {renderNavItem('background')}
               {renderNavItem('search')}
               {renderNavItem('top-sites')}
+              {renderNavItem('news')}
               {renderNavItem('clock')}
               {renderNavItem('widgets')}
             </Navigation>

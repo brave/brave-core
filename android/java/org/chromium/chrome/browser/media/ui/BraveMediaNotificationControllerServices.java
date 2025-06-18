@@ -10,7 +10,8 @@ import org.chromium.chrome.browser.base.SplitCompatService;
 
 public class BraveMediaNotificationControllerServices {
     public static class PlaybackListenerMicService extends SplitCompatService {
-        private static final @IdentifierNameString String sImplClassName =
+        @SuppressWarnings("FieldCanBeFinal") // @IdentifierNameString requires non-final
+        private static @IdentifierNameString String sImplClassName =
                 "org.chromium.chrome.browser.media.ui."
                         + "BraveMediaNotificationControllerDelegate$PlaybackListenerMicServiceImpl";
 

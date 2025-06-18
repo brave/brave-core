@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -29,13 +30,9 @@ void BraveEducationPageDelegateDesktop::OpenURL(
 }
 
 void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
-  // TODO(zenparsing): Instead of using a `Browser` pointer,
-  // expose Rewards panel functionality via `BrowserWindowFeatures`.
-  // See https://github.com/brave/brave-browser/issues/42179.
-  auto* browser = window_interface_->GetBrowserForMigrationOnly();
-  CHECK(browser);
-  if (auto* panel_coordinator =
-          brave_rewards::RewardsPanelCoordinator::FromBrowser(browser)) {
+  auto* panel_coordinator =
+      window_interface_->GetFeatures().rewards_panel_coordinator();
+  if (panel_coordinator) {
     panel_coordinator->OpenRewardsPanel();
   }
 }

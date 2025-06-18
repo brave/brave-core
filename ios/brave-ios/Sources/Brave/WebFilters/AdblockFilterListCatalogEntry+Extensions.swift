@@ -16,6 +16,15 @@ extension AdblockFilterListCatalogEntry {
   /// The component id of the cookie consent notices filter list.
   /// This is a special filter list that has more accessible UI to control it
   public static let cookieConsentNoticesComponentID = "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"
+  /// The component id of the YouTube mobile recommendations filter list.
+  /// This is a special filter list that has more accessible UI to control it
+  public static let youtubeMobileRecommendationsComponentID = "phdmgpanpejkbmbljlhcehpadabljfbk"
+  /// The component id of the YouTube distracting elements filter list.
+  /// This is a special filter list that has more accessible UI to control it
+  public static let youtubeDistractingElementsComponentID = "cpapfkpkeaajehipopnaiihfmbfbnkdp"
+  /// The component id of the YouTube shorts filter list.
+  /// This is a special filter list that has more accessible UI to control it
+  public static let youtubeShortsComponentID = "almolcgbkikkhliiibfjkohebgklegam"
 
   public static let disabledContentBlockersComponentIDs = [
     // The Anti-porn list has 500251 rules and is strictly all content blocking driven content

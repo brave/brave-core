@@ -8,10 +8,12 @@ import {
   mockBitcoinAccount,
   mockEthAccount,
 } from '../stories/mock-data/mock-wallet-accounts'
+import { mockEthToken } from '../stories/mock-data/mock-asset-options'
 import {
   makeAccountRoute,
   makeAccountTransactionRoute,
   makePortfolioNftCollectionRoute,
+  makeSendRoute,
 } from './routes-utils'
 
 describe('makeAccountRoute', () => {
@@ -76,6 +78,37 @@ describe('makePortfolioNftCollectionRoute', () => {
     const routeWithPage = makePortfolioNftCollectionRoute('MoonCatsRescue', 2)
     expect(routeWithPage).toBe(
       '/crypto/portfolio/collections/MoonCatsRescue?page=2',
+    )
+  })
+})
+
+describe('makeSendRoute', () => {
+  it('should return a route with chainId and token params', () => {
+    expect(makeSendRoute(mockEthToken)).toBe(
+      '/send?chainId=0x1&token=ETH#token',
+    )
+  })
+
+  it('should return a route with chainId, token and account params', () => {
+    expect(makeSendRoute(mockEthToken, mockEthAccount)).toBe(
+      '/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey#token',
+    )
+  })
+
+  it(
+    'should return a route with chainId, token, '
+      + 'account and recipient params',
+    () => {
+      expect(makeSendRoute(mockEthToken, mockEthAccount, '0x1234567890')).toBe(
+        '/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey'
+          + '&recipient=0x1234567890#token',
+      )
+    },
+  )
+
+  it('should return a route with chainId, token and recipient params', () => {
+    expect(makeSendRoute(mockEthToken, undefined, '0x1234567890')).toBe(
+      '/send?chainId=0x1&token=ETH&recipient=0x1234567890#token',
     )
   })
 })

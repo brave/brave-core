@@ -23,6 +23,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -51,7 +52,6 @@
 namespace {
 
 using brave_rewards::RewardsNotificationService;
-using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
@@ -231,8 +231,8 @@ BraveRewardsActionView::BraveRewardsActionView(
     notification_service_observation_.Observe(notification_service);
   }
 
-  panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(
-      browser_window_interface_->GetBrowserForMigrationOnly());
+  panel_coordinator_ =
+      browser_window_interface_->GetFeatures().rewards_panel_coordinator();
   if (panel_coordinator_) {
     panel_observation_.Observe(panel_coordinator_);
   }

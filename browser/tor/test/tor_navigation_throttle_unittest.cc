@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/tor/tor_navigation_throttle.h"
+
 #include <memory>
 #include <utility>
 
@@ -10,7 +12,6 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
-#include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -18,6 +19,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
+#include "content/public/test/mock_navigation_throttle_registry.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -81,15 +83,17 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 // Tests TorNavigationThrottle::MaybeCreateThrottleFor with tor enabled/disabled
 TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(tor_web_contents());
+  content::MockNavigationThrottleRegistry registry(&test_handle);
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, tor_web_contents()->GetBrowserContext()->IsTor());
+          registry, tor_web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle != nullptr);
 
   content::MockNavigationHandle test_handle2(web_contents());
+  content::MockNavigationThrottleRegistry registry2(&test_handle2);
   std::unique_ptr<TorNavigationThrottle> throttle2 =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle2, web_contents()->GetBrowserContext()->IsTor());
+          registry2, web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
@@ -98,9 +102,10 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
+  content::MockNavigationThrottleRegistry registry(&test_handle);
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, *GetTorLauncherFactory(),
+          registry, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("http://www.example.com");
   test_handle.set_url(url);
@@ -136,9 +141,10 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
+  content::MockNavigationThrottleRegistry registry(&test_handle);
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, *GetTorLauncherFactory(),
+          registry, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
@@ -164,9 +170,10 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(false));
   content::MockNavigationHandle test_handle(tor_web_contents());
+  content::MockNavigationThrottleRegistry registry(&test_handle);
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, *GetTorLauncherFactory(),
+          registry, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(

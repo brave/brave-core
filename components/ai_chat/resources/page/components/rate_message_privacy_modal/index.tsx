@@ -49,11 +49,11 @@ export default function RateMessagePrivacyModal() {
         slot='title'
         className={styles.dialogTitle}
       >
-        {getLocale('rateMessagePrivacyModalTitle')}
+        {getLocale(S.CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_TITLE)}
       </div>
       <div className={styles.description}>
         <span>
-          {formatLocale('rateMessagePrivacyModalDescription', {
+          {formatLocale(S.CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION, {
             $1: (content) => (
               <a
                 // While we preventDefault onClick, we still need to pass
@@ -83,14 +83,14 @@ export default function RateMessagePrivacyModal() {
               conversationContext.handleCloseRateMessagePrivacyModal()
             }
           >
-            {getLocale('cancelButtonLabel')}
+            {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
             kind='filled'
             size='medium'
             onClick={onClickSend}
           >
-            {getLocale('sendButtonLabel')}
+            {getLocale(S.CHAT_UI_SEND_BUTTON_LABEL)}
           </Button>
         </div>
       </div>

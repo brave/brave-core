@@ -124,6 +124,61 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   swapInfo: undefined,
 }
 
+export const mockATAInstruction = {
+  programId: BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
+  accountMetas: [
+    {
+      pubkey: mockSolanaAccount.address,
+      isSigner: true,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+    {
+      pubkey: 'ata',
+      isSigner: false,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+    {
+      pubkey: mockSolanaAccount.address,
+      isSigner: true,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+    {
+      pubkey: 'mint',
+      isSigner: false,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+    {
+      pubkey: 'systemProgram',
+      isSigner: false,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+    {
+      pubkey: 'tokenProgram',
+      isSigner: false,
+      isWritable: true,
+      addrTableLookupIndex: undefined,
+    },
+  ],
+  data: [],
+  decodedData: {
+    instructionType: 0,
+    accountParams: [],
+    params: [
+      {
+        name: 'lamports',
+        value: '2039280',
+        type: 0,
+        localizedName: 'lamports',
+      },
+    ],
+  },
+}
+
 export const mockSolanaTransactionInfoAccount: BraveWallet.AccountInfo = {
   ...mockSolanaAccount,
   accountId: mockSolanaTransactionInfo.fromAccountId,

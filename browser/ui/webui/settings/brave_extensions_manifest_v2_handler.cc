@@ -10,6 +10,8 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"

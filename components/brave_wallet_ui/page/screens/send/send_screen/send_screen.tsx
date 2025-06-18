@@ -68,14 +68,21 @@ import {
 import {
   useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
+import {
+  useIsSendingToInternalShieldedAddress, //
+} from '../../../../common/hooks/use_is_sending_to_internal_shielded_address'
 
 // Styled Components
-import { InputRow, ToText, ToRow } from './send.style'
+import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
 import {
   ToSectionWrapper,
   ReviewButtonRow,
 } from '../../composer_ui/shared_composer.style'
-import { Column, LeoSquaredButton } from '../../../../components/shared/style'
+import {
+  Column,
+  LeoSquaredButton,
+  Row,
+} from '../../../../components/shared/style'
 
 // Components
 import {
@@ -108,6 +115,7 @@ export const SendScreen = React.memo(() => {
   const accountIdFromParams = query.get('account') ?? undefined
   const chainIdFromParams = query.get('chainId') ?? undefined
   const contractOrSymbolFromParams = query.get('token') ?? undefined
+  const toAddressOrUrl = query.get('recipient') ?? ''
 
   const { account: accountFromParams } =
     useAccountFromAddressQuery(accountIdFromParams)
@@ -123,7 +131,6 @@ export const SendScreen = React.memo(() => {
     selectedSendOption === '#nft' ? '1' : '',
   )
   const [sendingMaxAmount, setSendingMaxAmount] = React.useState<boolean>(false)
-  const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const [resolvedDomainAddress, setResolvedDomainAddress] =
     React.useState<string>('')
   const [isWarningAcknowledged, setIsWarningAcknowledged] =
@@ -219,8 +226,17 @@ export const SendScreen = React.memo(() => {
     )
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
+  const isSendingToInternalShieldedAddress =
+    useIsSendingToInternalShieldedAddress(
+      getZCashTransactionTypeResult.txType ?? undefined,
+      toAddressOrUrl,
+    )
   const isShieldingFunds =
-    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+    tokenFromParams
+    && tokenFromParams.coin === BraveWallet.CoinType.ZEC
+    && (getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kShielding
+      || isSendingToInternalShieldedAddress)
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -279,17 +295,21 @@ export const SendScreen = React.memo(() => {
       } else {
         setSendAmount('')
       }
-      setToAddressOrUrl('')
+
+      if (toAddressOrUrl && needsAccountSelected && account) {
+        history.replace(makeSendRoute(asset, account, toAddressOrUrl))
+        return
+      }
+
       if (account) {
         history.replace(makeSendRoute(asset, account))
       }
     },
-    [history],
+    [history, needsAccountSelected, toAddressOrUrl],
   )
 
   const resetSendFields = React.useCallback(
     (option?: SendPageTabHashes) => {
-      setToAddressOrUrl('')
       setSendAmount('')
 
       if (option) {
@@ -521,6 +541,17 @@ export const SendScreen = React.memo(() => {
     [resetSendFields],
   )
 
+  const onChangeToAddressOrUrl = React.useCallback(
+    (addressOrUrl: string) => {
+      if (tokenFromParams) {
+        history.replace(
+          makeSendRoute(tokenFromParams, accountFromParams, addressOrUrl),
+        )
+      }
+    },
+    [history, tokenFromParams, accountFromParams],
+  )
+
   // Modals
   const {
     closeModal: closeSelectTokenModal,
@@ -635,6 +666,16 @@ export const SendScreen = React.memo(() => {
                       onUpdateMemoText={setMemoText}
                     />
                   )}
+                {isShieldingFunds && (
+                  <Row
+                    width='100%'
+                    padding='16px 0px 0px 0px'
+                  >
+                    <ShieldingFundsAlert type='info'>
+                      {getLocale('braveWalletShieldingFundsAlertDescription')}
+                    </ShieldingFundsAlert>
+                  </Row>
+                )}
               </Column>
               <ReviewButtonRow width='100%'>
                 <LeoSquaredButton
@@ -673,7 +714,7 @@ export const SendScreen = React.memo(() => {
           fromAccountId={accountFromParams?.accountId}
           selectedAsset={tokenFromParams}
           toAddressOrUrl={toAddressOrUrl}
-          setToAddressOrUrl={setToAddressOrUrl}
+          setToAddressOrUrl={onChangeToAddressOrUrl}
           setResolvedDomainAddress={setResolvedDomainAddress}
           ref={selectAddressModalRef}
         />

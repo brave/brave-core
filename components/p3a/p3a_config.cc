@@ -24,10 +24,6 @@ namespace p3a {
 namespace {
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
-constexpr char kP3AJsonHostPrefix[] = "p3a-json";
-constexpr char kP3ACreativeHostPrefix[] = "p3a-creative";
-constexpr char kP2AJsonHostPrefix[] = "p2a-json";
-constexpr char kJsonURLPath[] = "/";
 constexpr char kConstellationCollectorHostPrefix[] = "collector.bsg";
 constexpr char kRandomnessHostPrefix[] = "star-randsrv.bsg";
 
@@ -66,18 +62,6 @@ std::string MaybeOverrideStringFromCommandLine(
   return default_config_value;
 }
 
-GURL MaybeOverrideURLFromCommandLine(base::CommandLine* cmdline,
-                                     const char* switch_name,
-                                     GURL default_config_value) {
-  if (cmdline->HasSwitch(switch_name)) {
-    GURL url = GURL(cmdline->GetSwitchValueASCII(switch_name));
-    if (url.is_valid()) {
-      return url;
-    }
-  }
-  return default_config_value;
-}
-
 bool MaybeOverrideBoolFromCommandLine(base::CommandLine* cmdline,
                                       const char* switch_name,
                                       bool default_config_value) {
@@ -98,25 +82,14 @@ std::string GetDefaultHost(const char* host_prefix) {
                        brave_domains::GetServicesDomain(host_prefix)});
 }
 
-GURL GetDefaultURL(const char* host_prefix, const char* path) {
-  return GURL(base::StrCat({GetDefaultHost(host_prefix), path}));
-}
-
 }  // namespace
 
 P3AConfig::P3AConfig()
     : average_upload_interval(base::Seconds(kDefaultUploadIntervalSeconds)),
       randomize_upload_interval(true),
-      p3a_json_upload_url(GetDefaultURL(kP3AJsonHostPrefix, kJsonURLPath)),
-      p3a_creative_upload_url(
-          GetDefaultURL(kP3ACreativeHostPrefix, kJsonURLPath)),
-      p2a_json_upload_url(GetDefaultURL(kP2AJsonHostPrefix, kJsonURLPath)),
       p3a_constellation_upload_host(
           GetDefaultHost(kConstellationCollectorHostPrefix)),
       star_randomness_host(GetDefaultHost(kRandomnessHostPrefix)) {
-  CheckURL(p3a_json_upload_url);
-  CheckURL(p3a_creative_upload_url);
-  CheckURL(p2a_json_upload_url);
   CheckURL(GURL(star_randomness_host));
   for (MetricLogType log_type : kAllMetricLogTypes) {
     fake_star_epochs[log_type] = std::nullopt;
@@ -158,15 +131,6 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
   config.fake_star_epochs[MetricLogType::kExpress] =
       MaybeSetUint8FromCommandLine(cmdline, switches::kP3AFakeExpressStarEpoch);
 
-  config.p3a_json_upload_url =
-      MaybeOverrideURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl,
-                                      std::move(config.p3a_json_upload_url));
-  config.p3a_creative_upload_url = MaybeOverrideURLFromCommandLine(
-      cmdline, switches::kP3ACreativeUploadUrl,
-      std::move(config.p3a_creative_upload_url));
-  config.p2a_json_upload_url =
-      MaybeOverrideURLFromCommandLine(cmdline, switches::kP2AJsonUploadUrl,
-                                      std::move(config.p2a_json_upload_url));
   config.p3a_constellation_upload_host = MaybeOverrideStringFromCommandLine(
       cmdline, switches::kP3AConstellationUploadHost,
       std::move(config.p3a_constellation_upload_host));
@@ -185,10 +149,6 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
           << ", average_upload_interval_ = " << config.average_upload_interval
           << ", randomize_upload_interval_ = "
           << config.randomize_upload_interval
-          << ", p3a_json_upload_url_ = " << config.p3a_json_upload_url.spec()
-          << ", p2a_json_upload_url_ = " << config.p2a_json_upload_url.spec()
-          << ", p3a_creative_upload_url_ = "
-          << config.p3a_creative_upload_url.spec()
           << ", p3a_constellation_upload_host_ = "
           << config.p3a_constellation_upload_host
           << ", star_randomness_host_ = " << config.star_randomness_host

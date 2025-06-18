@@ -59,8 +59,6 @@ class AdsClientMock : public AdsClient {
               ShowScheduledCaptcha,
               (const std::string&, const std::string&));
 
-  MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>&));
-
   MOCK_METHOD(bool, FindProfilePref, (const std::string&), (const));
   MOCK_METHOD(std::optional<base::Value>, GetProfilePref, (const std::string&));
   MOCK_METHOD(void, SetProfilePref, (const std::string&, base::Value));

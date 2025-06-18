@@ -1,10 +1,11 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright 2022 <year> The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/run_loop.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/browser/ui/browser_commands.h"

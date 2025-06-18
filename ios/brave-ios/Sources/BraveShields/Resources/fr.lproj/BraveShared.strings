@@ -14,10 +14,10 @@
 "AntiAdBlockWarningConfirmationButton" = "Ajuster les boucliers pour moi";
 
 /* A descriptive message explaining this site's ad-blocking crackdown. */
-"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie que leur site peut ne pas fonctionner correctement.";
+"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie qu'il peut ne pas fonctionner correctement.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers à votre place. Une fois qu'ils seront ajustés, vous pourrez plutôt essayer de regarder ce contenu dans le lecteur Brave.";
+"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers pour vous. Une fois qu'ils seront ajustés, vous pourrez essayer de regarder ce contenu dans le lecteur Brave.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Conserver les paramètres actuels";
@@ -59,7 +59,7 @@
 "BravePlayerInfoMessage" = "Le lecteur Brave vous permet de regarder des vidéos sans interruption.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Brave";
+"BravePlayerInfoTitle" = "Regardez vos contenus dans le lecteur Brave";
 
 /* A title to the content filtering page under global shield settings and the title on the Content filtering page */
 "ContentFiltering" = "Filtrage du contenu";

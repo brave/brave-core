@@ -105,23 +105,28 @@ void RemoteConfigManager::SetMetricConfigs(
 
   VLOG(1) << "Loaded " << result->size() << " metric configurations";
 
-  activation_metric_names_.clear();
   metric_configs_.clear();
+  activation_metric_names_.clear();
+
+  for (const auto& entry : *result) {
+    if (!entry.second.activation_metric_name ||
+        !delegate_->GetLogTypeForHistogram(entry.first)) {
+      continue;
+    }
+    activation_metric_names_.insert(*entry.second.activation_metric_name);
+  }
 
   for (const auto& entry : *result) {
     if (!delegate_->GetLogTypeForHistogram(entry.first)) {
       continue;
     }
 
-    const auto* base_config = delegate_->GetBaseMetricConfig(entry.first);
+    const auto* base_config = delegate_->GetMetricConfig(entry.first);
     const auto& remote_config = entry.second;
     auto metric_config = base_config ? *base_config : MetricConfig{};
 
     metric_config.ephemeral =
         remote_config.ephemeral.value_or(metric_config.ephemeral);
-    metric_config.constellation_only =
-        remote_config.constellation_only.value_or(
-            metric_config.constellation_only);
     metric_config.nebula = remote_config.nebula.value_or(metric_config.nebula);
     metric_config.disable_country_strip =
         remote_config.disable_country_strip.value_or(
@@ -138,9 +143,10 @@ void RemoteConfigManager::SetMetricConfigs(
     }
     if (remote_config.activation_metric_name) {
       auto it =
-          activation_metric_names_.insert(*remote_config.activation_metric_name)
-              .first;
-      metric_config.activation_metric_name = *it;
+          activation_metric_names_.find(*remote_config.activation_metric_name);
+      if (it != activation_metric_names_.end()) {
+        metric_config.activation_metric_name = *it;
+      }
     }
     if (remote_config.cadence) {
       metric_config.cadence = remote_config.cadence;

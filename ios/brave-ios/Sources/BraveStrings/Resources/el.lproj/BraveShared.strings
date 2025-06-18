@@ -517,6 +517,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Μηχανές αναζήτησης σε χρήση";
 
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "Προσθήκη μηχανής προσαρμοσμένης αναζήτησης";
+
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Γράψτε τη διεύθυνση URL αναζήτησης και αντικαταστήστε το ερώτημα με το %1$s.\nΓια παράδειγμα: https://youtube.com/search?q=%2$s \n(Εάν ο ιστότοπος υποστηρίζει το OpenSearch, θα παρέχεται μια επιλογή αυτόματης προσθήκης κατά την επεξεργασία αυτού του πεδίου.)";
 
@@ -534,6 +537,9 @@
 
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Υπάρχει ήδη μια μηχανή αναζήτησης με το ίδιο όνομα.";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "Εισαγωγή ονόματος μηχανής αναζήτησης";
 
 /* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Μη ασφαλές πρότυπο προσαρμοσμένης αναζήτησης για";
@@ -694,6 +700,9 @@
 /* Title for editing a folder */
 "EditFolderTitle" = "Επεξεργασία φακέλου";
 
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "Επεξεργασία μηχανών αναζήτησης";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ενεργοποίηση έλξης για ανανέωση";
 
@@ -778,8 +787,8 @@
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Τέλος";
 
-/* Find %@ text in page. */
-"FindInPageFormat" = "Εύρεση του «%@»";
+/* Find `search query` */
+"FindInPageFormat" = "Εύρεση";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Επόμενο αποτέλεσμα στη σελίδα";
@@ -1046,7 +1055,10 @@
 "ntp.hideSponsoredImages" = "Απόκρυψη επιχορηγούμενων εικόνων";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Οι «Χορηγούμενες» είναι πρόσθετα φόντα με επωνυμία από τα οποία μπορείτε να κερδίζετε με ενεργοποιημένες τις Ανταμοιβές Brave.";
+"ntp.imageTypeSelectionDescription" = "Οι χορηγούμενες εικόνες είναι επώνυμα φόντα που εμφανίζονται σε καρτέλες που ανοίγονται στο πρόγραμμα περιήγησης. Η ενεργοποίηση αυτών των χορηγούμενων εικόνων υποστηρίζει την αποστολή του Brave.";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "Μάθετε περισσότερα";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Μάθετε περισσότερα για τις Ανταμοιβές Brave";
@@ -2125,9 +2137,6 @@
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Απόκρυψη";
 
-/* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Επικόλληση & μετάβαση";
-
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "ενεργοποιημένο";
 
@@ -2144,10 +2153,13 @@
 "RecentSearchScannerTitle" = "Σάρωση Κωδικού QR";
 
 /* Recent Search Section Description */
-"RecentSearchSectionDescription" = "Οι Πρόσφατες αναζητήσεις σάς επιτρέπουν να αποκτάτε ιδιωτική πρόσβαση σε προηγούμενες αναζητήσεις. Θέλετε να ενεργοποιήσετε τις Πρόσφατες αναζητήσεις;";
+"RecentSearchSectionDescription" = "Θα θέλατε να ενεργοποιήσετε τις Πρόσφατες αναζητήσεις;";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "Πρόσφατες αναζητήσεις";
 
 /* Recent Search Section Title */
-"RecentSearchSectionTitle" = "Πρόσφατες αναζητήσεις";
+"RecentSearchSectionTitle" = "Οι πρόσφατες αναζητήσεις σας επιτρέπουν να έχετε ιδιωτική πρόσβαση σε προηγούμενες αναζητήσεις.";
 
 /* Recent Search Show Button */
 "RecentSearchShow" = "Εμφάνιση";
@@ -2492,7 +2504,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Πραγματοποιεί αναζήτηση για την πρόταση";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Ανοιχτές καρτέλες & σελιδοδείκτες & ιστορικό";
+"SearchHistorySectionHeader" = "Στη συσκευή σας";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Εκκαθάριση αναζήτησης";
@@ -2505,6 +2517,9 @@
 
 /* Title for the search field at the top of the Logins list screen */
 "SearchInputViewTitle" = "Αναζήτηση";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "Αναζήτηση \"%@\"";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Προσθήκη μηχανής προσαρμοσμένης αναζήτησης";
@@ -2541,6 +2556,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Προτάσεις αναζήτησης";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "Θα θέλατε να ενεργοποιήσετε την Προτάσεις αναζήτησης;";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Αναζήτηση με το Brave";
@@ -3259,6 +3277,9 @@
 /* A label shown next to a URL that loaded in some insecure way */
 "tabToolbarNotSecureTitle" = "Μη ασφαλής";
 
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "Επικόλληση και μετάβαση";
+
 /* Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Λίστα αναπαραγωγής";
 
@@ -3280,7 +3301,7 @@
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Διακοπή";
 
-/* Accessibility Label for the tab toolbar Reload button */
+/* Accessibility Label for the tab toolbar voice search button */
 "tabToolbarVoiceSearchButtonAccessibilityLabel" = "Φωνητική αναζήτηση";
 
 /* Accessibility label for the lock icon, which is only present if the connection is insecure */

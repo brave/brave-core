@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/color/material_brave_color_mixer.h"
 
+#include "base/check.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
