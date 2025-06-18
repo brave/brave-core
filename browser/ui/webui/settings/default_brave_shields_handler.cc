@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"

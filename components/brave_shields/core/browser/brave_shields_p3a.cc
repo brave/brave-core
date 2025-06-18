@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 
 #include <algorithm>
 
@@ -13,7 +13,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
