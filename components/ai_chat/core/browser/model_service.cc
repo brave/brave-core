@@ -231,7 +231,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-gemma";
-      model->display_name = "Gemma 3 12B";
+      model->display_name = "Gemma 12B";
       model->vision_support = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
