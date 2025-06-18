@@ -1,0 +1,11 @@
+{
+  "captions": {
+    "playerCaptionsTracklistRenderer": {
+      "captionTracks": [
+        {
+          "baseUrl": "https://www.youtube.com/navigated.xml"
+        }
+      ]
+    }
+  }
+}

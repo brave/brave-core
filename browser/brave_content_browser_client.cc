@@ -48,12 +48,10 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -533,17 +531,6 @@ void BraveContentBrowserClient::
           },
           &render_frame_host));
 #endif
-
-  // AI Chat page content extraction renderer -> browser interface
-  associated_registry.AddInterface<ai_chat::mojom::PageContentExtractorHost>(
-      base::BindRepeating(
-          [](content::RenderFrameHost* render_frame_host,
-             mojo::PendingAssociatedReceiver<
-                 ai_chat::mojom::PageContentExtractorHost> receiver) {
-            ai_chat::AIChatTabHelper::BindPageContentExtractorHost(
-                render_frame_host, std::move(receiver));
-          },
-          &render_frame_host));
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(

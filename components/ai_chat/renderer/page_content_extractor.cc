@@ -5,25 +5,17 @@
 
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
-#include <functional>
-#include <ios>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 
-#include "base/check.h"
-#include "base/check_op.h"
-#include "base/compiler_specific.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_tree.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/logging.h"
-#include "base/numerics/safe_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -32,14 +24,9 @@
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
-#include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_element.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -59,10 +46,11 @@ constexpr char16_t kYoutubeInnerTubeConfigExtractionScript[] =
     uR"JS(
       (function() {
         // Get API key from ytcfg or fallback to regex
-        const apiKey = ytcfg?.data_?.INNERTUBE_API_KEY || (() => {
+        const apiKey = window.ytcfg?.data_?.INNERTUBE_API_KEY || (() => {
           const scripts = document.querySelectorAll('script');
           for (const script of scripts) {
-            const match = script.textContent?.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+            const match = script.textContent?.match(
+                /"INNERTUBE_API_KEY":"([^"]+)"/);
             if (match) return match[1];
           }
           return null;
@@ -142,35 +130,6 @@ base::WeakPtr<PageContentExtractor> PageContentExtractor::GetWeakPtr() {
 void PageContentExtractor::ExtractPageContent(
     mojom::PageContentExtractor::ExtractPageContentCallback callback) {
   VLOG(1) << "AI Chat renderer has been asked for page content.";
-  // When content has been pushed to this class from a throttle via
-  // OnInterceptedPageContentChanged, use that content instead of fetching it
-  // from the page.
-  if (intercepted_content_) {
-    auto intercepted_content = std::move(intercepted_content_);
-    intercepted_content_.reset();
-    DVLOG(1) << "Using intercepted content.";
-    DCHECK_EQ(intercepted_content->type,
-              InterceptedContentType::kYouTubeMetadataString)
-        << "Unexpected intercepted content type";
-    // Parse the YT metadata and extract the most appropriate caption Url
-    auto maybe_caption_url =
-        ParseAndChooseCaptionTrackUrl(intercepted_content->content);
-    if (maybe_caption_url.has_value()) {
-      GURL caption_url =
-          render_frame()->GetWebFrame()->GetDocument().CompleteURL(
-              blink::WebString::FromASCII(maybe_caption_url.value()));
-      if (caption_url.is_valid()) {
-        mojom::PageContentPtr content_update = mojom::PageContent::New();
-        content_update->type = mojom::PageContentType::VideoTranscriptYouTube;
-        content_update->content =
-            mojom::PageContentData::NewContentUrl(caption_url);
-        std::move(callback).Run(std::move(content_update));
-        return;
-      }
-    }
-    std::move(callback).Run({});
-    return;
-  }
 
   blink::WebLocalFrame* main_frame = render_frame()->GetWebFrame();
   GURL origin =
@@ -235,26 +194,6 @@ void PageContentExtractor::ExtractPageContent(
       render_frame(), global_world_id_, isolated_world_id_,
       base::BindOnce(&PageContentExtractor::OnDistillResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void PageContentExtractor::OnInterceptedPageContentChanged(
-    std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
-        content_update) {
-  DCHECK_EQ(content_update->type,
-            AIChatResourceSnifferThrottleDelegate::InterceptedContentType::
-                kYouTubeMetadataString)
-      << " - unexpected content type";
-  DCHECK(!content_update->content.empty());
-
-  // Store the new content for later, when we're asked for it, so that we
-  // don't have to do any parsing or fetching when there's no active
-  // conversation.
-  intercepted_content_ = std::move(content_update);
-  // Let the host know that new content was received so that it may record a
-  // "page" change.
-  mojo::AssociatedRemote<mojom::PageContentExtractorHost> host;
-  render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&host);
-  host->OnInterceptedPageContentChanged();
 }
 
 void PageContentExtractor::BindReceiver(
