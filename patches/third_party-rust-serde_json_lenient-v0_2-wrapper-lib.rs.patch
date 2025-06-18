@@ -1,0 +1,34 @@
+diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
+index c5e39138b1d25c8a534e97b9f79eeee5b8fba33b..d27c64061d20c71bb57e5e8d409176640e12f394 100644
+--- a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
++++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
+@@ -38,6 +38,11 @@ mod ffi {
+         fn dict_set_str(ctx: Pin<&mut Dict>, key: &str, val: &str);
+         fn dict_set_list<'f, 'a>(ctx: Pin<&'a mut Dict>, key: &'f str) -> Pin<&'a mut List>;
+         fn dict_set_dict<'f, 'a>(ctx: Pin<&'a mut Dict>, key: &'f str) -> Pin<&'a mut Dict>;
++        include!("brave/chromium_src/third_party/rust/serde_json_lenient/v0_2/wrapper/functions_redirect_cc.h");
++        fn list_append_i64(ctx: Pin<&mut List>, val: i64);
++        fn list_append_u64(ctx: Pin<&mut List>, val: u64);
++        fn dict_set_i64(ctx: Pin<&mut Dict>, key: &str, val: i64);
++        fn dict_set_u64(ctx: Pin<&mut Dict>, key: &str, val: u64);
+     }
+ 
+     extern "Rust" {
+@@ -73,6 +78,8 @@ mod ffi {
+         allow_newlines: bool,
+         /// Permits \\v vertical tab escapes.
+         allow_vert_tab: bool,
++        /// Allows 64-bit integers rather than trying to fit than as double.
++        allow_64bit_numbers: bool,
+         /// Permits \\xNN escapes as described above.
+         allow_x_escapes: bool,
+ 
+@@ -122,7 +129,7 @@ pub fn decode_json(
+ 
+     let target = visitor::DeserializationTarget::List { ctx };
+ 
+-    let result = deserializer.deserialize_any(ValueVisitor::new(target, options.max_depth));
++    let result = deserializer.deserialize_any(ValueVisitor::new(target, options.max_depth, options.allow_64bit_numbers));
+     match result.and(deserializer.end()) {
+         Ok(()) => true,
+         Err(err) => {

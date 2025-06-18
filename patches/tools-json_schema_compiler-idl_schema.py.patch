@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/idl_schema.py b/tools/json_schema_compiler/idl_schema.py
-index a0df36c7246e76781f3fa5211a28e8f0931e5d43..6032046735bc3aec1db5b856a1283f7622f095fb 100755
+index a0df36c7246e76781f3fa5211a28e8f0931e5d43..c8dedcc1ef8d05c78f86fd2e0f9e26ff5c527deb 100755
 --- a/tools/json_schema_compiler/idl_schema.py
 +++ b/tools/json_schema_compiler/idl_schema.py
 @@ -560,6 +560,8 @@ class IDLSchema(object):
@@ -11,3 +11,8 @@ index a0df36c7246e76781f3fa5211a28e8f0931e5d43..6032046735bc3aec1db5b856a1283f76
          else:
            continue
        else:
+@@ -614,3 +616,4 @@ def Main():
+ 
+ if __name__ == '__main__':
+   Main()
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

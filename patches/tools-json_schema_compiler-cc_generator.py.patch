@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/cc_generator.py b/tools/json_schema_compiler/cc_generator.py
-index 0767b1debcd2ead0852f33a826be6e073f082695..b3b2a6cd1b1de42aadef75b5401eeb1c76a37af7 100644
+index 0767b1debcd2ead0852f33a826be6e073f082695..b729cc9a49fdc802e51dec1b3424c753d01dd7e0 100644
 --- a/tools/json_schema_compiler/cc_generator.py
 +++ b/tools/json_schema_compiler/cc_generator.py
 @@ -30,6 +30,7 @@ class _Generator(object):
@@ -19,3 +19,8 @@ index 0767b1debcd2ead0852f33a826be6e073f082695..b3b2a6cd1b1de42aadef75b5401eeb1c
          .Concat(self._GeneratePopulatePropertyFromValue(
              prop, '(*%s)' % value_var, dst, 'false')))
        underlying_type = self._type_helper.FollowRef(prop.type_)
+@@ -1514,3 +1515,4 @@ class _Generator(object):
+     if generate_error_messages:
+       args = list(args) + ['error']
+     return ', '.join(str(a) for a in args)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

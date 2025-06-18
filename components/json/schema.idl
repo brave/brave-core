@@ -1,0 +1,20 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// This is a test file schema
+namespace schema {
+
+dictionary Example {
+  long id;
+  double someSignal;
+  boolean someBoolean;
+  DOMString someString;
+  [override=int64_t] ArrayBuffer someLargeValue;
+  [override=uint64_t] ArrayBuffer someLargeUnsignedValue;
+  [override=int64_t] ArrayBuffer anotherValue;
+  [override=uint64_t] ArrayBuffer someOtherValue;
+};
+
+};

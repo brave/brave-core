@@ -1,0 +1,9 @@
+diff --git a/tools/json_schema_compiler/cpp_type_generator.py b/tools/json_schema_compiler/cpp_type_generator.py
+index c5c5afb2acc1a3cb962916b784839c58e615bd03..58fd2d85c40ee0a29139459ff389aac0aaf5100e 100644
+--- a/tools/json_schema_compiler/cpp_type_generator.py
++++ b/tools/json_schema_compiler/cpp_type_generator.py
+@@ -373,3 +373,4 @@ class CppTypeGenerator(object):
+       if not has_child_code:
+         c = None
+     return c
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

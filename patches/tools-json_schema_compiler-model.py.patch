@@ -1,0 +1,9 @@
+diff --git a/tools/json_schema_compiler/model.py b/tools/json_schema_compiler/model.py
+index 1b4f4724f6f89784d400fff5968c31278848211c..7f1d7695892c9dfc322a4078ca050455b4bbd2ab 100644
+--- a/tools/json_schema_compiler/model.py
++++ b/tools/json_schema_compiler/model.py
+@@ -890,3 +890,4 @@ def _GetPlatforms(json):
+       raise ValueError('Invalid platform specified: ' + platform_name)
+     platforms.append(platform_enum)
+   return platforms
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
