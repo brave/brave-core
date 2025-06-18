@@ -117,7 +117,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
         run_loop.Quit();
       });
 
-  registry.CheckIfMatch(GURL("https://a.com"), mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
   run_loop.Run();
 }
 
@@ -125,7 +125,7 @@ TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
   PsstRuleRegistry registry;
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  registry.CheckIfMatch(GURL("https://a.com"), mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
@@ -243,7 +243,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
         run_loop.Quit();
       });
 
-  registry.CheckIfMatch(GURL("https://url.com"), mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://url.test"), mock_callback.Get());
   run_loop.Run();
 }
 
@@ -271,7 +271,7 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
 
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  registry.CheckIfMatch(GURL("https://notexisted.com"), mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://notexisted.test"), mock_callback.Get());
 }
 
 }  // namespace psst
