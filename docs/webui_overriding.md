@@ -73,7 +73,7 @@ declare module './item-chromium.js' {
   }
 }
 
-ExtensionsItemElement.prototype.isBraveAndFancy = () => true;
+FancyElement.prototype.isBraveAndFancy = () => true;
 
 export * from './fancy-chromium.js'
 ```
