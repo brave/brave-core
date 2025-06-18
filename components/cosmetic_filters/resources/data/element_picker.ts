@@ -362,12 +362,8 @@ const attachElementPicker = () => {
     'visibility: visible',
     'width: 100%',
     'z-index: 2147483647',
-    '--text-color: #1b1b1f',
+    '--button-text: white',
     '--dynamic-color-rgb: rgb(0, 0, 0)',
-    '--dynamic-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), ' +
-      'var(--text-color) 10%)',
-    '--dynamic-secondary-btn-bg-color: color-mix(in srgb, ' +
-      'var(--dynamic-color-rgb), var(--text-color) 3%)',
     '',
   ].join(' !important;')
 
@@ -567,16 +563,9 @@ const seShowRulesHiddenBtnState = (
 }
 
 const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
-  const rulesBox = root.getElementById('rules-box')!
-  const showRulesButton = root.getElementById('btn-show-rules-box')!
-
-  rulesBox.style.display = 'none'
-  seShowRulesHiddenBtnState(showRulesButton, false)
-
   const mainSection = root.getElementById('main-section')
   if (!mainSection) return;
   mainSection.classList.toggle('minimized', minimized);
-
 }
 
 const setupDragging = (root: ShadowRoot): void => {
@@ -632,7 +621,7 @@ const setupDragging = (root: ShadowRoot): void => {
   root.addEventListener('touchend', handleDragEnd);
 };
 
-function initSlider(root: ShadowRoot, element: HTMLElement
+function initSlider(element: HTMLElement
   | null, options: SliderOptions = {}): SliderAPI | undefined {
   if (!element) return;
 
@@ -657,10 +646,9 @@ function initSlider(root: ShadowRoot, element: HTMLElement
 
     inputElement.style.setProperty('--value', `${percentage}%`);
 
-    currentValue = value + 1;
+    currentValue = value;
 
     if (fireEvent && options.onChange) {
-      console.log('on change event fired with currentValue:', currentValue);
       options.onChange(currentValue);
     }
     return value;
@@ -705,8 +693,8 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
 
   const sliderElement = root.getElementById('custom-slider');
-  const slider = initSlider(root, sliderElement, {
-    onChange: (value) => {
+  const slider = initSlider(sliderElement, {
+    onChange: () => {
       dispatchSelect()
     }
   });
@@ -756,21 +744,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const setDarkMode = (isDarkModeEnabled: boolean) => {
-    const elements = root.querySelectorAll('.theme-managed');
-    elements.forEach(element => {
-      if (element.classList.contains(isDarkModeEnabled ? 'light' : 'dark')) {
-        element.classList.remove(isDarkModeEnabled ? 'light' : 'dark');
-      }
-      element.classList.add(isDarkModeEnabled ? 'dark' : 'light')
-    });
-    const rootStyles = root.host as HTMLElement
-    if(rootStyles){
-      rootStyles.style
-        .setProperty('--text-color', isDarkModeEnabled ? '#e3e3e8' : '#1b1b1f')
-    }
-  }
-
+  const section = root.getElementById('main-section')!
   const enableButtons = (isDisabled: boolean) => {
     const elements = root.querySelectorAll('.button');
     elements.forEach(element => {
@@ -782,7 +756,6 @@ const launchElementPicker = (root: ShadowRoot) => {
     });
   }
 
-  const section = root.getElementById('main-section')!
   if (!isAndroid) {
     section.classList.add('desktop')
   }
@@ -820,8 +793,11 @@ const launchElementPicker = (root: ShadowRoot) => {
         const bgcolorMaskOut = bgcolor & 0xFFFFFF
         const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('--theme-background-color', colorHex)
+
+        section.classList.remove(isDarkModeEnabled ? 'light' : 'dark')
+        section.classList.add(isDarkModeEnabled ? 'dark' : 'light')
+
         setTitleBarColor(bgcolor)
-        setDarkMode(isDarkModeEnabled)
         dispatchSelect()
       })
   }

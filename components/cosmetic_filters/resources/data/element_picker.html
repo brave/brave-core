@@ -1,14 +1,5 @@
 <style>
   :host {
-    --primary-light: #3E37D4;
-    --primary-dark: #C1C4FF;
-    --title-bar-light: #f0f0f4;
-    --title-bar-dark: #303034;
-    --white: #ffffff;
-    --black: #0f172a;
-    --primary: var(--primary-light);
-    --title-bar: var(--title-bar-light);
-
     background: transparent;
     color: black;
     font: 14px 'Inter Variable', 'Inter', sans-serif;
@@ -16,13 +7,31 @@
     width: 100%;
     margin: 0;
     overflow: hidden;
+    --text-color: #1b1b1f;
+    --dynamic-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 10%);
+    --dynamic-secondary-btn-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 3%);
   }
 
   @media (prefers-color-scheme: dark) {
     :host {
-      --primary: var(--primary-dark);
-      --title-bar: var(--title-bar-dark);
+      --text-color: #e3e3e8;
     }
+  }
+
+  .light {
+    --primary: #3E37D4;
+    --title-bar: #f0f0f4;
+    --block-btn-bg-disabled: #46464a33;
+    --block-btn-color-disabled: #21272a80;
+    --button-text: white;
+  }
+
+  .dark {
+    --primary: #C1C4FF;
+    --title-bar: #303034;
+    --block-btn-bg-disabled: #ebeef033;
+    --block-btn-color-disabled: #ebeef080;
+    --button-text: #251491;
   }
 
   #rules-box {
@@ -31,6 +40,10 @@
     background-color: #fff;
     border-radius: .1em;
     display: none;
+  }
+
+  .desktop.minimized>#rules-box {
+    display: none !important;
   }
 
   #rules-box>textarea {
@@ -117,10 +130,6 @@
     background-color: var(--dynamic-bg-color);
   }
 
-  #main-section.desktop .drag-header.dark {
-    background-color: var(--dynamic-bg-color);
-  }
-
   #main-section:not(.desktop) .drag-indicator {
     width: 36px;
     height: 4px;
@@ -161,15 +170,12 @@
     position: unset;
   }
 
-  #main-section.desktop>.drag-header.light .close-dlg-btn path #main-section.desktop>.drag-header.light .minimize-dlg-btn path {
-    fill: var(--black)
-  }
+  #minimize-dlg-btn>svg>path,
+  #close-btn > svg > path {
+	  fill: var(--text-color);
+	}
 
-  #main-section.desktop>.drag-header.dark .close-dlg-btn path #main-section.desktop>.drag-header.dark>.minimize-dlg-btn path {
-    fill: var(--white)
-  }
-
-  #main-section.desktop.minimized>*:not(#desktop-min-icon-container) {
+  .desktop.minimized>*:not(#desktop-min-icon-container) {
     display: none;
   }
 
@@ -177,7 +183,7 @@
     display: none;
   }
 
-  #main-section.desktop.minimized>#desktop-min-icon-container>.minimized-icon {
+  .desktop.minimized .minimized-icon {
     display: block;
     height: 25px;
     width: 25px;
@@ -185,7 +191,7 @@
     margin: 15px;
   }
 
-  #main-section.desktop.minimized>#desktop-min-icon-container>.minimized-icon path {
+  .desktop.minimized .minimized-icon path {
     fill: var(--dynamic-color-rgb);
   }
 
@@ -218,24 +224,14 @@
     margin: 3px;
   }
 
-  .block-button.light {
-    background-color: var(--primary-light);
-    color: white;
+  .block-button {
+    background-color: var(--primary);
+    color: var(--button-text);
   }
 
-  .block-button.dark {
-    background-color: var(--primary-dark);
-    color: #251491;
-  }
-
-  .block-button.disabled.light {
-    background: rgba(70, 70, 74, 0.20);
-    color: rgba(33, 39, 42, 0.50);
-  }
-
-  .block-button.disabled.dark {
-    background: rgba(235, 238, 240, 0.20);
-    color: rgba(235, 238, 240, 0.50);
+  .block-button.disabled {
+    background: var(--block-btn-bg-disabled);
+    color: var(--block-btn-color-disabled);
   }
 
   .secondary-button {
@@ -245,22 +241,7 @@
     padding: 4px 6px;
     flex-grow: 1;
     border-width: 0px;
-  }
-
-  .secondary-button.dark {
-    color: var(--primary-dark);
-  }
-
-  .secondary-button.light {
-    color: var(--primary-light);
-  }
-
-  .secondary-button.disable.dark {
-    color: var(--primary-dark);
-  }
-
-  .secondary-button.disable.light {
-    color: var(--primary-light)
+    color: var(--primary);
   }
 
   .secondary-button-bordered {
@@ -296,7 +277,6 @@
   }
 
   input[type="range"] {
-    -webkit-appearance: none;
     appearance: none;
     width: 100%;
     height: 10px;
@@ -342,9 +322,9 @@
   </defs>
   <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
 </svg>
-<section id="main-section" class="theme-managed">
-  <div id="drag-header" class="drag-header theme-managed">
-    <div id="title" class="theme-managed">Block Element</div>
+<section id="main-section">
+  <div id="drag-header" class="drag-header">
+    <div id="title">Block Element</div>
     <div class="drag-indicator"></div>
     <div id="minimize-dlg-btn" class="title-control-btn minimize-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -365,24 +345,23 @@
   </div>
   <div>
     <div id="slider-container">
-      <!-- <div id="custom-slider"  data-min="0" data-max="4" data-value="4"></div> -->
-      <input id="custom-slider" class="slider theme-managed" type="range" min="0" max="3" value="3">
+      <input id="custom-slider" class="slider" type="range" min="1" max="4" value="4">
     </div>
     <div id="buttons">
       <div class="buttons-line">
-        <button id="btn-create" class="button block-button theme-managed disabled light">Select element you want to
+        <button id="btn-create" class="button block-button disabled">Select element you want to
           block</button>
       </div>
       <div class="buttons-line">
-        <button id="btn-manage" class="button secondary-button theme-managed disabled light">Manage filters</button>
-        <button id="btn-show-rules-box" class="button secondary-button theme-managed disabled light">Show rules</button>
+        <button id="btn-manage" class="button secondary-button disabled">Manage filters</button>
+        <button id="btn-show-rules-box" class="button secondary-button disabled">Show rules</button>
         <button id="btn-quit"
-          class="button secondary-button theme-managed disabled secondary-button-bordered light">Cancel</button>
+          class="button secondary-button disabled secondary-button-bordered">Cancel</button>
       </div>
     </div>
   </div>
   <div id="desktop-min-icon-container">
-    <svg xmlns="http://www.w3.org/2000/svg" class="minimized-icon theme-managed" fill="none" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" class="minimized-icon" fill="none" viewBox="0 0 24 24">
       <path fill="#62757E" fill-rule="evenodd"
         d="M4.8 4a.8.8 0 0 0-.8.8v5.437a.8.8 0 0 0 1.6 0V6.722l4.4 4.4a.8.8 0 1 0 1.132-1.13L6.74 5.6h3.446a.8.8 0 0 0 0-1.6zm14.4 16a.8.8 0 0 0 .8-.8v-5.437a.8.8 0 0 0-1.6 0v3.515l-4.4-4.4a.8.8 0 1 0-1.132 1.13L17.26 18.4h-3.446a.8.8 0 0 0 0 1.6z"
         clip-rule="evenodd">
