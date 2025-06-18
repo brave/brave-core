@@ -1,16 +1,16 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index b58c9d354fed0793810a491e0564b8bf163dccc9..53d4848caeaacf2f0579e52f0eca864e8e1e1180 100644
+index 5fa377afb71d764dd6d46ecfa177302828c35039..e167fb6caac1287d896869c49aba323416b7644c 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -5154,6 +5154,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5208,6 +5208,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
      candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
    }
  
 +  BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
    std::optional<base::UnguessableToken> nonce =
        ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
-   return net::IsolationInfo::Create(request_type, top_frame_origin,
-@@ -5164,6 +5165,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+   return net::IsolationInfo::Create(
+@@ -5219,6 +5220,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
  std::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
      bool is_credentialless,
      std::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {
@@ -18,7 +18,7 @@ index b58c9d354fed0793810a491e0564b8bf163dccc9..53d4848caeaacf2f0579e52f0eca864e
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -5221,6 +5223,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -5276,6 +5278,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
    if (rfs_document_data_for_storage_key && unpartitioned_key_allowed &&
        rfs_document_data_for_storage_key->runtime_feature_state_read_context()
            .IsThirdPartyStoragePartitioningUserBypassEnabled()) {
@@ -26,7 +26,7 @@ index b58c9d354fed0793810a491e0564b8bf163dccc9..53d4848caeaacf2f0579e52f0eca864e
      return false;
    }
  
-@@ -9754,6 +9757,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -9806,6 +9809,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  
