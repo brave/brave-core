@@ -176,3 +176,9 @@ the upstream build for that WebUI.
 
 See `//brave/browser/resources/settings/BUILD.gn` and
 `//brave/browser/resources/settings/settings.gni` for how to get this setup.
+
+## Strings
+
+When using translated strings you should follow the guidance in the
+[webui strings explainer](./webui_strings_explainer.md) to reduce boilerplate
+and ensure we catch misspelt strings.
