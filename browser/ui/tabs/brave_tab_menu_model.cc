@@ -24,6 +24,12 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/menus/simple_menu_model.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/mock_containers_service.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
@@ -125,8 +131,13 @@ void BraveTabMenuModel::Build(Browser* browser,
 
   if (tabs::features::IsBraveSplitViewEnabled()) {
     BuildItemsForSplitView(browser, tab_strip_model, indices);
-    return;
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    BuildItemForContainer(browser, tab_strip_model, indices);
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 void BraveTabMenuModel::BuildItemsForSplitView(
@@ -166,3 +177,29 @@ void BraveTabMenuModel::BuildItemsForSplitView(
                              IDS_IDC_SWAP_SPLIT_VIEW);
   }
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTabMenuModel::OnContainerSelected(int container_id) {
+  // Should open selected tabs in the specified container.
+  // TODO(sko) Questions:
+  // Q1. What should we do if there's multiple tabs selected?
+  // Q2. What should we do if user selects already selected container? Are we
+  //     going to take the tabs out of the container, or do nothing?
+  NOTIMPLEMENTED();
+
+  // In-development code to simulate the container selection.
+  MockContainersService::GetInstance().set_selected_container_id(container_id);
+}
+
+void BraveTabMenuModel::BuildItemForContainer(Browser* browser,
+                                              TabStripModel* tab_strip_model,
+                                              const std::vector<int>& indices) {
+  auto index =
+      *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
+  containers_submenu_ = std::make_unique<ContainersMenuModel>(
+      ContainersMenuModel::Type::kTab, *this);
+  InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
+                              IDS_CXMENU_OPEN_IN_CONTAINER,
+                              containers_submenu_.get());
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
