@@ -16,7 +16,6 @@ static_library("common") {
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
-    "//brave/components/ntp_background_images/browser",
     "//brave/components/p3a",
     "//brave/components/sidebar/browser",
     "//brave/components/text_recognition/browser",
