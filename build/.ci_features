@@ -2,3 +2,4 @@
 # conditionally enable them on CI. Use lower_snake_case naming.
 
 gn_check_supports_checkdeps_only
+brave_components_unittests
