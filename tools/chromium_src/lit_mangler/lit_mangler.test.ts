@@ -424,4 +424,18 @@ export function getList(this: string[]) {
             expect(template.text).toBe('<div>World</div>')
         }
     })
+
+    it('should handle HTML files with Lit templates', () => {
+        utilsForTest.setResult(undefined)
+        utilsForTest.load('test/data/lit_mangle_html.html')
+
+        utilsForTest.mangle(e => e.querySelector('div').setAttribute('foo', 'bar'), t => t.text.includes('div'))
+        utilsForTest.mangle(e => e.querySelector('span').setAttribute('bar', 'foo'), t => t.text.includes('span'))
+
+        const result = utilsForTest.replacePlaceholders(utilsForTest.getResult()!)
+        expect(result).toBe(`<div foo="bar">
+  \${items.map(i => html\`<span bar="foo">\${i}</span>\`)}
+</div>
+`)
+    })
 })
