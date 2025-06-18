@@ -20,7 +20,8 @@ include_rules = [
 # would removed and "+components" above would be changed to "-components"
 include_rules += [
   "-components/grit",
-  "-components/sync_preferences"
+  "-components/prefs",
+  "-components/sync_preferences",
 ]
 
 specific_include_rules = {
