@@ -341,10 +341,6 @@ class TestContentBrowserClient : public BraveContentBrowserClient {
                             weak_ptr_factory_.GetWeakPtr()));
   }
 
-  void SetBindClosure(base::OnceClosure callback) {
-    bind_closure_ = std::move(callback);
-  }
-
   bool WaitForSolanaProviderBinding(
       content::RenderFrameHost* const frame_host) {
     if (bound_solana_providers_.contains(frame_host->GetGlobalId())) {
@@ -1304,8 +1300,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   ReloadAndWaitForLoadStop(browser());
   // Make sure SolanaProviderImpl for reloaded page is created so it is
   // subscribed to `accountChanged` event.
-  browser_content_client_->WaitForSolanaProviderBinding(
-      web_contents()->GetPrimaryMainFrame());
+  ASSERT_TRUE(browser_content_client_->WaitForSolanaProviderBinding(
+      web_contents()->GetPrimaryMainFrame()));
 
   RegisterSolAccountChanged();
   // switch to disconnected account 2
