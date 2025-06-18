@@ -92,5 +92,4 @@ Afterwards everything should work the same as it does in our UIs.
 
 ## Storybook
 
-We're looking into generating Storybook strings too, but that will be done as a
-followup.
+Storybook will automatically have the generated strings available.
