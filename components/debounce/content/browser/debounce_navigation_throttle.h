@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_DEBOUNCE_CONTENT_BROWSER_DEBOUNCE_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_DEBOUNCE_CONTENT_BROWSER_DEBOUNCE_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "base/memory/raw_ref.h"
 #include "content/public/browser/navigation_throttle.h"
 
@@ -26,9 +24,8 @@ class DebounceNavigationThrottle : public content::NavigationThrottle {
   DebounceNavigationThrottle& operator=(const DebounceNavigationThrottle&) =
       delete;
 
-  static std::unique_ptr<DebounceNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry,
-      DebounceService* debounce_service);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                DebounceService* debounce_service);
 
   // Implements content::NavigationThrottle.
   ThrottleCheckResult WillStartRequest() override;

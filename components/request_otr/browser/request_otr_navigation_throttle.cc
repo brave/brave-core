@@ -29,12 +29,12 @@
 #include "net/base/features.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
+#include "url/gurl.h"
 
 namespace request_otr {
 
 // static
-std::unique_ptr<RequestOTRNavigationThrottle>
-RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
+void RequestOTRNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     RequestOTRService* request_otr_service,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
@@ -46,13 +46,13 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
   // is disabled, don't bother creating throttle.
   if (!base::FeatureList::IsEnabled(
           request_otr::features::kBraveRequestOTRTab)) {
-    return nullptr;
+    return;
   }
   DCHECK(request_otr_service);
 
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
-    return nullptr;
+    return;
   }
 
   // If this is the system profile, then we don't need the throttle.
@@ -60,25 +60,25 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
   if (profile_metrics::GetBrowserProfileType(
           navigation_handle.GetWebContents()->GetBrowserContext()) ==
       profile_metrics::BrowserProfileType::kSystem) {
-    return nullptr;
+    return;
   }
   DCHECK(ephemeral_storage_service);
 
   // Don't block subframes.
   if (!navigation_handle.IsInMainFrame()) {
-    return nullptr;
+    return;
   }
 
   // If user preference is 'never go off the record', don't bother creating
   // throttle.
   if (pref_service->GetInteger(kRequestOTRActionOption) ==
       static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever)) {
-    return nullptr;
+    return;
   }
 
-  return std::make_unique<RequestOTRNavigationThrottle>(
+  registry.AddThrottle(std::make_unique<RequestOTRNavigationThrottle>(
       registry, request_otr_service, ephemeral_storage_service, pref_service,
-      locale);
+      locale));
 }
 
 RequestOTRNavigationThrottle::RequestOTRNavigationThrottle(
