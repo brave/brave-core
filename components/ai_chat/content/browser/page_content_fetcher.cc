@@ -210,7 +210,7 @@ class PageContentFetcherInternal {
       SendResultAndDeleteSelf(std::move(callback), content, "", false);
       return;
     }
-    // If it's video, we expect content url
+    // If it's non YouTube video, we expect content url
     if (data->content->is_content_url()) {
       auto content_url = data->content->get_content_url();
       if (content_url.is_empty() || !content_url.is_valid() ||

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -16,7 +17,6 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -39,12 +39,18 @@ class AIChatBrowserTest : public InProcessBrowserTest {
             auto response =
                 std::make_unique<net::test_server::BasicHttpResponse>();
 
-            // Get the key parameter
-            std::string key;
-            if (request.GetURL().has_query()) {
-              const std::string& query_str = request.GetURL().query();
-              if (base::StartsWith(query_str, "key=")) {
-                key = query_str.substr(4);  // Skip "key="
+            // Extract videoId from the JSON request body
+            std::string video_id;
+            if (request.method == net::test_server::METHOD_POST &&
+                !request.content.empty()) {
+              // Parse the JSON body to extract videoId
+              auto json_result = base::JSONReader::Read(request.content);
+              if (json_result.has_value() && json_result->is_dict()) {
+                const auto& body_dict = json_result->GetDict();
+                if (const std::string* video_id_ptr =
+                        body_dict.FindString("videoId")) {
+                  video_id = *video_id_ptr;
+                }
               }
             }
 
@@ -53,10 +59,11 @@ class AIChatBrowserTest : public InProcessBrowserTest {
                                             .AppendASCII("v1")
                                             .AppendASCII("player_dir");
 
-            // Determine which file to serve
+            // Determine which file to serve based on videoId
             base::FilePath file_path;
-            if (!key.empty()) {
-              file_path = player_dir.AppendASCII(base::StrCat({key, ".json"}));
+            if (!video_id.empty()) {
+              file_path =
+                  player_dir.AppendASCII(base::StrCat({video_id, ".json"}));
             } else {
               file_path = player_dir.AppendASCII("default.json");
             }
@@ -136,20 +143,14 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   const std::string initial_content = FetchPageContent();
   EXPECT_EQ("Initial content", initial_content);
 
-  static constexpr char kClick[] =
-      R"js(
-        document.getElementById('config').click()
-      )js";
+  // Also test regex fallback
+  const GURL url2("https://www.youtube.com/youtube-fallback.html?v=brave1234");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url2, WindowOpenDisposition::CURRENT_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  content::WebContentsConsoleObserver console_observer(ActiveWebContents());
-  console_observer.SetPattern("CLICKED");
-
-  EXPECT_TRUE(content::ExecJs(ActiveWebContents(), kClick,
-                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS));
-  EXPECT_TRUE(console_observer.Wait());
-
-  const std::string intercepted_content = FetchPageContent();
-  EXPECT_EQ("Intercepted content", intercepted_content);
+  const std::string navigated_content = FetchPageContent();
+  EXPECT_EQ("Navigated content", navigated_content);
 }
 
 }  // namespace ai_chat
