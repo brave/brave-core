@@ -5,6 +5,7 @@
 
 include_rules = [
   "+brave/components/ai_chat/core/common",
+  "+components/grit/brave_components_strings.h",
   "+content/public/test",
   "+services/network/public",
   "+services/network/test",
