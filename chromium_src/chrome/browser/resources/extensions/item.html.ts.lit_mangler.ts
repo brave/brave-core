@@ -16,7 +16,7 @@ mangle(
     }
     name.insertAdjacentHTML(
       'afterend',
-      `<div ?hidden=\${!this.isBraveHosted_(this.data.id)}
+      `<div ?hidden="\${!this.isBraveHosted_(this.data.id)}"
             class="brave-hosted">
           \$i18n{braveHosted}
        </div>`,

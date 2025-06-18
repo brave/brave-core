@@ -28,12 +28,8 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source,
                              IDS_EXTENSIONS_BRAVE_PRIVATE_AND_TOR_WARNING);
   source->AddLocalizedString("braveHosted", IDS_EXTENSIONS_BRAVE_HOSTED);
 
-  std::string mv2_extensions;
-  for (const auto& mv2_extension_id :
-       extensions_mv2::kPreconfiguredManifestV2Extensions) {
-    mv2_extensions += mv2_extension_id;
-    mv2_extensions += ",";
-  }
+  const std::string mv2_extensions =
+      base::JoinString(extensions_mv2::kPreconfiguredManifestV2Extensions, ",");
   source->AddString("braveHostedExtensions", mv2_extensions);
 }
 
