@@ -12,6 +12,9 @@
 #define AttachedTabStateUpdated                                            \
   AttachedTabStateUpdated_Unused();                                        \
   void SetClosePanelCallback(base::RepeatingClosure close_panel_callback); \
+  base::RepeatingClosure close_panel_callback() const {                    \
+    return close_panel_callback_;                                          \
+  }                                                                        \
                                                                            \
  private:                                                                  \
   base::RepeatingClosure close_panel_callback_;                            \

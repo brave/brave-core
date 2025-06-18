@@ -25,16 +25,11 @@ void CustomizeChromeUI::CreatePageHandler(
   CreatePageHandlerChromium(std::move(pending_page),
                             std::move(pending_page_handler));
   CHECK(customize_chrome_page_handler_);
-  customize_chrome_page_handler_->set_close_panel_callback(
-      close_panel_callback_);
+  customize_chrome_page_handler_->set_customize_chrome_ui(
+      weak_ptr_factory_.GetWeakPtr());
 }
 
 void CustomizeChromeUI::SetClosePanelCallback(
     base::RepeatingClosure close_panel_callback) {
   close_panel_callback_ = std::move(close_panel_callback);
-  if (customize_chrome_page_handler_) {
-    // Do not std::move() callback as handler may be created after this call
-    customize_chrome_page_handler_->set_close_panel_callback(
-        close_panel_callback);
-  }
 }

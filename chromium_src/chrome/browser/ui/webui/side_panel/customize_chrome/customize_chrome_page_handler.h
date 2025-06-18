@@ -8,16 +8,19 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome.mojom.h"
 
-#define UpdateNtpManagedByName                                                 \
-  UpdateNtpManagedByName() override;                                           \
-  void set_close_panel_callback(base::RepeatingClosure close_panel_callback) { \
-    close_panel_callback_ = std::move(close_panel_callback);                   \
-  }                                                                            \
-                                                                               \
- private:                                                                      \
-  base::RepeatingClosure close_panel_callback_;                                \
-                                                                               \
- public:                                                                       \
+class CustomizeChromeUI;
+
+#define UpdateNtpManagedByName                                       \
+  UpdateNtpManagedByName() override;                                 \
+  void set_customize_chrome_ui(                                      \
+      const base::WeakPtr<CustomizeChromeUI>& customize_chrome_ui) { \
+    customize_chrome_ui_ = std::move(customize_chrome_ui);           \
+  }                                                                  \
+                                                                     \
+ private:                                                            \
+  base::WeakPtr<CustomizeChromeUI> customize_chrome_ui_;             \
+                                                                     \
+ public:                                                             \
   void ClosePanel
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h"  // IWYU pragma: export

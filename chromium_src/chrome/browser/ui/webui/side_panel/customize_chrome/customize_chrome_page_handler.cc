@@ -5,8 +5,12 @@
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc"
 
+#include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"
+
 void CustomizeChromePageHandler::ClosePanel() {
-  if (close_panel_callback_) {
-    close_panel_callback_.Run();
-  }
+  CHECK(customize_chrome_ui_)
+      << "CustomizeChromeUI must be set on its creation.";
+  auto close_panel = customize_chrome_ui_->close_panel_callback();
+  CHECK(close_panel);
+  close_panel.Run();
 }
