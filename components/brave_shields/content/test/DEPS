@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
   "+services/network/public",
 ]
@@ -22,8 +23,5 @@ specific_include_rules = {
   ],
   "test_filters_provider\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
-  ],
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }

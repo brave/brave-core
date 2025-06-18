@@ -1,5 +1,6 @@
 include_rules = [
   "+components/grit/brave_components_strings.h",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
   "+content/public/test",
   "+services/data_decoder/public",
@@ -8,8 +9,3 @@ include_rules = [
   "+ui/base",
 ]
 
-specific_include_rules = {
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
-  ],
-}

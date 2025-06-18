@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser/browser_thread.h",
   "+content/public/test/browser_task_environment.h",
   "+net",
@@ -18,8 +19,5 @@ specific_include_rules = {
   ],
   "publishers_controller\.cc": [
     "!brave/components/l10n/common/locale_util.h",
-  ],
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }

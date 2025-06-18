@@ -2,14 +2,10 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
   "+components/os_crypt/sync",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
   "+google_apis/gaia/gaia_id.h",
   "+services/network/public",
   "+services/network/test",
 ]
 
-specific_include_rules = {
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
-  ],
-}

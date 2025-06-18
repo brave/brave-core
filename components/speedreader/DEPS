@@ -5,6 +5,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/prefs",
   "+components/sessions/content",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
@@ -20,8 +21,5 @@ specific_include_rules = {
   ],
   "url_readable_hints\.cc": [
     "+third_party/re2",
-  ],
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }

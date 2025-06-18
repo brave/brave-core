@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/version_info",
   "+brave/net/base",
   "+components/grit/brave_components_strings.h",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
@@ -21,8 +22,5 @@ include_rules = [
 specific_include_rules = {
   "bip39\.cc": [
     "+brave/third_party/bip39wally-core-native/include",
-  ],
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }

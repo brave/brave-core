@@ -6,6 +6,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/os_crypt/async",
   "+components/os_crypt/sync",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+crypto",
   "+services/data_decoder/public",
   "+services/network/public",
@@ -34,8 +35,5 @@ specific_include_rules = {
   ],
   "utils\.cc": [
     "!brave/components/l10n/common/locale_util.h",
-  ],
-  ".*_unittest\.cc": [
-    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }
