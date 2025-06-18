@@ -11,9 +11,11 @@ import android.content.res.ColorStateList;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.components.tab_groups.TabGroupColorId;
 
+@NullMarked
 public class BraveTabCardThemeUtil {
     @ColorInt
     public static int getTitleTextColor(
