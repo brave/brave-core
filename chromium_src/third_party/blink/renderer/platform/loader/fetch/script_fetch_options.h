@@ -13,7 +13,7 @@
 #define CreateFetchParameters                                           \
   CreateFetchParameters_ChromiumImpl(                                   \
       const KURL&, const SecurityOrigin*, const DOMWrapperWorld* world, \
-      CrossOriginAttributeValue, const WTF::TextEncoding&,              \
+      CrossOriginAttributeValue, const TextEncoding&,                   \
       FetchParameters::DeferOption, const FeatureContext*) const;       \
   void SetDOMNodeId(DOMNodeId dom_node_id);                             \
   DOMNodeId GetDOMNodeId() const;                                       \
