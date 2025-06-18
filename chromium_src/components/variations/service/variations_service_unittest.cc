@@ -10,12 +10,10 @@ namespace variations {
 TEST_F(VariationsServiceTest, SetVariationsCountryWithNotModifiedResponse) {
   VariationsService::EnableFetchForTesting();
 
-  SyntheticTrialRegistry synthetic_trial_registry;
   TestVariationsService service(
       std::make_unique<web_resource::TestRequestAllowedNotifier>(
           &prefs_, network_tracker_),
-      &prefs_, GetMetricsStateManager(), /*use_secure_url=*/true,
-      &synthetic_trial_registry);
+      &prefs_, GetMetricsStateManager(), /*use_secure_url=*/true);
   service.set_intercepts_fetch(/*value=*/false);
 
   std::string headers("HTTP/1.1 304 Not Modified\n\n");
