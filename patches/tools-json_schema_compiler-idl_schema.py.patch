@@ -1,8 +1,17 @@
 diff --git a/tools/json_schema_compiler/idl_schema.py b/tools/json_schema_compiler/idl_schema.py
-index a0df36c7246e76781f3fa5211a28e8f0931e5d43..6032046735bc3aec1db5b856a1283f7622f095fb 100755
+index a0df36c7246e76781f3fa5211a28e8f0931e5d43..05b6628faad5b6463283ff468d7542155b52f914 100755
 --- a/tools/json_schema_compiler/idl_schema.py
 +++ b/tools/json_schema_compiler/idl_schema.py
-@@ -560,6 +560,8 @@ class IDLSchema(object):
+@@ -229,6 +229,8 @@ class Member(object):
+ 
+     if self.node.GetProperty('platforms'):
+       properties['platforms'] = list(self.node.GetProperty('platforms'))
++    if self.node.GetProperty('override'):
++      properties['override'] = self.node.GetProperty('override')
+ 
+     for option_name, sanitizer in [('maxListeners', int),
+                                    ('supportsFilters', lambda s: s == 'true'),
+@@ -560,6 +562,8 @@ class IDLSchema(object):
            compiler_options['generate_error_messages'] = True
          elif node.name == 'deprecated':
            deprecated = str(node.value)
