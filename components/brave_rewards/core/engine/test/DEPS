@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "test_rewards_engine_client\.h": [
+    "+components/sync_preferences/testing_pref_service_syncable.h",
+  ],
+}

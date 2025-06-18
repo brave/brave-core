@@ -18,4 +18,7 @@ specific_include_rules = {
   "skus_service_impl\.h": [
     "+third_party/rust/cxx/v1/cxx.h"
   ],
+  ".*_unittest\.cc": [
+    "+components/sync_preferences/testing_pref_service_syncable.h",
+  ],
 }

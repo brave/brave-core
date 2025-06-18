@@ -26,5 +26,8 @@ specific_include_rules = {
     "!chrome/browser/history/history_service_factory.h",
     "!chrome/browser/search_engines/template_url_service_factory.h",
     "!chrome/test/base/testing_profile.h",
-  ]
+  ],
+  ".*_unittest\.cc": [
+    "+components/sync_preferences/testing_pref_service_syncable.h",
+  ],
 }

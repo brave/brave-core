@@ -3,10 +3,10 @@ include_rules = [
   "+cc/port",
   "+cc/task/core",
   "+cc/task/text",
-  "+crypto",
   "+components/grit/brave_components_strings.h",
   "+components/os_crypt/async",
   "+components/os_crypt/sync",
+  "+crypto",
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/test",
@@ -14,8 +14,8 @@ include_rules = [
   "+tensorflow_lite_support/cc/task/core/proto",
   "+tensorflow_lite_support/cc/task/processor/proto",
   "+tensorflow_lite_support/cc/task/text/proto",
-  "+third_party/skia/include",
   "+third_party/re2/src/re2",
+  "+third_party/skia/include",
   "+ui/base",
   "+ui/gfx/image",
 ]
@@ -34,5 +34,8 @@ specific_include_rules = {
   ],
   "utils\.cc": [
     "!brave/components/l10n/common/locale_util.h",
+  ],
+  ".*_unittest\.cc": [
+    "+components/sync_preferences/testing_pref_service_syncable.h",
   ],
 }

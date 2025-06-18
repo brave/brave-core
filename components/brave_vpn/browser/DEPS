@@ -7,3 +7,9 @@ include_rules = [
   "+services/network/test",
   "+ui/base",
 ]
+
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+components/sync_preferences/testing_pref_service_syncable.h",
+  ],
+}
