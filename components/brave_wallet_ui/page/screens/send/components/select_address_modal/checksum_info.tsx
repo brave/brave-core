@@ -110,7 +110,7 @@ export const ChecksumInfo = () => {
         >
           {getLocale('braveWalletChecksumModalNeedHelp')}{' '}
           <Link
-            href='https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
+            href='https://support.brave.app/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
             target='_blank'
             rel='noopener noreferrer'
           >

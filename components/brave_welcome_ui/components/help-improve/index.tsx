@@ -32,13 +32,13 @@ const readPrivacyPolicy = formatLocale('braveWelcomePrivacyPolicyNote', {
 })
 
 const diagnosticReportsLabel = formatLocale('braveWelcomeSendReportsLabel', {
-  $1: content => <a href='https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting' target='_blank'>
+  $1: content => <a href='https://support.brave.app/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting' target='_blank'>
     {content}
   </a>
 })
 
 const braveProductUsageDataLabel = formatLocale('braveWelcomeSendInsightsLabel', {
-  $1: content => <a href='https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-' target='_blank'>
+  $1: content => <a href='https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-' target='_blank'>
     {content}
   </a>
 })

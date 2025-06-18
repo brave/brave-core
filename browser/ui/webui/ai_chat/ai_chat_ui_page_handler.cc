@@ -50,7 +50,7 @@ namespace {
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
 constexpr char kURLLearnMoreAboutStorage[] =
-    "https://support.brave.com/hc/en-us/articles/"
+    "https://support.brave.app/hc/en-us/articles/"
     "32663367857549-How-do-I-use-Chat-History-in-Brave-Leo";
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -30,7 +30,7 @@ inline constexpr auto kPrintPreviewRetrievalHosts =
 
 inline constexpr uint8_t kMaxPreviewPages = 20;
 inline constexpr char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/articles/26727364100493-"
+    "https://support.brave.app/hc/en-us/articles/26727364100493-"
     "What-are-the-differences-between-Leo-s-AI-Models";
 
 inline constexpr char kLeoGoPremiumUrl[] =

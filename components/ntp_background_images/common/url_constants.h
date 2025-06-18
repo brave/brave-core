@@ -9,7 +9,7 @@
 namespace ntp_background_images {
 
 inline constexpr char kNewTabTakeoverLearnMoreLinkUrl[] =
-    "https://support.brave.com/hc/en-us/articles/35182999599501";
+    "https://support.brave.app/hc/en-us/articles/35182999599501";
 
 }  // namespace ntp_background_images
 

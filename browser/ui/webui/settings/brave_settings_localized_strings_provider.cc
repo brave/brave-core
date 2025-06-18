@@ -58,7 +58,7 @@ constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
     u"https://brave.com/privacy/browser/";
 
 constexpr char16_t kWebRTCLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/"
+    u"https://support.brave.app/hc/en-us/articles/"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 constexpr char16_t kBraveBuildInstructionsUrl[] =
     u"https://github.com/brave/brave-browser/wiki";
@@ -74,9 +74,9 @@ constexpr char16_t kUnstoppableDomainsLearnMoreURL[] =
 constexpr char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 constexpr char16_t kBraveSyncGuideUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
+    u"https://support.brave.app/hc/en-us/articles/360047642371-Sync-FAQ";
 constexpr char16_t kDeAmpLearnMoreUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/8611298579981";
+    u"https://support.brave.app/hc/en-us/articles/8611298579981";
 constexpr char16_t kDebounceLearnMoreUrl[] =
     u"https://brave.com/privacy-updates/11-debouncing/";
 constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
@@ -86,18 +86,18 @@ constexpr char16_t kBlockAllCookiesLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Block-all-cookies-global-Shields-setting";
 constexpr char16_t kLeoCustomModelsLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/"
+    u"https://support.brave.app/hc/en-us/articles/"
     u"34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo";
 
 constexpr char16_t kTabOrganizationLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/"
+    u"https://support.brave.app/hc/en-us/articles/"
     u"35200007195917-How-to-use-Tab-Focus-Mode";
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/36550092449165";
+    u"https://support.brave.app/hc/en-us/articles/36550092449165";
 
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";

@@ -69,7 +69,7 @@ import java.util.Locale;
  */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private static final String P3A_URL =
-            "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
+            "https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
     private static final String WDP_LINK =
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 

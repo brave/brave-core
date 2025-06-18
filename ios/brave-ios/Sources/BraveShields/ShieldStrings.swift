@@ -322,7 +322,7 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Ask websites not to sell or share your data. [Learn more](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)",
+      "Ask websites not to sell or share your data. [Learn more](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)",
     comment: "A description of what the Enable GPC toggle does"
   )
 }
