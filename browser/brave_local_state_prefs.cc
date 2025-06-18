@@ -85,6 +85,10 @@
 #include "brave/components/speedreader/speedreader_service.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -192,6 +196,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterLocalStatePrefs(registry);
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  windows_recall::RegisterLocalStatePrefs(registry);
 #endif
 }
 

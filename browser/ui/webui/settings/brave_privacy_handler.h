@@ -45,6 +45,10 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void GetP3AEnabled(const base::Value::List& args);
   void OnP3AEnabledChanged();
 
+#if BUILDFLAG(IS_WIN)
+  void OnWindowsRecallDisabledChanged();
+#endif
+
   raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
 };

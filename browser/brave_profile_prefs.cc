@@ -131,9 +131,6 @@ using extensions::FeatureSwitch;
 #include "brave/components/containers/core/browser/prefs.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/windows_recall/windows_recall.h"
-#endif
 
 namespace brave {
 
@@ -485,10 +482,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(IS_WIN)
-  windows_recall::RegisterProfilePrefs(registry);
 #endif
 }
 
