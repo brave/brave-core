@@ -8,6 +8,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/omnibox",
   "+components/prefs",
+  "+components/search_engines",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
   "+services/network/public",
