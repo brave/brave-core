@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/version_info",
   "+brave/net/base",
+  "+components/component_updater",
   "+components/content_settings",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",

@@ -3,6 +3,7 @@ include_rules = [
   "+cc/port",
   "+cc/task/core",
   "+cc/task/text",
+  "+components/component_updater",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
   "+components/os_crypt/async",
