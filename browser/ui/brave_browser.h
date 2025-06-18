@@ -44,6 +44,14 @@ class BraveBrowser : public Browser {
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
 
+  // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
+  // and it's called from WebContentsModalDialogManager.
+  // That manager prevents web modal dialog when web contents is not visible.
+  // As we have visible but inactive tabs in split tab, this should return false
+  // when it's inactive tab. Otherwse, web modal from inactive split tab can be
+  // shown.
+  bool IsWebContentsVisible(content::WebContents* web_contents) override;
+
   void OnTabClosing(content::WebContents* contents) override;
   void TabStripEmpty() override;
 

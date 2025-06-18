@@ -37,6 +37,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/common/url_constants.h"
@@ -289,6 +290,20 @@ bool BraveBrowser::TryToCloseWindow(
 void BraveBrowser::ResetTryToCloseWindow() {
   confirmed_to_close_ = false;
   Browser::ResetTryToCloseWindow();
+}
+
+bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
+  const auto original_visible = Browser::IsWebContentsVisible(web_contents);
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
+  if (!tab) {
+    return original_visible;
+  }
+
+  if (original_visible && !tab->IsActivated()) {
+    return false;
+  }
+
+  return original_visible;
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,
