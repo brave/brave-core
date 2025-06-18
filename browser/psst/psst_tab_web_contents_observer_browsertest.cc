@@ -64,8 +64,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
-    PsstRuleRegistry::GetInstance()->LoadRules(
-        test_data_dir.AppendASCII("brave/components/test/data/psst"));
+    if (base::FeatureList::IsEnabled(features::kEnablePsst)) {
+      PsstRuleRegistry::GetInstance()->LoadRules(
+          test_data_dir.AppendASCII("brave/components/test/data/psst"));
+    }
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
@@ -86,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptHandlerForSameDocument) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
-  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
 
   {
     std::u16string expected_title(u"a_user-a_policy");
@@ -121,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptsIfPsstDisabled) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), false);
-  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -137,9 +139,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL iframe_url =
-      GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
-  const GURL navigate_url = GetTestUrl(
-      iframe_url, GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html"));
+      GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
+  const GURL navigate_url =
+      GetTestUrl(iframe_url,
+                 GetEmbeddedTestServer().GetURL("a.test", "/iframe_load.html"));
   std::u16string expected_title(u"iframe test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), navigate_url));
@@ -150,7 +153,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerBothScriptsExecuted) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
-  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
 
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -162,6 +165,7 @@ class PsstTabWebContentsObserverBrowserTestDisabled
     : public PsstTabWebContentsObserverBrowserTest {
  public:
   PsstTabWebContentsObserverBrowserTestDisabled() {
+    feature_list_.Reset();
     feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
   }
 };

@@ -2,7 +2,7 @@
     {
         "name": "a",
         "include": [
-            "https://a.com/*"
+            "https://a.test/*"
         ],
         "exclude": [
         ],
@@ -13,7 +13,7 @@
     {
         "name": "b",
         "include": [
-            "https://b.com/*"
+            "https://b.test/*"
         ],
         "exclude": [
         ],
@@ -24,7 +24,7 @@
     {
         "name": "rule_with_wrong_script_path",
         "include": [
-            "https://url.com/*"
+            "https://url.test/*"
         ],
         "exclude": [
         ],
