@@ -6,12 +6,13 @@
 #include <optional>
 
 #include "base/command_line.h"
-#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
@@ -24,10 +25,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -42,9 +39,11 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
+#include "mojo/public/cpp/bindings/binder_map.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -325,13 +324,60 @@ void CloseWalletBubble(content::WebContents* web_contents) {
   tab_helper->CloseBubble();
 }
 
+class TestContentBrowserClient : public BraveContentBrowserClient {
+ public:
+  TestContentBrowserClient() = default;
+  TestContentBrowserClient(const TestContentBrowserClient&) = delete;
+  TestContentBrowserClient& operator=(const TestContentBrowserClient&) = delete;
+  ~TestContentBrowserClient() override = default;
+
+  void RegisterBrowserInterfaceBindersForFrame(
+      content::RenderFrameHost* render_frame_host,
+      mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override {
+    BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
+        render_frame_host, map);
+    map->Add<brave_wallet::mojom::SolanaProvider>(
+        base::BindRepeating(&TestContentBrowserClient::BindSolanaProvider,
+                            weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  bool WaitForSolanaProviderBinding(
+      content::RenderFrameHost* const frame_host) {
+    if (bound_solana_providers_.contains(frame_host->GetGlobalId())) {
+      return true;
+    }
+
+    base::test::TestFuture<void> future;
+    bind_closure_ = future.GetCallback();
+    return future.Wait();
+  }
+
+ private:
+  void BindSolanaProvider(
+      content::RenderFrameHost* const frame_host,
+      mojo::PendingReceiver<mojom::SolanaProvider> receiver) {
+    BraveWalletTabHelper::BindSolanaProvider(frame_host, std::move(receiver));
+
+    bound_solana_providers_.insert(frame_host->GetGlobalId());
+
+    if (bind_closure_) {
+      std::move(bind_closure_).Run();
+    }
+  }
+  base::flat_set<content::GlobalRenderFrameHostId> bound_solana_providers_;
+  base::OnceClosure bind_closure_;
+  base::WeakPtrFactory<TestContentBrowserClient> weak_ptr_factory_{this};
+};
+
 }  // namespace
 
 class SolanaProviderTest : public InProcessBrowserTest {
  public:
   SolanaProviderTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
-        https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+        https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    set_open_about_blank_on_browser_launch(false);
+  }
 
   ~SolanaProviderTest() override = default;
 
@@ -339,6 +385,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
     brave_wallet::SetDefaultSolanaWallet(
         browser()->profile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
+
+    browser_content_client_ = std::make_unique<TestContentBrowserClient>();
+    content::SetBrowserClientForTesting(browser_content_client_.get());
+
     host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_for_files_.SetSSLConfig(
@@ -769,6 +819,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
  protected:
   bool mock_blockhash_is_valid_ = true;
+  std::unique_ptr<TestContentBrowserClient> browser_content_client_;
 
  private:
   TestTxServiceObserver observer_;
@@ -1247,6 +1298,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   EXPECT_EQ(GetAccountChangedResult(), account_0->address);
 
   ReloadAndWaitForLoadStop(browser());
+  // Make sure SolanaProviderImpl for reloaded page is created so it is
+  // subscribed to `accountChanged` event.
+  ASSERT_TRUE(browser_content_client_->WaitForSolanaProviderBinding(
+      web_contents()->GetPrimaryMainFrame()));
 
   RegisterSolAccountChanged();
   // switch to disconnected account 2
