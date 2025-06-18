@@ -69,7 +69,7 @@ import { FancyElement } from './fancy-chromium.js'
 
 declare module './item-chromium.js' {
   interface FancyElement {
-    isBraveAndFancy(): boolean
+    isBraveAndFancy: () => boolean
   }
 }
 
