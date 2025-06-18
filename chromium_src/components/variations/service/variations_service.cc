@@ -5,11 +5,11 @@
 
 #include "brave/chromium_src/components/variations/variations_seed_store.h"
 
-// #define UpdateSeedDateAndLogDayChange(...)                                  \
-//   UpdateSeedDateAndMaybeCountry(is_first_request,                           \
-//                                 GetHeaderValue(headers.get(), "X-Country"), \
-//                                 __VA_ARGS__)
+#define UpdateSeedDateAndLogDayChange(...)                                  \
+  UpdateSeedDateAndMaybeCountry(is_first_request,                           \
+                                GetHeaderValue(headers.get(), "X-Country"), \
+                                __VA_ARGS__)
 
 #include "src/components/variations/service/variations_service.cc"
 
-// #undef UpdateSeedDateAndLogDayChange
+#undef UpdateSeedDateAndLogDayChange
