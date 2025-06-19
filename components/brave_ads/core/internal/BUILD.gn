@@ -387,8 +387,6 @@ static_library("internal") {
     "common/challenge_bypass_ristretto/verification_key.h",
     "common/challenge_bypass_ristretto/verification_signature.cc",
     "common/challenge_bypass_ristretto/verification_signature.h",
-    "common/country_code/country_code.cc",
-    "common/country_code/country_code.h",
     "common/crypto/crypto_util.cc",
     "common/crypto/crypto_util.h",
     "common/crypto/key_pair_info.cc",

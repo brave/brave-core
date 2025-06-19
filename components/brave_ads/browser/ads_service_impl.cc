@@ -54,8 +54,6 @@
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/l10n/common/country_code_util.h"
-#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
@@ -63,6 +61,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
@@ -187,7 +186,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
-    brave_ads::ResourceComponent* resource_component,
+    ResourceComponent* resource_component,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     HostContentSettingsMap* host_content_settings_map)
@@ -273,7 +272,7 @@ void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() {
   if (resource_component_observation_.IsObserving()) {
     resource_component_observation_.GetSource()
         ->RegisterComponentForCountryCode(
-            brave_l10n::GetCountryCode(local_state_));
+            delegate_->GetVariationsCountryCode());
   }
 }
 
@@ -572,7 +571,6 @@ void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
 
   // Clear all ads preferences.
   prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
-  local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   ClearAdsServiceDataAndMaybeRestart(std::move(callback));
 }
@@ -696,10 +694,10 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
   local_state_pref_change_registrar_.Init(local_state_);
 
   local_state_pref_change_registrar_.Add(
-      brave_l10n::prefs::kCountryCode,
-      base::BindRepeating(&AdsServiceImpl::OnCountryCodePrefChanged,
+      variations::prefs::kVariationsCountry,
+      base::BindRepeating(&AdsServiceImpl::OnVariationsCountryPrefChanged,
                           base::Unretained(this),
-                          brave_l10n::prefs::kCountryCode));
+                          variations::prefs::kVariationsCountry));
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -810,7 +808,7 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::OnCountryCodePrefChanged(const std::string& path) {
+void AdsServiceImpl::OnVariationsCountryPrefChanged(const std::string& path) {
   RegisterResourceComponentsForCurrentCountryCode();
 
   NotifyPrefChanged(path);
@@ -1901,8 +1899,7 @@ void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {
   browser_upgrade_required_to_serve_ads_ = true;
 }
 
-void AdsServiceImpl::OnRemindUser(
-    brave_ads::mojom::ReminderType mojom_reminder_type) {
+void AdsServiceImpl::OnRemindUser(mojom::ReminderType mojom_reminder_type) {
   CHECK(mojom::IsKnownEnumValue(mojom_reminder_type));
 
   ShowReminder(mojom_reminder_type);
