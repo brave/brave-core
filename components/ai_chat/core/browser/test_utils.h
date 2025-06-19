@@ -18,12 +18,14 @@ class AssociatedContentManager;
 
 void ExpectConversationEquals(base::Location location,
                               const mojom::ConversationPtr& a,
-                              const mojom::ConversationPtr& b);
+                              const mojom::ConversationPtr& b,
+                              bool compare_non_persisted_fields = false);
 
 void ExpectAssociatedContentEquals(
     base::Location location,
     const std::vector<mojom::AssociatedContentPtr>& a,
-    const std::vector<mojom::AssociatedContentPtr>& b);
+    const std::vector<mojom::AssociatedContentPtr>& b,
+    bool compare_non_persisted_fields = false);
 
 void ExpectConversationEntryEquals(base::Location location,
                                    const mojom::ConversationTurnPtr& a,

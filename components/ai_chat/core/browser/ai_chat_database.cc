@@ -774,7 +774,6 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 bool AIChatDatabase::AddConversationEntry(
     std::string_view conversation_uuid,
     mojom::ConversationTurnPtr entry,
-    std::optional<std::string_view> model_key,
     std::optional<std::string> editing_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation_uuid.empty());
@@ -787,45 +786,21 @@ bool AIChatDatabase::AddConversationEntry(
   // want to add orphan conversation entries when the conversation doesn't
   // exist.
   static constexpr char kGetConversationIdQuery[] =
-      "SELECT model_key FROM conversation WHERE uuid=?";
-  sql::Statement get_conversation_model_statement(
+      "SELECT uuid FROM conversation WHERE uuid=?";
+  sql::Statement get_conversation_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationIdQuery));
-  CHECK(get_conversation_model_statement.is_valid());
-  get_conversation_model_statement.BindString(0, conversation_uuid);
-  if (!get_conversation_model_statement.Step()) {
+  CHECK(get_conversation_statement.is_valid());
+  get_conversation_statement.BindString(0, conversation_uuid);
+  if (!get_conversation_statement.Step()) {
     DVLOG(0) << "ID not found in 'conversation' table";
     return false;
   }
-  auto existing_model_key =
-      GetOptionalString(get_conversation_model_statement, 0);
 
   sql::Transaction transaction(&GetDB());
   CHECK(GetDB().is_open());
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin";
     return false;
-  }
-
-  bool has_valid_new_model_key = !model_key.value_or("").empty();
-  bool should_update_model = (
-      // Clear existing
-      (!has_valid_new_model_key && existing_model_key.has_value()) ||
-      // Change or add existing
-      (has_valid_new_model_key &&
-       (existing_model_key.value_or("") != model_key.value())));
-  if (should_update_model) {
-    // Update model key if neccessary
-    static constexpr char kUpdateModelKeyQuery[] =
-        "UPDATE conversation SET model_key=? WHERE uuid=?";
-    sql::Statement update_model_key_statement(
-        GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateModelKeyQuery));
-    update_model_key_statement.BindString(1, conversation_uuid);
-    if (has_valid_new_model_key) {
-      update_model_key_statement.BindString(0, model_key.value());
-    } else {
-      update_model_key_statement.BindNull(0);
-    }
-    update_model_key_statement.Run();
   }
 
   sql::Statement insert_conversation_entry_statement;
@@ -948,7 +923,7 @@ bool AIChatDatabase::AddConversationEntry(
 
   if (entry->edits.has_value()) {
     for (auto& edit : entry->edits.value()) {
-      if (!AddConversationEntry(conversation_uuid, std::move(edit), model_key,
+      if (!AddConversationEntry(conversation_uuid, std::move(edit),
                                 entry->uuid.value())) {
         return false;
       }
@@ -1010,6 +985,28 @@ bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
   if (!BindAndEncryptString(statement, 0, title)) {
     return false;
   }
+  statement.BindString(1, conversation_uuid);
+
+  return statement.Run();
+}
+
+bool AIChatDatabase::UpdateConversationModelKey(
+    std::string_view conversation_uuid,
+    std::optional<std::string> model_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for " << conversation_uuid << " with model_key "
+           << model_key.value_or("null");
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateConversationTitleQuery[] =
+      "UPDATE conversation SET model_key=? WHERE uuid=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationTitleQuery));
+  CHECK(statement.is_valid());
+
+  BindOptionalString(statement, 0, model_key);
   statement.BindString(1, conversation_uuid);
 
   return statement.Run();
