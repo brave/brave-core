@@ -133,8 +133,8 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
   conversation.emplace_back(mojom::CharacterType::HUMAN,
                             ConversationEventType::RequestRewrite,
                             /*Content=*/std::vector<std::string>{question});
-  api_->PerformRequest(std::move(conversation), selected_language,
-                       std::move(received_callback),
+  api_->PerformRequest(std::move(conversation),
+                       selected_language, std::move(received_callback),
                        std::move(completed_callback));
 }
 
@@ -154,8 +154,9 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), selected_language,
-                       base::NullCallback(), std::move(on_response));
+  api_->PerformRequest(std::move(conversation),
+                       selected_language, base::NullCallback(),
+                       std::move(on_response));
 }
 
 void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
@@ -187,6 +188,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
+    const std::vector<const Tool*>,
+    const std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -253,8 +256,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     model_name = model_service_->GetLeoModelNameByKey(
         *conversation_history.back()->model_key);
   }
-  api_->PerformRequest(std::move(conversation), selected_language,
-                       std::move(data_received_callback),
+  api_->PerformRequest(std::move(conversation),
+                       selected_language, std::move(data_received_callback),
                        std::move(completed_callback), model_name);
 }
 
@@ -347,7 +350,8 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
          {base::WriteJson(tab_value_list).value_or(std::string())},
          topic});
 
-    api_->PerformRequest(std::move(conversation), "" /* selected_language */,
+    api_->PerformRequest(std::move(conversation),
+                         "" /* selected_language */,
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }

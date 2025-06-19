@@ -1014,7 +1014,8 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, selected_language_,
+      is_video, page_content, chat_history_, selected_language_, {} /* tools */,
+      std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
