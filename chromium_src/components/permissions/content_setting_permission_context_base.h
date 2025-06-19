@@ -82,7 +82,6 @@ class ContentSettingPermissionContextBase
   };
 
   void PermissionDecided(PermissionDecision decision,
-                         bool is_one_time,
                          bool is_final_decision,
                          const PermissionRequestData& request_data) override;
   void CleanUpRequest(content::WebContents* web_contents,
