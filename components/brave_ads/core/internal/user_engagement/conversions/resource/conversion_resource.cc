@@ -92,11 +92,6 @@ void ConversionResource::Unload() {
   resource_.reset();
 }
 
-void ConversionResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  MaybeLoad();
-}
-
 void ConversionResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
       DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
