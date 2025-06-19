@@ -424,7 +424,7 @@
       General purpose chat, coding, and more
   </message>
   <message name="IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE" desc="A description for gemma model" formatter_data="webui=AiChat">
-    General purpose, text and image understanding
+    General purpose text and image understanding
   </message>
   <message name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model" formatter_data="webui=AiChat">
     General purpose vision
