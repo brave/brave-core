@@ -46,6 +46,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -446,11 +447,13 @@ TEST_P(AIChatServiceUnitTest,
 
   // Function to call to finish generating the response.
   base::OnceClosure resolve;
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](bool send_page_contents, const std::string& page_contents,
+          [&resolve](const bool& is_video, const std::string& page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
+                     const std::vector<base::WeakPtr<Tool>>& tools,
+                     std::optional<std::string_view> preferred_tool_name,
                      base::RepeatingCallback<void(
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(
