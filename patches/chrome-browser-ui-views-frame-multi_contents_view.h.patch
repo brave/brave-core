@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index 7aa36d1033aeb2cc064526e229a9a67b80278609..80d6e79635111d3ecd0315375e47b7ab1d4d9e1a 100644
+index f8dbc6741dad0db5454b88058619cc6a044c3767..ffef40a3994b40184e5be784eb0763894a2b03f0 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
-@@ -19,7 +19,7 @@
+@@ -20,7 +20,7 @@
  class BrowserView;
  class ContentsWebView;
  class MultiContentsDropTargetView;

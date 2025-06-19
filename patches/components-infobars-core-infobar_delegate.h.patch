@@ -1,8 +1,8 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 3a66c8b2033e9d172a46b622e1e2dfbd71b76d29..f04d13649d925845139e1146560630ddba14c7fe 100644
+index b50703c15cf9dcb49a5c8d732cccd25b1bdee8ea..753801e092e0f833eb5f8b214597bf5c2a35e4c5 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -189,6 +189,7 @@ class InfoBarDelegate {
+@@ -190,6 +190,7 @@ class InfoBarDelegate {
      CREDENTIAL_PROVIDER_INFOBAR_DELEGATE_IOS = 122,
      PDF_INFOBAR_DELEGATE = 123,
      INSTALLER_DOWNLOADER_INFOBAR_DELEGATE = 124,

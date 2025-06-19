@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 189f53027d6b591cc5f973707179ac4f9a9bcc70..81043a5ae7003daf10ada88a2fc43c528ed42142 100644
+index 1589994746b9116a81d3ad0bcf7925fd3cf63d7f..aa737e15a85db883aefcb094cc65791287e6d6fd 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -19,6 +19,7 @@ js_files = [
