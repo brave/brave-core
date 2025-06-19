@@ -690,7 +690,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
-  if (!credential_cookie.HasExpires()) {
+  if (!credential_cookie.Expires()) {
     VLOG(1) << __func__ << " : FAILED cookie doesn't have expired date.";
     SetPurchasedState(env, PurchasedState::FAILED);
     return;
@@ -700,7 +700,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   // That leaves us with a Base64 encoded JSON blob which is the credential.
   const std::string encoded_credential = credential_cookie.Value();
   const auto time =
-      net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
+      net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);

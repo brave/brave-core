@@ -279,13 +279,13 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
     return;
   }
 
-  if (!credential_cookie.HasExpires()) {
+  if (!credential_cookie.Expires()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
   const auto time =
-      net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
+      net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
   // Early return when it's already expired.
   if (time < base::Time::Now()) {
     std::move(callback).Run(std::nullopt);
