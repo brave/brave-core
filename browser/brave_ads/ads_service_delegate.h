@@ -58,6 +58,7 @@ class AdsServiceDelegate : public AdsService::Delegate {
   void CloseNotificationAd(const std::string& id, bool is_custom) override;
   void OpenNewTabWithUrl(const GURL& url) override;
   bool IsFullScreenMode() override;
+  std::string GetVariationsCountryCode() override;
 
  private:
   NotificationDisplayService* GetNotificationDisplayService();

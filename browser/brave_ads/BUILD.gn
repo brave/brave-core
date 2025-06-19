@@ -76,6 +76,8 @@ source_set("impl") {
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
     "//components/keyed_service/content",
+    "//components/variations",
+    "//components/variations/service",
     "//ui/gfx",
     "//ui/message_center/public/cpp",
   ]
