@@ -11,6 +11,7 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
@@ -226,6 +227,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
+      &policy::kDevicePolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kDeviceLocalAccountPolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kCbcmPolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kUserPolicyInvalidationWithDirectMessagesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kFingerprintingProtectionUx,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
