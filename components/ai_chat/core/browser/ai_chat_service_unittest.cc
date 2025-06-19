@@ -174,7 +174,6 @@ class MockAIChatDatabase : public AIChatDatabase {
               AddConversationEntry,
               (std::string_view,
                mojom::ConversationTurnPtr,
-               std::optional<std::string_view>,
                std::optional<std::string>),
               (override));
 
@@ -188,6 +187,11 @@ class MockAIChatDatabase : public AIChatDatabase {
   MOCK_METHOD(bool,
               UpdateConversationTitle,
               (std::string_view, std::string_view),
+              (override));
+
+  MOCK_METHOD(bool,
+              UpdateConversationModelKey,
+              (std::string_view, std::optional<std::string>),
               (override));
 
   MOCK_METHOD(bool,
@@ -1264,9 +1268,10 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
 
   // Set up expectations - no database calls should be made
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(0);
-  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, AddOrUpdateAssociatedContent(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTitle(_, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTokenInfo(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversationEntry(_)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversation(_)).Times(0);
@@ -1306,7 +1311,8 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   ASSERT_FALSE(permanent_conversation->GetIsTemporary());
   permanent_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(1);
-  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(1);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _)).Times(1);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(1);
   DisconnectConversationClient(client2.get());
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
 }
