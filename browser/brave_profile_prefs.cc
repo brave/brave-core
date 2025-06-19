@@ -131,7 +131,6 @@ using extensions::FeatureSwitch;
 #include "brave/components/containers/core/browser/prefs.h"
 #endif
 
-
 namespace brave {
 
 void RegisterProfilePrefsForMigration(
