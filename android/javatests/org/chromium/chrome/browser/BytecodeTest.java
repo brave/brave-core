@@ -174,6 +174,7 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDel
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.components.infobars.InfoBarLayout;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -415,6 +416,7 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_group_sync/StartupHelper"));
+        Assert.assertTrue(classExists("org/chromium/components/infobars/ConfirmInfoBar"));
     }
 
     @Test
@@ -988,6 +990,13 @@ public class BytecodeTest {
                         int.class,
                         boolean.class,
                         MotionEventInfo.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/infobars/ConfirmInfoBar",
+                        "createContent",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        InfoBarLayout.class));
     }
 
     @Test
@@ -1942,6 +1951,17 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/infobars/ConfirmInfoBar",
+                        "org/chromium/components/infobars/BraveConfirmInfoBar",
+                        int.class,
+                        int.class,
+                        Bitmap.class,
+                        String.class,
+                        String.class,
+                        String.class,
+                        String.class));
     }
 
     @Test

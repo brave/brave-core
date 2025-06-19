@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.infobar;
+package org.chromium.components.infobars;
 
 import androidx.annotation.IntDef;
+
+import org.chromium.build.annotations.NullMarked;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,8 +20,10 @@ import java.lang.annotation.RetentionPolicy;
     BraveInfoBarIdentifier.SYNC_CANNOT_RUN_INFOBAR,
     BraveInfoBarIdentifier.WEB_DISCOVERY_INFOBAR_DELEGATE,
     BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR,
-    BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE
+    BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
+    BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_EDGE_TO_EDGE
 })
+@NullMarked
 @Retention(RetentionPolicy.SOURCE)
 public @interface BraveInfoBarIdentifier {
     int INVALID = -1;
@@ -31,4 +35,5 @@ public @interface BraveInfoBarIdentifier {
     int WEB_DISCOVERY_INFOBAR_DELEGATE = 506;
     int BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507;
     int NEW_TAB_TAKEOVER_INFOBAR_DELEGATE = 511;
+    int NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_EDGE_TO_EDGE = 512;
 }

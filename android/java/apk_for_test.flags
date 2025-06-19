@@ -993,3 +993,12 @@
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
 }
+
+-keep class org.chromium.components.infobars.ConfirmInfoBar {
+    protected <init>(...);
+    *** createContent(...);
+}
+
+-keep class org.chromium.components.infobars.BraveConfirmInfoBar {
+    protected <init>(...);
+}

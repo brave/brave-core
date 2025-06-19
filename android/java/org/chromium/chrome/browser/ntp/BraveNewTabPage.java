@@ -110,6 +110,8 @@ public class BraveNewTabPage extends NewTabPage {
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTabProvider(activityTabProvider);
+            ((BraveNewTabPageLayout) mNewTabPageLayout)
+                    .setEdgeToEdgeControllerSupplier(edgeToEdgeControllerSupplier);
         }
 
         // We have no way to know exactly which service the observer is added to, so try
