@@ -20,6 +20,7 @@
 #include "components/content_settings/core/browser/website_settings_info.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/permission_util.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 using content_settings::WebsiteSettingsInfo;
@@ -84,11 +85,11 @@ void PermissionLifetimeManager::PermissionDecided(
     const PermissionRequest& permission_request,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
-    ContentSetting content_setting,
+    PermissionDecision decision,
     bool is_one_time) {
   if (!permission_request.SupportsLifetime() ||
-      (content_setting != ContentSetting::CONTENT_SETTING_ALLOW &&
-       content_setting != ContentSetting::CONTENT_SETTING_BLOCK) ||
+      (decision != PermissionDecision::kAllow &&
+       decision != PermissionDecision::kDeny) ||
       is_one_time) {
     // Only interested in ALLOW/BLOCK and non one-time (Chromium
     // geolocation-specific) decisions.
@@ -101,7 +102,7 @@ void PermissionLifetimeManager::PermissionDecided(
     return;
   }
 
-  if (content_setting == ContentSetting::CONTENT_SETTING_ALLOW) {
+  if (decision == PermissionDecision::kAllow) {
     const char* histogram_name = nullptr;
     if (*lifetime == base::Hours(24)) {
       histogram_name = kLifetime24HoursHistogramName;
@@ -119,13 +120,17 @@ void PermissionLifetimeManager::PermissionDecided(
     return;
   }
 
+  ContentSetting content_setting =
+      PermissionUtil::PermissionDecisionToContentSetting(decision);
+
   DVLOG(1) << "PermissionLifetimeManager::PermissionDecided"
            << "\ntype: "
            << WebsiteSettingsRegistry::GetInstance()->Get(content_type)->name()
            << "\nrequesting_origin: " << requesting_origin
            << "\nembedding_origin: " << embedding_origin
            << "\ncontent_setting: "
-           << content_settings::ContentSettingToString(content_setting)
+           << content_settings::ContentSettingToString(
+                  PermissionUtil::PermissionDecisionToContentSetting(decision))
            << "\nlifetime: " << permission_request.GetLifetime()->InSeconds()
            << " seconds";
 
