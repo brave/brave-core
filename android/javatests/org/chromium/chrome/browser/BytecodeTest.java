@@ -174,7 +174,6 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDel
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.feature_engagement.Tracker;
-import org.chromium.components.infobars.InfoBarLayout;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -990,13 +989,6 @@ public class BytecodeTest {
                         int.class,
                         boolean.class,
                         MotionEventInfo.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/infobars/ConfirmInfoBar",
-                        "createContent",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        InfoBarLayout.class));
     }
 
     @Test

@@ -996,7 +996,6 @@
 
 -keep class org.chromium.components.infobars.ConfirmInfoBar {
     protected <init>(...);
-    *** createContent(...);
 }
 
 -keep class org.chromium.components.infobars.BraveConfirmInfoBar {
