@@ -471,12 +471,12 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
 
   if (IsWin11()) {
     EXPECT_TRUE(
-        local_state->GetBoolean(windows_recall::prefs::kBlockWindowsRecall));
+        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
     EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
     EXPECT_TRUE(client()->IsWindowsRecallDisabled());
   } else {
     EXPECT_FALSE(local_state->FindPreference(
-        windows_recall::prefs::kBlockWindowsRecall));
+        windows_recall::prefs::kWindowsRecallDisabled));
     EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
     EXPECT_FALSE(client()->IsWindowsRecallDisabled());
   }
@@ -487,9 +487,10 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 
   if (IsWin11()) {
-    local_state->SetBoolean(windows_recall::prefs::kBlockWindowsRecall, false);
+    local_state->SetBoolean(windows_recall::prefs::kWindowsRecallDisabled,
+                            false);
     EXPECT_FALSE(
-        local_state->GetBoolean(windows_recall::prefs::kBlockWindowsRecall));
+        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
 
     // Not changed until restart.
     EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
@@ -507,7 +508,7 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
 
   EXPECT_TRUE(windows_recall::IsWindowsRecallAvailable());
   EXPECT_FALSE(
-      local_state->GetBoolean(windows_recall::prefs::kBlockWindowsRecall));
+      local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
   EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
   EXPECT_FALSE(client()->IsWindowsRecallDisabled());
   EXPECT_TRUE(GetShouldDoLearning(browser()));

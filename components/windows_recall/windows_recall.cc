@@ -20,7 +20,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
     return;
   }
 
-  registry->RegisterBooleanPref(prefs::kBlockWindowsRecall, true);
+  registry->RegisterBooleanPref(prefs::kWindowsRecallDisabled, true);
 }
 
 bool IsWindowsRecallDisabled(PrefService* local_state) {
@@ -28,7 +28,7 @@ bool IsWindowsRecallDisabled(PrefService* local_state) {
     return false;
   }
 
-  static bool disabled = local_state->GetBoolean(prefs::kBlockWindowsRecall);
+  static bool disabled = local_state->GetBoolean(prefs::kWindowsRecallDisabled);
   return disabled;
 }
 

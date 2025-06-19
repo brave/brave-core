@@ -661,10 +661,10 @@
     </message>
   </if>
   <if expr="is_win">
-    <message name="IDS_SETTINGS_BLOCK_WINDOWS_RECALL_LABEL" desc="Windows Recall setting label">
+    <message name="IDS_SETTINGS_WINDOWS_RECALL_DISABLED_LABEL" desc="Windows Recall setting label">
       Block Microsoft Recall
     </message>
-    <message name="IDS_SETTINGS_BLOCK_WINDOWS_RECALL_SUBLABEL" desc="Windows Recall setting sub-label">
+    <message name="IDS_SETTINGS_WINDOWS_RECALL_DISABLED_SUBLABEL" desc="Windows Recall setting sub-label">
       Block the Recall feature on Microsoft Windows computers from automatically taking screenshots of any open Brave tabs.
     </message>
   </if>

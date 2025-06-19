@@ -328,7 +328,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
 
 #if BUILDFLAG(IS_WIN)
-  (*s_brave_allowlist)[windows_recall::prefs::kBlockWindowsRecall] =
+  (*s_brave_allowlist)[windows_recall::prefs::kWindowsRecallDisabled] =
       settings_api::PrefType::kBoolean;
 #endif
 
