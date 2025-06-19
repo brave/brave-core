@@ -81,7 +81,7 @@ class ContentSettingPermissionContextBase
     size_t next_callback_index_ = 0;
   };
 
-  void PermissionDecided(ContentSetting content_setting,
+  void PermissionDecided(PermissionDecision decision,
                          bool is_one_time,
                          bool is_final_decision,
                          const PermissionRequestData& request_data) override;
