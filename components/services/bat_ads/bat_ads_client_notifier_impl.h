@@ -39,9 +39,6 @@ class BatAdsClientNotifierImpl final
   // Invoked when ads did initialize.
   void NotifyDidInitializeAds() override;
 
-  // Invoked when the operating system locale changes.
-  void NotifyLocaleDidChange(const std::string& locale) override;
-
   // Invoked when a preference has changed for the specified `path`.
   void NotifyPrefDidChange(const std::string& path) override;
 
