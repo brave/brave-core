@@ -53,6 +53,7 @@ export default function TabsMenu() {
     setIsOpen={setIsOpen}
     query={query}
     matchesQuery={matchesQuery}
+    noMatchesMessage={<span className={styles.tabMenuItem}>{getLocale(S.CHAT_UI_TABS_MENU_NO_MATCHING_TABS)}</span>}
   >
     {(item) => <leo-menu-item
         class={styles.tabMenuItem}

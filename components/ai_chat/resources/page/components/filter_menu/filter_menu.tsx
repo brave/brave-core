@@ -15,6 +15,8 @@ export interface Props<T> {
   setIsOpen: (open: boolean) => void,
   categories: { category: string, entries: T[] }[],
 
+  noMatchesMessage?: React.ReactNode
+
   matchesQuery: (query: string, entry: T, category?: string) => boolean | undefined
 
   children: (entry: T, category?: string) => React.ReactNode
@@ -31,6 +33,7 @@ export default function FilterMenu<T>(props: Props<T>) {
       }))
       .filter(g => g.entries.length > 0), [props.query, props.categories])
 
+  const noMatches = useMemo(() => !filtered.some(g => g.entries.length !== 0), [filtered])
   const ref = React.useRef<HTMLElement>(null)
 
   React.useEffect(() => {
@@ -83,6 +86,7 @@ export default function FilterMenu<T>(props: Props<T>) {
           </React.Fragment>
         )
       })}
+      {noMatches && props.noMatchesMessage}
     </ButtonMenu>
   )
 }
