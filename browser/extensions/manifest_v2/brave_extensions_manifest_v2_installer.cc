@@ -35,15 +35,6 @@ namespace extensions_mv2 {
 
 namespace {
 
-constexpr auto kPreconfiguredManifestV2Extensions =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 kNoScriptId,
-                                                 kAdGuardId,
-                                                 kUMatrixId,
-                                                 kUBlockId,
-                                             });
-
 GURL GetUpdaterExtensionDownloadUrl(
     const extensions::ExtensionId& extenion_id) {
   const std::string params[] = {base::JoinString({"id", extenion_id}, "="),
