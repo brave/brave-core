@@ -13,17 +13,13 @@ enum BookmarkItemSelection {
   case shareLink
 }
 
-class BookmarkModel: NSObject, ObservableObject {
+@Observable
+class BookmarkModel: NSObject {
   private let api: BraveBookmarksAPI?
   private weak var tabManager: TabManager?
   private weak var bookmarkManager: BookmarkManager?
   private weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
   private var dismiss: (() -> Void)?
-
-  @Published
-  private(set) var isBookmarksServiceLoaded = false
-
-  @Published
   private(set) var isPrivateBrowsing = false
 
   var lastVisitedFolder: BookmarkNode? {
@@ -89,7 +85,7 @@ class BookmarkModel: NSObject, ObservableObject {
 
     return await withCheckedContinuation { continuation in
       bookmarkManager?.byFrequency(query: query) {
-        continuation.resume(returning: Array(($0 as! [BookmarkNode]).uniqued()))
+        continuation.resume(returning: Array($0.uniqued()))
       }
     }
   }

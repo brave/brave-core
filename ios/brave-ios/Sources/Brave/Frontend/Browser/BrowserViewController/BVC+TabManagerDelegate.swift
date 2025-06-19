@@ -371,9 +371,9 @@ extension BrowserViewController: TabManagerDelegate {
             let navigationController = UINavigationController()
 
             let addBookmarksController = UIHostingController(
-              rootView: BookmarksAddTabsView(
+              rootView: BookmarksAddEditFolderView(
                 model: BookmarkModel(api: profileController.bookmarksAPI),
-                tabs: tabManager.tabsForCurrentMode,
+                action: .addTabs(tabManager.tabsForCurrentMode),
                 dismiss: { [weak navigationController] in
                   navigationController?.dismiss(animated: true)
                 }

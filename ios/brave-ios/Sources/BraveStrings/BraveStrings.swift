@@ -6949,15 +6949,6 @@ extension Strings {
         comment: "Title which is displayed on Bookmarks screen when you search for something but no results are found"
       )
 
-    public static let bookmarksCreateEmptyFolder =
-      NSLocalizedString(
-        "bookmarks.bookmarksCreateEmptyFolder",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "No Search Results",
-        comment: "Title which is displayed on Bookmarks screen when you search for something but no results are found"
-      )
-
     public static let bookmarksImportExportSuccessTitle =
       NSLocalizedString(
         "bookmarks.bookmarksImportExportSuccess",

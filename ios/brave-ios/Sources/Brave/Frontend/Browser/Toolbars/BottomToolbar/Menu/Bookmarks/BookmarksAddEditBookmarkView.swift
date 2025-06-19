@@ -23,11 +23,7 @@ struct BookmarksAddEditBookmarkView: View {
   @Environment(\.dismiss)
   private var dismiss
 
-  @ObservedObject
   private var model: BookmarkModel
-
-  @State
-  private var action: Action
 
   @State
   private var title: String
@@ -52,6 +48,8 @@ struct BookmarksAddEditBookmarkView: View {
 
   @State
   private var urlTextField: UITextField?
+
+  private var action: Action
 
   private var bookmarkURL: URL? {
     return URL(string: oldUrlString) ?? URL.bookmarkletURL(from: oldUrlString)
@@ -89,7 +87,7 @@ struct BookmarksAddEditBookmarkView: View {
   init(model: BookmarkModel, action: Action, dismiss: (() -> Void)? = nil) {
     self.model = model
     self.manuallyDismiss = dismiss
-    self._action = .init(initialValue: action)
+    self.action = action
     self._title = .init(initialValue: action.title)
 
     let formattedURL = URLFormatter.formatURLOrigin(
@@ -171,25 +169,27 @@ struct BookmarksAddEditBookmarkView: View {
       Section {
         if isExpanded {
           NavigationLink {
-            BookmarksAddEditFolderView(model: model)
+            BookmarksAddEditFolderView(model: model, action: .modifyFolder(nil))
           } label: {
-            HStack {
-              Image(braveSystemName: "leo.folder.new")
+            Label {
               Text(Strings.newFolderTitle)
+            } icon: {
+              Image(braveSystemName: "leo.folder.new")
             }
           }
-          .tint(Color(braveSystemName: .iconDefault))
+          .foregroundColor(Color(braveSystemName: .iconDefault))
 
           Button {
             saveFolder = .favorites
             isExpanded.toggle()
           } label: {
-            HStack {
-              Image(braveSystemName: "leo.heart.outline")
+            Label {
               Text(Strings.favoritesRootLevelCellTitle)
+            } icon: {
+              Image(braveSystemName: "leo.heart.outline")
             }
           }
-          .tint(Color(braveSystemName: .iconDefault))
+          .foregroundColor(Color(braveSystemName: .iconDefault))
 
           ForEach(folders, id: \.bookmarkNode.id) { indentedFolder in
             Button {
@@ -201,7 +201,9 @@ struct BookmarksAddEditBookmarkView: View {
 
               isExpanded.toggle()
             } label: {
-              HStack {
+              Label {
+                Text(indentedFolder.bookmarkNode.title)
+              } icon: {
                 let hasChildFolders = indentedFolder.bookmarkNode.children.contains(where: {
                   $0.isFolder
                 })
@@ -210,19 +212,39 @@ struct BookmarksAddEditBookmarkView: View {
                   braveSystemName: indentedFolder.bookmarkNode.parentNode == nil
                     ? "leo.product.bookmarks" : hasChildFolders ? "leo.folder.open" : "leo.folder"
                 )
-                Text(indentedFolder.bookmarkNode.title)
               }
               .padding(.leading, CGFloat(indentedFolder.indentationLevel) * 16.0)
             }
-            .tint(Color(braveSystemName: .iconDefault))
+            .foregroundColor(Color(braveSystemName: .iconDefault))
           }
         } else {
           Button {
             isExpanded.toggle()
           } label: {
-            locationView()
+            switch saveFolder {
+            case .folder(let folder):
+              Label {
+                Text(folder.title)
+              } icon: {
+                Image(braveSystemName: "leo.folder")
+              }
+
+            case .favorites:
+              Label {
+                Text(Strings.favoritesRootLevelCellTitle)
+              } icon: {
+                Image(braveSystemName: "leo.heart.outline")
+              }
+
+            case .mobileBookmarks:
+              Label {
+                Text(defaultRootFolder?.title ?? Strings.bookmarkRootLevelCellTitle)
+              } icon: {
+                Image(braveSystemName: "leo.folder")
+              }
+            }
           }
-          .tint(Color(braveSystemName: .iconDefault))
+          .foregroundColor(Color(braveSystemName: .iconDefault))
         }
       } header: {
         Text(Strings.editBookmarkTableLocationHeader)
@@ -238,7 +260,7 @@ struct BookmarksAddEditBookmarkView: View {
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.editBookmarkTitle)
     .toolbar {
-      ToolbarItemGroup(placement: .topBarTrailing) {
+      ToolbarItemGroup(placement: .confirmationAction) {
         Button(Strings.saveButtonTitle) {
           switch saveFolder {
           case .folder(let folder):
@@ -253,35 +275,11 @@ struct BookmarksAddEditBookmarkView: View {
 
           manuallyDismiss?() ?? dismiss()
         }
-        .disabled(!isBookmarkValid())
+        .disabled(!isBookmarkValid)
       }
     }
-    .onAppear {
-      Task {
-        self.folders = await model.folders()
-      }
-    }
-  }
-
-  private func locationView() -> some View {
-    switch saveFolder {
-    case .folder(let folder):
-      return HStack {
-        Image(braveSystemName: "leo.folder")
-        Text(folder.title)
-      }
-
-    case .favorites:
-      return HStack {
-        Image(braveSystemName: "leo.heart.outline")
-        Text(Strings.favoritesRootLevelCellTitle)
-      }
-
-    case .mobileBookmarks:
-      return HStack {
-        Image(braveSystemName: "leo.folder")
-        Text(defaultRootFolder?.title ?? Strings.bookmarkRootLevelCellTitle)
-      }
+    .task {
+      self.folders = await model.folders()
     }
   }
 
@@ -300,7 +298,7 @@ struct BookmarksAddEditBookmarkView: View {
     }
   }
 
-  private func isBookmarkValid() -> Bool {
+  private var isBookmarkValid: Bool {
     let url = isURLFieldFocused ? urlString : oldUrlString
 
     if URL.bookmarkletURL(from: url) != nil {

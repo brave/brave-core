@@ -104,7 +104,7 @@ class BookmarkManager {
 
   public func byFrequency(
     query: String? = nil,
-    completion: @escaping ([Bookmarkv2]) -> Void
+    completion: @escaping ([BookmarkNode]) -> Void
   ) {
     // Invalid query.. BraveCore doesn't store bookmarks based on last visited.
     // Any last visited bookmarks would show up in `History` anyway.
@@ -118,7 +118,7 @@ class BookmarkManager {
       withQuery: query,
       maxCount: 200,
       completion: { nodes in
-        completion(nodes.compactMap({ return !$0.isFolder ? BookmarkRepresentable($0) : nil }))
+        completion(nodes.compactMap({ return !$0.isFolder ? $0 : nil }))
       }
     )
   }

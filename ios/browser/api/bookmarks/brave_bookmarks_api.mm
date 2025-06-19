@@ -62,8 +62,10 @@
     return NO;
   }
 
-  return [self.bookmarkNode nodeId] ==
-         [[(BookmarkFolder*)object bookmarkNode] nodeId];
+  BookmarkFolder* other = (BookmarkFolder*)object;
+
+  return self.bookmarkNode.nodeId == other.bookmarkNode.nodeId &&
+         self.indentationLevel == other.indentationLevel;
 }
 
 - (NSUInteger)hash {
@@ -524,7 +526,11 @@
     return NO;
   }
 
-  return [self nodeId] == [(IOSBookmarkNode*)object nodeId];
+  IOSBookmarkNode* other = (IOSBookmarkNode*)object;
+
+  return self.nodeId == other.nodeId &&
+         node_->uuid().AsLowercaseString() ==
+             [other getNode]->uuid().AsLowercaseString();
 }
 
 - (NSUInteger)hash {

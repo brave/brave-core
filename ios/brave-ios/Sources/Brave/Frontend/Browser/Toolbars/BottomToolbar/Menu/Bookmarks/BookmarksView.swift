@@ -41,7 +41,7 @@ private class BookmarkFile: ReferenceFileDocument {
 
 /// View Model that holds all the information required to render a list of bookmarks
 private class BookmarkViewModel: ObservableObject {
-  @ObservedObject
+
   private var model: BookmarkModel
 
   private var listener: BookmarkModelListener?
@@ -130,7 +130,6 @@ private struct BookmarkItemView: View {
 
 private struct BookmarksListView: View {
 
-  @ObservedObject
   var model: BookmarkModel
 
   @StateObject
@@ -189,7 +188,7 @@ private struct BookmarksListView: View {
 
               NavigationLink {
                 if node.isFolder {
-                  BookmarksAddEditFolderView(model: model, folder: node)
+                  BookmarksAddEditFolderView(model: model, action: .modifyFolder(node))
                 } else {
                   BookmarksAddEditBookmarkView(model: model, action: .existing(node))
                 }
@@ -275,11 +274,10 @@ private struct BookmarksListView: View {
     .overlay {
       if viewModel.items.isEmpty {
         BookmarksEmptyStateView(isSearching: !searchText.isEmpty)
-          .transition(.opacity.animation(.default))
       }
     }
     .toolbar {
-      ToolbarItemGroup(placement: .topBarTrailing) {
+      ToolbarItemGroup(placement: .confirmationAction) {
         Button {
           dismiss = true
         } label: {
@@ -484,7 +482,6 @@ struct BookmarksView: View {
   @Environment(\.dismiss)
   private var dismiss
 
-  @ObservedObject
   var model: BookmarkModel
 
   @State
@@ -508,7 +505,7 @@ struct BookmarksView: View {
         )
       }
     }
-    .onAppear {
+    .task {
       var stack: [BookmarkNode] = []
       var current = model.lastVisitedFolder
 
