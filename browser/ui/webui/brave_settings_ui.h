@@ -11,8 +11,14 @@
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "build/buildflag.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
 
 class BraveSettingsUI;
 
@@ -52,6 +58,12 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
           pending_receiver);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void BindInterface(
+      mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+          pending_receiver);
+#endif
 
  private:
   std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;

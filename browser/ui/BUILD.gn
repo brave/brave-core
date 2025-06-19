@@ -11,6 +11,7 @@ import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -797,6 +798,7 @@ source_set("ui") {
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/constants",
+    "//brave/components/containers/buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
@@ -1356,6 +1358,14 @@ source_set("ui") {
       "//components/constrained_window",
       "//ui/events",
       "//ui/views",
+    ]
+  }
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/common",
+      "//brave/components/containers/core/mojom",
     ]
   }
 }

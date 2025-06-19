@@ -1,0 +1,12 @@
+diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
+index d741a1624ea0b2bcb13862750db41fc06f29b345..b4bace93bba7a1100af7fe950ceaf974d81a8934 100644
+--- a/components/sync_preferences/BUILD.gn
++++ b/components/sync_preferences/BUILD.gn
+@@ -68,6 +68,7 @@ source_set("common_syncable_prefs_database") {
+     "//components/translate/core/browser",
+     "//components/variations/service",
+   ]
++  import("//brave/components/sync_preferences/sources.gni") public_deps = brave_common_syncable_prefs_database_public_deps
+ }
+ 
+ static_library("test_support") {

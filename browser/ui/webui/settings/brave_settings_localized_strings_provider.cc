@@ -20,11 +20,13 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_generated_resources_webui_strings.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
@@ -65,6 +67,11 @@ constexpr char16_t kBraveBuildInstructionsUrl[] =
 constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
 constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
+#if BUILDFLAG(ENABLE_CONTAINERS)
+constexpr char16_t kContainersLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Containers";
+#endif
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
@@ -1032,6 +1039,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
                              kUnstoppableDomainsLearnMoreURL));
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddLocalizedStrings(webui::kContainersStrings);
+  html_source->AddString("containersLearnMoreURL", kContainersLearnMoreURL);
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddString(
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
