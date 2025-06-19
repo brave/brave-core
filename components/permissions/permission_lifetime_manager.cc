@@ -85,12 +85,10 @@ void PermissionLifetimeManager::PermissionDecided(
     const PermissionRequest& permission_request,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
-    PermissionDecision decision,
-    bool is_one_time) {
+    PermissionDecision decision) {
   if (!permission_request.SupportsLifetime() ||
       (decision != PermissionDecision::kAllow &&
-       decision != PermissionDecision::kDeny) ||
-      is_one_time) {
+       decision != PermissionDecision::kDeny)) {
     // Only interested in ALLOW/BLOCK and non one-time (Chromium
     // geolocation-specific) decisions.
     return;
