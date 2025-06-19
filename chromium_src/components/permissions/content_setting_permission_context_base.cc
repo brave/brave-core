@@ -47,7 +47,6 @@ void ContentSettingPermissionContextBase::SetPermissionLifetimeManagerFactory(
 
 void ContentSettingPermissionContextBase::PermissionDecided(
     PermissionDecision decision,
-    bool is_one_time,
     bool is_final_decision,
     const PermissionRequestData& request_data) {
   if (permission_lifetime_manager_factory_) {
@@ -60,7 +59,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
             *permission_request, request_data.requesting_origin,
-            request_data.embedding_origin, decision, is_one_time);
+            request_data.embedding_origin, decision);
       }
     }
     const auto group_request_it =
@@ -73,7 +72,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
                 permission_lifetime_manager_factory_.Run(browser_context_)) {
           permission_lifetime_manager->PermissionDecided(
               *permission_request, request_data.requesting_origin,
-              request_data.embedding_origin, decision, is_one_time);
+              request_data.embedding_origin, decision);
         }
       }
     }
@@ -81,7 +80,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
 
   if (!IsGroupedPermissionType(content_settings_type())) {
     ContentSettingPermissionContextBase_ChromiumImpl::PermissionDecided(
-        decision, is_one_time, is_final_decision, request_data);
+        decision, is_final_decision, request_data);
     return;
   }
 
@@ -106,7 +105,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
   auto callback = grouped_request->second->GetNextCallback();
   if (callback) {
     NotifyPermissionSet(request_data, std::move(callback), persist, decision,
-                        is_one_time, is_final_decision);
+                        is_final_decision);
   }
 }
 
