@@ -8,7 +8,7 @@
 
 #include "base/gtest_prod_util.h"
 
-#include "src/base/check_is_test.h"  // IWYU pragma: export
+#include <base/check_is_test.h>  // IWYU pragma: export
 
 namespace variations {
 class PublicKeyWrapper;
