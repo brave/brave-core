@@ -36,6 +36,7 @@ public class TippingVerifiedCreatorToolTip {
             "https://support.brave.app/hc/en-us/articles/9312922941069";
 
     private PopupWindow mPopupWindow;
+
     public TippingVerifiedCreatorToolTip(@NonNull Context context) {
         init(context);
     }
