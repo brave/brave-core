@@ -66,7 +66,6 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 
 void WidevinePermissionRequest::PermissionDecided(
     PermissionDecision decision,
-    bool is_one_time,
     bool is_final_decision,
     const permissions::PermissionRequestData& request_data) {
   // Permission granted
