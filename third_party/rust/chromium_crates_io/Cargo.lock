@@ -895,7 +895,7 @@ dependencies = [
 
 [[package]]
 name = "getopts"
-version = "0.2.21"
+version = "0.2.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "unicode-width",
@@ -2250,7 +2250,7 @@ version = "1.0.18"
 
 [[package]]
 name = "unicode-width"
-version = "0.1.14"
+version = "0.2.1"
 
 [[package]]
 name = "unicode-xid"
