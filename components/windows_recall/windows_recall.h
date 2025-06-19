@@ -12,12 +12,19 @@ class PrefService;
 namespace windows_recall {
 
 namespace prefs {
-inline constexpr char kBlockWindowsRecall[] = "brave.block_windows_recall";
+inline constexpr char kWindowsRecallDisabled[] =
+    "brave.windows_recall_disabled";
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
+// Checks whether the Window Recall service functionality is potentially
+// available; currently, this verifies if the version is Windows 11 or newer.
 bool IsWindowsRecallAvailable();
+
+// Gets the current state of the setting in the browser.
+// NOTE: This is not related to system settings and does not check the status of
+// the system service.
 bool IsWindowsRecallDisabled(PrefService* local_state);
 
 }  // namespace windows_recall

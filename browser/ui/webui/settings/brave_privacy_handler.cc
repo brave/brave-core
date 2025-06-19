@@ -51,7 +51,7 @@ BravePrivacyHandler::BravePrivacyHandler() {
 #if BUILDFLAG(IS_WIN)
   if (windows_recall::IsWindowsRecallAvailable()) {
     local_state_change_registrar_.Add(
-        windows_recall::prefs::kBlockWindowsRecall,
+        windows_recall::prefs::kWindowsRecallDisabled,
         base::BindRepeating(
             &BravePrivacyHandler::OnWindowsRecallDisabledChanged,
             base::Unretained(this)));
@@ -86,12 +86,12 @@ void BravePrivacyHandler::RegisterMessages() {
         "isWindowsRecallDisabled",
         base::BindRepeating(&BravePrivacyHandler::GetLocalStateBooleanEnabled,
                             base::Unretained(this),
-                            windows_recall::prefs::kBlockWindowsRecall));
+                            windows_recall::prefs::kWindowsRecallDisabled));
     web_ui()->RegisterMessageCallback(
         "setWindowsRecallDisabled",
         base::BindRepeating(&BravePrivacyHandler::SetLocalStateBooleanEnabled,
                             base::Unretained(this),
-                            windows_recall::prefs::kBlockWindowsRecall));
+                            windows_recall::prefs::kWindowsRecallDisabled));
   }
 #endif
 }
@@ -213,6 +213,6 @@ void BravePrivacyHandler::OnWindowsRecallDisabledChanged() {
   }
   FireWebUIListener("windows-recall-disabled-changed",
                     base::Value(g_browser_process->local_state()->GetBoolean(
-                        windows_recall::prefs::kBlockWindowsRecall)));
+                        windows_recall::prefs::kWindowsRecallDisabled)));
 }
 #endif

@@ -3,16 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {loadTimeData} from '../i18n_setup.js'
+import {
+  WebUiListenerMixin,
+  WebUiListenerMixinInterface,
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { loadTimeData } from '../i18n_setup.js'
 
-import {getTemplate} from './brave_personalization_options.html.js'
-import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
+import { getTemplate } from './brave_personalization_options.html.js'
+import {
+  BravePrivacyBrowserProxy,
+  BravePrivacyBrowserProxyImpl,
+} from './brave_privacy_page_browser_proxy.js'
 
-import {assert} from 'chrome://resources/js/assert.js';
-import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+import { assert } from 'chrome://resources/js/assert.js'
+import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
 import '../privacy_page/do_not_track_toggle.js'
 
@@ -39,9 +45,18 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         value: function () {
           return [
             { value: 'default', name: loadTimeData.getString('webRTCDefault') },
-            { value: 'default_public_and_private_interfaces', name: loadTimeData.getString('defaultPublicAndPrivateInterfaces') },
-            { value: 'default_public_interface_only', name: loadTimeData.getString('defaultPublicInterfaceOnly') },
-            { value: 'disable_non_proxied_udp', name: loadTimeData.getString('disableNonProxiedUdp') }
+            {
+              value: 'default_public_and_private_interfaces',
+              name: loadTimeData.getString('defaultPublicAndPrivateInterfaces'),
+            },
+            {
+              value: 'default_public_interface_only',
+              name: loadTimeData.getString('defaultPublicInterfaceOnly'),
+            },
+            {
+              value: 'disable_non_proxied_udp',
+              name: loadTimeData.getString('disableNonProxiedUdp'),
+            },
           ]
         },
       },
@@ -51,14 +66,14 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         type: Boolean,
         value: function () {
           return loadTimeData.getBoolean('isDebounceFeatureEnabled')
-        }
+        },
       },
       isRequestOTRFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
         value: function () {
           return loadTimeData.getBoolean('isRequestOTRFeatureEnabled')
-        }
+        },
       },
       requestOTRActions_: {
         readOnly: true,
@@ -77,27 +92,28 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         type: Boolean,
         value: () => {
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
-        }
+        },
       },
       windowsRecallDisabledPref_: {
         type: Object,
         value: () => {
           return {}
-        }
-      }
+        },
+      },
     }
   }
 
-  private declare webRTCPolicies_: Object[]
-  private declare webRTCPolicy_: String
-  private declare isDebounceFeatureEnabled_: boolean
-  private declare isRequestOTRFeatureEnabled_: boolean
-  private declare requestOTRActions_: Object[]
-  private declare requestOTRAction_: String
-  private declare isWindowsRecallAvailable_: boolean
-  private declare windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
+  declare private webRTCPolicies_: Object[]
+  declare private webRTCPolicy_: String
+  declare private isDebounceFeatureEnabled_: boolean
+  declare private isRequestOTRFeatureEnabled_: boolean
+  declare private requestOTRActions_: Object[]
+  declare private requestOTRAction_: String
+  declare private isWindowsRecallAvailable_: boolean
+  declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
 
-  browserProxy_: BravePrivacyBrowserProxy = BravePrivacyBrowserProxyImpl.getInstance()
+  browserProxy_: BravePrivacyBrowserProxy =
+    BravePrivacyBrowserProxyImpl.getInstance()
 
   shouldShowRestart_(enabled: boolean) {
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup()
@@ -110,23 +126,21 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   windowsRecallDisabledChange_(event: Event) {
     const target = event.target
     assert(target instanceof SettingsToggleButtonElement)
-    this.browserProxy_.setWindowsRecallDisabled(
-      (target as SettingsToggleButtonElement).checked,
-    )
+    this.browserProxy_.setWindowsRecallDisabled(target.checked)
   }
 
   setWindowsRecallDisabled_(disabled: boolean) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: disabled
+      value: disabled,
     }
     this.windowsRecallDisabledPref_ = pref
   }
 
   restartBrowser_(e: Event) {
     e.stopPropagation()
-    window.open("chrome://restart", "_self")
+    window.open('chrome://restart', '_self')
   }
 
   override ready() {
@@ -140,11 +154,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         toggle.setAttribute('class', toggleClass + ' hr')
       } else {
         console.log(
-          '[Brave Settings Overrides] Could not find doNotTrack toggle')
+          '[Brave Settings Overrides] Could not find doNotTrack toggle',
+        )
       }
     } else {
       console.log(
-        '[Brave Settings Overrides] Could not find element with id doNotTrack')
+        '[Brave Settings Overrides] Could not find element with id doNotTrack',
+      )
     }
 
     if (this.isWindowsRecallAvailable_) {
@@ -160,4 +176,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 }
 
 customElements.define(
-  SettingsBravePersonalizationOptions.is, SettingsBravePersonalizationOptions)
+  SettingsBravePersonalizationOptions.is,
+  SettingsBravePersonalizationOptions,
+)

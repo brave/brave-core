@@ -65,8 +65,8 @@
         class="cr-row"
         pref="[[windowsRecallDisabledPref_]]"
         on-settings-boolean-control-change="windowsRecallDisabledChange_"
-        label="$i18n{blockWindowsRecallLabel}"
-        sub-label="$i18n{blockWindowsRecallSubLabel}">
+        label="$i18n{windowsRecallDisabledLabel}"
+        sub-label="$i18n{windowsRecallDisabledSubLabel}">
         <template is="dom-if"
                   if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabledPref_.value)]]">
             <cr-button on-click="restartBrowser_" slot="more-actions">
