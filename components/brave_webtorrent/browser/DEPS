@@ -1,7 +1,0 @@
-include_rules = [
-  "+brave/components/constants",
-  "+content/public/browser",
-  "+extensions/browser",
-  "+extensions/common",
-  "+ui/base",
-]
