@@ -165,7 +165,7 @@ class ChromiumSrcOverridesChecker:
 
     def do_check_includes(self, override_filepath, original_is_in_gen):
         """
-        Checks if |override_filepath| uses relative includes and also checks
+        Checks if |override_filepath| uses relative includes and also checks <>,
         src/ and ../gen-prefixed includes for naming consistency between the
         original and the override.
         """
@@ -175,7 +175,7 @@ class ChromiumSrcOverridesChecker:
             display_override_filepath = os.path.join('chromium_src',
                                                      override_filepath)
             override_filename = os.path.basename(override_filepath)
-            regexp = r'^#include "src/(.*)"'
+            regexp = r'^#include (?:"src/(.*)"|<(.*\.(?:c|cc|cpp|m|mm))>)'
             gen_regexp = r'^#include "\.\./gen/(.*)"'
             rel_regexp = rf'^#include "(\.\./.*{override_filename})"'
 
@@ -183,23 +183,25 @@ class ChromiumSrcOverridesChecker:
                 # Check src/-prefixed includes
                 line_match = re.search(regexp, line)
                 if line_match:
+                    line_match_path = line_match.group(1) or line_match.group(
+                        2)
                     if original_is_in_gen:
                         self.AddError(
                             f"  {display_override_filepath} overrides a " +
-                            "generated source file, but uses a src/-prefixed " +
-                            "include.\n  A ../gen/-prefixed include should " +
-                            "be used instead.")
-                    elif line_match.group(1) != normalized_override_filepath:
+                            "generated source file, but does not use a " +
+                            "../gen/-prefixed include.\n  A ../gen/-prefixed "
+                            + "include should be used instead.")
+                    elif line_match_path != normalized_override_filepath:
                         # Check for v8 overrides, they can have includes
                         # starting with src.
                         if normalized_override_filepath.startswith("v8/src"):
                             continue
                         self.AddError(
                             f"  {display_override_filepath} uses a " +
-                            "src/-prefixed include that doesn't point to " +
-                            "the expected file:\n" + f"  Include: {line}" +
-                            "  Expected include target: src/" +
-                            f"{normalized_override_filepath}")
+                            "src/-prefixed or <> include that doesn't point " +
+                            "to the expected file:\n" + f"  Include: {line}" +
+                            "  Expected include target: <" +
+                            f"{normalized_override_filepath}>")
                     continue
 
                 # Check ..gen/-prefixed includes
