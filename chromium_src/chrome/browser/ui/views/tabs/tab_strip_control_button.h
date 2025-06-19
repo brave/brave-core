@@ -9,9 +9,18 @@
 #define TabStripControlButton TabStripControlButton_ChromiumImpl
 #define UpdateInkDrop virtual UpdateInkDrop
 #define GetForegroundColor virtual GetForegroundColor
+#define UpdateBackground           \
+  UpdateBackground_UnUsed() {}     \
+                                   \
+ protected:                        \
+  virtual void UpdateBackground(); \
+                                   \
+ private:                          \
+  void UnUsed
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip_control_button.h"  // IWYU pragma: export
 
+#undef UpdateBackground
 #undef GetForegroundColor
 #undef UpdateInkDrop
 #undef TabStripControlButton

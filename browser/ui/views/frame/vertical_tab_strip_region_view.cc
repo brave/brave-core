@@ -179,6 +179,28 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     SetBackground(nullptr);
   }
 
+  void UpdateBackground() override {
+    // Copied comment from BraveTabStrip::GetCustomBackgroundId() as
+    // this method overriding has same purpose.
+    // When vertical tab strip mode is enabled, the tab strip could be
+    // reattached to the original parent during destruction. In this case, theme
+    // changing could occur. But unfortunately, some of native widget's
+    // implementation doesn't check the validity of pointer, which causes crash.
+    // e.g. DesktopNativeWidgetAura's many methods desktop_tree_host without
+    //      checking it's validity.
+    // In order to avoid accessing invalid pointer, filters here.
+
+    // TabStripControlButton::UpdateBackground() tries to access theme provider
+    // by calling BrowserTabStripController::GetCustomBackgroundId() and
+    // crash could happen there.
+    if (auto* widget = GetWidget();
+        !widget || widget->IsClosed() || !widget->native_widget()) {
+      return;
+    }
+
+    return BraveTabSearchButton::UpdateBackground();
+  }
+
   void OnThemeChanged() override {
     BraveTabSearchButton::OnThemeChanged();
     ConfigureInkDropForToolbar(this);
