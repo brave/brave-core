@@ -13,6 +13,6 @@
           testsuite_name.c_str(), result.GetTestName().c_str(), \
           result.output_snippet.c_str());
 
-#include "src/base/test/launcher/test_results_tracker.cc"
+#include <base/test/launcher/test_results_tracker.cc>
 
 #undef TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS

@@ -10,7 +10,7 @@
 
 #define GetChannelString GetChannelString_ChromiumImpl
 
-#include "src/base/version_info/channel.h"  // IWYU pragma: export
+#include <base/version_info/channel.h>  // IWYU pragma: export
 #undef GetChannelString
 
 namespace version_info {
