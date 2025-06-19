@@ -46,7 +46,7 @@ void ContentSettingPermissionContextBase::SetPermissionLifetimeManagerFactory(
 }
 
 void ContentSettingPermissionContextBase::PermissionDecided(
-    ContentSetting content_setting,
+    PermissionDecision decision,
     bool is_one_time,
     bool is_final_decision,
     const PermissionRequestData& request_data) {
@@ -60,7 +60,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
             *permission_request, request_data.requesting_origin,
-            request_data.embedding_origin, content_setting, is_one_time);
+            request_data.embedding_origin, decision, is_one_time);
       }
     }
     const auto group_request_it =
@@ -73,7 +73,7 @@ void ContentSettingPermissionContextBase::PermissionDecided(
                 permission_lifetime_manager_factory_.Run(browser_context_)) {
           permission_lifetime_manager->PermissionDecided(
               *permission_request, request_data.requesting_origin,
-              request_data.embedding_origin, content_setting, is_one_time);
+              request_data.embedding_origin, decision, is_one_time);
         }
       }
     }
@@ -81,17 +81,18 @@ void ContentSettingPermissionContextBase::PermissionDecided(
 
   if (!IsGroupedPermissionType(content_settings_type())) {
     ContentSettingPermissionContextBase_ChromiumImpl::PermissionDecided(
-        content_setting, is_one_time, is_final_decision, request_data);
+        decision, is_one_time, is_final_decision, request_data);
     return;
   }
 
-  DCHECK(content_setting == CONTENT_SETTING_ALLOW ||
-         content_setting == CONTENT_SETTING_BLOCK ||
-         content_setting == CONTENT_SETTING_DEFAULT);
+  DCHECK(decision == PermissionDecision::kAllow ||
+         decision == PermissionDecision::kDeny ||
+         decision == PermissionDecision::kNone);
   UserMadePermissionDecision(request_data.id, request_data.requesting_origin,
-                             request_data.embedding_origin, content_setting);
+                             request_data.embedding_origin, decision);
 
-  bool persist = content_setting != CONTENT_SETTING_DEFAULT;
+  bool persist = (decision == PermissionDecision::kAllow ||
+                  decision == PermissionDecision::kDeny);
 
   auto grouped_request =
       pending_grouped_requests_.find(request_data.id.ToString());
@@ -104,8 +105,8 @@ void ContentSettingPermissionContextBase::PermissionDecided(
 
   auto callback = grouped_request->second->GetNextCallback();
   if (callback) {
-    NotifyPermissionSet(request_data, std::move(callback), persist,
-                        content_setting, is_one_time, is_final_decision);
+    NotifyPermissionSet(request_data, std::move(callback), persist, decision,
+                        is_one_time, is_final_decision);
   }
 }
 
