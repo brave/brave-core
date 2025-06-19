@@ -33,6 +33,7 @@
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -54,6 +55,7 @@ namespace {
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
+using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
 
 constexpr char kRemotePath[] = "v1/conversation";
 
@@ -89,9 +91,10 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 base::Value::List ConversationEventsToList(
     std::vector<ConversationEvent> conversation) {
-  static const base::NoDestructor<std::map<mojom::CharacterType, std::string>>
-      kRoleMap({{mojom::CharacterType::HUMAN, "user"},
-                {mojom::CharacterType::ASSISTANT, "assistant"}});
+  static const base::NoDestructor<std::map<ConversationEventRole, std::string>>
+      kRoleMap({{ConversationEventRole::User, "user"},
+                {ConversationEventRole::Assistant, "assistant"},
+                {ConversationEventRole::Tool, "tool"}});
 
   static const base::NoDestructor<std::map<ConversationEventType, std::string>>
       kTypeMap(
@@ -115,7 +118,8 @@ base::Value::List ConversationEventsToList(
             "suggestAndDedupeFocusTopics"},
            {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::UploadImage, "uploadImage"},
-           {ConversationEventType::PageScreenshot, "pageScreenshot"}});
+           {ConversationEventType::PageScreenshot, "pageScreenshot"},
+           {ConversationEventType::ToolUse, "toolUse"}});
 
   base::Value::List events;
   for (const auto& event : conversation) {
@@ -131,16 +135,63 @@ base::Value::List ConversationEventsToList(
     CHECK(type_it != kTypeMap->end());
     event_dict.Set("type", type_it->second);
 
-    if (event.content.empty()) {
-      event_dict.Set("content", "");
-    } else if (event.content.size() == 1) {
-      event_dict.Set("content", event.content.front());
-    } else {
-      base::Value::List content_list;
-      for (const auto& content : event.content) {
-        content_list.Append(content);
+    // Content string or content blocks
+    if (auto* content_strings =
+            std::get_if<std::vector<std::string>>(&event.content)) {
+      if (content_strings->empty()) {
+        event_dict.Set("content", "");
+      } else if (content_strings->size() == 1) {
+        event_dict.Set("content", content_strings->front());
+      } else {
+        base::Value::List content_list;
+        for (const auto& content : *content_strings) {
+          content_list.Append(content);
+        }
+        event_dict.Set("content", std::move(content_list));
       }
-      event_dict.Set("content", std::move(content_list));
+    } else if (auto* content_blocks =
+                   std::get_if<std::vector<mojom::ContentBlockPtr>>(
+                       &event.content)) {
+      base::Value::List content_items;
+      for (const auto& content_block : *content_blocks) {
+        base::Value::Dict content_item;
+        if (content_block->is_image_content_block()) {
+          content_item.Set("type", "image_url");
+          content_item.SetByDottedPath(
+              "image_url.url",
+              content_block->get_image_content_block()->image_url);
+        } else if (content_block->is_text_content_block()) {
+          content_item.Set("type", "text");
+          content_item.Set("text",
+                           content_block->get_text_content_block()->text);
+        } else {
+          NOTREACHED();
+        }
+        content_items.Append(std::move(content_item));
+      }
+      event_dict.Set("content", std::move(content_items));
+    }
+
+    // Tool calls
+    if (!event.tool_calls.empty()) {
+      base::Value::List tool_call_dicts;
+      for (const auto& tool_event : event.tool_calls) {
+        base::Value::Dict tool_call_dict;
+        tool_call_dict.Set("id", tool_event->tool_id);
+        tool_call_dict.Set("type", "function");
+
+        base::Value::Dict function_dict;
+        function_dict.Set("name", tool_event->tool_name);
+        function_dict.Set("arguments", tool_event->input_json);
+        tool_call_dict.Set("function", std::move(function_dict));
+        tool_call_dicts.Append(std::move(tool_call_dict));
+      }
+
+      event_dict.Set("tool_calls", std::move(tool_call_dicts));
+    }
+
+    if (!event.tool_call_id.empty()) {
+      event_dict.Set("tool_call_id", event.tool_call_id);
     }
 
     if (event.type == ConversationEventType::GetFocusTabsForTopic) {
@@ -182,12 +233,14 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
 }  // namespace
 
 ConversationAPIClient::ConversationEvent::ConversationEvent(
-    mojom::CharacterType role,
+    ConversationEventRole role,
     ConversationEventType type,
-    const std::vector<std::string>& content,
+    Content content,
     const std::string& topic)
-    : role(role), type(type), content(content), topic(topic) {}
+    : role(role), type(type), content(std::move(content)), topic(topic) {}
+
 ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
+
 ConversationAPIClient::ConversationEvent::~ConversationEvent() = default;
 
 ConversationAPIClient::ConversationEvent::ConversationEvent(
@@ -218,6 +271,8 @@ void ConversationAPIClient::ClearAllQueries() {
 void ConversationAPIClient::PerformRequest(
     std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
+    std::optional<base::Value::List> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::string>& model_name) {
@@ -225,7 +280,8 @@ void ConversationAPIClient::PerformRequest(
   auto callback = base::BindOnce(
       &ConversationAPIClient::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
-      selected_language, model_name, std::move(data_received_callback),
+      selected_language, std::move(oai_tool_definitions), preferred_tool_name,
+      model_name, std::move(data_received_callback),
       std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
@@ -233,6 +289,8 @@ void ConversationAPIClient::PerformRequest(
 std::string ConversationAPIClient::CreateJSONRequestBody(
     std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
+    std::optional<base::Value::List> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name,
     const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
@@ -250,6 +308,10 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
   dict.Set("use_citations", true);
 #endif
 
+  if (oai_tool_definitions.has_value() && oai_tool_definitions->size() > 0) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
+
   std::string json;
   base::JSONWriter::Write(dict, &json);
   return json;
@@ -258,6 +320,8 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 void ConversationAPIClient::PerformRequestWithCredentials(
     std::vector<ConversationEvent> conversation,
     const std::string& selected_language,
+    std::optional<base::Value::List> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name,
     const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
@@ -277,8 +341,10 @@ void ConversationAPIClient::PerformRequestWithCredentials(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body = CreateJSONRequestBody(
-      std::move(conversation), selected_language, model_name, is_sse_enabled);
+  const std::string request_body =
+      CreateJSONRequestBody(std::move(conversation), selected_language,
+                            std::move(oai_tool_definitions),
+                            preferred_tool_name, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
@@ -388,9 +454,22 @@ void ConversationAPIClient::OnQueryDataReceived(
   if (!result.has_value() || !result->is_dict()) {
     return;
   }
-  auto result_data = ParseResponseEvent(result->GetDict(), model_service_);
-  if (result_data) {
+
+  auto& result_params = result->GetDict();
+
+  if (auto result_data = ParseResponseEvent(result_params, model_service_)) {
     callback.Run(std::move(*result_data));
+  }
+
+  // Tool calls - they may happen individually or combined with a response event
+  if (const base::Value::List* tool_calls =
+          result_params.FindList("tool_calls")) {
+    // Provide any valid tool use events to the callback
+    for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
+      auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(tool_use_event));
+      callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+    }
   }
 }
 
@@ -412,7 +491,7 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
   // Vary response parsing based on type
   if (*type == "completion") {
     const std::string* completion = response_event.FindString("completion");
-    if (!completion) {
+    if (!completion || completion->empty()) {
       return std::nullopt;
     }
     event = mojom::ConversationEntryEvent::NewCompletionEvent(

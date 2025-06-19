@@ -58,7 +58,7 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
-      const std::vector<const Tool*>,
+      const std::vector<const Tool*> tools,
       const std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
