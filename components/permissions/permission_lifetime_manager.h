@@ -56,7 +56,7 @@ class PermissionLifetimeManager : public KeyedService,
   void PermissionDecided(const PermissionRequest& permission_request,
                          const GURL& requesting_origin,
                          const GURL& embedding_origin,
-                         ContentSetting content_setting,
+                         PermissionDecision decision,
                          bool is_one_time);
 
   // content_settings::Observer:
