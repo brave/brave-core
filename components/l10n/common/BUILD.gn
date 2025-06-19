@@ -30,14 +30,12 @@ static_library("common") {
   ]
 
   public = [
-    "country_code_util.h",
     "locale_util.h",
     "ofac_sanction_util.h",
     "prefs.h",
   ]
 
   sources = [
-    "country_code_util.cc",
     "default_locale.cc",
     "default_locale.h",
     "locale_subtag_info.cc",

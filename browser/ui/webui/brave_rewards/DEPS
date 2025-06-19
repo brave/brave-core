@@ -1,5 +1,5 @@
 specific_include_rules = {
   "rewards_page_handler\.cc": [
-    "+brave/components/l10n/common/country_code_util.h",
+    "+brave/components/l10n/common/locale_util.h",
   ],
 }
