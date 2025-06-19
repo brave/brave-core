@@ -10,7 +10,7 @@
 #include "base/base64.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
-#include "base/json/values_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
@@ -51,12 +51,20 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
   *os << "--ToolUseEvent--\n";
   *os << "tool_name: " << event.tool_name << "\n";
   *os << "id: " << event.id << "\n";
-  *os << "arguments: ";
-  std::string args_json;
-  base::JSONWriter::Write(event.arguments, &args_json);
-  *os << args_json << "\n";
+  *os << "arguments_json: " << event.arguments_json << "\n";
+  if (event.arguments) {
+    *os << "arguments (stored as parsed ): ";
+    std::string args_json;
+    base::JSONWriter::Write(event.arguments.value(), &args_json);
+    *os << args_json << "\n";
+  }
 
-  *os << "output:\n";
+  *os << "output:\n"
+      << (!event.output.has_value()
+              ? "[nullopt]"
+              : " array with " + base::NumberToString(event.output->size()) +
+                    " elements");
+
   if (event.output) {
     for (const auto& block : *event.output) {
       *os << "  - ";
@@ -117,6 +125,7 @@ void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
       *os << "event: unknown\n";
   }
 }
+
 void PrintTo(const ConversationTurn& turn, std::ostream* os) {
   *os << "--ConversationTurn--\n";
   if (turn.uuid != std::nullopt) {
