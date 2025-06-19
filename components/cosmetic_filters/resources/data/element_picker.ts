@@ -362,7 +362,6 @@ const attachElementPicker = () => {
     'visibility: visible',
     'width: 100%',
     'z-index: 2147483647',
-    '--button-text: white',
     '--dynamic-color-rgb: rgb(0, 0, 0)',
     '',
   ].join(' !important;')
@@ -464,7 +463,6 @@ interface SliderOptions {
 }
 
 interface SliderAPI {
-  setValue: (value: number) => number;
   getValue: () => number;
   min: number;
   max: number;
@@ -556,7 +554,7 @@ const elementPickerUserModifiedRule = (selector: string) => {
   }
 }
 
-const seShowRulesHiddenBtnState = (
+const setShowRulesHiddenBtnState = (
   showRulesButton: HTMLElement | null, show: boolean) => {
   if (!showRulesButton) return
   showRulesButton.textContent = show ? btnHideRulesBoxText : btnShowRulesBoxText
@@ -636,7 +634,7 @@ function initSlider(element: HTMLElement
 
   let currentValue = initialValue;
 
-  const updateSlider = (fireEvent = true): number => {
+  const updateSlider = (fireEvent: boolean): number => {
 
     const value: number = parseFloat(inputElement.value);
     const currMin: number = parseFloat(inputElement.min);
@@ -660,7 +658,6 @@ function initSlider(element: HTMLElement
   updateSlider(false);
   // Return API for external control
   return {
-    setValue: (value: number) => updateSlider(),
     getValue: () => currentValue,
     min,
     max
@@ -793,10 +790,6 @@ const launchElementPicker = (root: ShadowRoot) => {
         const bgcolorMaskOut = bgcolor & 0xFFFFFF
         const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('--theme-background-color', colorHex)
-
-        section.classList.remove(isDarkModeEnabled ? 'light' : 'dark')
-        section.classList.add(isDarkModeEnabled ? 'dark' : 'light')
-
         setTitleBarColor(bgcolor)
         dispatchSelect()
       })
@@ -871,10 +864,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     trigger.addEventListener('click', e => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
-        seShowRulesHiddenBtnState(trigger, true)
+        setShowRulesHiddenBtnState(trigger, true)
       } else {
         target.style.display = 'none'
-        seShowRulesHiddenBtnState(trigger, false)
+        setShowRulesHiddenBtnState(trigger, false)
       }
     })
   }

@@ -10,28 +10,26 @@
     --text-color: #1b1b1f;
     --dynamic-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 10%);
     --dynamic-secondary-btn-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 3%);
-  }
 
-  @media (prefers-color-scheme: dark) {
-    :host {
-      --text-color: #e3e3e8;
-    }
-  }
-
-  .light {
     --primary: #3E37D4;
     --title-bar: #f0f0f4;
     --block-btn-bg-disabled: #46464a33;
     --block-btn-color-disabled: #21272a80;
     --button-text: white;
+    --text-area-bg-color: white;
   }
 
-  .dark {
-    --primary: #C1C4FF;
-    --title-bar: #303034;
-    --block-btn-bg-disabled: #ebeef033;
-    --block-btn-color-disabled: #ebeef080;
-    --button-text: #251491;
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --text-color: #e3e3e8;
+
+      --primary: #C1C4FF;
+      --title-bar: #303034;
+      --block-btn-bg-disabled: #ebeef033;
+      --block-btn-color-disabled: #ebeef080;
+      --button-text: #251491;
+      --text-area-bg-color: var(--dynamic-bg-color);
+    }
   }
 
   #rules-box {
@@ -55,12 +53,8 @@
     padding: 5px;
     overflow: auto;
     overflow-wrap: break-word;
-    background-color: white;
+    background-color: var(--text-area-bg-color);
     color: var(--text-color);
-  }
-
-  #main-section.dark>#rules-box>textarea {
-    background-color: var(--dynamic-bg-color);
   }
 
   #main-section {
@@ -107,12 +101,12 @@
     }
   }
 
-  #main-section.minimized:not(.desktop) {
+  .minimized:not(.desktop) {
     transition: transform 0.3s ease;
     transform: translateY(calc(100% - 28px));
   }
 
-  #main-section .drag-header {
+  .drag-header {
     position: absolute;
     top: 0;
     left: 0;
@@ -124,28 +118,30 @@
     border-radius: 16px 16px 0 0;
   }
 
-  #main-section.desktop .drag-header {
+  .desktop .drag-header {
     height: 48px;
     justify-content: right;
     background-color: var(--dynamic-bg-color);
+    color: var(--text-color);
   }
 
-  #main-section:not(.desktop) .drag-indicator {
+  .drag-indicator {
     width: 36px;
     height: 4px;
     background-color: #AAAAAA;
     border-radius: 2px;
   }
 
-  #main-section.desktop .drag-indicator {
+  .desktop.minimized .drag-header,
+  .desktop .drag-indicator {
     display: none;
   }
 
-  #main-section:not(.desktop) #title {
+  #title {
     display: none;
   }
 
-  #main-section.desktop #title {
+  .desktop #title {
     display: block;
     flex-grow: 1;
     text-align: left;
@@ -156,10 +152,15 @@
     color: var(--text-color);
   }
 
-  #main-section.desktop #btn-quit,
-  #main-section:not(.desktop) .minimize-dlg-btn,
-  #main-section:not(.desktop) .close-dlg-btn {
+  .desktop #btn-quit,
+  .minimize-dlg-btn,
+  .close-dlg-btn {
     display: none;
+  }
+
+  .desktop .minimize-dlg-btn,
+  .desktop .close-dlg-btn {
+    display: block;
   }
 
   .title-control-btn svg {
@@ -168,15 +169,6 @@
     margin-right: 20px;
     cursor: pointer;
     position: unset;
-  }
-
-  #minimize-dlg-btn>svg>path,
-  #close-btn > svg > path {
-	  fill: var(--text-color);
-	}
-
-  .desktop.minimized>*:not(#desktop-min-icon-container) {
-    display: none;
   }
 
   .minimized-icon {
@@ -269,6 +261,11 @@
     padding-right: 6px;
   }
 
+  .desktop.minimized #slider-container,
+  .desktop.minimized #buttons {
+    display: none;;
+  }
+
   .target {
     stroke: #3d39c8;
     stroke-width: 2px;
@@ -327,14 +324,14 @@
     <div class="drag-indicator"></div>
     <div id="minimize-dlg-btn" class="title-control-btn minimize-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <path fill="#62757E" fill-rule="evenodd"
+        <path fill="currentColor" fill-rule="evenodd"
           d="M10.566 11.357a.8.8 0 0 0 .8-.8V5.12a.8.8 0 0 0-1.6 0v3.515l-5.4-5.4a.8.8 0 0 0-1.132 1.13l5.392 5.392H5.18a.8.8 0 0 0 0 1.6zm2.868 1.286a.8.8 0 0 0-.8.8v5.437a.8.8 0 1 0 1.6 0v-3.515l5.4 5.4a.8.8 0 0 0 1.132-1.13l-5.392-5.392h3.446a.8.8 0 0 0 0-1.6z"
           clip-rule="evenodd">
       </svg>
     </div>
     <div id="close-btn" class="title-control-btn close-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <path fill="#62757E"
+        <path fill="currentColor"
           d="M5.287 5.287a.85.85 0 0 0 0 1.202L10.797 12l-5.51 5.511a.85.85 0 0 0 1.202 1.202L12 13.203l5.51 5.51a.85.85 0 0 0 1.202-1.203L13.202 12l5.51-5.51a.85.85 0 0 0-1.202-1.202L12 10.798 6.489 5.287a.85.85 0 0 0-1.202 0">
       </svg>
     </div>
@@ -361,7 +358,7 @@
   </div>
   <div id="desktop-min-icon-container">
     <svg xmlns="http://www.w3.org/2000/svg" class="minimized-icon" fill="none" viewBox="0 0 24 24">
-      <path fill="#62757E" fill-rule="evenodd"
+      <path fill="currentColor" fill-rule="evenodd"
         d="M4.8 4a.8.8 0 0 0-.8.8v5.437a.8.8 0 0 0 1.6 0V6.722l4.4 4.4a.8.8 0 1 0 1.132-1.13L6.74 5.6h3.446a.8.8 0 0 0 0-1.6zm14.4 16a.8.8 0 0 0 .8-.8v-5.437a.8.8 0 0 0-1.6 0v3.515l-4.4-4.4a.8.8 0 1 0-1.132 1.13L17.26 18.4h-3.446a.8.8 0 0 0 0 1.6z"
         clip-rule="evenodd">
     </svg>
