@@ -51,3 +51,9 @@ feature/web3/wallet/core:
       - browser/ui/brave_wallet/**/*
       - browser/ui/webui/brave_wallet/**/*
       - components/brave_wallet/**/*
+
+only-docs:
+  - changed-files:
+    - any-glob-to-all-files: 
+      - "**/*.md"
+      - "docs/**/*"
