@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index b379cc24f772260ea360779b26ca0836d21c89c4..f9960d6f4954b541aae87a94d53ba21d394a32b3 100644
+index cf2e9f7d7e6e954893efd765a0eb45fcfdae6a98..563ec491a2ca4d842b09d51ddce8c56f2bebd828 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -112,6 +112,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
+@@ -114,6 +114,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
    if (requests.size() == 1) {
      return GetUmaValueForRequestType(request_type);
    }
