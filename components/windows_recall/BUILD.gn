@@ -16,7 +16,6 @@ static_library("windows_recall") {
   deps = [
     "//base",
     "//components/prefs",
-    "//components/user_prefs",
     "//content/public/browser",
   ]
 }
