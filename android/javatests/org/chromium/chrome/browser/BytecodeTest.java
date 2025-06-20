@@ -80,6 +80,7 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
+import org.chromium.chrome.browser.infobar.InfoBarContainerView;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -1942,6 +1943,15 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
+                        "org/chromium/chrome/browser/infobar/BraveInfoBarContainerView",
+                        Context.class,
+                        InfoBarContainerView.ContainerViewObserver.class,
+                        BrowserControlsStateProvider.class,
+                        ObservableSupplier.class,
+                        boolean.class));
     }
 
     @Test
@@ -2365,6 +2375,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "mParams"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
+                        "mEdgeToEdgeSupplier"));
     }
 
     @Test

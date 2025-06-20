@@ -993,3 +993,12 @@
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
 }
+
+-keep class org.chromium.chrome.browser.infobar.InfoBarContainerView {
+    <init>(...);
+    *** mEdgeToEdgeSupplier;
+}
+
+-keep class org.chromium.chrome.browser.infobar.BraveInfoBarContainerView {
+    <init>(...);
+}
