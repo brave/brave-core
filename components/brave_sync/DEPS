@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/third_party/bip39wally-core-native",
   "+components/os_crypt/sync",
+  "+components/prefs",
   "+content/public/browser",
   "+third_party/boringssl",
   "+ios/web/public",

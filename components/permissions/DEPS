@@ -4,6 +4,7 @@ include_rules = [
   "+components/keyed_service/core",
   "+components/permissions",
   "+components/pref_registry",
+  "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
   "+services/preferences/public/cpp",

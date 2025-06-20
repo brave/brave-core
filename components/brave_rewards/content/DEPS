@@ -1,7 +1,8 @@
 include_rules = [
   "+brave/grit/brave_generated_resources.h",
   "+components/os_crypt/sync",
-  "+components/sync_preferences/testing_pref_service_syncable.h", 
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
