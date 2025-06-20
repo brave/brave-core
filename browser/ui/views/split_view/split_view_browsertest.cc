@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
@@ -33,9 +34,11 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -47,6 +50,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
 ui::MouseEvent GetDummyEvent() {
@@ -275,23 +279,58 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(5, tab_strip_model->active_index());
 }
 
-class SplitViewBrowserTestWithPermissionBubbleManagerTest
+class SplitViewWithTabDialogBrowserTest
     : public InProcessBrowserTest,
       public testing::WithParamInterface<bool> {
  public:
-  SplitViewBrowserTestWithPermissionBubbleManagerTest() {
+  SplitViewWithTabDialogBrowserTest() {
     if (IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
           /*enabled_features*/ {features::kSideBySide}, {});
     }
   }
-  ~SplitViewBrowserTestWithPermissionBubbleManagerTest() override = default;
+  ~SplitViewWithTabDialogBrowserTest() override = default;
 
   bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
     auto* tab_strip_model = browser()->tab_strip_model();
     return permissions::PermissionRequestManager::FromWebContents(
                tab_strip_model->GetWebContentsAt(index))
         ->tab_is_hidden_for_testing();
+  }
+
+  // blocked(true) when tab at |index| has tab modal dialog.
+  bool GetIsWebContentsBlockedFromTabAt(int index) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    return static_cast<tabs::TabModel*>(tab_strip_model->GetTabAtIndex(index))
+        ->blocked();
+  }
+
+  web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
+      int index) {
+    return web_modal::WebContentsModalDialogManager::FromWebContents(
+        browser()->tab_strip_model()->GetWebContentsAt(index));
+  }
+
+  bool HasWebModalDialogAt(int index) {
+    return !GetWebModalDialogManagerAt(index)->child_dialogs_.empty();
+  }
+
+  bool IsWebModalDialogVisibleAt(int index) {
+    return views::Widget::GetWidgetForNativeWindow(
+               GetWebModalDialogManagerAt(index)
+                   ->child_dialogs_.front()
+                   .manager->dialog())
+        ->IsVisible();
+  }
+
+  javascript_dialogs::TabModalDialogManager* GetTabModalDialogManagerAt(
+      int index) {
+    return javascript_dialogs::TabModalDialogManager::FromWebContents(
+        browser()->tab_strip_model()->GetWebContentsAt(index));
+  }
+
+  content::WebContents* GetWebContentsAt(int index) {
+    return browser()->tab_strip_model()->GetWebContentsAt(index);
   }
 
   void NewSplitTab() {
@@ -305,8 +344,8 @@ class SplitViewBrowserTestWithPermissionBubbleManagerTest
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_P(SplitViewBrowserTestWithPermissionBubbleManagerTest,
-                       GetTabIsHiddenTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
+                       InactiveSplitTabTest) {
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
 
@@ -344,11 +383,64 @@ IN_PROC_BROWSER_TEST_P(SplitViewBrowserTestWithPermissionBubbleManagerTest,
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
+  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(1));
+
+  // Launch dialog from inactive split tab (at 0).
+  bool did_suppress = false;
+  GetTabModalDialogManagerAt(0)->RunJavaScriptDialog(
+      GetWebContentsAt(0), GetWebContentsAt(0)->GetPrimaryMainFrame(),
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
+      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
+
+  // false because tab modal manager not yet launched dialog as tab is hidden.
+  EXPECT_FALSE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+  EXPECT_FALSE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
+
+  // Activate split tab at 0.
+  tab_strip_model->ActivateTabAt(0);
+  ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(0); }));
+
+  // true because tab/web modal manager launched dialog as tab is activated.
+  // check modal dialog at tab 0 is visible.
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(0); }));
+  EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+  EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+  EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
+
+  // Activate split tab at 1.
+  tab_strip_model->ActivateTabAt(1);
+
+  // Check modal dialog at tab 0 is hidden.
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !IsWebModalDialogVisibleAt(0); }));
+
+  // still true as modal was created.
+  EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+  EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+  EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
+
+  // tab at 1 doesn't have any modal dialog.
+  EXPECT_FALSE(GetTabModalDialogManagerAt(1)->IsShowingDialogForTesting());
+
+  // Launch dialog from active split tab (at 1) and check dialog is shown
+  // immediately.
+  GetTabModalDialogManagerAt(1)->RunJavaScriptDialog(
+      GetWebContentsAt(1), GetWebContentsAt(1)->GetPrimaryMainFrame(),
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
+      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
+  ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(1); }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(1); }));
 }
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
-    SplitViewBrowserTestWithPermissionBubbleManagerTest,
+    SplitViewWithTabDialogBrowserTest,
     ::testing::Bool());
 
 class SplitViewBrowserTest : public InProcessBrowserTest {

@@ -73,7 +73,9 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -888,18 +890,44 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   UpdateReaderModeToolbar();
 #endif
 
+  // Some managers need to consider tab's active state with web content's
+  // visibility.
   if (old_contents) {
-    auto* manager =
+    auto* permission_manager =
         permissions::PermissionRequestManager::FromWebContents(old_contents);
-    CHECK(manager);
-    manager->OnTabActiveStateChanged(false);
+    CHECK(permission_manager);
+    permission_manager->OnTabActiveStateChanged(false);
+
+    // web/tab modal dialog manger can get tab activation state fromm their
+    // delegates.
+    auto* web_modal_dialog_manager =
+        web_modal::WebContentsModalDialogManager::FromWebContents(old_contents);
+    CHECK(web_modal_dialog_manager);
+    web_modal_dialog_manager->OnTabActiveStateChanged();
+
+    auto* tab_modal_dialog_manager =
+        javascript_dialogs::TabModalDialogManager::FromWebContents(
+            old_contents);
+    CHECK(tab_modal_dialog_manager);
+    tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
 
   if (new_contents) {
-    auto* manager =
+    auto* permission_manager =
         permissions::PermissionRequestManager::FromWebContents(new_contents);
-    CHECK(manager);
-    manager->OnTabActiveStateChanged(true);
+    CHECK(permission_manager);
+    permission_manager->OnTabActiveStateChanged(true);
+
+    auto* web_modal_dialog_manager =
+        web_modal::WebContentsModalDialogManager::FromWebContents(new_contents);
+    CHECK(web_modal_dialog_manager);
+    web_modal_dialog_manager->OnTabActiveStateChanged();
+
+    auto* tab_modal_dialog_manager =
+        javascript_dialogs::TabModalDialogManager::FromWebContents(
+            new_contents);
+    CHECK(tab_modal_dialog_manager);
+    tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
 }
 
