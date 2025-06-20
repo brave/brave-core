@@ -27,3 +27,9 @@ include_rules = [
   "+brave/components/brave_shields/core/common/pref_names.h",
   "+brave/components/constants/pref_names.h",
 ]
+
+specific_include_rules = {
+  "browser_prefs\.cc": [
+    "+brave/components/l10n/common/prefs.h",
+  ],
+}

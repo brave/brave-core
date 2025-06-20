@@ -27,6 +27,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -229,6 +230,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
+  brave_l10n::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(local_state);
   ntp_background_images::NTPP3AHelperImpl::MigrateObsoleteLocalStatePrefs(

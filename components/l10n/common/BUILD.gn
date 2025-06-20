@@ -37,8 +37,6 @@ static_library("common") {
   ]
 
   sources = [
-    "country_code_feature.cc",
-    "country_code_feature.h",
     "country_code_util.cc",
     "default_locale.cc",
     "default_locale.h",
@@ -81,7 +79,6 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "country_code_util_unittest.cc",
     "locale_subtag_parser_util_unittest.cc",
     "locale_util_unittest.cc",
     "ofac_sanction_util_unittest.cc",

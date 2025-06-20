@@ -110,7 +110,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry);
   ntp_background_images::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);
-  brave_l10n::RegisterL10nLocalStatePrefs(registry);
+  brave_l10n::RegisterLocalStatePrefsForMigration(registry);
 #if BUILDFLAG(IS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
