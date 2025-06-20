@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_shields/ad_block_service_browsertest.h"
-
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
