@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/fil_response_parser.h"
+
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -215,20 +217,20 @@ TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
   EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
       GetResponse(
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
-          std::to_string(INT64_MAX) + "\"}}"),
+          base::NumberToString(INT64_MAX) + "\"}}"),
       "cid", &exit_code));
   EXPECT_EQ(exit_code, INT64_MAX);
   EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
       GetResponse(
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
-          std::to_string(INT64_MIN) + "\"}}"),
+          base::NumberToString(INT64_MIN) + "\"}}"),
       "cid", &exit_code));
   EXPECT_EQ(exit_code, INT64_MIN);
 
   EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
       GetResponse(
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
-          std::to_string(INT64_MIN) + "\"}}"),
+          base::NumberToString(INT64_MIN) + "\"}}"),
       "anothercid", &exit_code));
 
   EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(base::Value(), "cid",

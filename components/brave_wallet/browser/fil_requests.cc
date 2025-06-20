@@ -10,6 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
@@ -52,8 +53,8 @@ std::string getEstimateGas(const std::string& from_address,
 
   transaction.Set("Version", 0);
   transaction.Set("Params", "");
-  transaction.Set("GasLimit", std::to_string(gas_limit));
-  transaction.Set("Nonce", std::to_string(nonce));
+  transaction.Set("GasLimit", base::NumberToString(gas_limit));
+  transaction.Set("Nonce", base::NumberToString(nonce));
   params.Append(std::move(transaction));
 
   base::Value::Dict fee;
@@ -85,7 +86,7 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
   cid_value.Set("/", cid);
   auto result =
       GetJsonRpcString("Filecoin.StateSearchMsgLimited", std::move(cid_value),
-                       base::Value(std::to_string(period)));
+                       base::Value(base::NumberToString(period)));
   result = json::convert_string_value_to_uint64("/params/1", result, false);
   return result;
 }

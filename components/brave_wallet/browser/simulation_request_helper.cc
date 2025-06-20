@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
@@ -71,7 +72,7 @@ std::optional<std::string> EncodeScanTransactionParams(
     //   std::string result;
     //   while (uint256_value > 0) {
     //     uint64_t digit = uint256_value % 10;
-    //     result = std::to_string(digit) + result;
+    //     result = base::NumberToString(digit) + result;
     //     uint256_value /= 10;
     //   }
     //
