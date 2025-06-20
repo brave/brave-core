@@ -208,7 +208,7 @@ AdsServiceImpl::AdsServiceImpl(
           std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)),
       bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_service_path_(profile_path.AppendASCII("ads_service")),
       bat_ads_client_associated_receiver_(this) {
@@ -366,6 +366,8 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
 void AdsServiceImpl::StartBatAdsService() {
   CHECK(!IsBatAdsServiceBound());
 
+  VLOG(6) << "Starting Bat Ads Service";
+
   bat_ads_service_remote_ = bat_ads_service_factory_->Launch();
   bat_ads_service_remote_.set_disconnect_handler(base::BindOnce(
       &AdsServiceImpl::DisconnectHandler, weak_ptr_factory_.GetWeakPtr()));
@@ -431,6 +433,7 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(
     VLOG(0) << "Failed to initialize " << ads_service_path_ << " directory";
     return ShutdownAdsService();
   }
+  VLOG(6) << "Successfully initialized base path directory";
 
   Initialize(current_start_number);
 }
@@ -455,6 +458,7 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
   if (!ShouldProceedInitialization(current_start_number)) {
     return;
   }
+  VLOG(6) << "Successfully retrieved rewards wallet info";
 
   if (!bat_ads_associated_remote_.is_bound()) {
     return;
