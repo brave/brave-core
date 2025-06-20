@@ -118,6 +118,8 @@ std::optional<std::string> LoadOnFileTaskRunner(const base::FilePath& path) {
 }
 
 bool EnsureBaseDirectoryExistsOnFileTaskRunner(const base::FilePath& path) {
+  TRACE_EVENT("brave.ads", "EnsureBaseDirectoryExistsOnFileTaskRunner");
+  VLOG(1) << "Executing base directory exists check on file task runner";
   if (base::DirectoryExists(path)) {
     return true;
   }
@@ -208,7 +210,7 @@ AdsServiceImpl::AdsServiceImpl(
           std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)),
       bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_service_path_(profile_path.AppendASCII("ads_service")),
       bat_ads_client_associated_receiver_(this) {
@@ -416,6 +418,9 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
 
   SetContentSettings();
 
+  TRACE_EVENT("brave.ads", "BatAdsServiceCreatedCallback");
+  VLOG(1) << "Started initializing base path directory";
+
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner,
@@ -427,6 +432,9 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
 void AdsServiceImpl::InitializeBasePathDirectoryCallback(
     size_t current_start_number,
     bool success) {
+  TRACE_EVENT("brave.ads", "InitializeBasePathDirectoryCallback");
+  VLOG(1) << "Finished initializing base path directory";
+
   if (!success) {
     VLOG(0) << "Failed to initialize " << ads_service_path_ << " directory";
     return ShutdownAdsService();
