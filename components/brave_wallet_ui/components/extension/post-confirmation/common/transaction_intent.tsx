@@ -49,9 +49,6 @@ import {
   useSwapTransactionParser, //
 } from '../../../../common/hooks/use-swap-tx-parser'
 import { useExplorer } from '../../../../common/hooks/explorer'
-import {
-  useIsSendingToInternalShieldedAddress, //
-} from '../../../../common/hooks/use_is_sending_to_internal_shielded_address'
 
 // Styled Components
 import { Button, ExplorerIcon } from './common.style'
@@ -106,15 +103,8 @@ export const TransactionIntent = (props: Props) => {
       : skipToken,
   )
 
-  const isSendingToInternalShieldedAddress =
-    useIsSendingToInternalShieldedAddress(
-      getZCashTransactionTypeResult.txType ?? undefined,
-      txToAddress,
-    )
-
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
-    || isSendingToInternalShieldedAddress
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
