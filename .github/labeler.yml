@@ -52,7 +52,7 @@ feature/web3/wallet/core:
       - browser/ui/webui/brave_wallet/**/*
       - components/brave_wallet/**/*
 
-# add this label only if doc files have changed. This will skip CI runs
+# only-docs label skips CI (including noplatform) and is for docs/md file changes
 only-docs:
   - changed-files:
     - any-glob-to-all-files: 
