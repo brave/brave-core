@@ -20,6 +20,7 @@ include_rules = [
 # would removed and "+components" above would be changed to "-components"
 include_rules += [
   "-components/grit",
+  "-components/keyed_service",
   "-components/omnibox",
   "-components/prefs",
   "-components/sync_preferences",

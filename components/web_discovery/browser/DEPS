@@ -2,6 +2,7 @@ include_rules = [
   "-content",
   "+crypto",
   "+services/network/public",
+  "+components/keyed_service",
   "+components/prefs",
   "+content/public/browser",
   "+extensions/buildflags/buildflags.h",
