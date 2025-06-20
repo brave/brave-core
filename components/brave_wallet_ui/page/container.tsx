@@ -41,6 +41,7 @@ import 'emptykit.css'
 import {
   FullScreenWrapper,
   SimplePageWrapper,
+  AlertCenter,
 } from './screens/page-screen.styles'
 
 // components
@@ -172,6 +173,7 @@ export const Container = () => {
 
   return (
     <>
+      <AlertCenter position='top-center' />
       <Switch>
         <ProtectedRoute
           path={WalletRoutes.Onboarding}

@@ -56,11 +56,14 @@ import {
 import {
   ZCashSyncModal, //
 } from '../popup-modals/zcash_sync_modal/zcash_sync_modal'
+import {
+  AddressActionsMenu, //
+} from '../wallet-menus/address_actions_menu'
 
 // Styled Components
 import {
   StyledWrapper,
-  CollapseButton,
+  CollapsedWrapper,
   CollapseIcon,
   AccountDescriptionWrapper,
   RewardsProviderContainer,
@@ -68,6 +71,12 @@ import {
   InfoBar,
   InfoText,
   WarningIcon,
+  BalanceClickArea,
+  AccountIconClickArea,
+  AccountNameClickArea,
+  AddressArea,
+  NetworkAndExternalProviderClickArea,
+  EmptyClickArea,
 } from './asset-group-container.style'
 import {
   Row,
@@ -228,12 +237,12 @@ export const AssetGroupContainer = (props: Props) => {
       fullWidth={true}
       isCollapsed={isSkeleton || isCollapsed}
     >
-      <CollapseButton
-        onClick={onToggleCollapsed}
-        disabled={isDisabled}
-      >
+      <CollapsedWrapper isCollapsed={isSkeleton || isCollapsed}>
         {isSkeleton && (
-          <Row width='unset'>
+          <Row
+            width='unset'
+            padding='12px'
+          >
             <LoadingSkeleton
               width={24}
               height={24}
@@ -247,111 +256,150 @@ export const AssetGroupContainer = (props: Props) => {
           </Row>
         )}
         {externalProvider && !isSkeleton && (
-          <Row width='unset'>
-            {network && (
+          <NetworkAndExternalProviderClickArea
+            onClick={onToggleCollapsed}
+            disabled={isDisabled}
+          >
+            <Row width='unset'>
+              {network && (
+                <CreateNetworkIcon
+                  network={network}
+                  marginRight={16}
+                  size='huge'
+                />
+              )}
+              {account && (
+                <CreateAccountIcon
+                  size='medium'
+                  externalProvider={externalProvider}
+                  marginRight={16}
+                />
+              )}
+              <RewardsProviderContainer>
+                <RewardsText
+                  textSize='14px'
+                  isBold={true}
+                  textColor='primary'
+                  textAlign='left'
+                >
+                  {externalRewardsDescription}
+                </RewardsText>
+                <BraveRewardsIndicator>
+                  {getLocale('braveWalletBraveRewardsTitle')}
+                </BraveRewardsIndicator>
+              </RewardsProviderContainer>
+            </Row>
+          </NetworkAndExternalProviderClickArea>
+        )}
+
+        {network && !externalProvider && !isSkeleton && (
+          <NetworkAndExternalProviderClickArea
+            onClick={onToggleCollapsed}
+            disabled={isDisabled}
+          >
+            <Row width='unset'>
               <CreateNetworkIcon
                 network={network}
                 marginRight={16}
                 size='huge'
               />
-            )}
-            {account && (
-              <CreateAccountIcon
-                size='medium'
-                externalProvider={externalProvider}
-                marginRight={16}
-              />
-            )}
-            <RewardsProviderContainer>
-              <RewardsText
+              <Text
                 textSize='14px'
                 isBold={true}
                 textColor='primary'
                 textAlign='left'
               >
-                {externalRewardsDescription}
-              </RewardsText>
-              <BraveRewardsIndicator>
-                {getLocale('braveWalletBraveRewardsTitle')}
-              </BraveRewardsIndicator>
-            </RewardsProviderContainer>
-          </Row>
-        )}
-
-        {network && !externalProvider && !isSkeleton && (
-          <Row width='unset'>
-            <CreateNetworkIcon
-              network={network}
-              marginRight={16}
-              size='huge'
-            />
-            <Text
-              textSize='14px'
-              isBold={true}
-              textColor='primary'
-              textAlign='left'
-            >
-              {network.chainName}
-            </Text>
-          </Row>
+                {network.chainName}
+              </Text>
+            </Row>
+          </NetworkAndExternalProviderClickArea>
         )}
 
         {account && !externalProvider && !isSkeleton && (
-          <Row width='unset'>
-            <CreateAccountIcon
-              size='medium'
-              account={account}
-              marginRight={16}
-            />
+          <Row
+            width='unset'
+            height='100%'
+          >
+            <AccountIconClickArea
+              onClick={onToggleCollapsed}
+              disabled={isDisabled}
+            >
+              <CreateAccountIcon
+                size='medium'
+                account={account}
+                marginRight={16}
+              />
+            </AccountIconClickArea>
             <AccountDescriptionWrapper width='unset'>
-              <Text
-                textSize='14px'
-                isBold={true}
-                textColor='primary'
-                textAlign='left'
+              <AccountNameClickArea
+                onClick={onToggleCollapsed}
+                disabled={isDisabled}
+                hasAddress={account.address !== ''}
               >
-                {account.name}
-              </Text>
-              <HorizontalSpace space='8px' />
-              <Text
-                textSize='12px'
-                isBold={false}
-                textColor='secondary'
-              >
-                {reduceAddress(account.address)}
-              </Text>
+                <Text
+                  textSize='14px'
+                  isBold={true}
+                  textColor='primary'
+                  textAlign='left'
+                >
+                  {account.name}
+                </Text>
+                <HorizontalSpace space='8px' />
+              </AccountNameClickArea>
+              {account.address !== '' && (
+                <AddressArea width='unset'>
+                  <AddressActionsMenu account={account}>
+                    <Text
+                      textSize='12px'
+                      isBold={false}
+                      textColor='secondary'
+                    >
+                      {reduceAddress(account.address)}
+                    </Text>
+                  </AddressActionsMenu>
+                  <EmptyClickArea
+                    onClick={onToggleCollapsed}
+                    disabled={isDisabled}
+                  />
+                </AddressArea>
+              )}
             </AccountDescriptionWrapper>
           </Row>
         )}
 
-        <Row width='unset'>
-          {balance !== '' && !hideBalance ? (
-            <Text
-              textSize='14px'
-              isBold={true}
-              textColor='primary'
-            >
-              {hidePortfolioBalances ? '******' : balance}
-            </Text>
-          ) : (
-            <>
-              {!hideBalance && (
-                <LoadingSkeleton
-                  width={60}
-                  height={14}
-                />
-              )}
-            </>
-          )}
+        <BalanceClickArea
+          onClick={onToggleCollapsed}
+          disabled={isDisabled}
+        >
+          <Row width='unset'>
+            {balance !== '' && !hideBalance ? (
+              <Text
+                textSize='14px'
+                isBold={true}
+                textColor='primary'
+              >
+                {hidePortfolioBalances ? '******' : balance}
+              </Text>
+            ) : (
+              <>
+                {!hideBalance && (
+                  <LoadingSkeleton
+                    width={60}
+                    height={14}
+                  />
+                )}
+              </>
+            )}
 
-          {!isDisabled && (
-            <CollapseIcon
-              isCollapsed={isCollapsed}
-              name='carat-down'
-            />
-          )}
-        </Row>
-      </CollapseButton>
+            {!isDisabled && (
+              <CollapseIcon
+                isCollapsed={isCollapsed}
+                name='carat-down'
+              />
+            )}
+          </Row>
+        </BalanceClickArea>
+      </CollapsedWrapper>
 
       {!isCollapsed && !isDisabled && (
         <Column fullWidth={true}>
