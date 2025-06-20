@@ -37,6 +37,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveClassVisitor.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveClearBrowsingDataFragmentAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveCommandLineInitUtilClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveConfirmInfoBarClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveContentSettingsResourcesClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveContentViewClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveCustomTabActivityClassAdapter.java",

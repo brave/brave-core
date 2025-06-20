@@ -11,12 +11,12 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.infobars.BraveInfoBarIdentifier;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -30,9 +30,11 @@ public class BraveNewTabTakeoverInfobar {
     private static final String SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM =
             "should_support_confirmations_for_non_rewards";
     private final Profile mProfile;
+    private final boolean mIsEdgeToEdgeActive;
 
-    public BraveNewTabTakeoverInfobar(Profile profile) {
+    public BraveNewTabTakeoverInfobar(Profile profile, boolean isEdgeToEdgeActive) {
         mProfile = profile;
+        mIsEdgeToEdgeActive = isEdgeToEdgeActive;
     }
 
     public void maybeDisplayAndIncrementCounter(Activity activity, WebContents webContents) {
@@ -65,7 +67,9 @@ public class BraveNewTabTakeoverInfobar {
                         return false;
                     }
                 },
-                BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
+                mIsEdgeToEdgeActive
+                        ? BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_EDGE_TO_EDGE
+                        : BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
                 activity,
                 /* drawableId= */ 0,
                 activity.getString(R.string.new_tab_takeover_infobar_message, ""),

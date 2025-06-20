@@ -415,6 +415,7 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_group_sync/StartupHelper"));
+        Assert.assertTrue(classExists("org/chromium/components/infobars/ConfirmInfoBar"));
     }
 
     @Test
@@ -1942,6 +1943,17 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/infobars/ConfirmInfoBar",
+                        "org/chromium/components/infobars/BraveConfirmInfoBar",
+                        int.class,
+                        int.class,
+                        Bitmap.class,
+                        String.class,
+                        String.class,
+                        String.class,
+                        String.class));
     }
 
     @Test

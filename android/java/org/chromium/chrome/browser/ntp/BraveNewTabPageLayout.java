@@ -103,6 +103,7 @@ import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutB
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
@@ -195,7 +196,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
-
+    private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
@@ -1240,6 +1241,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     public void setTabProvider(Supplier<Tab> unused_tabProvider) {}
 
+    public void setEdgeToEdgeControllerSupplier(
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+        mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
+    }
+
     private void showNTPImage(NTPImage ntpImage) {
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -1271,7 +1277,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 && ntpImage instanceof Wallpaper
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
-            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
+            mNewTabTakeoverInfobar =
+                    new BraveNewTabTakeoverInfobar(
+                            mProfile, mEdgeToEdgeControllerSupplier.get() != null);
             mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
                     mActivity, getTab().getWebContents());
         }

@@ -39,6 +39,7 @@ public class BraveClassAdapter {
         chain = new BraveRadioButtonGroupHomepagePreferenceClassAdapter(chain);
         chain = new BraveClearBrowsingDataFragmentAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
+        chain = new BraveConfirmInfoBarClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveContentViewClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
