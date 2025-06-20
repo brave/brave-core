@@ -12,6 +12,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/profile_menu_coordinator.h"
@@ -51,7 +52,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
   }
 
   ProfileMenuViewBase* profile_menu(Browser* browser) {
-    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser);
+    auto* coordinator = browser->GetFeatures().profile_menu_coordinator();
     return coordinator ? coordinator->GetProfileMenuViewBaseForTesting()
                        : nullptr;
   }
@@ -75,7 +76,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     }
 #endif
 
-    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser);
+    auto* coordinator = browser->GetFeatures().profile_menu_coordinator();
     EXPECT_TRUE(coordinator->IsShowing());
   }
 
