@@ -134,35 +134,6 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadResourceIfOptedOutOfAllAds) {
   EXPECT_FALSE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsAntiTargetingResourceTest, LoadResourceForOnLocaleDidChange) {
-  // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
-
-  // Act
-  NotifyLocaleDidChange(/*locale=*/"en_GB");
-
-  // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsAntiTargetingResourceTest,
-       DoNotLoadResourceForOnLocaleDidChangeIfOptedOutOfAllAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
-
-  // Act
-  NotifyLocaleDidChange(/*locale=*/"en_GB");
-
-  // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
-}
-
 TEST_F(BraveAdsAntiTargetingResourceTest,
        LoadResourceWhenOptingInToBraveNewsAds) {
   // Arrange

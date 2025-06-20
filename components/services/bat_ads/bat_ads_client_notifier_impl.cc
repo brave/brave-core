@@ -44,11 +44,6 @@ void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
   ads_client_notifier_.NotifyDidInitializeAds();
 }
 
-void BatAdsClientNotifierImpl::NotifyLocaleDidChange(
-    const std::string& locale) {
-  ads_client_notifier_.NotifyLocaleDidChange(locale);
-}
-
 void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
   ads_client_notifier_.NotifyPrefDidChange(path);
 }

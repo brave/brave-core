@@ -27,8 +27,6 @@ interface BatAdsClientNotifier {
 
   NotifyDidInitializeAds();
 
-  NotifyLocaleDidChange(string locale);
-
   NotifyPrefDidChange(string path);
 
   NotifyResourceComponentDidChange(string manifest_version, string id);
