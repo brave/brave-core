@@ -8,6 +8,7 @@ module ai_chat.mojom;
 import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 enum CharacterType {
@@ -170,6 +171,8 @@ struct WebSourcesEvent {
 };
 
 struct CompletionEvent {
+  // TODO(petemill): Use ContentBlock or even array<ContentBlock>
+  // and rely less on multiple events.
   string completion;
 };
 
@@ -198,12 +201,46 @@ struct UploadedFile {
   UploadedFileType type;
 };
 
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported
+  url.mojom.Url image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+union ContentBlock {
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+};
+
+struct ToolUseEvent {
+  // Name of the tool, used to identify which
+  // tool to run in order to produce the output
+  // from the given arguments.
+  string tool_name;
+
+  // ID of the tool use request
+  string id;
+
+  // Arguments for the Tool. The LLM may hallucinate and generate
+  // incorrect arguments or even invalid JSON, so this should be
+  // interpreted defensively.
+  mojo_base.mojom.DictionaryValue arguments;
+
+  // Output from the Tool. When null, the Tool
+  // has not yet run or completed.
+  array<ContentBlock>? output;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
+  ToolUseEvent tool_use_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
