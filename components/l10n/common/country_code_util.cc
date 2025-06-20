@@ -5,17 +5,13 @@
 
 #include "brave/components/l10n/common/country_code_util.h"
 
-#include "brave/components/l10n/common/country_code_feature.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_l10n {
 
-std::string GetCountryCode(const PrefService* local_state) {
-  if (base::FeatureList::IsEnabled(kFetchResourcesByCountryCodeFeature)) {
-    return local_state->GetString(brave_l10n::prefs::kCountryCode);
-  }
+std::string GetCountryCode(const PrefService* /*local_state*/) {
   return GetDefaultISOCountryCodeString();
 }
 
