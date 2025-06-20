@@ -1,0 +1,13 @@
+diff --git a/build/android/resource_sizes.py b/build/android/resource_sizes.py
+index 5d7bc6ac00159e106dda18da058a9fd58a3bd3dc..615583f4d1d57ef30f95695febb87c06517d0b34 100755
+--- a/build/android/resource_sizes.py
++++ b/build/android/resource_sizes.py
+@@ -261,6 +261,8 @@ def _NormalizeResourcesArsc(apk_path, num_arsc_files, num_translations,
+   en_strings = _CreateResourceIdValueMap(aapt_output, 'en-rGB')
+   fr_strings = _CreateResourceIdValueMap(aapt_output, 'fr')
+ 
++  raise Exception(f'#1 en_strings:\n #1 {en_strings} \n #2 fr_strings:\n #2 {fr_strings}')
++
+   # en-US and en-GB will never be translated.
+   config_count = num_translations - 2
+ 
