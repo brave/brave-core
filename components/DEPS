@@ -19,9 +19,18 @@ include_rules = [
 # This list disallows implicitly depend on some chromium components. Eventually
 # would removed and "+components" above would be changed to "-components"
 include_rules += [
+  "-components/component_updater",
+  "-components/content_settings",
   "-components/grit",
+  "-components/history",
+  "-components/keyed_service",
+  "-components/omnibox",
   "-components/prefs",
+  "-components/search_engines",
+  "-components/security_interstitials",
   "-components/sync_preferences",
+  "-components/sync",
+  "-components/user_prefs",
 ]
 
 specific_include_rules = {

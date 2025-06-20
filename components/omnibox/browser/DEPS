@@ -6,7 +6,10 @@
 include_rules = [
   "+brave/components/ai_chat/core/common",
   "+components/grit/brave_components_strings.h",
+  "+components/history",
+  "+components/omnibox",
   "+components/prefs",
+  "+components/search_engines",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
   "+services/network/public",
