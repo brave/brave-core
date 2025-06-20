@@ -696,8 +696,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
   local_state_pref_change_registrar_.Add(
       variations::prefs::kVariationsCountry,
       base::BindRepeating(&AdsServiceImpl::OnVariationsCountryPrefChanged,
-                          base::Unretained(this),
-                          variations::prefs::kVariationsCountry));
+                          base::Unretained(this)));
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -808,10 +807,8 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::OnVariationsCountryPrefChanged(const std::string& path) {
+void AdsServiceImpl::OnVariationsCountryPrefChanged() {
   RegisterResourceComponentsForCurrentCountryCode();
-
-  NotifyPrefChanged(path);
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {

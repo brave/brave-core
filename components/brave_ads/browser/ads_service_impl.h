@@ -176,7 +176,7 @@ class AdsServiceImpl final : public AdsService,
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSearchResultAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
-  void OnVariationsCountryPrefChanged(const std::string& path);
+  void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();

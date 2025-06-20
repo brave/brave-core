@@ -53,7 +53,6 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void Unload();
 
   // AdsClientNotifierObserver:
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyResourceComponentDidChange(const std::string& manifest_version,
                                           const std::string& id) override;
