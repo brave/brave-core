@@ -27,3 +27,23 @@ static_library("renderer") {
     "//v8",
   ]
 }
+
+if (!is_ios) {
+  source_set("browser_tests") {
+    testonly = true
+    sources = [ "page_content_extractor_browsertest.cc" ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
+      "//brave/components/ai_chat/renderer",
+      "//content/public/renderer",
+      "//content/test:test_support",
+      "//mojo/public/cpp/bindings",
+      "//services/service_manager/public/cpp",
+      "//testing/gtest:gtest",
+      "//third_party/blink/public:blink",
+    ]
+  }
+}

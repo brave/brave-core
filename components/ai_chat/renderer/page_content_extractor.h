@@ -47,6 +47,17 @@ class PageContentExtractor
   PageContentExtractor& operator=(const PageContentExtractor&) = delete;
   ~PageContentExtractor() override;
 
+  // PageContentExtractor implementation:
+  void ExtractPageContent(
+      mojom::PageContentExtractor::ExtractPageContentCallback callback)
+      override;
+  void GetSearchSummarizerKey(
+      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
+      override;
+  void GetOpenAIChatButtonNonce(
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback)
+      override;
+
   base::WeakPtr<PageContentExtractor> GetWeakPtr();
 
  private:
@@ -66,17 +77,6 @@ class PageContentExtractor
 
   // RenderFrameObserver implementation:
   void OnDestruct() override;
-
-  // PageContentExtractor implementation:
-  void ExtractPageContent(
-      mojom::PageContentExtractor::ExtractPageContentCallback callback)
-      override;
-  void GetSearchSummarizerKey(
-      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
-      override;
-  void GetOpenAIChatButtonNonce(
-      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback)
-      override;
 
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
