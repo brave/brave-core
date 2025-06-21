@@ -115,10 +115,34 @@ const buildTests = async (
   await util.buildTargets()
 }
 
+const deleteFile = (filePath) => {
+  if (!fs.existsSync(filePath)) {
+    return true
+  }
+  try {
+    fs.unlinkSync(filePath)
+  } catch (err) {
+    console.log(`Error deleting file ${filePath}: ` + err)
+    return false
+  }
+  return true
+}
+
+const appendToResultsFile = (allResultFilePath, suiteResultsFilePath) => {
+  try {
+    fs.appendFileSync(allResultFilePath, suiteResultsFilePath + '\n')
+  } catch (err) {
+    console.log(`Error appending to file ${allResultFilePath}: ` + err)
+    return false
+  }
+  return true
+}
+
 const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
+  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   const isJunitTestSuite = suite.endsWith('_junit_tests')
 
   let braveArgs = []
@@ -145,6 +169,15 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 
   if (options.output) {
+    // Clear any previous output
+    const outputPath = path.join(config.srcDir, options.output)
+    if (!deleteFile(outputPath)) {
+      return false
+    }
+    // Also suite results file.
+    if (!deleteFile(allResultsFilePath)) {
+      return false
+    }
     braveArgs.push('--gtest_output=xml:' + options.output)
   }
 
@@ -272,8 +305,13 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs,
         runOptions,
       )
-      // Don't run other tests if one has failed already, especially because
-      // this would overwrite the --output file (if given).
+      if (options.output) {
+        // Add xml output filename of each test suite into the results file
+        if (!appendToResultsFile(allResultsFilePath, `${testSuite}.xml`)) {
+          return false
+        }
+      }
+      // Don't run other tests if one has failed already.
       return prog.status === 0
     })
   }
