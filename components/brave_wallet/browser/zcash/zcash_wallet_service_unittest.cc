@@ -1088,6 +1088,24 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
         mojom::kZCashMainnet, account_id_1.Clone(), false,
         account_info->orchard_internal_address.value(), callback.Get());
   }
+
+  {
+    auto account_id_2 = MakeIndexBasedAccountId(
+        mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
+        mojom::AccountKind::kDerived, 0);
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kShielding),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
+    zcash_wallet_service_->GetTransactionType(
+        mojom::kZCashMainnet, account_id_1.Clone(), false,
+        account_info->orchard_internal_address.value(), callback.Get());
+  }
 }
 
 TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
