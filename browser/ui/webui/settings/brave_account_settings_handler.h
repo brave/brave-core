@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -16,23 +16,24 @@ class WebUI;
 }  // namespace content
 
 namespace brave_account {
-class BraveAccountHandler : public mojom::BraveAccountHandler {
+class BraveAccountSettingsHandler : public mojom::BraveAccountSettingsHandler {
  public:
-  explicit BraveAccountHandler(
-      mojo::PendingReceiver<mojom::BraveAccountHandler> handler,
+  explicit BraveAccountSettingsHandler(
+      mojo::PendingReceiver<mojom::BraveAccountSettingsHandler> handler,
       content::WebUI* web_ui);
 
-  BraveAccountHandler(const BraveAccountHandler&) = delete;
-  BraveAccountHandler& operator=(const BraveAccountHandler&) = delete;
+  BraveAccountSettingsHandler(const BraveAccountSettingsHandler&) = delete;
+  BraveAccountSettingsHandler& operator=(const BraveAccountSettingsHandler&) =
+      delete;
 
-  ~BraveAccountHandler() override;
+  ~BraveAccountSettingsHandler() override;
 
   void OpenDialog() override;
 
  private:
-  mojo::Receiver<mojom::BraveAccountHandler> handler_;
+  mojo::Receiver<mojom::BraveAccountSettingsHandler> handler_;
   raw_ptr<content::WebUI> web_ui_;
 };
 }  // namespace brave_account
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_

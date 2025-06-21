@@ -44,7 +44,7 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
-#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -650,7 +650,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  registry.ForWebUI<BraveAccountDialogsUI>()
+  registry.ForWebUI<BraveAccountUI>()
       .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
 }
 
@@ -849,7 +849,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
+      brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
 #endif
 
   auto* prefs =

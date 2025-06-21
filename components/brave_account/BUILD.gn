@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("brave_account") {
-  sources = [ "brave_account_dialogs_ui_base.h" ]
+  sources = [ "brave_account_ui_base.h" ]
 
   deps = [
     "//base",

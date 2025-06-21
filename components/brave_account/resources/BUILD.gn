@@ -9,8 +9,8 @@ build_webui("build") {
   grd_prefix = "brave_account"
 
   static_files = [
-    "brave_account_dialogs_page.css",
-    "brave_account_dialogs_page.html",
+    "brave_account_page.css",
+    "brave_account_page.html",
   ]
 
   ts_files = [

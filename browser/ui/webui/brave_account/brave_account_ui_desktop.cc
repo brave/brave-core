@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui_desktop.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 #include <memory>
 
@@ -26,22 +26,22 @@ constexpr int kDialogWidth = 500;
 constexpr gfx::Size kDialogMinSize(kDialogWidth, 470);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
 
-class BraveAccountDialogsDelegate : public ui::WebDialogDelegate {
+class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
-  BraveAccountDialogsDelegate() {
+  BraveAccountDialogDelegate() {
     set_delete_on_close(false);
-    set_dialog_content_url(GURL(kBraveAccountDialogsURL));
+    set_dialog_content_url(GURL(kBraveAccountURL));
     set_show_dialog_title(false);
   }
 };
 
 }  // namespace
 
-void ShowBraveAccountDialogs(content::WebUI* web_ui) {
+void ShowBraveAccountDialog(content::WebUI* web_ui) {
   DCHECK(web_ui);
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui),
-      std::make_unique<BraveAccountDialogsDelegate>(), web_ui->GetWebContents(),
+      std::make_unique<BraveAccountDialogDelegate>(), web_ui->GetWebContents(),
       kDialogMinSize, kDialogMaxSize);
 
   DCHECK(delegate);

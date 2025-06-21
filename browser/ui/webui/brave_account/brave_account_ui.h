@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
 
-#include "brave/components/brave_account/brave_account_dialogs_ui_base.h"
+#include "brave/components/brave_account/brave_account_ui_base.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -17,23 +17,22 @@ class BrowserContext;
 class WebUI;
 }  // namespace content
 
-class BraveAccountDialogsUI
-    : public BraveAccountDialogsUIBase<content::WebUIDataSource>,
-      public ConstrainedWebDialogUI {
+class BraveAccountUI : public BraveAccountUIBase<content::WebUIDataSource>,
+                       public ConstrainedWebDialogUI {
  public:
-  explicit BraveAccountDialogsUI(content::WebUI* web_ui);
+  explicit BraveAccountUI(content::WebUI* web_ui);
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-class BraveAccountDialogsUIConfig
-    : public content::DefaultWebUIConfig<BraveAccountDialogsUI> {
+class BraveAccountUIConfig
+    : public content::DefaultWebUIConfig<BraveAccountUI> {
  public:
-  BraveAccountDialogsUIConfig();
+  BraveAccountUIConfig();
 
   // content::WebUIConfig:
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_

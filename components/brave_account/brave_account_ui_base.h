@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
+#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
 
 #include <utility>
 
@@ -25,18 +25,17 @@
 #include "ui/base/webui/web_ui_util.h"
 
 template <typename WebUIDataSource>
-class BraveAccountDialogsUIBase {
+class BraveAccountUIBase {
  public:
-  explicit BraveAccountDialogsUIBase(
+  explicit BraveAccountUIBase(
       auto* profile,
       base::OnceCallback<
           void(WebUIDataSource*, base::span<const webui::ResourcePath>, int)>
           setup_webui_data_source = base::DoNothing()) {
-    auto* source =
-        WebUIDataSource::CreateAndAdd(profile, kBraveAccountDialogsHost);
+    auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
     std::move(setup_webui_data_source)
         .Run(source, kBraveAccountResources,
-             IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_PAGE_HTML);
+             IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
     SetupWebUIDataSource(source);
   }
 
@@ -63,8 +62,7 @@ class BraveAccountDialogsUIBase {
     source->EnableReplaceI18nInJS();
 
     source->AddResourcePaths(kBraveAccountResources);
-    source->AddResourcePath("",
-                            IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_PAGE_HTML);
+    source->AddResourcePath("", IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
     static constexpr webui::LocalizedString kStrings[] = {
         // 'Entry' dialog:
@@ -149,4 +147,4 @@ class BraveAccountDialogsUIBase {
   }
 };
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_

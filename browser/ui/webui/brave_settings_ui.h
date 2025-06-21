@@ -23,7 +23,7 @@
 class BraveSettingsUI;
 
 namespace brave_account {
-class BraveAccountHandler;
+class BraveAccountSettingsHandler;
 }
 
 namespace content {
@@ -56,7 +56,7 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
   void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
           pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -66,7 +66,8 @@ class BraveSettingsUI : public settings::SettingsUI {
 #endif
 
  private:
-  std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
+  std::unique_ptr<brave_account::BraveAccountSettingsHandler>
+      brave_account_settings_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

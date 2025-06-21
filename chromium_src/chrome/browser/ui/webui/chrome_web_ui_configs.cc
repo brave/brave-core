@@ -28,7 +28,7 @@
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui_config.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
@@ -86,7 +86,7 @@ void RegisterChromeWebUIConfigs() {
 #else   // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<NewTabTakeoverUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
-  map.AddWebUIConfig(std::make_unique<BraveAccountDialogsUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveAccountUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());
 

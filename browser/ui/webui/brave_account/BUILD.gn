@@ -5,8 +5,8 @@
 
 source_set("brave_account") {
   sources = [
-    "brave_account_dialogs_ui.cc",
-    "brave_account_dialogs_ui.h",
+    "brave_account_ui.cc",
+    "brave_account_ui.h",
   ]
 
   deps = [
@@ -22,8 +22,8 @@ source_set("brave_account") {
 
   if (!is_android) {
     sources += [
-      "brave_account_dialogs_ui_desktop.cc",
-      "brave_account_dialogs_ui_desktop.h",
+      "brave_account_ui_desktop.cc",
+      "brave_account_ui_desktop.h",
     ]
 
     deps += [

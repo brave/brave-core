@@ -5,6 +5,6 @@
 
 module brave_account.mojom;
 
-interface BraveAccountHandler {
+interface BraveAccountSettingsHandler {
   OpenDialog();
 };
