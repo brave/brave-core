@@ -25,7 +25,7 @@ import org.chromium.content_public.browser.WebContents;
 public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
     private static final String LEARN_MORE_URL =
-            "https://support.brave.com/hc/en-us/articles/35182999599501";
+            "https://support.brave.app/hc/en-us/articles/35182999599501";
     private static final String NEW_TAB_PAGE_ADS_FEATURE = "NewTabPageAds";
     private static final String SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM =
             "should_support_confirmations_for_non_rewards";

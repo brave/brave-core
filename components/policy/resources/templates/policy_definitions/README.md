@@ -2,7 +2,7 @@
 
 These are Brave specific group policies.
 
-Our official documentation is [available here](https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy).
+Our official documentation is [available here](https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy).
 
 For information about adding a new policy, please see [this page](https://source.chromium.org/chromium/chromium/src/+/main:docs/enterprise/add_new_policy.md).
 
