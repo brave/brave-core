@@ -19,6 +19,8 @@ NET_EXPORT std::string URLToEphemeralStorageDomain(const GURL& url);
 
 NET_EXPORT bool IsOnion(const GURL& url);
 
+NET_EXPORT bool IsOnion(const url::Origin& origin);
+
 NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 
 }  // namespace net
