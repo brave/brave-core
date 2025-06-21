@@ -40,20 +40,42 @@ namespace {
 
 constexpr char kJavascriptExtension[] = ".js";
 
+blink::WebSecurityOrigin GetFrameSecurityOrigin(blink::WebFrame* frame) {
+  if (!frame) {
+    return blink::WebSecurityOrigin();
+  }
+  return frame->GetSecurityOrigin();
+}
+
 bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
   // Storage access is keyed off the top origin and the frame's origin.
   // It will be denied any opaque origins so have this method to return early
   // instead of making a Sync IPC call.
-  return frame->GetSecurityOrigin().IsOpaque() ||
-         frame->Top()->GetSecurityOrigin().IsOpaque();
+  const auto frame_origin = GetFrameSecurityOrigin(frame);
+  if (frame_origin.IsNull()) {
+    return false;
+  }
+  if (frame_origin.IsOpaque()) {
+    return true;
+  }
+  const auto top_frame_origin = GetFrameSecurityOrigin(frame->Top());
+  if (top_frame_origin.IsNull()) {
+    return false;
+  }
+  return top_frame_origin.IsOpaque();
 }
 
 GURL GetTopFrameOriginAsURL(const blink::WebFrame* frame) {
-  DCHECK(frame);
-  url::Origin top_origin(frame->Top()->GetSecurityOrigin());
-  return top_origin.opaque()
-             ? top_origin.GetTupleOrPrecursorTupleIfOpaque().GetURL()
-             : top_origin.GetURL();
+  if (!frame) {
+    return GURL();
+  }
+  const auto top_frame_origin = GetFrameSecurityOrigin(frame->Top());
+  if (top_frame_origin.IsNull()) {
+    return GURL();
+  }
+  const url::Origin origin(top_frame_origin);
+  return origin.opaque() ? origin.GetTupleOrPrecursorTupleIfOpaque().GetURL()
+                         : origin.GetURL();
 }
 
 bool IsBraveShieldsDown(const GURL& primary_url,
@@ -84,8 +106,7 @@ bool ShouldSkipResource(const GURL& resource_url) {
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     std::unique_ptr<Delegate> delegate)
-    : ContentSettingsAgentImpl(render_frame,
-                               std::move(delegate)) {
+    : ContentSettingsAgentImpl(render_frame, std::move(delegate)) {
   render_frame->GetAssociatedInterfaceRegistry()
       ->AddInterface<brave_shields::mojom::BraveShields>(base::BindRepeating(
           &BraveContentSettingsAgentImpl::BindBraveShieldsReceiver,
