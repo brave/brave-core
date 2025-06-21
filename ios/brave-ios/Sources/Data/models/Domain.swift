@@ -255,7 +255,7 @@ public final class Domain: NSManagedObject, CRUD {
     }).count
   }
 
-  @MainActor public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
+  public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
     let appExitPredicate = NSPredicate(
       format: "shield_shredLevel == %@",
       SiteShredLevel.appExit.rawValue
@@ -263,13 +263,47 @@ public final class Domain: NSManagedObject, CRUD {
     let allExplicitlySet = Domain.all(
       where: appExitPredicate
     )
-    guard ShieldPreferences.shredLevel.shredOnAppExit else { return allExplicitlySet }
-    // Default value is SiteShredLevel.appExit, include all with default value nil
-    let nilPredicate = NSPredicate(format: "shield_shredLevel == nil")
-    return (allExplicitlySet ?? [])
-      + (Domain.all(
-        where: nilPredicate
-      ) ?? [])
+    guard ShieldPreferences.shredLevel.shredOnAppExit else {
+      return allExplicitlySet
+    }
+
+    // Default value is SiteShredLevel.appExit, so fetch Domain's with default value
+    let defaultShredLevelPredicate = NSPredicate(format: "shield_shredLevel == nil")
+    let domainsWithDefaultShredLevel =
+      Domain.all(
+        where: defaultShredLevelPredicate
+      ) ?? []
+
+    // A Domain may be created with non-secure scheme, then a separate Domain
+    // may be created with the secure scheme after https upgrade.
+    // WKWebsiteDataStore stores data without a scheme, so we should remove
+    // duplicate Domain's from the domainsWithDefaultShredLevel if the user explicitly
+    // sets a shred level.
+    let nonDefaultShredLevelPredicate = NSPredicate(format: "shield_shredLevel != nil")
+    let domainsWithNonDefaultShredLevel = Domain.all(where: nonDefaultShredLevelPredicate) ?? []
+    let baseDomainsToExclude: Set<String> = Set(
+      domainsWithNonDefaultShredLevel.compactMap({
+        guard let urlString = $0.url, let url = URL(string: urlString) else {
+          // if no url, not usable for shred
+          return nil
+        }
+        return url.baseDomain
+      })
+    )
+    let defaultValueDomainsFiltered =
+      domainsWithDefaultShredLevel
+      .filter { domain in
+        guard let urlString = domain.url, let url = URL(string: urlString),
+          let baseDomain = url.baseDomain
+        else {
+          // if no url, not usable for shred
+          return false
+        }
+        // exclude domain if on exclusion list
+        return !baseDomainsToExclude.contains(baseDomain)
+      }
+
+    return (allExplicitlySet ?? []) + defaultValueDomainsFiltered
   }
 
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
