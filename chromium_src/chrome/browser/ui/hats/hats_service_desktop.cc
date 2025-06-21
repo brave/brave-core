@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/hats/hats_service_desktop.h"
 
 #define HatsServiceDesktop HatsServiceDesktop_ChromiumImpl
-#include "src/chrome/browser/ui/hats/hats_service_desktop.cc"
+#include <chrome/browser/ui/hats/hats_service_desktop.cc>
 #undef HatsServiceDesktop
 
 HatsServiceDesktop::HatsServiceDesktop(Profile* profile)

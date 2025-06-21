@@ -272,7 +272,7 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
 
 #define IsFullCookieAccessAllowed IsFullCookieAccessAllowed_ChromiumImpl
 
-#include "src/components/content_settings/core/common/cookie_settings_base.cc"
+#include <components/content_settings/core/common/cookie_settings_base.cc>
 
 #undef IsFullCookieAccessAllowed
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS

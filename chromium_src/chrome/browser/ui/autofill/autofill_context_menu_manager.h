@@ -10,7 +10,7 @@
   AppendItems_ChromiumImpl(); \
   void AppendItems
 
-#include "src/chrome/browser/ui/autofill/autofill_context_menu_manager.h"  // IWYU pragma: export
+#include <chrome/browser/ui/autofill/autofill_context_menu_manager.h>  // IWYU pragma: export
 #undef AppendItems
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_AUTOFILL_AUTOFILL_CONTEXT_MENU_MANAGER_H_

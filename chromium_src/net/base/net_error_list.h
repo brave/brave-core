@@ -6,6 +6,6 @@
 // NOLINT(build/header_guard)
 // no-include-guard-because-multiply-included
 
-#include "src/net/base/net_error_list.h"  // IWYU pragma: export
+#include <net/base/net_error_list.h>  // IWYU pragma: export
 
 NET_ERROR(ENS_OFFCHAIN_LOOKUP_NOT_SELECTED, -10004)

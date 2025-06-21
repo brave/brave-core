@@ -50,6 +50,6 @@ std::vector<DnsOverHttpsServerConfig> MaybeAddFallbackDohServer(
 #define GetDohUpgradeServersFromNameservers(...) \
   MaybeAddFallbackDohServer(GetDohUpgradeServersFromNameservers(__VA_ARGS__))
 
-#include "src/net/dns/dns_client.cc"
+#include <net/dns/dns_client.cc>
 
 #undef GetDohUpgradeServersFromNameservers

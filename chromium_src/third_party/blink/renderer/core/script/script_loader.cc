@@ -19,7 +19,7 @@
 // handles web bundles.
 #define kWebbundle kWebbundle) && (false
 
-#include "src/third_party/blink/renderer/core/script/script_loader.cc"
+#include <third_party/blink/renderer/core/script/script_loader.cc>
 
 #undef kWebbundle
 #undef BRAVE_SCRIPT_LOADER_PREPARE_SCRIPT

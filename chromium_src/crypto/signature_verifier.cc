@@ -12,5 +12,5 @@
   break;                   \
   case ECDSA_SHA256
 
-#include "src/crypto/signature_verifier.cc"
+#include <crypto/signature_verifier.cc>
 #undef ECDSA_SHA256

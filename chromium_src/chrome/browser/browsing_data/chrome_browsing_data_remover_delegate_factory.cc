@@ -8,5 +8,5 @@
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 
 #define ChromeBrowsingDataRemoverDelegate BraveBrowsingDataRemoverDelegate
-#include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc"
+#include <chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc>
 #undef ChromeBrowsingDataRemoverDelegate

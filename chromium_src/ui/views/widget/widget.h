@@ -18,7 +18,7 @@
 #define UnlockPaintAsActive UnlockPaintAsActive
 #endif
 
-#include "src/ui/views/widget/widget.h"  // IWYU pragma: export
+#include <ui/views/widget/widget.h>  // IWYU pragma: export
 
 #undef UnlockPaintAsActive
 

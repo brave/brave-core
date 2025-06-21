@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/ios/web/webui/mojo_facade.mm"
-
 #include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+
+#include <ios/web/webui/mojo_facade.mm>
 
 namespace web {
 bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,

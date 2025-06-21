@@ -21,6 +21,6 @@
     return;                                                                    \
   }
 
-#include "src/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc"
+#include <chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc>
 
 #undef BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM

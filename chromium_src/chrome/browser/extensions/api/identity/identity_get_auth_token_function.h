@@ -10,7 +10,7 @@
 #include "extensions/browser/extension_function.h"
 
 #define ExtensionFunction ExtensionFunction, public BraveWebAuthFlow
-#include "src/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h"  // IWYU pragma: export
+#include <chrome/browser/extensions/api/identity/identity_get_auth_token_function.h>  // IWYU pragma: export
 #undef ExtensionFunction
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_API_IDENTITY_IDENTITY_GET_AUTH_TOKEN_FUNCTION_H_

@@ -12,5 +12,5 @@
   TYPE_BRAVE_COMMANDER: \
   case TYPE_BRAVE_LEO:  \
   case TYPE_BOOKMARK
-#include "src/components/omnibox/browser/autocomplete_provider.cc"
+#include <components/omnibox/browser/autocomplete_provider.cc>
 #undef TYPE_BOOKMARK

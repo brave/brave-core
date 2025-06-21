@@ -24,5 +24,5 @@
   case PermissionType::BRAVE_CARDANO:                   \
   case PermissionType::NUM
 
-#include "src/content/shell/browser/shell_permission_manager.cc"
+#include <content/shell/browser/shell_permission_manager.cc>
 #undef NUM

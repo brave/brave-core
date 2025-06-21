@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/search/ntp_features.cc"
-
 #include "base/feature_override.h"
 #include "build/build_config.h"
+
+#include <components/search/ntp_features.cc>
 
 namespace ntp_features {
 

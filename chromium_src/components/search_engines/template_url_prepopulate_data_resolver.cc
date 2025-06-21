@@ -11,5 +11,5 @@
   GetPrepopulatedFallbackSearch(           \
       regional_capabilities_->GetRegionalDefaultEngine(), __VA_ARGS__)
 
-#include "src/components/search_engines/template_url_prepopulate_data_resolver.cc"
+#include <components/search_engines/template_url_prepopulate_data_resolver.cc>
 #undef GetPrepopulatedFallbackSearch

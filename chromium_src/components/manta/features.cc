@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include "src/components/manta/features.cc"
+#include <components/manta/features.cc>
 
 namespace manta::features {
 

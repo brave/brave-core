@@ -13,7 +13,7 @@
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #define GetPrepopulatedFallbackSearch GetPrepopulatedFallbackSearch_Unused
 #define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
-#include "src/components/search_engines/template_url_prepopulate_data.cc"
+#include <components/search_engines/template_url_prepopulate_data.cc>
 #undef GetPrepopulatedEngine
 #undef GetPrepopulatedFallbackSearch
 #undef GetDataVersion

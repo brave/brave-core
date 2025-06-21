@@ -8,7 +8,7 @@
 
 // Pulling in the original just to expose PrerenderPredictionStatus enum.
 #define PrerenderManager PrerenderManager_ChromiumImpl
-#include "src/chrome/browser/preloading/prerender/prerender_manager.h"  // IWYU pragma: export
+#include <chrome/browser/preloading/prerender/prerender_manager.h>  // IWYU pragma: export
 #undef PrerenderManager
 
 // Completely override PrerendererManager as we don't want to use prerendering.

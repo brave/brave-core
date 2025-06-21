@@ -41,7 +41,7 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
 #define kUngroupRefreshIcon \
   kUngroupRefreshIcon, ui::kColorMenuIcon, kDefaultIconSize
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.cc"
+#include <chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.cc>
 
 #undef kUngroupRefreshIcon
 

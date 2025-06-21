@@ -23,6 +23,6 @@ void BraveAddBookmarksResources(content::WebUIDataSource* source,
 #define BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE \
   BraveAddBookmarksResources(source, profile);
 
-#include "src/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
+#include <chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc>
 
 #undef BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE

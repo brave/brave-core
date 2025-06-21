@@ -8,6 +8,6 @@
 
 #define ReadLaterSidePanelWebView BraveReadLaterSidePanelView
 
-#include "src/chrome/browser/ui/views/side_panel/reading_list/reading_list_side_panel_coordinator.cc"
+#include <chrome/browser/ui/views/side_panel/reading_list/reading_list_side_panel_coordinator.cc>
 
 #undef ReadLaterSidePanelWebView

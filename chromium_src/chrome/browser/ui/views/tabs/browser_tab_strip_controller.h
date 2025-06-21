@@ -11,7 +11,7 @@
   friend class BraveBrowserTabStripController; \
   void CloseContextMenuForTesting
 
-#include "src/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.h>  // IWYU pragma: export
 
 #undef CloseContextMenuForTesting
 

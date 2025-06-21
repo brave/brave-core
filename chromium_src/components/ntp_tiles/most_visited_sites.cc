@@ -8,6 +8,6 @@
 // We don't support downloading popular sites
 #define popular_sites_(...) popular_sites_(nullptr)
 
-#include "src/components/ntp_tiles/most_visited_sites.cc"
+#include <components/ntp_tiles/most_visited_sites.cc>
 
 #undef popular_sites_

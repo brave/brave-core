@@ -11,7 +11,7 @@
   friend class BraveShortcutsProviderTest; \
   void InitInternal
 
-#include "src/components/omnibox/browser/shortcuts_backend.h"  // IWYU pragma: export
+#include <components/omnibox/browser/shortcuts_backend.h>  // IWYU pragma: export
 
 #undef InitInternal
 

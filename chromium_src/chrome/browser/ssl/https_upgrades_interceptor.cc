@@ -41,7 +41,7 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
-#include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
+#include <chrome/browser/ssl/https_upgrades_interceptor.cc>
 
 #undef MaybeCreateLoader
 #undef IsEnabled

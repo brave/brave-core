@@ -16,5 +16,5 @@ static const char* kBraveCTExcludedHosts[] = {
     excluded.push_back(host);                               \
   }
 
-#include "src/chrome/browser/net/profile_network_context_service.cc"
+#include <chrome/browser/net/profile_network_context_service.cc>
 #undef BRAVE_PROFILE_NETWORK_CONTEXT_SERVICE_GET_CT_POLICY

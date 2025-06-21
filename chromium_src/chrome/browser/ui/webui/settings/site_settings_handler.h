@@ -11,7 +11,7 @@
   friend class BraveSiteSettingsHandler
 #define RemoveNonModelData virtual RemoveNonModelData
 
-#include "src/chrome/browser/ui/webui/settings/site_settings_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/settings/site_settings_handler.h>  // IWYU pragma: export
 
 #undef SiteSettingsHandlerBaseTest
 #undef RemoveNonModelData

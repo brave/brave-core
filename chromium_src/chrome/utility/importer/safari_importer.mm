@@ -37,6 +37,6 @@ void CorrectSafariReadingListPath(
 #undef IDS_BOOKMARK_GROUP_FROM_SAFARI
 #define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()); \
   CorrectSafariReadingListPath(bookmarks
-#include "src/chrome/utility/importer/safari_importer.mm"
+#include <chrome/utility/importer/safari_importer.mm>
 #undef IDS_BOOKMARK_GROUP_FROM_SAFARI
 #define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()

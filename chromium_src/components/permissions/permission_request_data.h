@@ -11,7 +11,7 @@
 #define PermissionContextBase PermissionContextBase_ChromiumImpl
 #endif
 
-#include "src/components/permissions/permission_request_data.h"  // IWYU pragma: export
+#include <components/permissions/permission_request_data.h>  // IWYU pragma: export
 
 #ifdef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE
 #undef PermissionContextBase

@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "services/network/cookie_settings.h"
+
 #include <optional>
 
 #include "net/base/features.h"
-#include "services/network/cookie_settings.h"
-#include "src/services/network/cookie_settings.cc"
 #include "url/origin.h"
+
+#include <services/network/cookie_settings.cc>
 
 namespace network {
 

@@ -14,7 +14,7 @@
   friend class BraveBrowserFrameViewWin;          \
   void OnWindowControlsOverlayEnabledChanged
 
-#include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_caption_button_container_win.h>  // IWYU pragma: export
 
 #undef OnWindowControlsOverlayEnabledChanged
 #undef BrowserCaptionButtonContainer

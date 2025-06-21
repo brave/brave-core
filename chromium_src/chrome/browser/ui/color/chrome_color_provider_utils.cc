@@ -8,7 +8,7 @@
 #define ShouldApplyChromeMaterialOverrides \
   ShouldApplyChromeMaterialOverrides_UnUsed
 
-#include "src/chrome/browser/ui/color/chrome_color_provider_utils.cc"
+#include <chrome/browser/ui/color/chrome_color_provider_utils.cc>
 
 #undef ShouldApplyChromeMaterialOverrides
 

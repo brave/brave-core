@@ -41,4 +41,4 @@
 
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#include "src/components/password_manager/core/browser/password_store/password_store_built_in_backend.cc"
+#include <components/password_manager/core/browser/password_store/password_store_built_in_backend.cc>

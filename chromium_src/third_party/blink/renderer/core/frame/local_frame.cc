@@ -28,7 +28,7 @@
 
 #define ScriptEnabled ScriptEnabled_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/frame/local_frame.cc"
+#include <third_party/blink/renderer/core/frame/local_frame.cc>
 #undef ScriptEnabled
 #undef AddInspectorTraceEvents
 

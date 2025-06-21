@@ -22,6 +22,6 @@
   break;                            \
   case SettingSource::kTpcdGrant
 
-#include "src/components/permissions/permission_uma_util.cc"
+#include <components/permissions/permission_uma_util.cc>
 #undef GetUkmSourceId
 #undef kTpcdGrant

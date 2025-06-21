@@ -16,7 +16,7 @@
   CreateClipboardEndpoint();         \
   bool sanitize_on_next_write_text_ = false
 
-#include "src/content/browser/renderer_host/clipboard_host_impl.h"  // IWYU pragma: export
+#include <content/browser/renderer_host/clipboard_host_impl.h>  // IWYU pragma: export
 
 #undef CommitWrite
 #undef CreateClipboardEndpoint

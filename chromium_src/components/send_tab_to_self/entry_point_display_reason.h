@@ -7,9 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEND_TAB_TO_SELF_ENTRY_POINT_DISPLAY_REASON_H_
 
 #define GetEntryPointDisplayReason GetEntryPointDisplayReason_ChromiumImpl
-#include <optional>
+#include <components/send_tab_to_self/entry_point_display_reason.h>  // IWYU pragma: export
 
-#include "src/components/send_tab_to_self/entry_point_display_reason.h"  // IWYU pragma: export
+#include <optional>
 #undef GetEntryPointDisplayReason
 
 namespace send_tab_to_self {

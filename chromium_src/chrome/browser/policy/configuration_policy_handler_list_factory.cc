@@ -8,7 +8,7 @@
 #include "components/policy/core/browser/configuration_policy_handler.h"
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
-#include "src/chrome/browser/policy/configuration_policy_handler_list_factory.cc"
+#include <chrome/browser/policy/configuration_policy_handler_list_factory.cc>
 #undef BuildHandlerList
 
 namespace policy {

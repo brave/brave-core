@@ -55,7 +55,7 @@
 #define kColorOmniboxResultsBackgroundHovered kColorLocationBarBackgroundHovered); \
   normal = color_provider->GetColor(kColorLocationBarBackground
 
-#include "src/chrome/browser/ui/views/location_bar/location_bar_view.cc"
+#include <chrome/browser/ui/views/location_bar/location_bar_view.cc>
 #undef STYLE_BODY_4_EMPHASIS
 #undef kColorOmniboxResultsBackgroundHovered
 #undef PageActionIconContainerView

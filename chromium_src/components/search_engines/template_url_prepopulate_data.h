@@ -12,7 +12,7 @@
   GetPrepopulatedFallbackSearch(BravePrepopulatedEngineID default_engine_id, \
                                 __VA_ARGS__)
 
-#include "src/components/search_engines/template_url_prepopulate_data.h"  // IWYU pragma: export
+#include <components/search_engines/template_url_prepopulate_data.h>  // IWYU pragma: export
 #undef GetPrepopulatedFallbackSearch
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_TEMPLATE_URL_PREPOPULATE_DATA_H_

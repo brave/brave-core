@@ -13,7 +13,7 @@
   InstallVPNServices() override; \
   IFACEMETHODIMP DecryptData
 
-#include "src/chrome/elevation_service/elevator.h"  // IWYU pragma: export
+#include <chrome/elevation_service/elevator.h>  // IWYU pragma: export
 
 #undef DecryptData
 #undef IElevatorChromeDev

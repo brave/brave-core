@@ -8,7 +8,7 @@
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 
-#include "src/components/sync/service/sync_internals_util.h"  // IWYU pragma: export
+#include <components/sync/service/sync_internals_util.h>  // IWYU pragma: export
 
 #undef ConstructAboutInformation
 

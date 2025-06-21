@@ -24,7 +24,7 @@ gfx::Insets BraveAdjustVisualBorderForFont(const gfx::FontList& badge_font,
   flags.setColor
 #define AdjustVisualBorderForFont BraveAdjustVisualBorderForFont
 
-#include "src/ui/views/badge_painter.cc"
+#include <ui/views/badge_painter.cc>
 
 #undef AdjustVisualBorderForFont
 #undef setColor

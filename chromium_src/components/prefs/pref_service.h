@@ -10,7 +10,7 @@
   GetBooleanOr(const std::string& path, bool other) const; \
   bool GetBoolean
 
-#include "src/components/prefs/pref_service.h"  // IWYU pragma: export
+#include <components/prefs/pref_service.h>  // IWYU pragma: export
 
 #undef GetBoolean
 

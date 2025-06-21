@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 
-#include "src/extensions/common/constants.h"  // IWYU pragma: export
+#include <extensions/common/constants.h>  // IWYU pragma: export
 
 inline constexpr int kBraveActionLeftMarginExtra = -2;
 

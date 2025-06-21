@@ -12,7 +12,7 @@
   bool IsResetDevicesProgressTokenDone();                          \
   static void RegisterProfilePrefs
 
-#include "src/components/sync_device_info/device_info_prefs.h"  // IWYU pragma: export
+#include <components/sync_device_info/device_info_prefs.h>  // IWYU pragma: export
 
 #undef RegisterProfilePrefs
 

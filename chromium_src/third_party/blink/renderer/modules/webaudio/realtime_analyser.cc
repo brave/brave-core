@@ -32,7 +32,7 @@
     return;                                                    \
   }
 
-#include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc"
+#include <third_party/blink/renderer/modules/webaudio/realtime_analyser.cc>
 
 #undef BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
 #undef BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA

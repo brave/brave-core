@@ -5,6 +5,6 @@
 
 #define FrameworkBundle MainBundle
 
-#include "src/ios/chrome/common/app_group/app_group_helper.mm"
+#include <ios/chrome/common/app_group/app_group_helper.mm>
 
 #undef FrameworkBundle

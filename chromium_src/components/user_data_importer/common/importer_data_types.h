@@ -12,7 +12,7 @@
 
 #define BRAVE_VISIT_SOURCE VISIT_SOURCE_CHROME_IMPORTED = 4,
 
-#include "src/components/user_data_importer/common/importer_data_types.h"  // IWYU pragma: export
+#include <components/user_data_importer/common/importer_data_types.h>  // IWYU pragma: export
 #undef BRAVE_VISIT_SOURCE
 #undef BRAVE_IMPORT_ITEM
 

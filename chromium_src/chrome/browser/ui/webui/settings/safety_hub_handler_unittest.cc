@@ -33,6 +33,6 @@
       ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,         \
       ContentSettingsType::BRAVE_WEBCOMPAT_ALL, ContentSettingsType::MIDI
 
-#include "src/chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc"
+#include <chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc>
 #undef FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION
 #undef MIDI

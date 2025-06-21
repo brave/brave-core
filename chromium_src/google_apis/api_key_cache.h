@@ -13,7 +13,7 @@
   }                                                          \
   const std::string& metrics_key
 
-#include "src/google_apis/api_key_cache.h"  // IWYU pragma: export
+#include <google_apis/api_key_cache.h>  // IWYU pragma: export
 
 #undef metrics_key
 

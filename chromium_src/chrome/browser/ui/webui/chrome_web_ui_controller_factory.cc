@@ -16,7 +16,7 @@
 #define BRAVE_CHROME_WEBUI_CONTROLLER_FACTORY \
   return BraveWebUIControllerFactory::GetInstance();
 
-#include "src/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc"
+#include <chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc>
 #undef BRAVE_CHROME_WEBUI_CONTROLLER_FACTORY
 #undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
 #undef CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_

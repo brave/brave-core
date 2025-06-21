@@ -37,7 +37,7 @@
   void InitializeWithHost
 #endif
 
-#include "src/components/viz/service/gl/gpu_service_impl.h"  // IWYU pragma: export
+#include <components/viz/service/gl/gpu_service_impl.h>  // IWYU pragma: export
 
 #undef InitializeWithHost
 

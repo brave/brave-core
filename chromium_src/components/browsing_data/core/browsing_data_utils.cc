@@ -18,7 +18,7 @@
   TABS:      \
   case BrowsingDataType::BRAVE_AI_CHAT
 
-#include "src/components/browsing_data/core/browsing_data_utils.cc"
+#include <components/browsing_data/core/browsing_data_utils.cc>
 
 #undef TABS
 #undef GetDataTypeFromDeletionPreference

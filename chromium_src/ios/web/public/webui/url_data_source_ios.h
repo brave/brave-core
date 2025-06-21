@@ -10,7 +10,7 @@
   GetContentSecurityPolicyObjectSrc() const; \
   virtual std::string GetContentSecurityPolicyFrameSrc
 
-#import "src/ios/web/public/webui/url_data_source_ios.h"  // IWYU pragma: export
+#import <ios/web/public/webui/url_data_source_ios.h>  // IWYU pragma: export
 
 #undef GetContentSecurityPolicyObjectSrc
 

@@ -11,7 +11,7 @@
   friend class BraveNotificationPlatformBridgeHelperAndroid; \
   void OnNotificationProcessed
 
-#include "src/chrome/browser/notifications/notification_platform_bridge_android.h"  // IWYU pragma: export
+#include <chrome/browser/notifications/notification_platform_bridge_android.h>  // IWYU pragma: export
 
 #undef OnNotificationProcessed
 

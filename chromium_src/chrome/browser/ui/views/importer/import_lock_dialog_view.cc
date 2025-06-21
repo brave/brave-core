@@ -7,7 +7,7 @@
 
 #include "chrome/browser/importer/importer_lock_dialog.h"
 
-#include "src/chrome/browser/ui/views/importer/import_lock_dialog_view.cc"
+#include <chrome/browser/ui/views/importer/import_lock_dialog_view.cc>
 
 namespace importer {
 

@@ -5,7 +5,7 @@
 
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
 
-#include "src/components/content_settings/renderer/content_settings_agent_impl.cc"
+#include <components/content_settings/renderer/content_settings_agent_impl.cc>
 
 namespace content_settings {
 

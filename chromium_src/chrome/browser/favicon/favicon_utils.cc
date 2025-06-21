@@ -11,7 +11,7 @@
 
 // Allow brave internal pages to break out of favicon themeing
 #define ShouldThemifyFaviconForEntry ShouldThemifyFaviconForEntry_ChromiumImpl
-#include "src/chrome/browser/favicon/favicon_utils.cc"
+#include <chrome/browser/favicon/favicon_utils.cc>
 #undef ShouldThemifyFaviconForEntry
 
 namespace favicon {

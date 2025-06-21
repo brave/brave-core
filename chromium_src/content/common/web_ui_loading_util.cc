@@ -26,5 +26,5 @@ network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
 #define OnReceiveResponse(headers, ...) \
   OnReceiveResponse(UseContentLengthFromHeaders(headers), __VA_ARGS__)
 
-#include "src/content/common/web_ui_loading_util.cc"
+#include <content/common/web_ui_loading_util.cc>
 #undef OnReceiveResponse

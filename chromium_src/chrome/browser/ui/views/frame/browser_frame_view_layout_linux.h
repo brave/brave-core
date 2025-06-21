@@ -14,7 +14,7 @@
                           ButtonAlignment align) override;                     \
   gfx::Insets GetInputInsets
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h>  // IWYU pragma: export
 
 #undef GetInputInsets
 

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/ios/web/webui/web_ui_ios_data_source_impl.mm"
+#include <ios/web/webui/web_ui_ios_data_source_impl.mm>
 
 namespace web {
 

@@ -14,7 +14,7 @@
   void EnsureInstalled(const std::string& id, Callback callback) override; \
   void OnDemandUpdate
 
-#include "src/components/component_updater/component_updater_service_internal.h"  // IWYU pragma: export
+#include <components/component_updater/component_updater_service_internal.h>  // IWYU pragma: export
 
 #undef OnDemandUpdate
 

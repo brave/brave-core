@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc"
-
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
@@ -14,6 +12,8 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "ui/views/window/caption_button_layout_constants.h"
 #include "ui/views/window/frame_caption_button.h"
+
+#include <chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc>
 
 void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     views::FrameButton button_id,

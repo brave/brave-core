@@ -14,7 +14,7 @@
   static base::flat_map<int, int>& GetPrintPreviewUIRequestIdMap();     \
   void ClearPreviewUIId
 
-#include "src/chrome/browser/ui/webui/print_preview/print_preview_ui.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/print_preview/print_preview_ui.h>  // IWYU pragma: export
 
 #undef ClearPreviewUIId
 

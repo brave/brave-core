@@ -12,6 +12,6 @@
     position = widget_delegate->get_desired_position();                      \
   }
 
-#include "src/components/constrained_window/constrained_window_views.cc"
+#include <components/constrained_window/constrained_window_views.cc>
 
 #undef GetDialogPosition

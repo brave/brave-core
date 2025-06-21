@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_HATS_HATS_SERVICE_DESKTOP_H_
 
 #define HatsServiceDesktop HatsServiceDesktop_ChromiumImpl
-#include "src/chrome/browser/ui/hats/hats_service_desktop.h"  // IWYU pragma: export
+#include <chrome/browser/ui/hats/hats_service_desktop.h>  // IWYU pragma: export
 #undef HatsServiceDesktop
 
 class HatsServiceDesktop : public HatsServiceDesktop_ChromiumImpl {

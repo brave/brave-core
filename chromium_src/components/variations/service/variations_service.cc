@@ -10,6 +10,6 @@
                                 GetHeaderValue(headers.get(), "X-Country"), \
                                 __VA_ARGS__)
 
-#include "src/components/variations/service/variations_service.cc"
+#include <components/variations/service/variations_service.cc>
 
 #undef UpdateSeedDateAndLogDayChange

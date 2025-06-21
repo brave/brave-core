@@ -26,5 +26,5 @@
   case PermissionType::BRAVE_CARDANO:                   \
   case PermissionType::NUM
 
-#include "src/content/browser/permissions/permission_controller_impl.cc"
+#include <content/browser/permissions/permission_controller_impl.cc>
 #undef NUM

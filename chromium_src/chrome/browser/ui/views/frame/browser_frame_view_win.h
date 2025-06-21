@@ -12,7 +12,7 @@
 #define ShouldShowWindowTitle virtual ShouldShowWindowTitle
 #define LayoutCaptionButtons virtual LayoutCaptionButtons
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_win.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_frame_view_win.h>  // IWYU pragma: export
 
 #undef LayoutCaptionButtons
 #undef ShouldShowWindowTitle

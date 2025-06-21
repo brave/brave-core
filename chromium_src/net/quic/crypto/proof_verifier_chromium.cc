@@ -8,6 +8,6 @@
 #define ShouldSSLErrorsBeFatal(host) \
   ShouldSSLErrorsBeFatal(proof_verifier_->network_anonymization_key_, host)
 
-#include "src/net/quic/crypto/proof_verifier_chromium.cc"
+#include <net/quic/crypto/proof_verifier_chromium.cc>
 
 #undef ShouldSSLErrorsBeFatal

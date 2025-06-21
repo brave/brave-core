@@ -6,7 +6,7 @@
 #include "chrome/browser/permissions/chrome_permissions_client.h"
 
 #define MaybeCreateMessageUI MaybeCreateMessageUI_ChromiumImpl
-#include "src/chrome/browser/permissions/chrome_permissions_client.cc"
+#include <chrome/browser/permissions/chrome_permissions_client.cc>
 #undef MaybeCreateMessageUI
 
 #include <vector>

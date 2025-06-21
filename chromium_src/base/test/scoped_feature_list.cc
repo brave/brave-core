@@ -5,7 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 
-#include "src/base/test/scoped_feature_list.cc"
+#include <base/test/scoped_feature_list.cc>
 
 namespace base::test {
 

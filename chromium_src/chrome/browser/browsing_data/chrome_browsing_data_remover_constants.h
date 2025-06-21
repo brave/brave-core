@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_CONSTANTS_H_
 
-#include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"  // IWYU pragma: export
+#include <chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h>  // IWYU pragma: export
 
 namespace chrome_browsing_data_remover {
 constexpr DataType GetBraveDataTypeValue(const int index) {

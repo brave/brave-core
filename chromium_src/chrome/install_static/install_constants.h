@@ -18,7 +18,7 @@
 // clang-format on
 #endif  // defined(OFFICIAL_BUILD)
 
-#include "src/chrome/install_static/install_constants.h"  // IWYU pragma: export
+#include <chrome/install_static/install_constants.h>  // IWYU pragma: export
 
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/brave_restore_google_update_integration.h"

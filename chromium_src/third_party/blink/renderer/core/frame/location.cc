@@ -6,7 +6,7 @@
 #include "third_party/blink/renderer/core/frame/location.h"
 
 #define ancestorOrigins ancestorOrigins_ChromiumImpl
-#include "src/third_party/blink/renderer/core/frame/location.cc"
+#include <third_party/blink/renderer/core/frame/location.cc>
 #undef ancestorOrigins
 
 namespace blink {

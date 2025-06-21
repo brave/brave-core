@@ -9,6 +9,6 @@
   if (true)                                                  \
     return;
 
-#include "src/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc"
+#include <chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc>
 
 #undef BRAVE_SEND_TAB_TO_SELFDEVICE_PICKER_BUBBLE_VIEW_INIT

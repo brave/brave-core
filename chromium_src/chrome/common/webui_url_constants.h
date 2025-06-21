@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_COMMON_WEBUI_URL_CONSTANTS_H_
 
 #define kPerformanceSubPage kPerformanceSubPage_UnUsed
-#include "src/chrome/common/webui_url_constants.h"  // IWYU pragma: export
+#include <chrome/common/webui_url_constants.h>  // IWYU pragma: export
 #undef kPerformanceSubPage
 
 namespace chrome {
