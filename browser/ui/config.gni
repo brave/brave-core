@@ -13,6 +13,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_education",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_news_internals",
+    "//brave/browser/ui/webui/side_panel/customize_chrome",
   ]
 }
 if (is_android) {
