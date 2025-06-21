@@ -156,25 +156,36 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
 
 }  // namespace
 
-void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
-                                PrefService* local_state) {
+P3A_FUNC RecordShieldsToggled(PrefService* local_state) {
+  return MaybeRecordShieldsUsageP3A(kShutOffShields, local_state);
+}
+
+P3A_FUNC RecordShieldsSettingChanged(PrefService* local_state) {
+  return MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state);
+}
+
+P3A_FUNC MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
+                                    PrefService* local_state) {
   p3a::RecordValueIfGreater<ShieldsIconUsage>(usage, kUsageStatusHistogramName,
                                               kUsagePrefName, local_state);
+  return {};
 }
 
-void RecordShieldsAdsSetting(ControlType setting) {
+P3A_FUNC RecordShieldsAdsSetting(ControlType setting) {
   RecordShieldsLevelSetting(kAdsSettingHistogramName, setting);
+  return {};
 }
 
-void RecordShieldsFingerprintSetting(ControlType setting) {
+P3A_FUNC RecordShieldsFingerprintSetting(ControlType setting) {
   RecordShieldsLevelSetting(kFingerprintSettingHistogramName, setting);
+  return {};
 }
 
-void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
-                                      bool is_fingerprint,
-                                      ControlType global_setting) {
+P3A_FUNC RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
+                                          bool is_fingerprint,
+                                          ControlType global_setting) {
   if (profile_prefs == nullptr) {
-    return;
+    return {};
   }
   const char* above_hg_name = is_fingerprint
                                   ? kDomainFPSettingsAboveHistogramName
@@ -202,15 +213,16 @@ void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
     p3a_utils::RecordToHistogramBucket(below_hg_name, kDomainCountBuckets,
                                        below_total);
   }
+  return {};
 }
 
-void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
-                                                bool is_fingerprint,
-                                                ControlType global_setting,
-                                                ControlType* prev_setting,
-                                                ControlType new_setting) {
+P3A_FUNC RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
+                                                    bool is_fingerprint,
+                                                    ControlType global_setting,
+                                                    ControlType* prev_setting,
+                                                    ControlType new_setting) {
   if (profile_prefs == nullptr) {
-    return;
+    return {};
   }
   if (prev_setting != nullptr) {
     UpdateDomainSettingCount(profile_prefs, is_fingerprint, *prev_setting, -1);
@@ -223,11 +235,11 @@ void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
   VLOG(1) << "BraveShieldsP3A: Increasing new setting count: new_setting="
           << new_setting << " is_fp=" << is_fingerprint << " count="
           << GetDomainSettingCount(profile_prefs, is_fingerprint, new_setting);
-  RecordShieldsDomainSettingCounts(profile_prefs, is_fingerprint,
-                                   global_setting);
+  return RecordShieldsDomainSettingCounts(profile_prefs, is_fingerprint,
+                                          global_setting);
 }
 
-void RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
+P3A_FUNC RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
   ContentSetting global_setting = map->GetContentSetting(
       {}, {}, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
   auto per_site_settings = map->GetSettingsForOneType(
@@ -249,20 +261,21 @@ void RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
     answer = 3;
   }
   UMA_HISTOGRAM_EXACT_LINEAR(kForgetFirstPartyHistogramName, answer, 4);
+  return {};
 }
 
-void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
-                                       HostContentSettingsMap* map) {
+P3A_FUNC MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
+                                           HostContentSettingsMap* map) {
   if (profile_prefs->GetInteger(kFirstReportedRevisionPrefName) >=
       kCurrentReportRevision) {
-    return;
+    return {};
   }
   VLOG(1) << "BraveShieldsP3A: Starting initial report for profile";
 
   ControlType global_ads_setting = GetCosmeticFilteringControlType(map, GURL());
   ControlType global_fp_setting = GetFingerprintingControlType(map, GURL());
-  RecordShieldsAdsSetting(global_ads_setting);
-  RecordShieldsFingerprintSetting(global_fp_setting);
+  P3A(map) << RecordShieldsAdsSetting(global_ads_setting)
+           << RecordShieldsFingerprintSetting(global_fp_setting);
 
   // Since internal setting counts don't exist, we will
   // count ads & fp settings for all domains by processing the content settings.
@@ -297,12 +310,15 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
   UpdateDomainSettingCount(profile_prefs, false, ControlType::BLOCK,
                            ads_counts.aggressive);
 
-  RecordShieldsDomainSettingCounts(profile_prefs, false, global_ads_setting);
-  RecordShieldsDomainSettingCounts(profile_prefs, true, global_fp_setting);
-  RecordForgetFirstPartySetting(map);
+  P3A(map) << RecordShieldsDomainSettingCounts(profile_prefs, false,
+                                               global_ads_setting)
+           << RecordShieldsDomainSettingCounts(profile_prefs, true,
+                                               global_fp_setting)
+           << RecordForgetFirstPartySetting(map);
 
   profile_prefs->SetInteger(kFirstReportedRevisionPrefName,
                             kCurrentReportRevision);
+  return {};
 }
 
 void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state) {
@@ -321,11 +337,11 @@ void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* registry) {
 
 void RegisterShieldsP3AProfilePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 03/2024
-  registry->RegisterBooleanPref(kFirstReportedPrefName, false);
+  registry->RegisterBooleanPref(kDeprecatedFirstReportedPrefName, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
-  profile_prefs->ClearPref(kFirstReportedPrefName);
+  profile_prefs->ClearPref(kDeprecatedFirstReportedPrefName);
 }
 
 }  // namespace brave_shields
