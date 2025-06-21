@@ -18,6 +18,7 @@ source_set("browser_tests") {
     "//brave/components/psst/buildflags",
     "//brave/components/psst/common",
     "//chrome/test:test_support",
+    "//components/component_updater:test_support",
     "//content/test:test_support",
     "//net:test_support",
     "//url",

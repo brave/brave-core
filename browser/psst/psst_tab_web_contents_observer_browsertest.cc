@@ -6,10 +6,14 @@
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include "base/base64url.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
+#include "base/run_loop.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/components/constants/brave_paths.h"
+#include "brave/browser/ui/tabs/public/tab_features.h"
+#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
@@ -18,6 +22,8 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "components/component_updater/component_updater_paths.h"
+#include "components/component_updater/mock_component_updater_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -45,8 +51,17 @@ GURL GetTestUrl(const GURL& destination_url, const GURL& navigation_url) {
 
 }  // namespace
 
+class MockComponentUpdateService
+    : public component_updater::MockComponentUpdateService {
+ public:
+  MockComponentUpdateService() = default;
+  ~MockComponentUpdateService() override = default;
+};
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  public:
+  using LoadRulesTestCallback = base::MockCallback<base::OnceCallback<
+      void(const std::string& data, const std::vector<PsstRule>& rules)>>;
+
   PsstTabWebContentsObserverBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
@@ -57,6 +72,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
+    base::PathService::Override(
+        component_updater::DIR_COMPONENT_PREINSTALLED,
+        test_data_dir.AppendASCII("brave/components/test/data/psst"));
+
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -64,10 +83,25 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
-    if (base::FeatureList::IsEnabled(features::kEnablePsst)) {
-      PsstRuleRegistry::GetInstance()->LoadRules(
-          test_data_dir.AppendASCII("brave/components/test/data/psst"));
-    }
+    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
+        .Times(1)
+        .WillOnce(testing::Return(true));
+
+    LoadRulesTestCallback mock_callback;
+    base::RunLoop run_loop;
+    PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTesting(
+        mock_callback.Get());
+    EXPECT_CALL(mock_callback, Run)
+        .Times(1)
+        .WillOnce(
+            [&](const std::string& data, const std::vector<PsstRule>& rules) {
+              EXPECT_FALSE(rules.empty());
+              EXPECT_FALSE(data.empty());
+              run_loop.Quit();
+            });
+
+    RegisterPsstComponent(&component_update_service_);
+    run_loop.Run();
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
@@ -81,6 +115,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  protected:
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
+  MockComponentUpdateService component_update_service_;
 };
 
 // TESTS
@@ -172,7 +207,13 @@ class PsstTabWebContentsObserverBrowserTestDisabled
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTestDisabled,
                        PsstTabWebContentsObserverNotCreated) {
-  ASSERT_TRUE(false);
+  auto* active_tab = browser()->GetActiveTabInterface();
+  ASSERT_TRUE(active_tab);
+  auto* registry = active_tab->GetTabFeatures();
+  ASSERT_TRUE(registry);
+
+  // Verify that the PSST tab web contents observer is not created
+  EXPECT_FALSE(registry->psst_web_contents_observer());
 }
 
 }  // namespace psst
