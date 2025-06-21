@@ -22,12 +22,14 @@
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -68,6 +70,8 @@ using ResponseConversionCallback =
 
 namespace ai_chat {
 
+using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
+
 namespace {
 
 std::pair<std::vector<ConversationAPIClient::ConversationEvent>, std::string>
@@ -77,26 +81,26 @@ GetMockEventsAndExpectedEventsBody() {
 
   std::vector<ConversationAPIClient::ConversationEvent> events;
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
+      ConversationEventRole::User, ConversationAPIClient::PageText,
       std::vector<std::string>{"This is a page about The Mandalorian."});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::PageExcerpt,
                       std::vector<std::string>{"The Mandalorian"});
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
+      ConversationEventRole::User, ConversationAPIClient::ChatMessage,
       std::vector<std::string>{"Est-ce lié à une série plus large?"});
   events.emplace_back(
-      mojom::CharacterType::HUMAN,
+      ConversationEventRole::User,
       ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
       std::vector<std::string>{"GetSuggestedTopicsForFocusTabs"});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::DedupeTopics,
                       std::vector<std::string>{"DedupeTopics"});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::GetFocusTabsForTopic,
                       std::vector<std::string>{"GetFocusTabsForTopics"}, "C++");
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::UploadImage,
+      ConversationEventRole::User, ConversationAPIClient::UploadImage,
       std::vector<std::string>{"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                                "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
@@ -211,15 +215,12 @@ class ConversationAPIUnitTest : public testing::Test {
 
   void TearDown() override {}
 
-  std::string GetEventsJson(std::string_view body_json) {
+  base::Value::List GetEvents(std::string_view body_json) {
     auto dict = base::JSONReader::ReadDict(body_json);
     EXPECT_TRUE(dict.has_value());
     base::Value::List* events = dict->FindList("events");
     EXPECT_TRUE(events);
-    std::string events_json;
-    base::JSONWriter::WriteWithOptions(
-        *events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
-    return events_json;
+    return std::move(*events);
   }
 
   // Returns a pair of system_language and selected_langauge
@@ -245,15 +246,6 @@ class ConversationAPIUnitTest : public testing::Test {
     } else {
       return {*system_language, std::nullopt};
     }
-  }
-
-  std::string FormatComparableEventsJson(std::string_view formatted_json) {
-    auto events = base::JSONReader::Read(formatted_json);
-    EXPECT_TRUE(events.has_value()) << "Verify that the string is valid JSON!";
-    std::string events_json;
-    base::JSONWriter::WriteWithOptions(
-        events.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
-    return events_json;
   }
 
  protected:
@@ -310,8 +302,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify input body contains input events in expected json format
-        EXPECT_EQ(GetEventsJson(body),
-                  FormatComparableEventsJson(expected_events_body));
+        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
@@ -523,8 +514,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify body contains events in expected json format
-        EXPECT_EQ(GetEventsJson(body),
-                  FormatComparableEventsJson(expected_events_body));
+        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
@@ -601,6 +591,117 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   testing::Mock::VerifyAndClearExpectations(client_.get());
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
+}
+
+TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
+  // Tests that we interpret tool use reponses. For more variants
+  // see tests for `ToolUseEventFromToolCallsResponse`.
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected.
+  // Tool use is only supported for streaming requests since the completion
+  // callback only supports a single event.
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "completion");
+          result.GetDict().Set("model", "model-1");
+          result.GetDict().Set("completion", "This is a test completion");
+          result.GetDict().Set("tool_calls", base::test::ParseJsonList(R"([
+              {
+                "id": "call_123",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"New York\"}"
+                }
+              },
+              {
+                "id": "call_456",
+                "type": "function",
+                "function": {
+                  "name": "search_web",
+                  "arguments": "{\"query\":\"Hello, world!\"}"
+                }
+              }
+            ])"));
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "This is a test completion");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_tool_use_event());
+        ExpectToolUseEventEquals(
+            FROM_HERE, result.event->get_tool_use_event(),
+            mojom::ToolUseEvent::New("get_weather", "call_123",
+                                     "{\"location\":\"New York\"}",
+                                     std::nullopt));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_tool_use_event());
+        ExpectToolUseEventEquals(
+            FROM_HERE, result.event->get_tool_use_event(),
+            mojom::ToolUseEvent::New("search_web", "call_456",
+                                     "{\"query\":\"Hello, world!\"}",
+                                     std::nullopt));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](const EngineConsumer::GenerationResult& result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+        EXPECT_FALSE(result->model_key.has_value());
+      });
+
+  // The payload of the request is not important for this test
+  client_->PerformRequest(
+      std::move(events), {}, "",
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
 TEST_F(ConversationAPIUnitTest,
