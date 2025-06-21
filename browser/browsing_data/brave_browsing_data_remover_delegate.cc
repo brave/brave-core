@@ -38,6 +38,11 @@ class ContentSettingsDefaultsKeeper {
     const auto shields_content_types =
         content_settings::GetShieldsContentSettingsTypes();
     for (const auto content_type : shields_content_types) {
+      if (content_type == ContentSettingsType::BRAVE_COOKIES) {
+        // BRAVE_COOKIES don't have own default values. They relies on the
+        // default COOKIES settings which are stored in the profile prefs.
+        continue;
+      }
       ContentSettingsForOneType settings =
           map->GetSettingsForOneType(content_type);
       for (const auto& setting : settings) {
