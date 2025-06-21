@@ -8,20 +8,12 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -32,7 +24,6 @@
 #include "ui/color/color_provider_source.h"
 #include "ui/native_theme/test_native_theme.h"
 
-using brave_shields::ControlType;
 using brave_shields::features::kBraveDarkModeBlock;
 
 constexpr char kEmbeddedTestServerDirectory[] = "dark_mode_block";
@@ -42,8 +33,7 @@ constexpr char kMatchDarkModeFormatString[] =
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
   BraveDarkModeFingerprintProtectionTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveShowStrictFingerprintingMode);
+    feature_list_.InitAndEnableFeature(kBraveDarkModeBlock);
   }
 
   class BraveContentBrowserClientWithWebTheme
@@ -115,25 +105,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
 
   const GURL& dark_mode_url() { return dark_mode_url_; }
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
-  void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
-  }
-
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
-  }
-
-  void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
-  }
-
   void SetDarkMode(bool dark_mode) {
     test_theme_.SetDarkMode(dark_mode);
     browser()
@@ -183,71 +154,24 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {
-  SetDarkMode(true);
-
-  // On fingerprinting off, should return dark mode
-  AllowFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(IsReportingDarkMode());
-
-  // On fingerprinting default, should return dark mode
-  SetFingerprintingDefault();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(IsReportingDarkMode());
-
-  // On fingerprinting block, should return light
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_FALSE(IsReportingDarkMode());
-}
-
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
-                       RegressionCheck) {
+                       PrefersColorSchemeBehavior) {
   SetDarkMode(false);
-
-  // On all modes, should return light
-  // Fingerprinting off
-  AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_FALSE(IsReportingDarkMode());
-
-  // Fingerprinting default
-  SetFingerprintingDefault();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_FALSE(IsReportingDarkMode());
-
-  // Fingerprinting strict/block
-  BlockFingerprinting();
+  
+  SetDarkMode(true);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_FALSE(IsReportingDarkMode());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
-                       SettingsPagesCheck) {
-  // On settings page should get dark mode with fingerprinting strict
+                       SettingsPagesExempt) {
+  // On settings page should get dark mode (exempt from blocking)
   SetDarkMode(true);
-
-  BlockFingerprinting();
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("brave://settings")));
   ASSERT_TRUE(IsReportingDarkMode());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
-                       PrefersColorSchemeWithDefaultFingerprinting) {
-  SetFingerprintingDefault();
-
-  SetDarkMode(false);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  std::u16string tab_title;
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"light", tab_title);
-
-  SetDarkMode(true);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(ui_test_utils::GetCurrentTabTitle(browser(), &tab_title));
-  EXPECT_EQ(u"dark", tab_title);
 }
 
 class BraveDarkModeFingerprintProtectionFlagDisabledTest
@@ -265,19 +189,10 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionFlagDisabledTest,
                        WithFeatureDisabled) {
   SetDarkMode(true);
 
-  // On fingerprinting off, should return dark mode
-  AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_TRUE(IsReportingDarkMode());
 
-  // On fingerprinting default, should return dark mode
-  SetFingerprintingDefault();
+  SetDarkMode(false);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(IsReportingDarkMode());
-
-  // On fingerprinting block, should still return dark due to the
-  // BraveDarkModeBlock feature being disabled for this test.
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(IsReportingDarkMode());
+  ASSERT_FALSE(IsReportingDarkMode());
 }

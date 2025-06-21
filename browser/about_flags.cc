@@ -666,9 +666,8 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
       },                                                                       \
       {                                                                        \
           "brave-dark-mode-block",                                             \
-          "Enable dark mode blocking fingerprinting protection",               \
-          "Always report light mode when fingerprinting protections set to "   \
-          "Strict",                                                            \
+          "Enable dark mode blocking",                                         \
+          "Always report light mode to websites regardless of system theme",   \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveDarkModeBlock),    \
       },                                                                       \

@@ -1229,28 +1229,10 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
 }
 
-bool PreventDarkModeFingerprinting(WebContents* web_contents,
-                                   content::SiteInstance& main_frame_site,
-                                   WebPreferences* prefs) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!host_content_settings_map) {
-    return false;
-  }
+bool DarkModeBlocking(content::SiteInstance& main_frame_site, WebPreferences* prefs) {
   const GURL url = main_frame_site.GetSiteURL();
-  const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
-  // https://github.com/brave/brave-browser/issues/15265
-  // Always use color scheme Light if fingerprinting mode strict
-  if (base::FeatureList::IsEnabled(
+  if (url.SchemeIsHTTPOrHTTPS() && base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK &&
       prefs->preferred_color_scheme !=
           blink::mojom::PreferredColorScheme::kLight) {
     prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
@@ -1289,8 +1271,7 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   bool changed =
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
-  return PreventDarkModeFingerprinting(web_contents, main_frame_site, prefs) ||
-         changed;
+  return DarkModeBlocking(main_frame_site, prefs) || changed;
 }
 
 void BraveContentBrowserClient::OverrideWebPreferences(
@@ -1299,7 +1280,7 @@ void BraveContentBrowserClient::OverrideWebPreferences(
     WebPreferences* web_prefs) {
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
-  PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
+  DarkModeBlocking(main_frame_site, web_prefs);
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;

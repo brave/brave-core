@@ -125,10 +125,12 @@ BASE_FEATURE(kBraveShowStrictFingerprintingMode,
 BASE_FEATURE(kBraveLocalhostAccessPermission,
              "BraveLocalhostAccessPermission",
              base::FEATURE_DISABLED_BY_DEFAULT);
-// When enabled, Brave will always report Light in Fingerprinting: Strict mode
+// When enabled, Brave will always report Light
+// This used to be tied to Fingerprinting: Strict mode,
+// but now is independent (since Strict mode is deprecated).
 BASE_FEATURE(kBraveDarkModeBlock,
              "BraveDarkModeBlock",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // load the cosmetic filter rules using sync ipc
 BASE_FEATURE(kCosmeticFilteringSyncLoad,
              "CosmeticFilterSyncLoad",
