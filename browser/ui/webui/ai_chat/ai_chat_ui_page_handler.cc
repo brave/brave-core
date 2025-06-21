@@ -5,7 +5,9 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
+#include <algorithm>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -30,6 +32,7 @@
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -37,6 +40,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -205,6 +209,15 @@ void AIChatUIPageHandler::UploadImage(bool use_media_capture,
       std::move(callback));
 }
 
+void AIChatUIPageHandler::GetPluralString(const std::string& key,
+                                          int32_t count,
+                                          GetPluralStringCallback callback) {
+  auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                &webui::LocalizedString::name);
+  CHECK(iter != webui::kAiChatStrings.end());
+  std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
   content::WebContents* contents_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
@@ -308,7 +321,11 @@ void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
-  chat_ui_->OnNewDefaultConversation();
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::OnFilesSelected() {
@@ -327,6 +344,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
