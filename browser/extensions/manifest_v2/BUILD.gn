@@ -21,8 +21,23 @@ source_set("manifest_v2") {
     "//components/update_client",
     "//content/public/browser",
     "//extensions/browser",
-    "//extensions/common:common",
+    "//extensions/common",
     "//net/traffic_annotation",
     "//services/network/public/cpp",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_extensions_manifest_v2_unittest.cc" ]
+
+  deps = [
+    ":manifest_v2",
+    "//chrome/browser/extensions",
+    "//chrome/test:test_support",
+    "//extensions:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }
