@@ -1,6 +1,7 @@
 
 include_rules = [
   "+brave/components/constants",
+  "+components/content_settings",
   "+components/prefs",
   "+components/variations",
   "+content/public/browser",
