@@ -89,7 +89,7 @@ count = 0
 To apply this plaster file, just run `plaster.py`:
 
 ```sh
-tools/cr/plaster.py
+tools/cr/plaster.py apply
 ```
 
 Running `plaster.py` will cause the substitutions to be applied in

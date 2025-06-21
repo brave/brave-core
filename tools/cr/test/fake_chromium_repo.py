@@ -29,7 +29,10 @@ class FakeChromiumRepo:
             tempfile.TemporaryDirectory())
         self.base_path: Path = Path(self.temp_dir.name) / 'workspace'
         self._init_repo(self.chromium)
-        self._init_repo(self.brave)  # Create the brave repository
+
+        # Set a brave repository under src/.
+        self._init_repo(self.brave)
+        self.brave_patches.mkdir(parents=True, exist_ok=True)
 
     @property
     def chromium(self) -> Path:

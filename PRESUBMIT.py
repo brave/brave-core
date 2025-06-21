@@ -270,6 +270,37 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     return []
 
 
+def CheckPlasterFiles(input_api, output_api):
+    """Checks that all Plaster files are up-to-date with their patches.
+
+    This check ensures that all Plaster files in the repository are
+    synchronized with their corresponding patches in the Chromium repository.
+    This helps detecting unintentiional manual patching for sources that already
+    have a Plaster file.
+    """
+
+    affected_files = []
+    for f in input_api.AffectedFiles(include_deletes=True):
+        local_path = f.LocalPath()
+        if (local_path.startswith("patches/") and local_path.endswith(".patch")
+            ) or (local_path.startswith("rewrite/")
+                  and local_path.endswith(".toml")):
+            affected_files.append(local_path)
+
+    if not affected_files:
+        return []
+
+    cmd = [input_api.python3_executable, 'tools/cr/plaster.py', 'check'
+           ] + affected_files
+    kwargs = {'cwd': input_api.PresubmitLocalPath()}
+    return input_api.RunTests([
+        input_api.Command(name='plaster_check',
+                          cmd=cmd,
+                          kwargs=kwargs,
+                          message=output_api.PresubmitError),
+    ])
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
