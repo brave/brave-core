@@ -83,9 +83,5 @@ leo-icon {
 }
 
 :host ::slotted([slot='footer']) {
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
   border-top: 1px solid var(--leo-color-divider-subtle);
-  margin: 0;
-  padding: 16px 20px;
 }
