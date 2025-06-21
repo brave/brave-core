@@ -31,7 +31,7 @@ tag update.
 | --- | --- |
 | `Upgrade` | A change with the upgrading of the chromium tag in `package.json` |
 | `Conflict-resolved patches` | Patches that may have failed to apply, and required manual conflict resolution, once `npm run init` was run on the new tag |
-| `Update patches` | Regerated versions of all patches that applied cleanly. |
+| `Update patches` | Regenerated versions of all patches that applied cleanly. |
 | `Updated strings` | Translation strings may have had updates once regenerated under the new Chromium tag. |
 
 There may be many other changes necessary to get Brave to build with the tag
@@ -79,8 +79,8 @@ $ npm run init
 ```
 
 At this point, if no failure occurs, there's nothing else to be done, and one
-shoudl carry on to the next step. However, when failure occurs this means that
-that we are expected to manually fix the filed patches.
+should carry on to the next step. However, when failure occurs this means that
+that we are expected to manually fix the failed patches.
 
 A failed run usually produces a failure report listing the files that failed to
 apply.
@@ -177,8 +177,8 @@ $ npm run update_patches
 ```
 
 With all patches that had problems out of the way, and committed as part of
-`Conflict-resolved patches`, or in some other change, it is time to commmit all
-remaining changed paths as part of `Update patche`.
+`Conflict-resolved patches`, or in some other change, it is time to commit all
+remaining changed paths as part of `Update patches`.
 ```shell
 git add -u *.patch
 $ git commit -m " Update patches from Chromium 119.7049.17 to Chromium 120.0.7050.40."
@@ -189,7 +189,7 @@ $ npm run init
 
 ### Regenerating l18n strings
 
-This last step consists of regenarating all string files that are replicated in
+This last step consists of regenerating all string files that are replicated in
 `brave-core` from chromium.
 
 ```shell
