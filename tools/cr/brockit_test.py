@@ -210,27 +210,27 @@ class BrockitTest(unittest.TestCase):
         staged_files = self.fake_chromium_src._run_git_command(
             ['diff', '--cached', '--name-only'], self.fake_chromium_src.brave)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium, test_file_chromium)),
-            staged_files)
+                    self.fake_chromium_src.chromium,
+                    test_file_chromium)).as_posix(), staged_files)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium / 'v8', test_file_v8)),
-            staged_files)
+                    self.fake_chromium_src.chromium / 'v8',
+                    test_file_v8)).as_posix(), staged_files)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
                     self.fake_chromium_src.chromium / 'third_party/test1',
-                    test_file_third_party)), staged_files)
+                    test_file_third_party)).as_posix(), staged_files)
 
         # Verify that unrelated patches are not staged
         self.assertNotIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium, unrelated_file)),
-            staged_files)
+                    self.fake_chromium_src.chromium,
+                    unrelated_file)).as_posix(), staged_files)
 
     def test_continuation_file_save_and_load(self):
         """Test saving and loading of ContinuationFile."""

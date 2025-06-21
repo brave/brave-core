@@ -119,7 +119,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(applied.patch.path, patchfile.path)
         self.assertFalse(patchfile.source_from_git)
         self.assertTrue(applied.patch.source_from_git)
-        self.assertEqual(applied.patch.source_from_git, str(test_idl))
+        self.assertEqual(Path(applied.patch.source_from_git), test_idl)
 
     def test_apply_clean(self):
         test_idl = Path('chrome/common/extensions/api/developer_private.idl')
@@ -287,29 +287,36 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(applied.patch.path, patchfile.path)
         self.assertFalse(patchfile.source_from_git)
         self.assertTrue(applied.patch.source_from_git)
-        self.assertEqual(applied.patch.source_from_git, str(test_idl))
+        self.assertEqual(Path(applied.patch.source_from_git), test_idl)
 
     def test_source_from_brave(self):
         """Tests the source_from_brave method of Patchfile."""
         self.assertEqual(
-            Patchfile(path=PurePath('patches/v8/build-android-gyp-dex.py.patch'
-                                    )).source_from_brave(),
-            '../v8/build/android/gyp/dex.py')
+            Path(
+                Patchfile(
+                    path=PurePath('patches/v8/build-android-gyp-dex.py.patch'
+                                  )).source_from_brave()),
+            Path('../v8/build/android/gyp/dex.py'))
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/build-android-gyp-dex.py.patch')).source_from_brave(),
-            '../build/android/gyp/dex.py')
+            Path(
+                Patchfile(
+                    path=PurePath('patches/build-android-gyp-dex.py.patch')).
+                source_from_brave()), Path('../build/android/gyp/dex.py'))
 
     def test_path_from_repo(self):
         """Tests the path_from_repo method of Patchfile."""
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/v8/build-android-gyp-dex.py.patch')).path_from_repo(),
-            '../brave/patches/v8/build-android-gyp-dex.py.patch')
+            Path(
+                Patchfile(
+                    path=PurePath('patches/v8/build-android-gyp-dex.py.patch'
+                                  )).path_from_repo()),
+            Path('../brave/patches/v8/build-android-gyp-dex.py.patch'))
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/build-android-gyp-dex.py.patch')).path_from_repo(),
-            'brave/patches/build-android-gyp-dex.py.patch')
+            Path(
+                Patchfile(
+                    path=PurePath('patches/build-android-gyp-dex.py.patch')).
+                path_from_repo()),
+            Path('brave/patches/build-android-gyp-dex.py.patch'))
 
     def test_fetch_source_from_git(self):
         """Test fetch_source_from_git with renamed patch file."""
@@ -349,8 +356,7 @@ class PatchfileTest(unittest.TestCase):
 
         # Verify the source file path matches the original file
         self.assertEqual(
-            str(patchfile.fetch_source_from_git().source_from_git),
-            str(test_idl))
+            Path(patchfile.fetch_source_from_git().source_from_git), test_idl)
 
     def test_get_last_commit_for_source(self):
         """Test get_last_commit_for_source method."""
@@ -523,7 +529,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(rename_status.status, 'R')  # 'R' indicates rename
         self.assertIn('Rename developer_private.idl to renamed_private.idl',
                       rename_status.commit_details)
-        self.assertEqual(rename_status.renamed_to, str(renamed_file))
+        self.assertEqual(Path(rename_status.renamed_to), renamed_file)
 
 
 if __name__ == "__main__":

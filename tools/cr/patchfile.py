@@ -181,7 +181,7 @@ class Patchfile:
                         replace(self, source_from_git=reason.split(': ',
                                                                    2)[0]))
                 if ('No such file or directory' in reason
-                        and self.path in reason):
+                        and self.path.as_posix() in reason):
                     # This should never occur as it indicates that the patch
                     # file itself is missing, which is sign something is wrong
                     # with path resolution.
