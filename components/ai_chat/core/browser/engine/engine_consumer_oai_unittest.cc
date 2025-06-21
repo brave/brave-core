@@ -418,7 +418,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      /* is_video */ false, "", history, "", base::DoNothing(),
+      /* is_video */ false, "", history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -499,7 +500,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   }
 
   engine_->GenerateAssistantResponse(
-      /* is_video */ false, "", history, "", base::DoNothing(),
+      /* is_video */ false, "", history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_EQ(result.value(),
@@ -546,7 +548,8 @@ TEST_F(EngineConsumerOAIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", GetHistoryWithModifiedReply(), "", base::DoNothing(),
+      false, "", GetHistoryWithModifiedReply(), "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -561,7 +564,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", base::DoNothing(),
+      false, "This is my page.", history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -581,7 +585,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", base::DoNothing(),
+      false, "This is my page.", history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -671,8 +676,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false,
       std::nullopt /* model_key */));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
-                                     future.GetCallback());
+  engine_->GenerateAssistantResponse(false, "", history, "", {}, std::nullopt,
+                                     base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -716,7 +721,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   engine_->GenerateAssistantResponse(
       /* is_video */ false,
-      /* page_content */ "This is a page.", history, "", base::DoNothing(),
+      /* page_content */ "This is a page.", history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
