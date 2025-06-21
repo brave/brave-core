@@ -18,6 +18,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -51,6 +52,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "base/test/scoped_os_info_override_win.h"
+#include "base/win/windows_version.h"
+#include "brave/components/windows_recall/windows_recall.h"
 #endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
@@ -716,3 +723,89 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
   // Brave Extension background page should be disabled by default.
   EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));
 }
+
+#if BUILDFLAG(IS_WIN)
+
+class WinBraveContentBrowserClientTest
+    : public BraveContentBrowserClientTest,
+      public ::testing::WithParamInterface<
+          base::test::ScopedOSInfoOverride::Type> {
+ public:
+  WinBraveContentBrowserClientTest() = default;
+  ~WinBraveContentBrowserClientTest() override = default;
+
+  bool GetShouldDoLearning(Browser* browser) {
+    return browser->tab_strip_model()
+        ->GetActiveWebContents()
+        ->GetShouldDoLearningForTesting();
+  }
+
+  bool IsWin11() const {
+    return base::win::GetVersion() >= base::win::Version::WIN11;
+  }
+
+ private:
+  base::test::ScopedOSInfoOverride win_version_{GetParam()};
+};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    WinBraveContentBrowserClientTest,
+    ::testing::Values(base::test::ScopedOSInfoOverride::Type::kWin11Home,
+                      base::test::ScopedOSInfoOverride::Type::kWin10Home));
+
+IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
+  EXPECT_EQ(windows_recall::IsWindowsRecallAvailable(), IsWin11());
+
+  auto* local_state = g_browser_process->local_state();
+
+  if (IsWin11()) {
+    EXPECT_TRUE(
+        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
+    EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
+    EXPECT_TRUE(client()->IsWindowsRecallDisabled());
+  } else {
+    EXPECT_FALSE(local_state->FindPreference(
+        windows_recall::prefs::kWindowsRecallDisabled));
+    EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
+    EXPECT_FALSE(client()->IsWindowsRecallDisabled());
+  }
+
+  EXPECT_EQ(GetShouldDoLearning(browser()), !IsWin11());
+
+  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
+  EXPECT_FALSE(GetShouldDoLearning(incognito));
+
+  if (IsWin11()) {
+    local_state->SetBoolean(windows_recall::prefs::kWindowsRecallDisabled,
+                            false);
+    EXPECT_FALSE(
+        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
+
+    // Not changed until restart.
+    EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
+    EXPECT_FALSE(GetShouldDoLearning(browser()));
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
+  if (!IsWin11()) {
+    // Nothing to check, because there is no pref registered.
+    return;
+  }
+
+  auto* local_state = g_browser_process->local_state();
+
+  EXPECT_TRUE(windows_recall::IsWindowsRecallAvailable());
+  EXPECT_FALSE(
+      local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
+  EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
+  EXPECT_FALSE(client()->IsWindowsRecallDisabled());
+  EXPECT_TRUE(GetShouldDoLearning(browser()));
+
+  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
+  // Still blocked in the incgonito.
+  EXPECT_FALSE(GetShouldDoLearning(incognito));
+}
+
+#endif  // BUILDFLAG(IS_WIN)

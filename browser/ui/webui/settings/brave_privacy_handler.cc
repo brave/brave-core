@@ -34,6 +34,10 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
@@ -44,6 +48,15 @@ BravePrivacyHandler::BravePrivacyHandler() {
       p3a::kP3AEnabled,
       base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(IS_WIN)
+  if (windows_recall::IsWindowsRecallAvailable()) {
+    local_state_change_registrar_.Add(
+        windows_recall::prefs::kWindowsRecallDisabled,
+        base::BindRepeating(
+            &BravePrivacyHandler::OnWindowsRecallDisabledChanged,
+            base::Unretained(this)));
+  }
+#endif
 }
 
 BravePrivacyHandler::~BravePrivacyHandler() {
@@ -67,6 +80,20 @@ void BravePrivacyHandler::RegisterMessages() {
       "getStatsUsagePingEnabled",
       base::BindRepeating(&BravePrivacyHandler::GetStatsUsagePingEnabled,
                           base::Unretained(this)));
+#if BUILDFLAG(IS_WIN)
+  if (windows_recall::IsWindowsRecallAvailable()) {
+    web_ui()->RegisterMessageCallback(
+        "isWindowsRecallDisabled",
+        base::BindRepeating(&BravePrivacyHandler::GetLocalStateBooleanEnabled,
+                            base::Unretained(this),
+                            windows_recall::prefs::kWindowsRecallDisabled));
+    web_ui()->RegisterMessageCallback(
+        "setWindowsRecallDisabled",
+        base::BindRepeating(&BravePrivacyHandler::SetLocalStateBooleanEnabled,
+                            base::Unretained(this),
+                            windows_recall::prefs::kWindowsRecallDisabled));
+  }
+#endif
 }
 
 // static
@@ -104,6 +131,17 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
+#if BUILDFLAG(IS_WIN)
+  {
+    data_source->AddBoolean("isWindowsRecallAvailable",
+                            windows_recall::IsWindowsRecallAvailable());
+    data_source->AddBoolean("windowsRecallDisabledAtStartup",
+                            windows_recall::IsWindowsRecallDisabled(
+                                g_browser_process->local_state()));
+  }
+#else
+  data_source->AddBoolean("isWindowsRecallAvailable", false);
+#endif
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(
@@ -166,3 +204,15 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
     FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
   }
 }
+
+#if BUILDFLAG(IS_WIN)
+void BravePrivacyHandler::OnWindowsRecallDisabledChanged() {
+  CHECK(windows_recall::IsWindowsRecallAvailable());
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("windows-recall-disabled-changed",
+                    base::Value(g_browser_process->local_state()->GetBoolean(
+                        windows_recall::prefs::kWindowsRecallDisabled)));
+}
+#endif
