@@ -783,10 +783,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   DISABLED_CnameCloakedRequestsGetBlocked
 #define MAYBE_CnameCloakedRequestsCanBeExcepted \
   DISABLED_CnameCloakedRequestsCanBeExcepted
+#define MAYBE_NoRemoveparamOnCnameUncloakedUrl \
+  DISABLED_NoRemoveparamOnCnameUncloakedUrl
 #else
 #define MAYBE_CnameCloakedRequestsGetBlocked CnameCloakedRequestsGetBlocked
 #define MAYBE_CnameCloakedRequestsCanBeExcepted \
   CnameCloakedRequestsCanBeExcepted
+#define MAYBE_NoRemoveparamOnCnameUncloakedUrl NoRemoveparamOnCnameUncloakedUrl
 #endif
 
 // A test observer that allows blocking waits for the
@@ -1196,6 +1199,51 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 excepted_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(5ULL, inner_resolver->num_resolve());
+}
+
+// `$removeparam` should happen for the original URL, not the CNAME-uncloaked
+// one
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_NoRemoveparamOnCnameUncloakedUrl) {
+  UpdateAdBlockInstanceWithRules(
+      "||frame.com^$subdocument,removeparam=evil\n"
+      "||assets.cdn.net^$subdocument,removeparam=test");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  GURL frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?evil=true&test=true");
+
+  auto inner_resolver = std::make_unique<net::MockHostResolver>();
+
+  const std::set<std::string> kDnsAliases({"assets.cdn.net"});
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "frame.com", "127.0.0.1", kDnsAliases);
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "b.com", "127.0.0.1",
+      /*dns_aliases=*/std::set<std::string>());
+
+  network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
+
+  brave::SetAdblockCnameHostResolverForTesting(&resolver);
+  content::NavigateIframeToURL(contents, "iframe", frame_url);
+
+  ASSERT_EQ(nullptr,
+            content::FrameMatchingPredicateOrNullptr(
+                contents->GetPrimaryPage(),
+                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
+
+  GURL redirected_frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?test=true");
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
+
+  ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
 }
 
 class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
