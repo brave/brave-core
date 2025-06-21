@@ -20,6 +20,7 @@ import {
 export const StyledWrapper = styled.div<{
   yPosition?: number
   right?: number
+  left?: number
   padding?: string
 }>`
   display: flex;
@@ -33,7 +34,24 @@ export const StyledWrapper = styled.div<{
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
   top: ${(p) => (p.yPosition !== undefined ? p.yPosition : 35)}px;
-  right: ${(p) => (p.right !== undefined ? p.right : 0)}px;
+  right: ${(p) => {
+    if (p.left !== undefined) {
+      return 'unset'
+    }
+    if (p.right !== undefined) {
+      return `${p.right}px`
+    }
+    return '0px'
+  }};
+  left: ${(p) => {
+    if (p.right !== undefined) {
+      return 'unset'
+    }
+    if (p.left !== undefined) {
+      return `${p.left}px`
+    }
+    return 'unset'
+  }};
   z-index: 20;
 `
 

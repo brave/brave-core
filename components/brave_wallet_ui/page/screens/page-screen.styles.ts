@@ -5,6 +5,11 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import LeoAlertCenter from '@brave/leo/react/alertCenter'
+
+export const AlertCenter = styled(LeoAlertCenter)`
+  --leo-alert-center-width: 200px;
+`
 
 export const SimplePageWrapper = styled.div`
   display: flex;

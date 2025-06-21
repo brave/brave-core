@@ -355,6 +355,7 @@ leo_icons = [
   "protocol-handler-off.svg",
   "protocol-handler.svg",
   "qr-code.svg",
+  "qr-code-alternative.svg",
   "qwant-color.svg",
   "radio-checked.svg",
   "radio-unchecked.svg",

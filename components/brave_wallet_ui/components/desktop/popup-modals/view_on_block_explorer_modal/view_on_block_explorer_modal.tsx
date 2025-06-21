@@ -38,81 +38,84 @@ interface Props {
   onClose: () => void
 }
 
-export const ViewOnBlockExplorerModal = (props: Props) => {
-  const { account, onClose } = props
+export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
+  (props: Props, forwardedRef) => {
+    const { account, onClose } = props
 
-  // Queries
-  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+    // Queries
+    const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
-  // Memos
-  const networksByAccountCoinType = React.useMemo(() => {
-    return visibleNetworks.filter(
-      (network) => network.coin === account.accountId.coin,
-    )
-  }, [visibleNetworks, account])
+    // Memos
+    const networksByAccountCoinType = React.useMemo(() => {
+      return visibleNetworks.filter(
+        (network) => network.coin === account.accountId.coin,
+      )
+    }, [visibleNetworks, account])
 
-  return (
-    <PopupModal
-      title={getLocale('braveWalletTransactionExplorer')}
-      onClose={onClose}
-      width='520px'
-    >
-      <StyledWrapper
-        fullWidth={true}
-        fullHeight={true}
-        alignItems='flex-start'
-        justifyContent='flex-start'
-        padding='0px 16px 16px 16px'
+    return (
+      <PopupModal
+        title={getLocale('braveWalletTransactionExplorer')}
+        onClose={onClose}
+        width='520px'
+        ref={forwardedRef}
       >
-        <AccountInfoRow
+        <StyledWrapper
+          fullWidth={true}
+          fullHeight={true}
+          alignItems='flex-start'
           justifyContent='flex-start'
-          marginBottom={16}
+          padding='0px 16px 16px 16px'
         >
-          <CreateAccountIcon
-            account={account}
-            size='huge'
-            marginRight={16}
-          />
-          <Column alignItems='flex-start'>
+          <AccountInfoRow
+            justifyContent='flex-start'
+            marginBottom={16}
+          >
+            <CreateAccountIcon
+              account={account}
+              size='huge'
+              marginRight={16}
+            />
+            <Column alignItems='flex-start'>
+              <Text
+                isBold={true}
+                textColor='primary'
+                textSize='14px'
+              >
+                {account.name}
+              </Text>
+              <AddressText
+                isBold={false}
+                textColor='secondary'
+                textSize='12px'
+                textAlign='left'
+              >
+                {account.address}
+              </AddressText>
+            </Column>
+          </AccountInfoRow>
+          <Row
+            padding='16px'
+            justifyContent='flex-start'
+          >
             <Text
               isBold={true}
               textColor='primary'
               textSize='14px'
             >
-              {account.name}
+              {getLocale('braveWalletViewAddressOn')}
             </Text>
-            <AddressText
-              isBold={false}
-              textColor='secondary'
-              textSize='12px'
-              textAlign='left'
-            >
-              {account.address}
-            </AddressText>
-          </Column>
-        </AccountInfoRow>
-        <Row
-          padding='16px'
-          justifyContent='flex-start'
-        >
-          <Text
-            isBold={true}
-            textColor='primary'
-            textSize='14px'
-          >
-            {getLocale('braveWalletViewAddressOn')}
-          </Text>
-        </Row>
-        <ScrollableColumn>
-          {networksByAccountCoinType.map((network) => (
-            <NetworkButton
-              key={getNetworkId(network)}
-              network={network}
-              address={account.accountId.address}
-            />
-          ))}
-        </ScrollableColumn>
-      </StyledWrapper>
-    </PopupModal>
-  )
-}
+          </Row>
+          <ScrollableColumn>
+            {networksByAccountCoinType.map((network) => (
+              <NetworkButton
+                key={getNetworkId(network)}
+                network={network}
+                address={account.accountId.address}
+              />
+            ))}
+          </ScrollableColumn>
+        </StyledWrapper>
+      </PopupModal>
+    )
+  },
+)

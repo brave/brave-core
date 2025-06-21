@@ -7,6 +7,11 @@ import * as React from 'react'
 import './locale'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import Container from '../page/container'
+import {
+  mockAccount,
+  mockNativeBalanceRegistry,
+  mockTokenBalanceRegistry,
+} from '../common/constants/mocks'
 
 type StorybookWalletConceptArgs = {
   isPanel: boolean
@@ -53,6 +58,11 @@ export const _DesktopWalletConcept = {
         }}
         uiStateOverride={{
           isPanel: isPanel,
+        }}
+        apiOverrides={{
+          selectedAccountId: mockAccount.accountId,
+          nativeBalanceRegistry: mockNativeBalanceRegistry,
+          tokenBalanceRegistry: mockTokenBalanceRegistry,
         }}
       >
         <Container />
