@@ -33,9 +33,8 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "chrome/browser/browser_process.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -50,10 +49,6 @@ static constexpr auto kPluralStrings =
         {{"connectedAdsViewedText", IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT},
          {"unconnectedAdsViewedText",
           IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT}});
-
-PrefService* GetLocalState() {
-  return g_browser_process->local_state();
-}
 
 }  // namespace
 
@@ -418,7 +413,7 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
       prefs_->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting);
 
   auto& subdivisions = brave_ads::GetSupportedSubdivisions();
-  auto iter = subdivisions.find(brave_l10n::GetCountryCode(GetLocalState()));
+  auto iter = subdivisions.find(brave_l10n::GetDefaultISOCountryCodeString());
   if (iter != subdivisions.cend()) {
     for (auto& [code, name] : iter->second) {
       auto entry = mojom::AdsSubdivision::New();

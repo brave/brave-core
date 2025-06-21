@@ -20,7 +20,4 @@ specific_include_rules = {
   "brave_adblock_internals_ui\.cc": [
     "+brave/components/brave_adblock/adblock_internals/resources/grit/brave_adblock_internals_generated_map.h",
   ],
-  "brave_rewards_page_ui\.cc": [
-    "+brave/components/l10n/common/country_code_util.h",
-  ],
 }
