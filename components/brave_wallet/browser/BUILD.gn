@@ -442,6 +442,11 @@ source_set("utils") {
     "//third_party/boringssl",
     "//ui/base",
     "//url",
+
+    # TODO(https://github.com/brave/brave-browser/issues/46940): Remove this
+    # dependency to version_info once crash dumps have been collected for
+    # MakeChainIdLowerCase.
+    "//base/version_info:version_info",
   ]
 
   public_deps = [ "//brave/components/brave_wallet/common" ]

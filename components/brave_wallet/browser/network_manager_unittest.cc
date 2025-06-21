@@ -600,7 +600,7 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
       {mojom::kNeonEVMMainnetChainId, false},
       {mojom::kLocalhostChainId, false}};
   for (auto& [chain_id, value] : known_states) {
-    EXPECT_EQ(network_manager()->IsEip1559Chain(chain_id).value(), value);
+    EXPECT_EQ(network_manager()->IsEip1559Chain(chain_id), value);
   }
 
   // Custom chain.
@@ -608,24 +608,24 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
   EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
 
   network_manager()->SetEip1559ForCustomChain(custom_chain_id, true);
-  EXPECT_TRUE(*network_manager()->IsEip1559Chain(custom_chain_id));
+  EXPECT_TRUE(network_manager()->IsEip1559Chain(custom_chain_id));
   EXPECT_EQ(*dict().FindBool(custom_chain_id), true);
 
   network_manager()->SetEip1559ForCustomChain(
       base::ToUpperASCII(custom_chain_id), false);
   EXPECT_FALSE(
-      *network_manager()->IsEip1559Chain(base::ToUpperASCII(custom_chain_id)));
+      network_manager()->IsEip1559Chain(base::ToUpperASCII(custom_chain_id)));
   EXPECT_EQ(*dict().FindBool(custom_chain_id), false);
 
   network_manager()->SetEip1559ForCustomChain(custom_chain_id, std::nullopt);
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id).has_value());
+  EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
   EXPECT_EQ(dict().FindBool(custom_chain_id), std::nullopt);
 
   // Custom chain overriding known one.
   network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
                                               false);
   EXPECT_FALSE(
-      *network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
+      network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
   EXPECT_EQ(*dict().FindBool(mojom::kPolygonMainnetChainId), false);
 
   network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
@@ -761,12 +761,12 @@ TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
 
   network_manager()->AddCustomNetwork(chain);
 
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id).has_value());
+  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
   network_manager()->SetEip1559ForCustomChain(chain.chain_id, true);
-  EXPECT_TRUE(*network_manager()->IsEip1559Chain(chain.chain_id));
+  EXPECT_TRUE(network_manager()->IsEip1559Chain(chain.chain_id));
 
   network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id).has_value());
+  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
 }
 
 TEST_F(NetworkManagerUnitTest, HiddenNetworks) {

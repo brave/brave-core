@@ -168,9 +168,7 @@ void EthTxManager::AddUnapprovedEvmTransaction(
       mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
                          params->data, false, std::nullopt);
 
-  if (!json_rpc_service_->network_manager()
-           ->IsEip1559Chain(params->chain_id)
-           .value_or(false)) {
+  if (!json_rpc_service_->network_manager()->IsEip1559Chain(params->chain_id)) {
     AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
                              std::move(origin_val), std::move(callback));
   } else {

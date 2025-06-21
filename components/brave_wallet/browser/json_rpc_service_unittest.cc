@@ -820,7 +820,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   bool GetIsEip1559FromPrefs(const std::string& chain_id) {
-    return network_manager_->IsEip1559Chain(chain_id).value_or(false);
+    return network_manager_->IsEip1559Chain(chain_id);
   }
 
   void SetEthTokenInfoInterceptor(const GURL& network_url,
