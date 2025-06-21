@@ -22,7 +22,7 @@ void RewardsPrefs::SetBoolean(std::string_view path, bool value) {
 }
 
 bool RewardsPrefs::GetBoolean(std::string_view path) {
-  return GetValue(path).GetBool();
+  return GetValue(path).GetIfBool().value_or(false);
 }
 
 void RewardsPrefs::SetInteger(std::string_view path, int value) {
@@ -30,7 +30,7 @@ void RewardsPrefs::SetInteger(std::string_view path, int value) {
 }
 
 int RewardsPrefs::GetInteger(std::string_view path) {
-  return GetValue(path).GetInt();
+  return GetValue(path).GetIfInt().value_or(0);
 }
 
 void RewardsPrefs::SetDouble(std::string_view path, double value) {
@@ -38,7 +38,7 @@ void RewardsPrefs::SetDouble(std::string_view path, double value) {
 }
 
 double RewardsPrefs::GetDouble(std::string_view path) {
-  return GetValue(path).GetDouble();
+  return GetValue(path).GetIfDouble().value_or(0);
 }
 
 void RewardsPrefs::SetString(std::string_view path, std::string_view value) {
@@ -46,7 +46,9 @@ void RewardsPrefs::SetString(std::string_view path, std::string_view value) {
 }
 
 const std::string& RewardsPrefs::GetString(std::string_view path) {
-  return GetValue(path).GetString();
+  static constexpr std::string default_value = "";
+  auto* string_value = GetValue(path).GetIfString();
+  return string_value ? *string_value : default_value;
 }
 
 void RewardsPrefs::Set(std::string_view path, const base::Value& value) {
@@ -69,7 +71,9 @@ void RewardsPrefs::SetDict(std::string_view path, base::Value::Dict dict) {
 }
 
 const base::Value::Dict& RewardsPrefs::GetDict(std::string_view path) {
-  return GetValue(path).GetDict();
+  static const base::Value::Dict default_value;
+  auto* dict = GetValue(path).GetIfDict();
+  return dict ? *dict : default_value;
 }
 
 void RewardsPrefs::SetInt64(std::string_view path, int64_t value) {
