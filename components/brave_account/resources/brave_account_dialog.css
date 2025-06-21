@@ -7,33 +7,25 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-:host {
-  --cr-dialog-body-border-bottom: 0px;
-  --cr-dialog-body-border-top: 0px;
-  --cr-dialog-border-radius: var(--leo-radius-xl);
-  --cr-dialog-top-container-min-height: 0px;
-  --cr-dialog-width: 500px;
-}
-
-[slot=header] {
+.header {
   align-items: center;
   display: flex;
   flex-direction: column;
   padding: 0px 0px var(--leo-spacing-4xl);
 }
 
-.buttons {
+.navigation-buttons {
   display: flex;
   justify-content: flex-end;
   min-height: var(--leo-spacing-4xl);
   width: 100%;
 }
 
-:host([show-back-button]) .buttons {
+:host([show-back-button]) .navigation-buttons {
   justify-content: space-between;
 }
 
-leo-button {
+leo-button[size='tiny'] {
   --leo-button-padding: 0px;
   flex: none;
   margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
@@ -44,20 +36,21 @@ leo-icon {
 }
 
 .logo {
-  background-image: url('../images/full_brave_brand.svg');
+  background-image: url('full_brave_brand.svg');
   background-size: cover;
   height: var(--leo-spacing-4xl);
-  width: calc(var(--leo-spacing-4xl) * 129/40);
+  width: calc(var(--leo-spacing-4xl) * 129 / 40);
 }
 
 @media (prefers-color-scheme: dark) {
   .logo {
-    background-image: url('../images/full_brave_brand_dark.svg');
+    background-image: url('full_brave_brand_dark.svg');
   }
 }
 
-[slot=body] {
-  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
+.body {
+  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+    var(--leo-spacing-2xl);
 }
 
 .title-and-description {
@@ -76,20 +69,19 @@ leo-icon {
   font: var(--leo-font-default-regular);
 }
 
-:host ::slotted([slot=inputs]) {
+:host ::slotted([slot='inputs']) {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-2xl);
   margin: 0px 0px var(--leo-spacing-2xl);
 }
 
-:host ::slotted([slot=buttons]) {
+.action-buttons {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-m);
 }
 
-:host([horizontal-buttons]) ::slotted([slot=buttons]) {
-  flex-direction: row;
-  justify-content: flex-end;
+:host ::slotted([slot='footer']) {
+  border-top: 1px solid var(--leo-color-divider-subtle);
 }
