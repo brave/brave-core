@@ -186,6 +186,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       [[fallthrough]];
     case BraveTabMenuModel::CommandBreakTile:
       [[fallthrough]];
+    case BraveTabMenuModel::CommandOpenInContainer:
+      [[fallthrough]];
     case BraveTabMenuModel::CommandSwapTabsInTile:
       return true;
   }

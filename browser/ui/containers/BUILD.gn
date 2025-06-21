@@ -1,0 +1,45 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(enable_containers,
+       "Containers feature must be enabled to build this target.")
+
+source_set("containers") {
+  sources = [
+    "containers_menu_model.cc",
+    "containers_menu_model.h",
+
+    # These files should be moved to test targets in the future.
+    "mock_containers_service.cc",
+    "mock_containers_service.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/containers/core/common",
+    "//chrome/app:generated_resources",
+    "//ui/base",
+    "//ui/menus",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "containers_menu_model_unittest.cc",
+    "mock_containers_menu_model_delegate.cc",
+    "mock_containers_menu_model_delegate.h",
+  ]
+
+  deps = [
+    ":containers",
+    "//base/allocator/partition_allocator/src/partition_alloc:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

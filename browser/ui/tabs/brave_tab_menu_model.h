@@ -6,11 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "ui/menus/simple_menu_model.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/containers_menu_model.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace content {
 class WebContents;
@@ -22,7 +29,12 @@ class TabRestoreService;
 
 class Browser;
 
-class BraveTabMenuModel : public TabMenuModel {
+class BraveTabMenuModel : public TabMenuModel
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ,
+                          public ContainersMenuModel::Delegate
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
  public:
   enum BraveTabContextMenuCommand {
     CommandStart = TabStripModel::CommandLast,
@@ -36,6 +48,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandTileTabs,
     CommandBreakTile,
     CommandSwapTabsInTile,
+    CommandOpenInContainer,
     CommandLast,
   };
 
@@ -53,6 +66,11 @@ class BraveTabMenuModel : public TabMenuModel {
   // TabMenuModel:
   std::u16string GetLabelAt(size_t index) const override;
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // ContainersMenuModel::Delegate:
+  void OnContainerSelected(int container_id) override;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
  private:
   void Build(Browser* browser,
              TabStripModel* tab_strip_model,
@@ -62,11 +80,21 @@ class BraveTabMenuModel : public TabMenuModel {
                               const std::vector<int>& indices);
   int GetRestoreTabCommandStringId() const;
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void BuildItemForContainer(Browser* browser,
+                             TabStripModel* tab_strip_model,
+                             const std::vector<int>& indices);
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   bool all_muted_;
 
   bool is_vertical_tab_ = false;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::unique_ptr<ContainersMenuModel> containers_submenu_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
