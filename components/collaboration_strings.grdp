@@ -51,6 +51,12 @@
   <message name="IDS_COLLABORATION_LINK_FAILED_BODY" desc="The body for the link failed dialog.">
     Contact the sender to ask for a new link
   </message>
+  <message name="IDS_COLLABORATION_SHARE_BUTTON_CHROME_OUT_OF_DATE_ERROR_DIALOG_HEADER" desc="The title for the chrome out of date dialog, shown when user tries to share a tab group.">
+    Brave is out of date
+  </message>
+  <message name="IDS_COLLABORATION_SHARE_BUTTON_CHROME_OUT_OF_DATE_ERROR_DIALOG_BODY" desc="The body for the chrome out of date dialog, shown when user tries to share a tab group.">
+    To share tab groups, update Brave
+  </message>
   <message name="IDS_COLLABORATION_SIGNED_OUT_HEADER" desc="The title for the signed out dialog." formatter_data="android_java">
     You're signed out
   </message>
@@ -130,6 +136,9 @@
   </message>
   <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_TAB_GROUP_COLOR_UPDATED" desc="Text on a recent activity bottom sheet row that says user updated the tab group color.">
     <ph name="USER_DISPLAY_NAME">$1<ex>User 1</ex></ph> changed the group color
+  </message>
+  <message name="DATA_SHARING_GROUP_LABEL_NEW_ACTIVITY" desc="Accessibility text for a shared group that states that it has updates from other members in the group.">
+    new activity
   </message>
   <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_USER_JOINED_GROUP" desc="Text on a recent activity bottom sheet row that says user joined the group.">
     <ph name="USER_DISPLAY_NAME">$1<ex>User 1</ex></ph> joined the group

@@ -83,6 +83,7 @@ void TopSitesMessageHandler::RegisterMessages() {
 
 // ntp_tiles::MostVisitedSites::Observer:
 void TopSitesMessageHandler::OnURLsAvailable(
+    bool is_user_triggered,
     const std::map<ntp_tiles::SectionType, ntp_tiles::NTPTilesVector>&
         sections) {
   if (!most_visited_sites_)

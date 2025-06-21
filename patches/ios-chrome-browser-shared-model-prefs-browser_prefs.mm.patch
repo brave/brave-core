@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 5f4b8933f93f5d9f5d5ea214148bd54f832efebd..04e5db5cda83f15db3dfe7d46cecefe458c03eac 100644
+index 8450309aa4160d2b6305dabb9917865be5d476d5..cc7116e111cc1d558f536baf58f7399444be5f33 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -676,6 +676,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Deprecated 03/2025, migrated to profile pref.
-   registry->RegisterIntegerPref(
-       prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
+@@ -686,6 +686,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // Deprecated 06/2025.
+   registry->RegisterBooleanPref(
+       prefs::kIosCredentialProviderPromoHasRegisteredWithPromoManager, false);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1089,6 +1090,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterTimePref(kSyncLastSyncedTime, base::Time());
-   registry->RegisterTimePref(kSyncLastPollTime, base::Time());
-   registry->RegisterTimeDeltaPref(kSyncPollInterval, base::TimeDelta());
+@@ -1094,6 +1095,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+ 
+   // Deprecated 06/2025.
+   registry->RegisterDoublePref(kGaiaCookiePeriodicReportTimeDeprecated, 0);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

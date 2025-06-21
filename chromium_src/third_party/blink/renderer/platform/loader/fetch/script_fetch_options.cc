@@ -23,7 +23,7 @@ FetchParameters ScriptFetchOptions::CreateFetchParameters(
     const SecurityOrigin* security_origin,
     const DOMWrapperWorld* world_for_csp,
     CrossOriginAttributeValue cross_origin,
-    const WTF::TextEncoding& encoding,
+    const TextEncoding& encoding,
     FetchParameters::DeferOption defer,
     const FeatureContext* feature_context) const {
   auto params = CreateFetchParameters_ChromiumImpl(
