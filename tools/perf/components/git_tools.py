@@ -62,13 +62,24 @@ def PushChangesToBranch(files: Dict[str, str],
     GetProcessOutput(['git', 'commit', '-m', f'{commit_message}'],
                      cwd,
                      check=True)
+
+    # Use environment variables for GitHub username and auth token
+    github_username = os.environ.get('GITHUB_USERNAME')
+    github_token = os.environ.get('GITHUB_TOKEN')
+
+    if not github_username or not github_token:
+      raise ValueError(
+          "GitHub username or token not set in environment variables")
+
+    # Construct the URL with authentication
+    auth_url = f'https://{github_username}:{github_token}@github.com/brave/brave-core.git'
+
     success, _ = GetProcessOutput(
-        ['git', 'push', GH_BRAVE_CORE_GIT_URL, f'{branch}:{branch}'], cwd)
+        ['git', 'push', auth_url, f'{branch}:{branch}'], cwd)
     if success:
       return
 
   raise RuntimeError(f'Can\'t push changes to branch {branch}')
-
 
 def GetFileAtRevision(
     filepath: str, revision: str, cwd=path_util.GetBraveDir()) -> Optional[str]:
