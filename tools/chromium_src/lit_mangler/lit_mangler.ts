@@ -22,8 +22,11 @@ export interface HTMLTemplateTags {
 }
 
 let nextId = 1
+let isHTML = false
 
 const loadRaw = (filepath: string) => {
+    isHTML = filepath.endsWith('.html')
+
     const text = readFileSync(filepath, 'utf-8')
     const tsFile = ts.createSourceFile(path.basename(filepath), text, ts.ScriptTarget.Latest)
 
@@ -268,6 +271,12 @@ export function* findTemplates(predicate: (template: HTMLTemplateTags) => boolea
         throw new Error("This should only be called after load!")
     }
 
+    // If we're mangling an HTML file, the root node is also a template (though
+    // it isn't tagged)
+    if (isHTML && !template && predicate(result)) {
+        yield result
+    }
+
     for (const child of (template ?? result).children) {
         if (predicate(child)) {
             yield child
@@ -285,8 +294,10 @@ export const utilsForTest = {
     injectPlaceholders,
     replacePlaceholders,
     getTemplateLiterals,
-    setResult: (r: HTMLTemplateTags) => {
+    setResult: (r: HTMLTemplateTags | undefined) => {
         result = r
     },
-    resetTemplateId: () => nextId = 1
+    getResult: () => result,
+    resetTemplateId: () => nextId = 1,
+    load
 }

@@ -81,7 +81,7 @@ def get_chromium_src_files(in_folder, in_files):
 
 def should_run_mangler(in_file):
     """Determines if we should run the mangler on the given file"""
-    return in_file.endswith('.html.ts.lit_mangler.ts')
+    return in_file.endswith('.lit_mangler.ts')
 
 
 # Used to indicate that there are no overrides, so we don't need to reprocess
