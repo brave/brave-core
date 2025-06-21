@@ -1,0 +1,13 @@
+diff --git a/tools/json_schema_compiler/cpp_type_generator.py b/tools/json_schema_compiler/cpp_type_generator.py
+index c5c5afb2acc1a3cb962916b784839c58e615bd03..9cf5a316bce2b016fe6f9db652ab93bcefedd21c 100644
+--- a/tools/json_schema_compiler/cpp_type_generator.py
++++ b/tools/json_schema_compiler/cpp_type_generator.py
+@@ -185,6 +185,8 @@ class CppTypeGenerator(object):
+         cpp_type = 'std::vector<%s>' % item_cpp_type
+     elif type_.property_type == PropertyType.BINARY:
+       cpp_type = 'std::vector<uint8_t>'
++      if type_.override:
++        cpp_type = type_.override
+     else:
+       raise NotImplementedError('Cannot get type of %s' % type_.property_type)
+ 

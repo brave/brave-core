@@ -1,0 +1,25 @@
+diff --git a/base/json/json_reader.cc b/base/json/json_reader.cc
+index eb57cc99db323baa8e17a84c62adc1d939d28cb2..80c7437fe532c3d8075b198b02ea2bed2729d7e6 100644
+--- a/base/json/json_reader.cc
++++ b/base/json/json_reader.cc
+@@ -205,3 +205,20 @@ JSONReader::Result JSONReader::ReadAndReturnValueWithError(
+ }
+ 
+ }  // namespace base
++#ifdef IS_REDIRECT_CC_BUILD
++#include "base/notreached.h"
++namespace serde_json_lenient {
++void list_append_i64(base::Value::List& ctx, int64_t val) {
++  NOTREACHED();
++}
++void list_append_u64(base::Value::List& ctx, uint64_t val) {
++  NOTREACHED();
++}
++void dict_set_i64(base::Value::Dict& ctx, rust::Str key, int64_t val) {
++  NOTREACHED();
++}
++void dict_set_u64(base::Value::Dict& ctx, rust::Str key, uint64_t val) {
++  NOTREACHED();
++}
++}
++#endif  // IS_REDIRECT_CC_BUILD
