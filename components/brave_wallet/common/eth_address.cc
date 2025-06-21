@@ -6,12 +6,14 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 #include <algorithm>
+#include <string>
 #include <utility>
 
 #include "base/containers/span.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/types/zip.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -106,7 +108,6 @@ std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
 }
 
 std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
-  std::string result = "0x";
   std::string prefix;
 
   if (eip1191_chaincode == static_cast<uint256_t>(30) ||
@@ -121,17 +122,17 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   const std::string hash_str = base::HexEncode(
       KeccakHash(base::as_byte_span(base::StrCat({prefix, address_str}))));
 
-  for (size_t i = 0; i < address_str.length(); ++i) {
-    if (isdigit(address_str[i])) {
-      result.push_back(address_str[i]);
-    } else {  // address has already be validated
-      int nibble = std::stoi(std::string(1, hash_str[i]), nullptr, 16);
-      if (nibble > 7) {
-        result.push_back(base::ToUpperASCII(address_str[i]));
-      } else {
-        result.push_back(address_str[i]);
-      }
-    }
+  std::string result;
+  result.reserve(2 + address_str.length());
+  result.append("0x");
+
+  for (const auto [address_char, hash_char] :
+       base::zip(address_str, hash_str)) {
+    // Uppercase address letter if corresponding hash nibble ≥ 8.
+    const bool should_uppercase = !base::IsAsciiDigit(address_char) &&
+                                  base::HexDigitToInt(hash_char) >= 8;
+    result.push_back(should_uppercase ? base::ToUpperASCII(address_char)
+                                      : address_char);
   }
   return result;
 }
