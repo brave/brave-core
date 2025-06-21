@@ -146,6 +146,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/device/public/cpp/geolocation/location_provider.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
@@ -252,6 +253,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
+#endif
+
+#if BUILDFLAG(IS_LINUX)
+#include "brave/services/device/geolocation/geoclue_location_provider.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -1366,4 +1371,13 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+std::unique_ptr<device::LocationProvider>
+BraveContentBrowserClient::OverrideSystemLocationProvider() {
+#if BUILDFLAG(IS_LINUX)
+  return device::MaybeCreateGeoClueLocationProvider();
+#else
+  return nullptr;
+#endif
 }
