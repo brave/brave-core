@@ -45,8 +45,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   PsstRuleRegistry();
   friend base::NoDestructor<PsstRuleRegistry>;
 
-  friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
+  friend class PsstTabWebContentsObserverBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoading);
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
                            CheckIfMatchWithNoRulesLoaded);
