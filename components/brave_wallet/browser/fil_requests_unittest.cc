@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -108,7 +109,7 @@ TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
   EXPECT_EQ(fil::getStateSearchMsgLimited("cid", UINT64_MAX),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin."
             "StateSearchMsgLimited\",\"params\":[{\"/\":\"cid\"}," +
-                std::to_string(UINT64_MAX) + "]}");
+                base::NumberToString(UINT64_MAX) + "]}");
 }
 
 TEST(FilRequestUnitTest, getSendTransaction_WhenSendToFEVM) {

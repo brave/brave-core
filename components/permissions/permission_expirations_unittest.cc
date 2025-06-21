@@ -11,6 +11,7 @@
 
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
@@ -141,7 +142,8 @@ class PermissionExpirationsTest : public testing::Test {
   }
 
   static std::string TimeKey(const base::Time& time) {
-    return std::to_string(time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+    return base::NumberToString(
+        time.ToDeltaSinceWindowsEpoch().InMicroseconds());
   }
 
   static std::string DomainKey(const GURL& url) { return url.host(); }
@@ -253,7 +255,7 @@ TEST_F(PermissionExpirationsTest, AddWithAllAndRemoveDataAfterExpiration) {
     CheckExpirationsPref(
         FROM_HERE, kOneTypeOneExpirationWithAllDataPrefValue,
         {entry.type_key, TimeKey(expiration_time), entry.origin.spec(),
-         entry.origin2.spec(), std::to_string(CONTENT_SETTING_BLOCK)});
+         entry.origin2.spec(), base::NumberToString(CONTENT_SETTING_BLOCK)});
 
     auto removed = expirations()->RemoveExpiredPermissions(expiration_time);
     EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(

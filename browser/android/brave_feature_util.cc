@@ -8,6 +8,7 @@
 #include "base/android/jni_string.h"
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/strings/string_number_conversions.h"
 #include "chrome/android/chrome_jni_headers/BraveFeatureUtil_jni.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
@@ -42,7 +43,7 @@ static void JNI_BraveFeatureUtil_EnableFeature(
   std::string disabled_value =
       fallback_to_default
           ? "0"
-          : std::to_string(GetNumberOfOptions(feature_name) - 1);
+          : base::NumberToString(GetNumberOfOptions(feature_name) - 1);
   enabled ? feature_name += "@1" : feature_name += "@" + disabled_value;
   flags_ui::PrefServiceFlagsStorage flags_storage(
       g_browser_process->local_state());

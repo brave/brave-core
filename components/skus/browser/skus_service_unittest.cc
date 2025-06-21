@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -210,7 +211,7 @@ std::string GenerateTestingCreds(const std::string& domain) {
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{year}",
-                                     std::to_string(exploded.year + 1));
+                                     base::NumberToString(exploded.year + 1));
   base::ReplaceSubstringsAfterOffset(&json, 0, "{domain}", domain);
   return json;
 }

@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
@@ -119,7 +120,7 @@ std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
     usage_bitset = UsageBitfieldFromTimestamp(wallet_last_unlocked_,
                                               last_reported_wallet_unlock_);
   }
-  return std::to_string(usage_bitset);
+  return base::NumberToString(usage_bitset);
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {

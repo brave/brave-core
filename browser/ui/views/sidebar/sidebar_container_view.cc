@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -453,8 +454,8 @@ void SidebarContainerView::OnActiveIndexChanged(
     std::optional<size_t> old_index,
     std::optional<size_t> new_index) {
   DVLOG(1) << "OnActiveIndexChanged: "
-           << (old_index ? std::to_string(*old_index) : "none") << " to "
-           << (new_index ? std::to_string(*new_index) : "none");
+           << (old_index ? base::NumberToString(*old_index) : "none") << " to "
+           << (new_index ? base::NumberToString(*new_index) : "none");
   if (new_index) {
     ShowSidebarAll();
   } else {

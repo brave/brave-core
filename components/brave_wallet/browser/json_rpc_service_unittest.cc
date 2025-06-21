@@ -132,7 +132,7 @@ std::string GetGasFilEstimateResponse(int64_t value) {
           }
       })";
   base::ReplaceSubstringsAfterOffset(&response, 0, "{gas_limit}",
-                                     std::to_string(value));
+                                     base::NumberToString(value));
   return response;
 }
 
@@ -164,7 +164,7 @@ std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
       }
     )";
   base::ReplaceSubstringsAfterOffset(&response, 0, "{exit_code}",
-                                     std::to_string(value));
+                                     base::NumberToString(value));
   return response;
 }
 

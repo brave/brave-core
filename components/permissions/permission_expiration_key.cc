@@ -24,7 +24,7 @@ base::Time ParseExpirationTime(const std::string& key_str) {
 }
 
 std::string ExpirationTimeToStr(base::Time expiration_time) {
-  return std::to_string(
+  return base::NumberToString(
       expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
 }
 

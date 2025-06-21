@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -122,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSDocumentCookieWriteCookie(
-      browser(), "max-age=" + std::to_string(less_than_max.InSeconds()));
+      browser(), "max-age=" + base::NumberToString(less_than_max.InSeconds()));
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
@@ -137,7 +138,7 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSDocumentCookieWriteCookie(
-      browser(), "max-age=" + std::to_string(k4YearsInDays.InSeconds()));
+      browser(), "max-age=" + base::NumberToString(k4YearsInDays.InSeconds()));
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
@@ -151,8 +152,8 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   auto less_than_max = base::Days(2);
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  JSCookieStoreWriteCookie(browser(),
-                           std::to_string(less_than_max.InMilliseconds()));
+  JSCookieStoreWriteCookie(
+      browser(), base::NumberToString(less_than_max.InMilliseconds()));
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -167,8 +168,8 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForCookieStoreMoreThanMax) {
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  JSCookieStoreWriteCookie(browser(),
-                           std::to_string(k4YearsInDays.InMilliseconds()));
+  JSCookieStoreWriteCookie(
+      browser(), base::NumberToString(k4YearsInDays.InMilliseconds()));
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -182,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForHttpCookiesLessThanMax) {
   auto less_than_max = base::Days(30);
   std::string cookie_string = "/set-cookie?test=http;max-age=" +
-                              std::to_string(less_than_max.InSeconds());
+                              base::NumberToString(less_than_max.InSeconds());
 
   GURL url = https_server_->GetURL("a.com", cookie_string);
 
@@ -200,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
 IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForHttpCookiesMoreThanMax) {
   std::string cookie_string =
-      "test=http;max-age=" + std::to_string(k4YearsInDays.InSeconds());
+      "test=http;max-age=" + base::NumberToString(k4YearsInDays.InSeconds());
   GURL url = https_server_->GetURL("a.com", "/set-cookie?" + cookie_string);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

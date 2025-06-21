@@ -14,6 +14,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -521,7 +522,7 @@ GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                          ? GetAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
   url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
-  url = net::AppendQueryParameter(url, "limit", std::to_string(limit));
+  url = net::AppendQueryParameter(url, "limit", base::NumberToString(limit));
   return url;
 }
 

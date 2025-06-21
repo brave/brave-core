@@ -11,6 +11,7 @@
 #include "base/containers/extend.h"
 #include "base/containers/to_vector.h"
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -274,12 +275,12 @@ std::string FilAddress::EncodeAsString() const {
   std::string encoded_output = base::ToLowerASCII(base32::Base32Encode(
       payload_hash, base32::Base32EncodePolicy::OMIT_PADDING));
   if (protocol_ == mojom::FilecoinAddressProtocol::DELEGATED) {
-    auto r = network_ + std::to_string(static_cast<int>(protocol_)) +
+    auto r = network_ + base::NumberToString(static_cast<int>(protocol_)) +
              // Agent id + delimiter
              "10f" + encoded_output;
     return r;
   } else {
-    return network_ + std::to_string(static_cast<int>(protocol_)) +
+    return network_ + base::NumberToString(static_cast<int>(protocol_)) +
            encoded_output;
   }
 }

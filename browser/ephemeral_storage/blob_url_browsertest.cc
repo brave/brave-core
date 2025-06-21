@@ -113,10 +113,10 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
       const FramesWithRegisteredBlobs& frames_with_registered_blobs,
       size_t rfh1_idx,
       size_t rfh2_idx) {
-    EXPECT_EQ(std::to_string(rfh2_idx),
+    EXPECT_EQ(base::NumberToString(rfh2_idx),
               FetchBlob(frames_with_registered_blobs[rfh1_idx].rfh,
                         frames_with_registered_blobs[rfh2_idx].blob_url));
-    EXPECT_EQ(std::to_string(rfh1_idx),
+    EXPECT_EQ(base::NumberToString(rfh1_idx),
               FetchBlob(frames_with_registered_blobs[rfh2_idx].rfh,
                         frames_with_registered_blobs[rfh1_idx].blob_url));
   }
@@ -141,9 +141,9 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     for (size_t idx = 0; idx < rfhs.size(); ++idx) {
       auto* rfh = rfhs[idx];
       // Register blob.
-      GURL blob_url = RegisterBlob(rfh, std::to_string(idx));
+      GURL blob_url = RegisterBlob(rfh, base::NumberToString(idx));
       // Blob should be fetchable from the same frame.
-      EXPECT_EQ(std::to_string(idx), FetchBlob(rfh, blob_url));
+      EXPECT_EQ(base::NumberToString(idx), FetchBlob(rfh, blob_url));
 
       frames_with_registered_blobs.push_back({rfh, std::move(blob_url)});
     }
@@ -183,7 +183,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh.get();
       // All blobs from another a.com tab should be avilable.
-      EXPECT_EQ(std::to_string(idx),
+      EXPECT_EQ(base::NumberToString(idx),
                 FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
 
       // No blobs from b.com should be available.
