@@ -15,7 +15,7 @@
   GetStateIfOverridden_ChromiumImpl(const Feature& feature); \
   static std::optional<bool> GetStateIfOverridden
 
-#include "src/base/feature_list.h"  // IWYU pragma: export
+#include <base/feature_list.h>  // IWYU pragma: export
 
 #undef IsFeatureOverridden
 #undef GetStateIfOverridden

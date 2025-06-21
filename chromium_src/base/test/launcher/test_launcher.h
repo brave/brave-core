@@ -23,7 +23,7 @@ using TestLauncher_BraveImpl = TestLauncher;
   virtual void OnTestFinished
 #define MaybeSaveSummaryAsJSON virtual MaybeSaveSummaryAsJSON
 
-#include "src/base/test/launcher/test_launcher.h"  // IWYU pragma: export
+#include <base/test/launcher/test_launcher.h>  // IWYU pragma: export
 
 #undef TestLauncher
 #undef OnTestFinished
