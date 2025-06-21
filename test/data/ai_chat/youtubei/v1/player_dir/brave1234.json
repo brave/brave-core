@@ -3,7 +3,7 @@
     "playerCaptionsTracklistRenderer": {
       "captionTracks": [
         {
-          "baseUrl": "https://www.youtube.com/intercepted.xml"
+          "baseUrl": "https://www.youtube.com/navigated.xml"
         }
       ]
     }

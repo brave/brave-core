@@ -3,16 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_
-#define BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_YT_UTIL_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_YT_UTIL_H_
 
 #include <functional>
 #include <optional>
 #include <string>
 #include <string_view>
 
+#include "base/component_export.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_tree.h"
+#include "base/files/file_path.h"
 #include "base/values.h"
 
 namespace ai_chat {
@@ -26,13 +28,25 @@ inline constexpr auto kYouTubeHosts =
 
 // Extract a caption url from an array of YT caption tracks, from the YT page
 // API.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<std::string> ChooseCaptionTrackUrl(
     const base::Value::List& caption_tracks);
 
 // Parse YT metadata json string and choose the most appropriate caption track
 // url.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string_view body);
+
+// Returns the path to the YouTube player response file based on the key
+// parameter. If key is empty, returns the path to default.json.
+std::string GetYoutubePlayerResponsePath(const base::FilePath& test_data_dir,
+                                         const std::string& key);
+
+// Parse YouTube transcript XML content and return the combined transcript text.
+// Handles both <transcript> and <timedtext> formats.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+std::string ParseYoutubeTranscriptXml(const base::Value& root);
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_YT_UTIL_H_

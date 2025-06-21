@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -39,7 +38,6 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "pdf/buildflags.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
@@ -48,30 +46,6 @@
 #endif  // BUILDFLAG(ENABLE_PDF)
 
 namespace ai_chat {
-
-// static
-void AIChatTabHelper::BindPageContentExtractorHost(
-    content::RenderFrameHost* rfh,
-    mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
-  CHECK(rfh);
-  if (!rfh->IsInPrimaryMainFrame()) {
-    DVLOG(4) << "Not binding extractor host to non-main frame";
-    return;
-  }
-  auto* sender = content::WebContents::FromRenderFrameHost(rfh);
-  if (!sender) {
-    DVLOG(1) << "Cannot bind extractor host, no valid WebContents";
-    return;
-  }
-  auto* tab_helper = AIChatTabHelper::FromWebContents(sender);
-  if (!tab_helper) {
-    DVLOG(1) << "Cannot bind extractor host, no AIChatTabHelper - "
-             << sender->GetVisibleURL();
-    return;
-  }
-  DVLOG(4) << "Binding extractor host to AIChatTabHelper";
-  tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
-}
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
                                  std::unique_ptr<PrintPreviewExtractionDelegate>
@@ -150,14 +124,6 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
       GetPageContent(std::move(pending_get_page_content_callback_), "");
     }
   }
-}
-
-// mojom::PageContentExtractorHost
-void AIChatTabHelper::OnInterceptedPageContentChanged() {
-  // Maybe mark that the page changed, if we didn't detect it already via title
-  // change after a same-page navigation. This is the main benefit of this
-  // function.
-  MaybeSameDocumentIsNewPage();
 }
 
 GURL AIChatTabHelper::GetPageURL() const {
@@ -290,12 +256,6 @@ void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
     // Don't respond to further TitleWasSet
     is_same_document_navigation_ = false;
   }
-}
-
-void AIChatTabHelper::BindPageContentExtractorReceiver(
-    mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
-  page_content_extractor_receiver_.reset();
-  page_content_extractor_receiver_.Bind(std::move(receiver));
 }
 
 #if BUILDFLAG(ENABLE_PDF)
