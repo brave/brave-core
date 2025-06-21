@@ -853,7 +853,7 @@ void BringAllTabs(Browser* browser) {
   }
 }
 
-bool HasDuplicateTabs(Browser* browser) {
+bool HasDuplicatesOfActiveTab(Browser* browser) {
   if (!browser) {
     return false;
   }
@@ -880,7 +880,7 @@ bool HasDuplicateTabs(Browser* browser) {
   return false;
 }
 
-void CloseDuplicateTabs(Browser* browser) {
+void CloseDuplicatesOfActiveTab(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();
 
@@ -894,6 +894,35 @@ void CloseDuplicateTabs(Browser* browser) {
     if (tab->GetVisibleURL() == url) {
       tab->Close();
     }
+  }
+}
+
+bool HasAnyDuplicateTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  base::flat_set<GURL> urls;
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (urls.contains(tab->GetVisibleURL())) {
+      return true;
+    }
+    urls.insert(tab->GetVisibleURL());
+  }
+
+  return false;
+}
+
+void CloseAllDuplicateTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  base::flat_set<GURL> urls;
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (urls.contains(tab->GetVisibleURL())) {
+      tab->Close();
+      --i;
+      continue;
+    }
+
+    urls.insert(tab->GetVisibleURL());
   }
 }
 
