@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -59,12 +60,15 @@ class AIChatDatabase {
   virtual bool AddConversationEntry(
       std::string_view conversation_uuid,
       mojom::ConversationTurnPtr entry,
-      std::optional<std::string_view> model_key = std::nullopt,
       std::optional<std::string> editing_id = std::nullopt);
 
   // Updates the title of the conversation with the provided UUID
   virtual bool UpdateConversationTitle(std::string_view conversation_uuid,
                                        std::string_view title);
+
+  // Updates the model of the conversation with the provided value
+  virtual bool UpdateConversationModelKey(std::string_view conversation_uuid,
+                                          std::optional<std::string> model_key);
 
   // Updates the token information of the conversation with the provided UUID
   virtual bool UpdateConversationTokenInfo(std::string_view conversation_uuid,
