@@ -8,9 +8,9 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_entry_dialog.css.js'
 import { getHtml } from './brave_account_entry_dialog.html.js'
 
-export class SettingsBraveAccountEntryDialogElement extends CrLitElement {
+export class BraveAccountEntryDialogElement extends CrLitElement {
   static get is() {
-    return 'settings-brave-account-entry-dialog'
+    return 'brave-account-entry-dialog'
   }
 
   static override get styles() {
@@ -24,12 +24,11 @@ export class SettingsBraveAccountEntryDialogElement extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-entry-dialog':
-    SettingsBraveAccountEntryDialogElement
+    'brave-account-entry-dialog': BraveAccountEntryDialogElement
   }
 }
 
 customElements.define(
-  SettingsBraveAccountEntryDialogElement.is,
-  SettingsBraveAccountEntryDialogElement
+  BraveAccountEntryDialogElement.is,
+  BraveAccountEntryDialogElement,
 )

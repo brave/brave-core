@@ -44,19 +44,19 @@
   gap: var(--leo-spacing-s);
 }
 
-leo-icon[name=check-circle-filled] {
+leo-icon[name='check-circle-filled'] {
   --leo-icon-color: var(--leo-color-text-interactive);
 }
 
-leo-icon[name=check-circle-filled] + div {
+leo-icon[name='check-circle-filled'] + div {
   color: var(--leo-color-text-interactive);
 }
 
-leo-icon[name=warning-triangle-filled] {
+leo-icon[name='warning-triangle-filled'] {
   --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
 }
 
-leo-icon[name=warning-triangle-filled] + div {
+leo-icon[name='warning-triangle-filled'] + div {
   color: var(--leo-color-systemfeedback-error-text);
 }
 
