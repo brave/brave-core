@@ -448,6 +448,9 @@ interface AIChatUIHandler {
   UploadImage(bool use_media_capture)
       => (array<UploadedFile>? uploaded_images);
 
+  // Get a plural string for the given key and count.
+  GetPluralString(string key, int32 count) => (string plural_string);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
@@ -478,7 +481,9 @@ interface AIChatUIHandler {
 interface ChatUI {
   // Notifies that the default conversation for the
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
-  OnNewDefaultConversation();
+  // Content ID is the content ID of the tab associated with the conversation,
+  // if any.
+  OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
   // Notifies that files are selected between AIChatUIHandler::UploadImage() is
   // called and return of uploaded files after processed.
@@ -610,6 +615,10 @@ interface UntrustedConversationHandler {
 interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  // Called when the associated content is changed - called when the untrusted
+  // conversation frame is attached and when the content is changed.
+  AssociatedContentChanged(array<AssociatedContent> associated_content);
 };
 
 interface ConversationUI {

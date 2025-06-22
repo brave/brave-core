@@ -27,6 +27,12 @@
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)" formatter_data="webui=AiChat">
     Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
   </message>
+  <message name="IDS_CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL" desc="Placeholder text for when there are attached pages in the input box" formatter_data="webui=AiChat">
+    {PAGE_COUNT, plural,
+      =1 {Ask a question about the content of this page}
+      other {Ask a question about the content of these pages}
+    }
+  </message>
   <message name="IDS_CHAT_UI_INITIAL_PLACEHOLDER_LABEL" desc="Placeholder text for the initial input box on a new chat" formatter_data="webui=AiChat">
     How can I help you today?
   </message>
@@ -382,10 +388,10 @@
     Search tabs
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_TITLE" desc="Title for the attachments section" formatter_data="webui=AiChat">
-    Attachments
+    Attach content from other tabs
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION" desc="Description for the attachments section" formatter_data="webui=AiChat">
-    Add your browser tabs to give Leo more context for the conversation
+    Send page content from your browser tabs to give Leo more context for the conversation
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE" desc="Title for the browser tabs section" formatter_data="webui=AiChat">
     Browser tabs
@@ -459,8 +465,8 @@
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations." formatter_data="webui=AiChat">
     Shape answers based on the tab(s) contents
   </message>
-  <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle" formatter_data="webui=AiChat">
-    Toggle on to ask about these tab(s). Contents will be sent to Brave Leo along with your messages.
+  <message name="IDS_CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip for page attachment" formatter_data="webui=AiChat">
+    This page's content will be sent to Leo along with your messages.
   </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.

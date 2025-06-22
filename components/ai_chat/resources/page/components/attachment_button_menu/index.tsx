@@ -19,8 +19,11 @@ import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 
 type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
-  'conversationHistory' | 'associatedContentInfo'> &
-  Pick<AIChatContext, 'isMobile'>
+  'conversationHistory' | 'associatedContentInfo'
+  | 'associateDefaultContent'> &
+  Pick<AIChatContext, 'isMobile'> & {
+    conversationStarted: boolean
+  }
 
 export default function AttachmentButtonMenu(props: Props) {
   const totalUploadedImages = props.conversationHistory.reduce(
@@ -30,6 +33,7 @@ export default function AttachmentButtonMenu(props: Props) {
   )
 
   const isMenuDisabled = totalUploadedImages >= MAX_IMAGES
+  const hasAssociatedContent = props.associatedContentInfo.length > 0
 
   return (
     <>
@@ -53,17 +57,16 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale(S.AI_CHAT_UPLOAD_FILE_BUTTON_LABEL)}
           </div>
         </leo-menu-item>
-        {!!props.associatedContentInfo &&
+        {hasAssociatedContent &&
           <leo-menu-item onClick={() => props.getScreenshots()}>
-             <div className={styles.buttonContent}>
-               <Icon
-                 className={styles.buttonIcon}
-                 name='screenshot'
-               />
-               {getLocale(S.AI_CHAT_SCREENSHOT_BUTTON_LABEL)}
-             </div>
-          </leo-menu-item>
-       }
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='screenshot'
+              />
+              {getLocale(S.AI_CHAT_SCREENSHOT_BUTTON_LABEL)}
+            </div>
+          </leo-menu-item>}
         {props.isMobile &&
           <leo-menu-item onClick={() => props.uploadImage(true)}>
             <div className={styles.buttonContent}>
@@ -75,6 +78,17 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         }
+        {!props.conversationStarted && props.associateDefaultContent && (
+          <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='window-tab'
+              />
+              {getLocale(S.AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL)}
+            </div>
+          </leo-menu-item>
+        )}
       </ButtonMenu>
     </>
   )
