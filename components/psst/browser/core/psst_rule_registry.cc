@@ -43,7 +43,6 @@ std::string ReadFile(const base::FilePath& file_path) {
 
 // static
 PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
-  CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
   static base::NoDestructor<PsstRuleRegistry> instance;
   return instance.get();
 }

@@ -84,10 +84,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
-    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
-        .Times(1)
-        .WillOnce(testing::Return(true));
+    SetUpPsstComponent();
+  }
 
+  virtual void SetUpPsstComponent() {
     LoadRulesTestCallback mock_callback;
     base::RunLoop run_loop;
     PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTesting(
@@ -103,6 +103,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
     RegisterPsstComponent(&component_update_service_);
     run_loop.Run();
+    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
+        .Times(1)
+        .WillOnce(testing::Return(true));
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
@@ -203,6 +206,17 @@ class PsstTabWebContentsObserverBrowserTestDisabled
   PsstTabWebContentsObserverBrowserTestDisabled() {
     feature_list_.Reset();
     feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
+  }
+
+  void SetUpPsstComponent() override {
+    LoadRulesTestCallback mock_callback;
+    PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTesting(
+        mock_callback.Get());
+    EXPECT_CALL(mock_callback, Run).Times(0);
+
+    RegisterPsstComponent(&component_update_service_);
+    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
+        .Times(0);
   }
 };
 

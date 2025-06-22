@@ -47,6 +47,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
 
   friend class PsstRuleRegistryUnitTest;
   friend class PsstTabWebContentsObserverBrowserTest;
+  friend class PsstTabWebContentsObserverBrowserTestDisabled;
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoading);
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
                            CheckIfMatchWithNoRulesLoaded);
