@@ -7,7 +7,7 @@
 
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
 
-#define ListActions(...) ListActionsChromium(__VA_ARGS__)
+#define ListActions ListActionsChromium
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc"
 
