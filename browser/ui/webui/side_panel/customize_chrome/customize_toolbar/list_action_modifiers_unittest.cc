@@ -7,46 +7,79 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ListActionModifiersUnitTest = ::testing::Test;
+using ActionId = side_panel::customize_chrome::mojom::ActionId;
 
-TEST_F(ListActionModifiersUnitTest, FilterUnsupportedChromiumAction) {
-  // We have four actions that are not supported.
-  //  * ActionId::kShowPaymentMethods
-  //  * ActionId::kShowTranslate
-  //  * ActionId::kShowReadAnything
-  //  * ActionId::kShowAddresses
-  // Checks if customize_chrome::FilterUnsupportedChromiumActions() filters them
-  // out.
-  using ActionId = side_panel::customize_chrome::mojom::ActionId;
-  side_panel::customize_chrome::mojom::ActionPtr action =
-      side_panel::customize_chrome::mojom::Action::New();
-  action->id = ActionId::kShowPaymentMethods;
-  std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions;
-  actions.push_back(std::move(action));
-  action = side_panel::customize_chrome::mojom::Action::New();
-  action->id = ActionId::kShowTranslate;
-  actions.push_back(std::move(action));
-  action = side_panel::customize_chrome::mojom::Action::New();
-  action->id = ActionId::kShowReadAnything;
-  actions.push_back(std::move(action));
-  action = side_panel::customize_chrome::mojom::Action::New();
-  action->id = ActionId::kShowAddresses;
-  actions.push_back(std::move(action));
+class ListActionModifiersUnitTest : public testing::Test {
+ protected:
+  static constexpr auto kUnsupportedChromiumActions =
+      base::MakeFixedFlatSet<ActionId>(
+          {ActionId::kShowPaymentMethods, ActionId::kShowTranslate,
+           ActionId::kShowReadAnything, ActionId::kShowAddresses});
+};
 
-  actions =
-      customize_chrome::FilterUnsupportedChromiumActions(std::move(actions));
-  // The actions vector should be empty now.
-  EXPECT_TRUE(actions.empty());
+TEST_F(ListActionModifiersUnitTest,
+       FilterUnsupportedChromiumAction_IndividualActions) {
+  // For each possible action, verify it's either filtered or preserved
+  // correctly
 
-  // Now let's add a supported action and check if it remains.
-  action = side_panel::customize_chrome::mojom::Action::New();
-  action->id = ActionId::kShowBookmarks;
-  actions.push_back(std::move(action));
-  actions =
-      customize_chrome::FilterUnsupportedChromiumActions(std::move(actions));
-  // The actions vector should contain the supported action.
-  EXPECT_EQ(actions.size(), 1u);
-  EXPECT_EQ(actions[0]->id, ActionId::kShowBookmarks);
+  // Test each action individually to ensure proper filtering
+  for (ActionId id = ActionId::kMinValue; id <= ActionId::kMaxValue;
+       id = static_cast<ActionId>(static_cast<int>(id) + 1)) {
+    std::vector<side_panel::customize_chrome::mojom::ActionPtr> single_action;
+    auto action = side_panel::customize_chrome::mojom::Action::New();
+    action->id = id;
+    single_action.push_back(std::move(action));
+
+    const auto filtered = customize_chrome::FilterUnsupportedChromiumActions(
+        std::move(single_action));
+
+    // Check if this action should be filtered out
+    const bool should_be_filtered =
+        base::Contains(kUnsupportedChromiumActions, id);
+
+    if (should_be_filtered) {
+      EXPECT_TRUE(filtered.empty()) << "Action ID " << static_cast<int>(id)
+                                    << " should be filtered out but wasn't.";
+    } else {
+      EXPECT_EQ(filtered.size(), 1u) << "Action ID " << static_cast<int>(id)
+                                     << " was incorrectly filtered out.";
+      if (!filtered.empty()) {
+        EXPECT_EQ(filtered[0]->id, id);
+      }
+    }
+  }
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       FilterUnsupportedChromiumAction_PossibleActions) {
+  // Create vector with all possible actions
+  std::vector<side_panel::customize_chrome::mojom::ActionPtr> all_actions;
+  for (ActionId id = ActionId::kMinValue; id <= ActionId::kMaxValue;
+       id = static_cast<ActionId>(static_cast<int>(id) + 1)) {
+    auto action = side_panel::customize_chrome::mojom::Action::New();
+    action->id = id;
+    all_actions.push_back(std::move(action));
+  }
+
+  // Test that the exact expected number of actions remain
+  const auto filtered_all = customize_chrome::FilterUnsupportedChromiumActions(
+      std::move(all_actions));
+
+  const size_t expected_size = static_cast<int>(ActionId::kMaxValue) -
+                               static_cast<int>(ActionId::kMinValue) + 1 -
+                               kUnsupportedChromiumActions.size();
+
+  EXPECT_EQ(expected_size, filtered_all.size())
+      << "Wrong number of actions after filtering.";
+
+  // Verify none of the unsupported actions remain
+  for (const auto& action : filtered_all) {
+    EXPECT_FALSE(base::Contains(kUnsupportedChromiumActions, action->id))
+        << "Found unsupported action ID " << static_cast<int>(action->id)
+        << " in filtered results.";
+  }
 }
