@@ -76,7 +76,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         component_updater::DIR_COMPONENT_PREINSTALLED,
         test_data_dir.AppendASCII("brave/components/test/data/psst"));
 
-    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.ServeFilesFromDirectory(
+        test_data_dir.AppendASCII("brave/test/data"));
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
 
