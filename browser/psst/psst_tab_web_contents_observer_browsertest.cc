@@ -88,6 +88,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   virtual void SetUpPsstComponent() {
+    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
+        .Times(1)
+        .WillOnce(testing::Return(true));
     LoadRulesTestCallback mock_callback;
     base::RunLoop run_loop;
     PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTesting(
@@ -103,9 +106,6 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
     RegisterPsstComponent(&component_update_service_);
     run_loop.Run();
-    EXPECT_CALL(component_update_service_, RegisterComponent(testing::_))
-        .Times(1)
-        .WillOnce(testing::Return(true));
   }
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
