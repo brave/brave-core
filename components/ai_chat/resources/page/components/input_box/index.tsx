@@ -140,6 +140,8 @@ function InputBox(props: InputBoxProps) {
   const showPageAttachments = props.context.associatedContentInfo.length > 0
     && props.context.shouldSendPageContents
     && !props.conversationStarted
+  const isSendButtonDisabled =
+    props.context.shouldDisableUserInput || props.context.inputText === ''
 
   return (
     <form className={styles.form}>
@@ -252,21 +254,31 @@ function InputBox(props: InputBoxProps) {
           {props.context.isGenerating ? (
             <Button
               fab
-              kind='plain-faint'
+              kind='filled'
+              className={classnames({
+                [styles.button]: true,
+                [styles.streamingButton]: true
+              })}
               onClick={handleStopGenerating}
               title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
             >
-              <Icon name='stop-circle' />
+              <Icon name='stop-circle' className={styles.streamingIcon} />
             </Button>
           ) : (
             <Button
               fab
-              kind='plain-faint'
+              kind='filled'
+              className={classnames({
+                [styles.button]: true,
+                [styles.sendButtonDisabled]: isSendButtonDisabled
+              })}
               onClick={handleSubmit}
-              disabled={props.context.shouldDisableUserInput}
+              disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
             >
-              <Icon name='send' />
+              <Icon className={classnames({
+                [styles.sendIconDisabled]: isSendButtonDisabled
+              })} name='arrow-up' />
             </Button>
           )}
         </div>

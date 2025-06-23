@@ -38,7 +38,10 @@ export default function AttachmentButtonMenu(props: Props) {
   return (
     <>
       <ButtonMenu>
-        <div slot='anchor-content'>
+        <div
+          slot='anchor-content'
+          className={styles.anchor}
+        >
           <Button
             fab
             kind='plain-faint'
