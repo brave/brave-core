@@ -56,6 +56,98 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/item.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/extensions/item.html.ts
++++ gen/chrome/browser/resources/extensions/preprocessed/item.html.ts
+@@ -13,10 +13,9 @@
+ </div>
+ <div id=\\"card\\" class=\\"\${this.computeClasses_()}\\">
+   <div id=\\"main\\">
+     <div id=\\"icon-wrapper\\">
+-      <img id=\\"icon\\" src=\\"\${this.data.iconUrl}\\"
+-          aria-describedby=\\"a11yAssociation\\" alt=\\"\\">
++      <img id=\\"icon\\" src=\\"\${this.data.iconUrl}\\" aria-describedby=\\"a11yAssociation\\" alt=\\"\\">
+       \${this.computeSourceIndicatorIcon_() ? html\`
+         <div id=\\"source-indicator\\">
+           <div class=\\"source-icon-wrapper\\" role=\\"img\\"
+               aria-describedby=\\"a11yAssociation\\"
+@@ -38,20 +37,19 @@
+       <!--Note: We wrap inspect-views in a div so that the outer div
+           doesn't shrink (because it's not display: flex).-->
+       <div>
+         <div id=\\"name-and-version\\" class=\\"layout-horizontal-center\\">
+-          <div id=\\"name\\" role=\\"heading\\" aria-level=\\"3\\"
+-              class=\\"clippable-flex-text\\">
++          <div id=\\"name\\" role=\\"heading\\" aria-level=\\"3\\" class=\\"clippable-flex-text\\">
+             \${this.data.name}
+           </div>
+-          <span id=\\"version\\" class=\\"cr-secondary-text\\"
+-              ?hidden=\\"\${!this.inDevMode}\\">
++          <span id=\\"version\\" class=\\"cr-secondary-text\\" ?hidden=\\"\${!this.inDevMode}\\">
+             \${this.data.version}
+           </span>
+-        </div>
++        </div><div ?hidden=\\"\${!this.isBraveHosted_(this.data.id)}\\" class=\\"brave-hosted\\">
++          $i18n{braveHosted}
++       </div>
+       </div>
+-      <div id=\\"description\\" class=\\"cr-secondary-text multiline-clippable-text\\"
+-          ?hidden=\\"\${!this.showDescription_()}\\">
++      <div id=\\"description\\" class=\\"cr-secondary-text multiline-clippable-text\\" ?hidden=\\"\${!this.showDescription_()}\\">
+         \${this.data.description}
+       </div>
+       \${this.showSevereWarnings() ? html\`
+         <div id=\\"warnings\\">
+@@ -132,15 +130,12 @@
+     </div>
+   </div>
+   <div id=\\"button-strip\\" class=\\"layout-horizontal-center cr-secondary-text\\">
+     <div class=\\"layout-horizontal-center flex\\">
+-      <cr-button id=\\"detailsButton\\" @click=\\"\${this.onDetailsClick_}\\"
+-          aria-describedby=\\"a11yAssociation\\">
++      <cr-button id=\\"detailsButton\\" @click=\\"\${this.onDetailsClick_}\\" aria-describedby=\\"a11yAssociation\\">
+         $i18n{itemDetails}
+       </cr-button>
+-      <cr-button id=\\"removeButton\\" @click=\\"\${this.onRemoveClick_}\\"
+-          aria-describedby=\\"a11yAssociation\\"
+-          ?hidden=\\"\${this.data.mustRemainInstalled}\\">
++      <cr-button id=\\"removeButton\\" @click=\\"\${this.onRemoveClick_}\\" aria-describedby=\\"a11yAssociation\\" ?hidden=\\"\${this.data.mustRemainInstalled}\\">
+         $i18n{remove}
+       </cr-button>
+       \${this.shouldShowErrorsButton_() ? html\`
+         <cr-button id=\\"errors-button\\" @click=\\"\${this.onErrorsClick_}\\"
+@@ -168,24 +163,14 @@
+       <cr-button id=\\"terminated-reload-button\\" @click=\\"\${this.onReloadClick_}\\"
+           aria-describedby=\\"a11yAssociation\\" class=\\"action-button\\">
+         $i18n{itemReload}
+       </cr-button>\` : ''}
+-    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\"
+-        ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\"
+-        tooltip-text=\\"$i18n{parentDisabledPermissions}\\"
+-        icon-class=\\"cr20:kite\\"
+-        icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
++    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\" ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\" tooltip-text=\\"$i18n{parentDisabledPermissions}\\" icon-class=\\"cr20:kite\\" icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
+     </cr-tooltip-icon>
+-    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\"
+-        aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds>
++    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\" aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds=\\"\\">
+       \${this.getEnableToggleTooltipText_()}
+     </cr-tooltip>
+-    <cr-toggle id=\\"enableToggle\\"
+-        aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\"
+-        aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\"
+-        ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\"
+-        ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\"
+-        ?hidden=\\"\${!this.showEnableToggle_()}\\">
++    <cr-toggle id=\\"enableToggle\\" aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\" aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\" ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\" ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\" ?hidden=\\"\${!this.showEnableToggle_()}\\">
+     </cr-toggle>
+   </div>
+ </div>
+ <!--_html_template_end_-->\`;
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/side_panel/customize_chrome/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
