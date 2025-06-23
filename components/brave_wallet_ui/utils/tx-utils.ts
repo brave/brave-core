@@ -108,6 +108,7 @@ export interface ParsedTransaction
   isSolanaDappTransaction: boolean
   isSolanaSPLTransaction: boolean
   isFilecoinTransaction: boolean
+  isCardanoTransaction: boolean
   coinType: BraveWallet.CoinType
 
   // Tokens
@@ -1780,6 +1781,7 @@ export const parseTransactionWithoutPrices = ({
     isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
     isEIP1559Transaction,
     isFilecoinTransaction: isFilecoinTransaction(tx),
+    isCardanoTransaction: isCardanoTransaction(tx),
     isSendingToZeroXExchangeProxy,
     isSolanaDappTransaction: isSolanaDappTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),

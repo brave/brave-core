@@ -82,9 +82,13 @@ export const TransactionInfo = ({
 
   const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency || isLoadingGasFee
 
-  const { isSolanaTransaction, isFilecoinTransaction } = transactionDetails
+  const { isSolanaTransaction, isFilecoinTransaction, isCardanoTransaction } =
+    transactionDetails
   const feeLocale =
-    isSolanaTransaction || isZCashTransaction || isBitcoinTransaction
+    isSolanaTransaction
+    || isZCashTransaction
+    || isBitcoinTransaction
+    || isCardanoTransaction
       ? 'braveWalletConfirmTransactionTransactionFee'
       : 'braveWalletConfirmTransactionGasFee'
 
