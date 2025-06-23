@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "base/i18n/case_conversion.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "build/branding_buildflags.h"
 #include "chrome/browser/ui/browser.h"

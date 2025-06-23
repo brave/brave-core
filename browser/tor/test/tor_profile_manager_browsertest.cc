@@ -7,7 +7,6 @@
 
 #include "base/path_service.h"
 #include "base/process/launch.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"

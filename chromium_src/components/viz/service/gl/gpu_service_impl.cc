@@ -5,6 +5,8 @@
 
 #include "components/viz/service/gl/gpu_service_impl.h"
 
+#include "base/strings/utf_string_conversions.h"
+
 #define InitializeWithHost InitializeWithHost_ChromiumImpl
 
 #include "src/components/viz/service/gl/gpu_service_impl.cc"

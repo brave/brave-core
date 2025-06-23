@@ -25,7 +25,6 @@
 #include "base/notreached.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/mime_util.h"
 #include "brave/components/playlist/browser/playlist_service.h"

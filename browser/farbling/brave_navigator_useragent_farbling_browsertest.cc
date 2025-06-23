@@ -9,7 +9,6 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"

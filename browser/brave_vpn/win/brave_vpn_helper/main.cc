@@ -11,7 +11,6 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/process/memory.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/win/process_startup_helper.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_crash_reporter_client.h"

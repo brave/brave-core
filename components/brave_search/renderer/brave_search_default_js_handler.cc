@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
-#include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"

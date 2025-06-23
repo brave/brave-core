@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/webui/webui_resources.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"

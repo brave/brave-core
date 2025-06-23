@@ -7,7 +7,6 @@
 
 #include <algorithm>
 
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_view_ids.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
