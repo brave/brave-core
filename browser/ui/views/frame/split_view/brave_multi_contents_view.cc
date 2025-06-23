@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -123,7 +124,7 @@ void BraveMultiContentsView::Layout(PassKey) {
 
 float BraveMultiContentsView::GetCornerRadius(bool for_border) const {
   auto* exclusive_access_manager =
-      browser_view_->browser()->exclusive_access_manager();
+      browser_view_->browser()->GetFeatures().exclusive_access_manager();
   if (exclusive_access_manager &&
       exclusive_access_manager->fullscreen_controller()->IsTabFullscreen()) {
     return 0;
