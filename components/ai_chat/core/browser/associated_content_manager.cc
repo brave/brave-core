@@ -72,9 +72,6 @@ void AssociatedContentManager::LoadArchivedContent(
     AddContent(archive_content_.back().get(), /*notify_updated=*/false);
   }
 
-  // If we restored content from an archive then it was used in the conversation
-  // so we should send it.
-  should_send_ = should_send_ || !archive->associated_content.empty();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -127,12 +124,6 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     content_observations_.AddObservation(delegate);
   }
 
-  // If we're adding content, we probably want to send it, otherwise, set
-  // |should_send_| to the default value.
-  should_send_ =
-      !detach_existing_content ||
-      (features::IsPageContextEnabledInitially() && HasAssociatedContent());
-
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
   }
@@ -159,9 +150,6 @@ void AssociatedContentManager::RemoveContent(
   if (archive_it != archive_content_.end()) {
     archive_content_.erase(archive_it);
   }
-
-  // If we're modifying the associated content, we probably want to send it.
-  should_send_ = !content_delegates_.empty();
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -368,16 +356,6 @@ bool AssociatedContentManager::IsVideo() const {
 
   return content_delegates_.size() == 1 &&
          content_delegates_[0]->GetCachedIsVideo();
-}
-
-void AssociatedContentManager::SetShouldSend(bool value) {
-  DVLOG(1) << __func__ << " " << value;
-  if (value == should_send_) {
-    return;
-  }
-
-  should_send_ = value && HasAssociatedContent();
-  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::OnNavigated(

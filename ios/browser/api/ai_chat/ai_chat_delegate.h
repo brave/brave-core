@@ -26,8 +26,7 @@ OBJC_EXPORT
              modelList:(NSArray<AiChatModel*>*)modelList;
 - (void)onSuggestedQuestionsChanged:(NSArray<NSString*>*)questions
                              status:(AiChatSuggestionGenerationStatus)status;
-- (void)onPageHasContent:(NSArray<AiChatAssociatedContent*>*)siteInfo
-       shouldSendContent:(bool)shouldSendContent;
+- (void)onPageHasContent:(NSArray<AiChatAssociatedContent*>*)siteInfo;
 - (void)onServiceStateChanged:(AiChatServiceState*)state;
 @end
 
