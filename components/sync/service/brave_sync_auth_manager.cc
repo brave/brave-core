@@ -122,7 +122,7 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   std::string timestamp =
-      std::to_string(int64_t(time.InMillisecondsFSinceUnixEpoch()));
+      base::NumberToString(int64_t(time.InMillisecondsFSinceUnixEpoch()));
   if (public_key_.empty() || private_key_.empty()) {
     return;
   }

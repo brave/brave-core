@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -67,7 +68,7 @@ class SolanaBlockTrackerUnitTest : public testing::Test {
     return "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
            "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":\"" +
            response_blockhash_ + "\", \"lastValidBlockHeight\":" +
-           std::to_string(response_last_valid_block_height_) + "}}}";
+           base::NumberToString(response_last_valid_block_height_) + "}}}";
   }
 
   void TestGetLatestBlockhash(const base::Location& location,

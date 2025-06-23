@@ -167,7 +167,7 @@ void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   const HostPortPair old_host_port = proxy_server_.host_port_pair();
   const HostPortPair new_host_port(
       CircuitAnonymizationKey(url),
-      std::to_string(
+      base::NumberToString(
           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds()),
       old_host_port.host(), old_host_port.port());
   proxy_server_ = ProxyServer(ProxyServer::SCHEME_SOCKS5, new_host_port);
@@ -206,7 +206,7 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   if (!username.empty()) {
     auto* map = GetTorProxyMap(service);
     if (host_port_pair.username() == username) {
-      // password is a int64_t -> std::to_string in milliseconds
+      // password is a int64_t -> base::NumberToString in milliseconds
       int64_t time = 0;
       base::StringToInt64(host_port_pair.password(), &time);
       map->MaybeExpire(

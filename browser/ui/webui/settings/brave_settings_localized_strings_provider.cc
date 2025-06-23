@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 
-#include <string>
-
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -935,7 +933,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               g_browser_process->GetApplicationLocale())
               .spec()));
   html_source->AddString("autoLockMinutesValue",
-                         std::to_string(profile->GetPrefs()->GetInteger(
+                         base::NumberToString(profile->GetPrefs()->GetInteger(
                              kBraveWalletAutoLockMinutes)));
 
   html_source->AddString(
