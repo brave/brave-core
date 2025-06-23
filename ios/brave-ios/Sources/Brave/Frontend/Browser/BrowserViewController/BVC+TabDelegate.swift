@@ -544,6 +544,7 @@ extension BrowserViewController {
     tab.isDisplayingBasicAuthPrompt = true
     defer {
       tab.isDisplayingBasicAuthPrompt = false
+      updateToolbarCurrentURL(tab.visibleURL)
     }
 
     let isHidden = tab.view.isHidden
@@ -577,7 +578,6 @@ extension BrowserViewController {
 
       return resolvedCredential
     } catch {
-      updateToolbarCurrentURL(tab.visibleURL)
       return nil
     }
   }
