@@ -1227,6 +1227,7 @@ public class BytecodeTest {
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
+                        ExtensionService.class,
                         OneshotSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
