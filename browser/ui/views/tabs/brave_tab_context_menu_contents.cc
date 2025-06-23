@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <iterator>
-#include <optional>
 #include <stack>
 #include <string>
 #include <utility>
