@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
@@ -792,7 +793,8 @@ void JSEthereumProvider::AnnounceProvider() {
 const std::string& JSEthereumProvider::GetBraveWalletImage() {
   if (!brave_wallet_image_) {
     brave_wallet_image_ =
-        LoadImageResourceAsDataUrl(IDR_BRAVE_WALLET_PROVIDER_ICON);
+        "data:image/png;base64," +
+        base::Base64Encode(LoadDataResource(IDR_BRAVE_WALLET_PROVIDER_ICON));
   }
   return brave_wallet_image_.value();
 }
