@@ -80,6 +80,7 @@ import org.chromium.chrome.browser.translate.TranslateBridgeJni;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
+import org.chromium.chrome.browser.ui.extensions.ExtensionService;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePage;
 import org.chromium.components.browser_ui.accessibility.PageZoomCoordinator;
@@ -143,6 +144,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private WebFeedSnackbarController.FeedLauncher mFeedLauncher;
     @Mock private ModalDialogManager mDialogManager;
     @Mock private SnackbarManager mSnackbarManager;
+    @Mock private ExtensionService mExtensionService;
     @Mock private OfflinePageUtils.Internal mOfflinePageUtils;
     @Mock private SigninManager mSigninManager;
     @Mock private IdentityManager mIdentityManager;
@@ -255,6 +257,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mFeedLauncher,
                         mDialogManager,
                         mSnackbarManager,
+                        mExtensionService,
                         mIncognitoReauthControllerSupplier,
                         mReadAloudControllerSupplier);
         delegate.setIsJunitTesting(true);
