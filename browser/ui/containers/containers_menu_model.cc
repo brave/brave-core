@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -15,13 +16,9 @@
 
 namespace containers {
 
-ContainersMenuModel::ContainersMenuModel(Type type,
-                                         Delegate& delegate,
+ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)
-    : ui::SimpleMenuModel(this),
-      type_(type),
-      delegate_(delegate),
-      items_(std::move(items)) {
+    : ui::SimpleMenuModel(this), delegate_(delegate), items_(std::move(items)) {
   // 1. Add items for each container.
   int index = 0;
   for (const auto& item : items_) {
@@ -61,13 +58,8 @@ void ContainersMenuModel::ContainerSelected(int command_id) {
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
-  if (type_ == Type::kRendererContextMenu) {
-    // For links, we don't have a current container concept.
-    return false;
-  }
-
-  const auto& id = delegate_->GetCurrentContainerId();
-  return id.has_value() && items_.at(command_id).id() == id.value();
+  const auto& ids = delegate_->GetCurrentContainerIds();
+  return base::Contains(ids, items_[command_id].container()->id);
 }
 
 bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {
