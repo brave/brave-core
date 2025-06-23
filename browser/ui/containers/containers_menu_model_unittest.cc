@@ -21,21 +21,18 @@ class ContainersMenuModelUnitTest : public testing::Test {
   std::vector<ContainerModel> GetContainers() const {
     std::vector<ContainerModel> containers;
     for (const auto& model : containers_) {
-      containers.push_back(ContainerModel(model.container()->Clone(), {}));
+      containers.emplace_back(ContainerModel(model.container()->Clone()));
     }
     return containers;
   }
 
   void SetUp() override {
-    containers_.push_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer1", "Example 1"),
-        {}));
-    containers_.push_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer2", "Example 2"),
-        {}));
-    containers_.push_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer3", "Example 3"),
-        {}));
+    containers_.emplace_back(ContainerModel(
+        containers::mojom::Container::New("ExampleContainer1", "Example 1")));
+    containers_.emplace_back(ContainerModel(
+        containers::mojom::Container::New("ExampleContainer2", "Example 2")));
+    containers_.emplace_back(ContainerModel(
+        containers::mojom::Container::New("ExampleContainer3", "Example 3")));
   }
 
   void TearDown() override { containers_.clear(); }
