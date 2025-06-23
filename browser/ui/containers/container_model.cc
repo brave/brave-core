@@ -7,6 +7,8 @@
 
 #include <utility>
 
+namespace containers {
+
 ContainerModel::ContainerModel(containers::mojom::ContainerPtr container,
                                ui::ImageModel icon)
     : container_(std::move(container)), icon_(std::move(icon)) {
@@ -19,3 +21,5 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
     default;
 
 ContainerModel::~ContainerModel() = default;
+
+}  // namespace containers

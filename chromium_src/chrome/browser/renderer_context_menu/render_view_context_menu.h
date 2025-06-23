@@ -41,10 +41,11 @@ class BraveRenderViewContextMenu;
 #undef BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
 
 // Declare our own subclass with overridden methods.
-class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium
+class BraveRenderViewContextMenu
+    : public RenderViewContextMenu_Chromium
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-                                   public ContainersMenuModel::Delegate
+      public containers::ContainersMenuModel::Delegate
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
  public:
@@ -102,7 +103,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium
   ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  std::unique_ptr<ContainersMenuModel> containers_submenu_model_;
+  std::unique_ptr<containers::ContainersMenuModel> containers_submenu_model_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };
 

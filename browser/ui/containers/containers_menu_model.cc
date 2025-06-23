@@ -13,6 +13,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 
+namespace containers {
+
 ContainersMenuModel::ContainersMenuModel(Type type,
                                          Delegate& delegate,
                                          std::vector<ContainerModel> items)
@@ -70,3 +72,5 @@ bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
 bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {
   return true;
 }
+
+}  // namespace containers

@@ -708,8 +708,8 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
-  containers_submenu_model_ = std::make_unique<ContainersMenuModel>(
-      ContainersMenuModel::Type::kLink, *this,
+  containers_submenu_model_ = std::make_unique<containers::ContainersMenuModel>(
+      containers::ContainersMenuModel::Type::kLink, *this,
       containers::GetContainerModelsFromPrefs(*GetProfile()->GetPrefs()));
 
   menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,

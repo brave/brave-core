@@ -11,7 +11,8 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-class MockContainerMenuModelDelegate : public ContainersMenuModel::Delegate {
+class MockContainerMenuModelDelegate
+    : public containers::ContainersMenuModel::Delegate {
  public:
   MockContainerMenuModelDelegate();
   ~MockContainerMenuModelDelegate() override;
