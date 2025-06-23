@@ -37,11 +37,6 @@ std::optional<std::string> ChooseCaptionTrackUrl(
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string_view body);
 
-// Returns the path to the YouTube player response file based on the key
-// parameter. If key is empty, returns the path to default.json.
-std::string GetYoutubePlayerResponsePath(const base::FilePath& test_data_dir,
-                                         const std::string& key);
-
 // Parse YouTube transcript XML content and return the combined transcript text.
 // Handles both <transcript> and <timedtext> formats.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
