@@ -16,8 +16,7 @@ namespace containers {
 // A model for view that represents a container in the UI.
 class ContainerModel {
  public:
-  ContainerModel(containers::mojom::ContainerPtr container,
-                 ui::ImageModel icon);
+  explicit ContainerModel(containers::mojom::ContainerPtr container);
   ContainerModel(const ContainerModel&) = delete;
   ContainerModel& operator=(const ContainerModel&) = delete;
   ContainerModel(ContainerModel&& other) noexcept;

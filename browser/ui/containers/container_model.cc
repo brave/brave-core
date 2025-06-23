@@ -7,11 +7,13 @@
 
 #include <utility>
 
+#include "brave/browser/ui/containers/container_model_utils.h"
+
 namespace containers {
 
-ContainerModel::ContainerModel(containers::mojom::ContainerPtr container,
-                               ui::ImageModel icon)
-    : container_(std::move(container)), icon_(std::move(icon)) {
+ContainerModel::ContainerModel(containers::mojom::ContainerPtr container)
+    : container_(std::move(container)),
+      icon_(GetImageModelForContainer(container)) {
   CHECK(container_) << "Container must be valid";
 }
 

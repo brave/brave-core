@@ -15,8 +15,7 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
     const PrefService& prefs) {
   std::vector<ContainerModel> containers;
   for (auto& container : containers::GetContainersFromPrefs(prefs)) {
-    containers.emplace_back(std::move(container),
-                            GetImageModelForContainer(container));
+    containers.emplace_back(std::move(container));
   }
   return containers;
 }
