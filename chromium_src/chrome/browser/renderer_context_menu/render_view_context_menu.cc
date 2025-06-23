@@ -775,7 +775,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveRenderViewContextMenu::OnContainerSelected(
-    containers::mojom::ContainerPtr container) {
+    const containers::mojom::ContainerPtr& container) {
   NOTIMPLEMENTED();
 }
 

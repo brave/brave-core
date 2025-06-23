@@ -18,7 +18,7 @@ class MockContainerMenuModelDelegate : public ContainersMenuModel::Delegate {
 
   MOCK_METHOD(void,
               OnContainerSelected,
-              (containers::mojom::ContainerPtr container),
+              (const containers::mojom::ContainerPtr& container),
               (override));
 
   MOCK_METHOD(std::optional<std::string_view>,

@@ -25,7 +25,9 @@ class ContainerModel {
   const std::string id() const { return container_->id; }
   const std::string name() const { return container_->name; }
   const ui::ImageModel& icon() const { return icon_; }
-  containers::mojom::ContainerPtr CloneContainer() const;
+  const containers::mojom::ContainerPtr& container() const {
+    return container_;
+  }
 
  private:
   containers::mojom::ContainerPtr container_;

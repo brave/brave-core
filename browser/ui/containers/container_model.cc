@@ -19,7 +19,3 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
     default;
 
 ContainerModel::~ContainerModel() = default;
-
-containers::mojom::ContainerPtr ContainerModel::CloneContainer() const {
-  return container_->Clone();
-}

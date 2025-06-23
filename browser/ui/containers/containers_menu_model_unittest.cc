@@ -18,7 +18,7 @@ class ContainersMenuModelUnitTest : public testing::Test {
   std::vector<ContainerModel> GetContainers() const {
     std::vector<ContainerModel> containers;
     for (const auto& model : containers_) {
-      containers.push_back(ContainerModel(model.CloneContainer(), {}));
+      containers.push_back(ContainerModel(model.container()->Clone(), {}));
     }
     return containers;
   }
