@@ -369,6 +369,9 @@ bool AssociatedContentManager::IsVideo() const {
 
 void AssociatedContentManager::SetShouldSend(bool value) {
   DVLOG(1) << __func__ << " " << value;
+  if (value == should_send_) {
+    return;
+  }
 
   should_send_ = value && HasAssociatedContent();
   conversation_->OnAssociatedContentUpdated();
