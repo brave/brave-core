@@ -2230,6 +2230,13 @@
 # kClearCrossSiteCrossBrowsingContextGroupWindowName is set to
 -All/ClearWindowNameForNewBrowsingContextGroupTestP.ClearWindowNameCrossSite/0
 
+# These tests fail because we enable features::kTabstripComboButton and stub
+# features::HasTabSearchToolbarButton() to return true
+-TabSearchButtonBrowserTest.ButtonClickCreatesBubble
+-TabSearchButtonBrowserUITest.InvokeUi_default
+-TabStripComboButtonBrowserTest.BuildsComboButton
+-TabStripComboButtonBrowserTest.SeparatorVisibility
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
