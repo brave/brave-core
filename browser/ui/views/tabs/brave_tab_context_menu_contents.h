@@ -72,6 +72,7 @@ class BraveTabContextMenuContents
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override;
   std::optional<std::string_view> GetCurrentContainerId() override;
+  Browser* GetBrowserToOpenSettings() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
  private:

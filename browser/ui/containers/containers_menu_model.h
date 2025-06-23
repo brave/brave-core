@@ -16,6 +16,8 @@
 
 FORWARD_DECLARE_TEST(ContainersMenuModelUnitTest, ModelContainsAllContainers);
 
+class Browser;
+
 namespace containers {
 
 class ContainersMenuModel : public ui::SimpleMenuModel,
@@ -37,6 +39,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual void OnContainerSelected(
         const containers::mojom::ContainerPtr& container) = 0;
     virtual std::optional<std::string_view> GetCurrentContainerId() = 0;
+    virtual Browser* GetBrowserToOpenSettings() = 0;
   };
 
   static constexpr int kCommandToOpenSettingsPage =

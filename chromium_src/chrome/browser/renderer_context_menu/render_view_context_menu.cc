@@ -716,6 +716,10 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
                                      IDS_CXMENU_OPEN_IN_CONTAINER,
                                      containers_submenu_model_.get());
 }
+
+Browser* BraveRenderViewContextMenu::GetBrowserToOpenSettings() {
+  return GetBrowser();
+}
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {

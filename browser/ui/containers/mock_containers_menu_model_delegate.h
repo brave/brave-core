@@ -26,6 +26,8 @@ class MockContainerMenuModelDelegate
               GetCurrentContainerId,
               (),
               (override const));
+
+  MOCK_METHOD(Browser*, GetBrowserToOpenSettings, (), (override));
 };
 
 #endif  // BRAVE_BROWSER_UI_CONTAINERS_MOCK_CONTAINERS_MENU_MODEL_DELEGATE_H_
