@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
+#include "base/gtest_prod_util.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/label_button.h"

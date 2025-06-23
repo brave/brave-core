@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_ACTION_ICON_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_ACTION_ICON_VIEW_H_
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_state_manager.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
