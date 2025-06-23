@@ -70,7 +70,8 @@ class AIChatBrowserTest : public InProcessBrowserTest {
 
             // Read and serve the file
             std::string file_contents;
-            EXPECT_TRUE(base::ReadFileToString(file_path, &file_contents));
+            CHECK(base::ReadFileToString(file_path, &file_contents))
+                << "Failed to read file: " << file_path;
             response->set_code(net::HTTP_OK);
             response->set_content_type("application/json");
             response->set_content(file_contents);
