@@ -29,12 +29,7 @@ class TabRestoreService;
 
 class Browser;
 
-class BraveTabMenuModel : public TabMenuModel
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    ,
-                          public ContainersMenuModel::Delegate
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-{
+class BraveTabMenuModel : public TabMenuModel {
  public:
   enum BraveTabContextMenuCommand {
     CommandStart = TabStripModel::CommandLast,
@@ -55,6 +50,9 @@ class BraveTabMenuModel : public TabMenuModel
   BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
                     TabMenuModelDelegate* tab_menu_model_delegate,
                     TabStripModel* tab_strip_model,
+#if BUILDFLAG(ENABLE_CONTAINERS)
+                    ContainersMenuModel::Delegate& containers_delegate,
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
                     int index,
                     bool is_vertical_tab);
   BraveTabMenuModel(const BraveTabMenuModel&) = delete;
@@ -65,11 +63,6 @@ class BraveTabMenuModel : public TabMenuModel
 
   // TabMenuModel:
   std::u16string GetLabelAt(size_t index) const override;
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  // ContainersMenuModel::Delegate:
-  void OnContainerSelected(int container_id) override;
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
  private:
   void Build(Browser* browser,
@@ -83,6 +76,7 @@ class BraveTabMenuModel : public TabMenuModel
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BuildItemForContainer(Browser* browser,
                              TabStripModel* tab_strip_model,
+                             ContainersMenuModel::Delegate& containers_delegate,
                              const std::vector<int>& indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -93,6 +87,7 @@ class BraveTabMenuModel : public TabMenuModel
   bool is_vertical_tab_ = false;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+  raw_ref<ContainersMenuModel::Delegate> containers_menu_model_delegate_;
   std::unique_ptr<ContainersMenuModel> containers_submenu_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };

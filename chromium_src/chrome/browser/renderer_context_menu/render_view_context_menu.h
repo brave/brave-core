@@ -8,6 +8,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -67,7 +68,8 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // ContainersMenuModel::Delegate:
-  void OnContainerSelected(int container_id) override;
+  void OnContainerSelected(containers::mojom::ContainerPtr) override;
+  std::optional<std::string_view> GetCurrentContainerId() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   void SetAIEngineForTesting(

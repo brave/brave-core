@@ -14,6 +14,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -27,7 +28,7 @@
 #include "ui/menus/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/browser/ui/containers/mock_containers_service.h"
+#include "brave/browser/ui/containers/container_model_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -35,10 +36,18 @@ BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ContainersMenuModel::Delegate& containers_delegate,
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
     int index,
     bool is_vertical_tab)
     : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index),
-      is_vertical_tab_(is_vertical_tab) {
+      is_vertical_tab_(is_vertical_tab)
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      ,
+      containers_menu_model_delegate_(containers_delegate)
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   CHECK(web_contents_);
   Browser* browser = chrome::FindBrowserWithTab(web_contents_);
@@ -135,7 +144,8 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainer(browser, tab_strip_model, indices);
+    BuildItemForContainer(browser, tab_strip_model,
+                          containers_menu_model_delegate_.get(), indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
@@ -179,25 +189,16 @@ void BraveTabMenuModel::BuildItemsForSplitView(
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void BraveTabMenuModel::OnContainerSelected(int container_id) {
-  // Should open selected tabs in the specified container.
-  // TODO(sko) Questions:
-  // Q1. What should we do if there's multiple tabs selected?
-  // Q2. What should we do if user selects already selected container? Are we
-  //     going to take the tabs out of the container, or do nothing?
-  NOTIMPLEMENTED();
-
-  // In-development code to simulate the container selection.
-  MockContainersService::GetInstance().set_selected_container_id(container_id);
-}
-
-void BraveTabMenuModel::BuildItemForContainer(Browser* browser,
-                                              TabStripModel* tab_strip_model,
-                                              const std::vector<int>& indices) {
+void BraveTabMenuModel::BuildItemForContainer(
+    Browser* browser,
+    TabStripModel* tab_strip_model,
+    ContainersMenuModel::Delegate& containers_delegate,
+    const std::vector<int>& indices) {
   auto index =
       *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
   containers_submenu_ = std::make_unique<ContainersMenuModel>(
-      ContainersMenuModel::Type::kTab, *this);
+      ContainersMenuModel::Type::kTab, containers_delegate,
+      containers::GetContainerModelsFromPrefs(*browser->profile()->GetPrefs()));
   InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());

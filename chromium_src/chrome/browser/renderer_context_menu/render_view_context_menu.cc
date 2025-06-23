@@ -69,6 +69,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/container_model_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -708,7 +709,9 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
   }
 
   containers_submenu_model_ = std::make_unique<ContainersMenuModel>(
-      ContainersMenuModel::Type::kLink, *this);
+      ContainersMenuModel::Type::kLink, *this,
+      containers::GetContainerModelsFromPrefs(*GetProfile()->GetPrefs()));
+
   menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
                                      IDS_CXMENU_OPEN_IN_CONTAINER,
                                      containers_submenu_model_.get());
@@ -771,8 +774,15 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void BraveRenderViewContextMenu::OnContainerSelected(int container_id) {
+void BraveRenderViewContextMenu::OnContainerSelected(
+    containers::mojom::ContainerPtr container) {
   NOTIMPLEMENTED();
+}
+
+std::optional<std::string_view>
+BraveRenderViewContextMenu::GetCurrentContainerId() {
+  // As Link will always be newly open in a container, there's no current state.
+  return std::nullopt;
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

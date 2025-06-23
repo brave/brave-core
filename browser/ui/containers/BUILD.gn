@@ -10,17 +10,20 @@ assert(enable_containers,
 
 source_set("containers") {
   sources = [
+    "container_model.cc",
+    "container_model.h",
+    "container_model_utils.cc",
+    "container_model_utils.h",
     "containers_menu_model.cc",
     "containers_menu_model.h",
-
-    # These files should be moved to test targets in the future.
-    "mock_containers_service.cc",
-    "mock_containers_service.h",
   ]
 
   deps = [
+    "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom:mojom",
     "//chrome/app:generated_resources",
     "//ui/base",
     "//ui/menus",
@@ -38,6 +41,7 @@ source_set("unit_tests") {
 
   deps = [
     ":containers",
+    "//base",
     "//base/allocator/partition_allocator/src/partition_alloc:test_support",
     "//testing/gmock",
     "//testing/gtest",

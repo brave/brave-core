@@ -12,9 +12,14 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/base/ui_base_types.h"
 #include "ui/menus/simple_menu_model.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/containers_menu_model.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 class BraveBrowserTabStripController;
 class BraveTabMenuModel;
@@ -33,7 +38,13 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
-class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
+class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ,
+                                    public ContainersMenuModel::Delegate
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+{
  public:
   BraveTabContextMenuContents(Tab* tab,
                               BraveBrowserTabStripController* controller,
@@ -55,6 +66,12 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
   void ExecuteCommand(int command_id, int event_flags) override;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // ContainersMenuModel::Delegate:
+  void OnContainerSelected(containers::mojom::ContainerPtr container) override;
+  std::optional<std::string_view> GetCurrentContainerId() override;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripStringBrowserTest,
