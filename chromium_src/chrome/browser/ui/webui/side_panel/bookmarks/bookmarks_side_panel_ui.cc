@@ -22,7 +22,7 @@ BookmarksSidePanelUIConfig::BookmarksSidePanelUIConfig()
                                   chrome::kChromeUIBookmarksSidePanelHost) {}
 
 bool BookmarksSidePanelUIConfig::IsPreloadable() {
-  return true;
+  return false;
 }
 
 std::optional<int> BookmarksSidePanelUIConfig::GetCommandIdForTesting() {
