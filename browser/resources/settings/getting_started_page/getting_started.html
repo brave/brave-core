@@ -1,5 +1,8 @@
 <style include="settings-shared md-select">
 </style>
+<if expr="enable_brave_account">
+  <settings-brave-account-row></settings-brave-account-row>
+</if>
 <settings-people-page prefs="{{prefs}}"
   page-visibility="[[pageVisibility]]">
 </settings-people-page>

@@ -7,9 +7,12 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_SETTINGS_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ACCOUNT));
 
 namespace content {
 class WebUI;

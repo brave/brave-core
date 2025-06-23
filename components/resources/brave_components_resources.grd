@@ -109,7 +109,9 @@
       <if expr="is_android">
         <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
       </if>
-      <part file="../brave_account/resources/brave_account_resources.grdp" />
+      <if expr="enable_brave_account">
+        <part file="../brave_account/resources/brave_account_resources.grdp" />
+      </if>
     </includes>
   </release>
 </grit>

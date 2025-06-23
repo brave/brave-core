@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_account/buildflags/buildflags.gni")
 import("//ui/webui/resources/tools/build_webui.gni")
+
+assert(enable_brave_account)
 
 build_webui("build") {
   grd_prefix = "brave_account"

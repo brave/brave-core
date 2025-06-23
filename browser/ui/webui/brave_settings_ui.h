@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "build/buildflag.h"
@@ -20,11 +20,15 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
-class BraveSettingsUI;
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
 namespace brave_account {
 class BraveAccountSettingsHandler;
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+
+class BraveSettingsUI;
 
 namespace content {
 class WebUIDataSource;
@@ -55,9 +59,6 @@ class BraveSettingsUI : public settings::SettingsUI {
       mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
-          pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
@@ -65,9 +66,15 @@ class BraveSettingsUI : public settings::SettingsUI {
           pending_receiver);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
+          pending_receiver);
+
  private:
   std::unique_ptr<brave_account::BraveAccountSettingsHandler>
       brave_account_settings_handler_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

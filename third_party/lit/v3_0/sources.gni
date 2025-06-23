@@ -3,9 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_account/buildflags/buildflags.gni")
+
 brave_lit_build_ts_visibility = [
   "//chrome/browser/resources/settings:build_ts",
   "//brave/browser/resources/brave_education:build_ts",
-  "//brave/components/brave_account/resources:build_ts",
   "//brave/ui/webui/resources:build_ts",
 ]
+
+if (enable_brave_account) {
+  brave_lit_build_ts_visibility +=
+      [ "//brave/components/brave_account/resources:build_ts" ]
+}

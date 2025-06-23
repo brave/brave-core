@@ -23,5 +23,8 @@ BraveAccountUIConfig::BraveAccountUIConfig()
 
 bool BraveAccountUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return false;
+  // TODO(sszaloki): will be
+  // return brave_account::features::IsBraveAccountEnabled();
+  // once the feature flag has been introduced.
+  return true;
 }

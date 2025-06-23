@@ -20,7 +20,6 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
-#include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -55,6 +54,10 @@
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -237,6 +240,7 @@ void BraveSettingsUI::BindInterface(
   web_ui()->AddMessageHandler(std::move(assistant_handler));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
         pending_receiver) {
@@ -244,6 +248,7 @@ void BraveSettingsUI::BindInterface(
       std::make_unique<brave_account::BraveAccountSettingsHandler>(
           std::move(pending_receiver), web_ui());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveSettingsUI::BindInterface(

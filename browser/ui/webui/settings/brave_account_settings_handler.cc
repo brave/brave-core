@@ -9,6 +9,8 @@
 
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_ACCOUNT));
+
 namespace brave_account {
 BraveAccountSettingsHandler::BraveAccountSettingsHandler(
     mojo::PendingReceiver<mojom::BraveAccountSettingsHandler> handler,

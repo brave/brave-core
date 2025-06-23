@@ -4,14 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_account/buildflags/buildflags.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
+import("//build/buildflag_header.gni")
 
-assert(enable_brave_account)
-assert(
-    !is_android && !is_ios,
-    "Mobile platforms should load the WebUI by navigating to it in a browser tab!")
-
-mojom("mojom") {
-  sources = [ "brave_account.mojom" ]
-  webui_module_path = "/"
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_BRAVE_ACCOUNT=$enable_brave_account" ]
 }
