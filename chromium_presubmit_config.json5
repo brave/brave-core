@@ -81,9 +81,8 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
-      "android/java/res/drawable/.*\\.xml",
       "android/java/res/values/.*\\.xml",
-      "browser/ui/android/toolbar/java/res/drawable/.*\\.xml",
+      ".*/java/res/drawable/.*\\.xml",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",

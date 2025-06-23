@@ -9,6 +9,7 @@ import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/browser/ui/android/toolbar/brave_java_resources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
+import("//brave/components/browser_ui/widget/android/brave_java_resources.gni")
 import("//brave/ui/android/brave_java_resources.gni")
 
 declare_args() {

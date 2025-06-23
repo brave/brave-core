@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/widget/android/BUILD.gn b/components/browser_ui/widget/android/BUILD.gn
+index 64f3fa1c2a7cde505b9c9daaea3769ff8f7ff3a1..ffa8565b22df04ab5fb3c442bce1f5b348afec9c 100644
+--- a/components/browser_ui/widget/android/BUILD.gn
++++ b/components/browser_ui/widget/android/BUILD.gn
+@@ -331,6 +331,7 @@ android_resources("java_resources") {
+     "//third_party/androidx:androidx_constraintlayout_constraintlayout_java",
+     "//ui/android:ui_java_resources",
+   ]
++  sources += brave_browser_ui_widget_android_java_resources sources -= brave_browser_ui_widget_android_java_resources_to_exclude
+ }
+ 
+ android_library("test_support_java") {

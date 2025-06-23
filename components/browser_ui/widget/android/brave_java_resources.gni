@@ -1,0 +1,15 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_ui_widget_android_java_resources =
+    [ "java/res/drawable/btn_info.xml" ]
+
+brave_browser_ui_widget_android_java_resources_to_exclude = [
+  "java/res/drawable-hdpi/btn_info.png",
+  "java/res/drawable-mdpi/btn_info.png",
+  "java/res/drawable-xhdpi/btn_info.png",
+  "java/res/drawable-xxhdpi/btn_info.png",
+  "java/res/drawable-xxxhdpi/btn_info.png",
+]

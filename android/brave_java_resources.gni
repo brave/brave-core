@@ -309,7 +309,6 @@ brave_java_resources = [
   "java/res/drawable/brave_sync_tab_layout_bg.xml",
   "java/res/drawable/brave_sync_top_rounded.xml",
   "java/res/drawable/brave_sync_top_rounded_light.xml",
-  "java/res/drawable/btn_info.xml",
   "java/res/drawable/card_bg.xml",
   "java/res/drawable/circular_progress.xml",
   "java/res/drawable/country_spinner_background.xml",

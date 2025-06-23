@@ -1145,6 +1145,17 @@ const util = {
             "drawable-xxhdpi", "ic_file_download_white_24dp.png"),
         path.join(androidResDest,
             "drawable-xxxhdpi", "ic_file_download_white_24dp.png"),
+
+        path.join(androidComponentsWidgetResDest,
+            "drawable-hdpi", "btn_info.png"),
+        path.join(androidComponentsWidgetResDest,
+            "drawable-mdpi", "btn_info.png"),
+        path.join(androidComponentsWidgetResDest,
+            "drawable-xhdpi", "btn_info.png"),
+        path.join(androidComponentsWidgetResDest,
+            "drawable-xxhdpi", "btn_info.png"),
+        path.join(androidComponentsWidgetResDest,
+            "drawable-xxxhdpi", "btn_info.png"),
       ]
       overriddenPngsToRemove.forEach((path) => fs.removeSync(path));
     }
