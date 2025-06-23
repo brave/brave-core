@@ -269,6 +269,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if BUILDFLAG(IS_ANDROID)
@@ -295,6 +296,10 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
 // it via its helper function
 TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
   EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
+}
+
+TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
+  EXPECT_TRUE(features::HasTabSearchToolbarButton());
 }
 
 #if !BUILDFLAG(IS_ANDROID)

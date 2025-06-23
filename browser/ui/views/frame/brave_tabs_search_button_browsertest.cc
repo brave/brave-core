@@ -13,11 +13,13 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -39,10 +41,14 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(prefs->GetBoolean(kTabsSearchShow));
 
-  views::View* button = nullptr;
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  button = browser_view->tab_strip_region_view()->GetTabSearchButton();
-  ASSERT_NE(nullptr, button);
+  views::View* button = nullptr;
+  if (features::HasTabSearchToolbarButton()) {
+    button = browser_view->toolbar()->tab_search_button();
+  } else {
+    button = browser_view->tab_strip_region_view()->GetTabSearchButton();
+  }
+  ASSERT_TRUE(button);
   EXPECT_TRUE(button->GetVisible());
 
   prefs->SetBoolean(kTabsSearchShow, false);
