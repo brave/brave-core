@@ -82,17 +82,12 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void OnNavigated(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
 
-  bool should_send() const { return should_send_; }
-  void SetShouldSend(bool value);
-
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
   }
 
  private:
   void DetachContent();
-
-  bool should_send_ = false;
 
   raw_ptr<ConversationHandler> conversation_;
 

@@ -31,8 +31,6 @@ OBJC_EXPORT
 
 - (void)getState:(void (^_Nullable)(AiChatConversationState*))completion;
 
-- (void)setShouldSendPageContents:(bool)shouldSend;
-
 - (void)changeModel:(NSString*)modelKey;
 
 - (void)submitHumanConversationEntry:(NSString*)text;

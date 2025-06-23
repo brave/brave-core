@@ -147,10 +147,6 @@
   model_service_->SetDefaultModelKey(base::SysNSStringToUTF8(modelKey));
 }
 
-- (void)setShouldSendPageContents:(bool)should_send {
-  current_conversation_->associated_content_manager()->SetShouldSend(should_send);
-}
-
 - (void)clearErrorAndGetFailedMessage:
     (void (^)(AiChatConversationTurn*))completion {
   current_conversation_->ClearErrorAndGetFailedMessage(base::BindOnce(
