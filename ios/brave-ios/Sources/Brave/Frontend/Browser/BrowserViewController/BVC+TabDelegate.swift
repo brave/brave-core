@@ -542,7 +542,9 @@ extension BrowserViewController {
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
     tab.isDisplayingBasicAuthPrompt = true
-    defer { tab.isDisplayingBasicAuthPrompt = false }
+    defer {
+      tab.isDisplayingBasicAuthPrompt = false
+    }
 
     let isHidden = tab.view.isHidden
     defer { tab.view.isHidden = isHidden }
@@ -575,6 +577,7 @@ extension BrowserViewController {
 
       return resolvedCredential
     } catch {
+      updateToolbarCurrentURL(tab.visibleURL)
       return nil
     }
   }
