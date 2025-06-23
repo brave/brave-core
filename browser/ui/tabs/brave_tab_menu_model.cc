@@ -144,8 +144,8 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainer(browser, tab_strip_model,
-                          containers_menu_model_delegate_.get(), indices);
+    BuildItemForContainers(browser, tab_strip_model,
+                           containers_menu_model_delegate_.get(), indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
@@ -189,7 +189,7 @@ void BraveTabMenuModel::BuildItemsForSplitView(
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void BraveTabMenuModel::BuildItemForContainer(
+void BraveTabMenuModel::BuildItemForContainers(
     Browser* browser,
     TabStripModel* tab_strip_model,
     containers::ContainersMenuModel::Delegate& containers_delegate,
