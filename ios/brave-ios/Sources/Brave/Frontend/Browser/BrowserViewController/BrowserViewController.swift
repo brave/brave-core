@@ -320,11 +320,6 @@ public class BrowserViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager
     )
 
-    // Add Regular tabs to Sync Chain
-    if Preferences.Chromium.syncOpenTabsEnabled.value {
-      tabManager.addRegularTabsToSyncChain()
-    }
-
     // Remove outdated Recently Closed tabs
     tabManager.deleteOutdatedRecentlyClosed()
 
@@ -886,6 +881,13 @@ public class BrowserViewController: UIViewController {
 
     // Adding Screenshot Service Delegate to browser to fetch full screen webview screenshots
     currentScene?.screenshotService?.delegate = self
+    
+    // Add Regular tabs to Sync Chain
+    if Preferences.Chromium.syncOpenTabsEnabled.value {
+      executeAfterSetup { [weak tabManager] in
+        tabManager?.addRegularTabsToSyncChain()
+      }
+    }
 
     self.setupInteractions()
   }
