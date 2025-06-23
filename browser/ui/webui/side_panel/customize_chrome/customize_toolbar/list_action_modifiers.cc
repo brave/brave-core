@@ -20,9 +20,12 @@ std::vector<ActionPtr> FilterUnsupportedChromiumActions(
   // Filter out unsupported Chromium actions.
   std::erase_if(actions, [](const ActionPtr& action) -> bool {
     static constexpr auto kUnsupportedChromiumActions =
-        base::MakeFixedFlatSet<ActionId>(
-            {ActionId::kShowPaymentMethods, ActionId::kShowTranslate,
-             ActionId::kShowReadAnything, ActionId::kShowAddresses});
+        base::MakeFixedFlatSet<ActionId>({
+            ActionId::kShowPaymentMethods,
+            ActionId::kShowTranslate,
+            ActionId::kShowReadAnything,
+            ActionId::kShowAddresses,
+        });
     return base::Contains(kUnsupportedChromiumActions, action->id);
   });
   return actions;

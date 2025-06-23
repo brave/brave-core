@@ -16,9 +16,12 @@ using ActionId = side_panel::customize_chrome::mojom::ActionId;
 class ListActionModifiersUnitTest : public testing::Test {
  protected:
   static constexpr auto kUnsupportedChromiumActions =
-      base::MakeFixedFlatSet<ActionId>(
-          {ActionId::kShowPaymentMethods, ActionId::kShowTranslate,
-           ActionId::kShowReadAnything, ActionId::kShowAddresses});
+      base::MakeFixedFlatSet<ActionId>({
+          ActionId::kShowPaymentMethods,
+          ActionId::kShowTranslate,
+          ActionId::kShowReadAnything,
+          ActionId::kShowAddresses,
+      });
 };
 
 TEST_F(ListActionModifiersUnitTest,
