@@ -25,6 +25,7 @@ static_library("common") {
     "//base",
     "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
+    "//components/prefs",
     "//net",
     "//ui/base",
     "//url",
