@@ -40,8 +40,4 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
       Profile::FromBrowserContext(context));
 }
 
-bool EmailAliasesServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return false;
-}
-
 }  // namespace email_aliases
