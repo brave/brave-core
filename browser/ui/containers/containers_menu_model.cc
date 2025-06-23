@@ -60,7 +60,7 @@ void ContainersMenuModel::ContainerSelected(int command_id) {
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
-  if (type_ == Type::kLink) {
+  if (type_ == Type::kRendererContextMenu) {
     // For links, we don't have a current container concept.
     return false;
   }

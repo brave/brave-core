@@ -197,7 +197,8 @@ void BraveTabMenuModel::BuildItemForContainer(
   auto index =
       *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      containers::ContainersMenuModel::Type::kTab, containers_delegate,
+      containers::ContainersMenuModel::Type::kTabContextMenu,
+      containers_delegate,
       containers::GetContainerModelsFromPrefs(*browser->profile()->GetPrefs()));
   InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,

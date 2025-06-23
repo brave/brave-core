@@ -21,9 +21,10 @@ namespace containers {
 class ContainersMenuModel : public ui::SimpleMenuModel,
                             public ui::SimpleMenuModel::Delegate {
  public:
+  // Types of context menus that trigger this model.
   enum class Type {
-    kTab,
-    kLink,
+    kTabContextMenu,
+    kRendererContextMenu,
   };
 
   class Delegate {
@@ -60,7 +61,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);
 
-  Type type_ = Type::kTab;
+  const Type type_;
   base::raw_ref<Delegate> delegate_;
 
   std::vector<ContainerModel> items_;

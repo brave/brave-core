@@ -48,8 +48,8 @@ MATCHER_P(EqId, id, "") {
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
   MockContainerMenuModelDelegate delegate;
 
-  ContainersMenuModel model(ContainersMenuModel::Type::kTab, delegate,
-                            GetContainers());
+  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
+                            delegate, GetContainers());
   auto containers = GetContainers();
 
   // Verify the model contains all containers from the service
@@ -66,8 +66,8 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kTab, delegate,
-                            GetContainers());
+  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
+                            delegate, GetContainers());
   EXPECT_CALL(delegate, OnContainerSelected(EqId("ExampleContainer1")));
   model.ExecuteCommand(0, 0);
 }
@@ -75,8 +75,8 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
 TEST_F(ContainersMenuModelUnitTest,
        TabTypeShouldReturnCheckedForCurrentContainer) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kTab, delegate,
-                            GetContainers());
+  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
+                            delegate, GetContainers());
 
   auto containers = GetContainers();
 
@@ -103,8 +103,8 @@ TEST_F(ContainersMenuModelUnitTest,
 
 TEST_F(ContainersMenuModelUnitTest, LinkTypeNeverReturnsChecked) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kLink, delegate,
-                            GetContainers());
+  ContainersMenuModel model(ContainersMenuModel::Type::kRendererContextMenu,
+                            delegate, GetContainers());
 
   const auto& containers = GetContainers();
   EXPECT_CALL(delegate, GetCurrentContainerId())
