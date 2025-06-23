@@ -851,6 +851,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
         map);
   }
+
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
+  }
 #endif
 
   auto* prefs =

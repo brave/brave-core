@@ -39,6 +39,9 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/email_aliases/browser/email_aliases_service.h"
+#include "brave/components/email_aliases/browser/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -264,3 +267,10 @@ void BraveSettingsUI::BindInterface(
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  email_aliases::EmailAliasesServiceFactory::GetForProfile(profile)
+      ->BindInterface(std::move(receiver));
+}

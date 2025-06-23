@@ -12,9 +12,9 @@ import {
   AuthState,
   Alias,
   EmailAliasesServiceInterface,
-  EmailAliasesServiceRemote,
-  EmailAliasesServiceObserverRemote,
-  EmailAliasesServiceObserverInterface
+  EmailAliasesServiceObserverInterface,
+  EmailAliasesServiceObserverReceiver,
+  EmailAliasesService
 } from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
@@ -57,11 +57,16 @@ export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
 
 export const mount = (at: HTMLElement) => {
   const root = createRoot(at);
-  const emailAliasesService = new EmailAliasesServiceRemote()
+  const emailAliasesService = EmailAliasesService.getRemote()
+
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
-    const observerRemote = new EmailAliasesServiceObserverRemote(observer)
+    const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
+    const observerRemote = observerReceiver.$.bindNewPipeAndPassRemote()
     emailAliasesService.addObserver(observerRemote)
-    return () => emailAliasesService.removeObserver(observerRemote)
+    return () => {
+      emailAliasesService.removeObserver(observerRemote)
+      observerReceiver.$.close()
+    }
   }
   root.render(
     <StyleSheetManager target={at}>

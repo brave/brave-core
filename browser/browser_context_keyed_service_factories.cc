@@ -42,11 +42,14 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/browser/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/common/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -193,6 +196,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   if (brave_account::features::IsBraveAccountEnabled()) {
     brave_account::BraveAccountServiceFactory::GetInstance();
+  }
+
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    email_aliases::EmailAliasesServiceFactory::GetInstance();
   }
 }
 
