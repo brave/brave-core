@@ -11,6 +11,8 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
+class Profile;
+
 namespace email_aliases {
 
 class EmailAliasesService;
