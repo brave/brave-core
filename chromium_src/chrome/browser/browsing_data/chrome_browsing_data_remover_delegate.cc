@@ -10,5 +10,5 @@
   case TracingDataType::kIPFSCache:                              \
     return "IPFSCache";
 
-#include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc"
+#include <chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc>
 #undef CHROME_BROWSING_DATA_REMOVER_DELEGATE_GET_HISTORY_SUFFIX

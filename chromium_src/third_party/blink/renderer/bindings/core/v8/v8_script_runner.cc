@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc"
-
 #include "brave/components/brave_page_graph/common/buildflags.h"
+
+#include <third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc>
 
 namespace blink {
 

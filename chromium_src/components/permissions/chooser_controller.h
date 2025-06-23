@@ -20,7 +20,7 @@ enum class ChooserControllerType {
   GetSelectAllCheckboxLabel(__VA_ARGS__) const; \
   virtual std::optional<ChooserControllerType> GetType()
 
-#include "src/components/permissions/chooser_controller.h"  // IWYU pragma: export
+#include <components/permissions/chooser_controller.h>  // IWYU pragma: export
 
 #undef GetSelectAllCheckboxLabel
 

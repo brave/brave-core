@@ -32,7 +32,7 @@ constexpr char kLeoWindowTabNewIconResourceName[] =
   autocomplete_input.set_prefer_keyword(true)
 #define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
 
-#include "src/chrome/browser/ui/webui/searchbox/searchbox_handler.cc"
+#include <chrome/browser/ui/webui/searchbox/searchbox_handler.cc>
 
 #undef set_prefer_keyword
 #undef set_allow_exact_keyword_match

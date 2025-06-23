@@ -7,7 +7,7 @@
 
 #define ConfigureInkDropForToolbar ConfigureInkDropForToolbar_UnUsed
 
-#include "src/chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc"
+#include <chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc>
 
 #undef ConfigureInkDropForToolbar
 

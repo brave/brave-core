@@ -43,7 +43,7 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels(
 #define SetOriginCanReadEnumerateDevicesVideoLabels \
   SetOriginCanReadEnumerateDevicesVideoLabels_ChromiumImpl
 
-#include "src/android_webview/browser/aw_permission_manager.cc"
+#include <android_webview/browser/aw_permission_manager.cc>
 
 #undef SetOriginCanReadEnumerateDevicesAudioLabels
 #undef SetOriginCanReadEnumerateDevicesVideoLabels

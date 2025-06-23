@@ -44,7 +44,7 @@ class BraveVpnDnsSettingsNotificiationDialogView;
   friend class brave_vpn::BraveVpnDnsSettingsNotificiationDialogView; \
   static DdvPassKey CreatePassKey
 
-#include "src/ui/views/window/dialog_delegate.h"  // IWYU pragma: export
+#include <ui/views/window/dialog_delegate.h>  // IWYU pragma: export
 
 #undef CreatePassKey
 #undef ResetViewShownTimeStampForTesting

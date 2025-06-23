@@ -17,6 +17,6 @@ constexpr std::string_view GetProductNameForChrome() {
 // We want to match Chrome behaviour for M-SEARCH USER-AGENT string.
 #define GetProductName GetProductNameForChrome
 #define GetVersionNumber GetBraveChromiumVersionNumber
-#include "src/chrome/browser/media/router/discovery/dial/dial_service_impl.cc"
+#include <chrome/browser/media/router/discovery/dial/dial_service_impl.cc>
 #undef GetProductName
 #undef GetVersionNumber

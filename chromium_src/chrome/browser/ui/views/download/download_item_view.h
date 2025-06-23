@@ -42,7 +42,7 @@
 
 #define UpdateLabels virtual UpdateLabels
 #define CalculateAccessibleName virtual CalculateAccessibleName
-#include "src/chrome/browser/ui/views/download/download_item_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/download/download_item_view.h>  // IWYU pragma: export
 #undef CalculateAccessibleName
 #undef UpdateLabels
 #undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

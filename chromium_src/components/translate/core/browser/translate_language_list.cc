@@ -8,7 +8,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslateLanguageList TranslateLanguageList_ChromiumImpl
-#include "src/components/translate/core/browser/translate_language_list.cc"
+#include <components/translate/core/browser/translate_language_list.cc>
 #undef TranslateLanguageList
 
 namespace translate {

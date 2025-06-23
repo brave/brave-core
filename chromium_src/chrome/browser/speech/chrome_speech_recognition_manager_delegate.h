@@ -12,7 +12,7 @@
       int render_process_id, int render_frame_id);                       \
   static void CheckRenderFrameType
 
-#include "src/chrome/browser/speech/chrome_speech_recognition_manager_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/speech/chrome_speech_recognition_manager_delegate.h>  // IWYU pragma: export
 
 #undef CheckRenderFrameType
 

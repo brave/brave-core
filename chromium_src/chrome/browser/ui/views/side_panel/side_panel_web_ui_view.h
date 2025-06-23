@@ -12,7 +12,7 @@
   AddedToWidget() override;  \
   void ViewHierarchyChanged
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h>  // IWYU pragma: export
 
 #undef ViewHierarchyChanged
 

@@ -12,7 +12,7 @@
       const std::string& request_id,        \
       std::unique_ptr<protocol::Network::AdblockInfo> info)
 
-#include "src/content/browser/devtools/protocol/network_handler.h"  // IWYU pragma: export
+#include <content/browser/devtools/protocol/network_handler.h>  // IWYU pragma: export
 
 #undef NavigationRequestWillBeSent
 

@@ -8,7 +8,7 @@
 #define FormatOriginForSecurityDisplay \
   FormatOriginForSecurityDisplay_ChromiumImpl
 
-#include "src/components/url_formatter/elide_url.cc"
+#include <components/url_formatter/elide_url.cc>
 #undef FormatOriginForSecurityDisplay
 
 namespace url_formatter {

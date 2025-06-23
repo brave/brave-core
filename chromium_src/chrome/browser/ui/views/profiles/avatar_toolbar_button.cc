@@ -8,5 +8,5 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
 
 #define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
-#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc"
+#include <chrome/browser/ui/views/profiles/avatar_toolbar_button.cc>
 #undef AvatarToolbarButtonDelegate

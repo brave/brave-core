@@ -11,7 +11,7 @@
   virtual bool IsFirstTabInTile(const Tab* tab) const = 0; \
   virtual bool IsGroupCollapsed
 
-#include "src/chrome/browser/ui/views/tabs/tab_slot_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
 #undef IsGroupCollapsed
 

@@ -5,7 +5,7 @@
 
 #define ShouldOfferClickToCallForURL ShouldOfferClickToCallForURL_ChromiumImpl
 
-#include "src/chrome/browser/sharing/click_to_call/click_to_call_utils.cc"
+#include <chrome/browser/sharing/click_to_call/click_to_call_utils.cc>
 
 #undef ShouldOfferClickToCallForURL
 

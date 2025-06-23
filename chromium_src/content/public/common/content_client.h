@@ -10,7 +10,7 @@
   AddPlugins(std::vector<content::ContentPluginInfo>* plugins) {} \
   virtual void AddPlugins_ChromiumImpl
 
-#include "src/content/public/common/content_client.h"  // IWYU pragma: export
+#include <content/public/common/content_client.h>  // IWYU pragma: export
 
 #undef AddPlugins
 

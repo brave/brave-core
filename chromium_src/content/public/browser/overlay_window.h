@@ -18,7 +18,7 @@ struct MediaPosition;
   virtual void SetSeekerEnabled(bool enabled) {}                            \
   virtual void SetPlaybackState
 
-#include "src/content/public/browser/overlay_window.h"  // IWYU pragma: export
+#include <content/public/browser/overlay_window.h>  // IWYU pragma: export
 
 #undef SetPlaybackState
 

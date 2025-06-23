@@ -11,5 +11,5 @@
       (!profile->GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows) && \
        (IsOffTheRecord() || profile->IsTor())) ||                        \
       profile->IsGuestSession
-#include "src/chrome/browser/password_manager/chrome_password_manager_client.cc"
+#include <chrome/browser/password_manager/chrome_password_manager_client.cc>
 #undef IsGuestSession

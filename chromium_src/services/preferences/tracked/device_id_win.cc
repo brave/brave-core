@@ -13,4 +13,4 @@ bool IsMachineIdDisabled() {
 }
 
 }  // namespace
-#include "src/services/preferences/tracked/device_id_win.cc"
+#include <services/preferences/tracked/device_id_win.cc>

@@ -15,4 +15,4 @@ size_t EraseIf(std::list<T, Allocator>& container, Predicate pred);  // NOLINT
 }  // namespace base
 #include "base/stl_util.h"
 
-#include "src/net/url_request/url_request_test_job.cc"
+#include <net/url_request/url_request_test_job.cc>

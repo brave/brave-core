@@ -17,7 +17,7 @@
                   raw_ptr<const gfx::VectorIcon>* badge); \
   void SetFramebustBlockedIcon
 
-#include "src/chrome/browser/ui/content_settings/content_setting_image_model.h"  // IWYU pragma: export
+#include <chrome/browser/ui/content_settings/content_setting_image_model.h>  // IWYU pragma: export
 #undef SetFramebustBlockedIcon
 #undef GenerateContentSettingImageModels
 

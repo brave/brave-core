@@ -6,7 +6,7 @@
 #include "components/history/core/browser/sync/delete_directive_handler.h"
 
 #define CreateUrlDeleteDirective CreateUrlDeleteDirective_ChromiumImpl
-#include "src/components/history/core/browser/sync/delete_directive_handler.cc"
+#include <components/history/core/browser/sync/delete_directive_handler.cc>
 #undef CreateUrlDeleteDirective
 
 namespace history {

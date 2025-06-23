@@ -11,7 +11,7 @@
   virtual void SetShouldPatchModuleFileName(bool) = 0; \
   virtual bool ShouldPatchModuleFileName
 
-#include "src/sandbox/win/src/sandbox_policy.h"  // IWYU pragma: export
+#include <sandbox/win/src/sandbox_policy.h>  // IWYU pragma: export
 
 #undef IsConfigured
 

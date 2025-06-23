@@ -24,7 +24,7 @@
 
 #endif
 
-#include "src/chrome/browser/ui/views/page_info/page_info_bubble_view.cc"
+#include <chrome/browser/ui/views/page_info/page_info_bubble_view.cc>
 
 #undef kFileScheme
 #undef IsFileOrInternalPage

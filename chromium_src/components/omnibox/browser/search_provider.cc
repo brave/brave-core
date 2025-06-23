@@ -14,7 +14,7 @@
                       default_result_relevance, is_keyword_result, results, \
                       IsBraveRichSuggestion(is_keyword_result))
 
-#include "src/components/omnibox/browser/search_provider.cc"
+#include <components/omnibox/browser/search_provider.cc>
 
 #undef ParseSuggestResults
 

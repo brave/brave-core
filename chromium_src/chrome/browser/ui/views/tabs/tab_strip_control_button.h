@@ -18,7 +18,7 @@
  private:                          \
   void UnUsed
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_control_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_strip_control_button.h>  // IWYU pragma: export
 
 #undef UpdateBackground
 #undef GetForegroundColor

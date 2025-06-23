@@ -8,6 +8,6 @@
 #define ShouldSSLErrorsBeFatal(host) \
   ShouldSSLErrorsBeFatal(ssl_config_.network_anonymization_key, host)
 
-#include "src/net/socket/ssl_client_socket_impl.cc"
+#include <net/socket/ssl_client_socket_impl.cc>
 
 #undef ShouldSSLErrorsBeFatal

@@ -11,7 +11,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "src/components/content_settings/core/common/content_settings.cc"
+#include <components/content_settings/core/common/content_settings.cc>
 
 #undef RendererContentSettingRules
 

@@ -14,5 +14,5 @@
   profile_->GetPrefs()->GetBoolean(prefs::kPromptForDownload)); \
   DCHECK_EQ(true
 
-#include "src/chrome/browser/download/download_ui_controller.cc"
+#include <chrome/browser/download/download_ui_controller.cc>
 #undef kPromptForDownload

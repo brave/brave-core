@@ -11,7 +11,7 @@
   friend class BraveBrowserActions; \
   virtual void InitializeBrowserActions
 
-#include "src/chrome/browser/ui/browser_actions.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser_actions.h>  // IWYU pragma: export
 
 #undef InitializeBrowserActions
 

@@ -66,7 +66,7 @@
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define MigrateObsoleteLocalStatePrefs \
   MigrateObsoleteLocalStatePrefs_ChromiumImpl
-#include "src/chrome/browser/prefs/browser_prefs.cc"
+#include <chrome/browser/prefs/browser_prefs.cc>
 #undef MigrateObsoleteProfilePrefs
 #undef MigrateObsoleteLocalStatePrefs
 

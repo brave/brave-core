@@ -14,6 +14,6 @@
 #define BRAVE_GPU_MESSAGE_HANDLER_ON_REQUEST_CLIENT_INFO
 #endif
 
-#include "src/content/browser/gpu/gpu_internals_ui.cc"
+#include <content/browser/gpu/gpu_internals_ui.cc>
 
 #undef BRAVE_GPU_MESSAGE_HANDLER_ON_REQUEST_CLIENT_INFO

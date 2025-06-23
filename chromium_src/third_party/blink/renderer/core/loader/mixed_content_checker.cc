@@ -53,7 +53,7 @@ bool IsOnion(const T& obj) {
 
 #define UpgradeInsecureRequest UpgradeInsecureRequest_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/loader/mixed_content_checker.cc"
+#include <third_party/blink/renderer/core/loader/mixed_content_checker.cc>
 
 #undef UpgradeInsecureRequest
 

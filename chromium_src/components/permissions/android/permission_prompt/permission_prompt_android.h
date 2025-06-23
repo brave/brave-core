@@ -28,7 +28,7 @@
   }                                                                           \
   size_t PermissionCount
 
-#include "src/components/permissions/android/permission_prompt/permission_prompt_android.h"  // IWYU pragma: export
+#include <components/permissions/android/permission_prompt/permission_prompt_android.h>  // IWYU pragma: export
 
 #undef PermissionCount
 #undef PermissionPromptAndroid

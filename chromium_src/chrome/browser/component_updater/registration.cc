@@ -8,7 +8,7 @@
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
 
-#include "src/chrome/browser/component_updater/registration.cc"
+#include <chrome/browser/component_updater/registration.cc>
 
 #undef RegisterComponentsForUpdate
 

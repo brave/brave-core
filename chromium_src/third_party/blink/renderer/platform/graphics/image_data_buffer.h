@@ -14,7 +14,7 @@
     return pixmap_;            \
   }                            \
   bool EncodeImage
-#include "src/third_party/blink/renderer/platform/graphics/image_data_buffer.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/platform/graphics/image_data_buffer.h>  // IWYU pragma: export
 #undef EncodeImage
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_IMAGE_DATA_BUFFER_H_

@@ -8,7 +8,7 @@
 #define kFineResolutionMicroseconds FineResolutionMicroseconds()
 #define kCoarseResolutionMicroseconds CoarseResolutionMicroseconds()
 
-#include "src/third_party/blink/renderer/core/timing/time_clamper.cc"
+#include <third_party/blink/renderer/core/timing/time_clamper.cc>
 
 #undef kFineResolutionMicroseconds
 #undef kCoarseResolutionMicroseconds

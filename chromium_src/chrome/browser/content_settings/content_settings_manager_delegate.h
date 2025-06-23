@@ -15,7 +15,7 @@
       content_settings::mojom::ContentSettingsManager::       \
           GetBraveShieldsSettingsCallback callback)
 
-#include "src/chrome/browser/content_settings/content_settings_manager_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/content_settings/content_settings_manager_delegate.h>  // IWYU pragma: export
 
 #undef GetCookieSettings
 

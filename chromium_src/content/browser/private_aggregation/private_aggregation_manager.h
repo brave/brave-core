@@ -14,7 +14,7 @@
 #define GetManager(...)                 \
   GetManager_ChromiumImpl(__VA_ARGS__); \
   static PrivateAggregationManager* GetManager(__VA_ARGS__)
-#include "src/content/browser/private_aggregation/private_aggregation_manager.h"  // IWYU pragma: export
+#include <content/browser/private_aggregation/private_aggregation_manager.h>  // IWYU pragma: export
 #undef GetManager
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_PRIVATE_AGGREGATION_PRIVATE_AGGREGATION_MANAGER_H_

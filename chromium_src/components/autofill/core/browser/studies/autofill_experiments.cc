@@ -26,5 +26,5 @@ bool IsCreditCardUploadEnabled(
 }  // namespace autofill
 
 #define IsCreditCardUploadEnabled IsCreditCardUploadEnabled_ChromiumImpl
-#include "src/components/autofill/core/browser/studies/autofill_experiments.cc"
+#include <components/autofill/core/browser/studies/autofill_experiments.cc>
 #undef IsCreditCardUploadEnabled

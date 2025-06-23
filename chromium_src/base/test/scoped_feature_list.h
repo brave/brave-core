@@ -11,7 +11,7 @@
                              __VA_ARGS__);                         \
   void InitWithFeatures(__VA_ARGS__)
 
-#include "src/base/test/scoped_feature_list.h"  // IWYU pragma: export
+#include <base/test/scoped_feature_list.h>  // IWYU pragma: export
 
 #undef InitWithFeatures
 

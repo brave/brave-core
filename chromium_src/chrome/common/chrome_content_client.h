@@ -12,7 +12,7 @@
   AddPlugins(std::vector<content::ContentPluginInfo>* plugins) override; \
   void AddPlugins_ChromiumImpl
 
-#include "src/chrome/common/chrome_content_client.h"  // IWYU pragma: export
+#include <chrome/common/chrome_content_client.h>  // IWYU pragma: export
 
 #undef AddPlugins
 

@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_DEBUG_ALIAS_H_
 #define BRAVE_CHROMIUM_SRC_BASE_DEBUG_ALIAS_H_
 
+#include <base/debug/alias.h>  // IWYU pragma: export
+
 #include <algorithm>
 
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/stack_allocated.h"
-
-#include "src/base/debug/alias.h"  // IWYU pragma: export
 
 namespace base::debug {
 

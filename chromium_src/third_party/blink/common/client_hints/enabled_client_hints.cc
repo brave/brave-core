@@ -8,7 +8,7 @@
 
 #define SetIsEnabled SetIsEnabled_ChromiumImpl
 
-#include "src/third_party/blink/common/client_hints/enabled_client_hints.cc"
+#include <third_party/blink/common/client_hints/enabled_client_hints.cc>
 
 #undef SetIsEnabled
 

@@ -7,6 +7,6 @@
 
 #define BrowserNonClientFrameViewMac BraveBrowserNonClientFrameViewMac
 
-#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_mac.mm"
+#include <chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_mac.mm>
 
 #undef BrowserNonClientFrameViewMac

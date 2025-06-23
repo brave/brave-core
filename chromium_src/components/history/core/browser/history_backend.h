@@ -10,7 +10,7 @@
   GetKnownToSyncCount(); \
   HistoryCountResult GetHistoryCount
 
-#include "src/components/history/core/browser/history_backend.h"  // IWYU pragma: export
+#include <components/history/core/browser/history_backend.h>  // IWYU pragma: export
 
 #undef GetHistoryCount
 

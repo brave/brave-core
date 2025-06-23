@@ -11,5 +11,5 @@
   RequestFullscreen() override {} \
   void RequestPlay
 
-#include "src/content/browser/picture_in_picture/picture_in_picture_service_impl_unittest.cc"
+#include <content/browser/picture_in_picture/picture_in_picture_service_impl_unittest.cc>
 #undef RequestPlay

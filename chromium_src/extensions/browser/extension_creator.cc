@@ -35,6 +35,6 @@ constexpr char kAltPublisherKeySwitch[] = "brave-extension-publisher-key-alt";
   }                                                                       \
   result = crx_file::CreateWithMultipleKeys(output_path, zip_path, keys);
 
-#include "src/extensions/browser/extension_creator.cc"
+#include <extensions/browser/extension_creator.cc>
 
 #undef BRAVE_CREATE_CRX

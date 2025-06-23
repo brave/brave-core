@@ -35,5 +35,5 @@ constexpr auto kBravePublicKey = std::to_array<uint8_t>(
 #define signer_(KEY_VERSION, PUBLIC_KEY) \
   signer_(kBraveKeyVersion, kBravePublicKey)
 
-#include "src/components/update_client/request_sender.cc"
+#include <components/update_client/request_sender.cc>
 #undef signer_

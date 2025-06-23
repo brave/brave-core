@@ -73,7 +73,7 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
 #define GetPlaceholderAvatarIconVisibleAgainstBackground \
   GetPlaceholderAvatarIconVisibleAgainstBackground_ChromiumImpl
 
-#include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
+#include <chrome/browser/profiles/profile_avatar_icon_util.cc>
 #undef GetPlaceholderAvatarIconVisibleAgainstBackground
 #undef GetDefaultProfileAvatarIconAndLabel
 #undef GetPlaceholderAvatarIconWithColors

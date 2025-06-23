@@ -9,7 +9,7 @@
 
 #define CalculateHttpsState CalculateHttpsState_ChromiumImpl
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/https_state.cc"
+#include <third_party/blink/renderer/platform/loader/fetch/https_state.cc>
 
 #undef CalculateHttpsState
 

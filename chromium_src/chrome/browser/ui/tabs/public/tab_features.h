@@ -10,7 +10,7 @@
 
 #define TabFeatures TabFeatures_Chromium
 
-#include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
+#include <chrome/browser/ui/tabs/public/tab_features.h>  // IWYU pragma: export
 
 #undef TabFeatures
 

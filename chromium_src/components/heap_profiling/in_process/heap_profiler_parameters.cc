@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/heap_profiling/in_process/heap_profiler_parameters.cc"
-
 #include "base/feature_override.h"
+
+#include <components/heap_profiling/in_process/heap_profiler_parameters.cc>
 
 namespace heap_profiling {
 

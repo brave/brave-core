@@ -44,7 +44,7 @@ std::u16string Sanitize(content::ContentBrowserClient* client,
   }                                                                         \
   sanitize_on_next_write_text_ = false;
 
-#include "src/content/browser/renderer_host/clipboard_host_impl.cc"
+#include <content/browser/renderer_host/clipboard_host_impl.cc>
 
 #undef BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE
 

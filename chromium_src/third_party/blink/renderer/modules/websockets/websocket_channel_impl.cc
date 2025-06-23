@@ -12,7 +12,7 @@
 
 #define WebSocketChannelImpl WebSocketChannelImpl_ChromiumImpl
 
-#include "src/third_party/blink/renderer/modules/websockets/websocket_channel_impl.cc"
+#include <third_party/blink/renderer/modules/websockets/websocket_channel_impl.cc>
 
 #undef WebSocketChannelImpl
 

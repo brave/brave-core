@@ -6,7 +6,7 @@
 #include "third_party/crashpad/crashpad/client/settings.h"
 
 #define GetClientID GetClientID_ChromiumImpl
-#include "src/third_party/crashpad/crashpad/client/settings.cc"
+#include <third_party/crashpad/crashpad/client/settings.cc>
 #undef GetClientID
 
 namespace crashpad {

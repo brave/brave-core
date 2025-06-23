@@ -26,7 +26,7 @@
            ? 0                                         \
            : 1)
 
-#include "src/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc"
+#include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc>
 
 #undef GetStandardWidth
 #undef DraggingTabsSession

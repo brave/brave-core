@@ -12,6 +12,6 @@
 // headers. #define SetCornerRadius(...) SetCornerRadius(8)
 #define TOOLBAR_CORNER_RADIUS TOOLBAR_CORNER_RADIUS)); (SetCornerRadius(8
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc"
+#include <chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.cc>
 
 #undef TOOLBAR_CORNER_RADIUS

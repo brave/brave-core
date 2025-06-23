@@ -29,7 +29,7 @@ class BraveOnDemandUpdater;
                                                                           \
  public:
 
-#include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export
+#include <components/component_updater/component_updater_service.h>  // IWYU pragma: export
 
 #undef BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER
 #undef BRAVE_COMPONENT_UPDATER_SERVICE_H_

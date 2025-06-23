@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_CHECK_IS_TEST_H_
 #define BRAVE_CHROMIUM_SRC_BASE_CHECK_IS_TEST_H_
 
-#include "base/gtest_prod_util.h"
+#include <base/check_is_test.h>  // IWYU pragma: export
 
-#include "src/base/check_is_test.h"  // IWYU pragma: export
+#include "base/gtest_prod_util.h"
 
 namespace variations {
 class PublicKeyWrapper;

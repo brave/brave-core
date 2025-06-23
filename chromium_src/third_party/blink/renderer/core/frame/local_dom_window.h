@@ -35,7 +35,7 @@
   moveTo_ChromiumImpl(int x, int y) const; \
   void moveTo
 
-#include "src/third_party/blink/renderer/core/frame/local_dom_window.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/frame/local_dom_window.h>  // IWYU pragma: export
 
 #undef outerHeight
 #undef outerWidth

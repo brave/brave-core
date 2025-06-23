@@ -13,7 +13,7 @@
 // that we dont build.
 #if !BUILDFLAG(IS_ANDROID)
 
-#include "src/extensions/common/manifest.h"  // IWYU pragma: export
+#include <extensions/common/manifest.h>  // IWYU pragma: export
 
 #endif  // #if BUILDFLAG(IS_ANDROID)
 

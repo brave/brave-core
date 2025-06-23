@@ -14,7 +14,7 @@
   friend class BraveVideoOverlayWindowViews;                     \
   void UpdateImage
 
-#include "src/chrome/browser/ui/views/overlay/simple_overlay_window_image_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/overlay/simple_overlay_window_image_button.h>  // IWYU pragma: export
 
 #undef UpdateImage
 

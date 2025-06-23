@@ -24,7 +24,7 @@
 #define PopulateSharedResourcesDataSource \
   PopulateSharedResourcesDataSource_ChromiumImpl
 
-#include "src/content/browser/webui/shared_resources_data_source.cc"
+#include <content/browser/webui/shared_resources_data_source.cc>
 
 #undef PopulateSharedResourcesDataSource
 

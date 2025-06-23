@@ -7,7 +7,7 @@
 #include "ui/native_theme/native_theme_mac.h"
 
 #define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
-#include "src/ui/native_theme/native_theme_mac.mm"
+#include <ui/native_theme/native_theme_mac.mm>
 #undef GetSystemButtonPressedColor
 
 namespace ui {

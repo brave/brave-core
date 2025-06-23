@@ -13,7 +13,7 @@
       webViewNavigationProxy;                                        \
   @property(weak, nonatomic, readonly) WKWebView* webView
 
-#include "src/ios/web/web_state/ui/crw_web_controller.h"  // IWYU pragma: export
+#include <ios/web/web_state/ui/crw_web_controller.h>  // IWYU pragma: export
 
 #undef webViewNavigationProxy
 

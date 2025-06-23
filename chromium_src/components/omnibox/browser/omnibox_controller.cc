@@ -17,7 +17,7 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
 }  // namespace
 
 #define StartAutocomplete StartAutocomplete_ChromiumImpl
-#include "src/components/omnibox/browser/omnibox_controller.cc"
+#include <components/omnibox/browser/omnibox_controller.cc>
 #undef StartAutocomplete
 
 void OmniboxController::StartAutocomplete(
