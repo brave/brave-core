@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
 <translation id="7714773920987474116">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
-<translation id="995782501881226248">यूट्यूब</translation>
 <translation id="2233004324252915283">YouTube की ओर से सुझाए गए कंटेंट को ब्लॉक करें</translation>
 <translation id="1005372663692637999">YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है.</translation>
 <translation id="5152595963250646670">YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">टॉप सुझाव दिखाएँ</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
-<translation id="412411722208944922">क्विक सर्च इंजन</translation>
-<translation id="2836969042340015500">क्विक सर्च इंजन</translation>
-<translation id="9120455214794270250">क्विक सर्च बार दिखाएँ</translation>
-<translation id="1052991798173010693">अभी इस्तेमाल हो रहे सर्च इंजन</translation>
-<translation id="335303688425891752">क्रम बदलने के लिए दबाएँ रखें</translation>
 <translation id="9148058034647219655">बाहर निकलें</translation>
 <translation id="8047754398610073499">कुकी की इजाज़त के नोटिस को ब्लॉक करें</translation>
 <translation id="2621893359845808115">वेबसाइट के उन पॉप-अप को ब्लॉक करता है जो आपसे अपनी साइट पर कुकी को मंज़ूर / नामंज़ूर करने के लिए कहते हैं.</translation>
@@ -676,6 +670,7 @@
 <translation id="3952797765659730604">अपनी प्राइवेट की स्ट्रिंग फ़ाइल या JSON एंटर करें, पेस्ट करें या इम्पोर्ट  करें.</translation>
 <translation id="569068482611873351">इम्पोर्ट...</translation>
 <translation id="4522570452068850558">विवरण</translation>
+<translation id="3114681061018999547">शील्ड हो रहा है</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
 <translation id="4412698727486357573">सहायता केंद्र</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
@@ -807,18 +802,6 @@
 <translation id="2199215899212542417">फ़ंक्शन का प्रकार : <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">कोई डेटा नहीं</translation>
 <translation id="1105525362447173583">Solana डीऐप साइन ट्रांज़ैक्शन</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ने <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/> भेजा</translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> #<ph name="ASSET_ID"/> भेजा है - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> - <ph name="DATE"/> स्वीकृत किया है</translation>
-<translation id="7400134344541309180"><ph name="ASSET"/> - <ph name="PROXY"/>की असीमित स्वीकृति</translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> बदलें - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">अस्वीकृत</translation>
-<translation id="8034530868111548216">स्वीकृत</translation>
-<translation id="6015436276085482001">रिजेक्ट किया हुआ</translation>
-<translation id="6666273175654835609">प्रस्तुत किया गया</translation>
-<translation id="2331676293859649642">पुष्टि की गई</translation>
-<translation id="8214232307424031138">साइन किया गया</translation>
-<translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="2561824823738097741">क्या आप सबसे तेज़ ब्राउज़र का इस्तेमाल कर रहे हैं?</translation>
 <translation id="2065971949051836200">आपके फ़ोन पर 3x तेज़ इंटरनेट पहले से हैं. अपनी सभी वेब ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
 <translation id="2888278614497184977">Brave = 3x ज़्यादा तेज़ वेब ब्राउज़िंग</translation>
@@ -1222,10 +1205,9 @@
 <translation id="4010699428656610296">कृपया अन्य टैब को किसी अन्य Brave विंडो में मर्ज करें.</translation>
 <translation id="4306918392910017801">अपने-आप VPN कनेक्ट करें</translation>
 <translation id="1599073346542156922">कैसे ऑन करें:</translation>
-<translation id="7001163334415463127">1. अपने ऐप ड्रॉअर से या नीचे दिए गए बटन पर टैप करके अपने डिवाइस की सेटिंग खोलें.</translation>
-<translation id="887443138775437899">2. Brave VPN ढूंढें और दाईं ओर सेटिंग आइकन पर टैप करें.</translation>
-<translation id="7546805138087561624">3 इनेबल करने के लिए, हमेश VPN पर<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> 
-<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>पर टॉगल करें.</translation>
+<translation id="7001163334415463127">1. अपने ऐप ड्रॉअर से या नीचे दिए गए बटन पर टैप करके अपने डिवाइस की सेटिंग खोलें।</translation>
+<translation id="887443138775437899">2. Brave VPN ढूँढें और दाईं ओर सेटिंग आइकन पर टैप करें।</translation>
+<translation id="7546805138087561624">3. इसे टॉगल करने के लिए <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>हमेशा चालू VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> पर टॉगल करें।</translation>
 <translation id="2446001600399646984">ध्यान दें कि Android सीमाओं की वजह से, "बिना VPN वाले कनेक्शन ब्लॉक करें" उम्मीद के मुताबिक काम नहीं करता।<ph name="LEARN_MORE_START"/>ज़्यादा जानें।<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Android सेटिंग खोलें</translation>
 <translation id="2728518864712716830">अपडेट डाउनलोड हो गया है.</translation>
@@ -1238,4 +1220,5 @@
 <translation id="6859935199732075666">सुरक्षित ब्राउज़िक की गड़बड़ियाँ दिखाएँ</translation>
 <translation id="2735247450315842119">निजी टैब में स्क्रीनशॉट की अनुमति दें</translation>
 <translation id="8420414929552321089">अगर अनुमति हो, तो कई टैब खुले होने पर निजी टैब भी दिखाई देंगे।</translation>
+<translation id="7956713633345437162">मोबाइल बुकमार्क्स</translation>
 </translationbundle>

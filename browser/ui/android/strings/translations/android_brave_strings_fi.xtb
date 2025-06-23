@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Ota käyttöön tuki ylimmän tason seuranta-URL-osoitteiden uudelleenohjauksen ohittamiseksi.</translation>
 <translation id="94154759592465111">Estä komentosarjat</translation>
 <translation id="7714773920987474116">Estää JavaScriptin (voi rikkoa sivustoja)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Estä YouTuben suosittelema sisältö</translation>
 <translation id="1005372663692637999">Estää seuraavan ja loppukortin elementit Youtube.comissa.</translation>
 <translation id="5152595963250646670">Estä YouTuben häiritsevät elementit</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Näytä suosituimmat ehdotukset</translation>
 <translation id="6285118765755298263">Indeksoi muut hakukoneet</translation>
 <translation id="919715748352669592">Automaattisesti indeksoi sivustot, jotka seuraavat OpenSearch-määritystä.</translation>
-<translation id="412411722208944922">Pikahakukoneet</translation>
-<translation id="2836969042340015500">Pikahakukoneet</translation>
-<translation id="9120455214794270250">Näytä pikahakupalkki</translation>
-<translation id="1052991798173010693">Tällä hetkellä käytössä olevat hakukoneet</translation>
-<translation id="335303688425891752">Muuta järjestystä painamalla pitkään</translation>
 <translation id="9148058034647219655">Poistu</translation>
 <translation id="8047754398610073499">Estä evästeitä koskevat suostumusilmoitukset</translation>
 <translation id="2621893359845808115">Estä verkkosivustojen ponnahdusikkunat, joissa sinua pyydetään hyväksymään/hylkäämään sivuston käyttämät evästeet</translation>
@@ -677,6 +671,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3952797765659730604">Syötä, liitä tai tuo yksityisen avaimesi merkkijonotiedosto tai JSON.</translation>
 <translation id="569068482611873351">Tuo...</translation>
 <translation id="4522570452068850558">Tarkat tiedot</translation>
+<translation id="3114681061018999547">Suojataan</translation>
 <translation id="3784455785234192852">Lukitse</translation>
 <translation id="4412698727486357573">Ohjekeskus</translation>
 <translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
@@ -808,18 +803,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2199215899212542417">TOIMINTOTYYPPI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ei tietoja</translation>
 <translation id="1105525362447173583">Solana Dapp -maksutapahtuman allekirjoitus</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> lähetetty <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> lähetti <ph name="ASSET"/> nro<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> hyväksytty <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Hyväksytty rajoittamattomasti <ph name="ASSET"/> – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> vaihto – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Ei hyväksytty</translation>
-<translation id="8034530868111548216">Hyväksytty</translation>
-<translation id="6015436276085482001">Hylätty</translation>
-<translation id="6666273175654835609">Lähetetty</translation>
-<translation id="2331676293859649642">Vahvistettu</translation>
-<translation id="8214232307424031138">Allekirjoitettu</translation>
-<translation id="1165039591588034296">Virhe</translation>
 <translation id="2561824823738097741">Käytätkö nopeinta verkkoselainta?</translation>
 <translation id="2065971949051836200">Kolme kertaa nopeampi Internet on jo puhelimessasi. Käytä Brave-selainta kaikkeen verkkoselailuun.</translation>
 <translation id="2888278614497184977">Brave = kolme kertaa nopeampaa verkkoselailua</translation>
@@ -1224,8 +1207,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4306918392910017801">Yhdistä VPN automaattisesti uudestaan</translation>
 <translation id="1599073346542156922">Päälle kytkeminen:</translation>
 <translation id="7001163334415463127">1. Avaa laitteesi asetukset sovelluksessa tai napauta alla olevaa painiketta.</translation>
-<translation id="887443138775437899">2. Etsi Brave VPN ja napauta asetuskuvaketta oikealla.</translation>
-<translation id="7546805138087561624">3. Ota <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Aika käytössä oleva VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> käyttöön.</translation>
+<translation id="887443138775437899">2. Etsi Brave-VPN ja napauta asetuskuvaketta oikealla.</translation>
+<translation id="7546805138087561624">3. Ota <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Aina käytössä oleva VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> käyttöön.</translation>
 <translation id="2446001600399646984">Huomaa, että Androidin rajoitusten vuoksi "Yhteyksien estäminen ilman VPN:ää" ei toimi odotetusti. <ph name="LEARN_MORE_START"/>Lue lisää.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Avaa Android-asetukset</translation>
 <translation id="2728518864712716830">Päivitys on ladattu.</translation>
@@ -1238,4 +1221,5 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6859935199732075666">Näytä Safe Browsing -virheet</translation>
 <translation id="2735247450315842119">Salli kuvakaappaukset yksityisissä välilehdissä</translation>
 <translation id="8420414929552321089">Jos se sallitaan, yksityiset välilehdet ovat näkyvissä myös silloin, kun useita sovelluksia on avoinna.</translation>
+<translation id="7956713633345437162">Mobiilikirjanmerkit</translation>
 </translationbundle>

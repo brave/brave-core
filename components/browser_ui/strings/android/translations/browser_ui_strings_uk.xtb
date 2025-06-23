@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">Функції, яким потрібні датчики руху, не працюватимуть</translation>
 <translation id="2030769033451695672">Натисніть, щоб повернутися на сторінку <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Відмінити</translation>
+<translation id="2080070583977670716">Інші налаштування</translation>
 <translation id="2091887806945687916">Звук</translation>
 <translation id="2096716221239095980">Видалити всі дані</translation>
 <translation id="2102396546234652240">Заборонити сайтам доступ до мікрофона</translation>
@@ -229,7 +230,6 @@
 <translation id="3779154269823594982">Змінити паролі</translation>
 <translation id="3797520601150691162">Не використовувати темну тему для певного сайту</translation>
 <translation id="3803367742635802571">Сайти, які ви відвідуєте, можуть перестати працювати належним чином</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Номери телефонів</translation>
 <translation id="3826050100957962900">Вхід через сторонні сервіси</translation>
 <translation id="3835233591525155343">Дані про активний стан пристрою</translation>
@@ -437,7 +437,6 @@
 <translation id="6452138246455930388">Зниження ціни на відкритій вкладці з <ph name="OLD_PRICE"/> до <ph name="NEW_PRICE"/> (<ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/>)</translation>
 <translation id="6500423977866688905">Коли вікно завузьке, показувати мобільну версію</translation>
 <translation id="6527303717912515753">Надіслати</translation>
-<translation id="652937045869844725">Спробуйте дозволити сторонні файли cookie. Це зменшить рівень захисту, але функції сайту з більшою імовірністю працюватимуть.</translation>
 <translation id="6530703012083415527">Якщо цей параметр увімкнено, сайти можуть використовувати спливаючі вікна й переспрямування. Якщо його вимкнено, сайти не можуть використовувати спливаючі вікна й переспрямування.</translation>
 <translation id="6540488083026747005">Ви дозволили сторонні файли cookie на цьому сайті</translation>
 <translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
@@ -451,6 +450,7 @@
 <translation id="6612358246767739896">Захищений контент</translation>
 <translation id="662080504995468778">Залишитися</translation>
 <translation id="6635327442719709864">Якщо цей перемикач увімкнено, сайти можуть запитувати дозвіл використовувати послідовні порти. Якщо його вимкнено, сайти не можуть використовувати послідовні порти.</translation>
+<translation id="6678072580827808850">Пройти перевірку безпеки</translation>
 <translation id="6683865262523156564">Цей сайт належить до групи, учасники якої можуть бачити ваші дії. Групу визначив сайт-власник <ph name="RWS_OWNER"/>.</translation>
 <translation id="6689172468748959065">Фотографії профілів</translation>
 <translation id="6697925417670533197">Активні завантаження</translation>
@@ -485,7 +485,6 @@
 <translation id="7141896414559753902">Блокувати спливаючі вікна та переадресацію на сайтах (рекомендовано)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> КБ</translation>
 <translation id="7180611975245234373">Оновити</translation>
-<translation id="7180865173735832675">Налаштувати</translation>
 <translation id="7188508872042490670">Дані сайтів на пристрої</translation>
 <translation id="7201549776650881587">У результаті буде видалено всі дані й файли cookie, збережені сайтами в групі сайту <ph name="ORIGIN"/> або додатками на головному екрані</translation>
 <translation id="7203150201908454328">Розгорнуто</translation>

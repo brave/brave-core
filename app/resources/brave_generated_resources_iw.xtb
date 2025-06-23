@@ -326,7 +326,7 @@
 <translation id="4034992002364254340">לאסוף את כל הכרטיסיות הקשורות לחלון חדש</translation>
 <translation id="8012125596344613514">הצעות לנושאים</translation>
 <translation id="7529120186020617755">יש להזין נושא למיקוד...</translation>
-<translation id="6847541693235449912">פתיחה</translation>
+<translation id="6847541693235449912">ביצוע</translation>
 <translation id="2079545284768500474">בטל</translation>
 <translation id="1533980864758658574">חלון חדש נוצר עבור <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">הפיצ׳ר הזה שולח נתונים על הכרטיסיות הפתוחות שלך אל Leo, עוזר הדפדפן מבוסס ה-AI של Brave.</translation>
@@ -343,6 +343,8 @@
 <translation id="8081858229109418493">שם ואייקון הפרופיל</translation>
 <translation id="6786747875388722282">תוספים</translation>
 <translation id="984275831282074731">אמצעי תשלום</translation>
+<translation id="6278858909990433658">ייבוא פרופיל עדיין בשימוש</translation>
+<translation id="9071187015476020102">כדי לייבא תוספים או הגדרות אחרות, יש לסגור תחילה את הדפדפן שממנו מייבאים.</translation>
 <translation id="2044383478723007273">צבעי Brave</translation>
 <translation id="1807246157184219062">אור</translation>
 <translation id="2414886740292270097">כהה</translation>
@@ -823,4 +825,7 @@
 <translation id="5318548116565208315">אווטאר בונבון תירס</translation>
 <translation id="1959966725083452288">אווטאר בונבון Royal</translation>
 <translation id="2039034364578911089">אווטאר בונבון נינג'ה</translation>
+<translation id="154702742922788359">מצב פתיחה</translation>
+<translation id="2249111429176737533">פתיחה ככרטיסיה בחלון קיים</translation>
+<translation id="7022756207310403729">פתיחה בדפדפן</translation>
 </translationbundle>

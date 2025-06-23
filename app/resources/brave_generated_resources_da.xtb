@@ -328,7 +328,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4034992002364254340">Saml alle relaterede faner i et nyt vindue</translation>
 <translation id="8012125596344613514">Foreslåede emner</translation>
 <translation id="7529120186020617755">Indtast et emne, der skal fokuseres på ...</translation>
-<translation id="6847541693235449912">Gå</translation>
+<translation id="6847541693235449912">Start</translation>
 <translation id="2079545284768500474">Fortryd</translation>
 <translation id="1533980864758658574">Nyt vindue oprettet til <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">Denne funktion sender data om dine åbne faner til Leo, Braves AI-drevne browserassistent.</translation>
@@ -345,6 +345,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8081858229109418493">Profilnavn og ikon</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="984275831282074731">Betalingsmetoder</translation>
+<translation id="6278858909990433658">Importprofilen er stadig i brug</translation>
+<translation id="9071187015476020102">For at importere udvidelser eller andre indstillinger, skal du først lukke browseren, du importerer fra.</translation>
 <translation id="2044383478723007273">Brave farver</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="2414886740292270097">Mørk</translation>
@@ -826,4 +828,7 @@ Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du slett
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Åben tilstand</translation>
+<translation id="2249111429176737533">Åbn som fanevindue</translation>
+<translation id="7022756207310403729">Åbn i browser</translation>
 </translationbundle>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
-<translation id="1045448422538531528">បញ្ចូលទៅ​ក្នុង​ក្រុម</translation>
+<translation id="1036348656032585052">បិទ</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{បានបង្កើត <ph name="NUM_WEEKS_ONE"/> សប្ដាហ៍មុន}other{បានបង្កើត <ph name="NUM_WEEKS_MANY"/> សប្ដាហ៍មុន}}</translation>
 <translation id="1063300264396686489">បើកក្រុមផ្ទាំងដោយស្វ័យប្រវត្តិពីឧបករណ៍ផ្សេងទៀត</translation>
 <translation id="1075622780330595106">ផ្ទាំង <ph name="NUMBER_OF_TABS"/> របស់អ្នក​មិនត្រូវបាន​ប្រើទេ​នាពេល​ថ្មីៗនេះ។ បិទផ្ទាំង​ទាំងនោះឬ?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">លែង​អាចប្រើ​ក្រុមផ្ទាំង "<ph name="TAB_GROUP_NAME_1"/>" និង "<ph name="TAB_GROUP_NAME_2"/>" បាន​ទៀតហើយ</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{បង្រួមផ្ទាំង <ph name="TABS_COUNT_ONE"/>។}other{បង្រួមក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/>ផ្ទាំង។}}</translation>
 <translation id="2569352796411618312">ការណែនាំ៖ ផ្ទាំង <ph name="NUMBER_OF_TABS"/> របស់អ្នក​មិនត្រូវបាន​ប្រើទេ​នាពេល​ថ្មីៗនេះ។ បិទផ្ទាំង​ទាំងនោះឬ?</translation>
-<translation id="2656693375914502139">ផ្លាស់ទីទៅ​ក្រុម</translation>
 <translation id="2662028055331606429">ការវាយតម្លៃដោយដាក់ផ្កាយ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">ចូលមើលគេហទំព័រ</translation>
 <translation id="2671423594960767771">ចែករំលែកក្រុម</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{បានបិទ <ph name="ONE_CLOSED"/> ផ្ទាំង}other{បានបិទ <ph name="MANY_CLOSED"/> ផ្ទាំង}}</translation>
 <translation id="2894757982205307093">ផ្ទាំងថ្មី​នៅក្នុងក្រុម</translation>
 <translation id="4691798003247738043">Brave | អំពី​ហាងនេះ</translation>
-<translation id="2977480621796371840">លុបចេញ​ពីក្រុម</translation>
 <translation id="29919168204617356">ផ្ទាំងអសកម្មនឹងត្រូវបានបិទដោយស្វ័យប្រវត្តិ។ អ្នកអាចស្វែងរកផ្ទាំងទាំងនោះនៅក្នុង "ប្រវត្តិ" បានជានិច្ច។</translation>
 <translation id="3008554597174452548">បញ្ឈប់ការតាមដានផលិតផល</translation>
 <translation id="3026391124054406831">បង្កើត​ក្រុម ដើម្បី​រៀបចំ​ផ្ទាំង​របស់អ្នក។</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">ក្រុមផ្ទាំង​របស់អ្នក​រក្សាទុក​ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="6054741997831917303">តម្លៃទំនិញនេះ​បានធ្លាក់ចុះ​ថ្មីៗនេះ​ពី <ph name="PREVIOUS_PRICE"/> ទៅ <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">ឥឡូវនេះ ផ្ទាំងស្ទួន​ទាំងអស់​ក៏នឹង​ត្រូវបាន​ទុកក្នុង​បណ្ណសារ​ផងដែរ លើកលែងតែ​ផ្ទាំងស្ទួន​ដែលបានប្រើ​ថ្មីៗបំផុត​ប៉ុណ្ណោះ។</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{ផ្លាស់ទី​ក្រុមទៅ​វិនដូថ្មី}other{ផ្លាស់ទី​ក្រុមទៅ​វិនដូ​ផ្សេងទៀត}}</translation>
 <translation id="6193448654517602979">ជ្រើសរើសផ្ទាំង</translation>
+<translation id="6220820548421939212">បាទ/ចាស។ ខ្ញុំយល់ព្រម</translation>
 <translation id="6228793724645064692">(ការវាយ​តម្លៃហាង)</translation>
 <translation id="6271513594716432922">បិទ​ផ្ទាំង​អសកម្ម​ទាំងអស់</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{បញ្ចូលផ្ទាំង​ទៅក្រុមថ្មី}other{បញ្ចូលផ្ទាំង​ទៅក្រុមថ្មី}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">សកម្មភាព</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ ការវាយតម្លៃដោយដាក់ផ្កាយ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, មតិវាយតម្លៃ <ph name="REVIEWS_COUNT_ONE"/>}other{ការវាយតម្លៃដោយដាក់ផ្កាយ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, មតិវាយតម្លៃ <ph name="REVIEWS_COUNT_MANY"/>}}</translation>
 <translation id="7885132941432959125">ផ្លាស់ទី​ផ្ទាំង​ទៅ​ខាងស្ដាំ</translation>
+<translation id="788914896430720926">រក្សា​ផ្នែក​អសកម្ម​របស់អ្នក​ឱ្យមាន​របៀប​រៀបរយឬ?</translation>
 <translation id="7939917283308035850">មិនបាន​ជ្រើសរើសពណ៌<ph name="COLOR_NAME"/>ទេ</translation>
 <translation id="7942349550061667556">ក្រហម</translation>
 <translation id="7961015016161918242">មិនដែល</translation>
 <translation id="7966321538264951561">ច្រានចោល​ការណែនាំ​។</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី}other{ផ្លាស់ទី​ផ្ទាំងទៅ​វិនដូ​ផ្សេងទៀត}}</translation>
 <translation id="799469866974412355">ក្រុមថ្មីពីឧបករណ៍ផ្សេងទៀតរបស់អ្នក</translation>
 <translation id="8029301326595421733">បានបើក​ព័ត៌មានអំពី​ហាងនេះ​ពេញអេក្រង់</translation>
 <translation id="8053770993984522566">បញ្ជី​ក្រុមផ្ទាំង បានបើក​ពាក់កណ្ដាល​អេក្រង់</translation>
@@ -193,10 +195,11 @@
 <translation id="8730621377337864115">រួចរាល់</translation>
 <translation id="6687920250729800417">សកម្មភាព​របស់អ្នក​នៅក្នុង​ផ្ទាំងឯកជន​ទាំងនេះ​នឹងត្រូវបាន​ដកចេញពី​ឧបករណ៍នេះ</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{បានបង្កើត <ph name="NUM_MONTHS_ONE"/> ខែមុន}other{បានបង្កើត <ph name="NUM_MONTHS_MANY"/> ខែមុន}}</translation>
+<translation id="8813708480179818649">ដក​ផ្ទាំង​ចេញពី​ក្រុម</translation>
 <translation id="8820741577754260431">មើលការធ្លាក់ថ្លៃនៅក្នុងផ្ទាំងរបស់អ្នក</translation>
+<translation id="5495695379719652610">Brave បិទ​ធាតុ​នៅក្នុង​ផ្នែក​អសកម្ម​ដែលអ្នក​មិនបានប្រើ​រយៈពេល 3 ខែ​ដោយ​ស្វ័ួយប្រវត្តិ។ អ្នកអាច​បិទវា​ឥឡូវនេះ ឬ​នៅពេល​ណាក៏បាន​នៅក្នុង "ការកំណត់"។</translation>
 <translation id="8887921976452567404">ផ្ទាំង និងក្រុមដែលអ្នកបានបិទអាចត្រូវបានបើកឡើងវិញពីផ្នែកផ្ទាំងថ្មីៗ និងផ្នែកក្រុមផ្ទាំង។</translation>
 <translation id="8915916167043355778">បិទ​ទាំងអស់</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{ផ្លាស់ទីទៅ​វិនដូថ្មី}other{ផ្លាស់ទីទៅ​វិនដូ​ផ្សេងទៀត}}</translation>
 <translation id="9090098097337832354">បានបិទ​ព័ត៌មាន​អំពីហាងនេះ</translation>
 <translation id="9114502155681725011">បើក​ម៉ឺនុយ​សកម្មភាព​ក្រុមផ្ទាំង​សម្រាប់​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមានពណ៌<ph name="COLOR_NAME"/>។</translation>
 <translation id="9169594135889675189">បញ្ចូលផ្ទាំង​ថ្មីទៅក្រុម</translation>

@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Habilita el suport per evitar les URL de rastrejament de redireccions de nivell superior.</translation>
 <translation id="94154759592465111">Bloqueja els scripts</translation>
 <translation id="7714773920987474116">Bloqueja el JavaScript (pot trencar llocs web)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloqueja el contingut recomanat de YouTube</translation>
 <translation id="1005372663692637999">Bloqueja els elements de la targeta següent i final a youtube.com.</translation>
 <translation id="5152595963250646670">Bloqueja els elements de distracció de YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostra els suggeriments destacats</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
-<translation id="412411722208944922">Motors de cerca ràpids</translation>
-<translation id="2836969042340015500">Motors de cerca ràpida</translation>
-<translation id="9120455214794270250">Mostra la barra de cerca ràpida</translation>
-<translation id="1052991798173010693">Motors de cerca utilitzats actualment</translation>
-<translation id="335303688425891752">Per canviar la comanda, mantingues premut el botó</translation>
 <translation id="9148058034647219655">Surt</translation>
 <translation id="8047754398610073499">Bloqueja els avisos de consentiment de les galetes</translation>
 <translation id="2621893359845808115">Bloca les finestres emergents del lloc web que et demanen que acceptis / rebutgis les galetes del seu lloc</translation>
@@ -677,6 +671,7 @@ Segur que vols continuar?</translation>
 <translation id="3952797765659730604">Introdueix, enganxa o importa el teu arxiu de cadena de clau privada o JSON.</translation>
 <translation id="569068482611873351">Importa...</translation>
 <translation id="4522570452068850558">Detalls</translation>
+<translation id="3114681061018999547">Protegint</translation>
 <translation id="3784455785234192852">Bloqueig</translation>
 <translation id="4412698727486357573">Centre d'ajuda</translation>
 <translation id="8239147115686034860">Bloqueja la Cartera de Brave de forma automàtica</translation>
@@ -808,18 +803,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2199215899212542417">TIPUS DE FUNCIÓ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No hi ha dades</translation>
 <translation id="1105525362447173583">Transacció de signes Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviat<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ha enviat <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprovat<ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Aprovat il·limitat <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> intercanvi - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Pendent d'aprovació</translation>
-<translation id="8034530868111548216">Aprovat</translation>
-<translation id="6015436276085482001">Rebutjat</translation>
-<translation id="6666273175654835609">Enviat</translation>
-<translation id="2331676293859649642">Confirmat</translation>
-<translation id="8214232307424031138">Signat</translation>
-<translation id="1165039591588034296">Error</translation>
 <translation id="2561824823738097741">Estàs utilitzant el navegador web més ràpid?</translation>
 <translation id="2065971949051836200">Ja tens l'internet 3 cops més ràpid en el teu mòbil. Utilitza Brave per a tota la teva navegació web.</translation>
 <translation id="2888278614497184977">Brave = navegació web 3 cops més ràpida</translation>
@@ -1223,9 +1206,9 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="4010699428656610296">Mou les altres pestanyes a una altra finestra de Brave</translation>
 <translation id="4306918392910017801">Reconnectar VPN automàticament</translation>
 <translation id="1599073346542156922">Com s'activa:</translation>
-<translation id="7001163334415463127">1. Obriu la configuració del vostre dispositiu des del calaix d'aplicacions o premeu el botó de sota.</translation>
-<translation id="887443138775437899">2. Cerqueu la VPN de Brave i premeu la icona de configuració de la dreta.</translation>
-<translation id="7546805138087561624">3. Activeu <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre activada<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> per habilitar-la.</translation>
+<translation id="7001163334415463127">1. Obre la configuració del teu dispositiu des del calaix d'aplicacions o prem el botó a continuació.</translation>
+<translation id="887443138775437899">2. Troba la VPN de Brave i prem la icona de configuració de la dreta.</translation>
+<translation id="7546805138087561624">3. Activa <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre activada<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> per habilitar-la.</translation>
 <translation id="2446001600399646984">Tingues en compte que, a causa de les limitacions d'Android, la funció "Bloquejar connexions sense VPN" no funciona de la manera esperada. <ph name="LEARN_MORE_START"/>Més informació.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Obre la configuració d'Android</translation>
 <translation id="2728518864712716830">S'ha descarregat l'actualització.</translation>
@@ -1238,4 +1221,5 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6859935199732075666">Mostra els errors de Safe Browsing</translation>
 <translation id="2735247450315842119">Permetre les captures de pantalla a les pestanyes d'incògnit</translation>
 <translation id="8420414929552321089">Si s'activa aquesta opció, les pestanyes d'incògnit també seran visibles quan hi hagi diverses aplicacions obertes.</translation>
+<translation id="7956713633345437162">Adreces d'interès mòbils</translation>
 </translationbundle>

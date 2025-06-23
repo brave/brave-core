@@ -344,6 +344,8 @@
 <translation id="8081858229109418493">Όνομα και εικονίδιο προφίλ</translation>
 <translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="984275831282074731">Τρόποι πληρωμής</translation>
+<translation id="6278858909990433658">Η εισαγωγή του προφίλ είναι ακόμη σε χρήση</translation>
+<translation id="9071187015476020102">Για να εισάγετε τις επεκτάσεις ή άλλες ρυθμίσεις, παρακαλώ κλείστε πρώτα το πρόγραμμα περιήγησης από το οποίο εισάγετε.</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
 <translation id="1807246157184219062">Ανοιχτό</translation>
 <translation id="2414886740292270097">Σκούρο</translation>
@@ -824,4 +826,7 @@
 <translation id="5318548116565208315">Avatar Bonbon Καλαμπόκι</translation>
 <translation id="1959966725083452288">Avatar Bonbon Βασιλικό</translation>
 <translation id="2039034364578911089">Avatar Bonbon Νίντζα</translation>
+<translation id="154702742922788359">Λειτουργία ανοίγματος</translation>
+<translation id="2249111429176737533">Άνοιγμα ως καρτέλα με καρτέλες</translation>
+<translation id="7022756207310403729">Άνοιγμα στο πρόγραμμα περιήγησης</translation>
 </translationbundle>

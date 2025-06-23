@@ -344,6 +344,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8081858229109418493">Nome de perfil e ícone</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="984275831282074731">Métodos de pagamento</translation>
+<translation id="6278858909990433658">Importar perfil ainda em utilização</translation>
+<translation id="9071187015476020102">Para importar extensões ou outras configurações, primeiro feche o navegador de onde está a importar.</translation>
 <translation id="2044383478723007273">Cores Brave</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="2414886740292270097">Escuro</translation>
@@ -824,4 +826,7 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="5318548116565208315">Avatar Milho Bombom</translation>
 <translation id="1959966725083452288">Avatar Real Bombom</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombom</translation>
+<translation id="154702742922788359">Modo aberto</translation>
+<translation id="2249111429176737533">Abrir janela como novo separador</translation>
+<translation id="7022756207310403729">Abrir no navegador</translation>
 </translationbundle>

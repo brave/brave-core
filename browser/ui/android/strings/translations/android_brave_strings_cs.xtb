@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Aktivuje ochranu před sledovacími adresami URL, sledovací adresy budou obcházeny</translation>
 <translation id="94154759592465111">Blokovat skripty</translation>
 <translation id="7714773920987474116">Blokuje Javascript (může rozbít stránky)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokovat doporučený obsah YouTube</translation>
 <translation id="1005372663692637999">Blokovat „Další“ a karty na konci videa na youtube.com.</translation>
 <translation id="5152595963250646670">Blokování rozptylujících prvků YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Zobrazit nejlepší návrhy</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
-<translation id="412411722208944922">Rychlé vyhledávače</translation>
-<translation id="2836969042340015500">Rychlé vyhledávače</translation>
-<translation id="9120455214794270250">Zobrazit panel rychlého vyhledávání</translation>
-<translation id="1052991798173010693">Aktuálně používané vyhledávače</translation>
-<translation id="335303688425891752">Pořadí změníte dlouhým stisknutím</translation>
 <translation id="9148058034647219655">Ukončit</translation>
 <translation id="8047754398610073499">Blokování oznámení o souhlasu se soubory cookie</translation>
 <translation id="2621893359845808115">Blokuje vyskakovací okna webových stránek, která vás žádají o přijetí / odmítnutí souborů cookie na jejich stránkách</translation>
@@ -677,6 +671,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3952797765659730604">Zadejte, vložte nebo naimportujte soubor s řetězcem soukromého klíče nebo JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
+<translation id="3114681061018999547">Chrání se</translation>
 <translation id="3784455785234192852">Uzamknout</translation>
 <translation id="4412698727486357573">Centrum nápovědy</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
@@ -808,18 +803,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2199215899212542417">TYP FUNKCE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Žádná data</translation>
 <translation id="1105525362447173583">Podpis transakce decentralizované aplikace na blockchainu Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> odeslal/a <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> odeslal/a <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> shválil <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Schváleno bez omezení <ph name="ASSET"/> – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> směna – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Neschváleno</translation>
-<translation id="8034530868111548216">Schváleno</translation>
-<translation id="6015436276085482001">Odmítnuto</translation>
-<translation id="6666273175654835609">Odesláno</translation>
-<translation id="2331676293859649642">Potvrzeno</translation>
-<translation id="8214232307424031138">Signed</translation>
-<translation id="1165039591588034296">Chyba</translation>
 <translation id="2561824823738097741">Používáte ten nejrychlejší webový prohlížeč?</translation>
 <translation id="2065971949051836200">V telefonu už teď máte 3x rychlejší internet. Používejte Brave pro veškeré procházení webu.</translation>
 <translation id="2888278614497184977">Brave = 3x rychlejší procházení webu</translation>
@@ -1224,9 +1207,9 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="4010699428656610296">Slučte prosím ostatní karty do jiného okna Brave.</translation>
 <translation id="4306918392910017801">Automaticky znovu připojit VPN</translation>
 <translation id="1599073346542156922">Postup zapnutí:</translation>
-<translation id="7001163334415463127">1. Otevřít nastavení vašeho zařízení z vaší zásuvky aplikace nebo klepnout na tlačítko níže.</translation>
-<translation id="887443138775437899">2. Najít VPN Brave a klepnout na ikonu nastavení vpravo.</translation>
-<translation id="7546805138087561624">3. K povolení přepněte <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vždy zapnutá VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
+<translation id="7001163334415463127">1. Otevřete nastavení svého zařízení ze své zásuvky aplikace nebo klepněte na tlačítko níže.</translation>
+<translation id="887443138775437899">2. Najděte VPN Brave a klepněte na ikonu nastavení vpravo.</translation>
+<translation id="7546805138087561624">3. Abyste ji povolili, zapněte možnost <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vždy zapnutá VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
 <translation id="2446001600399646984">Upozorňujeme, že kvůli omezení systému Android funkce „Blokovat připojení bez VPN“ nefunguje podle očekávání. <ph name="LEARN_MORE_START"/>Learn more.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Otevřít nastavení systému Android</translation>
 <translation id="2728518864712716830">Aktualizace je stažena.</translation>
@@ -1239,4 +1222,5 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="6859935199732075666">Zobrazit chyby bezpečného procházení</translation>
 <translation id="2735247450315842119">Povolit snímky obrazovky na soukromých kartách</translation>
 <translation id="8420414929552321089">Pokud je tato funkce povolena, soukromé karty budou viditelné i při otevření několika aplikací.</translation>
+<translation id="7956713633345437162">Mobilní záložky</translation>
 </translationbundle>

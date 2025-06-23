@@ -84,6 +84,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="2028449514182362831">Kenmerke wat bewegingsensors nodig het, sal nie werk nie</translation>
 <translation id="2030769033451695672">Tik om na <ph name="URL_OF_THE_CURRENT_TAB"/> terug te keer</translation>
 <translation id="2079545284768500474">Ontdoen</translation>
+<translation id="2080070583977670716">Nog instellings</translation>
 <translation id="2091887806945687916">Klank</translation>
 <translation id="2096716221239095980">Vee alle data uit</translation>
 <translation id="2102396546234652240">Moenie werwe toelaat om jou mikrofoon te gebruik nie</translation>
@@ -205,6 +206,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="3523447078673133727">Moenie werwe toelaat om jou hande na te spoor nie</translation>
 <translation id="3536227077203206203">Hierdie keer toegelaat</translation>
 <translation id="3538390592868664640">Verhoed werwe om 'n 3D-kaart van jou omgewing te skep of kameraposisie na te spoor</translation>
+<translation id="8157212814767579028">Verlaat Incognitomodus?</translation>
 <translation id="3586500876634962664">Kamera- en mikrofoongebruik</translation>
 <translation id="358794129225322306">Laat 'n werf toe om outomaties veelvuldige lêers af te laai</translation>
 <translation id="3594780231884063836">Demp video</translation>
@@ -230,7 +232,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="3779154269823594982">Verander wagwoorde</translation>
 <translation id="3797520601150691162">Moenie donkertema vir 'n spesifieke werf toepas nie</translation>
 <translation id="3803367742635802571">Werwe wat jy besoek, sal dalk nie meer werk soos ontwerp nie</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Foonnommers</translation>
 <translation id="3826050100957962900">Derdeparty-aanmelding</translation>
 <translation id="3835233591525155343">Jou toestelgebruik</translation>
@@ -332,6 +333,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="5099358668261120049">Dit sal alle data en webkoekies uitvee wat deur <ph name="ORIGIN"/> of deur sy app op jou tuisskerm geberg is.</translation>
 <translation id="5100237604440890931">Ingevou – klik om uit te vou.</translation>
 <translation id="7143053178237996319">Jy kan Brave enige tyd gebruik wanneer jy tik op skakels in boodskappe, dokumente en ander apps.</translation>
+<translation id="3110967157686007724">Incognito-oortjie</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Prysdaling op jou oop oortjies}other{Prys daal op jou oop oortjies}}</translation>
 <translation id="5186036860380548585">Opsie is naby die bokant van die skerm beskikbaar</translation>
 <translation id="5197729504361054390">Die kontakte wat jy kies, sal gedeel word met <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -439,7 +441,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="6452138246455930388">Prysdaling op jou oop oortjie, van<ph name="OLD_PRICE"/> tot <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Versoek mobiele aansig wanneer die venster smal is</translation>
 <translation id="6527303717912515753">Deel</translation>
-<translation id="652937045869844725">Probeer derdepartywebkoekies toelaat, wat minder beskerming beteken, maar werfkenmerke is meer geneig om te werk</translation>
 <translation id="6530703012083415527">Wanneer dit aan is, kan werwe opspringers en herleidings gebruik. Wanneer dit af is, kan werwe nie opspringers en herleidings gebruik nie.</translation>
 <translation id="6540488083026747005">Jy het derdepartywebkoekies op hierdie werf toegelaat</translation>
 <translation id="6545864417968258051">Bluetooth-opsporing</translation>
@@ -453,6 +454,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="6612358246767739896">Beskermde inhoud</translation>
 <translation id="662080504995468778">Bly</translation>
 <translation id="6635327442719709864">Wanneer dit aan is, kan werwe vra om reekspoorte te gebruik. Wanneer dit af is, kan werwe nie reekspoorte gebruik nie.</translation>
+<translation id="6678072580827808850">Gaan Veiligheidskontrole na</translation>
 <translation id="6683865262523156564">Hierdie werf is in ’n groep wat jou aktiwiteit kan sien. Die groep word gedefinieer deur <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profielfoto's</translation>
 <translation id="6697925417670533197">Aktiewe aflaaie</translation>
@@ -487,7 +489,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="7141896414559753902">Verhinder werwe om opspringers en herleidings te wys (aanbeveel)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Herlaai</translation>
-<translation id="7180865173735832675">Pasmaak</translation>
 <translation id="7188508872042490670">Werfdata op toestel</translation>
 <translation id="7201549776650881587">Hierdie handeling sal alle data en webkoekies uitvee wat deur alle werwe onder <ph name="ORIGIN"/> of deur sy app op jou Tuisskerm geberg is</translation>
 <translation id="7203150201908454328">Uitgevou</translation>
@@ -537,6 +538,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="7846076177841592234">Kanselleer keuse</translation>
 <translation id="2353409725922994861">Brave beperk die meeste werwe om derdepartywebkoekies te gebruik. Maar derdepartywebkoekies word op hierdie werf toegelaat omdat dit daarop staatmaak om basiese dienste te verskaf.\n\nBesoek instellings om <ph name="BEGIN_LINK"/>toegang tot derdepartywebkoekies te bestuur<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Laat klank toe vir 'n spesifieke werf.</translation>
+<translation id="1856888821396498049">Blokkeer derdepartywebkoekies in Incognito:</translation>
 <translation id="789722939441020330">Moenie werwe toelaat om outomaties veelvuldige lêers af te laai nie</translation>
 <translation id="7940722705963108451">Herinner my</translation>
 <translation id="7948081750384205628">Kry meer inligting oor <ph name="SETTING_TITLE"/></translation>
@@ -654,11 +656,8 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="959682366969460160">Raak georganiseerd</translation>
 <translation id="967624055006145463">Data geberg</translation>
 <translation id="969975166333045662">Blokkeer werf om V8-optimeerder te gebruik.</translation>
-<translation id="3110967157686007724">Incognito-oortjie</translation>
-<translation id="8157212814767579028">Verlaat Incognitomodus?</translation>
 <translation id="6105125042109106861">Derdepartywebkoekies word in incognitomodus geblokkeer</translation>
 <translation id="6642913673024345959">Blokkeer derdepartywebkoekies in Incognitomodus</translation>
 <translation id="8877838532507724268">Terwyl jy in Incognitomodus is, kan werwe nie jou webkoekies gebruik om jou blaai-aktiwiteit op werwe, selfs verwante werwe, te sien nie. Jou blaai-aktiwiteit word nie gebruik vir dinge soos om advertensies te personaliseer nie. Kenmerke op sommige werwe sal dalk nie werk nie.</translation>
-<translation id="1856888821396498049">Blokkeer derdepartywebkoekies in Privaat:</translation>
 <translation id="1593610935874634135">’n Maatskappy kan ’n groep werwe definieer wat webkoekies kan gebruik om jou aktiwiteit in die groep te deel. Dit is af in Incognito.</translation>
 </translationbundle>

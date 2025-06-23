@@ -85,7 +85,6 @@
 <translation id="1118970888826017401">Omogoči podporo za obhod povezav za sledenje preusmeritve na najvišji ravni.</translation>
 <translation id="94154759592465111">Blokiraj skripte</translation>
 <translation id="7714773920987474116">Blokira JavaScript (lahko zlomi spletna mesta)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokirajte priporočeno vsebino YouTube</translation>
 <translation id="1005372663692637999">Blokira naslednje in končne elemente kartice na youtube.com.</translation>
 <translation id="5152595963250646670">Blokirajte moteče elemente YouTuba</translation>
@@ -112,11 +111,6 @@
 <translation id="5989135139219497991">Prikaži top predloge</translation>
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
-<translation id="412411722208944922">Hitri spletni iskalniki</translation>
-<translation id="2836969042340015500">Hitri spletni iskalniki</translation>
-<translation id="9120455214794270250">Prikaži vrstico za hitro iskanje</translation>
-<translation id="1052991798173010693">Trenutno uporabljeni spletni iskalniki</translation>
-<translation id="335303688425891752">Z dolgim pritiskom spremenite vrstni red</translation>
 <translation id="9148058034647219655">Zapri</translation>
 <translation id="8047754398610073499">Blokiraj obvestila o soglasju za piškotke</translation>
 <translation id="2621893359845808115">Blokira pojavna okna spletnega mesta, ki vas prosijo, da sprejmete/zavrnete piškotke na njihovem spletnem mestu</translation>
@@ -684,6 +678,7 @@ je v teku.
 <translation id="3952797765659730604">Vnesite, prilepite ali uvozite svojo datoteko niza zasebnega ključa ali JSON.</translation>
 <translation id="569068482611873351">Uvozi ...</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
+<translation id="3114681061018999547">Zaščita</translation>
 <translation id="3784455785234192852">Zakleni</translation>
 <translation id="4412698727486357573">Center za pomoč</translation>
 <translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
@@ -815,18 +810,6 @@ je v teku.
 <translation id="2199215899212542417">VRSTA FUNKCIJE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ni podatkov</translation>
 <translation id="1105525362447173583">Podpis transakcije Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> je poslal <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> poslan <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> je potrjen za <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Odobreno neomejeno <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> izvede menjavo - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Neodobreno</translation>
-<translation id="8034530868111548216">Potrjeno</translation>
-<translation id="6015436276085482001">Zavrnjeno</translation>
-<translation id="6666273175654835609">Potrjeno</translation>
-<translation id="2331676293859649642">Potrjeno</translation>
-<translation id="8214232307424031138">Podpisano</translation>
-<translation id="1165039591588034296">Napaka</translation>
 <translation id="2561824823738097741">Ali uporabljate najhitrejši spletni brskalnik?</translation>
 <translation id="2065971949051836200">3x hitrejši internet je že na vašem telefonu. Uporabite Brave za vse svoje brskanje po spletu.</translation>
 <translation id="2888278614497184977">Brave = 3x hitrejše brskanje po spletu</translation>
@@ -1245,4 +1228,5 @@ je v teku.
 <translation id="6859935199732075666">Prikaži napake Varnega brskanja</translation>
 <translation id="2735247450315842119">Omogočite posnetke zaslona v zasebnih zavihkih</translation>
 <translation id="8420414929552321089">Če je omogočeno, bodo zasebni zavihki vidni tudi, ko je odprtih več aplikacij.</translation>
+<translation id="7956713633345437162">Mobilni zaznamki</translation>
 </translationbundle>

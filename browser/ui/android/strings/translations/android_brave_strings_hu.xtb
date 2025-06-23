@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Engedélyezi a felső szintű átirányításkövető URL-ek megkerülésének támogatását.</translation>
 <translation id="94154759592465111">Scriptek blokkolása</translation>
 <translation id="7714773920987474116">Blokkolja a JavaScriptet (megzavarhatja az oldalak működését)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">A YouTube ajánlott tartalmainak letiltása</translation>
 <translation id="1005372663692637999">Letiltja a Következő és a Záróképernyő elemeket a youtube.com webhelyen.</translation>
 <translation id="5152595963250646670">A YouTube zavaró elemeinek letiltása</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
-<translation id="412411722208944922">Gyorskeresők</translation>
-<translation id="2836969042340015500">Gyorskeresők</translation>
-<translation id="9120455214794270250">Gyorskeresősáv megjelenítése</translation>
-<translation id="1052991798173010693">Jelenleg használt keresők</translation>
-<translation id="335303688425891752">Nyomja meg hosszan a sorrend megváltoztatásához</translation>
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
 <translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
@@ -420,7 +414,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8520059774736886747">A tartalomkészítő <ph name="PUBLISHER_NAME"/> nemrég igazolta magát</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Új lap</translation>
-<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását</translation>
+<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását.</translation>
 <translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
 <translation id="3171669670217312786">Háttérképek</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
@@ -677,6 +671,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3952797765659730604">Adja meg, másolja be vagy importálja a privát kulcsfájlját vagy JSON-ját.</translation>
 <translation id="569068482611873351">Importálás...</translation>
 <translation id="4522570452068850558">Részletek</translation>
+<translation id="3114681061018999547">Védelem</translation>
 <translation id="3784455785234192852">Zárolás</translation>
 <translation id="4412698727486357573">Súgó</translation>
 <translation id="8239147115686034860">Brave pénztárca automatikus zárolása</translation>
@@ -808,18 +803,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2199215899212542417">FUNKCIÓTÍPUS: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nincs adat</translation>
 <translation id="1105525362447173583">Solana Dapp Sign tranzakció</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> elküldte a következőt: <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> a következőt küldte: <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> jóváhagyta a következőt: <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Korlátlan <ph name="ASSET"/> jóváhagyva – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> csereügylet – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Jóvá nem hagyott</translation>
-<translation id="8034530868111548216">Jóváhagyva</translation>
-<translation id="6015436276085482001">Elutasítva</translation>
-<translation id="6666273175654835609">Elküldve</translation>
-<translation id="2331676293859649642">Megerősítve</translation>
-<translation id="8214232307424031138">Aláírva</translation>
-<translation id="1165039591588034296">Hiba</translation>
 <translation id="2561824823738097741">A leggyorsabb böngészőt használja?</translation>
 <translation id="2065971949051836200">A 3x gyorsabb internet már elérhető a telefonján. Használja a Brave-et minden webes böngészéshez.</translation>
 <translation id="2888278614497184977">Brave = 3x gyorsabb böngészés</translation>
@@ -1238,4 +1221,5 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>
 <translation id="2735247450315842119">Képernyőképek engedélyezése privát lapokon</translation>
 <translation id="8420414929552321089">Ha engedélyezi, a privát lapok akkor is láthatóak lesznek, ha több alkalmazás van megnyitva.</translation>
+<translation id="7956713633345437162">Mobil könyvjelzők</translation>
 </translationbundle>

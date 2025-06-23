@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">ඉහළ මට්ටමේ යළි හරවන ලුහුබැඳීම් ඒ.ස.නි. විපථ යැවීමට සහාය සබල කරන්න.</translation>
 <translation id="94154759592465111">අත්පත් අවහිර කරන්න</translation>
 <translation id="7714773920987474116">ජාවාස්ක්‍රිප්ට් අවහිර කරයි (අඩවි කැඩී යා හැකිය)</translation>
-<translation id="995782501881226248">යූටියුබ්</translation>
 <translation id="2233004324252915283">යූටියුබ් අන්තර්ගත නිර්දේශ අවහිර කරන්න</translation>
 <translation id="1005372663692637999">youtube.com හි ඊළඟ සහ අවසාන පත් අංග අවහිර කරයි.</translation>
 <translation id="5152595963250646670">බාධාකාරී යූටියුබ්අං‍ග අවහිර කරන්න</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">ප්‍රචලිත යෝජනා පෙන්වන්න</translation>
 <translation id="6285118765755298263">අනෙකුත් සෙවුම් යන්ත්‍ර සුචිගත කරන්න</translation>
 <translation id="919715748352669592">ඕපන් සර්ච් පිරිවිතර අනුගමනය කරන අඩවි ස්වයංක්‍රියව සුචිගත කරයි.</translation>
-<translation id="412411722208944922">ක්‍ෂණික සෙවුම් යන්ත්‍ර</translation>
-<translation id="2836969042340015500">ඉක්මන් සෙවුම් යන්ත්‍ර</translation>
-<translation id="9120455214794270250">ඉක්මන් සෙවුම් තීරුව පෙන්වන්න</translation>
-<translation id="1052991798173010693">දැනට භාවිත සෙවුම් යන්ත්‍ර</translation>
-<translation id="335303688425891752">අනුපිළිවෙල සංශෝධනයට මදක් ඔබාගෙන ඉන්න</translation>
 <translation id="9148058034647219655">පිටවන්න</translation>
 <translation id="8047754398610073499">දත්තකඩ අනුදැනුම ගැන දැන්වීම් අවහිර කරන්න</translation>
 <translation id="2621893359845808115">අඩවි වල දත්තකඩ ප්‍රතික්ෂේප / පිළිගැනීමට අසන අඩවි උත්පතන අවහිර කරයි</translation>
@@ -418,6 +412,7 @@
 <translation id="8520059774736886747"><ph name="PUBLISHER_NAME"/> කර්තෘ මෑත දී සත්‍යාපිතයි</translation>
 <translation id="1486343603936278248">සංකේතය</translation>
 <translation id="7781069478569868053">නව පටිති පිටුව</translation>
+<translation id="5927196110206824867">හදාරන ලද පසුබැසීමේ රූප Braveගේ මානය ප්‍රධාන වන්න. විශාලාග්නු තාක්ෂණය පරිසරය වන අතර, ඇඩුනාවන්රාකි පැකට් ගැනෙහිව සකසයි.</translation>
 <translation id="8748471354357836070">තව දැනගන්න / තේරීම් ඉවතලන්න</translation>
 <translation id="3171669670217312786">පසුබිම් රූප</translation>
 <translation id="8522669544471808198">පසුබිම් රූප පෙන්වන්න</translation>
@@ -673,6 +668,7 @@
 <translation id="3952797765659730604">ඔබගේ පුද්ගලික යතුරු තන්තු ගොනුව හෝ JSON ඇතුල් කරන්න, අලවන්න හෝ ආයාත කරන්න.</translation>
 <translation id="569068482611873351">ආයාත කරන්න</translation>
 <translation id="4522570452068850558">විස්තර</translation>
+<translation id="3114681061018999547">පලිහ</translation>
 <translation id="3784455785234192852">අගුළුලන්න</translation>
 <translation id="4412698727486357573">උපකාර මධ්‍යස්ථානය</translation>
 <translation id="8239147115686034860">Brave පසුම්බියට ස්වයංක්‍රීයව අගුළුලන්න</translation>
@@ -804,18 +800,6 @@
 <translation id="2199215899212542417">කාර්ය වර්ගය: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">දත්ත නැත</translation>
 <translation id="1105525362447173583">සොලනා ඩැප් සංඥා ගනුදෙනුව</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> යැවිණි <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> යැවිණි <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> අනුමතයි <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">අසීමිතව අනුමතයි <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> හුවමාරුව - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">අනුමත නොකළ</translation>
-<translation id="8034530868111548216">අනුමතයි</translation>
-<translation id="6015436276085482001">ප්‍රතික්ෂේප කළා</translation>
-<translation id="6666273175654835609">යොමු කළා</translation>
-<translation id="2331676293859649642">තහවුරුයි</translation>
-<translation id="8214232307424031138">අත්සන් කළා</translation>
-<translation id="1165039591588034296">දෝෂයකි</translation>
 <translation id="2561824823738097741">ඔබ භාවිතා කරන්නේ වේගවත්ම අතිරික්සුවද?</translation>
 <translation id="2065971949051836200">3x වේගවත් අන්තර්ජාලයක් දැනටමත් ඔබගේ දුරකථනයේ ඇත. ඔබගේ සියලු පිරික්සුම් සඳහා බ්‍රේව් භාවිතා කරන්න.</translation>
 <translation id="2888278614497184977">Brave = 3x වේගයෙන් පිරික්සන්න</translation>
@@ -1234,4 +1218,5 @@
 <translation id="6859935199732075666">ආරක්‍ෂිත පිරික්සුම් දෝෂ පෙන්වන්න</translation>
 <translation id="2735247450315842119">පෞද්. පටිති වල තිරසේයා වලට ඉඩ දෙන්න</translation>
 <translation id="8420414929552321089">අවසර දී ඇත්නම්, බහු යෙදුම් විවෘතව ඇති විට පුද්ගලික ටැබ් ද දෘශ්‍යමාන වනු ඇත.</translation>
+<translation id="7956713633345437162">ජංගම පොත් අවතැන්</translation>
 </translationbundle>

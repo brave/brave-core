@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
-<translation id="1045448422538531528">Добавить в группу</translation>
+<translation id="1036348656032585052">Отключить</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Создано <ph name="NUM_WEEKS_ONE"/> неделю назад}one{Создано <ph name="NUM_WEEKS_MANY"/> неделю назад}few{Создано <ph name="NUM_WEEKS_MANY"/> недели назад}many{Создано <ph name="NUM_WEEKS_MANY"/> недель назад}other{Создано <ph name="NUM_WEEKS_MANY"/> недели назад}}</translation>
 <translation id="1063300264396686489">Автоматически открывать группы вкладок с других устройств</translation>
 <translation id="1075622780330595106">Вы давно не использовали некоторые вкладки (всего: <ph name="NUMBER_OF_TABS"/>). Закрыть их?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Группы вкладок "<ph name="TAB_GROUP_NAME_1"/>" и "<ph name="TAB_GROUP_NAME_2"/>" больше не доступны.</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Свернуть <ph name="TABS_COUNT_ONE"/> вкладку.}one{Свернуть группу из <ph name="TABS_COUNT_MANY"/> вкладки.}few{Свернуть группу из <ph name="TABS_COUNT_MANY"/> вкладок.}many{Свернуть группу из <ph name="TABS_COUNT_MANY"/> вкладок.}other{Свернуть группу из <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="2569352796411618312">Подсказка: вы давно не использовали некоторые вкладки (всего: <ph name="NUMBER_OF_TABS"/>). Закрыть их?</translation>
-<translation id="2656693375914502139">Переместить в группу</translation>
 <translation id="2662028055331606429">Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Открыть сайт</translation>
 <translation id="2671423594960767771">Открыть доступ</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Закрыта <ph name="ONE_CLOSED"/> вкладка.}one{Закрыта <ph name="MANY_CLOSED"/> вкладка.}few{Закрыты <ph name="MANY_CLOSED"/> вкладки.}many{Закрыто <ph name="MANY_CLOSED"/> вкладок.}other{Закрыто <ph name="MANY_CLOSED"/> вкладки.}}</translation>
 <translation id="2894757982205307093">Добавить новую вкладку в группу</translation>
 <translation id="4691798003247738043">Brave | О магазине</translation>
-<translation id="2977480621796371840">Удалить из группы</translation>
 <translation id="29919168204617356">Неактивные вкладки будут закрываться автоматически. Их всегда можно найти в разделе "История".</translation>
 <translation id="3008554597174452548">Не отслеживать товар</translation>
 <translation id="3026391124054406831">Создавайте группы, чтобы упорядочивать вкладки.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Группы вкладок сохраняются автоматически.</translation>
 <translation id="6054741997831917303">Цена на этот товар недавно снизилась с <ph name="PREVIOUS_PRICE"/> до <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Все одинаковые вкладки также будут добавляться в архив, за исключением недавно открытой</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Переместить группу в новое окно}one{Переместить группу в другое окно}few{Переместить группу в другое окно}many{Переместить группу в другое окно}other{Переместить группу в другое окно}}</translation>
 <translation id="6193448654517602979">Выбрать вкладки</translation>
+<translation id="6220820548421939212">Да</translation>
 <translation id="6228793724645064692">(оценка магазина)</translation>
 <translation id="6271513594716432922">Закрыть все неактивные вкладки</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Добавить вкладку в новую группу}one{Добавить вкладки в новую группу}few{Добавить вкладки в новую группу}many{Добавить вкладки в новую группу}other{Добавить вкладки в новую группу}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Действия</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> отзыв}one{Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> отзыв}few{Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> отзыва}many{Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> отзывов}other{Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> отзыва}}</translation>
 <translation id="7885132941432959125">Переместить вкладку вправо</translation>
+<translation id="788914896430720926">Закрывать неиспользуемые вкладки автоматически?</translation>
 <translation id="7939917283308035850">Цвет "<ph name="COLOR_NAME"/>" не выбран</translation>
 <translation id="7942349550061667556">Красный</translation>
 <translation id="7961015016161918242">Нет</translation>
 <translation id="7966321538264951561">Скрыть подсказки.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Переместить вкладку в новое окно}one{Переместить вкладку в другое окно}few{Переместить вкладку в другое окно}many{Переместить вкладку в другое окно}other{Переместить вкладку в другое окно}}</translation>
 <translation id="799469866974412355">Новая группа с другого устройства</translation>
 <translation id="8029301326595421733">Информация об этом магазине открыта на весь экран</translation>
 <translation id="8053770993984522566">Список групп вкладок, открыт наполовину</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Более низкая цена</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Создано <ph name="NUM_MONTHS_ONE"/> месяц назад}one{Создано <ph name="NUM_MONTHS_MANY"/> месяц назад}few{Создано <ph name="NUM_MONTHS_MANY"/> месяца назад}many{Создано <ph name="NUM_MONTHS_MANY"/> месяцев назад}other{Создано <ph name="NUM_MONTHS_MANY"/> месяца назад}}</translation>
+<translation id="8813708480179818649">Удалить вкладку из группы</translation>
 <translation id="8820741577754260431">Показывать скидки на вкладках</translation>
+<translation id="5495695379719652610">Вкладки в Brave, на которые вы не переходили 3 месяца, будут автоматически закрываться. Эту функцию всегда можно отключить в настройках.</translation>
 <translation id="8887921976452567404">Вернуть закрытые вкладки и группы можно в разделах "Недавние вкладки" и "Группы вкладок".</translation>
 <translation id="8915916167043355778">Закрыть все</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Перенести в другое окно}one{Перенести в другое окно}few{Перенести в другое окно}many{Перенести в другое окно}other{Перенести в другое окно}}</translation>
 <translation id="9090098097337832354">Информация об этом магазине закрыта</translation>
 <translation id="9114502155681725011">Открыть меню действий для группы вкладок "<ph name="TITLE_OF_GROUP"/>", которой присвоен цвет "<ph name="COLOR_NAME"/>".</translation>
 <translation id="9169594135889675189">Добавить новую вкладку в группу</translation>

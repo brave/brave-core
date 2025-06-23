@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">I-enable ang suporta para sa pag-bypass ng mataas na antas ng pag-redirect ng mga URL ng pagta-track</translation>
 <translation id="94154759592465111">Mag-block ng Mga Script</translation>
 <translation id="7714773920987474116">Bina-block ang JavaScript (posibleng masira ang mga site)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">I-block ang inirerekomendang content ng YouTube</translation>
 <translation id="1005372663692637999">Bina-block ang mga element na susunod at pangwakas na card sa youtube.com.</translation>
 <translation id="5152595963250646670">I-block ang mga nakakaabalang element ng YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Ipakita ang mga nangungunang mungkahi</translation>
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
-<translation id="412411722208944922">Mabibilis na search engine</translation>
-<translation id="2836969042340015500">Mabibilis na Search Engine</translation>
-<translation id="9120455214794270250">Magpakita ng mabilis na search bar</translation>
-<translation id="1052991798173010693">Kasalukuyang ginagamit na mga search engine</translation>
-<translation id="335303688425891752">Pindutin nang matagal para baguhin ang pagkakaayos</translation>
 <translation id="9148058034647219655">Lumabas</translation>
 <translation id="8047754398610073499">I-block ang mga abiso sa pahintulot sa cookie</translation>
 <translation id="2621893359845808115">I-block ang mga pop-up sa website na hinihiling sa iyong tanggapin / tanggihan ang cookies sa site ng mga ito</translation>
@@ -677,6 +671,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3952797765659730604">Ilagay, i-paste, o i-import ang iyong pribadong key string file o JSON.</translation>
 <translation id="569068482611873351">I-import...</translation>
 <translation id="4522570452068850558">Mga Detalye</translation>
+<translation id="3114681061018999547">Nagshi-shield</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="4412698727486357573">Help center</translation>
 <translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
@@ -808,18 +803,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2199215899212542417">URI NG FUNCTION: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Walang data</translation>
 <translation id="1105525362447173583">Solana Dapp Sign Transaction</translation>
-<translation id="9061799688859969073">Nagpadala ang <ph name="ACCOUNT_NAME"/> ng <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046">Nag-send ang <ph name="ACCOUNT_NAME"/> ng <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823">Inaprubahan ng <ph name="ACCOUNT_NAME"/> ang <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Inaprubahan ang Walang Limitasyong <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Pagpapalit ng<ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Hindi inaprubahan</translation>
-<translation id="8034530868111548216">Inaprubahan</translation>
-<translation id="6015436276085482001">Tinanggihan</translation>
-<translation id="6666273175654835609">Isinumite</translation>
-<translation id="2331676293859649642">Nakumpirma</translation>
-<translation id="8214232307424031138">Na-sign</translation>
-<translation id="1165039591588034296">Nagka-error</translation>
 <translation id="2561824823738097741">Ginagamit mo ba ang pinakamabilis na browser ng web?</translation>
 <translation id="2065971949051836200">Nasa telepono mo na ang 3x na mas mabilis na internet. Gamitin ang Brave para sa lahat ng iyong pag-browse ng web,</translation>
 <translation id="2888278614497184977">Brave = 3x na mas mabilis na pag-browse ng web</translation>
@@ -1238,4 +1221,5 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6859935199732075666">Ipakita ang mga error ng Safe Browsing</translation>
 <translation id="2735247450315842119">Payagan ang mga screenshot sa mga private tab</translation>
 <translation id="8420414929552321089">Kung papayagan, makikita rin ang mga private tab kapag nakabukas ang maraming app.</translation>
+<translation id="7956713633345437162">Mga bookmark sa Mobile</translation>
 </translationbundle>
