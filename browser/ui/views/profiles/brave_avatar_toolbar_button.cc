@@ -22,6 +22,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -91,21 +92,27 @@ void BraveAvatarToolbarButton::SetHighlight(
     const std::u16string& highlight_text,
     std::optional<SkColor> highlight_color) {
   std::u16string revised_highlight_text;
+
+  // We put window count to otr window's profile icon.
+  int window_count = 0;
+  if (browser_->profile()->IsOffTheRecord()) {
+    window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
+        browser_->profile());
+  }
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
 
-    if (delegate_->GetWindowCount() > 1) {
-      revised_highlight_text = l10n_util::GetStringFUTF16(
-          IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
-          base::NumberToString16(delegate_->GetWindowCount()));
+    if (window_count > 1) {
+      revised_highlight_text =
+          l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
+                                     base::NumberToString16(window_count));
     }
   } else if (browser_->profile()->IsIncognitoProfile()) {
     // We only want the icon and count for Incognito profiles.
     revised_highlight_text = std::u16string();
-    if (delegate_->GetWindowCount() > 1) {
-      revised_highlight_text =
-          base::NumberToString16(delegate_->GetWindowCount());
+    if (window_count > 1) {
+      revised_highlight_text = base::NumberToString16(window_count);
     }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
