@@ -930,8 +930,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewFullscreenTest) {
   EXPECT_TRUE(secondary_contents_container().GetBorder());
 
   // Simulate tab-fullscreen state change.
-  FullscreenController* fullscreen_controller =
-      browser()->exclusive_access_manager()->fullscreen_controller();
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
   split_view().OnFullscreenStateChanged();
 
