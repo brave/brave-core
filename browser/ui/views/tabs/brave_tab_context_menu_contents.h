@@ -69,7 +69,8 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // ContainersMenuModel::Delegate:
-  void OnContainerSelected(containers::mojom::ContainerPtr container) override;
+  void OnContainerSelected(
+      const containers::mojom::ContainerPtr& container) override;
   std::optional<std::string_view> GetCurrentContainerId() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

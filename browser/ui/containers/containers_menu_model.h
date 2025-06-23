@@ -30,7 +30,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual ~Delegate() = default;
 
     virtual void OnContainerSelected(
-        containers::mojom::ContainerPtr container) = 0;
+        const containers::mojom::ContainerPtr& container) = 0;
     virtual std::optional<std::string_view> GetCurrentContainerId() = 0;
   };
 

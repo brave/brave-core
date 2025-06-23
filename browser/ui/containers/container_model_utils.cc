@@ -14,8 +14,8 @@ namespace containers {
 std::vector<ContainerModel> GetContainerModelsFromPrefs(
     const PrefService& prefs) {
   std::vector<ContainerModel> containers;
-  for (const auto& container : containers::GetContainersFromPrefs(prefs)) {
-    containers.emplace_back(container.Clone(),
+  for (auto& container : containers::GetContainersFromPrefs(prefs)) {
+    containers.emplace_back(std::move(container),
                             GetImageModelForContainer(container));
   }
   return containers;

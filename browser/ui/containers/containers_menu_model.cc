@@ -54,7 +54,7 @@ void ContainersMenuModel::OpenContainerSettingsPage() {
 }
 
 void ContainersMenuModel::ContainerSelected(int command_id) {
-  delegate_->OnContainerSelected(items_[command_id].CloneContainer());
+  delegate_->OnContainerSelected(items_[command_id].container());
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {

@@ -159,7 +159,7 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabContextMenuContents::OnContainerSelected(
-    containers::mojom::ContainerPtr container) {
+    const containers::mojom::ContainerPtr& container) {
   // Should open selected tabs in the specified container.
   // TODO(sko) Uncomment this when the containers feature is ready.
   // auto* tab_strip_model =

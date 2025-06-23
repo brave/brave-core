@@ -68,7 +68,8 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // ContainersMenuModel::Delegate:
-  void OnContainerSelected(containers::mojom::ContainerPtr) override;
+  void OnContainerSelected(
+      const containers::mojom::ContainerPtr& container) override;
   std::optional<std::string_view> GetCurrentContainerId() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
