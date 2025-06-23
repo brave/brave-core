@@ -12,7 +12,6 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/tabs/public/tab_features.h"
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -222,13 +221,20 @@ class PsstTabWebContentsObserverBrowserTestDisabled
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTestDisabled,
                        PsstTabWebContentsObserverNotCreated) {
-  auto* active_tab = browser()->GetActiveTabInterface();
-  ASSERT_TRUE(active_tab);
-  auto* registry = active_tab->GetTabFeatures();
-  ASSERT_TRUE(registry);
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
 
-  // Verify that the PSST tab web contents observer is not created
-  EXPECT_FALSE(registry->psst_web_contents_observer());
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+
+  // If the kPsstEnabled preference has not been registered, it means PSST has
+  // not been initialized.
+  EXPECT_FALSE(GetPrefs()->FindPreference(prefs::kPsstEnabled));
+
+  EXPECT_EQ(
+      url.spec(),
+      content::EvalJs(web_contents(), kGetCurrentUrlScript).ExtractString());
 }
 
 }  // namespace psst
