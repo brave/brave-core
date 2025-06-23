@@ -29,10 +29,13 @@ const defaultContext: InputBoxProps['context'] = {
   shouldDisableUserInput: false,
   shouldSendPageContents: true,
   submitInputTextToAPI: () => {},
-  updateShouldSendPageContents: () => {},
   uploadImage: () => {},
   associatedContentInfo: [],
-  handleVoiceRecognition: () => {}
+  handleVoiceRecognition: () => {},
+  isUploadingFiles: false,
+  disassociateContent: () => {},
+  associateDefaultContent: () => {},
+  getPluralString: () => Promise.resolve('')
 }
 
 describe('input box', () => {
@@ -127,5 +130,50 @@ describe('input box', () => {
     expect(
       container.querySelector('img[src*="//favicon2"]')
     ).not.toBeInTheDocument()
+  })
+
+  it('send button is disabled when the input text is empty', () => {
+    const { container } = render(
+      <InputBox
+        context={{
+          ...defaultContext,
+          inputText: ''
+        }}
+        conversationStarted={false}
+      />
+    )
+
+    const sendButton = container.querySelector('.sendButtonDisabled')
+    expect(sendButton).toBeInTheDocument()
+    expect(sendButton).toHaveClass('sendButtonDisabled')
+  })
+
+  it('send button is enabled when the input text is not empty', () => {
+    const { container } = render(
+      <InputBox
+        context={{
+          ...defaultContext,
+          inputText: 'test'
+        }}
+        conversationStarted={false}
+      />
+    )
+
+    const sendButton = container.querySelector('.button')
+    expect(sendButton).toBeInTheDocument()
+    expect(sendButton).not.toHaveClass('sendButtonDisabled')
+  })
+
+  it('streaming button is shown while generating', () => {
+    const { container } = render(
+      <InputBox
+        context={{ ...defaultContext, isGenerating: true }}
+        conversationStarted={false}
+      />
+    )
+
+    const streamingButton = container.querySelector('.streamingButton')
+    expect(streamingButton).toBeInTheDocument()
+    expect(streamingButton).toHaveClass('streamingButton')
   })
 })
