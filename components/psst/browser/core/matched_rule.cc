@@ -31,8 +31,10 @@ std::unique_ptr<MatchedRule> MatchedRule::Create(
     const PsstRule& rule) {
   CHECK(rule_reader);
 
-  auto user_script = rule_reader->ReadUserScript(rule);
-  auto policy_script = rule_reader->ReadPolicyScript(rule);
+  auto user_script =
+      rule_reader->ReadUserScript(rule.name(), rule.user_script_path());
+  auto policy_script =
+      rule_reader->ReadPolicyScript(rule.name(), rule.policy_script_path());
 
   if (!user_script || !policy_script) {
     return nullptr;

@@ -14,50 +14,20 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
+#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
 
 namespace {
 
-constexpr char kPsstJsonFileContent[] = R"([
-    {
-        "name": "a",
-        "include": [
-            "https://a.com/*"
-        ],
-        "exclude": [
-            "https://a.com/exclude/*"
-        ],
-        "version": 1,
-        "user_script": "user.js",
-        "policy_script": "policy.js"
-    },
-    {
-        "name": "b",
-        "include": [
-            "https://b.com/*"
-        ],
-        "exclude": [
-        ],
-        "version": 2,
-        "user_script": "user.js",
-        "policy_script": "policy.js"
-    },
-    {
-        "name": "rule_with_wrong_script_path",
-        "include": [
-            "https://url.com/*"
-        ],
-        "exclude": [
-        ],
-        "version": 1,
-        "user_script": "user.js",
-        "policy_script": "policy.js"
-    }
-])";
+constexpr base::FilePath::StringViewType kUserScriptPath =
+    FILE_PATH_LITERAL("user.js");
+constexpr base::FilePath::StringViewType kPolicyScriptPath =
+    FILE_PATH_LITERAL("policy.js");
+
+constexpr char kExistingRuleName[] = "a";
+constexpr char kNotExistingRuleName[] = "rule_with_wrong_script_path";
 
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
@@ -76,53 +46,48 @@ class RuleDataReaderUnitTest : public testing::Test {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
     test_data_dir_base_ =
-        test_data_dir.AppendASCII("brave/components/test/data/psst");
-
-    psst_rules_ = PsstRule::ParseRules(kPsstJsonFileContent);
-    ASSERT_EQ(psst_rules_->size(), 3U);
+        test_data_dir.AppendASCII("brave/components/test/data/psst")
+            .AppendASCII(kPsstComponentId);
   }
 
   base::FilePath GetBasePath() { return test_data_dir_base_; }
 
-  MatchedRule GetMatchedRule() {
-    return MatchedRule("a", "user.js", "policy.js", 1);
-  }
-
-  PsstRule& GetBasicRule() { return (*psst_rules_)[0]; }
-  PsstRule& GetWrongNameRule() { return (*psst_rules_)[2]; }
-
  private:
   base::FilePath test_data_dir_base_;
-  std::optional<std::vector<PsstRule>> psst_rules_;
 };
 
 TEST_F(RuleDataReaderUnitTest, LoadComponentScripts) {
   RuleDataReader crr(GetBasePath());
-  auto scripts_path = GetBasePath()
-                          .Append(base::FilePath::FromUTF8Unsafe("scripts"))
-                          .Append(base::FilePath::FromUTF8Unsafe("a"));
+  auto scripts_path =
+      GetBasePath()
+          .Append(base::FilePath::FromUTF8Unsafe("scripts"))
+          .Append(base::FilePath::FromUTF8Unsafe(kExistingRuleName));
 
-  auto user_script = crr.ReadUserScript(GetBasicRule());
-  ASSERT_TRUE(user_script);
-  ASSERT_FALSE(user_script->empty());
-  EXPECT_EQ(
-      *user_script,
-      ReadFile(scripts_path.Append(base::FilePath::FromUTF8Unsafe("user.js"))));
+  const auto user_script = base::FilePath(kUserScriptPath);
+  const auto policy_script = base::FilePath(kPolicyScriptPath);
 
-  auto policy_script = crr.ReadPolicyScript(GetBasicRule());
-  ASSERT_TRUE(policy_script);
-  ASSERT_FALSE(policy_script->empty());
-  EXPECT_EQ(*policy_script, ReadFile(scripts_path.Append(
-                                base::FilePath::FromUTF8Unsafe("policy.js"))));
+  auto user_script_content = crr.ReadUserScript(kExistingRuleName, user_script);
+  ASSERT_TRUE(user_script_content);
+  ASSERT_FALSE(user_script_content->empty());
+  EXPECT_EQ(*user_script_content, ReadFile(scripts_path.Append(user_script)));
+
+  auto policy_script_content =
+      crr.ReadPolicyScript(kExistingRuleName, policy_script);
+  ASSERT_TRUE(policy_script_content);
+  ASSERT_FALSE(policy_script_content->empty());
+  EXPECT_EQ(*policy_script_content,
+            ReadFile(scripts_path.Append(policy_script)));
 }
 
 TEST_F(RuleDataReaderUnitTest, TryToLoadWrongWithComponentScriptPath) {
   RuleDataReader crr(GetBasePath());
 
-  auto user_script = crr.ReadUserScript(GetWrongNameRule());
+  auto user_script =
+      crr.ReadUserScript(kNotExistingRuleName, base::FilePath(kUserScriptPath));
   ASSERT_FALSE(user_script);
 
-  auto policy_script = crr.ReadPolicyScript(GetWrongNameRule());
+  auto policy_script = crr.ReadPolicyScript(kNotExistingRuleName,
+                                            base::FilePath(kPolicyScriptPath));
   ASSERT_FALSE(policy_script);
 }
 

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
 
 namespace psst {
 
@@ -24,8 +23,12 @@ class RuleDataReader {
   RuleDataReader& operator=(const RuleDataReader&) = delete;
   ~RuleDataReader() = default;
 
-  std::optional<std::string> ReadUserScript(const PsstRule& rule) const;
-  std::optional<std::string> ReadPolicyScript(const PsstRule& rule) const;
+  std::optional<std::string> ReadUserScript(
+      const std::string& rule_name,
+      const base::FilePath& user_script_path) const;
+  std::optional<std::string> ReadPolicyScript(
+      const std::string& rule_name,
+      const base::FilePath& policy_script_path) const;
 
  private:
   base::FilePath prefix_;

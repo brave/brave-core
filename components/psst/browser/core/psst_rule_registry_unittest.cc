@@ -18,6 +18,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "brave/components/psst/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -50,8 +51,9 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   void SetUp() override {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
-    test_data_dir_base_ = test_data_dir.AppendASCII(
-        "brave/components/test/data/psst/lhhcaamjbmbijmjbnnodjaknblkiagon");
+    test_data_dir_base_ =
+        test_data_dir.AppendASCII("brave/components/test/data/psst")
+            .AppendASCII(kPsstComponentId);
     scoped_feature_list_.InitAndEnableFeature(features::kEnablePsst);
   }
 
