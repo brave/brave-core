@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/containers/container_model_utils.h"
 
+#include <utility>
+
 #include "base/notimplemented.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/components/containers/core/browser/prefs.h"
