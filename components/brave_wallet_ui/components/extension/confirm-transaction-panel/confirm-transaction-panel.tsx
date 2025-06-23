@@ -138,6 +138,7 @@ export const ConfirmTransactionPanel = ({
     isSolanaTransaction,
     isBitcoinTransaction,
     isZCashTransaction,
+    isFilecoinTransaction,
     hasFeeEstimatesError,
     isLoadingGasFee,
     rejectAllTransactions,
@@ -188,6 +189,8 @@ export const ConfirmTransactionPanel = ({
   const onToggleAdvancedTransactionSettings = () => {
     setShowAdvancedTransactionSettings((prev) => !prev)
   }
+
+  const canEditGas = isEthereumTransaction || isFilecoinTransaction
 
   // render
   if (
@@ -452,11 +455,7 @@ export const ConfirmTransactionPanel = ({
       <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <TransactionInfo
-            onToggleEditGas={
-              isSolanaTransaction || isBitcoinTransaction || isZCashTransaction
-                ? undefined
-                : onToggleEditGas
-            }
+            onToggleEditGas={canEditGas ? onToggleEditGas : undefined}
             isZCashTransaction={isZCashTransaction}
             isBitcoinTransaction={isBitcoinTransaction}
             transactionDetails={transactionDetails}
@@ -483,7 +482,9 @@ export const ConfirmTransactionPanel = ({
       <NetworkFeeRow>
         <PendingTransactionNetworkFeeAndSettings
           showEditGas={
-            !isZCashTransaction && !isBitcoinTransaction && !isSolanaTransaction
+            isEthereumTransaction
+            || isSolanaTransaction
+            || isFilecoinTransaction
           }
           onToggleEditGas={onToggleEditGas}
           feeDisplayMode='fiat'
