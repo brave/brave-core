@@ -192,8 +192,8 @@ source_set("browser_tests") {
       "//brave/test/data/ai_chat/youtube.html",
       "//brave/test/data/ai_chat/youtube-fallback.html",
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/default.json",
-      "//brave/test/data/ai_chat/youtubei/v1/player_dir/brave1234.json",
-      "//brave/test/data/ai_chat/youtubei/v1/player_dir/brave5566.json",
+      "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_001.json",
+      "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_002.json",
     ]
   }
 }

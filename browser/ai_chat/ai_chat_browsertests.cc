@@ -134,7 +134,7 @@ class AIChatBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
-  const GURL url("https://www.youtube.com/youtube.html?v=brave5566");
+  const GURL url("https://www.youtube.com/youtube.html?v=video_id_001");
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::CURRENT_TAB,
@@ -144,7 +144,8 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   EXPECT_EQ("Initial content", initial_content);
 
   // Also test regex fallback
-  const GURL url2("https://www.youtube.com/youtube-fallback.html?v=brave1234");
+  const GURL url2(
+      "https://www.youtube.com/youtube-fallback.html?v=video_id_002");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url2, WindowOpenDisposition::CURRENT_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
