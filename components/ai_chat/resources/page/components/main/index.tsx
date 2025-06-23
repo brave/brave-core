@@ -185,7 +185,11 @@ function Main() {
   })
 
   return (
-    <main className={styles.main} ref={setMainElement}>
+    <main className={classnames({
+      [styles.main]: true,
+      [styles.mainPanel]: !aiChatContext.isStandalone,
+      [styles.mainMobile]: aiChatContext.isMobile
+    })} ref={setMainElement}>
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div

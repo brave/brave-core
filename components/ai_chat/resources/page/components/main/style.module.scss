@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .main {
-  --conversation-content-margin: var(--leo-spacing-2xl);
+  --conversation-content-margin: var(--leo-spacing-5xl);
   --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
 
   display: flex;
@@ -13,6 +13,14 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.mainPanel {
+  --conversation-content-margin: var(--leo-spacing-2xl);
+}
+
+.mainMobile {
+  --conversation-content-margin: var(--leo-spacing-xl);
 }
 
 .attachmentsDialog {
@@ -90,8 +98,7 @@
   max-width: var(--conversation-content-max-width);
   // Adjust padding to account for scrollbar width so content lines up with
   // input area which is outside of the scroller.
-  padding:
-    0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+  padding: 0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 var(--conversation-content-margin);
 
   // Hide until content is ready
   opacity: 0;
