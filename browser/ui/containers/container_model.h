@@ -1,0 +1,35 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_UI_CONTAINERS_CONTAINER_MODEL_H_
+#define BRAVE_BROWSER_UI_CONTAINERS_CONTAINER_MODEL_H_
+
+#include <string>
+
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "ui/base/models/image_model.h"
+
+// A model for view that represents a container in the UI.
+class ContainerModel {
+ public:
+  ContainerModel(containers::mojom::ContainerPtr container,
+                 ui::ImageModel icon);
+  ContainerModel(const ContainerModel&) = delete;
+  ContainerModel& operator=(const ContainerModel&) = delete;
+  ContainerModel(ContainerModel&& other) noexcept;
+  ContainerModel& operator=(ContainerModel&& other) noexcept;
+  ~ContainerModel();
+
+  const std::string id() const { return container_->id; }
+  const std::string name() const { return container_->name; }
+  const ui::ImageModel& icon() const { return icon_; }
+  containers::mojom::ContainerPtr CloneContainer() const;
+
+ private:
+  containers::mojom::ContainerPtr container_;
+  ui::ImageModel icon_;
+};
+
+#endif  // BRAVE_BROWSER_UI_CONTAINERS_CONTAINER_MODEL_H_

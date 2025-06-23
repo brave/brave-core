@@ -5,19 +5,26 @@
 
 #include "brave/browser/ui/containers/containers_menu_model.h"
 
+#include <utility>
+#include <vector>
+
 #include "base/notimplemented.h"
-#include "brave/browser/ui/containers/mock_containers_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 
-ContainersMenuModel::ContainersMenuModel(Type type, Delegate& delegate)
-    : ui::SimpleMenuModel(this), type_(type), delegate_(delegate) {
+ContainersMenuModel::ContainersMenuModel(Type type,
+                                         Delegate& delegate,
+                                         std::vector<ContainerModel> items)
+    : ui::SimpleMenuModel(this),
+      type_(type),
+      delegate_(delegate),
+      items_(std::move(items)) {
   // 1. Add items for each container.
   int index = 0;
-  for (const auto& container :
-       MockContainersService::GetInstance().containers()) {
-    AddCheckItem(container.id, container.name);
-    SetIcon(index, container.icon);
+  for (const auto& item : items_) {
+    AddCheckItem(index, base::UTF8ToUTF16(item.name()));
+    SetIcon(index, item.icon());
     index++;
   }
 
@@ -46,8 +53,8 @@ void ContainersMenuModel::OpenContainerSettingsPage() {
   NOTIMPLEMENTED();
 }
 
-void ContainersMenuModel::ContainerSelected(int container_id) {
-  delegate_->OnContainerSelected(container_id);
+void ContainersMenuModel::ContainerSelected(int command_id) {
+  delegate_->OnContainerSelected(items_[command_id].CloneContainer());
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
@@ -56,8 +63,8 @@ bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
     return false;
   }
 
-  return command_id ==
-         MockContainersService::GetInstance().current_tab_container_id();
+  const auto& id = delegate_->GetCurrentContainerId();
+  return id.has_value() && items_.at(command_id).id() == id.value();
 }
 
 bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {

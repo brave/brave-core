@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <optional>
 #include <stack>
 #include <string>
 #include <utility>
@@ -14,6 +15,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
@@ -50,7 +52,11 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
 
   model_ = std::make_unique<BraveTabMenuModel>(
       this, browser_->GetFeatures().tab_menu_model_delegate(),
-      controller->model(), index, is_vertical_tab);
+      controller->model(),
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      *this,
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+      index, is_vertical_tab);
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_->profile());
   menu_runner_ = std::make_unique<views::MenuRunner>(
@@ -150,6 +156,29 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
   controller_->ExecuteCommandForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTabContextMenuContents::OnContainerSelected(
+    containers::mojom::ContainerPtr container) {
+  // Should open selected tabs in the specified container.
+  // TODO(sko) Uncomment this when the containers feature is ready.
+  // auto* tab_strip_model =
+  //     static_cast<BraveTabStripModel*>(controller_->model());
+  // for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
+  //   auto* tab = tab_strip_model->GetTabAtIndex(index);
+  //   brave::IsolateTab(browser_, tab->GetHandle(),
+  //                     container->id);
+  // }
+}
+
+std::optional<std::string_view>
+BraveTabContextMenuContents::GetCurrentContainerId() {
+  // TODO(sko) In the future, we should consider a case where the selected tabs
+  // are included in different Containers.
+  NOTIMPLEMENTED();
+  return std::nullopt;
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     int command_id) const {
