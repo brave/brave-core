@@ -202,7 +202,9 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
           previous_result.did_match_important);
 
   bool has_valid_rewritten_url = false;
-  if (adblock_result.rewritten_url.has_value &&
+  // Note that `rewritten_url` results should only be used for the
+  // "user-facing" URL; never for the canonical one.
+  if (!canonical_url && adblock_result.rewritten_url.has_value &&
       GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
       (ctx->method == "GET" || ctx->method == "HEAD" ||
        ctx->method == "OPTIONS")) {
