@@ -178,6 +178,10 @@ BraveTabContextMenuContents::GetCurrentContainerId() {
   NOTIMPLEMENTED();
   return std::nullopt;
 }
+
+Browser* BraveTabContextMenuContents::GetBrowserToOpenSettings() {
+  return browser_;
+}
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(

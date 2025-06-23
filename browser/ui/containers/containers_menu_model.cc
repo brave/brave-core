@@ -8,9 +8,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/notimplemented.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/grit/generated_resources.h"
 
 namespace containers {
@@ -52,7 +52,8 @@ void ContainersMenuModel::ExecuteCommand(int command_id, int event_flags) {
 }
 
 void ContainersMenuModel::OpenContainerSettingsPage() {
-  NOTIMPLEMENTED();
+  chrome::ShowSettingsSubPage(delegate_->GetBrowserToOpenSettings(),
+                              "braveContent");
 }
 
 void ContainersMenuModel::ContainerSelected(int command_id) {
