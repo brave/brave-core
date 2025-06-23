@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "base/values.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "chrome/browser/extensions/extension_management.h"
 #include "chrome/browser/extensions/extension_service_test_base.h"
 #include "chrome/browser/extensions/install_signer.h"
 #include "chrome/browser/extensions/install_verifier.h"
+#include "chrome/browser/extensions/mv2_deprecation_impact_checker.h"
+#include "chrome/browser/extensions/mv2_experiment_stage.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/common/extension_builder.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -62,5 +64,35 @@ TEST_F(BraveExtensionsManifestV2Test, CheckInstallVerifier) {
         test.expected_must_remain_disabled,
         install_verifier->MustRemainDisabled(extension.get(), &disable_reason));
     EXPECT_EQ(test.expected_reason, disable_reason);
+  }
+}
+
+class BraveExtensionsManifestV2DeprecationTest
+    : public BraveExtensionsManifestV2Test,
+      public ::testing::WithParamInterface<extensions::MV2ExperimentStage> {};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveExtensionsManifestV2DeprecationTest,
+    ::testing::Values(extensions::MV2ExperimentStage::kNone,
+                      extensions::MV2ExperimentStage::kDisableWithReEnable,
+                      extensions::MV2ExperimentStage::kUnsupported,
+                      extensions::MV2ExperimentStage::kWarning));
+
+TEST_P(BraveExtensionsManifestV2DeprecationTest,
+       KnownMV2ExtensionsNotDeprecated) {
+  extensions::MV2DeprecationImpactChecker checker(
+      GetParam(),
+      extensions::ExtensionManagementFactory::GetForBrowserContext(profile()));
+
+  for (const auto& known_mv2 :
+       extensions_mv2::kPreconfiguredManifestV2Extensions) {
+    auto extension =
+        extensions::ExtensionBuilder("test")
+            .SetID(std::string(known_mv2))
+            .AddFlags(extensions::Extension::FROM_WEBSTORE)
+            .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+            .Build();
+    EXPECT_FALSE(checker.IsExtensionAffected(*extension.get()));
   }
 }
