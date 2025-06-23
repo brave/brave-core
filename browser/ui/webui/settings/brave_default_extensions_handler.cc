@@ -10,7 +10,6 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"

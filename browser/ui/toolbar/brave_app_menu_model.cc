@@ -13,7 +13,6 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"

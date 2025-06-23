@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"

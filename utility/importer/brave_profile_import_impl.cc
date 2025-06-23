@@ -14,7 +14,6 @@
 #include "base/location.h"
 #include "base/memory/ref_counted.h"
 #include "base/notreached.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/threading/thread.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"

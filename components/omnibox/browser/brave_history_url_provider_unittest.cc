@@ -14,6 +14,7 @@
 
 #include "base/check.h"
 #include "base/run_loop.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
