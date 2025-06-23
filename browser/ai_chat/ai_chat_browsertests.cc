@@ -57,7 +57,7 @@ class AIChatBrowserTest : public InProcessBrowserTest {
             base::FilePath player_dir = test_data_dir.AppendASCII("ai_chat")
                                             .AppendASCII("youtubei")
                                             .AppendASCII("v1")
-                                            .AppendASCII("player_dir");
+                                            .AppendASCII("player");
 
             // Determine which file to serve based on videoId
             base::FilePath file_path;
