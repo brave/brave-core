@@ -76,7 +76,7 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
-  CHECK(exclusive_access_manager());
+  CHECK(GetFeatures().exclusive_access_manager());
   brave_window()->ReadyToListenFullscreenChanges();
 }
 
