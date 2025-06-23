@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_account/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
@@ -17,11 +18,11 @@ source_set("webui") {
 
   deps = [
     "//base",
+    "//brave/components/brave_account/buildflags",
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/browser/ui/webui/ads",
-    "//brave/ios/browser/ui/webui/brave_account",
     "//brave/ios/browser/ui/webui/skus",
     "//components/prefs",
     "//components/resources:components_resources_grit",
@@ -33,6 +34,10 @@ source_set("webui") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_brave_account) {
+    deps += [ "//brave/ios/browser/ui/webui/brave_account" ]
+  }
 }
 
 source_set("data_sources") {

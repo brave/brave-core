@@ -10,17 +10,21 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
-#include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 using web::WebUIIOS;
 using web::WebUIIOSController;
@@ -65,8 +69,10 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
 
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
   } else if (url_host == kBraveAccountHost) {
     return &NewWebUIIOS<BraveAccountUI>;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
   }
