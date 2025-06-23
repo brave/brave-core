@@ -75,7 +75,7 @@ class BraveTabMenuModel : public TabMenuModel {
   int GetRestoreTabCommandStringId() const;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  void BuildItemForContainer(
+  void BuildItemForContainers(
       Browser* browser,
       TabStripModel* tab_strip_model,
       containers::ContainersMenuModel::Delegate& containers_delegate,
