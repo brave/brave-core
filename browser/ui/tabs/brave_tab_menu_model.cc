@@ -14,7 +14,6 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -29,6 +28,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/container_model_utils.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
