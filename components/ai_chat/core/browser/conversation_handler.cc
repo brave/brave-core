@@ -198,8 +198,9 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   UpdateAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
-        associated_content_manager_->GetAssociatedContent(),
-        associated_content_manager_->should_send());
+        associated_content_manager_->should_send()
+            ? associated_content_manager_->GetAssociatedContent()
+            : std::vector<mojom::AssociatedContentPtr>());
   }
 
   for (const auto& client : untrusted_conversation_ui_handlers_) {
@@ -343,9 +344,10 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
-      associated_content_manager_->GetAssociatedContent(),
-      associated_content_manager_->should_send(), current_error_,
-      metadata_->temporary);
+      associated_content_manager_->should_send()
+          ? associated_content_manager_->GetAssociatedContent()
+          : std::vector<mojom::AssociatedContentPtr>(),
+      current_error_, metadata_->temporary);
 
   std::move(callback).Run(std::move(state));
 }
@@ -866,21 +868,10 @@ void ConversationHandler::PerformQuestionGeneration(
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
   UpdateAssociatedContentInfo();
-  std::move(callback).Run(associated_content_manager_->GetAssociatedContent(),
-                          associated_content_manager_->should_send());
-}
-
-void ConversationHandler::SetShouldSendPageContents(bool should_send) {
-  if (associated_content_manager_->should_send() == should_send) {
-    return;
-  }
-  if (!associated_content_manager_->HasAssociatedContent() && should_send) {
-    return;
-  }
-  associated_content_manager_->SetShouldSend(should_send);
-
-  MaybeSeedOrClearSuggestions();
-  MaybeFetchOrClearContentStagedConversation();
+  std::move(callback).Run(
+      associated_content_manager_->should_send()
+          ? associated_content_manager_->GetAssociatedContent()
+          : std::vector<mojom::AssociatedContentPtr>());
 }
 
 void ConversationHandler::RetryAPIRequest() {
@@ -978,7 +969,7 @@ void ConversationHandler::MaybeUnlinkAssociatedContent() {
   // Only unlink if panel is closed and there is no conversation history.
   // When panel is open or has existing conversation, do not change the state.
   if (chat_history_.empty() && !IsAnyClientConnected()) {
-    SetShouldSendPageContents(false);
+    associated_content_manager()->SetShouldSend(false);
   }
 }
 
