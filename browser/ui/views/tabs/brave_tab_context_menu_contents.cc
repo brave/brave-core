@@ -171,12 +171,11 @@ void BraveTabContextMenuContents::OnContainerSelected(
   // }
 }
 
-std::optional<std::string_view>
-BraveTabContextMenuContents::GetCurrentContainerId() {
-  // TODO(sko) In the future, we should consider a case where the selected tabs
-  // are included in different Containers.
+base::flat_set<std::string_view>
+BraveTabContextMenuContents::GetCurrentContainerIds() {
+  // TODO(sko) Fill the set with container ids of tabs selected.
   NOTIMPLEMENTED();
-  return std::nullopt;
+  return {};
 }
 
 Browser* BraveTabContextMenuContents::GetBrowserToOpenSettings() {

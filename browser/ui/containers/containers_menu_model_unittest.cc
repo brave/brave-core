@@ -48,8 +48,7 @@ MATCHER_P(EqId, id, "") {
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
   MockContainerMenuModelDelegate delegate;
 
-  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
-                            delegate, GetContainers());
+  ContainersMenuModel model(delegate, GetContainers());
   auto containers = GetContainers();
 
   // Verify the model contains all containers from the service
@@ -66,54 +65,42 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
-                            delegate, GetContainers());
+  ContainersMenuModel model(delegate, GetContainers());
   EXPECT_CALL(delegate, OnContainerSelected(EqId("ExampleContainer1")));
   model.ExecuteCommand(0, 0);
 }
 
-TEST_F(ContainersMenuModelUnitTest,
-       TabTypeShouldReturnCheckedForCurrentContainer) {
+TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kTabContextMenu,
-                            delegate, GetContainers());
+  ContainersMenuModel model(delegate, GetContainers());
 
   auto containers = GetContainers();
 
   // Test with the first container ID
-  EXPECT_CALL(delegate, GetCurrentContainerId())
-      .WillRepeatedly(
-          testing::Return(std::optional<std::string_view>(containers[0].id())));
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillRepeatedly(testing::Return(
+          (base::flat_set<std::string_view>{containers[0].id()})));
   EXPECT_TRUE(model.IsCommandIdChecked(0));
   EXPECT_FALSE(model.IsCommandIdChecked(1));
 
   // Now test with the second container ID
-  EXPECT_CALL(delegate, GetCurrentContainerId())
-      .WillRepeatedly(
-          testing::Return(std::optional<std::string_view>(containers[1].id())));
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillRepeatedly(testing::Return(
+          base::flat_set<std::string_view>{containers[1].id()}));
   EXPECT_FALSE(model.IsCommandIdChecked(0));
   EXPECT_TRUE(model.IsCommandIdChecked(1));
 
   // Test with no container selected
-  EXPECT_CALL(delegate, GetCurrentContainerId())
-      .WillRepeatedly(testing::Return(std::nullopt));
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillRepeatedly(testing::Return<base::flat_set<std::string_view>>({}));
   EXPECT_FALSE(model.IsCommandIdChecked(0));
   EXPECT_FALSE(model.IsCommandIdChecked(1));
-}
 
-TEST_F(ContainersMenuModelUnitTest, LinkTypeNeverReturnsChecked) {
-  MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(ContainersMenuModel::Type::kRendererContextMenu,
-                            delegate, GetContainers());
-
-  const auto& containers = GetContainers();
-  EXPECT_CALL(delegate, GetCurrentContainerId())
-      .WillRepeatedly(
-          testing::Return(std::optional<std::string_view>(containers[0].id())));
-
-  // For links, it'll open the link in a container, so we don't have a current
-  // container.
-  for (size_t i = 0; i < containers.size() - 1; ++i) {
-    EXPECT_FALSE(model.IsCommandIdChecked(i));
-  }
+  // Test with multiple containers selected
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillRepeatedly(testing::Return(base::flat_set<std::string_view>{
+          containers[0].id(), containers[1].id()}));
+  EXPECT_TRUE(model.IsCommandIdChecked(0));
+  EXPECT_TRUE(model.IsCommandIdChecked(1));
+  EXPECT_FALSE(model.IsCommandIdChecked(2));
 }

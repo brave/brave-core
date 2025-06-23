@@ -22,8 +22,8 @@ class MockContainerMenuModelDelegate
               (const containers::mojom::ContainerPtr& container),
               (override));
 
-  MOCK_METHOD(std::optional<std::string_view>,
-              GetCurrentContainerId,
+  MOCK_METHOD(base::flat_set<std::string_view>,
+              GetCurrentContainerIds,
               (),
               (override const));
 

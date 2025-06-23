@@ -23,12 +23,6 @@ namespace containers {
 class ContainersMenuModel : public ui::SimpleMenuModel,
                             public ui::SimpleMenuModel::Delegate {
  public:
-  // Types of context menus that trigger this model.
-  enum class Type {
-    kTabContextMenu,
-    kRendererContextMenu,
-  };
-
   class Delegate {
    public:
     Delegate() = default;
@@ -38,16 +32,14 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
 
     virtual void OnContainerSelected(
         const containers::mojom::ContainerPtr& container) = 0;
-    virtual std::optional<std::string_view> GetCurrentContainerId() = 0;
+    virtual base::flat_set<std::string_view> GetCurrentContainerIds() = 0;
     virtual Browser* GetBrowserToOpenSettings() = 0;
   };
 
   static constexpr int kCommandToOpenSettingsPage =
       std::numeric_limits<int>::max();
 
-  ContainersMenuModel(Type type,
-                      Delegate& delegate,
-                      std::vector<ContainerModel> items);
+  ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
   ~ContainersMenuModel() override;
 
   // ui::SimpleMenuModel:
@@ -64,7 +56,6 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);
 
-  const Type type_;
   base::raw_ref<Delegate> delegate_;
 
   std::vector<ContainerModel> items_;

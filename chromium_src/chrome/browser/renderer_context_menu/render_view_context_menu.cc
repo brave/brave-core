@@ -709,7 +709,7 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
   }
 
   containers_submenu_model_ = std::make_unique<containers::ContainersMenuModel>(
-      containers::ContainersMenuModel::Type::kRendererContextMenu, *this,
+      *this,
       containers::GetContainerModelsFromPrefs(*GetProfile()->GetPrefs()));
 
   menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
@@ -783,10 +783,11 @@ void BraveRenderViewContextMenu::OnContainerSelected(
   NOTIMPLEMENTED();
 }
 
-std::optional<std::string_view>
-BraveRenderViewContextMenu::GetCurrentContainerId() {
-  // As Link will always be newly open in a container, there's no current state.
-  return std::nullopt;
+base::flat_set<std::string_view>
+BraveRenderViewContextMenu::GetCurrentContainerIds() {
+  // TODO(sko) If the tab is in a container, return the container ID.
+  NOTIMPLEMENTED();
+  return {};
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
