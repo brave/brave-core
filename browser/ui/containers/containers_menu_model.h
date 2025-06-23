@@ -14,6 +14,10 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "ui/menus/simple_menu_model.h"
 
+FORWARD_DECLARE_TEST(ContainersMenuModelUnitTest, ModelContainsAllContainers);
+
+namespace containers {
+
 class ContainersMenuModel : public ui::SimpleMenuModel,
                             public ui::SimpleMenuModel::Delegate {
  public:
@@ -50,7 +54,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   bool IsCommandIdEnabled(int command_id) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ContainersMenuModelUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(::ContainersMenuModelUnitTest,
                            ModelContainsAllContainers);
 
   void OpenContainerSettingsPage();
@@ -61,5 +65,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
 
   std::vector<ContainerModel> items_;
 };
+
+}  // namespace containers
 
 #endif  // BRAVE_BROWSER_UI_CONTAINERS_CONTAINERS_MENU_MODEL_H_

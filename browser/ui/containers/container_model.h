@@ -11,6 +11,8 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "ui/base/models/image_model.h"
 
+namespace containers {
+
 // A model for view that represents a container in the UI.
 class ContainerModel {
  public:
@@ -33,5 +35,7 @@ class ContainerModel {
   containers::mojom::ContainerPtr container_;
   ui::ImageModel icon_;
 };
+
+}  // namespace containers
 
 #endif  // BRAVE_BROWSER_UI_CONTAINERS_CONTAINER_MODEL_H_

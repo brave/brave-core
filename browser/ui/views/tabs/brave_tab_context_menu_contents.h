@@ -38,12 +38,12 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
-class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate
+class BraveTabContextMenuContents
+    : public ui::SimpleMenuModel::Delegate
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-                                    public ContainersMenuModel::Delegate
+      public containers::ContainersMenuModel::Delegate
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
 {
  public:
   BraveTabContextMenuContents(Tab* tab,

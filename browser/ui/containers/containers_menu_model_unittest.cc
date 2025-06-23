@@ -13,6 +13,9 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using containers::ContainerModel;
+using containers::ContainersMenuModel;
+
 class ContainersMenuModelUnitTest : public testing::Test {
  protected:
   std::vector<ContainerModel> GetContainers() const {

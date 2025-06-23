@@ -12,9 +12,10 @@
 #include "ui/base/models/image_model.h"
 
 class PrefService;
-class ContainerModel;
 
 namespace containers {
+
+class ContainerModel;
 
 std::vector<ContainerModel> GetContainerModelsFromPrefs(
     const PrefService& prefs);

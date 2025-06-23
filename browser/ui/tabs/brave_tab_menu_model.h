@@ -47,14 +47,15 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandLast,
   };
 
-  BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
-                    TabMenuModelDelegate* tab_menu_model_delegate,
-                    TabStripModel* tab_strip_model,
+  BraveTabMenuModel(
+      ui::SimpleMenuModel::Delegate* delegate,
+      TabMenuModelDelegate* tab_menu_model_delegate,
+      TabStripModel* tab_strip_model,
 #if BUILDFLAG(ENABLE_CONTAINERS)
-                    ContainersMenuModel::Delegate& containers_delegate,
+      containers::ContainersMenuModel::Delegate& containers_delegate,
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-                    int index,
-                    bool is_vertical_tab);
+      int index,
+      bool is_vertical_tab);
   BraveTabMenuModel(const BraveTabMenuModel&) = delete;
   BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
@@ -74,10 +75,11 @@ class BraveTabMenuModel : public TabMenuModel {
   int GetRestoreTabCommandStringId() const;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  void BuildItemForContainer(Browser* browser,
-                             TabStripModel* tab_strip_model,
-                             ContainersMenuModel::Delegate& containers_delegate,
-                             const std::vector<int>& indices);
+  void BuildItemForContainer(
+      Browser* browser,
+      TabStripModel* tab_strip_model,
+      containers::ContainersMenuModel::Delegate& containers_delegate,
+      const std::vector<int>& indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
@@ -87,8 +89,9 @@ class BraveTabMenuModel : public TabMenuModel {
   bool is_vertical_tab_ = false;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  raw_ref<ContainersMenuModel::Delegate> containers_menu_model_delegate_;
-  std::unique_ptr<ContainersMenuModel> containers_submenu_;
+  raw_ref<containers::ContainersMenuModel::Delegate>
+      containers_menu_model_delegate_;
+  std::unique_ptr<containers::ContainersMenuModel> containers_submenu_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };
 
