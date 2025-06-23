@@ -13,7 +13,7 @@ source_set("brave_account") {
     "//base",
     "//brave/components/brave_account",
     "//brave/components/password_strength_meter:mojom",
-    "//brave/ios/browser/ui/webui:data_sources",
+    "//brave/ios/browser/web/webui",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public",
     "//ios/web/public/webui",
