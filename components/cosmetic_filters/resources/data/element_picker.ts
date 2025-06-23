@@ -594,11 +594,16 @@ const setupDragging = (root: ShadowRoot): void => {
       window.getComputedStyle(mainSection).transform);
   };
 
-  const handleDragMove = (e: TouchEvent): void => {
+  const handleDragMove = (e: Event): void => {
     if (!isDragging) return;
-    e.preventDefault();
 
-    const deltaY = e.touches[0].clientY - startY;
+    const touchEvent = e as TouchEvent;
+    touchEvent.preventDefault();
+
+    const touch = touchEvent.touches[0];
+    if (!touch) return;
+
+    const deltaY = touch.clientY - startY;
     const newTransform = Math.min(
       Math.max(startTransform + deltaY, 0), sectionHeight - HEADER_HEIGHT);
     mainSection.style.transform = `translateY(${newTransform}px)`;
@@ -626,7 +631,7 @@ function initSlider(element: HTMLElement
   const inputElement =  element as HTMLInputElement
   if (!inputElement) return;
 
-  const min = parseInt(inputElement.min ?? '0', 10);
+  const min = parseInt(inputElement.min ?? '1', 10);
   const max = parseInt(inputElement.max ?? '4', 10);
   const initialValue = 4
 
@@ -636,9 +641,9 @@ function initSlider(element: HTMLElement
 
   const updateSlider = (fireEvent: boolean): number => {
 
-    const value: number = parseFloat(inputElement.value);
-    const currMin: number = parseFloat(inputElement.min);
-    const currMax: number = parseFloat(inputElement.max);
+    const value = parseFloat(inputElement.value);
+    const currMin = parseFloat(inputElement.min);
+    const currMax = parseFloat(inputElement.max);
 
     const percentage = ((value - currMin) / (currMax - currMin)) * 100;
 
