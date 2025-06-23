@@ -44,6 +44,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/webui/chrome_urls/pref_names.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
@@ -189,6 +190,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterLocalStatePrefs(registry);
 #endif
+
+  // Enable seeing internal pages by default (without going to chrome-urls page
+  // and clicking "Enable internal debugging pages" button).
+  registry->SetDefaultPrefValue(chrome_urls::kInternalOnlyUisEnabled,
+                                base::Value(true));
 }
 
 }  // namespace brave
