@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/gtest_prod_util.h"
 
 // Disable the original tests we're going to override.
 #define TestRegisterUKMProviders DISABLED_TestRegisterUKMProviders

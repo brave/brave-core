@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
