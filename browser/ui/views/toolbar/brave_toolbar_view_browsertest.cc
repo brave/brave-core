@@ -343,6 +343,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(gfx::Size(avatar_size, avatar_size), avatar->size());
 }
 
+// Check no crash when clicking private window's avatar button.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* avatar_button = BrowserView::GetBrowserViewForBrowser(incognito_browser)
+                            ->toolbar_button_provider()
+                            ->GetAvatarToolbarButton();
+  EXPECT_TRUE(avatar_button->GetVisible());
+  avatar_button->button_controller()->NotifyClick();
+}
+
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        BookmarkButtonCanBeToggledWithPref) {
   auto* prefs = browser()->profile()->GetPrefs();
