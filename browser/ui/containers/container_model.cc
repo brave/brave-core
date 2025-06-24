@@ -13,7 +13,7 @@ namespace containers {
 
 ContainerModel::ContainerModel(containers::mojom::ContainerPtr container)
     : container_(std::move(container)),
-      icon_(GetImageModelForContainer(container)) {
+      icon_(GetImageModelForContainer(container_)) {
   CHECK(container_) << "Container must be valid";
 }
 
