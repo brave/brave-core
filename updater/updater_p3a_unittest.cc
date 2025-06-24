@@ -21,12 +21,11 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
     RegisterLocalState(local_state_.registry());
   }
 
-  bool IsUsingOmaha4() const { return GetParam(); }
-
  protected:
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
 
+  bool IsUsingOmaha4() const { return GetParam(); }
   UpdateStatus GetExpectedStatus(bool updated);
 
   void SimulateLaunch(int day, std::string current_version);
