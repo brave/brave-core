@@ -13,9 +13,6 @@ include_rules = [
 
   # In most cases you want l10n_util - see comments in the source
   "-brave/components/l10n",
-
-  # This is equivalent to chrome/test/base
-  "-brave/test/base",
 ]
 
 # Work in progress: https://github.com/brave/brave-browser/issues/46907
