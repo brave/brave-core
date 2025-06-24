@@ -27,6 +27,7 @@ const getChromiumUnitTestsSuites = () => {
 const getTestsToRun = (config, suite) => {
   let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
+    testsToRun.push('brave_components_unittests')
     if (config.targetOS !== 'android') {
       testsToRun.push('brave_installer_unittests')
     }
