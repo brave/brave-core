@@ -67,7 +67,7 @@ std::optional<ParseFilEstimateGasResult> ParseFilEstimateGas(
   parse_gas_result.gas_fee_cap = *fee_cap;
   parse_gas_result.gas_premium = *premium;
   parse_gas_result.gas_limit = gas_limit;
-  return {std::move(parse_gas_result)};
+  return parse_gas_result;
 }
 
 std::optional<uint64_t> ParseFilGetChainHead(const base::Value& json_value) {
@@ -84,7 +84,7 @@ std::optional<uint64_t> ParseFilGetChainHead(const base::Value& json_value) {
   if (!base::StringToUint64(*height_value, &height)) {
     return {};
   }
-  return {height};
+  return height;
 }
 
 // Returns parsed receipt exit code.
@@ -107,7 +107,7 @@ std::optional<int64_t> ParseFilStateSearchMsgLimited(
   if (!base::StringToInt64(*code_value, &exit_code)) {
     return {};
   }
-  return {exit_code};
+  return exit_code;
 }
 
 std::optional<std::string> ParseSendFilecoinTransaction(
@@ -120,8 +120,7 @@ std::optional<std::string> ParseSendFilecoinTransaction(
   if (!cid_value) {
     return {};
   }
-  std::string cid = *cid_value;
-  return {std::move(cid)};
+  return *cid_value;
 }
 
 }  // namespace brave_wallet
