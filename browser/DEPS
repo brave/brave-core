@@ -104,6 +104,7 @@ include_rules += [
   "+brave/components/webcompat_reporter/common",
   "+brave/components/sidebar/browser",
   "+brave/components/windows_recall",
+  "+brave/updater/updater_p3a.h",
 ]
 
 specific_include_rules = {
