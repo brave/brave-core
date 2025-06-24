@@ -168,6 +168,7 @@ void BraveTabContextMenuContents::OnContainerSelected(
   //   brave::IsolateTab(browser_, tab->GetHandle(),
   //                     container->id);
   // }
+  NOTIMPLEMENTED();
 }
 
 base::flat_set<std::string>
