@@ -15,6 +15,7 @@ export interface Props<T> {
   setIsOpen: (open: boolean) => void,
   categories: { category: string, entries: T[] }[],
 
+  header?: React.ReactNode,
   noMatchesMessage?: React.ReactNode
 
   matchesQuery: (query: string, entry: T, category?: string) => boolean | undefined
@@ -74,12 +75,13 @@ export default function FilterMenu<T>(props: Props<T>) {
       isOpen={props.isOpen}
       onClose={() => props.setIsOpen(false)}
     >
+      {props.header}
       {filtered.map((category) => {
         return (
           <React.Fragment key={category.category}>
-            <div className={styles.menuSectionTitle}>
+            {category.category && <div className={styles.menuSectionTitle}>
               {category.category}
-            </div>
+            </div>}
             {category.entries.map((entry, i) => <React.Fragment key={i}>
               {props.children(entry, category.category)}
             </React.Fragment>)}

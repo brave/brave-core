@@ -46,22 +46,26 @@ export default function TabsMenu() {
 
   return <FilterMenu
     categories={[{
-      category: getLocale(S.CHAT_UI_TABS_MENU_TITLE),
+      category: '',
       entries: unselectedTabs
     }]}
     isOpen={isOpen}
     setIsOpen={setIsOpen}
     query={query}
     matchesQuery={matchesQuery}
-    noMatchesMessage={<span className={styles.tabMenuItem}>{getLocale(S.CHAT_UI_TABS_MENU_NO_MATCHING_TABS)}</span>}
+    header={<div className={styles.tabsMenuHeader}>{getLocale(S.CHAT_UI_TABS_MENU_TITLE)}</div>}
+    noMatchesMessage={<div className={styles.tabNoMatches}>{getLocale(S.CHAT_UI_TABS_MENU_NO_MATCHING_TABS)}</div>}
   >
     {(item) => <leo-menu-item
-        class={styles.tabMenuItem}
-        key={item.contentId}
-        onClick={() => selectTab(item)}
-      >
-        <img src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`} />
-        {item.title}
-      </leo-menu-item>}
+      class={styles.tabMenuItem}
+      key={item.contentId}
+      onClick={() => selectTab(item)}
+    >
+      <img src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`} />
+      <div className={styles.tabItemInfo}>
+        <span className={styles.tabItemTitle}>{item.title}</span>
+        <span className={styles.tabItemUrl}>{item.url.url}</span>
+      </div>
+    </leo-menu-item>}
   </FilterMenu>
 }
