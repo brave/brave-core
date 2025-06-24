@@ -20,7 +20,7 @@ class ContainerModel;
 // Returns a vector of `ContainerModel` objects created from preferences. This
 // function retrieves the containers defined in the preferences and converts
 // them into `ContainerModel` instances, which also contains UI specific data
-// such as icons.
+// such as ui::ImageModel.
 std::vector<ContainerModel> GetContainerModelsFromPrefs(
     const PrefService& prefs);
 
