@@ -436,7 +436,6 @@ brave_java_resources = [
   "java/res/drawable/ic_eye_off.xml",
   "java/res/drawable/ic_eye_on.xml",
   "java/res/drawable/ic_fil_asset_icon.xml",
-  "java/res/drawable/ic_file_download_white_24dp.xml",
   "java/res/drawable/ic_filecoin_color.xml",
   "java/res/drawable/ic_following.xml",
   "java/res/drawable/ic_ftm_color.xml",
@@ -965,14 +964,6 @@ brave_java_resources = [
   "java/res/xml/secure_dns_settings.xml",
   "java/res/xml/sns_preferences.xml",
   "java/res/xml/unstoppable_domains_preferences.xml",
-]
-
-brave_java_resources_to_exclude = [
-  "java/res/drawable-hdpi/ic_file_download_white_24dp.png",
-  "java/res/drawable-mdpi/ic_file_download_white_24dp.png",
-  "java/res/drawable-xhdpi/ic_file_download_white_24dp.png",
-  "java/res/drawable-xxhdpi/ic_file_download_white_24dp.png",
-  "java/res/drawable-xxxhdpi/ic_file_download_white_24dp.png",
 ]
 
 brave_base_module_resources =

@@ -1110,54 +1110,6 @@ const util = {
         },
       )
       removeUnlistedAndroidResources(braveOverwrittenFiles)
-
-      console.log('Remove unlisted overridden pngs')
-      const overriddenPngsToRemove = [
-        path.join(androidToolbarResDest,
-            "drawable-hdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-mdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-xhdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-xxhdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-xxxhdpi", "btn_toolbar_reload.png"),
-
-        path.join(androidToolbarResDest,
-            "drawable-ldrtl-hdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-ldrtl-mdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-ldrtl-xhdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-ldrtl-xxhdpi", "btn_toolbar_reload.png"),
-        path.join(androidToolbarResDest,
-            "drawable-ldrtl-xxxhdpi", "btn_toolbar_reload.png"),
-
-        path.join(androidResDest,
-            "drawable-hdpi", "ic_file_download_white_24dp.png"),
-        path.join(androidResDest,
-            "drawable-mdpi", "ic_file_download_white_24dp.png"),
-        path.join(androidResDest,
-            "drawable-xhdpi", "ic_file_download_white_24dp.png"),
-        path.join(androidResDest,
-            "drawable-xxhdpi", "ic_file_download_white_24dp.png"),
-        path.join(androidResDest,
-            "drawable-xxxhdpi", "ic_file_download_white_24dp.png"),
-
-        path.join(androidComponentsWidgetResDest,
-            "drawable-hdpi", "btn_info.png"),
-        path.join(androidComponentsWidgetResDest,
-            "drawable-mdpi", "btn_info.png"),
-        path.join(androidComponentsWidgetResDest,
-            "drawable-xhdpi", "btn_info.png"),
-        path.join(androidComponentsWidgetResDest,
-            "drawable-xxhdpi", "btn_info.png"),
-        path.join(androidComponentsWidgetResDest,
-            "drawable-xxxhdpi", "btn_info.png"),
-      ]
-      overriddenPngsToRemove.forEach((path) => fs.removeSync(path));
     }
     Log.progressFinish('update branding')
   },

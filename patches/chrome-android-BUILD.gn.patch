@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 53e1d8a325bd973afa26e0f40818f341aeb98b1c..4b4bcf65f9cd539f67916dccaa96fdc55fd9b638 100644
+index 53e1d8a325bd973afa26e0f40818f341aeb98b1c..1a96265b1555bccab2257c0d11960b0d666aeb14 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -194,6 +194,7 @@ if (_is_default_toolchain) {
@@ -14,7 +14,7 @@ index 53e1d8a325bd973afa26e0f40818f341aeb98b1c..4b4bcf65f9cd539f67916dccaa96fdc5
      if (enable_screen_capture) {
        deps += [ "//chrome/browser:screen_capture_java_resources" ]
      }
-+    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources sources -= brave_java_resources_to_exclude resource_overlay = true
++    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
    }
  
    android_resources("java_overlay_resources") {
