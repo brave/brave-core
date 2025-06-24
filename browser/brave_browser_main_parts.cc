@@ -71,7 +71,8 @@
 #if BUILDFLAG(IS_MAC)
 #include "base/task/task_traits.h"
 #include "brave/browser/mac_features.h"
-#include "brave/updater/updater_p3a_facade.h"
+#include "brave/updater/updater_p3a.h"
+#include "chrome/common/chrome_constants.h"
 #include "content/public/browser/browser_thread.h"
 #endif
 
@@ -175,7 +176,11 @@ void ChromeBrowserMainParts::PostBrowserStart() {
 
 #if BUILDFLAG(IS_MAC)
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
-      ->PostTask(FROM_HERE, base::BindOnce(&brave_updater::ReportLaunch));
+      ->PostTask(
+          FROM_HERE,
+          base::BindOnce(&brave_updater::ReportLaunch, base::Time::Now(),
+                         chrome::kChromeVersion, brave::ShouldUseOmaha4(),
+                         g_browser_process->local_state()));
 #endif
 }
 
