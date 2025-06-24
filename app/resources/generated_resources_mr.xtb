@@ -79,6 +79,7 @@
 <translation id="1049324577536766607">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> कडून <ph name="ATTACHMENTS"/> मिळवत आहे}other{<ph name="DEVICE_NAME"/> कडून <ph name="ATTACHMENTS"/> मिळवत आहे}}</translation>
 <translation id="1049795001945932310">&amp;भाषा सेटिंग्ज</translation>
 <translation id="1050693411695664090">खराब</translation>
+<translation id="1053226848101751430">एंट्री हटवली गेली आहे</translation>
 <translation id="1053898984916097744">नवीन काहीतरी सुरू करा किंवा फ्लोमध्ये मदत मिळवा.</translation>
 <translation id="1054048317165655285">तुमच्या फोनवर सेटअप पूर्ण करा</translation>
 <translation id="1054153489933238809">नवीन टॅबमध्‍ये मूळ &amp;प्रतिमा उघडा</translation>
@@ -199,7 +200,6 @@
 <translation id="1131201598497838573">तुमच्या लहान मुलाचा पिन अपडेट करण्यात आला आहे</translation>
 <translation id="1133418583142946603">सध्याचा टॅब जोडा</translation>
 <translation id="1133751489735776037">माउस तीनदा क्लिक करा</translation>
-<translation id="1134363466745332968">तुम्ही तुमचा ब्राउझिंग इतिहास सर्वसाधारण पेजच्या आशयाच्या आधारावर शोधू शकता, फक्त पेजचे शीर्षक आणि URL नाही. तुम्ही ॲड्रेस बारमध्ये @history वापरून किंवा इतिहास पेजवरून ब्राउझिंग इतिहास शोधत असलात, तरी यामुळे तुम्हाला सुधारित परिणाम मिळतात.</translation>
 <translation id="1136179794690960030"><ph name="EMOJI_COUNT"/> पैकी <ph name="EMOJI_NAME"/>. <ph name="EMOJI_INDEX"/>.</translation>
 <translation id="1136712381129578788">चुकीचा पिन बऱ्याच वेळा एंटर केल्यामुळे, सिक्युरिटी की लॉक झाली आहे. ती अनलॉक करण्यासाठी, ती काढून टाका आणि पुन्हा घाला.</translation>
 <translation id="1137589305610962734">तात्पुरता डेटा</translation>
@@ -419,6 +419,7 @@
 <translation id="1276994519141842946"><ph name="APP_NAME"/> अनइंस्टॉल करता आले नाही</translation>
 <translation id="1277020343994096713">तुमच्या सध्याच्या पिनपेक्षा वेगळा नवीन पिन तयार करा</translation>
 <translation id="1277597051786235230">नवीन टॅब मध्ये “<ph name="SEARCH_TERMS"/>” साठी <ph name="SEARCH_ENGINE"/> शोधा</translation>
+<translation id="127849925363482083">पिन केलेला टॅब बंद करण्यासाठी <ph name="SHORTCUT_TEXT"/> पुन्हा प्रेस करा</translation>
 <translation id="1278859221870828664">Google Play च्या अ‍ॅप्स आणि सेवांचे पुनरावलोकन करा</translation>
 <translation id="127946606521051357">जवळपासचे डिव्हाइस शेअर करत आहे</translation>
 <translation id="1280332775949918163">स्नॅप विंडो</translation>
@@ -483,6 +484,7 @@
 <translation id="1319983966058170660"><ph name="SUBPAGE_TITLE"/> सबपेजचे मागे जा बटण</translation>
 <translation id="1322046419516468189">सेव्ह केलेले पासवर्ड तुमच्या <ph name="SAVED_PASSWORDS_STORE"/> मध्ये पहा आणि व्यवस्थापित करा</translation>
 <translation id="132539964543492755">डावे बटण, उजवे बटण आणि दोन्ही बटणे यांच्यामधून माउस बटणाची निवड बदलण्यासाठी “x” वापरा</translation>
+<translation id="1325611581149097457">आणखी चांगले लिहा</translation>
 <translation id="1325898422473267360"><ph name="PERMISSION_USAGE"/> <ph name="PERMISSION_INDICATOR_DESCRIPTION"/></translation>
 <translation id="1327272175893960498">Kerberos तिकिटे</translation>
 <translation id="1327495825214193325">ADB डीबगिंग सुरू करण्यासाठी, हे <ph name="DEVICE_TYPE"/> रीस्टार्ट करणे आवश्यक आहे. ते बंद करण्यासाठी फॅक्टरी सेटिंग्जवर रीसेट करणे आवश्यक आहे.</translation>
@@ -685,7 +687,6 @@
 <translation id="1473223074251193484">टेदरिंग कॉन्फिगरेशन सेट करा</translation>
 <translation id="1473927070149284123">पुन्हा प्रयत्न करा किंवा नेटवर्क मॅन्युअली कनेक्ट करा</translation>
 <translation id="1474785664565228650">मायक्रोफोनच्या सेटिंगमधील बदलासाठी Parallels Desktop पुन्हा लाँच करणे आवश्यक आहे. Parallels Desktop वर पुढे सुरू ठेवण्यासाठी पुन्हा लाँच करा.</translation>
-<translation id="1475502736924165259">आपल्याकडे फाईलवर प्रमाणपत्रे आहेत जी अन्य कोणत्याही श्रेणींसाठी योग्य नाहीत</translation>
 <translation id="1476088332184200792">तुमच्या डिव्हाइसवर कॉपी करा</translation>
 <translation id="1991562568473125499">&amp;Brave प्रोफाइल व्यवस्थापित करा</translation>
 <translation id="1476595624592550506">तुमचा पासवर्ड बदला</translation>
@@ -718,6 +719,7 @@
 <translation id="1494349716233667318">तुमच्या डिव्हाइसवर इंस्टॉल केलेले फाँट वापरण्यासाठी साइट विचारू शकतात</translation>
 <translation id="1494429729245089920">"<ph name="VM_NAME"/>" व्हर्च्युअल मशीन अस्तित्वात आहे, पण ते वैध <ph name="APP_NAME"/> व्हर्च्युअल मशीन असल्याचे दिसत नाही. कृपया तुमच्या अ‍ॅडमिनिस्ट्रेटरशी संपर्क साधा.</translation>
 <translation id="1495677929897281669">टॅबवर परत</translation>
+<translation id="1496514951988037011">वापरकर्ता नाव</translation>
 <translation id="1498498210836053409">मजकूर संपादित करताना स्टिकी मोड बंद करा (स्मार्ट स्टिकी मोड)</translation>
 <translation id="1499041187027566160">आवाज वाढवा</translation>
 <translation id="1500297251995790841">अज्ञात डिव्हाइस [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
@@ -957,7 +959,6 @@
 <translation id="1645004815457365098">अज्ञात स्रोत</translation>
 <translation id="1645516838734033527">तुमचा <ph name="DEVICE_TYPE"/> सुरक्षित ठेवण्यासाठी Smart Lockला तुमच्या फोनवर स्क्रीन लॉकची आवश्यकता आहे.</translation>
 <translation id="1646045728251578877">सॉफ्टवेअर अपडेट उपलब्ध आहे</translation>
-<translation id="1646982517418478057">कृपया हे सर्टिफिकेट एंक्रिप्शन करण्यासाठी एक पासवर्ड एंटर करा</translation>
 <translation id="1647408325348388858">या वेब अ‍ॅपमध्ये <ph name="FILE_NAME"/> उघडायची आणि संपादित करायची आहे का?</translation>
 <translation id="1647986356840967552">मागील पेज</translation>
 <translation id="1648439345221797326">ctrl + shift + <ph name="TOP_ROW_KEY"/></translation>
@@ -1068,7 +1069,6 @@
 <translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/>ने तुमचे <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> व्यवस्थापित केले आहे <ph name="END_LINK"/></translation>
 <translation id="1723824996674794290">&amp;नवीन विंडो</translation>
 <translation id="1724801751621173132">इनपुट मोड</translation>
-<translation id="1725562816265788801">टॅब स्क्रोल करणे</translation>
 <translation id="1725585416709851618">सेटिंग्जमध्ये Google Drive सुरू करून पहा आणि "पुन्हा प्रयत्न करा" निवडा किंवा मर्यादित दृश्य व संपादनाशी संबंधित पर्याय वापरण्यासाठी "मूळ संपादकामध्ये उघडा" निवडा.</translation>
 <translation id="1726503915437308071">आयटॅलिक फॉंट</translation>
 <translation id="1729533290416704613">तुम्ही ओम्निबॉक्समधून शोध घेता तेव्हा कोणते पेज दाखवावे हेदेखील ते नियंत्रित करते.</translation>
@@ -1165,6 +1165,7 @@
 <translation id="1796588414813960292">साउंडची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
 <translation id="1797117170091578105">तुमच्या Chromebook चा कीबोर्ड वापरून प्ले करा. तुम्ही विशिष्ट कृतींसाठी की कस्टमाइझ करू शकता.</translation>
 <translation id="1798335429200675510">Brave AI वापरून मसुदा तयार करणे किंवा सध्याचे काम सुधारित करणे यासाठी टेक्स्ट बॉक्सवर राइट-क्लिक करा. सध्या मर्यादित उपलब्धता आहे.</translation>
+<translation id="1799852120691957794">तुमच्या खाजगी सेशनमधील विंडो रिस्टोअर करू शकत नाही</translation>
 <translation id="180203835522132923">Search + O, त्यानंतर W</translation>
 <translation id="1802624026913571222">कव्हर बंद केल्यावर स्लीप मोड ऑन करा</translation>
 <translation id="1802687198411089702">पेज प्रतिसाद देत नाही. तुम्ही वाट पाहू शकता किंवा बाहेर पडू शकता.</translation>
@@ -1246,11 +1247,9 @@
     <ph name="BEGIN_PARAGRAPH2"/>तुम्ही TPM डिव्हाइस पूर्णपणेदेखील बंद करू शकता. तुमचा डेटा तरीही सॉफ्टवेअर एंक्रिप्शनसह सुरक्षितरीत्या स्टोअर केला जाईल, पण हार्डवेअर-बॅक्ड सर्टिफिकेट यांसारखी विशिष्ट सुरक्षितता वैशिष्‍ट्ये बंद केली जातील.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>तुम्ही रीबूट करून आणि सिस्टीमची BIOS/UEFI सेटिंग्ज एंटर करून तुमची TPM सेटिंग्ज बदलू शकता. डिव्हाइसच्या मॉडेलनुसार पायऱ्या बदलतात. अधिक माहितीसाठी, तुम्ही रीबूट करण्यापूर्वी, स्वतंत्र डिव्हाइसवर <ph name="DEVICE_OS"/> दस्तऐवज उघडा: g.co/flex/TPMHelp.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1851551847729706116">या टॅबवर <ph name="TAB_NAME"/> शेअर करत आहे</translation>
-<translation id="1852799913675865625">फाइल वाचण्याचा प्रयत्न करताना एक एरर आली: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="1854180393107901205">कास्ट करणे थांबवा</translation>
 <translation id="1856715684130786728">स्थान जोडा...</translation>
 <translation id="185766080319917408">लाँचर की ही डावीकडील ऑल्ट कीच्या डाव्या बाजूला आहे</translation>
-<translation id="1858585891038687145">सॉफ्टवेअर निर्मात्यांना ओळखण्याकरिता या सर्टिफिकेटवर विश्वास ठेवा</translation>
 <translation id="1859294693760125695">आता स्वारस्य नाही</translation>
 <translation id="1859339856433307593">या खात्याचा पासवर्ड आधीपासून तुमच्या <ph name="BRAND"/> वर सेव्ह केला आहे (<ph name="USER_EMAIL"/>)</translation>
 <translation id="1861262398884155592">हे फोल्डर रिक्त आहे</translation>
@@ -1285,9 +1284,7 @@
 <translation id="1878477879455105085">उघडला</translation>
 <translation id="1878885068166344708">तुम्ही फोकस हलवता तेव्हा आयटम हायलाइट केला जातो. फोकस बदलण्यासाठी टॅब प्रेस करा किंवा आयटम निवडा.</translation>
 <translation id="1879000426787380528">हे म्हणून साइन करा</translation>
-<translation id="18802377548000045">टॅब मोठी रुंदीवर आक्रसतात</translation>
 <translation id="1880618477732738742">या एक्स्टेंशनसह तुमच्या सर्व वेबसाइट आणि एक्स्टेंशनसाठी भौगोलिक स्थान, मायक्रोफोन, कॅमेरा, कुकी इत्यादीसांरख्या वैशिष्‍ट्यांमध्ये बदल करा व अ‍ॅक्सेस द्या.</translation>
-<translation id="1880905663253319515">"<ph name="CERTIFICATE_NAME"/>" सर्टिफिकेट हटवायचे?</translation>
 <translation id="1881445033931614352">कीबोर्ड लेआउट</translation>
 <translation id="1881577802939775675">{COUNT,plural, =1{आयटम}other{# आयटम}}</translation>
 <translation id="1884340228047885921">सध्याचे दृश्यमानता सेटिंग हे काही संपर्क आहेत</translation>
@@ -1393,7 +1390,6 @@
 <translation id="1954597385941141174">साइट USB डिव्हाइसशी कनेक्ट करण्यासाठी विचारू शकतात</translation>
 <translation id="1954813140452229842">शेअर माउंट करताना एरर आली. कृपया तुमची क्रेडेंशियल तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="1955749740583837857">शिफारस डिसमिस करा</translation>
-<translation id="1956050014111002555">फाइलमध्ये एकाधिक प्रमाणपत्रे आहेत ज्यापैकी एकही इंपोर्ट झालेले नाही: </translation>
 <translation id="1956167375087861299">संरक्षित आशय प्ले करण्यासाठी आयडेंटिफायर वापरण्याची अनुमती नाही</translation>
 <translation id="1956390763342388273">हे "<ph name="FOLDER_PATH"/>" वरील सर्व फाइल अपलोड करेल. जर तुमचा साइटवर विश्वास असेल तरच हे करा.</translation>
 <translation id="1956890443345590119">{NUM_EXTENSIONS,plural, =1{१ एक्स्टेंशनचे पुनरावलोकन केले आहे}other{{NUM_EXTENSIONS} एक्स्टेंशनचे पुनरावलोकन केले आहे}}</translation>
@@ -1437,6 +1433,7 @@
 <translation id="1981434377190976112">सर्व वेबसाइटवरील तुमचा सर्व डेटा वाचू शकते</translation>
 <translation id="1982851102516626421">तुम्ही साइन आउट केले आहे</translation>
 <translation id="1983612835086592681">तुम्ही मागील आठवड्यामध्ये उघडल्या होत्या</translation>
+<translation id="1984087999855033707">फोन नंबर</translation>
 <translation id="1984417487208496350">संरक्षण नाही (शिफारस केली जात नाही)</translation>
 <translation id="1984683754853869253">शाळेसाठी तुम्हाला नवीन प्रोफाइल तयार करायची का?</translation>
 <translation id="198507684520034826">मदत</translation>
@@ -1461,7 +1458,6 @@
 <translation id="1999115740519098545">स्टार्टअप वर</translation>
 <translation id="1999763610967697511">ड्रॅग आणि ड्रॉप करा</translation>
 <translation id="2002109485265116295">रीअल टाइम</translation>
-<translation id="2002160221914907025">प्रायोगिक AI</translation>
 <translation id="2003130567827682533">'<ph name="NAME"/>' डेटा ॲक्टिव्हेट करण्यासाठी, आधी वाय-फाय नेटवर्कशी कनेक्ट करा</translation>
 <translation id="200321182559008924">तुमचे टॅब क्लटर मुक्त ठेवा</translation>
 <translation id="2003596238737586336">सध्याचे शेड्यूल <ph name="SUNRISE"/> - <ph name="SUNSET"/> यावर सेट केले आहे. हे सेटिंग तुमच्या अ‍ॅडमिनिस्ट्रेटरद्वारे व्यवस्थापित केले जाते.</translation>
@@ -1607,7 +1603,6 @@
 <translation id="2096716221239095980">सर्व डेटा हटवा</translation>
 <translation id="2097950021134740304">सदस्यत्व विसरणे रद्द करा</translation>
 <translation id="2098805196501063469">शिल्लक पासवर्ड तपासा</translation>
-<translation id="2099686503067610784">सर्व्हर सर्टिफिकेट "<ph name="CERTIFICATE_NAME"/>" हटवायचे?</translation>
 <translation id="2101225219012730419">आवृत्ती:</translation>
 <translation id="2102396546234652240">साइटना तुमचा मायक्रोफोन वापरण्याची अनुमती देऊ नका</translation>
 <translation id="2102495993840063010">Android अ‍ॅप्स</translation>
@@ -1724,7 +1719,6 @@
 <translation id="2186206192313702726">Google Lens</translation>
 <translation id="2186711480981247270">दुसऱ्या डिव्हाइसवरून शेअर केलेले पेज</translation>
 <translation id="2187675480456493911">तुमच्या खात्यावरील इतर डिव्हाइसशी सिंक केले आहे. इतर वापरकर्त्यांनी बदललेली सेटिंग्ज सिंक केली जाणार नाहीत. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या<ph name="LINK_END"/></translation>
-<translation id="2187895286714876935">सर्व्हर सर्टिफिकेट आयात एरर</translation>
 <translation id="2187906491731510095">विस्तार अपडेट केले</translation>
 <translation id="2188881192257509750"><ph name="APPLICATION"/> उघडा</translation>
 <translation id="2188919919468240749">टॅब गट हटवायचा आहे का?</translation>
@@ -1736,7 +1730,6 @@
 <translation id="2192505247865591433">द्वारा:</translation>
 <translation id="219283042927675668">गटामधील टॅब</translation>
 <translation id="2192881772486983655"><ph name="THIRD_PARTY_NTP_MANAGER"/> हे तुमचे नवीन टॅब हे पेज व्यवस्थापित करत आहे, नवीन टॅबमध्ये उघडते</translation>
-<translation id="2193365732679659387">विश्वासू सेटिंग्ज</translation>
 <translation id="2194856509914051091">विचार करण्याच्या गोष्टी</translation>
 <translation id="2195331105963583686">तुम्ही त्यानंतर तरीही हे <ph name="DEVICE_TYPE"/> वापरू शकाल पण ते यापुढे ऑटोमॅटिक सॉफ्टवेअर आणि सुरक्षा अपडेट मिळवू शकणार नाही</translation>
 <translation id="2195729137168608510">ईमेल संरक्षण</translation>
@@ -1782,10 +1775,8 @@
 <translation id="2229161054156947610">1 तासापेक्षा जास्त बाकी</translation>
 <translation id="222931766245975952">फाईल कापली गेली</translation>
 <translation id="2231160360698766265">साइट संरक्षित आशय प्ले करू शकतात</translation>
-<translation id="2231238007119540260">तुम्ही एक सर्व्हर सर्टिफिकेट हटविल्यास, तुम्ही त्या सर्व्हरसाठी नेहमीचे सुरक्षा चेक पुनर्संचयित करता आणि त्यास एक वैध सर्टिफिकेट वापरणे आवश्यक आहे.</translation>
 <translation id="2231351769755997720">कोणत्याही सूचना उपलब्ध नाहीत. या पेजविषयी तुमचा स्वत:चा प्रश्न विचारण्याचा प्रयत्न करा.</translation>
 <translation id="2232751457155581899">साइट तुमच्या कॅमेर्‍याचे स्थान ट्रॅक करण्यासाठी विचारू शकतात</translation>
-<translation id="2232876851878324699">फाइलमध्ये एक सर्टिफिकेट आहे, जे इंपोर्ट झाले नाही:</translation>
 <translation id="2233502537820838181">&amp;अधिक माहिती</translation>
 <translation id="223356358902285214">वेब आणि अ‍ॅप अ‍ॅक्टिव्हिटी</translation>
 <translation id="2234065144797002621">खाडी</translation>
@@ -1810,6 +1801,7 @@
 <translation id="2249111429176737533">टॅब असलेली विंडो म्हणून उघडा</translation>
 <translation id="2249605167705922988">उदा. 1-5, 8, 11-13</translation>
 <translation id="2249635629516220541">तुम्हाला जाहिराती दाखवण्यासाठी साइटद्वारे वापरलेली माहिती कस्टमाइझ करा</translation>
+<translation id="2250153645770828940">शब्दकोश हटवा</translation>
 <translation id="22505994009453896">अंकीय कीपॅडद्वारे तुमचा माउस कर्सर नियंत्रित करा</translation>
 <translation id="2250624716625396929">हा टॅब तुमचा कॅमेरा आणि मायक्रोफोन वापरत आहे</translation>
 <translation id="2251218783371366160">सिस्टीम दर्शकासह उघडा</translation>
@@ -1994,6 +1986,7 @@
 <translation id="2359345697448000899">टूल मेनूमध्‍ये विस्तारांवर क्लिक करुन तुमचे विस्तार व्यवस्थापित करा.</translation>
 <translation id="2359556993567737338">ब्लूटूथ डिव्‍हाइस कनेक्ट करा</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
+<translation id="2360047907847684514">एक्स्टेंशन आणि थीम वापरून तुमचा डेस्कटॉप ब्राउझर प्रभावी करा</translation>
 <translation id="5184079355364489096">पेजचा सारांश, संबंधित शोध आणि या पेजविषयी इतर उपयुक्त माहिती मिळवण्यासाठी, टूलबारमध्ये Brave Search साइड पॅनल बटण निवडा</translation>
 <translation id="2361100938102002520">तुम्ही या ब्राउझरमध्ये व्यवस्थापित केलेली प्रोफाइल जोडत आहात. तुमच्या अ‍ॅडमिनिस्ट्रेटरकडे प्रोफाइलचे नियंत्रण आहे आणि तो त्याचा डेटा ॲक्सेस करू शकतो.</translation>
 <translation id="236117173274098341">Optimize</translation>
@@ -2234,6 +2227,7 @@
 <translation id="2519250377986324805">कसे ते पहा</translation>
 <translation id="2519517390894391510">सर्टिफिकेट प्रोफाइल नाव</translation>
 <translation id="2520644704042891903">उपलब्ध सॉकेटची प्रतीक्षा करत आहे...</translation>
+<translation id="2520961587246779103">स्प्लिट दृश्यासाठी आणखी पर्याय</translation>
 <translation id="2521427645491031107">अ‍ॅप्स सिंक हे डिव्हाइस सेटिंग्ज मध्ये सेट केले आहे</translation>
 <translation id="2521835766824839541">मागील ट्रॅक</translation>
 <translation id="2521854691574443804"><ph name="FILE_NAME"/> तुमच्या संस्थेच्या सुरक्षितता धोरणांनुसार तपासत आहे...</translation>
@@ -2261,6 +2255,7 @@
 <translation id="2537927931785713436">व्हर्च्युअल मशीन इमेज तपासत आहे</translation>
 <translation id="2538084450874617176">हे <ph name="DEVICE_TYPE"/> कोण वापरत आहे?</translation>
 <translation id="2538361623464451692">सिंक बंद केले आहे</translation>
+<translation id="2538655793265890607">व्हिडिओ फ्रेम कॉपी केली आहे</translation>
 <translation id="2540449034743108469">एक्स्टेंशन अ‍ॅक्टिव्हिटी ऐकण्यासाठी "सुरू करा" प्रेस करा</translation>
 <translation id="2540651571961486573">काहीतरी चूक झाली. एरर कोड: <ph name="ERROR_CODE"/>.</translation>
 <translation id="2541002089857695151">फुलस्क्रीन कास्टिंग ऑप्टिमाइझ करायचे?</translation>
@@ -2350,6 +2345,7 @@
 <translation id="2610374175948698697">तुमच्या डिव्हाइसवरील फाइल किंवा फोल्डर पाहू शकते</translation>
 <translation id="2610780100389066815">Microsoft Trust List Signing</translation>
 <translation id="261114180663074524">तुमच्या Microsoft खात्यामध्ये साइन इन करून पुन्हा प्रयत्न करा</translation>
+<translation id="2611702650078660078">एरर आली:</translation>
 <translation id="2611776654555141051">आयत टूल</translation>
 <translation id="2612676031748830579">कार्ड नंबर</translation>
 <translation id="261305050785128654">तुम्ही बोलता त्या भाषा वेबसाइटना कळवा. शक्य असेल, तेव्हा ते त्या भाषांमध्ये आशय दाखवतील.</translation>
@@ -2408,7 +2404,6 @@
 <translation id="265156376773362237">साधारण प्रीलोडिंग</translation>
 <translation id="312102011478921700">{COUNT,plural, =1{{COUNT} पासवर्ड फक्त या डिव्हाइसवर सेव्ह केला आहे. तो इतर डिव्हाइसवर वापरण्यासाठी, तुमच्या <ph name="BEGIN_LINK"/>Brave खाते मध्ये सेव्ह करणे<ph name="END_LINK"/> हे करा.}other{{COUNT} पासवर्ड फक्त या डिव्हाइसवर सेव्ह केले आहेत. ते इतर डिव्हाइसवर वापरण्यासाठी, तुमच्या <ph name="BEGIN_LINK"/>Brave खाते मध्ये सेव्ह करणे<ph name="END_LINK"/> हे करा.}}</translation>
 <translation id="2652129567809778422">पासवर्ड निवडा</translation>
-<translation id="2653266418988778031">तुम्ही एक प्रमाणन अधिकृतता (CA) सर्टिफिकेट हटविल्यास, तुमचा ब्राउझर त्या CA द्वारे जारी केलेल्या कोणत्याही सर्टिफिकेटवर यापुढे विश्वास ठेवणार नाही.</translation>
 <translation id="2653275834716714682">मजकूर बदलणे</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="265390580714150011">फील्ड मूल्य</translation>
@@ -2465,6 +2460,7 @@
 <translation id="2692503699962701720">घटक प्रकार आणि फॉरमॅट केलेला मजकूर बोलताना पिच बदला</translation>
 <translation id="2692901429679246677">अ‍ॅक्वा</translation>
 <translation id="2693134906590795721">चार्जिंगसंबंधित आवाज</translation>
+<translation id="2695943520968279338">एक्स्टेंशन डिस्कव्हर करा</translation>
 <translation id="2698147581454716013">हे बंडल केलेले डिव्हाइस आहे आणि कियोस्क व साइनेज अपग्रेड सह नोंदणी केली जाऊ शकत नाही.</translation>
 <translation id="2699911226086014512"><ph name="RETRIES"/> कोडसह पिन ऑपरेशन पूर्ण झाले नाही.</translation>
 <translation id="2701330563083355633"><ph name="DEVICE_NAME"/> वरून शेअर केले</translation>
@@ -2629,7 +2625,6 @@
 <translation id="2798347533012571708">अपडेट कायम ठेवा</translation>
 <translation id="5962774139606909656">तुमचे Brave</translation>
 <translation id="2799223571221894425">पुन्हा लाँच करा</translation>
-<translation id="2800309299477632167">कस्टम कीमॅप</translation>
 <translation id="2800760947029405028">इमेज अपलोड करा</translation>
 <translation id="2800996978423439835">तुमच्या सर्व डिव्हाइसवर तुमचे बुकमार्क आणि आणखी बरेच काही मिळवा</translation>
 <translation id="2801134910297796778"><ph name="EMAIL"/> मध्ये साइन इन केले आहे</translation>
@@ -2704,6 +2699,7 @@
 <translation id="2849936225196189499">गंभीर</translation>
 <translation id="285033512555869047">बंद आहे</translation>
 <translation id="2850541429955027218">थीम जोडा</translation>
+<translation id="2852045827873867442">इंटरनेट कनेक्शन आवश्यक आहे.</translation>
 <translation id="285237063405807022">(लोड करत आहे)</translation>
 <translation id="2853121255651601031">पासवर्ड सेव्ह केला</translation>
 <translation id="2855243985454069333">सर्व सिंक केलेल्या डिव्हाइसवरून इतिहास हटवते</translation>
@@ -2942,7 +2938,6 @@
 <translation id="3022978424994383087">ते समजू शकले नाही.</translation>
 <translation id="3023464535986383522">बोलण्यासाठी निवडा</translation>
 <translation id="3024374909719388945">24-तासांचे घड्याळ वापरा</translation>
-<translation id="3025174326431589540">{COUNT,plural, =0{No saved passwords}=1{{COUNT} साइटसाठी तपासलेले पासवर्ड}other{{COUNT} साइट आणि ॲपसाठी तपासलेले पासवर्ड}}</translation>
 <translation id="3027296729579831126">Nearby सह शेअरिंग सुरू करा</translation>
 <translation id="3027644380269727216">साइटवरील तुमच्या अ‍ॅक्टिव्हिटीवर आधारित. हे सेटिंग सुरू आहे.</translation>
 <translation id="3028371505549235127">साइन इन करण्यासाठी तुमचा Brave खाते पासवर्ड एंटर करण्याऐवजी, तुम्ही या डिव्हाइससाठी <ph name="DEVICE_TYPE"/> पासवर्ड तयार करू शकता</translation>
@@ -2974,6 +2969,7 @@
 <translation id="3043126717220766543">गटासंबंधित सूचना साफ करा</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752"><ph name="ORIGIN"/> वरून</translation>
+<translation id="3044066905368192931">AI वापरून वर्धित करा</translation>
 <translation id="3045447014237878114">या साइटने एकाहून अधिक फाइल आपोआप डाउनलोड केल्या</translation>
 <translation id="3046178388369461825">Linux डिस्कवरील जागा अतिशय कमी आहे</translation>
 <translation id="304644035656848980">तुमच्या मायक्रोफोनचे पूर्वावलोकन</translation>
@@ -3153,6 +3149,7 @@
 <translation id="3188465121994729530">हलविण्याची सरासरी</translation>
 <translation id="3189187154924005138">मोठा कर्सर</translation>
 <translation id="1935773126712913592">{PASSWORD_COUNT,plural, =1{१ पासवर्ड आणि इतर आयटम फक्त या डिव्हाइसवर सेव्ह केले आहेत. इतर डिव्हाइसवर वापरण्यासाठी, ते तुमच्या Brave खाते मध्ये सेव्ह करा.}other{{PASSWORD_COUNT} पासवर्ड आणि इतर आयटम फक्त या डिव्हाइसवर सेव्ह केले आहेत. इतर डिव्हाइसवर वापरण्यासाठी, ते तुमच्या Brave खाते मध्ये सेव्ह करा.}}</translation>
+<translation id="319044078641740013">तुम्ही भेट दिलेल्या साइटवर सहजपणे परत जाण्यासाठी तुमचा इतिहास आणि टॅब<ph name="ACCOUNT_EMAIL"/> शी सिंक करा</translation>
 <translation id="3190558889382726167">पासवर्ड सेव्ह केला</translation>
 <translation id="1289921851739337479">समस्येचे तपशीलवार वर्णन करा. Brave कडे मानवी पुनरावलोकनासाठी फीडबॅक पाठवला जाईल आणि तो Brave उत्पादनांमध्ये व सेवांमध्ये सुधारणा करण्याकरिता किंवा त्या विकसित करण्याकरिता वापरला जाऊ शकतो.</translation>
 <translation id="3192947282887913208">ऑडिओ फाइल</translation>
@@ -3160,7 +3157,6 @@
 <translation id="3194095220941877499">तुम्ही लिंक, इमेज किंवा व्हिडिओ कॉपी करता, तेव्हा कन्फर्मेशन दाखवते</translation>
 <translation id="3196912927885212665">तुमच्‍या Android फोनसह सेट करण्‍यासाठी, तुमच्‍या Chromebook चे ब्लूटूथ सुरू असणे आवश्‍यक आहे</translation>
 <translation id="3197453258332670132">राइट क्लिक केल्यामुळे किंवा प्रेस करून ठेवल्यामुळे, तुमच्या मजकूर निवडीशी संबंधित माहिती दाखवते</translation>
-<translation id="3199127022143353223">सर्व्हर</translation>
 <translation id="3199637719075529971">हा टॅब सिरीअल पोर्टशी कनेक्ट केलेला आहे</translation>
 <translation id="3201237270673604992">Z ते A</translation>
 <translation id="3201422919974259695">उपलब्ध असलेली USB डिव्हाइस येथे दिसतील.</translation>
@@ -3168,6 +3164,7 @@
 <translation id="3202578601642193415">नवीन‍तम</translation>
 <translation id="3204648577100496185">या अ‍ॅपशी संबंधित डेटा या डिव्हाइसवरून कदाचित काढून टाकला जाईल.</translation>
 <translation id="3204717934117444051">फक्त या डिव्हाइसवर सेव्ह केलेला डेटा सद्य प्रोफाइलमध्ये राहील. तो <ph name="EMAIL"/> वर सिंक केला जाणार नाही</translation>
+<translation id="3206289903841621620">वापरकर्ता शब्दकोश <ph name="NUMBER"/></translation>
 <translation id="3746394893874035323">तुमच्या अलीकडील अ‍ॅक्टिव्हिटीनुसार तुम्हाला स्वारस्य असेल असे सुचवलेले शोध आणि खरेदीच्या सवलती तुम्हाला दिसत आहेत.
         <ph name="BREAK"/>
         <ph name="BREAK"/>
@@ -3242,7 +3239,6 @@
 <translation id="3262261769033093854">तुमचे माउस इनपुट कॅप्चर करण्याची आणि वापरण्याची साइटना अनुमती देऊ नका</translation>
 <translation id="2255934964289231599">खाते <ph name="DOMAIN"/> द्वारे व्यवस्थापित केलेले असल्यामुळे, तुम्हाला तुमच्या Brave खाते मधून साइन आउट करता येणार नाही. तुमचे बुकमार्क, इतिहास, पासवर्ड आणि इतर सेटिंग्ज यापुढे सिंक केली जाणार नाहीत. तरीही, तुमचा आधी सिंक केलेला डेटा तुमच्या Brave खाते मध्ये स्टोअर केलेला राहील आणि तो <ph name="BEGIN_LINK"/>Brave Dashboard<ph name="END_LINK"/> वर व्यवस्थापित करता येईल.</translation>
 <translation id="3262986719682892278">खूप मोठी</translation>
-<translation id="8716657673371817602">तुम्ही साइट ब्राउझ करत असताना, त्यांच्या पेजचा आशय एन्क्रिप्ट केला जातो आणि तुमच्या डिव्हाइसवर सेव्ह केला जातो.  तुमच्या शेवटच्या भेटीनंतर साइटवरील आशयामध्ये बदल झाला असल्यास, AI द्वारे सक्षम केलेले इतिहास शोध परिणाम आणि उत्तरे कालबाह्य होऊ शकतात.  या वैशिष्‍ट्यामुळे Brave च्या परफॉर्मन्सवरदेखील परिणाम होऊ शकतो.</translation>
 <translation id="3264544094376351444">Sans-serif font</translation>
 <translation id="3264582393905923483">संदर्भ</translation>
 <translation id="3265459715026181080">विंडो बंद करा</translation>
@@ -3258,6 +3254,7 @@
 <translation id="3269689705184377744">{COUNT,plural, =1{फाइल}other{# फाइल}}</translation>
 <translation id="326999365752735949">फरक डाउनलोड करत आहे</translation>
 <translation id="3270965368676314374">तुमच्या कॉंप्युटरवरील फोटो, संगीत आणि अन्य मीडिया वाचा, बदला आणि हटवा</translation>
+<translation id="3275464924531706548"><ph name="HEADER"/> कोलॅप्स करा</translation>
 <translation id="3275778809241512831">तुमची अंतर्गत सिक्युरिटी की सध्या असुरक्षित आहे. कृपया तुम्ही वापरलेल्या कोणत्याही सेवांमधून त्या काढून टाका. समस्येचे निराकरण करण्यासाठी, कृपया सिक्युरिटी की रीसेट करा.</translation>
 <translation id="3275778913554317645">विंडो म्हणून उघडा</translation>
 <translation id="3277214528693754078">मजकूर कर्सर वापरून नेव्हिगेट करा (कॅरेट ब्राउझिंग)</translation>
@@ -3395,7 +3392,6 @@
 <translation id="3378627645871606983">Steam साठी अनुमती असलेल्या परवानग्या या Steam संबंधित सर्व गेम आणि अ‍ॅप्ससाठी लागू होतात.</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> इंस्टॉल केले जाईल.</translation>
 <translation id="3379268272734690">वाळवंट</translation>
-<translation id="3380365263193509176">अज्ञात एरर</translation>
 <translation id="3382073616108123819">अरेरे! सिस्टीमला या डिव्हाइससाठी डिव्हाइस आयडेंटिफायर ठरवता आले नाहीत.</translation>
 <translation id="3382200254148930874">पर्यवेक्षण थांबवत आहे...</translation>
 <translation id="3382737653173267704">कुटुंब पहा</translation>
@@ -3588,6 +3584,7 @@
 <translation id="3510471875518562537">तुमच्या iPhone वर हा ॲड्रेस वापरा</translation>
 <translation id="3511200754045804813">पुन्हा-स्कॅन करा</translation>
 <translation id="3511307672085573050">लिंक पत्ता कॉपी करा</translation>
+<translation id="3511358375261756531"><ph name="HEADER"/> चा विस्तार करा</translation>
 <translation id="351152300840026870">निश्चित-रुंदीचा फॉंट</translation>
 <translation id="3511528412952710609">लहान</translation>
 <translation id="3513019849832307207">सामील व्हा आणि उघडा</translation>
@@ -3597,6 +3594,7 @@
 <translation id="3514681096978190000">या संग्रहण फाइलमध्ये मालवेअर लपवू शकणाऱ्या इतर फाइलचा समावेश आहे</translation>
 <translation id="3515983984924808886">रीसेटची खात्री करण्यासाठी तुमच्या सिक्युरिटी कीला पुन्हा स्पर्श करा. सिक्युरिटी कीवर स्टोअर केलेली सर्व माहिती, तिच्या पिनसह, हटवली जाईल.</translation>
 <translation id="3518866566087677312">तुम्हाला नंतर वापरायच्या असलेल्या गोष्टी बुकमार्क करा</translation>
+<translation id="7586854317445879873">Brave सह नोटिफिकेशनशी संबंधित आशय आणि site ची URL शेअर करून स्पॅम संरक्षणामध्ये सुधारणा करण्यात मदत करा. आशयाचे मानवांकडून पुनरावलोकन केले जाऊ शकते.</translation>
 <translation id="3519382402703204668">टॅब निवडा</translation>
 <translation id="3519564332031442870">Print Backend Service</translation>
 <translation id="3519938335881974273">पेज या फॉरमॅटमध्ये सेव्ह करा...</translation>
@@ -3795,7 +3793,6 @@
 <translation id="3656701180077048004">तुम्ही की प्रेस करता आणि अ‍ॅक्टिव्हेट होते यांदरम्यान विलंब जोडते</translation>
 <translation id="3658871634334445293">TrackPoint अ‍ॅक्सिलरेशन</translation>
 <translation id="3659929705630080526">तुम्ही खूप वेळा चुकीचा अ‍ॅक्सेस कोड एंटर केला आहे. नंतर पुन्हा प्रयत्न करा</translation>
-<translation id="3660234220361471169">अविश्‍वासू</translation>
 <translation id="3661106764436337772">जलद आणि अधिक आत्मविश्वासाने लिहा</translation>
 <translation id="3661297433172569100">{NUM_PASSWORDS,plural, =1{एक सद्य पासवर्ड आढळला आहे}other{{NUM_PASSWORDS} सद्य पासवर्ड आढळले आहेत}}</translation>
 <translation id="3662207097851752847">तुमच्या फोनवर तुमचे Brave खाते कन्फर्म करा</translation>
@@ -3811,7 +3808,6 @@
 <translation id="3670113805793654926">कोणत्याही विक्रेत्याकडील डिव्हाइस</translation>
 <translation id="3670229581627177274">ब्लूटूथ सुरू करा</translation>
 <translation id="3670480940339182416">साइट V8 ऑप्टिमायझर वापरू शकतात</translation>
-<translation id="3671764914317109892">तुमचा ब्राउझिंग इतिहास शोधण्यासाठी दररोजची भाषा वापरा. तुम्ही तुमच्या ब्राउझिंग इतिहासावर आधारित प्रश्न विचारू शकता आणि उत्तरेदेखील मिळवू शकता.</translation>
 <translation id="3671982238795754537">पासकीबद्दल अधिक जाणून घ्या</translation>
 <translation id="3672681487849735243">एक फॅक्टरी एरर शोधली गेली</translation>
 <translation id="3673097791729989571">साइन इन करणे <ph name="SAML_DOMAIN"/> द्वारे होस्ट केले आहे</translation>
@@ -3830,7 +3826,6 @@
 <translation id="3683524264665795342"><ph name="APP_NAME"/> स्क्रीन शेअर विनंती</translation>
 <translation id="3685598397738512288">Linux ची USB प्राधान्ये</translation>
 <translation id="3687598459967813435"><ph name="WEBSITE"/> वरील सूचनांना नेहमी अनुमती द्या</translation>
-<translation id="368789413795732264">ही फाइल राइट करण्याचा प्रयत्न करताना एरर आली:<ph name="ERROR_TEXT"/>.</translation>
 <translation id="3688507211863392146">तुम्ही ॲप्समध्ये उघडता त्या फायलींमध्ये आणि फोल्डरमध्ये लिहा</translation>
 <translation id="3688526734140524629">चॅनल बदला</translation>
 <translation id="3688578402379768763">अद्ययावत</translation>
@@ -3842,6 +3837,7 @@
 <translation id="3694027410380121301">मागील टॅब निवडा</translation>
 <translation id="3694122362646626770">वेबसाइट</translation>
 <translation id="3694590407685276748">मजकूर कर्सर हायलाइट करा</translation>
+<translation id="3694777699203615368">सद्य दृश्यासह अदलाबदल करा</translation>
 <translation id="369489984217678710">पासवर्ड आणि इतर साइन इन डेटा</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{सुरक्षा तपासण्या पूर्ण झाल्या. तुमचा डेटा अपलोड केला जाईल.}=1{सुरक्षा तपासण्या पूर्ण झाल्या. तुमची फाइल अपलोड केली जाईल.}other{सुरक्षा तपासण्या पूर्ण झाल्या. तुमच्या फाइल अपलोड केल्या जातील.}}</translation>
 <translation id="3695339288331169103"><ph name="BEGIN_LINK"/><ph name="DISPLAY_REFERRER_URL"/><ph name="END_LINK"/> वरून</translation>
@@ -4098,6 +4094,7 @@
 <translation id="3838486795898716504">अधिक <ph name="PAGE_TITLE"/></translation>
 <translation id="383891835335927981">कोणत्याही साइटसाठी झूम वाढविले किंवा कमी केलेले नाही</translation>
 <translation id="3839516600093027468"><ph name="HOST"/> ला क्लिपबोर्ड पाहण्यापासून नेहमी ब्लॉक करा</translation>
+<translation id="3840096463915153852">संभाषण इतिहास</translation>
 <translation id="3841282988425489367">Chromebook (बीटा) साठी Steam सेट करू शकत नाही</translation>
 <translation id="3841319830220785495">डीफॉल्ट नैसर्गिक आवाज</translation>
 <translation id="3841356782900714251">स्मार्ट कार्ड रीडर</translation>
@@ -4237,7 +4234,6 @@
 <translation id="3933121352599513978">अनावश्यक विनंत्या कोलॅप्स करा (शिफारस केलेले)</translation>
 <translation id="3936260554100916852"><ph name="DEVICE_NAME"/> तुमच्यासह वाय-फाय नेटवर्क शेअर करत आहे</translation>
 <translation id="3936390757709632190">नवीन टॅबमध्ये ऑडिओ &amp;उघडा</translation>
-<translation id="3936925983113350642">तुम्ही निवडता तो पासवर्ड नंतर हे सर्टिफिकेट रिस्टोअर करण्यासाठी आवश्यक आहे. कृपया एखाद्या सुरक्षित स्थानावर त्याची नोंद ठेवा.</translation>
 <translation id="3937640725563832867">सर्टिफिकेट जारीकर्ता वैकल्पिक नाव</translation>
 <translation id="3937734102568271121">नेहमी <ph name="LANGUAGE"/> मध्‍ये भाषांतर करा</translation>
 <translation id="3938128855950761626">विक्रेता <ph name="VENDOR_ID"/> कडील डिव्हाइस</translation>
@@ -4390,7 +4386,6 @@
 <translation id="4042941173059740150"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> सह <ph name="SITE_ETLD_PLUS_ONE"/> वर पुढे सुरू ठेवा</translation>
 <translation id="4043267180218562935">कर्सरचा आकार:</translation>
 <translation id="4043620984511647481">प्रिंटर मॅन्युअली जोडा</translation>
-<translation id="4044612648082411741">तुमचा सर्टिफिकेट पासवर्ड एंटर करा</translation>
 <translation id="4044708573046946214">स्क्रीन लॉक पासवर्ड</translation>
 <translation id="4044883420905480380">तुम्ही वाय-फायशी कनेक्ट केले आहे आणि तुमचा Android फोन वापरून <ph name="USER_EMAIL"/> मध्ये साइन इन केले आहे</translation>
 <translation id="404493185430269859">डीफॉल्ट शोध इंजीन</translation>
@@ -4490,6 +4485,7 @@
     <ph name="BEGIN_PARAGRAPH2"/>Brave ही माहिती तुम्हाला न ओळखता वापरते: स्थान अचूकता आणि स्थान आधारित सेवांमध्ये सुधारणा करणे व Brave सेवांमध्ये सुधारणा करणे, त्या पुरवणे आणि त्यांची देखभाल करणे. आम्ही वापरकर्त्यांच्या गरजा पूर्ण करण्यासाठी Brave आणि तृतीय पक्षांच्या कायदेशीर हितसंबंधांवर आधारित या माहितीवर प्रक्रिया करतो.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>तुम्ही तुमच्या डिव्हाइसच्या स्थान सेटिंग्जमध्ये सेटिंग्ज &gt; गोपनीयता आणि सुरक्षितता &gt; गोपनीयता नियंत्रणे &gt; स्थान अ‍ॅक्सेस &gt; प्रगत स्थान सेटिंग्ज अंतर्गत स्थान अचूकता कधीही बंद करू शकता. स्थान अचूकता बंद असल्यास, स्थान अचूकता डेटा गोळा केला जाणार नाही. Android ॲप्स आणि सेवांसाठी, तुमच्या डिव्हाइसचे स्थान निर्धारित करण्यासाठी, उपलब्ध असल्यास, फक्त आयपी अ‍ॅड्रेस वापरला जातो, ज्यामुळे Android ॲप्स व Brave Maps सारख्या सेवांसाठी स्थानांची उपलब्धता आणि अचूकता प्रभावित होऊ शकते.<ph name="END_PARAGRAPH3"/>
     <ph name="BEGIN_PARAGRAPH4"/><ph name="LINK_BEGIN"/>स्थान अचूकता याबद्दल अधिक जाणून घ्या<ph name="LINK_END"/><ph name="END_PARAGRAPH4"/></translation>
+<translation id="4114391251600134209">{COUNT,plural, =0{सेव्ह केलेला पासवर्ड नाही}=1{१ पासवर्ड तपासला आहे}other{{COUNT} पासवर्ड तपासले आहेत}}</translation>
 <translation id="1423132677367459502">Google Drive मधील तुमच्या सर्वात अलीकडील अ‍ॅक्टिव्हिटीवर सहजपणे परत जाण्यात मदत करण्यासाठी, तुम्हाला सुचवलेल्या फाइल दिसत आहेत.
         <ph name="BREAK"/>
         <ph name="BREAK"/>
@@ -4564,8 +4560,8 @@
 <translation id="4176864026061939326">हे डिव्हाइस व्यवस्थापित केलेले आहे. तुमच्या डिव्हाइसच्या अ‍ॅडमिनिस्ट्रेटरद्वारे <ph name="USER_EMAIL_ADDRESS"/> खात्यासाठी नवीन प्रोफाइलची आवश्यकता आहे</translation>
 <translation id="4177501066905053472">जाहिरातीचे विषय</translation>
 <translation id="4177668342649553942"><ph name="SHORTCUT_NAME"/> - <ph name="APP_NAME"/> उघडा</translation>
+<translation id="638591227897120703">एक्स्टेंशन ही Brave वरील अ‍ॅड-ऑन आहेत, जी तुम्हाला व्यवस्थापित केलेले राहण्यात, टास्क सोप्या करण्यात आणि तुमचे ब्राउझिंग कस्टमाइझ करण्यात मदत करू शकतात</translation>
 <translation id="4178220097446335546">हे सदस्यत्व आणि त्याच्याशी संबंधित नेटवर्क विसरण्यासाठी, सदस्यत्व काढून टाकण्याकरिता पासपॉइंट सदस्यत्व पेजवर जा.</translation>
-<translation id="4180788401304023883">CA सर्टिफिकेट "<ph name="CERTIFICATE_NAME"/>" हटवायचे?</translation>
 <translation id="4181602000363099176">२०x</translation>
 <translation id="4181841719683918333">भाषा</translation>
 <translation id="4182339886482390129">वर्धित सुरक्षित ब्राउझिंग धोकादायक वेबसाइट, डाउनलोड आणि एक्स्टेंशनपासून तुमचे संरक्षण करण्यासाठी बरेच काही करते</translation>
@@ -4697,6 +4693,7 @@
 <translation id="4275397969489577657">इव्हेंट स्ट्रीम लॉगिंग सुरू करा</translation>
 <translation id="4275788652681621337">साइड पॅनल बंद करा</translation>
 <translation id="4275830172053184480">तुमचा डिव्हाइस रीस्टार्ट करा</translation>
+<translation id="4276598757692536305">प्रिंटर PPD</translation>
 <translation id="4276856098224910511">इंस्टॉल करता आले नाही, OS अपडेट प्रलंबित आहे. कृपया कोणतेही OS अपडेट प्रलंबित असल्यास ते लागू करा, रीस्टार्ट करा आणि पुन्हा प्रयत्न करा. <ph name="ERROR"/> हा एरर कोड आहे.</translation>
 <translation id="4277434192562187284">XML कॉन्फिगरेशन स्रोत</translation>
 <translation id="4278348589087554892">{NUM_SITES,plural, =1{१ साइट वरून परवानग्या काढून टाकल्या आहेत}other{{NUM_SITES} साइट वरून परवानग्या काढून टाकल्या}}</translation>
@@ -4722,7 +4719,6 @@
 <translation id="4289540628985791613">विहंगावलोकन</translation>
 <translation id="428963538941819373">तुम्ही <ph name="HOST"/> ब्राउझ करत असताना या साइटनी तुमच्याविषयी सेव्ह केलेली माहिती त्या वापरू शकतात</translation>
 <translation id="4289732974614035569">एक पिन निवडा</translation>
-<translation id="223179092088125570">Brave अ‍ॅप्ससाठीचा सपोर्ट लवकरच संपेल. तुमच्या पर्यायांबद्दल जाणून घेण्यासाठी, अ‍ॅप डेव्हलपरशी किंवा तुमच्या आयटी सपोर्ट टीमशी संपर्क साधा.</translation>
 <translation id="4290791284969893584">पेज बंद केल्यानंतर, तुम्ही सुरू केलेली टास्क कदाचित पूर्ण होणार नाहीत</translation>
 <translation id="4290826901752066702"><ph name="NUM"/> सदस्य</translation>
 <translation id="4290898381118933198">पेजदरम्यान नेव्हिगेट करण्यासाठी स्वाइप करा</translation>
@@ -4812,7 +4808,6 @@
 <translation id="4359408040881008151">अवलंबून असलेल्या एक्स्टेंशन(ना) मुळे इंस्टॉल केले.</translation>
 <translation id="4359809482106103048">एका दृष्‍टिक्षेपात सुरक्षितता</translation>
 <translation id="4360738659108163902">माउसवर राइट-क्लिक करा</translation>
-<translation id="4361142739114356624">या क्लायंट प्रमाणपत्रासाठी खाजगी, की अनुपलब्ध किंवा अवैध आहे</translation>
 <translation id="4361745360460842907">टॅब म्हणून उघडा</translation>
 <translation id="4362459470237309049">माउस बटण रिलीझ करण्यासाठी “.” वापरा</translation>
 <translation id="4363262124589131906">माझे ड्राइव्ह मधील नवीन फाइल या Chromebook वर आपोआप सिंक करणे थांबवतील</translation>
@@ -4834,7 +4829,6 @@
 <translation id="4374831787438678295">Linux इंस्टॉलर</translation>
 <translation id="4375035964737468845">डाउनलोड केलेल्या फाइल उघडा</translation>
 <translation id="4376226992615520204">स्थान बंद केले</translation>
-<translation id="4377058670119819762">जास्त टॅब उघडल्यावर, डावीकडे आणि उजवीकडे स्क्रोल करण्यासाठी टॅब स्ट्रिप सुरू होतो.</translation>
 <translation id="4377363674125277448">सर्व्हरच्या सर्टिफिकेटस समस्या आली.</translation>
 <translation id="437809255587011096">मजकुराच्या शैलीची घोषणा करा</translation>
 <translation id="4378154925671717803">फोन</translation>
@@ -5130,6 +5124,7 @@
 <translation id="4585793705637313973">पेज संपादित करा</translation>
 <translation id="4586275095964870617"><ph name="URL"/> पर्यायी ब्राउझरमध्ये उघडता आले नाही. कृपया तुमच्या सिस्टीम अ‍ॅडमिनिस्ट्रेटरशी संपर्क साधा.</translation>
 <translation id="4587589328781138893">Sites</translation>
+<translation id="4588497044036650559">सध्याच्या टॅबमध्ये नवीन टॅब पेज एक्स्टेंशनचे पर्याय पेज उघडा</translation>
 <translation id="4588749726511456218">अ‍ॅक्सिलरेशन स्क्रोल करा <ph name="LINK_BEGIN"/>अधिक जाणून घ्या<ph name="LINK_END"/></translation>
 <translation id="4589197033939192905"><ph name="PASSWORD_DOMAIN"/> आणि <ph name="DOMAIN"/> हे एकमेकांशी संबंधित असल्याचे आढळते. तुमचा पासवर्ड वापरण्यापूर्वी <ph name="DOMAIN"/> वर विश्वास असल्याची खात्री करा.</translation>
 <translation id="4589713469967853491">डाउनलोड डिरेक्टरीमध्ये लॉग यशस्वीरीत्या राइट केले गेले.</translation>
@@ -5139,7 +5134,6 @@
 <translation id="4593962599442730215">तुमची प्राधान्ये बदला</translation>
 <translation id="4594218792629569101">पेज तुमच्या सूचीच्या तळाशी हलवण्यासाठी “वाचलेले म्हणून मार्क करा” निवडा</translation>
 <translation id="4595560905247879544">ॲप्स आणि विस्तार केवळ (<ph name="CUSTODIAN_NAME"/>) व्यवस्थापकाद्वारे सुधारित केले जाऊ शकतात.</translation>
-<translation id="4596295440756783523">आपल्‍याकडे फाईलवर अशी प्रमाणपत्रे आहेत जी या सर्व्हरला ओळखतात</translation>
 <translation id="4598345735110653698">पासकी व्यवस्थापित करा</translation>
 <translation id="4598556348158889687">स्टोरेज व्यवस्थापन</translation>
 <translation id="4598776695426288251">एकाहून अधिक डिव्हाइसद्वारे वाय-फाय उपलब्ध आहे</translation>
@@ -5234,7 +5228,6 @@
 <translation id="4662373422909645029">टोपणनावामध्ये अंकांचा समावेश असू शकत नाही</translation>
 <translation id="4662788913887017617">हा बुकमार्क आपल्या iPhone सह शेअर करा</translation>
 <translation id="4663373278480897665">कॅमेऱ्याला अनुमती आहे</translation>
-<translation id="4664482161435122549">PKCS #12 निर्यात एरर</translation>
 <translation id="4665014895760275686">निर्माता</translation>
 <translation id="4665446389743427678"><ph name="SITE"/> द्वारे स्टोअर केलेला डेटा हटवला जाईल.</translation>
 <translation id="4666472247053585787">तुमच्या फोनवरील सूचना तुमच्या <ph name="DEVICE_TYPE"/> वर पहा</translation>
@@ -5352,6 +5345,7 @@
 <translation id="4750185073185658673">आणखी परवानग्यांचे पुनरावलोकन करण्यासाठी, तुमच्या फोनवर जा. तुमच्या फोनचे ब्लूटूथ आणि वाय-फाय सुरू केले असल्याची खात्री करा.</translation>
 <translation id="4750394297954878236">सूचना</translation>
 <translation id="475088594373173692">प्रथम वापरकर्ता</translation>
+<translation id="4754590344707355551">एक्स्टेंशन वापरून तुमचा ब्राउझर वर्धित करा</translation>
 <translation id="4756378406049221019">थांबा/पुन्हा लोड करा</translation>
 <translation id="4756388243121344051">&amp;इतिहास</translation>
 <translation id="4756671452988984333">ऑडिओसाठीचा मजकूर</translation>
@@ -5369,7 +5363,6 @@
 <translation id="4766551476047591055">{MINUTES,plural, =0{Checking public key and integrity block... Less than 1 minute remaining}=1{पब्लिक की आणि इंटेग्रिटी ब्लॉक तपासत आहे... १ मिनिट शिल्‍लक आहे}other{पब्लिक की आणि इंटेग्रिटी ब्लॉक तपासत आहे... # मिनिटे शिल्लक आहेत}}</translation>
 <translation id="4766598565665644999">सर्व एक्स्टेंशन <ph name="HOST"/> रीड करू शकतात आणि बदलू शकतात</translation>
 <translation id="4767427586072640478">बंद केलेल्या एक्स्टेंशनबद्दल अधिक जाणून घ्या.</translation>
-<translation id="4768332406694066911">आपल्‍याकडे या संस्थांकडील प्रमाणपत्रे आहेत जी आपल्‍याला ओळखतात</translation>
 <translation id="4769632191812288342">तुम्हाला साधारण संरक्षण मिळत आहे</translation>
 <translation id="4770119228883592393">परवानगीची विनंती केली आहे, प्रतिसाद देण्यासाठी ⌘ + Option + डाउन अ‍ॅरो प्रेस करा</translation>
 <translation id="4770755495532014179">हा पासवर्ड तुमच्या iPhone वर वापरा</translation>
@@ -5393,6 +5386,7 @@
 <translation id="4779855924282373274"><ph name="URL"/> • १ डुप्लिकेट</translation>
 <translation id="4780321648949301421">पेज या फॉरमॅटमध्ये सेव्ह करा...</translation>
 <translation id="4780558987886269159">ऑफिससाठी</translation>
+<translation id="4781633367688946589">नवीन सेशनमध्ये पुढे सुरू ठेवा</translation>
 <translation id="4784349455504343791"><ph name="WEBSITE_ORIGIN"/> ला तुमच्या डिजिटल वॉलेटमधून वैयक्तिक माहिती वापरायची आहे.</translation>
 <translation id="4785719467058219317">तुम्ही या वेबसाइटवर नोंदणीकृत नसलेली सिक्युरिटी की वापरत आहात</translation>
 <translation id="4785914069240823137">क्रॉप रद्द करा</translation>
@@ -5577,7 +5571,6 @@
 <translation id="4893522937062257019">लॉक स्क्रीनवर</translation>
 <translation id="4894055916816649664">फक्त १० मिनिटांसाठी</translation>
 <translation id="4895799941222633551">शॉर्टकट तयार करा...</translation>
-<translation id="4898011734382862273">सर्टिफिकेट "<ph name="CERTIFICATE_NAME"/>" प्रमाणन अधिकृतता प्रस्तुत करते</translation>
 <translation id="4898913189644355814">साइट तुमची प्राधान्य दिलेली भाषा किंवा तुम्हाला खरेदी करायचे असलेले आयटम सेव्ह करू शकते. ही माहिती साइट आणि तिच्या सबडोमेनवर उपलब्ध आहे.</translation>
 <translation id="4899052647152077033">रंग इन्व्हर्ट करा</translation>
 <translation id="4899696330053002588">यामध्ये जाहिराती आहेत</translation>
@@ -5658,7 +5651,6 @@
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="4961318399572185831">स्क्रीन कास्ट करा</translation>
 <translation id="496185450405387901">हे अ‍ॅप तुमच्या अ‍ॅडमिनिस्ट्रेटरने इंस्टॉल केले आहे.</translation>
-<translation id="4963079328730030450">या वैशिष्ट्यांद्वारे गोळा केलेला डेटा कसा वापरला जाऊ शकतो हे तुमची संस्था नियंत्रित करते.</translation>
 <translation id="4963603093937263654">तुमच्या <ph name="DEVICE_NAME"/> वर नोटिफिकेशन सुरू केली असल्याची खात्री करा</translation>
 <translation id="4963789650715167449">सध्याचा टॅब काढून टाका</translation>
 <translation id="4964455510556214366">व्यवस्था</translation>
@@ -5714,7 +5706,6 @@
 <translation id="50080882645628821">प्रोफाइल काढून टाका</translation>
 <translation id="5008936837313706385">ॲक्टिव्हिटीचे नाव</translation>
 <translation id="5009463889040999939">प्रोफाइलचे नाव बदलत आहे. याला काही मिनिटे लागू शकतात.</translation>
-<translation id="5010043101506446253">सर्टिफिकेट अधिकारी</translation>
 <translation id="501057610015570208">'kiosk_only' मॅनिफेस्ट ॲट्रिब्यूट असलेले अ‍ॅप हे ChromeOS Flex कियोस्क मोडमध्ये इंस्टॉल केले जाणे आवश्यक आहे</translation>
 <translation id="5010886807652684893">व्हिज्युअल दृश्य</translation>
 <translation id="5012523644916800014">पासवर्ड आणि पासकी व्यवस्थापित करा</translation>
@@ -5979,6 +5970,7 @@
 <translation id="5197255632782567636">इंटरनेट</translation>
 <translation id="5198430103906431024">वापर आणि निदान डेटा पाठवा. हे डिव्हाइस सध्या Brave ला निदान, डिव्हाइस आणि अ‍ॅप वापर डेटा आपोआप पाठवत आहे. हे सिस्टीम व अ‍ॅप स्थिरता आणि इतर सुधारणांमध्ये मदत करेल. काही अ‍ॅग्रिगेट केलेला डेटा Brave अ‍ॅप्स आणि Android डेव्हलपर यांसारख्या भागीदारांनादेखील मदत करेल. तुमचे अतिरिक्त वेब आणि अ‍ॅप अ‍ॅक्टिव्हिटी सेटिंग सुरू केलेले असल्यास, हा डेटा तुमच्या Brave खाते वर सेव्ह केला जाऊ शकतो.</translation>
 <translation id="5199729219167945352">प्रयोग</translation>
+<translation id="5200191131577845078"><ph name="DOMAIN"/> च्या नोटिफिकेशनना अनुमती आहे</translation>
 <translation id="5200680225062692606">टच आयडी लॉक केलेला आहे. पुढे सुरू ठेवण्यासाठी, तुमचा पासवर्ड एंटर करा.</translation>
 <translation id="5201945335223486172"><ph name="EXAMPLE_DOMAIN_1"/> साठी</translation>
 <translation id="5203035663139409780">तुमच्या डिव्हाइसवर फाइल किंवा फोल्डर संपादित करू शकते</translation>
@@ -5987,8 +5979,6 @@
 <translation id="5204967432542742771">पासवर्ड एंटर करा</translation>
 <translation id="5205484256512407285">ट्रान्सफर करण्यासाठी कधीही मोबाइल डेटा वापरू नका</translation>
 <translation id="520568280985468584">नेटवर्क यशस्वीरीत्या जोडले गेले. तुमचे मोबाइल नेटवर्क अ‍ॅक्टिव्ह होण्यासाठी काही मिनिटे लागू शकतात.</translation>
-<translation id="5206215183583316675">"<ph name="CERTIFICATE_NAME"/>" हटवायचे?</translation>
-<translation id="520621735928254154">सर्टिफिकेट आया‍त एरर</translation>
 <translation id="5207949376430453814">मजकूर कॅरेट हायलाइट करा</translation>
 <translation id="520840839826327499"><ph name="SERVICE_NAME"/> ला तुम्ही पात्र ChromeOS डिव्हाइस वापरत आहात की नाही हे तपासायचे आहे.</translation>
 <translation id="5208926629108082192">डिव्हाइसच्या मोबाइल नेटवर्कची माहिती</translation>
@@ -6036,6 +6026,7 @@
     <ph name="DEVICE_TYPE"/> म्हणून दृश्यमान आहे...</translation>
 <translation id="5238301240406177137">खाते मध्ये सेव्ह करा</translation>
 <translation id="523862956770478816">साइट परवानग्या</translation>
+<translation id="5240247138804326767">विभाजित दृश्य व्यवस्थित करा</translation>
 <translation id="5240931875940563122">Android फोन वापरून साइन इन करा</translation>
 <translation id="5241689948221696942">काही उत्पादनांसाठी, तुलना सारण्या वेबवरील परीक्षणांचा सारांश देतात</translation>
 <translation id="5242724311594467048">"<ph name="EXTENSION_NAME"/>" सुरू करायचे?</translation>
@@ -6072,7 +6063,6 @@
 <translation id="5264148714798105376">यास मिनिटभर किंवा त्‍याहून अधिक वेळ लागू शकतो.</translation>
 <translation id="5264252276333215551">कृपया कियोस्क मोडमध्ये तुमचा ॲप लाँच करण्यासाठी इंटरनेटशी कनेक्ट करा.</translation>
 <translation id="5265797726250773323">इंस्टॉल करताना एरर आली</translation>
-<translation id="5266113311903163739">सर्टिफिकेशन ऑथोरेटी इंपोर्ट एरर</translation>
 <translation id="526622169288322445"><ph name="ADDRESS_SUMMARY"/> साठी आणखी कृती</translation>
 <translation id="5267572070504076962">धोकादायक साइटपासून संरक्षण मिळवण्यासाठी सुरक्षित ब्राउझिंग सुरू करा</translation>
 <translation id="5269977353971873915">प्रिंट अयशस्वी</translation>
@@ -6115,6 +6105,7 @@
 <translation id="6092554978456048094">तुमच्याकडे हानिकारक वेबसाइटच्या विरोधात Brave ची सर्वात मजबूत सुरक्षा आहे</translation>
 <translation id="5297005732522718715">टेदरिंग कॉन्फिगरेशन रिफ्रेश करा</translation>
 <translation id="5297082477358294722">पासवर्ड सेव्ह केलेले आहेत. तुमच्या <ph name="SAVED_PASSWORDS_STORE"/> मध्ये सेव्ह केलेले पासवर्ड पहा आणि व्यवस्थापित करा.</translation>
+<translation id="5297548311167268289"><ph name="RP_ID"/> मध्ये साइन इन करा</translation>
 <translation id="5297946558563358707">तुमच्या स्क्रीनकडे कोणीतरी पाहते, तेव्हा तुमच्या स्क्रीनच्या तळाशी उजवीकडे प्रायव्हसी आय आयकॉन दाखवा</translation>
 <translation id="5297984209202974345"><ph name="STYLE"/> शैलीमध्ये, <ph name="SUBJECT"/> पैकी <ph name="INDEX"/> अलीकडील AI थीम</translation>
 <translation id="5298219193514155779">द्वारा निर्मित थीम</translation>
@@ -6154,7 +6145,6 @@
 <translation id="5327912693242073631">सूचनांची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
 <translation id="532943162177641444">तुम्ही या डिव्हाइसने वापरू शकत असलेले मोबाइल हॉटस्पॉट सेट अप करण्यासाठी तुमच्या <ph name="PHONE_NAME"/>वरील सूचनेवर टॅप करा.</translation>
 <translation id="5329858601952122676">&amp;हटवा</translation>
-<translation id="5331069282670671859">तुमच्याकडे या श्रेणीतील कोणतीही प्रमाणपत्रे नाहीत</translation>
 <translation id="5331568967879689647">ChromeOS सिस्टीम अ‍ॅप</translation>
 <translation id="5331975486040154427">USB-C डिव्‍हाइस (डाव्या बाजूचे मागील पोर्ट)</translation>
 <translation id="5333896723098573627">ॲप्स काढून टाकण्यासाठी, सेटिंग्ज &gt; ॲप्स &gt; Google Play Store &gt; Android प्राधान्ये व्यवस्थापित करा &gt; ॲप्स किंवा अ‍ॅप्लिकेशन व्यवस्थापक वर जा. नंतर तुम्हाला अनइंस्टॉल करायच्या असलेल्या ॲपवर टॅप करा (ॲप शोधण्‍यासाठी तुम्हाला कदाचित उजवीकडे किंवा डावीकडे स्वाइप करावे लागेल). यानंतर अनइंस्टॉल करा किंंवा बंद करा वर टॅप करा.</translation>
@@ -6285,7 +6275,6 @@
 <translation id="542750953150239272">पुढे सुरू ठेवून, तुम्ही सहमती दर्शवता, की हे डिव्हाइस कदाचित मोबाइल डेटा वापरून Brave, तुमचा वाहक आणि तुमच्या डिव्हाइसच्या उत्पादकाकडूनदेखील अपडेट व अ‍ॅप्स आपोआप डाउनलोड आणि इंस्टॉल करू शकते. यांपैकी काही अ‍ॅप्स अ‍ॅप्समधील खरेदीचा पर्याय देऊ करू शकतात.</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (अपडेट उपलब्ध आहे)</translation>
 <translation id="542948651837270806">विश्वासू प्लॅटफॉर्म मॉड्युल फर्मवेयरचा एखादा अपडेट इंस्टॉल करणे आवश्यक आहे. <ph name="TPM_FIRMWARE_UPDATE_LINK"/> पहा</translation>
-<translation id="5429549332422308385">तुम्ही हे वैशिष्‍ट्य सुरू केल्यानंतरच भेट दिलेल्या साइट AI द्वारे सक्षम केलेले इतिहास शोध परिणाम यामध्ये दिसतील.</translation>
 <translation id="5429818411180678468">पूर्णरुंदी</translation>
 <translation id="5430931332414098647">झटपट टेदरिंग</translation>
 <translation id="5431318178759467895">रंग</translation>
@@ -6311,7 +6300,6 @@
 <translation id="5444281205834970653">हटवा आणि पुढे सुरू ठेवा</translation>
 <translation id="5444452275167152925">ChromeOS मधून इंपोर्ट केलेला</translation>
 <translation id="5445400788035474247">१०x</translation>
-<translation id="5446983216438178612">संस्थेसाठी प्रमाणपत्रे दर्शवा</translation>
 <translation id="5448092089030025717">{NUM_REUSED,plural, =0{No reused passwords}=1{१ पुन्हा वापरलेला पासवर्ड}other{{NUM_REUSED} पुन्हा वापरलेले पासवर्ड}}</translation>
 <translation id="5448293924669608770">अरेरे, साइन इन करण्यात काहीतरी चूक झाली</translation>
 <translation id="5449551289610225147">चुकीचा पासवर्ड</translation>
@@ -6380,6 +6368,7 @@
 <translation id="5490798133083738649">Linux ला तुमचा मायक्रोफोन अ‍ॅक्सेस करण्याची परवानगी द्या</translation>
 <translation id="549211519852037402">फिकट तपकिरी आणि पांढरा</translation>
 <translation id="5492637351392383067">डिव्हाइसवरील एंक्रिप्शन</translation>
+<translation id="525561504184560379">एक्स्टेंशन ही Brave वरील अ‍ॅड-ऑन आहेत, जी तुम्हाला मदत करू शकतात</translation>
 <translation id="5493455553805432330">विसरा</translation>
 <translation id="5493792505296048976">स्क्रीन सुरू</translation>
 <translation id="5494016731375030300">अलीकडे बंद केलेले टॅब</translation>
@@ -6437,12 +6426,10 @@
 <translation id="5533343601674003130">PDF सेवा</translation>
 <translation id="5537725057119320332">कास्ट करा</translation>
 <translation id="5539070192556911367">Brave शी कनेक्ट करू शकत नाही</translation>
-<translation id="5541694225089836610">तुमच्या ॲडमिनिस्ट्रेटरने क्रिया बंद केली आहे</translation>
 <translation id="5542132724887566711">प्रोफाइल</translation>
 <translation id="5542750926112347543"><ph name="DOMAIN"/> वरील कुकीज ब्‍लॉक केल्‍या आहेत</translation>
 <translation id="5542949973455282971"><ph name="CARRIER_NAME"/> शी कनेक्ट करत आहे</translation>
 <translation id="5543983818738093899">स्थिती तपासत आहे...</translation>
-<translation id="5544193518673765595">उत्तरे आणि शोध परिणाम तुमच्या पेजवरील आशयावर आधारित असतात.  तुम्ही ॲड्रेस बारमध्ये “@history” वापरून किंवा इतिहास पेजवरून ब्राउझिंग इतिहास शोधत असलात, तरी यामुळे तुम्हाला सुधारित परिणाम मिळतात.</translation>
 <translation id="5544482392629385159"><ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/> पैकी <ph name="DEVICE_INDEX"/> डिव्हाइस</translation>
 <translation id="554517701842997186">रेंडरर</translation>
 <translation id="5545335608717746497">{NUM_TABS,plural, =1{गटामध्ये टॅब जोडा}other{गटामध्ये टॅब जोडा}}</translation>
@@ -6574,6 +6561,7 @@
 <translation id="563371367637259496">मोबाइल</translation>
 <translation id="5635312199252507107">विशिष्ट साइटवर अनुमती द्या</translation>
 <translation id="5636012309446422"><ph name="PRIMARY_EMAIL"/> मधून <ph name="DEVICE"/> काढून टाकायचे आहे का?</translation>
+<translation id="56360247219959198"><ph name="DICTIONARY"/> कायमचे हटवले जाईल. ही कृती पहिल्यासारखी केली जाऊ शकत नाही.</translation>
 <translation id="5636140764387862062">पिनसाठी आणखी कृती</translation>
 <translation id="5636996382092289526"><ph name="NETWORK_ID"/> वापरण्यासाठी तुमच्या प्रथम <ph name="LINK_START"/>नेटवर्कच्या साइन-इन पेजला भेट देणे<ph name="LINK_END"/> आवश्यक आहे, जे काही सेकंदांमध्ये आपोआप उघडेल. तसे न झाल्यास, नेटवर्क वापरणे शक्य नाही.</translation>
 <translation id="5637476008227280525">मोबाइल डेटा सुरू आहे</translation>
@@ -6986,7 +6974,6 @@
 <translation id="5947651424015173580">माउसवर डबल-क्लिक करा</translation>
 <translation id="5948476936444935795">इंपोर्ट रद्द करा</translation>
 <translation id="5948536763493709626">कीबोर्ड किंवा माउस कनेक्ट करा किंवा तुमची टचस्क्रीन वापरून सेट अप करणे पुढे सुरू ठेवा. तुम्ही ब्लूटूथ डिव्‍हाइस वापरत असल्यास, तुमची डिव्हाइस पेअर करण्यासाठी तयार असल्याची खात्री करा.</translation>
-<translation id="5949544233750246342">फाइल पार्स करता आली नाही?</translation>
 <translation id="5949795028157144515">विकसक मोड बंद आहे. काही एक्स्टेंशन बंद केली आहेत.</translation>
 <translation id="594993197557058302">१-४ मॉडिफायर की (कंट्रोल, ऑल्ट, शिफ्ट, शोध किंवा लाँचर) आणि आणखी १ की प्रेस करा. तुम्ही स्वतंत्र कीदेखील निवडू शकता.</translation>
 <translation id="5950762317146173294">या फाइलमध्ये व्हायरस किंवा मालवेअर असू शकते</translation>
@@ -7024,7 +7011,6 @@
 <translation id="5973041996755340290">"<ph name="CLIENT_NAME"/>" यांनी या ब्राउझरचे डीबगिंग करण्यास सुरुवात केली आहे</translation>
 <translation id="5973605538625120605">पिन बदला</translation>
 <translation id="5975792506968920132">बॅटरी चार्ज टक्केवारी</translation>
-<translation id="5976160379964388480">इतर</translation>
 <translation id="5976780232488408272">लेखनासंबंधित मदत मिळवा</translation>
 <translation id="5977976211062815271">या डिव्हाइसवरील</translation>
 <translation id="5978277834170881274">आणि मूलभूत स्पेल चेक वापरा</translation>
@@ -7146,7 +7132,6 @@ I feel - विटांची इमारत</translation>
 <translation id="6065289257230303064">प्रमाणपत्र विषय डिरेक्टरी विशेषता</translation>
 <translation id="6066794465984119824">इमेज हॅश सेट केलेला नाही</translation>
 <translation id="6069464830445383022">तुमचे Brave खाते हेच तुमचे Chromebook साइन इन आहे</translation>
-<translation id="6069500411969514374">ऑफिस</translation>
 <translation id="6071181508177083058">पासवर्ड कन्फर्म करा</translation>
 <translation id="6071576563962215370">सिस्टमला डिव्हाइस इंस्टॉलेशन वेळ विशेषता लॉक स्थापित करता आले नाही.</translation>
 <translation id="6071938745001252305"><ph name="MEMORY_VALUE"/> मेमरी सेव्ह केली आहे</translation>
@@ -7291,6 +7276,7 @@ I feel - विटांची इमारत</translation>
 <translation id="3191314862567596053">Brave मध्ये पासवर्ड इंपोर्ट करा</translation>
 <translation id="6169040057125497443">कृपया तुमचा मायक्रोफोन तपासा.</translation>
 <translation id="6169967265765719844">Steam द्वारे इंस्टॉल केलेल्या गेम आणि अ‍ॅप्ससंबंधित परवानग्या <ph name="LINK_BEGIN"/>Steam अ‍ॅप सेटिंग्ज<ph name="LINK_END"/> मध्ये व्यवस्‍थापित केल्या जाऊ शकतात.</translation>
+<translation id="6170313103929479668">विभाजित दृश्य व्यवस्थित करा</translation>
 <translation id="6170470584681422115">सँडविच</translation>
 <translation id="6170498031581934115">ADB डीबगिंग सुरू करता आले नाही. सेटिंग्जवर जा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="6170675927290506430">सूचना सेटिंग्ज वर जा</translation>
@@ -7333,6 +7319,7 @@ I feel - विटांची इमारत</translation>
 <translation id="61988015556954366">स्क्रीन फ्लॅश</translation>
 <translation id="6200047250927636406">फाइल काढून टाका</translation>
 <translation id="6200151268994853226">एक्स्टेंशन व्यवस्थापित करा</translation>
+<translation id="6201345951596836663">लिंक कॉपी केली</translation>
 <translation id="6202304368170870640">तुमच्या डिव्हाइसमध्ये साइन इन करण्यासाठी किंवा ते अनलॉक करण्यासाठी तुम्ही तुमचा पिन वापरू शकता.</translation>
 <translation id="6202935572248792580">अनुमती दिली आहे. तुमच्या डिव्हाइसशी मायक्रोफोन कनेक्ट करा.</translation>
 <translation id="6203247599828309566">तुम्ही या साइटवर पासवर्डसाठी टीप सेव्ह केली आहे. ती पाहण्यासाठी, की आयकनवर क्लिक करा.</translation>
@@ -7471,7 +7458,6 @@ I feel - विटांची इमारत</translation>
 <translation id="6291580570300353047">स्टोरेज जागा कमी असल्यामुळे रिस्टोअर करू शकत नाही.</translation>
 <translation id="6291741848715722067">कन्फर्मेशन कोड</translation>
 <translation id="6291953229176937411">फाइंडर मध्ये &amp;दर्शवा</translation>
-<translation id="6292699686837272722">टॅब मध्यम रुंदीवर आक्रसतात</translation>
 <translation id="6293862149782163840"><ph name="DEVICE_NAME"/> सुरू केला आहे</translation>
 <translation id="6294759976468837022">ऑटो-स्कॅनची गती</translation>
 <translation id="6295158916970320988">सर्व साइट</translation>
@@ -7487,6 +7473,7 @@ I feel - विटांची इमारत</translation>
 <translation id="630292539633944562">वैयक्तिक माहिती सूचना</translation>
 <translation id="6304017513498618504">तुम्ही “सारांश द्या” यासारख्या गोष्टीदेखील विचारू शकता</translation>
 <translation id="6305607932814307878">जागतिक धोरण:</translation>
+<translation id="6305627295927385295">पुढील आयटम हटवा:</translation>
 <translation id="6305702903308659374">ChromeVox बोलत असताना देखील सामान्य व्हॉल्यूममध्ये प्ले करा</translation>
 <translation id="6307268917612054609">कॅमेराची परवानगी असणारी अ‍ॅप्स आणि वेबसाइट, त्याचप्रमाणे सिस्टीम सेवा तुमचा कॅमेरा वापरू शकतात</translation>
 <translation id="6307990684951724544">सिस्‍टीम व्यस्त</translation>
@@ -7564,6 +7551,7 @@ I feel - विटांची इमारत</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="6365411474437319296">कुटुंब आणि मित्र जोडा</translation>
 <translation id="6367097275976877956">तुम्हाला ChromeOS साठी बिल्ट-इन स्क्रीन रीडर असलेले ChromeVox अ‍ॅक्टिव्हेट करायचे आहे का? करायचे असल्यास, स्पेस बार प्रेस करा.</translation>
+<translation id="6367196786591004737">एंट्री हटवा</translation>
 <translation id="6367396429435748845">माउस की थांबवण्यासाठी आणि पुन्‍हा सुरू करण्यासाठी <ph name="ALT"/> + <ph name="LAUNCHER"/> + <ph name="NUM_4"/> प्रेस करा</translation>
 <translation id="6367985768157257101">Nearby सह शेअरिंग वापरून मिळवायचे आहे का?</translation>
 <translation id="6368157733310917710">&amp;पत्ते आणि आणखी बरेच काही</translation>
@@ -7682,6 +7670,7 @@ I feel - विटांची इमारत</translation>
 <translation id="6459799433792303855">ॲक्टिव्ह विंडो दुसऱ्या डिस्प्लेवर हलवली आहे.</translation>
 <translation id="6460601847208524483">पुढील शोधा</translation>
 <translation id="6461170143930046705">नेटवर्क शोधत आहे...</translation>
+<translation id="6463488491707167747">हा शब्दकोश हटवा</translation>
 <translation id="6463596731306859179">नको असलेले पॉप-अप मिळत आहे का किंवा इतर अनपेक्षित वर्तन घडत आहे का? काहीवेळा, तुम्ही इंस्टॉल केलेली अ‍ॅप्स आणि एक्स्टेंशन तुमच्या नकळत तुमच्या ChromeOS ची सेटिंग्ज बदलू शकतात.</translation>
 <translation id="6463668944631062248">तुमच्या <ph name="DEVICE_NAME"/> वर कास्‍ट करण्याची विनंती स्वीकारा</translation>
 <translation id="6463795194797719782">&amp;संपादन</translation>
@@ -7723,7 +7712,6 @@ I feel - विटांची इमारत</translation>
 <translation id="649396225532207613">ही फाइल तुमच्या वैयक्तिक आणि सोशल नेटवर्क खात्यांना हानी पोहोचवू शकते</translation>
 <translation id="6493991254603208962">चकाकी कमी करा</translation>
 <translation id="6494327278868541139">वर्धित संरक्षणाचे तपशील दाखवा</translation>
-<translation id="6494445798847293442">प्रमाणीकरण अधिकृतता नाही</translation>
 <translation id="6494483173119160146">डिव्हाइसमध्ये रिकव्‍हर न करता येणारी एरर आली आहे. कृपया तुमचे डिव्हाइस रीसेट करा (यामुळे सर्व वापरकर्ता डेटा मिटेल) आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="6495266441917713704">वाय-फाय ट्रान्सफर करू शकत नाही</translation>
 <translation id="4328654367880031858">थीम ही डीफॉल्ट Brave वर अपडेट केली आहे</translation>
@@ -7826,7 +7814,6 @@ I feel - विटांची इमारत</translation>
 <translation id="656293578423618167">फाइल पथ किंवा नाव खूप मोठे आहे. कृपया एका छोट्या नावाने किंवा दुसर्‍या स्‍थानावर सेव्ह करा.</translation>
 <translation id="6563002009564846727">Windows मधून इंपोर्ट केलेली प्रमाणपत्रे पहा</translation>
 <translation id="6563055593659435495">तुमच्या फोनशी कनेक्शन सुरू ठेवू शकत नाही. तुमचा फोन जवळपास असल्याची, अनलॉक केलेला असल्याची आणि त्याचे ब्लूटूथ व वाय-फाय सुरू असल्याची खात्री करा.</translation>
-<translation id="9133043124325375321">तुम्ही ब्राउझिंग इतिहास शोधता, तेव्हा तुमच्या इतिहास शोध, सर्वोत्तम जुळण्यांचा पेज आशय आणि जनरेट केलेली मॉडेल आउटपुट Brave ला पाठवली जातात व या वैशिष्ट्यामध्ये सुधारणा करण्यासाठी मानवी परीक्षणकर्त्यांद्वारे पाहिली जाऊ शकतात.</translation>
 <translation id="6565144332292237355">तुमच्या स्थानिक नेटवर्कवरील कोणतेही डिव्हाइस शोधून त्याच्याशी कनेक्ट करण्यासाठी साइट हे वैशिष्ट्य वापरू शकते</translation>
 <translation id="6568283005472142698">टॅब शोध</translation>
 <translation id="6569931898053264308">मध्यम बचती</translation>
@@ -7893,7 +7880,6 @@ I feel - विटांची इमारत</translation>
 <translation id="6610002944194042868">भाषांतराचे पर्याय</translation>
 <translation id="6610064275805055636">आयसोलेटेड वेब ॲप्स व्यवस्थापित करा</translation>
 <translation id="6611432349566876829"><ph name="NUM"/> टॅब</translation>
-<translation id="6611972847767394631">येथे तुमचे टॅब शोधा</translation>
 <translation id="661266467055912436">तुमच्यासाठी आणि वेबवरील प्रत्येकजणासाठी सुरक्षिततेत सुधारणा करते.</translation>
 <translation id="6613267708691765962">मालवेअरसाठी स्कॅन करत आहे…</translation>
 <translation id="6615455863669487791">मला दर्शवा</translation>
@@ -7942,7 +7928,6 @@ I feel - विटांची इमारत</translation>
 <translation id="6650206238642452078">ChromeOS सिस्टीम इव्‍हेंटचे सदस्यत्व घ्या</translation>
 <translation id="6650584564768559994">मेमरीची संतुलीत बचत करा. योग्य कालावधीनंतर तुमचे टॅब इनॅक्टिव्ह होतात.</translation>
 <translation id="665061930738760572">&amp;नवीन विंडोमध्ये उघडा</translation>
-<translation id="6651237644330755633">वेबसाइट ओळखण्‍यासाठी या सर्टिफिकेटवर विश्‍वास ठेवा</translation>
 <translation id="6651366126843599466">तुम्ही ब्राउझ करत असताना तुमची माहिती वापरू शकते</translation>
 <translation id="6651495917527016072">तुमच्या फोनसह वाय-फाय नेटवर्क सिंक करा. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या<ph name="LINK_END"/></translation>
 <translation id="6651762277693024112">तुम्ही या साइटला भेट देता, तेव्हा प्रत्येक वेळी आपोआप रन होते</translation>
@@ -8196,7 +8181,6 @@ I feel - विटांची इमारत</translation>
 <translation id="6818920801736417483">पासवर्ड सेव्ह करायचे आहेत का?</translation>
 <translation id="6820079682647046800">Kerberos चे ऑथेंटिकेशन करता आले नाही</translation>
 <translation id="6821439254917412979"><ph name="EXTENSION_NAME"/> ला अनपिन करा</translation>
-<translation id="6922556332985462734">तुम्ही ब्राउझिंग इतिहास शोधता, तेव्हा तुमच्या इतिहास शोध संज्ञा, सर्वोत्तम जुळण्यांचा पेज आशय आणि जनरेट केलेली मॉडेल आउटपुट Brave कडे पाठवली जातात व या वैशिष्ट्यामध्ये सुधारणा करण्यासाठी मानवी परीक्षणकर्त्यांद्वारे पाहिली जाऊ शकतात.</translation>
 <translation id="6823174134746916417">टचपॅड क्लिक करण्यासाठी टॅप करा</translation>
 <translation id="6823561724060793716">अ‍ॅड्रेस बारवरून, तुम्ही भेट देत असलेल्या पेजबद्दल अतिरिक्त माहिती पाहण्यासाठी पेजशी संबंधित माहिती उघडू शकता</translation>
 <translation id="6824564591481349393">&amp;ईमेल पत्ता कॉपी कराil Address</translation>
@@ -8218,12 +8202,10 @@ I feel - विटांची इमारत</translation>
 <translation id="6831043979455480757">भाषांतर करा</translation>
 <translation id="6832218595502288407">डावीकडे अलाइन करा</translation>
 <translation id="6832815922179448173">{MULTI_GROUP_TAB_COUNT,plural, =0{Remove Tab and Delete Group?}=1{टॅब काढून टाकून गट हटवायचा आहे का?}other{टॅब काढून टाकून गट हटवायचे आहेत का?}}</translation>
-<translation id="6833103209700200188">तळटीप</translation>
 <translation id="6833479554815567477">टॅब गट <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/> यामधून काढून टाकला आहे</translation>
 <translation id="6833753236242482566">संतुलित (शिफारस केलेली)</translation>
 <translation id="6835762382653651563">कृपया तुमचे <ph name="DEVICE_TYPE"/> अपडेट करण्‍यासाठी इंटरनेटशी कनेक्ट करा.</translation>
 <translation id="6838992358006915573">मॅग्निफायर ChromeVox फोकसला फॉलो करते</translation>
-<translation id="6839225236531462745">सर्टिफिकेट हटविणे एरर</translation>
 <translation id="6839916869147598086">साइन इन बदलले आहे</translation>
 <translation id="6840155290835956714">पाठविण्यापूर्वी विचारा</translation>
 <translation id="6840184929775541289">प्रमाणन अधिकृतता नाही</translation>
@@ -8520,6 +8502,7 @@ I feel - विटांची इमारत</translation>
 <translation id="7044207729381622209">तुम्हाला उघडलेल्या टॅबसह या साइटमधून साइन आउट केले जाईल</translation>
 <translation id="7044211973375150246">ॲप हे <ph name="APP_NAME"/> सारख्याच लिंक उघडण्यासाठी सेट केले आहे. हे <ph name="APP_NAME_2"/> ला सपोर्ट असलेल्या लिंक उघडण्यापासून बंद करेल.</translation>
 <translation id="7044606776288350625">डेटा सिंक करा</translation>
+<translation id="7049334121062577747">सद्य दृश्यासह अदलाबदल करा</translation>
 <translation id="7050037487872780845">चुकीचे हॉटस्पॉट कॉन्फिगरेशन</translation>
 <translation id="1419348090043109902">{COUNT,plural, =1{तुमच्या <ph name="USER_EMAIL"/> या Brave खाते मध्ये पासवर्ड सेव्ह केला आहे}other{तुमच्या <ph name="USER_EMAIL"/> या Brave खाते मध्ये पासवर्ड सेव्ह केले आहेत}}</translation>
 <translation id="7052147783849658969">या क्षणी इनॅक्टिव्ह टॅब नाहीत</translation>
@@ -8938,7 +8921,6 @@ I feel - विटांची इमारत</translation>
 <translation id="7368927539449986686">साइट शोध संपादित करा</translation>
 <translation id="7370592524170198497">इथरनेट EAP:</translation>
 <translation id="7370751048350026847">या साइटवर हा आशय पेस्ट करण्याची शिफारस करत नाही</translation>
-<translation id="7371917887111892735">टॅब पिन केलेली टॅबच्या रुंदीवर आक्रसतात</translation>
 <translation id="7374376573160927383">USB डिव्हाइस व्यवस्थापित करा</translation>
 <translation id="7376124766545122644">ही लिंक वापरू शकत नाही. पुन्हा प्रयत्न करण्यासाठी, तुमची लिंक 'http://' किंवा 'https://' ने सुरू होते का ते तपासा.</translation>
 <translation id="7376553024552204454">माउस कर्सर हलताना हायलाइट करा</translation>
@@ -9068,9 +9050,11 @@ I feel - विटांची इमारत</translation>
 <translation id="7457831169406914076">{COUNT,plural, =1{लिंक}other{# लिंक}}</translation>
 <translation id="8944680893327873975">Brave Search मध्ये वापरत असेलेले स्पेल चेकर वापरले जाते. तुम्ही ब्राउझरमध्ये टाइप करत असलेला मजकूर Brave कडे पाठवला जातो.</translation>
 <translation id="7458933488302148148">तुमची सुरक्षा मजबूत करण्यासाठी आणि ऑनलाइन सुरक्षित राहण्यासाठी तुमचे सेव्ह केलेले पासवर्ड तपासा</translation>
+<translation id="7460045493116006516">तुम्ही इंस्टॉल केलेली सध्याची थीम</translation>
 <translation id="7461924472993315131">पिन</translation>
 <translation id="746216226901520237">पुढील वेळेस तुमचा फोन तुमचे <ph name="DEVICE_TYPE"/> अनलॉक करेल. तुम्ही सेटिंग्जमधून Smart Lock बंद करू शकता.</translation>
 <translation id="746329643760972486">MacOS</translation>
+<translation id="7463985990119325874">या वैशिष्ट्यांद्वारे गोळा केलेला डेटा कसा वापरला जाऊ शकतो हे तुमची संस्था व्यवस्थापित करते.</translation>
 <translation id="7464645554245611385">या टॅबसंबंधित शेवटचे अपडेट</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# टॅब उघडा, टॅब स्ट्रिप टॉगल करण्यासाठी प्रेस करा}other{# टॅब उघडा, टॅब स्ट्रिप टॉगल करण्यासाठी प्रेस करा}}</translation>
 <translation id="7465635034594602553">काहीतरी चूक झाली. कृपया काही मिनिटे थांबा आणि <ph name="APP_NAME"/> पुन्हा रन करा.</translation>
@@ -9237,6 +9221,7 @@ I feel - विटांची इमारत</translation>
 <translation id="7583948862126372804">संख्या</translation>
 <translation id="7585106857920830898">तुमच्या संस्थेची सुरक्षा धोरणे तपासत आहे...</translation>
 <translation id="8201192017531062522">Brave Apps उघडे असताना Brave सुरू रहाणे सुरू ठेवेल.</translation>
+<translation id="7587806318633605613">सूचनेशी संबंधित इतिहास</translation>
 <translation id="7589461650300748890">ओहो, तेथेच. काळजी घ्या.</translation>
 <translation id="7590883480672980941">इनपुट सेटिंग्ज</translation>
 <translation id="7592060599656252486">काही</translation>
@@ -9257,7 +9242,6 @@ I feel - विटांची इमारत</translation>
 <translation id="7606248551867844312">क्रॉप करण्याची खात्री करा</translation>
 <translation id="7606560865764296217">ॲनिमेशन थांबवा</translation>
 <translation id="7606639338662398635">टॅब गट</translation>
-<translation id="7606992457248886637">अधिकारी</translation>
 <translation id="7607002721634913082">विराम द्या</translation>
 <translation id="7608810328871051088">Android प्राधान्ये</translation>
 <translation id="7609148976235050828">कृपया इंटरनेटशी कनेक्‍ट करा आणि पुन्हा प्रयत्न करा.</translation>
@@ -9579,13 +9563,13 @@ I feel - विटांची इमारत</translation>
 <translation id="7811263553491007091">पुन्हा प्रयत्न करा किंवा पूर्वी जनरेट केलेल्या खालील थीमपैकी एखादी निवडा.</translation>
 <translation id="7811986034759500329">सिस्टीम सेटिंग्जमध्ये सेट करा</translation>
 <translation id="928545015781405758">Brave Calendar लपवलेले आहे</translation>
-<translation id="7814090115158024843">या साइटवर कधीही लिहिण्यासंबंधित मदत देऊ करू नका</translation>
 <translation id="7814458197256864873">&amp;कॉपी करा</translation>
 <translation id="7814857791038398352">Microsoft OneDrive</translation>
 <translation id="7815583197273433531"><ph name="EXTENSION_NAME"/> साठी शॉर्टकट <ph name="SHORTCUT"/> संपादित करा</translation>
 <translation id="7815680994978050279">धोकादायक डाउनलोड ब्लॉक केले</translation>
 <translation id="7817361223956157679">ऑन-स्क्रीन कीबोर्ड सध्या Linux ॲप्समध्ये काम करत नाही</translation>
 <translation id="7818135753970109980">नवीन थीम जोडली (<ph name="EXTENSION_NAME"/>)</translation>
+<translation id="5224689297916943449">एक्स्टेंशन ही Brave साठी अ‍ॅड-ऑन आहेत, जी तुम्हाला आणखी बरेच काही करण्यात मदत करू शकतात</translation>
 <translation id="7820400255539998692"><ph name="FILENAME"/> हटवा, जेणेकरून हे डिव्हाइस वापरणारे इतर लोक तुमचे पासवर्ड पाहू शकणार नाहीत</translation>
 <translation id="7820561748632634942">अतिरिक्त स्विच असाइन करायचे आहेत का?</translation>
 <translation id="782057141565633384">व्हिडिओ पत्ता कॉपी करा</translation>
@@ -9698,7 +9682,6 @@ I feel - विटांची इमारत</translation>
 <translation id="7901405293566323524">फोन हब</translation>
 <translation id="7903429136755645827">तुमची गेम नियंत्रणे कस्टमाइझ करण्यासाठी क्लिक करा</translation>
 <translation id="7903481341948453971">पासवर्ड भरताना तुमचे स्क्रीन लॉक वापरा</translation>
-<translation id="7903742244674067440">तुमच्याकडे फाइलवर अशी सर्टिफिकेट आहेत जी या सर्टिफिकेट अधिकार्‍यांची ओळख पटवतात</translation>
 <translation id="7903925330883316394">उयुक्तता: <ph name="UTILITY_TYPE"/></translation>
 <translation id="7903984238293908205">कॅटाकाना</translation>
 <translation id="7904526211178107182">तुमच्या नेटवर्कवरील इतर डिव्हाइसना Linux पोर्ट उपलब्ध करून द्या.</translation>
@@ -9791,7 +9774,6 @@ I feel - विटांची इमारत</translation>
 <translation id="7957074856830851026">सिरीअल नंबर किंवा मालमत्ता आयडी यांसारखी डिव्हाइसची माहिती पहा</translation>
 <translation id="7958157896921135832">फॉंटचा आकार वाढवा</translation>
 <translation id="7958828865373988933">तुम्हाला USB सिक्युरिटी कीवर <ph name="APP_NAME"/> साठी पासकी तयार करायची असल्यास, ती आता घाला आणि स्पर्श करा</translation>
-<translation id="7959074893852789871">फाइलमध्ये एकाधिक प्रमाणपत्रे आहेत, यापैकी काही इंपोर्ट झाली नाहीत: </translation>
 <translation id="7960540720012720106">Windows चे अवलोकन उघडा</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="7963001036288347286">टचपॅड अ‍ॅक्सिलरेशन</translation>
@@ -9897,6 +9879,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8028138772801251745">AI वापरून ऑटोफिल करा</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/>, <ph name="FILE_NAME"/> डाउनलोड करत आहे</translation>
 <translation id="8028993641010258682">आकार</translation>
+<translation id="8029412171914613589">{SELECTED_ITEMS,plural, =0{वाचन सूची}=1{वाचन सूची ({SELECTED_ITEMS})}other{वाचन सूची ({SELECTED_ITEMS})}}</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> - परवानगीची विनंती केली आहे, प्रतिसाद देण्यासाठी ⌘ + Option + अप अ‍ॅरो प्रेस करा</translation>
 <translation id="8030169304546394654">डिस्कनेक्ट केलेले</translation>
 <translation id="8030852056903932865">मंजूर करा</translation>
@@ -9911,6 +9894,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8037801708772278989">नुकतेच तपासले</translation>
 <translation id="8038111231936746805">(डीफॉल्ट)</translation>
 <translation id="8039151841428107077">{NUM_OF_FILES,plural, =1{१ फाइल <ph name="CLOUD_PROVIDER"/> वर कॉपी करत आहे}other{{NUM_OF_FILES} फाइल <ph name="CLOUD_PROVIDER"/> वर कॉपी करत आहे}}</translation>
+<translation id="6409220262307200557">तुमची ChromeOS आवृत्ती अपडेट झाल्यानंतर हे Brave ॲप काम करणार नाही. तुम्हाला ठेवायचा असलेला कोणताही ॲप डेटा सेव्ह करा. तुमच्या पर्यायांबद्दल जाणून घेण्यासाठी, अ‍ॅप डेव्हलपरशी किंवा तुमच्या आयटी सपोर्ट टीमशी संपर्क साधा.</translation>
 <translation id="8041089156583427627">अभिप्राय पाठवा</translation>
 <translation id="8041093619605951337">आनंदी</translation>
 <translation id="8041267120753677077">तुमच्या फोनमधील ॲप्स स्ट्रीम करणे</translation>
@@ -9934,7 +9918,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8051193500142930381">कॅमेर्‍याची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
 <translation id="8052218774860457016">ब्राउझर सिंक व्यवस्थापित करा</translation>
 <translation id="8052944601017749068"><ph name="CERT_GROUP"/> मध्ये इंपोर्ट करा</translation>
-<translation id="8053278772142718589">PKCS #12 फाइल</translation>
 <translation id="8053390638574070785">हे पेज रीलोड करा</translation>
 <translation id="8054500940978949009">अनुमती दिली आहे. <ph name="LINK_BEGIN"/>सिस्टीम मायक्रोफोन अ‍ॅक्सेस<ph name="LINK_END"/> सुरू करा.</translation>
 <translation id="8054517699425078995">या प्रकारची फाईल आपल्‍या डिव्‍हाइसला हानी पोहचवू शकते. तुम्ही <ph name="FILE_NAME"/> तरीही ठेवू इच्‍छिता?</translation>
@@ -9964,6 +9947,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8073499153683482226"><ph name="BEGIN_PARAGRAPH1"/>अ‍ॅप डेटा म्हणजे अ‍ॅपने (डेव्हलपर सेटिंग्जवर आधारित) सेव्ह केलेला कोणताही डेटा असू शकतो , ज्यामध्ये संपर्क, मेसेज आणि फोटो यासारख्या डेटाचा समावेश आहे.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>बॅकअप डेटा तुमच्या लहान मुलाच्या ड्राइव्ह स्टोरेज कोट्यामध्ये गणला जाणार नाही.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>तुम्ही सेटिंग्जमध्ये ही सेवा बंद करू शकता.<ph name="END_PARAGRAPH3"/></translation>
+<translation id="8075044377771022666">फूटर</translation>
 <translation id="8076835018653442223">तुमच्या ॲडमिनिस्ट्रेटरने तुमच्या डिव्‍हाइसवरील स्‍थानिक फायलीचा ॲक्सेस बंद केला आहे</translation>
 <translation id="8077120325605624147">तुम्ही भेट देता ती कोणतीही साइट तुम्हाला कोणतीही जाहिरात दाखवू शकते</translation>
 <translation id="8174413867995118050">इतर Brave प्रोफाइल</translation>
@@ -10087,7 +10071,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8157849462797352650">तुमच्या डिव्हाइसला नवीनतम सुरक्षा, स्थिरता आणि परफॉर्मन्स अपडेट मिळतात</translation>
 <translation id="8158117992543756526"><ph name="MONTH_AND_YEAR"/> मध्ये या डिव्हाइसला ऑटोमेटिक सॉफ्टवेअर आणि सुरक्षा अपडेट मिळणे थांबेल. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या<ph name="LINK_END"/></translation>
 <translation id="8159652640256729753">स्क्रीन स्प्लिट करणे आणि डेस्‍क स्विच करणे यांसारख्या कृतींसाठी व्हायब्रेशनद्वारे कन्फर्मेशन मिळवा. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या<ph name="LINK_END"/></translation>
-<translation id="816055135686411707">सर्टिफिकेट विश्वास सेट करताना एरर</translation>
 <translation id="8160775796528709999">सेटिंग्जमध्ये लाइव्ह कॅप्शन सुरू करून तुमच्या ऑडिओ आणि व्हिडिओसाठी कॅप्शन मिळवा</translation>
 <translation id="816095449251911490"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/>, <ph name="TIME_REMAINING"/></translation>
 <translation id="8161095570253161196">ब्राउझिंग पुन्‍हा सुरू करा</translation>
@@ -10262,6 +10245,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8280848878018088610">गडद मूडमध्ये, बॅकग्राउंडमध्ये विलक्षण शहर आणि किल्ला असलेला समुद्रामधील उसळलेल्या लाटा.</translation>
 <translation id="828180235270931531">इतर उपलब्ध प्रिंटर</translation>
 <translation id="8281886186245836920">वगळा</translation>
+<translation id="8283802069507225582">इतर डिव्हाइसवर तुम्ही सोडले होते तिथून पुन्हा सुरू करण्यासाठी तुमचा इतिहास आणि टॅब <ph name="ACCOUNT_EMAIL"/> शी सिंक करा</translation>
 <translation id="8284279544186306258">सर्व <ph name="WEBSITE_1"/> साइट</translation>
 <translation id="8284326494547611709">मथळे</translation>
 <translation id="8286036467436129157">साइन इन</translation>
@@ -10296,7 +10280,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8308024039615003152">कुरण</translation>
 <translation id="8308179586020895837"><ph name="HOST"/> तुमचा कॅमेरा ॲक्सेस करू इच्छित असल्यास विचारा</translation>
 <translation id="830868413617744215">बीटा</translation>
-<translation id="8309458809024885768">सर्टिफिकेट आधीपासूनच अस्तित्वात आहे</translation>
 <translation id="8310409247509201074"><ph name="NUM"/> टॅब</translation>
 <translation id="831207808878314375">परिभाषा</translation>
 <translation id="8312841338723044391">लाइव्ह</translation>
@@ -10440,7 +10423,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8405118833120731611">{0,plural, =1{ही प्रोफाइल बंद करा}other{या प्रोफाइल बंद करा (# windows)}}</translation>
 <translation id="8407199357649073301">लॉग पातळी:</translation>
 <translation id="8408270600235826886">Brave सह कोणता डेटा शेअर केला जातो हे तुम्ही नियंत्रित करू शकता. तुम्ही सेटिंग्ज मध्ये हे कधीही बदलू शकता. Brave चे <ph name="BEGIN_LINK"/>गोपनीयता धोरण<ph name="END_LINK"/> यानुसार डेटा वापरला जाईल.</translation>
-<translation id="84098433273647700">तुम्ही इंस्टॉल केलेली सध्याची थीम.</translation>
 <translation id="8410133743809404768">तुम्ही "@history" वापरून ॲड्रेस बारमध्ये, त्याचप्रमाणे इतिहास पेजवरून शोधू शकता</translation>
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8411043186249152291">फुलस्क्रीन</translation>
@@ -10535,6 +10517,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8472623782143987204">हार्डवेअर-बॅक्ड</translation>
 <translation id="8473540203671727883">माउसखाली मजकूर बोला</translation>
 <translation id="8473863474539038330">अ‍ॅड्रेस आणि बरेच काही</translation>
+<translation id="847433688444405067">सर्व डिव्हाइसवर ब्राउझ करा</translation>
 <translation id="8474378002946546633">सूचनांना अनुमती द्या</translation>
 <translation id="8474561048882755118">एकसारखी उत्पादने शेजारी शेजारी पाहण्यात आणि तुमच्यासाठी महत्त्वाच्या असलेल्या तपशिलांची सहजपणे तुलना करण्यात मदत करते</translation>
 <translation id="2015014930243978107">तुमच्या कॉंप्युटरवरील दुसऱ्या प्रोग्रामने Brave च्या काम करण्याचा मार्ग बदलू शकणारा एक्स्टेंशन जोडला.</translation>
@@ -10548,6 +10531,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8477241577829954800">अधिग्रहित</translation>
 <translation id="8477384620836102176">&amp;सामान्य</translation>
 <translation id="8477446666255316832">पुढील वेळेस आणखी जलद साइन इन करा</translation>
+<translation id="8478346767369317046">ऑफिस</translation>
 <translation id="8479176401914456949">कोड चुकीचा आहे. कृपया पुन्हा प्रयत्न करा.</translation>
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> कडील अज्ञात डिव्हाइस</translation>
 <translation id="8481187309597259238">USB परवानगीची निश्चिती करा</translation>
@@ -10574,6 +10558,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8502536196501630039">Google Play वरचे ॲप्स वापरण्यासाठी, तुम्ही प्रथम तुमचे ॲप्स रिस्टोअर करणे आवश्यक आहे. काही डेटा गमावला असू शकतो.</translation>
 <translation id="8503813439785031346">वापरकर्ता नाव</translation>
 <translation id="850382998924680137">आज पाहिलेले</translation>
+<translation id="850399339579925930">शब्दकोश</translation>
 <translation id="850561044295157831">लिहिण्यात मला मदत करा याबद्दल अधिक जाणून घ्या</translation>
 <translation id="8505669004895429027">कमी बचती</translation>
 <translation id="8507227974644337342">स्क्रीन रिझोल्युशन</translation>
@@ -10714,7 +10699,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8619000641825875669">OneDrive</translation>
 <translation id="8619369551122276044">तुमच्या डिव्हाइसवर वेब अ‍ॅप्स इंस्टॉल करण्याची अनुमती नाही</translation>
 <translation id="8619803522055190423">ड्रॉप शॅडो</translation>
-<translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620206585293032550">इनॲक्टिव्ह टॅबचे स्वरूप</translation>
 <translation id="8621979332865976405">तुमची संपूर्ण स्क्रीन शेअर करा</translation>
 <translation id="8624315169751085215">क्लिपबोर्डवर कॉपी करा</translation>
@@ -10761,6 +10745,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8648252583955599667"><ph name="GET_HELP_LINK"/> किंवा <ph name="RE_SCAN_LINK"/></translation>
 <translation id="8648408795949963811">रात्रीच्या प्रकाशाचे रंगाचे तापमान</translation>
 <translation id="8648544143274677280"><ph name="SITE_NAME"/> ला हे करायचे आहे: <ph name="FIRST_PERMISSION"/>, <ph name="SECOND_PERMISSION"/> आणि बरेच काही</translation>
+<translation id="8648889679430451455">वैयक्तिक डेटा साफ करा</translation>
 <translation id="5225261774087485064">सर्वसाधारणपणे, तुम्ही भेट देता त्या साइट तुमचा अनुभव पर्सनलाइझ करण्यासाठी, तुम्हाला स्वारस्य असलेल्या गोष्टी लक्षात ठेवतात. साइट तुमच्या स्वारस्यांबद्दलची माहिती Brave वापरून स्टोअरदेखील करू शकतात.</translation>
 <translation id="8650543407998814195">जरी तुम्ही आता तुमची जुनी प्रोफाइल अ‍ॅक्सेस करू शकत नसलात, तरीही तुम्ही ती काढून टाकू शकता.</translation>
 <translation id="8651585100578802546">सक्तीने हे पेज रीलोड करा</translation>
@@ -10788,7 +10773,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8664389313780386848">पेज स्रोत &amp;पहा</translation>
 <translation id="8665110742939124773">तुम्ही चुकीचा अ‍ॅक्सेस कोड एंटर केला आहे. पुन्हा प्रयत्न करा.</translation>
 <translation id="8665180165765946056">बॅकअप पूर्ण झाला</translation>
-<translation id="866611985033792019">ईमेल वापरकर्त्यांना ओळखण्यासाठी या सर्टिफिकेटवर विश्वास ठेवा</translation>
 <translation id="8666268818656583275">एफ की आता सिस्टीममधील सर्वात वरच्या पंक्ती की म्हणून वर्तन करतील</translation>
 <translation id="8666321716757704924"><ph name="WEBSITE"/> साठी पुन्हा परवानग्यांना अनुमती दिला आहे</translation>
 <translation id="8667261224612332309">तुमच्याकडे सुधारणा करता येतील असे पासवर्ड आहेत</translation>
@@ -10813,7 +10797,6 @@ I feel - विटांची इमारत</translation>
 <translation id="2820611115745592411">लक्ष्यित हल्ल्यांचा धोका असलेल्या लोकांसाठी Brave हे मजबूत खाते सुरक्षा पुरवते</translation>
 <translation id="8678378565142776698">रीस्टार्ट करा आणि ऑटोमॅटिक अपडेट मिळवा</translation>
 <translation id="8678538439778360739">तुमच्या सिंक पासफ्रेझसह <ph name="TIME"/> रोजी डेटा एंक्रिप्ट केला होता. यामध्ये Google Pay वरील पेमेंट पद्धतींचा आणि पत्त्यांचा समावेश नसतो.</translation>
-<translation id="8678582529642151449">टॅब लहान केले जात नाहीत</translation>
 <translation id="8799943527225783766">तुम्ही ब्राउझ करताना तुम्हाला ट्रॅक करण्यासाठी साइट कोणत्या प्रकारची माहिती वापरू शकतात हे Brave मर्यादित करते. तुमच्या स्वतःची संरक्षण पातळी निवडण्यासाठी तुम्ही तुमची सेटिंग्ज बदलू शकता.</translation>
 <translation id="8678933587484842200">हे ॲप्लिकेशन कसे लॉंच व्हावे असे तुम्हाला वाटते?</translation>
 <translation id="8679054765393461130">रेंडर नेटवर्क निवड सूची वारंवार स्कॅन करण्यासाठी वायफाय ट्रिगर करेल; हे तुमच्या वायफाय नेटवर्कच्या परफॉर्मन्सवर परिणाम करू शकते.</translation>
@@ -10894,6 +10877,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8729133765463465108">QR कोड स्कॅन करण्यासाठी कॅमेरा वापरा</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="8731029916209785242">परवानग्या (<ph name="FORMATTED_ORIGIN"/>)</translation>
+<translation id="8731258351357994801">एंट्री <ph name="NUMBER"/></translation>
 <translation id="8731268612289859741">सुरक्षितता कोड</translation>
 <translation id="8731629443331803108"><ph name="SITE_NAME"/> ला हे करायचे आहे: <ph name="PERMISSION"/></translation>
 <translation id="8731787661154643562">पोर्ट क्रमांक</translation>
@@ -10925,7 +10909,6 @@ I feel - विटांची इमारत</translation>
 <translation id="8749863574775030885">अज्ञात विक्रेत्याकडील USB डिव्हाइस ॲक्सेस करा</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> ला सिरीअल पोर्टशी कनेक्ट करायचे आहे</translation>
 <translation id="8750346984209549530">मोबाइल APN</translation>
-<translation id="8750521821491993283">तुमचा ब्राउझिंग इतिहास शोधण्यासाठी आणि तुम्ही भेट दिलेल्या साइट शोधण्यासाठी दररोजची भाषा वापरा. तुम्ही हे वैशिष्‍ट्य सुरू केल्यानंतरच भेट दिलेल्या साइट AI द्वारे सक्षम केलेले इतिहास शोध परिणाम यामध्ये दिसतील.</translation>
 <translation id="8750786237117206586">ChromeOS Flex ऑडिओ सेटिंग्ज व्यवस्थापित करा</translation>
 <translation id="8751034568832412184">शाळा</translation>
 <translation id="8751329102746373229">तुमच्या अ‍ॅडमिनिस्ट्रेटरकडील</translation>
@@ -10934,6 +10917,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8754200782896249056">&lt;p&gt;सपोर्टेड डेस्कटॉप परिस्थिती अंतर्गत <ph name="PRODUCT_NAME"/> चालवताना, सिस्टीम प्रॉक्सी सेटिंग्ज वापरल्या जातील. तथापि, एकतर तुमची सिस्टीमला सपोर्ट नाही नसते किंवा तुमचे सिस्टीम कॉन्फिगरेशन लाँच करताना समस्या आली.&lt;/p&gt;
 
           &lt;/p&gt;परंतु तुम्ही अद्याप कमांड लाइन कॉन्फिगर करू शकता. कृपया फ्लॅग आणि परिस्थिती व्हेरिएबलवरील अधिक माहितीसाठी &lt;code&gt;man <ph name="PRODUCT_BINARY_NAME"/>&lt;/code&gt; पहा.&lt;/p&gt;</translation>
+<translation id="8754810799862630650">तुमच्या इतर काँप्युटर आणि फोनवरून उघडे असलेले टॅब पाहण्यासाठी, तुमचा इतिहास व टॅब<ph name="ACCOUNT_EMAIL"/> शी सिंक करा</translation>
 <translation id="8755175579224030324">तुमच्या संस्थेसाठी सुरक्षिततेशी संबंधित टास्क पार पाडा, जसे की डिव्हाइसवर स्टोअर केलेली सर्टिफिकेट आणि की व्यवस्थापित करणे</translation>
 <translation id="875532100880844232"><ph name="DEVICE_NAME"/>साठी, प्रत्येक कीसाठी कृती निवडा</translation>
 <translation id="8755376271068075440">&amp;विशाल</translation>
@@ -11035,6 +11019,7 @@ I feel - विटांची इमारत</translation>
 <translation id="8827289157496676362">एक्स्टेंशन पिन करा</translation>
 <translation id="8828933418460119530">DNS नाव</translation>
 <translation id="8829979393064090868">दृश्य विभाजित करण्यासाठी टॅब जोडा</translation>
+<translation id="8830479210602243906">उत्पादनक्षमता बूस्ट करा</translation>
 <translation id="883062543841130884">उपघटक</translation>
 <translation id="8830779999439981481">अपडेट लागू करण्यासाठी रीस्टार्ट करत आहे</translation>
 <translation id="8830796635868321089">विद्यमान प्रॉक्सी सेटिंग्ज वापरून अपडेट तपासणी अयशस्वी झाली. कृपया तुमच्या <ph name="PROXY_SETTINGS_LINK_START"/>प्रॉक्सी 
@@ -11608,8 +11593,8 @@ I feel - विटांची इमारत</translation>
 <translation id="93393615658292258">फक्त पासवर्ड</translation>
 <translation id="934244546219308557">या गटाला नाव द्या</translation>
 <translation id="93480724622239549">बग किंवा एरर</translation>
-<translation id="2903307881094448721">तुम्ही साइट ब्राउझ करत असताना, त्यांच्या पेजचा आशय तुमच्या डिव्हाइसवर एन्क्रिप्ट केलेल्या स्वरूपात सेव्ह केला जातो. याचा Brave च्या परफॉर्मन्सवर परिणाम होऊ शकतो.</translation>
 <translation id="9354763467503131">तुमच्या डिव्हाइसवर वेब अ‍ॅप्स इंस्टॉल करण्याची विनंती करण्यास अनुमती दिली आहे</translation>
+<translation id="936329857119665832">सध्याच्या टॅबमध्ये उघडते</translation>
 <translation id="936646668635477464">कॅमेरा आणि मायक्रोफोन</translation>
 <translation id="936801553271523408">सिस्टीम निदान डेटा</translation>
 <translation id="93766956588638423">एक्स्टेंशन दुरुस्त करा</translation>

@@ -77,7 +77,6 @@
 <translation id="5499149312981370855">选择是否要包含 Brave 历史记录以便在各款 Brave 服务中获享更个性化的体验</translation>
 <translation id="5888420425384578947">若要接收后续 Brave 更新，您需要使用 macOS 12 或更高版本。该电脑目前使用的是 macOS 11。</translation>
 <translation id="2472891440303445472">Brave 阻止了此项下载操作，因为该文件具有欺骗性，可能会意外更改您的设备</translation>
-<translation id="849607431499549468">与 Brave 如何管理其根证书有关的信息</translation>
 <translation id="2726948994393234543">系统将从此设备中移除您已保存在 Brave 账号中的密码和其他 Brave 数据。如需在 Brave 中重新使用这些数据，请重新登录。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{贵组织会在 Brave 闲置 1 分钟后自动删除浏览数据。这些数据可能包括历史记录、自动填充数据和下载内容。您的标签页将会保持打开状态。}other{贵组织会在 Brave 闲置 # 分钟后自动删除浏览数据。这些数据可能包括历史记录、自动填充数据和下载内容。您的标签页将会保持打开状态。}}</translation>
 <translation id="2126108037660393668">所下载的文件未能顺利通过验证。</translation>
@@ -117,7 +116,6 @@
 <translation id="8447483940522230788">Brave 帮助程序</translation>
 <translation id="2575822587468774919">选择任何内容即可使用图片搜索功能进行搜索</translation>
 <translation id="3830890663494219270">如需获取您所有设备上的密码等信息，请登录 Brave</translation>
-<translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">继续使用 Brave</translation>
 <translation id="259935314519650377">未能缓存所下载的安装程序。错误：<ph name="UNPACK_CACHING_ERROR_CODE"/>。</translation>
 <translation id="2620436844016719705">系统</translation>
@@ -180,6 +178,7 @@
 <translation id="8926637909431618259">关闭 Brave 后继续运行后台应用</translation>
 <translation id="518125528057094977">Brave 会在使用不安全的连接加载网站前向您发出警告</translation>
 <translation id="8652321858775514885">关闭所有 Brave 窗口后，您将会从大多数网站退出账号；但如果您已登录 Brave，则您的 Brave 账号不会退出。若要让网站记住您，请<ph name="SETTINGS_LINK"/>。</translation>
+<translation id="3352986031709923790">搜索区域的右上角：右侧 <ph name="RIGHT"/>%，顶部 <ph name="TOP"/>%</translation>
 <translation id="2645435784669275700">Brave 操作系统</translation>
 <translation id="2297290224191497273">切换到现有的 Brave 个人资料？</translation>
 <translation id="3412460710772753638">在此设备上的密码管理工具中更新</translation>
@@ -219,6 +218,7 @@
 <translation id="3703994572283698466">与 <ph name="BEGIN_LINK_LINUX_OSS"/>Linux 开发环境<ph name="END_LINK_LINUX_OSS"/>一样，Brave 操作系统也是借助了其他<ph name="BEGIN_LINK_CROS_OSS"/>开源软件<ph name="END_LINK_CROS_OSS"/>才得以问世。</translation>
 <translation id="4022972681110646219">翻译屏幕</translation>
 <translation id="4023601594785368013">源语言：<ph name="LANGUAGE"/></translation>
+<translation id="5540160525564738506">在任意应用内通过 Brave 打开链接。此外，为了方便使用，Brave 会固定到任务栏。</translation>
 <translation id="6056473803837713617">报告<ph name="BEGIN_LINK"/>当前设置<ph name="END_LINK"/>，协助我们改进 Brave</translation>
 <translation id="4050175100176540509">最新版本不仅在安全性方面做出了重要改进，还提供了多项新功能。</translation>
 <translation id="4055805654398742145">密码管理工具(&amp;A)</translation>
@@ -314,8 +314,10 @@
 <translation id="3809116188788099368">为了保护您的隐私，如果您的兴趣保留时间超过 4 周，系统便会自动将其删除。随着您继续浏览，某项兴趣可能会再次出现在列表中。如果 Brave 的推测不准确，或者您不想看到某些广告，可以移除某项兴趣。</translation>
 <translation id="1744365871163268756">Brave正在安装最新的系统更新，请稍候。</translation>
 <translation id="3861679447659630159">Brave 正在尝试修改密码。请输入您的 Windows 密码以允许此操作。</translation>
+<translation id="5524890928877629608">搜索区域的左上角：左侧 <ph name="LEFT"/>%，顶部 <ph name="TOP"/>%</translation>
 <translation id="232381795826373334">在 Brave 中打开 PDF 文件</translation>
 <translation id="5579324208890605088">启动错误：请以普通用户身份（非管理员身份）运行安装程序。</translation>
+<translation id="3588973534877826647">默认使用 Brave 并将其固定</translation>
 <translation id="5596627076506792578">更多选项</translation>
 <translation id="5605834417512968703">选择任意内容即可使用图片搜索功能进行搜索，按 Esc 键可退出图片搜索功能</translation>
 <translation id="5618818588972826921">选择任何文字或图片即可使用图片搜索功能进行搜索，按 Esc 键可退出图片搜索功能</translation>
@@ -353,7 +355,6 @@
 <translation id="6069027071882229820">复制为图片</translation>
 <translation id="7861579472672677409">“<ph name="EXTENSION_NAME"/>”已添加到 Brave</translation>
 <translation id="3693188491491843187">提高 Brave 的运行速度</translation>
-<translation id="608006075545470555">向此浏览器添加工作资料</translation>
 <translation id="5849446944780602366">有可用的更新。欢迎自定义和控制 Brave。</translation>
 <translation id="5711722515923392428">已开启 • Brave 无法验证此扩展程序的来源</translation>
 <translation id="7433698744896946664">允许扩展程序在 Brave 工具栏中显示访问请求</translation>
@@ -428,6 +429,7 @@
 <translation id="684888714667046800">无法连接到互联网。如果使用防火墙，请确保 <ph name="PRODUCT_EXE_NAME"/> 在许可名单中。</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="3028928628792374067">Brave 发现“<ph name="EXTENSION_NAME"/>”包含恶意软件</translation>
+<translation id="6877155553248388166">搜索区域的右下角：右侧 <ph name="RIGHT"/>%，底部 <ph name="BOTTOM"/>%</translation>
 <translation id="6896758677409633944">复制</translation>
 <translation id="862687584320433626">将 Brave 设为默认浏览器，并将其固定到任务栏</translation>
 <translation id="126871877963043118">在试用期间，Ad measurement 允许您访问的网站向 Brave 请求信息来对网站上的广告进行效果衡量。Ad measurement 会在网站间传输尽可能少的信息，从而限制跨网站跟踪。</translation>
@@ -544,7 +546,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8691137711639873980">如要使用 Brave 数据并将其保存在您的 Brave 账号中，请验证是您本人在操作</translation>
 <translation id="2097604701283463988">Brave版本太旧</translation>
 <translation id="871233388178581868">您需要先保存密码，然后才能使用 Brave 的密码检查功能</translation>
-<translation id="8550334526674375523">此工作资料与您的个人资料是完全分开的。</translation>
 <translation id="8555465886620020932">发生了服务错误：<ph name="SERVICE_ERROR"/>。</translation>
 <translation id="8556420416730706394">您可以固定图片搜索功能以方便访问，点击侧边栏顶部的“固定”按钮即可</translation>
 <translation id="856656450041460113">搜索语言列表</translation>
@@ -558,6 +559,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2433912322225810055">它还能够控制您启动Brave后或通过多功能框进行搜索时系统显示的页面。</translation>
 <translation id="4100716194836114130">这是您的专属Brave</translation>
 <translation id="1419543648228375718">登录 Brave？</translation>
+<translation id="8747073452963259673">搜索区域的左下角：左侧 <ph name="LEFT"/>%，底部 <ph name="BOTTOM"/>%</translation>
 <translation id="878572486461146056">安装时出错：您的网络管理员所应用的一项群组政策阻止了安装进程：<ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave 需要获得相应权限，才能允许此网站使用您的摄像头和麦克风</translation>
 <translation id="64216977793816291">登录 Brave？</translation>
@@ -572,7 +574,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="6514033039060816211">Brave 可以根据您在过去几周的浏览记录推测出您的兴趣。这些信息会保留在您的设备上。</translation>
 <translation id="6389268239133412586">无法更新 Brave</translation>
 <translation id="7731184591599776500">Brave 企业版徽标</translation>
-<translation id="8986207147630327271">您将要向此浏览器添加工作资料并允许您的管理员仅控制此工作资料。</translation>
 <translation id="3424657754843264466">管理 Brave 个人资料</translation>
 <translation id="82609232232243542">登录 Brave</translation>
 <translation id="7055223246119657449">Brave 阻止了此项下载操作，因为归档文件包含可能隐藏恶意软件的其他文件</translation>
@@ -584,13 +585,13 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5190991181158966940">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。该计算机目前使用的是 Windows 8.1。</translation>
 <translation id="7863882214613921971">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="911206726377975832">同时删除您的浏览数据吗？</translation>
+<translation id="9134482777260927479">作业辅导</translation>
 <translation id="9148058034647219655">退出</translation>
 <translation id="2444257125841652328">您的系统管理员已将 Brave 配置为使用备用浏览器访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="7902365066753170041">重新启动以更新 Brave(&amp;C)</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="296137235951584143">定制您的专属 Brave</translation>
 <translation id="7977787072794666032">Brave 可能无法正常运行，因为它不再支持 Windows XP 和 Windows Vista</translation>
-<translation id="8180288330711585962">由 Brave 管理的证书</translation>
 <translation id="945522503751344254">发送反馈</translation>
 <translation id="4484434718272972655">谁在使用 Brave？</translation>
 <translation id="7173394303099002355">获享 Brave 的最强安全保护</translation>

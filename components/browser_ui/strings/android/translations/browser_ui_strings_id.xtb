@@ -84,6 +84,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="2028449514182362831">Fitur yang memerlukan sensor gerakan tidak akan berfungsi</translation>
 <translation id="2030769033451695672">Ketuk untuk kembali ke <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Urungkan</translation>
+<translation id="2080070583977670716">Setelan lain</translation>
 <translation id="2091887806945687916">Suara</translation>
 <translation id="2096716221239095980">Hapus semua data</translation>
 <translation id="2102396546234652240">Jangan izinkan situs menggunakan mikrofon Anda</translation>
@@ -229,7 +230,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3779154269823594982">Ubah sandi</translation>
 <translation id="3797520601150691162">Jangan terapkan tema gelap untuk situs tertentu</translation>
 <translation id="3803367742635802571">Situs yang Anda buka mungkin tidak berfungsi sebagaimana mestinya</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Nomor telepon</translation>
 <translation id="3826050100957962900">Login pihak ketiga</translation>
 <translation id="3835233591525155343">Penggunaan perangkat Anda</translation>
@@ -437,7 +437,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="6452138246455930388">Penurunan harga di tab yang terbuka, dari <ph name="OLD_PRICE"/> menjadi <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Jika jendela terlihat sempit, minta tampilan seluler</translation>
 <translation id="6527303717912515753">Bagikan</translation>
-<translation id="652937045869844725">Coba izinkan cookie pihak ketiga, yang berarti lebih sedikit perlindungan, tetapi fitur situs biasanya berfungsi</translation>
 <translation id="6530703012083415527">Jika diaktifkan, situs dapat menggunakan pop-up dan pengalihan. Jika dinonaktifkan, situs tidak dapat menggunakan pop-up dan pengalihan.</translation>
 <translation id="6540488083026747005">Anda mengizinkan cookie pihak ketiga di situs ini</translation>
 <translation id="6545864417968258051">Pemindaian Bluetooth</translation>
@@ -451,6 +450,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="6612358246767739896">Konten dilindungi</translation>
 <translation id="662080504995468778">Tinggal</translation>
 <translation id="6635327442719709864">Jika diaktifkan, situs dapat meminta untuk menggunakan port serial. Jika dinonaktifkan, situs tidak dapat menggunakan port serial.</translation>
+<translation id="6678072580827808850">Tinjau Pemeriksaan Keamanan</translation>
 <translation id="6683865262523156564">Situs ini berada dalam grup yang dapat melihat aktivitas Anda. Grup ditentukan oleh <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Foto profil</translation>
 <translation id="6697925417670533197">Download aktif</translation>
@@ -485,7 +485,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="7141896414559753902">Blokir situs agar tidak menampilkan pop-up dan pengalihan (disarankan)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Perbarui</translation>
-<translation id="7180865173735832675">Sesuaikan</translation>
 <translation id="7188508872042490670">Data situs di perangkat</translation>
 <translation id="7201549776650881587">Tindakan ini akan menghapus semua data dan cookie yang disimpan oleh semua situs di bawah <ph name="ORIGIN"/> atau oleh aplikasinya di Layar utama</translation>
 <translation id="7203150201908454328">Diperluas</translation>

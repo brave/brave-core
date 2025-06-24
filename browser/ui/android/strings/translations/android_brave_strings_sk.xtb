@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Povoliť najvyššiu úroveň podpory obchádzania sledovacích adries URL.</translation>
 <translation id="94154759592465111">Blokovať skripty</translation>
 <translation id="7714773920987474116">Zablokovať JavaScript (môže prerušiť webové stránky)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokovať odporúčaný obsah YouTube</translation>
 <translation id="1005372663692637999">Blokuje prvky Ďalšia udalosť a Koncová karta na youtube.com.</translation>
 <translation id="5152595963250646670">Blokovať rušivé prvky YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Zobraziť top návrhy</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch</translation>
-<translation id="412411722208944922">Rýchle vyhľadávače</translation>
-<translation id="2836969042340015500">Rýchle vyhľadávače</translation>
-<translation id="9120455214794270250">Zobraziť panel rýchleho vyhľadávania</translation>
-<translation id="1052991798173010693">Aktuálne používané vyhľadávače</translation>
-<translation id="335303688425891752">Dlhým stlačením zmeníte poradie</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
 <translation id="8047754398610073499">Blokovať upozornenia na súhlas so súbormi cookie</translation>
 <translation id="2621893359845808115">Blokuje vyskakovacie okná webových stránok, ktoré vás žiadajú o prijatie/odmietnutie súborov cookie na ich stránke</translation>
@@ -499,7 +493,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8459191579769999214">Zobraziť snímku obrazovky</translation>
 <translation id="6476216365964140603">Ďalšie podrobnosti (voliteľné)</translation>
 <translation id="6145852496180774737">Kontaktujte ma na: (voliteľné)</translation>
-<translation id="6367576083705149078">Ak poskytnete kontaktné údaje, budú uložené pre budúce správy.</translation>
+<translation id="6367576083705149078">Ak poskytnete kontaktné údaje, budú uložené pre budúce hlásenia.</translation>
 <translation id="7616645803364270729">E-mail, Twitter atď.</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
@@ -677,6 +671,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3952797765659730604">Zadajte, vložte alebo naimportujte súbor s reťazcom súkromného kľúča alebo JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Detaily</translation>
+<translation id="3114681061018999547">Ochraňuje sa</translation>
 <translation id="3784455785234192852">Uzamknúť</translation>
 <translation id="4412698727486357573">Centrum pomoci</translation>
 <translation id="8239147115686034860">Automaticky uzamknúť peňaženku Brave</translation>
@@ -808,18 +803,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2199215899212542417">TYP FUNKCIE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Žiadne dáta</translation>
 <translation id="1105525362447173583">Transakcia Solana Dapp Sign</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> odoslaný <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> odoslal <ph name="ASSET"/> #<ph name="ASSET_ID"/> –<ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> schválený <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Schválené neobmedzené <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> – zámena – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Neschváleno</translation>
-<translation id="8034530868111548216">Schváleno</translation>
-<translation id="6015436276085482001">Odmítnuto</translation>
-<translation id="6666273175654835609">Odesláno</translation>
-<translation id="2331676293859649642">Potvrzeno</translation>
-<translation id="8214232307424031138">Podepsáno</translation>
-<translation id="1165039591588034296">Chyba</translation>
 <translation id="2561824823738097741">Používate najrýchlejší webový prehliadač?</translation>
 <translation id="2065971949051836200">3x rýchlejší internet je už vo vašom telefóne. Brave používajte vždy pri prehliadaní webu.</translation>
 <translation id="2888278614497184977">Brave = 3x rýchlejšie prehliadanie webu</translation>
@@ -1226,9 +1209,9 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="4010699428656610296">Zlúčiť ostatné karty do iného okna Brave.</translation>
 <translation id="4306918392910017801">Automatické opätovné pripojenie k VPN</translation>
 <translation id="1599073346542156922">Postup zapnutia:</translation>
-<translation id="7001163334415463127">1. Otvorte nastavenia zariadenia v karte v aplikácii alebo ťuknite na tlačidlo nižšie.</translation>
-<translation id="887443138775437899">2. Vyhľadajte sieť Brave VPN a ťuknite na ikonu nastavení na pravej strane.</translation>
-<translation id="7546805138087561624">3. Prepnite<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vždy zapnutá sieť VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> na povolenie nastavenia.</translation>
+<translation id="7001163334415463127">1. Otvorte nastavenia zariadenia v zozname aplikácii alebo ťuknite na tlačidlo nižšie.</translation>
+<translation id="887443138775437899">2. Vyhľadajte Brave VPN a ťuknite na ikonu nastavení na pravej strane.</translation>
+<translation id="7546805138087561624">3. Prepnite<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vždy zapnutá sieť VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> na povolenie funkcie.</translation>
 <translation id="2446001600399646984">Majte na pamäti, že kvôli obmedzeniam systému Android nefunguje funkcia "Blokovanie pripojení bez VPN" podľa očakávania. <ph name="LEARN_MORE_START"/>Ďalšie informácie.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Otvoriť nastavenia Androidu</translation>
 <translation id="2728518864712716830">Aktualizácia je stiahnutá.</translation>
@@ -1240,5 +1223,6 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="7942415993090181327">História chatu</translation>
 <translation id="6859935199732075666">Zobraziť chyby Bezpečného prehliadania</translation>
 <translation id="2735247450315842119">Povoliť snímky obrazovky v súkromných kartách</translation>
-<translation id="8420414929552321089">Ak je to povolené, súkromné karty budú viditeľné aj pri viacerých otvorených aplikáciách.</translation>
+<translation id="8420414929552321089">Ak je táto možnosť povolená, súkromné karty budú viditeľné aj pri viacerých otvorených aplikáciách.</translation>
+<translation id="7956713633345437162">Mobilné záložky</translation>
 </translationbundle>

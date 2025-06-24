@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Iespējot atbalstu augstākā līmeņa novirzīšanas izsekošanas URL apiešanai.</translation>
 <translation id="94154759592465111">Bloķēt skriptus</translation>
 <translation id="7714773920987474116">Bloķē JavaScript (var salauzt vietnes)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloķēt YouTube ieteikto saturu</translation>
 <translation id="1005372663692637999">Bloķē nākamo un beigu kartes elementus vietnē youtube.com.</translation>
 <translation id="5152595963250646670">Bloķēt YouTube elementus, kas novērš uzmanību</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Rādīt populārākos ieteikumus</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
-<translation id="412411722208944922">Ātrās meklēšanas programmas</translation>
-<translation id="2836969042340015500">Ātrās meklēšanas programmas</translation>
-<translation id="9120455214794270250">Rādīt ātrās meklēšanas joslu</translation>
-<translation id="1052991798173010693">Šobrīd izmantotās meklētājprogrammas</translation>
-<translation id="335303688425891752">Nospiediet un turiet, lai mainītu secību</translation>
 <translation id="9148058034647219655">Iziet</translation>
 <translation id="8047754398610073499">Bloķēt paziņojumus par piekrišanu sīkfailiem</translation>
 <translation id="2621893359845808115">Bloķē tīmekļa vietnes iznirstošos logus, kas lūdz jums apstiprināt/noraidīt sīkfailus vietnē.</translation>
@@ -678,6 +672,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3952797765659730604">Ievadiet, ielīmējiet vai importējiet privātās atslēgas virknes failu vai JSON.</translation>
 <translation id="569068482611873351">Notiek importēšana...</translation>
 <translation id="4522570452068850558">Informācija</translation>
+<translation id="3114681061018999547">Šifrē</translation>
 <translation id="3784455785234192852">Bloķēt</translation>
 <translation id="4412698727486357573">Palīdzības centrs</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
@@ -809,18 +804,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2199215899212542417">FUNKCIJAS VEIDS: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nav datu</translation>
 <translation id="1105525362447173583">Solana Dapp paraksta darījums</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> nosūtīts <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> nosūtīja <ph name="ASSET"/> #<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> apstiprināts <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Apstiprināts neierobežots <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> mijmaiņa - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Nav apstiprināts</translation>
-<translation id="8034530868111548216">Apstiprināts</translation>
-<translation id="6015436276085482001">Noraidīts</translation>
-<translation id="6666273175654835609">Iesniegts</translation>
-<translation id="2331676293859649642">Apstiprināts</translation>
-<translation id="8214232307424031138">Parakstīts</translation>
-<translation id="1165039591588034296">Kļūda</translation>
 <translation id="2561824823738097741">Vai jūs izmantojat ātrāko tīmekļa pārlūku?</translation>
 <translation id="2065971949051836200">Trīsreiz ātrāks internets jau ir pieejams jūsu tālrunī. Izmantojiet Brave tīmekļa pārlūkošanai.</translation>
 <translation id="2888278614497184977">Brave = trīsreiz ātrāka tīmekļa pārlūkošana</translation>
@@ -1098,7 +1081,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1179407411385015942">Leo ir mākslīgā intelekta nodrošināts viedais asistents, kas iestrādāts tieši pārlūkā</translation>
 <translation id="5781842473834867765">Saglabāt manu sarunu vēsturi</translation>
 <translation id="4109670531935487117">Rādīt automātiskās aizpildes ieteikumus adrešu joslā</translation>
-<translation id="4983005227524068187">Rādīt ātrās meklēšanas programmu joslu</translation>
+<translation id="4983005227524068187">Rādīt ātrās meklēšanas programmu joslā</translation>
 <translation id="8514910864411336826">Iespējo saīsni Leo palaišanai no ātrās meklēšanas programmu joslas.</translation>
 <translation id="6106701981952170121">Dzēst visus Leo MI sarunu datus</translation>
 <translation id="423600389315522551">Atiestatot Leo MI, jūsu tērzēšanas vēsture tiks dzēsta, un jums būs atkal jāpiekrīt Brave Leo MI lietošanai. Dzēšot tērzēšanas vēsturi, visas jūsu iepriekšējās sarunas ar Brave Leo MI tiks dzēstas. Šo darbību nav iespējams atsaukt.</translation>
@@ -1224,9 +1207,9 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4010699428656610296">Lūdzu, apvienojiet citas cilnes citā Brave logā.</translation>
 <translation id="4306918392910017801">Automātiski atkārtot VPN savienojuma izveidi</translation>
 <translation id="1599073346542156922">Kā ieslēgt:</translation>
-<translation id="7001163334415463127">1. Atveriet ierīces iestatījumus lietotņu sarakstā vai nospiežot zemāk redzamo pogu.</translation>
-<translation id="887443138775437899">2. Atrodiet Brave VPN un atlasiet iestatījumu ikonu labajā pusē.</translation>
-<translation id="7546805138087561624">3. Atlasiet <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN vienmēr ieslēgts<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, lai iespējotu to.</translation>
+<translation id="7001163334415463127">1. Atveriet ierīces iestatījumus, atrodot tos savā lietotņu sarakstā, vai pieskaroties pogai zemāk.</translation>
+<translation id="887443138775437899">2. Atrodiet Brave VPN un pieskarieties iestatījumu ikonai labajā pusē.</translation>
+<translation id="7546805138087561624">3. Ieslēdziet <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vienmēr ieslēgts VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, lai iespējotu to.</translation>
 <translation id="2446001600399646984">Ņemiet vērā, ka Android ierobežojumu dēļ funkcija "Bloķēt savienojumus bez VPN" nestrādā kā paredzēts. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Atvērt Android iestatījumus</translation>
 <translation id="2728518864712716830">Atjauninājums ir lejupielādēts.</translation>
@@ -1239,4 +1222,5 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6859935199732075666">Rādīt drošās pārlūkošanas kļūdas</translation>
 <translation id="2735247450315842119">Atļaut ekrānuzņēmumu veikšanu inkognito cilnēs</translation>
 <translation id="8420414929552321089">Šī funkcija nodrošina, ka privātās cilnes ir redzamas pat tad, ja ir atvērtas vairākas citas lietotnes.</translation>
+<translation id="7956713633345437162">Mobilo ierīču grāmatzīmes</translation>
 </translationbundle>

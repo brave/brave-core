@@ -25,6 +25,7 @@ brave_project_id = 6  # Brave Core (Android+Chrome)
 # we create overrides that are then handled by Crowdin).
 crowdin_handled_files = [
     'android_brave_strings.xml',
+    'android_quick_search_engines_strings.xml',
     'brave_generated_resources.xml',
     'brave_components_strings.xml',
     'brave_extension.json',

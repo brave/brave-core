@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Aktivirajte zaobilaženje URL-ova za praćenje sa preusmeravanjem na najvišem nivou</translation>
 <translation id="94154759592465111">Blokiraj skripte</translation>
 <translation id="7714773920987474116">Blokira JavaScript (može da dovede do nefunkcionalnosti sajta)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokiraj sadržaj koji predlaže YouTube</translation>
 <translation id="1005372663692637999">Blokira elemente „sledeće“ i završne kartice na youtube.com.</translation>
 <translation id="5152595963250646670">Blokiraj elemente YouTube-a koji odvlače pažnju</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Prikaži omiljene predloge</translation>
 <translation id="6285118765755298263">Indeksiraj druge pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji prate specifikacije softvera OpenSearch.</translation>
-<translation id="412411722208944922">Brzi pretraživači</translation>
-<translation id="2836969042340015500">Brzi pretraživači</translation>
-<translation id="9120455214794270250">Prikaži traku za brzu pretragu</translation>
-<translation id="1052991798173010693">Brzi pretraživači koje trenutno koristite</translation>
-<translation id="335303688425891752">Dugo pritisnite da promenite redosled</translation>
 <translation id="9148058034647219655">Izađi</translation>
 <translation id="8047754398610073499">Blokiraj obaveštenja o davanju saglasnosti za kolačiće</translation>
 <translation id="2621893359845808115">Blokira iskačuće prozore veb-sajtova koji vam traže da prihvatite / odbijete kolačiće na sajtu</translation>
@@ -673,6 +667,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="3952797765659730604">Upišite, nalepite ili uvezite fajl niske svog privatnog klljča ili JSON.</translation>
 <translation id="569068482611873351">Uvoz…</translation>
 <translation id="4522570452068850558">Detalji</translation>
+<translation id="3114681061018999547">Zaštita</translation>
 <translation id="3784455785234192852">Zaključaj</translation>
 <translation id="4412698727486357573">Centar za pomoć</translation>
 <translation id="8239147115686034860">Automatski zaključaj Brave novčanik</translation>
@@ -804,18 +799,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="2199215899212542417">VRSTA FUNKCIJE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nema podataka</translation>
 <translation id="1105525362447173583">Potpisivanje transakcije u decentralizovanoj aplikaciji Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> šalje <ph name="CRYPTO_VALUE"/><ph name="ASSET"/> (<ph name="FIAT_VALUE"/> USD) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> šalje <ph name="ASSET"/> #<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> šalje odobrenje za <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Odobreno je neograničeno <ph name="ASSET"/> – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> razmena – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Neodobreno</translation>
-<translation id="8034530868111548216">Odobreno</translation>
-<translation id="6015436276085482001">Odbijeno</translation>
-<translation id="6666273175654835609">Poslato</translation>
-<translation id="2331676293859649642">Potvrđeno</translation>
-<translation id="8214232307424031138">Potpisano</translation>
-<translation id="1165039591588034296">Greška</translation>
 <translation id="2561824823738097741">Da li koristite najbrži internet pregledač ?</translation>
 <translation id="2065971949051836200">Tri puta brži internet je već na vašem telefonu. Koristite Brave za sve što pregledate na vebu.</translation>
 <translation id="2888278614497184977">Brave = 3 puta brže pregledanje veba</translation>

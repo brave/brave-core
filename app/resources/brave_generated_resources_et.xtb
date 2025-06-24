@@ -344,6 +344,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8081858229109418493">Profiili nimi ja ikoon</translation>
 <translation id="6786747875388722282">Laiendused</translation>
 <translation id="984275831282074731">Makseviisid</translation>
+<translation id="6278858909990433658">Impordi profiil on endiselt kasutusel</translation>
+<translation id="9071187015476020102">Et laiendusi või muid seadeid importida, sulge esmalt brauser, millest importimise teed.</translation>
 <translation id="2044383478723007273">Brave'i värvid</translation>
 <translation id="1807246157184219062">Hele</translation>
 <translation id="2414886740292270097">Tume</translation>
@@ -827,4 +829,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="5318548116565208315">Avatar Bonbon vili</translation>
 <translation id="1959966725083452288">Avatar Bonbon kuninglik</translation>
 <translation id="2039034364578911089">Avatar Bonbon ninja</translation>
+<translation id="154702742922788359">Ava režiim</translation>
+<translation id="2249111429176737533">Ava vahelehtedega aknas</translation>
+<translation id="7022756207310403729">Ava brauseris</translation>
 </translationbundle>

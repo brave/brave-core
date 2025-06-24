@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">ከፍተኛ ደረጃ የማዞሪያ መከታተያ URLን ለማለፍ ድጋፍን ያንቁ።</translation>
 <translation id="94154759592465111">ስክሪፕቶችን አግድ</translation>
 <translation id="7714773920987474116">የጃቫ ስክሪፕቶችን ማገድ (ጣቢያዎችን ሊሰብር ይችላል)</translation>
-<translation id="995782501881226248">ዩቲዩብ</translation>
 <translation id="2233004324252915283">በYouTube የሚመከር ይዘትን ያግዱ</translation>
 <translation id="1005372663692637999">በyoutube.com ላይ ቀጣዩ እና የመጨረሻዎቹ የካርድ አካላትን ያግዳል።</translation>
 <translation id="5152595963250646670">የYouTube አዘናጊ አካላትን ያግዱ</translation>
@@ -719,18 +718,6 @@
 <translation id="2199215899212542417">የተግባር አይነት: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">ውሂብ የለም</translation>
 <translation id="1105525362447173583">Solana Dapp Sign ግብይት</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ተልኳል <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/>ን ልኳል</translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ጸድቋል <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">ያለምንም ገደብ ጸድቋል <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> ልውውጥ - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">ያልተፈቀደ</translation>
-<translation id="8034530868111548216">የተፈቀደ</translation>
-<translation id="6015436276085482001">ውድቅ የተደረገ</translation>
-<translation id="6666273175654835609">የቀረበ</translation>
-<translation id="2331676293859649642">ተረጋገጠ</translation>
-<translation id="8214232307424031138">ተፈርሟል</translation>
-<translation id="1165039591588034296">ስህተት</translation>
 <translation id="2561824823738097741">በጣም ፈጣኑን የድር አሳሽ እየተጠቀሙ ነው?</translation>
 <translation id="2065971949051836200">3x እጥፍ ፈጣን በይነመረብ አስቀድሞ በስልክዎ ላይ አለ። ለሁሉም የድር አሰሳዎ Brave ይጠቀሙ።</translation>
 <translation id="2888278614497184977">Brave = 3x ጊዜ ፈጣን የድር አሳሽ</translation>
@@ -1111,5 +1098,4 @@
 <translation id="3251885322612056119">የዘመኑ የአገልግሎት ውሎች</translation>
 <translation id="4049035689681585146">ለBrave ሽልማቶች የአገልግሎት ውሎችን አዘምነናል። ውሎቻችንን ግልጽ ለማድረግ እና አዳዲስ ባህርያትን እንደሸፈኑ ለማረጋገጥ፣ እነዚህን ዝማኔዎች አድርገናል። የBrave ሽልማቶችን ለመጠቀም ከቀጠሉ፣ ለዘመኑ የአገልግሎት ውሎች እየተስማሙ ነው። ካልተስማሙ፣ የBrave ሽልማቶችን<ph name="RESET_START"/>ዳግም ማስጀመር<ph name="RESET_END"/> ይችላሉ፣ ይህም ባህሪውን ያሰናክላል።</translation>
 <translation id="2165953574528546737">የ <ph name="TOS_START"/>Brave ሽልማቶች የአገልግሎት ውሎች<ph name="TOS_END"/> የሚለውን ይመልከቱ</translation>
-<translation id="4776146737004271126">የAndroid ቅንብሮችን ክፈት</translation>
 </translationbundle>

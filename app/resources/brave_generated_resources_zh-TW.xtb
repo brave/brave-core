@@ -327,7 +327,7 @@
 <translation id="4034992002364254340">將所有相關標籤頁匯集到新視窗中</translation>
 <translation id="8012125596344613514">建議的主題</translation>
 <translation id="7529120186020617755">輸入要聚焦的主題...</translation>
-<translation id="6847541693235449912">立即前往</translation>
+<translation id="6847541693235449912">前往</translation>
 <translation id="2079545284768500474">復原</translation>
 <translation id="1533980864758658574">為 <ph name="TOPIC"/> 建立新視窗</translation>
 <translation id="7985042437720138349">此功能會將您開啟的標籤頁資料傳送給 Brave 的 AI 驅動瀏覽器助理 Leo。</translation>
@@ -344,6 +344,8 @@
 <translation id="8081858229109418493">設定檔名稱和圖示</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="984275831282074731">付款方式</translation>
+<translation id="6278858909990433658">匯入的設定檔仍在使用中</translation>
+<translation id="9071187015476020102">要匯入擴充功能或其他設置，請先關閉您要從中匯入的瀏覽器。</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
@@ -749,7 +751,7 @@
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="5385064007245738696">關於 Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo 在瀏覽器中提供隱私優先的 AI 聊天和其他 AI 驅動的介面。Leo 絕不會學習您的資料或將其使用於模型訓練。所有要求都會透過匿名伺服器代理。</translation>
-<translation id="6458721693611638005">閱讀更多有關 Brave 如何在 Leo 的隱私政策中保護您使用 AI 的資訊。 &amp;lt<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="6458721693611638005">閱讀更多有關 Brave 如何在 Leo 的隱私政策中保護您使用 AI 的資訊。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="8826914609353373601">管理付費訂閱</translation>
 <translation id="235457946228076038">使用自己的模型</translation>
@@ -825,4 +827,7 @@
 <translation id="5318548116565208315">糖果粒化身</translation>
 <translation id="1959966725083452288">高貴糖果化身</translation>
 <translation id="2039034364578911089">糖果忍者化身</translation>
+<translation id="154702742922788359">開啟模式</translation>
+<translation id="2249111429176737533">作為分頁視窗開啟</translation>
+<translation id="7022756207310403729">在瀏覽器中開啟</translation>
 </translationbundle>
