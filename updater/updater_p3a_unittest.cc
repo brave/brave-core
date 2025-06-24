@@ -27,10 +27,6 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
 
-  void TestNoUpdate();
-  void TestUpdated();
-  void TestUpdatedComplex();
-
   UpdateStatus GetExpectedStatus(bool updated);
 
   void SimulateLaunch(int day, std::string current_version);
@@ -39,27 +35,6 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
 };
 
 TEST_P(BraveUpdaterP3ATest, TestNoUpdate) {
-  TestNoUpdate();
-}
-
-TEST_P(BraveUpdaterP3ATest, TestUpdated) {
-  TestUpdated();
-}
-
-TEST_P(BraveUpdaterP3ATest, TestUpdatedComplex) {
-  TestUpdatedComplex();
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    // Empty to simplify gtest output
-    ,
-    BraveUpdaterP3ATest,
-    ::testing::Values(false, true),
-    [](const ::testing::TestParamInfo<bool>& info) {
-      return info.param ? "Omaha4" : "Legacy";
-    });
-
-void BraveUpdaterP3ATest::TestNoUpdate() {
   // No updates for 8 days:
   for (int day = 0; day <= 7; day++) {
     ExpectTotalCount(0);
@@ -72,7 +47,7 @@ void BraveUpdaterP3ATest::TestNoUpdate() {
   ExpectBucketCount(no_update, 1);
 }
 
-void BraveUpdaterP3ATest::TestUpdated() {
+TEST_P(BraveUpdaterP3ATest, TestUpdated) {
   // Initial launch on the first day:
   SimulateLaunch(0, "0.0.0.1");
   UpdateStatus updated = GetExpectedStatus(true);
@@ -93,7 +68,7 @@ void BraveUpdaterP3ATest::TestUpdated() {
   ExpectBucketCount(no_update, 1);
 }
 
-void BraveUpdaterP3ATest::TestUpdatedComplex() {
+TEST_P(BraveUpdaterP3ATest, TestUpdatedComplex) {
   // Like TestUpdated, but with an update on the 15th day.
   UpdateStatus updated = GetExpectedStatus(true);
 
@@ -115,6 +90,15 @@ void BraveUpdaterP3ATest::TestUpdatedComplex() {
  
   ExpectTotalCount(2);
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    // Empty to simplify gtest output
+    ,
+    BraveUpdaterP3ATest,
+    ::testing::Values(false, true),
+    [](const ::testing::TestParamInfo<bool>& info) {
+      return info.param ? "Omaha4" : "Legacy";
+    });
 
 UpdateStatus BraveUpdaterP3ATest::GetExpectedStatus(bool updated) {
   return updated ? (IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy)
