@@ -24,6 +24,7 @@ include_rules += [
   "-components/keyed_service",
   "-components/omnibox",
   "-components/prefs",
+  "-components/search_engines",
   "-components/security_interstitials",
   "-components/sync_preferences",
   "-components/sync",
