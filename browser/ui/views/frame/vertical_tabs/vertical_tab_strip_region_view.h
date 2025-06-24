@@ -1,10 +1,10 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_REGION_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
 #include <memory>
 #include <optional>
@@ -21,16 +21,11 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/resize_area_delegate.h"
 
-namespace views {
-class ResizeArea;
-}
-
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
 class TabSearchButton;
 class TabStripScrollContainer;
-class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
@@ -248,4 +243,4 @@ class VerticalTabStripRegionView : public views::View,
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_REGION_VIEW_H_
