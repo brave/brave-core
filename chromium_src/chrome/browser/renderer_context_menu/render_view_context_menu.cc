@@ -783,7 +783,7 @@ void BraveRenderViewContextMenu::OnContainerSelected(
   NOTIMPLEMENTED();
 }
 
-base::flat_set<std::string_view>
+base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
   // TODO(sko) If the tab is in a container, return the container ID.
   NOTIMPLEMENTED();

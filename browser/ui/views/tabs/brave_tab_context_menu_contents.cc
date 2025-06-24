@@ -170,7 +170,7 @@ void BraveTabContextMenuContents::OnContainerSelected(
   // }
 }
 
-base::flat_set<std::string_view>
+base::flat_set<std::string>
 BraveTabContextMenuContents::GetCurrentContainerIds() {
   // TODO(sko) Fill the set with container ids of tabs selected.
   NOTIMPLEMENTED();

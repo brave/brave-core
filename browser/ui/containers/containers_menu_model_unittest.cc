@@ -78,28 +78,28 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
 
   // Test with the first container ID
   EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return(
-          (base::flat_set<std::string_view>{containers[0].id()})));
+      .WillRepeatedly(
+          testing::Return((base::flat_set<std::string>{containers[0].id()})));
   EXPECT_TRUE(model.IsCommandIdChecked(0));
   EXPECT_FALSE(model.IsCommandIdChecked(1));
 
   // Now test with the second container ID
   EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return(
-          base::flat_set<std::string_view>{containers[1].id()}));
+      .WillRepeatedly(
+          testing::Return(base::flat_set<std::string>{containers[1].id()}));
   EXPECT_FALSE(model.IsCommandIdChecked(0));
   EXPECT_TRUE(model.IsCommandIdChecked(1));
 
   // Test with no container selected
   EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return<base::flat_set<std::string_view>>({}));
+      .WillRepeatedly(testing::Return<base::flat_set<std::string>>({}));
   EXPECT_FALSE(model.IsCommandIdChecked(0));
   EXPECT_FALSE(model.IsCommandIdChecked(1));
 
   // Test with multiple containers selected
   EXPECT_CALL(delegate, GetCurrentContainerIds())
-      .WillRepeatedly(testing::Return(base::flat_set<std::string_view>{
-          containers[0].id(), containers[1].id()}));
+      .WillRepeatedly(testing::Return(
+          base::flat_set<std::string>{containers[0].id(), containers[1].id()}));
   EXPECT_TRUE(model.IsCommandIdChecked(0));
   EXPECT_TRUE(model.IsCommandIdChecked(1));
   EXPECT_FALSE(model.IsCommandIdChecked(2));

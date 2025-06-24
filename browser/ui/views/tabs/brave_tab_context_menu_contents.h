@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTEXT_MENU_CONTENTS_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -71,7 +72,7 @@ class BraveTabContextMenuContents
   // ContainersMenuModel::Delegate:
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override;
-  base::flat_set<std::string_view> GetCurrentContainerIds() override;
+  base::flat_set<std::string> GetCurrentContainerIds() override;
   Browser* GetBrowserToOpenSettings() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

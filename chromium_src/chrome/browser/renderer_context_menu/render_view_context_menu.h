@@ -71,7 +71,7 @@ class BraveRenderViewContextMenu
   // ContainersMenuModel::Delegate:
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override;
-  base::flat_set<std::string_view> GetCurrentContainerIds() override;
+  base::flat_set<std::string> GetCurrentContainerIds() override;
   Browser* GetBrowserToOpenSettings() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
