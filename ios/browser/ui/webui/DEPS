@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_account/buildflags/buildflags.h",
+  "+brave/components/brave_account/features/features.h",
   "+brave/components/constants",
   "+brave/components/webui",
   "+ios/web/webui",

@@ -1,5 +1,7 @@
 include_rules = [
   "+brave/components/ai_chat/core/common/features.h",
+  "+brave/components/brave_account/buildflags/buildflags.h",
+  "+brave/components/brave_account/features/features.h",
   "+brave/components/brave_component_updater/browser/features.h",
   "+brave/components/brave_rewards/core/features.h",
   "+brave/components/brave_shields/core/common/features.h",

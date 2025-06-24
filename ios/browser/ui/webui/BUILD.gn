@@ -36,7 +36,10 @@ source_set("webui") {
   ]
 
   if (enable_brave_account) {
-    deps += [ "//brave/ios/browser/ui/webui/brave_account" ]
+    deps += [
+      "//brave/components/brave_account/features",
+      "//brave/ios/browser/ui/webui/brave_account",
+    ]
   }
 }
 

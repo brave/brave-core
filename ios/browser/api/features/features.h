@@ -26,6 +26,7 @@ OBJC_EXPORT
     Feature* kAdblockOverrideRegexDiscardPolicy;
 @property(class, nonatomic, readonly)
     Feature* kAllowUnsupportedWalletProvidersFeature;
+@property(class, nonatomic, readonly, nullable) Feature* kBraveAccount;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockCnameUncloaking;
 @property(class, nonatomic, readonly)
     Feature* kBraveAdblockCollapseBlockedElements;

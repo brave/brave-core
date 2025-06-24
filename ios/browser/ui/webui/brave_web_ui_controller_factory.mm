@@ -23,6 +23,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/features/features.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
@@ -70,7 +71,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
-  } else if (url_host == kBraveAccountHost) {
+  } else if (url_host == kBraveAccountHost &&
+             brave_account::features::IsBraveAccountEnabled()) {
     return &NewWebUIIOS<BraveAccountUI>;
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
   } else if (url_host == kSkusInternalsHost) {

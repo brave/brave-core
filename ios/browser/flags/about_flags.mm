@@ -6,6 +6,7 @@
 // This file is included into //ios/chrome/browser/flags/about_flags.mm
 
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -23,6 +24,10 @@
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/features/features.h"
+#endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
@@ -148,6 +153,16 @@
       FEATURE_VALUE_TYPE(playlist::features::kNewPlaylistUI), \
   })
 
+#define BRAVE_ACCOUNT_FEATURE_ENTRIES                                          \
+  IF_BUILDFLAG(ENABLE_BRAVE_ACCOUNT,                                           \
+               EXPAND_FEATURE_ENTRIES({                                        \
+                   "brave-account",                                            \
+                   "Enable Brave Account",                                     \
+                   "Enables Brave Account",                                    \
+                   flags_ui::kOsIos,                                           \
+                   FEATURE_VALUE_TYPE(brave_account::features::kBraveAccount), \
+               }))
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -244,4 +259,5 @@
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
+  BRAVE_ACCOUNT_FEATURE_ENTRIES                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

@@ -8,6 +8,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/core/features.h"
@@ -32,6 +33,10 @@
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/features/features.h"
+#endif
 
 @interface Feature () {
   raw_ptr<const base::Feature> _feature;
@@ -88,6 +93,15 @@
   return [[Feature alloc]
       initWithFeature:&brave_rewards::features::
                           kAllowUnsupportedWalletProvidersFeature];
+}
+
++ (Feature*)kBraveAccount {
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  return
+      [[Feature alloc] initWithFeature:&brave_account::features::kBraveAccount];
+#else
+  return nil;
+#endif
 }
 
 + (Feature*)kBraveAdblockCnameUncloaking {

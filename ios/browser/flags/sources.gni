@@ -3,8 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_account/buildflags/buildflags.gni")
+
 brave_flags_deps = [
   "//base",
+  "//brave/components/brave_account/buildflags",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_rewards/core",
@@ -22,3 +25,7 @@ brave_flags_deps = [
   "//components/webui/flags",
   "//net",
 ]
+
+if (enable_brave_account) {
+  brave_flags_deps += [ "//brave/components/brave_account/features" ]
+}

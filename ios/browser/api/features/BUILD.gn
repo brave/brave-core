@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_account/buildflags/buildflags.gni")
+
 source_set("features") {
   sources = [
     "features.h",
@@ -12,6 +14,7 @@ source_set("features") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common:common",
+    "//brave/components/brave_account/buildflags",
     "//brave/components/brave_component_updater/browser:browser",
     "//brave/components/brave_news/common:common",
     "//brave/components/brave_rewards/core:features",
@@ -35,6 +38,10 @@ source_set("features") {
     "//build:blink_buildflags",
     "//net",
   ]
+
+  if (enable_brave_account) {
+    deps += [ "//brave/components/brave_account/features" ]
+  }
 
   frameworks = [ "Foundation.framework" ]
 }
