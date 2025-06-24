@@ -49,15 +49,19 @@ source_set("android_browser_process") {
   ]
 }
 
-source_set("tab_features") {
-  sources = [
-    "tab_features.cc",
-  ]
+source_set("tabs_public") {
+  public = [ "brave_tab_features.h" ]
+
+  public_deps = [ "//chrome/browser/android:tabs_public" ]
+}
+
+source_set("tabs_impl") {
+  sources = [ "brave_tab_features.cc" ]
 
   deps = [
+    ":tabs_public",
     "//base",
     "//brave/browser/ai_chat",
-    "//chrome/browser/android:tabs_public",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]

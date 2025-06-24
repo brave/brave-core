@@ -413,7 +413,7 @@ if (is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
-    "//brave/browser/android:tab_features",
+    "//brave/browser/android:tabs_impl",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/android/youtube_script_injector",

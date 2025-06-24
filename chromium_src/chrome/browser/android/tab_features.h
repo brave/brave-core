@@ -13,14 +13,15 @@
 #undef TabFeatures
 
 namespace tabs {
-class TabFeaturesInternal;
+class BraveTabFeatures;
 class TabFeatures {
  public:
   TabFeatures(content::WebContents* web_contents, Profile* profile);
   ~TabFeatures();
 
  private:
-  std::unique_ptr<TabFeaturesInternal> tab_features_internal_;
+  friend BraveTabFeatures;
+  std::unique_ptr<BraveTabFeatures> brave_tab_features_;
 };
 }  // namespace tabs
 
