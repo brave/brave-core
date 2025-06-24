@@ -9,6 +9,7 @@ include_rules = [
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/service_manager/public",
+  "+services/network/test",
   "+third_party/blink/public/common",
   "+third_party/blink/public/mojom/permissions",
   "+third_party/skia/include",
