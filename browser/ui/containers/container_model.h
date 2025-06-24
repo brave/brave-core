@@ -26,12 +26,10 @@ class ContainerModel {
   const std::string& id() const { return container_->id; }
   const std::string& name() const { return container_->name; }
   const ui::ImageModel& icon() const { return icon_; }
-  const containers::mojom::ContainerPtr& container() const {
-    return container_;
-  }
+  const mojom::ContainerPtr& container() const { return container_; }
 
  private:
-  containers::mojom::ContainerPtr container_;
+  mojom::ContainerPtr container_;
   ui::ImageModel icon_;
 };
 

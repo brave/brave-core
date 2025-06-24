@@ -16,14 +16,13 @@ namespace containers {
 std::vector<ContainerModel> GetContainerModelsFromPrefs(
     const PrefService& prefs) {
   std::vector<ContainerModel> containers;
-  for (auto& container : containers::GetContainersFromPrefs(prefs)) {
+  for (auto& container : GetContainersFromPrefs(prefs)) {
     containers.emplace_back(std::move(container));
   }
   return containers;
 }
 
-ui::ImageModel GetImageModelForContainer(
-    const containers::mojom::ContainerPtr& container) {
+ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container) {
   CHECK(container) << "Container must be valid";
   NOTIMPLEMENTED();
   return ui::ImageModel();

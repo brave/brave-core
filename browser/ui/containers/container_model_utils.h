@@ -26,8 +26,7 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
 
 // Returns an image model for the given container. This function is useful for
 // testability.
-ui::ImageModel GetImageModelForContainer(
-    const containers::mojom::ContainerPtr& container);
+ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container);
 
 }  // namespace containers
 
