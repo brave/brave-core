@@ -15,7 +15,7 @@ source_set("tabs_public") {
 
 if (!is_android) {
   source_set("impl") {
-    public_deps = [ "//chrome/browser:browser_public_dependencies" ]
+    visibility = [ "//chrome/browser" ]
 
     sources = [ "brave_tab_features.cc" ]
 

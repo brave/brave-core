@@ -61,10 +61,6 @@ source_set("ui") {
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
-  if (!is_android) {
-    deps += [ "//brave/browser/ui/tabs:impl" ]
-  }
-
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
