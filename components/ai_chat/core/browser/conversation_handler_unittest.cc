@@ -1211,11 +1211,13 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   first_edit->uuid = "ignore_me";
   first_edit->selected_text = std::nullopt;
   first_edit->text = "prompt2";
+  first_edit->created_time = base::Time::Now();
 
   first_edit_expected_history[0]->edits.emplace();
   first_edit_expected_history[0]->edits->push_back(first_edit->Clone());
 
   first_edit_expected_history[1]->text = "new answer";
+  first_edit_expected_history[1]->created_time = base::Time::Now();
   first_edit_expected_history[1]->events.emplace();
   first_edit_expected_history[1]->events->emplace_back(
       expected_new_completion_event->Clone());

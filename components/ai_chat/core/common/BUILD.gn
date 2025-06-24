@@ -28,6 +28,8 @@ component("common") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "test_mojom_printers.cc",
+    "test_mojom_printers.h",
     "test_utils.cc",
     "test_utils.h",
   ]
@@ -36,6 +38,7 @@ source_set("test_support") {
     "//base",
     "//brave/components/ai_chat/core/common/mojom",
     "//crypto",
+    "//testing/gtest",
   ]
 }
 

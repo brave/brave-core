@@ -840,7 +840,13 @@ void AIChatService::HandleNewEntry(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
         .WithArgs(handler->get_conversation_uuid(), entry.Clone(),
-                  conversation->model_key, std::nullopt);
+                  std::nullopt);
+
+    // update the model name if it changed for this entry
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationModelKey))
+        .WithArgs(handler->get_conversation_uuid(), conversation->model_key);
 
     if (maybe_associated_content.has_value() &&
         !conversation->associated_content.empty()) {

@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/notreached.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -23,82 +22,90 @@ namespace ai_chat {
 
 namespace {
 
-std::string MessageConversationEntryEvents(
-    const mojom::ConversationTurnPtr& entry) {
-  std::string message = "Entry has the following events:";
-  if (!entry->events.has_value()) {
-    message = base::StrCat({message, "\nNo events"});
-    return message;
+base::Time TruncateToSeconds(base::Time time) {
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+  exploded.millisecond = 0;
+  EXPECT_TRUE(base::Time::FromUTCExploded(exploded, &time));
+  return time;
+}
+
+mojom::ConversationTurnPtr CloneForCompare(
+    const mojom::ConversationTurnPtr& turn,
+    bool compare_uuid) {
+  auto cloned_turn = turn->Clone();
+  if (!compare_uuid) {
+    cloned_turn->uuid = "";
   }
-  for (const auto& event : entry->events.value()) {
-    switch (event->which()) {
-      case mojom::ConversationEntryEvent::Tag::kCompletionEvent: {
-        message = base::StrCat({message, "\n - completion: ",
-                                event->get_completion_event()->completion});
-        break;
-      }
-      case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
-        message = base::StrCat({message, "\n - search event"});
-        break;
-      }
-      case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
-        message = base::StrCat({message, "\n - sources event"});
-        break;
-      }
-      case mojom::ConversationEntryEvent::Tag::kConversationTitleEvent: {
-        message = base::StrCat({message, "\n - title: ",
-                                event->get_conversation_title_event()->title});
-        break;
-      }
-      default:
-        message = base::StrCat({message, "\n - unknown event"});
+  // we don't need to compare the times to the micro second
+  cloned_turn->created_time = TruncateToSeconds(cloned_turn->created_time);
+
+  // Do the same for edits
+  if (cloned_turn->edits) {
+    std::vector<mojom::ConversationTurnPtr> transformed_edits;
+    for (const auto& edit : cloned_turn->edits.value()) {
+      transformed_edits.push_back(CloneForCompare(edit, compare_uuid));
     }
+    cloned_turn->edits = std::move(transformed_edits);
   }
-  return message;
+  return cloned_turn;
 }
 
 }  // namespace
 
 void ExpectConversationEquals(base::Location location,
-                              const mojom::ConversationPtr& a,
-                              const mojom::ConversationPtr& b) {
-  SCOPED_TRACE(testing::Message() << location.ToString());
-  if (!a || !b) {
-    EXPECT_EQ(a, b);  // Both should be null or neither
-    return;
+                              const mojom::ConversationPtr& a_raw,
+                              const mojom::ConversationPtr& b_raw,
+                              bool compare_non_persisted_fields) {
+  auto a = a_raw->Clone();
+  auto b = b_raw->Clone();
+  if (!compare_non_persisted_fields) {
+    // has_content is not persisted
+    a->has_content = false;
+    b->has_content = false;
+    // Date is not persisted
+    a->updated_time = base::Time::Now();
+    b->updated_time = base::Time::Now();
+    // content_id is not persisted
+    for (auto& content : a->associated_content) {
+      content->content_id = 0;
+    }
+    for (auto& content : b->associated_content) {
+      content->content_id = 0;
+    }
   }
-  EXPECT_EQ(a->uuid, b->uuid);
-  EXPECT_EQ(a->title, b->title);
-  EXPECT_EQ(a->has_content, b->has_content);
-
-  // associated content
-  ExpectAssociatedContentEquals(FROM_HERE, a->associated_content,
-                                b->associated_content);
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  EXPECT_MOJOM_EQ(*a, *b);
 }
 
 void ExpectAssociatedContentEquals(
     base::Location location,
     const std::vector<mojom::AssociatedContentPtr>& a,
-    const std::vector<mojom::AssociatedContentPtr>& b) {
+    const std::vector<mojom::AssociatedContentPtr>& b,
+    bool compare_non_persisted_fields) {
   SCOPED_TRACE(testing::Message() << location.ToString());
-  ASSERT_EQ(a.size(), b.size());
+  EXPECT_EQ(a.size(), b.size());
 
   for (size_t i = 0; i < a.size(); ++i) {
     SCOPED_TRACE(testing::Message()
                  << "Comparing associated content at index " << i);
-    const auto& a_content = a[i];
-    const auto& b_content = b[i];
+    const auto& a_content_raw = a[i];
+    const auto& b_content_raw = b[i];
 
-    if (!a_content || !b_content) {
-      EXPECT_EQ(a_content, b_content);  // Both should be null or neither
+    if (!a_content_raw || !b_content_raw) {
+      EXPECT_EQ(a_content_raw,
+                b_content_raw);  // Both should be null or neither
       return;
     }
-    EXPECT_EQ(a_content->uuid, b_content->uuid);
-    EXPECT_EQ(a_content->title, b_content->title);
-    EXPECT_EQ(a_content->url, b_content->url);
-    EXPECT_EQ(a_content->content_type, b_content->content_type);
-    EXPECT_EQ(a_content->content_used_percentage,
-              b_content->content_used_percentage);
+
+    auto a_content = a_content_raw->Clone();
+    auto b_content = b_content_raw->Clone();
+    if (!compare_non_persisted_fields) {
+      a_content->content_id = 0;
+      b_content->content_id = 0;
+    }
+
+    EXPECT_MOJOM_EQ(*a_content, *b_content);
   }
 }
 
@@ -120,92 +127,10 @@ void ExpectConversationEntryEquals(base::Location location,
                                    const mojom::ConversationTurnPtr& b,
                                    bool compare_uuid) {
   SCOPED_TRACE(testing::Message() << location.ToString());
-  if (!a || !b) {
-    EXPECT_EQ(a, b);  // Both should be null or neither
-    return;
-  }
+  auto a_compare = CloneForCompare(a, compare_uuid);
+  auto b_compare = CloneForCompare(b, compare_uuid);
 
-  if (compare_uuid) {
-    EXPECT_EQ(a->uuid.value_or("default"), b->uuid.value_or("default"));
-  }
-
-  EXPECT_EQ(a->action_type, b->action_type);
-  EXPECT_EQ(a->character_type, b->character_type);
-  EXPECT_EQ(a->selected_text, b->selected_text);
-  EXPECT_EQ(a->text, b->text);
-  EXPECT_EQ(a->prompt, b->prompt);
-  EXPECT_EQ(a->model_key, b->model_key);
-
-  // compare events
-  EXPECT_EQ(a->events.has_value(), b->events.has_value());
-  if (a->events.has_value()) {
-    EXPECT_EQ(a->events->size(), b->events->size())
-        << "\nEvents for a. " << MessageConversationEntryEvents(a)
-        << "\nEvents for b. " << MessageConversationEntryEvents(b);
-    for (auto i = 0u; i < a->events->size(); i++) {
-      SCOPED_TRACE(testing::Message() << "Comparing events at index " << i);
-      auto& a_event = a->events->at(i);
-      auto& b_event = b->events->at(i);
-      EXPECT_EQ(a_event->which(), b_event->which());
-      switch (a_event->which()) {
-        case mojom::ConversationEntryEvent::Tag::kCompletionEvent: {
-          EXPECT_EQ(a_event->get_completion_event()->completion,
-                    b_event->get_completion_event()->completion);
-          break;
-        }
-        case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
-          EXPECT_EQ(a_event->get_search_queries_event()->search_queries,
-                    b_event->get_search_queries_event()->search_queries);
-          break;
-        }
-        case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
-          auto& a_sources = a_event->get_sources_event();
-          auto& b_sources = b_event->get_sources_event();
-          EXPECT_EQ(a_sources->sources.size(), b_sources->sources.size());
-          for (auto j = 0u; j < a_sources->sources.size(); j++) {
-            SCOPED_TRACE(testing::Message()
-                         << "Comparing sources at index " << j);
-            EXPECT_EQ(a_sources->sources[j]->url, b_sources->sources[j]->url);
-            EXPECT_EQ(a_sources->sources[j]->title,
-                      b_sources->sources[j]->title);
-          }
-          break;
-        }
-        default:
-          NOTREACHED()
-              << "Unexpected event type for comparison. Only know about "
-                 "event types which are not discarded.";
-      }
-    }
-  }
-
-  // compare uploaded files
-  EXPECT_EQ(a->uploaded_files.has_value(), b->uploaded_files.has_value());
-  if (a->uploaded_files.has_value()) {
-    EXPECT_EQ(a->uploaded_files->size(), b->uploaded_files->size());
-    for (size_t i = 0; i < a->uploaded_files->size(); ++i) {
-      SCOPED_TRACE(testing::Message()
-                   << "Comparing uplodaed files at index " << i);
-      const auto& uploaded_file_a = a->uploaded_files->at(i);
-      const auto& uploaded_file_b = b->uploaded_files->at(i);
-      EXPECT_EQ(uploaded_file_a->filename, uploaded_file_b->filename);
-      EXPECT_EQ(uploaded_file_a->filesize, uploaded_file_b->filesize);
-      EXPECT_EQ(uploaded_file_a->data, uploaded_file_b->data);
-      EXPECT_EQ(uploaded_file_a->type, uploaded_file_b->type);
-    }
-  }
-
-  // compare edits
-  EXPECT_EQ(a->edits.has_value(), b->edits.has_value());
-  if (a->edits.has_value()) {
-    EXPECT_EQ(a->edits->size(), b->edits->size());
-    for (auto i = 0u; i < a->edits->size(); i++) {
-      SCOPED_TRACE(testing::Message() << "Comparing edits at index " << i);
-      auto& a_edit = a->edits->at(i);
-      auto& b_edit = b->edits->at(i);
-      ExpectConversationEntryEquals(FROM_HERE, a_edit, b_edit, compare_uuid);
-    }
-  }
+  EXPECT_MOJOM_EQ(*a_compare, *b_compare);
 }
 
 mojom::Conversation* GetConversation(
