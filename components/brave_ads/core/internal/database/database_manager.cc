@@ -26,7 +26,7 @@ namespace brave_ads {
 
 DatabaseManager::DatabaseManager(const base::FilePath& path)
     : database_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       database_(base::SequenceBound<Database>(database_task_runner_, path)) {}
 
