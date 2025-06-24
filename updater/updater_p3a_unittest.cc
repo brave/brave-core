@@ -26,68 +26,55 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
   base::HistogramTester histogram_tester_;
 
   bool IsUsingOmaha4() const { return GetParam(); }
-  UpdateStatus GetExpectedStatus(bool updated);
 
   void SimulateLaunch(int day, std::string current_version);
-  void ExpectBucketCount(int sample, int count);
-  void ExpectTotalCount(int count);
+  void ExpectBucketCounts(int num_updates, int num_no_updates);
 };
 
 TEST_P(BraveUpdaterP3ATest, TestNoUpdate) {
   // No updates for 8 days:
   for (int day = 0; day <= 7; day++) {
-    ExpectTotalCount(0);
+    ExpectBucketCounts(0, 0);
     SimulateLaunch(day, "0.0.0.1");
   }
   // On the 8th day, the implementation should have reported that there was no
   // update in the previous week:
-  ExpectTotalCount(1);
-  UpdateStatus no_update = GetExpectedStatus(false);
-  ExpectBucketCount(no_update, 1);
+  ExpectBucketCounts(1, 0);
 }
 
 TEST_P(BraveUpdaterP3ATest, TestUpdated) {
   // Initial launch on the first day:
   SimulateLaunch(0, "0.0.0.1");
-  UpdateStatus updated = GetExpectedStatus(true);
-  UpdateStatus no_update = GetExpectedStatus(false);
   // A new version on the second day, then no updates until the 14th day:
   for (int day = 1; day <= 13; day++) {
     SimulateLaunch(day, "0.0.0.2");
     // Should report the update immediately, but only once:
-    ExpectTotalCount(1);
-    ExpectBucketCount(updated, 1);
-    ExpectBucketCount(no_update, 0);
+    ExpectBucketCounts(0, 1);
   }
   // On the 15th day, there was no update in the previous week. The
   // implementation should report this:
   SimulateLaunch(14, "0.0.0.2");
-  ExpectTotalCount(2);
-  ExpectBucketCount(updated, 1);
-  ExpectBucketCount(no_update, 1);
+  ExpectBucketCounts(1, 1);
 }
 
 TEST_P(BraveUpdaterP3ATest, TestUpdatedComplex) {
   // Like TestUpdated, but with an update on the 15th day.
-  UpdateStatus updated = GetExpectedStatus(true);
 
   // Initial launch:
   SimulateLaunch(0, "0.0.0.1");
-  ExpectBucketCount(updated, 0);
+  ExpectBucketCounts(0, 0);
 
   // An update in week 1:
   SimulateLaunch(1, "0.0.0.2");
-  ExpectBucketCount(updated, 1);
+  ExpectBucketCounts(0, 1);
 
   // No update at the beginning of week 2:
   SimulateLaunch(7, "0.0.0.2");
-  ExpectBucketCount(updated, 1);
+  ExpectBucketCounts(0, 1);
 
   // An update in week 3:
   SimulateLaunch(14, "0.0.0.3");
-  ExpectBucketCount(updated, 2);
- 
-  ExpectTotalCount(2);
+  ExpectBucketCounts(0, 2);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -99,23 +86,17 @@ INSTANTIATE_TEST_SUITE_P(
       return info.param ? "Omaha4" : "Legacy";
     });
 
-UpdateStatus BraveUpdaterP3ATest::GetExpectedStatus(bool updated) {
-  return updated ? (IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy)
-                 : (IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy);
-}
-
 void BraveUpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
   base::Time now = base::Time::FromTimeT(1) + base::Days(day);
   ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
 }
 
-void BraveUpdaterP3ATest::ExpectTotalCount(int count) {
-  histogram_tester_.ExpectTotalCount(kUpdateStatusHistogramName, count);
-}
-
-void BraveUpdaterP3ATest::ExpectBucketCount(int sample, int count) {
-  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, sample,
-                                       count);
+void BraveUpdaterP3ATest::ExpectBucketCounts(int num_no_updates, int num_updates) {
+  UpdateStatus no_update = IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
+  UpdateStatus updated = IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
+  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, no_update, num_no_updates);
+  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, updated, num_updates);
+  histogram_tester_.ExpectTotalCount(kUpdateStatusHistogramName, num_updates + num_no_updates);
 }
 
 }  // namespace brave_updater
