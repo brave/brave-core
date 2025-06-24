@@ -67,7 +67,9 @@ export default function BeginGeneration() {
           isUploadingFiles: false,
           shouldSendPageContents: false,
           disassociateContent: () => {},
-          getPluralString: () => Promise.resolve('')
+          getPluralString: () => Promise.resolve(''),
+          setShowAttachments: () => {},
+          tabs: []
         }} />
     </FiltersContainer>
     <NoContent />

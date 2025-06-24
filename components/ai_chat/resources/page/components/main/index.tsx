@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
-import { useConversation, useSupportsAttachments } from '../../state/conversation_context'
+import { useConversation, useIsNewConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
@@ -81,7 +81,7 @@ function Main() {
     conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
-  const showAttachments = useSupportsAttachments()
+  const showAttachments = useIsNewConversation()
     && conversationContext.showAttachments
     && aiChatContext.tabs.length > 0
 

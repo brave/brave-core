@@ -35,7 +35,8 @@ const defaultContext: InputBoxProps['context'] = {
   isUploadingFiles: false,
   disassociateContent: () => {},
   associateDefaultContent: () => {},
-  getPluralString: () => Promise.resolve('')
+  getPluralString: () => Promise.resolve(''),
+  tabs: [],
 }
 
 describe('input box', () => {

@@ -42,8 +42,9 @@ type Props = Pick<
   | 'shouldSendPageContents'
   | 'disassociateContent'
   | 'associateDefaultContent'
+  | 'setShowAttachments'
 > &
-  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement' | 'getPluralString'>
+  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs'>
 
 export interface InputBoxProps {
   context: Props
@@ -248,6 +249,8 @@ function InputBox(props: InputBoxProps) {
             associateDefaultContent={props.context.associateDefaultContent}
             conversationStarted={props.conversationStarted}
             isMobile={props.context.isMobile}
+            tabs={props.context.tabs}
+            setShowAttachments={props.context.setShowAttachments}
           />
         </div>
         <div>
