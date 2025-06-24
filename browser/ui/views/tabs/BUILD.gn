@@ -43,12 +43,15 @@ source_set("unit_tests") {
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
     "brave_tab_unittest.cc",
+    "tab_model_unittest.cc",
   ]
 
   deps = [
     "//base",
     "//brave/common",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:test_support",
+    "//chrome/browser/ui/tabs:test_support",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//testing/gmock",

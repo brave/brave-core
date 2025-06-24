@@ -1,0 +1,12 @@
+diff --git a/components/tabs/BUILD.gn b/components/tabs/BUILD.gn
+index db6309f275821bb819867657be6a42cc8e5821f5..5ee3e63be2129324c711c11035198e92a9749eb8 100644
+--- a/components/tabs/BUILD.gn
++++ b/components/tabs/BUILD.gn
+@@ -27,6 +27,7 @@ source_set("public") {
+     "//components/tab_groups",
+   ]
+   deps = [ "//ui/gfx/range" ]
++  import("//brave/components/tabs/sources.gni") sources += brave_components_tabs_sources public_deps += brave_components_tabs_public_deps
+ }
+ 
+ source_set("tabs") {
