@@ -23,8 +23,8 @@ class ContainerModel {
   ContainerModel& operator=(ContainerModel&& other) noexcept;
   ~ContainerModel();
 
-  const std::string id() const { return container_->id; }
-  const std::string name() const { return container_->name; }
+  const std::string& id() const { return container_->id; }
+  const std::string& name() const { return container_->name; }
   const ui::ImageModel& icon() const { return icon_; }
   const containers::mojom::ContainerPtr& container() const {
     return container_;
