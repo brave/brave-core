@@ -16,6 +16,7 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -248,6 +249,41 @@ void PageContentExtractor::OnJSYoutubeInnerTubeConfigResult(
   if (!api_key || !video_id) {
     std::move(callback).Run({});
     return;
+  }
+
+  // Validate API key - should not be empty and should contain only printable
+  // ASCII
+  if (api_key->empty()) {
+    DVLOG(1) << "Empty API key";
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Check that API key contains only printable ASCII characters
+  for (char c : *api_key) {
+    if (!base::IsAsciiPrintable(c)) {
+      DVLOG(1) << "Invalid character in API key: " << c;
+      std::move(callback).Run({});
+      return;
+    }
+  }
+
+  // Validate YouTube video ID - should contain only valid characters
+  // YouTube video IDs are defined as [\\w-]+ (word characters + hyphens)
+  // Based on Google Closure Library:
+  // third_party/google-closure-library/closure/goog/ui/media/youtube.js
+  if (video_id->empty()) {
+    DVLOG(1) << "Empty video ID";
+    std::move(callback).Run({});
+    return;
+  }
+  for (char c : *video_id) {
+    if (!base::IsAsciiPrintable(c) ||
+        (!base::IsAsciiAlphaNumeric(c) && c != '_' && c != '-')) {
+      DVLOG(1) << "Invalid character in video ID: " << c;
+      std::move(callback).Run({});
+      return;
+    }
   }
 
   // Return the configuration for the browser process to make the API request

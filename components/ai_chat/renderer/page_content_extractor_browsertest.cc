@@ -153,4 +153,112 @@ TEST_F(PageContentExtractorRenderViewTest, ExtractPageContentNonYouTube) {
   EXPECT_TRUE(!result || result->type == mojom::PageContentType::Text);
 }
 
+// Test validation of API key with non-printable characters
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentYouTubeInvalidApiKeyNonPrintable) {
+  // Mock the ytcfg object with API key containing non-printable characters
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: "test\x00api\x01key"
+      }
+    };
+  )JS";
+
+  LoadPageWithUrl("https://www.youtube.com/watch?v=test123", kScript);
+
+  auto result = ExtractPageContent();
+
+  // Should return null when API key contains non-printable characters
+  EXPECT_FALSE(result);
+}
+
+// Test validation of API key with empty string
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentYouTubeEmptyApiKey) {
+  // Mock the ytcfg object with empty API key
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: ""
+      }
+    };
+  )JS";
+
+  LoadPageWithUrl("https://www.youtube.com/watch?v=test123", kScript);
+
+  auto result = ExtractPageContent();
+
+  // Should return null when API key is empty
+  EXPECT_FALSE(result);
+}
+
+// Test validation of video ID with invalid characters
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentYouTubeInvalidVideoId) {
+  // Mock the ytcfg object with valid API key but invalid video ID
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: "valid_api_key_123"
+      }
+    };
+  )JS";
+
+  // Video ID with invalid characters (spaces, special chars)
+  LoadPageWithUrl("https://www.youtube.com/watch?v=test 123!@#", kScript);
+
+  auto result = ExtractPageContent();
+
+  // Should return null when video ID contains invalid characters
+  EXPECT_FALSE(result);
+}
+
+// Test validation of video ID with empty string
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentYouTubeEmptyVideoId) {
+  // Mock the ytcfg object with valid API key
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: "valid_api_key_123"
+      }
+    };
+  )JS";
+
+  // Empty video ID
+  LoadPageWithUrl("https://www.youtube.com/watch?v=", kScript);
+
+  auto result = ExtractPageContent();
+
+  // Should return null when video ID is empty
+  EXPECT_FALSE(result);
+}
+
+// Test validation of valid API key and video ID with special characters
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentYouTubeValidSpecialChars) {
+  // Mock the ytcfg object with API key containing valid special characters
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: "valid_api_key_with_special_chars_!@#$%^&*()_+-="
+      }
+    };
+  )JS";
+
+  // Video ID with valid characters (alphanumeric, underscore, hyphen)
+  LoadPageWithUrl("https://www.youtube.com/watch?v=test_123-456", kScript);
+
+  auto result = ExtractPageContent();
+
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->type, mojom::PageContentType::VideoTranscriptYouTube);
+  EXPECT_TRUE(result->content->is_youtube_inner_tube_config());
+
+  const auto& config = result->content->get_youtube_inner_tube_config();
+  EXPECT_EQ(config->api_key, "valid_api_key_with_special_chars_!@#$%^&*()_+-=");
+  EXPECT_EQ(config->video_id, "test_123-456");
+}
+
 }  // namespace ai_chat
