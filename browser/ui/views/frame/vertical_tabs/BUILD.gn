@@ -41,7 +41,11 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "vertical_tab_strip_root_view_browsertest.cc" ]
+  sources = [
+    "vertical_tab_search_button_browsertest.cc",
+    "vertical_tab_strip_browsertest.cc",
+    "vertical_tab_strip_root_view_browsertest.cc",
+  ]
 
   deps = [
     ":vertical_tabs",
@@ -50,6 +54,8 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//testing/gtest",
     "//ui/base",
+    "//ui/base:test_support",
     "//ui/views",
+    "//ui/views:test_support",
   ]
 }
