@@ -24,15 +24,30 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/menus/simple_menu_model.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/container_model_utils.h"
+#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    containers::ContainersMenuModel::Delegate& containers_delegate,
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
     int index,
     bool is_vertical_tab)
     : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index),
-      is_vertical_tab_(is_vertical_tab) {
+      is_vertical_tab_(is_vertical_tab)
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      ,
+      containers_menu_model_delegate_(containers_delegate)
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   CHECK(web_contents_);
   Browser* browser = chrome::FindBrowserWithTab(web_contents_);
@@ -125,8 +140,14 @@ void BraveTabMenuModel::Build(Browser* browser,
 
   if (tabs::features::IsBraveSplitViewEnabled()) {
     BuildItemsForSplitView(browser, tab_strip_model, indices);
-    return;
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    BuildItemForContainers(browser, tab_strip_model,
+                           containers_menu_model_delegate_.get(), indices);
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 void BraveTabMenuModel::BuildItemsForSplitView(
@@ -166,3 +187,20 @@ void BraveTabMenuModel::BuildItemsForSplitView(
                              IDS_IDC_SWAP_SPLIT_VIEW);
   }
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTabMenuModel::BuildItemForContainers(
+    Browser* browser,
+    TabStripModel* tab_strip_model,
+    containers::ContainersMenuModel::Delegate& containers_delegate,
+    const std::vector<int>& indices) {
+  auto index =
+      *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
+  containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
+      containers_delegate,
+      containers::GetContainerModelsFromPrefs(*browser->profile()->GetPrefs()));
+  InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
+                              IDS_CXMENU_OPEN_IN_CONTAINER,
+                              containers_submenu_.get());
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)

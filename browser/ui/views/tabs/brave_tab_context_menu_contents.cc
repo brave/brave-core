@@ -14,6 +14,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
@@ -22,6 +23,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -38,6 +40,10 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/views/controls/menu/menu_runner.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/utils.h"
+#endif
+
 BraveTabContextMenuContents::BraveTabContextMenuContents(
     Tab* tab,
     BraveBrowserTabStripController* controller,
@@ -50,7 +56,11 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
 
   model_ = std::make_unique<BraveTabMenuModel>(
       this, browser_->GetFeatures().tab_menu_model_delegate(),
-      controller->model(), index, is_vertical_tab);
+      controller->model(),
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      *this,
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+      index, is_vertical_tab);
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_->profile());
   menu_runner_ = std::make_unique<views::MenuRunner>(
@@ -151,6 +161,51 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTabContextMenuContents::OnContainerSelected(
+    const containers::mojom::ContainerPtr& container) {
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(controller_->model());
+  for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
+    auto* tab = tab_strip_model->GetTabAtIndex(index);
+    brave::IsolateTab(browser_, tab->GetHandle(), container);
+  }
+}
+
+base::flat_set<std::string>
+BraveTabContextMenuContents::GetCurrentContainerIds() {
+  base::flat_set<std::string> container_ids;
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(controller_->model());
+  for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
+    auto* tab = tab_strip_model->GetTabAtIndex(index);
+    if (!tab) {
+      continue;
+    }
+
+    auto* contents = tab->GetContents();
+    if (!contents) {
+      continue;
+    }
+
+    auto storage_partition_config =
+        containers::GetContainersStoragePartition(contents);
+    if (!storage_partition_config) {
+      continue;
+    }
+
+    container_ids.insert(containers::GetContainerIdFromStoragePartitionConfig(
+        *storage_partition_config));
+  }
+
+  return container_ids;
+}
+
+Browser* BraveTabContextMenuContents::GetBrowserToOpenSettings() {
+  return browser_;
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     int command_id) const {
   CHECK(IsValidContextMenu());
@@ -185,6 +240,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandTileTabs:
       [[fallthrough]];
     case BraveTabMenuModel::CommandBreakTile:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandOpenInContainer:
       [[fallthrough]];
     case BraveTabMenuModel::CommandSwapTabsInTile:
       return true;

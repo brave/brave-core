@@ -9,35 +9,22 @@ assert(enable_containers)
 
 static_library("browser") {
   sources = [
-    "containers_settings_handler.cc",
-    "containers_settings_handler.h",
-    "pref_names.h",
-    "prefs.cc",
-    "prefs.h",
     "utils.cc",
     "utils.h",
   ]
 
-  public_deps = [ "//brave/components/containers/core/mojom" ]
-
   deps = [
     "//base",
+    "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
-    "//components/pref_registry",
-    "//components/prefs",
-    "//components/user_prefs",
-    "//net/base/registry_controlled_domains",
-    "//services/network/public/cpp",
-    "//third_party/re2",
-    "//url",
+    "//content/public/browser",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "containers_settings_handler_unittest.cc",
-    "prefs_unittest.cc",
+    # "utils_unittest.cc",
   ]
 
   deps = [
@@ -46,7 +33,6 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/containers/core/common",
     "//components/sync_preferences:test_support",
-    "//mojo/public/cpp/bindings",
     "//testing/gmock",
     "//testing/gtest",
   ]
