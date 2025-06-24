@@ -13,8 +13,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using containers::ContainerModel;
-using containers::ContainersMenuModel;
+namespace containers {
 
 class ContainersMenuModelUnitTest : public testing::Test {
  protected:
@@ -28,11 +27,11 @@ class ContainersMenuModelUnitTest : public testing::Test {
 
   void SetUp() override {
     containers_.emplace_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer1", "Example 1")));
+        mojom::Container::New("ExampleContainer1", "Example 1")));
     containers_.emplace_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer2", "Example 2")));
+        mojom::Container::New("ExampleContainer2", "Example 2")));
     containers_.emplace_back(ContainerModel(
-        containers::mojom::Container::New("ExampleContainer3", "Example 3")));
+        mojom::Container::New("ExampleContainer3", "Example 3")));
   }
 
   void TearDown() override { containers_.clear(); }
@@ -104,3 +103,5 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
   EXPECT_TRUE(model.IsCommandIdChecked(1));
   EXPECT_FALSE(model.IsCommandIdChecked(2));
 }
+
+}  // namespace containers
