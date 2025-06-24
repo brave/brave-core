@@ -15,16 +15,30 @@ component("common") {
     "pref_names.h",
     "utils.cc",
     "utils.h",
-    "yt_util.cc",
-    "yt_util.h",
   ]
 
   deps = [
     "//base",
     "//brave/brave_domains",
     "//components/prefs",
-    "//services/data_decoder/public/cpp:safe_xml_parser",
     "//url",
+  ]
+}
+
+source_set("common_impl") {
+  visibility = [
+    ":unit_tests",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/renderer",
+  ]
+  sources = [
+    "yt_util.cc",
+    "yt_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//services/data_decoder/public/cpp:safe_xml_parser",
   ]
 }
 
@@ -55,6 +69,7 @@ if (!is_ios) {
     ]
 
     deps = [
+      ":common_impl",
       "//base/test:test_support",
       "//brave/components/ai_chat/core/common",
       "//components/prefs:test_support",

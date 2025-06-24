@@ -14,6 +14,7 @@ static_library("renderer") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common:common_impl",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//content/public/renderer",
