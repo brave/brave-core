@@ -116,34 +116,19 @@ const buildTests = async (
 }
 
 const deleteFile = (filePath) => {
-  if (!fs.existsSync(filePath)) {
-    return true
-  }
-  try {
+  if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath)
-  } catch (err) {
-    console.log(`Error deleting file ${filePath}: ` + err)
-    return false
   }
-  return true
-}
-
-const appendToResultsFile = (allResultFilePath, suiteResultsFilePath) => {
-  try {
-    fs.appendFileSync(allResultFilePath, suiteResultsFilePath + '\n')
-  } catch (err) {
-    console.log(`Error appending to file ${allResultFilePath}: ` + err)
-    return false
-  }
-  return true
 }
 
 const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   const isJunitTestSuite = suite.endsWith('_junit_tests')
+  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
+  // Clear previous results file
+  deleteFile(allResultsFilePath)
 
   let braveArgs = []
 
@@ -169,15 +154,9 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 
   if (options.output) {
-    // Clear any previous output
     const outputPath = path.join(config.srcDir, options.output)
-    if (!deleteFile(outputPath)) {
-      return false
-    }
-    // Also suite results file.
-    if (!deleteFile(allResultsFilePath)) {
-      return false
-    }
+    // Clear previous output
+    deleteFile(outputPath)
     braveArgs.push('--gtest_output=xml:' + options.output)
   }
 
@@ -306,10 +285,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         runOptions,
       )
       if (options.output) {
-        // Add xml output filename of each test suite into the results file
-        if (!appendToResultsFile(allResultsFilePath, `${testSuite}.xml`)) {
-          return false
-        }
+        // Add filename of xml output of each test suite into the results file
+        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
       // Don't run other tests if one has failed already.
       return prog.status === 0
