@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -87,12 +86,6 @@ template("brave_extra_paks") {
           [ "$root_gen_dir/brave/components/tor/resources/tor_resources.pak" ]
 
       deps += [ "//brave/components/tor/resources" ]
-    }
-
-    if (enable_brave_webtorrent) {
-      sources += [ "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak" ]
-
-      deps += [ "//brave/components/brave_webtorrent:resources" ]
     }
 
     if (enable_extensions) {

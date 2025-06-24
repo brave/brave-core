@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -91,16 +90,4 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]
-
-  if (enable_brave_webtorrent) {
-    sources += [
-      "//brave/browser/extensions/brave_webtorrent_navigation_throttle_unittest.cc",
-      "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
-    ]
-
-    deps += [
-      "//brave/browser/extensions",
-      "//brave/components/brave_referrals/browser",
-    ]
-  }
 }

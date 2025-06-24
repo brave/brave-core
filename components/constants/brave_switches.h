@@ -27,10 +27,6 @@ inline constexpr char kDisableBraveExtension[] = "disable-brave-extension";
 // This switch disables update module(Sparkle).
 inline constexpr char kDisableBraveUpdate[] = "disable-brave-update";
 
-// Allows disabling the WebTorrent extension.
-inline constexpr char kDisableWebTorrentExtension[] =
-    "disable-webtorrent-extension";
-
 // Allows disabling the Wayback Machine extension.
 inline constexpr char kDisableBraveWaybackMachineExtension[] =
     "disable-brave-wayback-machine-extension";

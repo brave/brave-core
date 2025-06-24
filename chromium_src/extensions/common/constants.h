@@ -14,13 +14,6 @@ inline constexpr char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
 inline constexpr char crl_set_extension_id[] =
     "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
-inline constexpr char brave_webtorrent_extension_id[] =
-    "lgjmpdmojkpocjcopdikifhejkkjglho";
-inline constexpr char brave_webtorrent_extension_filename[] =
-    "brave_webtorrent.html";
-inline constexpr char brave_webtorrent_extension_filename2[] =
-    "brave_webtorrent2.html";
-
 inline constexpr char google_translate_extension_id[] =
     "aapbdbdomjkkjkaonfhkkikfgjllcleb";
 
