@@ -32,6 +32,10 @@ const pullL10n = (options) => {
         '--source_string_path',
         sourceStringPath,
       ]
+      if (options.lang) {
+        args.push('--lang')
+        args.push(options.lang)
+      }
       if (options.debug) {
         args.push('--debug')
       }
