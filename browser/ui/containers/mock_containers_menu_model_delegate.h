@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_CONTAINERS_MOCK_CONTAINERS_MENU_MODEL_DELEGATE_H_
 #define BRAVE_BROWSER_UI_CONTAINERS_MOCK_CONTAINERS_MENU_MODEL_DELEGATE_H_
 
-#include <optional>
+#include <string>
 
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -22,7 +22,7 @@ class MockContainerMenuModelDelegate
               (const containers::mojom::ContainerPtr& container),
               (override));
 
-  MOCK_METHOD(base::flat_set<std::string_view>,
+  MOCK_METHOD(base::flat_set<std::string>,
               GetCurrentContainerIds,
               (),
               (override const));

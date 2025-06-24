@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_CONTAINERS_CONTAINERS_MENU_MODEL_H_
 
 #include <limits>
+#include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -32,7 +33,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
 
     virtual void OnContainerSelected(
         const containers::mojom::ContainerPtr& container) = 0;
-    virtual base::flat_set<std::string_view> GetCurrentContainerIds() = 0;
+    virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
     virtual Browser* GetBrowserToOpenSettings() = 0;
   };
 
