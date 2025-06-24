@@ -59,7 +59,7 @@ source_set("browser_tests") {
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/constants",
     "//brave/components/tor",
     "//brave/components/tor:pref_names",

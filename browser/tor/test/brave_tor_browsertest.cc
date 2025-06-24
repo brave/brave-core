@@ -23,7 +23,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/brave_tor_client_updater.h"

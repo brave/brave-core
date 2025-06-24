@@ -18,7 +18,7 @@ source_set("browser_tests") {
     "//brave/browser/extensions:test_support",
     "//brave/common:common",
     "//brave/components/brave_component_updater/browser:browser",
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/request_otr/browser",
     "//brave/components/request_otr/common",
