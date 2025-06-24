@@ -1,12 +1,12 @@
 diff --git a/ui/android/BUILD.gn b/ui/android/BUILD.gn
-index 6244f756f2dceed1715a1ce3153b9e704257874e..54c51ba0ac7aaca6ffbc4af75494422ad7735dc5 100644
+index 6244f756f2dceed1715a1ce3153b9e704257874e..9d264f3a509e399e088dbfb028f31ea27dcedffd 100644
 --- a/ui/android/BUILD.gn
 +++ b/ui/android/BUILD.gn
 @@ -297,6 +297,7 @@ android_resources("ui_java_resources") {
    ]
  
    deps = [ ":ui_strings_grd" ]
-+  sources += brave_ui_android_java_resources 
++  import("//brave/ui/android/brave_java_resources.gni") sources += brave_ui_android_java_resources
  }
  
  java_group("ui_java") {
