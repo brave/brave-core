@@ -160,7 +160,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
       },
       key: modelKey,
       displayName: this.label,
-      visionSupport: this.hasVisionSupport
+      visionSupport: this.hasVisionSupport,
+      supportsTools: false
     }
 
     this.fire('save', { modelConfig })

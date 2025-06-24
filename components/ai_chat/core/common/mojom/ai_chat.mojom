@@ -360,6 +360,8 @@ struct Model {
   string display_name;
   // whether accept image as input
   bool vision_support;
+  // Model supports tool use
+  bool supports_tools = false;
 };
 
 struct ModelWithSubtitle {

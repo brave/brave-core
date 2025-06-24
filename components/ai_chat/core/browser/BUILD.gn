@@ -50,6 +50,10 @@ static_library("browser") {
     "model_validator.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
+    "tools/tool.cc",
+    "tools/tool.h",
+    "tools/tool_input_properties.cc",
+    "tools/tool_input_properties.h",
     "types.h",
     "utils.cc",
     "utils.h",
@@ -129,6 +133,7 @@ if (!is_ios) {
       "model_service_unittest.cc",
       "model_validator_unittest.cc",
       "tab_tracker_service_unittest.cc",
+      "tools/tool_input_properties_unittest.cc",
       "utils_unittest.cc",
     ]
 

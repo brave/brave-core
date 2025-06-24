@@ -19,6 +19,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
+class Tool;
+
 namespace mojom {
 class ModelOptions;
 }  // namespace mojom
@@ -85,6 +87,8 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 
