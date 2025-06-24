@@ -420,7 +420,6 @@ Config.prototype.buildArgs = function () {
     branding_path_component: 'brave',
     branding_path_product: 'brave',
     enable_glic: false,
-    enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
@@ -746,9 +745,8 @@ Config.prototype.buildArgs = function () {
       args.enable_android_secondary_abi = true
     }
 
-    // These do not exist on android
+    // This does not exist on android
     // TODO - recheck
-    delete args.enable_nacl
     delete args.enable_hangout_services_extension
   }
 
@@ -809,7 +807,6 @@ Config.prototype.buildArgs = function () {
     delete args.branding_path_component
     delete args.branding_path_product
     delete args.enable_glic
-    delete args.enable_nacl
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
