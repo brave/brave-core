@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="az">
-<translation id="1045448422538531528">Qrupa əlavə edin</translation>
+<translation id="1036348656032585052">Deaktiv edin</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> həftə əvvəl yaradıldı}other{<ph name="NUM_WEEKS_MANY"/> həftə əvvəl yaradıldı}}</translation>
 <translation id="1063300264396686489">Digər cihazlardan tab qruplarını avtomatik açın</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> tab son zamanlarda istifadə edilməyib. Onlar bağlansın?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">"<ph name="TAB_GROUP_NAME_1"/>" və "<ph name="TAB_GROUP_NAME_2"/>" tab qrupları artıq əlçatan deyil</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tabını yığcamlaşdırın.}other{<ph name="TABS_COUNT_MANY"/> tab olan tab qrupunu yığcamlaşdırın.}}</translation>
 <translation id="2569352796411618312">Təklif: <ph name="NUMBER_OF_TABS"/> tabel bu yaxınlarda istifadə edilməyib. Bağlansınlar?</translation>
-<translation id="2656693375914502139">Qrupa köçürün</translation>
 <translation id="2662028055331606429"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> reytinq</translation>
 <translation id="266935134738038806">Sayta daxil olun</translation>
 <translation id="2671423594960767771">Qrupu paylaşın</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> tab bağlanıb}other{<ph name="MANY_CLOSED"/> tab bağlanıb}}</translation>
 <translation id="2894757982205307093">Qrupa yeni tab</translation>
 <translation id="4691798003247738043">Brave | Bu mağaza haqqında</translation>
-<translation id="2977480621796371840">Qrupdan çıxarın</translation>
 <translation id="29919168204617356">Qeyri-aktiv tablar avtomatik bağlanacaq. Onları Tarixçədə tapa bilərsiniz.</translation>
 <translation id="3008554597174452548">Məhsulu izləməyi dayandırın</translation>
 <translation id="3026391124054406831">Tabları nizamlamaq üçün qruplar yaradın.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Tab qruplarınız avtomatik olaraq yadda saxlanılır</translation>
 <translation id="6054741997831917303">Bu element bu yaxınlarda <ph name="PREVIOUS_PRICE"/> qiymətindən <ph name="NEW_PRICE"/> qiymətinə endirilib</translation>
 <translation id="6109251075362363230">Ən son istifadə olunan nüsxə istisna olmaqla bütün dublikat tablar da artıq arxivlənəcək.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Qrupu yeni pəncərəyə köçürün}other{Qrupu başqa pəncərəyə köçürün}}</translation>
 <translation id="6193448654517602979">Tablar seçin</translation>
+<translation id="6220820548421939212">Bəli. Hazıram</translation>
 <translation id="6228793724645064692">(mağaza reytinqi)</translation>
 <translation id="6271513594716432922">Bütün deaktiv tabları bağlayın</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Yeni qrupa tab əlavə edin}other{Yeni qrupa tablar əlavə edin}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Fəalliyyət</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> reytinq, <ph name="REVIEWS_COUNT_ONE"/> rəy}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> reytinq, <ph name="REVIEWS_COUNT_MANY"/> rəy}}</translation>
 <translation id="7885132941432959125">Tabı sağa daşıyın</translation>
+<translation id="788914896430720926">Fəaliyyətsiz bölmə səliqəli saxlanılsın?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> Seçilməyib</translation>
 <translation id="7942349550061667556">Qırmızı</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="7966321538264951561">Təkliflərdən imtina edin.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Tabı yeni pəncərəyə köçürün}other{Tabı başqa pəncərəyə köçürün}}</translation>
 <translation id="799469866974412355">Digər cihazdan yeni qrup</translation>
 <translation id="8029301326595421733">Bu mağaza haqqında məlumatlar tam hündürlükdə açılıb</translation>
 <translation id="8053770993984522566">Tab qrupu siyahısı, yarım hündürlükdə açıldı</translation>
@@ -193,10 +195,11 @@
 <translation id="8730621377337864115">Tamamdır</translation>
 <translation id="6687920250729800417">Bu Anonim tablardakı fəaliyyət bu cihazdan silinəcək</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> ay əvvəl yaradıldı}other{<ph name="NUM_MONTHS_MANY"/> ay əvvəl yaradıldı}}</translation>
+<translation id="8813708480179818649">Tabı qrupdan silin</translation>
 <translation id="8820741577754260431">Tablarda qiymət endirimləri göstərilsin</translation>
+<translation id="5495695379719652610">Brave fəaliyyətsiz bölmədə 3 ay ərzində istifadə etmədiyiniz elementləri avtomatik bağlayır. Bunu indi və ya istənilən vaxt Ayarlarda söndürə bilərsiniz.</translation>
 <translation id="8887921976452567404">Bağlanmış tab və qrupları Son tablar və ya Tab qrupları bölməsindən yenidən aça bilərsiniz.</translation>
 <translation id="8915916167043355778">Hamısını bağlayın</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Yeni pəncərəyə köçürün}other{Başqa pəncərəyə köçürün}}</translation>
 <translation id="9090098097337832354">Bu mağaza haqqında məlumatlar bağlanıb</translation>
 <translation id="9114502155681725011"><ph name="TITLE_OF_GROUP"/> tab qrupu (rəng <ph name="COLOR_NAME"/>) üçün tab qrupunun əməliyyat menyusunu açın.</translation>
 <translation id="9169594135889675189">Qrupa yeni tab əlavə edin</translation>

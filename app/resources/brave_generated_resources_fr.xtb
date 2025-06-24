@@ -344,6 +344,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8081858229109418493">Nom et icône du profil</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Modes de paiement</translation>
+<translation id="9071187015476020102">Pour importer des extensions ou d'autres paramètres, veuillez d'abord fermer le navigateur à partir duquel vous effectuez l'importation.</translation>
 <translation id="2044383478723007273">Mode</translation>
 <translation id="1807246157184219062">Clair</translation>
 <translation id="2414886740292270097">Sombre</translation>
@@ -823,4 +824,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Mode d'ouverture</translation>
+<translation id="2249111429176737533">Ouvrir comme fenêtre à onglets</translation>
+<translation id="7022756207310403729">Ouvrir dans le navigateur</translation>
 </translationbundle>

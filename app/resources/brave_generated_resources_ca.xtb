@@ -327,7 +327,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="4034992002364254340">Combina totes les pestanyes relacionades en una nova finestra</translation>
 <translation id="8012125596344613514">Temes suggerits</translation>
 <translation id="7529120186020617755">Introdueix el tema en el qual vulguis centrar-te...</translation>
-<translation id="6847541693235449912">Ves</translation>
+<translation id="6847541693235449912">Anar</translation>
 <translation id="2079545284768500474">Desfés</translation>
 <translation id="1533980864758658574">Nova finestra creada per <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">Aquesta funció envia informació sobre les pestanyes que tens obertes a Leo, l'assistent de navegació Impulsat per IA de Brave.</translation>
@@ -344,6 +344,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="8081858229109418493">Nom de perfil i imatge</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Formes de pagament</translation>
+<translation id="6278858909990433658">Importar perfil encara en ús</translation>
+<translation id="9071187015476020102">Per importar extensions o altres configuracions, tanca abans el navegador des del qual estàs important.</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
 <translation id="1807246157184219062">Clar</translation>
 <translation id="2414886740292270097">Fosc</translation>
@@ -824,4 +826,7 @@ Segur que vols continuar?</translation>
 <translation id="5318548116565208315">Avatar Bombó Dacsa</translation>
 <translation id="1959966725083452288">Avatar Bombó Reial</translation>
 <translation id="2039034364578911089">Avatar Bombó Ninja</translation>
+<translation id="154702742922788359">Mode d'obertura</translation>
+<translation id="2249111429176737533">Obrir com a finestra amb pestanyes</translation>
+<translation id="7022756207310403729">Obrir al navegador</translation>
 </translationbundle>

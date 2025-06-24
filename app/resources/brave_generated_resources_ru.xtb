@@ -57,7 +57,7 @@
 <translation id="3211174446914979436">Управлять фильтрами</translation>
 <translation id="3108584651298176909">Показывать правила</translation>
 <translation id="5156986655891520787">Скрывать правила</translation>
-<translation id="7658239707568436148">Cancel</translation>
+<translation id="7658239707568436148">Отмена</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Открыть с помощью адреса .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Вставить принудительно</translation>
@@ -344,6 +344,8 @@
 <translation id="8081858229109418493">Имя и иконка профиля</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="984275831282074731">Способы оплаты</translation>
+<translation id="6278858909990433658">Импортируемый профиль все еще используется</translation>
+<translation id="9071187015476020102">Чтобы импортировать расширения или другие настройки, сначала закройте браузер, из которого осуществляется импорт.</translation>
 <translation id="2044383478723007273">Цвета Brave</translation>
 <translation id="1807246157184219062">Светлая</translation>
 <translation id="2414886740292270097">Темная</translation>
@@ -824,4 +826,7 @@ Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="5318548116565208315">Аватар конфета кукуруза</translation>
 <translation id="1959966725083452288">Аватар королевская конфета</translation>
 <translation id="2039034364578911089">Аватар конфетный ниндзя</translation>
+<translation id="154702742922788359">Открытый режим</translation>
+<translation id="2249111429176737533">Открыть как окно с вкладками</translation>
+<translation id="7022756207310403729">Открыть в браузере</translation>
 </translationbundle>

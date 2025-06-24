@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">최상위 리디렉션 추적 URL 바이패싱 지원 활성화.</translation>
 <translation id="94154759592465111">스크립트 차단</translation>
 <translation id="7714773920987474116">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">YouTube 추천 콘텐츠 차단</translation>
 <translation id="1005372663692637999">youtube.com의 다음 콘텐츠와 엔드 카드 요소를 차단합니다.</translation>
 <translation id="5152595963250646670">YouTube의 거추장스러운 요소 차단</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">인기 추천 항목 표시</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
-<translation id="412411722208944922">빠른 검색 엔진</translation>
-<translation id="2836969042340015500">빠른 검색 엔진</translation>
-<translation id="9120455214794270250">빠른 검색창 표시</translation>
-<translation id="1052991798173010693">현재 사용 중인 검색 엔진</translation>
-<translation id="335303688425891752">길게 눌러 순서 변경</translation>
 <translation id="9148058034647219655">나가기</translation>
 <translation id="8047754398610073499">쿠키 동의 문구 차단</translation>
 <translation id="2621893359845808115">사이트에서 쿠키를 수락/거부하겠냐는 웹사이트 팝업 차단</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">비공개 키 문자열 파일 또는 JSON을 입력하거나 붙여넣거나 가져오세요.</translation>
 <translation id="569068482611873351">가져오기...</translation>
 <translation id="4522570452068850558">세부 정보</translation>
+<translation id="3114681061018999547">차폐</translation>
 <translation id="3784455785234192852">잠금</translation>
 <translation id="4412698727486357573">고객센터</translation>
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">기능 유형: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">데이터 없음</translation>
 <translation id="1105525362447173583">Solana Dapp 서명 트랜잭션</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 보냄 <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 님이 <ph name="ASSET"/> #<ph name="ASSET_ID"/> 보냄 - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>에서 <ph name="ASSET"/> 승인함 - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">무제한 <ph name="ASSET"/> 승인함 - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> 스왑 - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">허가 안 됨</translation>
-<translation id="8034530868111548216">수락</translation>
-<translation id="6015436276085482001">거부됨</translation>
-<translation id="6666273175654835609">제출됨</translation>
-<translation id="2331676293859649642">승인됨</translation>
-<translation id="8214232307424031138">서명됨</translation>
-<translation id="1165039591588034296">오류</translation>
 <translation id="2561824823738097741">가장 빠른 웹 브라우저를 사용하고 계신가요?</translation>
 <translation id="2065971949051836200">휴대폰에서 인터넷 속도를 3배 빠르게. 모든 웹 브라우징에 Brave를 이용해보세요.</translation>
 <translation id="2888278614497184977">Brave = 3배 빠른 웹 브라우저</translation>
@@ -1238,4 +1221,5 @@
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
 <translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>
 <translation id="8420414929552321089">이 기능을 허용하면 앱이 여러 개 열려 있을 때 비공개 탭도 표시됩니다.</translation>
+<translation id="7956713633345437162">모바일 북마크</translation>
 </translationbundle>

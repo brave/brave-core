@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Активувати підтримку обходу переспрямування на верхньому рівні для URL-адрес зі стеженням.</translation>
 <translation id="94154759592465111">Блокувати скрипти</translation>
 <translation id="7714773920987474116">Блокування JavaScript (може порушити роботу вебсайтів)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Блокувати рекомендований контент YouTube</translation>
 <translation id="1005372663692637999">Блокування елементів наступної та кінцевої карток на youtube.com.</translation>
 <translation id="5152595963250646670">Блокувати надокучливі елементи YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Пропонувати найпопулярніші сайти</translation>
 <translation id="6285118765755298263">Індексувати інші пошукові системи</translation>
 <translation id="919715748352669592">Автоматичне індексування вебсайтів, що відповідають специфікації OpenSearch.</translation>
-<translation id="412411722208944922">Швидкі пошукові системи</translation>
-<translation id="2836969042340015500">Системи швидкого пошуку</translation>
-<translation id="9120455214794270250">Показати панель швидкого пошуку</translation>
-<translation id="1052991798173010693">Нещодавно використані пошукові системи</translation>
-<translation id="335303688425891752">Натисніть і утримуйте, щоб змінити порядок</translation>
 <translation id="9148058034647219655">Вийти</translation>
 <translation id="8047754398610073499">Блокувати сповіщення щодо файлів cookie</translation>
 <translation id="2621893359845808115">Блокування спливних сповіщень із запитами про використання файлів cookie на вебсайтах</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">Уведіть, вставте або імпортуйте файл рядку закритого ключа або JSON.</translation>
 <translation id="569068482611873351">Імпорт…</translation>
 <translation id="4522570452068850558">Подробиці</translation>
+<translation id="3114681061018999547">Захист</translation>
 <translation id="3784455785234192852">Заблокувати</translation>
 <translation id="4412698727486357573">Довідковий центр</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">ТИП ФУНКЦІЇ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Немає даних</translation>
 <translation id="1105525362447173583">Транзакція підпису Dapp на базі Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> надіслав (-ла) <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> надсилає<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> затвердив (-ла) <ph name="ASSET"/> — <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Затверджено необмежені <ph name="ASSET"/> — <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Своп <ph name="ACCOUNT_NAME"/> —<ph name="DATE"/></translation>
-<translation id="2833661570529295305">Не затверджено</translation>
-<translation id="8034530868111548216">Затверджено</translation>
-<translation id="6015436276085482001">Відмовлено</translation>
-<translation id="6666273175654835609">Надіслано</translation>
-<translation id="2331676293859649642">Підтверджено</translation>
-<translation id="8214232307424031138">Підписано</translation>
-<translation id="1165039591588034296">Помилка</translation>
 <translation id="2561824823738097741">Ви користуєтеся найшвидшим браузером?</translation>
 <translation id="2065971949051836200">Утричі швидший Інтернет у вашому телефоні. Завжди використовуйте Brave для вебперегляду.</translation>
 <translation id="2888278614497184977">Brave: утричі швидший вебперегляд</translation>
@@ -1238,4 +1221,5 @@
 <translation id="6859935199732075666">Показати помилки безпечного перегляду</translation>
 <translation id="2735247450315842119">Дозволити скріншоти в приватних вкладках</translation>
 <translation id="8420414929552321089">Якщо дозволено, приватні вкладки також буде видно під час відкриття кількох додатків.</translation>
+<translation id="7956713633345437162">Мобільні закладки</translation>
 </translationbundle>

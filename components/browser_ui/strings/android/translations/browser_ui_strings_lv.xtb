@@ -84,6 +84,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="2028449514182362831">Funkcijas, kurām nepieciešama piekļuve kustību sensoriem, nedarbosies</translation>
 <translation id="2030769033451695672">Pieskarieties, lai atgrieztos cilnē <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Atsaukt</translation>
+<translation id="2080070583977670716">Vairāk iestatījumu</translation>
 <translation id="2091887806945687916">Signāls</translation>
 <translation id="2096716221239095980">Dzēst visus datus</translation>
 <translation id="2102396546234652240">Neļaut vietnēm izmantot jūsu mikrofonu</translation>
@@ -229,7 +230,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3779154269823594982">Mainīt paroles</translation>
 <translation id="3797520601150691162">Varat tumšo motīvu nelietot konkrētās vietnēs</translation>
 <translation id="3803367742635802571">Apmeklētās vietnes var pārtraukt pienācīgi darboties</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Tālruņa numuri</translation>
 <translation id="3826050100957962900">Trešās puses pierakstīšanās</translation>
 <translation id="3835233591525155343">Jūsu ierīces lietojums</translation>
@@ -437,7 +437,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="6452138246455930388">Cenas kritums atvērtajā cilnē no <ph name="OLD_PRICE"/> uz <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Ja logs ir šaurs, pieprasīt skatu mobilajā ierīcē</translation>
 <translation id="6527303717912515753">Kopīgot</translation>
-<translation id="652937045869844725">Varat atļaut trešo pušu sīkfailus. Tas nozīmē, ka aizsardzības līmenis būs zemāks, taču pastāv lielāka iespēja, ka darbosies vietnes funkcijas.</translation>
 <translation id="6530703012083415527">Kad šis slēdzis ir ieslēgts, vietnēs var izmantot uznirstošos elementus un novirzīšanu. Kad šis slēdzis ir izslēgts, vietnēs nevar izmantot uznirstošos elementus un novirzīšanu.</translation>
 <translation id="6540488083026747005">Jūs atļāvāt trešo pušu sīkfailus šajā vietnē</translation>
 <translation id="6545864417968258051">Bluetooth meklēšana</translation>
@@ -451,6 +450,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="6612358246767739896">Aizsargāts saturs</translation>
 <translation id="662080504995468778">Palikt</translation>
 <translation id="6635327442719709864">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt atļauju izmantot seriālos portus. Kad tas ir izslēgts, vietnes nevar izmantot seriālos portus.</translation>
+<translation id="6678072580827808850">Pārskatīt drošības pārbaudi</translation>
 <translation id="6683865262523156564">Šī vietne ir grupā, un visu grupas vietņu īpašnieki var skatīt jūsu darbības. Grupa ir definēta atbilstoši domēnam <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profila fotoattēli</translation>
 <translation id="6697925417670533197">Aktīvas lejupielādes</translation>
@@ -485,7 +485,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="7141896414559753902">Neļaut vietnēm novirzīt un rādīt uznirstošos elementus (ieteicams)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Atsvaidzināt</translation>
-<translation id="7180865173735832675">Pielāgot</translation>
 <translation id="7188508872042490670">Vietnes dati ierīcē</translation>
 <translation id="7201549776650881587">Veicot šo darbību, tiks izdzēsti visi dati un sīkfaili, ko jūsu sākuma ekrānā glabā vietņu grupa <ph name="ORIGIN"/> vai tās lietotne.</translation>
 <translation id="7203150201908454328">Izvērsts</translation>

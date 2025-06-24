@@ -84,6 +84,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="2028449514182362831">Liiketunnistimia edellyttävät ominaisuudet eivät enää toimi</translation>
 <translation id="2030769033451695672">Napauta, niin palaat tänne: <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Kumoa</translation>
+<translation id="2080070583977670716">Lisää asetuksia</translation>
 <translation id="2091887806945687916">Ääni</translation>
 <translation id="2096716221239095980">Poista kaikki data</translation>
 <translation id="2102396546234652240">Älä salli sivustojen käyttää mikrofoniasi</translation>
@@ -229,7 +230,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="3779154269823594982">Vaihda salasanoja</translation>
 <translation id="3797520601150691162">Älä käytä tummaa teemaa tietyllä sivustolla</translation>
 <translation id="3803367742635802571">Avaamasi sivustot voivat lakata toimimasta suunnitellusti</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Puhelinnumerot</translation>
 <translation id="3826050100957962900">Kolmannen osapuolen sisäänkirjautuminen</translation>
 <translation id="3835233591525155343">Laitteesi käyttö</translation>
@@ -437,7 +437,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="6452138246455930388">Hinnanalennus avoimella välilehdellä, vanha hinta <ph name="OLD_PRICE"/>, nyt <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Kun ikkuna on kapea, pyydä mobiilinäkymää</translation>
 <translation id="6527303717912515753">Jaa</translation>
-<translation id="652937045869844725">Kokeile sallia kolmannen osapuolen evästeet. Suojaus ei tällöin ole niin vahva, mutta sivuston ominaisuudet toimivat todennäköisemmin.</translation>
 <translation id="6530703012083415527">Kun tämä on päällä, sivustot voivat käyttää ponnahdusikkunoita ja uudelleenohjauksia. Kun tämä on pois päältä, sivustot eivät voi käyttää ponnahdusikkunoita tai uudelleenohjauksia.</translation>
 <translation id="6540488083026747005">Olet sallinut kolmannen osapuolen evästeet tällä sivustolla</translation>
 <translation id="6545864417968258051">Bluetooth-haku</translation>
@@ -451,6 +450,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="6612358246767739896">Suojattu sisältö</translation>
 <translation id="662080504995468778">Jää</translation>
 <translation id="6635327442719709864">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää sarjaportteja. Kun tämä on pois päältä, sivustot eivät voi käyttää sarjaportteja.</translation>
+<translation id="6678072580827808850">Tarkista turvatarkistus</translation>
 <translation id="6683865262523156564">Tämä sivusto kuuluu ryhmään, joka voi nähdä toimintasi. <ph name="RWS_OWNER"/> on määrittänyt ryhmän</translation>
 <translation id="6689172468748959065">Profiilikuvat</translation>
 <translation id="6697925417670533197">Aktiiviset lataukset</translation>
@@ -485,7 +485,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="7141896414559753902">Estä ponnahdusikkunoiden näyttäminen sivustoilla (suositus)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kt</translation>
 <translation id="7180611975245234373">Päivitä</translation>
-<translation id="7180865173735832675">Muokkaa</translation>
 <translation id="7188508872042490670">Laitepohjainen sivustodata</translation>
 <translation id="7201549776650881587">Tämä toiminto poistaa kaiken datan ja kaikki evästeet sivuston <ph name="ORIGIN"/> alla olevilta sivustoilta tai sen sovelluksesta aloitusnäytöllä</translation>
 <translation id="7203150201908454328">Laajennettu</translation>

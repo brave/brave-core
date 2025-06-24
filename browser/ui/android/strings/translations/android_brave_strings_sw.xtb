@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Wezesha usaidizi kwa kuvuka URL za kufuatilia uelekezaji upya wa ngazi ya juu.</translation>
 <translation id="94154759592465111">Zuia Maandishi</translation>
 <translation id="7714773920987474116">Huzuia JavaScript (inaweza kuharibu utendakazi wa tovuti)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Zuia maudhui yanayopendekezwa na YouTube</translation>
 <translation id="1005372663692637999">Huzuia vipengele vya video inayofuata na kadi ya mwishoni kwenye youtube.com.</translation>
 <translation id="5152595963250646670">Zuia vipengele vya YouTube vinavyokatiza</translation>
@@ -404,6 +403,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8520059774736886747">Muundaji <ph name="PUBLISHER_NAME"/> alithibitisha hivi majuzi</translation>
 <translation id="1486343603936278248">kuponi</translation>
 <translation id="7781069478569868053">Ukurasa Mpya wa Kichupo</translation>
+<translation id="5927196110206824867">Picha za usuli za Kifadhili zinaunga mkono lengo la Brave la kujenga wavuti huru, inayomjali mtumiaji kwanza. Na tofauti na Big Tech, tunapima utendaji wa matangazo bila jina ili kuhifadhi faragha yako.</translation>
+<translation id="8748471354357836070">Pata maelezo zaidi / chagua kutoka</translation>
 <translation id="3171669670217312786">Picha za Mandharinyuma</translation>
 <translation id="8522669544471808198">Onyesha Picha za Usuli</translation>
 <translation id="3870475560794762985">Onyesha Picha Zilizodhaminiwa</translation>
@@ -452,6 +453,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7854108565842971747">Hii ni mipangilio chaguo msingi ya Ngao kwa tovuti mpya. Kubadilisha hii hakutaathiri mipangilio iliyopo ya tovuti.</translation>
 <translation id="218587021686734263">Zuia ufuatiliaji wa data kupitia mipangilio ya lugha</translation>
 <translation id="1706099589708266367">Hupunguza ni kiasi gani tovuti zinaweza kujifunza kukuhusu kulingana na mipangilio ya lugha ya kivinjari chako.</translation>
+<translation id="6486971767955110687">Hifadhi maelezo ya mawasiliano kwa ripoti za tovuti zilizovunjika za baadaye</translation>
+<translation id="4085787265464238844">Ikiwa utatoa maelezo ya mawasiliano itahifadhiwa kwa ripoti za baadaye</translation>
 <translation id="4721088070859595932">Huzuia tovuti kugundua kifaa chako</translation>
 <translation id="7445306466605902444">Alama ya kidole imezuiwa (inasisitizwa, inaweza kuathiri utendaji wa tovuti)</translation>
 <translation id="5582686930349810484">Alama ya kidole imezuiwa (kawaida)</translation>
@@ -477,10 +480,12 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8459191579769999214">Angalia picha ya skrini</translation>
 <translation id="6476216365964140603">Maelezo ya ziada (kwa hiari)</translation>
 <translation id="6145852496180774737">Wasiliana nami kupitia kwa: (kwa hiari)</translation>
+<translation id="6367576083705149078">Ikiwa utatoa maelezo ya mawasiliano yatahifadhiwa kwa ripoti za baadaye.</translation>
 <translation id="7616645803364270729">Barua pepe, Twitter, n.k.</translation>
 <translation id="5299848999918506028">Asante!</translation>
 <translation id="76550953340008122">Asante kwa kufahamisha wasanidi programu wa Brave kuwa kuna tatizo kwenye tovuti hii. Tutajitahidi kulitatua!</translation>
 <translation id="650318023204990401">Vidhibiti vya hali ya juu</translation>
+<translation id="7205939464631857223">Futa vipengee vyote vilivyofungiwa</translation>
 <translation id="5370478469168390143">Hifadhi Data Mtandaoni</translation>
 <translation id="1118508688433541158">Vinjari kwa haraka na uzuie matangazo ukitumia Brave</translation>
 <translation id="7427391215172269363">Kila siku ninaokoa data kwa kuvinjari Wavuti nikitumia Brave.</translation>
@@ -649,6 +654,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="3952797765659730604">Weka, bandika, au leta faili ya mtungo wa ufunguo wako wa faragha au JSON.</translation>
 <translation id="569068482611873351">Leta...</translation>
 <translation id="4522570452068850558">Maelezo</translation>
+<translation id="3114681061018999547">Kufunika</translation>
 <translation id="3784455785234192852">Kufunga</translation>
 <translation id="4412698727486357573">Kituo cha usaidizi</translation>
 <translation id="8239147115686034860">Funga Brave Wallet kiotomatiki</translation>
@@ -778,18 +784,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="2199215899212542417">AINA YA KAZI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Hakuna data</translation>
 <translation id="1105525362447173583">Muamala wa Saini wa Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ametuma<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ametuma <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ameidhinisha<ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180"><ph name="ASSET"/> Imeidhinishwa Bila Kikomo - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Ubadilishaji wa<ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Haijaidhinishwa</translation>
-<translation id="8034530868111548216">Imeidhinishwa</translation>
-<translation id="6015436276085482001">Imekataliwa</translation>
-<translation id="6666273175654835609">Imewasilishwa</translation>
-<translation id="2331676293859649642">Imethibitishwa</translation>
-<translation id="8214232307424031138">Imesainiwa</translation>
-<translation id="1165039591588034296">Hitilafu</translation>
 <translation id="2561824823738097741">Je, unatumia kivinjari cha kasi zaidi?</translation>
 <translation id="2065971949051836200">Intaneti ya kasi mara 3 zaidi tayari iko kwenye simu yako. Tumia Brave kwa uvinjari wako wote.</translation>
 <translation id="2888278614497184977">Brave = Uvinjari mara 3 zaidi</translation>
@@ -815,6 +809,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4351811224047421378">Desimali za usahihi</translation>
 <translation id="3494964159182650590">Muhtasari wa Zawadi</translation>
 <translation id="590733288489975971">Zawadi kutoka kwenye Matangazo</translation>
+<translation id="1450735350187803276">Matangazo yaliyotazamwa mwezi huu</translation>
 <translation id="1767561995429774671">Changia</translation>
 <translation id="6727102863431372879">Weka</translation>
 <translation id="3074127054582480056">Umakini</translation>
@@ -1063,7 +1058,9 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="2471230424465522689">Si kabla ya</translation>
 <translation id="4841860051609590575">Kitambulisho cha Ombi</translation>
 <translation id="1179407411385015942">Leo ni msaidizi mahiri anayetumia AI ambaye amejengwa ndani ya kivinjari</translation>
+<translation id="5781842473834867765">Hifadhi historia ya mazungumzo yangu</translation>
 <translation id="4109670531935487117">Onyesha mapendekezo ya ukamilishaji otomatiki kwenye upau wa anwani</translation>
+<translation id="6106701981952170121">Futa data zote za mazungumzo ya Leo AI</translation>
 <translation id="3692772534525889713">Unganisha ununuzi wako kwenye Play Store kwenye akaunti yako ya Brave ili utumie Brave Leo kwenye vifaa vingine.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Mwaka mmoja</translation>
@@ -1191,4 +1188,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="8403338849301491865">Orodha ya vichujio imesasishwa kwa mafanikio</translation>
 <translation id="4650851936784160359">Orodha ya vichujio haikuweza kusasishwa. Tafadhali jaribu tena</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Historia ya mazungumzo</translation>
+<translation id="7956713633345437162">Vialamisho vya Simu</translation>
 </translationbundle>

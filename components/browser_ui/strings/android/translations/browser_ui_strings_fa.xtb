@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">ویژگی‌هایی که به حسگرهای حرکتی نیاز دارند کار نخواهند کرد</translation>
 <translation id="2030769033451695672">برای برگشتن به <ph name="URL_OF_THE_CURRENT_TAB"/> تک‌ضرب بزنید</translation>
 <translation id="2079545284768500474">لغو</translation>
+<translation id="2080070583977670716">تنظیمات بیشتر</translation>
 <translation id="2091887806945687916">صدا</translation>
 <translation id="2096716221239095980">حذف همه داده‌ها</translation>
 <translation id="2102396546234652240">به سایت‌ها اجازه داده نشود از میکروفون استفاده کنند</translation>
@@ -229,7 +230,6 @@
 <translation id="3779154269823594982">تغییر دادن گذرواژه‌ها</translation>
 <translation id="3797520601150691162">زمینه تاریک برای سایت خاصی استفاده نشود</translation>
 <translation id="3803367742635802571">ممکن است سایت‌هایی که بازدید می‌کنید دیگر مطابق طراحی عمل نکنند</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">شماره‌های تلفن</translation>
 <translation id="3826050100957962900">ورود به سیستم شخص ثالث</translation>
 <translation id="3835233591525155343">استفاده از دستگاه</translation>
@@ -437,7 +437,6 @@
 <translation id="6452138246455930388">کاهش قیمت در برگه باز، از <ph name="OLD_PRICE"/> به <ph name="NEW_PRICE"/>، <ph name="PRODUCT_NAME"/>، <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">وقتی پنجره باریک است، نمای تلفن همراه درخواست شود</translation>
 <translation id="6527303717912515753">اشتراک‌گذاری</translation>
-<translation id="652937045869844725">کوکی‌های طرف سوم را مجاز کنید. این کار به‌معنی محافظت کمتر است اما ویژگی‌های سایت به احتمال زیاد کار می‌کنند</translation>
 <translation id="6530703012083415527">هرگاه روشن باشد، سایت‌ها می‌توانند از بالاپرها و هدایت کردن استفاده کنند. هرگاه خاموش باشد، سایت‌ها نمی‌توانند از بالاپرها و هدایت کردن استفاده کنند.</translation>
 <translation id="6540488083026747005">کوکی‌های طرف سوم را برای این سایت مجاز کرده‌اید</translation>
 <translation id="6545864417968258051">اسکن کردن بلوتوث</translation>
@@ -451,6 +450,7 @@
 <translation id="6612358246767739896">محتوای محافظت‌شده</translation>
 <translation id="662080504995468778">ماندن</translation>
 <translation id="6635327442719709864">وقتی روشن باشد، سایت‌ها می‌توانند درخواست استفاده از درگاه‌های سریال را داشته باشند. وقتی خاموش باشد، سایت‌ها نمی‌توانند از درگاه‌های سریال استفاده کنند.</translation>
+<translation id="6678072580827808850">ارزیابی کنترل ایمنی</translation>
 <translation id="6683865262523156564">این سایت در گروهی است که می‌تواند فعالیت شما را ببیند. ‫<ph name="RWS_OWNER"/> این گروه را تعریف کرده است</translation>
 <translation id="6689172468748959065">عکس‌های نمایه</translation>
 <translation id="6697925417670533197">بارگیری‌های فعال</translation>
@@ -485,7 +485,6 @@
 <translation id="7141896414559753902">مسدود کردن نمایش پنجره‌های بازشو و هدایت‌ها در سایت‌ها (توصیه می‌شود)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> کیلوبایت</translation>
 <translation id="7180611975245234373">بازآوری</translation>
-<translation id="7180865173735832675">سفارشی کردن</translation>
 <translation id="7188508872042490670">داده‌های سایت‌ها در دستگاه</translation>
 <translation id="7201549776650881587">با این کار همه داده‌ها و کوکی‌های ذخیره‌شده توسط همه سایت‌های تحت <ph name="ORIGIN"/> یا برنامه آن در صفحه اصلی حذف خواهد شد</translation>
 <translation id="7203150201908454328">باز شده</translation>

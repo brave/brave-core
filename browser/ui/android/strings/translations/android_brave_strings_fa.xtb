@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">برای دور زدن بالاترین درجه تغییر مسیر ردیابی نشانی‌های وب‌سایت پشتیبانی را فعال کنید.</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
 <translation id="7714773920987474116">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">مسدود کردن محتوای توصیه‌شده YouTube</translation>
 <translation id="1005372663692637999">عناصر کارت پایان و قسمت بعدی را در youtube.com مسدود می‌کند.</translation>
 <translation id="5152595963250646670">مسدود کردن عناصر مزاحم YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">نمایش پیشنهادهای برتر</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
-<translation id="412411722208944922">موتورهای جستجوی سریع</translation>
-<translation id="2836969042340015500">موتورهای جستجو-سریع</translation>
-<translation id="9120455214794270250">نمایش نوار جستجوی سریع</translation>
-<translation id="1052991798173010693">موتورهای جستجوی فعلی</translation>
-<translation id="335303688425891752">برای تغییر ترتیب، نگه دارید</translation>
 <translation id="9148058034647219655">خروج</translation>
 <translation id="8047754398610073499">اعلامیه‌های رضایت کوکی را مسدود کنید</translation>
 <translation id="2621893359845808115">پاپ-آپ های وب‌سایت را که از شما می‌خواهند تا کوکی‌های وب‌سایتشان را قبول / رد کنید، مسدود کنید.</translation>
@@ -501,7 +495,7 @@
 <translation id="8459191579769999214">مشاهده عکس صفحه</translation>
 <translation id="6476216365964140603">جزئیات بیشتر (اختیاری)</translation>
 <translation id="6145852496180774737">از این طریق با من تماس بگیرید: (اختیاری)</translation>
-<translation id="6367576083705149078">اگر اطلاعات تماس خود را ارائه دهید، برای گزارش‌های آتی ذخیره خواهد شد.</translation>
+<translation id="6367576083705149078">اگر اطلاعات تماس خود را ارائه دهید، برای گزارش‌های آینده ذخیره خواهد شد.</translation>
 <translation id="7616645803364270729">ایمیل، توئیتر، غیره.</translation>
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
@@ -679,6 +673,7 @@
 <translation id="3952797765659730604">فایل رشته کلید خصوصی یا JSON خود را درج، جای‌گذاری یا وارد کنید.</translation>
 <translation id="569068482611873351">وارد کردن…</translation>
 <translation id="4522570452068850558">جزئیات</translation>
+<translation id="3114681061018999547">در حال محرمانه‌سازی</translation>
 <translation id="3784455785234192852">قفل کردن</translation>
 <translation id="4412698727486357573">مرکز راهنمایی</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
@@ -810,18 +805,6 @@
 <translation id="2199215899212542417">نوع قابلیت: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">داده‌ای وجود ندارد</translation>
 <translation id="1105525362447173583">تراکنش علامت دپ سولانا</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ارسال شد <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ارسال کرد <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>، <ph name="ASSET"/>-<ph name="DATE"/> را تأیید کرد</translation>
-<translation id="7400134344541309180"><ph name="ASSET"/> - <ph name="PROXY"/> نامحدود را تأیید کرد</translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> مبادله - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">تصدیق ناشده</translation>
-<translation id="8034530868111548216">تصدیق شد</translation>
-<translation id="6015436276085482001">رد شد</translation>
-<translation id="6666273175654835609">ارائه شد</translation>
-<translation id="2331676293859649642">تأیید شد</translation>
-<translation id="8214232307424031138">وارد شد</translation>
-<translation id="1165039591588034296">خطا</translation>
 <translation id="2561824823738097741">از سریع‌ترین مرورگر وب استفاده می‌کنید؟</translation>
 <translation id="2065971949051836200">اینترنتی 3 برابر سریع‌تر از قبل در تلفنتان وجود دارد. از Brave برای همه مرورهای وب استفاده کنید.</translation>
 <translation id="2888278614497184977">Brave = مرور وب 3 برابر سریع‌تر.</translation>
@@ -1032,7 +1015,7 @@
 <translation id="5888208462949095139">جستجو با <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">ویجت صفحه اصلی</translation>
 <translation id="703185154752046151">ویجت به صفحه اصلی افزوده شد</translation>
-<translation id="4635094429202343515">ویجت جستجوی Brave را امتحان کنید</translation>
+<translation id="4635094429202343515">ابزارک جستجوی Brave را امتحان کنید</translation>
 <translation id="4809681171446727314">درست از صفحه اصلی خود، به جستجوی محرمانه و مستقل دسترسی یابید.</translation>
 <translation id="7751715172931488388">افزودن ویجت</translation>
 <translation id="7285167584112910782">جستجوی عمل سریع Brave</translation>
@@ -1225,7 +1208,7 @@
 <translation id="4010699428656610296">لطفاً زبانه‌های دیگر را در یک پنجره دیگر Brave ادغام کنید.</translation>
 <translation id="4306918392910017801">اتصال خودکار مجدد VPN</translation>
 <translation id="1599073346542156922">نحوه روشن کردن:</translation>
-<translation id="7001163334415463127">۱. تنظیمات دستگاه خود را از کشوی برنامه باز کنید یا روی دکمه زیر ضربه بزنید.</translation>
+<translation id="7001163334415463127">1. تنظیمات دستگاه خود را از درایور برنامه خود باز کنید یا با زدن دکمه زیر.</translation>
 <translation id="887443138775437899">۲. Brave VPN را پیدا کنید و روی نماد تنظیمات در سمت راست ضربه بزنید.</translation>
 <translation id="7546805138087561624">۳. برای فعال کردن <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN همیشه روشن<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>آن را روشن کنید.</translation>
 <translation id="2446001600399646984">توجه کنید که به‌دلیل محدودیت‌های Android، گزینه «مسدود کردن اتصال‌ها بدون VPN» مطابق انتظار عمل نمی‌کند. <ph name="LEARN_MORE_START"/>اطلاعات بیشتر<ph name="LEARN_MORE_END"/></translation>
@@ -1240,4 +1223,5 @@
 <translation id="6859935199732075666">نمایش خطاهای مرور ایمن</translation>
 <translation id="2735247450315842119">اجازه گرفتن عکس صفحه در برگه‌های خصوصی</translation>
 <translation id="8420414929552321089">در صورت دادن اجازه، برگه‌های خصوصی هنگام باز بودن چندین برنامه نیز قابل مشاهده خواهند بود.</translation>
+<translation id="7956713633345437162">نشانک‌های موبایل</translation>
 </translationbundle>

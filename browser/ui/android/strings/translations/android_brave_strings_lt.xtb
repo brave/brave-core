@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Įjunkite palaikymo funkciją, kad būtų apeinami aukščiausio lygio peradresavimo sekimo URL adresai.</translation>
 <translation id="94154759592465111">Blokuoti scenarijus</translation>
 <translation id="7714773920987474116">blokuoti „JavaScript“ (gali sugadinti svetaines)</translation>
-<translation id="995782501881226248">„YouTube“</translation>
 <translation id="2233004324252915283">Užblokuoti „Youtube“ rekomenduojamą turinį</translation>
 <translation id="1005372663692637999">Blokuoja sekantį ir galutinį elementą svetainėje youtube.com.</translation>
 <translation id="5152595963250646670">Blokuoti blaškančius „YouTube“ elementus</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Rodyti populiariausius pasiūlymus</translation>
 <translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
 <translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
-<translation id="412411722208944922">Greitos paieškos sistemos</translation>
-<translation id="2836969042340015500">Greitos paieškos sistemos</translation>
-<translation id="9120455214794270250">Rodyti greitos paieškos juostą</translation>
-<translation id="1052991798173010693">Šiuo metu naudojamos paieškos sistemos</translation>
-<translation id="335303688425891752">Norėdami pakeisti tvarką, spauskite ilgai</translation>
 <translation id="9148058034647219655">Išeiti</translation>
 <translation id="8047754398610073499">Blokuoti pranešimus sutikti su slapukais</translation>
 <translation id="2621893359845808115">Blokuojami svetainių iškylantieji langai, kuriuose jūsų prašoma sutikti su slapukais arba juos atmesti toje svetainėje</translation>
@@ -681,6 +675,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3952797765659730604">Įveskite, įklijuokite ar importuokite savo privačiojo rakto eilutės failą arba JSON.</translation>
 <translation id="569068482611873351">Importuoti...</translation>
 <translation id="4522570452068850558">Išsami informacija</translation>
+<translation id="3114681061018999547">Ekranavimas</translation>
 <translation id="3784455785234192852">Užrakinti</translation>
 <translation id="4412698727486357573">Pagalbos centras</translation>
 <translation id="8239147115686034860">Automatiškai užrakinti „Brave“ piniginę</translation>
@@ -812,18 +807,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2199215899212542417">FUNKCIJOS TIPAS: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Duomenų nėra</translation>
 <translation id="1105525362447173583">„Solana dApp“ sandorio pasirašymas</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> nusiuntė<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> nusiuntė <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> patvirtino <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Patvirtintas neribotas <ph name="ASSET"/> skaičius <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> sukeitimas – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Nepatvirtinta</translation>
-<translation id="8034530868111548216">Patvirtinta</translation>
-<translation id="6015436276085482001">Atmesta</translation>
-<translation id="6666273175654835609">Pateikta</translation>
-<translation id="2331676293859649642">Patvirtinta</translation>
-<translation id="8214232307424031138">Pasirašyta</translation>
-<translation id="1165039591588034296">Klaida</translation>
 <translation id="2561824823738097741">Ar naudojatės greičiausia tinklo naršykle?</translation>
 <translation id="2065971949051836200">3 kartus greitesnis internetas jau jūsų telefone. Naršydami internete naudokite „Brave“.</translation>
 <translation id="2888278614497184977">„Brave“ – 3 kartus greitesnis naršymas tinkle</translation>
@@ -1229,7 +1212,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1599073346542156922">Kaip įjungti:</translation>
 <translation id="7001163334415463127">1. Atverkite įrenginio nuostatas iš programų skydelio arba bakstelėdami toliau esantį mygtuką.</translation>
 <translation id="887443138775437899">2. Raskite „Brave“ VPN ir bakstelėkite nustatymų piktogramą dešinėje.</translation>
-<translation id="7546805138087561624">3. Perjunkite jungiklį<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Visada įjungtas VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, kad jį įjungtumėte.</translation>
+<translation id="7546805138087561624">3. Perjunkite <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Visada įjungtas VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, kad jį įjungtumėte.</translation>
 <translation id="2446001600399646984">Atkreipkite dėmesį, kad dėl „Android“ apribojimų parinktis „Blokuoti ryšius be VPN“ neveikia taip, kaip tikėtasi. <ph name="LEARN_MORE_START"/>Sužinokite daugiau.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Atidaryti „Android“ nuostatas</translation>
 <translation id="2728518864712716830">Naujinimas atsisiųstas.</translation>
@@ -1242,4 +1225,5 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6859935199732075666">Rodyti saugaus naršymo klaidas</translation>
 <translation id="2735247450315842119">Leidimas daryti ekrano kopijas privačiose kortelėse</translation>
 <translation id="8420414929552321089">Jei leidžiama, privačios kortelės taip pat bus matomos, kai bus atidarytos kelios programos.</translation>
+<translation id="7956713633345437162">Mobiliosios žymės</translation>
 </translationbundle>

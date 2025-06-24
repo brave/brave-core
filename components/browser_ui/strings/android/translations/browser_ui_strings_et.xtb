@@ -84,6 +84,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="2028449514182362831">Liikumisandureid vajavad funktsioonid ei tööta</translation>
 <translation id="2030769033451695672">Puudutage vahelehele <ph name="URL_OF_THE_CURRENT_TAB"/> naasmiseks</translation>
 <translation id="2079545284768500474">Võta tagasi</translation>
+<translation id="2080070583977670716">Rohkem seadeid</translation>
 <translation id="2091887806945687916">Heli</translation>
 <translation id="2096716221239095980">Kustuta kõik andmed</translation>
 <translation id="2102396546234652240">Ära luba saitidel kasutada minu mikrofoni</translation>
@@ -229,7 +230,6 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="3779154269823594982">Muuda paroole</translation>
 <translation id="3797520601150691162">Tumedat teemat ei rakendata konkreetsele saidile</translation>
 <translation id="3803367742635802571">Külastatavad saidid võivad lõpetada ootuspäraselt toimimise</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefoninumbrid</translation>
 <translation id="3826050100957962900">Kolmanda osapoole sisselogimisviibad</translation>
 <translation id="3835233591525155343">Teie seadmekasutus</translation>
@@ -437,7 +437,6 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="6452138246455930388">Hinnalangus avatud vahelehel, hinnalt <ph name="OLD_PRICE"/> hinnale <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Kui aken on kitsas, taotlege mobiilivaadet</translation>
 <translation id="6527303717912515753">Jaga</translation>
-<translation id="652937045869844725">Proovige kolmanda osapoole küpsisefailid lubada. See vähendab kaitset, kuid saidi funktsiooni töötavad suurema tõenäosusega.</translation>
 <translation id="6530703012083415527">Kui see on sisse lülitatud, saavad saidid kasutada hüpikaknaid ja ümbersuunamisi. Kui see on välja lülitatud, ei saa saidid kasutada hüpikaknaid ega ümbersuunamisi.</translation>
 <translation id="6540488083026747005">Lubasite sellel saidil kolmanda osapoole küpsisefailid</translation>
 <translation id="6545864417968258051">Bluetoothi otsimine</translation>
@@ -451,6 +450,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="6612358246767739896">Kaitstud sisu</translation>
 <translation id="662080504995468778">Jää siia</translation>
 <translation id="6635327442719709864">Kui see on sisse lülitatud, saavad saidid küsida jadaportide kasutamist. Kui see on välja lülitatud, ei saa saidid jadaporte kasutada.</translation>
+<translation id="6678072580827808850">Ohutuskontrolli ülevaatamine</translation>
 <translation id="6683865262523156564">See sait on grupis, mis näeb teie tegevusi. Grupi on määratlenud <ph name="RWS_OWNER"/>.</translation>
 <translation id="6689172468748959065">Profiilifotod</translation>
 <translation id="6697925417670533197">Aktiivsed allalaadimised</translation>
@@ -485,8 +485,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="7141896414559753902">Blokeeri saitidel hüpikakende ja ümbersuunamiste kuvamine (soovitatav)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Värskenda</translation>
-<translation id="7180865173735832675">Kohandamine</translation>
-<translation id="7188508872042490670">Seadmes olevad saidi andmed</translation>
+<translation id="7188508872042490670">Seadmes olevad saidiandmed</translation>
 <translation id="7201549776650881587">See toiming kustutab teie avakuval kõik saidigrupi <ph name="ORIGIN"/> alla kuuluvate saitide või selle rakenduse salvestatud andmed ja küpsised</translation>
 <translation id="7203150201908454328">Laiendatud</translation>
 <translation id="7219254577985949841">Kas kustutada saidi andmed?</translation>
