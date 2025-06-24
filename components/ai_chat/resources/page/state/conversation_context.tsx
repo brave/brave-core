@@ -693,9 +693,3 @@ export function useIsNewConversation() {
   return !aiChatContext.conversations.find(
     c => c.uuid === conversationContext.conversationUuid && c.hasContent)
 }
-
-export function useSupportsAttachments() {
-  const aiChatContext = useAIChat()
-  const isNew = useIsNewConversation()
-  return aiChatContext.isStandalone && isNew
-}

@@ -32,7 +32,12 @@ const defaultContext: InputBoxProps['context'] = {
   updateShouldSendPageContents: () => {},
   uploadImage: () => {},
   associatedContentInfo: [],
-  handleVoiceRecognition: () => {}
+  handleVoiceRecognition: () => {},
+  isUploadingFiles: false,
+  disassociateContent: () => {},
+  associateDefaultContent: () => {},
+  getPluralString: () => Promise.resolve(''),
+  tabs: [],
 }
 
 describe('input box', () => {
