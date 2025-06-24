@@ -24,6 +24,7 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
 
 ui::ImageModel GetImageModelForContainer(
     const containers::mojom::ContainerPtr& container) {
+  CHECK(container) << "Container must be valid";
   NOTIMPLEMENTED();
   return ui::ImageModel();
 }
