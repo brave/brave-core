@@ -10,6 +10,7 @@
 namespace switches {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kEnableImprovedGuestProfileMenu, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSyncEnableBookmarksInTransportMode, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

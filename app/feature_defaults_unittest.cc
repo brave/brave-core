@@ -244,6 +244,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
+      &switches::kEnableImprovedGuestProfileMenu,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
