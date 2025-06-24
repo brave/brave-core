@@ -352,7 +352,7 @@ if (is_mac) {
     "//brave/app:command_ids",
     "//brave/browser:mac_features",
     "//brave/browser:sparkle_buildflags",
-    "//brave/updater:p3a_facade",
+    "//brave/updater:p3a",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
