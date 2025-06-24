@@ -45,16 +45,4 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
-
-  if (!is_android) {
-    sources += [
-      "brave_shields_p3a_unittest.cc",
-      "brave_shields_util_unittest.cc",
-    ]
-
-    deps += [
-      "//chrome/browser",
-      "//chrome/browser/content_settings:content_settings_factory",
-    ]
-  }
 }

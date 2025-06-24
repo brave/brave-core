@@ -19,7 +19,7 @@ source_set("browser_tests") {
     "global_privacy_control_network_delegate_helper_browsertest.cc",
   ]
   deps = [
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/geolocation",
     "//brave/components/query_filter",

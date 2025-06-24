@@ -8,7 +8,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
