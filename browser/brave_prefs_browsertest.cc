@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -82,10 +81,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                 brave_shields::prefs::kReduceLanguageEnabled),
             base::FeatureList::IsEnabled(
                 brave_shields::features::kBraveReduceLanguage));
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kWebTorrentEnabled));
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kBraveWaybackMachineEnabled));

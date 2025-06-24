@@ -81,7 +81,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -190,10 +189,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -1173,12 +1168,6 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       navigation_handle.GetWebContents()->GetBrowserContext();
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  registry.AddThrottle(
-      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(
-          registry));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
