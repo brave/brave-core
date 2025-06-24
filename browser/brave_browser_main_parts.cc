@@ -68,6 +68,13 @@
 #include "brave/components/ipfs/ipfs_component_cleaner.h"
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
 
+#if BUILDFLAG(IS_MAC)
+#include "base/task/task_traits.h"
+#include "brave/browser/mac_features.h"
+#include "brave/updater/updater_p3a_facade.h"
+#include "content/public/browser/browser_thread.h"
+#endif
+
 ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
                                                StartupData* startup_data)
     : ChromeBrowserMainParts_ChromiumImpl(is_integration_test, startup_data) {}
@@ -165,6 +172,11 @@ void ChromeBrowserMainParts::PostBrowserStart() {
   ipfs::CleanupIpfsComponent(
       base::PathService::CheckedGet(chrome::DIR_USER_DATA));
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
+
+#if BUILDFLAG(IS_MAC)
+  content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
+      ->PostTask(FROM_HERE, base::BindOnce(&brave_updater::ReportLaunch));
+#endif
 }
 
 void ChromeBrowserMainParts::PreShutdown() {
