@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">ฟีเจอร์ที่ต้องใช้เซ็นเซอร์ตรวจจับการเคลื่อนไหวจะไม่ทำงาน</translation>
 <translation id="2030769033451695672">แตะเพื่อกลับไปที่ <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">เลิกทำ</translation>
+<translation id="2080070583977670716">การตั้งค่าเพิ่มเติม</translation>
 <translation id="2091887806945687916">เสียง</translation>
 <translation id="2096716221239095980">ลบข้อมูลทั้งหมด</translation>
 <translation id="2102396546234652240">ไม่อนุญาตให้เว็บไซต์ใช้ไมโครโฟนของคุณ</translation>
@@ -229,7 +230,6 @@
 <translation id="3779154269823594982">เปลี่ยนรหัสผ่าน</translation>
 <translation id="3797520601150691162">ไม่ใช้ธีมมืดกับบางเว็บไซต์</translation>
 <translation id="3803367742635802571">เว็บไซต์ที่คุณเข้าชมอาจหยุดทำงานตามการตั้งค่า</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/> <ph name="TYPE_2"/></translation>
 <translation id="381841723434055211">หมายเลขโทรศัพท์</translation>
 <translation id="3826050100957962900">การลงชื่อเข้าใช้ของบุคคลที่สาม</translation>
 <translation id="3835233591525155343">การใช้งานอุปกรณ์ของคุณ</translation>
@@ -437,7 +437,6 @@
 <translation id="6452138246455930388">ราคาต่ำลงในแท็บที่เปิดอยู่ จาก <ph name="OLD_PRICE"/> เป็น <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">เมื่อใช้หน้าต่างที่แคบ ให้ขอมุมมองบนอุปกรณ์เคลื่อนที่</translation>
 <translation id="6527303717912515753">แชร์</translation>
-<translation id="652937045869844725">ลองอนุญาตคุกกี้ของบุคคลที่สาม ซึ่งหมายความว่าการปกป้องจะลดลง แต่ฟีเจอร์ของเว็บไซต์มีแนวโน้มที่จะทำงานได้มากกว่า</translation>
 <translation id="6530703012083415527">เมื่อเปิด เว็บไซต์จะใช้ป๊อปอัปและการเปลี่ยนเส้นทางได้ เมื่อปิด เว็บไซต์จะใช้ป๊อปอัปและการเปลี่ยนเส้นทางไม่ได้</translation>
 <translation id="6540488083026747005">คุณอนุญาตคุกกี้ของบุคคลที่สามสำหรับเว็บไซต์นี้</translation>
 <translation id="6545864417968258051">การสแกนหาบลูทูธ</translation>
@@ -451,6 +450,7 @@
 <translation id="6612358246767739896">เนื้อหาที่ได้รับความคุ้มครอง</translation>
 <translation id="662080504995468778">อยู่ต่อ</translation>
 <translation id="6635327442719709864">เมื่อเปิด เว็บไซต์จะขอใช้พอร์ตอนุกรมได้ เมื่อปิด เว็บไซต์จะใช้พอร์ตอนุกรมไม่ได้</translation>
+<translation id="6678072580827808850">ตรวจสอบ "การตรวจสอบความปลอดภัย"</translation>
 <translation id="6683865262523156564">เว็บไซต์นี้อยู่ในกลุ่มที่สามารถดูกิจกรรมของคุณได้ กลุ่มที่ <ph name="RWS_OWNER"/> กำหนดไว้</translation>
 <translation id="6689172468748959065">รูปโปรไฟล์</translation>
 <translation id="6697925417670533197">การดาวน์โหลดที่ทำงานอยู่</translation>
@@ -485,7 +485,6 @@
 <translation id="7141896414559753902">บล็อกเว็บไซต์ไม่ให้แสดงป๊อปอัปและการเปลี่ยนเส้นทาง (แนะนำ)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">รีเฟรช</translation>
-<translation id="7180865173735832675">กำหนดค่า</translation>
 <translation id="7188508872042490670">ข้อมูลเว็บไซต์ในอุปกรณ์</translation>
 <translation id="7201549776650881587">การดำเนินการนี้จะลบข้อมูลและคุกกี้ทั้งหมดที่ทุกเว็บไซต์จาก <ph name="ORIGIN"/> หรือแอปในหน้าจอหลักจัดเก็บไว้</translation>
 <translation id="7203150201908454328">ขยาย</translation>

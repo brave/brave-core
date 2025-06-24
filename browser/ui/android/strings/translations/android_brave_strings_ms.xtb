@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Dayakan sokongan untuk memintas URL penjejakan hala semula aras atas.</translation>
 <translation id="94154759592465111">Sekat Skrip</translation>
 <translation id="7714773920987474116">Menyekat JavaScript (boleh merosakkan laman)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Sekat kandungan disyorkan YouTube</translation>
 <translation id="1005372663692637999">Menyekat unsur seterusnya dan kad akhir di youtube.com.</translation>
 <translation id="5152595963250646670">Sekat unsur YouTube yang mengganggu</translation>
@@ -108,14 +107,9 @@
 <translation id="7304425663107214334">Tunjukkan cadangan pelayar</translation>
 <translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
 <translation id="924029461438529367">Tunjukkan cadangan carian</translation>
-<translation id="5989135139219497991">Tunjukkan cadangan teratas</translation>
+<translation id="5989135139219497991">Tunjukkan cadangan utama</translation>
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
 <translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
-<translation id="412411722208944922">Enjin carian pantas</translation>
-<translation id="2836969042340015500">Enjin Carian Pantas</translation>
-<translation id="9120455214794270250">Papar bar carian pantas</translation>
-<translation id="1052991798173010693">Enjin carian yang digunakan sekarang</translation>
-<translation id="335303688425891752">Tekan lama untuk ubah susunan</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="8047754398610073499">Notis persetujuan kuki sekatan</translation>
 <translation id="2621893359845808115">Sekat tetingkap timbul laman web yang meminta anda menerima / menolak kuki di laman mereka</translation>
@@ -677,6 +671,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3952797765659730604">Masukkan, tampal atau import fail rentetan kunci peribadi atau JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Butiran</translation>
+<translation id="3114681061018999547">Sedang melindung</translation>
 <translation id="3784455785234192852">Kunci</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
@@ -808,18 +803,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2199215899212542417">JENIS FUNGSI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Tiada data</translation>
 <translation id="1105525362447173583">Transaksi Tandatangan Dapp Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> menghantar <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> menghantar <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> diluluskan <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Diluluskan Tanpa Had <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> tukar - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Belum Diluluskan</translation>
-<translation id="8034530868111548216">Diluluskan</translation>
-<translation id="6015436276085482001">Ditolak</translation>
-<translation id="6666273175654835609">Dihantar</translation>
-<translation id="2331676293859649642">Disahkan</translation>
-<translation id="8214232307424031138">Ditandatangani</translation>
-<translation id="1165039591588034296">Ralat</translation>
 <translation id="2561824823738097741">Adakah anda menggunakan penyemak imbas web yang terpantas?</translation>
 <translation id="2065971949051836200">Internet 3x lebih pantas kini di telefon anda. Gunakan Brave untuk semua penyemakan imbas web anda.</translation>
 <translation id="2888278614497184977">Brave = penyemakan imbas web 3x lebih pantas</translation>
@@ -1097,8 +1080,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1179407411385015942">Leo ialah pembantu pintar yang dikuasakan oleh AI, dibina terus dalam penyemak imbas</translation>
 <translation id="5781842473834867765">Simpan sejarah perbualan saya</translation>
 <translation id="4109670531935487117">Tunjukkan cadangan autolengkap dalam bar alamat</translation>
-<translation id="4983005227524068187">Tunjukkan di ruang enjin carian pantas</translation>
-<translation id="8514910864411336826">Bolehkan jalan pintas untuk lancarkan Leo dari ruang enjin carian pantas.</translation>
+<translation id="4983005227524068187">Tunjukkan di bar enjin carian pantas</translation>
+<translation id="8514910864411336826">Mengaktifkan pintasan untuk melancarkan Leo dari bar enjin carian pantas.</translation>
 <translation id="6106701981952170121">Padam semua data perbualan Leo AI</translation>
 <translation id="423600389315522551">Menetapkan semula Leo AI akan memerlukan anda untuk memilih semula penggunaannya pada masa hadapan dan akan turut memadam sejarah perbualan anda. Mengosongkan sejarah perbualan akan memadam semua perbualan terdahulu anda dengan Brave Leo AI secara kekal. Tindakan ini tidak boleh dipulihkan.</translation>
 <translation id="6742599753610126012">Kosongkan sejarah sembang</translation>
@@ -1223,10 +1206,10 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4010699428656610296">Sila gabungkan tab lain ke tetingkap Brave yang lain.</translation>
 <translation id="4306918392910017801">Sambung semula VPN secara automatik</translation>
 <translation id="1599073346542156922">Cara menghidupkan:</translation>
-<translation id="7001163334415463127">1. Buka tetapan peranti anda daripada laci aplikasi anda atau ketik butang di bawah.</translation>
+<translation id="7001163334415463127">1. Buka tetapan peranti anda daripada laci aplikasi atau ketik butang di bawah.</translation>
 <translation id="887443138775437899">2. Cari VPN Brave dan ketik pada ikon tetapan di sebelah kanan.</translation>
 <translation id="7546805138087561624">3. Togol <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sentiasa hidup<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> untuk mendayakannya.</translation>
-<translation id="2446001600399646984">Harap maklum bahawa disebabkan batasan Android, "Sekat sambungan tanpa VPN" tidak berfungsi seperti yang dijangka. <ph name="LEARN_MORE_START"/>Ketahui lebih lanjut.<ph name="LEARN_MORE_END"/></translation>
+<translation id="2446001600399646984">Harap maklum bahawa disebabkan batasan Android, "Sekat sambungan tanpa VPN" tidak berfungsi seperti yang dijangkakan. <ph name="LEARN_MORE_START"/>Ketahui lebih lanjut.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Buka tetapan Android</translation>
 <translation id="2728518864712716830">Kemas kini dimuat turun.</translation>
 <translation id="8403338849301491865">Senarai penapis berjaya dikemas kini</translation>
@@ -1236,6 +1219,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="7942415993090181327">Sejarah sembang</translation>
 <translation id="6859935199732075666">Tunjukkan ralat Menyemak Imbas Secara Selamat</translation>
-<translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab privet</translation>
+<translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab peribadi</translation>
 <translation id="8420414929552321089">Jika dibenarkan, tab privet juga akan kelihatan apabila berbilang aplikasi dibuka.</translation>
+<translation id="7956713633345437162">Penanda Halaman Mudah Alih</translation>
 </translationbundle>

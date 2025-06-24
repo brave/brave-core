@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
-<translation id="1045448422538531528">Ajouter au groupe</translation>
+<translation id="1036348656032585052">Désactiver</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Créé il y a <ph name="NUM_WEEKS_ONE"/> semaine}one{Créé il y a <ph name="NUM_WEEKS_MANY"/> semaine}other{Créé il y a <ph name="NUM_WEEKS_MANY"/> semaines}}</translation>
 <translation id="1063300264396686489">Ouvrir automatiquement les groupes d'onglets d'autres appareils</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> des onglets ouverts n'ont pas été utilisés récemment. Voulez-vous les fermer ?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Les groupes d'onglets "<ph name="TAB_GROUP_NAME_1"/>" et "<ph name="TAB_GROUP_NAME_2"/>" ne sont plus disponibles</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Réduisez <ph name="TABS_COUNT_ONE"/> onglet.}one{Réduisez le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}other{Réduisez le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="2569352796411618312">Suggestion : <ph name="NUMBER_OF_TABS"/> des onglets ouverts n'ont pas été utilisés récemment. Voulez-vous les fermer ?</translation>
-<translation id="2656693375914502139">Déplacer dans un groupe</translation>
 <translation id="2662028055331606429">Note de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Accéder au site</translation>
 <translation id="2671423594960767771">Partager le groupe</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> onglet fermé}one{<ph name="MANY_CLOSED"/> onglet fermé}other{<ph name="MANY_CLOSED"/> onglets fermés}}</translation>
 <translation id="2894757982205307093">Nouvel onglet dans le groupe</translation>
 <translation id="4691798003247738043">Brave | À propos de ce magasin</translation>
-<translation id="2977480621796371840">Retirer du groupe</translation>
 <translation id="29919168204617356">Les onglets inactifs seront automatiquement fermés. Vous pourrez toujours les retrouver dans l'historique.</translation>
 <translation id="3008554597174452548">Arrêter de suivre le produit</translation>
 <translation id="3026391124054406831">Créez des groupes pour organiser vos onglets.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Vos groupes d'onglets sont enregistrés automatiquement</translation>
 <translation id="6054741997831917303">Le prix de cet article est récemment passé de <ph name="PREVIOUS_PRICE"/> à <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Tous les onglets en double seront désormais également archivés, à l'exception de la dernière copie utilisée.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Déplacer le groupe vers une nouvelle fenêtre}one{Déplacer le groupe vers une autre fenêtre}other{Déplacer le groupe vers une autre fenêtre}}</translation>
 <translation id="6193448654517602979">Sélectionner des onglets</translation>
+<translation id="6220820548421939212">Oui. J'accepte</translation>
 <translation id="6228793724645064692">(note du magasin)</translation>
 <translation id="6271513594716432922">Fermer tous les onglets inactifs</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Ajouter l'onglet à un nouveau groupe}one{Ajouter l'onglet à un nouveau groupe}other{Ajouter les onglets à un nouveau groupe}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Activité</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Note de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> avis}one{Note de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> avis}other{Note de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> avis}}</translation>
 <translation id="7885132941432959125">Déplacer l'onglet vers la droite</translation>
+<translation id="788914896430720926">Garder la section des onglets inactifs bien rangée ?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> non sélectionné</translation>
 <translation id="7942349550061667556">Rouge</translation>
 <translation id="7961015016161918242">Jamais</translation>
 <translation id="7966321538264951561">Fermer les suggestions.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Déplacer l'onglet vers une nouvelle fenêtre}one{Déplacer l'onglet vers une autre fenêtre}other{Déplacer l'onglet vers une autre fenêtre}}</translation>
 <translation id="799469866974412355">Nouveau groupe issu de votre autre appareil</translation>
 <translation id="8029301326595421733">Fiche d'infos sur ce magasin ouverte à pleine hauteur</translation>
 <translation id="8053770993984522566">Liste de groupes d'onglets, ouverte à mi-hauteur</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Prix inférieur</translation>
 <translation id="8730621377337864115">OK</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Créé il y a <ph name="NUM_MONTHS_ONE"/> mois}one{Créé il y a <ph name="NUM_MONTHS_MANY"/> mois}other{Créé il y a <ph name="NUM_MONTHS_MANY"/> mois}}</translation>
+<translation id="8813708480179818649">Supprimer l'onglet du groupe</translation>
 <translation id="8820741577754260431">Consultez les baisses de prix dans les onglets</translation>
+<translation id="5495695379719652610">Brave ferme automatiquement les éléments de la section des onglets inactifs que vous n'avez pas utilisés depuis trois mois. Vous pouvez désactiver cette option maintenant ou à tout moment dans les paramètres.</translation>
 <translation id="8887921976452567404">Vous pouvez rouvrir vos onglets et groupes fermés depuis les sections "Onglets récents" et "Groupes d'onglets".</translation>
 <translation id="8915916167043355778">Tout fermer</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Déplacer vers une nouvelle fenêtre}one{Déplacer vers autre fenêtre}other{Déplacer vers autre fenêtre}}</translation>
 <translation id="9090098097337832354">Fiche d'infos sur ce magasin fermée</translation>
 <translation id="9114502155681725011">Ouvrir le menu d'actions du groupe d'onglets <ph name="TITLE_OF_GROUP"/>, couleur <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Ajouter un nouvel onglet au groupe</translation>

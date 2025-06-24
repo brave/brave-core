@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
-<translation id="1045448422538531528">Lisa gruppi</translation>
+<translation id="1036348656032585052">Lülita välja</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Loodud <ph name="NUM_WEEKS_ONE"/> nädal tagasi}other{Loodud <ph name="NUM_WEEKS_MANY"/> nädalat tagasi}}</translation>
 <translation id="1063300264396686489">Vahelehegrupi automaatne avamine teisest seadmest</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> teie vahelehte pole hiljuti kasutatud. Kas sulgeda need?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Vahelehegrupid „<ph name="TAB_GROUP_NAME_1"/>“ ja „<ph name="TAB_GROUP_NAME_2"/>“ ei ole enam saadaval</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Ahenda <ph name="TABS_COUNT_ONE"/> vaheleht.}other{Ahenda <ph name="TABS_COUNT_MANY"/> vahelehega vahelehegrupp.}}</translation>
 <translation id="2569352796411618312">Soovitus: <ph name="NUMBER_OF_TABS"/> vahelehte pole hiljuti kasutatud. Kas sulgeda need?</translation>
-<translation id="2656693375914502139">Teise gruppi</translation>
 <translation id="2662028055331606429"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> hinnang</translation>
 <translation id="266935134738038806">Külasta saiti</translation>
 <translation id="2671423594960767771">Jaga gruppi</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> vaheleht suleti}other{<ph name="MANY_CLOSED"/> vahelehte suleti}}</translation>
 <translation id="2894757982205307093">Uus vaheleht grupis</translation>
 <translation id="4691798003247738043">Brave | Teave selle poe kohta</translation>
-<translation id="2977480621796371840">Grupist eemaldamine</translation>
 <translation id="29919168204617356">Inaktiivsed vahelehed suletakse automaatselt. Leiate need alati jaotisest Ajalugu.</translation>
 <translation id="3008554597174452548">Lõpeta toote jälgimine</translation>
 <translation id="3026391124054406831">Looge vahekaartide korraldamiseks gruppe.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Teie vahelehegrupid salvestatakse automaatselt.</translation>
 <translation id="6054741997831917303">Selle üksuse hind <ph name="PREVIOUS_PRICE"/> langes hiljuti ja uus hind on <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Nüüd arhiivitakse ka kõik vahelehtede duplikaadid, välja arvatud viimati kasutatud koopia.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Teisaldage grupp uude aknasse}other{Teisaldage grupp uude aknasse}}</translation>
 <translation id="6193448654517602979">Valige vahelehed</translation>
+<translation id="6220820548421939212">Jah. Sobib</translation>
 <translation id="6228793724645064692">(hinnang poes)</translation>
 <translation id="6271513594716432922">Sule kõik inaktiivsed vahelehed</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Vahelehe lisamine uude gruppi}other{Vahelehtede lisamine uude gruppi}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Tegevus</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> hinnang, <ph name="REVIEWS_COUNT_ONE"/> arvustus}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> hinnang, <ph name="REVIEWS_COUNT_MANY"/> arvustust}}</translation>
 <translation id="7885132941432959125">Teisalda vaheleht paremale</translation>
+<translation id="788914896430720926">Kas soovite hoida mitteaktiivsete vahelehtede jaotise korras?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> pole valitud</translation>
 <translation id="7942349550061667556">Punane</translation>
 <translation id="7961015016161918242">Mitte kunagi</translation>
 <translation id="7966321538264951561">Loobuge soovitustest.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Vahelehe teisaldamine uude aknasse}other{Vahelehe teisaldamine teise aknasse}}</translation>
 <translation id="799469866974412355">Uus grupp teie teises seadmes</translation>
 <translation id="8029301326595421733">Selle poe teave on avatud täiskõrgusel</translation>
 <translation id="8053770993984522566">Vahelehegruppide loend, avatud poolel kõrgusel</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Soodsam hind</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Loodud <ph name="NUM_MONTHS_ONE"/> kuu tagasi}other{Loodud <ph name="NUM_MONTHS_MANY"/> kuud tagasi}}</translation>
+<translation id="8813708480179818649">Vahelehe eemaldamine grupist</translation>
 <translation id="8820741577754260431">Näete oma vahelehtedel hinnalangusi</translation>
+<translation id="5495695379719652610">Brave kustutab automaatselt mitteaktiivse jaotise üksused, mida te pole kolme kuu jooksul kasutanud. Saate selle igal ajal seadetes välja lülitada.</translation>
 <translation id="8887921976452567404">Teie suletud vahelehti ja gruppe on võimalik avada jaotistest Hiljutised vahelehed ja Vahelehegrupid.</translation>
 <translation id="8915916167043355778">Sule kõik</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Teisalda uude aknasse}other{Teisalda teise aknasse}}</translation>
 <translation id="9090098097337832354">Selle poe teave suleti</translation>
 <translation id="9114502155681725011">Avage vahelehegrupi <ph name="TITLE_OF_GROUP"/> toimingute menüü, värv <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Lisa gruppi uus vaheleht</translation>

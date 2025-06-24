@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Schakel ondersteuning in voor het omzeilen van omleidings-/tracerings-URL's van het hoogste niveau.</translation>
 <translation id="94154759592465111">Blokkeer scripts</translation>
 <translation id="7714773920987474116">Hiermee wordt JavaScript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Aanbevolen content van YouTube blokkeren</translation>
 <translation id="1005372663692637999">Blokkeert de elementen voor de volgende content en aftiteling op youtube.com.</translation>
 <translation id="5152595963250646670">Afleidende elementen van YouTube blokkeren</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Topsuggesties weergeven</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
-<translation id="412411722208944922">Snelle zoekmachines</translation>
-<translation id="2836969042340015500">Snelzoekmachines</translation>
-<translation id="9120455214794270250">Snelle zoekbalk weergeven</translation>
-<translation id="1052991798173010693">Momenteel gebruikte zoekmachines</translation>
-<translation id="335303688425891752">Druk lang om de volgorde te wijzigen</translation>
 <translation id="9148058034647219655">Sluiten</translation>
 <translation id="8047754398610073499">Kennisgevingen over cookietoestemming blokkeren</translation>
 <translation id="2621893359845808115">Websites die pop-ups geven die vragen om cookies op hun site te accepteren/weigeren worden geblokkeerd</translation>
@@ -677,6 +671,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3952797765659730604">Typ, plak of importeer je stringbestand met privésleutel of JSON-bestand.</translation>
 <translation id="569068482611873351">Importeren...</translation>
 <translation id="4522570452068850558">Details</translation>
+<translation id="3114681061018999547">Beschermen</translation>
 <translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
@@ -808,18 +803,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2199215899212542417">FUNCTIETYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Geen gegevens</translation>
 <translation id="1105525362447173583">Transactie ondertekenen met Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> heeft <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> verzonden ($ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> verzonden<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> heeft <ph name="ASSET"/> - <ph name="DATE"/> goedgekeurd</translation>
-<translation id="7400134344541309180">Onbeperkte <ph name="ASSET"/> - <ph name="PROXY"/> goedgekeurd</translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/>-uitwisseling - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Unapproved</translation>
-<translation id="8034530868111548216">Goedgekeurd</translation>
-<translation id="6015436276085482001">Verworpen</translation>
-<translation id="6666273175654835609">Submitted</translation>
-<translation id="2331676293859649642">Bevestigd</translation>
-<translation id="8214232307424031138">Signed</translation>
-<translation id="1165039591588034296">Fout</translation>
 <translation id="2561824823738097741">Gebruik jij de snelste webbrowser?</translation>
 <translation id="2065971949051836200">3x sneller internet is al beschikbaar op je telefoon. Gebruik Brave om te browsen op internet.</translation>
 <translation id="2888278614497184977">Brave = 3x sneller browsen op internet</translation>
@@ -1238,4 +1221,5 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>
 <translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>
 <translation id="8420414929552321089">Als deze optie is ingeschakeld, zijn privétabbladen ook zichtbaar wanneer meerdere apps zijn geopend.</translation>
+<translation id="7956713633345437162">Mobiele bladwijzers</translation>
 </translationbundle>

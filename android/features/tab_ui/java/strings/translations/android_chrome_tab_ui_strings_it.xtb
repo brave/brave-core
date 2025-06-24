@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
-<translation id="1045448422538531528">Aggiungi al gruppo</translation>
+<translation id="1036348656032585052">Disattiva</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Creato <ph name="NUM_WEEKS_ONE"/> settimana fa}other{Creato <ph name="NUM_WEEKS_MANY"/> settimane fa}}</translation>
 <translation id="1063300264396686489">Apri automaticamente i gruppi di schede da altri dispositivi</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> delle tue schede non sono state usate ultimamente. Vuoi chiuderle?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">I gruppi di schede "<ph name="TAB_GROUP_NAME_1"/>" e "<ph name="TAB_GROUP_NAME_2"/>" non sono più disponibili</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Comprimi <ph name="TABS_COUNT_ONE"/> scheda.}other{Comprimi il gruppo di schede con <ph name="TABS_COUNT_MANY"/> schede.}}</translation>
 <translation id="2569352796411618312">Suggerimento: <ph name="NUMBER_OF_TABS"/> delle tue schede non sono state usate ultimamente. Vuoi chiuderle?</translation>
-<translation id="2656693375914502139">Sposta nel gruppo</translation>
 <translation id="2662028055331606429">Valutazione di <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Visita il sito</translation>
 <translation id="2671423594960767771">Condividi gruppo</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> scheda chiusa}other{<ph name="MANY_CLOSED"/> schede chiuse}}</translation>
 <translation id="2894757982205307093">Nuova scheda nel gruppo</translation>
 <translation id="4691798003247738043">Brave | Informazioni su questo negozio</translation>
-<translation id="2977480621796371840">Rimuovi dal gruppo</translation>
 <translation id="29919168204617356">Le schede non attive verranno chiuse automaticamente. Puoi trovarle nella cronologia in qualsiasi momento.</translation>
 <translation id="3008554597174452548">Interrompi il monitoraggio del prodotto</translation>
 <translation id="3026391124054406831">Crea gruppi per organizzare le tue schede.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">I gruppi di schede vengono salvati automaticamente</translation>
 <translation id="6054741997831917303">Il prezzo di questo articolo è recentemente sceso da <ph name="PREVIOUS_PRICE"/> a <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Ora verranno archiviate anche tutte le schede duplicate, fatta eccezione per la copia utilizzata più di recente.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Sposta gruppo in una nuova finestra}other{Sposta gruppo in un'altra finestra}}</translation>
 <translation id="6193448654517602979">Seleziona schede</translation>
+<translation id="6220820548421939212">Sì. Accetto</translation>
 <translation id="6228793724645064692">(valutazione del negozio)</translation>
 <translation id="6271513594716432922">Chiudi tutte le schede non attive</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Aggiungi scheda a nuovo gruppo}other{Aggiungi schede a nuovo gruppo}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Attività</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{Valutazione di <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> recensione}other{Valutazione di <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> recensioni}}</translation>
 <translation id="7885132941432959125">Sposta scheda a destra</translation>
+<translation id="788914896430720926">Mantenere in ordine la sezione Inattivi?</translation>
 <translation id="7939917283308035850">Colore <ph name="COLOR_NAME"/> non selezionato</translation>
 <translation id="7942349550061667556">Rosso</translation>
 <translation id="7961015016161918242">Mai</translation>
 <translation id="7966321538264951561">Ignora i suggerimenti.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Sposta scheda in una nuova finestra}other{Sposta scheda in un'altra finestra}}</translation>
 <translation id="799469866974412355">Nuovo gruppo dall'altro dispositivo</translation>
 <translation id="8029301326595421733">Informazioni su questo negozio aperte a schermo intero</translation>
 <translation id="8053770993984522566">Elenco dei gruppi di schede aperto nella parte inferiore dello schermo</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Prezzo più basso</translation>
 <translation id="8730621377337864115">Fine</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Creato <ph name="NUM_MONTHS_ONE"/> mese fa}other{Creato <ph name="NUM_MONTHS_MANY"/> mesi fa}}</translation>
+<translation id="8813708480179818649">Rimuovi scheda dal gruppo</translation>
 <translation id="8820741577754260431">Visualizza i cali di prezzo nelle tue schede</translation>
+<translation id="5495695379719652610">Brave chiude automaticamente gli elementi nella sezione Inattivi che non utilizzi da 3 mesi. Puoi disattivare questa impostazione adesso o in qualsiasi momento in Impostazioni.</translation>
 <translation id="8887921976452567404">Le schede e i gruppi chiusi possono essere riaperti dalle sezioni Schede recenti e Gruppi di schede.</translation>
 <translation id="8915916167043355778">Chiudi tutte</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Sposta in una nuova finestra}other{Sposta in nuove finestre}}</translation>
 <translation id="9090098097337832354">Informazioni su questo negozio chiuse</translation>
 <translation id="9114502155681725011">Apri il menu Azioni del gruppo di schede <ph name="TITLE_OF_GROUP"/>, colore <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Aggiungi una nuova scheda al gruppo</translation>

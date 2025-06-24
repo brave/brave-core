@@ -323,10 +323,10 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8813509417421129632">Une page intégrée à <ph name="SITE"/> tente d'enregistrer</translation>
 <translation id="7700010743463174379">Cette page tente d'enregistrer</translation>
 <translation id="6774238875569752630">Une page intégrée à celle-ci tente d'enregistrer</translation>
-<translation id="1233913566967531780">Focus</translation>
+<translation id="1233913566967531780">Onglet Focus</translation>
 <translation id="4034992002364254340">Regroupez tous vos onglets similaires dans une nouvelle fenêtre</translation>
 <translation id="8012125596344613514">Catégories recommandées</translation>
-<translation id="7529120186020617755">Saisissez une catégorie…</translation>
+<translation id="7529120186020617755">Saisissez une catégorie pour travailler…</translation>
 <translation id="6847541693235449912">OK</translation>
 <translation id="2079545284768500474">Annuler</translation>
 <translation id="1533980864758658574">Nouvelle fenêtre créée pour <ph name="TOPIC"/></translation>
@@ -344,6 +344,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8081858229109418493">Nom et icône du profil</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Modes de paiement</translation>
+<translation id="6278858909990433658">Importer un profil encore en cours d'utilisation</translation>
+<translation id="9071187015476020102">Pour importer les extensions ou autres paramètres, veuillez d'abord fermer le navigateur à partir duquel vous importez.</translation>
 <translation id="2044383478723007273">Couleurs de Brave</translation>
 <translation id="1807246157184219062">Clair</translation>
 <translation id="2414886740292270097">Foncé</translation>
@@ -748,7 +750,7 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="5574059574002819179">Ajuster les suggestions semi-automatiques</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
 <translation id="5385064007245738696">À propos de Leo</translation>
-<translation id="5084498230659987096">Brave Leo met l'IA au cœur de votre navigation avec un service de chat et d'interfaces intelligentes, tout en protégeant vos données personnelles. Leo n'utilise jamais vos données pour s'entraîner, ni pour améliorer les modèles d'IA. Toutes les requêtes passent par un serveur anonyme.</translation>
+<translation id="5084498230659987096">Brave Leo met l'IA au cœur de votre navigation avec un service de clavadage et d'interfaces intelligentes, tout en protégeant vos données personnelles. Leo n'utilise jamais vos données pour s'entraîner, ni pour améliorer les modèles d'IA. Toutes les requêtes passent par un serveur anonyme.</translation>
 <translation id="6458721693611638005">Pour mieux comprendre comment Brave sécurise votre usage de l'IA, consultez la politique de confidentialité de Leo. <ph name="BEGIN_LINK"/>En savoir plus.<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modèle par défaut pour les nouvelles conversations</translation>
 <translation id="8826914609353373601">Gérer l'abonnement Premium</translation>
@@ -825,4 +827,7 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Mode d'ouverture</translation>
+<translation id="2249111429176737533">Ouvrir comme fenêtre à onglets</translation>
+<translation id="7022756207310403729">Ouvrir dans le navigateur</translation>
 </translationbundle>

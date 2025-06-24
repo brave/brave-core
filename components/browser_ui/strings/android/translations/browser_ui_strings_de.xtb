@@ -29,7 +29,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="1343356790768851700">Diese Website erhebt Informationen zu deinen Interessen und schlägt dann anderen Websites Werbung vor</translation>
 <translation id="1369915414381695676">Website "<ph name="SITE_NAME"/>" hinzugefügt</translation>
 <translation id="1371239764779356792">Einer Website erlauben, Daten auf deinem Gerät zu speichern</translation>
-<translation id="1383876407941801731">Durchsuchen</translation>
+<translation id="1383876407941801731">Suchen</translation>
 <translation id="1384959399684842514">Download angehalten</translation>
 <translation id="1396327438254055134">Du kannst einer Website erlauben, dass V8‑Optimierungstool zu verwenden.</translation>
 <translation id="1409338233051621926">Tippe auf „Apps“ und dann auf „Standard-Apps“</translation>
@@ -84,6 +84,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="2028449514182362831">Funktionen, die Bewegungssensoren benötigen, funktionieren dann nicht</translation>
 <translation id="2030769033451695672">Tippen, um zu <ph name="URL_OF_THE_CURRENT_TAB"/> zurückzukehren</translation>
 <translation id="2079545284768500474">Rückgängig</translation>
+<translation id="2080070583977670716">Weitere Einstellungen</translation>
 <translation id="2091887806945687916">Ton</translation>
 <translation id="2096716221239095980">Alle Daten löschen</translation>
 <translation id="2102396546234652240">Websites dürfen nicht mein Mikrofon verwenden</translation>
@@ -229,7 +230,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="3779154269823594982">Passwörter ändern</translation>
 <translation id="3797520601150691162">Dunkles Design auf eine bestimmte Website nicht anwenden</translation>
 <translation id="3803367742635802571">Websites funktionieren möglicherweise nicht mehr erwartungsgemäß</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefonnummern</translation>
 <translation id="3826050100957962900">Anmeldung über Drittanbieter</translation>
 <translation id="3835233591525155343">Meine Gerätenutzung</translation>
@@ -437,7 +437,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6452138246455930388">Preissenkung auf dem geöffneten Tab von <ph name="OLD_PRICE"/> auf <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Mobile Ansicht anfordern, wenn das Fenster schmal ist</translation>
 <translation id="6527303717912515753">Teilen</translation>
-<translation id="652937045869844725">Versuche, Drittanbieter-Cookies zuzulassen. Das bedeutet zwar weniger Schutz, aber dadurch erhöht sich die Wahrscheinlichkeit, dass Websites richtig funktionieren.</translation>
 <translation id="6530703012083415527">Wenn dieser Schalter aktiviert ist, können Websites Pop-ups und Weiterleitungen verwenden. Wenn er deaktiviert ist, können Websites keine Pop-ups und Weiterleitungen verwenden.</translation>
 <translation id="6540488083026747005">Du hast Drittanbieter-Cookies auf dieser Website zugelassen</translation>
 <translation id="6545864417968258051">Bluetooth-Suche</translation>
@@ -451,6 +450,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6612358246767739896">Geschützte Inhalte</translation>
 <translation id="662080504995468778">Bleiben</translation>
 <translation id="6635327442719709864">Wenn diese Funktion aktiviert ist, können Websites anfragen, ob sie serielle Ports verwenden dürfen. Ist sie deaktiviert, können Websites keine seriellen Ports verwenden.</translation>
+<translation id="6678072580827808850">Sicherheitscheck aufrufen</translation>
 <translation id="6683865262523156564">Diese Website ist einer Gruppe zugeordnet, die deine Aktivitäten sehen kann. Die Gruppe wird durch <ph name="RWS_OWNER"/> definiert.</translation>
 <translation id="6689172468748959065">Profilfotos</translation>
 <translation id="6697925417670533197">Aktive Downloads</translation>
@@ -471,7 +471,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6912998170423641340">Websites dürfen keine Texte oder Bilder aus der Zwischenablage abrufen</translation>
 <translation id="6945221475159498467">Auswählen</translation>
 <translation id="6950072572526089586">Websites, die du besuchst, können Informationen zu deinen Aktivitäten speichern, um erwartungsgemäß zu funktionieren – beispielsweise um dafür zu sorgen, dass du angemeldet bleibst oder um Artikel in deinem Einkaufswagen zu speichern. Oft speichern Websites diese Informationen vorübergehend auf deinem Gerät.</translation>
-<translation id="6965382102122355670">Ok</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Websitedaten löschen? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Bedienungshilfen</translation>
 <translation id="6992289844737586249">Nachfragen, bevor Websites auf mein Mikrofon zugreifen dürfen (empfohlen)</translation>
@@ -485,7 +485,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="7141896414559753902">Anzeige von Pop-ups und Weiterleitungen für Websites blockieren (empfohlen)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Aktualisieren</translation>
-<translation id="7180865173735832675">Anpassen</translation>
 <translation id="7188508872042490670">Websitedaten auf dem Gerät</translation>
 <translation id="7201549776650881587">Durch diese Aktion werden alle Daten und Cookies gelöscht, die von allen Websites unter <ph name="ORIGIN"/> oder von der zugehörigen App auf dem Startbildschirm gespeichert wurden</translation>
 <translation id="7203150201908454328">Erweitert</translation>

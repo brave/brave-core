@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">ಪ್ರಮುಖ-ಮಟ್ಟದ ಮರುನಿರ್ದೇಶನ ಟ್ರ್ಯಾಕಿಂಗ್ URL ಗಳನ್ನು ಬೈಪಾಸ್ ಮಾಡುವುದಕ್ಕಾಗಿ ಬೆಂಬಲವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
 <translation id="94154759592465111">ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="7714773920987474116">JavaScript ನಿರ್ಬಂಧಿಸುತ್ತದೆ (ಸೈಟ್‌ಗಳು ಕಾರ್ಯನಿರ್ವಹಿಸದಂತೆ ಮಾಡಬಹುದು)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">YouTube ಶಿಫಾರಸು ಮಾಡಲಾದ ಕಂಟೆಂಟ್ ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="1005372663692637999">youtube.com ನಲ್ಲಿ ಮುಂಬರುವ ಮುಂದಿನ ಮತ್ತು ಮುಕ್ತಾಯದ ಕಾರ್ಡ್ ಎಲಿಮೆಂಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ.</translation>
 <translation id="5152595963250646670">YouTube ಗೆ ಅಡಚಣೆ ಉಂಟುಮಾಡುವ ಎಲಿಮೆಂಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">ಉನ್ನತ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="6285118765755298263">ಇತರ ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಇಂಡೆಕ್ಸ್ ಮಾಡಿ</translation>
 <translation id="919715748352669592">OpenSearch ನಿರ್ದಿಷ್ಟತೆಯನ್ನು ಅನುಸರಣೆ ಮಾಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಂಡೆಕ್ಸ್ ಮಾಡುತ್ತದೆ.</translation>
-<translation id="412411722208944922">ಕ್ವಿಕ್‌ ಸರ್ಚ್‌ ಎಂಜಿನ್ಸ್</translation>
-<translation id="2836969042340015500">ಕ್ವಿಕ್-ಸರ್ಚ್‌ ಎಂಜಿನ್ಸ್</translation>
-<translation id="9120455214794270250">ಕ್ವಿಕ್‌ ಸರ್ಚ್‌ ಬಾರ್‌ ತೋರಿಸಿ</translation>
-<translation id="1052991798173010693">ಪ್ರಸ್ತುತ ಸರ್ಚ್ ಇಂಜಿನ್‌ಗಳನ್ನು ಬಳಸಲಾಗುತ್ತದೆ</translation>
-<translation id="335303688425891752">ಆದೇಶವನ್ನು ಬದಲಾಯಿಸಲು ದೀರ್ಘವಾಗಿ ಒತ್ತಿರಿ</translation>
 <translation id="9148058034647219655">ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="8047754398610073499">ಕುಕೀ ಸಮ್ಮತಿ ಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="2621893359845808115">ಅವರ ಸೈಟ್‌ನಲ್ಲಿ ಕುಕೀಗಳನ್ನು ಸ್ವೀಕರಿಸಲು / ನಿರಾಕರಿಸಲು ನಿಮ್ಮನ್ನು ಕೇಳಿಕೊಳ್ಳುವ ವೆಬ್‌ಸೈಟ್ ಪಾಪ್-ಅಪ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">ನಿಮ್ಮ ಖಾಸಗಿ ಕೀ ಸ್ಟ್ರಿಂಗ್ ಫೈಲ್ ಅಥವಾ JSON ಅನ್ನು ನಮೂದಿಸಿ, ಅಂಟಿಸಿ ಅಥವಾ ಆಮದು ಮಾಡಿ.</translation>
 <translation id="569068482611873351">ಆಮದು ಮಾಡಿ...</translation>
 <translation id="4522570452068850558">ವಿವರಗಳು</translation>
+<translation id="3114681061018999547">ರಕ್ಷಾಕವಚ</translation>
 <translation id="3784455785234192852">ಲಾಕ್ ಮಾಡಿ</translation>
 <translation id="4412698727486357573">ಸಹಾಯ ಕೇಂದ್ರ</translation>
 <translation id="8239147115686034860">ಸ್ವಯಂಚಾಲಿತವಾಗಿ Brave ವ್ಯಾಲೆಟ್ ಲಾಕ್ ಮಾಡಿ</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">ಕಾರ್ಯಪ್ರಕಾರ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">ಡೇಟಾ ಇಲ್ಲ</translation>
 <translation id="1105525362447173583">Solana Dapp Sign ವಹಿವಾಟು</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ಕಳುಹಿಸಿರುವುದು <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ಕಳುಹಿಸಲಾಗಿದೆ <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ಅನುಮೋದಿತ <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">ಅನುಮೋದಿತ ಅನಿಯಮಿತ <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> ಸ್ವ್ಯಾಪ್ - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">ಅನುಮೋದಿಸದಿರುವುದು</translation>
-<translation id="8034530868111548216">ಅನುಮೋದಿಸಲಾಗಿದೆ</translation>
-<translation id="6015436276085482001">ತಿರಸ್ಕರಿಸಲಾಗಿದೆ</translation>
-<translation id="6666273175654835609">ಸಲ್ಲಿಸಲಾಗಿದೆ</translation>
-<translation id="2331676293859649642">ಖಚಿತಪಡಿಸಲಾಗಿದೆ</translation>
-<translation id="8214232307424031138">ಸಹಿ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="1165039591588034296">ದೋಷ</translation>
 <translation id="2561824823738097741">ನೀವು ವೇಗವಾದ ವೆಬ್ ಬ್ರೌಸರ್ ಬಳಸುತ್ತಿರುವಿರಾ?</translation>
 <translation id="2065971949051836200">3x ವೇಗವಾದ ಇಂಟರ್ನೆಟ್ ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿದೆ. ನಿಮ್ಮ ಎಲ್ಲಾ ವೆಬ್ ಬ್ರೌಸಿಂಗ್‌ಗೆ Brave ಬಳಸಿ.</translation>
 <translation id="2888278614497184977">Brave = 3x ವೇಗವಾದ ವೆಬ್ ಬ್ರೌಸಿಂಗ್</translation>
@@ -1238,4 +1221,5 @@
 <translation id="6859935199732075666">ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್ ದೋಷಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2735247450315842119">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="8420414929552321089">ಅನುಮತಿ ನೀಡಿದರೆ, ಹಲವು ಅಪ್ಲಿಕೇಶನ್‌ ಓಪನ್‌ ಇರುವಾಗ ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳು ಸಹ ಗೋಚರಿಸುತ್ತವೆ.</translation>
+<translation id="7956713633345437162">ಮೊಬೈಲ್‌ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
 </translationbundle>

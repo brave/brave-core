@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">אפשר תמיכה בעקיפה של כתובות אתרים למעקב אחר הפניות מחדש.</translation>
 <translation id="94154759592465111">חסום תסריטים</translation>
 <translation id="7714773920987474116">חוסם JavaScript (עלול לשבור אתרים)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">חסום תוכן מומלץ ב-Youtube</translation>
 <translation id="1005372663692637999">חוסם את רכיבי הלשונית 'הבא' ו-'סיום' ב-youtube.com.</translation>
 <translation id="5152595963250646670">חסום אלמנטים מסיחים ב-YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">הצגת הצעות מובילות</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
-<translation id="412411722208944922">מנועי חיפוש מהירים</translation>
-<translation id="2836969042340015500">מנועי חיפוש מהיר</translation>
-<translation id="9120455214794270250">הצגת סרגל חיפוש מהיר</translation>
-<translation id="1052991798173010693">מנועי חיפוש שנמצאים בשימוש</translation>
-<translation id="335303688425891752">יש ללחוץ לחיצה ארוכה כדי לשנות את הסדר</translation>
 <translation id="9148058034647219655">יציאה</translation>
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2621893359845808115">חסום חלונות קופצים של אתרים שמבקשים ממך לקבל/לדחות קובצי Cookie באתר שלהם</translation>
@@ -678,6 +672,7 @@
 <translation id="3952797765659730604">הכנס, הדבק, או תייבא את קובץ המחרוזת של מפתח פרטי שלך או JSON.</translation>
 <translation id="569068482611873351">ייבא...</translation>
 <translation id="4522570452068850558">פרטים</translation>
+<translation id="3114681061018999547">בהגנה</translation>
 <translation id="3784455785234192852">נעל</translation>
 <translation id="4412698727486357573">מרכז העזרה</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
@@ -809,18 +804,6 @@
 <translation id="2199215899212542417">סוג פונקציה: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">אין נתונים</translation>
 <translation id="1105525362447173583">פעולת Solana Dapp Sign</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> נשלחו<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> נשלח <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> מאושר<ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">אושר ללא הגבלה <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> החלפה - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">לא אושר</translation>
-<translation id="8034530868111548216">אושר</translation>
-<translation id="6015436276085482001">נדחה</translation>
-<translation id="6666273175654835609">הוגש</translation>
-<translation id="2331676293859649642">אושר</translation>
-<translation id="8214232307424031138">חתום</translation>
-<translation id="1165039591588034296">שגיאה</translation>
 <translation id="2561824823738097741">האם דפדפן האינטרנט שלך הכי מהיר?</translation>
 <translation id="2065971949051836200">האינטרנט המהיר פי 3 כבר מותקן בטלפון שלך. השתמש ב-Brave בכל הגלישות שלך באינטרנט.</translation>
 <translation id="2888278614497184977">Brave = גלישה מהרה פי 3x באינטרנט</translation>
@@ -1224,9 +1207,9 @@
 <translation id="4010699428656610296">אנא מזג לשוניות אחרות לחלון Brave אחר.</translation>
 <translation id="4306918392910017801">חיבור מחדש אוטומטי של VPN</translation>
 <translation id="1599073346542156922">כיצד להפעיל:</translation>
-<translation id="7001163334415463127">1. פתח את ההגדרות של המכשיר ממגירת היישומים שלך או בלחיצה על הכפתור למטה.</translation>
-<translation id="887443138775437899">2. מצא את Brave VPN והקש על סמל ההגדרות הממוקם בימין.</translation>
-<translation id="7546805138087561624">3. החלף<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN פעיל תמיד<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> כדי להפעיל אותו.</translation>
+<translation id="7001163334415463127">1. לפתוח את הגדרות המכשיר ממגירת היישומים שלך או בלחיצה על הכפתור למטה.</translation>
+<translation id="887443138775437899">2. למצוא את Brave VPN וללחוץ על סמל ההגדרות מימין.</translation>
+<translation id="7546805138087561624">3. להחליף למצב<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN פעיל תמיד<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> כדי להפעיל אותו.</translation>
 <translation id="2446001600399646984">לתשומת לבך: בשל מגבלות Android, האפשורת ״חסימת חיבורים בלי VPN״ לא עובדת כצפוי. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">‏פתיחת הגדרות Android</translation>
 <translation id="2728518864712716830">העדכון הורד</translation>
@@ -1239,4 +1222,5 @@
 <translation id="6859935199732075666">הצגת שגיאות גלישה בטוחה</translation>
 <translation id="2735247450315842119">לאפשר צילומי מסך בכרטיסיות פרטיות</translation>
 <translation id="8420414929552321089">כשאפשרות זו מופעלת, כרטיסיות פרטיות גם יהיו גלויות בזמן שמספר אפליקציות פתוחות.</translation>
+<translation id="7956713633345437162">סימניות לנייד</translation>
 </translationbundle>

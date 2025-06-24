@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">मोशन सेन्सरची आवश्यकता असलेली वैशिष्ट्ये काम करणार नाहीत</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> वर परत जाण्यासाठी टॅप करा</translation>
 <translation id="2079545284768500474">पहिल्यासारखे करा</translation>
+<translation id="2080070583977670716">अधिक सेटिंग्ज</translation>
 <translation id="2091887806945687916">ध्वनी</translation>
 <translation id="2096716221239095980">सर्व डेटा हटवा</translation>
 <translation id="2102396546234652240">साइटना तुमचा मायक्रोफोन वापरण्याची अनुमती देऊ नका</translation>
@@ -231,7 +232,6 @@
 <translation id="3779154269823594982">पासवर्ड बदला</translation>
 <translation id="3797520601150691162">विशिष्ट साइटला गडद थीम लागू करू नका</translation>
 <translation id="3803367742635802571">तुम्ही भेट देता त्या साइट कदाचित डिझाइन केल्यानुसार काम करणे थांबवतील</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">फोन नंबर</translation>
 <translation id="3826050100957962900">तृतीय पक्ष साइन इन</translation>
 <translation id="3835233591525155343">तुमच्या डिव्हाइसचा वापर</translation>
@@ -440,7 +440,6 @@
 <translation id="6452138246455930388">तुमच्या उघड्या असलेल्या टॅबवरील किमतीमध्ये <ph name="OLD_PRICE"/> वरून <ph name="NEW_PRICE"/> वर घट झाली आहे, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">विंडो अरुंद असते, तेव्हा मोबाइल दृश्याची विनंती करा</translation>
 <translation id="6527303717912515753">शेअर करा</translation>
-<translation id="652937045869844725">तृतीय पक्ष कुकीना अनुमती देऊन पहा, ज्यामुळे कमी संरक्षण मिळेल, पण साइटची वैशिष्ट्ये काम करण्याची अधिक शक्यता आहे</translation>
 <translation id="6530703012083415527">सुरू असताना, साइट पॉप-अप आणि रीडिरेक्ट वापरू शकतात. बंद असताना, साइट पॉप-अप आणि रीडिरेक्ट वापरू शकत नाहीत.</translation>
 <translation id="6540488083026747005">तुम्ही या साइटवर तृतीय पक्ष कुकीना अनुमती दिली आहे</translation>
 <translation id="6545864417968258051">ब्लूटूथ स्कॅन करत आहे</translation>
@@ -454,6 +453,7 @@
 <translation id="6612358246767739896">संरक्षित आशय</translation>
 <translation id="662080504995468778">यावर रहा</translation>
 <translation id="6635327442719709864">सुरू असताना, साइट सिरीअल पोर्ट वापरण्यास सांगू शकतात. बंद असताना, साइट सिरीअल पोर्ट वापरू शकत नाहीत.</translation>
+<translation id="6678072580827808850">सुरक्षितता तपासणीचे पुनरावलोकन करा</translation>
 <translation id="6683865262523156564">ही साइट तुमच्या अ‍ॅक्टिव्हिटी पाहू शकते अशा गटामध्ये आहे. हा गट <ph name="RWS_OWNER"/> द्वारे परिभाषित केला आहे</translation>
 <translation id="6689172468748959065">प्रोफाइल फोटो</translation>
 <translation id="6697925417670533197">सुरू असलेली डाउनलोड</translation>
@@ -488,7 +488,6 @@
 <translation id="7141896414559753902">साइट पॉप-अप आणि रीडिरेक्ट दाखवण्यापासून ब्लॉक करा (शिफारस केलेले)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">रिफ्रेश करा</translation>
-<translation id="7180865173735832675">कस्टमाइझ करा</translation>
 <translation id="7188508872042490670">डिव्‍हाइसवरील साइट डेटा</translation>
 <translation id="7201549776650881587">ही कृती <ph name="ORIGIN"/> अंतर्गत किंवा तुमच्या होम स्क्रीनवर त्याच्या अ‍ॅपने सर्व साइटनी स्टोअर केलेला सर्व डेटा आणि कुकी हटवेल</translation>
 <translation id="7203150201908454328">विस्‍तृत केलेले</translation>

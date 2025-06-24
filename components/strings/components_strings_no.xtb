@@ -17,10 +17,10 @@
 <translation id="102916930470544692">Passnøkkel</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ber om å lagre store datamengder permanent på enheten din</translation>
 <translation id="1030949145805074938">{COUNT,plural, =0{Ingen}=1{Fra 1 nettsted. Du blir logget av de fleste nettsteder. }other{Fra # nettsteder. Du blir logget av de fleste nettsteder. }}</translation>
+<translation id="1035509598913574970">Turkis 3</translation>
 <translation id="1035709686865413354">Vannfiltre og vannrensere</translation>
 <translation id="1036348656032585052">Slå av</translation>
 <translation id="1036881361735705143">C4-konvolutt</translation>
-<translation id="1038106730571050514">Vis forslag</translation>
 <translation id="1038842779957582377">ukjent navn</translation>
 <translation id="1041998700806130099">Jobbarkmelding</translation>
 <translation id="1044897699341250361">Hva betyr dette?</translation>
@@ -36,6 +36,7 @@
 <translation id="1062407476771304334">Erstatt</translation>
 <translation id="1063822554756965137">Filene er slettet</translation>
 <translation id="1064054731605354900">A3x5</translation>
+<translation id="1066528211000788800">JSON</translation>
 <translation id="1067029985695494416">Søkemotordetaljer</translation>
 <translation id="1068672505746868501">Oversett aldri sider på <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070333806075222467">Metall (glans)</translation>
@@ -139,6 +140,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1240347957665416060">Navnet på enheten din</translation>
 <translation id="124116460088058876">Flere språk</translation>
 <translation id="1243027604378859286">Forfatter:</translation>
+<translation id="1246424317317450637">Fet</translation>
 <translation id="1247030632403369975">Aluminium</translation>
 <translation id="1252209483516427155">Ytterklær</translation>
 <translation id="1253846494229886276">Lagrer skjermbildet</translation>
@@ -178,6 +180,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1301227606947843452">Legal Extra</translation>
 <translation id="1301324364792935241">Kontroller innstillingene for sikker DNS</translation>
 <translation id="1302418742166945866"><ph name="URL"/> vil kontrollere og programmere MIDI-enhetene dine</translation>
+<translation id="1302441868985588151">Microsoft PowerPoint</translation>
 <translation id="1304542452206545141">Hoteller og overnattingssteder</translation>
 <translation id="1307966114820526988">Avviklede funksjoner</translation>
 <translation id="1308113895091915999">Et tilbud er tilgjengelig</translation>
@@ -233,6 +236,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="138810468159004008">Tillat mens du er på nettstedet</translation>
 <translation id="139161720020179799">Mørkegrå 1</translation>
 <translation id="1391625539203220400">Vil du lagre IBAN-nummeret på denne enheten?</translation>
+<translation id="1392813880755413602">OpenDocument-presentasjon</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> sendte ingen data.</translation>
 <translation id="3057197202055415269">Angripere på nettstedet du prøvde å besøke, kan lure deg til å installere programvare eller oppgi ting som passord, telefonnumre eller kredittkortnumre. Brave anbefaler på det sterkeste at du går tilbake til trygg grunn. <ph name="BEGIN_LEARN_MORE_LINK"/>Finn ut mer om denne advarselen<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1405567553485452995">Lysegrønn</translation>
@@ -261,6 +265,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1432187715652018471">siden vil installere en tjenestebehandler</translation>
 <translation id="1432581352905426595">Administrer søkemotorer</translation>
 <translation id="1433225466058025572">Prøv å flytte filene på nytt</translation>
+<translation id="1433478348197382180">Lesemodus</translation>
 <translation id="1436185428532214179">Kan be om å få redigere filer og mapper på enheten</translation>
 <translation id="1442386063175183758">Høyre vindusfals</translation>
 <translation id="1442987760062738829">Hull</translation>
@@ -352,6 +357,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="159274626729231974">Filmfestivaler</translation>
 <translation id="1593359183944365958">270 grader</translation>
 <translation id="1594030484168838125">Velg</translation>
+<translation id="1597307423671074806">WebM-video</translation>
 <translation id="1599199147673445968">Nytt kort? <ph name="BEGIN_LINK"/>Oppgi kortopplysningene<ph name="END_LINK"/></translation>
 <translation id="1601786938618212857">Opprett ZIP-arkiv</translation>
 <translation id="1604192142734009334">Skjønnhet og trening</translation>
@@ -362,6 +368,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1612199629998703524">Administrer emner</translation>
 <translation id="1615178538289490617">Opphev tilgangen for <ph name="PORT_NAME"/></translation>
 <translation id="1615402009686901181">På grunn av en administratorregel er skjermbilder deaktivert når konfidensielt innhold er synlig</translation>
+<translation id="5716510827141729993">Spør Brave Søk om denne siden</translation>
 <translation id="1617276713587758852">Crossover-biler</translation>
 <translation id="1619007254056372606">Administrer nettstedsdata på enheten</translation>
 <translation id="1619648179761984213"><ph name="USER_DISPLAY_NAME"/> fjernet en fane</translation>
@@ -471,6 +478,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1801812870656502108">Detaljer om virtuelt kort</translation>
 <translation id="1803254472779303354">Muselås er tillatt</translation>
 <translation id="1803351196216024260">Kan be om å få bruke mikrofonen din</translation>
+<translation id="1804258830776932716">Aktiver Pix ved å knytte sammen kontoen din raskt</translation>
 <translation id="1806174020048213474">Denne appen ber om tillatelse til å installere wifi-legitimasjon. Etter konfigurering kobles <ph name="DEVICE_TYPE"/> automatisk til deltakende wifi-nettverk. For å fjerne denne legitimasjonen, avinstaller appen.</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="1807528111851433570">Startark</translation>
@@ -488,6 +496,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1821930232296380041">Ugyldig forespørsel eller forespørselsparametere</translation>
 <translation id="1822540298136254167">Nettsteder du besøker, og hvor mye tid du bruker på dem</translation>
 <translation id="1822995137827688764">Eiendomsutvikling</translation>
+<translation id="1823768272150895732">Skrift</translation>
 <translation id="1824402189105105503">Åttende rull</translation>
 <translation id="1826516787628120939">Kontrollerer</translation>
 <translation id="1832730227369924598">Synkronisering av skrivebord</translation>
@@ -616,6 +625,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2071156619270205202">Dette kortet er ikke kvalifisert for virtuelt kortnummer.</translation>
 <translation id="2071692954027939183">Varsler ble blokkert automatisk fordi du vanligvis ikke tillater dem</translation>
 <translation id="2071852865256799872">Nettleseren din administreres av organisasjonen din, og profilen din administreres av <ph name="PROFILE_DOMAIN"/></translation>
+<translation id="4131219066342523581">Brave Jamboard</translation>
 <translation id="2074733626795553847">Opphev blokkeringen av <ph name="TOPIC"/></translation>
 <translation id="2074771604462073334">Du besøkte nettstedet</translation>
 <translation id="2078956195623975415">Musikk- og dansespill</translation>
@@ -626,8 +636,10 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2082238445998314030">Resultat <ph name="RESULT_NUMBER"/> av <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2083256696566019397">Tillat for alle besøk</translation>
 <translation id="2085876078937250610">Lagre …</translation>
+<translation id="2088913896151127116">Legg til tekst</translation>
 <translation id="2090451897496479509">Kontakt leverandøren for å få mer informasjon</translation>
 <translation id="2091887806945687916">Lyd</translation>
+<translation id="2093184051799735948">Søk <ph name="ENGINE_NAME"/> eller skriv inn nettadresse</translation>
 <translation id="4871965986998315786">Brave prøver å slå av Windows Hello for utfylling av passord.</translation>
 <translation id="2094505752054353250">Domenene samsvarer ikke</translation>
 <translation id="2094704029599359040">Versjonsinformasjon</translation>
@@ -651,6 +663,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2122719317867821810">Denne regelen fungerer som den skal, men en motstridende verdi er angitt et annet sted og overstyres av denne regelen.</translation>
 <translation id="2126374524350484896">PDF-produsent:</translation>
 <translation id="2127090458081644412">Passordet er lagret på denne enheten</translation>
+<translation id="2127747486437921899">Kursiv</translation>
 <translation id="2130448033692577677">Malene du har angitt, kan ikke tas i bruk fordi DnsOverHttpsMode-regelen ikke er angitt.</translation>
 <translation id="2130699163006053678">A3x7</translation>
 <translation id="2132825047782982803">Disse vises i tilfeldig rekkefølge. Du kan når som helst bytte standardsøkemotor.</translation>
@@ -676,7 +689,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2161656808144014275">Tekst</translation>
 <translation id="2162620598375156287">Nå <ph name="CURRENT_PRICE"/> på <ph name="SOURCE_WEBSITE"/></translation>
 <translation id="2164510882479075877">Sjekk om det er en skrivefeil i <ph name="HOST_NAME"/>.</translation>
-<translation id="7839694624913224410">Fyll ut stamkundekort fra Brave Wallet automatisk</translation>
 <translation id="2166049586286450108">Full administratortilgang</translation>
 <translation id="2166378884831602661">Dette nettstedet tilbyr ikke sikre tilkoblinger</translation>
 <translation id="2168151236314517198">Utskrift av dette innholdet er blokkert på grunn av en administratorregel</translation>
@@ -693,6 +705,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2184405333245229118">{COUNT,plural, =1{1 adresse}other{# adresser}}</translation>
 <translation id="2187317261103489799">Oppdag (standard)</translation>
 <translation id="2188375229972301266">Flere hull bunn</translation>
+<translation id="218940509700321686">Kommadelte verdier</translation>
 <translation id="2194856509914051091">Ting å tenke på</translation>
 <translation id="2200678913752027654">Tommel ned-knapp – trykk på Enter for å åpne et skjema der du kan gi en detaljert tilbakemelding om hvorfor du ikke liker dette forslaget</translation>
 <translation id="2202627062836089804">baksiden av kortet</translation>
@@ -762,9 +775,12 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2296331629987861142">Betal i rimelige avdrag (forutsetter at du er kvalifisert; gebyrer påløper)</translation>
 <translation id="2300306941146563769">Ikke lastet opp</translation>
 <translation id="2301098101308036335">Hvilke nettsteder som besøkes, og når.</translation>
+<translation id="2302571905116831849">Fyll ut stamkundekort automatisk</translation>
+<translation id="2303437270440428119">OpenDocument-regneark</translation>
 <translation id="2305294852062272447">Vil du lagre førerkortet?</translation>
 <translation id="2306124309679506798">Vil du tillate en omsluttende opplevelse?</translation>
 <translation id="2139786916734654358">Hjemme- og jobbadressene dine er nå tilgjengelige i Brave</translation>
+<translation id="2310789833878085574">Lagre og autofyll</translation>
 <translation id="2312234273148520048">Sauser og dressinger</translation>
 <translation id="2316087952091171402">Mindre enn <ph name="UPPER_ESTIMATE"/>. Det kan hende at enkelte nettsteder lastes inn tregere neste gang du besøker dem.</translation>
 <translation id="2316159751672436664">Gi tilgjengelighetsverktøyene dine personlig preg i ChromeOS-innstillingene</translation>
@@ -825,8 +841,8 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2404884497378469141">Prøv å kopiere filene på nytt</translation>
 <translation id="2413155254802890957">Gamle</translation>
 <translation id="2413528052993050574">Denne tjeneren kunne ikke bevise at den er <ph name="DOMAIN"/>. Tjenerens sikkerhetssertifikat kan være trukket tilbake. Dette kan være forårsaket av en feilkonfigurering eller en angriper som avskjærer tilkoblingen din.</translation>
+<translation id="2414676293664737497">Markdown</translation>
 <translation id="2414886740292270097">Mørk</translation>
-<translation id="2418292431699242678">Administratoren din tillater at følgende synkroniseres mellom de forrige og nåværende øktene dine på alle ChromeOS-enheter:</translation>
 <translation id="2429716554270894715">Stoff (vannfast)</translation>
 <translation id="2436186046335138073">Vil du la <ph name="HANDLER_HOSTNAME"/> åpne alle <ph name="PROTOCOL"/>-linker?</translation>
 <translation id="2436976580469434549">Fiber- og tekstilkunst</translation>
@@ -919,13 +935,16 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="258135245577667916"><ph name="USER_DISPLAY_NAME"/> la til en fane</translation>
 <translation id="2586657967955657006">Utklippstavle</translation>
 <translation id="2587841377698384444">ID for katalog-API:</translation>
+<translation id="2593272815202181319">Monospace</translation>
 <translation id="2594318783181750337">Rask nettvisning:</translation>
 <translation id="2595719060046994702">Denne enheten og kontoen administreres ikke av et selskap eller en annen organisasjon.</translation>
 <translation id="2597378329261239068">Dette dokumentet er passordbeskyttet. Skriv inn et passord.</translation>
+<translation id="8100082401435090746">Autofyll dette kortet for kjøp i Brave når det er lagret for bruk med Google Pay</translation>
 <translation id="2605979593348332811">Fonetisk navn</translation>
 <translation id="2606760465469169465">Automatisk bekreftelse</translation>
 <translation id="2608019759319359258">Når et emne er blokkert, blir det ikke brukt til personlig tilpasning av annonser</translation>
 <translation id="2610561535971892504">Klikk for å kopiere</translation>
+<translation id="2612676031748830579">Kortnummer</translation>
 <translation id="686139377353794280">Alle sikkerhetskoder som er lagret på enheten og i Brave-kontoen din, blir slettet</translation>
 <translation id="2616412942031748191">Søkemotoroptimalisering og markedsføring</translation>
 <translation id="2618206371527040026">Akademiske konferanser og publikasjoner</translation>
@@ -957,7 +976,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2673968385134502798">Spill</translation>
 <translation id="2674170444375937751">Er du sikker på at du vil slette disse sidene fra loggen?</translation>
 <translation id="2674524144218093528">Husmaling og -beising</translation>
-<translation id="2674804415323431591">Skjul forslag</translation>
 <translation id="26774279487328902"><ph name="GROUP_COUNT"/> fanegrupper er ikke tilgjengelige lenger</translation>
 <translation id="2677748264148917807">Gå ut</translation>
 <translation id="2683195745483370038">Fant andre resultater</translation>
@@ -1055,6 +1073,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2893773853358652045">Fjerde rull</translation>
 <translation id="2894137550885451583">Dette er priser i <ph name="CURRENCY"/> for produktet <ph name="PRODUCT"/></translation>
 <translation id="2894233157216554317">Vil du oppdatere passet?</translation>
+<translation id="2898398337339787921">Microsoft Excel</translation>
 <translation id="2900528713135656174">Opprett hendelse</translation>
 <translation id="2902312830803030883">Flere handlinger</translation>
 <translation id="2903493209154104877">Adresser</translation>
@@ -1067,6 +1086,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2915068235268646559">Krasj fra <ph name="CRASH_TIME"/></translation>
 <translation id="2915496182262110498">Maling</translation>
 <translation id="2916038427272391327">Lukk andre programmer</translation>
+<translation id="2917630513638801879">Turkis 1</translation>
 <translation id="2919185931486062599">Jakt og skyting</translation>
 <translation id="2922350208395188000">Tjenerens sertifikat kan ikke kontrolleres.</translation>
 <translation id="2922792708490674">{0,plural, =1{Filen er blokkert for nedlasting}other{<ph name="FILE_COUNT"/> filer er blokkert for nedlasting}}</translation>
@@ -1081,6 +1101,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2930577230479659665">Beskjær etter hver kopi</translation>
 <translation id="2933624813161016821">Pregfolie</translation>
 <translation id="2938225289965773019">åpne linker til <ph name="PROTOCOL"/></translation>
+<translation id="2940418897281183211">PNG-bilde</translation>
 <translation id="2941878205777356567">Konvolutt 9 x 12 tommer</translation>
 <translation id="2941952326391522266">Denne tjeneren kunne ikke bevise at den er <ph name="DOMAIN"/>. Tjenerens sikkerhetssertifikat er fra <ph name="DOMAIN2"/>. Dette kan være forårsaket av en feilkonfigurering eller en angriper som avskjærer tilkoblingen din.</translation>
 <translation id="2942492342931589800">Casual</translation>
@@ -1135,6 +1156,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3022959067768579802">Fortsett å skrive</translation>
 <translation id="3023165109041533893">Foreslåtte annonser bidrar til å beskytte nettleserloggen og identiteten din samtidig som nettsteder kan vise deg relevante annonser. Basert på aktiviteten din kan et nettsted du har besøkt, foreslå relaterte annonser mens du fortsetter å bla gjennom. Du kan se en liste over disse nettstedene og blokkere de du ikke vil ha i innstillingene.</translation>
 <translation id="3024663005179499861">Feil type enhetsinnstillinger</translation>
+<translation id="3027915437837548462">SVG-bilde</translation>
 <translation id="3030331669969285614">Disse flaggene forhindrer eller tilbakestiller en funksjonsbrytende endring og er bare tilgjengelige i en begrenset periode.</translation>
 <translation id="3030542417256082866">Vil du lagre kjøretøyet?</translation>
 <translation id="3034526003882782781">Rulling og zooming er tillatt</translation>
@@ -1142,7 +1164,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3037177537145227281">Sporer prisen</translation>
 <translation id="3037605927509011580">Æsj!</translation>
 <translation id="3039406992698062762">Familiereise</translation>
-<translation id="3040636468789770340">Informasjonskapsler (påloggingsstatus på nettsteder du nylig har besøkt)</translation>
 <translation id="3041176923638368519">Se vilkårene for kortfordeler</translation>
 <translation id="3041612393474885105">Sertifikatinformasjon</translation>
 <translation id="3045769629416806687">Ekstremsport</translation>
@@ -1264,7 +1285,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å tilpasse nettleserens utseende</translation>
 <translation id="3240791268468473923">Ark for sikker betalingslegitimasjon uten samsvarende legitimasjon er åpnet</translation>
 <translation id="324180406144491771">«<ph name="HOST_NAME"/>»-linker er blokkert</translation>
-<translation id="3242784107647756022">Dette nettstedet forblir blokkert fordi du har Avansert beskyttelse påslått i Android-innstillingene. <ph name="BEGIN_LEARN_MORE_LINK"/>Finn ut mer om denne advarselen<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3243650379537999343">Tegn</translation>
 <translation id="3248329428895535435">Ikke vis på dette nettstedet</translation>
 <translation id="3249102948665905108">Filopplastingen til <ph name="CLOUD_PROVIDER"/> er fullført, men med feil</translation>
@@ -1469,6 +1489,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3586931643579894722">Skjul detaljer</translation>
 <translation id="3587725436724465984">Organisasjonen din har identifisert <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> som et nettsted som kanskje bryter retningslinjene. <ph name="BEGIN_LEARN_MORE_LINK"/>Finn ut mer om denne advarselen<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3587738293690942763">Midtre</translation>
+<translation id="3589519427766620380">Spør Google Lens om denne siden</translation>
 <translation id="3596918995172292499">Utstedende delstat for nummerskilt</translation>
 <translation id="3600106876108433070">Finn ut mer om sammenligningstabeller</translation>
 <translation id="3600246354004376029"><ph name="TITLE"/>, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
@@ -1529,6 +1550,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3678914302246317895">Skriv inn den <ph name="OTP_LENGTH"/>-sifrede bekreftelseskoden</translation>
 <translation id="3681007416295224113">Sertifikatinformasjon</translation>
 <translation id="2659564324969662497">Brave merker seg interessante emner basert på den nylige nettleserloggen din.</translation>
+<translation id="3681841880472207951">QuickTime-video</translation>
 <translation id="3682094733650754138">Alternativet for utfylling av adresse er valgt</translation>
 <translation id="3687920599421452763">Varebiler og minivaner</translation>
 <translation id="3693327506115126094">Velg hvordan du vil bekrefte at det er deg</translation>
@@ -1642,7 +1664,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3869939189466884821">De lokale filene dine slettes om <ph name="MINUTES"/> minutter</translation>
 <translation id="3872834068356954457">Vitenskap</translation>
 <translation id="3875783148670536197">Vis meg hvordan</translation>
-<translation id="387681220560687945">Vinduer (plassering og organisering av vinduer og faner)</translation>
 <translation id="3879748587602334249">Nedlastingsbehandling</translation>
 <translation id="3880456882942693779">Kunst og underholdning</translation>
 <translation id="3880589673277376494">Internett og telekommunikasjon</translation>
@@ -1665,6 +1686,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Slik kan du administrere dataene dine:<ph name="END_BOLD"/> Brave sletter automatisk nettsteder som er eldre enn 30 dager. Hvis du besøker et nettsted på nytt, kan det havne på listen igjen. Du kan også når som helst slå av annonser som er foreslått av nettsteder, og blokkere nettsteder fra å foreslå annonser for deg, i Brave-innstillingene.</translation>
 <translation id="3921869355029467742">Skriv inn sikkerhetskoden</translation>
 <translation id="3927538228901078312">Ingen sammenligningstabeller</translation>
+<translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3927932062596804919">Ikke tillat</translation>
 <translation id="3930260846839546333">Vesker og håndvesker</translation>
 <translation id="3937834511546249636">Forsvarsindustri</translation>
@@ -1797,6 +1819,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4140905366050378834">Dyremat og -utstyr</translation>
 <translation id="4140905530744469899">Profil-ID:</translation>
 <translation id="4142935452406587478">Skuff 10</translation>
+<translation id="4147897805161313378">Brave Foto</translation>
 <translation id="4148925816941278100">American Express</translation>
 <translation id="4150099059797363385">Kinesisk konvolutt nr. 4</translation>
 <translation id="4151403195736952345">Bruk global standard (oppdag)</translation>
@@ -1808,6 +1831,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4159784952369912983">Fiolett</translation>
 <translation id="4165422751765527461">Åpner en brukerstøtteartikkel på en ny fane</translation>
 <translation id="4165986682804962316">Nettstedsinnstillinger</translation>
+<translation id="535085301118821481">Administrer stamkundekort eller slå av disse forslagene i Brave Wallet</translation>
 <translation id="4169535189173047238">Ikke tillat</translation>
 <translation id="4171400957073367226">Ugyldig bekreftelsessignatur</translation>
 <translation id="4171489848299289778"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_OWNER"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
@@ -1937,6 +1961,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="437620492464254965">Dører og vinduer</translation>
 <translation id="4377125064752653719">Du forsøkte å gå til <ph name="DOMAIN"/>, men sertifikatet tjeneren presenterte har blitt trukket tilbake av utstederen. Dette innebærer at sikkerhetsinformasjonen tjeneren presenterte ikke er klarert. Det kan hende at du kommuniserer med en angriper.</translation>
 <translation id="4378154925671717803">Telefon</translation>
+<translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">Fra nå av kan du lagre filene dine i nettskyen</translation>
 <translation id="4384395682990721132">A4x3</translation>
 <translation id="4387692837058041921">Filopplasting til Microsoft OneDrive er satt på pause</translation>
@@ -1980,6 +2005,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Dette skjemaet er ikke sikkert. Autofyll er slått av.</translation>
 <translation id="4477350412780666475">Neste spor</translation>
+<translation id="4480760608050410381">MP4-video</translation>
 <translation id="448363931695049633">Pizzeriaer</translation>
 <translation id="4489023393592172404">Kaku 4-konvolutt</translation>
 <translation id="4489977488133295402">Bekreft at det er deg, for å autofylle betalingsmåter</translation>
@@ -2007,6 +2033,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4523643381056109546">Skilt</translation>
 <translation id="4524138615196389145">Bekreft kortene dine raskere ved å bruke WebAuthn fra nå av</translation>
 <translation id="45243788195988825">Blokkér <ph name="TOPIC"/></translation>
+<translation id="4528888973346221791">informasjon om jobbprofilen (for eksempel brukernavnet ditt)</translation>
 <translation id="4530347922939905757">SMS</translation>
 <translation id="4531477351494678589">Virtuelt kortnummer</translation>
 <translation id="4535523368173457420">Disse søkemotorene er populære i regionen din og vises i tilfeldig rekkefølge</translation>
@@ -2022,6 +2049,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4562155266774382038">Avvis forslaget</translation>
 <translation id="4566017918361049074">Utendørs</translation>
 <translation id="4569155249847375786">Bekreftet</translation>
+<translation id="4570008401337135432">Tekstjustering</translation>
 <translation id="457875822857220463">Levering</translation>
 <translation id="4579699065574932398">Bankvirksomhet</translation>
 <translation id="4582595824823167856">Motta en tekstmelding</translation>
@@ -2147,6 +2175,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4800132727771399293">Kontroller utløpsdatoen og CVC-koden, og prøv igjen.</translation>
 <translation id="4800546479758254481">AR er tillatt</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
+<translation id="4807098396393229769">Navn som er oppført på kortet</translation>
 <translation id="4809079943450490359">Veiledning fra enhetsadministratoren din:</translation>
 <translation id="4811450222531576619">Finn ut mer om kilden og emnet</translation>
 <translation id="4813512666221746211">Nettverksfeil</translation>
@@ -2180,7 +2209,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4866506163384898554">Trykk på |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| for å vise markøren</translation>
 <translation id="4873616204573862158">Briller</translation>
 <translation id="4873807733347502026">låse og bruke musen din</translation>
-<translation id="4876188919622883022">Forenklet visning</translation>
 <translation id="4876305945144899064">Uten brukernavn</translation>
 <translation id="4876327226315760474">Dette betyr at funksjoner på nettstedet skal fungere som forventet, men det kan hende at surfebeskyttelsen svekkes.</translation>
 <translation id="4877047577339061095">Oppbevaringsløsninger til hjemmet</translation>
@@ -2230,6 +2258,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4936134414789135531">Fant ikke angitt <ph name="VALUE_NAME"/>.</translation>
 <translation id="4936573216809994970">Filene dine begynner å lastes opp til <ph name="CLOUD_PROVIDER"/> om 1 time</translation>
 <translation id="4936675324097895694">Finans</translation>
+<translation id="4941627891654116707">Skriftstørrelse</translation>
 <translation id="4943620199112228840">Bruk mikrofonene dine</translation>
 <translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="4950898438188848926">Knappen for å bytte fane – trykk på Enter for å bytte til den åpne fanen, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
@@ -2262,10 +2291,12 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4998950033665438990">Ensidig</translation>
 <translation id="5001526427543320409">Tredjeparts informasjonskapsler</translation>
 <translation id="3676215163710610678">Hvis du slår på dette alternativet, lagrer Brave en kopi av kortet ditt på denne enheten, slik at det blir raskere å fylle ut skjemaer i fremtiden.</translation>
+<translation id="5007344584818503324">Aktivitet i delte fanegrupper</translation>
 <translation id="5007392906805964215">Se gjennom</translation>
 <translation id="5010599530303458903">Betal månedlig eller i fire rentefrie avdrag (forutsetter at du er kvalifisert)</translation>
 <translation id="5011561501798487822">gjenkjent språk</translation>
 <translation id="5015510746216210676">Maskinnavn:</translation>
+<translation id="5016205925109358554">Serif</translation>
 <translation id="5017554619425969104">Teksten du kopierte</translation>
 <translation id="5017828934289857214">Påminn meg senere</translation>
 <translation id="5018422839182700155">Kan ikke åpne denne siden</translation>
@@ -2317,6 +2348,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5097501891273180634">A2</translation>
 <translation id="510644072453496781">Kartong (ende)</translation>
 <translation id="5106648964679263509">Virtuelt kort for <ph name="BNPL_ISSUER_NAME"/> er fylt ut</translation>
+<translation id="5108567515277121477">Stamkundekort</translation>
 <translation id="5108881358339761672">Nettstedet er ikke sikkert</translation>
 <translation id="5109892411553231226">Administrer betalingsmåter</translation>
 <translation id="5112422516732747637">A5</translation>
@@ -2370,6 +2402,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="519422657042045905">Annotering er ikke tilgjengelig</translation>
 <translation id="5200063972779787617">Lagre adressen i kontoen</translation>
 <translation id="5201306358585911203">På en innebygd side på denne siden står det</translation>
+<translation id="5203716867500274632">Administratoren din har aktivert at følgende synkroniseres mellom de forrige og nåværende øktene dine på alle ChromeOS-enhetene dine:</translation>
 <translation id="5205114269877707377"><ph name="OMNIBOX_ACTION_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab for å bla gjennom tilgjengelige handlinger, og trykk deretter på Enter for å utføre den valgte handlingen.</translation>
 <translation id="5205222826937269299">Navn er obligatorisk</translation>
 <translation id="5206392433295093945">Soverom</translation>
@@ -2463,6 +2496,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5355557959165512791">Du kan ikke gå til <ph name="SITE"/> akkurat nå, siden sertifikatet for nettstedet er trukket tilbake. Nettverksfeil- og angrep er vanligvis midlertidige, så denne siden fungerer sannsynligvis senere.</translation>
 <translation id="5360706051680403227">Lamper og belysning</translation>
 <translation id="536296301121032821">Kunne ikke lagre angivelsen for enhetsinnstillinger</translation>
+<translation id="5363148545938487338">Salesforce</translation>
 <translation id="5363309033720083897">Den serielle porten tillates av administratoren din</translation>
 <translation id="5363532265530011914">Sokker, tights og strømper</translation>
 <translation id="5371425731340848620">Oppdater kortet</translation>
@@ -2498,7 +2532,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5414511064953050917">Flytt likevel</translation>
 <translation id="5418700249417444482">Nettadressene til sidene du besøker, blir sendt til Google Cloud eller tredjeparter for analyse og kan være synlige for administratoren din. De kan for eksempel bli skannet for å oppdage usikre nettsteder, eller nettsteder kan filtreres basert på regler som er angitt av administratoren.</translation>
 <translation id="5419311651396341287">Administratoren kan kanskje se</translation>
-<translation id="542101555204394006">Se all aktivitet</translation>
 <translation id="5421408724705443535">Rockemusikk</translation>
 <translation id="5423269318075950257">Spor prisen</translation>
 <translation id="5425082381151187189">Hjemme- og interiørdekor</translation>
@@ -2529,9 +2562,11 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5472588168895083535">Håndsporing er blokkert</translation>
 <translation id="547963486735802022">Prøv å overføre filene på nytt</translation>
 <translation id="5481076368049295676">Dette innholdet kan prøve å installere farlig programvare som stjeler eller sletter informasjon, på enheten din. <ph name="BEGIN_LINK"/>Vis det likevel<ph name="END_LINK"/></translation>
+<translation id="5481604577800516617">Plassering av vinduer og faner</translation>
 <translation id="5481682542063333508">Tilby skrivehjelp</translation>
 <translation id="54817484435770891">Du må angi en gyldig adresse</translation>
 <translation id="5483838506518938965">Du er klar</translation>
+<translation id="5484396522446324950">Stiler</translation>
 <translation id="5485100387355669506">Ekstra tykk</translation>
 <translation id="5485973315555778056">Skymaskin</translation>
 <translation id="5488367146069768854">Installasjoner av nettapper</translation>
@@ -2564,7 +2599,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="55293785478302737">Kantstifting</translation>
 <translation id="553377674408670169">Undervisningsjobber</translation>
 <translation id="5534785731327961487">Godt tilbud nå</translation>
-<translation id="5536214594743852365">Vis «<ph name="SECTION"/>»-delen</translation>
 <translation id="5536471014287260753">{DOMAIN_COUNT,plural, =1{+ 1 nettsted (flere på synkroniserte enheter)}other{+ # nettsteder (flere på synkroniserte enheter)}}</translation>
 <translation id="553782666181800029">Chou 2-konvolutt</translation>
 <translation id="5538270463355278784">automatisk fullskjerm</translation>
@@ -2582,6 +2616,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5548606607480005320">Sikkerhetssjekk</translation>
 <translation id="555037537507405574">avanserte skriverfunksjoner</translation>
 <translation id="555128936272638662">Mobilutstyr og trådløst tilbehør</translation>
+<translation id="555146886889455303">JPEG-bilde</translation>
 <translation id="5551890439174915351">100 x 200 mm</translation>
 <translation id="5556459405103347317">Last inn på nytt</translation>
 <translation id="5558083606899411167">Klimaanlegg</translation>
@@ -2681,6 +2716,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5732392974455271431">Foreldrene dine kan oppheve blokkeringen for deg</translation>
 <translation id="5110141686029759199">Knappen «Opprett skjema» – aktiver for å opprette et nytt skjema i Brave Skjemaer raskt</translation>
 <translation id="5738385766833540397">Administrer hvordan du mottar varsler om avslag for produkter du sporer</translation>
+<translation id="5739619009927381786">Lås opp skjermen i neste trinn, vanligvis med fingeravtrykket ditt. Alternativt kan du prøve å <ph name="BEGIN_LINK"/>bekrefte på en annen måte<ph name="END_LINK"/>.</translation>
 <translation id="573974402615125334">For å dele, bli med i og samarbeide i fanegrupper, synkroniser loggen og fanene dine</translation>
 <translation id="5740911612628596808">C9-konvolutt</translation>
 <translation id="5742806904559466333">Barer, nattklubber og uteliv</translation>
@@ -2776,6 +2812,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5924782825030413055">Kilden til den siste samtykkeoppdateringen:</translation>
 <translation id="5925040402342933574">Optisk disk (halvglans)</translation>
 <translation id="5926982310317673627">Treningssentre og helsestudioer</translation>
+<translation id="5927279462592128805">Microsoft Word</translation>
 <translation id="5930147475897662863">Slå på denne innstillingen for å bruke Hjelp meg å skrive</translation>
 <translation id="593102073240001326">Veiledninger, gjør-det-selv (DIY) og spesialkunnskap</translation>
 <translation id="5932224571077948991">Nettstedet viser forstyrrende eller villedende annonser</translation>
@@ -2827,6 +2864,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6015796118275082299">År</translation>
 <translation id="6017514345406065928">Grønn</translation>
 <translation id="818107217016701700">Slett nettleserloggen, informasjonskapsler, bufferen med mer i Brave-innstillingene</translation>
+<translation id="4738711932360196351">Brave Apps Script</translation>
 <translation id="6023810427609440412">Understellsnummer (VIN)</translation>
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> og <ph name="TYPE_3"/> (synkronisert)</translation>
 <translation id="6028591542479806248">Administrer mobilvarsler og e-postvarsler</translation>
@@ -2867,6 +2905,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6062937464449575061">Slutt å spore pris</translation>
 <translation id="6063415549109819824">Boligfinansiering</translation>
 <translation id="6070432475334343308">En eller flere filer ble ikke lastet opp til <ph name="FOLDER_NAME"/> i <ph name="CLOUD_PROVIDER"/></translation>
+<translation id="6078069862923723141">Turkis 2</translation>
 <translation id="6085149458302186532">Etiketter (farget)</translation>
 <translation id="6087312102907839798">Relaterte søk</translation>
 <translation id="7851017866080575588">Faner du sletter fra Brave-loggen, vises fortsatt i sammenligningstabellene</translation>
@@ -2947,7 +2986,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="622039917539443112">Parallellfals</translation>
 <translation id="6221286101741304627">For å gå ut av fullskjerm, trykk på |<ph name="ACCELERATOR"/>|</translation>
 <translation id="5286511760116495417">Vil du lagre dette kortet i Brave-kontoen din?</translation>
-<translation id="6221892641068781024">Forenklet visning</translation>
 <translation id="6222527803348563979">Brevpapir</translation>
 <translation id="62231116988543150">kunne installere nettapper</translation>
 <translation id="6224281071334553713">Smykkesteiner og smykker</translation>
@@ -2984,7 +3022,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="9136010393039243713">Brave Oppdatering</translation>
 <translation id="6278015583149890680">Brave Disk og OneDrive</translation>
 <translation id="6280223929691119688">Kan ikke levere til denne adressen. Velg en annen adresse.</translation>
-<translation id="628324801501145855">Administrer i innstillingene for betalingsmåter</translation>
 <translation id="6284292079994426700">26 x 38 tommer</translation>
 <translation id="6284449872909111707">Tekstmeldinger og chat</translation>
 <translation id="6284517535531159884">Typer frøvarianter</translation>
@@ -3091,6 +3128,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6433501201775827830">Velg søkemotor</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> avviste tilkoblingsforsøket.</translation>
 <translation id="6433797564277305076">Bekreft kortene dine raskere ved å bruke enhetsopplåsing fremover</translation>
+<translation id="4314443819377484539">Brave Tegninger</translation>
 <translation id="643917412048333145">Kjoler</translation>
 <translation id="6440503408713884761">Ignorert</translation>
 <translation id="6443406338865242315">hvilke utvidelser og programtillegg du har installert</translation>
@@ -3136,6 +3174,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6507117483253822672">Skriv med selvsikkerhet overalt på nettet</translation>
 <translation id="3960299545138990065">Start Brave på nytt</translation>
 <translation id="6513005815064132016">Kan be om å få spore kameraposisjonen din</translation>
+<translation id="8939259472484379612">Betal i Brave uten å bruke bankappen</translation>
 <translation id="6517596291481585650">Advarsel: Denne regelen ble ikke sammenslått som en regelspesifisert liste fordi den ikke er en liste.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="6519885440226079262">Kan be om å få spore hendene dine</translation>
@@ -3286,6 +3325,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6789062271869667677">Kontinuerlig (lang)</translation>
 <translation id="678982761784843853">ID-er for beskyttet innhold</translation>
 <translation id="6790428901817661496">Spill av</translation>
+<translation id="6792631792628412749">Passnøkkel • <ph name="PROVIDER_NAME"/></translation>
 <translation id="6793213097893210590">Kartong</translation>
 <translation id="679355240208270552">Ignorert fordi standardsøk ikke er aktivert av regel.</translation>
 <translation id="6794951432696553238">Bekreft kortene dine raskere ved å bruke Windows Hello fra nå av</translation>
@@ -3312,6 +3352,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6842196666980060516">184 x 260 mm</translation>
 <translation id="6844998850832008753">Håndsporing er tillatt denne gangen</translation>
 <translation id="976643339176907534">Knappen «Administrer sikkerhetsinnstillinger» – aktiver for å administrere Safe Browsing med mer i Brave-innstillingene</translation>
+<translation id="6850286078059909152">Tekstfarge</translation>
 <translation id="6852204201400771460">Vil du laste inn appen på nytt?</translation>
 <translation id="6857776781123259569">Administrer passord…</translation>
 <translation id="6858034839887287663">A2x4</translation>
@@ -3329,6 +3370,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6882210908253838664">Hvis et nettsted ikke fungerer, kan du prøve å gi det midlertidig tillatelse til å bruke informasjonskapsler fra tredjeparter. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="6883221904761970440">Ark for sikker autentisering av betalingslegitimasjon er lukket</translation>
 <translation id="6884662655240309489">Størrelse 1</translation>
+<translation id="6886283082988906333">ZIP-arkiv</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
 <translation id="7265969755975834932">Brave har forenklet denne siden for å gjøre den lettere å lese. Brave hentet den opprinnelige siden via en usikker forbindelse.</translation>
 <translation id="6890443033788248019">Vil du gi posisjonstillatelse?</translation>
@@ -3355,8 +3397,10 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6925267999184670015">North American B+</translation>
 <translation id="6926216138694948720">Kroppsutsmykning</translation>
 <translation id="692638818576287323">Kommersielle kjøretøy</translation>
+<translation id="6930607614725241390">Søk i sidepanelet</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>Med standardsøkemotoren din kan du søke på nettet og dra nytte av Brave-funksjoner<ph name="END_BOLD"/> som søk i adressefeltet og via bilder på nettsider. Det kan hende at enkelte funksjoner ikke er tilgjengelige hvis søkemotoren din ikke støtter dem.</translation>
 <translation id="6722453239914327220">Dette navnet er fra Brave-kontoen din</translation>
+<translation id="7372037107287931628">Nå kan du fylle ut stamkundekort fra Brave Wallet automatisk</translation>
 <translation id="6935082727755903526">Regnskaps- og finansjobber</translation>
 <translation id="6935179587384421592"><ph name="SIZE"/>. Det kan hende at enkelte nettsteder lastes inn tregere neste gang du besøker dem.</translation>
 <translation id="6936976777388162184">Dette er en pakkeenhet og kan ikke registreres med Kiosk- og skiltoppgradering.</translation>
@@ -3448,6 +3492,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7079783554682867524">Fra <ph name="TYPE_1"/> (flere på synkroniserte enheter)</translation>
 <translation id="7081311540357715807">Mat- og dagligvareforretninger</translation>
 <translation id="7083258188081898530">Skuff 9</translation>
+<translation id="70846382339153529">OpenDocument-tekst</translation>
 <translation id="7086090958708083563">Opplasting forespurt av bruker</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å administrere tillatelser og data som er lagret på nettsteder, i Brave-innstillingene</translation>
 <translation id="7096341143397839437">E-postadresse: <ph name="EMAIL"/>.</translation>
@@ -3525,6 +3570,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7219179957768738017">Tilkoblingen bruker <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Behandler</translation>
 <translation id="7221855153210829124">Vis varsler</translation>
+<translation id="7226892411756387078">Ren tekst</translation>
 <translation id="7227293336683593977">Prishistorikk</translation>
 <translation id="7228306718910595403">EU-kvalifisert status</translation>
 <translation id="7232352818707016189">Flere handlinger for Sammenligning-tabellen</translation>
@@ -3574,7 +3620,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7316521168101843192">Lagrer filen i Microsoft OneDrive</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Tilkoblingshjelp</translation>
-<translation id="7323804146520582233">Skjul «<ph name="SECTION"/>»-delen</translation>
 <translation id="733354035281974745">Overstyrt av lokal konto på enheten</translation>
 <translation id="7334320624316649418">&amp;Omorganiser likevel</translation>
 <translation id="7335157162773372339">Kan be om å få bruke kameraet ditt</translation>
@@ -3704,7 +3749,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7517414872996418597">C10-konvolutt</translation>
 <translation id="7518003948725431193">Finner ingen nettside for denne nettadressen: <ph name="URL"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
-<translation id="7521825010239864438">Delen «<ph name="SECTION"/>» er skjult</translation>
 <translation id="8552966873255887118">Du kan bruke den i alle Brave-produkter</translation>
 <translation id="7523408071729642236">Produksjon</translation>
 <translation id="7525067979554623046">Opprett</translation>
@@ -3754,6 +3798,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7598391785903975535">Under <ph name="UPPER_ESTIMATE"/></translation>
 <translation id="759889825892636187"><ph name="HOST_NAME"/> kan for øyeblikket ikke behandle denne forespørselen.</translation>
 <translation id="7599089013883397081">Nedlastingen ble tidsavbrutt</translation>
+<translation id="1062868744766141611">Spør Brave om denne siden</translation>
 <translation id="7608583484192556132">Hvorvidt en annonse du ser, er personlig tilpasset, kan avhenge av flere ting, inkludert denne innstillingen, <ph name="BEGIN_LINK_1"/>annonser foreslått av nettsteder<ph name="END_LINK_1"/>, <ph name="BEGIN_LINK_2"/>innstillingene dine for informasjonskapsler<ph name="END_LINK_2"/> og hvorvidt nettstedet du ser på, viser personlig tilpassede annonser. Finn ut mer om hvordan du <ph name="BEGIN_LINK_3"/>administrerer annonsepersonvernet ditt<ph name="END_LINK_3"/>.</translation>
 <translation id="7610193165460212391">Verdien er utenfor rekkevidden <ph name="VALUE"/>.</translation>
 <translation id="761261689936461781">Tykk</translation>
@@ -3779,6 +3824,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7639968568612851608">Mørk grå</translation>
 <translation id="8275603180424408640">Passordet du nettopp brukte, er funnet i et databrudd. Brave Passordlagring anbefaler at du endrer passordet nå.</translation>
 <translation id="7647206758853451655">Utskriftskvalitet</translation>
+<translation id="7648527891719919697">Dette nettstedet forblir blokkert fordi du har Avansert beskyttelse påslått i <ph name="BEGIN_ANDROID_SETTINGS_LINK"/>Android-innstillingene<ph name="END_ANDROID_SETTINGS_LINK"/>. <ph name="BEGIN_LEARN_MORE_LINK"/>Finn ut mer om denne advarselen<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="7648992873808071793">lagre filer på denne enheten</translation>
 <translation id="7653957176542370971">Arket for betalingsbehandling er lukket</translation>
 <translation id="7654909834015434372">Når du redigerer annoteringer, går dette dokumentet tilbake til den opprinnelige rotasjonen</translation>
@@ -3876,6 +3922,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7802523362929240268">Nettstedet er legitimt</translation>
 <translation id="7802989406998618639">Skriv inn den <ph name="NUMBER_OF_DIGITS"/>-sifrede sikkerhetskoden på <ph name="SIDE_OF_CARD"/>, slik at banken kan bekrefte at det er deg</translation>
 <translation id="780301667611848630">Nei takk</translation>
+<translation id="7805268272389338048">Kryptering beskytter personopplysningene dine</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="7805906048382884326">Lukk tipset</translation>
 <translation id="7810410097247356677">For å betale raskere neste gang, lagre kortet og den krypterte sikkerhetskoden på enheten</translation>
@@ -3885,6 +3932,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7814857791038398352">Microsoft OneDrive</translation>
 <translation id="7815352264092918456">Papir (vanlig)</translation>
 <translation id="7815407501681723534">Fant <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> for «<ph name="SEARCH_STRING"/>»</translation>
+<translation id="7816581410322248899">Jira-problem</translation>
 <translation id="7819605256207059717">Blokkert av organisasjonen din</translation>
 <translation id="7822611063308883975">Håndholdte spillkonsoller</translation>
 <translation id="7825558994363763489">Mikrobølgeovner</translation>
@@ -4066,6 +4114,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="8163866351304776260">Fire hull venstre</translation>
 <translation id="8164078261547504572">Vil du motta e-post når prisene går ned?</translation>
 <translation id="8169175551046720804">Nøklene «<ph name="DATA_CONTROLS_KEYS"/>» kan ikke være angitt i samme ordliste</translation>
+<translation id="8175053171643471349">Administrer stamkundekort</translation>
 <translation id="4351627595884993315">Brave tilbyr å lagre kort i Brave-kontoen din fordi du er logget på. Du kan endre dette i innstillingene.</translation>
 <translation id="8176440868214972690">Enhetsadministratoren har sendt noe informasjon til de følgende nettstedene, for eksempel innstillinger eller retningslinjer.</translation>
 <translation id="817820454357658398">Feminine hygieneprodukter</translation>
@@ -4151,7 +4200,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="8297545700510100061">Informasjonskapsler og andre nettstedsdata brukes til å huske deg, for eksempel for å logge deg på eller for å vise deg personlig tilpassede annonser. For å administrere informasjonskapsler for alle nettsteder, se <ph name="SETTINGS"/>.</translation>
 <translation id="8298115750975731693">Det kan hende at Wifi-nettverket du bruker (<ph name="WIFI_NAME"/>), krever at du besøker <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="8301894345671534559">Skriv inn koden</translation>
-<translation id="8303854710873047864">Delen «<ph name="SECTION"/>» vises</translation>
 <translation id="8304912090860925649">Ny sammenligningstabell</translation>
 <translation id="830498451218851433">Halvfals</translation>
 <translation id="8308653357438598313">Direktesendt videostrøm</translation>
@@ -4171,6 +4219,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="833262891116910667">Fremhev</translation>
 <translation id="8339163506404995330">Sider på <ph name="LANGUAGE"/> oversettes ikke</translation>
 <translation id="8339275256517065202">Fullfør kjøpet med Touch ID</translation>
+<translation id="833935588477667012"><ph name="FIELD_LABEL"/>, obligatorisk</translation>
 <translation id="8339463238135163999"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="TIMESTMAP"/></translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="8344776605855290140">Registrering med virtuelt kort er åpnet i full høyde</translation>
@@ -4179,6 +4228,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="8352849934814541340">Enhetsadministratoren har installert programmer for tilleggsfunksjoner. Programmene har tilgang til noen av dataene dine.</translation>
 <translation id="8355270400102541638">Lokal krasjkontekst:</translation>
 <translation id="8363502534493474904">Slå av flymodus</translation>
+<translation id="8363929499301563123">Nettstedsinformasjonskapsler (påloggingsstatusen på nettsteder du nylig har besøkt, bevares)</translation>
 <translation id="8364627913115013041">Ikke angitt.</translation>
 <translation id="8366057325711477500">Nyheter fra hele verden</translation>
 <translation id="836616551641291797">Finn ut mer om hvordan nettleseren din administreres</translation>
@@ -4217,7 +4267,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 Mer informasjon:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8416874502399604126">Mikrofon er tillatt denne gangen</translation>
-<translation id="8421158157346464398">informasjon om jobbprofilen (for eksempel brukernavnet for jobbprofilen)</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="8426945547715537628">Vil du tillate tastaturoverstyring?</translation>
@@ -4243,6 +4292,7 @@ Mer informasjon:
 <translation id="8460854335417802511">Slå den på</translation>
 <translation id="8461694314515752532">Kryptér synkroniserte data med din egen passordfrase for synkronisering</translation>
 <translation id="8461973047386722744">Fant ingen passord</translation>
+<translation id="6746841356191721119">Betal med Pix direkte i Brave</translation>
 <translation id="1912557825937556898">Gå til siden for Brave-sikkerhetssjekk i innstillingene</translation>
 <translation id="8468358362970107653">C3-konvolutt</translation>
 <translation id="8469428721212363950">Detaljhandel</translation>
@@ -4312,8 +4362,10 @@ Mer informasjon:
 <translation id="8586082901536468629">Utstyr for squash og racketball</translation>
 <translation id="858637041960032120">Legg til telefonnummer</translation>
 <translation id="8587100480629037893">Håndsporing er ikke tillatt</translation>
+<translation id="8589282312594195231">Buganizer-problem</translation>
 <translation id="8589998999637048520">Beste kvalitet</translation>
 <translation id="8590264442799989746"><ph name="HOST_NAME"/> og andre</translation>
+<translation id="8596640923906423176">Rikt tekstformat (RTF)</translation>
 <translation id="8597726363542221027">Brukte kjøretøy</translation>
 <translation id="8600271352425265729">Bare denne gangen</translation>
 <translation id="860043288473659153">Kortinnehavers navn</translation>
@@ -4364,6 +4416,7 @@ Mer informasjon:
 <translation id="8699041776323235191">HID-enhet</translation>
 <translation id="8699985386408839112">Kaku 1-konvolutt</translation>
 <translation id="8702965365666568344">Monteringsteip</translation>
+<translation id="8703242769654966101">Slå på Pix i Wallet</translation>
 <translation id="8703372953981978786">Denne linken fungerer ikke</translation>
 <translation id="8703575177326907206">Tilkoblingen til <ph name="DOMAIN"/> er ikke kryptert.</translation>
 <translation id="8705331520020532516">Serienummer</translation>
@@ -4464,6 +4517,7 @@ Mer informasjon:
 <translation id="8874824191258364635">Angi et gyldig kortnummer</translation>
 <translation id="8877780815363510165">Fiske</translation>
 <translation id="888117890813270681">«<ph name="DATA_CONTROLS_RESTRICTION"/>» kan ikke settes til «<ph name="DATA_CONTROLS_LEVEL"/>»</translation>
+<translation id="8883863364960302898">Brave Disk-mappe</translation>
 <translation id="8884537526797090108">Kan ikke ta opp konfidensielt innhold</translation>
 <translation id="8888187300091017436">Madrasser</translation>
 <translation id="8891031436559779793">Du blir varslet hvis prisen settes ned på noe nettsted.</translation>
@@ -4532,6 +4586,7 @@ Mer informasjon:
 <translation id="9023536760430404133">Bildekk og -hjul</translation>
 <translation id="9025348182339809926">(Ugyldig)</translation>
 <translation id="902590795160480390">Laster inn PDF</translation>
+<translation id="5979301400168151411">Brave Nettsteder</translation>
 <translation id="8309858808266687860">Prøv Brave Enterprise Core</translation>
 <translation id="9027531288681624875">For å gå ut av fullskjerm, trykk på og hold inne |<ph name="ACCELERATOR"/>|</translation>
 <translation id="9035022520814077154">Sikkerhetsfeil</translation>
@@ -4616,6 +4671,7 @@ Mer informasjon:
 <translation id="9157595877708044936">Konfigurerer ...</translation>
 <translation id="9161794544616754735">{0,plural, =1{<ph name="FILE_NAME"/> kan ha sensitivt innhold}other{<ph name="FILE_COUNT"/> filer kan ha sensitivt innhold}}</translation>
 <translation id="9162097962559874470"><ph name="ORIGIN"/> – For å gå ut av fullskjerm, trykk på |<ph name="ACCELERATOR"/>|</translation>
+<translation id="9163287596625611517">Slack-melding</translation>
 <translation id="9165305804774426672">Nettsteder du besøker, kan også fastslå hva du liker, basert på aktiviteten din på nettstedet. Hvis du for eksempel besøker et nettsted som selger joggesko for langdistanseturer, kan det hende at nettstedet tolker det som at du er interessert i å løpe maraton.</translation>
 <translation id="9166851138617700776">Mer om annonser som er foreslått av nettsteder og annonsemåling</translation>
 <translation id="9167054383925257837">informasjon om enhetens nettleser og OS (for eksempel nettleser- og OS-versjonen)</translation>
@@ -4670,6 +4726,7 @@ Mer informasjon:
 <translation id="940524522703752213">Filene dine begynner å lastes opp til <ph name="CLOUD_PROVIDER"/> om <ph name="MINUTES"/> minutter</translation>
 <translation id="944578681290094302">Vis hvilke belønninger og fordeler som er tilgjengelige for kortene dine, når du betaler. <ph name="CARD_BENEFIT_HELP_LINK_BEGIN"/>Finn ut mer om kortfordeler<ph name="CARD_BENEFIT_HELP_LINK_END"/></translation>
 <translation id="5444457503062019851">Brave blokkerer nettsteder fra å bruke informasjonskapsler fra tredjeparter til å spore deg når du surfer.</translation>
+<translation id="5858078029174489466">Autofyll dette kortet for kjøp i Brave når det er lagret på denne enheten</translation>
 <translation id="94613679163347541">Vil du sammenligne <ph name="CATEGORY"/>?</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å opprette et nytt nettsted i Brave Nettsteder raskt</translation>
 <translation id="7776043919629791284">{COUNT,plural, =0{Brave begynner å begrense informasjonskapsler igjen i dag}=1{Brave begynner å begrense informasjonskapsler igjen i morgen}other{# dager til Brave begynner å begrense informasjonskapsler igjen}}</translation>

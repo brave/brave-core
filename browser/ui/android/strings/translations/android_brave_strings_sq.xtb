@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sq">
 <translation id="370665806235115550">Po ngarkohet…</translation>
-<translation id="7931127789630755251">Fito emblema për reklamat private që sheh në Brave</translation>
 <translation id="7859066142771796818">Përdor emblemat për të blerë karta dhuratë, shkëmbeji me monedha të tjera, mbështet krijuesit e përmbajtjes dhe më shumë.</translation>
 <translation id="3863981251715594911">Si funksionon?</translation>
 <translation id="2965798296974325760">Fillo përdor Shpërblimet</translation>
@@ -17,7 +16,6 @@
 <translation id="7307834434086582547">Aktivizo/Çaktivizo Mbrojtjen e Braves</translation>
 <translation id="1118970888826017401">Aktivizo mbështetjen për anashkalimin e URL-ve që përcjellin gjurmime të nivelit të lartë.</translation>
 <translation id="94154759592465111">Blloko skriptet</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blloko përmbajtjen e rekomanduar nga YouTube</translation>
 <translation id="1005372663692637999">Bllokon elementet e kartës së fundit dhe të ardhshme në youtube.com.</translation>
 <translation id="5152595963250646670">Blloko elementet shpërqendruese të YouTube</translation>
@@ -192,7 +190,6 @@
 <translation id="5299848999918506028">Faleminderit!</translation>
 <translation id="76550953340008122">Faleminderit që bëre me dije programuesit e Brave-s se ka diçka që nuk shkon me këtë faqe interneti. Ne do të bëjmë më të mirën ta rregullojmë këtë.</translation>
 <translation id="650318023204990401">Kontrolle të përparuara</translation>
-<translation id="8589748782214271192">Jo, faleminderit</translation>
 <translation id="8374242949413616101">Mbrojtja e privatësisë</translation>
 <translation id="4955406228638026265">Brave ndalon reklamat &amp; gjurmuesit që mbledhin informacion rreth teje pa pëlqimin tënd.</translation>
 <translation id="752842701893882688">Kurse internet dhe bateri</translation>
@@ -210,7 +207,6 @@
 <translation id="8363792084628930008">Duke aktivizuar Shpërblimet, ti pranon <ph name="TERMS_OF_SERVICE"/> dhe <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3479552764303398839">Jo tani</translation>
 <translation id="7701040980221191251">Asnjë</translation>
-<translation id="8488282162676695335">Kuleta Brave</translation>
 <translation id="8798099450830957504">Parazgjedhje</translation>
 <translation id="1822560017823072927">Ndërfaqe parazgjedhje publike dhe private</translation>
 <translation id="5825943197137337319">Vetëm ndërfaqe parazgjedhje publike</translation>
@@ -256,7 +252,6 @@
 <translation id="9065203028668620118">Përpunojeni</translation>
 <translation id="473775607612524610">Përditësoje</translation>
 <translation id="5045550434625856497">Fjalëkalim i gabuar</translation>
-<translation id="1165039591588034296">Gabim</translation>
 <translation id="3494964159182650590">Përmbledhje Shpërblimesh</translation>
 <translation id="1450735350187803276">Reklamat e para këtë muaj</translation>
 <translation id="1767561995429774671">Jepni ndihmesë</translation>
@@ -286,7 +281,6 @@
 <translation id="3264975266761862670">Gati për të fituar?</translation>
 <translation id="265337947574975838">Hyr ose krijo llogari me një nga partnerët tanë.</translation>
 <translation id="654447476965480878">Mëso më shumë si të fitosh BAT</translation>
-<translation id="6278643716658443228">Parametrat e Shpërblimeve</translation>
 <translation id="4272136334824111854">Këtë muaj, ke vizituar <ph name="CREATOR_COUNT"/> krijues të mbështetur nga Shpërblimet Brave</translation>
 <translation id="1179407411385015942">Leo është një ndihmës inteligjent që 
 mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
