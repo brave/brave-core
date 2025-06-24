@@ -19,6 +19,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/types/expected.h"
@@ -256,7 +257,7 @@ class PageContentFetcherInternal {
 
       auto url = GURL(base::StringPrintf(
           "https://www.youtube.com/youtubei/v1/player?key=%s",
-          config->api_key.c_str()));
+          base::EscapeQueryParamValue(config->api_key, true).c_str()));
       auto new_invalidation_token = url.spec();
       if (new_invalidation_token == invalidation_token) {
         VLOG(2) << "Not fetching content since invalidation token matches: "

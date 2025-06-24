@@ -619,4 +619,83 @@ TEST_F(PageContentFetcherTest, TextContentExtraction) {
   EXPECT_EQ(test_url_loader_factory_->total_requests(), 0u);
 }
 
+// Test that API keys with special characters are properly URL-encoded
+TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
+  // API key with special characters that need URL encoding
+  const std::string api_key_with_special_chars =
+      "test+api_key=with&special?chars#123 space";
+  const std::string video_id = "test_video_456";
+  const std::string transcript_text = "This is a test transcript";
+
+  NavigateAndCommit(GURL("https://www.youtube.com/watch?v=" + video_id));
+
+  // Set up mock extractor that returns YouTube InnerTube config
+  MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
+  auto youtube_content =
+      CreateYoutubePageContent(api_key_with_special_chars, video_id);
+
+  EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
+      .WillOnce(
+          Invoke([&youtube_content](
+                     mojom::PageContentExtractor::ExtractPageContentCallback
+                         callback) {
+            std::move(callback).Run(youtube_content.Clone());
+          }));
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Calculate the expected URL with properly encoded API key
+  // The original API key "test+api_key=with&special?chars#123 space" should be
+  // encoded as "test%2Bapi_key%3Dwith%26special%3Fchars%23123+space" when using
+  // EscapeQueryParamValue with use_plus=true (spaces become +)
+  std::string expected_encoded_api_key =
+      "test%2Bapi_key%3Dwith%26special%3Fchars%23123+space";
+  GURL expected_inner_tube_url(
+      "https://www.youtube.com/youtubei/v1/player?key=" +
+      expected_encoded_api_key);
+  GURL transcript_url("https://www.youtube.com/api/timedtext?lang=en&v=" +
+                      video_id);
+
+  // Mock InnerTube API response
+  std::string inner_tube_response =
+      CreateInnerTubeResponse(transcript_url.spec());
+  SimulateNetworkResponse(expected_inner_tube_url, net::HTTP_OK,
+                          inner_tube_response);
+
+  // Mock transcript XML response
+  std::string transcript_xml = CreateTranscriptXmlResponse(transcript_text);
+  SimulateNetworkResponse(transcript_url, net::HTTP_OK, transcript_xml);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, transcript_text);
+  EXPECT_TRUE(is_video);
+  EXPECT_FALSE(invalidation_token.empty());
+
+  // Verify that the correct requests were made
+  EXPECT_EQ(requests_made.size(), 2u);
+
+  // Check that the InnerTube API request URL has the properly encoded API key
+  EXPECT_EQ(requests_made[0].url, expected_inner_tube_url);
+  EXPECT_EQ(requests_made[0].method, "POST");
+  EXPECT_EQ(requests_made[0].headers.GetHeader("Content-Type"),
+            "application/json");
+
+  // Verify that the API key in the URL is properly encoded
+  EXPECT_EQ(requests_made[0].url.spec(), expected_inner_tube_url.spec());
+
+  // Check transcript request
+  EXPECT_EQ(requests_made[1].url, transcript_url);
+  EXPECT_EQ(requests_made[1].method, "GET");
+}
+
 }  // namespace ai_chat
