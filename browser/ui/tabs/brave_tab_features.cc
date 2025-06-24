@@ -14,14 +14,12 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
-
-#if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#endif
 
 namespace tabs {
 namespace {
