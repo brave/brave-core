@@ -52,7 +52,7 @@ class NetworkManager {
   GURL GetNetworkURL(mojom::CoinType coin,
                      const std::optional<url::Origin>& origin);
 
-  std::optional<bool> IsEip1559Chain(std::string_view chain_id);
+  bool IsEip1559Chain(std::string_view chain_id);
   void SetEip1559ForCustomChain(std::string_view chain_id,
                                 std::optional<bool> is_eip1559);
 
