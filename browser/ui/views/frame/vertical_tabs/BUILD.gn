@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//build/config/ozone.gni")
 import("//build/config/ui.gni")
 
 source_set("vertical_tabs") {
@@ -63,5 +64,12 @@ source_set("browser_tests") {
 
   if (use_aura) {
     deps += [ "//ui/aura:test_support" ]
+  }
+
+  if (use_ozone) {
+    deps += [
+      "//ui/ozone",
+      "//ui/platform_window/common",
+    ]
   }
 }
