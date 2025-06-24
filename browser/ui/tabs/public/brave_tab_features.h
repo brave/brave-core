@@ -20,15 +20,11 @@ namespace tabs {
 
 class TabInterface;
 
-class TabFeatures : public TabFeatures_Chromium {
+class BraveTabFeatures : public TabFeatures {
  public:
-  using TabFeaturesFactory =
-      base::RepeatingCallback<std::unique_ptr<TabFeatures>()>;
-  static std::unique_ptr<TabFeatures> CreateTabFeatures();
-  static void ReplaceTabFeaturesForTesting(TabFeaturesFactory factory);
-
-  TabFeatures();
-  ~TabFeatures() override;
+  static BraveTabFeatures* FromTabTabFeatures(TabFeatures* tab_features);
+  BraveTabFeatures();
+  ~BraveTabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
 
