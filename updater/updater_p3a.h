@@ -6,11 +6,11 @@
 #ifndef BRAVE_UPDATER_UPDATER_P3A_H_
 #define BRAVE_UPDATER_UPDATER_P3A_H_
 
-#include <time.h>
+#include <string>
 
 #include "base/time/time.h"
-#include "components/prefs/pref_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_updater {
 
@@ -24,7 +24,10 @@ enum UpdateStatus {
 };
 
 void RegisterLocalState(PrefRegistrySimple* registry);
-void ReportLaunch(base::Time now, std::string current_version, bool is_using_omaha4, PrefService* prefs);
+void ReportLaunch(base::Time now,
+                  std::string current_version,
+                  bool is_using_omaha4,
+                  PrefService* prefs);
 
 }  // namespace brave_updater
 

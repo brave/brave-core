@@ -1,12 +1,22 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/updater/updater_p3a.h"
+
 #include "base/metrics/histogram_macros.h"
 
 namespace brave_updater {
 
-inline constexpr char kFirstLaunchTimePref[] = "brave.updater_p3a.first_launch_time";
-inline constexpr char kLastLaunchUsedOmaha4Pref[] = "brave.updater_p3a.last_launch_used_omaha4";
-inline constexpr char kLastLaunchVersionPref[] = "brave.updater_p3a.last_launch_version";
-inline constexpr char kLastReportedWeekPref[] = "brave.updater_p3a.last_reported_week";
+inline constexpr char kFirstLaunchTimePref[] =
+    "brave.updater_p3a.first_launch_time";
+inline constexpr char kLastLaunchUsedOmaha4Pref[] =
+    "brave.updater_p3a.last_launch_used_omaha4";
+inline constexpr char kLastLaunchVersionPref[] =
+    "brave.updater_p3a.last_launch_version";
+inline constexpr char kLastReportedWeekPref[] =
+    "brave.updater_p3a.last_reported_week";
 
 void RegisterLocalState(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kFirstLaunchTimePref, base::Time());
@@ -15,8 +25,10 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastReportedWeekPref, -1);
 }
 
-void ReportLaunch(base::Time now, std::string current_version,
-                  bool is_using_omaha4, PrefService* prefs) {
+void ReportLaunch(base::Time now,
+                  std::string current_version,
+                  bool is_using_omaha4,
+                  PrefService* prefs) {
   std::string last_launch_version = prefs->GetString(kLastLaunchVersionPref);
   prefs->SetString(kLastLaunchVersionPref, current_version);
 
@@ -33,8 +45,9 @@ void ReportLaunch(base::Time now, std::string current_version,
   int current_week = time_since_first.InDays() / 7;
 
   int last_reported_week = prefs->GetInteger(kLastReportedWeekPref);
-  if (last_reported_week >= current_week)
+  if (last_reported_week >= current_week) {
     return;
+  }
 
   bool updated_to_new_version = last_launch_version != current_version;
 

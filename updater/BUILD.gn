@@ -9,14 +9,12 @@ source_set("p3a") {
     "updater_p3a.h",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = ["updater_p3a_unittest.cc"]
+  sources = [ "updater_p3a_unittest.cc" ]
 
   deps = [
     ":p3a",

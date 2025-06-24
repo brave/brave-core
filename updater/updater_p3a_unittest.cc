@@ -5,8 +5,8 @@
 
 #include "brave/updater/updater_p3a.h"
 
-#include "base/time/time.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/time/time.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,9 +17,7 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
   BraveUpdaterP3ATest() = default;
   ~BraveUpdaterP3ATest() override = default;
 
-  void SetUp() override {
-    RegisterLocalState(local_state_.registry());
-  }
+  void SetUp() override { RegisterLocalState(local_state_.registry()); }
 
  protected:
   TestingPrefServiceSimple local_state_;
@@ -91,12 +89,18 @@ void BraveUpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
   ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
 }
 
-void BraveUpdaterP3ATest::ExpectBucketCounts(int num_no_updates, int num_updates) {
-  UpdateStatus no_update = IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
-  UpdateStatus updated = IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
-  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, no_update, num_no_updates);
-  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, updated, num_updates);
-  histogram_tester_.ExpectTotalCount(kUpdateStatusHistogramName, num_updates + num_no_updates);
+void BraveUpdaterP3ATest::ExpectBucketCounts(int num_no_updates,
+                                             int num_updates) {
+  UpdateStatus no_update =
+      IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
+  UpdateStatus updated =
+      IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
+  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, no_update,
+                                      num_no_updates);
+  histogram_tester_.ExpectBucketCount(kUpdateStatusHistogramName, updated,
+                                      num_updates);
+  histogram_tester_.ExpectTotalCount(kUpdateStatusHistogramName,
+                                     num_updates + num_no_updates);
 }
 
 }  // namespace brave_updater
