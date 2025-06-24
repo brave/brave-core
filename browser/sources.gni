@@ -348,7 +348,9 @@ if (is_mac) {
   ]
   brave_chrome_browser_deps += [
     "//brave/app:command_ids",
+    "//brave/browser:mac_features",
     "//brave/browser:sparkle_buildflags",
+    "//brave/updater:p3a_facade",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
@@ -661,8 +663,4 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
-}
-
-if (target_os == "mac") {
-  brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }

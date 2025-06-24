@@ -15,6 +15,20 @@ source_set("p3a") {
   ]
 }
 
+source_set("p3a_facade") {
+  sources = [
+    "updater_p3a_facade.cc",
+    "updater_p3a_facade.h",
+  ]
+  deps = [
+    ":p3a",
+    "//base",
+    "//brave/browser:mac_features",
+    "//chrome/browser:browser_process",
+    "//chrome/common:non_code_constants",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "updater_p3a_unittest.cc" ]
