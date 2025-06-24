@@ -27,6 +27,7 @@ class BraveUpdaterP3ATest : public ::testing::Test {
 
   void TestNoUpdate(bool is_using_omaha4);
   void TestUpdated(bool is_using_omaha4);
+  void TestUpdatedComplex(bool is_using_omaha4);
 
   UpdateStatus GetExpectedStatus(bool is_using_omaha4, bool updated);
 
@@ -52,6 +53,14 @@ TEST_F(BraveUpdaterP3ATest, TestUpdatedWithOmaha4) {
   TestUpdated(true);
 }
 
+TEST_F(BraveUpdaterP3ATest, TestUpdatedComplexWithLegacy) {
+  TestUpdatedComplex(false);
+}
+
+TEST_F(BraveUpdaterP3ATest, TestUpdatedComplexWithOmaha4) {
+  TestUpdatedComplex(true);
+}
+
 void BraveUpdaterP3ATest::TestNoUpdate(bool is_using_omaha4) {
   // No updates for 8 days:
   for (int day = 0; day <= 7; day++) {
@@ -68,8 +77,8 @@ void BraveUpdaterP3ATest::TestNoUpdate(bool is_using_omaha4) {
 void BraveUpdaterP3ATest::TestUpdated(bool is_using_omaha4) {
   // Initial launch on the first day:
   SimulateLaunch(0, "0.0.0.1", is_using_omaha4);
-  UpdateStatus no_update = GetExpectedStatus(is_using_omaha4, false);
   UpdateStatus updated = GetExpectedStatus(is_using_omaha4, true);
+  UpdateStatus no_update = GetExpectedStatus(is_using_omaha4, false);
   // A new version on the second day, then no updates until the 14th day:
   for (int day = 1; day <= 13; day++) {
     SimulateLaunch(day, "0.0.0.2", is_using_omaha4);
@@ -84,6 +93,29 @@ void BraveUpdaterP3ATest::TestUpdated(bool is_using_omaha4) {
   ExpectTotalCount(2);
   ExpectBucketCount(updated, 1);
   ExpectBucketCount(no_update, 1);
+}
+
+void BraveUpdaterP3ATest::TestUpdatedComplex(bool is_using_omaha4) {
+  // Like TestUpdated, but with an update on the 15th day.
+  UpdateStatus updated = GetExpectedStatus(is_using_omaha4, true);
+
+  // Initial launch:
+  SimulateLaunch(0, "0.0.0.1", is_using_omaha4);
+  ExpectBucketCount(updated, 0);
+
+  // An update in week 1:
+  SimulateLaunch(1, "0.0.0.2", is_using_omaha4);
+  ExpectBucketCount(updated, 1);
+
+  // No update at the beginning of week 2:
+  SimulateLaunch(7, "0.0.0.2", is_using_omaha4);
+  ExpectBucketCount(updated, 1);
+
+  // An update in week 3:
+  SimulateLaunch(14, "0.0.0.3", is_using_omaha4);
+  ExpectBucketCount(updated, 2);
+ 
+  ExpectTotalCount(2);
 }
 
 UpdateStatus BraveUpdaterP3ATest::GetExpectedStatus(bool is_using_omaha4,
