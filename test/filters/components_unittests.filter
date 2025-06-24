@@ -203,4 +203,5 @@
 -UserAgentUtilsTest.UserAgentMetadata
 -VariationsIdsProviderTest.*
 -ViewElementTest.GetSources
+-WebContentsModalDialogManagerTest.OccludedToVisible
 -WebSigninTrackerTest.DeferredCreationAndCookiesWithSigninAccountShouldTriggerSuccessResult
