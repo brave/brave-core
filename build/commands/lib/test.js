@@ -153,13 +153,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--gtest_also_run_disabled_tests')
   }
 
-  if (options.output) {
-    const outputPath = path.join(config.srcDir, options.output)
-    // Clear previous output
-    deleteFile(outputPath)
-    braveArgs.push('--gtest_output=xml:' + options.output)
-  }
-
   if (options.disable_brave_extension) {
     braveArgs.push('--disable-brave-extension')
   }
@@ -236,7 +229,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
           }
         }
       }
-      if (options.output) {
+      if (options.output_xml) {
         const previousOutput = braveArgs.findIndex((arg) => {
           return arg.startsWith('--gtest_output=xml:')
         })
@@ -268,7 +261,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
       }
-      if (options.output) {
+      if (options.output_xml) {
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
         // not interested in the exit code of running the tests, because they
@@ -284,7 +277,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs,
         runOptions,
       )
-      if (options.output) {
+      if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
