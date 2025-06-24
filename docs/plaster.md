@@ -89,7 +89,7 @@ count = 0
 To apply this plaster file, just run `plaster.py`:
 
 ```sh
-tools/cr/plaster.py
+tools/cr/plaster.py apply
 ```
 
 Running `plaster.py` will cause the substitutions to be applied in
@@ -128,3 +128,14 @@ index 00000000000..63703e6940b
 ```
 
 The produced patch is supposed to be committed in the repository as usual.
+
+### Checking if files are up-to-date
+
+You can verify if all plaster files are applied, with Chromium sources updated
+and patch files checked under `path` with the following command:
+
+```sh
+tools/cr/plaster.py check
+```
+
+This is the equivalent of a dry run of `plaster.py apply`.
