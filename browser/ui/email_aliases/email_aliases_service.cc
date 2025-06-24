@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/email_aliases/browser/email_aliases_service.h"
+#include "brave/browser/ui/email_aliases/email_aliases_service.h"
 
 #include <algorithm>
 #include <set>
@@ -11,7 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/browser/ui/email_aliases/email_aliases.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace email_aliases {

@@ -8,11 +8,11 @@
 
 #include <memory>
 
+#include "brave/browser/ui/email_aliases/email_aliases.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "build/buildflag.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

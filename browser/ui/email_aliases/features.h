@@ -3,10 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/email_aliases/features.h"
+#ifndef BRAVE_BROWSER_UI_EMAIL_ALIASES_FEATURES_H_
+#define BRAVE_BROWSER_UI_EMAIL_ALIASES_FEATURES_H_
+
+#include "base/feature_list.h"
 
 namespace email_aliases {
 
-BASE_FEATURE(kEmailAliases, "EmailAliases", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_DECLARE_FEATURE(kEmailAliases);
 
 }  // namespace email_aliases
+
+#endif  // BRAVE_BROWSER_UI_EMAIL_ALIASES_FEATURES_H_

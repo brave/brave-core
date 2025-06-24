@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_H_
-#define BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_H_
+#ifndef BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
+#define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/browser/ui/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -59,4 +59,4 @@ class EmailAliasesService : public KeyedService,
 
 }  // namespace email_aliases
 
-#endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_H_
+#endif  // BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
