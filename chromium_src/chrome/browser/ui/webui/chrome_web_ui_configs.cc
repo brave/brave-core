@@ -38,6 +38,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/components/brave_account/features/features.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 namespace {
@@ -98,7 +99,9 @@ void RegisterChromeWebUIConfigs() {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
-  map.AddWebUIConfig(std::make_unique<BraveAccountUIConfig>());
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    map.AddWebUIConfig(std::make_unique<BraveAccountUIConfig>());
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)

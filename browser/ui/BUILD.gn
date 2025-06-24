@@ -161,7 +161,10 @@ source_set("ui") {
         "webui/settings/brave_account_settings_handler.h",
       ]
 
-      deps += [ "//brave/components/brave_account/mojom" ]
+      deps += [
+        "//brave/components/brave_account/features",
+        "//brave/components/brave_account/mojom",
+      ]
     }
   }
 

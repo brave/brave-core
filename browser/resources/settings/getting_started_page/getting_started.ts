@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 import '../people_page/people_page.js'
 import '../settings_page/settings_animated_pages.js'
@@ -28,6 +29,19 @@ export class BraveSettingsGettingStarted extends PolymerElement {
   static get template() {
     return getTemplate()
   }
+
+// <if expr="enable_brave_account">
+  static get properties() {
+    return {
+      isBraveAccountEnabled_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isBraveAccountEnabled'),
+      },
+    }
+  }
+
+  declare private isBraveAccountEnabled_: boolean
+// </if>
 }
 
 customElements.define(BraveSettingsGettingStarted.is, BraveSettingsGettingStarted);

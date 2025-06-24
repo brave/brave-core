@@ -276,6 +276,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/components/brave_account/features/features.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -657,8 +658,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
-  registry.ForWebUI<BraveAccountUI>()
-      .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 }
 
@@ -899,8 +902,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT) && !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
+        map);
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT) && !BUILDFLAG(IS_ANDROID)
 }
 

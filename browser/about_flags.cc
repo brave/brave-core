@@ -13,6 +13,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -47,6 +48,10 @@
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/features/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
@@ -524,6 +529,16 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES
 #endif
+
+#define BRAVE_ACCOUNT_FEATURE_ENTRIES                                          \
+  IF_BUILDFLAG(ENABLE_BRAVE_ACCOUNT,                                           \
+               EXPAND_FEATURE_ENTRIES({                                        \
+                   "brave-account",                                            \
+                   "Enable Brave Account",                                     \
+                   "Enables Brave Account",                                    \
+                   kOsAndroid | kOsLinux | kOsMac | kOsWin,                    \
+                   FEATURE_VALUE_TYPE(brave_account::features::kBraveAccount), \
+               }))
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -1034,6 +1049,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
+  BRAVE_ACCOUNT_FEATURE_ENTRIES                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

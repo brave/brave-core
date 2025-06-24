@@ -312,7 +312,10 @@ if (!is_android) {
 }
 
 if (enable_brave_account) {
-  brave_chrome_browser_deps += [ "//brave/browser/ui/webui/brave_account" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/ui/webui/brave_account",
+    "//brave/components/brave_account/features",
+  ]
 
   if (!is_android) {
     brave_chrome_browser_deps += [ "//brave/components/brave_account/mojom" ]

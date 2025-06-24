@@ -57,6 +57,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
+#include "brave/components/brave_account/features/features.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -215,6 +216,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  html_source->AddBoolean("isBraveAccountEnabled",
+                          brave_account::features::IsBraveAccountEnabled());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
 }
 
 // static

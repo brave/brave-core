@@ -43,6 +43,10 @@
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+#include "brave/components/brave_account/features/features.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
 #endif
@@ -152,17 +156,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
-#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
-      // <Brave Account Row>
-      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
-      {"braveAccountRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
-      {"braveAccountGetStartedButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountManageAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
-  // </Brave Account Row>
-#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -1094,6 +1087,26 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(localized_strings);
 }
 
+void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
+#if BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+  if (!brave_account::features::IsBraveAccountEnabled()) {
+    return;
+  }
+
+  webui::LocalizedString localized_strings[] = {
+      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
+      {"braveAccountRowDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountGetStartedButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
+      {"braveAccountManageAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+  };
+
+  html_source->AddLocalizedStrings(localized_strings);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ACCOUNT)
+}
+
 }  // namespace
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
@@ -1104,6 +1117,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
   BraveAddEmailAliasesStrings(html_source);
+  BraveAddBraveAccountStrings(html_source);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
