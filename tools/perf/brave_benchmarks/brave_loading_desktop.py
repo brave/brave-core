@@ -12,7 +12,6 @@
 # pytype: disable=import-error
 
 import os
-import sys
 import time
 
 from benchmarks import loading_metrics_category
@@ -36,9 +35,7 @@ def CreateCoreTBMOptions(metric_list):
   tbm_options = timeline_based_measurement.Options()
   loading_metrics_category.AugmentOptionsForLoadingMetrics(tbm_options)
   cat_filter = tbm_options.config.chrome_trace_config.category_filter
-  if sys.platform != 'darwin':
-    # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
-    cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
+  cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
   tbm_options.ExtendTimelineBasedMetric(metric_list)
   return tbm_options
 
