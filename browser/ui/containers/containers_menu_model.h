@@ -29,8 +29,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     Delegate& operator=(const Delegate&) = delete;
     virtual ~Delegate() = default;
 
-    virtual void OnContainerSelected(
-        const containers::mojom::ContainerPtr& container) = 0;
+    virtual void OnContainerSelected(const mojom::ContainerPtr& container) = 0;
     virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
     virtual Browser* GetBrowserToOpenSettings() = 0;
   };
