@@ -9,7 +9,10 @@ source_set("p3a") {
     "updater_p3a.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
 }
 
 source_set("unit_tests") {
