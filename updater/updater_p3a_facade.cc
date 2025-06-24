@@ -14,11 +14,8 @@
 namespace brave_updater {
 
 void ReportLaunch() {
-  ReportLaunch(
-      base::Time::Now(),
-      chrome::kChromeVersion,
-      brave::ShouldUseOmaha4(),
-      g_browser_process->local_state());
+  ReportLaunch(base::Time::Now(), chrome::kChromeVersion,
+               brave::ShouldUseOmaha4(), g_browser_process->local_state());
 }
 
 }  // namespace brave_updater
