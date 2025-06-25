@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/bubble/bubble_border.h"
 
 BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
     views::View* contents,
