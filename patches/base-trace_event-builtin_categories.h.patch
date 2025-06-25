@@ -1,5 +1,5 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index 467ce5cd72f227ecf7011176ef174a18c2b9d8cc..9e92a4cd814610a27e1299e841b5275d7a1ea2e6 100644
+index 5cd2f29af7cb7cbb50d88164ab790bc6cadaf456..da2a147519f70c429c91604f89fb41a655f4369b 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
 @@ -255,6 +255,7 @@ PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(
@@ -7,6 +7,6 @@ index 467ce5cd72f227ecf7011176ef174a18c2b9d8cc..9e92a4cd814610a27e1299e841b5275d
      perfetto::Category("webrtc_stats"),
      perfetto::Category("xr"),
 +    BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES
-     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("android_view_hierarchy")),
-     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("animation-worklet")),
-     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("audio")),
+     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("android_view_hierarchy"))
+         .SetTags("slow"),
+     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("animation-worklet"))
