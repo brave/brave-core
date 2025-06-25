@@ -13,9 +13,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
-// TODO(apaymyshev): refactor utility methods to return std::optional instead
-// of bool + out-parameter.
-
 namespace brave_wallet {
 
 struct ParseFilEstimateGasResult {
