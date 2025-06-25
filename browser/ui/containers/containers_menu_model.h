@@ -40,10 +40,8 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
   ~ContainersMenuModel() override;
 
-  // ui::SimpleMenuModel:
-  void ExecuteCommand(int command_id, int event_flags) override;
-
   // ui::SimpleMenuModel::Delegate:
+  void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
   bool IsCommandIdEnabled(int command_id) const override;
 
