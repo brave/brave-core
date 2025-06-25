@@ -288,7 +288,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-        //Make Inactive Items Outside Of PopupWindow
+        // Make Inactive Items Outside Of PopupWindow
         boolean focusable = true;
 
         // Create a window with our parameters
