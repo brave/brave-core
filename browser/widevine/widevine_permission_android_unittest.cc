@@ -81,8 +81,8 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
-  TestingPrefServiceSimple* local_state() {
-    return profile_manager_->local_state()->Get();
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->local_state();
   }
   Profile* profile() { return profile_; }
   content::WebContents* web_contents() const { return web_contents_.get(); }
