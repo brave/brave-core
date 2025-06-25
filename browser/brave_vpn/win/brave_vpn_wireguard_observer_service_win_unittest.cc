@@ -23,8 +23,6 @@ class BraveVpnWireguardObserverServiceUnitTest : public testing::Test {
   BraveVpnWireguardObserverServiceUnitTest() {}
 
   void SetUp() override {
-    brave_vpn::RegisterLocalStatePrefs(
-        scoped_testing_local_state_.Get()->registry());
     EnableWireguardIfPossible(scoped_testing_local_state_.Get());
     CreateWireguardObserverService();
   }
