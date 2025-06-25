@@ -90,18 +90,14 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
           }
       })";
 
-  std::optional<ParseFilEstimateGasResult> m_parse_result;
+  auto parse_result = brave_wallet::ParseFilEstimateGas(ParseJson(json));
+  EXPECT_TRUE(parse_result);
+  EXPECT_EQ(parse_result->gas_premium, "100466");
+  EXPECT_EQ(parse_result->gas_fee_cap, "101520");
+  EXPECT_EQ(parse_result->gas_limit, 2187060u);
 
-  m_parse_result = brave_wallet::ParseFilEstimateGas(ParseJson(json));
-  EXPECT_TRUE(m_parse_result);
-  EXPECT_EQ(m_parse_result->gas_premium, "100466");
-  EXPECT_EQ(m_parse_result->gas_fee_cap, "101520");
-  EXPECT_EQ(m_parse_result->gas_limit, 2187060u);
-
-  m_parse_result = {};
   json.clear();
-  m_parse_result = brave_wallet::ParseFilEstimateGas(base::Value());
-  EXPECT_FALSE(m_parse_result);
+  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(base::Value()));
 
   json = "[]";
   EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
