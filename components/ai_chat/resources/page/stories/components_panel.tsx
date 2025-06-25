@@ -218,7 +218,25 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
+    events: [
+      getCompletionEvent(
+        'Sure! Here\'s a table with 5 Marvel characters:\n\n' +
+        '| First Name | Last Name   | Character Name       | ' +
+        'First Appearance |\n' +
+        '|------------|-------------|----------------------|' +
+        '------------------|\n' +
+        '| Tony       | Stark      | Iron Man            | ' +
+        '1968              |\n' +
+        '| Steve      | Rogers     | Captain America      | ' +
+        '1941              |\n' +
+        '| Thor       | Odinson    | Thor                 | ' +
+        '1962              |\n' +
+        '| Natasha    | Romanoff   | Black Widow          | ' +
+        '1964              |\n' +
+        '| Peter      | Parker     | Spider-Man           | ' +
+        '1962              |\n' +
+        '\n\n Let me know if you\'d like more details!'
+      )],
     uploadedFiles : [],
     fromBraveSearchSERP: false,
     modelKey: '1'
@@ -441,6 +459,38 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [
       getCompletionEvent(
         'According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.'
+      )],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      getCompletionEvent(
+        'Sure! Here\'s a table with 5 Marvel characters:\n\n' +
+        '| First Name | Last Name   | Character Name       | ' +
+        'First Appearance |\n' +
+        '|------------|-------------|----------------------|' +
+        '------------------|\n' +
+        '| Tony       | Stark      | Iron Man            | ' +
+        '1968              |\n' +
+        '| Steve      | Rogers     | Captain America      | ' +
+        '1941              |\n' +
+        '| Thor       | Odinson    | Thor                 | ' +
+        '1962              |\n' +
+        '| Natasha    | Romanoff   | Black Widow          | ' +
+        '1964              |\n' +
+        '| Peter      | Parker     | Spider-Man           | ' +
+        '1962              |\n' +
+        '\n\n Let me know if you\'d like more details!'
       )],
     uploadedFiles : [],
     fromBraveSearchSERP: false,
