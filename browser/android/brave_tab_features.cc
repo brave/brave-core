@@ -5,7 +5,6 @@
 
 #include "brave/browser/android/brave_tab_features.h"
 
-
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "chrome/browser/android/tab_android.h"
@@ -33,7 +32,8 @@ TabFeatures::~TabFeatures() = default;
 
 // static
 BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
-  return static_cast<BraveTabFeatures*>(tab_features->brave_tab_features_.get());
+  return static_cast<BraveTabFeatures*>(
+      tab_features->brave_tab_features_.get());
 }
 
 }  // namespace tabs

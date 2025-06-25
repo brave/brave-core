@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
-#define BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
+#ifndef BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_H_
+#define BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_H_
 
 #include <memory>
 
@@ -24,7 +24,7 @@ namespace tabs {
 
 // This class holds state that is scoped to a tab in Android. It is constructed
 // after the WebContents/tab_helpers, and destroyed before.
-class BraveTabFeatures : TabFeatures_Chromium{
+class BraveTabFeatures : TabFeatures_Chromium {
  public:
   BraveTabFeatures(content::WebContents* web_contents, Profile* profile);
   ~BraveTabFeatures();
@@ -36,4 +36,4 @@ class BraveTabFeatures : TabFeatures_Chromium{
 
 }  // namespace tabs
 
-#endif  // BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
+#endif  // BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_H_

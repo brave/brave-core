@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
