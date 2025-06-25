@@ -44,6 +44,14 @@ class Repository:
         """
         return self.path == BRAVE_CORE_PATH
 
+    @property
+    def relative_to_chromium(self) -> PurePath:
+        """ Returns the path relative to src/.
+        """
+        if self.is_chromium:
+            return PurePath('')
+        return self.path.relative_to(CHROMIUM_SRC_PATH)
+
     def to_brave(self) -> PurePath:
         """ Returns the path from the repository to brave/.
         """
