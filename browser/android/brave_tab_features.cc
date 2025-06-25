@@ -26,7 +26,8 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 BraveTabFeatures::~BraveTabFeatures() = default;
 
 TabFeatures::TabFeatures(content::WebContents* web_contents, Profile* profile)
-    : brave_tab_features_(new BraveTabFeatures(web_contents, profile)) {}
+    : brave_tab_features_(
+          std::make_unique<BraveTabFeatures>(web_contents, profile)) {}
 
 TabFeatures::~TabFeatures() = default;
 
