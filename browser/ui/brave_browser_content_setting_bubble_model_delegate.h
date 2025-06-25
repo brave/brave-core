@@ -9,6 +9,8 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 
+class Browser;
+
 class BraveBrowserContentSettingBubbleModelDelegate
     : public BrowserContentSettingBubbleModelDelegate {
  public:
