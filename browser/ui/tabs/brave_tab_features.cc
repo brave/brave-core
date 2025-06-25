@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/tabs/public/tab_features.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 
 #include <memory>
 #include <utility>
@@ -27,25 +27,31 @@ TabFeatures::TabFeaturesFactory& GetFactory() {
 }  // namespace
 
 // static
+void TabFeatures::ReplaceTabFeaturesForTesting(
+    TabFeatures::TabFeaturesFactory factory) {
+  TabFeatures::TabFeaturesFactory& f = GetFactory();
+  f = std::move(factory);
+}
+
+// static
 std::unique_ptr<TabFeatures> TabFeatures::CreateTabFeatures() {
   if (GetFactory()) {
     return GetFactory().Run();
   }
   // Constructor is protected.
-  return base::WrapUnique(new TabFeatures());
+  return base::WrapUnique(new BraveTabFeatures());
 }
 
 // static
-void TabFeatures::ReplaceTabFeaturesForTesting(TabFeaturesFactory factory) {
-  TabFeatures::TabFeaturesFactory& f = GetFactory();
-  f = std::move(factory);
+BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
+  return static_cast<BraveTabFeatures*>(tab_features);
 }
 
-TabFeatures::TabFeatures() = default;
-TabFeatures::~TabFeatures() = default;
+BraveTabFeatures::BraveTabFeatures() = default;
+BraveTabFeatures::~BraveTabFeatures() = default;
 
-void TabFeatures::Init(TabInterface& tab, Profile* profile) {
-  TabFeatures_Chromium::Init(tab, profile);
+void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
+  TabFeatures::Init(tab, profile);
 
   // Expect upstream's Init to create the registry.
   CHECK(side_panel_registry());

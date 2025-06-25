@@ -12,6 +12,17 @@
 
 #undef TabFeatures
 
-#include "brave/browser/android/tab_features.h"
+namespace tabs {
+class BraveTabFeatures;
+class TabFeatures {
+ public:
+  TabFeatures(content::WebContents* web_contents, Profile* profile);
+  ~TabFeatures();
+
+ private:
+  friend BraveTabFeatures;
+  std::unique_ptr<BraveTabFeatures> brave_tab_features_;
+};
+}  // namespace tabs
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ANDROID_TAB_FEATURES_H_

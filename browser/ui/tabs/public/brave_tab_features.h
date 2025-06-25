@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
-#define BRAVE_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
+#ifndef BRAVE_BROWSER_UI_TABS_PUBLIC_BRAVE_TAB_FEATURES_H_
+#define BRAVE_BROWSER_UI_TABS_PUBLIC_BRAVE_TAB_FEATURES_H_
 
 #include <memory>
 
@@ -20,21 +20,20 @@ namespace tabs {
 
 class TabInterface;
 
-class TabFeatures : public TabFeatures_Chromium {
+class BraveTabFeatures : public TabFeatures {
  public:
-  using TabFeaturesFactory =
-      base::RepeatingCallback<std::unique_ptr<TabFeatures>()>;
-  static std::unique_ptr<TabFeatures> CreateTabFeatures();
-  static void ReplaceTabFeaturesForTesting(TabFeaturesFactory factory);
-
-  TabFeatures();
-  ~TabFeatures() override;
+  static BraveTabFeatures* FromTabFeatures(TabFeatures* tab_features);
+  ~BraveTabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+ protected:
+  friend TabFeatures;
+  BraveTabFeatures();
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
 };
 
 }  // namespace tabs
-#endif  // BRAVE_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
+#endif  // BRAVE_BROWSER_UI_TABS_PUBLIC_BRAVE_TAB_FEATURES_H_
