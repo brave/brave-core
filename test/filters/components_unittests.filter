@@ -5,6 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fail because we stub out AutofillImageFetcher.
+-AutofillImageFetcherTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
