@@ -43,8 +43,7 @@ std::unique_ptr<TabFeatures> TabFeatures::CreateTabFeatures() {
 }
 
 // static
-BraveTabFeatures* BraveTabFeatures::FromTabTabFeatures(
-    TabFeatures* tab_features) {
+BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
   return static_cast<BraveTabFeatures*>(tab_features);
 }
 

@@ -22,7 +22,7 @@ class TabInterface;
 
 class BraveTabFeatures : public TabFeatures {
  public:
-  static BraveTabFeatures* FromTabTabFeatures(TabFeatures* tab_features);
+  static BraveTabFeatures* FromTabFeatures(TabFeatures* tab_features);
   BraveTabFeatures();
   ~BraveTabFeatures() override;
 
