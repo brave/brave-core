@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
+#include "base/containers/span.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
 
