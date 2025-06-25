@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">움직임 감지 센서가 필요한 기능이 작동하지 않음</translation>
 <translation id="2030769033451695672">탭하여 <ph name="URL_OF_THE_CURRENT_TAB"/>(으)로 돌아가기</translation>
 <translation id="2079545284768500474">실행취소</translation>
+<translation id="2080070583977670716">설정 더보기</translation>
 <translation id="2091887806945687916">소리</translation>
 <translation id="2096716221239095980">모든 데이터 삭제</translation>
 <translation id="2102396546234652240">사이트에서 마이크를 사용하도록 허용하지 않음</translation>
@@ -229,7 +230,6 @@
 <translation id="3779154269823594982">비밀번호 변경</translation>
 <translation id="3797520601150691162">특정 사이트에 어두운 테마를 적용하지 마세요.</translation>
 <translation id="3803367742635802571">방문한 사이트가 정상적으로 작동하지 않을 수 있음</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="381841723434055211">전화번호</translation>
 <translation id="3826050100957962900">서드 파티 로그인</translation>
 <translation id="3835233591525155343">기기 사용 여부</translation>
@@ -437,7 +437,6 @@
 <translation id="6452138246455930388">열려 있는 탭의 가격 인하(<ph name="OLD_PRICE"/>~<ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/>)</translation>
 <translation id="6500423977866688905">창이 좁은 경우 모바일 뷰 요청</translation>
 <translation id="6527303717912515753">공유</translation>
-<translation id="652937045869844725">서드 파티 쿠키를 허용해 보세요. 보안은 취약해지지만 사이트 기능이 작동할 가능성은 높아집니다.</translation>
 <translation id="6530703012083415527">사용 설정하면 사이트에서 팝업 및 리디렉션을 사용할 수 있습니다. 사용 중지하면 사이트에서 팝업 및 리디렉션을 사용할 수 없습니다.</translation>
 <translation id="6540488083026747005">이 사이트에서 서드 파티 쿠키를 허용했습니다</translation>
 <translation id="6545864417968258051">블루투스 검색</translation>
@@ -451,6 +450,7 @@
 <translation id="6612358246767739896">보호된 콘텐츠</translation>
 <translation id="662080504995468778">머무르기</translation>
 <translation id="6635327442719709864">사용 설정하면 사이트에서 직렬 포트 사용을 요청할 수 있습니다. 사용 중지하면 사이트에서 직렬 포트를 사용할 수 없습니다.</translation>
+<translation id="6678072580827808850">안전 확인 검토</translation>
 <translation id="6683865262523156564">이 사이트는 내 활동을 볼 수 있는 그룹에 있습니다. 그룹 정의 기준: <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">프로필 사진</translation>
 <translation id="6697925417670533197">진행 중인 다운로드</translation>
@@ -485,7 +485,6 @@
 <translation id="7141896414559753902">사이트에서 팝업 및 리디렉션을 표시하지 못하도록 차단(권장)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/>KB</translation>
 <translation id="7180611975245234373">새로고침</translation>
-<translation id="7180865173735832675">맞춤설정</translation>
 <translation id="7188508872042490670">기기 내 사이트 데이터</translation>
 <translation id="7201549776650881587">이 작업을 실행하면 <ph name="ORIGIN"/>의 모든 하위 사이트 또는 홈 화면에 있는 앱에서 저장한 데이터와 쿠키가 모두 삭제됩니다.</translation>
 <translation id="7203150201908454328">펼쳐짐</translation>

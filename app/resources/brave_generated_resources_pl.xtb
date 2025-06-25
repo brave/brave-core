@@ -343,6 +343,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8081858229109418493">Nazwa profilu i zdjęcie</translation>
 <translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="984275831282074731">Metody płatności</translation>
+<translation id="6278858909990433658">Importowany profil jest w użyciu</translation>
+<translation id="9071187015476020102">Aby zaimportować rozszerzenia lub inne ustawienia, najpierw zamknij przeglądarkę, z której importujesz.</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
 <translation id="1807246157184219062">Jasny</translation>
 <translation id="2414886740292270097">Ciemny</translation>
@@ -748,7 +750,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="5574059574002819179">Dostosuj sugestie autouzupełniania</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
 <translation id="5385064007245738696">O sztucznej inteligencji Leo</translation>
-<translation id="5084498230659987096">Brave Leo to zorientowany na prywatności czat SI i inne zasilane sztuczną inteligencją interfejsy w przeglądarce. Leo nigdy nie uczy się na Twoich danych ani nie wykorzystuje ich do szkolenia modeli. Wszystkie żądania są przesyłane przez anonimowy serwer.</translation>
+<translation id="5084498230659987096">Brave Leo to zorientowany na prywatności czat SI i inne zasilane sztuczną inteligencją interfejsy w przeglądarce. Leo nigdy nie uczy się na Twoich danych ani nie wykorzystuje ich do szkolenia modeli. Wszystkie żądania są przesyłane przez serwer maskujący.</translation>
 <translation id="6458721693611638005">Przeczytaj o tym, jak Brave chroni Cię podczas korzystania ze sztucznej inteligencji w polityce prywatności Leo. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
 <translation id="8826914609353373601">Zarządzaj subskrypcją w wersji premium</translation>
@@ -825,4 +827,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="5318548116565208315">Awatar cukierkowa kukurydza</translation>
 <translation id="1959966725083452288">Awatar królewski cukierek</translation>
 <translation id="2039034364578911089">Awatar cukierkowy ninja</translation>
+<translation id="154702742922788359">Tryb otwarcia</translation>
+<translation id="2249111429176737533">Otwórz jako okno z zakładkami</translation>
+<translation id="7022756207310403729">Otwórz w przeglądarce</translation>
 </translationbundle>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
-<translation id="1045448422538531528">Добавяне към група</translation>
+<translation id="1036348656032585052">Изключване</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Създадено преди <ph name="NUM_WEEKS_ONE"/> седмица}other{Създадено преди <ph name="NUM_WEEKS_MANY"/> седмици}}</translation>
 <translation id="1063300264396686489">Автоматично отваряне на групи раздели от други устройства</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> от разделите ви не са използвани наскоро. Искате ли да ги затворите?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Групите раздели „<ph name="TAB_GROUP_NAME_1"/>“ и „<ph name="TAB_GROUP_NAME_2"/>“ вече не са налице</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Свиване на <ph name="TABS_COUNT_ONE"/> раздел.}other{Свиване на групата с раздели с(ъс) <ph name="TABS_COUNT_MANY"/> раздела.}}</translation>
 <translation id="2569352796411618312">Предложение: <ph name="NUMBER_OF_TABS"/> от разделите ви не са използвани наскоро. Искате ли да ги затворите?</translation>
-<translation id="2656693375914502139">Преместване в група</translation>
 <translation id="2662028055331606429">Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Към сайта</translation>
 <translation id="2671423594960767771">Споделяне на групата</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{Затворихте <ph name="ONE_CLOSED"/> раздел}other{Затворихте <ph name="MANY_CLOSED"/> раздела}}</translation>
 <translation id="2894757982205307093">Нов раздел в групата</translation>
 <translation id="4691798003247738043">Brave | Всичко за този магазин</translation>
-<translation id="2977480621796371840">Премахване от групата</translation>
 <translation id="29919168204617356">Неактивните раздели ще бъдат затворени автоматично. Винаги можете да ги намерите в историята.</translation>
 <translation id="3008554597174452548">Спиране на следенето на продукта</translation>
 <translation id="3026391124054406831">Създайте групи, за да организирате разделите си.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Групите раздели се запазват автоматично</translation>
 <translation id="6054741997831917303">Цената на този артикул наскоро бе намалена от <ph name="PREVIOUS_PRICE"/> на <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Всички дублиращи се раздели вече ще бъдат архивирани с изключение на най-скоро използваното копие.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Преместване на групата в нов прозорец}other{Преместване на групата в друг прозорец}}</translation>
 <translation id="6193448654517602979">Избиране на раздели</translation>
+<translation id="6220820548421939212">Да. Ще участвам</translation>
 <translation id="6228793724645064692">(оценка на магазина)</translation>
 <translation id="6271513594716432922">Затваряне на всички неактивни раздели</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Добавяне на раздела към нова група}other{Добавяне на разделите към нова група}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Активност</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> отзив}other{Оценка: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> отзива}}</translation>
 <translation id="7885132941432959125">Преместване на раздела надясно</translation>
+<translation id="788914896430720926">Искате ли да се поддържа подредена секцията с неактивни раздели?</translation>
 <translation id="7939917283308035850">Не сте избрали: <ph name="COLOR_NAME"/></translation>
 <translation id="7942349550061667556">Червено</translation>
 <translation id="7961015016161918242">Никога</translation>
 <translation id="7966321538264951561">Отхвърляне на предложенията.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Преместване на раздела в нов прозорец}other{Преместване на раздела в друг прозорец}}</translation>
 <translation id="799469866974412355">Нова група от другото ви устройство</translation>
 <translation id="8029301326595421733">Информацията за този магазин е отворена на пълната височина</translation>
 <translation id="8053770993984522566">Списъкът с групите раздели е отворен на половината височина</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">По-ниска цена</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Създадено преди <ph name="NUM_MONTHS_ONE"/> месец}other{Създадено преди <ph name="NUM_MONTHS_MANY"/> месеца}}</translation>
+<translation id="8813708480179818649">Премахване на раздела от групата</translation>
 <translation id="8820741577754260431">Преглед на пониженията на цените от разделите ви</translation>
+<translation id="5495695379719652610">Brave автоматично затваря елементите в секцията с неактивни раздели, които не сте използвали от 3 месеца. Можете да изключите това сега или по всяко време от настройките.</translation>
 <translation id="8887921976452567404">Затворените раздели и групи могат да бъдат отворени отново от секциите „Скорошни раздели“ и „Групи раздели“.</translation>
 <translation id="8915916167043355778">Затваряне на всички</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Преместване в нов прозорец}other{Преместване в друг прозорец}}</translation>
 <translation id="9090098097337832354">Информацията за този магазин е затворена</translation>
 <translation id="9114502155681725011">Отваряне на менюто с действия за групата раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят</translation>
 <translation id="9169594135889675189">Добавяне на нов раздел към групата</translation>

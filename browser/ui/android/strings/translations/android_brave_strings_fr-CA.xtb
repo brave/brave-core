@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Activez la prise en charge du contournement des URL de suivi de redirection de niveau supérieur.</translation>
 <translation id="94154759592465111">Bloquer les scripts</translation>
 <translation id="7714773920987474116">Bloquer JavaScript (peut empêcher certains sites de fonctionner)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloquer le contenu recommandé de YouTube</translation>
 <translation id="1005372663692637999">Bloque l'élément « à suivre » ainsi que les fiches de fin sur youtube.com.</translation>
 <translation id="5152595963250646670">Bloquer les éléments de YouTube qui empêchent de se concentrer</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Afficher les suggestions principales</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
-<translation id="412411722208944922">Moteurs de recherches rapides</translation>
-<translation id="2836969042340015500">Moteurs de recherches rapides</translation>
-<translation id="9120455214794270250">Afficher la barre de recherche rapide</translation>
-<translation id="1052991798173010693">Moteurs de recherches actuellement utilisés</translation>
-<translation id="335303688425891752">Appuyez longuement pour modifier l'ordre</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="8047754398610073499">Bloquer les avis de consentement aux témoins</translation>
 <translation id="2621893359845808115">Bloquer les fenêtres surgissantes de sites Web qui vous demandent d'accepter ou de refuser les témoins sur leur site</translation>
@@ -677,6 +671,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3952797765659730604">Saisissez, collez ou importez le fichier ou JSON contenant votre clé privée.</translation>
 <translation id="569068482611873351">Importer…</translation>
 <translation id="4522570452068850558">Détails</translation>
+<translation id="3114681061018999547">Bouclier</translation>
 <translation id="3784455785234192852">Verrouiller</translation>
 <translation id="4412698727486357573">Centre d'aide</translation>
 <translation id="8239147115686034860">Verrouiller automatiquement le portefeuille Brave</translation>
@@ -808,18 +803,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2199215899212542417">TYPE DE FONCTION : <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Aucune donnée</translation>
 <translation id="1105525362447173583">Signature d'une transaction Dapp Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> a envoyé <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> a envoyé <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> a approuvé <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180"><ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Échange par <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Non approuvé</translation>
-<translation id="8034530868111548216">Approuvé</translation>
-<translation id="6015436276085482001">Rejeté</translation>
-<translation id="6666273175654835609">Envoyé</translation>
-<translation id="2331676293859649642">Confirmé</translation>
-<translation id="8214232307424031138">Signé</translation>
-<translation id="1165039591588034296">Erreur</translation>
 <translation id="2561824823738097741">Utilisez-vous le navigateur Web le plus rapide?</translation>
 <translation id="2065971949051836200">L'Internet 3 fois plus rapide est déjà sur votre téléphone. Utilisez Brave pour toute votre navigation sur le Web.</translation>
 <translation id="2888278614497184977">Brave = une navigation sur le Web 3 fois plus rapide</translation>
@@ -1239,4 +1222,5 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets privés</translation>
 <translation id="8420414929552321089">Si autorisé, les onglets privés seront également visibles lorsque plusieurs applications sont ouvertes.</translation>
+<translation id="7956713633345437162">Signets de téléphone mobile</translation>
 </translationbundle>

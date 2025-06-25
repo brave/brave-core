@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">મોશન સેન્સરની આવશ્યકતા હોય તેવી સુવિધાઓ કાર્ય નહીં કરે</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> પર પરત ફરવા માટે, ટૅપ કરો</translation>
 <translation id="2079545284768500474">છેલ્લો ફેરફાર રદ કરો</translation>
+<translation id="2080070583977670716">વધુ સેટિંગ</translation>
 <translation id="2091887806945687916">ધ્વનિ</translation>
 <translation id="2096716221239095980">બધો ડેટા ડિલીટ કરો</translation>
 <translation id="2102396546234652240">સાઇટને તમારા માઇક્રોફોનનો ઉપયોગ કરવાની મંજૂરી આપશો નહીં</translation>
@@ -231,7 +232,6 @@
 <translation id="3779154269823594982">પાસવર્ડ બદલો</translation>
 <translation id="3797520601150691162">કોઈ ચોક્કસ સાઇટ માટે ઘેરી થીમ લાગુ કરશો નહીં</translation>
 <translation id="3803367742635802571">તમે મુલાકાત લો છો તે સાઇટ જે હેતુ માટે તૈયાર કરવામાં આવી છે તે મુજબ કામ કરવાનું બંધ કરી શકે છે</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">ફોન નંબર</translation>
 <translation id="3826050100957962900">Third-party sign-in</translation>
 <translation id="3835233591525155343">તમારા ડિવાઇસનો વપરાશ</translation>
@@ -440,7 +440,6 @@
 <translation id="6452138246455930388">તમારા ખુલ્લા ટૅબ પર કિંમતમાં ઘટાડો, <ph name="OLD_PRICE"/>માંથી <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">વિન્ડો નાની હોય ત્યારે, મોબાઇલ વ્યૂની વિનંતી કરો</translation>
 <translation id="6527303717912515753">શેર કરો</translation>
-<translation id="652937045869844725">ત્રીજા પક્ષની કુકીને મંજૂરી આપવાનો પ્રયાસ કરવાનો અર્થ છે ઓછું સંરક્ષણ પરંતુ સાઇટની સુવિધાઓની કાર્ય કરવાની સંભાવના વધુ છે</translation>
 <translation id="6530703012083415527">ચાલુ હોય ત્યારે, સાઇટ પૉપ-અપ અને રીડાયરેક્ટનો ઉપયોગ કરી શકે છે. બંધ હોય ત્યારે, સાઇટ પૉપ-અપ અને રીડાયરેક્ટનો ઉપયોગ કરી શકતી નથી.</translation>
 <translation id="6540488083026747005">તમે આ સાઇટ માટે ત્રીજા પક્ષની કુકીને મંજૂરી આપી છે</translation>
 <translation id="6545864417968258051">બ્લૂટૂથ સ્કૅનિંગ</translation>
@@ -454,6 +453,7 @@
 <translation id="6612358246767739896">સુરક્ષિત કન્ટેન્ટ</translation>
 <translation id="662080504995468778">અહીં જ રહો</translation>
 <translation id="6635327442719709864">જ્યારે વિકલ્પ ચાલુ હોય, ત્યારે સાઇટ, સીરિયલ પોર્ટનો ઉપયોગ કરવા માટે પૂછી શકે છે. જ્યારે વિકલ્પ બંધ હોય, ત્યારે સાઇટ, સીરિયલ પોર્ટનો ઉપયોગ કરી શકતી નથી.</translation>
+<translation id="6678072580827808850">સલામતી માટે તપાસનો રિવ્યૂ કરો</translation>
 <translation id="6683865262523156564">આ સાઇટ એવા ગ્રૂપમાં શામેલ છે, જે તમારી ઍક્ટિવિટી જોઈ શકે છે. ગ્રૂપ <ph name="RWS_OWNER"/> દ્વારા નિર્ધારિત છે</translation>
 <translation id="6689172468748959065">પ્રોફાઇલ ફોટો</translation>
 <translation id="6697925417670533197">ડાઉનલોડ કરવાનું સક્રિય કરો</translation>
@@ -488,7 +488,6 @@
 <translation id="7141896414559753902">સાઇટને પૉપ-અપ અને રીડાયરેક્ટ બતાવવા દેવાથી બ્લૉક કરો (સુઝાવ આપીએ છીએ)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">રિફ્રેશ કરો</translation>
-<translation id="7180865173735832675">કસ્ટમાઇઝ કરો</translation>
 <translation id="7188508872042490670">ડિવાઇસ પર સાઇટનો ડેટા</translation>
 <translation id="7201549776650881587">આ ક્રિયાના પરિણામે <ph name="ORIGIN"/> હેઠળની બધી સાઇટ અથવા તેની ઍપ દ્વારા તમારી હોમ સ્ક્રીન પર સ્ટોર કરવામાં આવેલો બધો ડેટા અને કુકી ડિલીટ થઈ જશે</translation>
 <translation id="7203150201908454328">વિસ્તૃત કરેલ</translation>

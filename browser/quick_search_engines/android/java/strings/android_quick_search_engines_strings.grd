@@ -178,7 +178,6 @@
       <message name="IDS_LONG_PRESS_TO_CHANGE_ORDER" desc="Text for changing the order of quick-search engines">
         Long press to change the order
       </message>
-    
     <!-- End of Quick Search engines strings -->
   </messages>
   </release>
