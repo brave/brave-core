@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 2f4ab49cbe968ec8a47d72a08fefbbc938fb41c8..85b0220576bd8414dbc5696e6ed1ef78c1bdd20c 100644
+index 2f4ab49cbe968ec8a47d72a08fefbbc938fb41c8..387ac354196ce5c0e97cff5c5b6b89eccc6ebbc9 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -59,7 +59,7 @@ index 2f4ab49cbe968ec8a47d72a08fefbbc938fb41c8..85b0220576bd8414dbc5696e6ed1ef78
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1145]}},
++    "META": {"sizes": {"includes": [1150]}},
      "includes": [10000],
    },
    "weblayer/weblayer_resources.grd": {
