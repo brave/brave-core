@@ -1,11 +1,11 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index 15fdad3f0cbfd2a15ab9fa63519e420dbd616b5c..ed6c21148f0351ad8eb4756eec61f82af2b1cd8c 100644
+index 99324469362e14c0168cb15d123c9484b3674359..19d9976bba84bd37ece510c2e9ee9ec7f7471cf3 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
-@@ -359,6 +359,7 @@ static_library("test_support") {
-     "trace_to_file.cc",
-     "trace_to_file.h",
-   ]
+@@ -368,6 +368,7 @@ static_library("test_support") {
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
 +  import("//brave/base/sources.gni") sources += brave_base_test_support_sources
  }
  

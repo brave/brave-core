@@ -11,6 +11,6 @@ index 592005fcdd83be0ff9601f96a0f1ea3c4e5c2964..fdcbc756e9fe4f1c760611c587b65ed0
          android:focusable="false"
          android:focusableInTouchMode="false">
 +    <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
- 
+
          <ViewStub
              android:id="@+id/optional_button_stub"

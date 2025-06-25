@@ -1,5 +1,5 @@
 diff --git a/services/network/resolve_host_request.cc b/services/network/resolve_host_request.cc
-index 3095fe0124d77e8e1a434f1af6a91d3ddde091a6..5f67a8154179e4bb9a2c6828c8d13ebf53304838 100644
+index a2014dd53948443a9d0443f032959e30f5d32ae5..4e1db6663d250b9474b74dfca4dcd6c1b755f6f7 100644
 --- a/services/network/resolve_host_request.cc
 +++ b/services/network/resolve_host_request.cc
 @@ -94,6 +94,7 @@ int ResolveHostRequest::Start(
@@ -7,6 +7,6 @@ index 3095fe0124d77e8e1a434f1af6a91d3ddde091a6..5f67a8154179e4bb9a2c6828c8d13ebf
        std::move(pending_response_client));
    if (rv != net::ERR_IO_PENDING) {
 +    BRAVE_RESOLVE_HOST_REQUEST_START
-     response_client->OnComplete(rv, GetResolveErrorInfo(),
-                                 base::OptionalFromPtr(GetAddressResults()),
-                                 GetEndpointResultsWithMetadata());
+     response_client->OnComplete(rv, GetResolveErrorInfo(), GetAddressResults(),
+                                 GetAlternativeEndpoints());
+     return rv;
