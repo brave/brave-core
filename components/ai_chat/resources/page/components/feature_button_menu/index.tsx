@@ -28,6 +28,8 @@ const modelIcons = {
   'chat-vision-basic': 'meta-color',
 }
 
+const fallbackModelIcon = 'product-brave-leo'
+
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
 }
@@ -79,8 +81,8 @@ export default function FeatureMenu(props: Props) {
             onClick={() => conversationContext.setCurrentModel(model)}
           >
             <div className={styles.menuItemWithIcon}>
-              <div className={styles.modelIcon}>
-                <Icon name={modelIcons[model.key as keyof typeof modelIcons]} />
+              <div className={styles.modelIcon} data-key={model.key}>
+                <Icon name={modelIcons[model.key as keyof typeof modelIcons] ?? fallbackModelIcon} />
               </div>
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>

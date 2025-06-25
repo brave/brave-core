@@ -49,7 +49,7 @@
 
 .modelIcon {
   --leo-icon-size: 18px;
-  --leo-icon-color: white;
+  --leo-icon-color: var(--leo-color-icon-default);
 
   border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-subtle);
@@ -64,7 +64,9 @@
   width: 32px;
   height: 32px;
 
-  &:has(leo-icon[name="product-brave-leo"]) {
+  &[data-key="chat-automatic"] {
+    --leo-icon-color: white;
+
     background: var(--leo-gradient-icons-active);
     border: none;
   }
