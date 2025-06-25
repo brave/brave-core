@@ -175,16 +175,27 @@ class ChromiumSrcOverridesChecker:
             display_override_filepath = os.path.join('chromium_src',
                                                      override_filepath)
             override_filename = os.path.basename(override_filepath)
-            regexp = r'^#include (?:"src/(.*)"|<(.*\.(?:c|cc|cpp|m|mm))>)'
+            regexp = r"""
+                ^\#include\s
+                (?:
+                    # 1. Double quoted include starting with src/
+                    "src/(.*)"
+                    # 2. Angle brackets include <...> for source files
+                    |<(.*\.(?:c|cc|cpp|m|mm))>
+                    # 3. Angle brackets include <...> for header files followed
+                    # by `// IWYU pragma: export`
+                    |<(.*\.h)>\s*//\ IWYU\ pragma:\ export
+                )
+            """
             gen_regexp = r'^#include "\.\./gen/(.*)"'
             rel_regexp = rf'^#include "(\.\./.*{override_filename})"'
 
             for line in override_file:
                 # Check src/-prefixed includes
-                line_match = re.search(regexp, line)
+                line_match = re.search(regexp, line, re.VERBOSE)
                 if line_match:
                     line_match_path = line_match.group(1) or line_match.group(
-                        2)
+                        2) or line_match.group(3)
                     if original_is_in_gen:
                         self.AddError(
                             f"  {display_override_filepath} overrides a " +
