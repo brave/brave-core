@@ -376,12 +376,19 @@ IN_PROC_BROWSER_TEST_P(
   auto* widget = dialog->GetWidget();
   ASSERT_TRUE(widget);
 
+#if BUILDFLAG(IS_MAC)
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    const auto dialog_bounds = widget->GetWindowBoundsInScreen();
+    auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
+    views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
+    return web_view_bounds.CenterPoint().x() == dialog_bounds.CenterPoint().x();
+  }));
+#else
   const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-
   auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
   views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
-
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
+#endif
 }
 
 // This test can be flaky depending on the screen size. Our macOS CI doesn't
