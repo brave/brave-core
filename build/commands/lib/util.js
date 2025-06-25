@@ -491,6 +491,11 @@ const util = {
       const androidBrowserHubInternalResSource = path.join(config.braveCoreDir, 'browser', 'hub', 'internal', 'android', 'res')
       const androidBrowserHubInternalResDest = path.join(config.srcDir, 'chrome', 'browser', 'hub', 'internal', 'android', 'res')
 
+      const uiAndroidResSource =
+          path.join(config.braveCoreDir, "ui", "android", "java", "res")
+      const uiAndroidResDest =
+          path.join(config.srcDir, "ui", "android", "java", "res")
+
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
         [androidTranslateResSource]: [androidTranslateResDest],
@@ -509,7 +514,10 @@ const util = {
         [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
         [androidBrowserUiOmniboxResSource]: [androidBrowserUiOmniboxResDest],
         [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest],
-        [androidBrowserHubInternalResSource]: [androidBrowserHubInternalResDest]
+        [androidBrowserHubInternalResSource]: [
+          androidBrowserHubInternalResDest,
+        ],
+        [uiAndroidResSource]: [uiAndroidResDest],
       }
 
       console.log('copy Android app icons and app resources')
