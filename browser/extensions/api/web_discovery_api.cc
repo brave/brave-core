@@ -13,6 +13,7 @@
 #include "brave/components/web_discovery/common/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "extensions/browser/extension_function.h"
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
