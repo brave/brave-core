@@ -16,6 +16,19 @@ static_library("windows_recall") {
   deps = [
     "//base",
     "//components/prefs",
-    "//content/public/browser",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "windows_recall_unittest.cc" ]
+
+  deps = [
+    ":windows_recall",
+    "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+    "//testing/gtest",
   ]
 }

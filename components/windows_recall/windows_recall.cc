@@ -5,11 +5,20 @@
 
 #include "brave/components/windows_recall/windows_recall.h"
 
+#include "base/check_is_test.h"
 #include "base/win/windows_version.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace windows_recall {
+
+namespace {
+bool* GetCurrentDisabledState() {
+  static bool disabled = false;
+  return &disabled;
+}
+
+}  // namespace
 
 bool IsWindowsRecallAvailable() {
   return base::win::GetVersion() >= base::win::Version::WIN11;
@@ -28,8 +37,14 @@ bool IsWindowsRecallDisabled(PrefService* local_state) {
     return false;
   }
 
-  static bool disabled = local_state->GetBoolean(prefs::kWindowsRecallDisabled);
-  return disabled;
+  bool* disabled = GetCurrentDisabledState();
+  *disabled = local_state->GetBoolean(prefs::kWindowsRecallDisabled);
+  return *disabled;
+}
+
+void SetCurrentDisabledStateForTesting(bool disabled) {
+  CHECK_IS_TEST();
+  *GetCurrentDisabledState() = disabled;
 }
 
 }  // namespace windows_recall

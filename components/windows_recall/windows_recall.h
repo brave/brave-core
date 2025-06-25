@@ -27,6 +27,8 @@ bool IsWindowsRecallAvailable();
 // the system service.
 bool IsWindowsRecallDisabled(PrefService* local_state);
 
+void SetCurrentDisabledStateForTesting(bool disabled);
+
 }  // namespace windows_recall
 
 #endif  // BRAVE_COMPONENTS_WINDOWS_RECALL_WINDOWS_RECALL_H_

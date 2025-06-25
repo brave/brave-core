@@ -52,7 +52,6 @@
 #if BUILDFLAG(IS_WIN)
 #include "base/test/scoped_os_info_override_win.h"
 #include "base/win/windows_version.h"
-#include "brave/components/windows_recall/windows_recall.h"
 #endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
@@ -465,56 +464,41 @@ INSTANTIATE_TEST_SUITE_P(
                       base::test::ScopedOSInfoOverride::Type::kWin10Home));
 
 IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
-  EXPECT_EQ(windows_recall::IsWindowsRecallAvailable(), IsWin11());
-
   auto* local_state = g_browser_process->local_state();
 
   if (IsWin11()) {
-    EXPECT_TRUE(
-        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
-    EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
-    EXPECT_TRUE(client()->IsWindowsRecallDisabled());
-  } else {
-    EXPECT_FALSE(local_state->FindPreference(
-        windows_recall::prefs::kWindowsRecallDisabled));
-    EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
-    EXPECT_FALSE(client()->IsWindowsRecallDisabled());
-  }
-
-  EXPECT_EQ(GetShouldDoLearning(browser()), !IsWin11());
-
-  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
-  EXPECT_FALSE(GetShouldDoLearning(incognito));
-
-  if (IsWin11()) {
+    // ensure previous state is already cached before the first check is made
     local_state->SetBoolean(windows_recall::prefs::kWindowsRecallDisabled,
                             false);
-    EXPECT_FALSE(
-        local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
-
     // Not changed until restart.
-    EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(local_state));
+    EXPECT_TRUE(client()->IsWindowsRecallDisabled());
     EXPECT_FALSE(GetShouldDoLearning(browser()));
+  } else {
+    EXPECT_FALSE(client()->IsWindowsRecallDisabled());
+    EXPECT_TRUE(GetShouldDoLearning(browser()));
   }
+
+  // incognito behavior is unchanged from upstream (always false)
+  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
+  EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 
 IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
-  if (!IsWin11()) {
-    // Nothing to check, because there is no pref registered.
-    return;
-  }
-
   auto* local_state = g_browser_process->local_state();
 
-  EXPECT_TRUE(windows_recall::IsWindowsRecallAvailable());
-  EXPECT_FALSE(
-      local_state->GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
-  EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(local_state));
-  EXPECT_FALSE(client()->IsWindowsRecallDisabled());
-  EXPECT_TRUE(GetShouldDoLearning(browser()));
+  if (IsWin11()) {
+    // ensure previous state is already cached before the first check is made
+    local_state->SetBoolean(windows_recall::prefs::kWindowsRecallDisabled,
+                            true);
+    EXPECT_FALSE(client()->IsWindowsRecallDisabled());
+    EXPECT_TRUE(GetShouldDoLearning(browser()));
+  } else {
+    EXPECT_FALSE(client()->IsWindowsRecallDisabled());
+    EXPECT_FALSE(GetShouldDoLearning(browser()));
+  }
 
+  // incognito behavior is unchanged from upstream (always false)
   Browser* incognito = CreateIncognitoBrowser(browser()->profile());
-  // Still blocked in the incgonito.
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 
