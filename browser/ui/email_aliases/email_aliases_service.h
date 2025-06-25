@@ -16,6 +16,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class Profile;
 
@@ -42,8 +43,6 @@ class EmailAliasesService : public KeyedService,
                    DeleteAliasCallback callback) override;
   void AddObserver(mojo::PendingRemote<mojom::EmailAliasesServiceObserver>
                        observer) override;
-  void RemoveObserver(mojo::PendingRemote<mojom::EmailAliasesServiceObserver>
-                          observer) override;
 
   // Binds the mojom interface to this service
   void BindInterface(
@@ -52,7 +51,7 @@ class EmailAliasesService : public KeyedService,
  private:
   raw_ptr<Profile> profile_;
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
-  std::vector<mojo::Remote<mojom::EmailAliasesServiceObserver>> observers_;
+  mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };

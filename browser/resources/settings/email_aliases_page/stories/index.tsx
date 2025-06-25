@@ -134,11 +134,6 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
-  removeObserver (observer: EmailAliasesServiceObserverRemote |
-                            EmailAliasesServiceObserverInterface) {
-    this.observers.delete(observer)
-  }
-
   async updateAlias (email: string, note: string) {
     if (Math.random() < 1/3) {
       return { errorMessage: getLocale('emailAliasesUpdateAliasError') }
@@ -235,17 +230,11 @@ const stubEmailAliasesServiceAccountReadyInstance =
 const bindNoAccountObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
-    return () => {
-      stubEmailAliasesServiceNoAccountInstance.removeObserver(observer)
-    }
   }
 
 const bindAccountReadyObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
-    return () => {
-      stubEmailAliasesServiceAccountReadyInstance.removeObserver(observer)
-    }
   }
 
 export const SignInPage = () => {

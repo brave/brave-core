@@ -20,7 +20,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
   cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn()
 }
 
 describe('EmailAliasModal', () => {

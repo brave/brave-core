@@ -17,7 +17,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn(),
 }
 
 describe('MainEmailDisplay', () => {

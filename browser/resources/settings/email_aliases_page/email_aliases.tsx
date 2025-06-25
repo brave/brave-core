@@ -64,7 +64,6 @@ export const mount = (at: HTMLElement) => {
     const observerRemote = observerReceiver.$.bindNewPipeAndPassRemote()
     emailAliasesService.addObserver(observerRemote)
     return () => {
-      emailAliasesService.removeObserver(observerRemote)
       observerReceiver.$.close()
     }
   }

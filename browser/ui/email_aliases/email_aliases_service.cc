@@ -24,7 +24,7 @@ EmailAliasesService::~EmailAliasesService() = default;
 
 void EmailAliasesService::Shutdown() {
   receivers_.Clear();
-  observers_.clear();
+  observers_.Clear();
 }
 
 void EmailAliasesService::BindInterface(
@@ -65,20 +65,7 @@ void EmailAliasesService::DeleteAlias(const std::string& alias_email,
 
 void EmailAliasesService::AddObserver(
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> observer) {
-  observers_.push_back(
-      mojo::Remote<mojom::EmailAliasesServiceObserver>(std::move(observer)));
-}
-
-void EmailAliasesService::RemoveObserver(
-    mojo::PendingRemote<mojom::EmailAliasesServiceObserver> observer) {
-  mojo::Remote<mojom::EmailAliasesServiceObserver> remote(std::move(observer));
-  auto it = std::find_if(observers_.begin(), observers_.end(),
-                         [&remote](const auto& observer) {
-                           return observer.get() == remote.get();
-                         });
-  if (it != observers_.end()) {
-    observers_.erase(it);
-  }
+  observers_.Add(std::move(observer));
 }
 
 }  // namespace email_aliases
