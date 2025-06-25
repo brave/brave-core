@@ -649,6 +649,7 @@ if (enable_widevine) {
 if (is_android) {
   brave_chrome_browser_allow_circular_includes_from += [
     "//brave/browser/android:android_browser_process",
+    "//brave/browser/android:tabs_impl",
     "//brave/browser/android/preferences",
   ]
 }
