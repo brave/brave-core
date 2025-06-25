@@ -785,9 +785,8 @@ void JsonRpcService::OnGetFilStateSearchMsgLimited(
     const std::string& cid,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    int64_t exit_code = -1;
     std::move(callback).Run(
-        exit_code, mojom::FilecoinProviderError::kInternalError,
+        std::nullopt, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -798,11 +797,11 @@ void JsonRpcService::OnGetFilStateSearchMsgLimited(
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
         api_request_result.value_body(), &error, &error_message);
-    std::move(callback).Run(-1, error, error_message);
+    std::move(callback).Run(std::nullopt, error, error_message);
     return;
   }
 
-  std::move(callback).Run(*exit_code, mojom::FilecoinProviderError::kSuccess,
+  std::move(callback).Run(exit_code, mojom::FilecoinProviderError::kSuccess,
                           "");
 }
 

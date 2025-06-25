@@ -377,7 +377,7 @@ void FilTxManager::UpdatePendingTransactions(
 
 void FilTxManager::OnGetFilStateSearchMsgLimited(
     const std::string& tx_meta_id,
-    int64_t exit_code,
+    std::optional<int64_t> exit_code,
     mojom::FilecoinProviderError error,
     const std::string& error_message) {
   if (error != mojom::FilecoinProviderError::kSuccess) {
