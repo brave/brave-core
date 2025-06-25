@@ -17,12 +17,12 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -43,7 +43,6 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
-import org.chromium.base.SysUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -292,50 +291,58 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         //Make Inactive Items Outside Of PopupWindow
         boolean focusable = true;
 
-        //Create a window with our parameters
+        // Create a window with our parameters
         PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, focusable);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.setElevation(20);
-        }
-        // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
+        popupWindow.setElevation(20);
+        Rect bgPadding = new Rect();
+        int popupWidth =
+                wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
+                        + bgPadding.left
+                        + bgPadding.right;
+        popupWindow.setWidth(popupWidth);
         // Set the location of the window on the screen
         mAnchorView = anchorView;
-        int mesuredHeight = 0;
         if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-            mPopupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            mesuredHeight = mPopupView.getMeasuredHeight() + mAnchorView.getHeight();
+            // The problem is that we have dynamic content height,
+            // so we need to pretend show it to get real height before actually showing it.
+            // This needs to be addressed when we re-design shields popup.
+            popupWindow.setAnimationStyle(0);
+            mPopupView.setVisibility(View.INVISIBLE);
+            popupWindow.setBackgroundDrawable(null);
+            popupWindow.showAtLocation(mAnchorView, Gravity.BOTTOM, 0, 0);
             mPopupView
                     .getViewTreeObserver()
                     .addOnGlobalLayoutListener(
                             new ViewTreeObserver.OnGlobalLayoutListener() {
                                 @Override
                                 public void onGlobalLayout() {
-                                    // Get the new height of the popup view.
-                                    int newHeight =
-                                            mPopupView.getHeight() + mAnchorView.getHeight();
+                                    mPopupView
+                                            .getViewTreeObserver()
+                                            .removeOnGlobalLayoutListener(this);
 
-                                    // Update the popup window's height.
-                                    popupWindow.update(mAnchorView, 0, -newHeight, width, height);
+                                    int actualHeight = mPopupView.getHeight();
+
+                                    // Dismiss and show in correct position.
+                                    popupWindow.dismiss();
+
+                                    // Calculate proper position with actual height.
+                                    int[] location = new int[2];
+                                    mAnchorView.getLocationOnScreen(location);
+                                    int xOffset = location[0];
+                                    int yOffset = location[1] - actualHeight;
+
+                                    // Show with proper animation and location.
+                                    mPopupView.setVisibility(View.VISIBLE);
+                                    popupWindow.setAnimationStyle(
+                                            R.style.AnchoredPopupAnimEndBottom);
+                                    popupWindow.showAtLocation(mAnchorView, 0, xOffset, yOffset);
                                 }
                             });
+        } else {
+            popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndTop);
+            popupWindow.showAsDropDown(mAnchorView);
         }
-        popupWindow.showAsDropDown(mAnchorView, 0, -1 * mesuredHeight);
-        popupWindow.setAnimationStyle(
-                BottomToolbarConfiguration.isToolbarTopAnchored()
-                        ? R.style.AnchoredPopupAnimEndTop
-                        : R.style.AnchoredPopupAnimEndBottom);
-
-        // Turn off window animations for low end devices, and on Android M, which has built-in menu
-        // animations.
-        if (SysUtils.isLowEndDevice() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            popupWindow.setAnimationStyle(0);
-        }
-
-        Rect bgPadding = new Rect();
-        int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
-                         + bgPadding.left + bgPadding.right;
-        popupWindow.setWidth(popupWidth);
 
         return popupWindow;
     }
