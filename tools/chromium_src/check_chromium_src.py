@@ -211,8 +211,8 @@ class ChromiumSrcOverridesChecker:
                             f"  {display_override_filepath} uses a " +
                             "src/-prefixed or <> include that doesn't point " +
                             "to the expected file:\n" + f"  Include: {line}" +
-                            "  Expected include target: <" +
-                            f"{normalized_override_filepath}>")
+                            "  Expected include target: src/" +
+                            f"{normalized_override_filepath}")
                     continue
 
                 # Check ..gen/-prefixed includes
