@@ -310,14 +310,16 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Check the values in apply_failures
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/b.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
 
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/a.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -336,14 +338,16 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Check the values in apply_failures
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/b.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/a.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -362,14 +366,16 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Check the values in apply_failures
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/b.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
         failure = (next(
             (f for f in apply_failures
-             if Path(f['patchPath']) == Path('patches/a.txt.patch')), None))
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], None)
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')

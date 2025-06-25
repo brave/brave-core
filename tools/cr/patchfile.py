@@ -44,6 +44,17 @@ class Patchfile:
         object.__setattr__(self, 'repository',
                            self.get_repository_from_patch_name())
 
+        if (not self.repository.is_chromium and self.provided_source
+                and self.provided_source.startswith(
+                    self.repository.relative_to_chromium.as_posix())):
+            # The report produced by `apply_patches` provides the source as a
+            # full path relative to chromium's src/ directory, therefore it is
+            # necessary to strip the repository path from the source path.
+            object.__setattr__(
+                self, 'provided_source',
+                PurePath(self.provided_source).relative_to(
+                    self.repository.relative_to_chromium).as_posix())
+
     def get_repository_from_patch_name(self) -> Repository:
         """Gets the repository for the patch file.
         """
@@ -126,12 +137,12 @@ class Patchfile:
     def source_from_brave(self) -> PurePath:
         """The source file path relative to the `brave/` directory.
         """
-        return f'{self.repository.from_brave() / self.source()}'
+        return self.repository.from_brave() / self.source()
 
     def path_from_repo(self) -> PurePath:
         """The patch path relative to the repository source belongs.
         """
-        return f'{self.repository.to_brave() / self.path}'
+        return self.repository.to_brave() / self.path
 
     def apply(self) -> ApplyResult:
         """Applies the patch file with `git apply --3way`.
@@ -147,7 +158,7 @@ class Patchfile:
         try:
             self.repository.run_git('apply', '--3way', '--ignore-space-change',
                                     '--ignore-whitespace',
-                                    self.path_from_repo())
+                                    self.path_from_repo().as_posix())
             return self.ApplyResult(status=self.ApplyStatus.CLEAN, patch=None)
         except subprocess.CalledProcessError as e:
             # If the process fails, we need to collect the files that failed to
@@ -158,10 +169,11 @@ class Patchfile:
                 #   U build/android/gyp/dex.py
                 # We get the file name from the last line.
                 return self.ApplyResult(
-                    self.ApplyStatus.CONFLICT,
-                    replace(self,
-                            source_from_git=e.stderr.strip().splitlines()
-                            [-1].split()[-1]))
+                    status=self.ApplyStatus.CONFLICT,
+                    patch=replace(
+                        self,
+                        source_from_git=e.stderr.strip().splitlines()
+                        [-1].split()[-1]))
             if e.stderr.startswith('error:'):
                 [_, reason] = e.stderr.strip().split(': ', 1)
 
@@ -177,8 +189,9 @@ class Patchfile:
                         ' which may indicate a bad sync state before starting '
                         'to upgrade. %s', self.path)
                     return self.ApplyResult(
-                        self.ApplyStatus.DELETED,
-                        replace(self, source_from_git=reason.split(': ',
+                        status=self.ApplyStatus.DELETED,
+                        patch=replace(self,
+                                      source_from_git=reason.split(': ',
                                                                    2)[0]))
                 if ('No such file or directory' in reason
                         and self.path.as_posix() in reason):
@@ -217,10 +230,11 @@ class Patchfile:
 
         # The command below has an output similar to:
         # 8	0  base/some_file.cc
-        return replace(self,
-                       source_from_git=self.repository.run_git(
-                           'apply', '--numstat', '-z',
-                           self.path_from_repo()).strip().split()[2][:-1])
+        return replace(
+            self,
+            source_from_git=self.repository.run_git(
+                'apply', '--numstat', '-z',
+                self.path_from_repo().as_posix()).strip().split()[2][:-1])
 
     def get_last_commit_for_source(self) -> str:
         """Gets the last commit where the source file was mentioned.

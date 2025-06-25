@@ -266,6 +266,26 @@ class RepositoryTest(unittest.TestCase):
         # Verify the current branch is updated
         self.assertEqual(repository.chromium.current_branch(), new_branch)
 
+    def test_relative_to_chromium(self):
+        # Chromium root should be relative to itself as ''
+        self.assertEqual(
+            Repository(self.fake_chromium_src.chromium).relative_to_chromium.
+            as_posix(), '.')
+        # Brave root should be relative to chromium as 'brave'
+        self.assertEqual(
+            Repository(
+                self.fake_chromium_src.brave).relative_to_chromium.as_posix(),
+            'brave')
+        # Subdirectory v8 should be relative as 'v8'
+        self.assertEqual(
+            Repository(self.fake_chromium_src.chromium /
+                       'v8').relative_to_chromium.as_posix(), 'v8')
+        # Nested subdirectory should be relative as 'third_party/test1'
+        self.assertEqual(
+            Repository(self.fake_chromium_src.chromium /
+                       'third_party/test1').relative_to_chromium.as_posix(),
+            'third_party/test1')
+
 
 if __name__ == "__main__":
     unittest.main()

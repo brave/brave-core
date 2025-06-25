@@ -935,9 +935,13 @@ class Upgrade(Versioned):
         for repo, patches in patch_files.items():
             for patch in patches:
                 apply_result = patch.apply()
+                if apply_result.patch:
+                    # Let's use the updated patchfile instance.
+                    patch = apply_result.patch
+
                 if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
-                    source = patch.source_from_brave()
-                    files_with_conflicts.append(source)
+                    files_with_conflicts.append(
+                        patch.source_from_brave().as_posix())
                 elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
                     broken_patches.append(patch)
                 elif apply_result.status == Patchfile.ApplyStatus.DELETED:
