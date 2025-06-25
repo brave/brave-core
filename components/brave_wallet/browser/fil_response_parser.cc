@@ -103,7 +103,7 @@ std::optional<int64_t> ParseFilStateSearchMsgLimited(
   if (!code_value) {
     return std::nullopt;
   }
-  int64_t exit_code = -1;
+  int64_t exit_code = 0;
   if (!base::StringToInt64(*code_value, &exit_code)) {
     return std::nullopt;
   }
