@@ -84,6 +84,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="2028449514182362831">Harakat sensori ishlatadigan funksiyalar ishlamaydi</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> sahifasiga qaytish uchun bosing</translation>
 <translation id="2079545284768500474">Bekor qilish</translation>
+<translation id="2080070583977670716">Kengaytirilgan sozlamalar</translation>
 <translation id="2091887806945687916">Tovush</translation>
 <translation id="2096716221239095980">Hammasini oʻchirish</translation>
 <translation id="2102396546234652240">Saytlarga mikrofondan foydalanishni taqiqlash</translation>
@@ -229,7 +230,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3779154269823594982">Parollarni yangilash</translation>
 <translation id="3797520601150691162">Maxsus saytlar uchun tungi mavzu tatbiq etilmaydi</translation>
 <translation id="3803367742635802571">Siz tashrif buyurgan saytlar toʻgʻri ishlamay qolishi mumkin</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefon raqamlari</translation>
 <translation id="3826050100957962900">Tashqi xizmatga kirish</translation>
 <translation id="3835233591525155343">Qurilmadan foydalanish</translation>
@@ -437,7 +437,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="6452138246455930388">Ochiq varaqda narx pasaydi: <ph name="OLD_PRICE"/>dan <ph name="NEW_PRICE"/>ga, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Oyna kichkina boʻlsa, mobil versiyani soʻrang</translation>
 <translation id="6527303717912515753">Ulashish</translation>
-<translation id="652937045869844725">Tashqi cookie fayllarga ruxsat bering, bunda himoya pasayadi, lekin saytdagi aksariyat funksiyalar ishlaydi</translation>
 <translation id="6530703012083415527">Yoqilsa, qalqib chiquvchi oyna va yoʻnaltirishlardan foydalana oladi. Oʻchirilsa, foydalana olmaydi.</translation>
 <translation id="6540488083026747005">Bu sayt uchun tashqi cookie fayllarga ruxsat bergansiz</translation>
 <translation id="6545864417968258051">Bluetooth qurilmalarni qidirish</translation>
@@ -451,6 +450,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="6612358246767739896">Himoyalangan kontent</translation>
 <translation id="662080504995468778">Qolaman</translation>
 <translation id="6635327442719709864">Yoqilsa, saytlar seriyali portlardan foydalanishni soʻrashi mumkin. Yoqilmasa, saytlar seriyali port ishlata olmaydi.</translation>
+<translation id="6678072580827808850">Xavfsizlik tekshiruvini tekshirish</translation>
 <translation id="6683865262523156564">Bu sayt guruhga kiradi va u guruhdagi faoliyatni koʻra oladi. Guruh <ph name="RWS_OWNER"/> tomonidan belgilangan</translation>
 <translation id="6689172468748959065">Profil rasmlari</translation>
 <translation id="6697925417670533197">Faol yuklanmalar</translation>
@@ -485,7 +485,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="7141896414559753902">Saytlarga qalqib chiquvchi oynalarni ochishni taqiqlash (tavsiya etiladi)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Yangilash</translation>
-<translation id="7180865173735832675">Sozlash</translation>
 <translation id="7188508872042490670">Qurilmada saqlangan sayt maʼlumotlari</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> saytiga bogʻlangan saytlar yoki ularning bosh ekrandagi ilovasi saqlangan barcha maʼlumotlar va cookie fayllari oʻchirib tashlanadi.</translation>
 <translation id="7203150201908454328">Yoyilgan</translation>

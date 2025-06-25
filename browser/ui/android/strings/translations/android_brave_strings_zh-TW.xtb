@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">啟用對繞過頂層重新導向追蹤 URL 的支援。</translation>
 <translation id="94154759592465111">阻擋指令稿</translation>
 <translation id="7714773920987474116">封鎖 JavaScript (可能會使網站無法正常運作)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">封鎖 YouTube 推薦內容</translation>
 <translation id="1005372663692637999">封鎖 youtube.com 的「下一部影片」和結尾畫面等元素。</translation>
 <translation id="5152595963250646670">封鎖 YouTube 上使人分心的元素</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">顯示熱門建議</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
-<translation id="412411722208944922">快速搜尋引擎</translation>
-<translation id="2836969042340015500">快速搜尋引擎</translation>
-<translation id="9120455214794270250">顯示快速搜尋列</translation>
-<translation id="1052991798173010693">目前使用的搜尋引擎</translation>
-<translation id="335303688425891752">長按可變更順序</translation>
 <translation id="9148058034647219655">結束</translation>
 <translation id="8047754398610073499">攔截 cookie 同意通知</translation>
 <translation id="2621893359845808115">攔截要求您接受/拒絕網站 cookie 的彈出式視窗</translation>
@@ -243,7 +237,7 @@
 <translation id="6718362830686703942">系統當機或停止回應時傳送診斷報告。</translation>
 <translation id="8616157231067364693">分享不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。</translation>
 <translation id="2888496576732880897">幫助 Brave 搜尋成長</translation>
-<translation id="7044431516245362795">選擇加入「網路探索計畫」，以幫助索引成長並改善搜尋結果。 <ph name="LEARN_MORE_START"/>「了解更多資訊」。<ph name="LEARN_MORE_END"/></translation>
+<translation id="7044431516245362795">選擇加入「網路探索計畫」，以幫助索引成長並改善搜尋結果。 <ph name="LEARN_MORE_START"/>了解更多資訊。<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">沒問題，我願意協助</translation>
 <translation id="3545804467215833536">輕觸以查看 Brave Shields</translation>
 <translation id="1724327820822194498">查看 Brave 使用 Shields 在每個頁面上封鎖的所有惡意內容。</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">輸入、貼上或匯入您的私鑰字串檔案或 JSON。</translation>
 <translation id="569068482611873351">匯入……</translation>
 <translation id="4522570452068850558">詳情</translation>
+<translation id="3114681061018999547">屏蔽中</translation>
 <translation id="3784455785234192852">鎖定</translation>
 <translation id="4412698727486357573">說明中心</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">功能類型：<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">無資料</translation>
 <translation id="1105525362447173583">Solana Dapp 簽署交易</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 已轉帳<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 已傳送 <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> 已核准<ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">已核准無限制的 <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> 交換 - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">未批准</translation>
-<translation id="8034530868111548216">已批准</translation>
-<translation id="6015436276085482001">拒絕</translation>
-<translation id="6666273175654835609">已送出</translation>
-<translation id="2331676293859649642">已確認</translation>
-<translation id="8214232307424031138">已簽署</translation>
-<translation id="1165039591588034296">錯誤</translation>
 <translation id="2561824823738097741">您使用的是最快的網頁瀏覽器嗎？</translation>
 <translation id="2065971949051836200">您的手機已經可以體驗快 3 倍的網路速度。使用 Brave 瀏覽所有網頁。</translation>
 <translation id="2888278614497184977">Brave = 網頁瀏覽加快 3 倍</translation>
@@ -1225,7 +1208,7 @@
 <translation id="1599073346542156922">如何開啟此功能：</translation>
 <translation id="7001163334415463127">1. 從您的 app 抽屜開啟裝置的設定，或點選下方的按鈕。</translation>
 <translation id="887443138775437899">2. 找到 Brave VPN 並點選右邊的設定圖示。</translation>
-<translation id="7546805138087561624">3. 切換「<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>永遠開啟的 VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>」以啟用此選項。</translation>
+<translation id="7546805138087561624">3. 切換「<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>永遠開啟 VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>」以啟用此選項。</translation>
 <translation id="2446001600399646984">請注意，由於 Android 的限制，「在沒有 VPN 的情況下封鎖連線」並不能如預期般運作。<ph name="LEARN_MORE_START"/>了解更多資訊。<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">開啟 Android 設定</translation>
 <translation id="2728518864712716830">已下載更新。</translation>
@@ -1238,4 +1221,5 @@
 <translation id="6859935199732075666">顯示安全瀏覽錯誤</translation>
 <translation id="2735247450315842119">允許在無痕標籤頁中截圖</translation>
 <translation id="8420414929552321089">如果允許，開啟多個應用程式時，無痕標籤頁也會顯示。</translation>
+<translation id="7956713633345437162">手機書籤</translation>
 </translationbundle>

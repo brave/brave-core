@@ -84,6 +84,7 @@ Advanced Protection controls these Brave settings:
 <translation id="2028449514182362831">Features that need motion sensors won't work</translation>
 <translation id="2030769033451695672">Tap to return to <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Undo</translation>
+<translation id="2080070583977670716">More settings</translation>
 <translation id="2091887806945687916">Sound</translation>
 <translation id="2096716221239095980">Delete all data</translation>
 <translation id="2102396546234652240">Don't allow sites to use your microphone</translation>
@@ -230,7 +231,6 @@ Advanced Protection controls these Brave settings:
 <translation id="3779154269823594982">Change passwords</translation>
 <translation id="3797520601150691162">Don’t apply Dark theme for a specific site</translation>
 <translation id="3803367742635802571">Sites that you visit may stop working as designed</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Phone numbers</translation>
 <translation id="3826050100957962900">Third-party sign-in</translation>
 <translation id="3835233591525155343">Your device use</translation>
@@ -439,7 +439,6 @@ Advanced Protection controls these Brave settings:
 <translation id="6452138246455930388">Price drop on your open tab, from <ph name="OLD_PRICE"/> to <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">When the window is narrow, request mobile view</translation>
 <translation id="6527303717912515753">Share</translation>
-<translation id="652937045869844725">Try allowing third-party cookies, which means less protection but that site features are more likely to work</translation>
 <translation id="6530703012083415527">When on, sites can use pop-ups and redirects. When off, sites can't use pop-ups and redirects.</translation>
 <translation id="6540488083026747005">You allowed third-party cookies on this site</translation>
 <translation id="6545864417968258051">Bluetooth scanning</translation>
@@ -453,6 +452,7 @@ Advanced Protection controls these Brave settings:
 <translation id="6612358246767739896">Protected content</translation>
 <translation id="662080504995468778">Stay</translation>
 <translation id="6635327442719709864">When on, sites can ask to use serial ports. When off, sites can't use serial ports.</translation>
+<translation id="6678072580827808850">Review Safety Check</translation>
 <translation id="6683865262523156564">This site is in a group that can see your activity. The group is defined by <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profile photos</translation>
 <translation id="6697925417670533197">Active downloads</translation>
@@ -487,7 +487,6 @@ Advanced Protection controls these Brave settings:
 <translation id="7141896414559753902">Block sites from showing pop-ups and redirects (recommended)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Refresh</translation>
-<translation id="7180865173735832675">Customise</translation>
 <translation id="7188508872042490670">On-device site data</translation>
 <translation id="7201549776650881587">This action will clear all data and cookies stored by all sites under <ph name="ORIGIN"/> or by its app on your Home screen</translation>
 <translation id="7203150201908454328">Expanded</translation>

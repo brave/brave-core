@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
-<translation id="1045448422538531528">Tambahkan pada kumpulan</translation>
+<translation id="1036348656032585052">Matikan</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Dibuat <ph name="NUM_WEEKS_ONE"/> minggu yang lalu}other{Dibuat <ph name="NUM_WEEKS_MANY"/> minggu yang lalu}}</translation>
 <translation id="1063300264396686489">Buka kumpulan tab daripada peranti lain secara automatik</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> daripada tab anda sudah lama tidak digunakan. Tutup tab?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Kumpulan tab "<ph name="TAB_GROUP_NAME_1"/>" dan "<ph name="TAB_GROUP_NAME_2"/>" tidak tersedia lagi</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Runtuhkan <ph name="TABS_COUNT_ONE"/> tab.}other{Runtuhkan kumpulan tab dengan <ph name="TABS_COUNT_MANY"/> tab.}}</translation>
 <translation id="2569352796411618312">Cadangan: <ph name="NUMBER_OF_TABS"/> daripada tab anda sudah lama tidak digunakan. Tutup tab?</translation>
-<translation id="2656693375914502139">Alihkan kepada kumpulan</translation>
 <translation id="2662028055331606429">Rating <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Lawati laman</translation>
 <translation id="2671423594960767771">Kongsi kumpulan</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> tab ditutup}other{<ph name="MANY_CLOSED"/> tab ditutup}}</translation>
 <translation id="2894757982205307093">Tab baharu dalam kumpulan</translation>
 <translation id="4691798003247738043">Brave | Perihal kedai ini</translation>
-<translation id="2977480621796371840">Alih keluar daripada kumpulan</translation>
 <translation id="29919168204617356">Tab tidak aktif akan ditutup secara automatik. Anda boleh menemukan tab tersebut dalam Sejarah pada bila-bila masa.</translation>
 <translation id="3008554597174452548">Hentikan penjejakan produk</translation>
 <translation id="3026391124054406831">Buat kumpulan untuk menyusun tab anda.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Tab kumpulan anda disimpan secara automatik</translation>
 <translation id="6054741997831917303">Baru-baru ini harga item ini jatuh daripada <ph name="PREVIOUS_PRICE"/> kepada <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Kini semua tab pendua akan turut diarkibkan kecuali salinan yang digunakan baru-baru ini.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Alihkan kumpulan kepada tetingkap baharu}other{Alihkan kumpulan kepada tetingkap lain}}</translation>
 <translation id="6193448654517602979">Pilih tab</translation>
+<translation id="6220820548421939212">Ya. Saya mahu</translation>
 <translation id="6228793724645064692">(rating kedai)</translation>
 <translation id="6271513594716432922">Tutup semua tab tidak aktif</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Tambahkan tab pada kumpulan baharu}other{Tambahkan tab pada kumpulan baharu}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Aktiviti</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Rating <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> ulasan}other{Rating <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> ulasan}}</translation>
 <translation id="7885132941432959125">Alihkan tab ke kanan</translation>
+<translation id="788914896430720926">Kemaskan bahagian tidak aktif anda?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> Tidak dipilih</translation>
 <translation id="7942349550061667556">Merah</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
 <translation id="7966321538264951561">Tolak cadangan.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Alihkan tab kepada tetingkap baharu}other{Alihkan tab kepada tetingkap lain}}</translation>
 <translation id="799469866974412355">Kumpulan baharu daripada peranti anda yang lain</translation>
 <translation id="8029301326595421733">Maklumat tentang kedai ini dibuka pada ketinggian penuh</translation>
 <translation id="8053770993984522566">Senarai kumpulan tab, dibuka pada ketinggian separuh</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Lebih murah</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Dibuat <ph name="NUM_MONTHS_ONE"/> bulan yang lalu}other{Dibuat <ph name="NUM_MONTHS_MANY"/> bulan yang lalu}}</translation>
+<translation id="8813708480179818649">Alih keluar tab daripada kumpulan</translation>
 <translation id="8820741577754260431">Lihat penurunan harga pada tab anda</translation>
+<translation id="5495695379719652610">Brave menutup item dalam bahagian tidak aktif yang tidak digunakan selama 3 bulan secara automatik. Anda boleh mematikan pilihan ini sekarang atau pada bila-bila masa dalam Tetapan.</translation>
 <translation id="8887921976452567404">Tab dan kumpulan anda yang ditutup boleh dibuka semula daripada bahagian Tab terbaharu dan bahagian Kumpulan tab.</translation>
 <translation id="8915916167043355778">Tutup semua</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Alihkan kepada tetingkap baharu}other{Alihkan kepada tetingkap lain}}</translation>
 <translation id="9090098097337832354">Maklumat tentang kedai ini ditutup</translation>
 <translation id="9114502155681725011">Buka menu tindakan kumpulan tab untuk kumpulan tab <ph name="TITLE_OF_GROUP"/>, warna <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Tambahkan tab baharu pada kumpulan</translation>

@@ -84,6 +84,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="2028449514182362831">Funktioner, der skal bruge bevægelsessensorer, fungerer ikke</translation>
 <translation id="2030769033451695672">Tryk for at vende tilbage til <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Fortryd</translation>
+<translation id="2080070583977670716">Flere indstillinger</translation>
 <translation id="2091887806945687916">Lyd</translation>
 <translation id="2096716221239095980">Slet alle data</translation>
 <translation id="2102396546234652240">Tillad ikke, at websites anvender din mikrofon</translation>
@@ -229,7 +230,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="3779154269823594982">Skift adgangskoder</translation>
 <translation id="3797520601150691162">Anvend ikke Mørkt tema på et bestemt website</translation>
 <translation id="3803367742635802571">Websites, du besøger, holder muligvis op med at fungere som forventet</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefonnumre</translation>
 <translation id="3826050100957962900">Tredjepartslogin</translation>
 <translation id="3835233591525155343">Din enhedsbrug</translation>
@@ -437,7 +437,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="6452138246455930388">Prisfald på din åbne fane fra <ph name="OLD_PRICE"/> til <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Når vinduet er smalt, kan du anmode om mobilvenlig visning</translation>
 <translation id="6527303717912515753">Del</translation>
-<translation id="652937045869844725">Prøv at tillade tredjepartscookies, hvilket vil betyde mindre beskyttelse, men større sandsynlighed for, at websitefunktionerne fungerer</translation>
 <translation id="6530703012083415527">Når dette er slået til, kan websites anvende pop op-vinduer og omdirigeringer. Når dette er slået fra, kan websites ikke anvende pop op-vinduer og omdirigeringer.</translation>
 <translation id="6540488083026747005">Du har tilladt tredjepartscookies på dette website</translation>
 <translation id="6545864417968258051">Bluetooth-scanning</translation>
@@ -451,6 +450,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="6612358246767739896">Beskyttet indhold</translation>
 <translation id="662080504995468778">Bliv her</translation>
 <translation id="6635327442719709864">Når denne indstilling er aktiveret, kan websites anmode om at anvende serieporte. Når denne indstilling er deaktiveret, kan websites ikke anvende serieporte.</translation>
+<translation id="6678072580827808850">Gennemgå sikkerhedstjek</translation>
 <translation id="6683865262523156564">Dette website er i en gruppe, der kan se din aktivitet. Gruppen er defineret af <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profilbilleder</translation>
 <translation id="6697925417670533197">Aktive downloads</translation>
@@ -485,7 +485,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="7141896414559753902">Bloker visning af pop up-vinduer på websites og omdirigeringer (anbefales)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Opdater</translation>
-<translation id="7180865173735832675">Tilpas</translation>
 <translation id="7188508872042490670">Websitedata på enheden</translation>
 <translation id="7201549776650881587">Denne handling sletter alle data og cookies, som er gemt af alle websites i gruppen <ph name="ORIGIN"/> eller den tilhørende app på din startside</translation>
 <translation id="7203150201908454328">Udvidet</translation>

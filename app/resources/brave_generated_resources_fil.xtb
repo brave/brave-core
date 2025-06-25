@@ -344,6 +344,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8081858229109418493">Pangalan at icon ng profile</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
 <translation id="984275831282074731">Mga paraan ng pagbabayad</translation>
+<translation id="6278858909990433658">Ginagamit pa rin ang import profile</translation>
+<translation id="9071187015476020102">Para mag-import ng mga extension o ibang mga setting, isara muna ang browser na panggagalingan.</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
 <translation id="1807246157184219062">Light</translation>
 <translation id="2414886740292270097">Dark</translation>
@@ -827,4 +829,7 @@ Leo AI. Hindi puwedeng ma-undo ang aksyong ito.</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Open mode</translation>
+<translation id="2249111429176737533">Buksan bilang naka-tab na window</translation>
+<translation id="7022756207310403729">Buksan sa browser</translation>
 </translationbundle>

@@ -84,6 +84,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="2028449514182362831">Las funciones que necesiten sensores de movimiento no se podrán utilizar</translation>
 <translation id="2030769033451695672">Toca para volver a <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Deshacer</translation>
+<translation id="2080070583977670716">Más ajustes</translation>
 <translation id="2091887806945687916">Sonido</translation>
 <translation id="2096716221239095980">Eliminar todos los datos</translation>
 <translation id="2102396546234652240">No permitir que los sitios usen tu micrófono</translation>
@@ -229,7 +230,6 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="3779154269823594982">Cambiar contraseñas</translation>
 <translation id="3797520601150691162">El tema oscuro no se aplica a un sitio específico</translation>
 <translation id="3803367742635802571">Es posible que los sitios que visites dejen de funcionar como deben</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Números de teléfono</translation>
 <translation id="3826050100957962900">Inicio de sesión de terceros</translation>
 <translation id="3835233591525155343">Uso de tu dispositivo</translation>
@@ -437,7 +437,6 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="6452138246455930388">Bajada de precio en tu pestaña abierta de <ph name="OLD_PRICE"/> a <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Cuando la ventana es estrecha, solicita la vista para móvil</translation>
 <translation id="6527303717912515753">Compartir</translation>
-<translation id="652937045869844725">Prueba a permitir las cookies de terceros, lo que disminuirá la protección, pero aumentará la probabilidad de que las opciones del sitio funcionen</translation>
 <translation id="6530703012083415527">Cuando esta opción está activada, los sitios pueden usar ventanas emergentes y redirecciones. Si está desactivada, los sitios no pueden usar ventanas emergentes ni redirecciones.</translation>
 <translation id="6540488083026747005">Has permitido el uso de cookies de terceros en este sitio</translation>
 <translation id="6545864417968258051">Búsqueda de dispositivos Bluetooth</translation>
@@ -451,6 +450,7 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="6612358246767739896">Contenido protegido</translation>
 <translation id="662080504995468778">Seguir aquí</translation>
 <translation id="6635327442719709864">Si se activa, los sitios pueden solicitar permiso para usar puertos serie. Si se desactiva, los sitios no pueden usar los puertos serie.</translation>
+<translation id="6678072580827808850">Revisar comprobación de seguridad</translation>
 <translation id="6683865262523156564">Este sitio está en un grupo que puede ver tu actividad. El grupo está definido por <ph name="RWS_OWNER"/>.</translation>
 <translation id="6689172468748959065">Fotos de perfil</translation>
 <translation id="6697925417670533197">Descargas activas</translation>
@@ -485,7 +485,6 @@ Protección Avanzada controla estos ajustes de Brave:
 <translation id="7141896414559753902">Impide que los sitios muestren ventanas emergentes y redirecciones (recomendado)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Actualizar</translation>
-<translation id="7180865173735832675">Personalizar</translation>
 <translation id="7188508872042490670">Datos de sitios en el dispositivo</translation>
 <translation id="7201549776650881587">Esta acción eliminará todos los datos y las cookies almacenados por todos los sitios que <ph name="ORIGIN"/> incluya o por su aplicación en tu pantalla de inicio.</translation>
 <translation id="7203150201908454328">Ampliado</translation>

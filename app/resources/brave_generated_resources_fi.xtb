@@ -344,6 +344,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8081858229109418493">Profiilin nimi ja kuvake</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="984275831282074731">Maksutavat</translation>
+<translation id="6278858909990433658">Profiilin tuominen on yhä käytössä</translation>
+<translation id="9071187015476020102">Tuodaksesi laajennuksia tai muita asetuksia sulje ensin selain, josta haluat tuoda.</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="1807246157184219062">Kevyt</translation>
 <translation id="2414886740292270097">Pimeä</translation>
@@ -824,4 +826,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5318548116565208315">Karamellimaissi-kuvake</translation>
 <translation id="1959966725083452288">Kuninkaallinen karamelli -kuvake</translation>
 <translation id="2039034364578911089">Karamellininja-kuvake</translation>
+<translation id="154702742922788359">Avaustapa</translation>
+<translation id="2249111429176737533">Avaa uudessa välilehdessä</translation>
+<translation id="7022756207310403729">Avaa selaimessa</translation>
 </translationbundle>

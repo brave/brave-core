@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
-<translation id="1045448422538531528">Adicionar ao grupo</translation>
+<translation id="1036348656032585052">Desativar</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Criado há <ph name="NUM_WEEKS_ONE"/> semana}one{Criado há <ph name="NUM_WEEKS_MANY"/> semana}other{Criado há <ph name="NUM_WEEKS_MANY"/> semanas}}</translation>
 <translation id="1063300264396686489">Abrir automaticamente grupos de guias de outros dispositivos</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> das suas guias não foram usadas recentemente. Fechar todas elas?</translation>
@@ -41,7 +41,6 @@
 <translation id="2536366509642644298">Os grupos de guias "<ph name="TAB_GROUP_NAME_1"/>" e "<ph name="TAB_GROUP_NAME_2"/>" não estão mais disponíveis</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Recolher <ph name="TABS_COUNT_ONE"/> guia.}one{Recolher grupo de guias com <ph name="TABS_COUNT_MANY"/> guia.}other{Recolher grupo de guias com <ph name="TABS_COUNT_MANY"/> guias.}}</translation>
 <translation id="2569352796411618312">Sugestão: <ph name="NUMBER_OF_TABS"/> das suas guias não foram usadas recentemente. Fechar todas elas?</translation>
-<translation id="2656693375914502139">Mover para grupo</translation>
 <translation id="2662028055331606429">Nota: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Visitar o site</translation>
 <translation id="2671423594960767771">Compartilhar grupo</translation>
@@ -53,7 +52,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> guia fechada}one{<ph name="MANY_CLOSED"/> guia fechada}other{<ph name="MANY_CLOSED"/> guias fechadas}}</translation>
 <translation id="2894757982205307093">Nova guia no grupo</translation>
 <translation id="4691798003247738043">Brave | Sobre a loja</translation>
-<translation id="2977480621796371840">Remover do grupo</translation>
 <translation id="29919168204617356">As guias inativas serão fechadas automaticamente. Elas podem ser encontradas no Histórico.</translation>
 <translation id="3008554597174452548">Parar de monitorar o produto</translation>
 <translation id="3026391124054406831">Crie grupos para organizar as guias.</translation>
@@ -119,7 +117,9 @@
 <translation id="6051432659151380973">Seus grupos de guias são salvos automaticamente</translation>
 <translation id="6054741997831917303">O preço deste item caiu de <ph name="PREVIOUS_PRICE"/> para <ph name="NEW_PRICE"/></translation>
 <translation id="6109251075362363230">Agora, todas as guias duplicadas também serão arquivadas, com exceção da cópia usada mais recentemente.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Mover grupo para nova janela}one{Mover grupo para outra janela}other{Mover grupo para outras janelas}}</translation>
 <translation id="6193448654517602979">Selecionar guias</translation>
+<translation id="6220820548421939212">Sim, aceito</translation>
 <translation id="6228793724645064692">(nota da loja)</translation>
 <translation id="6271513594716432922">Fechar todas as guias inativas</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Adicionar guia ao novo grupo}one{Adicionar guia ao novo grupo}other{Adicionar guias ao novo grupo}}</translation>
@@ -168,10 +168,12 @@
 <translation id="7853202427316060426">Atividade</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Nota: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>. <ph name="REVIEWS_COUNT_ONE"/> avaliação}one{Nota: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>. <ph name="REVIEWS_COUNT_MANY"/> avaliação}other{Nota: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>. <ph name="REVIEWS_COUNT_MANY"/> avaliações}}</translation>
 <translation id="7885132941432959125">Mover guia para a direita</translation>
+<translation id="788914896430720926">Organizar a seção "Inativas"?</translation>
 <translation id="7939917283308035850">Cor não selecionada: <ph name="COLOR_NAME"/></translation>
 <translation id="7942349550061667556">Vermelho</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="7966321538264951561">Dispensar as sugestões.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Mover guia para uma nova janela}one{Mover guia para outra janela}other{Mover guia para outras janelas}}</translation>
 <translation id="799469866974412355">Novo grupo do seu outro dispositivo</translation>
 <translation id="8029301326595421733">As informações sobre a loja estão abertas no tamanho máximo</translation>
 <translation id="8053770993984522566">Lista de grupos de guias aberta na metade da altura</translation>
@@ -192,10 +194,11 @@
 <translation id="8714939927607906138">Preço menor</translation>
 <translation id="8730621377337864115">Concluir</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Criado há <ph name="NUM_MONTHS_ONE"/> mês}one{Criado há <ph name="NUM_MONTHS_MANY"/> mês}other{Criado há <ph name="NUM_MONTHS_MANY"/> meses}}</translation>
+<translation id="8813708480179818649">Remover guia do grupo</translation>
 <translation id="8820741577754260431">Ver reduções no preço nas suas guias</translation>
+<translation id="5495695379719652610">O Brave fecha automaticamente os itens da seção "Inativas" que você não usa há três meses. Você pode desativar esse recurso agora ou a qualquer momento nas configurações.</translation>
 <translation id="8887921976452567404">Você pode reabrir as guias e os grupos fechados nas seções "Guias recentes" e "Grupos de guias".</translation>
 <translation id="8915916167043355778">Fechar todas</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Mover para nova janela}one{Mover para outra janela}other{Mover para outra janela}}</translation>
 <translation id="9090098097337832354">As informações sobre a loja estão fechadas</translation>
 <translation id="9114502155681725011">Abrir o menu de ações do grupo de guias <ph name="TITLE_OF_GROUP"/>, de cor <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Adicionar nova guia ao grupo</translation>

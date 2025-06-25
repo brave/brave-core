@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">وہ خصوصیات کام نہیں کریں گی جن کے لیے موشن سینسرز کی ضرورت ہوتی ہے</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> پر واپس جانے کے لیے تھپتھپائیں</translation>
 <translation id="2079545284768500474">کالعدم کریں</translation>
+<translation id="2080070583977670716">مزید ترتیبات</translation>
 <translation id="2091887806945687916">آواز</translation>
 <translation id="2096716221239095980">سبھی ڈیٹا حذف کریں</translation>
 <translation id="2102396546234652240">سائٹس کو اپنا مائیکروفون استعمال کرنے کی اجازت نہ دیں</translation>
@@ -232,7 +233,6 @@
 <translation id="3779154269823594982">پاس ورڈز تبدیل کریں</translation>
 <translation id="3797520601150691162">کسی مخصوص سائٹ کیلئے گہری تھیم لاگو نہ کریں</translation>
 <translation id="3803367742635802571">جو سائٹس آپ دیکھتے ہیں وہ ڈیزائن کے مطابق کام کرنا بند کر سکتی ہیں</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>۔ <ph name="TYPE_2"/>۔</translation>
 <translation id="381841723434055211">فون نمبرز</translation>
 <translation id="3826050100957962900">فریق ثالث سائن ان</translation>
 <translation id="3835233591525155343">آپ کے آلے کا استعمال</translation>
@@ -445,7 +445,6 @@
 <translation id="6452138246455930388"><ph name="PRODUCT_NAME"/>، <ph name="DOMAIN_NAME"/> پر آپ کے کھلے ٹیب پر <ph name="OLD_PRICE"/> سے <ph name="NEW_PRICE"/> تک قیمت میں کمی</translation>
 <translation id="6500423977866688905">جب ونڈو تنگ ہو تو موبائل منظر کی درخواست کریں</translation>
 <translation id="6527303717912515753">اشتراک کریں</translation>
-<translation id="652937045869844725">فریق ثالث کوکیز کو اجازت دے کر آزمائیں، جس کا مطلب کم تحفظ ہے لیکن سائٹ کی خصوصیات کے کام کرنے کا زیادہ امکان ہے</translation>
 <translation id="6530703012083415527">آن ہونے پر، سائٹس پاپ اپس اور ری ڈائریکٹ کا استعمال کر سکتی ہیں۔ آف ہونے پر، سائٹس پاپ اپس اور ری ڈائریکٹس کا استعمال نہیں کر سکتی ہیں۔</translation>
 <translation id="6540488083026747005">آپ نے اس سائٹ پر فریق ثالث کوکیز کی اجازت دی ہے</translation>
 <translation id="6545864417968258051">بلوٹوتھ اسکیننگ</translation>
@@ -459,6 +458,7 @@
 <translation id="6612358246767739896">تحفظ یافتہ مواد</translation>
 <translation id="662080504995468778">رکیں</translation>
 <translation id="6635327442719709864">آن ہونے پر، سائٹس سیریل پورٹس کا استعمال کرنے کیلئے پوچھ سکتی ہیں۔ آف ہونے پر، سائٹس سیریل پورٹس کا استعمال نہیں کر سکتیں۔</translation>
+<translation id="6678072580827808850">سیفٹی چیک کا جائزہ لیں</translation>
 <translation id="6683865262523156564">یہ سائٹ ایک گروپ میں موجود ہے، جو آپ کی سرگرمی دیکھ سکتا ہے۔ گروپ کی وضاحت <ph name="RWS_OWNER"/> نے کی ہے</translation>
 <translation id="6689172468748959065">پروفائل کی تصاویر</translation>
 <translation id="6697925417670533197">فعال ڈاؤن لوڈز</translation>
@@ -493,7 +493,6 @@
 <translation id="7141896414559753902">سائٹس کو پاپ اپس اور ری ڈائریکٹس دکھانے سے مسدود کریں (تجویز کردہ)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">ریفریش کریں</translation>
-<translation id="7180865173735832675">حسب ضرورت بنائیں</translation>
 <translation id="7188508872042490670">آلہ پر موجود سائٹ کا ڈیٹا</translation>
 <translation id="7201549776650881587">اس کارروائی سے آپ کی ہوم اسکرین پر موجود <ph name="ORIGIN"/> کے تحت یا اس کی ایپ کے ذریعے سبھی سائٹس کے ذریعے اسٹور کردہ سبھی ڈیٹا اور کوکیز حذف ہو جائیں گی</translation>
 <translation id="7203150201908454328">توسیع کردہ</translation>

@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Activar a compatibilidade coa excepción de redirección de máximo nivel das URL de seguimento</translation>
 <translation id="94154759592465111">Bloquear guións</translation>
 <translation id="7714773920987474116">Bloquea JavaScript (pode que os sitios non funcionen)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloquear contido recomendado de YouTube</translation>
 <translation id="1005372663692637999">Bloquea os elementos da tarxeta final e A continuación en youtube.com.</translation>
 <translation id="5152595963250646670">Bloquear elementos de distracción de YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostrar as suxestións principais</translation>
 <translation id="6285118765755298263">Indexa outros motores de busca</translation>
 <translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
-<translation id="412411722208944922">Buscadores rápidos</translation>
-<translation id="2836969042340015500">Buscadores rápidos</translation>
-<translation id="9120455214794270250">Amosar barra de busca rápida</translation>
-<translation id="1052991798173010693">Buscadores empregados actualmente</translation>
-<translation id="335303688425891752">Mantén pulsado para cambiar a orde</translation>
 <translation id="9148058034647219655">Saír</translation>
 <translation id="8047754398610073499">Bloquear avisos de aceptación de cookies</translation>
 <translation id="2621893359845808115">Bloquea as ventás emerxentes dos sitios web que che solicitan aceptar/rexeitar cookies no seu sitio</translation>
@@ -504,7 +498,7 @@ Seguro que queres facelo?</translation>
 <translation id="5299848999918506028">Por favor!</translation>
 <translation id="76550953340008122">Grazas por facer saber aos desenvolvedores de Brave que hai algo mal neste sitio. Faremos o mellor para solucionalo!</translation>
 <translation id="650318023204990401">Controis avanzados</translation>
-<translation id="7205939464631857223">Despejar todos os elementos bloqueados</translation>
+<translation id="7205939464631857223">Baleirar todos os elementos bloqueados</translation>
 <translation id="5370478469168390143">Gardar os datos en liña</translation>
 <translation id="1118508688433541158">Navega máis rápido e bloquea os anuncios con Brave</translation>
 <translation id="7427391215172269363">Aforro datos cada día navegando pola rede con Brave.</translation>
@@ -677,6 +671,7 @@ Seguro que queres facelo?</translation>
 <translation id="3952797765659730604">Introduce, pega ou importa o ficheiro ou JSON que contén a cadea da túa clave privada.</translation>
 <translation id="569068482611873351">Importar…</translation>
 <translation id="4522570452068850558">Detalles</translation>
+<translation id="3114681061018999547">Activando escudo</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="4412698727486357573">Centro de axuda</translation>
 <translation id="8239147115686034860">Bloquear Brave Wallet automaticamente</translation>
@@ -807,18 +802,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2199215899212542417">TIPO DE FUNCIÓN: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Sen datos</translation>
 <translation id="1105525362447173583">Rexistrar transacción de dApp de Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviou <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> enviou <ph name="ASSET"/> n.º <ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprobou <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Activos <ph name="ASSET"/> sen límite aprobados - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Intercambio de <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Non aprobado</translation>
-<translation id="8034530868111548216">Aprobado</translation>
-<translation id="6015436276085482001">Rexeitado</translation>
-<translation id="6666273175654835609">Enviado</translation>
-<translation id="2331676293859649642">Confirmado</translation>
-<translation id="8214232307424031138">Rexistrado</translation>
-<translation id="1165039591588034296">Erro</translation>
 <translation id="2561824823738097741">Estás a utilizar o explorador web máis rápido?</translation>
 <translation id="2065971949051836200">Xa tes internet 3 veces máis rápido no teu teléfono. Utiliza Brave sempre que navegues pola rede.</translation>
 <translation id="2888278614497184977">Brave = exploración web 3 veces máis rápida</translation>
@@ -1029,7 +1012,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5888208462949095139">Buscar con <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget da pantalla de inicio</translation>
 <translation id="703185154752046151">Engadiuse o widget á pantalla de inicio</translation>
-<translation id="4635094429202343515">Proba o widget Busca de Brave</translation>
+<translation id="4635094429202343515">Proba o widget de Busca de Brave</translation>
 <translation id="4809681171446727314">Busca de xeito privado e independente sen saír da pantalla de inicio.</translation>
 <translation id="7751715172931488388">Engadir widget</translation>
 <translation id="7285167584112910782">Busca de accións rápidas de Brave</translation>
@@ -1097,7 +1080,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5781842473834867765">Gardar o meu historial de conversas</translation>
 <translation id="4109670531935487117">Mostrar suxestións autocompletadas na barra de enderezos</translation>
 <translation id="4983005227524068187">Mostrar na barra de motores de busca rápida</translation>
-<translation id="8514910864411336826">Permite unha atallo para iniciar Leo desde a barra de motores de busca rápida.</translation>
+<translation id="8514910864411336826">Permite o atallo para iniciar Leo desde a barra de motores de busca rápida.</translation>
 <translation id="6106701981952170121">Eliminar todos os datos das conversas con Leo AI</translation>
 <translation id="423600389315522551">Ao restablecer Leo AI, terás que aceptar usar Leo AI de Brave no futuro e isto tamén eliminará o teu historial de conversas. Limpar o historial borrará todas as conversas que tiveches con Leo AI. Isto non se pode desfacer.</translation>
 <translation id="6742599753610126012">Eliminar historial de conversas</translation>
@@ -1220,11 +1203,11 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6891382640886173702">Combinar ventás</translation>
 <translation id="2912247081180973411">Pechas ventás</translation>
 <translation id="4010699428656610296">Combina outras pestanas con outra ventá de Brave.</translation>
-<translation id="4306918392910017801">Volver conectar automaticamente a VPN</translation>
+<translation id="4306918392910017801">Reconectar automaticamente á VPN</translation>
 <translation id="1599073346542156922">Como se activa:</translation>
 <translation id="7001163334415463127">1. Abre a configuración do teu dispositivo desde o caixón da aplicación ou toca o botón que aparece abaixo.</translation>
 <translation id="887443138775437899">2. Busca a VPN de Brave e toca a icona de configuración á dereita.</translation>
-<translation id="7546805138087561624">3. Activa<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre activa<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> para habilitala.</translation>
+<translation id="7546805138087561624">3. Activa <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre activa<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> para habilitala.</translation>
 <translation id="2446001600399646984">Teña en conta que, debido a limitacións de Android, "Bloquear conexións sen VPN" non funciona como se espera. <ph name="LEARN_MORE_START"/>Máis información.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Abre a configuración de Android</translation>
 <translation id="2728518864712716830">Descargouse a actualización.</translation>
@@ -1235,6 +1218,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2361906291514218784">IA de Leo</translation>
 <translation id="7942415993090181327">Historial de conversas</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegación segura</translation>
-<translation id="2735247450315842119">Permitir capturas de pantalla en pestanas privadas</translation>
-<translation id="8420414929552321089">Se está permitido, as pestanas privadas tamén serán visibles cando haxa varias aplicacións abertas.</translation>
+<translation id="2735247450315842119">Permitir capturas de pantalla nos separadores privados</translation>
+<translation id="8420414929552321089">Se está permitido, os separadores privados tamén serán visibles cando haxa varias aplicacións abertas.</translation>
+<translation id="7956713633345437162">Marcadores móbiles</translation>
 </translationbundle>

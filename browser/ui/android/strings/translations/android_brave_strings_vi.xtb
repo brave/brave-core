@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Bật hỗ trợ bỏ qua các URL theo dõi chuyển hướng cấp cao.</translation>
 <translation id="94154759592465111">Chặn Kịch bản</translation>
 <translation id="7714773920987474116">Chặn JavaScript (có thể làm hỏng một số trang web)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Chặn nội dung được đề xuất trên YouTube</translation>
 <translation id="1005372663692637999">Chặn các thành phần thẻ tiếp theo và thẻ kết thúc trên youtube.com.</translation>
 <translation id="5152595963250646670">Chặn các yếu tố gây mất tập trung trên YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Hiển thị các đề xuất hàng đầu</translation>
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
-<translation id="412411722208944922">Tìm nhanh công cụ tìm kiếm</translation>
-<translation id="2836969042340015500">Tìm nhanh công cụ tìm kiếm</translation>
-<translation id="9120455214794270250">Hiển thị thanh tìm kiếm nhanh</translation>
-<translation id="1052991798173010693">Công cụ tìm kiếm hiện sử dụng</translation>
-<translation id="335303688425891752">Nhấn và giữ để đổi thứ tự</translation>
 <translation id="9148058034647219655">Thoát</translation>
 <translation id="8047754398610073499">Chặn thông báo chấp thuận cookie</translation>
 <translation id="2621893359845808115">Chặn cửa sổ bật lên của trang web yêu cầu bạn chấp nhận / từ chối cookie trên trang web của họ</translation>
@@ -677,6 +671,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3952797765659730604">Nhập, dán hoặc nhập khẩu tệp chuỗi khóa cá nhân hoặc JSON của bạn.</translation>
 <translation id="569068482611873351">Nhập khẩu...</translation>
 <translation id="4522570452068850558">Thông tin chi tiết</translation>
+<translation id="3114681061018999547">Đang bảo vệ</translation>
 <translation id="3784455785234192852">Khóa</translation>
 <translation id="4412698727486357573">Trung tâm trợ giúp</translation>
 <translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
@@ -808,18 +803,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2199215899212542417">LOẠI CHỨC NĂNG: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Không có dữ liệu</translation>
 <translation id="1105525362447173583">Giao dịch ký Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> đã gửi <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/>$) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> đã gửi <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> đã phê duyệt <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Đã phê duyệt không giới hạn <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Hoán đổi <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Unapproved</translation>
-<translation id="8034530868111548216">Approved</translation>
-<translation id="6015436276085482001">Không chấp thuận/Bị từ chối</translation>
-<translation id="6666273175654835609">Submitted</translation>
-<translation id="2331676293859649642">Confirmed</translation>
-<translation id="8214232307424031138">Signed</translation>
-<translation id="1165039591588034296">Lỗi</translation>
 <translation id="2561824823738097741">Bạn có đang sử dụng trình duyệt web nhanh nhất không?</translation>
 <translation id="2065971949051836200">Internet nhanh hơn 3 lần đã ở trên điện thoại của bạn rồi. Hãy sử dụng Brave cho tất cả nhu cầu duyệt web của bạn.</translation>
 <translation id="2888278614497184977">Brave = duyệt web nhanh hơn 3 lần</translation>
@@ -1227,9 +1210,9 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="4306918392910017801">Tự động kết nối lại VPN</translation>
 <translation id="1599073346542156922">Cách bật:</translation>
 <translation id="7001163334415463127">1. Mở cài đặt của thiết bị từ ngăn kéo ứng dụng hoặc nhấn vào nút bên dưới.</translation>
-<translation id="887443138775437899">2. Tìm VPN Brave và nhấn vào biểu tượng cài đặt ở bên phải.</translation>
-<translation id="7546805138087561624">3. Gạt công tắc <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN luôn bật<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> để bật tính năng này.</translation>
-<translation id="2446001600399646984">Lưu ý, do hạn chế của Android, tính năng "Chặn kết nối không có VPN" không hoạt động bình thường. <ph name="LEARN_MORE_START"/>Tìm hiểu thêm.<ph name="LEARN_MORE_END"/></translation>
+<translation id="887443138775437899">2. Tìm Brave VPN và nhấn vào biểu tượng cài đặt ở bên phải.</translation>
+<translation id="7546805138087561624">3. Chuyển thành <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN luôn bật<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> để bật tính năng này.</translation>
+<translation id="2446001600399646984">Lưu ý, do hạn chế của Android, tính năng "Chặn kết nối không có VPN" hoạt động không bình thường. <ph name="LEARN_MORE_START"/>Tìm hiểu thêm.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Mở Cài đặt Android</translation>
 <translation id="2728518864712716830">Bản cập nhật được tải xuống.</translation>
 <translation id="8403338849301491865">Danh sách bộ lọc được cập nhật thành công</translation>
@@ -1241,4 +1224,5 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="6859935199732075666">Hiển thị lỗi của Duyệt web an toàn</translation>
 <translation id="2735247450315842119">Cho phép ảnh chụp màn hình trong thẻ riêng tư</translation>
 <translation id="8420414929552321089">Nếu được phép, các thẻ riêng tư cũng sẽ hiển thị khi nhiều ứng dụng được mở.</translation>
+<translation id="7956713633345437162">Dấu trang trên thiết bị di động</translation>
 </translationbundle>

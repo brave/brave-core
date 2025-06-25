@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Ative o suporte ignorando o redirecionamento de URLs de rastreamento de nível superior.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
 <translation id="7714773920987474116">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloquear conteúdo recomendado do YouTube</translation>
 <translation id="1005372663692637999">Bloqueia os elementos do cartão seguinte e final em youtube.com.</translation>
 <translation id="5152595963250646670">Bloqueie elementos de distração do YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostrar as sugestões principais</translation>
 <translation id="6285118765755298263">Indexar outros mecanismos de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente sites que seguem a especificação OpenSearch.</translation>
-<translation id="412411722208944922">Mecanismos de pesquisa rápida</translation>
-<translation id="2836969042340015500">Mecanismos de pesquisa rápida</translation>
-<translation id="9120455214794270250">Mostrar barra de pesquisa rápida</translation>
-<translation id="1052991798173010693">Mecanismos de pesquisa usados no momento</translation>
-<translation id="335303688425891752">Mantenha pressionado para alterar a ordem</translation>
 <translation id="9148058034647219655">Sair</translation>
 <translation id="8047754398610073499">Bloquear avisos de consentimento para cookies</translation>
 <translation id="2621893359845808115">Bloqueia os pop-ups de sites que solicitam que você aceite/recuse os cookies do site</translation>
@@ -677,6 +671,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3952797765659730604">Insira, cole ou importe seu arquivo de string de chave privada ou JSON.</translation>
 <translation id="569068482611873351">Importar...</translation>
 <translation id="4522570452068850558">Detalhes</translation>
+<translation id="3114681061018999547">Protegendo</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="4412698727486357573">Centro de Ajuda</translation>
 <translation id="8239147115686034860">Bloquear automaticamente a Carteira Brave</translation>
@@ -808,18 +803,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2199215899212542417">TIPO DE FUNÇÃO: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Não há dados</translation>
 <translation id="1105525362447173583">Transação de assinatura de DApp Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviou <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (US$ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> enviou <ph name="ASSET"/> #nº <ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprovou <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Aprovou <ph name="ASSET"/> ilimitado - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Swap de <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Desaprovado</translation>
-<translation id="8034530868111548216">Aprovado</translation>
-<translation id="6015436276085482001">Rejeitado</translation>
-<translation id="6666273175654835609">Enviado</translation>
-<translation id="2331676293859649642">Confirmado</translation>
-<translation id="8214232307424031138">Assinado</translation>
-<translation id="1165039591588034296">Erro</translation>
 <translation id="2561824823738097741">Você está usando o navegador da web mais rápido?</translation>
 <translation id="2065971949051836200">Uma internet 3x mais rápida já está no seu telefone. Use o Brave para toda a sua navegação na web.</translation>
 <translation id="2888278614497184977">Brave = navegação na web 3x mais rápida</translation>
@@ -1238,4 +1221,5 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6859935199732075666">Mostrar erros de Navegação Segura</translation>
 <translation id="2735247450315842119">Permitir capturas de tela em guias privadas</translation>
 <translation id="8420414929552321089">Se permitido, as guias privadas também ficarão visíveis quando vários aplicativos estiverem abertos.</translation>
+<translation id="7956713633345437162">Favoritos móveis</translation>
 </translationbundle>

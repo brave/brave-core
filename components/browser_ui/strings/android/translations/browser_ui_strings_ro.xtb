@@ -84,6 +84,7 @@ Protecția avansată gestionează următoarele setări Brave:
 <translation id="2028449514182362831">Funcțiile care au nevoie de senzori de mișcare nu vor funcționa</translation>
 <translation id="2030769033451695672">Atinge pentru a reveni la <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Anulează</translation>
+<translation id="2080070583977670716">Mai multe setări</translation>
 <translation id="2091887806945687916">Sunet</translation>
 <translation id="2096716221239095980">Șterge toate datele</translation>
 <translation id="2102396546234652240">Nu permite site-urilor să folosească microfonul</translation>
@@ -229,7 +230,6 @@ Protecția avansată gestionează următoarele setări Brave:
 <translation id="3779154269823594982">Schimbă parolele</translation>
 <translation id="3797520601150691162">Nu aplica tema întunecată pentru un anumit site</translation>
 <translation id="3803367742635802571">Este posibil ca site-urile pe care le accesezi să nu mai funcționeze așa cum au fost proiectate</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Numere de telefon</translation>
 <translation id="3826050100957962900">Conectarea prin terță parte</translation>
 <translation id="3835233591525155343">Folosirea dispozitivului</translation>
@@ -437,7 +437,6 @@ Protecția avansată gestionează următoarele setări Brave:
 <translation id="6452138246455930388">Scădere de preț în fila deschisă, de la <ph name="OLD_PRICE"/> la <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Când fereastra este îngustă, solicită afișarea pe mobil</translation>
 <translation id="6527303717912515753">Trimite</translation>
-<translation id="652937045869844725">Permite cookie-urile terță parte, ceea ce înseamnă mai puțină protecție, dar mai multe șanse ca funcțiile site-ului să ruleze</translation>
 <translation id="6530703012083415527">Când opțiunea este activată, site-urile pot folosi ferestre pop-up și redirecționări. Când opțiunea este dezactivată, site-urile nu pot folosi ferestre pop-up și redirecționări.</translation>
 <translation id="6540488083026747005">Ai permis cookie-urile terță parte pentru acest site</translation>
 <translation id="6545864417968258051">Căutare Bluetooth</translation>
@@ -451,6 +450,7 @@ Protecția avansată gestionează următoarele setări Brave:
 <translation id="6612358246767739896">Conținut protejat</translation>
 <translation id="662080504995468778">Rămâi pe pagină</translation>
 <translation id="6635327442719709864">Când opțiunea este activată, site-urile pot solicita permisiunea de a folosi porturi seriale. Când opțiunea este dezactivată, site-urile nu pot folosi porturi seriale.</translation>
+<translation id="6678072580827808850">Examinează Verificarea de siguranță</translation>
 <translation id="6683865262523156564">Site-ul este într-un grup care îți poate vedea activitatea. Grupul este definit de <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Fotografii de profil</translation>
 <translation id="6697925417670533197">Descărcări active</translation>
@@ -485,7 +485,6 @@ Protecția avansată gestionează următoarele setări Brave:
 <translation id="7141896414559753902">Împiedică site-urile să afișeze ferestre pop-up și redirecționări (recomandat)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Actualizați</translation>
-<translation id="7180865173735832675">Personalizează</translation>
 <translation id="7188508872042490670">Date privind site-urile pe dispozitiv</translation>
 <translation id="7201549776650881587">Această acțiune va șterge toate datele și cookie-urile stocate de toate site-urile subordonate <ph name="ORIGIN"/> sau de aplicația asociată de pe ecranul de pornire</translation>
 <translation id="7203150201908454328">Extins</translation>

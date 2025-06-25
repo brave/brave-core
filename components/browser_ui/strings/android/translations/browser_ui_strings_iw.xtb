@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">תכונות שצריכות חיישני תנועה לא יפעלו</translation>
 <translation id="2030769033451695672">כדי לחזור אל <ph name="URL_OF_THE_CURRENT_TAB"/>, יש ללחוץ כאן</translation>
 <translation id="2079545284768500474">ביטול הפעולה</translation>
+<translation id="2080070583977670716">הגדרות נוספות</translation>
 <translation id="2091887806945687916">צליל</translation>
 <translation id="2096716221239095980">מחיקת כל הנתונים</translation>
 <translation id="2102396546234652240">לא לאפשר לאתרים להשתמש במיקרופון</translation>
@@ -229,7 +230,6 @@
 <translation id="3779154269823594982">החלפת סיסמאות</translation>
 <translation id="3797520601150691162">אין להחיל עיצוב כהה על אתר ספציפי</translation>
 <translation id="3803367742635802571">יכול להיות שאתרים שביקרת בהם יפסיקו לפעול כמו שצריך</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">מספרי טלפון</translation>
 <translation id="3826050100957962900">כניסה של צד שלישי</translation>
 <translation id="3835233591525155343">השימוש שלך במכשיר</translation>
@@ -438,7 +438,6 @@
 <translation id="6452138246455930388">זוהתה ירידה במחיר בכרטיסייה הפתוחה שלך, מ-<ph name="OLD_PRICE"/> ל-<ph name="NEW_PRICE"/>,‏ <ph name="PRODUCT_NAME"/>,‏ <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">כשהחלון צר, אפשר לבקש תצוגת נייד.</translation>
 <translation id="6527303717912515753">שיתוף</translation>
-<translation id="652937045869844725">‏אפשר להפעיל קובצי cookie של צד שלישי. במצב כזה יש פחות הגנה, אבל סביר יותר שהתכונות באתר יפעלו</translation>
 <translation id="6530703012083415527">כשהאפשרות מופעלת, אתרים יכולים להציג חלונות קופצים ולהשתמש בהפניות אוטומטיות. כשהאפשרות מושבתת, אתרים לא יכולים להציג חלונות קופצים ולהשתמש בהפניות אוטומטיות.</translation>
 <translation id="6540488083026747005">‏אישרת את השימוש בקובצי Cookie של צד שלישי באתר הזה</translation>
 <translation id="6545864417968258051">‏סריקת Bluetooth</translation>
@@ -446,12 +445,13 @@
 <translation id="6554732001434021288">הביקור האחרון התבצע לפני <ph name="NUM_DAYS"/> ימים</translation>
 <translation id="656065428026159829">אפשרויות נוספות</translation>
 <translation id="6561560012278703671">הצגת התראות שקטה יותר (למניעת הקפצה של חלוניות מפריעות)</translation>
-<translation id="6593061639179217415">אתר שמותאם למחשב</translation>
+<translation id="6593061639179217415">אתר מותאם למחשב</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{‏קובצי cookie מותרים לאתר אחד (<ph name="RWS_MEMBERS_COUNT"/>) של <ph name="RWS_OWNER"/>}one{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}two{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}other{‏קובצי cookie מותרים ל-<ph name="RWS_MEMBERS_COUNT"/> אתרים של <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/>GB</translation>
 <translation id="6612358246767739896">תוכן מוגן</translation>
 <translation id="662080504995468778">להמשיך במצב אנונימי</translation>
 <translation id="6635327442719709864">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש ביציאות טוריות. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש ביציאות טוריות.</translation>
+<translation id="6678072580827808850">לבדיקת האבטחה</translation>
 <translation id="6683865262523156564">האתר הזה שייך לקבוצה שיש לה הרשאה לראות את הפעילות שלך. הקבוצה הוגדרה על ידי <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">תמונות פרופיל</translation>
 <translation id="6697925417670533197">הורדות פעילות</translation>
@@ -486,7 +486,6 @@
 <translation id="7141896414559753902">חסימה של חלונות קופצים והפניות אוטומטיות באתרים (מומלץ)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">רענון</translation>
-<translation id="7180865173735832675">התאמה אישית</translation>
 <translation id="7188508872042490670">נתונים מאתרים ששמורים במכשיר</translation>
 <translation id="7201549776650881587">‏הפעולה הזו תמחק את כל הנתונים וקובצי ה-Cookie שאוחסנו על ידי כל אתרי המשנה של <ph name="ORIGIN"/> או על ידי האפליקציה שלו במסך הבית</translation>
 <translation id="7203150201908454328">מורחב</translation>

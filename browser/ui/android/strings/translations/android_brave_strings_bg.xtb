@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Активирайте поддръжка за заобикаляне на URL адреси за проследяване с пренасочване от най-високо ниво.</translation>
 <translation id="94154759592465111">Блокиране на скриптове</translation>
 <translation id="7714773920987474116">Блокира JavaScript (може да попречи на работата на сайтовете)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Блокиране на препоръчано съдържание в YouTube</translation>
 <translation id="1005372663692637999">Блокира елементите за следваща и крайна карта в youtube.com.</translation>
 <translation id="5152595963250646670">Блокиране на разсейващите елементи в YouTube</translation>
@@ -108,14 +107,9 @@
 <translation id="7304425663107214334">Показване на предложения за браузър</translation>
 <translation id="8982438328166986164">Показва предложения на уебсайта въз основа на отметките и историята на сърфиране.</translation>
 <translation id="924029461438529367">Показване на предложения за търсене</translation>
-<translation id="5989135139219497991">Покажи най-добрите предложения</translation>
+<translation id="5989135139219497991">Показване на топ предложения</translation>
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
 <translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
-<translation id="412411722208944922">Бързи търсачки</translation>
-<translation id="2836969042340015500">Бързи търсачки</translation>
-<translation id="9120455214794270250">Показване на лентата за бързо търсене</translation>
-<translation id="1052991798173010693">Използвани търсачки в момента</translation>
-<translation id="335303688425891752">Натиснете продължитено, за да промените реда</translation>
 <translation id="9148058034647219655">Изход</translation>
 <translation id="8047754398610073499">Блокиране на съобщения за съгласие за бисквитки</translation>
 <translation id="2621893359845808115">Блокира изскачащи прозорци на уебсайтове, които Ви молят да приемете/откажете бисквитки за техния сайт</translation>
@@ -499,7 +493,7 @@
 <translation id="8459191579769999214">Преглед на екранната снимка</translation>
 <translation id="6476216365964140603">Допълнителни данни (по избор)</translation>
 <translation id="6145852496180774737">Свържете се с мен чрез: (по избор)</translation>
-<translation id="6367576083705149078">Ако предоставите информация за контакт, тя ще бъде съхранена за бъдещи доклади.</translation>
+<translation id="6367576083705149078">Ако предоставиш информация за контакт, тя ще бъде съхранена за бъдещи доклади.</translation>
 <translation id="7616645803364270729">Имейл, Twitter и др.</translation>
 <translation id="5299848999918506028">Благодарим ви!</translation>
 <translation id="76550953340008122">Благодарим ви, че уведомихте разработчиците на Brave, че в този сайт има нещо нередно. Ще направим всичко възможно да го поправим!</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">Въведете, поставете или импортирайте файла с низ от поверителен ключ или JSON.</translation>
 <translation id="569068482611873351">Импортиране...</translation>
 <translation id="4522570452068850558">Подробности</translation>
+<translation id="3114681061018999547">Защитаване</translation>
 <translation id="3784455785234192852">Заключване</translation>
 <translation id="4412698727486357573">Помощен център</translation>
 <translation id="8239147115686034860">Автоматично заключване на портфейла на Brave</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">ТИП ФУНКЦИЯ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Няма данни</translation>
 <translation id="1105525362447173583">Трансакция със знак Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> изпрати <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> изпрати <ph name="ASSET"/> #<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> одобри <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Одобрено без ограничение <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> размяна - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Неодобрено</translation>
-<translation id="8034530868111548216">Одобрено</translation>
-<translation id="6015436276085482001">Отказан</translation>
-<translation id="6666273175654835609">Изпратен</translation>
-<translation id="2331676293859649642">Потвърден</translation>
-<translation id="8214232307424031138">Подписан</translation>
-<translation id="1165039591588034296">Грешка</translation>
 <translation id="2561824823738097741">Използвате ли най-бързия уеб браузър?</translation>
 <translation id="2065971949051836200">Телефонът ви вече разполага с 3 пъти по-бърз интернет. Използвайте Brave за цялото си сърфиране в мрежата.</translation>
 <translation id="2888278614497184977">Brave = 3 пъти по-бързо сърфиране в мрежата</translation>
@@ -1030,7 +1013,7 @@
 <translation id="5888208462949095139">Търсене с <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Изпълним модул за начален екран</translation>
 <translation id="703185154752046151">Добавен е изпълним модул към началния екран</translation>
-<translation id="4635094429202343515">Опитай функциите за търсене на Brave</translation>
+<translation id="4635094429202343515">Опитай уиджета на Brave Търсене</translation>
 <translation id="4809681171446727314">Получете достъп до частно, независимо търсене директно от началния си екран.</translation>
 <translation id="7751715172931488388">Добавяне на изпълним модул</translation>
 <translation id="7285167584112910782">Бързо Brave търсене</translation>
@@ -1098,7 +1081,7 @@
 <translation id="5781842473834867765">Съхраняване на историята на разговорите ми</translation>
 <translation id="4109670531935487117">Показване на предложенията за автоматично попълване в адресната лента</translation>
 <translation id="4983005227524068187">Показване в лентата за бързо търсене</translation>
-<translation id="8514910864411336826">Позволява пряк път за стартиране на Лио от лентата за бързо търсене.</translation>
+<translation id="8514910864411336826">Позволява пряк път за стартиране на Лио от бързата лента за търсачки.</translation>
 <translation id="6106701981952170121">Изтриване на всички данни за разговори с Leo AI</translation>
 <translation id="423600389315522551">Нулирането на Leo AI ще изиска от вас да посочите, че искате да използвате Brave Leo AI в бъдеще, и ще изчисти историята на чатовете ви. Изчистването на историята на чатовете ви ще изтрие всички ваши предишни разговори с Brave Leo AI. Това действие не може да бъде отменено.</translation>
 <translation id="6742599753610126012">Изчистване на историята на чатовете</translation>
@@ -1223,11 +1206,11 @@
 <translation id="4010699428656610296">Моля, обединете останалите раздели в друг прозорец на Brave.</translation>
 <translation id="4306918392910017801">Автоматично повторно свързване на VPN</translation>
 <translation id="1599073346542156922">Как да включите:</translation>
-<translation id="7001163334415463127">1. Отворете настройките на устройството от лентата на приложението или като натиснете бутона по-долу.</translation>
-<translation id="887443138775437899">2. Намерете Brave VPN и докоснете иконата за настройки отдясно.</translation>
-<translation id="7546805138087561624">3. Превключете на<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Винаги активен VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> , за да го активирате.</translation>
-<translation id="2446001600399646984">Обърни внимание, че поради ограниченията на Android, функцията "Блокиране на връзки без VPN" не работи според очакванията. <ph name="LEARN_MORE_START"/>Научи повече.<ph name="LEARN_MORE_END"/></translation>
-<translation id="4776146737004271126">Отваряне на настройките за Android</translation>
+<translation id="7001163334415463127">1. Отвори настройките на устройството от чекмеджето с приложения или като натиснеш бутона по-долу.</translation>
+<translation id="887443138775437899">2. Намери Brave VPN и докосни иконата за настройки вдясно.</translation>
+<translation id="7546805138087561624">3. Превключи <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Винаги активен VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, за да го активираш.</translation>
+<translation id="2446001600399646984">Обърни внимание, че поради ограниченията на Android, функцията „Блокиране на връзки без VPN“ не работи според очакванията. <ph name="LEARN_MORE_START"/>Научи повече.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4776146737004271126">Отваряне на настройките на Android</translation>
 <translation id="2728518864712716830">Актуализацията е изтеглена.</translation>
 <translation id="8403338849301491865">Списъкът с филтри е успешно актуализиран</translation>
 <translation id="4650851936784160359">Списъкът с филтри не може да бъде актуализиран. Моля, опитайте отново</translation>
@@ -1236,6 +1219,7 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">История на чатовете</translation>
 <translation id="6859935199732075666">Покажи грешките за безопасно сърфиране</translation>
-<translation id="2735247450315842119">Разреши снимките на екран в поверителни раздели</translation>
-<translation id="8420414929552321089">При разрешаване поверителните раздели ще бъдат видими и когато са отворени няколко приложения.</translation>
+<translation id="2735247450315842119">Разрешаване на снимки на екрана в поверителни раздели</translation>
+<translation id="8420414929552321089">Ако е разрешено, поверителните раздели ще се виждат и когато са отворени няколко приложения.</translation>
+<translation id="7956713633345437162">Мобилни отметки</translation>
 </translationbundle>
