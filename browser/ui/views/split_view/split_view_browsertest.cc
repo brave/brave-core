@@ -340,9 +340,83 @@ class SplitViewWithTabDialogBrowserTest
 
   bool IsSideBySideEnabled() const { return GetParam(); }
 
+  bool IsSplitWebContents(content::WebContents* web_contents) {
+    auto tab_handle =
+        tabs::TabInterface::GetFromContents(web_contents)->GetHandle();
+    if (IsSideBySideEnabled()) {
+      return tab_handle.Get()->IsSplit();
+    }
+
+    auto* split_view_browser_data =
+        browser()->GetFeatures().split_view_browser_data();
+    CHECK(split_view_browser_data);
+    return split_view_browser_data->GetTile(tab_handle).has_value();
+  }
+
+  ContentsWebView* GetContentsWebView() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->contents_web_view();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
+
+IN_PROC_BROWSER_TEST_P(
+    SplitViewWithTabDialogBrowserTest,
+    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
+  NewSplitTab();
+  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
+  ASSERT_TRUE(IsSplitWebContents(active_contents));
+  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
+      active_contents, active_contents, u"title",
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
+      base::DoNothing(), base::DoNothing());
+  ASSERT_TRUE(dialog);
+  auto* widget = dialog->GetWidget();
+  ASSERT_TRUE(widget);
+
+  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
+
+  auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
+  views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
+
+  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
+}
+
+// This test can be flaky depending on the screen size. Our macOS CI doesn't
+// seem to have a large enough screen to run this test.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
+  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
+#else
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
+  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
+#endif
+
+IN_PROC_BROWSER_TEST_P(
+    SplitViewWithTabDialogBrowserTest,
+    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
+  brave::ToggleVerticalTabStrip(browser());
+  NewSplitTab();
+  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
+  ASSERT_TRUE(IsSplitWebContents(active_contents));
+
+  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
+      active_contents, active_contents, u"title",
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
+      base::DoNothing(), base::DoNothing());
+  ASSERT_TRUE(dialog);
+  auto* widget = dialog->GetWidget();
+  ASSERT_TRUE(widget);
+
+  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
+
+  auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
+  views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
+
+  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
+}
 
 IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
                        InactiveSplitTabTest) {
@@ -451,10 +525,6 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   BraveBrowserView& browser_view() {
     return *static_cast<BraveBrowserView*>(
         BrowserView::GetBrowserViewForBrowser(browser()));
-  }
-
-  views::WebView& contents_web_view() {
-    return *browser_view().contents_web_view();
   }
 
   views::View& secondary_contents_container() {
@@ -743,61 +813,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
 
   tab_strip_model().ActivateTabAt(3);
   EXPECT_EQ(kSizeDelta, split_view_layout_manager->split_view_size_delta());
-}
-
-IN_PROC_BROWSER_TEST_F(
-    SplitViewBrowserTest,
-    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
-  brave::NewSplitViewForTab(browser());
-  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
-
-  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
-      active_contents, active_contents, u"title",
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
-      base::DoNothing(), base::DoNothing());
-  ASSERT_TRUE(dialog);
-  auto* widget = dialog->GetWidget();
-  ASSERT_TRUE(widget);
-
-  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-
-  auto web_view_bounds = contents_web_view().GetLocalBounds();
-  views::View::ConvertRectToScreen(&contents_web_view(), &web_view_bounds);
-
-  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
-}
-
-// This test can be flaky depending on the screen size. Our macOS CI doesn't
-// seem to have a large enough screen to run this test.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
-  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
-#else
-#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
-  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
-#endif
-
-IN_PROC_BROWSER_TEST_F(
-    SplitViewBrowserTest,
-    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
-  brave::ToggleVerticalTabStrip(browser());
-  brave::NewSplitViewForTab(browser());
-  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
-
-  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
-      active_contents, active_contents, u"title",
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
-      base::DoNothing(), base::DoNothing());
-  ASSERT_TRUE(dialog);
-  auto* widget = dialog->GetWidget();
-  ASSERT_TRUE(widget);
-
-  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
-
-  auto web_view_bounds = contents_web_view().GetLocalBounds();
-  views::View::ConvertRectToScreen(&contents_web_view(), &web_view_bounds);
-
-  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewTabPathTest) {

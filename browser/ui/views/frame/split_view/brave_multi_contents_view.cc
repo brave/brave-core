@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
@@ -116,6 +117,8 @@ void BraveMultiContentsView::Layout(PassKey) {
   contents_container_views_[0]->SetBoundsRect(start_rect);
   resize_area_->SetBoundsRect(resize_rect);
   contents_container_views_[1]->SetBoundsRect(end_rect);
+
+  BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
 }
 
 float BraveMultiContentsView::GetCornerRadius() const {
