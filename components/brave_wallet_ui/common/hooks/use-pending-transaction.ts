@@ -63,9 +63,6 @@ import {
   querySubscriptionOptions60s,
 } from '../slices/constants'
 import { useIsAccountSyncing } from './use_is_account_syncing'
-import {
-  useIsSendingToInternalShieldedAddress, //
-} from './use_is_sending_to_internal_shielded_address'
 
 // Constants
 import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
@@ -526,18 +523,11 @@ export const usePendingTransactions = () => {
       : skipToken,
   )
 
-  const isSendingToInternalShieldedAddress =
-    useIsSendingToInternalShieldedAddress(
-      getZCashTransactionTypeResult.txType ?? undefined,
-      transactionDetails?.recipient,
-    )
-
   // memos
   const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
-    || isSendingToInternalShieldedAddress
 
   const transactionTitle = React.useMemo(
     (): string =>

@@ -68,9 +68,6 @@ import {
 import {
   useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
-import {
-  useIsSendingToInternalShieldedAddress, //
-} from '../../../../common/hooks/use_is_sending_to_internal_shielded_address'
 
 // Styled Components
 import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
@@ -226,17 +223,11 @@ export const SendScreen = React.memo(() => {
     )
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
-  const isSendingToInternalShieldedAddress =
-    useIsSendingToInternalShieldedAddress(
-      getZCashTransactionTypeResult.txType ?? undefined,
-      toAddressOrUrl,
-    )
   const isShieldingFunds =
     tokenFromParams
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && (getZCashTransactionTypeResult.txType
+    && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShielding
-      || isSendingToInternalShieldedAddress)
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
