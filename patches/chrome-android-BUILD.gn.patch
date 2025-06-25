@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428774c9667 100644
+index d12956fb8cb4608a6c7e5971393b583ff43aadf2..31744c2bb7921d9d4c3efa8b2cb077f1a0c3a380 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -194,6 +194,7 @@ if (_is_default_toolchain) {
+@@ -185,6 +185,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,9 +10,9 @@ index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -291,6 +292,7 @@ if (_is_default_toolchain) {
-     if (enable_screen_capture) {
-       deps += [ "//chrome/browser:screen_capture_java_resources" ]
+@@ -286,6 +287,7 @@ if (_is_default_toolchain) {
+     if (enable_extensions_core) {
+       deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
      }
 +    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
    }
@@ -34,15 +34,15 @@ index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -941,6 +945,7 @@ if (_is_default_toolchain) {
-       "//components/segmentation_platform/internal:internal_java",
-       "//components/visited_url_ranking/internal:internal_java",
-     ]
+@@ -954,6 +958,7 @@ if (_is_default_toolchain) {
+         "//chrome/browser/ui/browser_window/stub:java",
+       ]
+     }
 +    deps += brave_chrome_all_java_deps
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1646,6 +1651,7 @@ if (_is_default_toolchain) {
+@@ -1671,6 +1676,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1860,6 +1866,7 @@ if (_is_default_toolchain) {
+@@ -1885,6 +1891,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
        }
-@@ -2145,6 +2152,7 @@ if (_is_default_toolchain) {
+@@ -2176,6 +2183,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -66,11 +66,11 @@ index b3a2486e5bbc4bb72d6276d2c4eedebe9a8b4746..9d204f63a983d31d2930cc4daca6b428
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -3255,6 +3263,7 @@ if (_is_default_toolchain) {
+@@ -3260,6 +3268,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
      ]
-+  sources += brave_jni_headers_sources
++    sources += brave_jni_headers_sources
  
      if (enable_screen_capture) {
        sources += [ "java/src/org/chromium/chrome/browser/media/MediaCapturePickerDialogBridge.java" ]

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 9700307522be59552622bf0b7b13bcc5e91144bd..cc054152e4a925ff61a6df43f8ef6ed8111cf49d 100644
+index 94ef22dfef5d9175a034f2bd49e77b821cb43179..e5c28e541340edc5942573568442187d26810f77 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -24,6 +24,7 @@
@@ -16,14 +16,14 @@ index 9700307522be59552622bf0b7b13bcc5e91144bd..cc054152e4a925ff61a6df43f8ef6ed8
  </if><!-- not chromeos -->
 +</if>
  <if expr="_google_chrome">
- <if expr="chromeos_ash">
+ <if expr="is_chromeos">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
 @@ -74,6 +76,7 @@
          on-click="onMetricsReportingLinkClick_" external>
      </cr-link-row>
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
- <if expr="not chromeos_ash">
+ <if expr="not is_chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
 @@ -89,13 +92,14 @@
@@ -40,7 +40,7 @@ index 9700307522be59552622bf0b7b13bcc5e91144bd..cc054152e4a925ff61a6df43f8ef6ed8
      </settings-toggle-button>
 +</if>
  <if expr="_google_chrome">
- <if expr="not chromeos_ash">
+ <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
 @@ -151,6 +155,7 @@
        </settings-toggle-button>

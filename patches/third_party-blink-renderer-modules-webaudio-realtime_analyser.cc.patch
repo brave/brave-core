@@ -1,30 +1,30 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index 7172964ca8363465e442bab5c08498eb07cb05ca..c592aa6febbc1c1326f34e6ccfa4f8695fe21f45 100644
+index df5865fc8c3449a5655d29e51f9cdd136e1f0c43..3d2055bd1872bfb6900796d50a341fdde2bcdcb0 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -154,6 +154,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -150,6 +150,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
  
      unsigned write_index = GetWriteIndex();
  
 +    BRAVE_REALTIMEANALYSER_GETFLOATTIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
-       float value =
-@@ -181,6 +182,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+       float value = UNSAFE_TODO(
+@@ -177,6 +178,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
  
      unsigned write_index = GetWriteIndex();
  
 +    BRAVE_REALTIMEANALYSER_GETBYTETIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
-       float value =
+       float value = UNSAFE_TODO(
 @@ -297,6 +299,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
      const float* source = MagnitudeBuffer().Data();
      unsigned char* destination = destination_array->Data();
  
 +    BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
      for (unsigned i = 0; i < len; ++i) {
-       float linear_value = source[i];
+       float linear_value = UNSAFE_TODO(source[i]);
        double db_mag = audio_utilities::LinearToDecibels(linear_value);
 @@ -321,6 +324,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
      const float* source = MagnitudeBuffer().Data();
@@ -32,5 +32,5 @@ index 7172964ca8363465e442bab5c08498eb07cb05ca..c592aa6febbc1c1326f34e6ccfa4f869
  
 +    BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
      for (unsigned i = 0; i < len; ++i) {
-       float linear_value = source[i];
+       float linear_value = UNSAFE_TODO(source[i]);
        double db_mag = audio_utilities::LinearToDecibels(linear_value);
