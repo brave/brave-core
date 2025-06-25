@@ -881,11 +881,11 @@ public class BrowserViewController: UIViewController {
 
     // Adding Screenshot Service Delegate to browser to fetch full screen webview screenshots
     currentScene?.screenshotService?.delegate = self
-    
+
     // Add Regular tabs to Sync Chain
     if Preferences.Chromium.syncOpenTabsEnabled.value {
-      executeAfterSetup { [weak tabManager] in
-        tabManager?.addRegularTabsToSyncChain()
+      executeAfterSetup {
+        tabManager.addRegularTabsToSyncChain()
       }
     }
 
