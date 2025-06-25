@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/prefs/pref_service.h"
 #include "components/remote_cocoa/common/native_widget_ns_window_host.mojom.h"
 
 BraveBrowserFrameMac::BraveBrowserFrameMac(BrowserFrame* browser_frame,
