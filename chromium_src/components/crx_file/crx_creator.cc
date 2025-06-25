@@ -11,7 +11,8 @@ namespace crx_file {
 
 class CrxFileHeader;
 
-std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header);
+std::string GetCrxId_BraveImpl(base::span<const uint8_t> key,
+                               CrxFileHeader* header);
 
 }  // namespace crx_file
 
@@ -21,21 +22,22 @@ namespace crx_file {
 
 // Override for GetCrxId() in SignArchiveAndCreateHeader() to generate the
 // correct signed data for the second signature.
-std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header) {
+std::string GetCrxId_BraveImpl(base::span<const uint8_t> key,
+                               CrxFileHeader* header) {
   if (header->sha256_with_rsa_size() > 0) {
     const AsymmetricKeyProof& first_proof = header->sha256_with_rsa()[0];
-    return GetCrxId(first_proof.public_key());
+    return GetCrxId(base::as_byte_span(first_proof.public_key()));
   }
   return GetCrxId(key);
 }
 
-CreatorResult CreateWithMultipleKeys(const base::FilePath& output_path,
-                                     const base::FilePath& zip_path,
-                                     std::vector<crypto::RSAPrivateKey*> keys) {
+CreatorResult CreateWithMultipleKeys(
+    const base::FilePath& output_path,
+    const base::FilePath& zip_path,
+    base::span<const crypto::keypair::PrivateKey> keys) {
   CrxFileHeader header;
   base::File file(zip_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
   for (auto key : keys) {
-    CHECK(key);
     file.Seek(base::File::Whence::FROM_BEGIN, 0);
     const CreatorResult signing_result =
         SignArchiveAndCreateHeader(output_path, &file, key, &header);
