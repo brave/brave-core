@@ -1519,8 +1519,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls()
-                        || isToolbarPhone()
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored());
+                        || (isToolbarPhone()
+                                && BottomToolbarConfiguration.isToolbarBottomAnchored()));
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
