@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 14444f55fcb0aa690ebd2ef10aaab397f229d52c..72876158108e0e8d8daf1f3b4a9478f23afea518 100644
+index d790cb3123837a3f7c1790c544afbede4ceeb33c..71ad59f3320ce59652b461e1b13fab98e39d2f04 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -161,6 +161,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
-   AddComponentResourceEntries(kTtsEngineResources);
- #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+@@ -152,6 +152,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+         std::move(pdf_viewer_replacements);
+   }
+ #endif
 +  BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA
  }
  

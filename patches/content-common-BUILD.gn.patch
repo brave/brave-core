@@ -1,12 +1,12 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index dbf1eacd02c21e78e450e008bd4cb0e43685f699..190fba15845c73ecf7cd9f58fb6266a1f72f0818 100644
+index af1e2cc289018a8e632bb8a2417a85c115986b9f..0c06d7182e08b6b1224b1e0c0ba217e5947c87bc 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
-@@ -68,6 +68,7 @@ source_set("common") {
-   visibility = [
-     "//content/*",
-     "//tools/ipc_fuzzer/message_replay:ipc_fuzzer_replay",
-+    "//brave/content/*",
-   ]
- 
+@@ -64,6 +64,7 @@ source_set("common") {
+   # must not link to this because it will duplicate the code in the component
+   # build.
+   visibility = [ "//content/*" ]
++  visibility += [ "//brave/content/*" ]
+
    sources = [
+     "background_fetch/background_fetch_types.cc",
