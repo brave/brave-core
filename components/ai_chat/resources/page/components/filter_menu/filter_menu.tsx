@@ -70,6 +70,7 @@ export default function FilterMenu<T>(props: Props<T>) {
       })}
       isOpen={props.isOpen}
       onClose={() => props.setIsOpen(false)}
+      placement="top"
     >
       {filtered.map((category) => {
         return (
