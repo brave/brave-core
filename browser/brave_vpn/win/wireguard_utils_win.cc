@@ -85,7 +85,7 @@ void MaybeDisableSystemProxy() {
 
   // 2) The value is a valid URL.
   GURL current_proxy_gurl(base::WideToUTF8(current_proxy_url));
-  if (current_proxy_gurl.is_empty() || !current_proxy_gurl.is_valid()) {
+  if (!current_proxy_gurl.is_valid()) {
     VLOG(1)
         << "User has `AutoConfigURL` value set but it appears to be invalid: \""
         << current_proxy_url << "\".";
@@ -186,8 +186,8 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
   // If all params are empty this is a reconnect (using last known good config).
   // This happens when the person triggered reconnect using the tray icon.
   bool reconnect_using_last_config =
-      server_public_key.length() == 0 && client_private_key.length() == 0 &&
-      mapped_ip4_address.length() == 0 && vpn_server_hostname.length() == 0;
+      server_public_key.empty() && client_private_key.empty() &&
+      mapped_ip4_address.empty() && vpn_server_hostname.empty();
   // Only reset smart proxy URL if this is not a reconnect or if it has a value.
   if (!reconnect_using_last_config || smart_proxy_url.has_value()) {
     g_smart_proxy_url.reset();
