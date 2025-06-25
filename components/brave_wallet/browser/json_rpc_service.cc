@@ -1912,10 +1912,10 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
     return;
   }
 
-  std::optional<ParseFilEstimateGasResult> m_parse_result =
+  std::optional<ParseFilEstimateGasResult> parse_result =
       ParseFilEstimateGas(api_request_result.value_body());
 
-  if (!m_parse_result) {
+  if (!parse_result) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
@@ -1924,9 +1924,9 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
     return;
   }
 
-  std::move(callback).Run(std::move(m_parse_result)->gas_premium,
-                          std::move(m_parse_result)->gas_fee_cap,
-                          m_parse_result->gas_limit,
+  std::move(callback).Run(std::move(parse_result->gas_premium),
+                          std::move(parse_result->gas_fee_cap),
+                          parse_result->gas_limit,
                           mojom::FilecoinProviderError::kSuccess, "");
 }
 
