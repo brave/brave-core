@@ -35,10 +35,41 @@
 .menuItemWithIcon {
   --leo-icon-size: 20px;
   --leo-icon-color: var(--leo-color-icon-default);
+
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 12px;
+
+  & > leo-icon {
+    margin-left: 12px;
+    margin-right: 6px;
+  }
+}
+
+.modelIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 32px;
+  height: 32px;
+
+  &[data-key="chat-automatic"] {
+    --leo-icon-color: white;
+
+    background: var(--leo-gradient-icons-active);
+    border: none;
+  }
 }
 
 .menuItemMainItem {
@@ -49,10 +80,6 @@
 .menuText {
   flex-grow: 2;
   font: var(--leo-font-default-regular);
-}
-
-.menuIconSpace {
-  width: calc(var(--leo-icon-size) + 8px);
 }
 
 .modelSubtitle {

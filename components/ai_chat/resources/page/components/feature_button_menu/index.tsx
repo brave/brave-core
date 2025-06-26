@@ -17,6 +17,19 @@ import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 
+const modelIcons = {
+  'chat-automatic': 'product-brave-leo',
+  'chat-deepseek-r1': 'deepseek-color',
+  'chat-claude-instant': 'anthropic-color',
+  'chat-claude-haiku': 'anthropic-color',
+  'chat-claude-sonnet': 'anthropic-color',
+  'chat-qwen': 'qwen-color',
+  'chat-basic': 'meta-color',
+  'chat-vision-basic': 'meta-color',
+}
+
+const fallbackModelIcon = 'product-brave-leo'
+
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
 }
@@ -68,6 +81,9 @@ export default function FeatureMenu(props: Props) {
             onClick={() => conversationContext.setCurrentModel(model)}
           >
             <div className={styles.menuItemWithIcon}>
+              <div className={styles.modelIcon} data-key={model.key}>
+                <Icon name={modelIcons[model.key as keyof typeof modelIcons] ?? fallbackModelIcon} />
+              </div>
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
                 <p className={styles.modelSubtitle}>
