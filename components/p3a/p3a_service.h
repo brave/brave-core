@@ -19,10 +19,10 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "brave/components/p3a/managed/remote_config_manager.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
-#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
