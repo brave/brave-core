@@ -78,7 +78,7 @@ TEST(WindowsRecallTest, IsWindowsRecallDisabled) {
     EXPECT_TRUE(windows_recall::IsWindowsRecallDisabled(&prefs));
 
     // reset the value to match the current pref
-    windows_recall::SetCurrentDisabledStateForTesting(
+    windows_recall::test::ScopedWindowsRecallDisabledOverride override(
         prefs.GetBoolean(windows_recall::prefs::kWindowsRecallDisabled));
     EXPECT_FALSE(windows_recall::IsWindowsRecallDisabled(&prefs));
   }

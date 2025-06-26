@@ -6,7 +6,6 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include "base/memory/raw_ptr.h"
-#include "base/test/scoped_os_info_override_win.h"
 #include "base/values.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/skus/common/skus_utils.h"
@@ -30,6 +29,7 @@
 #endif
 
 #if BUILDFLAG(IS_WIN)
+#include "base/test/scoped_os_info_override_win.h"
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
@@ -84,9 +84,12 @@ TEST_F(BraveContentBrowserClientTest, IsWindowsRecallDisabled) {
   ScopedTestingLocalState testing_local_state(
       TestingBrowserProcess::GetGlobal());
 #if BUILDFLAG(IS_WIN)
-  auto win_version{base::test::ScopedOSInfoOverride::Type::kWin11Home};
-  windows_recall::RegisterLocalStatePrefs(
-      testing_local_state.Get()->GetRegistry());
+  base::test::ScopedOSInfoOverride win_version(
+      base::test::ScopedOSInfoOverride::Type::kWin11Home);
+  // Pref is registered.
+  EXPECT_TRUE(testing_local_state.Get()->FindPreference(
+      windows_recall::prefs::kWindowsRecallDisabled));
+  // Disabled by default on Win11 or newer.
   EXPECT_TRUE(client.IsWindowsRecallDisabled());
 #else
   EXPECT_FALSE(client.IsWindowsRecallDisabled());

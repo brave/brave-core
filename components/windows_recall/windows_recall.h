@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_WINDOWS_RECALL_WINDOWS_RECALL_H_
 #define BRAVE_COMPONENTS_WINDOWS_RECALL_WINDOWS_RECALL_H_
 
+#include "base/memory/raw_ptr.h"
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -27,7 +29,20 @@ bool IsWindowsRecallAvailable();
 // the system service.
 bool IsWindowsRecallDisabled(PrefService* local_state);
 
-void SetCurrentDisabledStateForTesting(bool disabled);
+namespace test {
+
+class ScopedWindowsRecallDisabledOverride {
+ public:
+  explicit ScopedWindowsRecallDisabledOverride(bool disabled);
+  ~ScopedWindowsRecallDisabledOverride();
+
+ private:
+  bool disabled_ = false;
+  raw_ptr<ScopedWindowsRecallDisabledOverride> original_instance_ = nullptr;
+  static ScopedWindowsRecallDisabledOverride* instance_;
+};
+
+}  // namespace test
 
 }  // namespace windows_recall
 

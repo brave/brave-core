@@ -13,12 +13,8 @@
 namespace windows_recall {
 
 namespace {
-bool* GetCurrentDisabledState() {
-  static bool disabled = false;
-  return &disabled;
+bool* g_windows_recall_disabled_override_for_testing = nullptr;
 }
-
-}  // namespace
 
 bool IsWindowsRecallAvailable() {
   return base::win::GetVersion() >= base::win::Version::WIN11;
@@ -37,14 +33,36 @@ bool IsWindowsRecallDisabled(PrefService* local_state) {
     return false;
   }
 
-  bool* disabled = GetCurrentDisabledState();
-  *disabled = local_state->GetBoolean(prefs::kWindowsRecallDisabled);
-  return *disabled;
+  static bool disabled = local_state->GetBoolean(prefs::kWindowsRecallDisabled);
+
+  if (g_windows_recall_disabled_override_for_testing) {
+    CHECK_IS_TEST();
+    return *g_windows_recall_disabled_override_for_testing;
+  }
+
+  return disabled;
 }
 
-void SetCurrentDisabledStateForTesting(bool disabled) {
+namespace test {
+
+// static
+ScopedWindowsRecallDisabledOverride*
+    ScopedWindowsRecallDisabledOverride::instance_ = nullptr;
+
+ScopedWindowsRecallDisabledOverride::ScopedWindowsRecallDisabledOverride(
+    bool disabled)
+    : disabled_(disabled), original_instance_(instance_) {
   CHECK_IS_TEST();
-  *GetCurrentDisabledState() = disabled;
+  instance_ = this;
+  g_windows_recall_disabled_override_for_testing = &instance_->disabled_;
 }
+
+ScopedWindowsRecallDisabledOverride::~ScopedWindowsRecallDisabledOverride() {
+  instance_ = original_instance_;
+  g_windows_recall_disabled_override_for_testing =
+      instance_ ? &instance_->disabled_ : nullptr;
+}
+
+}  // namespace test
 
 }  // namespace windows_recall
