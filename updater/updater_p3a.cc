@@ -70,4 +70,8 @@ void ReportLaunch(base::Time now,
   }
 }
 
+void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs) {
+  prefs->SetString(kLastLaunchVersionPref, version);
+}
+
 }  // namespace brave_updater

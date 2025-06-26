@@ -28,6 +28,7 @@ void ReportLaunch(base::Time now,
                   std::string current_version,
                   bool is_using_omaha4,
                   PrefService* prefs);
+void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
 
 }  // namespace brave_updater
 
