@@ -384,6 +384,13 @@ IN_PROC_BROWSER_TEST_P(
     return web_view_bounds.CenterPoint().x() == dialog_bounds.CenterPoint().x();
   }));
 #else
+  // On macOS, this check is flaky. It seems widget position is not updated
+  // immediately. So, used loop like above on macOS.
+  // Why not using above checking in loop on all platform?
+  // Above checking in loop causes another weird |Widget::native_widget_|
+  // invalidation in the loop on other platforms(win/linux). Not sure why.
+  // Fortunately, below checking works well. So, testing differently on macOS
+  // and others.
   const auto dialog_bounds = widget->GetWindowBoundsInScreen();
   auto web_view_bounds = GetContentsWebView()->GetLocalBounds();
   views::View::ConvertRectToScreen(GetContentsWebView(), &web_view_bounds);
