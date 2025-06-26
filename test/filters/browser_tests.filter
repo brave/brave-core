@@ -96,6 +96,7 @@
 -OptimizationGuideInternalsPageBrowserTest.*
 -OptimizationGuideKeyedServiceBrowserTest.*
 -OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
+-OptimizationGuideKeyedServicePermissionsCheckDisabledTest.RemoteFetchingAllowed
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
@@ -1781,11 +1782,6 @@
 -All/WebUIContentsPreloadManagerBrowserSmokeTest.TriggerPreloadedUIs/preload_on_warmup
 -WebUIContentsPreloadManagerHistoryClusterMetricTest.PreloadAndShow
 -WebUIContentsPreloadManagerHistoryClusterMetricTest.PreloadButNeverShow
-
-# These tests fail because we disable
-# optimization_guide::features::kRemoteOptimizationGuideFetching
--ModelExecutionEnabledBrowserTest.*
--ParametrizedTests/PreloadingModelKeyedServiceTest.FeatureFlagIsWorking/*
 
 # These tests fail because we remove description, separator, and 3p cookies
 # toggle from the Page Info cookies view.
