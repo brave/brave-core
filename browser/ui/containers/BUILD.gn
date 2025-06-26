@@ -12,8 +12,6 @@ source_set("containers") {
   sources = [
     "container_model.cc",
     "container_model.h",
-    "container_model_utils.cc",
-    "container_model_utils.h",
     "containers_menu_model.cc",
     "containers_menu_model.h",
   ]
@@ -34,6 +32,8 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "containers_menu_model_test_api.cc",
+    "containers_menu_model_test_api.h",
     "containers_menu_model_unittest.cc",
     "mock_containers_menu_model_delegate.cc",
     "mock_containers_menu_model_delegate.h",

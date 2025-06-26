@@ -27,7 +27,6 @@
 #include "ui/menus/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/browser/ui/containers/container_model_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -197,8 +196,7 @@ void BraveTabMenuModel::BuildItemForContainers(
   auto index =
       *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      containers_delegate,
-      containers::GetContainerModelsFromPrefs(*browser->profile()->GetPrefs()));
+      containers_delegate, *browser->profile()->GetPrefs());
   InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());

@@ -9,6 +9,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/containers/containers_menu_model_test_api.h"
 #include "brave/browser/ui/containers/mock_containers_menu_model_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -47,13 +48,16 @@ MATCHER_P(EqId, id, "") {
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
   MockContainerMenuModelDelegate delegate;
 
-  ContainersMenuModel model(delegate, GetContainers());
+  ContainersMenuModel model =
+      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+          delegate, GetContainers());
   auto containers = GetContainers();
 
   // Verify the model contains all containers from the service
   for (size_t i = 0; i < containers.size(); ++i) {
     EXPECT_TRUE(model.GetIndexOfCommandId(i).has_value());
-    EXPECT_EQ(containers.at(i).id(), model.items_.at(i).id());
+    EXPECT_EQ(containers.at(i).id(),
+              test::ContainersMenuModelTestApi::GetItems(model).at(i).id());
     EXPECT_EQ(base::UTF8ToUTF16(containers.at(i).name()), model.GetLabelAt(i));
   }
 
@@ -64,14 +68,18 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(delegate, GetContainers());
+  ContainersMenuModel model =
+      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+          delegate, GetContainers());
   EXPECT_CALL(delegate, OnContainerSelected(EqId("ExampleContainer1")));
   model.ExecuteCommand(0, 0);
 }
 
 TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
   MockContainerMenuModelDelegate delegate;
-  ContainersMenuModel model(delegate, GetContainers());
+  ContainersMenuModel model =
+      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+          delegate, GetContainers());
 
   auto containers = GetContainers();
 

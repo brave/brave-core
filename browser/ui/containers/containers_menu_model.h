@@ -16,8 +16,13 @@
 #include "ui/menus/simple_menu_model.h"
 
 class Browser;
+class PrefService;
 
 namespace containers {
+
+namespace test {
+class ContainersMenuModelTestApi;
+}  // namespace test
 
 // A menu model that represents a list of Containers. This menu can be used in
 // various UI components, such as renderer context menus, tab context menus,
@@ -41,7 +46,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   static constexpr int kCommandToOpenSettingsPage =
       std::numeric_limits<int>::max();
 
-  ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
+  ContainersMenuModel(Delegate& delegate, const PrefService& prefs);
   ~ContainersMenuModel() override;
 
   // ui::SimpleMenuModel::Delegate:
@@ -50,8 +55,9 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   bool IsCommandIdEnabled(int command_id) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ContainersMenuModelUnitTest,
-                           ModelContainsAllContainers);
+  friend class test::ContainersMenuModelTestApi;
+
+  ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
 
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);

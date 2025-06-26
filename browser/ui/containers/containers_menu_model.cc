@@ -10,11 +10,29 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/grit/generated_resources.h"
 
 namespace containers {
+
+namespace {
+
+std::vector<ContainerModel> GetContainerModelsFromPrefs(
+    const PrefService& prefs) {
+  std::vector<ContainerModel> containers;
+  for (auto& container : GetContainersFromPrefs(prefs)) {
+    containers.emplace_back(std::move(container));
+  }
+  return containers;
+}
+
+}  // namespace
+
+ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
+                                         const PrefService& prefs)
+    : ContainersMenuModel(delegate, GetContainerModelsFromPrefs(prefs)) {}
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)

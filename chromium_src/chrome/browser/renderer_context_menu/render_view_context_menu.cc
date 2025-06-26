@@ -69,7 +69,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/browser/ui/containers/container_model_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -709,8 +708,7 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
   }
 
   containers_submenu_model_ = std::make_unique<containers::ContainersMenuModel>(
-      *this,
-      containers::GetContainerModelsFromPrefs(*GetProfile()->GetPrefs()));
+      *this, *GetProfile()->GetPrefs());
 
   menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
                                      IDS_CXMENU_OPEN_IN_CONTAINER,
