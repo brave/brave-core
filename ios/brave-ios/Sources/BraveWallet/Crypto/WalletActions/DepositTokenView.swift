@@ -212,7 +212,8 @@ struct DepositTokenView: View {
     .addAccount(
       keyringStore: keyringStore,
       networkStore: networkStore,
-      accountNetwork: savedTokenViewModel?.network,
+      preselectedAccountCoin: savedTokenViewModel?.network.coin,
+      preselectedAccountNetwork: savedTokenViewModel?.network,
       isShowingConfirmation: $isPresentingAddAccountConfirmation,
       isShowingAddAccount: $isPresentingAddAccount,
       onConfirmAddAccount: { isPresentingAddAccount = true },
