@@ -30,6 +30,9 @@ class ContainerModel {
 
  private:
   mojom::ContainerPtr container_;
+
+  // An icon representing the `container_`. Each container can have its icon.
+  // This icon can be used by UI, such as menus and tabs.
   ui::ImageModel icon_;
 };
 

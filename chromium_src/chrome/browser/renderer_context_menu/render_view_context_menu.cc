@@ -780,12 +780,15 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveRenderViewContextMenu::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
+  // TODO(https://github.com/brave/brave-browser/issues/47118)
+  // Open |params_.link_url| in the selected container.
   NOTIMPLEMENTED();
 }
 
 base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
-  // TODO(sko) If the tab is in a container, return the container ID.
+  // TODO(https://github.com/brave/brave-browser/issues/47118) If the tab is in
+  // a container, return the container ID.
   NOTIMPLEMENTED();
   return {};
 }

@@ -24,6 +24,10 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
 
 ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container) {
   CHECK(container) << "Container must be valid";
+  // TODO(https://github.com/brave/brave-browser/issues/47117)
+  // At the moment, we don't have data filled into `container` to decide which
+  // icon to use to represent the container. When the data is ready, implement
+  // this function to return the appropriate icon based on the container data.
   NOTIMPLEMENTED();
   return ui::ImageModel();
 }

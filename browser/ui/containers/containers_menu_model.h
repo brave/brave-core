@@ -19,6 +19,10 @@ class Browser;
 
 namespace containers {
 
+// A menu model that represents a list of Containers. This menu can be used in
+// various UI components, such as renderer context menus, tab context menus,
+// etc. Not only containers, but also a command to open the settings page for
+// containers is included in the menu model.
 class ContainersMenuModel : public ui::SimpleMenuModel,
                             public ui::SimpleMenuModel::Delegate {
  public:
