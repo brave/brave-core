@@ -47,6 +47,12 @@
 -PDPMetricsTest.TestPDPIsRecorded
 -PredictionManagerTest.*
 
+# These tests fail because we disable commerce::kShoppingList
+-All/ShoppingServiceTest.TestShoppingList*/*
+
+# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
+-DocumentProviderTest.IsDocumentProviderAllowed
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*

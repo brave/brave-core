@@ -49,17 +49,19 @@
 # actions the test expects to find.
 -CustomizeToolbarHandlerTest.ListActions
 
-# This test fails because the message it checks has Brave intead of Google.
+# This test fails because the message it checks has Brave intead of Google (or
+# the url it checks uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
--TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy/SearchEngineChoice*
+-TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
+-TemplateURLServiceTest.RepairPrepopulatedSearchEngines
+-TemplateURLServiceTest.RepairStarterPackEngines
 
-# These tests fail because we have different than expected default number of
+# This test fails because we have different than expected default number of
 # prepopulated search engines
--TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceDisabled
--TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceEnabled
+=TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
@@ -113,6 +115,8 @@
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
+-PasswordChangeDelegateImplTest.PasswordChangeFlowCanceled
+-PasswordChangeDelegateImplTest.WaitingForAgreement
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -443,10 +447,8 @@
 # These tests fail because our search engine keywords use a shorter syntax than
 # is expected (:b vs search.brave.com)
 -IconUtilsTest.GetSearchEngineGeneratedIconPath
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceDisabled_SearchAggregator
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceDisabled_SiteSearch
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceEnabled_SearchAggregator
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceEnabled_SiteSearch
+-TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchAggregator
+-TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SiteSearch
 
 # These tests fail on CI but pass locally, due to directory security
 # restrictions on the CI nodes
@@ -615,6 +617,7 @@
 
 # We disable HATS
 -HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
+-SafetyHubHatsServiceTest.GetOverallState_*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -717,11 +720,6 @@
 -TabTest.*
 -TCPSocketUnitTest.SocketConnectDisconnectRace
 -TemplateURLServiceSyncTest.MergeConflictingPrepopulatedEngine
--TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceDisabled
--TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceEnabled
--TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceDisabled
--TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceEnabled
--TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
 -ThemeLocalDataBatchUploaderTest.*
 -ThemeServiceTest.IsGrayscale
 -ThemeSyncableServiceTest.GetAllSyncDataForTesting_Extension
