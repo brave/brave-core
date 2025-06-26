@@ -14,16 +14,13 @@ namespace ai_chat {
 
 namespace mojom {
 
+// Define the PrintTo function for a mojo type and also the StructPtr version
+// to allow for passing either type during tests.
 #define GENERATE_MOJO_PTR_PRINTER(Type)                         \
+  void PrintTo(const Type& instance, std::ostream* os);         \
   inline void PrintTo(const Type##Ptr& ptr, std::ostream* os) { \
     PrintTo(*ptr, os);                                          \
   }
-
-void PrintTo(const AssociatedContent& content, std::ostream* os);
-void PrintTo(const Conversation& conversation, std::ostream* os);
-void PrintTo(const ToolUseEvent& event, std::ostream* os);
-void PrintTo(const ConversationEntryEvent& event, std::ostream* os);
-void PrintTo(const ConversationTurn& event, std::ostream* os);
 
 GENERATE_MOJO_PTR_PRINTER(AssociatedContent)
 GENERATE_MOJO_PTR_PRINTER(Conversation)

@@ -53,7 +53,11 @@ class Tool {
   virtual std::optional<std::vector<std::string>> RequiredProperties() const;
 
   // Parameters for remote-defined tools that this client provides, e.g. screen
-  // width, location, etc.
+  // width, location, etc. This normally applies for non-function type tools,
+  // since for function type tools, the description includes any information
+  // needed, but for remote-defined tools, the description might need to be
+  // built to include some extra parameters that only the client knows about,
+  // e.g. location for a search tool, or screen size for a computer use tool.
   virtual std::optional<base::Value::Dict> ExtraParams() const;
 
   // If this tool requires content associated, it won't be provided if

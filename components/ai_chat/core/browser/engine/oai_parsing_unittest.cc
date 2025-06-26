@@ -372,10 +372,62 @@ TEST(OaiParsingTest,
 
   constexpr char kExptectedJson[] = R"([
     {
-      "height": 1080,
       "name": "screen_tool",
       "type": "computer_20241022",
-      "width": 1920
+      "width": 1920,
+      "height": 1080
+    }
+  ])";
+  EXPECT_THAT(*result, base::test::IsJson(kExptectedJson));
+}
+
+TEST(OaiParsingTest, ToolApiDefinitionsFromTools_FunctionTypeWithExtraParams) {
+  // extra params should be ignored for function type tools (which is inferred
+  // also if function type is empty)
+  for (const std::string& function_type : {"function", ""}) {
+    SCOPED_TRACE(testing::Message()
+                 << "function type: "
+                 << (function_type.empty() ? "[empty]" : function_type));
+    base::Value::Dict extra_params;
+    extra_params.Set("width", 1920);
+    extra_params.Set("height", 1080);
+    auto mock_tool = std::make_unique<MockTool>(
+        "screen_tool", "Screen capture", function_type, std::nullopt,
+        std::nullopt, std::move(extra_params));
+    std::vector<base::WeakPtr<Tool>> tools = {mock_tool->GetWeakPtr()};
+
+    auto result = ToolApiDefinitionsFromTools(tools);
+    ASSERT_TRUE(result.has_value());
+
+    constexpr char kExptectedJson[] = R"([
+      {
+        "type": "function",
+        "function": {
+          "name": "screen_tool",
+          "description": "Screen capture"
+        }
+      }
+    ])";
+    EXPECT_THAT(*result, base::test::IsJson(kExptectedJson));
+  }
+  base::Value::Dict extra_params;
+  extra_params.Set("width", 1920);
+  extra_params.Set("height", 1080);
+  auto mock_tool = std::make_unique<MockTool>(
+      "screen_tool", "Screen capture", "function", std::nullopt, std::nullopt,
+      std::move(extra_params));
+  std::vector<base::WeakPtr<Tool>> tools = {mock_tool->GetWeakPtr()};
+
+  auto result = ToolApiDefinitionsFromTools(tools);
+  ASSERT_TRUE(result.has_value());
+
+  constexpr char kExptectedJson[] = R"([
+    {
+      "type": "function",
+      "function": {
+        "name": "screen_tool",
+        "description": "Screen capture"
+      }
     }
   ])";
   EXPECT_THAT(*result, base::test::IsJson(kExptectedJson));

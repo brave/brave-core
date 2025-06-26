@@ -100,16 +100,18 @@ class ConversationAPIClient {
     ConversationEventType type;
     Content content;
 
-    // Optional properties:
-    std::string topic;  // Used in GetFocusTabsForTopic event.
+    // Optional structured properties:
 
-    // Calls made within this message/event, usually (always?)
-    // from the assistant. Output is ignored - it should be
-    // provided as a role=Tool event and use the content field.
+    // Only in a role=User type=GetFocusTabsForTopic event
+    std::string topic;
+
+    // Only for a role=Assistant type=ChatMessage event. Contains the calls
+    // the assistant wants to make to provided tools.
+    // ToolUseEvent::output is ignored (see tool_call_id).
     std::vector<mojom::ToolUseEventPtr> tool_calls;
 
-    // Used when content field has the results of the
-    // matching tool call.
+    // Only for a role=Tool type=ToolUse event. Specifies that the
+    // `content` field contains the result of the matching assistant tool call.
     std::string tool_call_id;
 
     ConversationEvent(ConversationEventRole,

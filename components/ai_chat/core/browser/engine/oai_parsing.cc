@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
@@ -124,9 +123,9 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
       tool_dict.Set("function", std::move(function_dict));
     } else {
       // For non-known types (anything not "function"), we send name, type
-      // and any "extra_param". The use case for this is custom anthropic
-      // tools that have different parameters each time it's defined, e.g.
-      // for screen size.
+      // and any "extra_param". The use case for this is remote-defined
+      // tools that have different parameters to creat the tool description,
+      // e.g. for screen size or user's locale.
       tool_dict.Set("name", tool->Name());
       if (tool->ExtraParams().has_value()) {
         tool_dict.Merge(tool->ExtraParams().value());

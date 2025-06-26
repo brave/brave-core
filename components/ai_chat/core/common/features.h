@@ -35,6 +35,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kOmniboxOpensFullPage;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 

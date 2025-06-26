@@ -28,6 +28,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -39,11 +40,6 @@ namespace {
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
-
-// TODO(petemill): Experiment with this value and consider making the algorithm
-// more sophisticated and variable by model, event type, or handled by the
-// server.
-constexpr uint8_t kMaxCountLargeToolUseEvents = 2;
 
 constexpr size_t kTabListChunkSize = 75;
 constexpr char kArrayPattern[] = R"((\[.*?\]))";
@@ -222,7 +218,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // history
   // Keep count of large tool results to limit the number of large results,
   // (mainly screenshots), but keep the ones at the end by iterating in reverse.
-  int large_event_count = 0;
+  size_t large_event_count = 0;
   for (const auto& message : base::Reversed(conversation_history)) {
     std::vector<ConversationEvent> events_before_message;
     if (message->uploaded_files) {
@@ -301,7 +297,9 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
                 }
               }
             }
-            if (large_event_count < kMaxCountLargeToolUseEvents || !is_large) {
+            if (large_event_count <
+                    features::kMaxCountLargeToolUseEvents.Get() ||
+                !is_large) {
               if (is_large) {
                 large_event_count++;
               }
