@@ -287,6 +287,24 @@ extension BrowserViewController: TabPolicyDecider {
 
       // Set some additional user scripts
       if requestInfo.isMainFrame {
+        let requestBlockingEnabled: Bool
+        let trackingProtectionEnabled: Bool
+        if BraveShields.isUseContentSettingsForShieldsEnabled {
+          if !profileController.braveShieldsUtils.isBraveShieldsEnabled(for: mainDocumentURL) {
+            requestBlockingEnabled = false
+            trackingProtectionEnabled = false
+          } else {
+            requestBlockingEnabled =
+              profileController.braveShieldsUtils.adBlockMode(for: mainDocumentURL).shieldLevel
+              .isEnabled
+            trackingProtectionEnabled =
+              profileController.braveShieldsUtils.adBlockMode(for: mainDocumentURL).shieldLevel
+              .isEnabled
+          }
+        } else {
+          requestBlockingEnabled = domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled
+          trackingProtectionEnabled = domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled
+        }
         tab.browserData?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
@@ -295,12 +313,12 @@ extension BrowserViewController: TabPolicyDecider {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+            && requestBlockingEnabled,
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
           .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+            && trackingProtectionEnabled,
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -335,10 +353,25 @@ extension BrowserViewController: TabPolicyDecider {
         )
 
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
-        let isAggressiveAdsBlocking =
-          domain.globalBlockAdsAndTrackingLevel.isAggressive
-          && adsBlockingShieldUp
+        let adsBlockingShieldUp: Bool
+        let isAggressiveAdsBlocking: Bool
+        if BraveShields.isUseContentSettingsForShieldsEnabled {
+          if !profileController.braveShieldsUtils.isBraveShieldsEnabled(for: mainDocumentURL) {
+            adsBlockingShieldUp = false
+            isAggressiveAdsBlocking = false
+          } else {
+            adsBlockingShieldUp =
+              profileController.braveShieldsUtils.adBlockMode(for: mainDocumentURL).shieldLevel
+              .isEnabled
+            isAggressiveAdsBlocking =
+              profileController.braveShieldsUtils.adBlockMode(for: mainDocumentURL).shieldLevel
+              == .aggressive && adsBlockingShieldUp
+          }
+        } else {
+          adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
+          isAggressiveAdsBlocking =
+            domain.globalBlockAdsAndTrackingLevel.isAggressive && adsBlockingShieldUp
+        }
 
         if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
           requestURL,
@@ -570,9 +603,15 @@ extension BrowserViewController {
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
       isMainFrame
     else { return nil }
+
+    if BraveShields.isUseContentSettingsForShieldsEnabled {
+      guard profileController.braveShieldsUtils.adBlockMode(for: requestURL).shieldLevel.isEnabled
+      else { return nil }
+    } else {
+      guard domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled else { return nil }
+    }
 
     // Handle Debounce
     // Only if the site (etld+1) changes

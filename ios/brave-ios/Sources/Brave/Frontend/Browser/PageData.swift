@@ -91,7 +91,13 @@ import WebKit
 
     // Handle dynamic domain level scripts on the main document.
     // These are scripts that change depending on the domain and the main document
-    let isFPProtectionOn = domain.isShieldExpected(.fpProtection, considerAllShieldsOption: true)
+    let isFPProtectionOn: Bool
+    if BraveShields.isUseContentSettingsForShieldsEnabled {
+      // TODO: braveShieldsUtils.isBlockFingerprintingEnabled(for: mainFrameURL)
+      isFPProtectionOn = false
+    } else {
+      isFPProtectionOn = domain.isShieldExpected(.fpProtection, considerAllShieldsOption: true)
+    }
     // Add the `farblingProtection` script if needed
     // Note: The added farbling protection script based on the document url, not the frame's url.
     // It is also added for every frame, including subframes.

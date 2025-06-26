@@ -154,8 +154,8 @@ struct SubmitReportView: View {
         braveVersion: version,
         reportUrl: url.absoluteString,
         shieldsEnabled: String(!domain.areAllShieldsOff),
-        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
-        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,  // TODO: Need BraveShieldsUtilsIOS
+        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,  // TODO: Need BraveShieldsUtilsIOS
         adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),

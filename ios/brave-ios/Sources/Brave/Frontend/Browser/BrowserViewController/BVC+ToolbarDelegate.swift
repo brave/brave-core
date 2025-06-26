@@ -409,7 +409,8 @@ extension BrowserViewController: TopToolbarDelegate {
         rootViewController: ShieldsPanelViewController(
           url: url,
           tab: selectedTab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
+          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate),
+          braveShieldsUtils: profileController.braveShieldsUtils
         ) { [weak self, weak selectedTab] action in
           switch action {
           case .navigate(let target, let dismiss):

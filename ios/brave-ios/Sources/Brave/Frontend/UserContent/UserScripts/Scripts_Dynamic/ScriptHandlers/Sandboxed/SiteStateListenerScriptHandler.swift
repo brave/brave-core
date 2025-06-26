@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import Foundation
 import Shared
@@ -63,6 +64,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
       Task { @MainActor in
         if let pageData = tab.currentPageData {
+          // TODO: Need BraveShieldsUtilsIOS
           let domain = pageData.domain(persistent: !tab.isPrivate)
           guard domain.globalBlockAdsAndTrackingLevel.isEnabled,
             pageData.mainFrameURL.isWebPage(includeDataURIs: false)
