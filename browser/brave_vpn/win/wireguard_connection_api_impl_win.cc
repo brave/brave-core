@@ -63,7 +63,8 @@ void WireguardConnectionAPIImplWin::PlatformConnectImpl(
   }
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       credentials.server_public_key, credentials.client_private_key,
-      credentials.mapped_ip4_address, vpn_server_hostname, smart_proxy_url,
+      credentials.mapped_ip4_address, vpn_server_hostname,
+      std::move(smart_proxy_url),
       base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
                      weak_factory_.GetWeakPtr()));
 }
