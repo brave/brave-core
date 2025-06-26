@@ -5,6 +5,7 @@
 
 #include "brave/updater/updater_p3a.h"
 
+#include "base/check.h"
 #include "base/metrics/histogram_macros.h"
 
 namespace brave_updater {
@@ -29,6 +30,7 @@ void ReportLaunch(base::Time now,
                   std::string current_version,
                   bool is_using_omaha4,
                   PrefService* prefs) {
+  DCHECK(prefs);
   std::string last_launch_version = prefs->GetString(kLastLaunchVersionPref);
   prefs->SetString(kLastLaunchVersionPref, current_version);
 
