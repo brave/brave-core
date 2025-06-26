@@ -543,8 +543,6 @@ source_set("ui") {
       "views/split_view/split_view.h",
       "views/split_view/split_view_location_bar_model_delegate.cc",
       "views/split_view/split_view_location_bar_model_delegate.h",
-      "views/split_view/split_view_menu_bubble.cc",
-      "views/split_view/split_view_menu_bubble.h",
       "views/split_view/split_view_separator.cc",
       "views/split_view/split_view_separator.h",
       "views/split_view/split_view_separator_delegate.h",
