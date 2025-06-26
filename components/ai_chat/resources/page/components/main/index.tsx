@@ -242,7 +242,10 @@ function Main() {
                   </div>
                 )}
 
-                <div ref={scrollAnchor}>
+                <div
+                  className={styles.aichatIframeContainer}
+                  ref={scrollAnchor}
+                >
                   {!!conversationContext.conversationUuid &&
                     <aiChatContext.conversationEntriesComponent
                       onIsContentReady={setIsContentReady}
@@ -250,6 +253,8 @@ function Main() {
                     />
                   }
                 </div>
+
+                <div className={styles.negativeMarginForIframe} />
 
                 {conversationContext.isFeedbackFormVisible &&
                   <div className={classnames([styles.promptContainer, styles.feedbackForm])}>

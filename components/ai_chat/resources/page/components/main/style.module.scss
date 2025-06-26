@@ -229,3 +229,14 @@
 .feedbackForm {
   padding: 0 16px;
 }
+
+.negativeMarginForIframe {
+  // Negative margin to account for the additional height
+  // added to the iframe.
+  // See https://github.com/brave/brave-browser/issues/46042
+  margin-top: calc(-1 * var(--iframe-additional-margin-for-menus));
+}
+
+.aichatIframeContainer {
+  margin-bottom: calc(-1 * var(--iframe-additional-margin-for-menus));
+}
