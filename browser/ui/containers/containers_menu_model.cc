@@ -77,7 +77,7 @@ void ContainersMenuModel::ContainerSelected(int command_id) {
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
   const auto& ids = delegate_->GetCurrentContainerIds();
-  return base::Contains(ids, items_[command_id].container()->id);
+  return ids.contains(items_[command_id].container()->id);
 }
 
 bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {
