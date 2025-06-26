@@ -10,6 +10,7 @@ import talkGraphic from '../../assets/talk_graphic.svg'
 
 export const style = scoped.css`
   & {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -20,6 +21,7 @@ export const style = scoped.css`
   }
 
   .content {
+    flex-grow: 1;
     display: flex;
     align-items: center;
   }
