@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/common/url_constants.h"
@@ -23,5 +24,5 @@ BraveAccountUIConfig::BraveAccountUIConfig()
 
 bool BraveAccountUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return false;
+  return brave_account::features::IsBraveAccountEnabled();
 }

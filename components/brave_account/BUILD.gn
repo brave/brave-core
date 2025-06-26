@@ -19,3 +19,12 @@ source_set("brave_account") {
     "//ui/base",
   ]
 }
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
