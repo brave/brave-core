@@ -148,6 +148,8 @@ test("brave_unit_tests") {
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
+  data_deps = [ "//brave/components:brave_components_unittests" ]
+
   deps = [
     ":crypto_unittests",
     ":test_support",
@@ -189,7 +191,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/webui/flags:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
-    "//brave/components:brave_components_unittests",
     "//brave/components/ai_chat/core/browser:unit_tests",
     "//brave/components/ai_chat/core/common:unit_tests",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
