@@ -366,6 +366,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"requestOTRAlways", IDS_SETTINGS_REQUEST_OTR_ALWAYS},
       {"requestOTRNever", IDS_SETTINGS_REQUEST_OTR_NEVER},
 #endif
+#if BUILDFLAG(IS_WIN)
+      {"windowsRecallDisabledLabel",
+       IDS_SETTINGS_WINDOWS_RECALL_DISABLED_LABEL},
+      {"windowsRecallDisabledSubLabel",
+       IDS_SETTINGS_WINDOWS_RECALL_DISABLED_SUBLABEL},
+#endif
       {"braveSync", IDS_SETTINGS_BRAVE_SYNC_TITLE},
       {"braveSyncSetupActionLabel", IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL},
       {"braveSyncSetupTitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE},
