@@ -10,6 +10,7 @@
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "brave/browser/ui/email_aliases/email_aliases.mojom.h"
 
 class Profile;
 
@@ -19,7 +20,7 @@ class EmailAliasesService;
 
 class EmailAliasesServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static EmailAliasesService* GetForProfile(Profile* profile);
+  static void BindForProfile(Profile* profile, mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
   static EmailAliasesServiceFactory* GetInstance();
 
   EmailAliasesServiceFactory();

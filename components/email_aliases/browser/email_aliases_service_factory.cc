@@ -14,10 +14,13 @@
 namespace email_aliases {
 
 // static
-EmailAliasesService* EmailAliasesServiceFactory::GetForProfile(
-    Profile* profile) {
-  return static_cast<EmailAliasesService*>(
+void EmailAliasesServiceFactory::BindForProfile(
+    Profile* profile, mojo::PendingReceiver<mojom::EmailAliasesService> receiver) {
+  auto* service = static_cast<EmailAliasesService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
+  if (service) {
+    service->BindInterface(std::move(receiver));
+  }
 }
 
 // static

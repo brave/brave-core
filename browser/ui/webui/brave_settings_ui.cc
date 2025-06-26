@@ -271,6 +271,6 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
-  email_aliases::EmailAliasesServiceFactory::GetForProfile(profile)
-      ->BindInterface(std::move(receiver));
+  email_aliases::EmailAliasesServiceFactory::BindForProfile(profile, std::move(receiver));
 }
+
