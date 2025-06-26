@@ -8,6 +8,10 @@
 # These tests fail because we disable prerender
 -All/PrerenderHostRegistryLimitGroupTest.*
 
+# This test fails because we disable attribution reporting by stubbing out
+# `BravePrivacySandboxSettings::IsAttributionReportingAllowed`
+-AttributionStorageSqlNavigationRetryTest.AdjustNavigationRetryEventReportTimes
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplBAndATest.*
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
