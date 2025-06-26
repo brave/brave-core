@@ -40,6 +40,16 @@
 # These tests pass locally but fail on CI (flaky).
 -SupervisedUserServiceTest.CantEnableFilteringUsingUserControls
 
+# These tests fail because we stub out
+# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
+# optimization_guide::features::IsModelDownloadingEnabled
+-HintsManagerFetchingTest.*
+-HintsManagerProactivePersonalizationFetchingTest.*
+-OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
+-PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
+-PDPMetricsTest.TestPDPIsRecorded
+-PredictionManagerTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
