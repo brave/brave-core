@@ -14,4 +14,22 @@ test("brave_components_unittests") {
     "//brave/components/ai_chat/content/browser:unit_tests",
     "//components/test:run_all_unittests",
   ]
+  if (is_ios) {
+    bundle_deps = [ "//components:components_tests_pak_bundle_data" ]
+  } else {
+    data_deps = [
+      "//components:components_tests_pak",
+      "//third_party/angle:includes",
+      "//ui/resources:ui_test_pak_data",
+    ]
+  }
+
+  if (is_android) {
+    deps += [
+      "//base:base_unittest_support_java",
+      "//ui/android:ui_java",
+      "//ui/base",
+      "//ui/gfx",
+    ]
+  }
 }
