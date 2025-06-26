@@ -35,6 +35,30 @@ namespace extensions_mv2 {
 
 namespace {
 
+constexpr bool CheckExtensionMaps() {
+  for (const auto& [bh_key, bh_value] : kBraveHosted) {
+    if (bh_value.empty()) {
+      // skip Brave-hosted extension which doesn't have the cws counterpart.
+      continue;
+    }
+
+    bool ok = false;
+    for (const auto& [cws_key, cws_value] : kCwsHosted) {
+      if (bh_value == cws_key && bh_key == cws_value) {
+        ok = true;
+        break;
+      }
+    }
+    if (!ok) {
+      return false;
+    }
+  }
+  return true;
+}
+
+static_assert(CheckExtensionMaps(),
+              "kBraveHostedToCws & kCwsToBraveHosted aren't consistent");
+
 GURL GetUpdaterExtensionDownloadUrl(
     const extensions::ExtensionId& extenion_id) {
   const std::string params[] = {base::JoinString({"id", extenion_id}, "="),
@@ -96,7 +120,28 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 }  // namespace
 
 bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
-  return kPreconfiguredManifestV2Extensions.contains(id);
+  return kBraveHosted.contains(id);
+}
+
+bool IsKnownCwsMV2Extension(const extensions::ExtensionId& id) {
+  return kCwsHosted.contains(id);
+}
+
+std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
+    const extensions::ExtensionId& cws_extension_id) {
+  if (auto fnd = kCwsHosted.find(cws_extension_id); fnd != kCwsHosted.end()) {
+    return extensions::ExtensionId(fnd->second);
+  }
+  return std::nullopt;
+}
+
+std::optional<extensions::ExtensionId> GetCwsExtensionId(
+    const extensions::ExtensionId& brave_hosted_extension_id) {
+  if (auto fnd = kBraveHosted.find(brave_hosted_extension_id);
+      fnd != kBraveHosted.end()) {
+    return extensions::ExtensionId(fnd->second);
+  }
+  return std::nullopt;
 }
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
