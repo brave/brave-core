@@ -30,6 +30,16 @@
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
 
+# These tests fail because we stub out
+# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
+# optimization_guide::features::IsModelDownloadingEnabled
+-HintsManagerFetchingTest.*
+-HintsManagerProactivePersonalizationFetchingTest.*
+-OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
+-PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
+-PDPMetricsTest.TestPDPIsRecorded
+-PredictionManagerTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
