@@ -21,8 +21,6 @@
 
 namespace psst {
 
-class MatchedRule;
-
 class PsstScriptsHandlerImpl
     : public PsstTabWebContentsObserver::ScriptsHandler {
  public:
