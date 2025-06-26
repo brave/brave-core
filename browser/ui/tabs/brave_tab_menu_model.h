@@ -76,7 +76,7 @@ class BraveTabMenuModel : public TabMenuModel {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BuildItemForContainers(
-      Browser* browser,
+      const PrefService& prefs,
       TabStripModel* tab_strip_model,
       containers::ContainersMenuModel::Delegate& containers_delegate,
       const std::vector<int>& indices);

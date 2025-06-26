@@ -143,7 +143,7 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainers(browser, tab_strip_model,
+    BuildItemForContainers(*browser->profile()->GetPrefs(), tab_strip_model,
                            containers_menu_model_delegate_.get(), indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -189,14 +189,14 @@ void BraveTabMenuModel::BuildItemsForSplitView(
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabMenuModel::BuildItemForContainers(
-    Browser* browser,
+    const PrefService& prefs,
     TabStripModel* tab_strip_model,
     containers::ContainersMenuModel::Delegate& containers_delegate,
     const std::vector<int>& indices) {
   auto index =
       *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      containers_delegate, *browser->profile()->GetPrefs());
+      containers_delegate, prefs);
   InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());
