@@ -213,7 +213,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
-      &optimization_guide::features::kRemoteOptimizationGuideFetching,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
       &permissions::features::kCpssUseTfliteSignatureRunner,
