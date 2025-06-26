@@ -209,18 +209,84 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   // We're going to iterate over the conversation entries and
   // build a list of events for the remote API.
-  // The iteration will be in reverse order so we can prioritize data
-  // in the most recent messages.
-  // Whilst iterating messages in reverse, we'll need to insert events before
-  // the previous message, so we'll keep track of this position.
-  auto conversation_message_insertion_it = conversation.end();
+  // We largely want to send the full conversation with all events back to the
+  // model in order to preserve the context of the conversation. However, some
+  // tool results are extremely large (especially for images), and repetitive.
+  // We need a way to remove the noise in order to 1) not overwhelm the model
+  // and 2) not surpass the max token limit. For now, this is a rudimentary
+  // approach that only keeps the most recent large tool results. Use a two-pass
+  // approach: first identify which large tool results to keep, then build the
+  // conversation in chronological order.
 
-  // history
-  // Keep count of large tool results to limit the number of large results,
-  // (mainly screenshots), but keep the ones at the end by iterating in reverse.
-  size_t large_event_count = 0;
-  for (const auto& message : base::Reversed(conversation_history)) {
-    std::vector<ConversationEvent> events_before_message;
+  // First pass: identify large tool results to keep (most recent ones)
+  struct LargeToolResult {
+    size_t message_index;
+    size_t event_index;
+    bool should_keep;
+  };
+  std::vector<LargeToolResult> large_tool_results;
+
+  for (size_t message_index = 0; message_index < conversation_history.size();
+       ++message_index) {
+    const auto& message = conversation_history[message_index];
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value() || tool_event->output->empty()) {
+          continue;
+        }
+
+        // Check if this tool result is large
+        bool is_large = false;
+        size_t content_size = 0;
+        for (const auto& content : tool_event->output.value()) {
+          if (content->is_image_content_block()) {
+            is_large = true;
+            break;
+          } else if (content->is_text_content_block()) {
+            content_size += content->get_text_content_block()->text.size();
+            if (content_size >= 1000) {
+              is_large = true;
+              break;
+            }
+          }
+        }
+
+        if (is_large) {
+          large_tool_results.push_back({message_index, event_index, false});
+        }
+      }
+    }
+  }
+
+  // Mark the most recent large tool results to keep
+  size_t max_large_events = features::kMaxCountLargeToolUseEvents.Get();
+  if (large_tool_results.size() <= max_large_events) {
+    // Keep all large tool results
+    for (auto& result : large_tool_results) {
+      result.should_keep = true;
+    }
+  } else {
+    // Keep only the most recent ones
+    for (size_t i = large_tool_results.size() - max_large_events;
+         i < large_tool_results.size(); ++i) {
+      large_tool_results[i].should_keep = true;
+    }
+  }
+
+  // Main pass: build conversation in chronological order
+  for (size_t message_index = 0; message_index < conversation_history.size();
+       ++message_index) {
+    const auto& message = conversation_history[message_index];
+
+    // Events that come before the main message
     if (message->uploaded_files) {
       std::vector<std::string> uploaded_images;
       std::vector<std::string> screenshot_images;
@@ -232,17 +298,25 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         }
       }
       if (!uploaded_images.empty()) {
-        events_before_message.push_back({ConversationEventRole::User,
-                                         ConversationEventType::UploadImage,
-                                         std::move(uploaded_images)});
+        conversation.emplace_back(ConversationEventRole::User,
+                                  ConversationEventType::UploadImage,
+                                  std::move(uploaded_images));
       }
       if (!screenshot_images.empty()) {
-        events_before_message.push_back({ConversationEventRole::User,
-                                         ConversationEventType::PageScreenshot,
-                                         std::move(screenshot_images)});
+        conversation.emplace_back(ConversationEventRole::User,
+                                  ConversationEventType::PageScreenshot,
+                                  std::move(screenshot_images));
       }
     }
 
+    if (message->selected_text.has_value() &&
+        !message->selected_text->empty()) {
+      conversation.emplace_back(
+          ConversationEventRole::User, ConversationEventType::PageExcerpt,
+          std::vector<std::string>{message->selected_text.value()});
+    }
+
+    // Build the main conversation event
     ConversationEvent event;
     event.role = message->character_type == mojom::CharacterType::HUMAN
                      ? ConversationEventRole::User
@@ -253,68 +327,19 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     event.content =
         std::vector<std::string>{EngineConsumer::GetPromptForEntry(message)};
 
-    // Construct tool calls and responses for each turn
-    std::vector<ConversationEvent> tool_results;
+    // Add tool calls to the main event
     if (message->character_type == mojom::CharacterType::ASSISTANT &&
         message->events.has_value() && !message->events->empty()) {
-      for (auto& message_event : base::Reversed(message->events.value())) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
         if (!message_event->is_tool_use_event()) {
           continue;
         }
 
-        // Provide initial tool call from assistant
         const auto& tool_event = message_event->get_tool_use_event();
-
-        // Tool result
-        // Remote APIs usually complain when sending a tool request back without
-        // a response. This should be restricted
         if (tool_event->output.has_value()) {
-          event.tool_calls.insert(event.tool_calls.begin(),
-                                  tool_event->Clone());
-          // Additional event for the result
-          ConversationEvent tool_result;
-          tool_result.role = ConversationEventRole::Tool;
-          tool_result.type = ConversationEventType::ToolUse;
-          tool_result.tool_call_id = tool_event->id;
-
-          // Only send the large results (e.g. images or xml trees) in the last
-          // X tool result events, otherwise the context gets filled.
-          // If this becomes problematic, we can consider a more complex
-          // matching algorithm based on tool type and ask the Tool
-          // itself to perform the cleanup given later results.
-          if (!tool_event->output->empty()) {
-            bool is_large = false;
-            size_t content_size = 0;
-            for (const auto& content : tool_event->output.value()) {
-              if (content->is_image_content_block()) {
-                is_large = true;
-                break;
-              } else if (content->is_text_content_block()) {
-                content_size += content->get_text_content_block()->text.size();
-                if (content_size >= 1000) {
-                  is_large = true;
-                  break;
-                }
-              }
-            }
-            if (large_event_count <
-                    features::kMaxCountLargeToolUseEvents.Get() ||
-                !is_large) {
-              if (is_large) {
-                large_event_count++;
-              }
-              std::vector<mojom::ContentBlockPtr> tool_result_content;
-              for (const auto& item : tool_event->output.value()) {
-                tool_result_content.push_back(item.Clone());
-              }
-              tool_result.content = std::move(tool_result_content);
-            } else {
-              tool_result.content = std::vector<std::string>{
-                  "[Large result removed to save space for subsequent "
-                  "results]"};
-            }
-          }
-          tool_results.emplace_back(std::move(tool_result));
+          event.tool_calls.emplace_back(tool_event->Clone());
         }
       }
     }
@@ -329,32 +354,51 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
       event.type = ConversationEventType::ChatMessage;
     }
 
-    // Tool result should be sorted after the message
-    if (!tool_results.empty()) {
-      for (auto& tool_event : tool_results) {
-        conversation_message_insertion_it = conversation.insert(
-            conversation_message_insertion_it, std::move(tool_event));
+    conversation.emplace_back(std::move(event));
+
+    // Add tool results after the main message
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value()) {
+          continue;
+        }
+
+        ConversationEvent tool_result;
+        tool_result.role = ConversationEventRole::Tool;
+        tool_result.type = ConversationEventType::ToolUse;
+        tool_result.tool_call_id = tool_event->id;
+
+        // Check if we should keep the full content for this large tool result
+        bool should_keep_full_content = true;
+        for (const auto& large_result : large_tool_results) {
+          if (large_result.message_index == message_index &&
+              large_result.event_index == event_index) {
+            should_keep_full_content = large_result.should_keep;
+            break;
+          }
+        }
+
+        if (should_keep_full_content) {
+          std::vector<mojom::ContentBlockPtr> tool_result_content;
+          for (const auto& item : tool_event->output.value()) {
+            tool_result_content.push_back(item.Clone());
+          }
+          tool_result.content = std::move(tool_result_content);
+        } else {
+          tool_result.content = std::vector<std::string>{
+              "[Large result removed to save space for subsequent results]"};
+        }
+
+        conversation.emplace_back(std::move(tool_result));
       }
-    }
-
-    conversation_message_insertion_it = conversation.insert(
-        conversation_message_insertion_it, std::move(event));
-
-    if (message->selected_text.has_value() &&
-        !message->selected_text->empty()) {
-      conversation_message_insertion_it = conversation.insert(
-          conversation_message_insertion_it,
-          ConversationEvent(
-              ConversationEventRole::User, ConversationEventType::PageExcerpt,
-              std::vector<std::string>{message->selected_text.value()}));
-    }
-
-    // Insert any events before the message
-    if (!events_before_message.empty()) {
-      conversation_message_insertion_it = conversation.insert(
-          conversation_message_insertion_it,
-          std::make_move_iterator(events_before_message.begin()),
-          std::make_move_iterator(events_before_message.end()));
     }
   }
 
