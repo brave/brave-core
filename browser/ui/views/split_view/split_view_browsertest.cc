@@ -9,6 +9,7 @@
 
 #include "base/test/run_until.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -18,6 +19,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -41,6 +43,7 @@
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
 #include "ui/compositor/layer.h"
@@ -361,6 +364,37 @@ class SplitViewWithTabDialogBrowserTest
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
+
+IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
+                       BookmarksBarVisibilityTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  NewSplitTab();
+
+  // Check no bookmarks when any split tab is activated.
+  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
+  ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(0)));
+  ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(1)));
+  EXPECT_FALSE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(0)));
+  EXPECT_TRUE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(1)));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+
+  // Check bookmarks is shown only on NTP split tab.
+  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
+
+  // Check bookmarks is shown always.
+  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
+  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
+}
 
 IN_PROC_BROWSER_TEST_P(
     SplitViewWithTabDialogBrowserTest,
