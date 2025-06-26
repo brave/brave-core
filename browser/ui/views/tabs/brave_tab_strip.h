@@ -27,6 +27,8 @@ class BraveTabStrip : public TabStrip {
   TabTiledState GetTiledStateForTab(int index) const;
 
   // TabStrip:
+  void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
+  void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
   void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
   void MaybeStartDrag(
       TabSlotView* source,

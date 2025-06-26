@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/task/current_thread.h"
 #include "base/test/run_until.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -56,6 +58,12 @@ namespace {
 ui::MouseEvent GetDummyEvent() {
   return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
                         gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+}
+
+void RunUntilIdle() {
+  DCHECK(base::CurrentThread::Get());
+  base::RunLoop loop;
+  loop.RunUntilIdle();
 }
 }  // namespace
 
@@ -224,6 +232,18 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(split_view_separator()->GetVisible());
   EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
+
+  // Check only hovered split tab has hover animation.
+  auto* hovered_split_tab = tab_strip()->tab_at(2);
+  auto* not_hovered_split_tab = tab_strip()->tab_at(3);
+  EXPECT_TRUE(hovered_split_tab->split().has_value());
+  EXPECT_EQ(hovered_split_tab->split(), not_hovered_split_tab->split());
+  hovered_split_tab->controller()->ShowHover(hovered_split_tab,
+                                             TabStyle::ShowHoverStyle::kSubtle);
+  RunUntilIdle();
+  EXPECT_NE(hovered_split_tab->tab_style_views()->GetHoverAnimationValue(), 0);
+  EXPECT_EQ(not_hovered_split_tab->tab_style_views()->GetHoverAnimationValue(),
+            0);
 
   // Check selected split tab becomes active tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());

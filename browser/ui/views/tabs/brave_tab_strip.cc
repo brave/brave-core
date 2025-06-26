@@ -127,6 +127,17 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
 }
 
+void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
+  // Chromium asks hover style to all split tabs but we only set hover style
+  // to hovered tab.
+  tab->ShowHover(style);
+}
+
+void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
+  // See the comment of ShowHover().
+  tab->HideHover(style);
+}
+
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
     return;
