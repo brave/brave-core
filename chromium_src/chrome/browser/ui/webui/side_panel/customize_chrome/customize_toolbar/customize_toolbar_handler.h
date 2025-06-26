@@ -12,8 +12,14 @@
   ListActionsChromium(ListActionsCallback callback); \
   void ListActions
 
+#define PinAction                                                            \
+  PinActionChromium(side_panel::customize_chrome::mojom::ActionId action_id, \
+                    bool pin);                                               \
+  void PinAction
+
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"  // IWYU pragma: export
 
+#undef PinAction
 #undef ListActions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_CUSTOMIZE_TOOLBAR_HANDLER_H_

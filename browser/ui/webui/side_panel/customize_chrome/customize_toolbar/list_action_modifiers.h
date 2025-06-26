@@ -10,10 +10,24 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace customize_chrome {
 
+// Removes unsupported Chromium actions from the list of actions.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 FilterUnsupportedChromiumActions(
+    std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
+
+// Applies Brave-specific modifications to the list of actions.
+// 1. Moves existing Chromium actions to the desired positions.
+// 2. Updates icons for existing actions.
+// 3. Adds Brave-specific actions.
+std::vector<side_panel::customize_chrome::mojom::ActionPtr>
+ApplyBraveSpecificModifications(
+    base::WeakPtr<content::WebContents> web_contents,
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
 
 }  // namespace customize_chrome
