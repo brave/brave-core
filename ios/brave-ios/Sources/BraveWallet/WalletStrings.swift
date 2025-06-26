@@ -5894,5 +5894,53 @@ extension Strings {
       comment:
         "The title displays in confirmation screen when there is no more pending transaction."
     )
+    public static let meldTransactionPartner = NSLocalizedString(
+      "wallet.meldTransactionPartner",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Transactions Partner",
+      comment:
+        "The title of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerDescription = NSLocalizedString(
+      "wallet.meldTransactionPartnerDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.",
+      comment:
+        "The description of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerLegal = NSLocalizedString(
+      "wallet.meldTransactionPartnerLegal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "I have read and agree to the [Meld's Terms of Use](%@)",
+      comment:
+        "The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldPaymentMethodHeaderTitle = NSLocalizedString(
+      "wallet.meldPaymentMethodHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Payment method",
+      comment:
+        "The header title of the section that user can pick a payment method in buy screen in Brave Wallet."
+    )
+    public static let meldCountryHeaderTitle = NSLocalizedString(
+      "wallet.meldCountryHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Country",
+      comment:
+        "The header title of the section that user can pick a country in buy screen in Brave Wallet."
+    )
+    public static let meldAccountHeaderTitle = NSLocalizedString(
+      "wallet.meldAccountHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Account",
+      comment:
+        "The header title of the section that user can pick an account in buy screen in Brave Wallet."
+    )
   }
 }

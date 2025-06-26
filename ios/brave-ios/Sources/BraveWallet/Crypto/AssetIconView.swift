@@ -26,26 +26,37 @@ struct AssetIcon: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
           } else {
-            fallbackMonogram
+            MogogramView(
+              seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased(),
+              symbol: token.symbol
+            )
           }
         }
       } else {
-        fallbackMonogram
+        MogogramView(
+          seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased(),
+          symbol: token.symbol
+        )
       }
     }
   }
+}
 
+struct MogogramView: View {
+  let seed: String
+  let symbol: String
   @State private var monogramSize: CGSize = .zero
-  private var fallbackMonogram: some View {
+
+  var body: some View {
     BlockieBackground(
-      seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased()
+      seed: seed
     )
     .clipShape(Circle())
     .readSize(onChange: { newSize in
       monogramSize = newSize
     })
     .overlay(
-      Text(token.symbol.first?.uppercased() ?? "")
+      Text(symbol.first?.uppercased() ?? "")
         .font(
           .system(
             size: max(monogramSize.width, monogramSize.height) / 2,
