@@ -52,6 +52,7 @@
 #if BUILDFLAG(IS_WIN)
 #include "base/test/scoped_os_info_override_win.h"
 #include "base/win/windows_version.h"
+#include "brave/components/windows_recall/windows_recall.h"
 #endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
