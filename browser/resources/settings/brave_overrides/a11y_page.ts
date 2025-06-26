@@ -44,7 +44,7 @@ RegisterPolymerTemplateModifications({
     if (imageLabelsToggle) {
       imageLabelsToggle.setAttribute('hidden', 'true')
     } else {
-      console.error('[Settings] missing image labels toggle button')
+      throw new Error('[Settings] Missing image labels toggle button')
     }
   }
 })
