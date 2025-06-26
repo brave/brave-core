@@ -788,24 +788,34 @@
     Block sites from autoplaying videos
   </message>
   <!-- Ethereum -->
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Label for ethereum site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Title for ethereum site settings.">
     Ethereum
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK" desc="Label for ethereum site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK" desc="Label for ethereum site settings as group.">
     Ask when a site wants to access the Ethereum provider API
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings block group.">
     Block sites from accessing the Ethereum provider API
   </message>
   <!-- Solana -->
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA" desc="Label for solana site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA" desc="Title for solana site settings.">
     Solana
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK" desc="Label for solana site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK" desc="Label for solana site settings ask group.">
     Ask when a site wants to access the Solana provider API
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings block group.">
     Block sites from accessing the Solana provider API
+  </message>
+  <!-- Cardano -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CARDANO" desc="Title for cardano site settings.">
+    Cardano
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CARDANO_ASK" desc="Label for cardano site settings ask group.">
+    Ask when a site wants to access the Cardano provider API
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CARDANO_BLOCK" desc="Label for cardano site settings block group.">
+    Block sites from accessing the Cardano provider API
   </message>
   <!-- Google Sign-In setting -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN" desc="Label for G sign-in site settings.">

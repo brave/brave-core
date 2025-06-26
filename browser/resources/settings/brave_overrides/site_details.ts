@@ -119,6 +119,8 @@ RegisterPolymerTemplateModifications({
       }
       const isNativeBraveWalletEnabled =
         loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+      const isCardanoDappSupportFeatureEnabled =
+        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
         insertBefore(firstPermissionItem, html`<site-details-permission
              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
@@ -145,6 +147,22 @@ RegisterPolymerTemplateModifications({
           solanaSettings.setAttribute(
             'label', loadTimeData.getString('siteSettingsSolana'))
         }
+        if (isCardanoDappSupportFeatureEnabled) {
+          curChild++
+          insertBefore(firstPermissionItem, html`<site-details-permission
+               category="[[contentSettingsTypesEnum_.CARDANO]]"
+               icon="cardano-on">
+             </site-details-permission>`)
+          const cardanoSettings = templateContent.querySelector(
+            `div.list-frame > site-details-permission:nth-child(${curChild})`)
+          if (!cardanoSettings) {
+            console.error('[Settings] Couldn\'t find Cardano settings')
+          } else {
+            cardanoSettings.setAttribute(
+              'label', loadTimeData.getString('siteSettingsCardano'))
+          }
+        }
+
         const adPersonalization =
           templateContent.querySelector('#adPersonalization')
         if (!adPersonalization) {

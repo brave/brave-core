@@ -162,6 +162,36 @@ function InsertSolanaSubpage (pages: Element)
     `)
 }
 
+function InsertCardanoSubpage (pages: Element)
+{
+  pages.appendChild(
+    html`
+      <template is="dom-if" route-path="/content/cardano" no-search>
+        <settings-subpage
+          associated-control="[[$$('#cardano')]]"
+          page-title="${loadTimeData.getString('siteSettingsCardano')}">
+          <settings-category-default-radio-group
+              id="cardanoDefault"
+              category="[[contentSettingsTypesEnum_.CARDANO]]"
+              block-option-label=
+                "${loadTimeData.getString('siteSettingsCardanoBlock')}"
+              allow-option-label=
+                "${loadTimeData.getString('siteSettingsCardanoAsk')}"
+              allow-option-icon="cardano-on"
+              block-option-icon="cardano-off">
+          </settings-category-default-radio-group>
+          <category-setting-exceptions
+            id="cardanoExceptions"
+            category="[[contentSettingsTypesEnum_.CARDANO]]"
+            block-header="${loadTimeData.getString('siteSettingsBlock')}"
+            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
+            read-only-list>
+          </category-setting-exceptions>
+        </settings-subpage>
+      </template>
+    `)
+}
+
 function InsertShieldsSubpage (pages: Element)
 {
   pages.appendChild(
@@ -246,9 +276,14 @@ RegisterPolymerTemplateModifications({
       InsertAutoplaySubpage(pages)
       const isNativeBraveWalletEnabled =
         loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+      const isCardanoDappSupportFeatureEnabled =
+        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')   
       if (isNativeBraveWalletEnabled) {
         InsertEthereumSubpage(pages)
         InsertSolanaSubpage(pages)
+        if (isCardanoDappSupportFeatureEnabled) {
+          InsertCardanoSubpage(pages)
+        }
       }
       InsertShieldsSubpage(pages)
       const permissionsLinkRow =

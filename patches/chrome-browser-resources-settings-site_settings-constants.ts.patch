@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.ts b/chrome/browser/resources/settings/site_settings/constants.ts
-index edae5264609c46bfc498d45e569f9b441f5d13b6..fac1a362eb5b433731f6aca4e7adc8b15994957c 100644
+index edae5264609c46bfc498d45e569f9b441f5d13b6..cfb0ec586a814bb1caa268d838e9b6f1caa7eb58 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.ts
 +++ b/chrome/browser/resources/settings/site_settings/constants.ts
 @@ -68,6 +68,7 @@ export enum ContentSettingsTypes {
    PDF_DOCUMENTS = 'pdfDocuments',
    SITE_DATA = 'site-data',
    OFFER_WRITING_HELP = 'offer-writing-help',
-+  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', BRAVE_SHIELDS = 'braveShields', GOOGLE_SIGN_IN = 'googleSignIn', LOCALHOST_ACCESS = 'localhostAccess', BRAVE_OPEN_AI_CHAT = 'braveOpenAIChat'
++  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', CARDANO = 'cardano', BRAVE_SHIELDS = 'braveShields', GOOGLE_SIGN_IN = 'googleSignIn', LOCALHOST_ACCESS = 'localhostAccess', BRAVE_OPEN_AI_CHAT = 'braveOpenAIChat'
  }
  
  /**
