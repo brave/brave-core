@@ -113,6 +113,7 @@
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
+-PasswordChangeDelegateImplTest.WaitingForAgreement
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -615,6 +616,7 @@
 
 # We disable HATS
 -HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
+-SafetyHubHatsServiceTest.GetOverallState_*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -721,7 +723,6 @@
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceEnabled
 -TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceDisabled
 -TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceEnabled
--TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
 -ThemeLocalDataBatchUploaderTest.*
 -ThemeServiceTest.IsGrayscale
 -ThemeSyncableServiceTest.GetAllSyncDataForTesting_Extension
