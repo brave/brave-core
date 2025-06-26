@@ -22,8 +22,7 @@ extension BraveWalletKeyringService {
   }
 
   /// Check if any wallet account has been created given a coin type
-  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType) async -> Bool
-  {
+  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType) async -> Bool {
     let allAccountsForCoin = await allAccounts().accounts.filter { $0.coin == coin }
     return !allAccountsForCoin.isEmpty
   }

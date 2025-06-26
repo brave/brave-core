@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BigNumber
 import BraveCore
 import BraveUI
 import DesignSystem
 import OrderedCollections
-import BigNumber
 import SwiftUI
 
 struct BuyProviderSelectionView: View {
@@ -128,7 +128,7 @@ struct ProviderView: View {
           if isBestOption {
             HStack {
               Image(braveSystemName: "leo.thumb.up")
-              Text("BEST OPTION")
+              Text(Strings.Wallet.providerListBestOption)
             }
             .padding(4)
             .font(.caption2.weight(.semibold))
@@ -150,9 +150,11 @@ struct ProviderView: View {
               let destinationCurrencyCode = quote.destinationCurrencyCode
             {
               HStack {
-                Text("Exchange rate with fees")
+                Text(Strings.Wallet.providerListExchangeRateWithFees)
                 Spacer()
-                Text("≈ \(exchangeRateBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode) / \(destinationCurrencyCode)")
+                Text(
+                  "≈ \(exchangeRateBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode) / \(destinationCurrencyCode)"
+                )
                 .multilineTextAlignment(.trailing)
               }
             }
@@ -161,9 +163,11 @@ struct ProviderView: View {
               let sourceCurrencyCode = quote.sourceCurrencyCode
             {
               HStack {
-                Text("Price \(sourceCurrencyCode)")
+                Text(Strings.Wallet.providerListPrice) + Text(" \(sourceCurrencyCode)")
                 Spacer()
-                Text("≈ \(sourceAmountWithoutFeeBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)")
+                Text(
+                  "≈ \(sourceAmountWithoutFeeBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)"
+                )
                 .multilineTextAlignment(.trailing)
               }
             }
@@ -172,9 +176,11 @@ struct ProviderView: View {
               let sourceCurrencyCode = quote.sourceCurrencyCode
             {
               HStack {
-                Text("Fees")
+                Text(Strings.Wallet.providerListFees)
                 Spacer()
-                Text("\(totalFeeBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)")
+                Text(
+                  "\(totalFeeBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)"
+                )
                 .multilineTextAlignment(.trailing)
               }
             }
@@ -183,9 +189,11 @@ struct ProviderView: View {
               let sourceCurrencyCode = quote.sourceCurrencyCode
             {
               HStack {
-                Text("Total")
+                Text(Strings.Wallet.providerListTotal)
                 Spacer()
-                Text("\(totalBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)")
+                Text(
+                  "\(totalBDouble.decimalDescription.trimmingTrailingZeros) \(sourceCurrencyCode)"
+                )
                 .multilineTextAlignment(.trailing)
               }
             }
@@ -206,7 +214,12 @@ struct ProviderView: View {
             }
           } label: {
             HStack {
-              Text("Buy with \(provider.name ?? "")")
+              Text(
+                String.localizedStringWithFormat(
+                  Strings.Wallet.providerListBuyWith,
+                  provider.name ?? ""
+                )
+              )
               Image(braveSystemName: "leo.launch")
             }
           }
