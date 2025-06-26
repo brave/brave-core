@@ -23,10 +23,25 @@ component("json") {
 source_set("brave_json_unit_tests") {
   testonly = true
   sources = [ "//brave/components/json/json_parser_unittest.cc" ]
+
   deps = [
     "//base",
     "//base/test:test_support",
     "//brave/components/json",
     "//testing/gtest",
   ]
+
+  if (!is_android) {
+    # Android seems to have some issue running these base tests, specially when
+    # using base::DIR_TEST_DATA
+    sources += [
+      "//base/json/json_reader_unittest.cc",
+      "//base/json/json_writer_unittest.cc",
+    ]
+
+    # Adding fuzztest dependency to be able to build `json_reader_unittest.cc`,
+    # which unfortunately requires the dependency correctly added to resolve
+    # the includes for the `FUZZ_TEST` macro.
+    deps += [ "//third_party/fuzztest" ]
+  }
 }
