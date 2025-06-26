@@ -585,13 +585,6 @@ extension Strings {
       value: "None",
       comment: "Title showing the user has no subscription."
     )
-    public static let advancedSettingsAutocompleteTitle = NSLocalizedString(
-      "aichat.advancedSettingsAutocompleteTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Show In Address Bar",
-      comment: "The title for the settings to show search suggestions from Leo in url-address bar"
-    )
     public static let advancedSettingsAutocompleteDescription = NSLocalizedString(
       "aichat.advancedSettingsAutocompleteDescription",
       tableName: "BraveLeo",
