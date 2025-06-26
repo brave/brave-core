@@ -101,6 +101,7 @@ include_rules += [
   "+brave/components/search_engines",
   "+brave/components/webcompat_reporter/common",
   "+brave/components/sidebar/browser",
+  "+brave/components/windows_recall",
 ]
 
 specific_include_rules = {

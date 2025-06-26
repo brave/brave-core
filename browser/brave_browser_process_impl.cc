@@ -96,6 +96,10 @@
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 using brave_component_updater::BraveComponent;
 using ntp_background_images::NTPBackgroundImagesService;
 
@@ -173,6 +177,10 @@ void BraveBrowserProcessImpl::Init() {
 
   brave::PrepareSearchSuggestionsConfig(*local_state(),
                                         first_run::IsChromeFirstRun());
+#endif
+#if BUILDFLAG(IS_WIN)
+  // Initializes the internal static data on start up.
+  windows_recall::IsWindowsRecallDisabled(local_state());
 #endif
 }
 
