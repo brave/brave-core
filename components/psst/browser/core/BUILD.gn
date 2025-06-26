@@ -53,10 +53,15 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    ":core_impl",
     "//base/test:test_support",
     "//brave/components/psst/common",
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (is_win) {
+    deps += [ ":core" ]
+  } else {
+    deps += [ ":core_impl" ]
+  }
 }
