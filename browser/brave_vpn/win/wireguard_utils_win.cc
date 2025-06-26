@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
@@ -34,14 +35,17 @@ namespace brave_vpn {
 
 namespace {
 std::optional<bool> g_wireguard_service_registered_for_testing;
-// TODO(bsclifton): consider persisting last used value to registry or disk.
-// As-is, it won't survive the owning process being restarted.
-std::optional<std::string> g_smart_proxy_url;
+// Store the last value passed in. This is useful for the case where the system
+// tray is needing to initiate the connect. As this isn't persisted, it won't
+// survive the owning process being restarted.
+// TODO(https://github.com/brave/brave-browser/issues/47115): remove this value
+// and pass in the real value each time.
+base::NoDestructor<std::string> g_smart_proxy_url("");
 constexpr wchar_t kSystemProxyRegistryKey[] =
     L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 
 void MaybeEnableSystemProxy() {
-  if (!g_smart_proxy_url.has_value()) {
+  if (!g_smart_proxy_url->empty()) {
     return;
   }
 
@@ -190,11 +194,8 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
       mapped_ip4_address.empty() && vpn_server_hostname.empty();
   // Only reset smart proxy URL if this is not a reconnect or if it has a value.
   if (!reconnect_using_last_config || smart_proxy_url.has_value()) {
-    g_smart_proxy_url.reset();
-    if (smart_proxy_url.has_value()) {
-      VLOG(1) << "Using smart_proxy_url = \"" << *smart_proxy_url << "\"";
-      g_smart_proxy_url = smart_proxy_url;
-    }
+    *g_smart_proxy_url = smart_proxy_url.has_value() ? *smart_proxy_url : "";
+    VLOG(1) << "Using smart_proxy_url = \"" << *smart_proxy_url << "\"";
   }
 
   base::ThreadPool::CreateCOMSTATaskRunner(
