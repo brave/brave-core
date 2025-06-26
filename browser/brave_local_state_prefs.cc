@@ -91,7 +91,9 @@
 #endif
 
 #if BUILDFLAG(IS_MAC)
-#include "brave/updater/updater_p3a.h"
+// Need `nogncheck` because the linter doesn't understand the conditional
+// include. See `gn help nogncheck`.
+#include "brave/updater/updater_p3a.h"  // nogncheck
 #endif
 
 namespace brave {
