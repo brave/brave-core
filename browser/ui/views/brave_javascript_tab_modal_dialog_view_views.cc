@@ -10,13 +10,17 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_host.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -79,19 +83,20 @@ JavaScriptTabModalDialogManagerDelegateDesktop::CreateNewDialog(
         std::move(dialog_force_closed_callback));
   }
 
-  if (!browser->GetFeatures().split_view_browser_data()) {
-    // Split view isn't enabled.
-    return CreateNewDialog_ChromiumImpl(
-        alerting_web_contents, title, dialog_type, message_text,
-        default_prompt_text, std::move(dialog_callback),
-        std::move(dialog_force_closed_callback));
+  if (tabs::features::IsBraveSplitViewEnabled() ||
+      base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return (new BraveJavaScriptTabModalDialogViewViews(
+                web_contents_, alerting_web_contents, title, dialog_type,
+                message_text, default_prompt_text, std::move(dialog_callback),
+                std::move(dialog_force_closed_callback)))
+        ->weak_ptr_factory_.GetWeakPtr();
   }
 
-  return (new BraveJavaScriptTabModalDialogViewViews(
-              web_contents_, alerting_web_contents, title, dialog_type,
-              message_text, default_prompt_text, std::move(dialog_callback),
-              std::move(dialog_force_closed_callback)))
-      ->weak_ptr_factory_.GetWeakPtr();
+  // Split view isn't enabled.
+  return CreateNewDialog_ChromiumImpl(alerting_web_contents, title, dialog_type,
+                                      message_text, default_prompt_text,
+                                      std::move(dialog_callback),
+                                      std::move(dialog_force_closed_callback));
 }
 
 web_modal::WebContentsModalDialogHost&
@@ -135,28 +140,38 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
     return bounds.origin();
   }
 
-  auto* tab_strip_model = browser->tab_strip_model();
-  auto tab_handle = tab_strip_model
-                        ->GetTabAtIndex(tab_strip_model->GetIndexOfWebContents(
-                            base::to_address(web_contents_)))
-                        ->GetHandle();
-
-  auto* split_view_browser_data =
-      browser->GetFeatures().split_view_browser_data();
-  CHECK(split_view_browser_data);
-
-  auto tile = split_view_browser_data->GetTile(tab_handle);
-  if (!tile) {
-    return bounds.origin();
-  }
-
-  // 2. It's in split view mode. Center the dialog to the relevant web
-  // view.
+  auto tab_handle =
+      tabs::TabInterface::GetFromContents(base::to_address(web_contents_))
+          ->GetHandle();
   auto* browser_view = static_cast<BraveBrowserView*>(browser->window());
-  auto* target_web_view =
-      tab_strip_model->GetActiveTab()->GetHandle() == tab_handle
-          ? browser_view->contents_web_view()
-          : browser_view->split_view()->secondary_contents_web_view();
+  const bool is_active_tab = tab_handle.Get()->IsActivated();
+  ContentsWebView* target_web_view = nullptr;
+  if (tabs::features::IsBraveSplitViewEnabled()) {
+    auto* split_view_browser_data =
+        browser->GetFeatures().split_view_browser_data();
+    CHECK(split_view_browser_data);
+
+    auto tile = split_view_browser_data->GetTile(tab_handle);
+    if (!tile) {
+      return bounds.origin();
+    }
+    target_web_view =
+        is_active_tab
+            ? browser_view->contents_web_view()
+            : browser_view->split_view()->secondary_contents_web_view();
+  } else {
+    CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
+    if (!tab_handle.Get()->IsSplit()) {
+      return bounds.origin();
+    }
+    auto* multi_contents_view = browser_view->GetBraveMultiContentsView();
+    target_web_view = is_active_tab
+                          ? multi_contents_view->GetActiveContentsView()
+                          : multi_contents_view->GetInactiveContentsView();
+  }
+  CHECK(target_web_view);
+
+  // 2. It's in split view mode. Center the dialog to the relevant web view.
   auto target_web_view_bounds = target_web_view->GetLocalBounds();
 
   // Adjust X position

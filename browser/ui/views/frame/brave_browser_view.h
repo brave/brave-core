@@ -142,6 +142,8 @@ class BraveBrowserView : public BrowserView,
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
+  BraveMultiContentsView* GetBraveMultiContentsView() const;
+
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
   }
@@ -214,7 +216,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  BraveMultiContentsView* GetBraveMultiContentsView() const;
   views::View* contents_separator_for_testing() const {
     return contents_separator_;
   }
