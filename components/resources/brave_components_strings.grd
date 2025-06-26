@@ -811,6 +811,7 @@
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
         <part file="email_aliases_strings.grdp" />
+        <part file="customize_toolbar_ui_strings.grdp" />
       </if>
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
