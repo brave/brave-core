@@ -495,7 +495,7 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
     EXPECT_TRUE(GetShouldDoLearning(browser()));
   } else {
     EXPECT_FALSE(client()->IsWindowsRecallDisabled());
-    EXPECT_FALSE(GetShouldDoLearning(browser()));
+    EXPECT_TRUE(GetShouldDoLearning(browser()));
   }
 
   // incognito behavior is unchanged from upstream (always false)
