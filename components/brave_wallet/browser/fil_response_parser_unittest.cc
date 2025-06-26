@@ -90,20 +90,20 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
           }
       })";
 
-  auto parse_result = brave_wallet::ParseFilEstimateGas(ParseJson(json));
+  auto parse_result = ParseFilEstimateGas(ParseJson(json));
   EXPECT_TRUE(parse_result);
   EXPECT_EQ(parse_result->gas_premium, "100466");
   EXPECT_EQ(parse_result->gas_fee_cap, "101520");
   EXPECT_EQ(parse_result->gas_limit, 2187060u);
 
   json.clear();
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(base::Value()));
+  EXPECT_FALSE(ParseFilEstimateGas(base::Value()));
 
   json = "[]";
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
+  EXPECT_FALSE(ParseFilEstimateGas(ParseJson(json)));
   // result is not a dictionary
   json = "{\"jsonrpc\":\"2.0\",\"result\":[]}";
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
+  EXPECT_FALSE(ParseFilEstimateGas(ParseJson(json)));
 
   // No GasLimit
   json = R"({
@@ -124,7 +124,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
                 "Version": 0
             }
           })";
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
+  EXPECT_FALSE(ParseFilEstimateGas(ParseJson(json)));
 
   // No GasPremium
   json =
@@ -146,7 +146,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
               "Version": 0
           }
       })";
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
+  EXPECT_FALSE(ParseFilEstimateGas(ParseJson(json)));
 
   // No GasFeeCap
   json =
@@ -168,12 +168,11 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
               "Version": 0
           }
       })";
-  EXPECT_FALSE(brave_wallet::ParseFilEstimateGas(ParseJson(json)));
+  EXPECT_FALSE(ParseFilEstimateGas(ParseJson(json)));
 }
 
 TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
-  std::optional<uint64_t> height =
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({
+  std::optional<uint64_t> height = ParseFilGetChainHead(GetResponse(R"({
         "Blocks":[],
         "Cids": [{
               "/": "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju"
@@ -182,69 +181,58 @@ TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
       })"));
   EXPECT_TRUE(height);
   EXPECT_EQ(*height, 18446744073709551615u);
-  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(base::Value()));
-  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({})")));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Height": 11})")));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Height": "abc"})")));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Height": {}})")));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Height": []})")));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Height": ""})")));
+  EXPECT_FALSE(ParseFilGetChainHead(base::Value()));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({})")));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({"Height": 11})")));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({"Height": "abc"})")));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({"Height": {}})")));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({"Height": []})")));
+  EXPECT_FALSE(ParseFilGetChainHead(GetResponse(R"({"Height": ""})")));
 }
 
 TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
-  std::optional<int64_t> exit_code =
-      brave_wallet::ParseFilStateSearchMsgLimited(
-          GetResponse(
-              "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
-              base::NumberToString(INT64_MAX) + "\"}}"),
-          "cid");
+  std::optional<int64_t> exit_code = ParseFilStateSearchMsgLimited(
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          base::NumberToString(INT64_MAX) + "\"}}"),
+      "cid");
   EXPECT_TRUE(exit_code);
   EXPECT_EQ(*exit_code, INT64_MAX);
-  exit_code = brave_wallet::ParseFilStateSearchMsgLimited(
+  exit_code = ParseFilStateSearchMsgLimited(
       GetResponse(
           "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
           base::NumberToString(INT64_MIN) + "\"}}"),
       "cid");
   EXPECT_TRUE(exit_code);
   EXPECT_EQ(*exit_code, INT64_MIN);
-  EXPECT_FALSE(
-      brave_wallet::ParseFilStateSearchMsgLimited(base::Value(), "cid"));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilStateSearchMsgLimited(ParseJson("{}"), "cid"));
-  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(base::Value(), "cid"));
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(ParseJson("{}"), "cid"));
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(
       GetResponse(R"({"Message": {"/":"cid"},"Receipt": {}})"), "cid"));
-  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(
       GetResponse(R"({"Message": {"/":"cid"},"Receipt": []})"), "cid"));
-  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(
       GetResponse(R"({"Message": {"/":"cid"},"Receipt": {"ExitCode": "a"}})"),
       "cid"));
-  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(
       GetResponse(R"({"Message": {"/":"cid"},"Receipt": {"ExitCode": []}})"),
       "cid"));
-  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(
       GetResponse(R"({"Message": {"/":"cid"},"Receipt": {"ExitCode": {}}})"),
       "cid"));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilStateSearchMsgLimited(GetResponse("null"), "cid"));
+  EXPECT_FALSE(ParseFilStateSearchMsgLimited(GetResponse("null"), "cid"));
 }
 
 TEST(FilResponseParserUnitTest, ParseSendFilecoinTransaction) {
-  std::optional<std::string> cid =
-      brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({
+  std::optional<std::string> cid = ParseSendFilecoinTransaction(GetResponse(R"({
     "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
   })"));
   EXPECT_TRUE(cid);
   EXPECT_EQ(*cid,
             "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4");
-  EXPECT_FALSE(
-      brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({})")));
-  EXPECT_FALSE(brave_wallet::ParseSendFilecoinTransaction(GetResponse("1")));
-  EXPECT_FALSE(brave_wallet::ParseSendFilecoinTransaction(GetResponse("[]")));
+  EXPECT_FALSE(ParseSendFilecoinTransaction(GetResponse(R"({})")));
+  EXPECT_FALSE(ParseSendFilecoinTransaction(GetResponse("1")));
+  EXPECT_FALSE(ParseSendFilecoinTransaction(GetResponse("[]")));
 }
 
 }  // namespace brave_wallet
