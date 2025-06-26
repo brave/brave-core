@@ -20,6 +20,7 @@ test("brave_components_unittests") {
     "//brave/components/api_request_helper:unit_tests",
     "//brave/components/brave_wallet/browser:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
+    "//brave/components/json:unit_tests",
     "//components/test:run_all_unittests",
   ]
 
