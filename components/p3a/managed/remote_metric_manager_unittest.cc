@@ -15,8 +15,8 @@
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/p3a/pref_names.h"
-#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,48 +24,19 @@ namespace p3a {
 
 namespace {
 
-constexpr char kTestHistogramName[] = "TestHistogram";
 constexpr char kTestPrefName[] = "test_pref";
 constexpr char kTestMetricName[] = "test_metric";
-constexpr char kTestStorageKey[] = "test_storage_key";
 
-constexpr char kTimePeriodEventsMetricJson[] = R"({
-  "type": "time_period_events",
-  "histogram_name": "TestHistogram",
-  "storage_key": "test_storage_key",
-  "period_days": 7,
-  "buckets": [5, 10, 20]
-})";
-
-constexpr char kPrefMetricJson[] = R"({
+constexpr char kSimplePrefMetricJson[] = R"({
   "type": "pref",
   "pref_name": "test_pref",
-  "value_map": {
-    "option1": 0,
-    "option2": 1,
-    "option3": 2
-  },
+  "use_profile_prefs": false
+})";
+
+constexpr char kSimpleProfilePrefMetricJson[] = R"({
+  "type": "pref",
+  "pref_name": "test_pref",
   "use_profile_prefs": true
-})";
-
-constexpr char kTimePeriodEventsMetricWithFutureMinVersionJson[] = R"({
-  "type": "time_period_events",
-  "histogram_name": "TestHistogram2",
-  "storage_key": "test_storage_key_future",
-  "period_days": 7,
-  "buckets": [5, 10, 20],
-  "min_version": "999.0.0"
-})";
-
-constexpr char kPrefMetricWithValidMinVersionJson[] = R"({
-  "type": "pref",
-  "pref_name": "test_pref",
-  "value_map": {
-    "option1": 0,
-    "option2": 1
-  },
-  "use_profile_prefs": true,
-  "min_version": "1.0.0"
 })";
 
 }  // namespace
@@ -79,26 +50,20 @@ class P3ARemoteMetricManagerUnitTest : public testing::Test,
   void SetUp() override {
     local_state_.registry()->RegisterDictionaryPref(
         kRemoteMetricStorageDictPref);
-    local_state_.registry()->RegisterFilePathPref(::prefs::kProfileLastUsed,
-                                                  {});
-    local_state_.registry()->RegisterStringPref(kTestPrefName, "option1");
+    local_state_.registry()->RegisterIntegerPref(kTestPrefName, 0);
 
     primary_profile_path_ = base::FilePath(FILE_PATH_LITERAL("profile1"));
     secondary_profile_path_ = base::FilePath(FILE_PATH_LITERAL("profile2"));
 
-    primary_profile_prefs_.registry()->RegisterStringPref(kTestPrefName,
-                                                          "option1");
-    secondary_profile_prefs_.registry()->RegisterStringPref(kTestPrefName,
-                                                            "option3");
+    primary_profile_prefs_.registry()->RegisterIntegerPref(kTestPrefName, 0);
+    secondary_profile_prefs_.registry()->RegisterIntegerPref(kTestPrefName, 0);
 
     manager_ = std::make_unique<RemoteMetricManager>(&local_state_, this);
   }
 
   // RemoteMetricManager::Delegate implementation
-  void UpdateMetricValue(
-      std::string_view histogram_name,
-      size_t bucket,
-      std::optional<bool> only_update_for_constellation) override {
+  void UpdateMetricValue(std::string_view histogram_name,
+                         size_t bucket) override {
     last_updated_metric_ = std::string(histogram_name);
     last_updated_bucket_ = bucket;
     update_count_++;
@@ -110,8 +75,8 @@ class P3ARemoteMetricManagerUnitTest : public testing::Test,
                      std::string_view json) {
     auto definition_value = base::JSONReader::Read(json);
     ASSERT_TRUE(definition_value.has_value());
-    definitions[metric_name] = std::make_unique<base::Value::Dict>(
-        definition_value->GetDict().Clone());
+    definitions[metric_name] =
+        std::make_unique<base::Value>(std::move(*definition_value));
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -129,140 +94,153 @@ class P3ARemoteMetricManagerUnitTest : public testing::Test,
 };
 
 TEST_F(P3ARemoteMetricManagerUnitTest, ProcessMetricDefinitions) {
-  RemoteMetricManager::UnparsedDefinitionsMap definitions;
+  // Set up profile prefs first since they're required
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
 
-  AddDefinition(definitions, kTestMetricName, kTimePeriodEventsMetricJson);
+  RemoteMetricManager::UnparsedDefinitionsMap definitions1;
 
-  manager_->ProcessMetricDefinitions(definitions);
+  AddDefinition(definitions1, kTestMetricName, kSimplePrefMetricJson);
+
+  manager_->ProcessMetricDefinitions(std::move(definitions1));
 
   EXPECT_EQ(manager_->metrics_.size(), 1u);
-  EXPECT_EQ(manager_->histogram_to_metrics_.size(), 1u);
-  EXPECT_TRUE(manager_->histogram_to_metrics_.contains(kTestHistogramName));
-  EXPECT_EQ(manager_->histogram_to_metrics_[kTestHistogramName].size(), 1u);
 
-  definitions.clear();
-  AddDefinition(definitions, "metric1", kTimePeriodEventsMetricJson);
-  AddDefinition(definitions, "metric2", kPrefMetricJson);
+  RemoteMetricManager::UnparsedDefinitionsMap definitions2;
+  AddDefinition(definitions2, "metric1", kSimplePrefMetricJson);
+  AddDefinition(definitions2, "metric2", kSimpleProfilePrefMetricJson);
 
-  manager_->ProcessMetricDefinitions(definitions);
+  manager_->ProcessMetricDefinitions(std::move(definitions2));
 
   EXPECT_EQ(manager_->metrics_.size(), 2u);
-  EXPECT_EQ(manager_->histogram_to_metrics_.size(), 1u);
-  EXPECT_TRUE(manager_->histogram_to_metrics_.contains(kTestHistogramName));
-  EXPECT_EQ(manager_->histogram_to_metrics_[kTestHistogramName].size(), 1u);
+}
+
+TEST_F(P3ARemoteMetricManagerUnitTest,
+       ProcessMetricDefinitionsBeforeProfileLoad) {
+  // Process metric definitions before profile is loaded
+  RemoteMetricManager::UnparsedDefinitionsMap definitions;
+  AddDefinition(definitions, "metric1", kSimplePrefMetricJson);
+  AddDefinition(definitions, "metric2", kSimpleProfilePrefMetricJson);
+
+  manager_->ProcessMetricDefinitions(std::move(definitions));
+
+  // No metrics should be instantiated yet since profile prefs aren't available
+  EXPECT_EQ(manager_->metrics_.size(), 0u);
+
+  // Now load the profile - this should trigger processing of the stored
+  // definitions
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
+
+  // Metrics should now be instantiated
+  EXPECT_EQ(manager_->metrics_.size(), 2u);
+}
+
+TEST_F(P3ARemoteMetricManagerUnitTest, MetricReported) {
+  // Set up profile prefs first since they're required
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
+
+  EXPECT_EQ(update_count_, 0u);
+  EXPECT_EQ(last_updated_bucket_, 0u);
+
+  // Create a simple pref metric
+  RemoteMetricManager::UnparsedDefinitionsMap definitions;
+  AddDefinition(definitions, kTestMetricName, kSimpleProfilePrefMetricJson);
+  manager_->ProcessMetricDefinitions(std::move(definitions));
+
+  EXPECT_EQ(update_count_, 1u);
+  EXPECT_EQ(last_updated_metric_, kTestMetricName);
+  EXPECT_EQ(last_updated_bucket_, 0u);
+
+  primary_profile_prefs_.SetInteger(kTestPrefName, 1);
+
+  EXPECT_EQ(update_count_, 2u);
+  EXPECT_EQ(last_updated_metric_, kTestMetricName);
+  EXPECT_EQ(last_updated_bucket_, 1u);
+
+  manager_->HandleProfileLoad(&secondary_profile_prefs_,
+                              secondary_profile_path_, true);
+
+  EXPECT_EQ(update_count_, 3u);
+  EXPECT_EQ(last_updated_metric_, kTestMetricName);
+  EXPECT_EQ(last_updated_bucket_, 0u);
+
+  secondary_profile_prefs_.SetInteger(kTestPrefName, 2);
+
+  EXPECT_EQ(update_count_, 4u);
+  EXPECT_EQ(last_updated_metric_, kTestMetricName);
+  EXPECT_EQ(last_updated_bucket_, 2u);
 }
 
 TEST_F(P3ARemoteMetricManagerUnitTest, InvalidMetricDefinitionsAreSkipped) {
+  // Set up profile prefs first since they're required
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
+
   RemoteMetricManager::UnparsedDefinitionsMap definitions;
 
   // Add a valid metric
-  AddDefinition(definitions, "valid_metric", kTimePeriodEventsMetricJson);
+  AddDefinition(definitions, "valid_metric", kSimplePrefMetricJson);
 
   // Add an invalid metric missing the type
-  auto invalid_type = std::make_unique<base::Value::Dict>();
-  invalid_type->Set("histogram_name", kTestHistogramName);
-  definitions["invalid_type"] = std::move(invalid_type);
+  AddDefinition(definitions, "invalid_type", "{}");
 
   // Add an invalid metric with unknown type
-  auto invalid_unknown_type = std::make_unique<base::Value::Dict>();
-  invalid_unknown_type->Set("type", "unknown_type");
-  definitions["invalid_unknown_type"] = std::move(invalid_unknown_type);
+  AddDefinition(definitions, "invalid_unknown_type",
+                R"({"type": "unknown_type"})");
 
-  // Add an invalid metric with invalid time period events definition
-  auto invalid_tpe = std::make_unique<base::Value::Dict>();
-  invalid_tpe->Set("type", "time_period_events");
-  definitions["invalid_tpe"] = std::move(invalid_tpe);
+  // Add an invalid metric with missing pref name
+  AddDefinition(definitions, "invalid_pref", R"({"type": "pref"})");
 
-  manager_->ProcessMetricDefinitions(definitions);
+  manager_->ProcessMetricDefinitions(std::move(definitions));
 
   // Only the valid metric should be processed
   EXPECT_EQ(manager_->metrics_.size(), 1u);
 }
 
 TEST_F(P3ARemoteMetricManagerUnitTest, ProfilePrefsHandling) {
-  RemoteMetricManager::UnparsedDefinitionsMap definitions;
-
   EXPECT_EQ(manager_->last_used_profile_prefs_, nullptr);
 
-  local_state_.SetFilePath(::prefs::kProfileLastUsed, primary_profile_path_);
-
-  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_);
-
+  // Load primary profile as the last used profile
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
   EXPECT_EQ(manager_->last_used_profile_prefs_, &primary_profile_prefs_);
 
+  // Load secondary profile (not as last used)
   manager_->HandleProfileLoad(&secondary_profile_prefs_,
-                              secondary_profile_path_);
-
+                              secondary_profile_path_, false);
   EXPECT_EQ(manager_->last_used_profile_prefs_, &primary_profile_prefs_);
 
-  local_state_.SetFilePath(::prefs::kProfileLastUsed, secondary_profile_path_);
-
+  // Switch to secondary profile as last used
+  manager_->HandleLastUsedProfileChanged(secondary_profile_path_);
   EXPECT_EQ(manager_->last_used_profile_prefs_, &secondary_profile_prefs_);
 
+  // Unload secondary profile
   manager_->HandleProfileUnload(secondary_profile_path_);
-
   EXPECT_EQ(manager_->last_used_profile_prefs_, nullptr);
 }
 
 TEST_F(P3ARemoteMetricManagerUnitTest, CleanupStorage) {
+  // Set up profile prefs first since they're required
+  manager_->HandleProfileLoad(&primary_profile_prefs_, primary_profile_path_,
+                              true);
+
   RemoteMetricManager::UnparsedDefinitionsMap definitions;
 
-  AddDefinition(definitions, kTestMetricName, kTimePeriodEventsMetricJson);
+  AddDefinition(definitions, kTestMetricName, kSimplePrefMetricJson);
 
-  manager_->ProcessMetricDefinitions(definitions);
+  manager_->ProcessMetricDefinitions(std::move(definitions));
 
-  base::Value::Dict dict;
-  dict.Set(kTestStorageKey, base::Value::Dict());
-  dict.Set("unused_key", base::Value::Dict());
-  local_state_.SetDict(kRemoteMetricStorageDictPref, std::move(dict));
+  {
+    ScopedDictPrefUpdate update(&local_state_, kRemoteMetricStorageDictPref);
+    update->Set("unused_key", 1);
+  }
 
-  definitions.clear();
-  manager_->ProcessMetricDefinitions(definitions);
+  manager_->ProcessMetricDefinitions({});
 
   const auto& storage = local_state_.GetDict(kRemoteMetricStorageDictPref);
-  EXPECT_FALSE(storage.FindDict("unused_key"));
-  EXPECT_FALSE(storage.FindDict(kTestStorageKey));
-}
-
-TEST_F(P3ARemoteMetricManagerUnitTest, MinVersionAccepted) {
-  // Set current version to a version that should accept min_version 1.0.0
-  manager_->current_version_ = base::Version("1.70.0");
-
-  RemoteMetricManager::UnparsedDefinitionsMap definitions;
-
-  // Add a metric with valid min_version for pref type (should be accepted)
-  AddDefinition(definitions, "metric_valid_pref",
-                kPrefMetricWithValidMinVersionJson);
-
-  // Add a metric without min_version (should be accepted)
-  AddDefinition(definitions, "metric_no_version", kTimePeriodEventsMetricJson);
-
-  manager_->ProcessMetricDefinitions(definitions);
-
-  // Should create all 2 metrics since they meet version requirements
-  EXPECT_EQ(manager_->metrics_.size(), 2u);
-
-  // Verify histogram mappings
-  EXPECT_EQ(manager_->histogram_to_metrics_.size(), 1u);
-  EXPECT_TRUE(manager_->histogram_to_metrics_.contains(kTestHistogramName));
-  EXPECT_EQ(manager_->histogram_to_metrics_[kTestHistogramName].size(), 1u);
-}
-
-TEST_F(P3ARemoteMetricManagerUnitTest, MinVersionRejected) {
-  // Set current version to a low version that should reject future versions
-  manager_->current_version_ = base::Version("1.0.0");
-
-  RemoteMetricManager::UnparsedDefinitionsMap definitions;
-
-  // Add a metric with future min_version (should be rejected)
-  AddDefinition(definitions, "metric_future_version",
-                kTimePeriodEventsMetricWithFutureMinVersionJson);
-
-  manager_->ProcessMetricDefinitions(definitions);
-
-  // Should create no metrics since the future version should be rejected
-  EXPECT_TRUE(manager_->metrics_.empty());
-  EXPECT_TRUE(manager_->histogram_to_metrics_.empty());
+  EXPECT_FALSE(storage.FindDict({}));
 }
 
 }  // namespace p3a

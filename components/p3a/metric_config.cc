@@ -117,12 +117,12 @@ bool GetOptionalBool(const base::Value* value, std::optional<bool>* field) {
   return true;
 }
 
-bool GetUniquePtrDict(const base::Value* value,
-                      std::unique_ptr<base::Value::Dict>* field) {
+bool GetUniquePtrValue(const base::Value* value,
+                       std::unique_ptr<base::Value>* field) {
   if (!value || !value->is_dict()) {
     return false;
   }
-  *field = std::make_unique<base::Value::Dict>(value->GetDict().Clone());
+  *field = std::make_unique<base::Value>(value->Clone());
   return true;
 }
 
@@ -154,7 +154,7 @@ void RemoteMetricConfig::RegisterJSONConverter(
   converter->RegisterCustomValueField("cadence", &RemoteMetricConfig::cadence,
                                       &GetMetricLogType);
   converter->RegisterCustomValueField(
-      "definition", &RemoteMetricConfig::definition, &GetUniquePtrDict);
+      "definition", &RemoteMetricConfig::definition, &GetUniquePtrValue);
 }
 
 }  // namespace p3a

@@ -60,10 +60,12 @@ class ProfileMiscMetricsService : public KeyedService {
 
  private:
   void ReportSimpleMetrics();
+  void OnLastUsedProfileChanged();
 
   raw_ptr<PrefService> profile_prefs_;
   base::FilePath context_path_;
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar last_used_profile_pref_change_registrar_;
 
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;

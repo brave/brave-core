@@ -90,7 +90,7 @@ struct RemoteMetricConfig {
   std::optional<bool> record_activation_date;
   std::optional<std::string> activation_metric_name;
   std::optional<MetricLogType> cadence;
-  std::unique_ptr<base::Value::Dict> definition;
+  std::unique_ptr<base::Value> definition;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<RemoteMetricConfig>* converter);

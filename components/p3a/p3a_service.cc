@@ -187,7 +187,7 @@ void P3AService::Init(
 
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    UpdateMetricValue(std::string(entry.first), entry.second, std::nullopt);
+    UpdateMetricValue(std::string(entry.first), entry.second);
   }
   histogram_values_.clear();
 
@@ -293,7 +293,7 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
     GetUIThreadTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+        FROM_HERE, base::BindOnce(&P3AService::UpdateMetricValue, this,
                                   histogram_name, kSuspendedMetricBucket));
     return;
   }
@@ -307,12 +307,12 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   }
 
   GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+      FROM_HERE, base::BindOnce(&P3AService::UpdateMetricValue, this,
                                 histogram_name, bucket));
 }
 
-void P3AService::HandleHistogramChange(std::string_view histogram_name,
-                                       size_t bucket) {
+void P3AService::UpdateMetricValue(std::string_view histogram_name,
+                                   size_t bucket) {
   VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << bucket;
   if (!initialized_) {

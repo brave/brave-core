@@ -14,13 +14,10 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
-#include "base/metrics/histogram_base.h"
-#include "base/metrics/statistics_recorder.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/p3a/managed/remote_metric.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
-#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
@@ -32,7 +29,7 @@ namespace p3a {
 class RemoteMetricManager : public RemoteMetric::Delegate {
  public:
   using UnparsedDefinitionsMap =
-      base::flat_map<std::string, std::unique_ptr<base::Value::Dict>>;
+      base::flat_map<std::string, std::unique_ptr<base::Value>>;
 
   // Delegate interface for RemoteMetricManager
   class Delegate {
@@ -40,10 +37,8 @@ class RemoteMetricManager : public RemoteMetric::Delegate {
     virtual ~Delegate() = default;
 
     // Called when a metric value needs to be updated
-    virtual void UpdateMetricValue(
-        std::string_view histogram_name,
-        size_t bucket,
-        std::optional<bool> only_update_for_constellation) = 0;
+    virtual void UpdateMetricValue(std::string_view histogram_name,
+                                   size_t bucket) = 0;
   };
 
   RemoteMetricManager(PrefService* local_state, Delegate* delegate);
@@ -54,14 +49,18 @@ class RemoteMetricManager : public RemoteMetric::Delegate {
 
   // Set the profile preferences service for the last used profile
   void HandleProfileLoad(PrefService* profile_prefs,
-                         const base::FilePath& context_path);
+                         const base::FilePath& context_path,
+                         bool is_last_used_profile = false);
 
   // Clear the stored PrefService if the context path matches
   void HandleProfileUnload(const base::FilePath& context_path);
 
+  // Handle when a profile becomes the last used profile
+  void HandleLastUsedProfileChanged(const base::FilePath& context_path);
+
   // Process all metric definitions in a map. Called by RemoteConfigManager
   // when new definitions are available.
-  void ProcessMetricDefinitions(const UnparsedDefinitionsMap& definitions);
+  void ProcessMetricDefinitions(UnparsedDefinitionsMap definitions);
 
   // RemoteMetric::Delegate:
   void UpdateMetric(std::string_view metric_name, size_t bucket) override;
@@ -74,21 +73,15 @@ class RemoteMetricManager : public RemoteMetric::Delegate {
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
                            ProcessMetricDefinitions);
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
+                           ProcessMetricDefinitionsBeforeProfileLoad);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
                            InvalidMetricDefinitionsAreSkipped);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MetricReported);
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
                            ProfilePrefsHandling);
   FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, CleanupStorage);
-  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MinVersionAccepted);
-  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MinVersionRejected);
 
-  // Called by ScopedHistogramSampleObserver when a histogram changes.
-  void OnHistogramChanged(std::string_view histogram_name,
-                          uint64_t name_hash,
-                          base::HistogramBase::Sample32 sample);
-  void SetupObservers();
   void CleanupStorage();
-
-  void OnLastUsedProfileChanged();
 
   // Maps from storage key to TimePeriodStorage objects
   base::flat_map<std::string, std::unique_ptr<TimePeriodStorage>>
@@ -97,26 +90,17 @@ class RemoteMetricManager : public RemoteMetric::Delegate {
   // Maps from metric name to metric objects
   std::vector<std::unique_ptr<RemoteMetric>> metrics_;
 
-  // Maps from histogram name to the list of metrics that consume it
-  base::flat_map<std::string, std::vector<raw_ptr<RemoteMetric>>>
-      histogram_to_metrics_;
-
-  // Maps from histogram name to the observer watching it.
-  base::flat_map<
-      std::string,
-      std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
-      remote_metric_sample_callbacks_;
-
   base::flat_map<base::FilePath, raw_ptr<PrefService>> profile_prefs_map_;
   raw_ptr<PrefService> last_used_profile_prefs_ = nullptr;
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<Delegate> delegate_;
 
-  PrefChangeRegistrar last_used_profile_pref_change_registrar_;
-
   base::Version current_version_;
-  bool is_processing_metric_definitions_ = false;
+
+  // Will be populated if ProcessMetricDefinitions is called before the last
+  // used profile is loaded.
+  std::optional<UnparsedDefinitionsMap> metric_definitions_to_process_;
 };
 
 }  // namespace p3a

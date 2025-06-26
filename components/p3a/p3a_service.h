@@ -136,7 +136,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void OnP3AEnabledChanged();
 
   // Updates or removes a metric from the log.
-  void HandleHistogramChange(std::string_view histogram_name, size_t bucket);
+  void UpdateMetricValue(std::string_view histogram_name,
+                         size_t bucket) override;
 
   // General prefs:
   bool initialized_ = false;

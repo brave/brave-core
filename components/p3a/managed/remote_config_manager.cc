@@ -175,7 +175,8 @@ void RemoteConfigManager::SetMetricConfigs(
   }
 
   if (remote_metric_manager_) {
-    remote_metric_manager_->ProcessMetricDefinitions(metric_definitions);
+    remote_metric_manager_->ProcessMetricDefinitions(
+        std::move(metric_definitions));
   }
 
   is_loaded_ = true;

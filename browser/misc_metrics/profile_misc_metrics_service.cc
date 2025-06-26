@@ -102,9 +102,29 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 
   if (profile_prefs_ && g_brave_browser_process->p3a_service() &&
       g_brave_browser_process->p3a_service()->remote_metric_manager()) {
+    // Check if this is the last used profile
+    bool is_last_used_profile = false;
+    if (local_state) {
+      base::FilePath last_used_path =
+          local_state->GetFilePath(::prefs::kProfileLastUsed);
+      is_last_used_profile = (last_used_path == context_path_.BaseName() ||
+                              last_used_path.empty());
+    }
+
     g_brave_browser_process->p3a_service()
         ->remote_metric_manager()
-        ->HandleProfileLoad(profile_prefs_, context_path_);
+        ->HandleProfileLoad(profile_prefs_, context_path_,
+                            is_last_used_profile);
+
+    // Register for last used profile changes
+    if (local_state) {
+      last_used_profile_pref_change_registrar_.Init(local_state);
+      last_used_profile_pref_change_registrar_.Add(
+          ::prefs::kProfileLastUsed,
+          base::BindRepeating(
+              &ProfileMiscMetricsService::OnLastUsedProfileChanged,
+              base::Unretained(this)));
+    }
   }
 
   ReportSimpleMetrics();
@@ -156,6 +176,23 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
 
 ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
   return ai_chat_metrics_.get();
+}
+
+void ProfileMiscMetricsService::OnLastUsedProfileChanged() {
+  auto* local_state = g_browser_process->local_state();
+  if (!local_state) {
+    return;
+  }
+
+  base::FilePath last_used_path =
+      local_state->GetFilePath(::prefs::kProfileLastUsed);
+  if (last_used_path == context_path_.BaseName() &&
+      g_brave_browser_process->p3a_service() &&
+      g_brave_browser_process->p3a_service()->remote_metric_manager()) {
+    g_brave_browser_process->p3a_service()
+        ->remote_metric_manager()
+        ->HandleLastUsedProfileChanged(context_path_);
+  }
 }
 
 }  // namespace misc_metrics
