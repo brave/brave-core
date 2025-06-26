@@ -38,5 +38,6 @@ source_set("browser_tests") {
     "//chrome/test:test_support_ui",
   ]
 
+  # We get an error without this define:
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
