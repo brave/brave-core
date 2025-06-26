@@ -5942,5 +5942,53 @@ extension Strings {
       comment:
         "The header title of the section that user can pick an account in buy screen in Brave Wallet."
     )
+    public static let providerListBestOption = NSLocalizedString(
+      "wallet.providerListBestOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "BEST OPTION",
+      comment:
+        "A label that will display on the provider option to indicate this is the best option."
+    )
+    public static let providerListExchangeRateWithFees = NSLocalizedString(
+      "wallet.providerListExchangeRateWithFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Exchange rate with fees",
+      comment:
+        "One of title that displays under provider option. Exchange rate with fees that this provider offers."
+    )
+    public static let providerListPrice = NSLocalizedString(
+      "wallet.providerListPrice",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Price",
+      comment:
+        "One of title that displays under provider option. The price of the target currency on market."
+    )
+    public static let providerListFees = NSLocalizedString(
+      "wallet.providerListFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Fees",
+      comment:
+        "One of title that displays under provider option. The fees that provider will charge."
+    )
+    public static let providerListTotal = NSLocalizedString(
+      "wallet.providerListTotal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Total",
+      comment:
+        "One of title that displays under provider option. The total cost of this purchase."
+    )
+    public static let providerListBuyWith = NSLocalizedString(
+      "wallet.providerListBuyWith",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Buy with %@",
+      comment:
+        "The title of the button that user can use to open the link to buy crypto."
+    )
   }
 }

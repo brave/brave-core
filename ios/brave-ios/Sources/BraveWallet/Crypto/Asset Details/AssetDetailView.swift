@@ -530,7 +530,9 @@ struct AssetDetailView: View {
       keyringStore: keyringStore,
       networkStore: networkStore,
       preselectedAccountCoin: assetDetailStore.assetDetailToken.coin,
-      preselectedAccountNetwork: networkStore.network(for: assetDetailStore.assetDetailToken.chainId),
+      preselectedAccountNetwork: networkStore.network(
+        for: assetDetailStore.assetDetailToken.chainId
+      ),
       isShowingConfirmation: $isPresentingAddAccountConfirmation,
       isShowingAddAccount: $isPresentingAddAccount,
       onConfirmAddAccount: { isPresentingAddAccount = true },

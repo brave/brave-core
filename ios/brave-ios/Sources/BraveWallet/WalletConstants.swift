@@ -16,56 +16,56 @@ public struct WalletConstants {
   ///
   /// This value will be formatted to a string such as 0.85%)
   static let braveSwapJupiterFee: Double = 0.0085
-  
+
   /// The wei value used for unlimited allowance in an ERC 20 transaction.
   static let maxUInt256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-  
+
   /// The `URLOrigin` used for transactions/requests from Brave Wallet.
   static let braveWalletOrigin: URLOrigin = .init(url: URL(string: "chrome://wallet")!)
-  
+
   /// The `OriginInfo.originSpec` used for transactions/requests from Brave Wallet.
   static let braveWalletOriginSpec = "chrome://wallet"
-  
+
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(
     string: "https://support.brave.com/hc/categories/360001062531-Wallet"
   )!
-  
+
   // TODO: update wiki link
   /// Brave Wiki page for Solana Name Service (SNS)
   public static let snsBraveWikiURL: URL = URL(
     string: "https://github.com/brave/brave-browser/wiki/Resolve-Methods-for-Solana-Name-Service"
   )!
-  
+
   /// Terms of Use for Ethereum Name Service (ENS)
   public static let ensTermsOfUseURL: URL = URL(string: "https://consensys.net/terms-of-use/")!
-  
+
   /// Privacy Policy for Ethereum Name Service (ENS)
   public static let ensPrivacyPolicyURL: URL = URL(string: "https://consensys.net/privacy-policy/")!
-  
+
   /// The url to learn more about ENS off-chain lookups
   public static let braveWalletENSOffchainURL = URL(
     string: "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup"
   )!
-  
+
   /// The url to learn more about Unstoppable Domains resolve methods.
   public static let braveWalletUnstoppableDomainsURL = URL(
     string: "https://github.com/brave/brave-browser/wiki/Resolve-Methods-for-Unstoppable-Domains"
   )!
-  
+
   /// The url to the privacy policy for 0x swaps
   static let zeroXPrivacyPolicy = URL(string: "https://www.0x.org/privacy")!
-  
+
   /// The url to the privacy policy for Jupiter swaps
   static let jupiterPrivacyPolicy = URL(string: "https://docs.jup.ag/legal/privacy-policy")!
-  
+
   /// The url to learn more about NFT Discovery
   public static let nftDiscoveryURL = URL(
     string: "https://github.com/brave/brave-browser/wiki/NFT-Discovery"
   )!
-  
+
   public static let braveWalletTermsOfUse = URL(string: "https://brave.com/terms-of-use/")!
-  
+
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [
     BraveWallet.SepoliaChainId,
@@ -77,7 +77,7 @@ public struct WalletConstants {
     BraveWallet.BitcoinTestnet,
     BraveWallet.ZCashTestnet,
   ]
-  
+
   /// Primary network chain ids
   static let primaryNetworkChainIds: [String] = [
     BraveWallet.SolanaMainnet,
@@ -86,18 +86,18 @@ public struct WalletConstants {
     BraveWallet.BitcoinMainnet,
     BraveWallet.ZCashMainnet,
   ]
-  
+
   public enum SupportedCoinTypesMode {
     case general
     case dapps
   }
-  
-#if DEBUG
+
+  #if DEBUG
   public static var isUnitTesting: Bool {
     ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
   }
-#endif
-  
+  #endif
+
   /// The currently supported coin types in wallet
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
@@ -105,7 +105,7 @@ public struct WalletConstants {
     var result = OrderedSet<BraveWallet.CoinType>()
     switch mode {
     case .general:
-#if DEBUG
+      #if DEBUG
       // Only enable .btc and .zec for unit tests.
       // Local Debug build need to
       // 1. Remove this check
@@ -113,7 +113,7 @@ public struct WalletConstants {
       if isUnitTesting {
         return [.eth, .sol, .fil, .btc, .zec]
       }
-#endif
+      #endif
       // Any non-debug build will check bitcoin & zcash feature flag from core
       // TF public build can use BraveCore Switches in Browser Settings,
       // Debug section in order to enable Bitcoin.
@@ -129,14 +129,14 @@ public struct WalletConstants {
     }
     return result
   }
-  
+
   /// All of currently supported `OnRampProvider`s.
   /// Use `OnRampProvider.allSupportedOnRampProviders` to get providers available for current device locale.
   /// Exclude `.ramp` due to #44542
   static let supportedOnRampProviders: OrderedSet<BraveWallet.OnRampProvider> = [
-    .sardine, .stripe, .coinbase, .transak
+    .sardine, .stripe, .coinbase, .transak,
   ]
-  
+
   /// The supported Ethereum Name Service (ENS) extensions
   static let supportedENSExtensions = [".eth"]
   /// The supported Solana Name Service (SNS) extensions
@@ -218,22 +218,22 @@ public struct WalletConstants {
     ".xmr",
     ".zil",
   ]
-  
+
   /// The supported IPFS schemes
   static let supportedIPFSSchemes = ["ipfs", "ipns"]
-  
+
   /// The supported send transaction types, used for P3A reporting.
   static let sendTransactionTypes: [BraveWallet.TransactionType] = [
     .ethSend, .erc20Transfer,
     .solanaSystemTransfer, .solanaSplTokenTransfer,
     .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
   ]
-  
+
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(
     string: "https://support.brave.com/hc/en-us/articles/5546517853325"
   )!
-  
+
   /// The list of token contract addresses that are supported to bridge to Aurora app
   static let supportedAuroraBridgeTokensContractAddresses: [String] = [
     "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",  // AAVE
@@ -265,28 +265,28 @@ public struct WalletConstants {
     "0x4691937a7508860f876c9c0a2a617e7d9e945d4b",  // WOO
     "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e",  // YFI
   ]
-  
+
   /// The link for users to learn the overview of aurora bridge
   static let auroraBridgeOverviewLink: URL? = URL(
     string: "https://doc.aurora.dev/bridge/bridge-overview/"
   )
   /// The link for users to learn about the risk of using aurora bridge
   static let auroraBridgeRiskLink: URL? = URL(string: "https://rainbowbridge.app/approvals")
-  
+
   /// The link for users to open Aurora site
   static let auroraBridgeLink: URL? = URL(string: "https://rainbowbridge.app")
-  
+
   /// The link for for users to learn more about sign transactions
   static let signTransactionRiskLink: URL = URL(
     string: "https://support.brave.com/hc/en-us/articles/4409513799693"
   )!
-  
+
   /// Solana Transacation Instruction Type Name
   static let solanaTxInstructionTypeNameAssign: String = "Assign"
-  
+
   /// Solana Transacation Instruction Type Name
   static let solanaTxInstructionTypeNameAssignWithSeed: String = "AssignWithSeed"
-  
+
   /// All supported chains by Meld
   static var supportedChainsForMeld: [String] {
     var result = [

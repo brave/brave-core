@@ -51,9 +51,10 @@ struct BuyTokenSearchView: View {
       onAddAccountDismissed: {
         Task {
           if let savedSelectedBuyToken,
-             await buyTokenStore.handleDismissAddAccount(
+            await buyTokenStore.handleDismissAddAccount(
               selectingToken: savedSelectedBuyToken
-             ) {
+            )
+          {
             self.savedSelectedBuyToken = nil
             presentationMode.dismiss()
           }
