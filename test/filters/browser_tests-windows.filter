@@ -157,7 +157,6 @@
 -StartupMetricsTest.*
 -StatusBubbleViewsTest.*
 -TabSearchBubbleHostBrowserTest.*
--VideoPictureInPictureWindowControllerBrowserTest.*
 -WebAppBrowserTest_FileHandler.RegKeysFileExtension
 -WebAppGlassBrowserFrameViewTest.*
 -WebAppIntegrationBrowserTestWin.*
