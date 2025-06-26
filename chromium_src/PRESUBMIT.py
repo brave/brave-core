@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import os
+
 import brave_chromium_utils
 import chromium_presubmit_overrides
 
@@ -30,10 +32,10 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
+        overridden_file_include_prefixes = tuple(
+            f'{prefix}{f.UnixLocalPath().replace("chromium_src/", "")}'
+            for prefix in include_prefixes)
         for lineno, line in enumerate(f.NewContents(), 1):
-            overridden_file_include_prefixes = tuple(
-                f'{prefix}{f.UnixLocalPath().replace("chromium_src/", "")}'
-                for prefix in include_prefixes)
             if not line.startswith(
                     overridden_file_include_prefixes) or nolint in line:
                 continue
@@ -48,6 +50,38 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
         output_api.PresubmitError(
             f'Overridden file include should end with {expected_suffix}',
             items)
+    ]
+
+
+# Ensure overridden sources include original headers only via "" syntax.
+def CheckOverriddenSourceIncludeOriginalHeaderOnlyViaQuotes(
+        input_api, output_api):
+    files_to_check = (r'.+\.(c|cc|cpp|m|mm)$', )
+    files_to_skip = ()
+
+    file_filter = lambda f: input_api.FilterSourceFile(
+        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+
+    include_template = '#include <{}>'
+    nolint = 'NOLINT'
+
+    items = []
+    for f in input_api.AffectedSourceFiles(file_filter):
+        include_with_path = include_template.format(
+            os.path.splitext(f.UnixLocalPath().replace("chromium_src/", ""))[0]
+            + '.h')
+        for lineno, line in enumerate(f.NewContents(), 1):
+            if not line.startswith(include_with_path) or nolint in line:
+                continue
+            items.append(f'{f.LocalPath()}:{lineno}')
+
+    if not items:
+        return []
+
+    return [
+        output_api.PresubmitError(
+            'In source files, headers for the overridden files should be '
+            'included via "" syntax, not <>', items)
     ]
 
 
