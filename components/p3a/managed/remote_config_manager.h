@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
-#define BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_
+#define BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_
 
 #include <memory>
 #include <string>
@@ -67,4 +67,4 @@ class RemoteConfigManager {
 
 }  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_
