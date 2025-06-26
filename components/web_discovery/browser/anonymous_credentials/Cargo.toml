@@ -16,7 +16,7 @@ brave-miracl = { version = "0.1", features = ["std"] }
 thiserror = "1.0"
 
 [dev-dependencies]
-hex = "0.4"
+hex = "=0.4.3"
 
 [lib]
 name = "anonymous_credentials"
