@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"

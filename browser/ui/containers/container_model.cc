@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/notimplemented.h"
-#include "brave/browser/ui/containers/container_model.h"
 
 namespace containers {
 

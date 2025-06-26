@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/containers/containers_menu_model_test_api.h"
 
+#include <utility>
+
 namespace containers::test {
 
 // static
