@@ -5,8 +5,14 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "base/task/task_traits.h"
 #include "brave/browser/mac/keystone_glue.h"
+#include "brave/browser/mac_features.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/updater/updater_p3a.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/common/chrome_constants.h"
+#include "content/public/browser/browser_thread.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
@@ -37,4 +43,15 @@ void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
     // like marking of the product as active.
     [glue setRegistrationActive];
   }
+}
+
+void BraveBrowserMainPartsMac::PostBrowserStart() {
+  ChromeBrowserMainPartsMac::PostBrowserStart();
+  content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
+      ->PostTask(FROM_HERE, base::BindOnce([]() {
+                   brave_updater::ReportLaunch(
+                       base::Time::Now(), chrome::kChromeVersion,
+                       brave::ShouldUseOmaha4(),
+                       g_browser_process->local_state());
+                 }));
 }
