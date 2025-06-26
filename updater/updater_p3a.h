@@ -12,7 +12,28 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
+// We're migrating Brave's auto-update mechanism to Omaha 4. As we do this, we
+// want to compare the success rates of the Omaha 4 and legacy implementations.
+// The functions in this file achieve this by reporting UMA events when the
+// browser was (or was not) updated.
+
 namespace brave_updater {
+
+// This function is called when the browser launches. It remembers the browser
+// version in a pref. When the version is different from the last launch, it
+// reports to UMA that the browser was updated. When no such update took place
+// in one week, it reports this to UMA as well. The reports include whether
+// Omaha 4 or the legacy updater were used. This lets us compare the success
+// rates of the two implementations.
+void ReportLaunch(base::Time now,
+                  std::string current_version,
+                  bool is_using_omaha4,
+                  PrefService* prefs);
+
+// Register the prefs for use by ReportLaunch(...) above.
+void RegisterLocalState(PrefRegistrySimple* registry);
+
+void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
 
 inline constexpr char kUpdateStatusHistogramName[] = "Brave.Update.Status";
 
@@ -22,13 +43,6 @@ enum UpdateStatus {
   kUpdatedWithLegacy,
   kUpdatedWithOmaha4
 };
-
-void RegisterLocalState(PrefRegistrySimple* registry);
-void ReportLaunch(base::Time now,
-                  std::string current_version,
-                  bool is_using_omaha4,
-                  PrefService* prefs);
-void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
 
 }  // namespace brave_updater
 
