@@ -176,11 +176,12 @@ void ChromeBrowserMainParts::PostBrowserStart() {
 
 #if BUILDFLAG(IS_MAC)
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
-      ->PostTask(
-          FROM_HERE,
-          base::BindOnce(&brave_updater::ReportLaunch, base::Time::Now(),
-                         chrome::kChromeVersion, brave::ShouldUseOmaha4(),
-                         g_browser_process->local_state()));
+      ->PostTask(FROM_HERE, base::BindOnce([]() {
+                   brave_updater::ReportLaunch(
+                       base::Time::Now(), chrome::kChromeVersion,
+                       brave::ShouldUseOmaha4(),
+                       g_browser_process->local_state());
+                 }));
 #endif
 }
 
