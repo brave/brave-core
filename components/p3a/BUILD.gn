@@ -8,8 +8,6 @@ import("//testing/test.gni")
 
 static_library("p3a") {
   sources = [
-    "component_installer.cc",
-    "component_installer.h",
     "constellation_helper.cc",
     "constellation_helper.h",
     "constellation_log_store.cc",
@@ -18,6 +16,10 @@ static_library("p3a") {
     "features.h",
     "histograms_braveizer.cc",
     "histograms_braveizer.h",
+    "managed/component_installer.cc",
+    "managed/component_installer.h",
+    "managed/remote_config_manager.cc",
+    "managed/remote_config_manager.h",
     "message_manager.cc",
     "message_manager.h",
     "metric_config.cc",
@@ -44,8 +46,6 @@ static_library("p3a") {
     "pref_names.h",
     "region.cc",
     "region.h",
-    "remote_config_manager.cc",
-    "remote_config_manager.h",
     "rotation_scheduler.cc",
     "rotation_scheduler.h",
     "scheduler.cc",
@@ -96,6 +96,7 @@ source_set("unit_tests") {
   sources = [
     "constellation_helper_unittest.cc",
     "constellation_log_store_unittest.cc",
+    "managed/remote_config_manager_unittest.cc",
     "message_manager_unittest.cc",
     "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
@@ -103,7 +104,6 @@ source_set("unit_tests") {
     "nitro_utils/cose_unittest.cc",
     "p3a_service_unittest.cc",
     "region_unittest.cc",
-    "remote_config_manager_unittest.cc",
     "rotation_scheduler_unittest.cc",
     "scheduler_unittest.cc",
     "star_randomness_test_util.cc",
