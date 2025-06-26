@@ -18,7 +18,7 @@ class BraveUpdaterP3ABrowsertest : public InProcessBrowserTest {
   base::HistogramTester histogram_tester_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, PRE_Launch) {
+IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, PRE_Update) {
   ExpectBucketCount(kNoUpdateWithLegacy, 0);
   ExpectBucketCount(kNoUpdateWithOmaha4, 0);
   ExpectBucketCount(kUpdatedWithLegacy, 0);
@@ -27,7 +27,7 @@ IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, PRE_Launch) {
   SetLastLaunchVersionForTesting("0.0.0.0", g_browser_process->local_state());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, Launch) {
+IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, Update) {
   ExpectBucketCount(kUpdatedWithLegacy, 1);
 }
 
