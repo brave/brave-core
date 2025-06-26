@@ -387,9 +387,10 @@ void FilTxManager::OnGetFilStateSearchMsgLimited(
   if (!meta) {
     return;
   }
-  mojom::TransactionStatus status = (exit_code == 0)
-                                        ? mojom::TransactionStatus::Confirmed
-                                        : mojom::TransactionStatus::Error;
+  mojom::TransactionStatus status =
+      (exit_code.has_value() && exit_code.value() == 0)
+          ? mojom::TransactionStatus::Confirmed
+          : mojom::TransactionStatus::Error;
   meta->set_status(status);
   if (status == mojom::TransactionStatus::Confirmed) {
     meta->set_confirmed_time(base::Time::Now());
