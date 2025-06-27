@@ -21,8 +21,8 @@ class BraveAppMenu extends AppMenu {
     private static int sMenuHeight;
     private static int sNegativeVerticalOffsetNotTopAnchored;
 
-    BraveAppMenu(int itemRowHeight, AppMenuHandlerImpl handler, Resources res) {
-        super(itemRowHeight, handler, res);
+    BraveAppMenu(AppMenuHandlerImpl handler, Resources res) {
+        super(handler, res);
 
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
