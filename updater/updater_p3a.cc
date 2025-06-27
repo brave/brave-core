@@ -66,8 +66,8 @@ void ReportLaunch(base::Time now,
   }
 
   if (report_status) {
-    UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName,
-                              static_cast<int>(status), kUpdatedWithOmaha4 + 1);
+    UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status,
+                              kUpdatedWithOmaha4 + 1);
     prefs->SetInteger(kLastReportedWeekPref, current_week);
   }
 }
