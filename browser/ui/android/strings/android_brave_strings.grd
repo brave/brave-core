@@ -2615,6 +2615,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_EDIT" desc="Brave wallet accounts text">
       Edit
     </message>
+    <message name="IDS_WALLET_ACCOUNTS_UPDATE" desc="Brave wallet accounts update text">
+      Update
+    </message>
     <message name="IDS_ACCOUNT_UPDATE_FAILED" desc="Brave Wallet account update error text">
       Account update failed.
     </message>
