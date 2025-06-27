@@ -32,16 +32,30 @@
 #define BrowserCommandController BraveBrowserCommandController
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
+#define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
 
 #include "src/chrome/browser/ui/browser.cc"
 
+#undef DeprecatedCreateOwnedForTesting
 #undef BrowserActions
 #undef BrowserTabStripModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_SHOULD_SHOW_BOOKMARK_BAR
+#undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING
 #undef BRAVE_BROWSER_CREATE
 
 bool IsShowingNTP_ChromiumImpl(content::WebContents* web_contents) {
   return IsShowingNTP(web_contents);
+}
+
+// static
+std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+    const CreateParams& params) {
+  CHECK_IS_TEST();
+  // If this is failing, a caller is trying to create a browser when creation is
+  // not possible, e.g. using the wrong profile or during shutdown. The caller
+  // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
+  CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
+  return base::WrapUnique(new BraveBrowser(params));
 }
