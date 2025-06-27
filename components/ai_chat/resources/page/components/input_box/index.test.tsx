@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'
 import { ContentType } from '../../../common/mojom'
 
@@ -40,7 +40,8 @@ const defaultContext: InputBoxProps['context'] = {
 }
 
 describe('input box', () => {
-  it('associated content is rendered in input box before conversation starts if should send contents is true', () => {
+  it('associated content is rendered in input box before conversation starts' +
+     'if should send contents is true', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -59,13 +60,17 @@ describe('input box', () => {
       />
     )
 
-    expect(screen.getByText('Associated Content', { selector: '.title'})).toBeInTheDocument()
-    expect(
-      container.querySelector('img[src*="//favicon2"]')
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Associated Content', { selector: '.title'}))
+        .toBeInTheDocument()
+      expect(
+        container.querySelector('img[src*="//favicon2"]')
+      ).toBeInTheDocument()
+    })
   })
 
-  it('associated content is not rendered in input box before conversation starts if should send contents is false', () => {
+  it('associated content is not rendered in input box before conversation ' +
+     'starts if should send contents is false', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -84,13 +89,16 @@ describe('input box', () => {
       />
     )
 
-    expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
-    expect(
-      container.querySelector('img[src*="//favicon2"]')
-    ).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
+      expect(
+        container.querySelector('img[src*="//favicon2"]')
+      ).not.toBeInTheDocument()
+    })
   })
 
-  it('associated content is not rendered in input box when there is no associated content', () => {
+  it('associated content is not rendered in input box when there is no ' +
+     'associated content', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -102,13 +110,16 @@ describe('input box', () => {
       />
     )
 
-    expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
-    expect(
-      container.querySelector('img[src*="//favicon2"]')
-    ).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
+      expect(
+        container.querySelector('img[src*="//favicon2"]')
+      ).not.toBeInTheDocument()
+    })
   })
 
-  it('associated content is not rendered in input box after the conversation has started', () => {
+  it('associated content is not rendered in input box after the conversation ' +
+     'has started', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -127,13 +138,15 @@ describe('input box', () => {
       />
     )
 
-    expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
-    expect(
-      container.querySelector('img[src*="//favicon2"]')
-    ).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
+      expect(
+        container.querySelector('img[src*="//favicon2"]')
+      ).not.toBeInTheDocument()
+    })
   })
 
-  it('send button is disabled when the input text is empty', () => {
+  it('send button is disabled when the input text is empty', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -144,12 +157,14 @@ describe('input box', () => {
       />
     )
 
-    const sendButton = container.querySelector('.sendButtonDisabled')
-    expect(sendButton).toBeInTheDocument()
-    expect(sendButton).toHaveClass('sendButtonDisabled')
+    await waitFor(() => {
+      const sendButton = container.querySelector('.sendButtonDisabled')
+      expect(sendButton).toBeInTheDocument()
+      expect(sendButton).toHaveClass('sendButtonDisabled')
+    })
   })
 
-  it('send button is enabled when the input text is not empty', () => {
+  it('send button is enabled when the input text is not empty', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -160,12 +175,14 @@ describe('input box', () => {
       />
     )
 
-    const sendButton = container.querySelector('.button')
-    expect(sendButton).toBeInTheDocument()
-    expect(sendButton).not.toHaveClass('sendButtonDisabled')
+    await waitFor(() => {
+      const sendButton = container.querySelector('.button')
+      expect(sendButton).toBeInTheDocument()
+      expect(sendButton).not.toHaveClass('sendButtonDisabled')
+    })
   })
 
-  it('streaming button is shown while generating', () => {
+  it('streaming button is shown while generating', async () => {
     const { container } = render(
       <InputBox
         context={{ ...defaultContext, isGenerating: true }}
@@ -173,8 +190,10 @@ describe('input box', () => {
       />
     )
 
-    const streamingButton = container.querySelector('.streamingButton')
-    expect(streamingButton).toBeInTheDocument()
-    expect(streamingButton).toHaveClass('streamingButton')
+    await waitFor(() => {
+      const streamingButton = container.querySelector('.streamingButton')
+      expect(streamingButton).toBeInTheDocument()
+      expect(streamingButton).toHaveClass('streamingButton')
+    })
   })
 })
