@@ -18,8 +18,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/mac/keystone_glue.h"
-#include "brave/browser/mac_features.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/updater/features.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -205,9 +205,9 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
 
-#define WrapUnique(X)                 \
-  WrapUnique(brave::ShouldUseOmaha4() \
-                 ? X                  \
+#define WrapUnique(X)                          \
+  WrapUnique(brave::updater::ShouldUseOmaha4() \
+                 ? X                           \
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
 #include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
 #undef WrapUnique

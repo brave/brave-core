@@ -141,6 +141,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
   "//brave/browser/ui/webui/brave_account",
+  "//brave/browser/updater:features",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/content/browser",
@@ -661,8 +662,4 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
-}
-
-if (target_os == "mac") {
-  brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }

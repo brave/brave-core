@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/mac_features.h"
+#include "brave/browser/updater/features.h"
 #include "chrome/browser/ui/webui/help/version_updater.h"
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -25,6 +25,7 @@ TEST_F(BraveVersionUpdaterMacTest, UsesSparkleByDefault) {
 }
 
 TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(brave::kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeature(
+      brave::updater::kBraveUseOmaha4Alpha);
   EXPECT_FALSE(UsesSparkle());
 }

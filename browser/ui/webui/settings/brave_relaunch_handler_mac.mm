@@ -6,12 +6,13 @@
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
 
 #import "brave/browser/mac/sparkle_glue.h"
-#include "brave/browser/mac_features.h"
+#include "brave/browser/updater/features.h"
 
 namespace brave_relaunch_handler {
 
 bool RelaunchOnMac() {
-  return !brave::ShouldUseOmaha4() && [SparkleGlue sharedSparkleGlue] &&
+  return !brave::updater::ShouldUseOmaha4() &&
+         [SparkleGlue sharedSparkleGlue] &&
          [[SparkleGlue sharedSparkleGlue] relaunch];
 }
 

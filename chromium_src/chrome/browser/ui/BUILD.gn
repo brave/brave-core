@@ -9,7 +9,7 @@ group("ui") {
   deps = [ "//brave/components/brave_vpn/common/buildflags" ]
 
   if (is_mac) {
-    deps += [ "//brave/browser:mac_features" ]
+    deps += [ "//brave/browser/updater:features" ]
   }
 
   if (toolkit_views) {

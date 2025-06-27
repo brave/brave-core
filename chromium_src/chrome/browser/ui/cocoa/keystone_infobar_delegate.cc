@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/cocoa/keystone_infobar_delegate.h"
 
-#include "brave/browser/mac_features.h"
+#include "brave/browser/updater/features.h"
 
 #define ShowUpdaterPromotionInfoBar ShowUpdaterPromotionInfoBar_ChromiumImpl
 
@@ -14,7 +14,7 @@
 #undef ShowUpdaterPromotionInfoBar
 
 void ShowUpdaterPromotionInfoBar() {
-  if (brave::ShouldUseOmaha4()) {
+  if (brave::updater::ShouldUseOmaha4()) {
     ShowUpdaterPromotionInfoBar_ChromiumImpl();
   }
 }
