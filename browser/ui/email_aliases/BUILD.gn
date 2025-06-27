@@ -11,6 +11,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:mojom",
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles:profile",

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/email_aliases/email_aliases_service.h"
+#include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 
@@ -40,6 +41,9 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return nullptr;
+  }
   return std::make_unique<EmailAliasesService>();
 }
 
