@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { fireEvent } from '@testing-library/react'
+
 // Helper function to click a Leo button
 export const clickLeoButton = (button: Element) => {
-  button.shadowRoot?.querySelector('button')?.click()
+  fireEvent.click(button.shadowRoot?.querySelector('button') as Element)
 }

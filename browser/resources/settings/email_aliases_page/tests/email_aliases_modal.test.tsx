@@ -125,9 +125,7 @@ describe('EmailAliasModal', () => {
 
     // Click delete button
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-    await act(() => {
-      clickLeoButton(deleteButton)
-    })
+    clickLeoButton(deleteButton)
 
     await waitFor(() => {
       expect(deleteButton).toHaveAttribute('isdisabled', 'true')
@@ -200,9 +198,7 @@ describe('EmailAliasModal', () => {
 
     // Click regenerate button
     const regenerateButton = screen.getByTitle('emailAliasesRefreshButtonTitle')
-    await act(async () => {
-      clickLeoButton(regenerateButton)
-    })
+    clickLeoButton(regenerateButton)
 
     // Check that generateAlias was called again
     await waitFor(() => {
@@ -406,10 +402,8 @@ describe('EmailAliasModal', () => {
     )
 
     // Click delete button
-    await act(async () => {
-      const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-      clickLeoButton(deleteButton)
-    })
+    const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
+    clickLeoButton(deleteButton)
 
     // Wait for error message to appear. Delete button should be enabled.
     await waitFor(() => {

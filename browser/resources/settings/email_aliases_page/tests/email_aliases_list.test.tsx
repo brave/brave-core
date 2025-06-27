@@ -122,10 +122,8 @@ describe('AliasList', () => {
       />
     )
 
-    await act(async () => {
-      const createButton = screen.getByText('emailAliasesCreateAliasLabel')
-      clickLeoButton(createButton)
-    })
+    const createButton = screen.getByText('emailAliasesCreateAliasLabel')
+    clickLeoButton(createButton)
 
     expect(mockOnCreateClicked).toHaveBeenCalled()
   })
