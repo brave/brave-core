@@ -10,15 +10,17 @@
 
 #include "base/memory/singleton.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
+class KeyedService;
 class Profile;
 
 namespace email_aliases {
 
 class EmailAliasesService;
 
-class EmailAliasesServiceFactory : public BrowserContextKeyedServiceFactory {
+class EmailAliasesServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static void BindForProfile(
       Profile* profile,
@@ -30,7 +32,7 @@ class EmailAliasesServiceFactory : public BrowserContextKeyedServiceFactory {
  private:
   ~EmailAliasesServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory:
+  // ProfileKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };

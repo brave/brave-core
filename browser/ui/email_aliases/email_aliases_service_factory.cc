@@ -5,12 +5,11 @@
 
 #include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 
-#include <memory>
 #include <utility>
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "chrome/browser/profiles/profile_selections.h"
 
 namespace email_aliases {
 
@@ -32,9 +31,9 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
 }
 
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "EmailAliasesService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          ProfileSelections::BuildRedirectedInIncognito()) {}
 
 EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 
