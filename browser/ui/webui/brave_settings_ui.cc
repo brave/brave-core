@@ -18,7 +18,6 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "brave/browser/ui/email_aliases/email_aliases_service.h"
 #include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
