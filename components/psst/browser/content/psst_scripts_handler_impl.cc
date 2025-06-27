@@ -77,8 +77,9 @@ void PsstScriptsHandlerImpl::InsertUserScript(
     return;
   }
 
+  const auto user_script = rule->user_script();
   InsertScriptInPage(
-      rule->user_script(), std::nullopt /* no params */,
+      user_script, std::nullopt /* no params */,
       base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), std::move(rule)));
 }
