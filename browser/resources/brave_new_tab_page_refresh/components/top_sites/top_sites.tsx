@@ -9,17 +9,13 @@ import Icon from '@brave/leo/react/icon'
 import { TopSite, TopSitesListKind } from '../../state/top_sites_state'
 import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
-import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
-import { TopSitesTile, DropLocation } from './top_site_tile'
+import { TopSitesGrid } from './top_sites_grid'
 import { TopSiteEditModal } from './top_site_edit_modal'
 import { Popover } from '../common/popover'
-import classNames from '$web-common/classnames'
+import { dispatchTopSiteAddedEvent } from './top_site_added_event'
 
-import {
-  style,
-  collapsedTileCount,
-  maxTileCount } from './top_sites.style'
+import { style, collapsedTileColumnCount } from './top_sites.style'
 
 export function TopSites() {
   const actions = useTopSitesActions()
@@ -41,14 +37,12 @@ export function TopSites() {
   const showAddButton = listKind === TopSitesListKind.kCustom
   const tileCount = topSites.length + (showAddButton ? 1 : 0)
 
-  function onTopSiteContextMenu(topSite: TopSite) {
-    return (event: React.MouseEvent) => {
-      setContextMenuSite(topSite)
-      const elem = rootRef.current
-      if (elem) {
-        elem.style.setProperty('--self-context-menu-x', event.pageX + 'px')
-        elem.style.setProperty('--self-context-menu-y', event.pageY + 'px')
-      }
+  function onTopSiteContextMenu(topSite: TopSite, event: React.MouseEvent) {
+    setContextMenuSite(topSite)
+    const elem = rootRef.current
+    if (elem) {
+      elem.style.setProperty('--self-context-menu-x', event.pageX + 'px')
+      elem.style.setProperty('--self-context-menu-y', event.pageY + 'px')
     }
   }
 
@@ -59,34 +53,27 @@ export function TopSites() {
     }
   }
 
-  function onTileDrop(position: number) {
-    return (url: string, location: DropLocation) => {
-      const current = topSites.findIndex((item) => item.url === url)
-      if (current < 0) {
-        return
-      }
-      let index = position;
-      if (location === 'after' && index < current) {
-        index += 1
-      }
-      actions.setTopSitePosition(url, index)
-    }
+  function onAddTopSite() {
+    setEditSite(null)
+    setShowEditSite(true)
+  }
+
+  if (!showTopSites || tileCount === 0) {
+    return null
   }
 
   return (
-    <div
-      ref={rootRef}
-      className={classNames({
-        'expanded': expanded,
-        'collapsed': !expanded,
-        'hidden': !showTopSites || tileCount === 0
-       })}
-      style={inlineCSSVars({ '--self-tile-count': tileCount })}
-      data-css-scope={style.scope}
-    >
+    <div ref={rootRef} data-css-scope={style.scope}>
       <div className='top-site-context-menu-anchor' />
       <div className='top-sites'>
-        <div className='tile-drop-indicator' />
+        <div className='left-spacer' />
+        <TopSitesGrid
+          expanded={expanded}
+          canAddSite={showAddButton}
+          canReorderSites={listKind === TopSitesListKind.kCustom}
+          onAddTopSite={onAddTopSite}
+          onTopSiteContextMenu={onTopSiteContextMenu}
+        />
         <button
           className='menu-button'
           onClick={() => setShowTopSitesMenu(true)}
@@ -99,6 +86,28 @@ export function TopSites() {
           onClose={() => setShowTopSitesMenu(false)}
         >
           <div className='popover-menu'>
+            {
+              listKind === TopSitesListKind.kCustom &&
+                <button onClick={topSitesMenuAction(onAddTopSite)}>
+                  <Icon name='browser-add' />
+                  {getString('addTopSiteLabel')}
+                </button>
+            }
+            {
+              tileCount > collapsedTileColumnCount &&
+                <button onClick={topSitesMenuAction(() => {
+                  saveExpandedState(!expanded)
+                  setExpanded(!expanded)
+                })}>
+                  <Icon name={expanded ? 'contract' : 'expand' } />
+                  {
+                    expanded ?
+                      getString('topSitesShowLessLabel') :
+                      getString('topSitesShowMoreLabel')
+                  }
+                </button>
+            }
+            <div className='menu-divider' />
             {
               listKind === TopSitesListKind.kCustom ?
                 <button onClick={topSitesMenuAction(() =>
@@ -114,63 +123,15 @@ export function TopSites() {
                   {getString('topSitesShowCustomLabel')}
                 </button>
             }
-            <button
-              onClick={topSitesMenuAction(() =>
-                actions.setShowTopSites(false))
-              }
-            >
+            <div className='menu-divider' />
+            <button onClick={topSitesMenuAction(() =>
+              actions.setShowTopSites(false))
+            }>
               <Icon name='eye-off' />
               {getString('hideTopSitesLabel')}
             </button>
           </div>
         </Popover>
-        <div className='top-site-tiles-mask'>
-          <div className='top-site-tiles'>
-            {
-              topSites.map((topSite, i) => {
-                if (i > maxTileCount) {
-                  return null
-                }
-                return (
-                  <TopSitesTile
-                    key={i}
-                    topSite={topSite}
-                    canDrag={listKind === TopSitesListKind.kCustom}
-                    onRightClick={onTopSiteContextMenu(topSite)}
-                    onDrop={onTileDrop(i)}
-                  />
-                )
-              })
-            }
-            {
-              showAddButton &&
-                <button
-                  className='top-site-tile'
-                  onClick={() => {
-                    setEditSite(null)
-                    setShowEditSite(true)
-                  }}
-                >
-                  <span className='top-site-icon'>
-                    <Icon name='plus-add' />
-                  </span>
-                  <span className='top-site-title'>
-                    {getString('addTopSiteLabel')}
-                  </span>
-                </button>
-            }
-          </div>
-        </div>
-        <button
-          className='expand-button'
-          disabled={tileCount <= collapsedTileCount}
-          onClick={() => {
-            saveExpandedState(!expanded)
-            setExpanded(!expanded)}
-          }
-        >
-          <Icon name={expanded ? 'contract' : 'expand' } />
-        </button>
         <Popover
           isOpen={Boolean(contextMenuSite)}
           className='top-site-context-menu'
@@ -208,6 +169,7 @@ export function TopSites() {
               actions.updateTopSite(editSite.url, url, title)
             } else {
               actions.addTopSite(url, title)
+              dispatchTopSiteAddedEvent()
             }
             setShowEditSite(false)
           }}
