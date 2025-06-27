@@ -162,29 +162,54 @@ export const style = scoped.css`
 
   .widget-container {
     --widget-height: 128px;
-    --widget-width: 450px;
-    --widget-flex-basis: var(--widget-width);
+    --widget-min-width: 380px;
+    --widget-max-width: 512px;
+    --widget-count: 0;
+    --widget-gap: 16px;
+    --widget-gap-total:
+      calc((var(--widget-count) - 1) * var(--widget-gap));
+    --widget-available-width: calc(
+      100cqi / var(--widget-count) -
+      var(--widget-gap-total) / var(--widget-count));
+    --widget-flex-basis: max(
+      var(--widget-min-width),
+      min(var(--widget-max-width), var(--widget-available-width)));
 
     anchor-name: --ntp-widget-container;
 
+    align-self: stretch;
     flex: 0 0 var(--widget-height);
 
     display: flex;
     justify-content: center;
     align-items: stretch;
-    gap: 16px;
+    gap: var(--widget-gap);
 
     &:empty {
       flex-basis: 0;
     }
 
+    &:has(> :nth-child(1)) {
+      --widget-count: 1;
+    }
+
+    &:has(> :nth-child(2)) {
+      --widget-count: 2;
+      justify-content: space-between;
+    }
+
+    &:has(> :nth-child(3)) {
+      --widget-count: 3;
+    }
+
     @container (width <= ${narrowBreakpoint}) {
       --widget-flex-basis: var(--widget-height);
 
-      width: var(--widget-width);
+      width: 100cqi;
+      min-width: var(--widget-min-width);
+      max-width: var(--widget-max-width);
       align-self: center;
       flex-basis: auto;
-      display: flex;
       flex-direction: column-reverse;
     }
   }
