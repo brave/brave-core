@@ -188,6 +188,9 @@ EXCLUDE_COMMANDS = [
     # current tab in the default container, but that would be undesirable as
     # Containers are security/privacy sensitive feature.
     "IDC_OPEN_IN_CONTAINER",
+    "IDC_OPEN_IN_CONTAINER_START",
+    "IDC_OPEN_IN_CONTAINER_END",
+    "IDC_OPEN_CONTAINERS_SETTING",
 
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",

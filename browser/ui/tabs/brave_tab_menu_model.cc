@@ -195,6 +195,7 @@ void BraveTabMenuModel::BuildItemForContainers(
     const std::vector<int>& indices) {
   auto index =
       *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
+
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
       containers_delegate, prefs);
   InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,

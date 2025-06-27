@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -36,10 +37,14 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)
     : ui::SimpleMenuModel(this), delegate_(delegate), items_(std::move(items)) {
+  CHECK_LE(items_.size(), static_cast<size_t>(IDC_OPEN_IN_CONTAINER_END -
+                                              IDC_OPEN_IN_CONTAINER_START + 1))
+      << "Too many containers for the current menu model.";
+
   // 1. Add items for each container.
   int index = 0;
   for (const auto& item : items_) {
-    AddCheckItem(index, base::UTF8ToUTF16(item.name()));
+    AddCheckItem(ItemIndexToCommandId(index), base::UTF8ToUTF16(item.name()));
     SetIcon(index, item.icon());
     index++;
   }
@@ -48,14 +53,14 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
   AddSeparator(ui::NORMAL_SEPARATOR);
 
   // 3. Add an item to open settings page.
-  AddItemWithStringId(kCommandToOpenSettingsPage,
+  AddItemWithStringId(IDC_OPEN_CONTAINERS_SETTING,
                       IDS_CXMENU_OPEN_CONTAINERS_SETTINGS);
 }
 
 ContainersMenuModel::~ContainersMenuModel() = default;
 
 void ContainersMenuModel::ExecuteCommand(int command_id, int event_flags) {
-  if (command_id == kCommandToOpenSettingsPage) {
+  if (command_id == IDC_OPEN_CONTAINERS_SETTING) {
     // Open the containers settings page
     OpenContainerSettingsPage();
     return;
@@ -71,16 +76,32 @@ void ContainersMenuModel::OpenContainerSettingsPage() {
 }
 
 void ContainersMenuModel::ContainerSelected(int command_id) {
-  delegate_->OnContainerSelected(items_[command_id].container());
+  delegate_->OnContainerSelected(
+      items_[CommandIdToItemIndex(command_id)].container());
 }
 
 bool ContainersMenuModel::IsCommandIdChecked(int command_id) const {
   const auto& ids = delegate_->GetCurrentContainerIds();
-  return ids.contains(items_[command_id].container()->id);
+  return ids.contains(items_[CommandIdToItemIndex(command_id)].container()->id);
 }
 
 bool ContainersMenuModel::IsCommandIdEnabled(int command_id) const {
   return true;
+}
+
+int ContainersMenuModel::CommandIdToItemIndex(int command_id) const {
+  const auto item_index = command_id - IDC_OPEN_IN_CONTAINER_START;
+  CHECK(item_index >= 0 && item_index < static_cast<int>(items_.size()))
+      << "Command ID " << command_id
+      << " is out of range for the current menu model.";
+  return item_index;
+}
+
+int ContainersMenuModel::ItemIndexToCommandId(int item_index) const {
+  CHECK(item_index >= 0 && item_index < static_cast<int>(items_.size()))
+      << "Item index " << item_index
+      << " is out of range for the current menu model.";
+  return item_index + IDC_OPEN_IN_CONTAINER_START;
 }
 
 }  // namespace containers

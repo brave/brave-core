@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_menu_model_test_api.h"
 #include "brave/browser/ui/containers/mock_containers_menu_model_delegate.h"
@@ -62,7 +63,7 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
   }
 
   // Last item should be the "Manage Containers" command
-  EXPECT_EQ(ContainersMenuModel::kCommandToOpenSettingsPage,
+  EXPECT_EQ(IDC_OPEN_CONTAINERS_SETTING,
             model.GetCommandIdAt(model.GetItemCount() - 1));
 }
 

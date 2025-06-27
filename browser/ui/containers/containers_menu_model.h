@@ -43,9 +43,6 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual Browser* GetBrowserToOpenSettings() = 0;
   };
 
-  static constexpr int kCommandToOpenSettingsPage =
-      std::numeric_limits<int>::max();
-
   ContainersMenuModel(Delegate& delegate, const PrefService& prefs);
   ~ContainersMenuModel() override;
 
@@ -61,6 +58,9 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
 
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);
+
+  int CommandIdToItemIndex(int command_id) const;
+  int ItemIndexToCommandId(int item_index) const;
 
   base::raw_ref<Delegate> delegate_;
 

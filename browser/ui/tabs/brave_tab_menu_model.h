@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -46,6 +47,10 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandOpenInContainer,
     CommandLast,
   };
+
+  static_assert(CommandLast < IDC_OPEN_IN_CONTAINER_START,
+                "Container's menu commands must be after "
+                "BraveTabContextMenuCommand to avoid conflicts");
 
   BraveTabMenuModel(
       ui::SimpleMenuModel::Delegate* delegate,
