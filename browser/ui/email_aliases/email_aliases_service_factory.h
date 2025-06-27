@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_FACTORY_H_
-#define BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_FACTORY_H_
 
 #include <memory>
 
 #include "base/memory/singleton.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
 
@@ -20,7 +20,9 @@ class EmailAliasesService;
 
 class EmailAliasesServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static void BindForProfile(Profile* profile, mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
+  static void BindForProfile(
+      Profile* profile,
+      mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
   static EmailAliasesServiceFactory* GetInstance();
 
   EmailAliasesServiceFactory();
@@ -35,4 +37,4 @@ class EmailAliasesServiceFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace email_aliases
 
-#endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_BROWSER_EMAIL_ALIASES_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_FACTORY_H_

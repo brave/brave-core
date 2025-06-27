@@ -18,6 +18,8 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/email_aliases/email_aliases_service.h"
+#include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
@@ -39,8 +41,6 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "brave/browser/ui/email_aliases/email_aliases_service.h"
-#include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -271,6 +271,6 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
-  email_aliases::EmailAliasesServiceFactory::BindForProfile(profile, std::move(receiver));
+  email_aliases::EmailAliasesServiceFactory::BindForProfile(
+      profile, std::move(receiver));
 }
-

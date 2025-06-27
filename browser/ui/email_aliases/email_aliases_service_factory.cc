@@ -15,7 +15,8 @@ namespace email_aliases {
 
 // static
 void EmailAliasesServiceFactory::BindForProfile(
-    Profile* profile, mojo::PendingReceiver<mojom::EmailAliasesService> receiver) {
+    Profile* profile,
+    mojo::PendingReceiver<mojom::EmailAliasesService> receiver) {
   auto* service = static_cast<EmailAliasesService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
   if (service) {
