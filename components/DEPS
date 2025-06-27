@@ -31,6 +31,7 @@ include_rules += [
   "-components/security_interstitials",
   "-components/sync_preferences",
   "-components/sync",
+  "-components/user_prefs",
 ]
 
 specific_include_rules = {
