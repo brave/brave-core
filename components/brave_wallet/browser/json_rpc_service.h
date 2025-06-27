@@ -131,7 +131,7 @@ class JsonRpcService : public mojom::JsonRpcService {
   void GetFilBlockHeight(const std::string& chain_id,
                          GetFilBlockHeightCallback callback);
   using GetFilStateSearchMsgLimitedCallback =
-      base::OnceCallback<void(int64_t code,
+      base::OnceCallback<void(std::optional<int64_t> code,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
   void GetFilStateSearchMsgLimited(

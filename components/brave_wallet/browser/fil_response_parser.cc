@@ -40,79 +40,87 @@ std::optional<uint64_t> ParseFilGetTransactionCount(
   return count;
 }
 
-bool ParseFilEstimateGas(const base::Value& json_value,
-                         std::string* gas_premium,
-                         std::string* gas_fee_cap,
-                         int64_t* gas_limit) {
+std::optional<ParseFilEstimateGasResult> ParseFilEstimateGas(
+    const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
   if (!result) {
-    return false;
+    return std::nullopt;
   }
   auto* limit = result->FindString("GasLimit");
   if (!limit) {
-    return false;
+    return std::nullopt;
   }
   auto* premium = result->FindString("GasPremium");
   if (!premium) {
-    return false;
+    return std::nullopt;
   }
   auto* fee_cap = result->FindString("GasFeeCap");
   if (!fee_cap) {
-    return false;
+    return std::nullopt;
   }
-  if (!base::StringToInt64(*limit, gas_limit)) {
-    return false;
+  int64_t gas_limit = 0;
+  if (!base::StringToInt64(*limit, &gas_limit)) {
+    return std::nullopt;
   }
-  *gas_fee_cap = *fee_cap;
-  *gas_premium = *premium;
-  return true;
+
+  ParseFilEstimateGasResult parse_gas_result;
+  parse_gas_result.gas_fee_cap = *fee_cap;
+  parse_gas_result.gas_premium = *premium;
+  parse_gas_result.gas_limit = gas_limit;
+  return parse_gas_result;
 }
 
-bool ParseFilGetChainHead(const base::Value& json_value, uint64_t* height) {
+std::optional<uint64_t> ParseFilGetChainHead(const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
-  if (!height || !result) {
-    return false;
+  if (!result) {
+    return std::nullopt;
   }
   auto* height_value = result->FindString("Height");
   if (!height_value) {
-    return false;
+    return std::nullopt;
   }
 
-  return base::StringToUint64(*height_value, height);
+  uint64_t height = 0;
+  if (!base::StringToUint64(*height_value, &height)) {
+    return std::nullopt;
+  }
+  return height;
 }
 
 // Returns parsed receipt exit code.
-bool ParseFilStateSearchMsgLimited(const base::Value& json_value,
-                                   const std::string& cid,
-                                   int64_t* exit_code) {
+std::optional<int64_t> ParseFilStateSearchMsgLimited(
+    const base::Value& json_value,
+    const std::string& cid) {
   auto result = ParseResultDict(json_value);
-  if (!exit_code || !result) {
-    return false;
+  if (!result) {
+    return std::nullopt;
   }
   auto* cid_value = result->FindStringByDottedPath("Message./");
   if (!cid_value || cid != *cid_value) {
-    return false;
+    return std::nullopt;
   }
   auto* code_value = result->FindStringByDottedPath("Receipt.ExitCode");
   if (!code_value) {
-    return false;
+    return std::nullopt;
   }
-  return base::StringToInt64(*code_value, exit_code);
+  int64_t exit_code = 0;
+  if (!base::StringToInt64(*code_value, &exit_code)) {
+    return std::nullopt;
+  }
+  return exit_code;
 }
 
-bool ParseSendFilecoinTransaction(const base::Value& json_value,
-                                  std::string* cid) {
+std::optional<std::string> ParseSendFilecoinTransaction(
+    const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
-  if (!cid || !result) {
-    return false;
+  if (!result) {
+    return std::nullopt;
   }
-
   auto* cid_value = result->FindString("/");
   if (!cid_value) {
-    return false;
+    return std::nullopt;
   }
-  *cid = *cid_value;
-  return true;
+  return *cid_value;
 }
 
 }  // namespace brave_wallet
