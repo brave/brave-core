@@ -224,7 +224,12 @@ program
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
-  .option('--output <output>', 'set test output (results) file path')
+  .option(
+    '--output_xml',
+    'indicates if test results xml output file(s) should be generated. '
+      + '<suite>.txt file will contain the list of xml files with results. '
+      + 'All output files are generated in the src directory',
+  )
   .option('--disable_brave_extension', 'disable loading the Brave extension')
   .option('--single_process', 'uses a single process to run tests to help with debugging')
   .option('--test_launcher_jobs <test_launcher_jobs>', 'Number of jobs to launch', parseInteger, '4')

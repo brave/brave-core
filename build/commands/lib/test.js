@@ -97,6 +97,12 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
   await util.buildTargets()
 }
 
+const deleteFile = (filePath) => {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath)
+  }
+}
+
 const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
@@ -104,6 +110,10 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   let braveArgs = [
     '--enable-logging=stderr'
   ]
+
+  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
+  // Clear previous results file
+  deleteFile(allResultsFilePath)
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
@@ -120,10 +130,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   if (options.run_disabled_tests) {
     braveArgs.push('--gtest_also_run_disabled_tests')
-  }
-
-  if (options.output) {
-    braveArgs.push('--gtest_output=xml:' + options.output)
   }
 
   if (options.disable_brave_extension) {
@@ -158,7 +164,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   } else {
     const upstreamTestSuites = [
       'browser_tests',
-       ...getChromiumUnitTestsSuites()
+      ...getChromiumUnitTestsSuites(),
     ]
     // Run the tests
     getTestsToRun(config, suite).every((testSuite) => {
@@ -184,12 +190,12 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
           }
         }
       }
-      if (options.output) {
+      if (options.output_xml) {
         const previousOutput = braveArgs.findIndex((arg) => {
-            return arg.startsWith('--gtest_output=xml:')
+          return arg.startsWith('--gtest_output=xml:')
         })
         if (previousOutput !== -1) {
-            braveArgs.splice(previousOutput, 1)
+          braveArgs.splice(previousOutput, 1)
         }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
@@ -209,7 +215,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
       }
-      if (options.output)
+      if (options.output_xml) {
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
         // not interested in the exit code of running the tests, because they
@@ -219,9 +225,13 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // the test exit code here, we give callers a chance to distinguish test
         // failures (by looking at the output file) from compilation errors.
         runOptions.continueOnFail = true
+      }
       let prog = util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
-      // Don't run other tests if one has failed already, especially because
-      // this would overwrite the --output file (if given).
+      if (options.output_xml) {
+        // Add filename of xml output of each test suite into the results file
+        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+      }
+      // Don't run other tests if one has failed already.
       return prog.status === 0
     })
   }
