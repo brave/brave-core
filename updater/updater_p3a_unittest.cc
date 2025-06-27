@@ -75,6 +75,21 @@ TEST_P(BraveUpdaterP3ATest, TestUpdatedComplex) {
   ExpectBucketCounts(0, 2);
 }
 
+TEST_P(BraveUpdaterP3ATest, TestUpdateAfterNoUpdate) {
+  // Initial launch:
+  SimulateLaunch(0, "0.0.0.1");
+  ExpectBucketCounts(0, 0);
+
+  // No update in week 1. Should be reported at the beginning of week 2.
+  SimulateLaunch(7, "0.0.0.1");
+  ExpectBucketCounts(1, 0);
+
+  // An update in week 2:
+  SimulateLaunch(8, "0.0.0.2");
+  // Should be reported:
+  ExpectBucketCounts(1, 1);
+}
+
 INSTANTIATE_TEST_SUITE_P(
     // Empty to simplify gtest output
     ,

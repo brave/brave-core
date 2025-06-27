@@ -61,6 +61,8 @@ void ReportLaunch(base::Time now,
     status = is_using_omaha4 ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
     // Only report "no update" when there was no update for at least one week.
     report_status = current_week > last_reported_week + 1;
+    // We are actually reporting for the previous week:
+    current_week -= 1;
   }
 
   if (report_status) {
