@@ -8,6 +8,7 @@ import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
 export const threeColumnBreakpoint = '1275px'
+export const horizontalContentPadding = 24
 
 export const style = scoped.css`
   & {
@@ -95,7 +96,7 @@ export const style = scoped.css`
     align-items: center;
     min-height: 100vh;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px ${horizontalContentPadding}px;
 
     > * {
       transition:
