@@ -126,7 +126,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
                                 base::Value(false));
-  brave_updater::RegisterLocalState(registry);
+  brave_updater::RegisterLocalStatePrefs(registry);
 #endif
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
