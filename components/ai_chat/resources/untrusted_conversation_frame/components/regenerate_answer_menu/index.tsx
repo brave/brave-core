@@ -11,6 +11,7 @@ import Label from '@brave/leo/react/label'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
+import { getModelIcon } from '../../../common/constants'
 import styles from './style.module.scss'
 
 interface Props {
@@ -79,7 +80,12 @@ export function RegenerateAnswerMenu(props: Props) {
             onClick={() => handleRegenerate(model.key)}
             aria-selected={selected || null}
           >
-            {model.displayName}
+            <div className={styles.modelIconAndName}>
+              <Icon
+                name={getModelIcon(model.key)}
+              />
+              {model.displayName}
+            </div>
             {selected && (
               <Label
                 mode='loud'
