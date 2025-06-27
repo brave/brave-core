@@ -157,7 +157,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         if (mEditedAccountInfo != null) {
             Button btnAdd = findViewById(R.id.btn_add);
-            btnAdd.setText(getResources().getString(R.string.update));
+            btnAdd.setText(getResources().getString(R.string.wallet_accounts_update));
             mAddAccountText.setText(mEditedAccountInfo.name);
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
