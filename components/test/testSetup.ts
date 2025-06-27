@@ -5,6 +5,9 @@
 
 import '@testing-library/jest-dom'
 import './testPolyfills'
+import failOnConsole from 'jest-fail-on-console'
+
+failOnConsole()
 
 // Mock the locale module so we don't need to provide strings in tests
 jest.mock('$web-common/locale', () => ({
