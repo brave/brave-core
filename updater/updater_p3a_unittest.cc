@@ -17,7 +17,7 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
   BraveUpdaterP3ATest() = default;
   ~BraveUpdaterP3ATest() override = default;
 
-  void SetUp() override { RegisterLocalState(local_state_.registry()); }
+  void SetUp() override { RegisterLocalStatePrefs(local_state_.registry()); }
 
  protected:
   TestingPrefServiceSimple local_state_;
