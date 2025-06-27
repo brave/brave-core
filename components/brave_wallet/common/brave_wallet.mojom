@@ -189,7 +189,7 @@ struct CardanoProviderPagination {
 
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (bool success, string? error_message);
+  Enable() => (string? error_message);
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>

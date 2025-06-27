@@ -45,7 +45,6 @@ class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
   void OnEnableResponse(v8::Global<v8::Context> global_context,
                         v8::Global<v8::Promise::Resolver> promise_resolver,
                         v8::Isolate* isolate,
-                        const bool reject,
                         const std::optional<std::string>& error_message);
 
   v8::Local<v8::Promise> IsEnabled(v8::Isolate* isolate);
