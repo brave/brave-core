@@ -14,8 +14,8 @@ RegisterPolymerComponentReplacement(
 
 RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
-        const isEmailAliasesFeatureEnabled = loadTimeData.getBoolean(
-      'isEmailAliasesFeatureEnabled')
+        const isEmailAliasesEnabled = loadTimeData.getBoolean(
+      'isEmailAliasesEnabled')
     templateContent.appendChild(html`
         <settings-toggle-button
           class="hr"
@@ -26,7 +26,7 @@ RegisterPolymerTemplateModifications({
           hidden=[[!isAutofillPage_]]
         </settings-toggle-button>
       `)
-      if (isEmailAliasesFeatureEnabled) {
+      if (isEmailAliasesEnabled) {
         const pages = templateContent.getElementById('pages')
         if (!pages) {
           console.error('[overrides]: Couldn\'t find pages')
