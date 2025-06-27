@@ -10,7 +10,7 @@
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
-#include "brave/browser/ui/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 
 class Profile;
 

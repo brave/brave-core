@@ -44,6 +44,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/browser/email_aliases_service_factory.h"
 #include "brave/components/email_aliases/common/features.h"
+#include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
