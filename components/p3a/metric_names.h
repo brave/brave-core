@@ -137,6 +137,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Today.WeeklySessionCount", {}},
     {"Brave.Today.WeeklyTotalCardClicks", MetricConfig{.ephemeral = true}},
     {"Brave.Today.WeeklyTotalCardViews", {}},
+    {"Brave.Update.Status", {}},
     {"Brave.VPN.ConnectedDuration", MetricConfig{.ephemeral = true}},
     {"Brave.VPN.HideWidget", MetricConfig{.ephemeral = true}},
     {"Brave.VPN.LastUsageTime", MetricConfig{.record_activation_date = true}},
