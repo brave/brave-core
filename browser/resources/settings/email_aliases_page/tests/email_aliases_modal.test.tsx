@@ -125,7 +125,7 @@ describe('EmailAliasModal', () => {
 
     // Click delete button
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-    await act(async () => {
+    await act(() => {
       clickLeoButton(deleteButton)
     })
 
