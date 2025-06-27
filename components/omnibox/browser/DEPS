@@ -6,6 +6,7 @@
 include_rules = [
   "+brave/components/ai_chat/core/common",
   "+components/grit/brave_components_strings.h",
+  "+components/bookmarks",
   "+components/history",
   "+components/omnibox",
   "+components/prefs",
