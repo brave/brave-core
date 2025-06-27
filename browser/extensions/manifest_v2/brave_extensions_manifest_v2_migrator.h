@@ -12,13 +12,16 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "extensions/browser/extension_prefs_observer.h"
+#include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
 
 namespace extensions_mv2 {
 
-class ExtensionsManifectV2Migrator : public KeyedService,
-                                     public extensions::ExtensionPrefsObserver {
+class ExtensionsManifectV2Migrator
+    : public KeyedService,
+      public extensions::ExtensionPrefsObserver,
+      public extensions::ExtensionRegistryObserver {
  public:
   explicit ExtensionsManifectV2Migrator(Profile* profile);
 
@@ -35,12 +38,20 @@ class ExtensionsManifectV2Migrator : public KeyedService,
       const extensions::ExtensionId& extension_id,
       extensions::DisableReasonSet disabled_reasons) override;
 
+  // ExtensionRegistryObserver:
+  void OnExtensionInstalled(content::BrowserContext* browser_context,
+                            const extensions::Extension* extension,
+                            bool is_updates) override;
+
   void BackupExtensionSettings(const extensions::ExtensionId& extension_id);
 
   const raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<extensions::ExtensionPrefs,
                           extensions::ExtensionPrefsObserver>
-      observation_{this};
+      prefs_observation_{this};
+  base::ScopedObservation<extensions::ExtensionRegistry,
+                          extensions::ExtensionRegistryObserver>
+      registry_observation_{this};
 };
 
 class ExtensionsManifectV2MigratorFactory : public ProfileKeyedServiceFactory {
