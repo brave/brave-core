@@ -45,17 +45,33 @@ export default function FilterMenu<T>(props: Props<T>) {
     if (!props.isOpen) return
 
     const handler = (e: KeyboardEvent) => {
-      if (e.key !== 'Enter') return
-
-      e.preventDefault()
-      e.stopPropagation();
+      const setHandled = () => {
+        e.preventDefault()
+        e.stopPropagation();
+      };
 
       const focused = ref.current?.querySelector<HTMLElement>(':focus')
-      // If there isn't a focused element, click the first menu item, if any.
-      const menuItem = focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
-      if (!menuItem) return
+      if (e.key === 'Enter') {
+        setHandled()
 
-      menuItem.click()
+        // If there isn't a focused element, click the first menu item, if any.
+        const menuItem = focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
+        if (!menuItem) return
+
+        menuItem.click()
+      }
+
+      // As we select the first item by default we want to skip it when the user
+      // presses one of the arrow keys.
+      let direction = 0
+      if (e.key === 'ArrowDown') direction = 1
+      if (e.key === 'ArrowUp') direction = -1
+
+      if (direction !== 0 && !focused) {
+        setHandled()
+        const items = Array.from(ref.current?.querySelectorAll('leo-menu-item') ?? []) as HTMLElement[]
+        items.at(direction)?.focus()
+      }
     }
     document.addEventListener('keydown', handler, { capture: true })
 
