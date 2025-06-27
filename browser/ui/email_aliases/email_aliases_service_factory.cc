@@ -41,8 +41,7 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<EmailAliasesService>(
-      Profile::FromBrowserContext(context));
+  return std::make_unique<EmailAliasesService>();
 }
 
 }  // namespace email_aliases

@@ -18,14 +18,12 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
-class Profile;
-
 namespace email_aliases {
 
 class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
-  explicit EmailAliasesService(Profile* profile);
+  EmailAliasesService();
   ~EmailAliasesService() override;
 
   // KeyedService:
@@ -49,7 +47,6 @@ class EmailAliasesService : public KeyedService,
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
 
  private:
-  raw_ptr<Profile> profile_;
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
 

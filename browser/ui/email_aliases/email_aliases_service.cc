@@ -12,13 +12,10 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
-#include "chrome/browser/profiles/profile.h"
 
 namespace email_aliases {
 
-EmailAliasesService::EmailAliasesService(Profile* profile) : profile_(profile) {
-  DCHECK(profile_);
-}
+EmailAliasesService::EmailAliasesService() = default;
 
 EmailAliasesService::~EmailAliasesService() = default;
 
