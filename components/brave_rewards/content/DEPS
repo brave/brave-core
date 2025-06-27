@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/grit/brave_generated_resources.h",
+  "+components/country_codes",
   "+components/keyed_service",
   "+components/os_crypt/sync",
   "+components/prefs",
