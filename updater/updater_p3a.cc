@@ -10,14 +10,12 @@
 
 namespace brave_updater {
 
-inline constexpr char kFirstLaunchTimePref[] =
-    "brave.updater_p3a.first_launch_time";
-inline constexpr char kLastLaunchUsedOmaha4Pref[] =
+constexpr char kFirstLaunchTimePref[] = "brave.updater_p3a.first_launch_time";
+constexpr char kLastLaunchUsedOmaha4Pref[] =
     "brave.updater_p3a.last_launch_used_omaha4";
-inline constexpr char kLastLaunchVersionPref[] =
+constexpr char kLastLaunchVersionPref[] =
     "brave.updater_p3a.last_launch_version";
-inline constexpr char kLastReportedWeekPref[] =
-    "brave.updater_p3a.last_reported_week";
+constexpr char kLastReportedWeekPref[] = "brave.updater_p3a.last_reported_week";
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kFirstLaunchTimePref, base::Time());
