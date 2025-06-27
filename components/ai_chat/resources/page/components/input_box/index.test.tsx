@@ -40,7 +40,8 @@ const defaultContext: InputBoxProps['context'] = {
 }
 
 describe('input box', () => {
-  it('associated content is rendered in input box before conversation starts if should send contents is true', async () => {
+  it('associated content is rendered in input box before conversation starts' +
+     'if should send contents is true', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -60,14 +61,16 @@ describe('input box', () => {
     )
 
     await waitFor(() => {
-      expect(screen.getByText('Associated Content', { selector: '.title'})).toBeInTheDocument()
+      expect(screen.getByText('Associated Content', { selector: '.title'}))
+        .toBeInTheDocument()
       expect(
         container.querySelector('img[src*="//favicon2"]')
       ).toBeInTheDocument()
     })
   })
 
-  it('associated content is not rendered in input box before conversation starts if should send contents is false', async () => {
+  it('associated content is not rendered in input box before conversation ' +
+     'starts if should send contents is false', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -94,7 +97,8 @@ describe('input box', () => {
     })
   })
 
-  it('associated content is not rendered in input box when there is no associated content', async () => {
+  it('associated content is not rendered in input box when there is no ' +
+     'associated content', async () => {
     const { container } = render(
       <InputBox
         context={{
@@ -114,7 +118,8 @@ describe('input box', () => {
     })
   })
 
-  it('associated content is not rendered in input box after the conversation has started', async () => {
+  it('associated content is not rendered in input box after the conversation ' +
+     'has started', async () => {
     const { container } = render(
       <InputBox
         context={{
