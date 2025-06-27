@@ -525,6 +525,11 @@ void BraveTabContainer::OnSplitRemoved(const std::vector<int>& indices) {
   UpdateTabsBorderInSplitTab(indices);
 }
 
+void BraveTabContainer::OnSplitContentsChanged(
+    const std::vector<int>& indices) {
+  UpdateTabsBorderInSplitTab(indices);
+}
+
 std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
     const ui::DropTargetEvent& event) {
   if (!tabs::utils::ShouldShowVerticalTabs(
@@ -848,34 +853,32 @@ bool BraveTabContainer::IsPinnedTabContainer() const {
 
 void BraveTabContainer::UpdateTabsBorderInSplitTab(
     const std::vector<int>& indices) {
-  auto* tab1 = GetTabAtModelIndex(indices[0]);
-  auto* tab2 = GetTabAtModelIndex(indices[1]);
+  const int offset = IsPinnedTabContainer() ? 0
+                                            : tab_slot_controller_->GetBrowser()
+                                                  ->tab_strip_model()
+                                                  ->IndexOfFirstNonPinnedTab();
+  for (auto& index : indices) {
+    auto tab_index = index - offset;
+    if (!controller_->IsValidModelIndex(tab_index)) {
+      // In case the tiled tab is not in this container, this can happen.
+      // For instance, this container is for pinned tabs but tabs in the tile
+      // are unpinned.
+      return;
+    }
 
-  // Tab's border varies per split view state.
-  // See BraveVerticalTabStyle::GetContentsInsets().
-  tab1->SetBorder(
-      views::CreateEmptyBorder(tab1->tab_style_views()->GetContentsInsets()));
-  tab2->SetBorder(
-      views::CreateEmptyBorder(tab2->tab_style_views()->GetContentsInsets()));
+    // Tab's border varies per split view state.
+    // See BraveVerticalTabStyle::GetContentsInsets().
+    GetTabAtModelIndex(tab_index)->UpdateInsets();
+  }
+
+  AnimateToIdealBounds();
 }
 
 void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  const int offset =
-      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
-
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset;
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset;
-
-  if (!controller_->IsValidModelIndex(tab1_index) ||
-      !controller_->IsValidModelIndex(tab2_index)) {
-    // In case the tiled tab is not in this container, this can happen.
-    // For instance, this container is for pinned tabs but tabs in the tile
-    // are unpinned.
-    return;
-  }
-
-  UpdateTabsBorderInSplitTab({tab1_index, tab2_index});
+  UpdateTabsBorderInSplitTab(
+      {tab_strip_model->GetIndexOfTab(tile.first.Get()),
+       tab_strip_model->GetIndexOfTab(tile.second.Get())});
 }
 
 BEGIN_METADATA(BraveTabContainer)

@@ -379,6 +379,23 @@ class SplitViewWithTabDialogBrowserTest
   base::test::ScopedFeatureList scoped_features_;
 };
 
+// Check split view works with pinned tabs.
+IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
+                       SplitViewWithPinnedTabTest) {
+  auto* tab_strip_model = browser()->tab_strip_model();
+  tab_strip_model->SetTabPinned(0, true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  NewSplitTab();
+  EXPECT_EQ(2, tab_strip_model->active_index());
+
+  brave::ToggleVerticalTabStrip(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(3, tab_strip_model->active_index());
+  NewSplitTab();
+  EXPECT_EQ(4, tab_strip_model->active_index());
+}
+
 IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
                        BookmarksBarVisibilityTest) {
   auto* prefs = browser()->profile()->GetPrefs();
