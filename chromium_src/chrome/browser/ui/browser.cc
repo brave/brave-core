@@ -14,6 +14,8 @@
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 
 #define BRAVE_BROWSER_CREATE return new BraveBrowser(params);
+#define BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING \
+  return base::WrapUnique(new BraveBrowser(params));
 
 // We have one more option for bookmarks bar visibility.
 // It's "only show bookmarks bar on NTP". And it's patched to prevent
@@ -40,6 +42,7 @@
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_SHOULD_SHOW_BOOKMARK_BAR
+#undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING
 #undef BRAVE_BROWSER_CREATE
 
 bool IsShowingNTP_ChromiumImpl(content::WebContents* web_contents) {
