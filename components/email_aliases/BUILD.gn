@@ -25,21 +25,3 @@ static_library("features") {
 
   public_deps = [ "//base" ]
 }
-
-static_library("browser") {
-  sources = [
-    "email_aliases_service.cc",
-    "email_aliases_service.h",
-    "email_aliases_service_factory.cc",
-    "email_aliases_service_factory.h",
-  ]
-
-  deps = [
-    ":mojom",
-    "//base",
-    "//chrome/browser/profiles:profile",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//mojo/public/cpp/bindings",
-  ]
-}

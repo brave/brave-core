@@ -1,0 +1,22 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "email_aliases_service.cc",
+    "email_aliases_service.h",
+    "email_aliases_service_factory.cc",
+    "email_aliases_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/email_aliases:mojom",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
+}

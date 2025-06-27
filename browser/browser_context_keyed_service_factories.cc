@@ -33,7 +33,6 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
-#include "brave/browser/ui/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
