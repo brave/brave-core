@@ -125,7 +125,9 @@ describe('EmailAliasModal', () => {
 
     // Click delete button
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-    clickLeoButton(deleteButton)
+    await act(async () => {
+      clickLeoButton(deleteButton)
+    })
 
     await waitFor(() => {
       expect(deleteButton).toHaveAttribute('isdisabled', 'true')
