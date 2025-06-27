@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
-#define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
+#define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -55,4 +55,4 @@ class EmailAliasesService : public KeyedService,
 
 }  // namespace email_aliases
 
-#endif  // BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_

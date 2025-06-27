@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/ui/email_aliases/email_aliases_service.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
