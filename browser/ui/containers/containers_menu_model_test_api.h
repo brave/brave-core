@@ -22,6 +22,14 @@ class ContainersMenuModelTestApi {
   // Returns the items in the menu model.
   static const std::vector<ContainerModel>& GetItems(
       const ContainersMenuModel& model);
+
+  // Returns the command ID for the item at the given index.
+  static int GetCommandIdFromItemIndex(const ContainersMenuModel& model,
+                                       int index);
+
+  // Returns item index from the command ID.
+  static int GetItemIndexFromCommandId(const ContainersMenuModel& model,
+                                       int command_id);
 };
 
 }  // namespace containers::test

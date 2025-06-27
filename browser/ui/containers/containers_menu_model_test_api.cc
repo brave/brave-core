@@ -22,4 +22,18 @@ const std::vector<ContainerModel>& ContainersMenuModelTestApi::GetItems(
   return model.items_;
 }
 
+// static
+int ContainersMenuModelTestApi::GetCommandIdFromItemIndex(
+    const ContainersMenuModel& model,
+    int index) {
+  return model.ItemIndexToCommandId(index);
+}
+
+// static
+int ContainersMenuModelTestApi::GetItemIndexFromCommandId(
+    const ContainersMenuModel& model,
+    int command_id) {
+  return model.CommandIdToItemIndex(command_id);
+}
+
 }  // namespace containers::test

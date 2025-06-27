@@ -56,7 +56,9 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
 
   // Verify the model contains all containers from the service
   for (size_t i = 0; i < containers.size(); ++i) {
-    EXPECT_TRUE(model.GetIndexOfCommandId(i).has_value());
+    const auto command_id =
+        test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, i);
+    EXPECT_TRUE(model.GetIndexOfCommandId(command_id).has_value());
     EXPECT_EQ(containers.at(i).id(),
               test::ContainersMenuModelTestApi::GetItems(model).at(i).id());
     EXPECT_EQ(base::UTF8ToUTF16(containers.at(i).name()), model.GetLabelAt(i));
@@ -73,7 +75,8 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
   EXPECT_CALL(delegate, OnContainerSelected(EqId("ExampleContainer1")));
-  model.ExecuteCommand(0, 0);
+  model.ExecuteCommand(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0), 0);
 }
 
 TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
@@ -88,29 +91,38 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
   EXPECT_CALL(delegate, GetCurrentContainerIds())
       .WillRepeatedly(
           testing::Return((base::flat_set<std::string>{containers[0].id()})));
-  EXPECT_TRUE(model.IsCommandIdChecked(0));
-  EXPECT_FALSE(model.IsCommandIdChecked(1));
+  EXPECT_TRUE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+  EXPECT_FALSE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
 
   // Now test with the second container ID
   EXPECT_CALL(delegate, GetCurrentContainerIds())
       .WillRepeatedly(
           testing::Return(base::flat_set<std::string>{containers[1].id()}));
-  EXPECT_FALSE(model.IsCommandIdChecked(0));
-  EXPECT_TRUE(model.IsCommandIdChecked(1));
+  EXPECT_FALSE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+  EXPECT_TRUE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
 
   // Test with no container selected
   EXPECT_CALL(delegate, GetCurrentContainerIds())
       .WillRepeatedly(testing::Return<base::flat_set<std::string>>({}));
-  EXPECT_FALSE(model.IsCommandIdChecked(0));
-  EXPECT_FALSE(model.IsCommandIdChecked(1));
+  EXPECT_FALSE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+  EXPECT_FALSE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
 
   // Test with multiple containers selected
   EXPECT_CALL(delegate, GetCurrentContainerIds())
       .WillRepeatedly(testing::Return(
           base::flat_set<std::string>{containers[0].id(), containers[1].id()}));
-  EXPECT_TRUE(model.IsCommandIdChecked(0));
-  EXPECT_TRUE(model.IsCommandIdChecked(1));
-  EXPECT_FALSE(model.IsCommandIdChecked(2));
+  EXPECT_TRUE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
+  EXPECT_TRUE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
+  EXPECT_FALSE(model.IsCommandIdChecked(
+      test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 2)));
 }
 
 }  // namespace containers
