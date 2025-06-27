@@ -27,7 +27,7 @@ from lib.l10n.validation import validate_tags_in_one_string
 # -------------
 
 
-def pull_source_file_from_crowdin(channel, source_file_path, filename,
+def pull_source_file_from_crowdin(channel, source_file_path, filename, lang,
                                   dump_path):
     """Downloads translations from Crowdin"""
     ext = os.path.splitext(source_file_path)[1]
@@ -36,6 +36,8 @@ def pull_source_file_from_crowdin(channel, source_file_path, filename,
         base_path = os.path.dirname(source_file_path)
         grd_strings = get_grd_strings(source_file_path)
         for (lang_code, xtb_rel_path) in xtb_files:
+            if lang and lang != lang_code:
+                continue
             xtb_file_path = os.path.join(base_path, xtb_rel_path)
             print(f'Updating: {xtb_file_path} {lang_code}')
             xml_content = get_crowdin_translation_file_content(
@@ -54,6 +56,8 @@ def pull_source_file_from_crowdin(channel, source_file_path, filename,
         langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
         lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
         for lang_code in lang_codes:
+            if lang and lang != lang_code:
+                continue
             print(f'getting filename {filename} for lang_code {lang_code}')
             content = get_crowdin_translation_file_content(
                 channel, source_file_path, filename, lang_code, dump_path)
