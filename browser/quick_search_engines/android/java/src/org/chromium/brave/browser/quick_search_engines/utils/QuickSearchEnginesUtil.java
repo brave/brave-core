@@ -29,6 +29,8 @@ import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -200,6 +202,28 @@ public class QuickSearchEnginesUtil {
         }
         // Remove default search engine from quick search options
         removeDefaultSearchEngine(searchEnginesMap, defaultSearchEngine);
+        // Remove models that have equal short names in a similar
+        // way as we do in Search engines settings inside
+        // BraveBaseSearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl
+        filterUnnecessaryModels(searchEnginesMap);
+    }
+
+    /**
+     * Filters out models that have equal short names
+     *
+     * @param searchEnginesMap Map of search engine keywords to their QuickSearchEnginesModel
+     */
+    private static void filterUnnecessaryModels(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap) {
+        final Iterator<Map.Entry<String, QuickSearchEnginesModel>> iter =
+                searchEnginesMap.entrySet().iterator();
+        final HashSet<String> valueSet = new HashSet<>();
+        while (iter.hasNext()) {
+            final Map.Entry<String, QuickSearchEnginesModel> next = iter.next();
+            if (!valueSet.add(next.getValue().getShortName())) {
+                iter.remove();
+            }
+        }
     }
 
     /**
