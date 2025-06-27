@@ -308,6 +308,7 @@ program
     '--grd_path <grd_path>',
     `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`,
   )
+  .option('--lang <language>', 'Only download content for this language')
   .option(
     '--debug',
     `Dumps downloaded content for one language into CrowdinCurrent.txt file in the temp directory.`,

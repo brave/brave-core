@@ -146,7 +146,7 @@ def get_override_file_path(source_string_path):
     return override_string_path
 
 
-def update_xtbs_locally(grd_file_path, brave_source_root):
+def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
     """Updates XTBs from the local Chromium files"""
     xtb_files = get_xtb_files(grd_file_path)
     chromium_grd_file_path = get_chromium_grd_src_with_fallback(grd_file_path,
@@ -186,10 +186,12 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
     }
 
     xtb_file_paths = [os.path.join(
-        grd_base_path, path) for (_, path) in xtb_files]
+        grd_base_path, path) for (lang, path) in xtb_files \
+            if not only_for_lang or only_for_lang == lang]
     chromium_xtb_file_paths = [
         os.path.join(chromium_grd_base_path, path) for
-        (_, path) in chromium_xtb_files]
+        (lang, path) in chromium_xtb_files \
+            if not only_for_lang or only_for_lang == lang]
     for idx, xtb_file in enumerate(xtb_file_paths):
         chromium_xtb_file = chromium_xtb_file_paths[idx]
         if not os.path.exists(chromium_xtb_file):
@@ -223,7 +225,7 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
             f.write(transformed_content)
 
 
-def combine_override_xtb_into_original(source_string_path):
+def combine_override_xtb_into_original(source_string_path, only_for_lang):
     """Applies XTB override file to the original"""
     source_base_path = os.path.dirname(source_string_path)
     override_path = get_override_file_path(source_string_path)
@@ -234,6 +236,8 @@ def combine_override_xtb_into_original(source_string_path):
 
     for (idx, _) in enumerate(xtb_files):
         (lang, xtb_path) = xtb_files[idx]
+        if only_for_lang and lang != only_for_lang:
+            continue
         (override_lang, override_xtb_path) = override_xtb_files[idx]
         assert lang == override_lang
 
