@@ -201,9 +201,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
          "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
         ContentSettingsType::BRAVE_SOLANA,
         blink::PermissionType::BRAVE_SOLANA},
-       {{"Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b",
-         "DdzFFzCqrhsfZHjaBunVySZBU8i9Zom7Gujham6Jz8scCcAdkDmEbD9XSdXKdBiPoa1fj"
-         "gL4ksGjQXD8ZkSNHGJfT25ieA9rWNCSA5qc"},
+       {{"1815_0_0_0", "1815_1_0_0"},
         ContentSettingsType::BRAVE_CARDANO,
         blink::PermissionType::BRAVE_CARDANO}});
   for (auto& test_case : cases) {
@@ -373,9 +371,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
          "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
         ContentSettingsType::BRAVE_SOLANA,
         blink::PermissionType::BRAVE_SOLANA},
-       {{"Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b",
-         "DdzFFzCqrhsfZHjaBunVySZBU8i9Zom7Gujham6Jz8scCcAdkDmEbD9XSdXKdBiPoa1fj"
-         "gL4ksGjQXD8ZkSNHGJfT25ieA9rWNCSA5qc"},
+       {{"1815_1_1_0"},
         ContentSettingsType::BRAVE_CARDANO,
         blink::PermissionType::BRAVE_CARDANO}});
   for (auto& test_case : cases) {

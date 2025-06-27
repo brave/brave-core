@@ -39,6 +39,14 @@ namespace brave_wallet {
 
 namespace {
 
+class MockBraveWalletService : public BraveWalletService {
+ public:
+  MockBraveWalletService() {}
+  ~MockBraveWalletService() override {}
+
+  MOCK_METHOD0(keyring_service, KeyringService*());
+};
+
 class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
  public:
   MockBraveWalletProviderDelegate() = default;
@@ -87,8 +95,12 @@ class CardanoProviderImplUnitTest : public testing::Test {
         shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
+    brave_wallet_service_ = std::make_unique<MockBraveWalletService>();
+    ON_CALL(*brave_wallet_service_, keyring_service())
+        .WillByDefault(
+            ::testing::Invoke([&]() { return keyring_service_.get(); }));
     provider_ = std::make_unique<CardanoProviderImpl>(
-        *keyring_service_,
+        *brave_wallet_service_,
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>());
   }
 
@@ -134,6 +146,7 @@ class CardanoProviderImplUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<MockBraveWalletService> brave_wallet_service_;
 
   std::unique_ptr<CardanoProviderImpl> provider_;
 };
@@ -158,8 +171,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
   base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
   base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback,
-              Run(::testing::Eq(true), ::testing::Eq(std::nullopt)))
+  EXPECT_CALL(first_callback, Run(::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
   provider()->Enable(first_callback.Get());
 
@@ -167,8 +179,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
     // Request will be rejected because it is still waiting for wallet unlock.
     base::MockCallback<CardanoProviderImpl::EnableCallback> callback;
     base::RunLoop run_loop;
-    EXPECT_CALL(callback,
-                Run(::testing::Eq(false), ::testing::Ne(std::nullopt)))
+    EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
     provider()->Enable(callback.Get());
     run_loop.Run();
@@ -224,8 +235,7 @@ TEST_F(CardanoProviderImplUnitTest,
 
   base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
   base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback,
-              Run(::testing::Eq(false), ::testing::Ne(std::nullopt)))
+  EXPECT_CALL(first_callback, Run(::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
   provider()->Enable(first_callback.Get());
 
@@ -250,8 +260,7 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
 
   base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
   base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback,
-              Run(::testing::Eq(false), ::testing::Ne(std::nullopt)))
+  EXPECT_CALL(first_callback, Run(::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
   provider()->Enable(first_callback.Get());
 

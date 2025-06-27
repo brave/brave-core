@@ -14,7 +14,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -27,7 +27,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
  public:
   CardanoProviderImpl(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl& operator=(const CardanoProviderImpl&) = delete;
-  CardanoProviderImpl(KeyringService& keyring_service,
+  CardanoProviderImpl(BraveWalletService& brave_wallet_service_,
                       std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~CardanoProviderImpl() override;
 
@@ -77,7 +77,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
       mojom::RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
-  raw_ref<KeyringService> keyring_service_;
+  raw_ref<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
 
   std::optional<EnableCallback> pending_request_cardano_permissions_callback_;

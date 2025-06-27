@@ -314,7 +314,7 @@ class BraveWalletService : public KeyedService,
 
   NetworkManager* network_manager() { return network_manager_.get(); }
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
-  KeyringService* keyring_service() { return keyring_service_.get(); }
+  virtual KeyringService* keyring_service();
   TxService* tx_service() { return tx_service_.get(); }
   // Might return nullptr.
   BitcoinWalletService* GetBitcoinWalletService();

@@ -16,11 +16,17 @@
 
 namespace brave_wallet {
 
+namespace {
+constexpr char kTabNotVisibleError[] = "Tab not active";
+constexpr char kAccountNotConnectedError[] = "Account not connected";
+}  // namespace
+
 CardanoProviderImpl::CardanoProviderImpl(
-    KeyringService& keyring_service,
+    BraveWalletService& brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
-    : keyring_service_(keyring_service), delegate_(std::move(delegate)) {
-  keyring_service_->AddObserver(
+    : brave_wallet_service_(brave_wallet_service),
+      delegate_(std::move(delegate)) {
+  brave_wallet_service_->keyring_service()->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
@@ -34,7 +40,7 @@ void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
 
 void CardanoProviderImpl::Enable(EnableCallback callback) {
   if (!delegate_->IsTabVisible()) {
-    std::move(callback).Run(false, "Tab not active");
+    std::move(callback).Run(kTabNotVisibleError);
     return;
   }
 
@@ -45,8 +51,9 @@ void CardanoProviderImpl::Enable(EnableCallback callback) {
 }
 
 mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
-  auto cardano_account = keyring_service_->GetHDAccountInfoForKeyring(
-      mojom::KeyringId::kCardanoMainnet, 0);
+  auto cardano_account =
+      brave_wallet_service_->keyring_service()->GetHDAccountInfoForKeyring(
+          mojom::KeyringId::kCardanoMainnet, 0);
 
   if (!cardano_account || !cardano_account->account_id) {
     return nullptr;
@@ -60,7 +67,8 @@ mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
     return nullptr;
   }
 
-  for (const auto& account : keyring_service_->GetAllAccountInfos()) {
+  for (const auto& account :
+       brave_wallet_service_->keyring_service()->GetAllAccountInfos()) {
     if (GetAccountPermissionIdentifier(account->account_id) ==
         (*allowed_accounts)[0]) {
       return account->account_id.Clone();
@@ -85,7 +93,7 @@ void CardanoProviderImpl::GetNetworkId(GetNetworkIdCallback callback) {
 void CardanoProviderImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -99,7 +107,7 @@ void CardanoProviderImpl::GetUnusedAddresses(
     GetUnusedAddressesCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -112,7 +120,7 @@ void CardanoProviderImpl::GetUnusedAddresses(
 void CardanoProviderImpl::GetChangeAddress(GetChangeAddressCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -126,7 +134,7 @@ void CardanoProviderImpl::GetRewardAddresses(
     GetRewardAddressesCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -139,7 +147,7 @@ void CardanoProviderImpl::GetRewardAddresses(
 void CardanoProviderImpl::GetBalance(GetBalanceCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -154,7 +162,7 @@ void CardanoProviderImpl::GetUtxos(const std::optional<std::string>& amount,
                                    GetUtxosCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -169,7 +177,7 @@ void CardanoProviderImpl::SignTx(const std::string& tx_cbor,
                                  SignTxCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -183,7 +191,7 @@ void CardanoProviderImpl::SubmitTx(const std::string& signed_tx_cbor,
                                    SubmitTxCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -198,7 +206,7 @@ void CardanoProviderImpl::SignData(const std::string& address,
                                    SignDataCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -213,7 +221,7 @@ void CardanoProviderImpl::GetCollateral(const std::string& amount,
                                         GetCollateralCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run({}, "Account not connected");
+    std::move(callback).Run({}, kAccountNotConnectedError);
     return;
   }
 
@@ -234,8 +242,9 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
   }
 
   // TODO(cypt4): Support multiple Cardano accounts
-  auto cardano_account = keyring_service_->GetHDAccountInfoForKeyring(
-      mojom::KeyringId::kCardanoMainnet, 0);
+  auto cardano_account =
+      brave_wallet_service_->keyring_service()->GetHDAccountInfoForKeyring(
+          mojom::KeyringId::kCardanoMainnet, 0);
 
   if (!cardano_account) {
     if (!wallet_onboarding_shown_) {
@@ -248,7 +257,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
     return;
   }
 
-  if (keyring_service_->IsLockedSync()) {
+  if (brave_wallet_service_->keyring_service()->IsLockedSync()) {
     if (pending_request_cardano_permissions_callback_) {
       OnRequestCardanoPermissions(
           std::move(callback), origin,
@@ -258,7 +267,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
     pending_request_cardano_permissions_callback_ = std::move(callback);
     pending_request_cardano_permissions_origin_ = origin;
 
-    keyring_service_->RequestUnlock();
+    brave_wallet_service_->keyring_service()->RequestUnlock();
     delegate_->ShowPanel();
     return;
   }
@@ -318,7 +327,7 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
-  std::move(callback).Run(has_allowed_account, error_message);
+  std::move(callback).Run(error_message);
 }
 
 BraveWalletProviderDelegate* CardanoProviderImpl::delegate() {

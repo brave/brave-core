@@ -140,7 +140,7 @@ void BraveWalletTabHelper::BindCardanoProvider(
 
   tab_helper->cardano_provider_receivers_.Add(
       std::make_unique<CardanoProviderImpl>(
-          *(brave_wallet_service->keyring_service()),
+          *brave_wallet_service,
           std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
                                                             frame_host)),
       std::move(receiver));
