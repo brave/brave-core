@@ -139,16 +139,14 @@ describe('EmailAliasModal', () => {
   })
 
   it('handles alias creation', async () => {
-    await act(async () => {
-      render(
-        <EmailAliasModal
-        editing={false}
-        mainEmail={mockEmail}
-        aliasCount={0}
-        onReturnToMain={mockOnReturnToMain}
-        emailAliasesService={mockEmailAliasesService}
-      />)
-    })
+    render(
+      <EmailAliasModal
+      editing={false}
+      mainEmail={mockEmail}
+      aliasCount={0}
+      onReturnToMain={mockOnReturnToMain}
+      emailAliasesService={mockEmailAliasesService}
+    />)
 
     // Wait for generated alias
     await waitFor(() => {
@@ -207,18 +205,16 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows limit reached message in bubble mode', async () => {
-    await act(async () => {
-      render(
-        <EmailAliasModal
-          editing={false}
-          mainEmail={mockEmail}
-          aliasCount={5}
-          onReturnToMain={mockOnReturnToMain}
-        emailAliasesService={mockEmailAliasesService}
-          bubble={true}
-        />
-      )
-    })
+    render(
+      <EmailAliasModal
+        editing={false}
+        mainEmail={mockEmail}
+        aliasCount={5}
+        onReturnToMain={mockOnReturnToMain}
+      emailAliasesService={mockEmailAliasesService}
+        bubble={true}
+      />
+    )
 
     // Wait for limit check
     await waitFor(() => {
