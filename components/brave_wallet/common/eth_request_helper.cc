@@ -456,16 +456,17 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
 
-  const std::string* typed_data_str = params_list[1].GetIfString();
-  if (!typed_data_str) {
-    return nullptr;
+  std::optional<base::Value::Dict> dict = std::nullopt;
+  if (auto const* typed_data_str = params_list[1].GetIfString();
+      typed_data_str) {
+    dict = base::JSONReader::ReadDict(*typed_data_str,
+                                      base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                          base::JSON_ALLOW_TRAILING_COMMAS);
+  } else if (auto* typed_data_dict = params_list[1].GetIfDict();
+             typed_data_dict) {
+    dict = typed_data_dict->Clone();
   }
 
-  // TODO(apaymyshev): support dict there per
-  // https://github.com/MetaMask/metamask-extension/issues/18462
-  auto dict = base::JSONReader::ReadDict(
-      *typed_data_str,
-      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!dict) {
     return nullptr;
   }
