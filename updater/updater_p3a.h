@@ -19,6 +19,15 @@
 
 namespace brave_updater {
 
+inline constexpr char kUpdateStatusHistogramName[] = "Brave.Update.Status";
+
+enum UpdateStatus {
+  kNoUpdateWithLegacy,
+  kNoUpdateWithOmaha4,
+  kUpdatedWithLegacy,
+  kUpdatedWithOmaha4
+};
+
 // This function is called when the browser launches. It remembers the browser
 // version in a pref. When the version is different from the last launch, it
 // reports to UMA that the browser was updated. When no such update took place
@@ -34,15 +43,6 @@ void ReportLaunch(base::Time now,
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
-
-inline constexpr char kUpdateStatusHistogramName[] = "Brave.Update.Status";
-
-enum UpdateStatus {
-  kNoUpdateWithLegacy,
-  kNoUpdateWithOmaha4,
-  kUpdatedWithLegacy,
-  kUpdatedWithOmaha4
-};
 
 }  // namespace brave_updater
 
