@@ -19,7 +19,7 @@ inline constexpr char kLastLaunchVersionPref[] =
 inline constexpr char kLastReportedWeekPref[] =
     "brave.updater_p3a.last_reported_week";
 
-void RegisterLocalState(PrefRegistrySimple* registry) {
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kFirstLaunchTimePref, base::Time());
   registry->RegisterBooleanPref(kLastLaunchUsedOmaha4Pref, false);
   registry->RegisterStringPref(kLastLaunchVersionPref, "");

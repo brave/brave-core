@@ -31,7 +31,7 @@ void ReportLaunch(base::Time now,
                   PrefService* prefs);
 
 // Register the prefs for use by ReportLaunch(...) above.
-void RegisterLocalState(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
 
