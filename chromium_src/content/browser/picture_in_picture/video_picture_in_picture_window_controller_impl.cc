@@ -11,15 +11,9 @@
 // Note that |media_position_| could be incorrect(suspecting timing issue
 // between service process), so we're getting more correct position from media
 // session.
-#define SetPlaybackState(PLAYBACK_STATE)                                  \
-  SetPlaybackState(PLAYBACK_STATE);                                       \
-  if (auto position = MediaSessionImpl::Get(web_contents())               \
-                          ->GetMediaPositionFromNormalPlayerIfPossible(); \
-      position) {                                                         \
-    window_->SetMediaPosition(position);                                  \
-  } else {                                                                \
-    window_->SetMediaPosition(effective_media_position);                  \
-  }
+#define SetPlaybackState(PLAYBACK_STATE) \
+  SetPlaybackState(PLAYBACK_STATE);      \
+  window_->SetMediaPosition(effective_media_position);
 
 // Update seeker enabled state whenever actions are updated.
 // Note that we allow seeking when media session is controllable referring to
