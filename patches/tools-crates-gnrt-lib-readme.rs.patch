@@ -1,17 +1,17 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 240ba5b64bc375c5e9ce5c9485f53e2db946d94e..6e315dfae71e7ea7962ab532e5bf88ba974bffa5 100644
+index f0b5f223a40e5b54add2c088e0e06d3ef94a1578..90a1aec29df6abde9446b8482d1572fccc9312a3 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
-@@ -122,7 +122,7 @@ pub fn readme_file_from_package<'a>(
+@@ -144,7 +144,7 @@ fn readme_file_from_package<'a>(
          Vec::new()
      };
  
 -    if license_files.is_empty() {
 +    if license_files.is_empty() && false {
          bail!(
-             "License file not found for crate {name}.\n
-              \n
-@@ -196,6 +196,9 @@ enum LicenseKind {
+             r#"License file not found for crate `{name}-{version}`.
+ 
+@@ -229,6 +229,9 @@ enum LicenseKind {
  
      /// https://spdx.org/licenses/Unicode-3.0.html
      Unicode3,
@@ -21,7 +21,7 @@ index 240ba5b64bc375c5e9ce5c9485f53e2db946d94e..6e315dfae71e7ea7962ab532e5bf88ba
  }
  
  impl Display for LicenseKind {
-@@ -210,6 +213,9 @@ impl Display for LicenseKind {
+@@ -243,6 +246,9 @@ impl Display for LicenseKind {
              LicenseKind::ISC => write!(f, "ISC"),
              LicenseKind::Zlib => write!(f, "Zlib"),
              LicenseKind::Unicode3 => write!(f, "Unicode-3.0"),
@@ -31,7 +31,7 @@ index 240ba5b64bc375c5e9ce5c9485f53e2db946d94e..6e315dfae71e7ea7962ab532e5bf88ba
          }
      }
  }
-@@ -255,6 +261,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
+@@ -288,6 +294,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
          h.insert("BSD-2-Clause OR Apache-2.0 OR MIT", vec![LicenseKind::Apache2]);
          h.insert("Unicode-3.0", vec![LicenseKind::Unicode3]);
          h.insert("Zlib", vec![LicenseKind::Zlib]);
@@ -43,7 +43,7 @@ index 240ba5b64bc375c5e9ce5c9485f53e2db946d94e..6e315dfae71e7ea7962ab532e5bf88ba
          h
      });
  
-@@ -283,6 +294,9 @@ static LICENSE_KIND_TO_LICENSE_FILES: LazyLock<HashMap<LicenseKind, Vec<&'static
+@@ -316,6 +327,9 @@ static LICENSE_KIND_TO_LICENSE_FILES: LazyLock<HashMap<LicenseKind, Vec<&'static
          h.insert(LicenseKind::ISC, vec!["LICENSE-ISC", "LICENSE.md", "LICENSE"]);
          h.insert(LicenseKind::Zlib, vec!["LICENSE-ZLIB", "LICENSE.md", "LICENSE"]);
          h.insert(LicenseKind::Unicode3, vec!["LICENSE-UNICODE", "LICENSE.md", "LICENSE"]);
