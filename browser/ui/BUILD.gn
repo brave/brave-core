@@ -306,7 +306,7 @@ source_set("ui") {
 
     deps += [
       "//base",
-      "//brave/browser/email_aliases:browser",
+      "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
