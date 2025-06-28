@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
