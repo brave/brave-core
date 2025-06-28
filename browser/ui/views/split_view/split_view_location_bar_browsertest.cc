@@ -58,7 +58,8 @@ class SplitViewLocationBarBrowserTest
   // Open split view active tab.
   void OpenSplitView() {
     if (IsSideBySideEnabled()) {
-      chrome::NewSplitTab(browser());
+      chrome::NewSplitTab(browser(),
+                          split_tabs::SplitTabCreatedSource::kToolbarButton);
     } else {
       brave::NewSplitViewForTab(browser());
     }
