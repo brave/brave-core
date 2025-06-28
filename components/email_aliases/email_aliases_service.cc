@@ -5,12 +5,8 @@
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 
-#include <algorithm>
-#include <set>
 #include <utility>
 
-#include "base/functional/bind.h"
-#include "base/strings/string_util.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 
 namespace email_aliases {
