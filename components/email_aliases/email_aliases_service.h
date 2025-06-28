@@ -6,12 +6,8 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
-#include <memory>
 #include <string>
-#include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -49,8 +45,6 @@ class EmailAliasesService : public KeyedService,
  private:
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
-
-  base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 
 }  // namespace email_aliases
