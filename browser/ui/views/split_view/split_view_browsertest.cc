@@ -139,14 +139,16 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   chrome::PinTab(browser());
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
   chrome::PinTab(browser());
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   chrome::PinTab(browser());
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
   chrome::PinTab(browser());
 
   tab_strip()->StopAnimating(/* layout= */ true);
@@ -199,7 +201,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_NE(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
 
-  chrome::NewSplitTab(browser());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   // separator should be empty when split view is opened.
   EXPECT_EQ(gfx::Size(),
@@ -277,7 +280,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Created new tab(at 3) for new split view with existing tab(at 2).
-  chrome::NewSplitTab(browser());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
   EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
@@ -385,8 +389,10 @@ class SplitViewWithTabDialogBrowserTest
   }
 
   void NewSplitTab() {
-    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
-                          : brave::NewSplitViewForTab(browser());
+    IsSideBySideEnabled()
+        ? chrome::NewSplitTab(browser(),
+                              split_tabs::SplitTabCreatedSource::kToolbarButton)
+        : brave::NewSplitViewForTab(browser());
   }
 
   bool IsSideBySideEnabled() const { return GetParam(); }
