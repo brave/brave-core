@@ -230,11 +230,13 @@ const stubEmailAliasesServiceAccountReadyInstance =
 const bindNoAccountObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
+    return () => { } // Do nothing in this mock implementation.
   }
 
 const bindAccountReadyObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
+    return () => { } // Do nothing in this mock implementation.
   }
 
 export const SignInPage = () => {
