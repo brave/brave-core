@@ -79,7 +79,7 @@ cargo_crate("{{this.name}}") {
   {{#if aliased_deps}}
   aliased_deps = {
     {{#each aliased_deps}}
-    {{this.0}} = "//brave/third_party/rust/{{this.1}}:lib"
+    {{this.0}} = "//brave/third_party/rust/{{this.1.name}}/{{this.1.epoch}}:lib"
     {{/each}}
   }
   {{/if}}
