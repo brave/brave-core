@@ -1238,7 +1238,8 @@ bool IsSplitTabs(Browser* browser) {
   });
 }
 
-void SplitTabsWithSideBySide(Browser* browser) {
+void SplitTabsWithSideBySide(Browser* browser,
+                             split_tabs::SplitTabCreatedSource source) {
   CHECK(brave::CanSplitTabsWithSideBySide(browser));
 
   auto selected_indices = GetSelectedIndices(browser);
@@ -1254,7 +1255,8 @@ void SplitTabsWithSideBySide(Browser* browser) {
                                           : selected_indices[0];
   tab_strip_model->AddToNewSplit(
       {non_active_index_from_selected_indices},
-      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kVertical));
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kVertical),
+      source);
 }
 
 void RemoveSplitWithSideBySide(Browser* browser) {
