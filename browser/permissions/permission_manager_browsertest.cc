@@ -118,7 +118,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   BravePermissionManager* permission_manager() { return permission_manager_; }
 
   bool IsPendingGroupedRequestsEmpty(ContentSettingsType type) {
-    ContentSettingPermissionContextBase* context =
+    PermissionContextBase* context =
         permission_manager()->GetPermissionContextForTesting(type);
     return context->IsPendingGroupedRequestsEmptyForTesting();
   }
