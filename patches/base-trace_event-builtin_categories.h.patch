@@ -1,8 +1,8 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index 31c41cb8e8cc0d0c43811ce7e97a03f4feb38feb..c1cfa62a88284483749fd3c5effd99233fda9849 100644
+index 467ce5cd72f227ecf7011176ef174a18c2b9d8cc..9e92a4cd814610a27e1299e841b5275d7a1ea2e6 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
-@@ -250,6 +250,7 @@ PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(
+@@ -255,6 +255,7 @@ PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(
      perfetto::Category("webrtc").SetTags("audio", "video"),
      perfetto::Category("webrtc_stats"),
      perfetto::Category("xr"),
