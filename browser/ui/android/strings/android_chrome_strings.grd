@@ -554,11 +554,17 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_CARD_HOLDER_NAME" desc="Label for text input field containing the name on a credit card. [CHAR_LIMIT=32]">
         Cardholder name
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NUMBER" desc="Label for text input field containing a card number. This can be a credit, debit, or prepaid card. [CHAR_LIMIT=32]">
-        Card number
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NUMBER" desc="Label for text input field containing a card number. This can be a credit, debit, or prepaid card. The asterisk '*' indicates that this field is required and should not be removed. [CHAR_LIMIT=32]">
+        Card number*
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_EXPIRATION_DATE" desc="Label for text input field containing a credit card expiration date. [CHAR_LIMIT=32]">
-        Expiration date
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NUMBER_CONTENT_DESCRIPTION" desc="Accessible content description and label for text input field containing a card number. This can be a credit, debit, or prepaid card. This field is required for cards. [CHAR_LIMIT=64]">
+        Card number, required
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_EXPIRATION_DATE" desc="Label for text input field containing a credit card expiration date. The asterisk '*' indicates that this field is required and should not be removed. [CHAR_LIMIT=32]">
+        Expiration date*
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_EXPIRATION_DATE_CONTENT_DESCRIPTION" desc="Accessible content description and label for text input field containing a credit card expiration date. This field is required for cards. [CHAR_LIMIT=64]">
+        Expiration date, required
       </message>
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR_LIMIT=32]">
         Billing address
@@ -1128,6 +1134,12 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_SEE_BETTER_RESULTS_SUMMARY" desc="Summary for the see better results switch in Contextual Search preference.">
         By including more of a page’s text, you might see better results
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT" desc="The text for a button, which when pressed opens the latest search results for the currently selected text.">
+        Latest results
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT_VARIANT" desc="The text for a button, which when pressed allows the user to see more information about the currently selected text.">
+        See more
       </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for the 'Do Not Track' preference. Please leave the 'Do Not Track' part in English according to the glossary.">
         Send a “Do Not Track” request
@@ -1794,6 +1806,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_LOCAL_PASSWORDS_CHECKING_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the check is in progress.">
         Checking passwords on this device…
       </message>
+      <message name="IDS_SAFETY_HUB_PASSWORDS_CHECKING_TITLE" desc="Title for the password check row in the Safety Check page indicating that the check is in progress.">
+        Checking passwords…
+      </message>
       <message name="IDS_SAFETY_HUB_PASSWORDS_COMPROMISED_TITLE" desc="Title for the password check row in the Safety Check page indicating that the user has account and local passwords which have been compromised.">
         {NUM_PASSWORDS, plural,
         =1 {1 compromised password}
@@ -1954,12 +1969,14 @@ Your Brave account may have other forms of browsing history like searches and ac
         other {Brave found # reused passwords that you could improve}}
       </message>
       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_TITLE" desc="Title for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
-        Brave unsubscribed you from notifications
+        {NUM_REVOKED_PERMISSIONS, plural,
+        =1 {Unsubscribed from one unused site}
+        other {Unsubscribed from # unused sites}}
       </message>
       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
         {NUM_REVOKED_PERMISSIONS, plural,
-        =1 {Removed notification permissions from one site you haven’t visited recently}
-        other {Removed notification permissions from # sites you haven’t visited recently}}
+        =1 {Brave stopped notifications from this site. You can review and manage.}
+        other {Brave stopped notifications from these sites. You can review and manage.}}
       </message>
       <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_ACK" desc="Button to acknowledge the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
         Got it
@@ -2341,6 +2358,28 @@ Your Brave account may have other forms of browsing history like searches and ac
         Downloaded PDFs automatically open with <ph name="APP_NAME">%1$s<ex>Drive PDF Viewer</ex></ph>
       </message>
 
+      <!-- Download warning bypass dialog -->
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_TEXT" desc="Text of the dialog for asking user to confirm that they want to bypass a download warning.">
+        This file contains malware or comes from a suspicious site
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_ACTION_DOWNLOAD" desc="Label for the button to confirm that the user wants to bypass a download warning.">
+        Download anyway
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_ACTION_LEARN_MORE" desc="Label for the button to open a help page about download warnings.">
+        Learn more
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_ACTION_LEARN_MORE_ACCESSIBILITY_DESCRIPTION" desc="Accessibility description for the button to open a help page about download warnings.">
+        Learn more about why Brave blocks some files
+      </message>
+
+      <!-- Download Home dangerous warning -->
+      <message name="IDS_DOWNLOAD_WARNING_HEED_MENU_ACTION_DELETE" desc="Label for the menu item to heed a download warning shown in the downloads list by removing the file from download history.">
+        Delete from history
+      </message>
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_MENU_ACTION_DOWNLOAD" desc="Label for the menu item to bypass a download warning shown in the downloads list and download the dangerous file anyway.">
+        Download
+      </message>
+
       <!-- About Brave preferences -->
       <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Brave page. [CHAR_LIMIT=32]">
         About Brave
@@ -2578,6 +2617,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
         Payment methods, offers, and addresses using Google Pay
       </message>
+      <message name="IDS_SYNC_PAYMENTS_AND_INFO_INTEGRATION" desc="Title for preference which enables import of Brave Wallet data for Autofill. 'Brave Wallet' should not be translated as it is the product name.">
+        Payment methods and other info from Brave Wallet
+      </message>
       <message name="IDS_ACCOUNT_SETTINGS_TITLE" desc="Title for the account settings page. [CHAR_LIMIT=32]">
         Account
       </message>
@@ -2604,6 +2646,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_SECTION_PAYMENTS_TOGGLE" desc="Google Pay data for Autofill, one of the data types that we allow syncing. 'Google Pay' should not be translated as it is the product name. Shown on next to the toggle that controls whether Google Pay data for Autofill should be saved in the Brave sync chain and synced across devices.">
         Payment methods, offers, and addresses using Google Pay
+      </message>
+      <message name="IDS_ACCOUNT_SECTION_PAYMENTS_AND_INFO_TOGGLE" desc="Brave Wallet data for Autofill, one of the data types that we allow syncing. 'Brave Wallet' should not be translated as it is the product name. Shown on next to the toggle that controls whether payments and other data from Brave Wallet, for use in Autofill, should be saved in the Brave sync chain and synced across devices.">
+        Payment methods and other info from Brave Wallet
       </message>
       <message name="IDS_ACCOUNT_SECTION_SETTINGS_TOGGLE" desc="Settings, one of the data types that we allow syncing. Shown on next to the toggle that controls whether Settings should be saved in the Brave sync chain and synced across devices.">
         Settings
@@ -2650,70 +2695,65 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGN_OUT" desc="Sign out button, visible if the user has authenticated. Clicking this clears authentication credentials and returns the web-app to the initial 'unauthenticated' state.">
         Sign out
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears on button in a temporary card to inform them that there is some local data, like passwords, saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_CARD_DESCRIPTION_PASSWORD" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (passwords) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {PASSWORDS_COUNT, plural,
+          =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+          other {# passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}}
+      </message>
+      <message name="IDS_BATCH_UPLOAD_CARD_DESCRIPTION_PASSWORD_AND_OTHER" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (bookmarks, or other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {PASSWORDS_COUNT, plural,
+          =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+          other {# passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}}
+      </message>
+      <message name="IDS_BATCH_UPLOAD_CARD_DESCRIPTION_OTHER" desc="This message appears either in user's account settings or bookmark manager. The text appears in a temporary card to inform them that there is some local data (in case of the account settings card the local data does not include passwords, and in case of the bookmark manager card the local data does not include bookmarks) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {ITEMS_COUNT, plural,
+          =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+          other {# items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}}
+      </message>
+      <message name="IDS_BATCH_UPLOAD_CARD_SAVE_BUTTON" desc="This message appears on a button in a temporary card to inform the user that there is some local data saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         Save in account
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_PASSWORD" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (passwords) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
-        {PASSWORDS_COUNT, plural,
-          =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
-      </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_PASSWORD_AND_OTHER" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (bookmarks, or other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
-        {PASSWORDS_COUNT, plural,
-          =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
-      </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_OTHER" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (passwords, bookmarks, or other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
-        {ITEMS_COUNT, plural,
-          =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
-      </message>
-      <message name="IDS_BOOKMARKS_LEFT_BEHIND_BOOKMARKS_BUTTON" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (bookmarks) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
-        Save in account
-      </message>
-      <message name="IDS_BOOKMARKS_LEFT_BEHIND_BOOKMARK" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (bookmarks) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_CARD_DESCRIPTION_BOOKMARK" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (bookmarks) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         {BOOKMARKS_COUNT, plural,
-          =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
+          =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+          other {# bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}}
       </message>
-      <message name="IDS_BOOKMARKS_LEFT_BEHIND_BOOKMARK_AND_OTHER" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (bookmarks and some other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_CARD_DESCRIPTION_BOOKMARK_AND_OTHER" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (bookmarks and some other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         {BOOKMARKS_COUNT, plural,
-          =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
+          =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+          other {# bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}}
       </message>
-      <message name="IDS_BOOKMARKS_LEFT_BEHIND_OTHER" desc="This message appears in a user's bookmark manager. The text appears in a temporary card to inform them that there is some local data (something other than bookmarks) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
-        {ITEMS_COUNT, plural,
-          =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
-          other {# items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
-      </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_TITLE" desc="The text appears as the title of a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_TITLE" desc="The text appears as the title of a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         Save data in your Brave sync chain
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_DESCRIPTION" desc="The text appears as a note in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave. This note explains where the user can go to view and manage individual items. like individual bookmarks or passwords.">
-        You can also view and manage these items in your bookmarks, reading list, or password manager
+      <message name="IDS_BATCH_UPLOAD_DIALOG_DESCRIPTION" desc="The text appears as a note in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave. This note explains where the user can go to view and manage individual items. like individual bookmarks or passwords.">
+        You can choose what data to save in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%1$s<ex>elisa.g.beckett@gmail.com</ex></ph>.\nYou can also view and manage these items in your bookmarks, reading list, or password manager.
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_BOOKMARKS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_DESCRIPTION_NON_DISPLAYABLE_PROFILE_DATA" desc="The text appears as a note in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave. This note explains where the user can go to view and manage individual items. like individual bookmarks or passwords.">
+        You can choose what data to save in your Brave sync chain.\nYou can also view and manage these items in your bookmarks, reading list, or password manager.
+      </message>
+      <message name="IDS_BATCH_UPLOAD_DIALOG_BOOKMARKS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         {ITEMS_COUNT, plural,
           =1 {1 bookmark}
           other {# bookmarks}}
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_PASSWORDS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_PASSWORDS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         {ITEMS_COUNT, plural,
           =1 {1 password}
           other {# passwords}}
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_READING_LIST" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_READING_LIST" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         {ITEMS_COUNT, plural,
           =1 {1 page on your reading list}
           other {# pages on your reading list}}
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_SAVE_BUTTON" desc="The text is the primary button in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_SAVE_BUTTON" desc="The text is the primary button in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         Save in account
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_CANCEL_BUTTON" desc="Text for the cancel button belonging to the batch upload confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+      <message name="IDS_BATCH_UPLOAD_DIALOG_CANCEL_BUTTON" desc="Text for the cancel button belonging to the batch upload confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
         Cancel
       </message>
-      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SAVED_SNACKBAR_MESSAGE" desc="The message appears in a small confirmation bubble with limited space after the user chose to save some data to their Brave sync chain.">
+      <message name="IDS_BATCH_UPLOAD_SAVED_SNACKBAR_MESSAGE" desc="The message appears in a small confirmation bubble with limited space after the user chose to save some data to their Brave sync chain.">
         {ITEMS_COUNT, plural,
           =1 {Item saved in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%1$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
           other {Items saved in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%1$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
@@ -2924,6 +2964,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_OKAY" desc="Button label for the message shown in the Sync Error Card (due to missing trusted vault keys) for confirming that a user wants to get all their passwords on their device.">
         Okay
       </message>
+      <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_GET" desc="Button label for the message shown in the Sync Error Card (due to missing trusted vault keys) for fixing the issue and getting all passwords of a user on their device.">
+        Get
+      </message>
       <!-- Identity error message and notification strings -->
       <message name="IDS_IDENTITY_ERROR_MESSAGE_BODY" desc="Error message/notification to resolve passphrase required error, sync encryption error, auth error, outdated client error.">
         Keep using the Brave data in your Brave sync chain
@@ -2943,7 +2986,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IDENTITY_ERROR_MESSAGE_TITLE_CLIENT_OUT_OF_DATE" desc="Error message/notification title for client out-of-date error.">
         Update Brave
       </message>
-      <message name="IDS_IDENTITY_ERROR_MESSAGE_BUTTON_PASSPHRASE_REQUIRED" desc="Error message button label for passphrase required error.">
+      <message name="IDS_IDENTITY_ERROR_MESSAGE_BUTTON_PASSPHRASE_REQUIRED" meaning="An on-screen button that opens the dialog for the user to enter a custom passphrase" desc="Error message button label for passphrase required error.">
         Enter
       </message>
       <message name="IDS_IDENTITY_ERROR_MESSAGE_BUTTON_VERIFY" desc="Error message button label for all errors requiring re-auth (auth error, degraded recoverability, encryption error)">
@@ -3032,6 +3075,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {FILE_COUNT, plural,
           =1 {1 was blocked by your organization}
           other {# were blocked by your organization}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_DANGEROUS" desc="Download message label describing that one or more downloads are dangerous and were blocked">
+        {FILE_COUNT, plural,
+          =1 {Dangerous download blocked}
+          other {# dangerous downloads blocked}}
       </message>
 
       <message name="IDS_INCOGNITO_DOWNLOAD_MESSAGE_TITLE" desc="Download title displayed in a prompt message when the user downloads a file in Private mode.">
@@ -3599,6 +3647,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_DOWNLOAD_FILE_TYPE_NOT_SUPPORTED" desc="Error message shown to user when a file can't de downloaded due to it's file format (e.g. .pdf, .docx, .apk).">
         Cannot download file. File format not supported.
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_DANGEROUS_BLOCKED" desc="Caption shown below a file that was blocked for being dangerous.">
+        Dangerous download blocked
       </message>
 
       <!-- Browsing History UI -->
@@ -4336,6 +4387,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR_LIMIT=27]">
         Move to other window
       </message>
+      <message name="IDS_MENU_MOVE_TAB_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into another window. [CHAR_LIMIT=27]">
+        Move tab to another window
+      </message>
+      <message name="IDS_MENU_MOVE_GROUP_TO_OTHER_WINDOW" desc="Menu item for moving the current tab group into another window. [CHAR_LIMIT=27]">
+        Move group to another window
+      </message>
       <message name="IDS_MENU_MANAGE_ALL_WINDOWS" desc="Menu item for bringing up instance switcher UI. [CHAR_LIMIT=27]">
         Manage windows (<ph name="INSTANCE_COUNTS">%1$d<ex>3</ex></ph>)
       </message>
@@ -4375,6 +4432,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
+      <message name="IDS_MENU_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
+        Extensions
+      </message>
       <message name="IDS_MENU_TINKER_TANK" desc="Menu item for opening the tinker tank bottom sheet. [CHAR_LIMIT=27]" translateable="false">
         Tinker tank
       </message>
@@ -4411,7 +4471,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR_LIMIT=27]" translateable="false">
         Show Paint Preview
       </message>
-      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR_LIMIT=24]">
+      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR_LIMIT=15]">
         Desktop site
       </message>
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE_ON" desc="Accessibility description for when Request Desktop Site is enabled.">
@@ -4473,6 +4533,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_REVIEW_PDF_WITH_AI" desc="Menu item to review a PDF file with AI.">
         Review PDF with AI
+      </message>
+      <message name="IDS_MENU_PIN_TAB" desc="Menu item for pinning a tab.">
+        Pin tab
+      </message>
+      <message name="IDS_MENU_ITEM_CONTENT_FILTER_HELP_CENTER_LINK" desc="Menu item to explain that the content filter is on and to direct the user to the help center article about content filters. Only available when the content filter is on.">
+        Content filter is on
       </message>
 
       <!-- Bookmarks strings -->
@@ -4877,17 +4943,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_OPEN_IN_PRODUCT_DEFAULT" desc="Default title for menu item for opening link in browser. [CHAR_LIMIT=30]">
         Open in browser
       </message>
-      <message name="IDS_READER_VIEW_TEXT_ALT" desc="Message shown on the reader mode button bar, to invite the user to tap to open a reader mode. Reader mode extracts content and removes clutter from a web page and puts the result in a panel making it easier to read. This is used when &quot;Reader Mode for Accessibility&quot; is available.">
+      <message name="IDS_SHOW_READING_MODE_TEXT" desc="Message shown on the reader mode button bar, to invite the user to tap to open a reading mode. Reading mode extracts content and removes clutter from a web page and puts the result in a panel making it easier to read. This is used when &quot;Reader Mode for Accessibility&quot; is available.">
         Show Reading Mode
       </message>
-      <message name="IDS_READER_MODE_MESSAGE_TITLE" desc="Message shown on the reader mode prompt, to invite the user to tap to open a reader mode.">
+      <message name="IDS_HIDE_READING_MODE_TEXT" desc="Message shown on the reader mode button bar, to invite the user to tap to close reading mode. Returns user to a non-distilled version of the same web page.">
+        Hide Reading Mode
+      </message>
+      <message name="IDS_READER_MODE_MESSAGE_TITLE" desc="Message shown on the reader mode prompt, to invite the user to tap to open a reading mode.">
         View Reading Mode?
       </message>
       <message name="IDS_READER_MODE_MESSAGE_BUTTON" desc="The label for the button to open the current page in reader mode.">
         View
-      </message>
-      <message name="IDS_READER_MODE_ACTION_CHIP_LABEL_SIMPLIFY_PAGE" desc="The label for the action chip shown on the toolbar to open the current page in reader mode. [CHAR_LIMIT=27]">
-        Simplify page
       </message>
       <message name="IDS_CONTENT_PROVIDER_SEARCH_DESCRIPTION" desc="Description for Brave's entry in QSB's list of search suggestion providers [CHAR_LIMIT=32]">
         Bookmarks and web history
@@ -4938,11 +5004,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
       </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_COMPOSEPLATE" is_accessibility_with_no_ui="true" desc="Content description for the composeplate.">
+        Start search
+      </message>
       <message name="IDS_ACCESSIBILITY_BTN_LENS_CAMERA" desc="Content description for the Lens button. When the user taps the button, they can perform a 'search with your camera or photos', which opens the Google Lens app.">
         Search with your camera using Google Lens
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
         New Private tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_3PC_SETTINGS" desc="Content description of the cookie controls icon displayed on the new private tab which navigates to the third-party cookies settings.">
+        Third-party cookies settings
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_TAB" desc="Content description for the new tab button.">
         New tab
@@ -5260,6 +5332,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MAX_NUMBER_OF_WINDOWS" desc="Toast message for when the user has tried to start more than 5 instances of Brave window.">
         You can have up to 5 windows.
       </message>
+      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
+        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer.
+      </message>
+      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
+        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer. Inactive windows are deleted after 6 months.
+      </message>
       <message name="IDS_TAB_DROPPED_DIFFERENT_MODEL" desc="Toast that appears when a tab is dropped into tab strip with a different profile (regular v.s. private).">
         You can find all open tabs in the tab switcher
       </message>
@@ -5556,7 +5634,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Open a new tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_REOPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut for reopening the last tab in the chrome app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Reopen the last closed tab
+        Reopen closed tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
@@ -5571,7 +5649,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Tab navigation shortcuts
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_OPEN_MENU" desc="A text label that appears next to a keyboard shortcut that opens the overflow menu in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the menu
+        Open Brave menu
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_NEXT_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the next tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to the next tab
@@ -5583,43 +5661,43 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Close current tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the Find Bar
+        Open Find Bar
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ADDRESS_BAR" desc="A text label that appears next to the keyboard that will let you focus on the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Jump to the address bar
+        Jump to address bar
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_SEARCH" desc="A text label that appears next to the keyboard that will focusa and clear the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Jump to search
+        Start new search
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open the bookmarks manager in Brave. On a tablet this is a new tab, on the phone this is a new activity. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the bookmarks manager
+        Open Bookmarks Manager
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_PAGE" desc="A text label that appears next to the keyboard shortcut that will bookmark the page that is currently on screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Bookmark the current page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_MANAGER" desc="A text label that appears next to the keyboard shorcut that will open up the history page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open the history page
+        Open History
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_BACK" desc="A text label that appears next to the keyboard shorcut that will go to the previous page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Go to the previous page in History
+        Go to previous page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_FORWARD" desc="A text label that appears next to the keyboard shorcut that will go to the next page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Go to the next page in History
+        Go to next page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_SAVE_PAGE" desc="A text label that appears next to the keyboard shortcut that will save the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open options to save page
+        Open options to save
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_PRINT_PAGE" desc="A text label that appears next to the keyboard shortcut that will open the print page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Open options to print page
+        Open options to print
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_IN" desc="A text label that appears next to the keyboard shortcut that will increase everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Make everything on the page bigger
+        Zoom in
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_OUT" desc="A text label that appears next to the keyboard shortcut that will decrease everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Make everything on the page smaller
+        Zoom out
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_RESET_ZOOM" desc="A text label that appears next to the keyboard shortcut that will reset the zoom back to the original size. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Return everything on the page to default size
+        Reset zoom
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_PAGE" desc="A text label that appears next to the keyboard shortcut that will reload the current page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reload the current page
@@ -5631,7 +5709,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Open the Brave Help Center in a new tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_BOOKMARK_BAR" desc="A text label that appears next to the keyboard shortcut that will toggle the bookmark bar. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Show or hide the bookmarks
+        Show or hide Bookmarks
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_DEVELOPER_TOOLS" desc="A text label that appears next to the keyboard shortcut that will open Developer Tools. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Developer Tools
@@ -5733,8 +5811,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
         Move tab
       </message>
-      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming close operation.">
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming close operation for a non-current window.">
         Close window?
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER_CURRENT" desc="The header of multi-instance switcher dialog confirming close operation for the current window.">
+        Close your current window?
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ZERO" desc="The phrase used in the message when there is a single tab to delete.">
         The window will be closed
@@ -5747,6 +5828,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           =1 {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_ONE">%2$s</ph> more tab will be closed}
           other {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s</ph> more tabs will be closed}}
       </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY_V2" desc="The phrase used in the message when there are multiple tabs to delete.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_ONE">%2$s</ph> other tab will be closed}
+          other {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s</ph> other tabs will be closed}}
+      </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO" desc="The phrase used in the message for deleting private-only instance.">
         {TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
@@ -5756,6 +5842,25 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
           other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_LAST_ACCESSED_CURRENT" desc="The current window indicator text.">
+        Current window
+      </message>
+       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED_V2" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> other tabs will be closed}}
+      </message>
+
+      <!-- Multi-instance message strings -->
+      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_TITLE" desc="Title of the message shown when the number of persisted instances exceeds the max instance count after an instance limit downgrade.">
+        Only <ph name="MAX_INSTANCE_COUNT">%1$s<ex>5</ex></ph> windows can be shown
+      </message>
+      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_DESCRIPTION" desc="Description of the message shown when the number of persisted instances exceeds the max instance count after an instance limit downgrade.">
+        Select manage to see all windows
+      </message>
+      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_BUTTON" desc="Text on the button that will open the instance switcher dialog.">
+        Manage
       </message>
 
       <!-- In-Product Help strings -->
@@ -5824,6 +5929,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_TAB_SWITCHER_XR" desc="The in-product-help message to notify the user about the new tab switcher on an XR device.">
         Your open tabs now have an updated look in XR
+      </message>
+      <message name="IDS_IPH_TAB_TEARING_XR" desc="The in-product-help message to notify the user about the new tab switcher on an XR device.">
+        Pinch, hold, and drag to open tabs in a new window
       </message>
 
       <!-- Search Widget strings -->
@@ -6778,6 +6886,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_COLLABORATION_MANAGE_GROUP_TITLE" desc="The Title for the manage flow dialog for a shared group.">
         Manage access
       </message>
+      <message name="IDS_COLLABORATION_MANAGE_ICON" desc="The text for the manage icon." formatter_data="android_java">
+        Manage icon
+      </message>
       <message name="IDS_COLLABORATION_MANAGE_STOP_SHARING_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
         Stop sharing
       </message>
@@ -7106,6 +7217,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_DEFAULT_BROWSER_PROMO_MESSAGE_SETTINGS_BUTTON" desc="Text that displayed on button that allows the user to open Android settings to set a default browser.">
         Settings
       </message>
+
+      <!-- Tab group suggestions -->
+      <message name="IDS_TAB_GROUP_SUGGESTION_ACTION_CHIP_LABEL" desc="The label for the action chip for tab group suggestions in the top toolbar.">
+        Group tabs
+      </message>
+
     </messages>
   </release>
 </grit>
