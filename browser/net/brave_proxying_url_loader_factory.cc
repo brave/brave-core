@@ -78,8 +78,9 @@ net::RedirectInfo CreateRedirectInfo(
           ? net::RedirectInfo::FirstPartyURLPolicy::UPDATE_URL_ON_REDIRECT
           : net::RedirectInfo::FirstPartyURLPolicy::NEVER_CHANGE_URL,
       original_request.referrer_policy, original_request.referrer.spec(),
-      response_code, new_url, referrer_policy_header,
-      false /* insecure_scheme_was_upgraded */, false /* copy_fragment */,
+      original_request.request_initiator, response_code, new_url,
+      referrer_policy_header, false /* insecure_scheme_was_upgraded */,
+      false /* copy_fragment */,
       false /* is_signed_exchange_fallback_redirect */);
 }
 
