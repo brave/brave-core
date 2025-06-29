@@ -43,7 +43,8 @@ class BraveHelpBubbleHostView : public views::View,
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
+                               views::View* starting_view,
+                               bool visible) override;
 
   // views::WidgetObserver:
   void OnWidgetBoundsChanged(views::Widget* widget, const gfx::Rect&) override;
