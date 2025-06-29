@@ -25,7 +25,7 @@ ItemName NodeJSBuiltin::GetItemName() const {
 }
 
 ItemDesc NodeJSBuiltin::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphNode::GetItemDesc() << " [" << builtin_ << "]";
   return ts.ReleaseString();
 }
