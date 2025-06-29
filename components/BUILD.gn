@@ -12,6 +12,8 @@ test("brave_components_unittests") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/browser:unit_tests",
+    "//brave/components/ai_chat/core/common:unit_tests",
     "//components/test:run_all_unittests",
   ]
 
