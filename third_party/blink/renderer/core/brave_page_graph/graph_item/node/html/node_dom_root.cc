@@ -25,7 +25,7 @@ ItemName NodeDOMRoot::GetItemName() const {
 }
 
 ItemDesc NodeDOMRoot::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeHTMLElement::GetItemDesc();
   ts << " [is attached: " << is_attached_;
 
