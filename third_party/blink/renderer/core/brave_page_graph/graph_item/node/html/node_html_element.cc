@@ -43,7 +43,7 @@ ItemName NodeHTMLElement::GetItemName() const {
 }
 
 ItemDesc NodeHTMLElement::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeHTML::GetItemDesc();
 
   ts << " [" << tag_name_;
