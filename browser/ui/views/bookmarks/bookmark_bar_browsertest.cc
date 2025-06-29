@@ -34,7 +34,8 @@ class InstructionViewVisibilityObserver : public views::ViewObserver {
 
   // views::ViewObserver
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
+                               views::View* starting_view,
+                               bool visible) override;
 
  protected:
   bool visibility_changed_ = false;
@@ -53,7 +54,8 @@ InstructionViewVisibilityObserver::~InstructionViewVisibilityObserver() {
 
 void InstructionViewVisibilityObserver::OnViewVisibilityChanged(
     views::View* observed_view,
-    views::View* starting_view) {
+    views::View* starting_view,
+    bool visible) {
   visibility_changed_ = true;
   if (run_loop_.running()) {
     run_loop_.Quit();
