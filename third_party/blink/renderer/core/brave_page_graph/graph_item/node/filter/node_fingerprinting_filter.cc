@@ -22,7 +22,7 @@ ItemName NodeFingerprintingFilter::GetItemName() const {
 }
 
 ItemDesc NodeFingerprintingFilter::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeFilter::GetItemDesc() << " [" << rule_.ToString() << "]";
   return ts.ReleaseString();
 }

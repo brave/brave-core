@@ -32,7 +32,7 @@ ItemName EdgeJSResult::GetItemName() const {
 }
 
 ItemDesc EdgeJSResult::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GetItemName() << " [result: " << result_ << "]";
   return ts.ReleaseString();
 }

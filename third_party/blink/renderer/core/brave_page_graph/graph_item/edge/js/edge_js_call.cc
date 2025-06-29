@@ -38,7 +38,7 @@ ItemName EdgeJSCall::GetItemName() const {
 }
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GetItemName() << " [arguments: " << arguments_ << "]";
   return ts.ReleaseString();
 }
