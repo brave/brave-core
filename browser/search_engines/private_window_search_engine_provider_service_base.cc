@@ -99,12 +99,12 @@ void PrivateWindowSearchEngineProviderServiceBase::
   // search provider.
   // Howeveer, we manually set |kDefaultSearchProviderDataPrefName|. So,
   // It's replaced with qwant provider. It was extension search provider.
-  // This only happens when |kSyncedDefaultSearchProviderGUID| and favicon
+  // This only happens when |kDefaultSearchProviderGUID| and favicon
   // udpated search provider is same. (See the condition in
   // TemplateURLService::MaybeUpdateDSEViaPrefs())
   // And there is no side-effect when this prefs update is skipped because
   // it can be updated again when qwant is default search provider.
-  otr_profile_->GetPrefs()->SetString(prefs::kSyncedDefaultSearchProviderGUID,
+  otr_profile_->GetPrefs()->SetString(prefs::kDefaultSearchProviderGUID,
                                       data.sync_guid);
 
   otr_profile_->GetPrefs()->SetDict(
