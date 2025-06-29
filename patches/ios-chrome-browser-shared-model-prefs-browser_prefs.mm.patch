@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 401d63f232dbacf4ed0800e73f52b1c04b39f46f..44ae190cc91043ff76ec59f4b9c44eaf89dec90d 100644
+index a91cb532d5c27c915bf12a27430acba251e46ba1..b1cd09db64b5a9332e9652725e8f2608c7d41cdb 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -690,6 +690,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 401d63f232dbacf4ed0800e73f52b1c04b39f46f..44ae190cc91043ff76ec59f4b9c44eaf
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1101,6 +1102,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1103,6 +1104,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 06/2025.
    registry->RegisterDoublePref(kGaiaCookiePeriodicReportTimeDeprecated, 0);
    registry->RegisterStringPref(kSyncedDefaultSearchProviderGUID, std::string());
