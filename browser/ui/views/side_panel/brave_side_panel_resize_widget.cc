@@ -112,9 +112,9 @@ void SidePanelResizeWidget::OnViewBoundsChanged(views::View* observed_view) {
   widget_->SetBounds(rect);
 }
 
-void SidePanelResizeWidget::OnViewVisibilityChanged(
-    views::View* observed_view,
-    views::View* starting_view) {
+void SidePanelResizeWidget::OnViewVisibilityChanged(views::View* observed_view,
+                                                    views::View* starting_view,
+                                                    bool visible) {
   // As this widget is for resizing side panel,
   // show only this when panel is visible.
   if (panel_ != observed_view) {
