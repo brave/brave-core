@@ -30,7 +30,7 @@ void NodeHTML::MarkDeleted() {
 }
 
 ItemDesc NodeHTML::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphNode::GetItemDesc();
   if (is_deleted_) {
     ts << " [deleted]";

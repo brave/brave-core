@@ -21,7 +21,7 @@ ItemName NodeTrackerFilter::GetItemName() const {
 }
 
 ItemDesc NodeTrackerFilter::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeFilter::GetItemDesc() << " [" << host_ << "]";
   return ts.ReleaseString();
 }

@@ -22,7 +22,7 @@ EdgeStorage::EdgeStorage(GraphItemContext* context,
 EdgeStorage::~EdgeStorage() = default;
 
 ItemName EdgeStorage::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc();
 
   if (!key_.empty()) {

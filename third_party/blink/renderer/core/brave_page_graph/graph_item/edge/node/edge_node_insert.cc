@@ -52,7 +52,7 @@ ItemDesc EdgeNodeInsert::GetItemDesc() const {
 
   const GraphNode* prior_sibling_node = GetPriorSiblingNode();
 
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeNode::GetItemDesc();
   ts << " [parent: " << parent_node->GetItemDesc() << "]";
 

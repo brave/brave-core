@@ -24,7 +24,7 @@ ItemName NodeJSWebAPI::GetItemName() const {
 }
 
 ItemDesc NodeJSWebAPI::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphNode::GetItemDesc() << " [" << method_name_ << "]";
   return ts.ReleaseString();
 }
