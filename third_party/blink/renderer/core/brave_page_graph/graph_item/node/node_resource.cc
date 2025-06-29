@@ -23,7 +23,7 @@ ItemName NodeResource::GetItemName() const {
 }
 
 ItemDesc NodeResource::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphNode::GetItemDesc() << " [" << url_.GetString() << "]";
   return ts.ReleaseString();
 }

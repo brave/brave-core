@@ -38,7 +38,7 @@ ItemName EdgeRequestComplete::GetItemName() const {
 }
 
 ItemDesc EdgeRequestComplete::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeRequestResponse::GetItemDesc() << " [" << resource_type_ << "]";
   return ts.ReleaseString();
 }
