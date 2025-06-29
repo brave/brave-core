@@ -26,8 +26,11 @@ test("brave_components_unittests") {
 
   if (is_android) {
     deps += [
-      "//base:base_unittest_support_java",
+      "//content/public/android:content_java",
+      "//content/public/browser",
       "//gin:v8_snapshot_assets",
+      "//net",
+      "//services/data_decoder/public/cpp/android:safe_json_java",
       "//ui/android:ui_java",
       "//ui/base",
       "//ui/gfx",
