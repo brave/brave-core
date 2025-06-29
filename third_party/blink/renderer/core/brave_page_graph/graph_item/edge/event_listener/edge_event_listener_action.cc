@@ -38,7 +38,7 @@ ScriptId EdgeEventListenerAction::GetListenerScriptId() const {
 }
 
 ItemDesc EdgeEventListenerAction::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc() << " [" << event_type_ << "]"
      << " [listener id: " << listener_id_ << "]"
      << " [listener script id: " << GetListenerScriptId() << "]";
