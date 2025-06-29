@@ -69,7 +69,7 @@ export default function FilterMenu<T>(props: Props<T>) {
 
       if (direction !== 0 && !focused) {
         setHandled()
-        const items = Array.from(ref.current?.querySelectorAll('leo-menu-item') ?? []) as HTMLElement[]
+        const items: HTMLElement[] = Array.from(ref.current?.querySelectorAll('leo-menu-item') ?? [])
         items.at(direction)?.focus()
       }
     }
