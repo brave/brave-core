@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/binding/node_binding.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -21,7 +22,7 @@ ItemName NodeBinding::GetItemName() const {
 }
 
 ItemDesc NodeBinding::GetItemDesc() const {
-  return GraphNode::GetItemDesc() + " [" + binding_ + "]";
+  return blink::StrCat({GraphNode::GetItemDesc(), " [", binding_, "]"});
 }
 
 void NodeBinding::AddGraphMLAttributes(xmlDocPtr doc,
