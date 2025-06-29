@@ -31,7 +31,8 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   void Toggle(SidePanelEntryKey key,
               SidePanelUtil::SidePanelOpenTrigger open_trigger) override;
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_from) override;
+                               views::View* starting_view,
+                               bool visible) override;
   void PopulateSidePanel(
       bool supress_animations,
       const UniqueKey& unique_key,
