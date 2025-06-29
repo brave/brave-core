@@ -114,6 +114,9 @@ void PermissionLifetimeManager::PermissionDecided(
 
   const ContentSettingsType content_type =
       permission_request.GetContentSettingsType();
+  if (content_type == ContentSettingsType::DEFAULT) {
+    return;
+  }
 
   ContentSetting content_setting =
       PermissionUtil::PermissionDecisionToContentSetting(decision);

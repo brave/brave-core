@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index 4f2d5e1b9475af1d0e02acd218703e81a72c784a..8c378dcc2ef1069b0b8e8291a4d2066418158e32 100644
+index 4816c883f020836ee09776780bd1c5ce71ae91d6..5ce4d735e03e1a183a55f64f89ddd658c8a59042 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-@@ -298,6 +298,7 @@ class AppMenu implements OnKeyListener {
+@@ -295,6 +295,7 @@ class AppMenu implements OnKeyListener {
+                 headerHeight,
                  anchorView,
-                 groupDividerResourceId,
                  anchorViewOffset);
 +        if (this instanceof BraveAppMenu) ((BraveAppMenu) this).updatePopup(mPopup, isByPermanentButton);
          int[] popupPosition =

@@ -10,19 +10,21 @@ import {
 RegisterPolymerTemplateModifications({
   'settings-a11y-page': (templateContent) => {
 
-    // We remove all the templates related to captions - there are two modes
-    // depending on whether `captionSettingsOpensExternally_` is set. We remove
-    // both.
-    const captionsLinkTemplates = templateContent.
-      querySelectorAll('template[if*="captionSettingsOpensExternally_"]')
-    if (captionsLinkTemplates.length !== 3) {
-      console.error(
-        `Expected 3 captionsLinkTemplates, got ${captionsLinkTemplates.length}`
-        + ' - this indicates something upstream has changed.'
-        + ' The override may need to be updated.')
+    // Remove the captions-related template
+    const enableLiveCaptionTemplate = templateContent.
+      querySelector('template[if*="enableLiveCaption_"]')
+    if (!enableLiveCaptionTemplate) {
+      throw new Error('[Settings] Missing enableLiveCaption_ template')
     }
-    for (const link of captionsLinkTemplates) {
-      link.remove()
+    enableLiveCaptionTemplate.remove()
+
+    // Remove the captions-related rows
+    const captionsRows = templateContent.querySelectorAll('#captions')
+    if (!captionsRows) {
+      throw new Error('[Settings] Missing captions rows')
+    }
+    for (const row of captionsRows) {
+      row.remove()
     }
 
     // We hide the image labels toggle button as we don't support this service
@@ -31,7 +33,7 @@ RegisterPolymerTemplateModifications({
     if (imageLabelsToggle) {
       imageLabelsToggle.setAttribute('hidden', 'true')
     } else {
-      console.error('[Settings] missing image labels toggle button')
+      throw new Error('[Settings] Missing image labels toggle button')
     }
   }
 })

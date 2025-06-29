@@ -28,7 +28,7 @@ ItemName EdgeEventListener::GetItemName() const {
 }
 
 ItemDesc EdgeEventListener::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc() << " [" << event_type_ << "]"
      << " [listener id: " << listener_id_ << "]";
   return ts.ReleaseString();

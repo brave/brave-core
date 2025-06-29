@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 2263c9cab52e884adaa8431d9922e069467d774d..7613dfcebd77fafeed03cf6cd1da4962d876f484 100644
+index 6da8f31c67b1e15926f820c93e2314d5f49864a9..3bfa44b7bbbb6dad71eda78d137268c35f70dff1 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4837,6 +4837,7 @@ const FeatureEntry::FeatureVariation kTouchToSearchCalloutVariations[] = {
+@@ -4645,6 +4645,7 @@ const FeatureEntry::Choice kDataSharingVersioningStateChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

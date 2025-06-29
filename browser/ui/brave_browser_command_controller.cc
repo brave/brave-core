@@ -728,7 +728,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
         brave::NewSplitViewForTab(&*browser_);
       } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        chrome::NewSplitTab(base::to_address(browser_));
+        chrome::NewSplitTab(base::to_address(browser_),
+                            split_tabs::SplitTabCreatedSource::kToolbarButton);
       }
       break;
     }
@@ -737,7 +738,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
         brave::TileTabs(&*browser_);
       } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-        brave::SplitTabsWithSideBySide(base::to_address(browser_));
+        brave::SplitTabsWithSideBySide(
+            base::to_address(browser_),
+            split_tabs::SplitTabCreatedSource::kToolbarButton);
       }
       break;
     }
