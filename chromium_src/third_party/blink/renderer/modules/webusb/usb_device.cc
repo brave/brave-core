@@ -21,7 +21,7 @@ String USBDevice::serialNumber() const {
               context,
               ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
               BraveFarblingLevel::BALANCED) != BraveFarblingLevel::OFF) {
-        WTF::StringBuilder result;
+        blink::StringBuilder result;
         result.Append(realSerialNumber);
         result.Append("WEBUSB_SERIAL_NUMBER");
         return brave::BraveSessionCache::From(*context).GenerateRandomString(
