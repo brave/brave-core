@@ -116,7 +116,8 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
 
 void VerticalTabStripWidgetDelegateView::OnViewVisibilityChanged(
     views::View* observed_view,
-    views::View* starting_view) {
+    views::View* starting_view,
+    bool visible) {
   auto* widget = GetWidget();
   if (!widget || widget->IsVisible() == observed_view->GetVisible()) {
     return;

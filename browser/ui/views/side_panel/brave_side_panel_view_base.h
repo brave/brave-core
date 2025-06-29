@@ -27,7 +27,8 @@ class BraveSidePanelViewBase : public views::View, public views::ViewObserver {
  private:
   // views::ViewObserver overrides:
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
+                               views::View* starting_view,
+                               bool visible) override;
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
