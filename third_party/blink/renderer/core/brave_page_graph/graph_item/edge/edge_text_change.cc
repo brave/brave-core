@@ -23,7 +23,7 @@ ItemName EdgeTextChange::GetItemName() const {
 }
 
 ItemName EdgeTextChange::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc() << " [" << text_ << "]";
   return ts.ReleaseString();
 }

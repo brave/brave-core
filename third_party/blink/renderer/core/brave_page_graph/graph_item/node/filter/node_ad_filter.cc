@@ -20,7 +20,7 @@ ItemName NodeAdFilter::GetItemName() const {
 }
 
 ItemDesc NodeAdFilter::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeFilter::GetItemDesc();
   if (!rule_.empty()) {
     ts << " [" << rule_ << "]";

@@ -27,7 +27,7 @@ EdgeAttribute::EdgeAttribute(GraphItemContext* context,
 EdgeAttribute::~EdgeAttribute() = default;
 
 ItemDesc EdgeAttribute::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc() << " [" << name_ << "]";
   return ts.ReleaseString();
 }
