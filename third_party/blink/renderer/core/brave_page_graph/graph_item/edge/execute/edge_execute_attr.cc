@@ -25,7 +25,7 @@ ItemName EdgeExecuteAttr::GetItemName() const {
 }
 
 ItemDesc EdgeExecuteAttr::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeExecute::GetItemDesc() << " [" << attribute_name_ << "]";
   return ts.ReleaseString();
 }

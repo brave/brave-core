@@ -19,7 +19,7 @@ GraphItem::GraphItem(GraphItemContext* context)
 GraphItem::~GraphItem() = default;
 
 ItemDesc GraphItem::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GetItemName() << " #" << id_;
   return ts.ReleaseString();
 }
