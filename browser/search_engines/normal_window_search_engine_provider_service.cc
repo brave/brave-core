@@ -84,8 +84,7 @@ void NormalWindowSearchEngineProviderService::MigrateSearchEnginePrefsInJP() {
     return;
   }
 
-  auto* preference =
-      prefs->FindPreference(prefs::kSyncedDefaultSearchProviderGUID);
+  auto* preference = prefs->FindPreference(prefs::kDefaultSearchProviderGUID);
   if (preference->HasUserSetting()) {
     return;
   }
