@@ -743,6 +743,7 @@ class AIChatDatabaseMigrationTest : public testing::Test,
     OSCryptMocker::SetUp();
     CHECK(temp_directory_.CreateUniqueTempDir());
     database_dump_location_ = database_dump_location_.AppendASCII("brave")
+                                  .AppendASCII("components")
                                   .AppendASCII("test")
                                   .AppendASCII("data")
                                   .AppendASCII("ai_chat");
