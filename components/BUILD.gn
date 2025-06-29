@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//testing/test.gni")
 
@@ -11,9 +12,17 @@ test("brave_components_unittests") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/content/browser:unit_tests",
+    "//brave/components/ai_chat/core/browser:unit_tests",
+    "//brave/components/ai_chat/core/common:unit_tests",
     "//components/test:run_all_unittests",
   ]
+
+  if (use_blink) {
+    deps += [
+      "//brave/components/ai_chat/content/browser:unit_tests",
+    ]
+  }
+
   if (is_ios) {
     bundle_deps = [ "//components:components_tests_pak_bundle_data" ]
   } else {
