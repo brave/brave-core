@@ -59,7 +59,7 @@ ItemName NodeScriptLocal::GetItemName() const {
 }
 
 ItemDesc NodeScriptLocal::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeScript::GetItemDesc();
 
   if (!script_data_.source.url.IsEmpty()) {
