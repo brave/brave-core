@@ -177,11 +177,11 @@ void BraveHelpBubbleHostView::OnViewIsDeleting(views::View* observed_view) {
 
 void BraveHelpBubbleHostView::OnViewVisibilityChanged(
     views::View* observed_view,
-    views::View* starting_view) {
+    views::View* starting_view,
+    bool visible) {
   // Close help bubble when |tracked_element_| gets hidden.
   // It could be in-visible when its ancestor is hidden.
-  if (!observed_view->GetVisible() ||
-      (starting_view && !starting_view->GetVisible())) {
+  if (!visible) {
     Hide();
   }
 }
