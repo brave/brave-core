@@ -371,7 +371,7 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
 
 WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   FarblingPRNG prng = MakePseudoRandomGenerator();
-  WTF::StringBuilder result;
+  blink::StringBuilder result;
   result.Append(real_user_agent);
   int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
   for (int i = 0; i < extra; i++) {
