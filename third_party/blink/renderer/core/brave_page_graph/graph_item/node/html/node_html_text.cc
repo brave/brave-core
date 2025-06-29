@@ -33,7 +33,7 @@ ItemName NodeHTMLText::GetItemName() const {
 }
 
 ItemDesc NodeHTMLText::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeHTML::GetItemDesc() << " [length: " << text_.length() << "]";
   return ts.ReleaseString();
 }

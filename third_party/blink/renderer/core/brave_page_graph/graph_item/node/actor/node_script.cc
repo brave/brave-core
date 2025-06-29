@@ -16,7 +16,7 @@ NodeScript::NodeScript(GraphItemContext* context, const ScriptId script_id)
     : NodeActor(context), script_id_(script_id) {}
 
 ItemDesc NodeScript::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeActor::GetItemDesc();
   ts << " [ script_id: " << script_id_ << "]";
   return ts.ReleaseString();
