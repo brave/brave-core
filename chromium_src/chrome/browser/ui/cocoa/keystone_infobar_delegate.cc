@@ -14,7 +14,7 @@
 #undef ShowUpdaterPromotionInfoBar
 
 void ShowUpdaterPromotionInfoBar() {
-  if (brave::updater::ShouldUseOmaha4()) {
+  if (brave_updater::ShouldUseOmaha4()) {
     ShowUpdaterPromotionInfoBar_ChromiumImpl();
   }
 }

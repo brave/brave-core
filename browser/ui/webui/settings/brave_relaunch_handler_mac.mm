@@ -11,8 +11,7 @@
 namespace brave_relaunch_handler {
 
 bool RelaunchOnMac() {
-  return !brave::updater::ShouldUseOmaha4() &&
-         [SparkleGlue sharedSparkleGlue] &&
+  return !brave_updater::ShouldUseOmaha4() && [SparkleGlue sharedSparkleGlue] &&
          [[SparkleGlue sharedSparkleGlue] relaunch];
 }
 

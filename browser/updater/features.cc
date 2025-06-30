@@ -7,7 +7,7 @@
 
 #include "build/build_config.h"
 
-namespace brave::updater {
+namespace brave_updater {
 
 // DO NOT TURN THIS FEATURE ON IN PRODUCTION. As of this writing, it only
 // implements the happy path of switching from Sparkle to Omaha 4 on macOS. It
@@ -22,4 +22,4 @@ bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha);
 }
 
-}  // namespace brave::updater
+}  // namespace brave_updater

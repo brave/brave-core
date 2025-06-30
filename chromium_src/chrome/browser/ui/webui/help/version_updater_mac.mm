@@ -205,9 +205,9 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
 
-#define WrapUnique(X)                          \
-  WrapUnique(brave::updater::ShouldUseOmaha4() \
-                 ? X                           \
+#define WrapUnique(X)                         \
+  WrapUnique(brave_updater::ShouldUseOmaha4() \
+                 ? X                          \
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
 #include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
 #undef WrapUnique

@@ -16,7 +16,7 @@
 namespace updater {
 
 void DoPeriodicTasks(base::OnceClosure callback) {
-  if (brave::updater::ShouldUseOmaha4()) {
+  if (brave_updater::ShouldUseOmaha4()) {
     DoPeriodicTasks_ChromiumImpl(std::move(callback));
   }
 }

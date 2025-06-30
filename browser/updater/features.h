@@ -8,12 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace brave::updater {
+namespace brave_updater {
 
 BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
 
 bool ShouldUseOmaha4();
 
-}  // namespace brave::updater
+}  // namespace brave_updater
 
 #endif  // BRAVE_BROWSER_UPDATER_FEATURES_H_

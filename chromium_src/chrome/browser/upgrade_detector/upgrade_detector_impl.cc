@@ -18,7 +18,7 @@
 #include "brave/browser/updater/features.h"
 
 #define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR \
-  if (!brave::updater::ShouldUseOmaha4()) {                       \
+  if (!brave_updater::ShouldUseOmaha4()) {                        \
     return;                                                       \
   }
 #else

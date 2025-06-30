@@ -513,13 +513,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #endif
 
 #if BUILDFLAG(ENABLE_UPDATER)
-#define BRAVE_UPDATER_FEATURE_ENTRIES                           \
-  EXPAND_FEATURE_ENTRIES({                                      \
-      "brave-use-omaha4-alpha",                                 \
-      "Use Omaha 4 Alpha",                                      \
-      "Use the new automatic update system",                    \
-      kOsMac,                                                   \
-      FEATURE_VALUE_TYPE(brave::updater::kBraveUseOmaha4Alpha), \
+#define BRAVE_UPDATER_FEATURE_ENTRIES                          \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-use-omaha4-alpha",                                \
+      "Use Omaha 4 Alpha",                                     \
+      "Use the new automatic update system",                   \
+      kOsMac,                                                  \
+      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4Alpha), \
   })
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES
