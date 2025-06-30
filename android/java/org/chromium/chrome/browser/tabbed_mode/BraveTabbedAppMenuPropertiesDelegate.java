@@ -10,6 +10,7 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -75,6 +76,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     private final AppMenuDelegate mAppMenuDelegate;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private boolean mJunitIsTesting;
+    private final Context mContext;
 
     public BraveTabbedAppMenuPropertiesDelegate(
             Context context,
@@ -113,10 +115,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mAppMenuDelegate = appMenuDelegate;
         mBookmarkModelSupplier = bookmarkModelSupplier;
+        mContext = context;
     }
 
-    @Override
-    public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
+    private void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
         // If it's still null, just hide the whole view
         if (mBookmarkModelSupplier.get() == null) {
             if (view != null) {
@@ -126,7 +128,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             assert false;
             return;
         }
-        super.onFooterViewInflated(appMenuHandler, view);
 
         if (view instanceof AppMenuIconRowFooter) {
             ((AppMenuIconRowFooter) view)
@@ -174,23 +175,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    public boolean shouldShowHeader(int maxMenuHeight) {
-        if (isMenuButtonInBottomToolbar()) return false;
-        return super.shouldShowHeader(maxMenuHeight);
-    }
+    public @Nullable View buildFooterView(AppMenuHandler appMenuHandler) {
+        if (isMenuButtonInBottomToolbar() && shouldShowPageMenu()) {
+            View footer =
+                    LayoutInflater.from(mContext).inflate(R.layout.icon_row_menu_footer, null);
 
-    @Override
-    public boolean shouldShowFooter(int maxMenuHeight) {
-        if (isMenuButtonInBottomToolbar()) return true;
-        return super.shouldShowFooter(maxMenuHeight);
-    }
+            this.onFooterViewInflated(appMenuHandler, footer);
 
-    @Override
-    public int getFooterResourceId() {
-        if (isMenuButtonInBottomToolbar()) {
-            return shouldShowPageMenu() ? R.layout.icon_row_menu_footer : 0;
+            return footer;
         }
-        return super.getFooterResourceId();
+        return null;
     }
 
     private boolean isMenuButtonInBottomToolbar() {
