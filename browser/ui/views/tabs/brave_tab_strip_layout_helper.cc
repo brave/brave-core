@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <optional>
+#include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -35,40 +36,66 @@ void CalculatePinnedTabsBoundsInGrid(
   DCHECK(tabs.size());
   DCHECK(result);
 
+  // This method only cares about pinned tab container's layout.
+  if (tabs[0].state().pinned() != TabPinned::kPinned) {
+    return;
+  }
+
   if (is_floating_mode) {
     // In floating mode, we should lay out pinned tabs vertically so that tabs
     // underneath the mouse cursor wouldn't move.
     return;
   }
 
-  auto* tab_style = TabStyle::Get();
-
+  // Passed |true| as |is_split| but it doesn't have any meaning becuase we
+  // always use same width.
+  const auto available_width =
+      width.value_or(TabStyle::Get()->GetStandardWidth(/*is_split*/ true));
   gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
                  /* y= */ kMarginForVerticalTabContainers,
                  /* width= */ kVerticalTabMinWidth,
                  /* height= */ kVerticalTabHeight);
-  for (const auto& tab : tabs) {
-    if (tab.state().pinned() != TabPinned::kPinned) {
-      break;
-    }
-
-    result->push_back(rect);
-
+  const auto tab_count = tabs.size();
+  for (size_t i = 0; i < tab_count; i++) {
+    auto tab = tabs[i];
     if (tab.state().open() != TabOpen::kOpen) {
       continue;
     }
 
-    // Update rect for the next pinned tabs. If overflowed, break into new line
-    // Passed |true| as |is_split| but it doesn't have any meaning becuase we
-    // always use same width.
+    // Don't need to consider any conditions for first tab.
+    if (i == 0) {
+      result->push_back(rect);
+      continue;
+    }
+
+    // Check |tab| is left split tab.
+    const bool need_split_tabs_check =
+        (i != (tab_count - 1) && tab.state().split().has_value() &&
+         (tab.state().split() == tabs[i + 1].state().split()));
+    if (need_split_tabs_check) {
+      // If two split tabs can't be put in the same line, move it to next line.
+      // This sets left split tab. Right split tab will be handled like other
+      // non split tab.
+      if (rect.right() + (kVerticalTabMinWidth + kVerticalTabsSpacing) * 2 >=
+          available_width) {
+        // New line
+        rect.set_x(kMarginForVerticalTabContainers);
+        rect.set_y(rect.bottom() + kVerticalTabsSpacing);
+        result->push_back(rect);
+        continue;
+      }
+    }
+
+    // Update rect for the next pinned tabs. If overflowed, break into new line.
     if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing <
-        width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
+        available_width) {
       rect.set_x(rect.right() + kVerticalTabsSpacing);
     } else {
       // New line
       rect.set_x(kMarginForVerticalTabContainers);
-      rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
+      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
     }
+    result->push_back(rect);
   }
 }
 
