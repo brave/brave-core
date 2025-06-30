@@ -321,10 +321,6 @@ void BraveWalletService::Bind(
   GetBraveWalletP3A()->Bind(std::move(receiver));
 }
 
-KeyringService* BraveWalletService::keyring_service() {
-  return keyring_service_.get();
-}
-
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        mojom::CoinType coin,
                                        GetUserAssetsCallback callback) {
