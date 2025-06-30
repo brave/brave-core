@@ -14,7 +14,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/request_otr/browser/request_otr_component_installer.h"

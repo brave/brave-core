@@ -12,7 +12,7 @@
 #include "base/check.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"

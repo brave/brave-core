@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"

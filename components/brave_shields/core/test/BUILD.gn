@@ -15,6 +15,20 @@ source_set("unit_tests") {
   deps = [
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//chrome/test:test_support",
     "//testing/gtest",
   ]
+
+  if (!is_android) {
+    sources += [
+      "brave_shields_p3a_unittest.cc",
+      "brave_shields_utils_unittest.cc",
+    ]
+
+    deps += [
+      "//chrome/browser",
+      "//chrome/browser/content_settings:content_settings_factory",
+    ]
+  }
 }

@@ -14,7 +14,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"

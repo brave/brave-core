@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"

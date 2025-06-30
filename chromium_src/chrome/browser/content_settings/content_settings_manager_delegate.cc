@@ -5,7 +5,7 @@
 
 #include "src/chrome/browser/content_settings/content_settings_manager_delegate.cc"
 
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/user_prefs/user_prefs.h"
