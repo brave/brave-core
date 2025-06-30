@@ -14,11 +14,13 @@ import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
 
 type Props = {
   icon: React.ReactNode
   title: string
-  subtitle: string
+  subtitle: React.ReactNode
+
   // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
@@ -31,13 +33,11 @@ export function AttachmentItem(props: Props) {
       <div className={styles.leftSide}>
         {props.icon}
         <div className={styles.info}>
-          <Tooltip
-            mode='mini'
-            text={props.title}
-          >
+          <Tooltip mode='mini'>
             <div className={styles.forEllipsis}>
               <span className={styles.title}>{props.title}</span>
             </div>
+            <div className={styles.tooltipContent} slot="content">{props.title}</div>
           </Tooltip>
           {props.subtitle && (
             <span
@@ -114,4 +114,28 @@ export function AttachmentSpinnerItem(props: { title: string }) {
       subtitle={''}
     />
   )
+}
+
+export function AttachmentPageItem(props: { title: string, url: string, remove?: () => void }) {
+  // We don't display the scheme in the subtitle.
+  const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
+
+  return <AttachmentItem
+    icon={<div className={styles.favicon}>
+      <img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />
+    </div>}
+    title={props.title}
+    subtitle={<>
+      {props.remove && <Tooltip mode='mini'>
+        <Icon name='info-outline' />
+        <div className={styles.tooltipContent} slot="content">
+          {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
+        </div>
+      </Tooltip>}
+      <Tooltip mode='mini' className={styles.subtitleText}>
+        <div>{sansSchemeUrl}</div>
+        <div className={styles.tooltipContent} slot="content">{props.url}</div>
+      </Tooltip>
+    </>}
+    remove={props.remove} />
 }

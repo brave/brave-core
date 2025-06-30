@@ -12,6 +12,7 @@ import { updateConversationHistory } from '../common/conversation_history_utils'
 export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
+  associatedContent: Mojom.AssociatedContent[]
 }
 
 // Default state before initial API call
@@ -25,7 +26,8 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   trimmedTokens: BigInt(0),
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
-  isMobile: loadTimeData.getBoolean('isMobile')
+  isMobile: loadTimeData.getBoolean('isMobile'),
+  associatedContent: []
 }
 
 // Define how to get the initial data and update the state from events
@@ -81,6 +83,10 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
 
     this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
       this.setPartialState(state)
+    })
+
+    this.conversationObserver.associatedContentChanged.addListener((content: Mojom.AssociatedContent[]) => {
+      this.setPartialState({ associatedContent: content })
     })
 
     // Set up communication with the parent frame
