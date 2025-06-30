@@ -45,48 +45,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
-namespace {
-
-base::Value::Dict GetJsonRpcRequest(const std::string& method,
-                                    base::Value::List params) {
-  base::Value::Dict dictionary;
-  dictionary.Set("jsonrpc", "2.0");
-  dictionary.Set("method", method);
-  dictionary.Set("params", std::move(params));
-  dictionary.Set("id", "1");
-  return dictionary;
-}
-
-// Common logic for filtering the list of accounts based on the selected account
-std::vector<std::string> FilterAccountsByPermissionIdentifier(
-    const std::vector<std::string>& identifiers,
-    const brave_wallet::mojom::AccountInfoPtr& selected_account) {
-  // If one of the accounts matches the selected account, then only
-  // return that account.  This is for webcompat reasons.
-  // Some Dapps select the first account in the list, and some the
-  // last. So having only 1 item returned here makes it work for
-  // all Dapps.
-  std::vector<std::string> filtered_identifiers;
-  for (const auto& identifier : identifiers) {
-    if (selected_account &&
-        base::EqualsCaseInsensitiveASCII(
-            identifier, brave_wallet::GetAccountPermissionIdentifier(
-                            selected_account->account_id))) {
-      filtered_identifiers.clear();
-      filtered_identifiers.push_back(identifier);
-      break;
-    } else {
-      filtered_identifiers.push_back(identifier);
-    }
-  }
-  return filtered_identifiers;
-}
-
-}  // namespace
-
 namespace brave_wallet {
 
 namespace {
+
 void RejectInvalidParams(base::Value id,
                          mojom::EthereumProvider::RequestCallback callback) {
   base::Value formed_response = GetProviderErrorDictionary(
@@ -119,6 +81,41 @@ bool IsTypedDataStructure(const base::Value::List& params_list) {
                                       EthSignTypedDataHelper::Version::kV4) ||
           ParseEthSignTypedDataParams(params_list,
                                       EthSignTypedDataHelper::Version::kV3));
+}
+
+base::Value::Dict GetJsonRpcRequest(const std::string& method,
+                                    base::Value::List params) {
+  base::Value::Dict dictionary;
+  dictionary.Set("jsonrpc", "2.0");
+  dictionary.Set("method", method);
+  dictionary.Set("params", std::move(params));
+  dictionary.Set("id", "1");
+  return dictionary;
+}
+
+// Common logic for filtering the list of accounts based on the selected account
+std::vector<std::string> FilterAccountsByPermissionIdentifier(
+    const std::vector<std::string>& identifiers,
+    const mojom::AccountInfoPtr& selected_account) {
+  // If one of the accounts matches the selected account, then only
+  // return that account.  This is for webcompat reasons.
+  // Some Dapps select the first account in the list, and some the
+  // last. So having only 1 item returned here makes it work for
+  // all Dapps.
+  std::vector<std::string> filtered_identifiers;
+  for (const auto& identifier : identifiers) {
+    if (selected_account &&
+        base::EqualsCaseInsensitiveASCII(
+            identifier,
+            GetAccountPermissionIdentifier(selected_account->account_id))) {
+      filtered_identifiers.clear();
+      filtered_identifiers.push_back(identifier);
+      break;
+    } else {
+      filtered_identifiers.push_back(identifier);
+    }
+  }
+  return filtered_identifiers;
 }
 
 }  // namespace

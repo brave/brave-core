@@ -133,7 +133,7 @@ bool IsRetriableStatus(mojom::TransactionStatus status);
 
 std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program);
 
-std::string GetAccountPermissionIdentifier(
+const std::string& GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id);
 
 }  // namespace brave_wallet

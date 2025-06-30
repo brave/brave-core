@@ -191,7 +191,8 @@ import XCTest
           ],
           selectedAccount: self.ethAccount1,
           ethDappSelectedAccount: self.ethAccount1,
-          solDappSelectedAccount: self.solAccount1
+          solDappSelectedAccount: self.solAccount1,
+          adaDappSelectedAccount: nil
         )
       )
     }

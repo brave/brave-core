@@ -20,6 +20,19 @@ namespace brave_wallet {
 namespace {
 constexpr char kTabNotVisibleError[] = "Tab not active";
 constexpr char kAccountNotConnectedError[] = "Account not connected";
+
+mojom::AccountIdPtr FindFirstCardanoHDAccount(KeyringService* keyring_service) {
+  auto accounts = keyring_service->GetAllAccountsSync();
+  for (const auto& account : accounts->accounts) {
+    if (account && account->account_id &&
+        IsCardanoMainnetKeyring(account->account_id->keyring_id) &&
+        account->account_id->account_index == 0) {
+      return account->account_id.Clone();
+    }
+  }
+  return nullptr;
+}
+
 }  // namespace
 
 CardanoProviderImpl::CardanoProviderImpl(
@@ -27,6 +40,7 @@ CardanoProviderImpl::CardanoProviderImpl(
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
     : brave_wallet_service_(brave_wallet_service),
       delegate_(std::move(delegate)) {
+  CHECK(delegate_);
   brave_wallet_service_->keyring_service()->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
@@ -49,18 +63,6 @@ void CardanoProviderImpl::Enable(EnableCallback callback) {
 
   // Mocked values for development usage.
   RequestCardanoPermissions(std::move(callback), delegate_->GetOrigin());
-}
-
-mojom::AccountIdPtr FindFirstCardanoHDAccount(KeyringService* keyring_service) {
-  auto accounts = keyring_service->GetAllAccountsSync();
-  for (const auto& account : accounts->accounts) {
-    if (account && account->account_id &&
-        IsCardanoMainnetKeyring(account->account_id->keyring_id) &&
-        account->account_id->account_index == 0) {
-      return account->account_id.Clone();
-    }
-  }
-  return nullptr;
 }
 
 mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
@@ -245,7 +247,6 @@ void CardanoProviderImpl::GetCollateral(const std::string& amount,
 
 void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
                                                     const url::Origin& origin) {
-  CHECK(delegate_);
   if (delegate_->IsPermissionDenied(mojom::CoinType::ADA)) {
     OnRequestCardanoPermissions(std::move(callback), origin,
                                 mojom::RequestPermissionsError::kNone,
@@ -351,7 +352,7 @@ void CardanoProviderImpl::Unlocked() {
   if (pending_request_cardano_permissions_callback_) {
     RequestCardanoPermissions(
         std::move(pending_request_cardano_permissions_callback_.value()),
-        pending_request_cardano_permissions_origin_);
+        std::move(pending_request_cardano_permissions_origin_));
   }
 }
 
