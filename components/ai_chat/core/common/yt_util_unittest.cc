@@ -3,13 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/renderer/yt_util.h"
+#include "brave/components/ai_chat/core/common/yt_util.h"
 
 #include <optional>
 #include <string>
 
+#include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -173,6 +177,79 @@ TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNoStructure) {
     ])";
   auto result = ParseAndChooseCaptionTrackUrl(body);
   EXPECT_FALSE(result.has_value());
+}
+
+class YTTranscriptTest : public testing::Test {
+ public:
+  base::Value ParseXmlSynchronously(const std::string& xml) {
+    base::test::TestFuture<base::expected<base::Value, std::string>> future;
+    data_decoder::DataDecoder::ParseXmlIsolated(
+        xml,
+        data_decoder::mojom::XmlParser::WhitespaceBehavior::
+            kPreserveSignificant,
+        future.GetCallback());
+    auto result = future.Take();
+    if (result.has_value()) {
+      return std::move(result.value());
+    }
+    return base::Value();
+  }
+
+ private:
+  base::test::SingleThreadTaskEnvironment task_environment_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+};
+
+TEST_F(YTTranscriptTest, ParseTimedtextFormatWithS) {
+  constexpr char kTimedtextWithSXml[] =
+      R"(<?xml version="1.0" encoding="utf-8"?>
+<timedtext format="3">
+  <body>
+    <p t="160" d="4080" w="1"><s ac="0">First</s><s t="160" ac="0"> part</s><s t="1120" ac="0"> of</s><s t="1320" ac="0"> text.</s></p>
+    <p t="2280" d="4119" w="1"><s ac="0">Second</s><s t="520" ac="0"> part</s><s t="720" ac="0"> of</s><s t="879" ac="0"> text.</s></p>
+  </body>
+</timedtext>)";
+  base::Value result = ParseXmlSynchronously(kTimedtextWithSXml);
+  std::string transcript = ParseYoutubeTranscriptXml(result);
+  EXPECT_EQ(transcript, "First part of text. Second part of text.");
+}
+
+TEST_F(YTTranscriptTest, ParseTimedtextFormatDirectText) {
+  constexpr char kTimedtextDirectTextXml[] =
+      R"(<?xml version="1.0" encoding="utf-8"?>
+<timedtext format="3">
+  <body>
+    <p t="13460" d="2175">First line of text.</p>
+    <p t="15659" d="3158">Second line of text.</p>
+    <p t="18841" d="3547">Third line of text.</p>
+  </body>
+</timedtext>)";
+  base::Value result = ParseXmlSynchronously(kTimedtextDirectTextXml);
+  std::string transcript = ParseYoutubeTranscriptXml(result);
+  EXPECT_EQ(transcript,
+            "First line of text. Second line of text. Third line of text.");
+}
+
+TEST_F(YTTranscriptTest, ParseEmptyTimedtext) {
+  constexpr char kEmptyTimedtextXml[] =
+      R"(<?xml version="1.0" encoding="utf-8"?>
+<timedtext format="3">
+  <body>
+  </body>
+</timedtext>)";
+  base::Value result = ParseXmlSynchronously(kEmptyTimedtextXml);
+  std::string transcript = ParseYoutubeTranscriptXml(result);
+  EXPECT_TRUE(transcript.empty());
+}
+
+TEST_F(YTTranscriptTest, ParseInvalidFormat) {
+  constexpr char kInvalidFormatXml[] = R"(<?xml version="1.0" encoding="utf-8"?>
+<invalid>
+  <text>Some text</text>
+</invalid>)";
+  base::Value result = ParseXmlSynchronously(kInvalidFormatXml);
+  std::string transcript = ParseYoutubeTranscriptXml(result);
+  EXPECT_TRUE(transcript.empty());
 }
 
 }  // namespace ai_chat
