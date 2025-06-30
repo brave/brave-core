@@ -19,6 +19,7 @@ class BraveUpdaterP3ABrowsertest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, PRE_Update) {
+  using enum UpdateStatus;
   ExpectBucketCount(kNoUpdateWithLegacy, 0);
   ExpectBucketCount(kNoUpdateWithOmaha4, 0);
   ExpectBucketCount(kUpdatedWithLegacy, 0);
@@ -28,7 +29,7 @@ IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, PRE_Update) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveUpdaterP3ABrowsertest, Update) {
-  ExpectBucketCount(kUpdatedWithLegacy, 1);
+  ExpectBucketCount(UpdateStatus::kUpdatedWithLegacy, 1);
 }
 
 void BraveUpdaterP3ABrowsertest::ExpectBucketCount(UpdateStatus status,
