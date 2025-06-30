@@ -7,11 +7,16 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 
 namespace email_aliases {
 
-EmailAliasesService::EmailAliasesService() = default;
+EmailAliasesService::EmailAliasesService() {
+  CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+}
 
 EmailAliasesService::~EmailAliasesService() = default;
 
