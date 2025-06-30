@@ -836,6 +836,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
+
+  content::RegisterWebUIControllerInterfaceBinder<
+      email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
 #endif
 
   auto* prefs =
