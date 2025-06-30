@@ -65,6 +65,7 @@ source_set("wireguard_utils") {
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard",

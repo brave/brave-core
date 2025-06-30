@@ -27,6 +27,7 @@
 #include "base/win/scoped_bstr.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 #include "url/gurl.h"
@@ -43,6 +44,7 @@ std::optional<bool> g_wireguard_service_registered_for_testing;
 base::NoDestructor<std::string> g_smart_proxy_url("");
 constexpr wchar_t kSystemProxyRegistryKey[] =
     L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+constexpr wchar_t kAutoConfigURL[] = L"AutoConfigURL";
 
 void MaybeEnableSystemProxy() {
   if (!g_smart_proxy_url->empty()) {
@@ -54,15 +56,15 @@ void MaybeEnableSystemProxy() {
       key.Create(HKEY_CURRENT_USER, kSystemProxyRegistryKey, KEY_ALL_ACCESS);
   if (rv == ERROR_SUCCESS && key.Valid()) {
     std::wstring current_proxy_url;
-    if (key.ReadValue(L"AutoConfigURL", &current_proxy_url) == ERROR_SUCCESS) {
+    if (key.ReadValue(kAutoConfigURL, &current_proxy_url) == ERROR_SUCCESS) {
       // Person already has a proxy value set; don't touch it.
-      VLOG(1) << L"User has `AutoConfigURL` value already set: \""
+      VLOG(1) << L"User has `" << kAutoConfigURL << "` value already set: \""
               << current_proxy_url
               << "\".\nBrave VPN smart proxy routing can't be used.";
     } else {
       // Set the system proxy URL.
       current_proxy_url = base::UTF8ToWide(*g_smart_proxy_url);
-      rv = key.WriteValue(L"AutoConfigURL", current_proxy_url.c_str());
+      rv = key.WriteValue(kAutoConfigURL, current_proxy_url.c_str());
       VLOG(1) << L"Set Brave VPN smart proxy routing to = \""
               << current_proxy_url << "\"";
     }
@@ -74,33 +76,35 @@ void MaybeDisableSystemProxy() {
   LONG rv =
       key.Create(HKEY_CURRENT_USER, kSystemProxyRegistryKey, KEY_ALL_ACCESS);
   if (rv != ERROR_SUCCESS || !key.Valid()) {
-    VLOG(1) << L"Nothing to clean up; user does not have a key for "
-               L"`AutoConfigURL`.";
+    VLOG(1) << L"Nothing to clean up; user does not have a key for `"
+            << kAutoConfigURL << "`.";
     return;
   }
 
   // Only disable system proxy if...
   // 1) There's a value actually set.
   std::wstring current_proxy_url;
-  if (key.ReadValue(L"AutoConfigURL", &current_proxy_url) != ERROR_SUCCESS) {
-    VLOG(1) << L"Error reading `AutoConfigURL`; value may not exist.";
+  if (key.ReadValue(kAutoConfigURL, &current_proxy_url) != ERROR_SUCCESS) {
+    VLOG(1) << L"Error reading `" << kAutoConfigURL
+            << "`; value may not exist.";
     return;
   }
 
   // 2) The value is a valid URL.
   GURL current_proxy_gurl(base::WideToUTF8(current_proxy_url));
   if (!current_proxy_gurl.is_valid()) {
-    VLOG(1)
-        << "User has `AutoConfigURL` value set but it appears to be invalid: \""
-        << current_proxy_url << "\".";
+    VLOG(1) << "User has `" << kAutoConfigURL
+            << "` value set but it appears to be invalid: \""
+            << current_proxy_url << "\".";
     return;
   }
 
   // 3) The URL is for Brave VPN.
-  if (current_proxy_gurl.DomainIs("guardianapp.com")) {
-    LOG(ERROR) << "Removing Brave VPN smart proxy routing value: \""
-               << current_proxy_url << "\".";
-    key.DeleteValue(L"AutoConfigURL");
+  GURL guardian_proxy_url(kProxyUrl);
+  if (current_proxy_gurl.DomainIs(guardian_proxy_url.host())) {
+    VLOG(1) << "Removing Brave VPN smart proxy routing value: \""
+            << current_proxy_url << "\".";
+    key.DeleteValue(kAutoConfigURL);
   }
 }
 
