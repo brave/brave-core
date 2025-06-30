@@ -49,6 +49,12 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Returns true if the container name is valid.
   static bool IsContainerNameValid(std::string_view name);
 
+  // Returns true if the icon is valid.
+  static bool IsIconValid(mojom::Icon icon);
+
+  // Returns true if the background color is valid.
+  static bool IsBackgroundColorValid(SkColor color);
+
  private:
   // Called when the containers list in preferences changes.
   void OnContainersChanged();

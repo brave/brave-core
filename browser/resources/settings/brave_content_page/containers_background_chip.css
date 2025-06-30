@@ -1,0 +1,43 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=//resources/cr_elements/cr_shared_style_lit.css.js
+ * #import=//resources/cr_elements/cr_shared_vars.css.js
+ * #include=cr-shared-style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  cursor: pointer;
+}
+
+.chip-container {
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.chip-container .chip-content {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Selected state border */
+.chip-container.selected::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  border: 2px solid var(--leo-color-primitive-primary-50, #5d69e9);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}

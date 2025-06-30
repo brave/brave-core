@@ -42,3 +42,52 @@
 .container:last-of-type {
   border-bottom: none;
 }
+
+.container .icon-and-label {
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 90px);
+  gap: var(--leo-spacing-xl);
+  font:var(--leo-font-default-regular);
+}
+
+.container .icon-and-label settings-brave-content-containers-icon {
+  width: 20px;
+  height: 20px;
+  --leo-icon-size: 16px;
+  flex-shrink: 0;
+}
+
+.container .icon-and-label .label {
+  color: var(--leo-color-text-primary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.edit-subsection-label {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-semibold);
+}
+
+.editing-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.name-section cr-input{
+  height: 44px;
+  margin-block: var(--leo-spacing-m);
+}
+
+.background-colors-list, .icons-list {
+  display: flex;
+  gap: var(--leo-spacing-m);
+  margin-block: var(--leo-spacing-m);
+}
+
+.icons-list settings-brave-content-containers-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}

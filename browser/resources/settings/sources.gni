@@ -184,10 +184,20 @@ if (enable_containers) {
   brave_settings_ts_files +=
       [ "brave_content_page/containers_browser_proxy.ts" ]
   brave_settings_ts_files += [
+    "brave_content_page/background_colors.ts",
+    "brave_content_page/container_icons_leo_map.ts",
+    "brave_content_page/containers_background_chip.html.ts",
+    "brave_content_page/containers_background_chip.ts",
+    "brave_content_page/containers_icon.html.ts",
+    "brave_content_page/containers_icon.ts",
     "brave_content_page/containers.html.ts",
     "brave_content_page/containers.ts",
   ]
-  brave_settings_local_css_files += [ "brave_content_page/containers.css" ]
+  brave_settings_local_css_files += [
+    "brave_content_page/containers_background_chip.css",
+    "brave_content_page/containers.css",
+    "brave_content_page/containers_icon.css",
+  ]
   brave_settings_mojo_files_deps +=
       [ "//brave/components/containers/core/mojom:mojom_ts__generator" ]
   brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]

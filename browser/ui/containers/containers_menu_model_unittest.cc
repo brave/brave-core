@@ -29,11 +29,13 @@ class ContainersMenuModelUnitTest : public testing::Test {
 
   void SetUp() override {
     containers_.emplace_back(ContainerModel(
-        mojom::Container::New("ExampleContainer1", "Example 1")));
+        mojom::Container::New("ExampleContainer1", "Example 1",
+                              mojom::Icon::kPersonal, SK_ColorWHITE)));
+    containers_.emplace_back(ContainerModel(mojom::Container::New(
+        "ExampleContainer2", "Example 2", mojom::Icon::kWork, SK_ColorBLACK)));
     containers_.emplace_back(ContainerModel(
-        mojom::Container::New("ExampleContainer2", "Example 2")));
-    containers_.emplace_back(ContainerModel(
-        mojom::Container::New("ExampleContainer3", "Example 3")));
+        mojom::Container::New("ExampleContainer3", "Example 3",
+                              mojom::Icon::kPersonal, SK_ColorWHITE)));
   }
 
   void TearDown() override { containers_.clear(); }

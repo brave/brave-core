@@ -6,6 +6,14 @@
 import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import { Icon } from '../containers.mojom-webui.js'
+import { skColorToHexColor } from 'chrome://resources/js/color_utils.js'
+import backgroundColors from './background_colors.js'
+import iconLeoMap from './container_icons_leo_map.js'
+
+// Bootstrap the custom element that are used in this component.
+import './containers_icon.js'
+import './containers_background_chip.js'
 
 export function getHtml(this: SettingsBraveContentContainersElement) {
   return html`<!--_html_template_start_-->
@@ -35,7 +43,12 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               ${this.containersList_.map(
                 (item) => html`
                   <div class="container">
-                    <div>
+                    <div class="icon-and-label">
+                      <settings-brave-content-containers-icon
+                        icon="${item.icon}"
+                        leo-icon="${iconLeoMap.get(item.icon) ?? ''}"
+                        background-color="${skColorToHexColor(item.backgroundColor)}"
+                        disabled></settings-brave-content-containers-icon>
                       <div class="label">${item.name}</div>
                     </div>
                     <div>
@@ -71,18 +84,59 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
           >
             <div slot="title">${this.getEditDialogTitle_()}</div>
             <div slot="body">
-              <div class="flex">
-                <cr-input
-                  .value="${this.editingContainer_.name}"
-                  @input="${this.onContainerNameInput_}"
-                  autofocus
-                  required
-                  auto-validate
-                  pattern="^.*\\S.*$"
-                  label="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL}"
-                  placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
-                >
-                </cr-input>
+              <div class="flex editing-container">
+                <section class="name-section">
+                  <div class="edit-subsection-label">
+                    $i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL}
+                  </div>
+                  <cr-input
+                    .value="${this.editingContainer_.name}"
+                    @input="${this.onContainerNameInput_}"
+                    autofocus
+                    required
+                    auto-validate
+                    pattern="^.*\\S.*$"
+                    placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
+                  ></cr-input>
+                </section>
+                <section class="background-colors-section">
+                  <div class="edit-subsection-label">
+                      $i18n{SETTINGS_CONTAINERS_CONTAINER_COLOR_LABEL}
+                  </div>
+                  <div class="background-colors-list">
+                    ${backgroundColors.map(
+                      (color) => html`
+                        <settings-brave-content-containers-background-chip
+                          ?selected="${color.value
+                          === this.editingContainer_!.backgroundColor.value}"
+                          background-color="${skColorToHexColor(color)}"
+                          @background-selected="${this
+                            .onContainersBackgroundColorSelected_}"
+                        ></settings-brave-content-containers-background-chip>
+                      `,
+                    )}
+                  </div>
+                </section>
+                <section class="icons-section">
+                  <div class="edit-subsection-label">
+                      $i18n{SETTINGS_CONTAINERS_CONTAINER_ICON_LABEL}
+                  </div>
+                  <div class="icons-list">
+                    ${[...iconLeoMap.entries()].map(
+                      (icon: [Icon, string]) => html`
+                        <settings-brave-content-containers-icon
+                          background-color="${skColorToHexColor(
+                            this.editingContainer_!.backgroundColor,
+                          )}"
+                          icon=${icon[0]}
+                          leo-icon=${icon[1]}
+                          ?selected="${icon[0] === this.editingContainer_!.icon}"
+                          @icon-selected="${this.onContainersIconSelected_}"
+                        ></settings-brave-content-containers-icon>
+                      `,
+                    )}
+                  </section>
+                </div>
               </div>
               ${this.editDialogError_
                 ? html`

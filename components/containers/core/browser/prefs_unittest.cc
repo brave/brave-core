@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -35,10 +36,10 @@ TEST_F(ContainersPrefsTest, GetEmptyContainerList) {
 
 TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
   std::vector<mojom::ContainerPtr> test_containers;
-  test_containers.push_back(
-      mojom::Container::New("test-id-1", "Test Container 1"));
-  test_containers.push_back(
-      mojom::Container::New("test-id-2", "Test Container 2"));
+  test_containers.push_back(mojom::Container::New(
+      "test-id-1", "Test Container 1", mojom::Icon::kPersonal, SK_ColorWHITE));
+  test_containers.push_back(mojom::Container::New(
+      "test-id-2", "Test Container 2", mojom::Icon::kWork, SK_ColorBLACK));
 
   SetContainersToPrefs(test_containers, prefs_);
 
@@ -47,20 +48,46 @@ TEST_F(ContainersPrefsTest, SetAndGetContainerList) {
 
   EXPECT_EQ(retrieved_containers[0]->id, "test-id-1");
   EXPECT_EQ(retrieved_containers[0]->name, "Test Container 1");
+  EXPECT_EQ(retrieved_containers[0]->icon, mojom::Icon::kPersonal);
+  EXPECT_EQ(retrieved_containers[0]->background_color, SK_ColorWHITE);
+
   EXPECT_EQ(retrieved_containers[1]->id, "test-id-2");
   EXPECT_EQ(retrieved_containers[1]->name, "Test Container 2");
+  EXPECT_EQ(retrieved_containers[1]->icon, mojom::Icon::kWork);
+  EXPECT_EQ(retrieved_containers[1]->background_color, SK_ColorBLACK);
 }
 
 TEST_F(ContainersPrefsTest, GetContainerListInvalidData) {
   // Test with invalid list items
   base::Value::List invalid_list;
   invalid_list.Append(base::Value(42));  // Not a dictionary
-  invalid_list.Append(base::Value::Dict().Set("id", "test-id")
-                      // Missing name field
-  );
-  invalid_list.Append(base::Value::Dict()
-                          // Missing id field
-                          .Set("name", "Test Container"));
+  invalid_list.Append(
+      base::Value::Dict()
+          // Missing name field
+          .Set("id", "test-id")
+          .Set("icon", static_cast<int>(mojom::Icon::kPersonal))
+          .Set("background_color", static_cast<int>(SK_ColorWHITE)));
+
+  invalid_list.Append(
+      base::Value::Dict()
+          // Missing id field
+          .Set("name", "Test Container")
+          .Set("icon", static_cast<int>(mojom::Icon::kPersonal))
+          .Set("background_color", static_cast<int>(SK_ColorWHITE)));
+
+  invalid_list.Append(
+      base::Value::Dict()
+          // Missing icon field
+          .Set("id", "test-id")
+          .Set("name", "Test Container")
+          .Set("background_color", static_cast<int>(SK_ColorWHITE)));
+
+  invalid_list.Append(
+      base::Value::Dict()
+          // Missing background_color field
+          .Set("id", "test-id")
+          .Set("name", "Test Container")
+          .Set("icon", static_cast<int>(mojom::Icon::kPersonal)));
 
   prefs_.SetList(prefs::kContainersList, std::move(invalid_list));
 

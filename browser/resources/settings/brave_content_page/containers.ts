@@ -11,13 +11,19 @@ import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_prox
 import {
   Container,
   ContainerOperationError,
+  Icon,
 } from '../containers.mojom-webui.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
+import backgroundColor from './background_colors.js'
+import type { IconSelectedEvent } from './containers_icon.js'
+import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import { CrIconButtonElement } from 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js'
+import {SkColor} from 'chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js';
 
 const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 
@@ -83,7 +89,12 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onAddContainerClick_() {
-    this.editingContainer_ = { id: '', name: '' }
+    this.editingContainer_ = {
+      id: '',
+      name: '',
+      icon: Icon.kPersonal,
+      backgroundColor: backgroundColor[0],
+    }
     this.editDialogError_ = undefined
   }
 
@@ -114,6 +125,22 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       name: input.value,
     }
     this.isEditDialogNameInvalid_ = input.invalid
+  }
+
+  onContainersIconSelected_(event: IconSelectedEvent) {
+    assert(this.editingContainer_)
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      icon: +event.detail.icon,  // event.detail.icon is string, so convert it to number(enum)
+    }
+  }
+
+  onContainersBackgroundColorSelected_(event: ColorSelectedEvent) {
+    assert(this.editingContainer_)
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      backgroundColor: event.detail.color,
+    }
   }
 
   async onSaveContainerFromDialog_() {
