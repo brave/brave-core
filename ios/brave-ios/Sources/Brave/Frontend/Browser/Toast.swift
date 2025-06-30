@@ -57,7 +57,6 @@ class ToastShadowView: UIView {
 }
 
 class Toast: UIView {
-  var animationConstraint: Constraint?
   var completionHandler: ((Bool) -> Void)?
 
   weak var viewController: UIViewController?
@@ -65,6 +64,8 @@ class Toast: UIView {
   var displayState = State.dismissed
 
   var tapDismissalMode: TapDismissalMode = .dismissOnOutsideTap
+
+  private var animationConstraint: Constraint?
 
   private lazy var tapInterceptingOverlay = ToastTapInterceptingOverlay()
 
@@ -74,6 +75,8 @@ class Toast: UIView {
     return gestureRecognizer
   }()
 
+  /// TODO(https://github.com/brave/brave-browser/issues/46198): Make private to
+  /// for looser coupling with subclasses.
   lazy var toastView: UIView = {
     let toastView = UIView()
     toastView.backgroundColor = SimpleToastUX.toastDefaultColor
@@ -125,6 +128,9 @@ class Toast: UIView {
         },
         completion: { finished in
           self.displayState = .showing
+
+          self.anchorToastToBottom()
+
           if let duration = duration {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
               self.dismiss(false, completion: completion)
@@ -145,6 +151,8 @@ class Toast: UIView {
     layer.removeAllAnimations()
 
     let duration = animated ? SimpleToastUX.toastAnimationDuration : 0.1
+
+    setupDismissalToastConstraints()
 
     UIView.animate(
       withDuration: duration,
@@ -179,6 +187,30 @@ class Toast: UIView {
     }
 
     dismiss(false)
+  }
+
+  /// TODO(https://github.com/brave/brave-browser/issues/46198): Make private to
+  /// for looser coupling with subclasses.
+  func setupInitialToastConstraints() {
+    toastView.snp.makeConstraints { make in
+      make.leading.trailing.height.equalTo(self)
+      self.animationConstraint = make.top.equalTo(self.snp.bottom).constraint
+    }
+  }
+
+  private func setupDismissalToastConstraints() {
+    toastView.snp.remakeConstraints { make in
+      make.leading.trailing.height.equalTo(self)
+      self.animationConstraint =
+        make.top.equalTo(self.snp.bottom).offset(-self.bounds.height).constraint
+    }
+  }
+
+  private func anchorToastToBottom() {
+    toastView.snp.remakeConstraints { make in
+      make.leading.trailing.height.equalTo(self)
+      make.bottom.equalTo(self.snp.bottom)
+    }
   }
 
   enum State {
