@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from './mojom'
+import { modelIcons, fallbackModelIcon } from './constants'
 
 /**
  * Updates the conversation history by either merging a new entry with an
@@ -48,4 +49,8 @@ export function getImageFiles(
     file.type === Mojom.UploadedFileType.kImage ||
     file.type === Mojom.UploadedFileType.kScreenshot
   );
+}
+
+export function getModelIcon(modelKey: string): string {
+  return modelIcons[modelKey as keyof typeof modelIcons] ?? fallbackModelIcon
 }

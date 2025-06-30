@@ -6,3 +6,16 @@
 export const MAX_IMAGES = 64
 
 export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
+
+export const modelIcons = {
+  'chat-automatic': 'product-brave-leo',
+  'chat-deepseek-r1': 'deepseek-color',
+  'chat-claude-instant': 'anthropic-color',
+  'chat-claude-haiku': 'anthropic-color',
+  'chat-claude-sonnet': 'anthropic-color',
+  'chat-qwen': 'qwen-color',
+  'chat-basic': 'meta-color',
+  'chat-vision-basic': 'meta-color',
+}
+
+export const fallbackModelIcon = 'product-brave-leo'
