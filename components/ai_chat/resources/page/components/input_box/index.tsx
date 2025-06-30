@@ -39,7 +39,6 @@ type Props = Pick<
   | 'conversationHistory'
   | 'associatedContentInfo'
   | 'isUploadingFiles'
-  | 'shouldSendPageContents'
   | 'disassociateContent'
   | 'associateDefaultContent'
   | 'setShowAttachments'
@@ -52,12 +51,12 @@ export interface InputBoxProps {
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
-function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
+function usePlaceholderText(attachmentsCount: number, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
   const { result: attachmentsPlaceholder } = usePromise(async () => getter(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount), [attachmentsCount, getter])
 
   if (conversationStarted) return getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)
 
-  if (shouldSendPageContents && attachmentsCount > 0) {
+  if (attachmentsCount > 0) {
     return attachmentsPlaceholder
   }
 
@@ -132,14 +131,12 @@ function InputBox(props: InputBoxProps) {
 
   const placeholderText = usePlaceholderText(
     props.context.associatedContentInfo.length,
-    props.context.shouldSendPageContents,
     props.conversationStarted,
     props.context.getPluralString
   )
 
   const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
   const showPageAttachments = props.context.associatedContentInfo.length > 0
-    && props.context.shouldSendPageContents
     && !props.conversationStarted
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput || props.context.inputText === ''
