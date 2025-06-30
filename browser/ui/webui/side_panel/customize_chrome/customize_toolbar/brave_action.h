@@ -64,7 +64,7 @@ inline constexpr BraveAction kShowVPNAction = {
     .pref_name = brave_vpn::prefs::kBraveVPNShowButton,
     .icon = kLeoProductVpnIcon};
 
-inline constexpr std::array kBraveActions = {
+inline constexpr std::array<BraveAction, 4> kBraveActions = {
     kShowSidePanelAction,
     kShowWalletAction,
     kShowAIChatAction,
