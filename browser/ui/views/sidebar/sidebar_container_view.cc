@@ -370,9 +370,12 @@ void SidebarContainerView::OnThemeChanged() {
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
-  DCHECK(browser_->exclusive_access_manager() &&
-         browser_->exclusive_access_manager()->fullscreen_controller());
-  return browser_->exclusive_access_manager()
+  DCHECK(browser_->GetFeatures().exclusive_access_manager() &&
+         browser_->GetFeatures()
+             .exclusive_access_manager()
+             ->fullscreen_controller());
+  return browser_->GetFeatures()
+      .exclusive_access_manager()
       ->fullscreen_controller()
       ->IsWindowFullscreenForTabOrPending();
 }

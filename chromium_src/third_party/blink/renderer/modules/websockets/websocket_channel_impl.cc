@@ -22,9 +22,9 @@ namespace blink {
 WebSocketChannelImpl* WebSocketChannelImpl::Create(
     ExecutionContext* execution_context,
     WebSocketChannelClient* client,
-    std::unique_ptr<SourceLocation> location) {
-  auto* channel = MakeGarbageCollected<WebSocketChannelImpl>(
-      execution_context, client, std::move(location));
+    SourceLocation* location) {
+  auto* channel = MakeGarbageCollected<WebSocketChannelImpl>(execution_context,
+                                                             client, location);
   channel->handshake_throttle_ =
       channel->GetBaseFetchContext()->CreateWebSocketHandshakeThrottle();
   return channel;

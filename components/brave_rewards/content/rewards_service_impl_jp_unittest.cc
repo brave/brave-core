@@ -50,7 +50,6 @@ class RewardsServiceJPTest : public testing::Test {
   }
 
   void TearDown() override {
-    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
     rewards_service_ = nullptr;
     profile_.reset();
   }

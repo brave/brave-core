@@ -13,9 +13,9 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "url/gurl.h"
 
 class Browser;
-class GURL;
 class Profile;
 
 namespace brave {

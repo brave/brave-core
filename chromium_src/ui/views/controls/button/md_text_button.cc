@@ -215,7 +215,7 @@ namespace views {
 
 MdTextButton::MdTextButton(
     PressedCallback callback,
-    const std::u16string& text,
+    std::u16string_view text,
     int button_context,
     bool use_text_color_for_icon,
     std::unique_ptr<LabelButtonImageContainer> image_container)

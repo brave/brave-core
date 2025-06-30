@@ -34,7 +34,7 @@ namespace variations {
 base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
     base::span<const uint8_t> public_key) {
   // Only kPublicKey should be passed here. This is a sanity check.
-  DCHECK_EQ(public_key, kPublicKey);
+  DCHECK(public_key == kPublicKey);
 
   // If we are in a Chromium test, return the original public key to let those
   // tests check everything they need.
@@ -54,19 +54,6 @@ base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
   };
 
   return kBravePublicKey;
-}
-
-void VariationsSeedStore::UpdateSeedDateAndMaybeCountry(
-    bool is_first_request,
-    std::string_view country_code,
-    base::Time server_date_fetched) {
-  // At browser startup, the country code is updated using the X-Country header
-  // from the response if the status is `HTTP_NOT_MODIFIED`, avoiding the need
-  // to wait for the next update, which happens every 5 hours.
-  if (is_first_request && !country_code.empty()) {
-    local_state_->SetString(prefs::kVariationsCountry, country_code);
-  }
-  UpdateSeedDateAndLogDayChange(server_date_fetched);
 }
 
 }  // namespace variations

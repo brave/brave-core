@@ -81,7 +81,7 @@ void BraveVpnDnsObserverService::ShowPolicyWarningMessage() {
     return;
   }
 
-  chrome::ShowWarningMessageBoxWithCheckbox(
+  chrome::ShowWarningMessageBoxWithCheckboxAsync(
       GetAnchorBrowserWindow(), l10n_util::GetStringUTF16(IDS_PRODUCT_NAME),
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_DNS_POLICY_ALERT),
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX),

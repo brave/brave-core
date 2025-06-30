@@ -100,8 +100,9 @@ class FullscreenNotificationObserver : public FullscreenObserver {
 
 FullscreenNotificationObserver::FullscreenNotificationObserver(
     Browser* browser) {
-  observation_.Observe(
-      browser->exclusive_access_manager()->fullscreen_controller());
+  observation_.Observe(browser->GetFeatures()
+                           .exclusive_access_manager()
+                           ->fullscreen_controller());
 }
 
 FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;

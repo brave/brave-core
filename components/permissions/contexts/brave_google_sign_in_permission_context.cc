@@ -15,7 +15,7 @@ namespace permissions {
 
 BraveGoogleSignInPermissionContext::BraveGoogleSignInPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(
+    : ContentSettingPermissionContextBase(
           browser_context,
           ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
           network::mojom::PermissionsPolicyFeature::kNotFound) {}
