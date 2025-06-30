@@ -146,7 +146,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
             l10n_util::GetStringUTF16(brave_action.display_name_resource_id)),
         /*pinned=*/prefs->GetBoolean(brave_action.pref_name),
         /*has_enterprise_controlled_pinned_state=*/false, brave_action.category,
-        get_icon_url(*brave_action.icon));
+        get_icon_url(brave_action.icon));
 
     // Insert the new action after the anchor.
     actions.insert(anchor_it + 1, std::move(new_action));

@@ -27,7 +27,8 @@ struct BraveAction {
   const side_panel::customize_chrome::mojom::ActionId anchor;
   const side_panel::customize_chrome::mojom::CategoryId category;
   const char* pref_name;
-  const raw_ref<const gfx::VectorIcon> icon;
+  // RAW_PTR_EXCLUSION: #global-scope
+  RAW_PTR_EXCLUSION const gfx::VectorIcon& icon;
 };
 
 inline constexpr BraveAction kShowSidePanelAction = {
@@ -37,7 +38,7 @@ inline constexpr BraveAction kShowSidePanelAction = {
         side_panel::customize_chrome::mojom::ActionId::kNewIncognitoWindow,
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = kShowSidePanelButton,
-    .icon = raw_ref(kLeoBrowserSidebarRightIcon)};
+    .icon = kLeoBrowserSidebarRightIcon};
 
 inline constexpr BraveAction kShowWalletAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowWallet,
@@ -45,7 +46,7 @@ inline constexpr BraveAction kShowWalletAction = {
     .anchor = side_panel::customize_chrome::mojom::ActionId::kTabSearch,
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = kShowWalletIconOnToolbar,
-    .icon = raw_ref(kLeoProductBraveWalletIcon)};
+    .icon = kLeoProductBraveWalletIcon};
 
 inline constexpr BraveAction kShowAIChatAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowAIChat,
@@ -53,7 +54,7 @@ inline constexpr BraveAction kShowAIChatAction = {
     .anchor = side_panel::customize_chrome::mojom::ActionId::kTabSearch,
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = ai_chat::prefs::kBraveAIChatShowToolbarButton,
-    .icon = raw_ref(kLeoProductBraveLeoIcon)};
+    .icon = kLeoProductBraveLeoIcon};
 
 inline constexpr BraveAction kShowVPNAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowVPN,
@@ -61,7 +62,7 @@ inline constexpr BraveAction kShowVPNAction = {
     .anchor = side_panel::customize_chrome::mojom::ActionId::kTabSearch,
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = brave_vpn::prefs::kBraveVPNShowButton,
-    .icon = raw_ref(kLeoProductVpnIcon)};
+    .icon = kLeoProductVpnIcon};
 
 inline constexpr std::array kBraveActions = {
     kShowSidePanelAction,
