@@ -6,6 +6,7 @@ package org.chromium.chrome.browser.tabmodel;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -19,7 +20,8 @@ public class BraveTabGroupModelFilter {
     protected boolean mIsResetting;
 
     /** Call from {@link TabGroupModelFilterImpl} will be redirected here via bytecode. */
-    public boolean shouldUseParentIds(Tab tab) {
+    @SuppressWarnings("UnusedMethod")
+    private boolean shouldGroupWithParent(Tab tab, @Nullable Tab parentTab) {
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(
@@ -36,7 +38,13 @@ public class BraveTabGroupModelFilter {
         // Otherwise just call parent.
         return (boolean)
                 BraveReflectionUtil.invokeMethod(
-                        TabGroupModelFilterImpl.class, this, "shouldUseParentIds", Tab.class, tab);
+                        TabGroupModelFilterImpl.class,
+                        this,
+                        "shouldGroupWithParent",
+                        Tab.class,
+                        tab,
+                        Tab.class,
+                        parentTab);
     }
 
     /** Determine if a launch type is the result of linked being clicked. */
