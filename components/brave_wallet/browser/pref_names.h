@@ -43,6 +43,8 @@ inline constexpr char kBraveWalletSelectedEthDappAccount[] =
     "brave.wallet.selected_eth_dapp_account";
 inline constexpr char kBraveWalletSelectedSolDappAccount[] =
     "brave.wallet.selected_sol_dapp_account";
+inline constexpr char kBraveWalletSelectedAdaDappAccount[] =
+    "brave.wallet.selected_ada_dapp_account";
 inline constexpr char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 inline constexpr char kBraveWalletUserAssetsList[] =
     "brave.wallet.wallet_user_assets_list";

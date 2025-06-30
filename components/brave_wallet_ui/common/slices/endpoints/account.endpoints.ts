@@ -133,6 +133,17 @@ export const accountEndpoints = ({
       providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
     }),
 
+    getSelectedADAAccountId: query<BraveWallet.AccountId | null, void>({
+      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        return {
+          data:
+            (await baseQuery(undefined).cache.getAllAccounts())
+              .adaDappSelectedAccount?.accountId || null,
+        }
+      },
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
+    }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {

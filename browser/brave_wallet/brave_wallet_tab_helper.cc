@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -139,7 +140,7 @@ void BraveWalletTabHelper::BindCardanoProvider(
 
   tab_helper->cardano_provider_receivers_.Add(
       std::make_unique<CardanoProviderImpl>(
-          *host_content_settings_map, brave_wallet_service,
+          *brave_wallet_service,
           std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
                                                             frame_host)),
       std::move(receiver));
@@ -250,7 +251,9 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
       (manager->Requests()[0]->request_type() !=
            permissions::RequestType::kBraveEthereum &&
        manager->Requests()[0]->request_type() !=
-           permissions::RequestType::kBraveSolana)) {
+           permissions::RequestType::kBraveSolana &&
+       manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBraveCardano)) {
     return webui_url;
   }
 

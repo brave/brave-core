@@ -41,7 +41,7 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
       IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
       IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled(),
       IsZCashShieldedTransactionsEnabled(), IsCardanoEnabled(),
-      GetEnabledCoins()));
+      GetEnabledCoins(), IsCardanoDAppSupportEnabled()));
 }
 
 }  // namespace brave_wallet

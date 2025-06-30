@@ -478,6 +478,15 @@ class KeyringServiceUnitTest : public testing::Test {
         ->Clone();
   }
 
+  mojom::AccountInfoPtr FirstAdaAccount(KeyringService* service) {
+    return std::ranges::find_if(service->GetAllAccountsSync()->accounts,
+                                [](auto& acc) {
+                                  return acc->account_id->coin ==
+                                         mojom::CoinType::ADA;
+                                })
+        ->Clone();
+  }
+
   content::BrowserTaskEnvironment task_environment_;
 
  private:
@@ -1990,7 +1999,10 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
   ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
 }
 
-TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
+TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
   const mojom::AccountInfoPtr empty_account;
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
@@ -1998,11 +2010,67 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
-  auto first_account = service.GetAllAccountsSync()->accounts[0]->Clone();
-  auto first_sol_account = FirstSolAccount(&service);
-  auto second_account =
-      AddAccount(&service, mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                 "Who does number 2 work for");
+  auto first_account = GetAccountUtils(&service).EnsureEthAccount(0);
+
+  auto first_sol_account = GetAccountUtils(&service).EnsureSolAccount(0);
+  auto first_ada_account = GetAccountUtils(&service).EnsureAdaAccount(0);
+  auto second_ada_account = GetAccountUtils(&service).EnsureAdaAccount(1);
+
+  auto second_account = GetAccountUtils(&service).EnsureEthAccount(1);
+
+  ASSERT_TRUE(second_account);
+
+  // This does not depend on being locked
+  EXPECT_TRUE(Lock(&service));
+
+  // Added account is selected.
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(second_ada_account, service.GetSelectedCardanoDappAccount());
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  // Can select SOL account. dApp selections don't change.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_sol_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, first_sol_account->account_id));
+  EXPECT_EQ(first_sol_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(second_ada_account, service.GetSelectedCardanoDappAccount());
+
+  observer.WaitAndVerify();
+
+  // Select back to ETH. dApp selections don't change.
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(second_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, second_account->account_id));
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(second_ada_account, service.GetSelectedCardanoDappAccount());
+  observer.WaitAndVerify();
+}
+
+TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures({}, {features::kBraveWalletCardanoFeature});
+
+  const mojom::AccountInfoPtr empty_account;
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  SetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL);
+
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto first_account = GetAccountUtils(&service).EnsureEthAccount(0);
+  auto first_sol_account = GetAccountUtils(&service).EnsureSolAccount(0);
+
+  auto second_account = GetAccountUtils(&service).EnsureEthAccount(1);
+
   ASSERT_TRUE(second_account);
 
   // This does not depend on being locked
@@ -2023,6 +2091,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_EQ(first_sol_account, service.GetSelectedWalletAccount());
   EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
   EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+
   observer.WaitAndVerify();
 
   // Select back to ETH. dApp selections don't change.

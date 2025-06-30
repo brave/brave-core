@@ -189,7 +189,7 @@ struct CardanoProviderPagination {
 
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (bool success);
+  Enable() => (string? error_message);
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
@@ -1018,6 +1018,7 @@ struct AllAccountsInfo {
   AccountInfo? selected_account;
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
+  AccountInfo? ada_dapp_selected_account;
 };
 
 struct WalletInfo {
@@ -1033,6 +1034,7 @@ struct WalletInfo {
   bool is_z_cash_shielded_transactions_enabled;
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
+  bool is_cardano_dapp_support_enabled;
 };
 
 // Browser-side handler for common panel / page things
