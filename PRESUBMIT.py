@@ -350,9 +350,20 @@ _BANNED_CPP_FUNCTIONS += (
          'you must inject into the main world, consider using '
          'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
          'instead. This is a warning only for existing usages, new usages are '
-         'strictly banned.'),
+         'strictly banned.', ),
         treat_as_error=False,
-    ))
+    ),
+    BanRule(
+        pattern=r'//\s*nogncheck(\s|$)',
+        explanation=
+        ('Avoid suppressing gn checks with `nogncheck` comments, and only do '
+         'it if it is absolutely necessary. Make sure that this is not the '
+         'case that the exclusion for the inclusion line has in the C++ source '
+         'has a mismatch with what is being included/excluded in the gn file.',
+         ),
+        treat_as_error=False,
+    ),
+)
 
 
 # Extend BanRule exclude lists with Brave-specific paths.
