@@ -107,6 +107,7 @@ class PageAPI extends API<State> {
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
 
+    // If we're in standalone mode, listen for tab changes so we can show a picker.
     Mojom.TabTrackerService.getRemote().addObserver(this.tabObserver.$.bindNewPipeAndPassRemote())
     this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
       this.setPartialState({

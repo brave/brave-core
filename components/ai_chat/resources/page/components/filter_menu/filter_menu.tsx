@@ -15,6 +15,9 @@ export interface Props<T> {
   setIsOpen: (open: boolean) => void,
   categories: { category: string, entries: T[] }[],
 
+  header?: React.ReactNode,
+  noMatchesMessage?: React.ReactNode
+
   matchesQuery: (query: string, entry: T, category?: string) => boolean | undefined
 
   children: (entry: T, category?: string) => React.ReactNode
@@ -31,6 +34,7 @@ export default function FilterMenu<T>(props: Props<T>) {
       }))
       .filter(g => g.entries.length > 0), [props.query, props.categories])
 
+  const noMatches = useMemo(() => !filtered.some(g => g.entries.length !== 0), [filtered])
   const ref = React.useRef<HTMLElement>(null)
 
   React.useEffect(() => {
@@ -41,17 +45,33 @@ export default function FilterMenu<T>(props: Props<T>) {
     if (!props.isOpen) return
 
     const handler = (e: KeyboardEvent) => {
-      if (e.key !== 'Enter') return
-
-      e.preventDefault()
-      e.stopPropagation();
+      const setHandled = () => {
+        e.preventDefault()
+        e.stopPropagation();
+      };
 
       const focused = ref.current?.querySelector<HTMLElement>(':focus')
-      // If there isn't a focused element, click the first menu item, if any.
-      const menuItem = focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
-      if (!menuItem) return
+      if (e.key === 'Enter') {
+        setHandled()
 
-      menuItem.click()
+        // If there isn't a focused element, click the first menu item, if any.
+        const menuItem = focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
+        if (!menuItem) return
+
+        menuItem.click()
+      }
+
+      // As we select the first item by default we want to skip it when the user
+      // presses one of the arrow keys.
+      let direction = 0
+      if (e.key === 'ArrowDown') direction = 1
+      if (e.key === 'ArrowUp') direction = -1
+
+      if (direction !== 0 && !focused) {
+        setHandled()
+        const items: HTMLElement[] = Array.from(ref.current?.querySelectorAll('leo-menu-item') ?? [])
+        items.at(direction)?.focus()
+      }
     }
     document.addEventListener('keydown', handler, { capture: true })
 
@@ -72,18 +92,20 @@ export default function FilterMenu<T>(props: Props<T>) {
       onClose={() => props.setIsOpen(false)}
       placement="top"
     >
+      {props.header}
       {filtered.map((category) => {
         return (
           <React.Fragment key={category.category}>
-            <div className={styles.menuSectionTitle}>
+            {category.category && <div className={styles.menuSectionTitle}>
               {category.category}
-            </div>
+            </div>}
             {category.entries.map((entry, i) => <React.Fragment key={i}>
               {props.children(entry, category.category)}
             </React.Fragment>)}
           </React.Fragment>
         )
       })}
+      {noMatches && props.noMatchesMessage}
     </ButtonMenu>
   )
 }
