@@ -10,18 +10,19 @@
 
 namespace brave_updater {
 
-constexpr char kFirstLaunchTimePref[] = "brave.updater_p3a.first_launch_time";
 constexpr char kLastLaunchUsedOmaha4Pref[] =
     "brave.updater_p3a.last_launch_used_omaha4";
 constexpr char kLastLaunchVersionPref[] =
     "brave.updater_p3a.last_launch_version";
-constexpr char kLastReportedWeekPref[] = "brave.updater_p3a.last_reported_week";
+constexpr char kLastUpdateTimePref[] = "brave.updater_p3a.last_update_time";
+constexpr char kLastUpdateUsedOmaha4Pref[] =
+    "brave.updater_p3a.last_update_used_omaha4";
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterTimePref(kFirstLaunchTimePref, {});
-  registry->RegisterBooleanPref(kLastLaunchUsedOmaha4Pref, false);
   registry->RegisterStringPref(kLastLaunchVersionPref, "");
-  registry->RegisterIntegerPref(kLastReportedWeekPref, -1);
+  registry->RegisterBooleanPref(kLastLaunchUsedOmaha4Pref, false);
+  registry->RegisterTimePref(kLastUpdateTimePref, {});
+  registry->RegisterBooleanPref(kLastUpdateUsedOmaha4Pref, false);
 }
 
 void ReportLaunch(base::Time now,
@@ -35,41 +36,37 @@ void ReportLaunch(base::Time now,
   bool last_launch_used_omaha4 = prefs->GetBoolean(kLastLaunchUsedOmaha4Pref);
   prefs->SetBoolean(kLastLaunchUsedOmaha4Pref, is_using_omaha4);
 
-  base::Time first_launch_time = prefs->GetTime(kFirstLaunchTimePref);
-  if (first_launch_time.is_null()) {
-    prefs->SetTime(kFirstLaunchTimePref, now);
+  if (last_launch_version.empty()) {
+    // This is the first launch.
     return;
   }
 
-  base::TimeDelta time_since_first = now - first_launch_time;
-  int current_week = time_since_first.InDays() / 7;
+  base::Time last_update_time;
+  bool last_update_used_omaha4;
 
-  int last_reported_week = prefs->GetInteger(kLastReportedWeekPref);
-  if (last_reported_week >= current_week) {
-    return;
+  if (last_launch_version != current_version) {
+    last_update_time = now;
+    prefs->SetTime(kLastUpdateTimePref, now);
+
+    last_update_used_omaha4 = last_launch_used_omaha4;
+    prefs->SetBoolean(kLastUpdateUsedOmaha4Pref, last_launch_used_omaha4);
+  } else {
+    last_update_time = prefs->GetTime(kLastUpdateTimePref);
+    last_update_used_omaha4 = prefs->GetBoolean(kLastUpdateUsedOmaha4Pref);
   }
 
-  bool updated_to_new_version = last_launch_version != current_version;
+  bool updated_this_week =
+      !last_update_time.is_null() && (now - last_update_time).InDays() < 7;
 
   UpdateStatus status;
-  bool report_status = false;
   using enum UpdateStatus;
-  if (updated_to_new_version) {
-    status = last_launch_used_omaha4 ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
-    // Report updates immediately.
-    report_status = true;
+  if (updated_this_week) {
+    status = last_update_used_omaha4 ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
   } else {
     status = is_using_omaha4 ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
-    // Only report "no update" when there was no update for at least one week.
-    report_status = current_week > last_reported_week + 1;
-    // We are actually reporting for the previous week:
-    current_week -= 1;
   }
 
-  if (report_status) {
-    UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status);
-    prefs->SetInteger(kLastReportedWeekPref, current_week);
-  }
+  UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status);
 }
 
 void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs) {
