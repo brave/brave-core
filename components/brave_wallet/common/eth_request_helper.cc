@@ -466,8 +466,8 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     if (dict_from_str) {
       dict = &*dict_from_str;
     }
-  } else if (const auto* typed_data_dict = params_list[1].GetIfDict()) {
-    dict = typed_data_dict;
+  } else {
+    dict = params_list[1].GetIfDict();
   }
 
   if (!dict) {
