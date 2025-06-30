@@ -71,10 +71,10 @@ void AIChatButton::ButtonPressed() {
 
 std::unique_ptr<ui::SimpleMenuModel> AIChatButton::CreateMenuModel() {
   auto model = std::make_unique<ui::SimpleMenuModel>(this);
-  model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInFullPage,
-                                  IDS_OPEN_BRAVE_AI_CHAT_FULL_PAGE);
   model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInSidebar,
                                   IDS_OPEN_BRAVE_AI_CHAT_SIDE_PANEL);
+  model->AddCheckItemWithStringId(ContextMenuCommand::kOpenInFullPage,
+                                  IDS_OPEN_BRAVE_AI_CHAT_FULL_PAGE);
   model->AddSeparator(ui::NORMAL_SEPARATOR);
   model->AddItemWithStringId(ContextMenuCommand::kAboutLeoAI,
                              IDS_ABOUT_BRAVE_AI_CHAT);
