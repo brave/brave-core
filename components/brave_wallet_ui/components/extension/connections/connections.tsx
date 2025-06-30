@@ -108,7 +108,7 @@ export const Connections = () => {
           width='100%'
         >
           {CONNECTABLE_COIN_TYPES.filter(
-            (coin, index, array) =>
+            (coin) =>
               coin !== BraveWallet.CoinType.ADA || isCardanoDappSupportEnabled,
           ).map((coin) => (
             <ConnectionSection
