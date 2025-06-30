@@ -15,9 +15,8 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -38,14 +37,6 @@ using testing::_;
 namespace brave_wallet {
 
 namespace {
-
-class MockBraveWalletService : public BraveWalletService {
- public:
-  MockBraveWalletService() {}
-  ~MockBraveWalletService() override {}
-
-  MOCK_METHOD0(keyring_service, KeyringService*());
-};
 
 class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
  public:
@@ -90,22 +81,16 @@ class CardanoProviderImplUnitTest : public testing::Test {
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
-    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
-    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
-                                                        &prefs_, &local_state_);
-    brave_wallet_service_ = std::make_unique<MockBraveWalletService>();
-    ON_CALL(*brave_wallet_service_, keyring_service())
-        .WillByDefault(
-            ::testing::Invoke([&]() { return keyring_service_.get(); }));
+    brave_wallet_service_ = std::make_unique<BraveWalletService>(
+        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
+        &prefs_, &local_state_);
     provider_ = std::make_unique<CardanoProviderImpl>(
         *brave_wallet_service_,
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>());
   }
 
   void CreateWallet() {
-    AccountUtils(keyring_service_.get())
+    AccountUtils(keyring_service())
         .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
   }
 
@@ -131,7 +116,9 @@ class CardanoProviderImplUnitTest : public testing::Test {
         provider()->delegate());
   }
 
-  KeyringService* keyring_service() { return keyring_service_.get(); }
+  KeyringService* keyring_service() {
+    return brave_wallet_service_->keyring_service();
+  }
 
  private:
   base::test::ScopedFeatureList feature_list_{
@@ -143,10 +130,7 @@ class CardanoProviderImplUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<NetworkManager> network_manager_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<MockBraveWalletService> brave_wallet_service_;
+  std::unique_ptr<BraveWalletService> brave_wallet_service_;
 
   std::unique_ptr<CardanoProviderImpl> provider_;
 };

@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -50,18 +51,29 @@ void CardanoProviderImpl::Enable(EnableCallback callback) {
   RequestCardanoPermissions(std::move(callback), delegate_->GetOrigin());
 }
 
-mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
-  auto cardano_account =
-      brave_wallet_service_->keyring_service()->GetHDAccountInfoForKeyring(
-          mojom::KeyringId::kCardanoMainnet, 0);
+mojom::AccountIdPtr FindFirstCardanoHDAccount(KeyringService* keyring_service) {
+  auto accounts = keyring_service->GetAllAccountsSync();
+  for (const auto& account : accounts->accounts) {
+    if (account && account->account_id &&
+        IsCardanoMainnetKeyring(account->account_id->keyring_id) &&
+        account->account_id->account_index == 0) {
+      return account->account_id.Clone();
+    }
+  }
+  return nullptr;
+}
 
-  if (!cardano_account || !cardano_account->account_id) {
+mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
+  auto cardano_account_id =
+      FindFirstCardanoHDAccount(brave_wallet_service_->keyring_service());
+
+  if (!cardano_account_id) {
     return nullptr;
   }
 
   const auto allowed_accounts = delegate_->GetAllowedAccounts(
       mojom::CoinType::ADA,
-      {GetAccountPermissionIdentifier(cardano_account->account_id)});
+      {GetAccountPermissionIdentifier(cardano_account_id)});
 
   if (!allowed_accounts || allowed_accounts->empty()) {
     return nullptr;
@@ -80,7 +92,7 @@ mojom::AccountIdPtr CardanoProviderImpl::GetAllowedSelectedAccount() {
 void CardanoProviderImpl::GetNetworkId(GetNetworkIdCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
-    std::move(callback).Run(0, "Account not connected");
+    std::move(callback).Run(0, kAccountNotConnectedError);
     return;
   }
 
@@ -242,11 +254,10 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
   }
 
   // TODO(cypt4): Support multiple Cardano accounts
-  auto cardano_account =
-      brave_wallet_service_->keyring_service()->GetHDAccountInfoForKeyring(
-          mojom::KeyringId::kCardanoMainnet, 0);
+  auto cardano_account_id =
+      FindFirstCardanoHDAccount(brave_wallet_service_->keyring_service());
 
-  if (!cardano_account) {
+  if (!cardano_account_id) {
     if (!wallet_onboarding_shown_) {
       delegate_->ShowWalletOnboarding();
       wallet_onboarding_shown_ = true;
@@ -274,7 +285,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
 
   const auto allowed_accounts = delegate_->GetAllowedAccounts(
       mojom::CoinType::ADA,
-      {GetAccountPermissionIdentifier(cardano_account->account_id)});
+      {GetAccountPermissionIdentifier(cardano_account_id)});
   const bool success = allowed_accounts.has_value();
 
   if (!success) {
@@ -292,7 +303,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
     // Request accounts if no accounts are connected.
     delegate_->RequestPermissions(
         mojom::CoinType::ADA,
-        {GetAccountPermissionIdentifier(cardano_account->account_id)},
+        {GetAccountPermissionIdentifier(cardano_account_id)},
         base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                        origin));

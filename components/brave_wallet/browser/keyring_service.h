@@ -192,8 +192,6 @@ class KeyringService : public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
-  mojom::AccountInfoPtr GetHDAccountInfoForKeyring(mojom::KeyringId keyring_id,
-                                                   uint32_t index) const;
   void UpdateNextUnusedAddressForBitcoinAccount(
       const mojom::AccountIdPtr& account_id,
       std::optional<uint32_t> next_receive_index,
@@ -363,8 +361,6 @@ class KeyringService : public mojom::KeyringService {
       base::span<const uint8_t> private_key);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
-      mojom::KeyringId keyring_id) const;
-  std::vector<mojom::AccountInfoPtr> GetHDAccountInfosForKeyring(
       mojom::KeyringId keyring_id) const;
 
   bool CanResumeWallet(const std::string& mnemonic,

@@ -1610,18 +1610,6 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
   return account_info;
 }
 
-mojom::AccountInfoPtr KeyringService::GetHDAccountInfoForKeyring(
-    mojom::KeyringId keyring_id,
-    uint32_t index) const {
-  for (const auto& derived_account_info :
-       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
-    if (derived_account_info.account_index == index) {
-      return MakeAccountInfoForDerivedAccount(derived_account_info);
-    }
-  }
-  return nullptr;
-}
-
 // This member function should not assume that the wallet is unlocked!
 std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
     mojom::KeyringId keyring_id) const {

@@ -1359,6 +1359,7 @@ export class MockedWalletApiProxy {
             BraveWallet.CoinType.SOL,
             BraveWallet.CoinType.ADA,
           ],
+          isCardanoDappSupportEnabled: false,
         },
       }
     },
