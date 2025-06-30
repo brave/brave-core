@@ -27,7 +27,7 @@ FilterUnsupportedChromiumActions(
 // 3. Adds Brave-specific actions.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
-    base::WeakPtr<content::WebContents> web_contents,
+    content::WebContents& web_contents,
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
 
 }  // namespace customize_chrome

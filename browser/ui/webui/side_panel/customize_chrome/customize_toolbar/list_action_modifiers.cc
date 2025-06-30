@@ -53,7 +53,7 @@ std::vector<ActionPtr> FilterUnsupportedChromiumActions(
 }
 
 std::vector<ActionPtr> ApplyBraveSpecificModifications(
-    base::WeakPtr<content::WebContents> web_contents,
+    content::WebContents& web_contents,
     std::vector<ActionPtr> actions) {
   using side_panel::customize_chrome::mojom::Action;
   using side_panel::customize_chrome::mojom::CategoryId;
@@ -76,12 +76,11 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   }
 
   // 2. Update icons for existing actions.
-  CHECK(web_contents);
-  const auto& cp = web_contents->GetColorProvider();
+  const auto& cp = web_contents.GetColorProvider();
 
   float scale_factor = 1.0f;
   if (auto* screen = display::Screen::GetScreen()) {
-    screen->GetDisplayNearestWindow(web_contents->GetTopLevelNativeWindow())
+    screen->GetDisplayNearestWindow(web_contents.GetTopLevelNativeWindow())
         .device_scale_factor();
   } else {
     CHECK_IS_TEST();
@@ -110,7 +109,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   //   kShowWallet,
   //   kShowAIChat,
   //   kShowVPN,
-  auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents.GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
   std::vector<BraveAction> brave_actions;
@@ -119,7 +118,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   // Followings are dynamic actions: anchor to TabSearchButton and append to
   // action list in reverse order.
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled(web_contents->GetBrowserContext())) {
+  if (brave_vpn::IsBraveVPNEnabled(web_contents.GetBrowserContext())) {
     brave_actions.push_back(kShowVPNAction);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)

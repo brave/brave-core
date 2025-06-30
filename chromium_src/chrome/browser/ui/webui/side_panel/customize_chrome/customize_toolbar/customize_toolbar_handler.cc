@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"
 
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
 
@@ -19,9 +20,10 @@
 void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
   ListActionsChromium(
       base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
-          .Then(
-              base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
-                             web_contents_->GetWeakPtr()))
+          .Then(base::BindOnce(
+              &customize_chrome::ApplyBraveSpecificModifications,
+              base::Unretained(
+                  base::raw_ref<content::WebContents>(*web_contents_))))
           .Then(std::move(callback)));
 }
 
