@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useEffect, useState } from "react"
+import * as React from "react"
+import { useEffect, useMemo, useState } from "react"
 
 // This file provides a helper for extract route params from a path and
 // notifying consumers when those path params change.
@@ -67,24 +68,68 @@ const extractParams = (currentUrl: string, route: string) => {
   return params
 }
 
+// Note: Unfortunately we can't use the new Navigation API because it isn't
+// supported in Safari yet (and the AI Chat WebUI runs on iOS).
+(['pushState', 'replaceState'] as const).forEach(method => {
+  const old = window.history[method]
+  window.history[method] = (state, title, url) => {
+    old.call(window.history, state, title, url)
+    window.dispatchEvent(new CustomEvent('brave-history-changed', {
+      detail: {
+        state,
+        title,
+        url
+      }
+    }))
+  }
+})
+
+// Helper hook for getting the current location and changing when history changes.
+export const useLocation = () => {
+  const [location, setLocation] = useState(window.location.href)
+
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      setLocation(window.location.href)
+    }
+    window.addEventListener('brave-history-changed', handler)
+    window.addEventListener('popstate', handler)
+    return () => {
+      window.removeEventListener('brave-history-changed', handler)
+      window.removeEventListener('popstate', handler)
+    }
+  }, [])
+
+  return location
+}
+
 // Extracts and returns matching route params from a URL, or null if the pattern
 // doesn't match.
 // Additionally, when the route matches navigations will be intercepted,
 // preventing a page reload.
 export const useRoute = <Route extends string>(route: Route): RouteParams<Route> | null => {
-  const [params, setParams] = useState(() => extractParams(window.location.href, route))
-
-  useEffect(() => {
-    const handler = (e: NavigateEvent) => {
-      const params = extractParams(e.destination.url, route)
-      if (params) e.intercept()
-      setParams(params)
-    }
-    window.navigation.addEventListener('navigate', handler)
-    return () => {
-      window.navigation.removeEventListener('navigate', handler)
-    }
-  }, [route])
-
+  const location = useLocation()
+  const params = useMemo(() => extractParams(location, route), [location, route])
   return params as RouteParams<Route> | null
+}
+
+// This component is useful if you want a Link which won't cause a page reload.
+export const Link = (props: React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => {
+  const { href, onClick, ...rest } = props
+  return <a {...rest} onClick={(e) => {
+    onClick?.(e);
+
+    // Ensure the event hasn't been handled by the user.
+    if (e.defaultPrevented || e.isPropagationStopped()) {
+      return
+    }
+
+    // Don't intercept clicks which would open in a different tab/window.
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+      return
+    }
+
+    e.preventDefault()
+    window.history.pushState(null, '', href)
+  }} />
 }

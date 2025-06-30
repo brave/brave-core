@@ -30,8 +30,8 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
 })
 
 
-const updateSelectedConversation = (selectedId: string | undefined) => {
-  window.location.href = `/${selectedId ?? ''}`
+export const updateSelectedConversation = (selectedId: string | undefined) => {
+  window.history.pushState(null, '', `/${selectedId ?? ''}`)
 }
 
 export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
