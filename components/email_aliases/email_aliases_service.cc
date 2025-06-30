@@ -9,8 +9,8 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
 
 namespace email_aliases {
 
@@ -37,8 +37,10 @@ void EmailAliasesService::RequestAuthentication(
   std::move(callback).Run("Not implemented");
 }
 
-void EmailAliasesService::CancelAuthenticationOrLogout() {
+void EmailAliasesService::CancelAuthenticationOrLogout(
+    CancelAuthenticationOrLogoutCallback callback) {
   // TODO: Implement logout logic
+  std::move(callback).Run();
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {

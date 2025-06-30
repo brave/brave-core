@@ -28,7 +28,8 @@ class EmailAliasesService : public KeyedService,
   // mojom::EmailAliasesService:
   void RequestAuthentication(const std::string& auth_email,
                              RequestAuthenticationCallback callback) override;
-  void CancelAuthenticationOrLogout() override;
+  void CancelAuthenticationOrLogout(
+      CancelAuthenticationOrLogoutCallback callback) override;
   void GenerateAlias(GenerateAliasCallback callback) override;
   void UpdateAlias(const std::string& alias_email,
                    const std::optional<std::string>& note,

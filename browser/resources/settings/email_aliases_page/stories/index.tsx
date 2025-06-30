@@ -196,7 +196,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { errorMessage: null }
   }
 
-  cancelAuthenticationOrLogout () {
+  async cancelAuthenticationOrLogout () {
     window.clearTimeout(this.accountRequestId)
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({

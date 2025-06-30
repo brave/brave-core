@@ -56,7 +56,7 @@ interface EmailAliasesService {
   RequestAuthentication(string auth_email) => (string? error_message);
 
   // Cancel pending authentication or log out if already authenticated.
-  CancelAuthenticationOrLogout();
+  CancelAuthenticationOrLogout() => ();
 
   // Generate a proposed email alias.
   GenerateAlias() => (GenerateAliasResult result);
