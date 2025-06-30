@@ -90,6 +90,12 @@
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+// Need `nogncheck` because the linter doesn't understand the conditional
+// include. See `gn help nogncheck`.
+#include "brave/updater/updater_p3a.h"  // nogncheck
+#endif
+
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -120,6 +126,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
                                 base::Value(false));
+  brave_updater::RegisterLocalStatePrefs(registry);
 #endif
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
