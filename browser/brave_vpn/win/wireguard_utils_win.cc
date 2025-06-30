@@ -54,7 +54,7 @@ constexpr wchar_t kSystemProxyRegistryKey[] =
 constexpr wchar_t kAutoConfigURL[] = L"AutoConfigURL";
 
 void MaybeEnableSystemProxy() {
-  if (!g_smart_proxy_url->empty()) {
+  if (g_smart_proxy_url->empty()) {
     return;
   }
 
