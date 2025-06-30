@@ -53,6 +53,7 @@ void ReportLaunch(base::Time now,
 
   UpdateStatus status;
   bool report_status = false;
+  using enum UpdateStatus;
   if (updated_to_new_version) {
     status = last_launch_used_omaha4 ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
     // Report updates immediately.
@@ -66,8 +67,7 @@ void ReportLaunch(base::Time now,
   }
 
   if (report_status) {
-    UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status,
-                              kUpdatedWithOmaha4 + 1);
+    UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status);
     prefs->SetInteger(kLastReportedWeekPref, current_week);
   }
 }

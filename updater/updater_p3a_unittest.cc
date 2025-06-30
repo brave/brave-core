@@ -106,6 +106,7 @@ void BraveUpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
 
 void BraveUpdaterP3ATest::ExpectBucketCounts(int num_no_updates,
                                              int num_updates) {
+  using enum UpdateStatus;
   UpdateStatus no_update =
       IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
   UpdateStatus updated =
