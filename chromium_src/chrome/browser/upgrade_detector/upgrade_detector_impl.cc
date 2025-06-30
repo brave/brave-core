@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "build/build_config.h"
+#include "brave/browser/updater/buildflags.h"
 
-#if BUILDFLAG(IS_MAC)
+#if BUILDFLAG(ENABLE_OMAHA4)
 // When the current build is more than several weeks old, upstream takes this as
 // a sign that automatic updates are broken and shows a prominent "Can't update
 // - please reinstall" notification. This makes sense for upstream, which uses
@@ -23,7 +23,7 @@
   }
 #else
 #define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR
-#endif
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
 
 #include "src/chrome/browser/upgrade_detector/upgrade_detector_impl.cc"
 

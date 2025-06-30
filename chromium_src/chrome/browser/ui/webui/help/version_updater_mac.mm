@@ -19,7 +19,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/browser/updater/features.h"
+#include "brave/browser/updater/buildflags.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -27,6 +27,10 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 // KeystoneObserver is a simple notification observer for Keystone status
@@ -205,12 +209,18 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
 
+#if BUILDFLAG(ENABLE_OMAHA4)
 #define WrapUnique(X)                         \
   WrapUnique(brave_updater::ShouldUseOmaha4() \
                  ? X                          \
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
+
 #include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+
+#if BUILDFLAG(ENABLE_OMAHA4)
 #undef WrapUnique
+#endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 void SparkleVersionUpdater::GetIsSparkleForTesting(bool& result) const {
