@@ -364,6 +364,20 @@ export const mockBitcoinTestnetAccount: BraveWallet.AccountInfo = {
   hardware: undefined,
 }
 
+export const mockCardanoAccount: BraveWallet.AccountInfo = {
+  name: 'mockAdaAccountName',
+  address: '',
+  accountId: {
+    coin: BraveWallet.CoinType.ADA,
+    keyringId: BraveWallet.KeyringId.kCardanoMainnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '',
+    accountIndex: 0,
+    uniqueKey: '1_0_0_0',
+  },
+  hardware: undefined,
+}
+
 export const mockSpotPriceRegistry: SpotPriceRegistry = {
   eth: {
     fromAsset: 'ETH',

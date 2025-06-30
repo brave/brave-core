@@ -13,8 +13,14 @@ import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 // Hooks
 import {
+  useSafeWalletSelector, //
+} from '../../../common/hooks/use-safe-selector'
+import {
   useIsDAppVerified, //
 } from '../../../common/hooks/use_is_dapp_verified'
+
+// selectors
+import { WalletSelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -39,12 +45,18 @@ import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 const CONNECTABLE_COIN_TYPES = [
   BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ADA,
 ]
 
 export const Connections = () => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
+
+  // Redux
+  const isCardanoDappSupportEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardanoDappSupportEnabled,
+  )
 
   // Hooks
   const isDAppVerified = useIsDAppVerified(activeOrigin)
@@ -95,7 +107,10 @@ export const Connections = () => {
           gap='16px'
           width='100%'
         >
-          {CONNECTABLE_COIN_TYPES.map((coin) => (
+          {CONNECTABLE_COIN_TYPES.filter(
+            (coin) =>
+              coin !== BraveWallet.CoinType.ADA || isCardanoDappSupportEnabled,
+          ).map((coin) => (
             <ConnectionSection
               key={coin}
               coin={coin}

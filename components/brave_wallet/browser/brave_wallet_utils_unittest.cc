@@ -809,4 +809,15 @@ TEST(BraveWalletUtilsUnitTest, SetAssetCompressed) {
   EXPECT_TRUE(GetAllUserAssets(&prefs)[13]->is_compressed);
 }
 
+TEST(BraveWalletUtilsUnitTest, GetAccountPermissionIdentifier) {
+  auto cardano_addr = mojom::AccountId::New(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kHardware, "addr", 1, "unique_key");
+  auto non_cardano_addr = mojom::AccountId::New(
+      mojom::CoinType::ETH, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kHardware, "addr", 1, "unique_key");
+  EXPECT_EQ("unique_key", GetAccountPermissionIdentifier(cardano_addr));
+  EXPECT_EQ("addr", GetAccountPermissionIdentifier(non_cardano_addr));
+}
+
 }  // namespace brave_wallet
