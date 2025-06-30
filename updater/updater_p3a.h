@@ -21,11 +21,12 @@ namespace brave_updater {
 
 inline constexpr char kUpdateStatusHistogramName[] = "Brave.Update.Status";
 
-enum UpdateStatus {
-  kNoUpdateWithLegacy,
-  kNoUpdateWithOmaha4,
-  kUpdatedWithLegacy,
-  kUpdatedWithOmaha4
+enum class UpdateStatus {
+  kNoUpdateWithLegacy = 0,
+  kNoUpdateWithOmaha4 = 1,
+  kUpdatedWithLegacy = 2,
+  kUpdatedWithOmaha4 = 3,
+  kMaxValue = kUpdatedWithOmaha4
 };
 
 // This function is called when the browser launches. It remembers the browser
