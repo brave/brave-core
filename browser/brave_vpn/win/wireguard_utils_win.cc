@@ -35,7 +35,14 @@
 namespace brave_vpn {
 
 namespace {
-std::optional<bool> g_wireguard_service_registered_for_testing;
+
+enum class ServiceRegistrationStatus {
+  kUndefined,
+  kNotRegistered,
+  kRegistered
+};
+
+ServiceRegistrationStatus g_wireguard_service_registered_for_testing;
 // Store the last value passed in. This is useful for the case where the system
 // tray is needing to initiate the connect. As this isn't persisted, it won't
 // survive the owning process being restarted.
@@ -113,8 +120,10 @@ void MaybeDisableSystemProxy() {
 namespace wireguard {
 
 bool IsWireguardServiceInstalled() {
-  if (g_wireguard_service_registered_for_testing.has_value()) {
-    return g_wireguard_service_registered_for_testing.value();
+  if (g_wireguard_service_registered_for_testing !=
+      ServiceRegistrationStatus::kUndefined) {
+    return g_wireguard_service_registered_for_testing ==
+           ServiceRegistrationStatus::kRegistered;
   }
   return brave_vpn::GetWindowsServiceStatus(
              brave_vpn::GetBraveVpnWireguardServiceName())
@@ -122,7 +131,9 @@ bool IsWireguardServiceInstalled() {
 }
 
 void SetWireguardServiceRegisteredForTesting(bool value) {
-  g_wireguard_service_registered_for_testing = value;
+  g_wireguard_service_registered_for_testing =
+      value ? ServiceRegistrationStatus::kRegistered
+            : ServiceRegistrationStatus::kNotRegistered;
 }
 
 bool IsBraveVPNWireguardTunnelServiceRunning() {
