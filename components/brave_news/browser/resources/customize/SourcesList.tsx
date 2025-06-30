@@ -5,8 +5,7 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
-import usePromise from '$web-common/usePromise'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
+import { getPluralString } from '$web-common/pluralStrings'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews, useChannels } from '../shared/Context'
@@ -28,7 +27,9 @@ export default function SourcesList () {
   const { subscribedPublisherIds } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
 
-  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', subscribedPublisherIds.length + channels.length), [subscribedPublisherIds.length, channels.length])
+  const sourcesCount = getPluralString('braveNewsSourceCount', {
+    FEED_COUNT: subscribedPublisherIds.length + channels.length
+  })
 
   return <div>
     <Flex direction="row" justify="space-between" align="center">
