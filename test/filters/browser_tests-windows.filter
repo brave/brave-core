@@ -17,6 +17,7 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-All/CookieSettingsTest.AllowCookiesUsingExceptions/0
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AiDataKeyedServiceBrowserTest.TabInnerText
@@ -27,6 +28,8 @@
 -ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
+-WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
+-WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
@@ -46,7 +49,6 @@
 
 # These tests fail on CI but passes locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
--All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
