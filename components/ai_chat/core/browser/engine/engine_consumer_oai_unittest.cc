@@ -558,43 +558,6 @@ TEST_F(EngineConsumerOAIUnitTest,
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
-  EngineConsumer::ConversationHistory history;
-  auto* client = GetClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", {}, std::nullopt,
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            run_loop->Quit();
-          }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(client);
-
-  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
-  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("Me")));
-  history.push_back(std::move(entry));
-
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
-  run_loop = std::make_unique<base::RunLoop>();
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", {}, std::nullopt,
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            run_loop->Quit();
-          }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(client);
-}
-
 TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   EngineConsumer::ConversationHistory history;
   auto* client = GetClient();

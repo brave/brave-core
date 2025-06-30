@@ -8,17 +8,25 @@
 
 #include <string>
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
 
 namespace mojom {
 
-void PrintTo(const AssociatedContent& content, std::ostream* os);
-void PrintTo(const Conversation& conversation, std::ostream* os);
-void PrintTo(const ToolUseEvent& event, std::ostream* os);
-void PrintTo(const ConversationEntryEvent& event, std::ostream* os);
-void PrintTo(const ConversationTurn& event, std::ostream* os);
+// Define the PrintTo function for a mojo type and also the StructPtr version
+// to allow for passing either type during tests.
+#define GENERATE_MOJO_PTR_PRINTER(Type)                         \
+  void PrintTo(const Type& instance, std::ostream* os);         \
+  inline void PrintTo(const Type##Ptr& ptr, std::ostream* os) { \
+    PrintTo(*ptr, os);                                          \
+  }
+
+GENERATE_MOJO_PTR_PRINTER(AssociatedContent)
+GENERATE_MOJO_PTR_PRINTER(Conversation)
+GENERATE_MOJO_PTR_PRINTER(ToolUseEvent)
+GENERATE_MOJO_PTR_PRINTER(ConversationEntryEvent)
+GENERATE_MOJO_PTR_PRINTER(ConversationTurn)
 
 }  // namespace mojom
 

@@ -54,11 +54,6 @@ bool EngineConsumer::CanPerformCompletionRequest(
     return false;
   }
 
-  const auto& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
-    return false;
-  }
-
   return true;
 }
 
