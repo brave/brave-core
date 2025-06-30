@@ -110,6 +110,7 @@ export const FundWalletScreen = () => {
   // Redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // Computed
   const selectedCountry = countries?.find(
@@ -128,10 +129,10 @@ export const FundWalletScreen = () => {
     <>
       <WalletPageWrapper
         wrapContentInBox={true}
-        hideNav={isAndroid || isPanel}
-        hideHeader={isAndroid}
+        hideNav={isAndroidOrPanel}
+        hideHeader={isAndroidOrPanel}
         cardHeader={
-          isPanel ? (
+          isAndroidOrPanel ? (
             <PanelActionHeader
               title={pageTitle}
               expandRoute={WalletRoutes.FundWalletPageStart}
@@ -140,9 +141,9 @@ export const FundWalletScreen = () => {
             <PageTitleHeader title={pageTitle} />
           )
         }
-        useDarkBackground={isPanel}
-        noPadding={isPanel}
-        noCardPadding={isPanel}
+        useDarkBackground={isAndroidOrPanel}
+        noPadding={isAndroidOrPanel}
+        noCardPadding={isAndroidOrPanel}
       >
         <ContentWrapper
           width='100%'
