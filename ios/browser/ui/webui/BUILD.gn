@@ -17,6 +17,7 @@ source_set("webui") {
 
   deps = [
     "//base",
+    "//brave/components/brave_account:features",
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui:data_sources",
