@@ -1051,7 +1051,23 @@ const util = {
         'android',
         'res',
       )
-
+      const androidBrowserShareResSource = path.join(
+        config.braveCoreDir,
+        'browser',
+        'share',
+        'android',
+        'java',
+        'res',
+      )
+      const androidBrowserShareResDest = path.join(
+        config.srcDir,
+        'chrome',
+        'browser',
+        'share',
+        'android',
+        'java',
+        'res',
+      )
       const uiAndroidResSource =
           path.join(config.braveCoreDir, "ui", "android", "java", "res")
       const uiAndroidResDest =
@@ -1079,6 +1095,7 @@ const util = {
           androidBrowserHubInternalResDest,
         ],
         [uiAndroidResSource]: [uiAndroidResDest],
+        [androidBrowserShareResSource]: [androidBrowserShareResDest],
       }
 
       console.log('copy Android app icons and app resources')
