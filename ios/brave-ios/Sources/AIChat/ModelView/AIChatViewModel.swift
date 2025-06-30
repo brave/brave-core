@@ -341,9 +341,11 @@ extension AIChatViewModel: AIChatDelegate {
   }
 
   public func onPageHasContent(
-    _ siteInfo: [AiChat.AssociatedContent]
+    _ siteInfo: [AiChat.AssociatedContent],
+    shouldSendContent shouldSendPageContents: Bool
   ) {
     self.siteInfo = siteInfo
+    self._shouldSendPageContents = shouldSendPageContents
   }
 
   public func onServiceStateChanged(_ state: AiChat.ServiceState) {
