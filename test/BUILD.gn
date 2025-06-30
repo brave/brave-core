@@ -12,6 +12,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -76,8 +77,10 @@ static_library("brave_test_support_unit") {
     ":test_support",
     "//brave/common",
     "//brave/components/constants",
+    "//chrome/browser/ui",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
+    "//content/public/common",
     "//mojo/core/embedder",
   ]
 
@@ -189,6 +192,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/webui/flags:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
+    "//brave/components:brave_components_unittests",
     "//brave/components/ai_chat/core/browser:unit_tests",
     "//brave/components/ai_chat/core/common:unit_tests",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
