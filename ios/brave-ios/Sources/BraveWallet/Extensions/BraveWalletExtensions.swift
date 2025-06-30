@@ -846,3 +846,77 @@ extension BraveWallet.ZCashAddressError {
     }
   }
 }
+
+extension String {
+  var chainIconName: String? {
+    if self.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame
+    {
+      return AssetImageName.ethereum.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.SolanaMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.SolanaDevnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.SolanaTestnet) == .orderedSame
+    {
+      return AssetImageName.solana.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.FilecoinTestnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.FilecoinEthereumMainnetChainId) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame
+    {
+      return AssetImageName.filecoin.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.BitcoinMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame
+    {
+      return AssetImageName.bitcoin.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.ZCashMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.ZCashTestnet) == .orderedSame
+    {
+      return AssetImageName.zcash.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
+      return AssetImageName.polygon.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.BnbSmartChainMainnetChainId)
+      == .orderedSame
+    {
+      return AssetImageName.binance.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
+      return AssetImageName.celo.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
+      return AssetImageName.avalanche.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.FantomMainnetChainId) == .orderedSame {
+      return AssetImageName.fantom.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.AuroraMainnetChainId) == .orderedSame {
+      return AssetImageName.aurora.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.OptimismMainnetChainId) == .orderedSame {
+      return AssetImageName.optimism.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.BaseMainnetChainId) == .orderedSame {
+      return AssetImageName.base.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.NeonEvmMainnetChainId) == .orderedSame {
+      return AssetImageName.neon.rawValue
+    } else {
+      return nil
+    }
+  }
+}
+
+extension BraveWallet.MeldCryptoCurrency {
+  var displaySymbol: String {
+    currencyCode.separatedBy("_").first ?? currencyCode
+  }
+}
+
+extension BraveWallet.MeldCryptoCurrency {
+  var coin: BraveWallet.CoinType {
+    switch chainCode {
+    case "BTC":
+      return .btc
+    case "FIL":
+      return .fil
+    case "ZEC":
+      return .zec
+    case "SOLANA":
+      return .sol
+    default:
+      return .eth
+    }
+  }
+}

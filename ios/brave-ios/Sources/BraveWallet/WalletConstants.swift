@@ -133,9 +133,8 @@ public struct WalletConstants {
   /// All of currently supported `OnRampProvider`s.
   /// Use `OnRampProvider.allSupportedOnRampProviders` to get providers available for current device locale.
   /// Exclude `.ramp` due to #44542
-  /// Exclude `.transak` due to #46567
   static let supportedOnRampProviders: OrderedSet<BraveWallet.OnRampProvider> = [
-    .sardine, .stripe, .coinbase,
+    .sardine, .stripe, .coinbase, .transak,
   ]
 
   /// The supported Ethereum Name Service (ENS) extensions
@@ -287,4 +286,31 @@ public struct WalletConstants {
 
   /// Solana Transacation Instruction Type Name
   static let solanaTxInstructionTypeNameAssignWithSeed: String = "AssignWithSeed"
+
+  /// All supported chains by Meld
+  static var supportedChainsForMeld: [String] {
+    var result = [
+      "FIL",
+      "ETH",
+      "SOLANA",
+      "FTM",
+      "BSC",
+      "POLYGON",
+      "OPTIMISM",
+      "AURORA",
+      "CELO",
+      "ARBITRUM",
+      "AVAXC",
+    ]
+    if FeatureList.kBraveWalletBitcoinFeature.enabled {
+      result.append("BTC")
+    }
+    if FeatureList.kBraveWalletZCashFeature.enabled {
+      result.append("ZEC")
+    }
+    return result
+  }
+
+  /// The link for users to open Meld Term of Use site
+  static let meldTermOfUseLink: URL = URL(string: "https://www.meld.io/terms-of-use")!
 }

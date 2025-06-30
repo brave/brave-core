@@ -89,7 +89,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
   public var nativeTokenLogoName: String? {
     if let logoBySymbol = assetIconNameBySymbol(symbol) {
       return logoBySymbol
-    } else if let logoByChainId = assetIconNameByChainId(chainId) {
+    } else if let logoByChainId = chainId.chainIconName {
       return logoByChainId
     } else {
       return iconUrls.first
@@ -102,61 +102,12 @@ extension BraveWallet.NetworkInfo: Identifiable {
   }
 
   public var networkLogoName: String? {
-    return assetIconNameByChainId(chainId) ?? iconUrls.first
+    return chainId.chainIconName ?? iconUrls.first
   }
 
   public var networkLogoImage: UIImage? {
     guard let logo = networkLogoName else { return nil }
     return UIImage(named: logo, in: .module, with: nil)
-  }
-
-  private func assetIconNameByChainId(_ chainId: String) -> String? {
-    if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame
-    {
-      return AssetImageName.ethereum.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.SolanaMainnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.SolanaDevnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.SolanaTestnet) == .orderedSame
-    {
-      return AssetImageName.solana.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinTestnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumMainnetChainId) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame
-    {
-      return AssetImageName.filecoin.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.BitcoinMainnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame
-    {
-      return AssetImageName.bitcoin.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.ZCashMainnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.ZCashTestnet) == .orderedSame
-    {
-      return AssetImageName.zcash.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
-      return AssetImageName.polygon.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.BnbSmartChainMainnetChainId)
-      == .orderedSame
-    {
-      return AssetImageName.binance.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
-      return AssetImageName.celo.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
-      return AssetImageName.avalanche.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.FantomMainnetChainId) == .orderedSame {
-      return AssetImageName.fantom.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.AuroraMainnetChainId) == .orderedSame {
-      return AssetImageName.aurora.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.OptimismMainnetChainId) == .orderedSame {
-      return AssetImageName.optimism.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.BaseMainnetChainId) == .orderedSame {
-      return AssetImageName.base.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.NeonEvmMainnetChainId) == .orderedSame {
-      return AssetImageName.neon.rawValue
-    } else {
-      return nil
-    }
   }
 
   private func assetIconNameBySymbol(_ symbol: String) -> String? {
@@ -231,5 +182,23 @@ extension BraveWallet.OnRampCurrency: Identifiable {
 extension BraveWallet.CoinMarket: Identifiable {
   var uniqueId: String {
     "\(symbol)\(marketCapRank)"
+  }
+}
+
+extension BraveWallet.MeldFiatCurrency: Identifiable {
+  public var id: String {
+    currencyCode
+  }
+}
+
+extension BraveWallet.MeldServiceProvider: Identifiable {
+  public var id: String {
+    serviceProvider
+  }
+}
+
+extension BraveWallet.MeldCryptoCurrency: Identifiable {
+  public var id: String {
+    currencyCode
   }
 }

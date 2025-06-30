@@ -5894,5 +5894,101 @@ extension Strings {
       comment:
         "The title displays in confirmation screen when there is no more pending transaction."
     )
+    public static let meldTransactionPartner = NSLocalizedString(
+      "wallet.meldTransactionPartner",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Transactions Partner",
+      comment:
+        "The title of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerDescription = NSLocalizedString(
+      "wallet.meldTransactionPartnerDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.",
+      comment:
+        "The description of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerLegal = NSLocalizedString(
+      "wallet.meldTransactionPartnerLegal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "I have read and agree to the [Meld's Terms of Use](%@)",
+      comment:
+        "The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldPaymentMethodHeaderTitle = NSLocalizedString(
+      "wallet.meldPaymentMethodHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Payment method",
+      comment:
+        "The header title of the section that user can pick a payment method in buy screen in Brave Wallet."
+    )
+    public static let meldCountryHeaderTitle = NSLocalizedString(
+      "wallet.meldCountryHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Country",
+      comment:
+        "The header title of the section that user can pick a country in buy screen in Brave Wallet."
+    )
+    public static let meldAccountHeaderTitle = NSLocalizedString(
+      "wallet.meldAccountHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Account",
+      comment:
+        "The header title of the section that user can pick an account in buy screen in Brave Wallet."
+    )
+    public static let providerListBestOption = NSLocalizedString(
+      "wallet.providerListBestOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "BEST OPTION",
+      comment:
+        "A label that will display on the provider option to indicate this is the best option."
+    )
+    public static let providerListExchangeRateWithFees = NSLocalizedString(
+      "wallet.providerListExchangeRateWithFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Exchange rate with fees",
+      comment:
+        "One of title that displays under provider option. Exchange rate with fees that this provider offers."
+    )
+    public static let providerListPrice = NSLocalizedString(
+      "wallet.providerListPrice",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Price",
+      comment:
+        "One of title that displays under provider option. The price of the target currency on market."
+    )
+    public static let providerListFees = NSLocalizedString(
+      "wallet.providerListFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Fees",
+      comment:
+        "One of title that displays under provider option. The fees that provider will charge."
+    )
+    public static let providerListTotal = NSLocalizedString(
+      "wallet.providerListTotal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Total",
+      comment:
+        "One of title that displays under provider option. The total cost of this purchase."
+    )
+    public static let providerListBuyWith = NSLocalizedString(
+      "wallet.providerListBuyWith",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Buy with %@",
+      comment:
+        "The title of the button that user can use to open the link to buy crypto."
+    )
   }
 }
