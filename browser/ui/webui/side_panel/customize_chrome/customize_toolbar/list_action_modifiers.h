@@ -23,8 +23,15 @@ FilterUnsupportedChromiumActions(
 
 // Applies Brave-specific modifications to the list of actions.
 // 1. Moves existing Chromium actions to the desired positions.
+//   e.g. Tab search action is moved to 'Navigation' category after 'New
+//        Incognito Window'.
 // 2. Updates icons for existing actions.
+//   e.g. 'New Incognito Window' action icon is updated to use the
+//        `kLeoProductPrivateWindowIcon`. This icon is different from what
+//        we use for App menu.
 // 3. Adds Brave-specific actions.
+//   e.g. In 'Navigation' category:
+//        `kShowSidePanel`, `kShowWallet`, `kShowAIChat`, `kShowVPN`.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
     content::WebContents& web_contents,
