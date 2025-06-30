@@ -27,6 +27,7 @@ static_library("browser") {
     "//base",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common:common_impl",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
     "//brave/components/brave_stats/browser",

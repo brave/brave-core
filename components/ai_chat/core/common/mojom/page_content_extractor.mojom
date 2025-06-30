@@ -13,10 +13,17 @@ enum PageContentType {
   VideoTranscriptVTT
 };
 
+// Configuration for YouTube InnerTube API
+struct YoutubeInnerTubeConfig {
+  string api_key;
+  string video_id;
+};
+
 // Items either have content or a url to retrieve content
 union PageContentData {
   string content;
   url.mojom.Url content_url;
+  YoutubeInnerTubeConfig youtube_inner_tube_config;
 };
 
 struct PageContent {
@@ -37,13 +44,4 @@ interface PageContentExtractor {
   // continue-with-leo HTML anchor element (open Leo button). These two
   // nonces value must be the same, otherwise nullopt will be returned.
   GetOpenAIChatButtonNonce() => (string? nonce);
-};
-
-// Allows the renderer to notify the browser process of meaningful changes to
-// the content.
-interface PageContentExtractorHost {
-  // We don't send page content here due to an optimization for the majority of
-  // renderers without active AIChat conversations. We wait until the host
-  // requests it via PageContentExtractor.ExtractPageContent.
-  OnInterceptedPageContentChanged();
 };
