@@ -22,7 +22,7 @@ public class BraveTabGroupModelFilterClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sTabGroupModelFilterClassName,
-                "shouldUseParentIds",
+                "shouldGroupWithParent",
                 sBraveTabGroupModelFilterClassName);
     }
 }
