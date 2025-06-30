@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.components.image_fetcher.ImageDataFetchResult;
 import org.chromium.components.image_fetcher.ImageFetcher;
 import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
@@ -159,9 +160,9 @@ public class ImageLoader {
             if (isGif(url)) {
                 imageFetcher.fetchGif(
                         Params.create(new GURL(url), UNUSED_CLIENT_NAME),
-                        gifImage -> {
+                        (ImageDataFetchResult gifImage) -> {
                             ImageFetcherFacade imageFetcherFacade =
-                                    new ImageFetcherFacade(gifImage.getData());
+                                    new ImageFetcherFacade(gifImage.imageData);
                             loadImage(
                                     imageFetcherFacade,
                                     requestManager,
