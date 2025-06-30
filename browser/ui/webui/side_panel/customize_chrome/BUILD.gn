@@ -3,16 +3,38 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
 source_set("customize_chrome") {
   sources = [
+    "customize_toolbar/brave_action.h",
     "customize_toolbar/list_action_modifiers.cc",
     "customize_toolbar/list_action_modifiers.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/vector_icons",
     "//chrome/browser/ui/webui/side_panel/customize_chrome:mojo_bindings",
+    "//chrome/browser/ui/webui/util",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
   ]
+
+  if (enable_brave_vpn_panel) {
+    deps += [
+      "//brave/browser/brave_vpn",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
 }
 
 source_set("browser_tests") {
@@ -36,6 +58,27 @@ source_set("unit_tests") {
   deps = [
     ":customize_chrome",
     "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/vector_icons",
+    "//chrome/browser/ui/webui/util",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
   ]
+
+  if (enable_brave_vpn_panel) {
+    deps += [
+      "//brave/browser/brave_vpn",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
 }
