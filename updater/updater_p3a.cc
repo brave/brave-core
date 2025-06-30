@@ -10,11 +10,20 @@
 
 namespace brave_updater {
 
+// This pref remembers whether Brave used Omaha 4 or the legacy updater in the
+// last browser launch:
 constexpr char kLastLaunchUsedOmaha4Pref[] =
     "brave.updater_p3a.last_launch_used_omaha4";
+
+// This pref remembers the version of the browser that was last launched:
 constexpr char kLastLaunchVersionPref[] =
     "brave.updater_p3a.last_launch_version";
+
+// This pref remembers when the browser was last updated:
 constexpr char kLastUpdateTimePref[] = "brave.updater_p3a.last_update_time";
+
+// This pref remembers whether the last update was done with Omaha 4 or the
+// legacy updater:
 constexpr char kLastUpdateUsedOmaha4Pref[] =
     "brave.updater_p3a.last_update_used_omaha4";
 
