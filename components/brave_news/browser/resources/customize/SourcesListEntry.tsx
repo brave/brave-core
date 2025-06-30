@@ -89,7 +89,7 @@ export function FeedListEntry (props: Props) {
       <FavIcon publisherId={props.publisherId} />
       <Text>{publisher.publisherName}</Text>
       <ToggleButton onClick={() => setFollowed(false)}>
-        {getLocale('braveNewsFollowButtonFollowing')}
+        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
       </ToggleButton>
     </Container>
   )
@@ -105,7 +105,7 @@ export function ChannelListEntry (props: { channelName: string }) {
       </FavIconContainer>
       <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
       <ToggleButton onClick={() => setSubscribed(false)}>
-        {getLocale('braveNewsFollowButtonFollowing')}
+        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
       </ToggleButton>
     </Container>
   )

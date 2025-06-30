@@ -16,6 +16,7 @@
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -39,6 +40,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -149,99 +151,12 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 }
 
 void NewTabPageInitializer::AddStrings() {
+
   static constexpr webui::LocalizedString kStrings[] = {
       {"addTopSiteLabel", IDS_NEW_TAB_ADD_TOP_SITE_LABEL},
       {"addTopSiteTitle", IDS_NEW_TAB_ADD_TOP_SITE_TITLE},
       {"backgroundSettingsTitle", IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE},
       {"braveBackgroundLabel", IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL},
-      {"braveNewsAdvertBadge", IDS_BRAVE_NEWS_ADVERT_BADGE},
-      {"braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
-      {"braveNewsBackButton", IDS_BRAVE_NEWS_BACK_BUTTON},
-      {"braveNewsBackToDashboard", IDS_BRAVE_NEWS_BACK_TO_DASHBOARD},
-      {"braveNewsCaughtUp", IDS_BRAVE_NEWS_CAUGHT_UP},
-      {"braveNewsChannel-Brave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
-      {"braveNewsChannel-Business", IDS_BRAVE_NEWS_CHANNEL_BUSINESS},
-      {"braveNewsChannel-Cars", IDS_BRAVE_NEWS_CHANNEL_CARS},
-      {"braveNewsChannel-Celebrities", IDS_BRAVE_NEWS_CHANNEL_CELEBRITIES},
-      {"braveNewsChannel-Crypto", IDS_BRAVE_NEWS_CHANNEL_CRYPTO},
-      {"braveNewsChannel-Culture", IDS_BRAVE_NEWS_CHANNEL_CULTURE},
-      {"braveNewsChannel-Education", IDS_BRAVE_NEWS_CHANNEL_EDUCATION},
-      {"braveNewsChannel-Entertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT},
-      {"braveNewsChannel-Fashion", IDS_BRAVE_NEWS_CHANNEL_FASHION},
-      {"braveNewsChannel-Film and TV", IDS_BRAVE_NEWS_CHANNEL_FILM_AND_TV},
-      {"braveNewsChannel-Food", IDS_BRAVE_NEWS_CHANNEL_FOOD},
-      {"braveNewsChannel-Fun", IDS_BRAVE_NEWS_CHANNEL_FUN},
-      {"braveNewsChannel-Gaming", IDS_BRAVE_NEWS_CHANNEL_GAMING},
-      {"braveNewsChannel-Health", IDS_BRAVE_NEWS_CHANNEL_HEALTH},
-      {"braveNewsChannel-Home", IDS_BRAVE_NEWS_CHANNEL_HOME},
-      {"braveNewsChannel-Lifestyle", IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE},
-      {"braveNewsChannel-Music", IDS_BRAVE_NEWS_CHANNEL_MUSIC},
-      {"braveNewsChannel-Politics", IDS_BRAVE_NEWS_CHANNEL_POLITICS},
-      {"braveNewsChannel-Regional News", IDS_BRAVE_NEWS_CHANNEL_REGIONAL_NEWS},
-      {"braveNewsChannel-Science", IDS_BRAVE_NEWS_CHANNEL_SCIENCE},
-      {"braveNewsChannel-Sports", IDS_BRAVE_NEWS_CHANNEL_SPORTS},
-      {"braveNewsChannel-Technology", IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY},
-      {"braveNewsChannel-Top News", IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS},
-      {"braveNewsChannel-Top Sources", IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES},
-      {"braveNewsChannel-Travel", IDS_BRAVE_NEWS_CHANNEL_TRAVEL},
-      {"braveNewsChannel-UK News", IDS_BRAVE_NEWS_CHANNEL_UK_NEWS},
-      {"braveNewsChannel-US News", IDS_BRAVE_NEWS_CHANNEL_US_NEWS},
-      {"braveNewsChannel-Weather", IDS_BRAVE_NEWS_CHANNEL_WEATHER},
-      {"braveNewsChannel-World News", IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS},
-      {"braveNewsChannelsHeader", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},
-      {"braveNewsCustomizeFeed", IDS_BRAVE_NEWS_CUSTOMIZE_FEED},
-      {"braveNewsDirectSearchButton", IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON},
-      {"braveNewsDirectSearchNoResults",
-       IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS},
-      {"braveNewsErrorActionLabel", IDS_BRAVE_NEWS_ERROR_ACTION_LABEL},
-      {"braveNewsErrorHeading", IDS_BRAVE_NEWS_ERROR_HEADING},
-      {"braveNewsErrorMessage", IDS_BRAVE_NEWS_ERROR_MESSAGE},
-      {"braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
-      {"braveNewsFollowButtonFollowing",
-       IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},
-      {"braveNewsFollowButtonNotFollowing",
-       IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},
-      {"braveNewsFollowingFeed", IDS_BRAVE_NEWS_FEEDS_HEADING},
-      {"braveNewsForYouFeed", IDS_BRAVE_NEWS_FOR_YOU_FEED},
-      {"braveNewsHideContentFrom", IDS_BRAVE_NEWS_HIDE_CONTENT_FROM},
-      {"braveNewsIntroDescription", IDS_BRAVE_NEWS_INTRO_DESCRIPTION},
-      {"braveNewsIntroDescriptionTwo", IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO},
-      {"braveNewsIntroTitle", IDS_BRAVE_NEWS_INTRO_TITLE},
-      {"braveNewsNewContentAvailable", IDS_BRAVE_NEWS_NEW_CONTENT_AVAILABLE},
-      {"braveNewsNewsPeek", IDS_BRAVE_NEWS_NEWS_PEEK},
-      {"braveNewsNoArticlesMessage", IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE},
-      {"braveNewsNoArticlesTitle", IDS_BRAVE_NEWS_NO_ARTICLES_TITLE},
-      {"braveNewsNoContentActionLabel", IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL},
-      {"braveNewsNoContentHeading", IDS_BRAVE_NEWS_NO_CONTENT_HEADING},
-      {"braveNewsNoContentMessage", IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE},
-      {"braveNewsOfflineMessage", IDS_BRAVE_NEWS_OFFLINE_MESSAGE},
-      {"braveNewsOfflineTitle", IDS_BRAVE_NEWS_OFFLINE_TITLE},
-      {"braveNewsOpenArticlesIn", IDS_BRAVE_NEWS_OPEN_ARTICLES_IN},
-      {"braveNewsOpenArticlesInCurrentTab",
-       IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB},
-      {"braveNewsOpenArticlesInNewTab",
-       IDS_BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB},
-      {"braveNewsOptInActionLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL},
-      {"braveNewsOptOutActionLabel", IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL},
-      {"braveNewsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
-      {"braveNewsPublishersHeading", IDS_BRAVE_NEWS_PUBLISHERS_HEADING},
-      {"braveNewsRefreshFeed", IDS_BRAVE_NEWS_REFRESH_FEED},
-      {"braveNewsSearchPlaceholderLabel",
-       IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},
-      {"braveNewsSearchQueryTooShort", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},
-      {"braveNewsSearchResultsDirectResults",
-       IDS_BRAVE_NEWS_SEARCH_RESULTS_DIRECT_RESULTS},
-      {"braveNewsSearchResultsLocalResults",
-       IDS_BRAVE_NEWS_SEARCH_RESULTS_LOCAL_RESULTS},
-      {"braveNewsSearchResultsNoResults",
-       IDS_BRAVE_NEWS_SEARCH_RESULTS_NO_RESULTS},
-      {"braveNewsShowAll", IDS_BRAVE_NEWS_SHOW_ALL},
-      {"braveNewsShowLess", IDS_BRAVE_NEWS_SHOW_LESS},
-      {"braveNewsSourcesRecommendation", IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION},
-      {"braveNewsSuggestionsSubtitle", IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE},
-      {"braveNewsSuggestionsTitle", IDS_BRAVE_NEWS_SUGGESTIONS_TITLE},
-      {"braveNewsTitle", IDS_BRAVE_NEWS_SETTINGS_TITLE},
-      {"braveNewsViewAllButton", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
       {"cancelButtonLabel", IDS_NEW_TAB_CANCEL_BUTTON_LABEL},
       {"clockFormatLabel", IDS_NEW_TAB_CLOCK_FORMAT_LABEL},
       {"clockFormatOption12HourText",
@@ -347,11 +262,12 @@ void NewTabPageInitializer::AddStrings() {
       {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);
+  source_->AddLocalizedStrings(webui::kBraveNewsStrings);
 }
 
 void NewTabPageInitializer::AddPluralStrings() {
   auto handler = std::make_unique<PluralStringHandler>();
-  handler->AddLocalizedString("braveNewsSourceCount",
+  handler->AddLocalizedString("BRAVE_NEWS_SOURCE_COUNT",
                               IDS_BRAVE_NEWS_SOURCE_COUNT);
   web_ui_->AddMessageHandler(std::move(handler));
 }

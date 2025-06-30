@@ -35,7 +35,7 @@ export default function Component({ info }: Props) {
   return <Container>
     <Title>
       <TitleIcon name="star-outline" />
-      {getLocale('braveNewsSourcesRecommendation')}
+      {getLocale(S.BRAVE_NEWS_SOURCES_RECOMMENDATION)}
     </Title>
     <Row>
       {info.publisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}

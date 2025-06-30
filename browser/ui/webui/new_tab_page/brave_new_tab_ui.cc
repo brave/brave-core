@@ -40,6 +40,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
@@ -165,6 +166,8 @@ BraveNewTabUI::BraveNewTabUI(
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       ads_service, ntp_p3a_helper);
+
+  source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,

@@ -57,7 +57,7 @@ const EnableButton = styled(Button)`
   margin-bottom: 48px;
 `
 
-const description = formatLocale('braveNewsIntroDescriptionTwo', {
+const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
   $1: content => <a href='https://brave.com/privacy/browser/'>
     {content}
   </a>
@@ -68,18 +68,18 @@ export default function DisabledPlaceholder (props: { enableBraveNews: () => voi
     <Container align="center" justify="center" direction="column" gap={26}>
       {TodayGraphic}
       <Header>
-        {getLocale('braveNewsIntroTitle')}
+        {getLocale(S.BRAVE_NEWS_INTRO_TITLE)}
       </Header>
       <div>
         <Subtitle>
-          {getLocale('braveNewsIntroDescription')}
+          {getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}
         </Subtitle>
         <Subtitle>
           {description}
         </Subtitle>
       </div>
       <EnableButton onClick={props.enableBraveNews}>
-        {getLocale('braveNewsOptInActionLabel')}
+        {getLocale(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
       </EnableButton>
     </Container>
   )

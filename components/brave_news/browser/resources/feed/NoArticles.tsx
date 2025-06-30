@@ -57,9 +57,9 @@ export default function NoArticles() {
         </linearGradient>
       </defs>
     </svg>
-    <Title>{getLocale('braveNewsNoArticlesTitle')}</Title>
+    <Title>{getLocale(S.BRAVE_NEWS_NO_ARTICLES_TITLE)}</Title>
     <div>
-      {getLocale('braveNewsNoArticlesMessage')}
+      {getLocale(S.BRAVE_NEWS_NO_ARTICLES_MESSAGE)}
     </div>
   </Container>
 }

@@ -12,7 +12,7 @@ import Flex from '$web-common/Flex'
 import ButtonMenu from "@brave/leo/react/buttonMenu";
 import Button from "@brave/leo/react/button";
 import Icon from "@brave/leo/react/icon";
-import { getLocale } from '$web-common/locale';
+import { formatLocale } from '$web-common/locale';
 import { getTranslatedChannelName } from "../shared/channel";
 import useRelativeTime from '$web-common/useRelativeTime'
 import { mojoTimeToJSDate } from '$web-common/mojomUtils'
@@ -65,8 +65,9 @@ export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideC
         getBraveNewsController().setPublisherPref(props.article.publisherId, UserEnabled.DISABLED)
         e.stopPropagation()
       }}>
-        {getLocale('braveNewsHideContentFrom')
-          .replace('$1', publisherDescription(props.article))}
+        {formatLocale(S.BRAVE_NEWS_HIDE_CONTENT_FROM, {
+          $1: publisherDescription(props.article)
+        })}
       </leo-menu-item>
     </ButtonMenu>
   </Flex>

@@ -66,7 +66,7 @@ export default function CardDisplayAd (props: Props) {
   return (
     <Card.Large ref={innerRef}>
       <Styles.BatAdLabel href='chrome://rewards'>
-        {getLocale('ad')}
+        {getLocale('braveNewsDisplayAdLabel')}
       </Styles.BatAdLabel>
       <a onClick={onClick} href={content.targetUrl.url} ref={cardRef}>
         <CardImage
