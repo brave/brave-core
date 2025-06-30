@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/brave_component_updater/browser",
   "+components/component_updater",
+  "+components/download",
   "+components/grit",
   "+components/keyed_service/core",
   "+components/prefs",

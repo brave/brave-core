@@ -3,6 +3,7 @@ include_rules = [
   "+brave/content/public/browser/devtools",
   "+components/component_updater",
   "+components/content_settings/core",
+  "+components/download",
   "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
