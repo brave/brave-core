@@ -80,8 +80,9 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
 
   float scale_factor = 1.0f;
   if (auto* screen = display::Screen::GetScreen()) {
-    screen->GetDisplayNearestWindow(web_contents.GetTopLevelNativeWindow())
-        .device_scale_factor();
+    scale_factor =
+        screen->GetDisplayNearestWindow(web_contents.GetTopLevelNativeWindow())
+            .device_scale_factor();
   } else {
     CHECK_IS_TEST();
   }
