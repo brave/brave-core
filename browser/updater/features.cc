@@ -3,19 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/mac_features.h"
+#include "brave/browser/updater/features.h"
 
 #include "build/build_config.h"
 
-static_assert(BUILDFLAG(IS_MAC), "Currently for macOS only");
-
-namespace brave {
+namespace brave_updater {
 
 // DO NOT TURN THIS FEATURE ON IN PRODUCTION. As of this writing, it only
-// implements the happy path of switching from Sparkle to Omaha 4. It does not
-// handle switching from Omaha 4 back to Sparkle. When you do enable the feature
-// in the future, make sure that it is not enabled for any clients that suffer
-// from the above limitations.
+// implements the happy path of switching from Sparkle to Omaha 4 on macOS. It
+// does not handle switching from Omaha 4 back to Sparkle. When you do enable
+// the feature in the future, make sure that it is not enabled for any clients
+// that suffer from the above limitations.
 BASE_FEATURE(kBraveUseOmaha4Alpha,
              "BraveUseOmaha4Alpha",
              base::FEATURE_DISABLED_BY_DEFAULT);
@@ -24,4 +22,4 @@ bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha);
 }
 
-}  // namespace brave
+}  // namespace brave_updater
