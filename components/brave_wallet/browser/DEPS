@@ -5,6 +5,7 @@ include_rules = [
   "+components/cbor",
   "+components/component_updater",
   "+components/content_settings",
+  "+components/country_codes",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
   "+components/prefs",

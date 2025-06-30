@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/test",
   "+components/autofill",
+  "+components/browsing_data",
   "+components/bookmarks",
   "+components/content_settings",
   "+components/history",
