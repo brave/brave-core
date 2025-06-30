@@ -70,7 +70,8 @@ void ConversationClient::OnSuggestedQuestionsChanged(
 }
 
 void ConversationClient::OnAssociatedContentInfoChanged(
-    std::vector<mojom::AssociatedContentPtr> site_info) {
+    std::vector<mojom::AssociatedContentPtr> site_info,
+    bool should_send_content) {
   NSMutableArray* infos =
       [[NSMutableArray alloc] initWithCapacity:site_info.size()];
 
@@ -78,7 +79,7 @@ void ConversationClient::OnAssociatedContentInfoChanged(
     [infos addObject:[[AiChatAssociatedContent alloc]
                          initWithAssociatedContentPtr:info->Clone()]];
   }
-  [bridge_ onPageHasContent:[infos copy]];
+  [bridge_ onPageHasContent:[infos copy] shouldSendContent:should_send_content];
 }
 
 void ConversationClient::OnConversationDeleted() {
