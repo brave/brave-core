@@ -1,0 +1,11 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  # This flag indicates that this is a redirect_cc build.
+  # A redirect_cc build is a special, as it cannot make use of the
+  # `chromium_src` override mechanism that is available to a normal brave build.
+  is_redirect_cc_build = false
+}
