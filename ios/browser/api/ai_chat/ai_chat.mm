@@ -13,7 +13,6 @@
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
-#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -145,6 +144,10 @@
 
 - (void)setDefaultModelKey:(NSString*)modelKey {
   model_service_->SetDefaultModelKey(base::SysNSStringToUTF8(modelKey));
+}
+
+- (void)setShouldSendPageContents:(bool)should_send {
+  current_conversation_->SetShouldSendPageContents(should_send);
 }
 
 - (void)clearErrorAndGetFailedMessage:
