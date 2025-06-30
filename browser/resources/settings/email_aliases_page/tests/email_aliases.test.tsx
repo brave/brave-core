@@ -58,12 +58,10 @@ const mockEmail = 'test@brave.com'
 const setupTest = async () => {
   const mockEmailAliasesService = new MockEmailAliasesService()
 
-  await act(async () => {
-    render(<ManagePageConnected
-      emailAliasesService={mockEmailAliasesService}
-      bindObserver={createBindObserver(mockEmailAliasesService)}
-    />)
-  })
+  render(<ManagePageConnected
+    emailAliasesService={mockEmailAliasesService}
+    bindObserver={createBindObserver(mockEmailAliasesService)}
+  />)
 
   return mockEmailAliasesService
 }
