@@ -242,7 +242,10 @@ function Main() {
                   </div>
                 )}
 
-                <div ref={scrollAnchor}>
+                <div
+                  className={styles.aichatIframeContainer}
+                  ref={scrollAnchor}
+                >
                   {!!conversationContext.conversationUuid &&
                     <aiChatContext.conversationEntriesComponent
                       onIsContentReady={setIsContentReady}
