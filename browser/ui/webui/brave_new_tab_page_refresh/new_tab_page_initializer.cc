@@ -16,7 +16,6 @@
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "components/grit/brave_components_webui_strings.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -32,6 +31,7 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
@@ -151,7 +151,6 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 }
 
 void NewTabPageInitializer::AddStrings() {
-
   static constexpr webui::LocalizedString kStrings[] = {
       {"addTopSiteLabel", IDS_NEW_TAB_ADD_TOP_SITE_LABEL},
       {"addTopSiteTitle", IDS_NEW_TAB_ADD_TOP_SITE_TITLE},

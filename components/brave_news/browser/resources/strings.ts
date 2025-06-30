@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import '$web-common/strings'
+
 import { BraveNewsStrings } from 'gen/components/grit/brave_components_webui_strings'
 
-// Provide a short name for the BraveNewsStrings enum.
 declare global {
-  const S: typeof BraveNewsStrings
+  // Expose the BraveNewsStrings enum on the global `S` enum.
+  interface Strings {
+    BraveNewsStrings: typeof BraveNewsStrings
+  }
 }

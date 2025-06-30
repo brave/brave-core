@@ -49,10 +49,14 @@ type" design. This only needs to be done once per WebUI.
 
 1. Create a new file called `strings.ts` in your webuis resources directory.
     ```ts
+    import '$web-common/strings'
+
     import { MyUiStrings } from 'gen/components/grit/brave_components_webui_strings'
 
     declare global {
-      const S: typeof MyUiStrings
+      interface Strings {
+        MyUiStrings: typeof MyUiStrings
+      }
     }
     ```
 
