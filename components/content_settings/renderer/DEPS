@@ -11,5 +11,6 @@ specific_include_rules = {
   ],
   "brave_content_settings_agent_impl_browsertest\.cc": [
     "+components/google",
+    "+components/network_session_configurator",
   ]
 }

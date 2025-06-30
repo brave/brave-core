@@ -8,3 +8,9 @@ include_rules = [
   "+third_party/re2",
   "+ui/base",
 ]
+
+specific_include_rules = {
+  "de_amp_browsertest\.cc": [
+    "+components/keep_alive_registry",
+  ],
+}
