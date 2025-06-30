@@ -52,18 +52,14 @@ program.command('versions').action(versions)
 
 // Run a chromium script or other comamnd with the environment PATH, etc... set
 // for Brave overrides
-program.command('exec')
-    .arguments('<command> [args...]')
-    .allowUnknownOption(true)
-    .action(
-        (
-            command,
-            args,
-            options = {},
-            ) => {
-          options.cwd = config.srcDir;
-          util.run(command, args, config.defaultOptions);
-        })
+program
+  .command('exec')
+  .arguments('<command> [args...]')
+  .allowUnknownOption(true)
+  .action((command, args, options = {}) => {
+    options.cwd = config.srcDir
+    util.run(command, args, config.defaultOptions)
+  })
 
 program
   .command('gn_check')
