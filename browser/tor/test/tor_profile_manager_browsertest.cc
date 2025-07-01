@@ -498,6 +498,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest, CookiesEvents) {
   // Create Tor OTR-"main" profile.
   SwitchToTorProfile(profile(), GetTorLauncherFactory());
 
+  // Call to CookiesEventRouter::OnCookieChange for Tor OTR profile shouldn't
+  // crash.
+  extensions::OnCookieChangeExposeForTesting::CallOnCookieChangeForOtr(
+      tor_cookies_api);
+
   // Create the main OTR profile, should not crash.
   profile()->GetPrimaryOTRProfile(true);
 }

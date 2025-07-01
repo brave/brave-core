@@ -10,7 +10,9 @@
 // in upstream, we'll be able to manage Tor profiles like any other main-OTR
 // profile.
 
-#define IsSerializeable(...) IsSerializeable(__VA_ARGS__) && !profile_->IsTor()
+#define IsSerializeable(...)      \
+  IsSerializeable(__VA_ARGS__) || \
+      (otr && !profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false))
 
 #define OnOffTheRecordProfileCreated(...) \
   OnOffTheRecordProfileCreated_ChromiumImpl(__VA_ARGS__)
@@ -21,6 +23,13 @@
 #undef OnOffTheRecordProfileCreated
 
 namespace extensions {
+
+// static
+void OnCookieChangeExposeForTesting::CallOnCookieChangeForOtr(
+    CookiesAPI* cookies_api) {
+  cookies_api->cookies_event_router_->OnCookieChange(true,
+                                                     net::CookieChangeInfo());
+}
 
 void CookiesEventRouter::OnOffTheRecordProfileCreated(Profile* off_the_record) {
   if (off_the_record->IsTor()) {
