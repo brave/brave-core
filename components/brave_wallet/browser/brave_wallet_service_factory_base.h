@@ -24,14 +24,14 @@ class BraveWalletServiceDelegate;
 
 template <typename PKSF>
 class BraveWalletServiceFactoryBase
-    : public ProfileKeyedServiceFactoryShim<PKSF> {
+    : public ProfileKeyedServiceFactoryShim<BraveWalletServiceFactoryBase<PKSF>, PKSF> {
  public:
   template <typename... Args>
   explicit BraveWalletServiceFactoryBase(Args&&... args)
-      : ProfileKeyedServiceFactoryShim<PKSF>(std::forward<Args>(args)...) {}
+      : ProfileKeyedServiceFactoryShim<BraveWalletServiceFactoryBase<PKSF>, PKSF>(std::forward<Args>(args)...) {}
 
  private:
-  using Context = ProfileKeyedServiceFactoryShim<PKSF>::Context;
+  using Context = ProfileKeyedServiceFactoryShim<BraveWalletServiceFactoryBase<PKSF>, PKSF>::Context;
 
   virtual scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory(
       Context context) const = 0;
@@ -43,9 +43,10 @@ class BraveWalletServiceFactoryBase
 
   virtual PrefService* GetLocalState() const = 0;
 
+public:
   // ProfileKeyedServiceFactoryShim<PKSF>:
   std::unique_ptr<KeyedService> BuildServiceInstanceForContext(
-      Context context) const override {
+      Context context) const {
     return std::make_unique<BraveWalletService>(
         GetURLLoaderFactory(context), GetBraveWalletServiceDelegate(context),
         GetProfilePrefs(context), GetLocalState());

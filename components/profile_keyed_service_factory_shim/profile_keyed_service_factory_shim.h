@@ -89,15 +89,13 @@ class ProfileKeyedServiceFactoryTraits {
   using Override = typename Computed::template Override<Shim>;
 };
 
-template <typename PKSF, typename Traits = ProfileKeyedServiceFactoryTraits<PKSF>>
-struct ProfileKeyedServiceFactoryShim
-    : Traits::template Override<ProfileKeyedServiceFactoryShim<PKSF>> {
-  using Base = typename Traits::template Override<ProfileKeyedServiceFactoryShim<PKSF>>;
+template <typename Concrete,
+          typename PKSF,
+          typename Traits = ProfileKeyedServiceFactoryTraits<PKSF>,
+          typename Base = typename Traits::template Override<Concrete>>
+struct ProfileKeyedServiceFactoryShim : Base {
   using Base::Base;
   using Context = typename Traits::Context;
-
-  virtual std::unique_ptr<KeyedService> BuildServiceInstanceForContext(
-      Context context) const = 0;
 
   ~ProfileKeyedServiceFactoryShim() override = default;
 };
