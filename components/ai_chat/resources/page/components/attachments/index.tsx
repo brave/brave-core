@@ -49,7 +49,7 @@ export default function Attachments() {
             <Flex direction='row' justify='space-between' align='center'>
                 <h5>{getLocale(S.CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE)}</h5>
             </Flex>
-            <Input placeholder={getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)} value={search} onInput={e => setSearch(e.value)}>
+            <Input placeholder={getLocale(S.CHAT_UI_ATTACHMENTS_SEARCH_PLACEHOLDER)} value={search} onInput={e => setSearch(e.value)}>
                 <Icon name='search' slot='icon-after' />
             </Input>
             <div className={styles.tabList}>
