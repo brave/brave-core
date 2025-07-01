@@ -18,6 +18,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -90,10 +91,8 @@
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
-#if BUILDFLAG(IS_MAC)
-// Need `nogncheck` because the linter doesn't understand the conditional
-// include. See `gn help nogncheck`.
-#include "brave/updater/updater_p3a.h"  // nogncheck
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/updater/updater_p3a.h"
 #endif
 
 namespace brave {
@@ -213,6 +212,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(IS_WIN)
   windows_recall::RegisterLocalStatePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+  brave_updater::RegisterLocalStatePrefs(registry);
 #endif
 }
 
