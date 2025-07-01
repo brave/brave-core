@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e2680ed4abfe 100644
+index 86007c8b041c44c14257245376326bc94ca050a9..4590fe7674830514a68c6761e61f260f455b0db4 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -196,6 +196,7 @@ if (!is_android && !is_mac) {
@@ -60,18 +60,15 @@ index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e268
        }
  
        extra_substitutions = [
-@@ -917,8 +924,8 @@ if (is_win) {
-       }
-     }
- 
--    if (enable_updater) {
--      if (is_chrome_branded) {
-+    if (enable_omaha4) {
-+      if (use_prebuilt_omaha4) {
+@@ -920,6 +927,7 @@ if (is_win) {
+     if (enable_updater) {
+       if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
++      } else if (!enable_omaha4) {} else if (use_prebuilt_omaha4) { sources += ["//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app"]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
-@@ -1231,6 +1238,7 @@ if (is_win) {
+ 
+@@ -1231,6 +1239,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -79,7 +76,7 @@ index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e268
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1428,6 +1436,7 @@ if (is_win) {
+@@ -1428,6 +1437,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -87,7 +84,7 @@ index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e268
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1483,7 +1492,7 @@ group("dependencies") {
+@@ -1483,7 +1493,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -96,7 +93,7 @@ index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e268
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1532,6 +1541,7 @@ group("resources") {
+@@ -1532,6 +1542,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -104,7 +101,7 @@ index 86007c8b041c44c14257245376326bc94ca050a9..312a956537d2b5320713194fe651e268
    ]
  }
  
-@@ -1585,6 +1595,7 @@ if (!is_android) {
+@@ -1585,6 +1596,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]
