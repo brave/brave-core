@@ -78,3 +78,12 @@
     }
   }
 }
+
+.modelIconAndName {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
