@@ -13,9 +13,53 @@
 #include "base/types/always_false.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-template <typename PKSF, typename Context, typename Shim>
-struct OverrideBuildServiceInstanceForBrowserContext : PKSF {
-  using PKSF::PKSF;
+template <typename Base,
+          typename Context,
+          typename Shim,
+          template <typename...> class... Overrides>
+struct ComposeOverrides;
+
+template <typename Base, typename Context, typename Shim>
+struct ComposeOverrides<Base, Context, Shim> {
+  using type = Base;
+};
+
+template <typename Base,
+          typename Context,
+          typename Shim,
+          template <typename...> class First,
+          template <typename...> class... Rest>
+struct ComposeOverrides<Base, Context, Shim, First, Rest...> {
+  using type =
+      First<typename ComposeOverrides<Base, Context, Shim, Rest...>::type,
+            Context,
+            Shim>;
+};
+
+template <typename Base,
+          typename Context,
+          typename Shim,
+          template <typename...> class... Overrides>
+using ComposeOverridesT =
+    typename ComposeOverrides<Base, Context, Shim, Overrides...>::type;
+
+template <typename T>
+concept HasBuildServiceInstanceForContext = requires(T t) {
+  t.BuildServiceInstanceForContext(nullptr);
+};
+
+template <typename Base, typename Context, typename Shim>
+struct OverrideBuildServiceInstanceForBrowserContext : Base {
+  using Base::Base;
+};
+
+template <typename Base,
+          typename Context,
+          typename Shim>
+requires HasBuildServiceInstanceForContext<Shim>
+struct OverrideBuildServiceInstanceForBrowserContext<Base, Context, Shim>
+    : Base {
+  using Base::Base;
 
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       Context context) const override {
@@ -47,8 +91,11 @@ class ProfileKeyedServiceFactoryTraits {
     using Context = ContextT;
 
     template <typename Shim>
-    using Override =
-        OverrideBuildServiceInstanceForBrowserContext<PKSF, Context, Shim>;
+    using Overrides =
+        ComposeOverridesT<PKSF,
+                          Context,
+                          Shim,
+                          OverrideBuildServiceInstanceForBrowserContext>;
   };
 
   template <typename ContextT>
@@ -56,7 +103,7 @@ class ProfileKeyedServiceFactoryTraits {
     using Context = ContextT;
 
     template <typename Shim>
-    using Override = OverrideGetBrowserStateToUse<PKSF, Context, Shim>;
+    using Overrides = OverrideGetBrowserStateToUse<PKSF, Context, Shim>;
   };
 
   using Computed = decltype([] {
@@ -86,13 +133,13 @@ class ProfileKeyedServiceFactoryTraits {
   using Context = typename Computed::Context;
 
   template <typename Shim>
-  using Override = typename Computed::template Override<Shim>;
+  using Overrides = typename Computed::template Overrides<Shim>;
 };
 
 template <typename Concrete,
           typename PKSF,
           typename Traits = ProfileKeyedServiceFactoryTraits<PKSF>,
-          typename Base = typename Traits::template Override<Concrete>>
+          typename Base = typename Traits::template Overrides<Concrete>>
 struct ProfileKeyedServiceFactoryShim : Base {
   using Base::Base;
   using Context = typename Traits::Context;
