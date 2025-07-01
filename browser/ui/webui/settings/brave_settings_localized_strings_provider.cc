@@ -862,6 +862,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_WARNING},
 
       {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
+      {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
+      {"braveOriginNtpAdsToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_NTP_ADS_TOGGLE_TITLE},
+      {"braveOriginEmailAliasToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIAS_TOGGLE_TITLE},
+      {"braveOriginLeoAiToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_LEO_AI_TOGGLE_TITLE},
+
       {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
       {"shortcutsPageResetAll", IDS_SHORTCUTS_PAGE_RESET_ALL},
       {"shortcutsPageResetCommand", IDS_SHORTCUTS_PAGE_RESET_COMMAND},

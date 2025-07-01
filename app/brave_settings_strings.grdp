@@ -569,8 +569,23 @@
     Don’t paste code here that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer.
   </message>
 
+  <!-- Settings / System -->
   <message name="IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE" desc="The text label for the shortcuts settings page">
     Shortcuts
+  </message>
+
+  <!-- Settings / System / Brave Origin -->
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_TITLE" desc="The title for the Brave Origin section in settings">
+    Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_NTP_ADS_TOGGLE_TITLE" desc="The title for toggling the 'Ads for New Tab Page' feature on/off for Brave Origin">
+    Ads in New tab page
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIAS_TOGGLE_TITLE" desc="The title for toggling the 'Email aliases' feature on/off for Brave Origin">
+    Email aliases
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_LEO_AI_TOGGLE_TITLE" desc="The title for toggling the 'Leo AI' feature on/off for Brave Origin">
+    Leo AI
   </message>
 
   <!-- Settings / Brave Rewards -->

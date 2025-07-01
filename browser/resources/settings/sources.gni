@@ -138,6 +138,10 @@ if (enable_brave_vpn_wireguard) {
   brave_settings_ts_files += [ "brave_system_page/brave_vpn_browser_proxy.ts" ]
 }
 
+# TODO(bsclifton): clean this up
+brave_settings_web_component_files +=
+      ["brave_system_page/brave_origin_page.ts"]
+
 if (enable_pin_shortcut) {
   brave_settings_web_component_files +=
       [ "pin_shortcut_page/pin_shortcut_page.ts" ]

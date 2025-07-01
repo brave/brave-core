@@ -13,6 +13,7 @@ import '../brave_system_page/brave_performance_page.js'
 // <if expr="enable_brave_vpn_wireguard">
 import '../brave_system_page/brave_vpn_page.js'
 // </if>
+import '../brave_system_page/brave_origin_page.js'
 import '../shortcuts_page/shortcuts_page.js'
 import { Router } from '../router.js'
 
@@ -136,6 +137,14 @@ RegisterPolymerTemplateModifications({
       html`
         <settings-brave-performance-page prefs="{{prefs}}">
         </settings-brave-performance-page>
+      `
+    )
+
+    // experimental
+    templateContent.appendChild(
+      html`
+        <settings-brave-origin-page prefs="{{prefs}}">
+        </settings-brave-origin-page>
       `
     )
   }
