@@ -11,6 +11,7 @@ import '../brave_content_page/speedreader.js'
 import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
+import '../brave_origin_page/brave_origin_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_tor_page/brave_tor_subpage.js'
@@ -143,6 +144,18 @@ RegisterPolymerTemplateModifications({
         'brave-settings-getting-started',
         {
           prefs: '{{prefs}}',
+        }
+      ))
+      const sectionOrigin = document.createElement('template')
+      sectionOrigin.setAttribute('is', 'dom-if')
+      sectionOrigin.setAttribute('restamp', 'true')
+      sectionOrigin.setAttribute('if', '[[showPage_(pageVisibility_.origin)]]')
+      sectionOrigin.content.appendChild(createSectionElement(
+        'origin',
+        'braveOriginTitle',
+        'settings-brave-origin-page',
+        {
+          prefs: '{{prefs}}'
         }
       ))
       const sectionTabs = document.createElement('template')
@@ -419,6 +432,8 @@ RegisterPolymerTemplateModifications({
         sectionGetStarted)
       // Insert New Tab
       last = last.insertAdjacentElement('afterend', sectionNewTab)
+      // Insert Brave Origin
+      last = last.insertAdjacentElement('afterend', sectionOrigin)
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
