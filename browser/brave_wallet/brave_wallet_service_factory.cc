@@ -41,20 +41,32 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
 }
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()
-    : BrowserContextKeyedServiceFactory(
+    : BraveWalletServiceFactoryBase(
           "BraveWalletService",
           BrowserContextDependencyManager::GetInstance()) {}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
-std::unique_ptr<KeyedService>
-BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
+scoped_refptr<network::SharedURLLoaderFactory>
+BraveWalletServiceFactory::GetURLLoaderFactory(
     content::BrowserContext* context) const {
-  return std::make_unique<BraveWalletService>(
-      context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess(),
-      BraveWalletServiceDelegate::Create(context),
-      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
+  return context->GetDefaultStoragePartition()
+      ->GetURLLoaderFactoryForBrowserProcess();
+}
+
+std::unique_ptr<BraveWalletServiceDelegate>
+BraveWalletServiceFactory::GetBraveWalletServiceDelegate(
+    content::BrowserContext* context) const {
+  return BraveWalletServiceDelegate::Create(context);
+}
+
+PrefService* BraveWalletServiceFactory::GetProfilePrefs(
+    content::BrowserContext* context) const {
+  return user_prefs::UserPrefs::Get(context);
+}
+
+PrefService* BraveWalletServiceFactory::GetLocalState() const {
+  return g_browser_process->local_state();
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

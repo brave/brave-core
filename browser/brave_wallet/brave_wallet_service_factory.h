@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service_factory_base.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
@@ -22,7 +23,8 @@ namespace brave_wallet {
 class BraveWalletService;
 class JsonRpcService;
 
-class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
+class BraveWalletServiceFactory
+    : public BraveWalletServiceFactoryBase<BrowserContextKeyedServiceFactory> {
  public:
   static BraveWalletService* GetServiceForContext(
       content::BrowserContext* context);
@@ -38,8 +40,16 @@ class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
   BraveWalletServiceFactory& operator=(const BraveWalletServiceFactory&) =
       delete;
 
-  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
+  scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory(
       content::BrowserContext* context) const override;
+
+  std::unique_ptr<BraveWalletServiceDelegate>
+  GetBraveWalletServiceDelegate(content::BrowserContext* context) const override;
+
+  PrefService* GetProfilePrefs(content::BrowserContext* context) const override;
+
+  PrefService* GetLocalState() const override;
+
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
