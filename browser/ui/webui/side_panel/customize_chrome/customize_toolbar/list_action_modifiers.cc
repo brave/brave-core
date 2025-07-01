@@ -15,7 +15,6 @@
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/prefs/pref_service.h"

@@ -8,13 +8,16 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/gfx/vector_icon_types.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 namespace customize_chrome {
 
@@ -56,6 +59,7 @@ inline constexpr BraveAction kShowAIChatAction = {
     .pref_name = ai_chat::prefs::kBraveAIChatShowToolbarButton,
     .icon = kLeoProductBraveLeoIcon};
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 inline constexpr BraveAction kShowVPNAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowVPN,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_VPN,
@@ -63,12 +67,19 @@ inline constexpr BraveAction kShowVPNAction = {
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = brave_vpn::prefs::kBraveVPNShowButton,
     .icon = kLeoProductVpnIcon};
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 inline constexpr std::array<BraveAction, 4> kBraveActions = {
+#else
+inline constexpr std::array<BraveAction, 3> kBraveActions = {
+#endif
     kShowSidePanelAction,
     kShowWalletAction,
     kShowAIChatAction,
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
     kShowVPNAction,
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 };
 
 }  // namespace customize_chrome
