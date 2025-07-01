@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_UPDATER_UPDATER_P3A_H_
-#define BRAVE_UPDATER_UPDATER_P3A_H_
+#ifndef BRAVE_BROWSER_UPDATER_UPDATER_P3A_H_
+#define BRAVE_BROWSER_UPDATER_UPDATER_P3A_H_
 
 #include <string>
 
@@ -47,4 +47,4 @@ void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
 
 }  // namespace brave_updater
 
-#endif  // BRAVE_UPDATER_UPDATER_P3A_H_
+#endif  // BRAVE_BROWSER_UPDATER_UPDATER_P3A_H_
