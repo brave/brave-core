@@ -55,6 +55,7 @@ function getPageVisibility () {
       getStarted: false,
       leoAssistant: false,
       newTab: false,
+      origin: true, // TODO(bsclifton): have this check the actual SKU
       playlist: false,
       shields: true,
       socialBlocking: true,
