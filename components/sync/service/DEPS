@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
+  "+components/network_time",
   "+components/os_crypt/sync",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
