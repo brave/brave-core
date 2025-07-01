@@ -9,17 +9,18 @@ import("//build/config/ui.gni")
 import("//testing/test.gni")
 import("//tools/grit/repack.gni")
 
+if (is_ios) {
+  import("//ios/build/config.gni")
+}
+
 test("brave_components_unittests") {
   use_xvfb = use_xvfb_in_this_config
-
-  data = [ "test/data/ai_chat/" ]
 
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser:unit_tests",
     "//brave/components/ai_chat/core/common:unit_tests",
     "//brave/components/api_request_helper:unit_tests",
-    "//brave/components/brave_wallet/browser:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/json:unit_tests",
     "//components/test:run_all_unittests",
@@ -32,13 +33,14 @@ test("brave_components_unittests") {
   if (use_blink) {
     deps += [
       "//brave/components/ai_chat/content/browser:unit_tests",
+      "//brave/components/brave_wallet/browser:unit_tests",
       "//brave/components/brave_wallet/renderer/test:unit_tests",
     ]
   }
 
   if (is_ios) {
     bundle_deps = [
-      ":components_tests_pak",
+      ":components_tests_pak_bundle_data",
       "//components:components_tests_pak_bundle_data",
     ]
   } else {
@@ -61,13 +63,46 @@ test("brave_components_unittests") {
       "//ui/gfx",
     ]
   }
+
+  # No components should depend on Chrome.
+  # Since //chrome depends on //extensions, we also only assert_no_deps on
+  # extensions targets.
+  assert_no_deps = [
+    "//brave/browser/*",
+    "//brave/build/*",
+    "//brave/common/*",
+    "//brave/renderer/*",
+    "//brave/updater/*",
+    "//brave/utility/*",
+    "//chrome/*",
+  ]
+  assert_no_deps += [
+    "//extensions/browser/*",
+    "//extensions/common",
+    "//extensions/common:core_api_provider",
+    "//extensions/common:mojom",
+    "//extensions/common/api/*",
+    "//extensions/components/*",
+    "//extensions/renderer/*",
+    "//extensions/shell/*",
+    "//extensions/strings/*",
+  ]
+
+  if (is_ios) {
+    assert_no_deps += ios_assert_no_deps
+    assert_no_deps += [ "//ios/chrome/*" ]
+    assert_no_deps += [ "//brave/ios/*" ]
+  }
 }
 
 if (is_ios) {
   bundle_data("components_tests_pak_bundle_data") {
     testonly = true
     public_deps = [ ":components_tests_pak" ]
-    sources = [ "$root_out_dir/brave_components_tests_resources.pak" ]
+    sources = [
+      "$root_gen_dir/components/brave_components_strings_en-US.pak",
+      "$root_out_dir/brave_components_tests_resources.pak",
+    ]
     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
   }
 }

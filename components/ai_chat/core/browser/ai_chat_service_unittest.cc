@@ -781,7 +781,13 @@ TEST_P(AIChatServiceUnitTest,
   run_loop.Run();
 }
 
-TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
+// TODO(https://github.com/brave/brave-browser/issues/47827)
+#if BUILDFLAG(IS_IOS)
+#define MAYBE_GetConversation_AfterRestart FLAKY_GetConversation_AfterRestart
+#else
+#define MAYBE_GetConversation_AfterRestart GetConversation_AfterRestart
+#endif
+TEST_P(AIChatServiceUnitTest, MAYBE_GetConversation_AfterRestart) {
   auto history = CreateSampleChatHistory(1u);
   std::string uuid;
   {

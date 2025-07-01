@@ -117,62 +117,66 @@ static_library("browser") {
   }
 }
 
-if (!is_ios) {
-  source_set("unit_tests") {
-    testonly = true
-    sources = [
-      "ai_chat_credential_manager_unittest.cc",
-      "ai_chat_database_unittest.cc",
-      "ai_chat_metrics_unittest.cc",
-      "ai_chat_service_unittest.cc",
-      "ai_chat_tab_focus_metrics_unittest.cc",
-      "associated_content_driver_unittest.cc",
-      "conversation_handler_unittest.cc",
-      "engine/conversation_api_client_unittest.cc",
-      "engine/conversation_api_parsing_unittest.cc",
-      "engine/engine_consumer_conversation_api_unittest.cc",
-      "engine/engine_consumer_oai_unittest.cc",
-      "engine/oai_api_client_unittest.cc",
-      "engine/oai_parsing_unittest.cc",
-      "engine/test_utils.cc",
-      "engine/test_utils.h",
-      "model_service_unittest.cc",
-      "model_validator_unittest.cc",
-      "tab_tracker_service_unittest.cc",
-      "tools/tool_input_properties_unittest.cc",
-      "utils_unittest.cc",
-    ]
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ai_chat_credential_manager_unittest.cc",
+    "ai_chat_metrics_unittest.cc",
+    "ai_chat_service_unittest.cc",
+    "ai_chat_tab_focus_metrics_unittest.cc",
+    "associated_content_driver_unittest.cc",
+    "conversation_handler_unittest.cc",
+    "engine/conversation_api_client_unittest.cc",
+    "engine/conversation_api_parsing_unittest.cc",
+    "engine/engine_consumer_conversation_api_unittest.cc",
+    "engine/engine_consumer_oai_unittest.cc",
+    "engine/oai_api_client_unittest.cc",
+    "engine/oai_parsing_unittest.cc",
+    "engine/test_utils.cc",
+    "engine/test_utils.h",
+    "model_service_unittest.cc",
+    "model_validator_unittest.cc",
+    "tab_tracker_service_unittest.cc",
+    "tools/tool_input_properties_unittest.cc",
+    "utils_unittest.cc",
+  ]
 
-    deps = [
-      ":test_support",
-      "//base/test:test_support",
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common:test_support",
-      "//brave/components/ai_chat/core/common/mojom",
-      "//brave/components/api_request_helper",
-      "//brave/components/brave_component_updater/browser:test_support",
-      "//brave/components/constants",
-      "//brave/components/l10n/common:test_support",
-      "//brave/components/resources:strings_grit",
-      "//brave/components/skus/browser",
-      "//brave/components/skus/common",
-      "//brave/components/skus/common:mojom",
-      "//components/component_updater:component_updater_paths",
-      "//components/component_updater:test_support",
-      "//components/os_crypt/async/browser:test_support",
-      "//components/os_crypt/sync:test_support",
-      "//components/prefs:test_support",
-      "//components/sync_preferences:test_support",
-      "//content/test:test_support",
-      "//net/traffic_annotation:test_support",
-      "//services/data_decoder/public/cpp:test_support",
-      "//services/network:test_support",
-      "//services/network/public/cpp:cpp",
-      "//sql:test_support",
-      "//testing/gtest:gtest",
-    ]
+  if (!is_ios) {
+    # TODO(https://github.com/brave/brave-browser/issues/47827)
+    # to initialize the database
+    sources += [ "ai_chat_database_unittest.cc" ]
   }
+
+  deps = [
+    ":test_support",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common:test_support",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/constants",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/component_updater:component_updater_paths",
+    "//components/component_updater:test_support",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/sync:test_support",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//net/traffic_annotation:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:cpp",
+    "//sql:test_support",
+    "//testing/gtest:gtest",
+    "//ui/base",
+    "//ui/gfx:test_support",
+  ]
 }
 
 source_set("test_support") {
@@ -197,6 +201,7 @@ source_set("test_support") {
     "//services/network/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
   ]
 }
 
