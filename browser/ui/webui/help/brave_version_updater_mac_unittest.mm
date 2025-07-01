@@ -20,11 +20,13 @@ class BraveVersionUpdaterMacTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(BraveVersionUpdaterMacTest, UsesSparkleByDefault) {
+TEST_F(BraveVersionUpdaterMacTest, UsesSparkleWhenFeatureDisabled) {
+  scoped_feature_list_.InitAndDisableFeature(
+      brave_updater::kBraveUseOmaha4Alpha);
   EXPECT_TRUE(UsesSparkle());
 }
 
-TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenEnabled) {
+TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenFeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(
       brave_updater::kBraveUseOmaha4Alpha);
   EXPECT_FALSE(UsesSparkle());
