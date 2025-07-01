@@ -8,6 +8,8 @@ include_rules = [
   "+components/country_codes",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
+  "+components/permissions",
+  "+components/pref_registry",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",

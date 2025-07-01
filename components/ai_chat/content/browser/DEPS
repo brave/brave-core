@@ -1,6 +1,8 @@
 include_rules = [
   "+brave/services/printing",
   "+components/keyed_service",
+  "+components/paint_preview",
+  "+components/pdf",
   "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
