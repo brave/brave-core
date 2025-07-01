@@ -1,0 +1,200 @@
+<style include="settings-shared cr-shared-style">
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    height: 68px;
+  }
+
+  .label.primary-title
+  {
+    font-size: 1.05em;
+    font-weight: 500;
+    padding-top: 1em;
+  }
+
+  .label.secondary-title {
+    padding-bottom: 1em;
+  }
+
+  .origin-note {
+    font-weight: bold;
+  }
+
+  #needsRestart {
+    background-color: #fff;
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: 16px;
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #needsRestart {
+      background-color: rgb(22, 23, 25);
+    }
+
+    button.primary {
+        color: white;
+    }
+  }
+
+  #needsRestart .flex:last-child {
+    text-align: right;  /* csschecker-disable-line left-right */
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .restart-notice {
+    font-size: .9375rem;
+    line-height: 1.4;
+  }
+  #toggleSearchAdsButton,
+  #toggleEmailAliasButton,
+  #toggleP3ACrashReportButton,
+  #toggleSidebarButton,
+  #toggleWeb3DomainsButton {
+    color: red;
+  }
+
+  button.primary {
+    background: var(--interactive-color);
+    border: 0;
+    border-radius: 3px;
+    font-size: .875rem;
+    padding: 14px 38px;
+  }
+</style>
+<div hidden="[[!braveOriginEnabled_]]">
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginHeadingDescription1}</p>
+        <p>$i18n{braveOriginHeadingDescription2}</p>
+        <p class="origin-note">
+          $i18n{braveOriginHeadingDescription3}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+
+  <settings-toggle-button id="toggleNtpAdsButton"
+      pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
+      label="$i18n{braveOriginNtpAdsToggleTitle}"
+      icon="price-tag">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleRewardsButton"
+      pref="{{prefs.brave.rewards.disabled_by_policy}}"
+      label="$i18n{braveOriginRewardsToggleTitle}"
+      icon="product-bat-outline"
+      inverted>
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleSearchAdsButton"
+      pref="[[toggleSearchAds_]]"
+      label="$i18n{braveOriginSearchAdsToggleTitle}"
+      on-settings-boolean-control-change="toggleSearchAdsButtonChange_"
+      icon="brave-icon-search">
+  </settings-toggle-button>
+
+  <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+
+  <settings-toggle-button id="toggleEmailAliasButton"
+      pref="[[toggleEmailAlias_]]"
+      label="$i18n{braveOriginEmailAliasToggleTitle}"
+      on-settings-boolean-control-change="toggleEmailAliasChange_"
+      icon="email-shield">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleLeoAiButton"
+      pref="{{prefs.brave.ai_chat.enabled_by_policy}}"
+      label="$i18n{braveOriginLeoAiToggleTitle}"
+      icon="product-brave-leo">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleNewsButton"
+      pref="{{prefs.brave.news.disabled_by_policy}}"
+      label="$i18n{braveOriginNewsToggleTitle}"
+      icon="product-brave-news"
+      inverted>
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleP3ACrashReportButton"
+      pref="[[toggleP3ACrashReport_]]"
+      label="$i18n{braveOriginP3ACrashReportToggleTitle}"
+      on-settings-boolean-control-change="toggleP3ACrashReportChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleSidebarButton"
+      pref="[[toggleSidebar_]]"
+      label="$i18n{braveOriginSidebarToggleTitle}"
+      on-settings-boolean-control-change="toggleSidebarChange_"
+      icon="browser-sidebar-right">
+  </settings-toggle-button>
+
+  <if expr="enable_tor">
+    <settings-toggle-button id="toggleTorWindowsButton"
+        pref="[[torEnabledPref_]]"
+        label="$i18n{braveOriginTorWindowsToggleTitle}"
+        on-settings-boolean-control-change="toggleTorWindowsButtonChange_"
+        icon="product-tor">
+    </settings-toggle-button>
+  </if>
+
+  <if expr="enable_brave_vpn">
+    <settings-toggle-button id="toggleVpnButton"
+        pref="{{prefs.brave.brave_vpn.disabled_by_policy}}"
+        label="$i18n{braveOriginVpnToggleTitle}"
+        icon="product-vpn"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <settings-toggle-button id="toggleWalletButton"
+      pref="{{prefs.brave.wallet.disabled_by_policy}}"
+      label="$i18n{braveOriginWalletToggleTitle}"
+      icon="product-brave-wallet"
+      inverted>
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleWeb3DomainsButton"
+      pref="[[toggleWeb3Domains_]]"
+      label="$i18n{braveOriginWeb3DomainsToggleTitle}"
+      on-settings-boolean-control-change="toggleWeb3DomainsChange_"
+      icon="web3">
+  </settings-toggle-button>
+
+  <div class="cr-row">$i18n{braveOriginResetToDefaultsTitle}</div>
+
+  <template is="dom-if" if="{{ showRestartToast_ }}">
+    <div id="needsRestart">
+      <div class="flex-container">
+        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+        <div class="flex">
+          <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+            $i18n{relaunchButtonLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>

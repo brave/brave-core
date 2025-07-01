@@ -26,6 +26,7 @@
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
+#include "brave/browser/ui/webui/settings/brave_origin/brave_origin_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
@@ -34,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -139,6 +141,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
         std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
   }
 #endif
+  if (BraveOriginState::GetInstance()->IsBraveOriginUser()) {
+    web_ui->AddMessageHandler(
+        std::make_unique<BraveOriginHandler>(Profile::FromWebUI(web_ui)));
+  }
 }
 
 BraveSettingsUI::~BraveSettingsUI() = default;
@@ -244,6 +250,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+  html_source->AddBoolean("isBraveOriginEnabled",
+                          BraveOriginState::GetInstance()->IsBraveOriginUser());
 }
 
 // static
