@@ -7,21 +7,23 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
-#include "base/no_destructor.h"
+#include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
+
+using brave_component_updater::BraveOnDemandUpdater;
 
 namespace psst {
 
@@ -33,25 +35,20 @@ namespace {
 //  |_ psst.json
 //  |_ scripts/
 //    |_ twitter/
-//        |_ test.js
+//        |_ user.js
 //        |_ policy.js
 //    |_ linkedin/
-//        |_ test.js
+//        |_ user.js
 //        |_ policy.js
 // See psst_rule.cc for the format of psst.json.
 
-constexpr char kPsstComponentName[] =
-    "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
-constexpr char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
-constexpr char kPsstComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
-    "qUOXSw3OJXRQwKs79bt7zqnmkeFp/szXmmhj6/"
-    "i4fmNiXVaxFuVOryM9OiaVxBIGHjN1BWYCQdylgbmgVTqLWpJAy/AAKEH9/"
-    "Q68yWfQnN5sg1miNir+0I1SpCiT/Dx2N7s28WNnzD2e6/"
-    "7Umx+zRXkRtoPX0xAecgUeyOZcrpZXJ4CG8dTJInhv7Fly/U8V/KZhm6ydKlibwsh2CB588/"
-    "FlvQUzi5ZykXnPfzlsNLyyQ8fy6/+8hzSE5x4HTW5fy3TIRvmDi/"
-    "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
+base::FilePath GetComponentDir() {
+  base::FilePath components_dir =
+      base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
 
+  return components_dir.Append(
+      base::FilePath::FromUTF8Unsafe(kPsstComponentId));
+}
 }  // namespace
 
 class PsstComponentInstallerPolicy
@@ -62,6 +59,8 @@ class PsstComponentInstallerPolicy
   PsstComponentInstallerPolicy(const PsstComponentInstallerPolicy&) = delete;
   PsstComponentInstallerPolicy& operator=(const PsstComponentInstallerPolicy&) =
       delete;
+
+  static void DeleteComponent();
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -93,6 +92,10 @@ PsstComponentInstallerPolicy::PsstComponentInstallerPolicy()
   auto decoded_public_key = base::Base64Decode(kPsstComponentBase64PublicKey);
   CHECK(decoded_public_key);
   component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+}
+
+void PsstComponentInstallerPolicy::DeleteComponent() {
+  base::DeletePathRecursively(GetComponentDir());
 }
 
 bool PsstComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
@@ -147,8 +150,7 @@ bool PsstComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
-    // In test, |cus| could be nullptr.
+  if (!base::FeatureList::IsEnabled(psst::features::kEnablePsst) || !cus) {
     return;
   }
 

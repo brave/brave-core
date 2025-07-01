@@ -10,18 +10,18 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
-#include "base/containers/flat_set.h"
+#include "base/check_is_test.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
-#include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
+#include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace psst {
@@ -29,54 +29,43 @@ namespace psst {
 namespace {
 
 const base::FilePath::CharType kJsonFile[] = FILE_PATH_LITERAL("psst.json");
-const base::FilePath::CharType kScriptsDir[] = FILE_PATH_LITERAL("scripts");
 
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
-    VLOG(2) << "ReadFile: cannot "
-            << "read file " << file_path;
+    VLOG(2) << "ReadFile: cannot " << "read file " << file_path;
   }
   return contents;
-}
-
-MatchedRule CreateMatchedRule(const base::FilePath& component_path,
-                              const base::FilePath& test_script_path,
-                              const base::FilePath& policy_script_path,
-                              const int version) {
-  auto prefix = base::FilePath(component_path).Append(kScriptsDir);
-  auto test_script = ReadFile(base::FilePath(prefix).Append(test_script_path));
-  auto policy_script =
-      ReadFile(base::FilePath(prefix).Append(policy_script_path));
-  return {test_script, policy_script, version};
 }
 
 }  // namespace
 
 // static
 PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
-  // Check if feature flag is enabled.
-  if (!base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
-    return nullptr;
-  }
-  return base::Singleton<PsstRuleRegistry>::get();
+  static base::NoDestructor<PsstRuleRegistry> instance;
+  return instance.get();
+}
+
+void PsstRuleRegistry::SetOnLoadCallbackForTesting(
+    base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
+        callback) {
+  onload_test_callback_ = std::move(callback);
 }
 
 PsstRuleRegistry::PsstRuleRegistry() = default;
-
 PsstRuleRegistry::~PsstRuleRegistry() = default;
 
 void PsstRuleRegistry::CheckIfMatch(
     const GURL& url,
-    base::OnceCallback<void(MatchedRule)> cb) const {
+    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) {
   for (const PsstRule& rule : rules_) {
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&CreateMatchedRule, component_path_,
-                         rule.GetTestScript(), rule.GetPolicyScript(),
-                         rule.GetVersion()),
+          base::BindOnce(&MatchedRule::Create,
+                         std::make_unique<RuleDataReader>(component_path_),
+                         rule),
           std::move(cb));
       // Only ever find one matching rule.
       return;
@@ -85,7 +74,8 @@ void PsstRuleRegistry::CheckIfMatch(
 }
 
 void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
-  SetComponentPath(path);
+  component_path_ = path;
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
@@ -93,16 +83,16 @@ void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void PsstRuleRegistry::SetComponentPath(const base::FilePath& path) {
-  component_path_ = path;
-}
-
 void PsstRuleRegistry::OnLoadRules(const std::string& contents) {
   auto parsed_rules = PsstRule::ParseRules(contents);
-  if (!parsed_rules) {
-    return;
+  if (parsed_rules) {
+    rules_ = std::move(parsed_rules.value());
   }
-  rules_ = std::move(parsed_rules.value());
+
+  if (onload_test_callback_) {
+    CHECK_IS_TEST();
+    std::move(*onload_test_callback_).Run(contents, rules_);
+  }
 }
 
 }  // namespace psst
