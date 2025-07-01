@@ -174,14 +174,15 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ImportExtensions) {
       source.source_path = source_profile->GetPath();
 
       bool extension_imported = false;
-      extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
-          base::BindLambdaForTesting(
-              [&](const std::string& id)
-                  -> extensions_import::ExtensionImportStatus {
-                EXPECT_EQ(id, kExtensionId);
-                extension_imported = true;
-                return extensions_import::ExtensionImportStatus::kOk;
-              });
+      auto installer = base::BindLambdaForTesting(
+          [&](const std::string& id)
+              -> extensions_import::ExtensionImportStatus {
+            EXPECT_EQ(id, kExtensionId);
+            extension_imported = true;
+            return extensions_import::ExtensionImportStatus::kOk;
+          });
+      auto installer_override = extensions_import::ExtensionsImporter::
+          OverrideExtensionInstallerForTesting(&installer);
 
       host->StartImportSettings(source, target, user_data_importer::EXTENSIONS,
                                 new ProfileWriter(target));
@@ -217,17 +218,16 @@ IN_PROC_BROWSER_TEST_F(BraveImporterBrowserTest, ReImportExtensions) {
     source.importer_type = user_data_importer::TYPE_CHROME;
     source.source_path = source_profile->GetPath();
 
-    extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
-        base::BindLambdaForTesting(
-            [&](const std::string& id)
-                -> extensions_import::ExtensionImportStatus {
-              if (id == kFailExtensionId) {
-                return extensions_import::ExtensionImportStatus::
-                    kFailedToInstall;
-              }
-              AddTestExtension(target, id);
-              return extensions_import::ExtensionImportStatus::kOk;
-            });
+    auto installer = base::BindLambdaForTesting(
+        [&](const std::string& id) -> extensions_import::ExtensionImportStatus {
+          if (id == kFailExtensionId) {
+            return extensions_import::ExtensionImportStatus::kFailedToInstall;
+          }
+          AddTestExtension(target, id);
+          return extensions_import::ExtensionImportStatus::kOk;
+        });
+    auto installer_override = extensions_import::ExtensionsImporter::
+        OverrideExtensionInstallerForTesting(&installer);
 
     host->StartImportSettings(source, target, user_data_importer::EXTENSIONS,
                               new ProfileWriter(target));
