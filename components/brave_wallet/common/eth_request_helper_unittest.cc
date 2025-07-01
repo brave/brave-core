@@ -761,6 +761,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
 
   auto params_list = ParseJsonList(json);
+  EXPECT_TRUE(params_list[1].is_string());
   auto eth_sign_typed_data = ParseEthSignTypedDataParams(
       params_list, EthSignTypedDataHelper::Version::kV4);
 
@@ -782,6 +783,40 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
       expected_primary_hash);
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
+      eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
+            expected_message_to_sign);
+  EXPECT_FALSE(eth_sign_typed_data->meta);
+
+  // Test that TypedData can also be a Dict, instead of a string
+  auto str = params_list[1].GetString();
+  auto dict =
+      base::JSONReader::ReadDict(str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                          base::JSON_ALLOW_TRAILING_COMMAS);
+  ASSERT_TRUE(dict);
+  params_list[1] = base::Value(dict->Clone());
+  EXPECT_TRUE(params_list[1].is_dict());
+  eth_sign_typed_data = ParseEthSignTypedDataParams(
+      params_list, EthSignTypedDataHelper::Version::kV4);
+
+  ASSERT_TRUE(eth_sign_typed_data);
+
+  EXPECT_EQ(eth_sign_typed_data->address_param,
+            "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
+  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
+
+  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
+            ParseJsonDict(expected_domain));
+
+  EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
+
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
+      expected_domain_hash);
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
+      expected_primary_hash);
+  message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             expected_message_to_sign);
