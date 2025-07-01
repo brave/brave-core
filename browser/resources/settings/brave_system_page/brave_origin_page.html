@@ -5,18 +5,25 @@
     height: 68px;
   }
 </style>
+<template
+  is="dom-if"
+  if="[[braveOriginEnabled_]]"
+>
+  <div class="cr-row title">$i18n{braveOriginTitle}</div>
+  <settings-origin-page prefs="{{prefs}}">
+    <settings-toggle-button id="toggleNtpAdsButton"
+        pref="[[toggleNtpAds_]]"
+        label="$i18n{braveOriginNtpAdsToggleTitle}">
+    </settings-toggle-button>
 
-<div class="cr-row title">$i18n{braveOriginTitle}</div>
-<settings-origin-page prefs="{{prefs}}">
-  <settings-toggle-button id="toggleNtpAdsButton"
-      label="$i18n{braveOriginNtpAdsToggleTitle}">
-  </settings-toggle-button>
+    <settings-toggle-button id="toggleEmailAliasButton"
+        pref="[[toggleEmailAlias_]]"
+        label="$i18n{braveOriginEmailAliasToggleTitle}">
+    </settings-toggle-button>
 
-  <settings-toggle-button id="toggleEmailAliasButton"
-      label="$i18n{braveOriginEmailAliasToggleTitle}">
-  </settings-toggle-button>
-
-  <settings-toggle-button id="toggleLeoAiButton"
-      label="$i18n{braveOriginLeoAiToggleTitle}">
-  </settings-toggle-button>
-</settings-origin-page>
+    <settings-toggle-button id="toggleLeoAiButton"
+        pref="[[toggleLeoAi_]]"
+        label="$i18n{braveOriginLeoAiToggleTitle}">
+    </settings-toggle-button>
+  </settings-origin-page>
+</template>

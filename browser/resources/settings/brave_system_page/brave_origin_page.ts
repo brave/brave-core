@@ -1,4 +1,4 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -12,7 +12,7 @@ import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixi
 import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './brave_origin_page.html.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-//import {BraveVPNBrowserProxy, BraveVPNBrowserProxyImpl} from './brave_vpn_browser_proxy.js';
+import {BraveOriginBrowserProxy, BraveOriginBrowserProxyImpl} from './brave_origin_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 /**
  * 'settings-brave-origin-page' is the settings page containing
@@ -39,28 +39,25 @@ export class SettingsBraveOriginPageElement
   }
 
   // private toggleWireguardSubLabel_: String;
-  // private braveVpnConnected_: Boolean = false;
+  private braveOriginEnabled_: Boolean = false;
+  private toggleNtpAds_: Boolean = false;
+  private toggleEmailAlias_: Boolean = false;
+  private toggleLeoAi_: Boolean = false;
 
-  // private vpnBrowserProxy_: BraveVPNBrowserProxy =
-  //   BraveVPNBrowserProxyImpl.getInstance();
+  private originBrowserProxy_: BraveOriginBrowserProxy =
+    BraveOriginBrowserProxyImpl.getInstance();
 
   override ready() {
-    super.ready();
-  //   this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
-  //   // <if expr="is_win">
-  //   this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
-  //   // </if>
+    super.ready()
+    this.originBrowserProxy_.getInitialState().then(this.onGetInitialState.bind(this))
   }
 
-  // private onVpnStateChange(connected: boolean) {
-  //   this.braveVpnConnected_ = connected
-  //   this.updateState()
-  // }
-
-  // private updateState() {
-  //   this.toggleWireguardSubLabel_ = this.braveVpnConnected_ ?
-  //     this.i18n('sublabelVpnConnected') : ''
-  // }
+  private onGetInitialState(initial_state: any) {
+    this.braveOriginEnabled_ = initial_state.enabled;
+    this.toggleNtpAds_ = initial_state.toggle_ntp_ads;
+    this.toggleEmailAlias_ = initial_state.toggle_email_alias;
+    this.toggleLeoAi_ = initial_state.toggle_leo_ai;
+  }
 }
 
 declare global {
