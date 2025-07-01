@@ -21,7 +21,7 @@ public class BraveTabGroupModelFilter {
 
     /** Call from {@link TabGroupModelFilterImpl} will be redirected here via bytecode. */
     @SuppressWarnings("UnusedMethod")
-    private boolean shouldGroupWithParent(Tab tab, @Nullable Tab parentTab) {
+    protected boolean shouldGroupWithParent(Tab tab, @Nullable Tab parentTab) {
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(
