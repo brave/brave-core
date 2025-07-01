@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/file_system_access/file_system_access_features.cc b/chrome/browser/file_system_access/file_system_access_features.cc
+index 3ff46cd7524f12454db43d9ae7558f0e1aba086d..a15a8d710ae94036ebfcac8e1d159b5d387653b2 100644
+--- a/chrome/browser/file_system_access/file_system_access_features.cc
++++ b/chrome/browser/file_system_access/file_system_access_features.cc
+@@ -21,6 +21,12 @@ BASE_FEATURE(kFileSystemAccessPersistentPermissions,
+ // resolves any symbolic link.
+ BASE_FEATURE(kFileSystemAccessSymbolicLinkCheck,
+              "FileSystemAccessSymbolicLinkCheck",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++// TODO(crbug.com/428455312): Enable for Windows
++#if BUILDFLAG(IS_WIN)
++             base::FEATURE_DISABLED_BY_DEFAULT
++#else
++             base::FEATURE_ENABLED_BY_DEFAULT
++#endif
++);
+ 
+ }  // namespace features
