@@ -21,6 +21,7 @@ class EmailAliasesService;
 
 class EmailAliasesServiceFactory : public ProfileKeyedServiceFactory {
  public:
+  static EmailAliasesService* GetServiceForProfile(Profile* profile);
   static void BindForProfile(
       Profile* profile,
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
