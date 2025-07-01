@@ -533,7 +533,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentType: Mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
-  url: { url: 'https://www.example.com/a' },
+  url: { url: 'https://www.example.com/areallylongurlthatwillbetruncatedintheinputbox' },
   contentId: 1,
 }
 
@@ -733,6 +733,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
       url: { url: 'https://search.brave.com' },
       title: 'Brave Search',
     }],
+    getPluralString: () => Promise.resolve(''),
     goPremium: () => { },
     managePremium: () => { },
     handleAgreeClick: () => { },
@@ -816,7 +817,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     handleRateMessage: () => Promise.resolve(),
     setTemporary: (temporary: boolean) => {
       setArgs({ isTemporaryChat: temporary })
-    }
+    },
+    disassociateContent: () => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
@@ -830,7 +832,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile,
     allModels: MODELS,
-    currentModelKey: currentModel?.key ?? ''
+    currentModelKey: currentModel?.key ?? '',
+    associatedContent: [associatedContent],
   }
 
   return (
