@@ -24,12 +24,22 @@ const getChromiumUnitTestsSuites = () => {
   ]
 }
 
+const getBraveUnitTestsSuites = (config) => {
+  let tests = []
+
+  if (config.targetOS !== 'android') {
+    // TODO(bridiver) https://github.com/brave/brave-browser/issues/47310
+    tests.push('brave_components_unittests')
+    tests.push('brave_installer_unittests')
+  }
+
+  return tests
+}
+
 const getTestsToRun = (config, suite) => {
   let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
-    if (config.targetOS !== 'android') {
-      testsToRun.push('brave_installer_unittests')
-    }
+    testsToRun = testsToRun.concat(getBraveUnitTestsSuites(config))
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
   } else if (suite === 'brave_junit_tests') {
@@ -97,13 +107,14 @@ const buildTests = async (
   config.update(options)
 
   let testSuites = [
-    'brave_unit_tests',
     'brave_browser_tests',
     'brave_java_unit_tests',
     'brave_junit_tests',
     'brave_network_audit_tests',
   ]
-  if (testSuites.includes(suite)) {
+  if (suite === 'brave_unit_tests') {
+    config.buildTargets = ['all_unit_tests']
+  } else if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
   } else if (suite === 'chromium_unit_tests') {
     config.buildTargets = getChromiumUnitTestsSuites()

@@ -62,3 +62,28 @@ static_library("browser") {
     ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "page_content_fetcher_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/content/browser:browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net:test_support",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:test_support",
+    "//services/service_manager/public/cpp",
+    "//testing/gmock:gmock",
+    "//testing/gtest:gtest",
+  ]
+}
