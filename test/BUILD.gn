@@ -87,19 +87,6 @@ static_library("brave_test_support_unit") {
   }
 }
 
-group("brave_all_unit_tests") {
-  testonly = true
-
-  data_deps = [
-    ":brave_unit_tests",
-    "//brave/components:brave_components_unittests",
-  ]
-
-  if (!is_android) {
-    data_deps += [ ":brave_installer_unittests" ]
-  }
-}
-
 test("brave_unit_tests") {
   testonly = true
 
