@@ -50,7 +50,7 @@ using brave_new_tab_page_refresh::VPNFacade;
 }  // namespace
 
 BraveNewTabPageUI::BraveNewTabPageUI(content::WebUI* web_ui)
-    : ui::MojoWebUIController(web_ui, /* enable_chrome_send = */ true) {
+    : ui::MojoWebUIController(web_ui) {
   NewTabPageInitializer(*web_ui).Initialize();
 }
 

@@ -24,7 +24,6 @@
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -90,7 +89,6 @@ void NewTabPageInitializer::Initialize() {
   AddCSPOverrides();
   AddLoadTimeValues();
   AddStrings();
-  AddPluralStrings();
 
   AddFaviconDataSource();
   AddCustomImageDataSource();
@@ -201,6 +199,7 @@ void NewTabPageInitializer::AddStrings() {
        IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},
       {"braveNewsFollowButtonNotFollowing",
        IDS_BRAVE_NEWS_FOLLOW_BUTTON_NOT_FOLLOWING},
+      {"braveNewsSourceCount", IDS_BRAVE_NEWS_SOURCE_COUNT},
       {"braveNewsFollowingFeed", IDS_BRAVE_NEWS_FEEDS_HEADING},
       {"braveNewsForYouFeed", IDS_BRAVE_NEWS_FOR_YOU_FEED},
       {"braveNewsHideContentFrom", IDS_BRAVE_NEWS_HIDE_CONTENT_FROM},
@@ -347,13 +346,6 @@ void NewTabPageInitializer::AddStrings() {
       {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);
-}
-
-void NewTabPageInitializer::AddPluralStrings() {
-  auto handler = std::make_unique<PluralStringHandler>();
-  handler->AddLocalizedString("braveNewsSourceCount",
-                              IDS_BRAVE_NEWS_SOURCE_COUNT);
-  web_ui_->AddMessageHandler(std::move(handler));
 }
 
 void NewTabPageInitializer::AddFaviconDataSource() {

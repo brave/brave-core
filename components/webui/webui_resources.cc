@@ -236,6 +236,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"braveNewsViewAllButton", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
                {"braveNewsAllSourcesHeader", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
                {"braveNewsFeedsHeading", IDS_BRAVE_NEWS_FEEDS_HEADING},
+               {"braveNewsSourceCount", IDS_BRAVE_NEWS_SOURCE_COUNT},
                {"braveNewsFollowButtonFollowing",
                 IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},
                {"braveNewsFollowButtonNotFollowing",
