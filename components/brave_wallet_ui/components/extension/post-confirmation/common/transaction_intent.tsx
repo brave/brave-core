@@ -373,6 +373,7 @@ export const TransactionIntent = (props: Props) => {
     <Row
       gap='4px'
       flexWrap='wrap'
+      padding='16px'
     >
       <Text
         textColor='secondary'
