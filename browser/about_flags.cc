@@ -11,6 +11,7 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
@@ -92,8 +93,8 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
-#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
-#include "brave/browser/mac_features.h"
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -512,14 +513,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #define BRAVE_EDUCATION_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
-#define BRAVE_UPDATER_FEATURE_ENTRIES                  \
-  EXPAND_FEATURE_ENTRIES({                             \
-      "brave-use-omaha4-alpha",                        \
-      "Use Omaha 4 Alpha",                             \
-      "Use the new automatic update system",           \
-      kOsDesktop | kOsMac,                             \
-      FEATURE_VALUE_TYPE(brave::kBraveUseOmaha4Alpha), \
+#if BUILDFLAG(ENABLE_OMAHA4)
+#define BRAVE_UPDATER_FEATURE_ENTRIES                          \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-use-omaha4-alpha",                                \
+      "Use Omaha 4 Alpha",                                     \
+      "Use the new automatic update system",                   \
+      kOsMac,                                                  \
+      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4Alpha), \
   })
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES

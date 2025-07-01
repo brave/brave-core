@@ -35,6 +35,7 @@ import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
 import("//brave/browser/webcompat_reporter/sources.gni")
@@ -141,6 +142,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
   "//brave/browser/ui/webui/brave_account",
+  "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/content/browser",
@@ -361,6 +363,10 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
+}
+
+if (enable_omaha4) {
+  brave_chrome_browser_deps += [ "//brave/browser/updater:features" ]
 }
 
 if (enable_speedreader) {
@@ -661,8 +667,4 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
-}
-
-if (target_os == "mac") {
-  brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }

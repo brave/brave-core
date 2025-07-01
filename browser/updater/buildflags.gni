@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("//chrome/browser/buildflags.gni")
+
+declare_args() {
+  # Chromium's auto-updater (also called "Omaha 4") is enabled via GN arg
+  # `enable_updater`. We set this flag to true for some necessary integration
+  # points. But, as of this writing, we do not actually use Omaha 4 - with one
+  # exception: On macOS, we are migrating from Sparkle to Omaha 4. Most users
+  # are still on Sparkle. But there's a feature flag that opts users into using
+  # Omaha 4 instead.
+  # The following GN arg decides whether Omaha 4 should be built into Brave:
+  enable_omaha4 = enable_updater && is_mac
+}
+
+assert(!enable_omaha4 || enable_updater,
+       "Can only enable_omaha4 when enable_updater")
