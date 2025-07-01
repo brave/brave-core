@@ -58,6 +58,8 @@ void ReportLaunch(base::Time now,
     prefs->SetTime(kLastUpdateTimePref, now);
 
     last_update_used_omaha4 = last_launch_used_omaha4;
+    // We remember the Omaha 4 state at the time of update because it is
+    // controlled by a feature flag and can change between launches.
     prefs->SetBoolean(kLastUpdateUsedOmaha4Pref, last_launch_used_omaha4);
   } else {
     last_update_time = prefs->GetTime(kLastUpdateTimePref);
