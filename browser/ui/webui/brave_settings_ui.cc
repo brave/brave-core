@@ -26,6 +26,7 @@
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
+#include "brave/browser/ui/webui/settings/brave_origin/brave_origin_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
@@ -137,6 +138,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
         std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
   }
 #endif
+
+  //TODO(bsclifton): use proper guard for this
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveOriginHandler>(Profile::FromWebUI(web_ui)));
 }
 
 BraveSettingsUI::~BraveSettingsUI() = default;
