@@ -69,18 +69,14 @@ inline constexpr BraveAction kShowVPNAction = {
     .icon = kLeoProductVpnIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-inline constexpr std::array<BraveAction, 4> kBraveActions = {
-#else
-inline constexpr std::array<BraveAction, 3> kBraveActions = {
-#endif
+inline constexpr auto kBraveActions = std::to_array<BraveAction>({
     kShowSidePanelAction,
     kShowWalletAction,
     kShowAIChatAction,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     kShowVPNAction,
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-};
+});
 
 }  // namespace customize_chrome
 
