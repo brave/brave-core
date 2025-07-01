@@ -39,15 +39,10 @@ class TabDragControllerTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-// It's flaky. Upstream also runs group header detach test only on Windows.
-// See
-// DetachToBrowserTabDragControllerTest.MAYBE_DragGroupHeaderToSeparateWindow
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragGroupHeaderToSeparateWindow \
   DISABLED_DragGroupHeaderToSeparateWindow
-#else
-#define MAYBE_DragGroupHeaderToSeparateWindow DragGroupHeaderToSeparateWindow
-#endif
 
 // Browser test for https://github.com/brave/brave-browser/issues/39486
 IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
