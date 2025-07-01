@@ -27,20 +27,6 @@
 class BraveVPNController {};
 #endif
 
-// static
-std::unique_ptr<BrowserWindowFeatures>
-BrowserWindowFeatures::CreateBrowserWindowFeatures() {
-  return base::WrapUnique(new BrowserWindowFeatures());
-}
-
-// static
-void BrowserWindowFeatures::ReplaceBrowserWindowFeaturesForTesting(
-    BrowserWindowFeaturesFactory factory) {
-  // Upstream doesn't use this static method.
-  // Revisit if used. Need to handle GetFactory() overriding.
-  NOTREACHED();
-}
-
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 
