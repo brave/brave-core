@@ -7,8 +7,8 @@
 
 #include "base/task/task_traits.h"
 #include "brave/browser/mac/keystone_glue.h"
-#include "brave/browser/mac_features.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/updater/updater_p3a.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
@@ -16,6 +16,10 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
@@ -47,11 +51,13 @@ void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
 
 void BraveBrowserMainPartsMac::PostBrowserStart() {
   ChromeBrowserMainPartsMac::PostBrowserStart();
+#if BUILDFLAG(ENABLE_OMAHA4)
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
       ->PostTask(FROM_HERE, base::BindOnce([]() {
                    brave_updater::ReportLaunch(
                        base::Time::Now(), chrome::kChromeVersion,
-                       brave::ShouldUseOmaha4(),
+                       brave_updater::ShouldUseOmaha4(),
                        g_browser_process->local_state());
                  }));
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
 }
