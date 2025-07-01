@@ -5,6 +5,7 @@
 
 import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -1039,10 +1040,7 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
 
-    deps += [
-      "//brave/components/tor:pref_names",
-      "//brave/updater:browser_tests",
-    ]
+    deps += [ "//brave/components/tor:pref_names" ]
   }
 
   if (is_win) {
@@ -1248,6 +1246,10 @@ test("brave_browser_tests") {
     deps += android_only_test_deps
     sources -= android_test_exception_sources
     sources += android_only_test_sources
+  }
+
+  if (enable_omaha4) {
+    deps += [ "//brave/updater:browser_tests" ]
   }
 }
 
