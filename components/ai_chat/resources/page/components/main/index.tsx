@@ -363,10 +363,10 @@ function Main() {
             maybeShowSoftKeyboard={maybeShowSoftKeyboard}
           />
         </div>
-        <DeleteConversationModal />
-        <OpenExternalLinkModal />
-        <RateMessagePrivacyModal />
       </div>
+      <DeleteConversationModal />
+      <OpenExternalLinkModal />
+      <RateMessagePrivacyModal />
     </main>
   )
 }
