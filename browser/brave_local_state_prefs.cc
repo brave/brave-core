@@ -92,7 +92,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)
-#include "brave/updater/updater_p3a.h"
+#include "brave/browser/updater/updater_p3a.h"
 #endif
 
 namespace brave {
