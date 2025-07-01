@@ -23,6 +23,7 @@ declare module '../page_visibility' {
     getStarted?: boolean
     leoAssistant?: boolean
     newTab?: boolean
+    origin?: boolean
     playlist?: boolean
     shields?: boolean
     socialBlocking?: boolean
@@ -54,6 +55,7 @@ function getPageVisibility () {
       getStarted: false,
       leoAssistant: false,
       newTab: false,
+      origin: false,
       playlist: false,
       shields: true,
       socialBlocking: true,
@@ -93,6 +95,7 @@ function getPageVisibility () {
                  !loadTimeData.getBoolean('isSpeedreaderDisabledByPolicy'),
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
+    origin: loadTimeData.getBoolean('isBraveOriginEnabled'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

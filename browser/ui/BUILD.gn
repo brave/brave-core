@@ -270,6 +270,8 @@ source_set("ui") {
       "webui/settings/brave_import_data_handler.h",
       "webui/settings/brave_importer_observer.cc",
       "webui/settings/brave_importer_observer.h",
+      "webui/settings/brave_origin/brave_origin_handler.cc",
+      "webui/settings/brave_origin/brave_origin_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",

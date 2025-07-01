@@ -1,0 +1,202 @@
+<style include="settings-shared cr-shared-style">
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    height: 68px;
+  }
+
+  .label.primary-title
+  {
+    font-size: 1.05em;
+    font-weight: 500;
+    padding-top: 1em;
+  }
+
+  .label.secondary-title {
+    padding-bottom: 1em;
+  }
+
+  .origin-note {
+    font-weight: bold;
+  }
+
+  #needsRestart {
+    background-color: #fff;
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: 16px;
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #needsRestart {
+      background-color: rgb(22, 23, 25);
+    }
+
+    button.primary {
+        color: white;
+    }
+  }
+
+  #needsRestart .flex:last-child {
+    text-align: right;  /* csschecker-disable-line left-right */
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .restart-notice {
+    font-size: .9375rem;
+    line-height: 1.4;
+  }
+
+  button.primary {
+    background: var(--interactive-color);
+    border: 0;
+    border-radius: 3px;
+    font-size: .875rem;
+    padding: 14px 38px;
+  }
+</style>
+<div hidden="[[!braveOriginEnabled_]]">
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginHeadingDescription1}</p>
+        <p>$i18n{braveOriginHeadingDescription2}</p>
+        <p class="origin-note">
+          $i18n{braveOriginHeadingDescription3}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+
+  <settings-toggle-button id="toggleRewardsButton"
+      pref="{{prefs.brave.rewards.disabled_by_policy}}"
+      label="$i18n{braveOriginRewardsToggleTitle}"
+      icon="product-bat-outline"
+      inverted>
+  </settings-toggle-button>
+
+  <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+
+  <settings-toggle-button id="toggleLeoAiButton"
+      pref="{{prefs.brave.ai_chat.enabled_by_policy}}"
+      label="$i18n{braveOriginLeoAiToggleTitle}"
+      icon="product-brave-leo">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleNewsButton"
+      pref="{{prefs.brave.news.disabled_by_policy}}"
+      label="$i18n{braveOriginNewsToggleTitle}"
+      icon="product-brave-news"
+      inverted>
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleTalkButton"
+      pref="{{prefs.brave.talk.disabled_by_policy}}"
+      label="$i18n{braveOriginTalkToggleTitle}"
+      icon="product-brave-talk"
+      inverted>
+  </settings-toggle-button>
+
+  <if expr="enable_brave_wayback_machine">
+    <settings-toggle-button id="toggleWaybackMachineButton"
+        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
+        label="$i18n{braveOriginWaybackMachineToggleTitle}"
+        icon="window-404"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <if expr="enable_speedreader">
+    <settings-toggle-button id="toggleSpeedreaderButton"
+        pref="{{prefs.brave.speedreader.disabled_by_policy}}"
+        label="$i18n{braveOriginSpeedReaderToggleTitle}"
+        icon="product-speedreader"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <settings-toggle-button id="toggleP3AButton"
+      pref="[[p3aEnabledPref_]]"
+      label="$i18n{braveOriginP3AToggleTitle}"
+      on-settings-boolean-control-change="toggleP3AButtonChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleStatsReportingButton"
+      pref="[[statsReportingEnabledPref_]]"
+      label="$i18n{braveOriginStatsReportingToggleTitle}"
+      on-settings-boolean-control-change="toggleStatsReportingButtonChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
+  <settings-toggle-button id="toggleCrashReportingButton"
+      pref="[[crashReportingEnabledPref_]]"
+      label="$i18n{braveOriginCrashReportingToggleTitle}"
+      on-settings-boolean-control-change="toggleCrashReportingButtonChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
+  <if expr="enable_tor">
+    <settings-toggle-button id="toggleTorWindowsButton"
+        pref="[[torEnabledPref_]]"
+        label="$i18n{braveOriginTorWindowsToggleTitle}"
+        on-settings-boolean-control-change="toggleTorWindowsButtonChange_"
+        icon="product-tor">
+    </settings-toggle-button>
+  </if>
+
+  <if expr="enable_brave_vpn">
+    <settings-toggle-button id="toggleVpnButton"
+        pref="{{prefs.brave.brave_vpn.disabled_by_policy}}"
+        label="$i18n{braveOriginVpnToggleTitle}"
+        icon="product-vpn"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <settings-toggle-button id="toggleWalletButton"
+      pref="{{prefs.brave.wallet.disabled_by_policy}}"
+      label="$i18n{braveOriginWalletToggleTitle}"
+      icon="product-brave-wallet"
+      inverted>
+  </settings-toggle-button>
+
+  <cr-link-row class="hr"
+    label="$i18n{braveOriginResetToDefaultsTitle}"
+    on-click="resetToDefaults_"
+    start-icon="refresh">
+  </cr-link-row>
+
+  <template is="dom-if" if="{{ showRestartToast_ }}">
+    <div id="needsRestart">
+      <div class="flex-container">
+        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+        <div class="flex">
+          <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+            $i18n{relaunchButtonLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
