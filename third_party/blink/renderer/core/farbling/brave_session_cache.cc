@@ -166,7 +166,7 @@ bool AllowFingerprinting(ExecutionContext* context,
 }
 
 bool AllowFontFamily(ExecutionContext* context,
-                     const AtomicString& family_name) {
+                     const blink::AtomicString& family_name) {
   if (!context) {
     return true;
   }
@@ -399,7 +399,7 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
-    const AtomicString& family_name) {
+    const blink::AtomicString& family_name) {
   if (!settings ||
       GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_FONT) ==
           BraveFarblingLevel::OFF ||
