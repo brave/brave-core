@@ -3,3 +3,4 @@
 
 gn_check_supports_checkdeps_only
 test_report_lists
+android_output_xml
