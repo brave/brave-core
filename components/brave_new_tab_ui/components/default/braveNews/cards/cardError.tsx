@@ -81,9 +81,9 @@ interface Props {
 export default function CardError (props: Props) {
   return (
     <UnidealMessageCard
-      heading={getLocale('braveNewsErrorHeading')}
-      message={getLocale('braveNewsErrorMessage')}
-      actionLabel={getLocale('braveNewsErrorActionLabel')}
+      heading={getLocale(S.BRAVE_NEWS_ERROR_HEADING)}
+      message={getLocale(S.BRAVE_NEWS_ERROR_MESSAGE)}
+      actionLabel={getLocale(S.BRAVE_NEWS_ERROR_ACTION_LABEL)}
       onActionClick={props.onRefresh}
     />
   )

@@ -101,7 +101,7 @@ const tabIcons: TabMap<string> = {
 
 const tabTranslationKeys: TabMap<string> = {
   [TabType.BackgroundImage]: 'backgroundImageTitle',
-  [TabType.BraveNews]: 'braveNewsTitle',
+  [TabType.BraveNews]: S.BRAVE_NEWS_SETTINGS_TITLE,
   [TabType.BraveStats]: 'statsTitle',
   [TabType.Clock]: 'clockTitle',
   [TabType.TopSites]: 'topSitesTitle',

@@ -117,7 +117,7 @@ export default function Advert(props: Props) {
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
     <AdImage loading='eager' src={imageUrl} />
     <MetaInfoContainer>
-      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
+      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale(S.BRAVE_NEWS_ADVERT_BADGE)}</BatAdLabel>
       •
       {' ' + advert.description}
     </MetaInfoContainer>

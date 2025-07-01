@@ -47,7 +47,7 @@ export default function CustomizePage (props: {
       <BackButtonContainer>
         <Button onClick={() => setCustomizePage('news')}>
           {BackArrow}
-          {getLocale('braveNewsBackButton')}
+          {getLocale(S.BRAVE_NEWS_BACK_BUTTON)}
         </Button>
       </BackButtonContainer>
       <Header>{props.title}</Header>

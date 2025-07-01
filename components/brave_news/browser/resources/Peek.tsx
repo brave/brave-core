@@ -119,7 +119,7 @@ export default function Peek() {
     ? <Container>
       {showNewsButton && <NewsButton onClick={scrollToNews}>
         <Icon name='product-brave-news' />
-        {getLocale('braveNewsNewsPeek')}
+        {getLocale(S.BRAVE_NEWS_NEWS_PEEK)}
         <Icon name='carat-down' />
       </NewsButton>}
       {data && <PeekingCard onClick={scrollToNews}>
