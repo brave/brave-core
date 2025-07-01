@@ -25,9 +25,11 @@ const getChromiumUnitTestsSuites = () => {
 }
 
 const getBraveUnitTestsSuites = (config) => {
-  let tests = ['brave_components_unittests']
+  let tests = []
 
   if (config.targetOS !== 'android') {
+    // TODO(bridiver) https://github.com/brave/brave-browser/issues/47310
+    tests.push('brave_components_unittests')
     tests.push('brave_installer_unittests')
   }
 
