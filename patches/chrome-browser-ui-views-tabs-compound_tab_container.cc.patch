@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/compound_tab_container.cc b/chrome/browser/ui/views/tabs/compound_tab_container.cc
+index e655cb3c2c7e221ef25f419648f8ca9b1d3256ee..0b215a930d7ba05a8c44cf79caee11c7f08202b9 100644
+--- a/chrome/browser/ui/views/tabs/compound_tab_container.cc
++++ b/chrome/browser/ui/views/tabs/compound_tab_container.cc
+@@ -52,7 +52,7 @@ class PinnedTabContainerController final : public TabContainerController {
+   }
+ 
+   int NumPinnedTabsInModel() const override {
+-    return base_controller_->NumPinnedTabsInModel();
++    return compound_tab_container_->NumPinnedTabs();
+   }
+ 
+   void OnDropIndexUpdate(const std::optional<int> index,
