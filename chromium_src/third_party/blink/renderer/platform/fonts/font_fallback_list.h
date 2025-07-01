@@ -19,7 +19,7 @@ class ExecutionContext;
 namespace brave {
 
 typedef base::RepeatingCallback<bool(blink::ExecutionContext*,
-                                     const WTF::AtomicString&)>
+                                     const blink::AtomicString&)>
     AllowFontFamilyCallback;
 
 PLATFORM_EXPORT void RegisterAllowFontFamilyCallback(
