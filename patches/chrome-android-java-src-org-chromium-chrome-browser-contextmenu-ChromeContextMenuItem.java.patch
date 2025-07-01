@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 27ff5d0d216f9c39d3a3b55ffe9746b7b6cb4c9a..fc32841119bca7517a21b2e5d368f28491a9e9be 100644
+index 122f6c3e696ff520b157d4fec8e5c86433cb9c48..706624bede27d4a71cb2da08ce352f905fbab5a6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -69,6 +69,7 @@ class ChromeContextMenuItem {
+@@ -74,6 +74,7 @@ class ChromeContextMenuItem {
          Item.SHARE_PAGE,
          Item.PRINT_PAGE,
          Item.INSPECT_ELEMENT,
@@ -10,7 +10,7 @@ index 27ff5d0d216f9c39d3a3b55ffe9746b7b6cb4c9a..fc32841119bca7517a21b2e5d368f284
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -124,7 +125,7 @@ class ChromeContextMenuItem {
+@@ -129,7 +130,7 @@ class ChromeContextMenuItem {
          // Developer Group
          int INSPECT_ELEMENT = 39;
          // ALWAYS UPDATE!
@@ -19,7 +19,7 @@ index 27ff5d0d216f9c39d3a3b55ffe9746b7b6cb4c9a..fc32841119bca7517a21b2e5d368f284
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -169,6 +170,7 @@ class ChromeContextMenuItem {
+@@ -174,6 +175,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_share_page, // Item.SHARE_PAGE
          R.id.contextmenu_print_page, // Item.PRINT_PAGE
          R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
@@ -27,7 +27,7 @@ index 27ff5d0d216f9c39d3a3b55ffe9746b7b6cb4c9a..fc32841119bca7517a21b2e5d368f284
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -213,6 +215,7 @@ class ChromeContextMenuItem {
+@@ -218,6 +220,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_share_page, // Item.SHARE_PAGE
          R.string.contextmenu_print_page, // Item.PRINT_PAGE
          R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
