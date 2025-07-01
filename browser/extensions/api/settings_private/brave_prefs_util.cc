@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -171,6 +172,33 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabledForAllSites] =
       settings_api::PrefType::kBoolean;
 #endif
+
+  // Brave Origin (group policy related values)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  (*s_brave_allowlist)[brave_rewards::prefs::kDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_news::prefs::kBraveNewsDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveTalkDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  (*s_brave_allowlist)[brave_vpn::prefs::kManagedBraveVPNDisabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+  (*s_brave_allowlist)[ai_chat::prefs::kEnabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  (*s_brave_allowlist)[kBraveWaybackMachineDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  (*s_brave_allowlist)[speedreader::kSpeedreaderDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#endif
+  (*s_brave_allowlist)[brave_wallet::prefs::kDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#endif
+
   // De-AMP feature
   (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
       settings_api::PrefType::kBoolean;
