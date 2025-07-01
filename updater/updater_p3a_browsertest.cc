@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/updater/updater_p3a.h"
+#include "brave/browser/updater/updater_p3a.h"
 
 #include "base/test/metrics/histogram_tester.h"
 #include "chrome/browser/browser_process.h"

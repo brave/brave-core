@@ -16,7 +16,7 @@
 #if BUILDFLAG(ENABLE_OMAHA4)
 #include "base/task/task_traits.h"
 #include "brave/browser/updater/features.h"
-#include "brave/updater/updater_p3a.h"
+#include "brave/browser/updater/updater_p3a.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
 #include "content/public/browser/browser_thread.h"
