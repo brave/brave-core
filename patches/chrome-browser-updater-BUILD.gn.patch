@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index 02a5139d3c16e619597d2dfd8b89a547779d79b9..a811d5857778be3d30db727bc7d053166ceaf53a 100644
+index 02a5139d3c16e619597d2dfd8b89a547779d79b9..8f93b07dfd19d1ecb7394d3b6073c3e2950bf90a 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
-@@ -90,6 +90,7 @@ source_set("scheduler") {
-         "//chrome/common",
-         "//chrome/updater:browser_sources",
-       ]
-+      deps += ["//brave/browser/updater:buildflags" ] import("//brave/browser/updater/buildflags.gni") if (enable_omaha4) { deps += ["//brave/browser/updater:features" ] }
-     } else if (is_win) {
-       sources += [ "scheduler_win.cc" ]
-       deps += [
+@@ -80,6 +80,7 @@ source_set("scheduler") {
+   ]
+ 
+   deps = [ "//base" ]
++  import("//brave/browser/updater/sources.gni") deps += brave_chrome_updater_scheduler_deps
+ 
+   if (enable_updater) {
+     if (is_mac) {
