@@ -20,7 +20,7 @@ import {
   updateConversationHistory, getImageFiles
 } from '../../common/conversation_history_utils'
 
-const MAX_INPUT_CHAR = 2000
+const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
 
 export interface CharCountContext {
