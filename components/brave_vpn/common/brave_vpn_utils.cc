@@ -14,6 +14,7 @@
 #include "base/json/values_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -206,16 +207,17 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
 
 bool IsBraveVPNDisabledByPolicy(PrefService* prefs) {
   DCHECK(prefs);
-  return prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
+  return (prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
   // Need to investigate more about this.
   // IsManagedPreference() gives false on macOS when it's configured by
   // "defaults write com.brave.Browser.beta BraveVPNDisabled -bool true".
   // As kManagedBraveVPNDisabled is false by default and only can be set
   // by policy, I think skipping this condition checking will be fine.
 #if !BUILDFLAG(IS_MAC)
-         prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled) &&
+          (BraveOriginState::GetInstance()->IsBraveOriginUser() ||
+           prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled)) &&
 #endif
-         prefs->GetBoolean(prefs::kManagedBraveVPNDisabled);
+          prefs->GetBoolean(prefs::kManagedBraveVPNDisabled));
 }
 
 bool IsBraveVPNFeatureEnabled() {

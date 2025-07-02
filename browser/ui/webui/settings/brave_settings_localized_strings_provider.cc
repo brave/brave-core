@@ -1214,10 +1214,9 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
 
-  html_source->AddBoolean(
-      "braveNewsDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(
-          brave_news::prefs::kBraveNewsDisabledByPolicy));
+  html_source->AddBoolean("braveNewsDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_news::prefs::kBraveNewsDisabledByPolicy));
 
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",

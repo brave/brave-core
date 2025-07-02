@@ -21,6 +21,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -93,7 +94,8 @@ GetActionTypeQuestionMap() {
 
 bool IsDisabledByPolicy(PrefService* prefs) {
   DCHECK(prefs);
-  return prefs->IsManagedPreference(prefs::kEnabledByPolicy) &&
+  return (BraveOriginState::GetInstance()->IsBraveOriginUser() ||
+          prefs->IsManagedPreference(prefs::kEnabledByPolicy)) &&
          !prefs->GetBoolean(prefs::kEnabledByPolicy);
 }
 

@@ -21,6 +21,7 @@ source_set("common") {
   public_deps = [ "mojom" ]
 
   deps = [
+    "//brave/components/brave_origin",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/skus/browser",
