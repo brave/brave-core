@@ -32,6 +32,7 @@ static_library("core") {
   deps = [
     ":features",
     "//base",
+    "//brave/components/brave_origin",
     "//brave/components/l10n/common",
     "//components/country_codes",
     "//components/prefs",
