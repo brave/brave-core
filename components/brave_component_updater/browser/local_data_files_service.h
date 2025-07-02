@@ -45,10 +45,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesService
   void AddObserver(LocalDataFilesObserver* observer);
   void RemoveObserver(LocalDataFilesObserver* observer);
 
-  static void SetComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key);
-
  protected:
   void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir,
