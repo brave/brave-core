@@ -39,6 +39,7 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/api/cookies/cookies_api.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registrar.h"
@@ -484,4 +485,27 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(component_extension->id(),
                                                    tor_profile));
 }
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest, CookiesEvents) {
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  auto* tor_cookies_api =
+      extensions::CookiesAPI ::GetFactoryInstance()->Get(profile());
+
+  extensions::EventListenerInfo details("chrome.cookies.onChanged", "id",
+                                        GURL("https://a.com"), profile());
+
+  tor_cookies_api->OnListenerAdded(details);
+
+  // Create Tor OTR-"main" profile.
+  SwitchToTorProfile(profile(), GetTorLauncherFactory());
+
+  // Call to CookiesEventRouter::OnCookieChange for Tor OTR profile shouldn't
+  // crash.
+  extensions::OnCookieChangeExposeForTesting::CallOnCookieChangeForOtr(
+      tor_cookies_api);
+
+  // Create the main OTR profile, should not crash.
+  profile()->GetPrimaryOTRProfile(true);
+}
+
 #endif
