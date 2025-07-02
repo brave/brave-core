@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "履歴";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "履歴から削除";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "履歴を消去する";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "閲覧履歴を消去する";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "検索結果がありません";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "ここに履歴が表示されます。";
+"history.historyEmptyStateSubtitle" = "閲覧履歴はここに表示されます";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "常にプライベート・ブラウジングを行うモードでは、履歴は利用できません。";
+"history.historyEmptyStateTitle" = "履歴がありません";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "履歴はプライベートオンリーのモードでは使用できません";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "最近閉じたタブ";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "検索履歴";
