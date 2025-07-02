@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "יש להפעיל כדי להציג קיצור דרך להשקה של Leo מתוך שורת הכתובת.  ";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "הצגה בשורת הכתובת";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "מודל ברירת מחדל ";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "מודל עיבוד ויזואלי למטרות כלליות";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Mixtral 8x7B, מודל שנוצר על ידי Mistral AI לטיפול במשימות מורכבות. Mixtral מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "משימות צ'אט מתקדמות";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 14B, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo מושבת";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo לא זמין כרגע במצב גלישה פרטית. כדי להשתמש ב-Leo, צריך לצאת ממצב גלישה פרטית ולנסות שוב.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo לא זמין";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "העלאת תמונה";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "אני מבינ/ה";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Leo של Brave הוא עוזר AI חכם פרטי שמשפר את השימוש שלך ברשת. Leo הוא כלי חינמי לשימוש עם גישה מוגבלת. Leo פרימיום של Brave מציע יותר מודלים ופחות מגבלות, ומעניק למנויים גישה מוקדמת לפיצ׳רים חדשים. מודל ברירת המחדל לכל המשתמשים הוא כרגע Mixtral 8x7B. אפשר לבקר ב**[מרכז העזרה](%1$@)** של Brave לפרטים נוספים.\n\nבמצב ברירת המחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף האינטרנט שבו צופים באותו רגע או של כל טקסט שהדגשת בעמוד כלשהו, או להשתמש בתוכן זה, כדי לאפשר ל-Leo של Brave לספק תשובה. במקרים מסוימים, Leo ישלח שאילתות שמבוססות על הקלט שהזנת לחיפוש Brave וישתמש בתוצאות החיפוש כדי לענות טוב יותר על השאלה שלך. הדיוק בתשובות אינו מובטח, ועלול לכלול מידע לא מדויק, מטעה או שגוי. אין להגיש מידע רגיש או פרטי, ויש לנקוט זהירות לגבי כל תשובה הקשורה לבריאות, לכספים, לבטיחות אישית וכדומה. ניתן להתאים את האפשרויות של Leo בהגדרות בכל עת באמצעות מעבר להגדרות > Leo.\n\nLeo לא אוסף פרטים מזהים כמו כתובת ה-IP שלך שעשויים להיות מקושרים אליך. אף נתון לא נאסף כדי לאמן את מודלי ה-AI ואף נתון אישי לא נשמר על ידי מודלי ה-AI (מלבד Anthropic שמחזיק בנתונים למשך 30 יום לפני מחיקתם). אפשר לעיין ב**[מדיניות הפרטיות](%2$@)** למידע נוסף.";
+"aichat.termsConditionsDescription" = "Leo של Brave הוא עוזר AI חכם פרטי שמשפר את השימוש שלך ברשת. Leo הוא כלי חינמי לשימוש עם גישה מוגבלת. Leo פרימיום של Brave מציע יותר מודלים ופחות מגבלות, ומעניק למנויים גישה מוקדמת לפיצ׳רים חדשים. אפשר לבקר ב**[מרכז העזרה](%1$@)** של Brave לפרטים נוספים.\n\nבמצב ברירת המחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף האינטרנט שבו צופים באותו רגע או של כל טקסט שהדגשת בעמוד כלשהו, או להשתמש בתוכן זה, כדי לאפשר ל-Leo של Brave לספק תשובה. במקרים מסוימים, Leo ישלח שאילתות שמבוססות על הקלט שהזנת לחיפוש Brave וישתמש בתוצאות החיפוש כדי לענות טוב יותר על השאלה שלך. הדיוק בתשובות אינו מובטח, ועלול לכלול מידע לא מדויק, מטעה או שגוי. אין לשלוח מידע רגיש או פרטי, ויש לנקוט זהירות לגבי כל תשובה הקשורה לבריאות, לכספים, לבטיחות אישית וכדומה. ניתן להתאים את האפשרויות של Leo בהגדרות בכל עת באמצעות מעבר להגדרות > Leo.\n\nLeo לא אוסף פרטים מזהים כמו כתובת ה-IP שלך שעשויים להיות מקושרים אליך. אף נתון לא נאסף כדי לאמן את מודלי ה-AI ואף נתון אישי לא נשמר על ידי מודלי ה-AI (מלבד Anthropic שמחזיק בנתונים למשך 30 יום לפני מחיקתם). אפשר לעיין ב**[מדיניות הפרטיות](%2$@)** למידע נוסף.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "נהל/י צ'טים בפרטיות עם Brave Leo";
