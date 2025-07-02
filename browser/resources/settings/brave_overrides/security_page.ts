@@ -77,10 +77,10 @@ RegisterPolymerTemplateModifications({
       }
     }
     const link = templateContent.
-      getElementById('advanced-protection-program-link')
+      getElementById('advancedProtectionProgramLink')
     if (!link) {
       console.error('[Brave Settings Overrides] Could not find ' +
-                    'advanced-protection-program-link id on security page.')
+                    'advancedProtectionProgramLink id on security page.')
     } else {
       link.setAttribute('hidden', 'true')
     }
