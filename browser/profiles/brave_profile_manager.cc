@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_origin/brave_origin_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -136,6 +137,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
+  brave_origin::SetupBraveOriginProfilePrefs(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   MigrateHttpsUpgradeSettings(profile);
 }
