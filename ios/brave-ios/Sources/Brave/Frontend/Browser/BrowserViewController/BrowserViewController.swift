@@ -883,9 +883,9 @@ public class BrowserViewController: UIViewController {
     currentScene?.screenshotService?.delegate = self
 
     // Add Regular tabs to Sync Chain
-    if Preferences.Chromium.syncOpenTabsEnabled.value {
-      executeAfterSetup {
-        tabManager.addRegularTabsToSyncChain()
+    executeAfterSetup {
+      if Preferences.Chromium.syncOpenTabsEnabled.value {
+        self.tabManager.addRegularTabsToSyncChain()
       }
     }
 
