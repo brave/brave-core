@@ -11,7 +11,7 @@ import getAPI from '../../api'
 import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
 import styles from './style.module.scss'
 import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
-import { useConversation, useSupportsAttachments } from '../../state/conversation_context'
+import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import { tabAssociatedChatId, useActiveChat } from '../../state/active_chat_context'
 
@@ -44,7 +44,6 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   )
   const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
   const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
-  const supportsAttachments = useSupportsAttachments()
 
   return (
     <div className={styles.header} ref={ref}>
@@ -101,15 +100,6 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
               >
                 <Icon name='expand' />
               </Button>}
-            {supportsAttachments && aiChatContext.tabs.length > 0 && <Button
-              fab
-              kind={conversationContext.showAttachments ? 'plain' : 'plain-faint'}
-              aria-label={getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}
-              title={getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}
-              onClick={() => conversationContext.setShowAttachments(!conversationContext.showAttachments)}
-            >
-              <Icon name='attachment' />
-            </Button>}
             <FeatureButtonMenu {...props} />
             {!aiChatContext.isStandalone &&
               <Button

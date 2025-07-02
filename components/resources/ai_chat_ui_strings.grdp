@@ -564,6 +564,9 @@
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>
+  <message name="IDS_AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL" desc="The button label for attaching open tabs" formatter_data="webui=AiChat">
+    Open tabs...
+  </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone
   </message>
