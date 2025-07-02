@@ -71,7 +71,8 @@ def PushChangesToBranch(files: Dict[str, str],
       raise ValueError(
           "GitHub username or token not set in environment variables")
 
-    # Configure git to use HTTPS instead of SSH for this push
+    # Configure git to use HTTPS and disable SSH key checking for this push
+    GetProcessOutput(['git', 'config', '--local', 'core.sshCommand', 'echo "SSH disabled"'], cwd)
     GetProcessOutput(['git', 'config', '--local', 'url."https://".insteadOf', 'git@'], cwd)
     GetProcessOutput(['git', 'config', '--local', 'url."https://github.com/".insteadOf', 'git@github.com:'], cwd)
 
