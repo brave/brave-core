@@ -6,14 +6,22 @@
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"
 
 #include "base/memory/raw_ref.h"
+#include "base/notreached.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 
 #define ListActions ListActionsChromium
 #define PinAction PinActionChromium
 
+// pref_change_registrar_.Init() in constructor
+#define Init(...)    \
+  Init(__VA_ARGS__); \
+  ObserveBraveActions()
+
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc"
 
+#undef Init
 #undef PinAction
 #undef ListActions
 
@@ -40,4 +48,27 @@ void CustomizeToolbarHandler::PinAction(
   }
 
   PinActionChromium(action_id, pin);
+}
+
+void CustomizeToolbarHandler::ObserveBraveActions() {
+  for (const auto& brave_action : customize_chrome::kBraveActions) {
+    pref_change_registrar_.Add(
+        brave_action.pref_name,
+        base::BindRepeating(
+            &CustomizeToolbarHandler::OnBraveActionPinnedChanged,
+            base::Unretained(this), brave_action.id));
+  }
+}
+
+void CustomizeToolbarHandler::OnBraveActionPinnedChanged(
+    side_panel::customize_chrome::mojom::ActionId action_id) {
+  for (const auto& brave_action : customize_chrome::kBraveActions) {
+    if (action_id == brave_action.id) {
+      client_->SetActionPinned(action_id,
+                               prefs()->GetBoolean(brave_action.pref_name));
+      return;
+    }
+  }
+
+  NOTREACHED();
 }
