@@ -292,8 +292,10 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
-      // Don't run other tests if one has failed already.
-      return prog.status === 0
+      // If we output results into xml files (CI), then we want to run all
+      // suites to get all potential failures. Otherwise, for example, if
+      // running locally, it makes sense to stop if a suite has failures.
+      return options.output_xml || prog.status === 0
     })
   }
 }
