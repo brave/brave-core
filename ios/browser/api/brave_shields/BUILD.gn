@@ -3,7 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs = [ "$root_gen_dir/brave/ios/browser/api/brave_shields" ]
+}
+
 source_set("brave_shields") {
+  configs += [ ":mojom_header_config" ]
   sources = [
     "adblock_engine.h",
     "adblock_engine.mm",
@@ -13,18 +24,43 @@ source_set("brave_shields") {
     "adblock_service+private.h",
     "adblock_service.h",
     "adblock_service.mm",
+    "brave_shields_utils_ios+private.h",
+    "brave_shields_utils_ios.h",
+    "brave_shields_utils_ios.mm",
   ]
   deps = [
+    ":brave_shields_mojom_wrappers",
     "//base",
     "//brave/base/mac",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/browser/adblock",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/resources:static_resources",
     "//components/component_updater",
+    "//ios/chrome/browser/content_settings/model",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
+    "//net",
     "//ui/base",
+    "//url",
+  ]
+}
+
+ios_objc_mojom_wrappers("brave_shields_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_shields/core/common:mojom"
+  sources = [
+    "//brave/components/brave_shields/core/common/brave_shields_panel.mojom",
+  ]
+  exclude_types = [
+    "PanelHandlerFactory",
+    "PanelHandler",
+    "UIHandler",
+    "DataHandler",
+    "SiteBlockInfo",
+    "SiteSettings",
   ]
 }
