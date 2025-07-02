@@ -27,18 +27,19 @@ type Props = {
   remove?: () => void
 }
 
+const tooltipHideDelay = 0
+const tooltipShowDelay = 500
+
 export function AttachmentItem(props: Props) {
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
         {props.icon}
         <div className={styles.info}>
-          <Tooltip mode='mini'>
-            <div className={styles.forEllipsis}>
-              <span className={styles.title}>{props.title}</span>
-            </div>
-            <div className={styles.tooltipContent} slot="content">{props.title}</div>
-          </Tooltip>
+          <div className={styles.forEllipsis}>
+            <span className={styles.title}>{props.title}</span>
+          </div>
+          <div className={styles.tooltipContent} slot="content">{props.title}</div>
           {props.subtitle && (
             <span
               data-key='subtitle'
