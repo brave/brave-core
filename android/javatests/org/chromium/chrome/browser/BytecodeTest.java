@@ -848,6 +848,7 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         void.class,
                         List.class,
+                        List.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
