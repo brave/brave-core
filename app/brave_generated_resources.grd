@@ -511,6 +511,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_EXTENSIONS_BRAVE_PRIVATE_AND_TOR_WARNING" desc="Displayed in extensions management UI after an extension is selected to be run in private mode and Tor mode.">
         To disable this extension in private mode and Tor mode, unselect this option.
       </message>
+      <message name="IDS_EXTENSIONS_BRAVE_HOSTED" desc="Displayed in extensions management UI if an extension is hosted on the Brave server.">
+        Brave-hosted
+      </message>
 
       <!-- App shortcuts -->
       <if expr="not is_win">
