@@ -42,3 +42,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
             base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
                 embedder_support::kOriginTrialPublicKey));
 }
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
+                       LowerDefaultCheckForUpdateIntervalSec) {
+  EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+                switches::kCheckForUpdateIntervalSec),
+            "900");
+}
