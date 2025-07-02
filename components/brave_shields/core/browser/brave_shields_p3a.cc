@@ -120,7 +120,7 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
   auto setting_order_it =
       std::find(setting_order.begin(), setting_order.end(), global_setting);
 
-  bool setting_order_in_range = setting_order_it < setting_order.end();
+  bool setting_order_in_range = setting_order_it != setting_order.end();
   DCHECK(setting_order_in_range)
       << "Shields global setting must be in setting_order";
   if (!setting_order_in_range) {
