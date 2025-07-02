@@ -39,6 +39,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/browser/ui/tabs:split_view",
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/split_view",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
