@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "build/build_config.h"
@@ -32,7 +33,8 @@ bool IsDisabledByPolicy(PrefService* prefs) {
   return false;
 #else
   DCHECK(prefs);
-  return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
+  return (BraveOriginState::GetInstance()->IsBraveOriginUser() ||
+          prefs->IsManagedPreference(prefs::kDisabledByPolicy)) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
 #endif
 }
