@@ -14,10 +14,10 @@
 
 namespace brave_updater {
 
-class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
+class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
  public:
-  BraveUpdaterP3ATest() = default;
-  ~BraveUpdaterP3ATest() override = default;
+  UpdaterP3ATest() = default;
+  ~UpdaterP3ATest() override = default;
 
   void SetUp() override {
     RegisterLocalStatePrefs(local_state_.registry());
@@ -38,7 +38,7 @@ class BraveUpdaterP3ATest : public ::testing::TestWithParam<bool> {
   void ExpectReportedStatus(UpdateStatus status);
 };
 
-TEST_P(BraveUpdaterP3ATest, TestUpdate) {
+TEST_P(UpdaterP3ATest, TestUpdate) {
   // Initial launch on day 0:
   SimulateLaunch(0, "0.0.0.1");
 
@@ -62,32 +62,32 @@ TEST_P(BraveUpdaterP3ATest, TestUpdate) {
 INSTANTIATE_TEST_SUITE_P(
     // Empty to simplify gtest output
     ,
-    BraveUpdaterP3ATest,
+    UpdaterP3ATest,
     ::testing::Values(false, true),
     [](const ::testing::TestParamInfo<bool>& info) {
       return info.param ? "Omaha4" : "Legacy";
     });
 
-void BraveUpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
+void UpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
   base::Time now = base::Time::FromTimeT(1) + base::Days(day);
   ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
 }
 
-void BraveUpdaterP3ATest::ExpectReportedUpdate() {
+void UpdaterP3ATest::ExpectReportedUpdate() {
   using enum UpdateStatus;
   UpdateStatus status =
       IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
   ExpectReportedStatus(status);
 }
 
-void BraveUpdaterP3ATest::ExpectReportedNoUpdate() {
+void UpdaterP3ATest::ExpectReportedNoUpdate() {
   using enum UpdateStatus;
   UpdateStatus status =
       IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
   ExpectReportedStatus(status);
 }
 
-void BraveUpdaterP3ATest::ExpectReportedStatus(UpdateStatus status) {
+void UpdaterP3ATest::ExpectReportedStatus(UpdateStatus status) {
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName, status, 1);
   // Reset the histogram tester:
   histogram_tester_ = std::make_unique<base::HistogramTester>();
