@@ -11,12 +11,6 @@ using brave_component_updater::BraveComponent;
 
 namespace brave_component_updater {
 
-std::string LocalDataFilesService::g_local_data_files_component_id_(
-    kLocalDataFilesComponentId);
-std::string LocalDataFilesService::
-g_local_data_files_component_base64_public_key_(
-    kLocalDataFilesComponentBase64PublicKey);
-
 LocalDataFilesService::LocalDataFilesService(BraveComponent::Delegate* delegate)
   : BraveComponent(delegate),
     initialized_(false) {}
@@ -29,9 +23,8 @@ LocalDataFilesService::~LocalDataFilesService() {
 bool LocalDataFilesService::Start() {
   if (initialized_)
     return true;
-  Register(kLocalDataFilesComponentName,
-           g_local_data_files_component_id_,
-           g_local_data_files_component_base64_public_key_);
+  Register(kLocalDataFilesComponentName, kLocalDataFilesComponentId,
+           kLocalDataFilesComponentBase64PublicKey);
   initialized_ = true;
   return true;
 }
@@ -50,14 +43,6 @@ void LocalDataFilesService::AddObserver(LocalDataFilesObserver* observer) {
 
 void LocalDataFilesService::RemoveObserver(LocalDataFilesObserver* observer) {
   observers_.RemoveObserver(observer);
-}
-
-// static
-void LocalDataFilesService::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_local_data_files_component_id_ = component_id;
-  g_local_data_files_component_base64_public_key_ = component_base64_public_key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
