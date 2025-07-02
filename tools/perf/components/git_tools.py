@@ -71,6 +71,10 @@ def PushChangesToBranch(files: Dict[str, str],
       raise ValueError(
           "GitHub username or token not set in environment variables")
 
+    # Configure git to use HTTPS instead of SSH for this push
+    GetProcessOutput(['git', 'config', '--local', 'url."https://".insteadOf', 'git@'], cwd)
+    GetProcessOutput(['git', 'config', '--local', 'url."https://github.com/".insteadOf', 'git@github.com:'], cwd)
+
     # Construct the URL with authentication
     auth_url = f'https://{github_username}:{github_token}@github.com/brave/brave-core.git'
 
