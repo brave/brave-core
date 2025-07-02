@@ -47,6 +47,7 @@
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
+#include "services/device/public/cpp/device_features.h"
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -1020,6 +1021,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "geoclue-location-backend",                                          \
+          "Use the GeoClue2 Location Provider",                                \
+          "Attempt to get the location from the GeoClue2 service",             \
+          kOsLinux,                                                            \
+          FEATURE_VALUE_TYPE(features::kLinuxGeoClueLocationBackend),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
