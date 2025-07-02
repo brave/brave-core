@@ -25,20 +25,6 @@ describe('attachment item', () => {
     expect(document.querySelector('leo-button')).not.toBeInTheDocument()
   })
 
-  it('has a tooltip around the title', () => {
-    const { container } = render(
-      <AttachmentItem
-        title='Title'
-        subtitle='Subtitle'
-        icon={<img src='https://example.com/image.jpg' />}
-      />
-    )
-
-    const tooltip = container.querySelector('leo-tooltip [slot="content"]')
-    expect(tooltip).toBeTruthy()
-    expect(tooltip?.textContent).toBe('Title')
-  })
-
   it('does not render subtitle if it is not provided', () => {
     const { container } = render(
       <AttachmentItem

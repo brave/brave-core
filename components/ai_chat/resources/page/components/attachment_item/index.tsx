@@ -39,7 +39,6 @@ export function AttachmentItem(props: Props) {
           <div className={styles.forEllipsis}>
             <span className={styles.title}>{props.title}</span>
           </div>
-          <div className={styles.tooltipContent} slot="content">{props.title}</div>
           {props.subtitle && (
             <span
               data-key='subtitle'
@@ -127,13 +126,13 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
     </div>}
     title={props.title}
     subtitle={<>
-      {props.remove && <Tooltip mode='mini'>
+      {props.remove && <Tooltip mode='mini' mouseleaveTimeout={tooltipHideDelay} mouseenterDelay={tooltipShowDelay}>
         <Icon name='info-outline' />
         <div className={styles.tooltipContent} slot="content">
           {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
         </div>
       </Tooltip>}
-      <Tooltip mode='mini' className={styles.subtitleText}>
+      <Tooltip mode='mini' mouseleaveTimeout={tooltipHideDelay} mouseenterDelay={tooltipShowDelay} className={styles.subtitleText}>
         <div>{sansSchemeUrl}</div>
         <div className={styles.tooltipContent} slot="content">{props.url}</div>
       </Tooltip>
