@@ -6,12 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMPOUND_TAB_CONTAINER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMPOUND_TAB_CONTAINER_H_
 
+// Moved to public to call from PinnedTabContainerController.
 #define NumPinnedTabs                     \
   NumPinnedTabs_Unused() {                \
     return {};                            \
   }                                       \
   friend class BraveCompoundTabContainer; \
-  int NumPinnedTabs
+                                          \
+ public:                                  \
+  int NumPinnedTabs() const;              \
+                                          \
+ private:                                 \
+  int Unused
+
 #define TransferTabBetweenContainers virtual TransferTabBetweenContainers
 #define GetUnpinnedContainerIdealLeadingX \
   virtual GetUnpinnedContainerIdealLeadingX

@@ -357,6 +357,10 @@ class SplitViewWithTabDialogBrowserTest
 
   bool IsSideBySideEnabled() const { return GetParam(); }
 
+  bool IsSplitTabAt(int index) {
+    return IsSplitWebContents(GetWebContentsAt(index));
+  }
+
   bool IsSplitWebContents(content::WebContents* web_contents) {
     auto tab_handle =
         tabs::TabInterface::GetFromContents(web_contents)->GetHandle();
@@ -394,6 +398,10 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   EXPECT_EQ(3, tab_strip_model->active_index());
   NewSplitTab();
   EXPECT_EQ(4, tab_strip_model->active_index());
+  EXPECT_TRUE(IsSplitTabAt(4));
+
+  // Pin active tab(split tab at 4).
+  chrome::PinTab(browser());
 }
 
 IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
