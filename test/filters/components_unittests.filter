@@ -8,6 +8,9 @@
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
 
+# This test fails because we use a different sync server endpoint.
+-HistoryNoticeUtilsTest.WebHistoryStates
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
