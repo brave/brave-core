@@ -367,6 +367,10 @@ if (enable_sparkle) {
 }
 
 if (enable_omaha4) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/brave_browser_main_extra_parts_p3a.cc",
+    "//brave/browser/brave_browser_main_extra_parts_p3a.h",
+  ]
   brave_chrome_browser_deps += [
     "//brave/browser/updater:features",
     "//brave/browser/updater:p3a",
