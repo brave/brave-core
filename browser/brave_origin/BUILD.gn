@@ -1,0 +1,27 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_profile_prefs.cc",
+    "brave_origin_profile_prefs.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common:common",
+    "//brave/components/brave_news/common:common",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_rewards/core:core",
+    "//brave/components/brave_vpn/common:common",
+    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/sidebar/browser:browser",
+    "//brave/components/tor:pref_names",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs:prefs",
+  ]
+}
