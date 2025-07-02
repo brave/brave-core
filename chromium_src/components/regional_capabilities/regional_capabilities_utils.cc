@@ -9,6 +9,7 @@
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/prefs/pref_service.h"
@@ -191,11 +192,10 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
     base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>
         engine_ids) {
   std::vector<const PrepopulatedEngine*> engines;
-  const auto& brave_engines_map =
-      TemplateURLPrepopulateData::GetBraveEnginesMap();
   for (TemplateURLPrepopulateData::BravePrepopulatedEngineID engine_id :
        engine_ids) {
-    const PrepopulatedEngine* engine = brave_engines_map.at(engine_id);
+    const PrepopulatedEngine* engine = base::FindPtrOrNull(
+        TemplateURLPrepopulateData::kBraveEngines, engine_id);
     CHECK(engine);
     engines.push_back(engine);
   }

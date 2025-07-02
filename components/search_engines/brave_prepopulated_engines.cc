@@ -58,26 +58,6 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(
           /*regulatory_extensions=*/{}};
 }
 
-// Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
-// LINT.IfChange
-const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
-    brave_engines_map = {
-        {PREPOPULATED_ENGINE_ID_GOOGLE, &brave_google},
-        {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
-        {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
-        {PREPOPULATED_ENGINE_ID_NAVER, &naver},
-        {PREPOPULATED_ENGINE_ID_DAUM, &daum},
-        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO, &duckduckgo},
-        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, &duckduckgo_de},
-        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
-        {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
-        {PREPOPULATED_ENGINE_ID_STARTPAGE, &brave_startpage},
-        {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
-        {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
-        {PREPOPULATED_ENGINE_ID_YAHOO_JP, &brave_yahoo_jp},
-};
-// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
-
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
                                       const char16_t* const name,
                                       const char16_t* const keyword,
@@ -312,10 +292,5 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
 const PrepopulatedEngine brave_google =
     ModifyEngineParams(google, nullptr, u":g", nullptr, nullptr, nullptr, 0);
 // LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
-
-const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
-GetBraveEnginesMap() {
-  return brave_engines_map;
-}
 
 }  // namespace TemplateURLPrepopulateData
