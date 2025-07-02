@@ -10,11 +10,13 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController.UndoActionData;
 
 import java.util.List;
 
 public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarController {
-    public void showUndoBar(List<Tab> closedTabs, boolean isAllTabs) {
+    public void showUndoBar(
+            List<Tab> closedTabs, List<String> savedTabGroupSyncIds, boolean isAllTabs) {
         boolean showUndoBar =
                 ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true);
@@ -22,8 +24,8 @@ public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarContr
             if (closedTabs.isEmpty()) {
                 return;
             }
-            Object actionData = closedTabs.size() == 1 ? closedTabs.get(0).getId() : closedTabs;
-            onDismissNoAction(actionData);
+            UndoActionData undoActionData = new UndoActionData(closedTabs, savedTabGroupSyncIds);
+            onDismissNoAction(undoActionData);
             return;
         }
 
@@ -33,6 +35,8 @@ public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarContr
                 "showUndoBar",
                 List.class,
                 closedTabs,
+                List.class,
+                savedTabGroupSyncIds,
                 boolean.class,
                 isAllTabs);
     }
