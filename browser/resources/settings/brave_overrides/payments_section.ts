@@ -10,7 +10,8 @@ RegisterPolymerTemplateModifications({
     const manageLink = templateContent.querySelector('#manageLink')
     if (!manageLink) {
       console.error('[Brave Settings Overrides] Could not find manage payments link')
+    } else {
+      manageLink.setAttribute('hidden', 'true')
     }
-    manageLink.remove()
   }
 })
