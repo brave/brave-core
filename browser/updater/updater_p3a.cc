@@ -38,7 +38,7 @@ void ReportLaunch(base::Time now,
                   std::string current_version,
                   bool is_using_omaha4,
                   PrefService* prefs) {
-  DCHECK(prefs);
+  CHECK(prefs);
   std::string last_launch_version = prefs->GetString(kLastLaunchVersionPref);
   prefs->SetString(kLastLaunchVersionPref, current_version);
 
