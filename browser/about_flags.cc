@@ -973,6 +973,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
       },                                                                       \
       {                                                                        \
+          "brave-clean-link-js-api",                                           \
+          "Sanitize URLs in the clipboard",                                    \
+          "Sanitize URLs in the clipboard when they are added via the JS API " \
+          "(share/copy buttons). ",                                            \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkFromJs),             \
+      },                                                                       \
+      {                                                                        \
           "brave-global-privacy-control-enabled",                              \
           "Enable Global Privacy Control",                                     \
           "Enable the Sec-GPC request header and the "                         \
