@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "السجل";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "الحذف من السجل";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "مسح السجل";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "مسح سجل التصفح";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "لا توجد نتائج بحث";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "سيظهر السجل هنا.";
+"history.historyEmptyStateSubtitle" = "يظهر سجل التصفح الخاص بك هنا";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "لا يتوفر السجل في وضع التصفح الخاص فقط.";
+"history.historyEmptyStateTitle" = "لا يوجد سجل";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "السجل غير متاح في وضع التصفح الخاص";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "علامات التبويب المغلقة مؤخرًا";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "سجل البحث";

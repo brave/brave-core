@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Verlauf";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "Aus dem Verlauf löschen";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "Verlauf löschen";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "Browserverlauf löschen";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "Keine Suchergebnisse";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "Hier wird der Verlauf angezeigt.";
+"history.historyEmptyStateSubtitle" = "Dein Browserverlauf wird hier angezeigt";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "Beim privaten Browsen ist kein Verlauf verfügbar.";
+"history.historyEmptyStateTitle" = "Kein Verlauf";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "Der Verlauf ist im Modus \"Nur privates Surfen\" nicht verfügbar";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "Kürzlich geschlossene Tabs";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "Suchverlauf";

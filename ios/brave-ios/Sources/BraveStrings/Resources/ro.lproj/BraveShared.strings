@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Istoric";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "Șterge din Istoric";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "Șterge istoricul";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "Șterge istoricul de navigare";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "Niciun rezultat de căutare";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "Istoricul va apărea aici.";
+"history.historyEmptyStateSubtitle" = "Istoricul de navigare apare aici";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "Istoricul nu este disponibil în modul de navigare privată exclusivă.";
+"history.historyEmptyStateTitle" = "Fără istoric";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "Istoricul nu este disponibil în modul de navigare privată exclusivă";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "File închise recent";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "Istoric căutare";

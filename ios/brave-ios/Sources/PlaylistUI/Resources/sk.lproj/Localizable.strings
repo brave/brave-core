@@ -31,6 +31,9 @@
 /* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
 "playlist.accessibilityPlaybackSpeed" = "Rýchlosť prehrávania";
 
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Predchádzajúca položka";
+
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
 "playlist.accessibilityRepeatModeAll" = "Režim opakovania: Všetko";
 

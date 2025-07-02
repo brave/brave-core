@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "레오를 주소창에서 실행하려면 바로가기를 켜 표시하세요.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "주소창에 표시";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "기본 모델";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "일반 목적의 비전";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 고급 작업을 처리하기 위해 미스트랄 AI에서 개발한 미스트랄 8x7B 모델을 기반으로 구동됩니다. 미스트랄은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "진보된 채팅 작업";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원 14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo 비활성화됨";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "현재 비공개 브라우징 모드에서는 레오를 사용할 수 없습니다. 레오를 사용하려면 비공개 브라우징 모드를 종료하고 다시 시도하세요.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "레오를 사용할 수 없음";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "이미지 업로드";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "이해했습니다";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave 레오는 웹 사용성을 강화해주는 프라이빗한 AI 스마트 어시스턴트입니다. 레오는 무료로 무제한 사용할 수 있습니다. Brave 레오 프리미엄은 더 많은 모델, 더 높은 이용 한도, 새 기능 우선 사용 등의 혜택이 있습니다. 모든 사용자를 위한 기본 모델은 현재 Mixtral 8x7B입니다. 자세한 내용은 Brave **[도움말 센터](%1$@)**를 참조하세요.\n\n레오에게 질문을 하면, 지금 떠 있는 웹페이지나 페이지상에서 강조 표시한 텍스트가 전송되어 Brave 레오가 답변을 제공하는 데 활용됩니다. 경우에 따라 레오는 사용자의 입력에서 파생된 검색어를 Brave Search에 보내 검색결과를 사용하여 질문에 대한 답변의 수준을 높입니다. 응답의 정확성은 보장되지 않으며 부정확하거나 오인의 여지가 있거나 허위인 정보를 포함할 수 있습니다. 민감하거나 사적인 정보는 제출하지 마시고, 건강, 금융, 개인 안정 등과 관련된 답변은 주의하여 활용하세요. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 > 레오로 이동하세요.\n\n레오는 개인을 특정할 수 있는 IP 주소 등 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델 훈련에 사용되지 않고 어떠한 개인 데이터도 AI 모델이 보유하지 않습니다(Anthropic의 경우 예외적으로 30일간 데이터를 보유한 후 삭제). 자세한 정보는 **[개인정보 보호정책](%2$@)**을 확인하세요.";
+"aichat.termsConditionsDescription" = "Brave 레오는 웹 사용성을 강화해 주는 프라이빗한 AI 스마트 어시스턴트입니다. 레오는 제한된 기능으로 무료 이용이 가능하며, Brave 레오 프리미엄은 더 많은 모델과 높은 사용 한도를 제공하며, 구독자가 신기능을 먼저 이용해 볼 수 있습니다. 자세한 내용은 Brave **[도움말 센터](%1$@)**를 참조하세요.\n\n기본적으로, 레오에게 질문을 하면 현재 보고 있는 웹페이지나 페이지상에서 강조 표시한 텍스트를 Brave 레오에 전송하여 답변을 제공하는 데 사용할 수 있습니다. 경우에 따라 레오는 사용자의 입력에서 파생된 쿼리를 Brave 검색에 보내 검색 결과를 바탕으로 더 나은 답변을 제공하기도 합니다. 응답의 정확성은 보장되지 않으며, 부정확하거나 오인의 여지가 있거나 잘못된 정보를 포함할 수 있습니다. 민감하거나 사적인 정보는 제출하지 말고, 건강, 금융, 개인 안정 등과 관련된 답변은 주의하여 활용하세요. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 > 레오로 이동하세요.\n\n레오는 개인을 특정할 수 있는 IP 주소 등 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델 훈련에 사용되지 않고, 어떠한 개인 데이터도 AI 모델에서 보유하지 않습니다(Anthropic의 경우 예외적으로 30일간 데이터를 보유한 후 삭제). 자세한 정보는 **[개인정보 보호정책](%2$@)**을 확인하세요.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave 레오와 사적인 채팅하기";

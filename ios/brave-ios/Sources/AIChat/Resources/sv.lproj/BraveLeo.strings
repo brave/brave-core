@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Aktivera för att visa en genväg för att starta Leo från adressfältet.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Visa i adressfältet";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Standardmodell";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Visionen för det allmänna ändamålet";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Mixtral 8x7B, en modell skapad av Mistral AI för att hantera avancerade uppgifter. Mixtral arrangeras av Brave genom vår egna säkra infrastruktur.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Avancerade chattuppgifter";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen 14B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen arrangeras av Brave genom vår egna säkra infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo funktionshindrad";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo är för närvarande inte tillgänglig i Privat surfningsläge. För att använda Leo, avsluta Privat surfningsläge och försök igen.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo är inte tillgänglig";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Ladda upp bild";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Jag förstår";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo är en privat, smart AI-assistent som förbättrar din användning av webben. Leo är gratis att använda med begränsad åtkomst. Brave Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidigare tillgång till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se Brave **[Hjälpcenter](%1$@)** för mer information.\n\nSom standard kan Leo, när du ställer en fråga till Leo, skicka och använda innehåll på den webbsida du tittar på eller text som du markerar på en sida till Brave Leo för att ge ett svar. I vissa fall kommer Leo att skicka frågor som härrör från din inmatning i Brave Sök och använda resultaten från sök för att bättre besvara din fråga. Svarens riktighet garanteras inte och de kan innehålla felaktig, vilseledande eller falsk information. Skicka inte känslig information eller privat information och var försiktig med svar som rör hälsa, ekonomi, personlig säkerhet eller liknande. Du kan justera Leos alternativ i Inställningar när som helst. Gå till Inställningar > Leo.\n\nLeo samlar inte in identifierare såsom din IP-adress som kan kopplas till dig. Ingen data används för att träna AI-modellerna och ingen personlig data sparas av AI-modellerna (med undantag för Anthropic som sparar data i 30 dagar innan den raderas). Se **[integritetspolicyn](%2$@)** för mer information.";
+"aichat.termsConditionsDescription" = "Brave Leo är en privat, smart AI-assistent som förbättrar din användning av webben. Leo kan användas gratis med begränsad åtkomst. Brave Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidigare tillgång till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se Brave **[Hjälpcenter](%1$@)** för mer information.\n\nNär du ställer en fråga kan Leo som standard skicka och använda innehåll på den webbsida du tittar på, eller text som du markerar på en sida, till Brave Leo för att ge ett svar. I vissa fall kommer Leo att skicka frågor som härrör från din inmatning i Brave Sök och använda resultaten från sök för att bättre besvara din fråga. Svarens riktighet garanteras inte och de kan innehålla felaktig, vilseledande eller falsk information. Skicka inte känslig information eller privat information och var försiktig med svar som rör hälsa, ekonomi, personlig säkerhet eller liknande. Du kan justera Leos alternativ i Inställningar när som helst. Gå till Inställningar > Leo.\n\nLeo samlar inte in identifierare såsom din IP-adress som kan kopplas till dig. Ingen data används för att träna AI-modellerna och ingen personlig data sparas av AI-modellerna (med undantag för Anthropic som sparar data i 30 dagar innan den raderas). Se **[integritetspolicyn](%2$@)** för mer information.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatta privat med Brave Leo";
