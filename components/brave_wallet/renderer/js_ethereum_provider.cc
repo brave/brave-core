@@ -506,6 +506,11 @@ void JSEthereumProvider::SendAsync(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
 
+  if (!input_value) {
+    args->ThrowError();
+    return;
+  }
+
   ethereum_provider_->SendAsync(
       std::move(*input_value),
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
@@ -526,6 +531,10 @@ v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
   std::unique_ptr<base::Value> input_value =
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
+
+  if (!input_value) {
+    return v8::Local<v8::Promise>();
+  }
 
   if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
@@ -555,17 +564,13 @@ void JSEthereumProvider::OnRequestOrSendAsync(
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    base::Value id,
-    base::Value formed_response,
-    const bool reject,
-    const std::string& first_allowed_account,
-    const bool update_bind_js_properties) {
-  if (update_bind_js_properties) {
-    first_allowed_account_ = first_allowed_account;
+    mojom::EthereumProviderResponsePtr response) {
+  if (response->update_bind_js_properties) {
+    first_allowed_account_ = response->first_allowed_account;
   }
-  SendResponse(std::move(id), std::move(global_context),
+  SendResponse(std::move(response->id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               std::move(formed_response), !reject);
+               std::move(response->formed_response), !response->reject);
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {

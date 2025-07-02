@@ -416,8 +416,8 @@ void JsonRpcService::OnRequestResult(RequestCallback callback,
   base::Value formed_response = GetProviderRequestReturnFromEthJsonResponse(
       api_request_result.response_code(), api_request_result.value_body(),
       &reject);
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), reject, "", false));
 }
 
 void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
@@ -2538,14 +2538,15 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   bool reject = false;
   if (approved) {
     reject = false;
-    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(), reject, "", false));
   } else {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
   }
 }
 
@@ -2560,15 +2561,16 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
         l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
                                   base::ASCIIToUTF16(chain_id)));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return false;
   }
 
   // Already on the chain
   if (GetChainIdSync(mojom::CoinType::ETH, origin) == chain_id) {
     reject = false;
-    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(), reject, "", false));
     return false;
   }
 
@@ -2578,8 +2580,8 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return false;
   }
 
@@ -2819,8 +2821,8 @@ void JsonRpcService::Reset() {
     auto callback = std::move(pending_request.second.switch_chain_callback);
     base::Value id = std::move(pending_request.second.switch_chain_id);
 
-    std::move(callback).Run(std::move(id), formed_response.Clone(), reject, "",
-                            false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), formed_response.Clone(), reject, "", false));
   }
   pending_switch_chain_requests_.clear();
 }

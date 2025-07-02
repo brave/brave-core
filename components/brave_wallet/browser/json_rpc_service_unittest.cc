@@ -181,17 +181,14 @@ void UpdateCustomNetworks(PrefService* prefs,
 void OnRequestResponse(bool* callback_called,
                        bool expected_success,
                        const std::string& expected_response,
-                       base::Value id,
-                       base::Value formed_response,
-                       const bool reject,
-                       const std::string& first_allowed_account,
-                       const bool update_bind_js_properties) {
+                       mojom::EthereumProviderResponsePtr provider_response) {
   *callback_called = true;
   std::string response;
-  base::JSONWriter::Write(formed_response, &response);
+  base::JSONWriter::Write(provider_response->formed_response, &response);
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
+  GetErrorCodeMessage(std::move(provider_response->formed_response), &error,
+                      &error_message);
   bool success = error == brave_wallet::mojom::ProviderError::kSuccess;
   EXPECT_EQ(expected_success, success);
   if (!success) {

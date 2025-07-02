@@ -54,8 +54,8 @@ void RejectInvalidParams(base::Value id,
   base::Value formed_response = GetProviderErrorDictionary(
       mojom::ProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-  std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), true, "", false));
 }
 
 void RejectAccountNotAuthed(base::Value id,
@@ -63,8 +63,8 @@ void RejectAccountNotAuthed(base::Value id,
   base::Value formed_response = GetProviderErrorDictionary(
       mojom::ProviderError::kUnauthorized,
       l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), true, "", false));
 }
 
 void RejectMismatchError(base::Value id,
@@ -72,8 +72,8 @@ void RejectMismatchError(base::Value id,
                          mojom::EthereumProvider::RequestCallback callback) {
   base::Value formed_response =
       GetProviderErrorDictionary(mojom::ProviderError::kInternalError, err_msg);
-  std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), true, "", false));
 }
 
 bool IsTypedDataStructure(const base::Value::List& params_list) {
@@ -201,7 +201,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
     }
 
     reject = false;
-    std::move(callback).Run(std::move(id), base::Value(), reject, "", true);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(), reject, "", true));
     return;
   }
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
@@ -216,8 +217,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", true);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", true));
     return;
   }
   if (!delegate_) {
@@ -225,8 +226,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
         mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", true);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", true));
     return;
   }
   auto error_message = json_rpc_service_->AddEthereumChainForOrigin(
@@ -236,8 +237,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest, error_message);
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", true);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", true));
     return;
   }
 
@@ -272,8 +273,8 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     std::string message = "Internal JSON-RPC error";
     base::Value formed_response = GetProviderErrorDictionary(code, message);
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
 
@@ -285,8 +286,8 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     std::string message = "Internal JSON-RPC error";
     base::Value formed_response = GetProviderErrorDictionary(code, message);
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
   tx_data_1559->base_data->sign_only = sign_only;
@@ -350,8 +351,8 @@ void EthereumProviderImpl::OnAddUnapprovedTransaction(
     base::Value formed_response =
         GetProviderErrorDictionary(error, error_message);
     bool reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
   }
 }
 
@@ -487,15 +488,15 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
         mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
 
   reject = false;
-  std::move(callback).Run(std::move(id),
-                          base::Value(std::move(address).value()), reject, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), base::Value(std::move(address).value()), reject, "",
+      false));
 }
 
 void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
@@ -518,8 +519,8 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
       eth_block_tracker_.Start(
           chain_id, base::Seconds(kBlockTrackerDefaultTimeInSeconds));
     }
-    std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
-                            false, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(std::get<1>(gen_res)), false, "", false));
   } else if (event_type == kEthSubscribeLogs && filter) {
     const auto gen_res = generateHexBytes(eth_log_subscriptions_);
 
@@ -530,15 +531,15 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
 
     eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res), std::move(*filter));
 
-    std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
-                            false, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(std::get<1>(gen_res)), false, "", false));
   } else {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_UNSUPPORTED_SUBSCRIPTION_TYPE));
     bool reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
 }
@@ -549,7 +550,8 @@ void EthereumProviderImpl::EthUnsubscribe(const std::string& subscription_id,
   bool found = UnsubscribeBlockObserver(subscription_id) ||
                UnsubscribeLogObserver(subscription_id);
 
-  std::move(callback).Run(std::move(id), base::Value(found), false, "", false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), base::Value(found), false, "", false));
 }
 
 bool EthereumProviderImpl::UnsubscribeBlockObserver(
@@ -730,8 +732,8 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError, *error);
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
   if (!approved) {
@@ -739,8 +741,8 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return;
   }
 
@@ -766,8 +768,8 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     }
   }
 
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), reject, "", false));
 }
 
 bool EthereumProviderImpl::CheckAccountAllowed(
@@ -805,8 +807,9 @@ void EthereumProviderImpl::OnAddEthereumChainRequestCompleted(
   base::Value formed_response = GetProviderErrorDictionary(
       mojom::ProviderError::kUserRejectedRequest, error);
   std::move(chain_callbacks_[chain_id_lower])
-      .Run(std::move(chain_ids_[chain_id_lower]), std::move(formed_response),
-           reject, "", false);
+      .Run(mojom::EthereumProviderResponse::New(
+          std::move(chain_ids_[chain_id_lower]), std::move(formed_response),
+          reject, "", false));
 
   chain_callbacks_.erase(chain_id_lower);
   chain_ids_.erase(chain_id_lower);
@@ -830,8 +833,8 @@ void EthereumProviderImpl::SendErrorOnRequest(const mojom::ProviderError& error,
                                               base::Value id) {
   base::Value formed_response =
       GetProviderErrorDictionary(error, error_message);
-  std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), true, "", false));
 }
 
 void EthereumProviderImpl::CommonRequestOrSendAsync(
@@ -1200,8 +1203,9 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
   }
   bool reject = !success || accounts.empty();
 
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                          first_allowed_account, true);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), reject, first_allowed_account,
+      true));
 }
 
 std::optional<std::vector<std::string>>
@@ -1268,8 +1272,8 @@ void EthereumProviderImpl::GetAllowedAccountsInternal(
         PermissionRequestResponseToValue(delegate_->GetOrigin(), accounts));
     update_bindings = true;
   }
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
-                          update_bindings);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), reject, "", update_bindings));
 }
 
 void EthereumProviderImpl::UpdateKnownAccounts() {
@@ -1288,8 +1292,8 @@ void EthereumProviderImpl::UpdateKnownAccounts() {
 
 void EthereumProviderImpl::Web3ClientVersion(RequestCallback callback,
                                              base::Value id) {
-  std::move(callback).Run(std::move(id), base::Value(GetWeb3ClientVersion()),
-                          false, "", false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), base::Value(GetWeb3ClientVersion()), false, "", false));
 }
 
 void EthereumProviderImpl::GetChainId(GetChainIdCallback callback) {
@@ -1408,8 +1412,9 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
     reject = true;
   }
   std::move(add_tx_callbacks_[tx_meta_id])
-      .Run(std::move(add_tx_ids_[tx_meta_id]), std::move(formed_response),
-           reject, "", false);
+      .Run(mojom::EthereumProviderResponse::New(
+          std::move(add_tx_ids_[tx_meta_id]), std::move(formed_response),
+          reject, "", false));
   add_tx_callbacks_.erase(tx_meta_id);
   add_tx_ids_.erase(tx_meta_id);
 }
@@ -1474,8 +1479,9 @@ void EthereumProviderImpl::OnSendRawTransaction(
   } else {
     formed_response = base::Value(tx_hash);
   }
-  std::move(callback).Run(std::move(id), std::move(formed_response),
-                          error != mojom::ProviderError::kSuccess, "", false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response),
+      error != mojom::ProviderError::kSuccess, "", false));
 }
 
 // EthBlockTracker::Observer:
@@ -1521,22 +1527,19 @@ void EthereumProviderImpl::OnLogsReceived(const std::string& subscription,
   }
 }
 
-void EthereumProviderImpl::OnResponse(bool format_json_rpc_response,
-                                      RequestCallback callback,
-                                      base::Value id,
-                                      base::Value formed_response,
-                                      const bool reject,
-                                      const std::string& first_allowed_account,
-                                      const bool update_bind_js_properties) {
+void EthereumProviderImpl::OnResponse(
+    bool format_json_rpc_response,
+    RequestCallback callback,
+    mojom::EthereumProviderResponsePtr response) {
   if (format_json_rpc_response) {
-    auto json_rpc_formed_response =
-        ToProviderResponse(id.Clone(), reject ? nullptr : &formed_response,
-                           reject ? &formed_response : nullptr);
-    formed_response = std::move(json_rpc_formed_response);
+    auto json_rpc_formed_response = ToProviderResponse(
+        response->id.Clone(),
+        response->reject ? nullptr : &response->formed_response,
+        response->reject ? &response->formed_response : nullptr);
+    response->formed_response = std::move(json_rpc_formed_response);
   }
 
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                          first_allowed_account, update_bind_js_properties);
+  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace brave_wallet
