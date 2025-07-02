@@ -73,7 +73,7 @@
     *** mToolbarSupplier;
     *** mBottomSheetController;
     *** mTabStripHeightSupplier;
-    *** updateSearchProviderHasLogo(...);
+    *** updateSearchProvider(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
