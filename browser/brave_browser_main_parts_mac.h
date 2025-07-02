@@ -17,7 +17,6 @@ class BraveBrowserMainPartsMac : public ChromeBrowserMainPartsMac {
   // ChromeBrowserMainPartsMac overrides:
   void PreCreateMainMessageLoop() override;
   void PostProfileInit(Profile* profile, bool is_initial_profile) override;
-  void PostBrowserStart() override;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_MAC_H_
