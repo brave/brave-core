@@ -5,21 +5,21 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "base/task/task_traits.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
+#include "brave/browser/updater/updater_p3a.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/common/chrome_constants.h"
+#include "content/public/browser/browser_thread.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)
-#include "base/task/task_traits.h"
 #include "brave/browser/updater/features.h"
-#include "brave/browser/updater/updater_p3a.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/common/chrome_constants.h"
-#include "content/public/browser/browser_thread.h"
 #endif
 
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
