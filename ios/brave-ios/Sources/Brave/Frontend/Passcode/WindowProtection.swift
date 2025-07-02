@@ -168,17 +168,14 @@ public class WindowProtection {
       .store(in: &cancellables)
 
     NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-      .merge(
-        with: NotificationCenter.default.publisher(
-          for: UIApplication.didFinishLaunchingNotification
-        )
-      )
       .sink(receiveValue: { [weak self] _ in
         guard let self = self else { return }
         self.context = LAContext()  // Reset context for new session
         self.updateVisibleStatusForForeground(viewType: .external)
       })
       .store(in: &cancellables)
+
+    updateVisibleStatusForForeground(viewType: .external)
   }
 
   @available(*, unavailable)
