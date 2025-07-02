@@ -659,7 +659,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
-                        "updateSearchProviderHasLogo",
+                        "updateSearchProvider",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
