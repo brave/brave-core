@@ -5,14 +5,11 @@
     height: 68px;
   }
 </style>
-<template
-  is="dom-if"
-  if="[[braveOriginEnabled_]]"
->
+<template is="dom-if" if="[[braveOriginEnabled_]]" restamp>
   <div class="cr-row title">$i18n{braveOriginTitle}</div>
   <settings-origin-page prefs="{{prefs}}">
     <settings-toggle-button id="toggleNtpAdsButton"
-        pref="[[toggleNtpAds_]]"
+        pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
         label="$i18n{braveOriginNtpAdsToggleTitle}">
     </settings-toggle-button>
 

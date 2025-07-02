@@ -38,9 +38,17 @@ export class SettingsBraveOriginPageElement
     return getTemplate()
   }
 
+  static get properties() {
+    return {
+      braveOriginEnabled_: {
+        type: Boolean,
+        value: false,
+      }
+    }
+  }
+
   // private toggleWireguardSubLabel_: String;
-  private braveOriginEnabled_: Boolean = false;
-  private toggleNtpAds_: Boolean = false;
+  private declare braveOriginEnabled_: boolean
   private toggleEmailAlias_: Boolean = false;
   private toggleLeoAi_: Boolean = false;
 
@@ -54,7 +62,6 @@ export class SettingsBraveOriginPageElement
 
   private onGetInitialState(initial_state: any) {
     this.braveOriginEnabled_ = initial_state.enabled;
-    this.toggleNtpAds_ = initial_state.toggle_ntp_ads;
     this.toggleEmailAlias_ = initial_state.toggle_email_alias;
     this.toggleLeoAi_ = initial_state.toggle_leo_ai;
   }
