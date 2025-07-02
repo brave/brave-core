@@ -7,6 +7,7 @@ include_rules = [
   "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
+  "+components/pref_registry",
   "+components/prefs",
   "+components/security_interstitials",
   "+components/user_prefs",

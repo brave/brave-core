@@ -1,6 +1,7 @@
 include_rules = [
   "+components/keyed_service",
   "+components/grit/brave_components_resources.h",
+  "+components/page_load_metrics",
   "+components/prefs",
   "+components/user_prefs",
   "+content/public/browser",

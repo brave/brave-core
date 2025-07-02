@@ -5,4 +5,5 @@
 
 include_rules = [
   "+components/affiliations",
+  "+components/password_manager",
 ]
