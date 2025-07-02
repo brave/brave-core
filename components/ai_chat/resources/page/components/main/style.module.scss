@@ -73,6 +73,11 @@
   position: sticky;
   top: 0;
 
+  grid-column: 2;
+  grid-row: 1 / 3;
+
+  max-height: min(90vh, 720px);
+
   overflow: hidden;
 }
 
