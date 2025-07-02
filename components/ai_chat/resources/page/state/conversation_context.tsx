@@ -89,7 +89,7 @@ export const defaultCharCountContext: CharCountContext = {
   inputTextCharCountDisplay: ''
 }
 
-const defaultContext: ConversationContext = {
+export const defaultContext: ConversationContext = {
   historyInitialized: false,
   conversationHistory: [],
   allModels: [],

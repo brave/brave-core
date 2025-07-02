@@ -396,6 +396,12 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE" desc="Title for the browser tabs section" formatter_data="webui=AiChat">
     Browser tabs
   </message>
+  <message name="IDS_CHAT_UI_TABS_MENU_TITLE" desc="Title for the tabs menu" formatter_data="webui=AiChat">
+    Add tab contents for context. The contents will be sent to Leo along with your messages.
+  </message>
+  <message name="IDS_CHAT_UI_TABS_MENU_NO_MATCHING_TABS" desc="A message shown when no tabs match the filter" formatter_data="webui=AiChat">
+    No matching tabs
+  </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history" formatter_data="webui=AiChat">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>
