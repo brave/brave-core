@@ -4,7 +4,7 @@
     border-radius: var(--leo-radius-l);
     box-shadow: var(--leo-effect-elevation-01);
 
-    max-height: 100%;
+    max-height: min(90vh, 720px);
 
     display: flex;
     flex-direction: column;
