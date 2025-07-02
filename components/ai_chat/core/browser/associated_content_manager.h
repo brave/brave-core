@@ -56,6 +56,11 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
+  // Removes the content delegate with the same uuid as |content| from the
+  // list of content delegates.
+  void RemoveContent(const mojom::AssociatedContentPtr& content,
+                     bool notify_updated = true);
+
   // Clears all content from the conversation.
   void ClearContent();
 

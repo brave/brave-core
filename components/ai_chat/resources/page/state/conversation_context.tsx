@@ -436,12 +436,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
-    const tab = aiChatContext.tabs.find(t => t.contentId === content.contentId)
-    if (!tab) {
-      console.error('Could not find tab for content', content)
-      return
-    }
-    aiChatContext.uiHandler?.disassociateTab(tab, context.conversationUuid!)
+    aiChatContext.uiHandler?.disassociateContent(content, context.conversationUuid!)
   }
 
   const associateDefaultContent = React.useMemo(() => {

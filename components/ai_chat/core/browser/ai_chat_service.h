@@ -148,7 +148,7 @@ class AIChatService : public KeyedService,
 
   void MaybeAssociateContent(AssociatedContentDelegate* content,
                              const std::string& conversation_uuid);
-  void DisassociateContent(AssociatedContentDelegate* content,
+  void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
