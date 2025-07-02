@@ -10,20 +10,33 @@ import {
 RegisterPolymerTemplateModifications({
   'settings-a11y-page': (templateContent) => {
 
-    // We remove all the templates related to captions - there are two modes
-    // depending on whether `captionSettingsOpensExternally_` is set. We remove
-    // both.
-    const captionsLinkTemplates = templateContent.
-      querySelectorAll('template[if*="captionSettingsOpensExternally_"]')
-    if (captionsLinkTemplates.length !== 3) {
+    // We remove/hide all elements related to captions.
+    // <if expr="is_macosx or is_win">
+    const enableLiveCaptionTemplate = templateContent.
+      querySelector('template[is=dom-if][if="[[enableLiveCaption_]]"]')
+    if (!enableLiveCaptionTemplate) {
       console.error(
-        `Expected 3 captionsLinkTemplates, got ${captionsLinkTemplates.length}`
-        + ' - this indicates something upstream has changed.'
-        + ' The override may need to be updated.')
+        `[Settings][a11y] Couldn't find enableLiveCaption_ template`)
+    } else {
+      enableLiveCaptionTemplate.remove()
     }
-    for (const link of captionsLinkTemplates) {
-      link.remove()
+    // </if>
+    const captions = templateContent.getElementById('captions')
+    if (!captions) {
+        console.error(`[Settings][a11y] Couldn't find #captions`)
+    } else {
+        captions.setAttribute('hidden', 'true')
     }
+    // <if expr="is_linux">
+    const captionsRoute = templateContent.
+      querySelector('template[is=dom-if][route-path="/captions"]')
+    if (!captionsRoute) {
+      console.error(
+        `[Settings][a11y] Couldn't find captionsRoute template`)
+    } else {
+      captionsRoute.remove()
+    }
+    // </if>
 
     // We hide the image labels toggle button as we don't support this service
     const imageLabelsToggle = templateContent.querySelector(
