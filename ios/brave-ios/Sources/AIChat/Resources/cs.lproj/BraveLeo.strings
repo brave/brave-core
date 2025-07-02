@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Zapnutím zobrazíte zkratku pro spuštění Lea z adresního řádku.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Zobrazit v adresním řádku";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Výchozí model";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Zvládá všeobecné vizuální úkoly";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Dobrý den, jsem Leo, asistent využívající umělou inteligencí plně hostovaný společností Brave. Využívám model Mixtral 8x7B, který vytvořila společnost Mistral AI, aby zvládal pokročilé úkoly. Model Mixtral je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Pokročilé úkoly chatu";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Dobrý den, jsem Leo, asistent využívající umělou inteligencí plně hostovaný společností Brave. Využívám model Qwen 14B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a dal se použít v řadě případů. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury. Zjistit více";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo není momentálně v režimu soukromého prohlížení k dispozici. Chcete-li Lea používat, ukončete prosím režim soukromého prohlížení a zkuste to znovu.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo není k dispozici";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Nahrát obrázek";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Rozumím";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo je soukromý asistent s umělou inteligencí, který vám usnadní používání internetu. Leo je k dispozici zdarma s omezeným přístupem. Brave Leo Premium nabízí více modelů, vyšší limity a poskytuje předplatitelům časný přístup k novým funkcím. Výchozím modelem pro všechny uživatele je v současné době Mixtral 8x7B. Další podrobnosti najdete v **[centru nápovědy](%1$@)** Brave.\n\nVe výchozím nastavení může Leo při pokládání otázky odeslat a použít obsah prohlížené webové stránky nebo jakýkoli text, který na stránce zvýrazníte, k poskytnutí odpovědi. V některých případech posílá Leo dotazy odvozené z vašeho zadání do vyhledávání Brave a výsledky vyhledávání používá, ale lépe odpověděl na vaši otázku. Přesnost odpovědí není zaručena a odpovědi mohou obsahovat nepřesné, zavádějící nebo nepravdivé informace. Neposílejte citlivé ani osobní údaje a buďte opatrní s odpověďmi týkajícími se zdraví, financí, osobní bezpečnosti apod. Možnosti asistenta Leo můžete kdykoli upravit v Nastavení. Přejděte do Nastavení > Leo.\n\nLeo neshromažďuje identifikátory, jako je vaše IP adresa, které by bylo možné s vámi spojit. K trénování modelů umělé inteligence se nepoužívají žádná vaše data a modely umělé inteligence neuchovávají žádné osobní údaje (s výjimkou modelu Anthropic, který uchovává údaje po dobu 30 dnů, než je vymaže). Další informace naleznete v **[zásadách ochrany osobních údajů](%2$@)**.";
+"aichat.termsConditionsDescription" = "Brave Leo je soukromý asistent s umělou inteligencí, který vám usnadní používání internetu. Leo je k dispozici zdarma s omezeným přístupem. Brave Leo Premium nabízí více modelů, vyšší limity a poskytuje předplatitelům časný přístup k novým funkcím. Další podrobnosti najdete v **[centru nápovědy](%1$@)** Brave.\n\nVe výchozím nastavení může Leo při pokládání otázky odeslat a použít obsah prohlížené webové stránky nebo jakýkoli text, který na stránce zvýrazníte, k poskytnutí odpovědi. V některých případech posílá Leo dotazy odvozené z vašeho zadání do vyhledávání Brave a výsledky vyhledávání používá, ale lépe odpověděl na vaši otázku. Přesnost odpovědí není zaručena a odpovědi mohou obsahovat nepřesné, zavádějící nebo nepravdivé informace. Neposílejte citlivé ani osobní údaje a buďte opatrní s odpověďmi týkajícími se zdraví, financí, osobní bezpečnosti apod. Možnosti asistenta Leo můžete kdykoli upravit v Nastavení. Přejděte do Nastavení > Leo.\n\nLeo neshromažďuje identifikátory, jako je vaše IP adresa, které by bylo možné s vámi spojit. K trénování modelů umělé inteligence se nepoužívají žádná vaše data a modely umělé inteligence neuchovávají žádné osobní údaje (s výjimkou modelu Anthropic, který uchovává údaje po dobu 30 dnů, než je vymaže). Další informace naleznete v **[zásadách ochrany osobních údajů](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatujte bez porušení soukromí s Brave Leo";
