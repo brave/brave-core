@@ -231,6 +231,9 @@
 -IsolatedWebAppURLLoaderFactoryForServiceWorkerTest.*
 -IsolatedWebAppURLLoaderFactoryTest.*
 
+# These tests fail because we disable Isolated Web Apps
+-IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
+
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
