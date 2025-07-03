@@ -3,11 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { Icon } from '../containers.mojom-webui.js'
 import { getCss } from './containers_icon.css.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { getHtml } from './containers_icon.html.js'
 
 export type IconSelectedEvent = CustomEvent<{
@@ -28,9 +27,7 @@ const iconsMap = new Map<Icon, string>([
   [Icon.kMessaging, 'container-messaging'],
 ]);
 
-const SettingsBraveContentContainersIconElementBase = I18nMixinLit(CrLitElement)
-
-export class SettingsBraveContentContainersIconElement extends SettingsBraveContentContainersIconElementBase {
+export class SettingsBraveContentContainersIconElement extends CrLitElement {
   static get is() {
     return 'settings-brave-content-containers-icon'
   }

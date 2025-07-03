@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { SkColor } from '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
 import { hexColorToSkColor } from '//resources/js/color_utils.js'
 
@@ -15,9 +14,7 @@ export type ColorSelectedEvent = CustomEvent<{
   color: SkColor
 }>
 
-const SettingsBraveContentContainersIconElementBase = I18nMixinLit(CrLitElement)
-
-export class SettingsBraveContentContainersBackgroundChipElement extends SettingsBraveContentContainersIconElementBase {
+export class SettingsBraveContentContainersBackgroundChipElement extends CrLitElement {
   static get is() {
     return 'settings-brave-content-containers-background-chip'
   }
