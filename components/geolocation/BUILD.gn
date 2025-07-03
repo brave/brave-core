@@ -6,8 +6,9 @@
 import("//build/buildflag_header.gni")
 
 declare_args() {
-  brave_google_api_key = ""
-  brave_google_api_endpoint = ""
+  brave_google_api_key = "AIzaSyAREPLACEWITHYOUROWNGOOGLEAPIKEY2Q"
+  brave_google_api_endpoint =
+      "https://www.googleapis.com/geolocation/v1/geolocate?key="
 }
 
 buildflag_header("geolocation") {

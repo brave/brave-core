@@ -1328,15 +1328,18 @@ const util = {
     const generatedArgsContent = [
       '# Do not edit, any changes will be lost on next build.',
       '# To customize build args, use args.gn in the same directory.\n',
-      ...Object.entries(buildArgs).map(([arg, val]) => {
-        assert(typeof arg === 'string')
-        assert(val !== undefined)
-        if (val === null) {
-          // Output only arg, it may be a comment or an import statement.
-          return arg
-        }
-        return `${arg}=${JSON.stringify(val)}`
-      }),
+      ...Object.entries(buildArgs)
+        // undefined values filtered out to allow gn to use default values in
+        // the absence of an .env key.
+        .filter(([_, val]) => val !== undefined)
+        .map(([arg, val]) => {
+          assert(typeof arg === 'string')
+          if (val === null) {
+            // Output only arg, it may be a comment or an import statement.
+            return arg
+          }
+          return `${arg}=${JSON.stringify(val)}`
+        }),
     ].join('\n')
 
     // Write the generated arguments to the args_generated.gni file. The file
