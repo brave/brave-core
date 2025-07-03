@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/web/webui/brave_url_data_source_ios.h"
+#include "brave/ios/web/webui/brave_url_data_source_ios.h"
 
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"

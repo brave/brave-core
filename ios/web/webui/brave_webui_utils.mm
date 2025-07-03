@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/web/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/brave_webui_utils.h"
 
 #include <string_view>
 #include <vector>
@@ -11,7 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/webui/webui_resources.h"
-#include "brave/ios/browser/web/webui/brave_web_ui_ios_data_source.h"
+#include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "build/build_config.h"
 #include "components/grit/components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
