@@ -16,7 +16,6 @@
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "net/test/spawned_test_server/spawned_test_server.h"
 
 class HostContentSettingsMap;
 
