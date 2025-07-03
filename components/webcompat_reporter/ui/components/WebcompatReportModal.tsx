@@ -58,6 +58,7 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
               isLocalPage={isLocalPage}
               onSubmitReport={onSubmitReport}
               onClose={onClose}
+              components={components}
             />
           )}
         </RectangularCard>

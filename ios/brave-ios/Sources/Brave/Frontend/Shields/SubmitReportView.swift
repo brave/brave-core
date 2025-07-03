@@ -160,6 +160,7 @@ struct SubmitReportView: View {
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
         braveVpnConnected: String(BraveVPN.isConnected),
+        category: "",
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,

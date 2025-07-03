@@ -914,6 +914,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.category = "";
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         return reportInfo;

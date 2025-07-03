@@ -87,6 +87,10 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
                             GURL(report_info->report_url.value()).spec());
   }
 
+  if (report_info->category) {
+    report_details_dict.Set(kCategoryField, report_info->category.value());
+  }
+
   if (report_info->details) {
     report_details_dict.Set(kDetailsField, report_info->details.value());
   }
