@@ -35,7 +35,8 @@
 
 namespace skus {
 
-gin::WrapperInfo SkusJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo SkusJSHandler::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
     : content::RenderFrameObserver(render_frame) {}
@@ -319,7 +320,8 @@ void SkusJSHandler::OnCredentialSummary(
 
 gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<SkusJSHandler>::GetObjectTemplateBuilder(
+             isolate)
       .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
       .SetMethod("fetch_order_credentials",
                  &SkusJSHandler::FetchOrderCredentials)
