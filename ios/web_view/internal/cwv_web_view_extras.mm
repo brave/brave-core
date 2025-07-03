@@ -143,4 +143,8 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   return self.webState->GetLastActiveTime().ToNSDate();
 }
 
+- (web::WebState*)internalWebState {
+  return self.webState->get();
+}
+
 @end
