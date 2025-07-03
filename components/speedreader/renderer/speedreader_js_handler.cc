@@ -28,7 +28,8 @@ constexpr const char kSpeedreader[] = "speedreader";
 
 namespace speedreader {
 
-gin::WrapperInfo SpeedreaderJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo SpeedreaderJSHandler::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 SpeedreaderJSHandler::SpeedreaderJSHandler(
     base::WeakPtr<SpeedreaderRenderFrameObserver> owner)
@@ -78,7 +79,8 @@ void SpeedreaderJSHandler::Install(
 
 gin::ObjectTemplateBuilder SpeedreaderJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::Wrappable<SpeedreaderJSHandler>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<
+             SpeedreaderJSHandler>::GetObjectTemplateBuilder(isolate)
       .SetMethod("showOriginalPage", &SpeedreaderJSHandler::ShowOriginalPage)
       .SetMethod("ttsPlayPause", &SpeedreaderJSHandler::TtsPlayPause);
 }

@@ -24,8 +24,9 @@ namespace brave_wallet {
 // https://cips.cardano.org/cip/CIP-30
 // This class implements API object which is available after
 // cardano.brave.enable() is called.
-class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
-                                 public content::RenderFrameObserver {
+class JSCardanoWalletApi final
+    : public gin::DeprecatedWrappable<JSCardanoWalletApi>,
+      public content::RenderFrameObserver {
  public:
   JSCardanoWalletApi(base::PassKey<class JSCardanoProvider> pass_key,
                      v8::Local<v8::Context> context,
@@ -35,7 +36,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
   JSCardanoWalletApi(const JSCardanoWalletApi&) = delete;
   JSCardanoWalletApi& operator=(const JSCardanoWalletApi&) = delete;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
