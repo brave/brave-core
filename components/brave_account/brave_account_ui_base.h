@@ -8,9 +8,11 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -39,6 +41,8 @@ class BraveAccountUIBase {
       base::OnceCallback<
           void(WebUIDataSource*, base::span<const webui::ResourcePath>, int)>
           setup_webui_data_source = base::DoNothing()) {
+    CHECK(brave_account::features::IsBraveAccountEnabled());
+
     auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
     std::move(setup_webui_data_source)
         .Run(source, kBraveAccountResources,

@@ -10,7 +10,7 @@
 
 namespace brave_account::features {
 
-BASE_DECLARE_FEATURE(kEnableBraveAccount);
+BASE_DECLARE_FEATURE(kBraveAccount);
 
 bool IsBraveAccountEnabled();
 

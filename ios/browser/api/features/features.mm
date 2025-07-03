@@ -273,9 +273,9 @@
       initWithFeature:&brave_shields::features::kCosmeticFilteringSyncLoad];
 }
 
-+ (Feature*)kEnableBraveAccount {
-  return [[Feature alloc]
-      initWithFeature:&brave_account::features::kEnableBraveAccount];
++ (Feature*)kBraveAccount {
+  return
+      [[Feature alloc] initWithFeature:&brave_account::features::kBraveAccount];
 }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
