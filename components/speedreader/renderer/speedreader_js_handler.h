@@ -14,9 +14,10 @@ namespace speedreader {
 
 class SpeedreaderRenderFrameObserver;
 
-class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
+class SpeedreaderJSHandler final
+    : public gin::DeprecatedWrappable<SpeedreaderJSHandler> {
  public:
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   SpeedreaderJSHandler(const SpeedreaderJSHandler&) = delete;
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
