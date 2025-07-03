@@ -130,7 +130,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest,
-       DoNotStartDataRequestIfContentIsOutsideOfSandbox3) {
+       DoNotStartDataRequestIfContentIsOutsideOfSandbox) {
   EXPECT_THAT(StartDataRequest(
                   GURL("chrome-untrusted://new-tab-takeover/restricted.jpg")),
               ::testing::IsEmpty());
@@ -211,6 +211,12 @@ TEST_F(NTPSponsoredRichMediaSourceTest, GetContentSecurityPolicy) {
 
       case network::mojom::CSPDirectiveName::StyleSrc: {
         EXPECT_EQ("style-src 'self';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
+        break;
+      }
+
+      case network::mojom::CSPDirectiveName::FontSrc: {
+        EXPECT_EQ("font-src 'self';",
                   url_data_source()->GetContentSecurityPolicy(directive));
         break;
       }
