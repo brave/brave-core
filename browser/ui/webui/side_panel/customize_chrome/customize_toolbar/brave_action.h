@@ -73,15 +73,11 @@ inline constexpr BraveAction kShowVPNAction = {
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
                            const BraveAction*>({
-        {side_panel::customize_chrome::mojom::ActionId::kShowSidePanel,
-         &kShowSidePanelAction},
-        {side_panel::customize_chrome::mojom::ActionId::kShowWallet,
-         &kShowWalletAction},
-        {side_panel::customize_chrome::mojom::ActionId::kShowAIChat,
-         &kShowAIChatAction},
+        {kShowSidePanelAction.id, &kShowSidePanelAction},
+        {kShowWalletAction.id, &kShowWalletAction},
+        {kShowAIChatAction.id, &kShowAIChatAction},
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-        {side_panel::customize_chrome::mojom::ActionId::kShowVPN,
-         &kShowVPNAction},
+        {kShowVPNAction.id, &kShowVPNAction},
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
     });
 
