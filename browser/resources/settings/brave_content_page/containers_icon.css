@@ -31,6 +31,6 @@
 
 /* Selected state border */
 .icon-container.selected {
-  outline: 2px solid var(--leo-color-primitive-primary-50, #5d69e9);
+  outline: 2px solid var(--leo-color-primary-50);
   outline-offset: 2px;
 }
