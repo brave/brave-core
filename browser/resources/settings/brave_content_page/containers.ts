@@ -15,7 +15,7 @@ import {
 } from '../containers.mojom-webui.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
-import backgroundColor from './background_colors.js'
+import backgroundColors from './background_colors.js'
 import type { IconSelectedEvent } from './containers_icon.js'
 import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
@@ -93,7 +93,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       id: '',
       name: '',
       icon: Icon.kPersonal,
-      backgroundColor: backgroundColor[0],
+      backgroundColor: backgroundColors[0],
     }
     this.editDialogError_ = undefined
   }
