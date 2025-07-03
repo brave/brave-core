@@ -30,15 +30,7 @@
 }
 
 /* Selected state border */
-.icon-container.selected::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(100% + 6px);
-  height: calc(100% + 6px);
-  box-sizing: border-box;
-  border: 2px solid var(--leo-color-primitive-primary-50, #5d69e9);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+.icon-container.selected {
+  outline: 2px solid var(--leo-color-primitive-primary-50, #5d69e9);
+  outline-offset: 2px;
 }
