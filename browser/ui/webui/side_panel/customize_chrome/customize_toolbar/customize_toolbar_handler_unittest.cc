@@ -81,11 +81,11 @@ class CustomizeToolbarHandlerUnitTest : public testing::Test {
 
 TEST_F(CustomizeToolbarHandlerUnitTest,
        OnBraveActionPinnedChanged_ShouldBeCalledWhenPrefsChanged) {
-  for (const auto& brave_action : kBraveActions) {
+  for (const auto& [id, brave_action] : kBraveActions) {
     const bool pinned =
-        GetTestingPrefService()->GetBoolean(brave_action.pref_name);
-    EXPECT_CALL(mock_page_, SetActionPinned(brave_action.id, !pinned));
-    GetTestingPrefService()->SetBoolean(brave_action.pref_name, !pinned);
+        GetTestingPrefService()->GetBoolean(brave_action->pref_name);
+    EXPECT_CALL(mock_page_, SetActionPinned(id, !pinned));
+    GetTestingPrefService()->SetBoolean(brave_action->pref_name, !pinned);
   }
 }
 

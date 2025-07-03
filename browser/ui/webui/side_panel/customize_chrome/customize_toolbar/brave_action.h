@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_BRAVE_ACTION_H_
 #define BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_BRAVE_ACTION_H_
 
+#include "base/containers/fixed_flat_map.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -69,14 +70,20 @@ inline constexpr BraveAction kShowVPNAction = {
     .icon = kLeoProductVpnIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-inline constexpr auto kBraveActions = std::to_array<BraveAction>({
-    kShowSidePanelAction,
-    kShowWalletAction,
-    kShowAIChatAction,
+inline constexpr auto kBraveActions =
+    base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
+                           const BraveAction*>({
+        {side_panel::customize_chrome::mojom::ActionId::kShowSidePanel,
+         &kShowSidePanelAction},
+        {side_panel::customize_chrome::mojom::ActionId::kShowWallet,
+         &kShowWalletAction},
+        {side_panel::customize_chrome::mojom::ActionId::kShowAIChat,
+         &kShowAIChatAction},
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    kShowVPNAction,
+        {side_panel::customize_chrome::mojom::ActionId::kShowVPN,
+         &kShowVPNAction},
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-});
+    });
 
 }  // namespace customize_chrome
 
