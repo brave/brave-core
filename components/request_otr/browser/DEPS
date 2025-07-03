@@ -3,6 +3,7 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
   "+components/prefs",
+  "+components/profile_metrics",
   "+components/security_interstitials",
   "+components/user_prefs",
   "+content/public/browser",

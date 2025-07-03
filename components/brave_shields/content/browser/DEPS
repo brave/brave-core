@@ -9,6 +9,7 @@ include_rules = [
   "+components/keyed_service",
   "+components/pref_registry",
   "+components/prefs",
+  "+components/proxy_config",
   "+components/security_interstitials",
   "+components/user_prefs",
   "+content/public/browser",
