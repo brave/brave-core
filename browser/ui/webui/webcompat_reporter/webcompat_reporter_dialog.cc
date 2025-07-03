@@ -125,7 +125,8 @@ void PrepareParamsAndShowDialog(content::WebContents* initiator,
                                 const int source,
                                 const bool is_error_page,
                                 const std::optional<std::string>& contact_info,
-                                const bool contact_info_save_flag) {
+                                const bool contact_info_save_flag,
+                                const std::vector<std::string>& components) {
   base::Value::Dict params_dict;
   params_dict.Set(kSiteURLField, report_url);
   params_dict.Set(kShieldsEnabledField, shields_enabled);
@@ -135,6 +136,12 @@ void PrepareParamsAndShowDialog(content::WebContents* initiator,
   params_dict.Set(kContactInfoSaveFlagField, contact_info_save_flag);
   params_dict.Set(kUISourceField, source);
   params_dict.Set(kIsErrorPage, static_cast<int>(is_error_page));
+
+  base::ListValue components_value;
+  for (std::string c : components) {
+    components_value.Append(base::Value(c));
+  }
+  params_dict.Set(kComponents, std::move(components_value));
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
@@ -175,7 +182,7 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   if (auto* webcompat_reporter_service =
           WebcompatReporterServiceFactory::GetServiceForContext(
               initiator->GetBrowserContext())) {
-    webcompat_reporter_service->GetContactInfo(base::BindOnce(
+    webcompat_reporter_service->GetBrowserParams(base::BindOnce(
         &PrepareParamsAndShowDialog, initiator, report_url.spec(),
         shields_enabled, GetAdBlockModeString(ad_block_mode),
         GetFingerprintModeString(fp_block_mode), static_cast<int>(source),
@@ -187,7 +194,7 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
                              GetAdBlockModeString(ad_block_mode),
                              GetFingerprintModeString(fp_block_mode),
                              static_cast<int>(source), is_error_page,
-                             std::nullopt, false);
+                             std::nullopt, false, {});
 }
 
 }  // namespace webcompat_reporter

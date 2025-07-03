@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -368,14 +369,15 @@ void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
     return;
   }
 
-  webcompat_reporter_service->GetContactInfo(
+  webcompat_reporter_service->GetBrowserParams(
       base::BindOnce(&DefaultBraveShieldsHandler::OnGetContactInfo,
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
 void DefaultBraveShieldsHandler::OnGetContactInfo(
     base::Value javascript_callback,
     const std::optional<std::string>& contact_info,
-    const bool contact_info_save_flag) {
+    const bool contact_info_save_flag,
+    const std::vector<std::string>& components) {
   base::Value::Dict params_dict;
   params_dict.Set("contactInfo", contact_info.value_or(""));
   params_dict.Set("contactInfoSaveFlag", contact_info_save_flag);

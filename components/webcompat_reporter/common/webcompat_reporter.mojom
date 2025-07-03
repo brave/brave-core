@@ -34,5 +34,6 @@ struct ReportInfo {
 interface WebcompatReporterHandler {
   SubmitWebcompatReport(ReportInfo report_info);
   SetContactInfoSaveFlag(bool value);
-  GetContactInfo() => (string? val, bool contact_info_save_flag);
+  GetBrowserParams() => (string? contact_info, bool contact_info_save_flag,
+    array<string> components);
 };

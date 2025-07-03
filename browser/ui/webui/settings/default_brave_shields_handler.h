@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -65,7 +66,8 @@ class DefaultBraveShieldsHandler
   void GetContactInfo(const base::Value::List& args);
   void OnGetContactInfo(base::Value javascript_callback,
                         const std::optional<std::string>& contact_info,
-                        const bool contact_info_save_flag);
+                        const bool contact_info_save_flag,
+                        const std::vector<std::string>& components);
 
   raw_ptr<Profile> profile_ = nullptr;
 

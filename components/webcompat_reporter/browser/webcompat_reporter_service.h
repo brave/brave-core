@@ -62,7 +62,7 @@ class WebcompatReporterService : public KeyedService,
 
   void SetContactInfoSaveFlag(bool value) override;
 
-  void GetContactInfo(GetContactInfoCallback callback) override;
+  void GetBrowserParams(GetBrowserParamsCallback callback) override;
 
  private:
   friend class WebcompatReporterServiceUnitTest;
