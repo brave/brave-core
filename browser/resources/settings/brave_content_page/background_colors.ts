@@ -9,8 +9,11 @@ import { SkColor } from '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.
 const allProperties = getComputedStyle(document.documentElement)
 
 function getSkColorFromLeoVariable(variableName: string): SkColor {
-  // Convert the variable name to lower case to match the hexColorToSkColor requirement.
-  return hexColorToSkColor(allProperties.getPropertyValue(variableName).trim().toLowerCase())
+  // Convert the variable name to lower case to match the hexColorToSkColor
+  // requirement.
+  return hexColorToSkColor(
+    allProperties.getPropertyValue(variableName).trim().toLowerCase(),
+  )
 }
 
 export default [

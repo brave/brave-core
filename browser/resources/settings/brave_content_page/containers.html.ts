@@ -45,8 +45,11 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                     <div class="icon-and-label">
                       <settings-brave-content-containers-icon
                         icon="${item.icon}"
-                        background-color="${skColorToHexColor(item.backgroundColor)}"
-                        disabled></settings-brave-content-containers-icon>
+                        background-color="${skColorToHexColor(
+                          item.backgroundColor,
+                        )}"
+                        disabled
+                      ></settings-brave-content-containers-icon>
                       <div class="label">${item.name}</div>
                     </div>
                     <div>
@@ -121,26 +124,27 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                   </div>
                   <div class="icons-list">
                     ${[...Array(Icon.MAX_VALUE - Icon.MIN_VALUE + 1).keys()]
-                      .map(i => Icon.MIN_VALUE + i)
-                      .map(icon => html`
-                        <settings-brave-content-containers-icon
-                          background-color="${skColorToHexColor(
-                            this.editingContainer_!.backgroundColor,
-                          )}"
-                          icon=${icon}
-                          ?selected="${icon === this.editingContainer_!.icon}"
-                          @icon-selected="${this.onContainersIconSelected_}"
-                        ></settings-brave-content-containers-icon>
-                      `,
-                    )}
+                      .map((i) => Icon.MIN_VALUE + i)
+                      .map(
+                        (icon) => html`
+                          <settings-brave-content-containers-icon
+                            background-color="${skColorToHexColor(
+                              this.editingContainer_!.backgroundColor,
+                            )}"
+                            icon=${icon}
+                            ?selected="${icon === this.editingContainer_!.icon}"
+                            @icon-selected="${this.onContainersIconSelected_}"
+                          ></settings-brave-content-containers-icon>
+                        `,
+                      )}
                   </section>
                 </div>
               </div>
               ${this.editDialogError_
-                ? html`
-                    <div class="error-message">${this.editDialogError_}</div>
-                  `
-                : nothing}
+                  ? html`
+                      <div class="error-message">${this.editDialogError_}</div>
+                    `
+                  : nothing}
             </div>
             <div slot="button-container">
               <cr-button
@@ -152,8 +156,9 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               <cr-button
                 class="action-button"
                 @click="${this.onSaveContainerFromDialog_}"
-                ?disabled="${!this.editingContainer_?.name
-                || this.isEditDialogNameInvalid_}"
+                ?disabled="${
+                  !this.editingContainer_?.name || this.isEditDialogNameInvalid_
+                }"
               >
                 $i18n{save}
               </cr-button>

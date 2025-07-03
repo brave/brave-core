@@ -3,16 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { hexColorToSkColor } from '//resources/js/color_utils.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { SkColor } from '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
-import { hexColorToSkColor } from '//resources/js/color_utils.js'
 
 import { getCss } from './containers_background_chip.css.js'
 import { getHtml } from './containers_background_chip.html.js'
 
-export type ColorSelectedEvent = CustomEvent<{
-  color: SkColor
-}>
+export type ColorSelectedEvent = CustomEvent<{ color: SkColor }>
 
 export class SettingsBraveContentContainersBackgroundChipElement extends CrLitElement {
   static get is() {

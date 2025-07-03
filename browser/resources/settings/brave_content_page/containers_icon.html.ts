@@ -5,15 +5,16 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { SettingsBraveContentContainersIconElement } from "./containers_icon"
+import { SettingsBraveContentContainersIconElement } from './containers_icon'
 
 export function getHtml(this: SettingsBraveContentContainersIconElement) {
-    return html`
-      <div class="icon-container ${this.selected ? 'selected' : ''}"
-           style="background-color: ${this.backgroundColor}"
-           @click="${this.handleIconClick_}">
-        <leo-icon name="${this.leoIcon}"></leo-icon>
-      </div>
-    `
+  return html`
+    <div
+      class="icon-container ${this.selected ? 'selected' : ''}"
+      style="background-color: ${this.backgroundColor}"
+      @click="${this.handleIconClick_}"
+    >
+      <leo-icon name="${this.leoIcon}"></leo-icon>
+    </div>
+  `
 }
-

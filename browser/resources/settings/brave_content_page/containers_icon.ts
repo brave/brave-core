@@ -25,7 +25,7 @@ const iconsMap = new Map<Icon, string>([
   [Icon.kSchool, 'container-school'],
   [Icon.kPrivate, 'container-private'],
   [Icon.kMessaging, 'container-messaging'],
-]);
+])
 
 export class SettingsBraveContentContainersIconElement extends CrLitElement {
   static get is() {
@@ -60,14 +60,14 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
     }
     return icon
   }
-  accessor backgroundColor: string = 'magenta'  // Debug color that should never be visible
+  accessor backgroundColor: string = 'magenta' // Debug color that should never be visible
   accessor selected: boolean = false
 
   handleIconClick_() {
-    const event : IconSelectedEvent = new CustomEvent('icon-selected', {
+    const event: IconSelectedEvent = new CustomEvent('icon-selected', {
       bubbles: true,
       composed: true,
-      detail: { icon: this.icon }
+      detail: { icon: this.icon },
     })
 
     this.dispatchEvent(event)
