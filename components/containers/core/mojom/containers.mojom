@@ -9,18 +9,23 @@ import "skia/public/mojom/skcolor.mojom";
 
 // Represents the icons that can be used for containers. These icons are
 // used to visually distinguish different containers in the user interface.
+// 
+// IMPORTANT: The values of these icons are stored in preferences, so they
+// should not be changed or reordered. If a new icon is added, it should be
+// appended to the end of the enum. When removing an icon, it should be
+// suffixed with "_DEPRECATED" to maintain compatibility with existing preferences.
 enum Icon {
-  kPersonal,
-  kWork,
-  kShopping,
-  kSocial,
-  kEvents,
-  kBanking,
-  kStar,
-  kTravel,
-  kSchool,
-  kPrivate,
-  kMessaging,
+  kPersonal = 0,
+  kWork = 1,
+  kShopping = 2,
+  kSocial = 3,
+  kEvents = 4,
+  kBanking = 5,
+  kStar = 6,
+  kTravel = 7,
+  kSchool = 8,
+  kPrivate = 9,
+  kMessaging = 10,
 };
 
 // Represents a container that holds a separate browsing context/identity.
