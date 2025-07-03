@@ -14,6 +14,20 @@ export type IconSelectedEvent = CustomEvent<{
   icon: Icon
 }>
 
+const iconsMap = new Map<Icon, string>([
+  [Icon.kPersonal, 'container-personal'],
+  [Icon.kWork, 'container-work'],
+  [Icon.kShopping, 'container-shopping'],
+  [Icon.kSocial, 'container-social'],
+  [Icon.kEvents, 'container-events'],
+  [Icon.kBanking, 'container-banking'],
+  [Icon.kStar, 'container-star'],
+  [Icon.kTravel, 'container-travel'],
+  [Icon.kSchool, 'container-school'],
+  [Icon.kPrivate, 'container-private'],
+  [Icon.kMessaging, 'container-messaging'],
+]);
+
 const SettingsBraveContentContainersIconElementBase = I18nMixinLit(CrLitElement)
 
 export class SettingsBraveContentContainersIconElement extends SettingsBraveContentContainersIconElementBase {
@@ -24,7 +38,6 @@ export class SettingsBraveContentContainersIconElement extends SettingsBraveCont
   static override get properties() {
     return {
       icon: { type: Icon },
-      leoIcon: { type: String },
       backgroundColor: { type: String },
       selected: { type: Boolean },
     }
@@ -39,7 +52,14 @@ export class SettingsBraveContentContainersIconElement extends SettingsBraveCont
   }
 
   accessor icon: Icon
-  accessor leoIcon: string
+  get leoIcon() {
+    const icon = iconsMap.get(+this.icon)  // Convert to number since Icon is a string
+    if (!icon) {
+      console.warn(`No Leo icon found for icon: ${this.icon} from `, iconsMap)
+      return ''
+    }
+    return icon
+  }
   accessor backgroundColor: string = 'magenta'  // Debug color that should never be visible
   accessor selected: boolean = false
 

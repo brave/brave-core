@@ -9,7 +9,6 @@ import { ContainersStrings } from '../brave_generated_resources_webui_strings.js
 import { Icon } from '../containers.mojom-webui.js'
 import { skColorToHexColor } from 'chrome://resources/js/color_utils.js'
 import backgroundColors from './background_colors.js'
-import iconLeoMap from './container_icons_leo_map.js'
 
 // Bootstrap the custom element that are used in this component.
 import './containers_icon.js'
@@ -46,7 +45,6 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                     <div class="icon-and-label">
                       <settings-brave-content-containers-icon
                         icon="${item.icon}"
-                        leo-icon="${iconLeoMap.get(item.icon) ?? ''}"
                         background-color="${skColorToHexColor(item.backgroundColor)}"
                         disabled></settings-brave-content-containers-icon>
                       <div class="label">${item.name}</div>
@@ -122,15 +120,15 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                       $i18n{SETTINGS_CONTAINERS_CONTAINER_ICON_LABEL}
                   </div>
                   <div class="icons-list">
-                    ${[...iconLeoMap.entries()].map(
-                      (icon: [Icon, string]) => html`
+                    ${[...Array(Icon.MAX_VALUE - Icon.MIN_VALUE + 1).keys()]
+                      .map(i => Icon.MIN_VALUE + i)
+                      .map(icon => html`
                         <settings-brave-content-containers-icon
                           background-color="${skColorToHexColor(
                             this.editingContainer_!.backgroundColor,
                           )}"
-                          icon=${icon[0]}
-                          leo-icon=${icon[1]}
-                          ?selected="${icon[0] === this.editingContainer_!.icon}"
+                          icon=${icon}
+                          ?selected="${icon === this.editingContainer_!.icon}"
                           @icon-selected="${this.onContainersIconSelected_}"
                         ></settings-brave-content-containers-icon>
                       `,

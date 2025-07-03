@@ -185,7 +185,6 @@ if (enable_containers) {
       [ "brave_content_page/containers_browser_proxy.ts" ]
   brave_settings_ts_files += [
     "brave_content_page/background_colors.ts",
-    "brave_content_page/container_icons_leo_map.ts",
     "brave_content_page/containers_background_chip.html.ts",
     "brave_content_page/containers_background_chip.ts",
     "brave_content_page/containers_icon.html.ts",
