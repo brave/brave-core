@@ -155,6 +155,13 @@ void AssociatedContentManager::RemoveContent(
   }
 }
 
+void AssociatedContentManager::ClearContent() {
+  DVLOG(1) << __func__;
+  DetachContent();
+
+  conversation_->OnAssociatedContentUpdated();
+}
+
 std::vector<mojom::AssociatedContentPtr>
 AssociatedContentManager::GetAssociatedContent() const {
   DVLOG(1) << __func__;

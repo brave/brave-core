@@ -56,6 +56,9 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
+  // Clears all content from the conversation.
+  void ClearContent();
+
   void GetContent(base::OnceClosure callback);
   void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
