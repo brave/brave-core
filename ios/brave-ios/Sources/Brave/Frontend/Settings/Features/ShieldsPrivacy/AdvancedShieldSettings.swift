@@ -205,7 +205,7 @@ import os
     self.clearableSettings = clearableSettings
     registerSubscriptions()
     Task { @MainActor in
-      self.isSaveContactInfoEnabled = await webcompatReporterHandler?.contactInfo().1 ?? false
+      self.isSaveContactInfoEnabled = await webcompatReporterHandler?.browserParams().1 ?? false
     }
   }
 

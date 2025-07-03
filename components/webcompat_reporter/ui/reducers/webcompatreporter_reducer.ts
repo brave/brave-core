@@ -17,7 +17,8 @@ const defaultState: WebcompatReporter.State = {
     fpBlockSetting: '',
     shieldsEnabled: '',
     contactInfo: '',
-    contactInfoSaveFlag: false
+    contactInfoSaveFlag: false,
+    components: []
   },
   submitted: false
 }

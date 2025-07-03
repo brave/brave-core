@@ -29,10 +29,6 @@ WebcompatReporterServiceDelegateBase::GetComponentInfos() const {
   std::vector<ComponentInfo> result;
   auto components(component_update_service_->GetComponents());
   for (const auto& ci : components) {
-    if (!NeedsToGetComponentInfo(ci.id)) {
-      continue;
-    }
-
     result.emplace_back(ComponentInfo{ci.id, base::UTF16ToUTF8(ci.name),
                                       ci.version.GetString()});
   }

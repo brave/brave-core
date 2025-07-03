@@ -897,8 +897,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     }
                 });
         if (mWebcompatReporterHandler != null) {
-            mWebcompatReporterHandler.getContactInfo(
-                    (contactInfo, contactInfoSaveFlag) -> {
+            mWebcompatReporterHandler.getBrowserParams(
+                    (contactInfo, contactInfoSaveFlag, _components) -> {
                         if (contactInfo != null && !contactInfo.isEmpty()) {
                             mEditTextContact.setText(contactInfo);
                         }

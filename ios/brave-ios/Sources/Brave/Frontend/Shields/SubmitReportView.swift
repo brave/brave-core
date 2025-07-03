@@ -59,9 +59,9 @@ struct SubmitReportView: View {
               return
             }
             Task { @MainActor in
-              let contactInfo = await webcompatReporterAPI.contactInfo()
-              self.contactDetails = contactInfo.0 ?? ""
-              self.isContactInfoDescVisible = contactInfo.1
+              let browserParams = await webcompatReporterAPI.browserParams()
+              self.contactDetails = browserParams.0 ?? ""
+              self.isContactInfoDescVisible = browserParams.1
             }
           }
           if self.isContactInfoDescVisible {
