@@ -26,6 +26,8 @@ enum Icon {
   kSchool = 8,
   kPrivate = 9,
   kMessaging = 10,
+
+  kDefault = kPersonal,  // Default icon used when no specific icon is set.
 };
 
 // Represents a container that holds a separate browsing context/identity.

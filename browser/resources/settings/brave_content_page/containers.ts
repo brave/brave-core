@@ -92,7 +92,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.editingContainer_ = {
       id: '',
       name: '',
-      icon: Icon.kPersonal,
+      icon: Icon.kDefault,
       backgroundColor: backgroundColors[0],
     }
     this.editDialogError_ = undefined
