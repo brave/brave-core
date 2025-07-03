@@ -10,11 +10,19 @@ import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 declare_args() {
-  brave_sync_endpoint = ""
+  # Backup value for local development when the `.env` file is not set.
+  # Official builds will  have the `brave_sync_endpoint` key defined.
+  brave_sync_default_dev_endpoint = "https://sync-v2.bravesoftware.com/v2"
+}
+
+declare_args() {
+  # Default to the dev endpoint. There is code which will DCHECK if empty.
+  brave_sync_endpoint = brave_sync_default_dev_endpoint
 }
 
 if (is_official_build) {
   assert(brave_sync_endpoint != "")
+  assert(brave_sync_endpoint != brave_sync_default_dev_endpoint)
 }
 
 buildflag_header("buildflags") {
