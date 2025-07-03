@@ -83,7 +83,7 @@ void PermissionRequestManager::AcceptDenyCancel(
     } else if (base::Contains(denied_requests, request.get())) {
       PermissionDeniedIncludingDuplicates(request.get());
     } else {
-      CancelledIncludingDuplicates(request.get());
+      CancelRequestIncludingDuplicates(request.get());
     }
   }
 
