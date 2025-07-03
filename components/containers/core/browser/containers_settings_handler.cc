@@ -60,8 +60,7 @@ void ContainersSettingsHandler::AddContainer(mojom::ContainerPtr container,
     return;
   }
 
-  if (auto error = ValidateContainerProperties(container->name, container->icon,
-                                               container->background_color)) {
+  if (auto error = ValidateEditableContainerProperties(container)) {
     std::move(callback).Run(*error);
     return;
   }
@@ -81,8 +80,7 @@ void ContainersSettingsHandler::UpdateContainer(
     return;
   }
 
-  if (auto error = ValidateContainerProperties(container->name, container->icon,
-                                               container->background_color)) {
+  if (auto error = ValidateEditableContainerProperties(container)) {
     std::move(callback).Run(*error);
     return;
   }
@@ -121,19 +119,17 @@ void ContainersSettingsHandler::RemoveContainer(
 
 // static
 std::optional<mojom::ContainerOperationError>
-ContainersSettingsHandler::ValidateContainerProperties(
-    std::string_view name,
-    mojom::Icon icon,
-    SkColor background_color) {
-  if (!IsContainerNameValid(name)) {
+ContainersSettingsHandler::ValidateEditableContainerProperties(
+    const mojom::ContainerPtr& container) {
+  if (!IsContainerNameValid(container->name)) {
     return mojom::ContainerOperationError::kInvalidName;
   }
 
-  if (!IsIconValid(icon)) {
+  if (!IsIconValid(container->icon)) {
     return mojom::ContainerOperationError::kInvalidIcon;
   }
 
-  if (!IsBackgroundColorValid(background_color)) {
+  if (!IsBackgroundColorValid(container->background_color)) {
     return mojom::ContainerOperationError::kInvalidBackgroundColor;
   }
 

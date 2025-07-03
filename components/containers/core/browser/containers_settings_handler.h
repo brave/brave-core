@@ -49,9 +49,7 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
-  ValidateContainerProperties(std::string_view name,
-                              mojom::Icon icon,
-                              SkColor background_color);
+  ValidateEditableContainerProperties(const mojom::ContainerPtr& container);
 
   // Returns true if the container name is valid.
   static bool IsContainerNameValid(std::string_view name);

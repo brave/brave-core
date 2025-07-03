@@ -17,6 +17,7 @@
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -97,52 +98,61 @@ class ContainersSettingsHandlerTest : public testing::Test {
 
 TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
   // Valid properties
-  EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                "Valid Name", mojom::Icon::kPersonal, SK_ColorWHITE),
+  EXPECT_EQ(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                mojom::Container::New("id", "Valid Name",
+                                      mojom::Icon::kPersonal, SK_ColorWHITE)),
             std::nullopt);
 
   // Valid/Invalid names
   for (const auto& test_name : kContainerTestNames) {
     if (test_name.is_valid) {
-      EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                    test_name.name, mojom::Icon::kPersonal, SK_ColorWHITE),
-                std::nullopt);
+      EXPECT_EQ(
+          ContainersSettingsHandler::ValidateEditableContainerProperties(
+              mojom::Container::New("id", test_name.name,
+                                    mojom::Icon::kPersonal, SK_ColorWHITE)),
+          std::nullopt);
     } else {
-      EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                    test_name.name, mojom::Icon::kPersonal, SK_ColorWHITE),
-                mojom::ContainerOperationError::kInvalidName);
+      EXPECT_EQ(
+          ContainersSettingsHandler::ValidateEditableContainerProperties(
+              mojom::Container::New("id", test_name.name,
+                                    mojom::Icon::kPersonal, SK_ColorWHITE)),
+          mojom::ContainerOperationError::kInvalidName);
     }
   }
 
   // Invalid icons
   for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
                            base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
-    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                  "Valid Name", mojom::Icon(icon), SK_ColorWHITE),
+    EXPECT_EQ(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                  mojom::Container::New("id", "Valid Name", mojom::Icon(icon),
+                                        SK_ColorWHITE)),
               mojom::ContainerOperationError::kInvalidIcon);
   }
 
   // Valid icons
   for (const auto& icon : {mojom::Icon::kPersonal, mojom::Icon::kBanking,
                            mojom::Icon::kShopping}) {
-    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                  "Valid Name", icon, SK_ColorWHITE),
-              std::nullopt);
+    EXPECT_EQ(
+        ContainersSettingsHandler::ValidateEditableContainerProperties(
+            mojom::Container::New("id", "Valid Name", icon, SK_ColorWHITE)),
+        std::nullopt);
   }
 
   // Invalid background colors
   for (const auto& color :
        {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
-    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                  "Valid Name", mojom::Icon::kPersonal, color),
+    EXPECT_EQ(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                  mojom::Container::New("id", "Valid Name",
+                                        mojom::Icon::kPersonal, color)),
               mojom::ContainerOperationError::kInvalidBackgroundColor);
   }
 
   // Valid background colors
   for (const auto& color : {SK_ColorWHITE, SK_ColorBLACK, SK_ColorRED,
                             SK_ColorGREEN, SK_ColorBLUE}) {
-    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
-                  "Valid Name", mojom::Icon::kPersonal, color),
+    EXPECT_EQ(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                  mojom::Container::New("id", "Valid Name",
+                                        mojom::Icon::kPersonal, color)),
               std::nullopt);
   }
 }
