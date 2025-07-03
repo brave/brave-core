@@ -216,8 +216,20 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       'browser_tests',
       ...getChromiumUnitTestsSuites(),
     ]
+
+    const testsToRun = getTestsToRun(config, suite)
+    // When outputting results into xml files, delete any previous results and
+    // add all expected output results file names into ${suite}.txt file.
+    if (options.output_xml) {
+      let expectedOutputs = ''
+      testsToRun.forEach((testSuite) => {
+        deleteFile(`${testSuite}.xml`)
+        expectedOutputs += `${testSuite}.xml\n`
+      })
+      fs.appendFileSync(allResultsFilePath, expectedOutputs)
+    }
     // Run the tests
-    getTestsToRun(config, suite).every((testSuite) => {
+    testsToRun.every((testSuite) => {
       // Filter out upstream tests that are known to fail for Brave
       if (upstreamTestSuites.includes(testSuite)) {
         const previousFilters = braveArgs.findIndex((arg) => {
@@ -288,13 +300,9 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs,
         runOptions,
       )
-      if (options.output_xml) {
-        // Add filename of xml output of each test suite into the results file
-        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
-      }
-      // If we output results into xml files (CI), then we want to run all
+      // If we output results into an xml file (CI), then we want to run all
       // suites to get all potential failures. Otherwise, for example, if
-      // running locally, it makes sense to stop if a suite has failures.
+      // running locally, it makes sense to stop once one suite has failures.
       return options.output_xml || prog.status === 0
     })
   }
