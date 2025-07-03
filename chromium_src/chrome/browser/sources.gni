@@ -6,6 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 brave_chromium_src_chrome_browser_deps = [
   "//base",
@@ -29,4 +30,9 @@ if (enable_brave_vpn) {
 if (toolkit_views) {
   brave_chromium_src_chrome_browser_deps +=
       [ "//brave/components/sidebar/browser" ]
+}
+
+if (enable_extensions) {
+  brave_chromium_src_chrome_browser_deps +=
+      [ "//brave/browser/extensions/manifest_v2" ]
 }
