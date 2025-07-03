@@ -15,6 +15,21 @@
 
 namespace containers {
 
+namespace {
+
+bool IsIconValid(mojom::Icon icon) {
+  // Valid icons are in the range of defined mojom::Icon values.
+  return icon >= mojom::Icon::kMinValue && icon <= mojom::Icon::kMaxValue;
+}
+
+bool IsBackgroundColorValid(SkColor color) {
+  auto in_range = [](uint8_t v) { return v >= 0 && v <= 255; };
+  return SkColorGetA(color) == SK_AlphaOPAQUE && in_range(SkColorGetR(color)) &&
+         in_range(SkColorGetG(color)) && in_range(SkColorGetB(color));
+}
+
+}  // namespace
+
 ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
     : prefs_(prefs) {
   DCHECK(prefs_);
@@ -128,19 +143,6 @@ void ContainersSettingsHandler::RemoveContainer(
 bool ContainersSettingsHandler::IsContainerNameValid(std::string_view name) {
   // A string that is not empty and does not contain only whitespace.
   return re2::RE2::FullMatch(name, re2::RE2("^.*\\S.*$"));
-}
-
-// static
-bool ContainersSettingsHandler::IsIconValid(mojom::Icon icon) {
-  // Valid icons are in the range of defined mojom::Icon values.
-  return icon >= mojom::Icon::kMinValue && icon <= mojom::Icon::kMaxValue;
-}
-
-// static
-bool ContainersSettingsHandler::IsBackgroundColorValid(SkColor color) {
-  auto in_range = [](uint8_t v) { return v >= 0 && v <= 255; };
-  return SkColorGetA(color) == SK_AlphaOPAQUE && in_range(SkColorGetR(color)) &&
-         in_range(SkColorGetG(color)) && in_range(SkColorGetB(color));
 }
 
 void ContainersSettingsHandler::OnContainersChanged() {
