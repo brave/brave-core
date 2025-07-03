@@ -1,0 +1,6 @@
+# only-docs label skips CI (including noplatform) and is for docs/md file changes
+only-docs:
+  - changed-files:
+    - any-glob-to-all-files: 
+      - "**/*.md"
+      - "docs/**/*"
