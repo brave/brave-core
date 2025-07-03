@@ -207,6 +207,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.getrandom]
 license_files = ['LICENSE-APACHE']
 
+[crate.getrandom_or_panic]
+license_files = ['LICENSE']
+
 [crate.halo2_gadgets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
