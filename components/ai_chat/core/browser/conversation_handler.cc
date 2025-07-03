@@ -562,8 +562,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     suggestions_.clear();
 
     // Reset the content to be empty.
-    associated_content_manager_->AddContent(nullptr, /*notify_updated=*/true,
-                                            /*detach_existing_content=*/true);
+    associated_content_manager_->ClearContent();
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
@@ -944,8 +943,7 @@ void ConversationHandler::MaybeUnlinkAssociatedContent() {
   // Only unlink if panel is closed and there is no conversation history.
   // When panel is open or has existing conversation, do not change the state.
   if (chat_history_.empty() && !IsAnyClientConnected()) {
-    associated_content_manager()->AddContent(nullptr, /*notify_updated=*/false,
-                                             /*detach_existing_content=*/true);
+    associated_content_manager_->ClearContent();
   }
 }
 
