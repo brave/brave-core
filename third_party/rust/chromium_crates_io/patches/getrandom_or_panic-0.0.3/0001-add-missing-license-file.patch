@@ -1,0 +1,47 @@
+From a6b1e634d02f29abd2f302f04468220139503674 Mon Sep 17 00:00:00 2001
+From: Christian Mazakas <christian.mazakas@gmail.com>
+Date: Thu, 3 Jul 2025 14:34:40 -0700
+Subject: [PATCH] add missing license file
+
+---
+ .../vendor/getrandom_or_panic-v0_0/LICENSE    | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/LICENSE
+
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/LICENSE b/brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/LICENSE
+new file mode 100644
+index 00000000000..9b3606c995a
+--- /dev/null
++++ b/brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/LICENSE
+@@ -0,0 +1,28 @@
++BSD 3-Clause License
++
++Copyright (c) 2023, Jeff Burdges
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++
++1. Redistributions of source code must retain the above copyright notice, this
++   list of conditions and the following disclaimer.
++
++2. Redistributions in binary form must reproduce the above copyright notice,
++   this list of conditions and the following disclaimer in the documentation
++   and/or other materials provided with the distribution.
++
++3. Neither the name of the copyright holder nor the names of its
++   contributors may be used to endorse or promote products derived from
++   this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
++FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-- 
+2.50.0.windows.1
+
