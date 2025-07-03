@@ -12,7 +12,7 @@ import("//tools/grit/repack.gni")
 declare_args() {
   # Backup value for local development when the `.env` file is not set.
   # Official builds will  have the `brave_sync_endpoint` key defined.
-  brave_sync_default_dev_endpoint = "https://sync-v2.bravesoftware.com/v2"
+  brave_sync_default_dev_endpoint = "https://sync-v2.brave.software/v2"
 }
 
 declare_args() {
