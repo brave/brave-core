@@ -170,7 +170,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
     }
   };
 
-  // check_split_tabs_has_same_y_position();
   const auto initial_width = region_view->expanded_width_;
   while (region_view->expanded_width_ >= (initial_width / 2)) {
     check_split_tabs_has_same_y_position();
