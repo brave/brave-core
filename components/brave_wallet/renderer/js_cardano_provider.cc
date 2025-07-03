@@ -49,10 +49,11 @@ std::string JSCardanoProvider::GetApiVersion() {
   return "1";
 }
 
-// gin::Wrappable<JSCardanoProvider>
+// gin::DeprecatedWrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::Wrappable<JSCardanoProvider>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<JSCardanoProvider>::GetObjectTemplateBuilder(
+             isolate)
       .SetMethod("enable", &JSCardanoProvider::Enable)
       .SetMethod("isEnabled", &JSCardanoProvider::IsEnabled)
       .SetProperty("supportedExtensions",
@@ -67,7 +68,8 @@ const char* JSCardanoProvider::GetTypeName() {
 }
 
 // JSCardanoProvider
-gin::WrapperInfo JSCardanoProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo JSCardanoProvider::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 JSCardanoProvider::~JSCardanoProvider() = default;
 
@@ -141,7 +143,8 @@ void JSCardanoProvider::OnEnableResponse(
       return;
     }
 
-    // Non-function properties are readonly guaranteed by gin::Wrappable
+    // Non-function properties are readonly guaranteed by
+    // gin::DeprecatedWrappable
     for (const std::string& method :
          {"getNetworkId", "getUsedAddresses", "getUnusedAddresses",
           "getChangeAddress", "getRewardAddresses", "getUtxos", "getBalance",
@@ -254,7 +257,7 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
                          cardano_brave_provider_object,
                          gin::StringToV8(isolate, kBrave), true);
 
-  // Non-function properties are readonly guaranteed by gin::Wrappable
+  // Non-function properties are readonly guaranteed by gin::DeprecatedWrappable
   for (const std::string& method : {"enable", "isEnabled"}) {
     SetOwnPropertyWritable(context, cardano_brave_provider_object,
                            gin::StringToV8(isolate, method), false);

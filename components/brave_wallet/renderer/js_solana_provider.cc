@@ -101,7 +101,8 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
 
 JSSolanaProvider::~JSSolanaProvider() = default;
 
-gin::WrapperInfo JSSolanaProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo JSSolanaProvider::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
@@ -167,7 +168,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
         .Check();
   }
 
-  // Non-function properties are readonly guaranteed by gin::Wrappable
+  // Non-function properties are readonly guaranteed by gin::DeprecatedWrappable
   for (const std::string& method :
        {"connect", "disconnect", "signAndSendTransaction", "signMessage",
         "request", "signTransaction", "signAllTransactions",
@@ -188,7 +189,8 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   // Note: When adding a new method, you would need to update the list in
   // kSolanaProxyHandlerScript too otherwise the function call would fail.
-  return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<JSSolanaProvider>::GetObjectTemplateBuilder(
+             isolate)
       .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
       .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
       .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)

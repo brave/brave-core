@@ -122,7 +122,8 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
 
 JSEthereumProvider::~JSEthereumProvider() = default;
 
-gin::WrapperInfo JSEthereumProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo JSEthereumProvider::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                   int32_t world_id) {
@@ -234,7 +235,7 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
     }
   }
 
-  // Non-function properties are readonly guaranteed by gin::Wrappable
+  // Non-function properties are readonly guaranteed by gin::DeprecatedWrappable
   // send should be writable because of
   // https://github.com/brave/brave-browser/issues/25078
   for (const std::string& method :
@@ -266,7 +267,7 @@ bool JSEthereumProvider::GetIsMetaMask() {
   return true;
 }
 
-gin::WrapperInfo JSEthereumProvider::MetaMask::kWrapperInfo = {
+gin::DeprecatedWrapperInfo JSEthereumProvider::MetaMask::kWrapperInfo = {
     gin::kEmbedderNativeGin};
 
 JSEthereumProvider::MetaMask::MetaMask(content::RenderFrame* render_frame)
@@ -275,8 +276,8 @@ JSEthereumProvider::MetaMask::~MetaMask() = default;
 
 gin::ObjectTemplateBuilder
 JSEthereumProvider::MetaMask::GetObjectTemplateBuilder(v8::Isolate* isolate) {
-  return gin::Wrappable<MetaMask>::GetObjectTemplateBuilder(isolate).SetMethod(
-      kIsUnlocked, &JSEthereumProvider::MetaMask::IsUnlocked);
+  return gin::DeprecatedWrappable<MetaMask>::GetObjectTemplateBuilder(isolate)
+      .SetMethod(kIsUnlocked, &JSEthereumProvider::MetaMask::IsUnlocked);
 }
 
 const char* JSEthereumProvider::MetaMask::GetTypeName() {
@@ -371,7 +372,8 @@ gin::ObjectTemplateBuilder JSEthereumProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   // Note: When adding a new method, you would need to update the list in
   // kEthereumProxyHandlerScript too otherwise the function call would fail.
-  return gin::Wrappable<JSEthereumProvider>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<JSEthereumProvider>::GetObjectTemplateBuilder(
+             isolate)
       .SetProperty(kIsBraveWallet, &JSEthereumProvider::GetIsBraveWallet)
       .SetProperty(kIsMetaMask, &JSEthereumProvider::GetIsMetaMask)
       .SetProperty(kMetaMask, &JSEthereumProvider::GetMetaMask)
