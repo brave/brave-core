@@ -13,6 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
@@ -114,8 +115,8 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
   }
 
   // Invalid icons
-  for (const auto& icon : {static_cast<int>(mojom::Icon::kMinValue) - 1,
-                           static_cast<int>(mojom::Icon::kMaxValue) + 1}) {
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
     EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
                   "Valid Name", mojom::Icon(icon), SK_ColorWHITE),
               mojom::ContainerOperationError::kInvalidIcon);
@@ -197,8 +198,8 @@ TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   }
 
   // Invalid icon.
-  for (const auto& icon : {static_cast<int>(mojom::Icon::kMinValue) - 1,
-                           static_cast<int>(mojom::Icon::kMaxValue) + 1}) {
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
     handler_->AddContainer(
         mojom::Container::New("", "Invalid icon", mojom::Icon(icon),
                               SK_ColorWHITE),
@@ -279,8 +280,8 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   }
 
   // Invalid icon.
-  for (const auto& icon : {static_cast<int>(mojom::Icon::kMinValue) - 1,
-                           static_cast<int>(mojom::Icon::kMaxValue) + 1}) {
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
     handler_->UpdateContainer(
         mojom::Container::New(containers[0]->id, "Invalid icon",
                               mojom::Icon(icon), SK_ColorWHITE),

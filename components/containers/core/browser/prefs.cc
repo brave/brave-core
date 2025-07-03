@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -54,7 +55,7 @@ void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
     list.Append(base::Value::Dict()
                     .Set("id", container->id)
                     .Set("name", container->name)
-                    .Set("icon", static_cast<int>(container->icon))
+                    .Set("icon", base::to_underlying(container->icon))
                     .Set("background_color",
                          static_cast<int>(container->background_color)));
   }
