@@ -292,8 +292,21 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   ASSERT_TRUE(split_id);
   tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(4, tab_strip_model->active_index());
+
+  // Check split tabs have proper insets after swap
+  EXPECT_EQ(tab_strip()->tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip()->tab_at(5)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
   tab_strip_model->ReverseTabsInSplit(split_id.value());
   EXPECT_EQ(5, tab_strip_model->active_index());
+
+  ToggleVerticalTabStrip();
+  EXPECT_NE(tab_strip()->tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_NE(tab_strip()->tab_at(5)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
 }
 
 class SplitViewWithTabDialogBrowserTest
@@ -379,6 +392,10 @@ class SplitViewWithTabDialogBrowserTest
         ->contents_web_view();
   }
 
+  TabStrip* tab_strip() {
+    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -402,6 +419,20 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
 
   // Pin active tab(split tab at 4).
   chrome::PinTab(browser());
+
+  // Check pinned split tabs have same insets with pin tabs.
+  EXPECT_FALSE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_TRUE(tab_strip_model->IsTabPinned(0));
+
+  const auto insets = tab_strip()->tab_at(0)->GetBorder()->GetInsets();
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return tab_strip_model->IsTabPinned(1) && tab_strip_model->IsTabPinned(2);
+  }));
+
+  EXPECT_EQ(insets, tab_strip()->tab_at(1)->GetBorder()->GetInsets());
+  EXPECT_EQ(insets, tab_strip()->tab_at(2)->GetBorder()->GetInsets());
 }
 
 IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
@@ -827,6 +858,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // Create split tabs with tab at 3 and new tab at 4.
   brave::NewSplitViewForTab(browser());
+  EXPECT_EQ(4, tab_strip().GetActiveIndex());
 
   // Check split tab's first & second tabs' insets are different.
   // value 4 here is copied from |kPaddingForVerticalTabInTile| in
@@ -834,6 +866,21 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   EXPECT_EQ(tab_strip().tab_at(3)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(4, 0, 0, 0));
   EXPECT_EQ(tab_strip().tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
+  brave::SwapTabsInTile(browser());
+  EXPECT_EQ(3, tab_strip().GetActiveIndex());
+
+  // Check split tabs have proper insets after swap
+  EXPECT_EQ(tab_strip().tab_at(3)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip().tab_at(4)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
+  ToggleVerticalTabStrip();
+  EXPECT_NE(tab_strip().tab_at(3)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_NE(tab_strip().tab_at(4)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(0, 0, 4, 0));
 }
 
