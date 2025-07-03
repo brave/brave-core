@@ -6,10 +6,7 @@
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
 #include <string>
-#include <utility>
-#include <vector>
 
-#include "base/strings/string_split.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -21,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/url_util.h"
 
 namespace {
 constexpr char16_t kYoutubeBackgroundPlayback[] =
@@ -148,13 +146,13 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
 
   // Key-value pairs are '&' delimited and the keys/values are '=' delimited.
   // Example: "https://www.youtube.com/watch?v=abcdefg&somethingElse=12345".
-  std::vector<std::pair<std::string_view, std::string_view>> key_value_pairs;
-  base::SplitStringIntoKeyValueViewPairs(query, '=', '&', &key_value_pairs);
-
   std::string video_id;
-  for (const auto& pair : key_value_pairs) {
-    if (pair.first == "v") {
-      base::TrimWhitespaceASCII(pair.second, base::TRIM_ALL, &video_id);
+  url::Component query_component(0, static_cast<int>(query.size()));
+  url::Component key, value;
+  while (url::ExtractQueryKeyValue(query, &query_component, &key, &value)) {
+    if (query.substr(key.begin, key.len) == "v") {
+      video_id = std::string(query.substr(value.begin, value.len));
+      base::TrimWhitespaceASCII(video_id, base::TRIM_ALL, &video_id);
       break;
     }
   }
