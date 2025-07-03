@@ -16,14 +16,16 @@ jobs:
 
     - name: set ci managed labels (automatically set and unset)
       uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
-      configuration-path: .github/synced-labels.yml
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: true
+        configuration-path: .github/synced-labels.yml
+
 
     - name: set optional labels
       uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
-      configuration-path: .github/optional-labels.yml
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: false
+        configuration-path: .github/optional-labels.yml
+
