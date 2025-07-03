@@ -53,7 +53,10 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "customize_toolbar/list_action_modifiers_unittest.cc" ]
+  sources = [
+    "customize_toolbar/customize_toolbar_handler_unittest.cc",
+    "customize_toolbar/list_action_modifiers_unittest.cc",
+  ]
 
   deps = [
     ":customize_chrome",

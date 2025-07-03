@@ -15,6 +15,9 @@
 #define PinAction                                                            \
   PinActionChromium(side_panel::customize_chrome::mojom::ActionId action_id, \
                     bool pin);                                               \
+  void ObserveBraveActions();                                                \
+  void OnBraveActionPinnedChanged(                                           \
+      side_panel::customize_chrome::mojom::ActionId action_id);              \
   void PinAction
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"  // IWYU pragma: export
