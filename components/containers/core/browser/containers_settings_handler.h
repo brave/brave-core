@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -45,6 +46,12 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // after data cleanup is complete.
   void RemoveContainer(const std::string& id,
                        RemoveContainerCallback callback) override;
+
+  // Returns an error if the given container properties are invalid.
+  static std::optional<mojom::ContainerOperationError>
+  ValidateContainerProperties(std::string_view name,
+                              mojom::Icon icon,
+                              SkColor background_color);
 
   // Returns true if the container name is valid.
   static bool IsContainerNameValid(std::string_view name);

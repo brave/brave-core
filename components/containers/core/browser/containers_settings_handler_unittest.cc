@@ -94,6 +94,57 @@ class ContainersSettingsHandlerTest : public testing::Test {
   std::unique_ptr<ContainersSettingsHandler> handler_;
 };
 
+TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
+  // Valid properties
+  EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                "Valid Name", mojom::Icon::kPersonal, SK_ColorWHITE),
+            std::nullopt);
+
+  // Invalid name
+  for (const auto& test_name : kContainerTestNames) {
+    if (test_name.is_valid) {
+      EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                    test_name.name, mojom::Icon::kPersonal, SK_ColorWHITE),
+                std::nullopt);
+    } else {
+      EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                    test_name.name, mojom::Icon::kPersonal, SK_ColorWHITE),
+                mojom::ContainerOperationError::kInvalidName);
+    }
+  }
+
+  // Invalid icon
+  for (const auto& icon : {static_cast<int>(mojom::Icon::kMinValue) - 1,
+                           static_cast<int>(mojom::Icon::kMaxValue) + 1}) {
+    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                  "Valid Name", mojom::Icon(icon), SK_ColorWHITE),
+              mojom::ContainerOperationError::kInvalidIcon);
+  }
+  // Valid icon
+  for (const auto& icon : {mojom::Icon::kPersonal, mojom::Icon::kBanking,
+                           mojom::Icon::kShopping}) {
+    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                  "Valid Name", icon, SK_ColorWHITE),
+              std::nullopt);
+  }
+
+  // Invalid background color
+  for (const auto& color :
+       {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
+    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                  "Valid Name", mojom::Icon::kPersonal, color),
+              mojom::ContainerOperationError::kInvalidBackgroundColor);
+  }
+
+  // Valid background color
+  for (const auto& color : {SK_ColorWHITE, SK_ColorBLACK, SK_ColorRED,
+                            SK_ColorGREEN, SK_ColorBLUE}) {
+    EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
+                  "Valid Name", mojom::Icon::kPersonal, color),
+              std::nullopt);
+  }
+}
+
 TEST_F(ContainersSettingsHandlerTest, IsContainerNameValid) {
   for (const auto& test_name : kContainerTestNames) {
     EXPECT_EQ(ContainersSettingsHandler::IsContainerNameValid(test_name.name),

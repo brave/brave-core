@@ -60,19 +60,9 @@ void ContainersSettingsHandler::AddContainer(mojom::ContainerPtr container,
     return;
   }
 
-  if (!IsContainerNameValid(container->name)) {
-    std::move(callback).Run(mojom::ContainerOperationError::kInvalidName);
-    return;
-  }
-
-  if (!IsIconValid(container->icon)) {
-    std::move(callback).Run(mojom::ContainerOperationError::kInvalidIcon);
-    return;
-  }
-
-  if (!IsBackgroundColorValid(container->background_color)) {
-    std::move(callback).Run(
-        mojom::ContainerOperationError::kInvalidBackgroundColor);
+  if (auto error = ValidateContainerProperties(container->name, container->icon,
+                                               container->background_color)) {
+    std::move(callback).Run(*error);
     return;
   }
 
@@ -91,19 +81,9 @@ void ContainersSettingsHandler::UpdateContainer(
     return;
   }
 
-  if (!IsContainerNameValid(container->name)) {
-    std::move(callback).Run(mojom::ContainerOperationError::kInvalidName);
-    return;
-  }
-
-  if (!IsIconValid(container->icon)) {
-    std::move(callback).Run(mojom::ContainerOperationError::kInvalidIcon);
-    return;
-  }
-
-  if (!IsBackgroundColorValid(container->background_color)) {
-    std::move(callback).Run(
-        mojom::ContainerOperationError::kInvalidBackgroundColor);
+  if (auto error = ValidateContainerProperties(container->name, container->icon,
+                                               container->background_color)) {
+    std::move(callback).Run(*error);
     return;
   }
 
@@ -137,6 +117,27 @@ void ContainersSettingsHandler::RemoveContainer(
   SetContainersToPrefs(std::move(containers), *prefs_);
 
   std::move(callback).Run(std::nullopt);
+}
+
+// static
+std::optional<mojom::ContainerOperationError>
+ContainersSettingsHandler::ValidateContainerProperties(
+    std::string_view name,
+    mojom::Icon icon,
+    SkColor background_color) {
+  if (!IsContainerNameValid(name)) {
+    return mojom::ContainerOperationError::kInvalidName;
+  }
+
+  if (!IsIconValid(icon)) {
+    return mojom::ContainerOperationError::kInvalidIcon;
+  }
+
+  if (!IsBackgroundColorValid(background_color)) {
+    return mojom::ContainerOperationError::kInvalidBackgroundColor;
+  }
+
+  return std::nullopt;
 }
 
 // static
