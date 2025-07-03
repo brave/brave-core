@@ -13,6 +13,8 @@ source_set("webui") {
     "brave_url_data_source_ios.mm",
     "brave_web_ui_ios_data_source.h",
     "brave_web_ui_ios_data_source.mm",
+    "brave_webui_utils.h",
+    "brave_webui_utils.mm",
   ]
 
   deps = [
