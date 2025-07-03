@@ -754,16 +754,15 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_->AddSuggestTokenRequest(
         request.Clone(),
         base::BindLambdaForTesting(
-            [&](base::Value id, base::Value formed_response, const bool reject,
-                const std::string& first_allowed_account,
-                const bool update_bind_js_properties) {
+            [&](mojom::EthereumProviderResponsePtr response) {
               bool user_approved = false;
-              if (formed_response.type() == base::Value::Type::BOOLEAN) {
-                user_approved = formed_response.GetBool();
+              if (response->formed_response.type() ==
+                  base::Value::Type::BOOLEAN) {
+                user_approved = response->formed_response.GetBool();
               }
               mojom::ProviderError error;
               std::string error_message;
-              GetErrorCodeMessage(std::move(formed_response), &error,
+              GetErrorCodeMessage(std::move(response->formed_response), &error,
                                   &error_message);
               if (run_switch_network) {
                 EXPECT_FALSE(user_approved);
