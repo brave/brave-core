@@ -22,15 +22,16 @@
 
 namespace brave_wallet {
 
-class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
-                               public content::RenderFrameObserver,
-                               public mojom::SolanaEventsListener {
+class JSSolanaProvider final
+    : public gin::DeprecatedWrappable<JSSolanaProvider>,
+      public content::RenderFrameObserver,
+      public mojom::SolanaEventsListener {
  public:
   ~JSSolanaProvider() override;
   JSSolanaProvider(const JSSolanaProvider&) = delete;
   JSSolanaProvider& operator=(const JSSolanaProvider&) = delete;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   static void Install(bool allow_overwrite_window_solana,
                       content::RenderFrame* render_frame);

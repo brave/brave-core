@@ -21,14 +21,15 @@ namespace brave_wallet {
 
 // https://cips.cardano.org/cip/CIP-30
 // This class implements cardano.brave object.
-class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
-                                public content::RenderFrameObserver {
+class JSCardanoProvider final
+    : public gin::DeprecatedWrappable<JSCardanoProvider>,
+      public content::RenderFrameObserver {
  public:
   ~JSCardanoProvider() override;
   JSCardanoProvider(const JSCardanoProvider&) = delete;
   JSCardanoProvider& operator=(const JSCardanoProvider&) = delete;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
