@@ -94,6 +94,8 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
       return "script-src 'self';";
     case network::mojom::CSPDirectiveName::StyleSrc:
       return "style-src 'self';";
+    case network::mojom::CSPDirectiveName::FontSrc:
+      return "font-src 'self';";
     case network::mojom::CSPDirectiveName::ImgSrc:
       return "img-src 'self';";
     case network::mojom::CSPDirectiveName::MediaSrc:
