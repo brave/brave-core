@@ -25,11 +25,12 @@
 
 namespace brave_wallet {
 
-class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
-                                 public content::RenderFrameObserver,
-                                 public mojom::EventsListener {
+class JSEthereumProvider final
+    : public gin::DeprecatedWrappable<JSEthereumProvider>,
+      public content::RenderFrameObserver,
+      public mojom::EventsListener {
  public:
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   JSEthereumProvider(const JSEthereumProvider&) = delete;
   JSEthereumProvider& operator=(const JSEthereumProvider&) = delete;
@@ -53,9 +54,9 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   explicit JSEthereumProvider(content::RenderFrame* render_frame);
   ~JSEthereumProvider() override;
 
-  class MetaMask final : public gin::Wrappable<MetaMask> {
+  class MetaMask final : public gin::DeprecatedWrappable<MetaMask> {
    public:
-    static gin::WrapperInfo kWrapperInfo;
+    static gin::DeprecatedWrapperInfo kWrapperInfo;
 
     explicit MetaMask(content::RenderFrame*);
     ~MetaMask() override;
