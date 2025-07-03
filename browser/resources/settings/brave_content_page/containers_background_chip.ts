@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { SkColor } from '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
+import { hexColorToSkColor } from '//resources/js/color_utils.js'
 
 import { getCss } from './containers_background_chip.css.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { getHtml } from './containers_background_chip.html.js'
-import { hexColorToSkColor } from 'chrome://resources/js/color_utils.js'
-import { SkColor } from 'chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
 
 export type ColorSelectedEvent = CustomEvent<{
   color: SkColor
