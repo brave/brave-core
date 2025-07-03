@@ -34,10 +34,7 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
 
   static override get properties() {
     return {
-      icon: {
-        type: Icon,
-        converter: (value: string | null) => (value ? (+value as Icon) : null),
-      },
+      icon: { type: Number },
       backgroundColor: { type: String },
       selected: { type: Boolean },
     }
