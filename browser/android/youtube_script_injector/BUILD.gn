@@ -31,6 +31,19 @@ source_set("youtube_script_injector") {
   ]
 }
 
+android_library("java") {
+  srcjar_deps = [ ":jni_headers" ]
+  sources = [ "java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//content/public/android:content_full_java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser"
+}
+
 source_set("features") {
   sources = [
     "features.cc",
