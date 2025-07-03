@@ -23,9 +23,7 @@ bool IsIconValid(mojom::Icon icon) {
 }
 
 bool IsBackgroundColorValid(SkColor color) {
-  auto in_range = [](uint8_t v) { return v >= 0 && v <= 255; };
-  return SkColorGetA(color) == SK_AlphaOPAQUE && in_range(SkColorGetR(color)) &&
-         in_range(SkColorGetG(color)) && in_range(SkColorGetB(color));
+  return SkColorGetA(color) == SK_AlphaOPAQUE;
 }
 
 }  // namespace
