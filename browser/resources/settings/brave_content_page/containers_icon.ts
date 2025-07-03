@@ -60,12 +60,6 @@ declare global {
   }
 }
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'settings-brave-content-containers-icon': SettingsBraveContentContainersIconElement
-  }
-}
-
 customElements.define(
   SettingsBraveContentContainersIconElement.is,
   SettingsBraveContentContainersIconElement,
