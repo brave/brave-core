@@ -13,7 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-    - uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
+
+    - name: set strict labels
+      uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
+      configuration-path: .github/synced-labels.yml
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: true
+
+    - name: set optional labels
+      uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
+      configuration-path: .github/optional-labels.yml
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        sync-labels: false
