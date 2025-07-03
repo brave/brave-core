@@ -17,6 +17,8 @@
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -124,6 +126,61 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
+                       PinnedSplitTabsLayoutInVerticalTabTest) {
+  ToggleVerticalTabStrip();
+
+  // Create enough pinned tabs including split tabs.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::PinTab(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::PinTab(browser());
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::NewSplitTab(browser());
+  chrome::PinTab(browser());
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::PinTab(browser());
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::NewSplitTab(browser());
+  chrome::PinTab(browser());
+
+  tab_strip()->StopAnimating(/* layout= */ true);
+  auto* widget_delegate_view =
+      brave_browser_view()->vertical_tab_strip_widget_delegate_view();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  auto check_split_tabs_has_same_y_position = [&]() {
+    auto* model = browser()->tab_strip_model();
+    const int tab_count = model->count();
+    for (int i = 0; i < tab_count; i++) {
+      auto* tab = tab_strip()->tab_at(i);
+      if (tab_count != (i + 1) && tab->split().has_value() &&
+          tab->split() == tab_strip()->tab_at(i + 1)->split()) {
+        // Check each split tab has same y-position.
+        EXPECT_EQ(tab->y(), tab_strip()->tab_at(i + 1)->y());
+      }
+    }
+  };
+
+  const auto initial_width = region_view->expanded_width_;
+  while (region_view->expanded_width_ >= (initial_width / 2)) {
+    check_split_tabs_has_same_y_position();
+    region_view->SetExpandedWidth(region_view->expanded_width_ - 20);
+  }
+
+  while (region_view->expanded_width_ < initial_width) {
+    check_split_tabs_has_same_y_position();
+    region_view->SetExpandedWidth(region_view->expanded_width_ + 20);
+  }
+}
 
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        BraveMultiContentsViewTest) {

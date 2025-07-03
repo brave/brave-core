@@ -134,6 +134,8 @@ class VerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            LayoutAfterFirstTabCreation);
+  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
+                           PinnedSplitTabsLayoutInVerticalTabTest);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
