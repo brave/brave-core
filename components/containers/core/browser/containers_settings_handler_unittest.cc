@@ -100,7 +100,7 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
                 "Valid Name", mojom::Icon::kPersonal, SK_ColorWHITE),
             std::nullopt);
 
-  // Invalid name
+  // Valid/Invalid names
   for (const auto& test_name : kContainerTestNames) {
     if (test_name.is_valid) {
       EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
@@ -113,14 +113,15 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
     }
   }
 
-  // Invalid icon
+  // Invalid icons
   for (const auto& icon : {static_cast<int>(mojom::Icon::kMinValue) - 1,
                            static_cast<int>(mojom::Icon::kMaxValue) + 1}) {
     EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
                   "Valid Name", mojom::Icon(icon), SK_ColorWHITE),
               mojom::ContainerOperationError::kInvalidIcon);
   }
-  // Valid icon
+
+  // Valid icons
   for (const auto& icon : {mojom::Icon::kPersonal, mojom::Icon::kBanking,
                            mojom::Icon::kShopping}) {
     EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
@@ -128,7 +129,7 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
               std::nullopt);
   }
 
-  // Invalid background color
+  // Invalid background colors
   for (const auto& color :
        {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
     EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
@@ -136,7 +137,7 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
               mojom::ContainerOperationError::kInvalidBackgroundColor);
   }
 
-  // Valid background color
+  // Valid background colors
   for (const auto& color : {SK_ColorWHITE, SK_ColorBLACK, SK_ColorRED,
                             SK_ColorGREEN, SK_ColorBLUE}) {
     EXPECT_EQ(ContainersSettingsHandler::ValidateContainerProperties(
