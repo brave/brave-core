@@ -409,7 +409,8 @@ extension BrowserViewController: TopToolbarDelegate {
         rootViewController: ShieldsPanelViewController(
           url: url,
           tab: selectedTab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
+          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate),
+          braveShieldsUtils: profileController.braveShieldsUtils
         ) { [weak self, weak selectedTab] action in
           switch action {
           case .navigate(let target, let dismiss):
@@ -493,6 +494,7 @@ extension BrowserViewController: TopToolbarDelegate {
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(privateMode: false),
+          braveShieldsUtils: profileController.braveShieldsUtils,
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
           rewards: rewards,
@@ -557,7 +559,8 @@ extension BrowserViewController: TopToolbarDelegate {
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        braveShieldsUtils: profileController.braveShieldsUtils
       )
     )
 

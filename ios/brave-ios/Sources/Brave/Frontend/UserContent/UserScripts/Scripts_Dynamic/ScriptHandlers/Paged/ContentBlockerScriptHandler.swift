@@ -85,12 +85,24 @@ extension ContentBlockerHelper: TabContentScript {
             return
           }
 
-          if dto.resourceType == .script
-            && domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
-          {
-            self.stats = self.stats.adding(scriptCount: 1)
-            BraveGlobalShieldStats.shared.scripts += 1
-            return
+          if dto.resourceType == .script {
+            if BraveShields.isUseContentSettingsForShieldsEnabled {
+              // TODO: Need BraveShieldsUtilsIOS
+              /*
+              if let url = tab.visibleURL,
+                 braveShieldsUtils.isShieldExpected(url: url, shield: .noScript, considerAllShieldsOption: true) {
+                self.stats = self.stats.adding(scriptCount: 1)
+                BraveGlobalShieldStats.shared.scripts += 1
+                return
+              }
+               */
+            } else {
+              if domain.isShieldExpected(.noScript, considerAllShieldsOption: true) {
+                self.stats = self.stats.adding(scriptCount: 1)
+                BraveGlobalShieldStats.shared.scripts += 1
+                return
+              }
+            }
           }
 
           // Because javascript urls allow some characters that `URL` does not,
@@ -140,15 +152,30 @@ extension ContentBlockerHelper: TabContentScript {
           guard !self.blockedRequests.contains(where: { $0.requestURL == requestURL }) else {
             return
           }
-          self.blockedRequests.append(
-            .init(
-              requestURL: requestURL,
-              sourceURL: sourceURL,
-              resourceType: dto.resourceType,
-              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
-              location: .contentBlocker
+          if BraveShields.isUseContentSettingsForShieldsEnabled {
+            // TODO: Need BraveShieldsUtilsIOS
+            /*
+            self.blockedRequests.append(
+              .init(
+                requestURL: requestURL,
+                sourceURL: sourceURL,
+                resourceType: dto.resourceType,
+                isAggressive: braveShieldsUtils.adBlockMode(for: requestURL) == .aggressive,
+                location: .contentBlocker
+              )
             )
-          )
+            */
+          } else {
+            self.blockedRequests.append(
+              .init(
+                requestURL: requestURL,
+                sourceURL: sourceURL,
+                resourceType: dto.resourceType,
+                isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+                location: .contentBlocker
+              )
+            )
+          }
 
           // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
           // in BraveShared)

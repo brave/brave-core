@@ -78,7 +78,8 @@ import WebKit
   /// Return all the user script types for this page. The number of script types grows as more frames are loaded.
   @MainActor func makeUserScriptTypes(
     domain: Domain,
-    isDeAmpEnabled: Bool
+    isDeAmpEnabled: Bool,
+    isBlockFingerprintingEnabled: Bool
   ) async -> Set<UserScriptType> {
     if !mainFrameURL.isWebPage(includeDataURIs: false) {
       // Local application urls do not need page-specific user scripts injected
@@ -91,11 +92,11 @@ import WebKit
 
     // Handle dynamic domain level scripts on the main document.
     // These are scripts that change depending on the domain and the main document
-    let isFPProtectionOn = domain.isShieldExpected(.fpProtection, considerAllShieldsOption: true)
+
     // Add the `farblingProtection` script if needed
     // Note: The added farbling protection script based on the document url, not the frame's url.
     // It is also added for every frame, including subframes.
-    if isFPProtectionOn, let baseDomain = mainFrameURL.baseDomain {
+    if isBlockFingerprintingEnabled, let baseDomain = mainFrameURL.baseDomain {
       userScriptTypes.insert(.nacl)  // dependency for `farblingProtection`
       userScriptTypes.insert(.farblingProtection(etld: baseDomain))
     }
@@ -103,15 +104,7 @@ import WebKit
     // Handle dynamic domain level scripts on the request that don't use shields
     // This shield is always on and doesn't need sheild settings
     if let domainUserScript = DomainUserScript(for: mainFrameURL) {
-      if let shield = domainUserScript.requiredShield {
-        // If a shield is required check that shield
-        if domain.isShieldExpected(shield, considerAllShieldsOption: true) {
-          userScriptTypes.insert(.domainUserScript(domainUserScript))
-        }
-      } else {
-        // Otherwise just add it right away
-        userScriptTypes.insert(.domainUserScript(domainUserScript))
-      }
+      userScriptTypes.insert(.domainUserScript(domainUserScript))
     }
 
     let allEngineScriptTypes = await makeAllEngineScripts(

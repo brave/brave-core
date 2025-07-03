@@ -72,17 +72,32 @@ struct DefaultShieldsSectionView: View {
         subtitle: Strings.autoRedirectTrackingURLsDescription,
         toggle: $settings.isDebounceEnabled
       )
-      OptionToggleView(
-        title: Strings.blockScripts,
-        subtitle: Strings.blockScriptsDescription,
-        option: Preferences.Shields.blockScripts
-      )
-
-      OptionToggleView(
-        title: Strings.fingerprintingProtection,
-        subtitle: Strings.fingerprintingProtectionDescription,
-        option: Preferences.Shields.fingerprintingProtection
-      )
+      if BraveShields.isUseContentSettingsForShieldsEnabled {
+        ToggleView(
+          title: Strings.blockScripts,
+          subtitle: Strings.blockScriptsDescription,
+          toggle: $settings.isBlockScriptsEnabled
+        )
+      } else {
+        OptionToggleView(
+          title: Strings.blockScripts,
+          subtitle: Strings.blockScriptsDescription,
+          option: Preferences.Shields.blockScripts
+        )
+      }
+      if BraveShields.isUseContentSettingsForShieldsEnabled {
+        ToggleView(
+          title: Strings.fingerprintingProtection,
+          subtitle: Strings.fingerprintingProtectionDescription,
+          toggle: $settings.isBlockFingerprintingEnabled
+        )
+      } else {
+        OptionToggleView(
+          title: Strings.fingerprintingProtection,
+          subtitle: Strings.fingerprintingProtectionDescription,
+          option: Preferences.Shields.fingerprintingProtection
+        )
+      }
 
       ToggleView(
         title: Strings.blockCookieConsentNotices,

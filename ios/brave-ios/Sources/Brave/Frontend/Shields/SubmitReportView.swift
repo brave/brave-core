@@ -18,6 +18,7 @@ struct SubmitReportView: View {
   @Environment(\.dismiss) private var dismiss: DismissAction
   let url: URL
   let isPrivateBrowsing: Bool
+  let braveShieldsUtils: BraveShieldsUtilsIOS
 
   @ScaledMetric private var textEditorHeight = 80.0
   @State private var additionalDetails = ""
@@ -148,14 +149,32 @@ struct SubmitReportView: View {
     let adblkList = FilterListStorage.shared.filterLists
       .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
       .joined(separator: ",")
+    let adBlockSetting: String
+    let fpBlockSetting: String
+    if BraveShields.isUseContentSettingsForShieldsEnabled {
+      if !braveShieldsUtils.isBraveShieldsEnabled(for: url) {
+        adBlockSetting = ShieldLevel.disabled.reportLabel
+        fpBlockSetting = ShieldLevel.disabled.reportLabel
+      } else {
+        adBlockSetting = braveShieldsUtils.adBlockMode(for: url).shieldLevel.reportLabel
+        let isBlockFingerprintingEnabled = braveShieldsUtils.isBlockFingerprintingEnabled(for: url)
+        // We don't have aggressive finterprint protection in iOS
+        fpBlockSetting =
+          isBlockFingerprintingEnabled
+          ? ShieldLevel.standard.reportLabel : ShieldLevel.disabled.reportLabel
+      }
+    } else {
+      adBlockSetting = domain.globalBlockAdsAndTrackingLevel.reportLabel
+      fpBlockSetting = domain.finterprintProtectionLevel.reportLabel
+    }
     webcompatReporterAPI.submitWebcompatReport(
       reportInfo: .init(
         channel: AppConstants.buildChannel.webCompatReportName,
         braveVersion: version,
         reportUrl: url.absoluteString,
         shieldsEnabled: String(!domain.areAllShieldsOff),
-        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
-        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        adBlockSetting: adBlockSetting,
+        fpBlockSetting: fpBlockSetting,
         adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
@@ -170,13 +189,6 @@ struct SubmitReportView: View {
       )
     )
   }
-}
-
-#Preview {
-  SubmitReportView(
-    url: URL(string: "https://brave.com/privacy-features")!,
-    isPrivateBrowsing: false
-  )
 }
 
 extension ShieldLevel {

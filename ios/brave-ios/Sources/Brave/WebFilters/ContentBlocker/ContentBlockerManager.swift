@@ -574,6 +574,7 @@ import os.log
     guard !domain.areAllShieldsOff else { return [] }
     var results = Set<GenericBlocklistType>()
 
+    // TODO: Need BraveShieldsUtilsIOS
     // Get domain specific rule types
     if domain.globalBlockAdsAndTrackingLevel.isEnabled {
       results = results.union([.blockAds, .blockTrackers])

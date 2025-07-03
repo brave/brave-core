@@ -312,7 +312,8 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
             domain: domainForMainFrame,
-            isDeAmpEnabled: false
+            isDeAmpEnabled: false,
+            isBlockFingerprintingEnabled: true
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }
