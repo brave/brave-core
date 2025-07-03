@@ -37,14 +37,14 @@ namespace skus {
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
 class SkusJSHandler : public content::RenderFrameObserver,
-                      public gin::Wrappable<SkusJSHandler> {
+                      public gin::DeprecatedWrappable<SkusJSHandler> {
  public:
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
   ~SkusJSHandler() override;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static gin::DeprecatedWrapperInfo kWrapperInfo;
 
   static void Install(content::RenderFrame* render_frame);
 
