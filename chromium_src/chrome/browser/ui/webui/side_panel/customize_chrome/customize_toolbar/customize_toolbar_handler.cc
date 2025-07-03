@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"
 
+#include "base/containers/map_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
