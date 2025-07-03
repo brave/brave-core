@@ -34,7 +34,10 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
 
   static override get properties() {
     return {
-      icon: { type: Icon },
+      icon: {
+        type: Icon,
+        converter: (value: string | null) => (value ? (+value as Icon) : null),
+      },
       backgroundColor: { type: String },
       selected: { type: Boolean },
     }
@@ -50,7 +53,7 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
 
   accessor icon: Icon
   get leoIcon() {
-    const icon = iconsMap.get(+this.icon)  // Convert to number since Icon is a string
+    const icon = iconsMap.get(this.icon)
     if (!icon) {
       console.warn(`No Leo icon found for icon: ${this.icon} from `, iconsMap)
       return ''

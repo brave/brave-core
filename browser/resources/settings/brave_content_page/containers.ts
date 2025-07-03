@@ -131,7 +131,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     assert(this.editingContainer_)
     this.editingContainer_ = {
       ...this.editingContainer_,
-      icon: +event.detail.icon,  // event.detail.icon is string, so convert it to number(enum)
+      icon: event.detail.icon,
     }
   }
 
