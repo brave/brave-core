@@ -27,6 +27,7 @@ inline constexpr char kWebcompatReportErrorsField[] = "webcompatReportErrors";
 
 inline constexpr char kSiteURLField[] = "url";
 inline constexpr char kDomainField[] = "domain";
+inline constexpr char kCategoryField[] = "category";
 inline constexpr char kDetailsField[] = "additionalDetails";
 inline constexpr char kContactField[] = "contactInfo";
 inline constexpr char kApiKeyField[] = "api_key";
