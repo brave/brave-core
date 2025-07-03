@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { html } from '//resources/lit/v3_0/lit.rollup.js'
+
 import { SettingsBraveContentContainersIconElement } from "./containers_icon"
-import { html } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
 export function getHtml(this: SettingsBraveContentContainersIconElement) {
     return html`
