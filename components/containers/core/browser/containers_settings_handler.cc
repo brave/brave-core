@@ -17,6 +17,12 @@ namespace containers {
 
 namespace {
 
+// Returns true if the container name is valid.
+bool IsContainerNameValid(std::string_view name) {
+  // A string that is not empty and does not contain only whitespace.
+  return re2::RE2::FullMatch(name, re2::RE2("^.*\\S.*$"));
+}
+
 bool IsIconValid(mojom::Icon icon) {
   // Valid icons are in the range of defined mojom::Icon values.
   return icon >= mojom::Icon::kMinValue && icon <= mojom::Icon::kMaxValue;
@@ -132,12 +138,6 @@ ContainersSettingsHandler::ValidateEditableContainerProperties(
   }
 
   return std::nullopt;
-}
-
-// static
-bool ContainersSettingsHandler::IsContainerNameValid(std::string_view name) {
-  // A string that is not empty and does not contain only whitespace.
-  return re2::RE2::FullMatch(name, re2::RE2("^.*\\S.*$"));
 }
 
 void ContainersSettingsHandler::OnContainersChanged() {

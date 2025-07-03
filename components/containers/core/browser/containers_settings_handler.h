@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SETTINGS_HANDLER_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 
@@ -50,9 +49,6 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
   ValidateEditableContainerProperties(const mojom::ContainerPtr& container);
-
-  // Returns true if the container name is valid.
-  static bool IsContainerNameValid(std::string_view name);
 
  private:
   // Called when the containers list in preferences changes.

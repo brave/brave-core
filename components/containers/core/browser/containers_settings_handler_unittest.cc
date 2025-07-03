@@ -160,15 +160,6 @@ TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
   }
 }
 
-TEST_F(ContainersSettingsHandlerTest, IsContainerNameValid) {
-  for (const auto& test_name : kContainerTestNames) {
-    EXPECT_EQ(ContainersSettingsHandler::IsContainerNameValid(test_name.name),
-              test_name.is_valid)
-        << test_name.name << " should be "
-        << (test_name.is_valid ? "valid" : "invalid");
-  }
-}
-
 TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
       error_future;
