@@ -55,10 +55,7 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               (),
               (const));
   MOCK_METHOD(std::optional<std::string>, GetChannelName, (), (const));
-  MOCK_METHOD(std::optional<std::vector<ComponentInfo>>,
-              GetComponentInfos,
-              (),
-              (const));
+  MOCK_METHOD(std::vector<ComponentInfo>, GetComponentInfos, (), (const));
   MOCK_METHOD(std::optional<std::string>,
               GetCookiePolicy,
               (const std::optional<std::string>& current_url),

@@ -54,12 +54,12 @@ struct ReportFiller {
     }
 
     auto component_infos = service_delegate->GetComponentInfos();
-    if (!component_infos) {
+    if (component_infos.empty()) {
       return *this;
     }
 
     std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components_list;
-    for (const auto& component : component_infos.value()) {
+    for (const auto& component : component_infos) {
       components_list.emplace_back(
           webcompat_reporter::mojom::ComponentInfo::New(
               component.name, component.id, component.version));
