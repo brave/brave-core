@@ -9,7 +9,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_file_task_runner.h"
@@ -26,6 +25,10 @@ constexpr base::FilePath::CharType kExtensionMV2BackupDir[] =
 
 constexpr base::FilePath::CharType kIndexedDBDir[] =
     FILE_PATH_LITERAL("IndexedDB");
+
+base::FilePath::StringType ASCIIToPathStringType(std::string_view str) {
+  return base::FilePath::FromASCII(str).value();
+}
 
 base::FilePath GetLocalSettings(const extensions::ExtensionId& extension_id,
                                 const base::FilePath& profile_dir) {
@@ -54,11 +57,10 @@ base::FilePath GetLocalSettingsForImport(
 base::FileEnumerator GetIndexedSettings(
     const extensions::ExtensionId& extension_id,
     const base::FilePath& profile_dir) {
-  const auto pattern = base::FilePath::FromASCII(
+  const auto pattern = ASCIIToPathStringType(
       base::StrCat({"chrome-extension_", extension_id, "_*indexeddb*"}));
   return base::FileEnumerator(profile_dir.Append(kIndexedDBDir), false,
-                              base::FileEnumerator::DIRECTORIES,
-                              pattern.value());
+                              base::FileEnumerator::DIRECTORIES, pattern);
 }
 
 base::FileEnumerator GetIndexedSettingsForImport(
@@ -69,11 +71,11 @@ base::FileEnumerator GetIndexedSettingsForImport(
       extensions_mv2::GetCwsExtensionId(brave_hosted_extension_id);
   CHECK(cws_extension_id);
 
-  const auto pattern = base::FilePath::FromASCII(
+  const auto pattern = ASCIIToPathStringType(
       base::StrCat({"chrome-extension_", *cws_extension_id, "_*indexeddb*"}));
   return base::FileEnumerator(
       profile_dir.Append(kExtensionMV2BackupDir).Append(kIndexedDBDir), false,
-      base::FileEnumerator::DIRECTORIES, pattern.value());
+      base::FileEnumerator::DIRECTORIES, pattern);
 }
 
 bool IsBackupAvailableFor(
@@ -159,21 +161,17 @@ void ImportExtensionSettingsOnFileThread(
             .AppendASCII(brave_hosted_extension_id));
   }
 
-  const auto brave_hosted_extension_id_u16 =
-      base::UTF8ToUTF16(brave_hosted_extension_id);
-
-  const auto cws_extension_id_u16 = base::UTF8ToUTF16(
-      *extensions_mv2::GetCwsExtensionId(brave_hosted_extension_id));
+  const auto cws_extension_id =
+      *extensions_mv2::GetCwsExtensionId(brave_hosted_extension_id);
 
   GetIndexedSettingsForImport(brave_hosted_extension_id, profile_dir)
-      .ForEach([&profile_dir, &brave_hosted_extension_id_u16,
-                &cws_extension_id_u16](const base::FilePath& path) {
-        auto name = path.BaseName().AsUTF16Unsafe();
-        base::ReplaceFirstSubstringAfterOffset(&name, 0, cws_extension_id_u16,
-                                               brave_hosted_extension_id_u16);
-        base::Move(
-            path,
-            profile_dir.Append(kIndexedDBDir).Append(base::UTF16ToWide(name)));
+      .ForEach([&profile_dir, &brave_hosted_extension_id,
+                &cws_extension_id](const base::FilePath& path) {
+        auto name = path.BaseName().value();
+        base::ReplaceFirstSubstringAfterOffset(
+            &name, 0, ASCIIToPathStringType(cws_extension_id),
+            ASCIIToPathStringType(brave_hosted_extension_id));
+        base::Move(path, profile_dir.Append(kIndexedDBDir).Append(name));
       });
 }
 
