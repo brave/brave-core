@@ -25,9 +25,8 @@ _IS_OBSERVABLE_ARRAY_SETTER = "pg_is_observable_array_setter"
 
 # Allowed WebAPIs to track.
 _PAGE_GRAPH_TRACKED_ITEMS = {
-    "OffscreenCanvasRenderingContext2D": {
-        "measureText",
-    },
+    "AudioContext": {"*"},
+    "BaseAudioContext": {"*"},
     "CanvasRenderingContext2D": {
         "measureText",
     },
@@ -35,41 +34,48 @@ _PAGE_GRAPH_TRACKED_ITEMS = {
         "cookie",
         "referrer",
     },
+    "DynamicsCompressorNode": {"*"},
+    "Geolocation": {"*"},
     "HTMLCanvasElement": {
         "getContext",
         "toBlob",
         "toDataURL",
     },
-    "Geolocation": {"*"},
     "Location": {"*"},
     "MediaDevices": {"*"},
     "Navigator": {"*"},
+    "OfflineAudioContext": {"*"},
+    "OffscreenCanvasRenderingContext2D": {
+        "measureText",
+    },
+    "OscillatorNode": {"*"},
     "Performance": {"*"},
-    "PerformanceObserver": {"*"},
     "PerformanceNavigation": {"*"},
+    "PerformanceObserver": {"*"},
     "PerformanceTiming": {"*"},
     "Screen": {"*"},
     "Storage": {"*"},
-    "Window": {
-        "performance",
-        "fetch",
-        "setTimeout",
-        "setInterval",
-        "clearTimeout",
-        "clearInterval",
-    },
-    "WorkerGlobalScope": {
-        "performance",
-        "fetch",
+    "WebGL2RenderingContext": {
+        "getExtension",
+        "getParameter",
     },
     "WebGLRenderingContext": {
         "getExtension",
         "getParameter",
         "getShaderPrecisionFormat",
     },
-    "WebGL2RenderingContext": {
-        "getExtension",
-        "getParameter",
+    "Window": {
+        "clearInterval",
+        "clearTimeout",
+        "fetch",
+        "matchMedia",
+        "performance",
+        "setInterval",
+        "setTimeout",
+    },
+    "WorkerGlobalScope": {
+        "fetch",
+        "performance",
     },
     "XMLHttpRequest": {"*"},
     "XMLHttpRequestEventTarget": {"*"},
