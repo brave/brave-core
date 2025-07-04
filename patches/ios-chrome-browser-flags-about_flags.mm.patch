@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 2306a49d2306c54555c10cbb1ca483ff8d6024c7..20b9291556c9afcb325ee18cf3e2aca3078a06db 100644
+index ddb64884bcd3da5647784b92f39de4cc0f6f6c04..b0ed085ff2de074130d1a039356b362057ed7b80 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1411,6 +1411,7 @@ const FeatureEntry::FeatureVariation kOmniboxMobileParityVariations[] = {
+@@ -1458,6 +1458,7 @@ const FeatureEntry::Choice kDataSharingVersioningStateChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {
