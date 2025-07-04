@@ -12,6 +12,7 @@ include_rules = [
   "+components/prefs",
   "+components/search_engines",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/variations",
   "+content/public/test",
   "+services/network/public",
   "+services/network/test",

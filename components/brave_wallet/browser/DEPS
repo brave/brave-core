@@ -12,6 +12,8 @@ include_rules = [
   "+components/pref_registry",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/update_client",
+  "+components/value_store",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
