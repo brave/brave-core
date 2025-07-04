@@ -1,55 +1,52 @@
-//
-//  BookmarkModel.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-05-01.
-//
+// Copyright 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Growth
 
 enum BookmarkItemSelection {
-  case openAll
   case openInNewTab
   case openInNewPrivateTab
   case copyLink
   case shareLink
 }
 
-class BookmarkModel: NSObject, ObservableObject {
+@Observable
+class BookmarkModel: NSObject {
   private let api: BraveBookmarksAPI?
   private weak var tabManager: TabManager?
   private weak var bookmarkManager: BookmarkManager?
   private weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
-  private var dismiss: () -> Void
-
-  @Published
-  private(set) var isBookmarksServiceLoaded = false
-
-  @Published
+  private var dismiss: (() -> Void)?
   private(set) var isPrivateBrowsing = false
 
-  var lastVisitedFolder: Bookmarkv2? {
+  var lastVisitedFolder: BookmarkNode? {
     bookmarkManager?.lastVisitedFolder()
   }
 
-  var mobileBookmarksFolder: Bookmarkv2? {
+  var lastVisitedFolderPath: [BookmarkNode] {
+    bookmarkManager?.lastVisitedFolderPath() ?? []
+  }
+
+  var mobileBookmarksFolder: BookmarkNode? {
     guard let api = api else {
       return nil
     }
 
     if let node = api.mobileNode {
-      return Bookmarkv2(node)
+      return node
     }
     return nil
   }
 
   init(
     api: BraveBookmarksAPI?,
-    tabManager: TabManager?,
-    bookmarksManager: BookmarkManager?,
-    toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?,
-    dismiss: @escaping () -> Void
+    tabManager: TabManager? = nil,
+    bookmarksManager: BookmarkManager? = nil,
+    toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate? = nil,
+    dismiss: (() -> Void)? = nil
   ) {
     self.api = api
     self.tabManager = tabManager
@@ -65,22 +62,22 @@ class BookmarkModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func bookmarks(for folder: Bookmarkv2? = nil, query: String?) async -> [Bookmarkv2] {
+  func bookmarks(for folder: BookmarkNode? = nil, query: String?) async -> [BookmarkNode] {
     if query == nil || query?.isEmpty == true {
-      var items = [Bookmarkv2]()
+      var items = [BookmarkNode]()
       if let folder = folder {
         items.append(contentsOf: folder.children)
       } else if let api = api {
         if let node = api.mobileNode {
-          items.append(Bookmarkv2(node))
+          items.append(node)
         }
 
         if let node = api.desktopNode, node.childCount > 0 {
-          items.append(Bookmarkv2(node))
+          items.append(node)
         }
 
         if let node = api.otherNode, node.childCount > 0 {
-          items.append(Bookmarkv2(node))
+          items.append(node)
         }
       }
       return items
@@ -88,44 +85,42 @@ class BookmarkModel: NSObject, ObservableObject {
 
     return await withCheckedContinuation { continuation in
       bookmarkManager?.byFrequency(query: query) {
-        continuation.resume(returning: Array(($0 as! [Bookmarkv2]).uniqued()))
+        continuation.resume(returning: Array($0.uniqued()))
       }
     }
   }
 
   @MainActor
-  func folders(excluding excludedFolder: Bookmarkv2? = nil) async -> [BraveBookmarkFolder] {
+  func folders(excluding excludedFolder: BookmarkNode? = nil) async -> [BookmarkFolder] {
     guard let api = api else {
       return []
     }
 
-    let nestedFolders = { (_ node: BookmarkNode, _ guid: String?) -> [BraveBookmarkFolder] in
+    let nestedFolders = { (_ node: BookmarkNode, _ guid: String?) -> [BookmarkFolder] in
       if let guid = guid {
-        return node.nestedChildFolders.filter({ $0.bookmarkNode.guid != guid }).map({
-          BraveBookmarkFolder($0)
-        })
+        return node.nestedChildFolders.filter({ $0.bookmarkNode.guid != guid })
       }
-      return node.nestedChildFolders.map({ BraveBookmarkFolder($0) })
+      return node.nestedChildFolders
     }
 
-    var items = [BraveBookmarkFolder]()
+    var items = [BookmarkFolder]()
 
     if let node = api.mobileNode {
-      items.append(contentsOf: nestedFolders(node, excludedFolder?.bookmarkNode.guid))
+      items.append(contentsOf: nestedFolders(node, excludedFolder?.guid))
     }
 
     if let node = api.desktopNode, node.childCount > 0 {
-      items.append(contentsOf: nestedFolders(node, excludedFolder?.bookmarkNode.guid))
+      items.append(contentsOf: nestedFolders(node, excludedFolder?.guid))
     }
 
     if let node = api.otherNode, node.childCount > 0 {
-      items.append(contentsOf: nestedFolders(node, excludedFolder?.bookmarkNode.guid))
+      items.append(contentsOf: nestedFolders(node, excludedFolder?.guid))
     }
 
     return items
   }
 
-  func bookmarks(in folder: Bookmarkv2) -> [URL] {
+  func bookmarks(in folder: BookmarkNode) -> [URL] {
     guard folder.isFolder else {
       return []
     }
@@ -137,25 +132,25 @@ class BookmarkModel: NSObject, ObservableObject {
       let bookmarkItem = children.removeFirst()
       if bookmarkItem.isFolder {
         children.insert(contentsOf: bookmarkItem.children, at: 0)
-      } else if let bookmarkURL = bookmarkItem.url, let url = URL(string: bookmarkURL) {
-        urls.append(url)
+      } else if let bookmarkURL = bookmarkItem.url {
+        urls.append(bookmarkURL)
       }
     }
     return urls
   }
 
-  func move(nodes: [Bookmarkv2], to index: Int) {
+  func move(nodes: [BookmarkNode], to index: Int) {
     nodes.enumerated().forEach({
-      if let parent = $0.element.parent?.bookmarkNode ?? api?.mobileNode {
-        $0.element.bookmarkNode.move(toParent: parent, index: UInt(index))
+      if let parent = $0.element.parentNode ?? api?.mobileNode {
+        $0.element.move(toParent: parent, index: UInt(index))
       }
     })
   }
 
-  func delete(nodes: [Bookmarkv2]) {
+  func delete(nodes: [BookmarkNode]) {
     nodes.forEach({
       if $0.canBeDeleted {
-        api?.removeBookmark($0.bookmarkNode)
+        api?.removeBookmark($0)
       }
     })
   }
@@ -164,20 +159,22 @@ class BookmarkModel: NSObject, ObservableObject {
     api?.removeAll()
   }
 
-  func handleBookmarkItemSelection(_ selection: BookmarkItemSelection, node: Bookmarkv2) {
-    guard let urlString = node.url, let url = URL(string: urlString) else {
+  func openAllBookmarks(node: BookmarkNode) {
+    dismiss?()
+    toolbarUrlActionsDelegate?.batchOpen(bookmarks(in: node))
+  }
+
+  func handleBookmarkItemSelection(_ selection: BookmarkItemSelection, node: BookmarkNode) {
+    guard let url = node.url else {
       return
     }
 
     switch selection {
-    case .openAll:
-      dismiss()
-      toolbarUrlActionsDelegate?.batchOpen(bookmarks(in: node))
     case .openInNewTab:
-      dismiss()
+      dismiss?()
       toolbarUrlActionsDelegate?.openInNewTab(url, isPrivate: false)
     case .openInNewPrivateTab:
-      dismiss()
+      dismiss?()
       toolbarUrlActionsDelegate?.openInNewTab(url, isPrivate: true)
     case .copyLink:
       toolbarUrlActionsDelegate?.copy(url)
@@ -187,31 +184,25 @@ class BookmarkModel: NSObject, ObservableObject {
   }
 
   @discardableResult
-  public func addFolder(title: String, in parentFolder: Bookmarkv2? = nil) -> Bookmarkv2? {
+  public func addFolder(title: String, in parent: BookmarkNode? = nil) -> BookmarkNode? {
     guard let api = api else {
       return nil
     }
 
-    if let parentNode = parentFolder?.bookmarkNode {
-      if let result = api.createFolder(withParent: parentNode, title: title) {
-        return Bookmarkv2(result)
-      }
-      return nil
+    if let parent = parent {
+      return api.createFolder(withParent: parent, title: title)
     }
 
-    if let result = api.createFolder(withTitle: title) {
-      return Bookmarkv2(result)
-    }
-    return nil
+    return api.createFolder(withTitle: title)
   }
 
-  public func addBookmark(url: URL, title: String?, in parentFolder: Bookmarkv2? = nil) {
+  public func addBookmark(url: URL, title: String?, in parent: BookmarkNode? = nil) {
     guard let api = api else {
       return
     }
 
-    if let parentNode = parentFolder?.bookmarkNode {
-      api.createBookmark(withParent: parentNode, title: title ?? "", with: url)
+    if let parent = parent {
+      api.createBookmark(withParent: parent, title: title ?? "", with: url)
     } else {
       api.createBookmark(withTitle: title ?? "", url: url)
     }

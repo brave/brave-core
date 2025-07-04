@@ -1,27 +1,25 @@
-//
-//  BookmarksAddEditFolderView.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-05-12.
-//
+// Copyright 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import DesignSystem
 import Favicon
 import SwiftUI
+import Web
 
 struct BookmarksAddEditFolderView: View {
   @Environment(\.dismiss)
   private var dismiss
 
-  @ObservedObject
   private var model: BookmarkModel
 
-  @State
-  private var folder: Bookmarkv2?
+  private var action: Action
 
   @State
-  private var selectedParentFolder: Bookmarkv2?
+  private var selectedParentFolder: BookmarkNode?
 
   @State
   private var title: String
@@ -30,63 +28,104 @@ struct BookmarksAddEditFolderView: View {
   private var isExpanded = false
 
   @State
-  private var folders: [(folder: Bookmarkv2, indentationLevel: Int)] = []
+  private var folders: [BookmarkFolder] = []
 
-  private var defaultRootFolder: Bookmarkv2? {
+  private var defaultRootFolder: BookmarkNode? {
     model.mobileBookmarksFolder
   }
 
-  init(model: BookmarkModel, folder: Bookmarkv2? = nil) {
+  private var manuallyDismiss: (() -> Void)?
+
+  enum Action {
+    case modifyFolder(_ folder: BookmarkNode?)
+    case addTabs(_ tabs: [any TabState])
+
+    var title: String {
+      switch self {
+      case .modifyFolder(let folder):
+        return folder?.title ?? Strings.newFolderDefaultName
+      case .addTabs:
+        return Strings.savedTabsFolderTitle
+      }
+    }
+
+    var navigationBarTitle: String {
+      switch self {
+      case .modifyFolder(let folder):
+        return folder == nil ? Strings.newFolderTitle : Strings.editFolderTitle
+      case .addTabs:
+        return Strings.newFolderTitle
+      }
+    }
+
+    func defaultSelectedParentFolder(for model: BookmarkModel) -> BookmarkNode? {
+      switch self {
+      case .modifyFolder(let folder):
+        return folder?.parent
+      case .addTabs:
+        return model.mobileBookmarksFolder
+      }
+    }
+  }
+
+  init(model: BookmarkModel, action: Action, dismiss: (() -> Void)? = nil) {
     self.model = model
-    self.folder = folder
-    self.selectedParentFolder = folder?.parent
-    self.title = folder?.title ?? Strings.newFolderDefaultName
+    self.action = action
+    self.manuallyDismiss = dismiss
+    self._selectedParentFolder = .init(initialValue: action.defaultSelectedParentFolder(for: model))
+    self._title = .init(initialValue: action.title)
   }
 
   var body: some View {
     List {
       Section {
-        TextField("", text: $title, prompt: Text(Strings.bookmarkTitlePlaceholderText))
+        if case .modifyFolder = action {
+          TextField("", text: $title, prompt: Text(Strings.bookmarkTitlePlaceholderText))
+        } else {
+          TextField("", text: $title, prompt: Text(title))
+        }
       }
 
       Section {
         if isExpanded {
-          ForEach(folders, id: \.folder.id) { indentedFolder in
+          ForEach(folders, id: \.bookmarkNode.id) { indentedFolder in
             Button {
-              selectedParentFolder = indentedFolder.folder
+              selectedParentFolder = indentedFolder.bookmarkNode
               isExpanded.toggle()
             } label: {
-              HStack {
-                let hasChildFolders = indentedFolder.folder.children.contains(where: {
+              Label {
+                Text(indentedFolder.bookmarkNode.title)
+              } icon: {
+                let hasChildFolders = indentedFolder.bookmarkNode.children.contains(where: {
                   $0.isFolder
                 })
 
                 Image(
-                  braveSystemName: indentedFolder.folder.parent == nil
+                  braveSystemName: indentedFolder.bookmarkNode.parentNode == nil
                     ? "leo.product.bookmarks" : hasChildFolders ? "leo.folder.open" : "leo.folder"
                 )
-                Text(indentedFolder.folder.title ?? "")
               }
               .padding(.leading, CGFloat(indentedFolder.indentationLevel) * 16.0)
             }
-            .tint(Color(braveSystemName: .iconDefault))
+            .foregroundColor(Color(braveSystemName: .iconDefault))
           }
         } else {
           Button {
             isExpanded.toggle()
           } label: {
-            HStack {
-              Image(
-                braveSystemName: selectedParentFolder == nil
-                  ? "leo.product.bookmarks" : "leo.folder"
-              )
+            Label {
               Text(
                 selectedParentFolder?.title ?? defaultRootFolder?.title
                   ?? Strings.bookmarkRootLevelCellTitle
               )
+            } icon: {
+              Image(
+                braveSystemName: selectedParentFolder == nil
+                  ? "leo.product.bookmarks" : "leo.folder"
+              )
             }
           }
-          .tint(Color(braveSystemName: .iconDefault))
+          .foregroundColor(Color(braveSystemName: .iconDefault))
         }
       }
     }
@@ -94,25 +133,41 @@ struct BookmarksAddEditFolderView: View {
     .background(Color(.braveGroupedBackground))
     .listStyle(.grouped)
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(folder == nil ? Strings.newFolderTitle : Strings.editFolderTitle)
+    .navigationTitle(action.navigationBarTitle)
     .toolbar {
-      ToolbarItemGroup(placement: .topBarTrailing) {
+      ToolbarItemGroup(placement: .confirmationAction) {
         Button(Strings.saveButtonTitle) {
-          if folder == nil {
-            model.addFolder(title: title, in: selectedParentFolder ?? defaultRootFolder)
-          } else {
-            folder?.bookmarkNode.setTitle(title)
+          switch action {
+          case .modifyFolder(let folder):
+            if folder == nil {
+              model.addFolder(title: title, in: selectedParentFolder ?? defaultRootFolder)
+            } else {
+              folder?.title = title
+            }
+
+          case .addTabs(let tabs):
+            if let newFolder = model.addFolder(
+              title: title,
+              in: selectedParentFolder ?? defaultRootFolder
+            ) {
+              for tab in tabs {
+                if let url = tab.visibleURL, url.isWebPage() {
+                  model.addBookmark(url: url, title: tab.title, in: newFolder)
+                }
+              }
+            }
           }
 
-          dismiss()
+          manuallyDismiss?() ?? dismiss()
         }
       }
     }
-    .onAppear {
-      Task {
-        self.folders = await model.folders(excluding: self.folder).map({
-          return ($0, $0.indentationLevel)
-        })
+    .task {
+      switch action {
+      case .modifyFolder(let folder):
+        self.folders = await model.folders(excluding: folder)
+      case .addTabs:
+        self.folders = await model.folders()
       }
     }
   }
