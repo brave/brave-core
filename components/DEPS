@@ -67,9 +67,15 @@ include_rules += [
   "-components/search_engines",
   "-components/security_interstitials",
   "-components/sessions",
+  "-components/signin",
+  "-components/sync_device_info",
   "-components/sync_preferences",
   "-components/sync",
+  "-components/update_client",
   "-components/user_prefs",
+  "-components/value_store",
+  "-components/variations",
+  "-components/version_info",
 ]
 
 specific_include_rules = {

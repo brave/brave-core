@@ -4,6 +4,7 @@ include_rules = [
   "+components/network_time",
   "+components/os_crypt/sync",
   "+components/prefs",
+  "+components/signin",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
   "+google_apis/gaia/gaia_id.h",

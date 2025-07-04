@@ -3,6 +3,7 @@ include_rules = [
   "+components/keyed_service",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/version_info",
   "+content/public/browser",
   "+content/public/test",
   "+services/data_decoder/public",

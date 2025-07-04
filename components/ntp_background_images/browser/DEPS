@@ -5,6 +5,7 @@ include_rules = [
   "+components/metrics",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/variations",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
