@@ -41,7 +41,7 @@ private class BookmarkFile: ReferenceFileDocument {
 
 /// View Model that holds all the information required to render a list of bookmarks
 private class BookmarkViewModel: ObservableObject {
-  @ObservedObject
+
   private var model: BookmarkModel
 
   private var listener: BookmarkModelListener?
@@ -49,15 +49,15 @@ private class BookmarkViewModel: ObservableObject {
   private(set) var currentSearchQuery: String?
 
   @Published
-  private(set) var folder: Bookmarkv2?
+  private(set) var folder: BookmarkNode?
 
   @Published
-  private(set) var items = [Bookmarkv2]()
+  private(set) var items = [BookmarkNode]()
 
   @Published
   private(set) var isLoading = false
 
-  init(model: BookmarkModel, folder: Bookmarkv2?) {
+  init(model: BookmarkModel, folder: BookmarkNode?) {
     self.model = model
     self.folder = folder
 
@@ -89,18 +89,11 @@ private class BookmarkViewModel: ObservableObject {
 }
 
 private struct BookmarkItemView: View {
-  var bookmark: Bookmarkv2
-
-  var url: URL? {
-    if let urlString = bookmark.url, let url = URL(string: urlString) {
-      return url
-    }
-    return nil
-  }
+  var bookmark: BookmarkNode
 
   var body: some View {
     Label {
-      Text(bookmark.title ?? bookmark.url ?? "")
+      Text(bookmark.title)
         .font(bookmark.isFolder ? .subheadline.bold() : .subheadline)
         .lineLimit(1)
         .truncationMode(.tail)
@@ -115,7 +108,7 @@ private struct BookmarkItemView: View {
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(Color(braveSystemName: .iconDefault))
             .padding(6.0)
-        } else if let url = url {
+        } else if let url = bookmark.url {
           FaviconImage(url: url, isPrivateBrowsing: false)
             .overlay(
               ContainerRelativeShape()
@@ -137,14 +130,13 @@ private struct BookmarkItemView: View {
 
 private struct BookmarksListView: View {
 
-  @Environment(\.dismiss)
-  private var dismiss
-
-  @ObservedObject
   var model: BookmarkModel
 
-  @ObservedObject
+  @StateObject
   var viewModel: BookmarkViewModel
+
+  @Binding
+  var dismiss: Bool
 
   @State private var showShare = false
   @State private var showImport = false
@@ -163,7 +155,7 @@ private struct BookmarksListView: View {
   @State private var timer: Timer?
 
   @ViewBuilder
-  private func view(for node: Bookmarkv2) -> some View {
+  private func view(for node: BookmarkNode) -> some View {
     if node.isFolder {
       NavigationLink(value: node) {
         BookmarkItemView(bookmark: node)
@@ -171,7 +163,7 @@ private struct BookmarksListView: View {
     } else {
       Button {
         model.handleBookmarkItemSelection(
-          model.isPrivateBrowsing ? .openInNewTab : .openInNewPrivateTab,
+          model.isPrivateBrowsing ? .openInNewPrivateTab : .openInNewTab,
           node: node
         )
       } label: {
@@ -196,9 +188,9 @@ private struct BookmarksListView: View {
 
               NavigationLink {
                 if node.isFolder {
-                  BookmarksAddEditFolderView(model: model, folder: node)
+                  BookmarksAddEditFolderView(model: model, action: .modifyFolder(node))
                 } else {
-                  BookmarksAddEditBookmarkView(model: model, node: node)
+                  BookmarksAddEditBookmarkView(model: model, action: .existing(node))
                 }
               } label: {
                 Text(Strings.edit)
@@ -211,13 +203,17 @@ private struct BookmarksListView: View {
           .listRowBackground(Color.clear)
           .contextMenu {
             if node.isFolder {
-              Button {
-                model.handleBookmarkItemSelection(.openAll, node: node)
-              } label: {
-                Label(
-                  String(format: Strings.openAllBookmarks, model.bookmarks(in: node).count),
-                  systemImage: "plus.square.on.square"
-                )
+              if node.children.isEmpty {
+                EmptyView()
+              } else {
+                Button {
+                  model.openAllBookmarks(node: node)
+                } label: {
+                  Label(
+                    String(format: Strings.openAllBookmarks, model.bookmarks(in: node).count),
+                    systemImage: "plus.square.on.square"
+                  )
+                }
               }
             } else {
               Section {
@@ -278,13 +274,12 @@ private struct BookmarksListView: View {
     .overlay {
       if viewModel.items.isEmpty {
         BookmarksEmptyStateView(isSearching: !searchText.isEmpty)
-          .transition(.opacity.animation(.default))
       }
     }
     .toolbar {
-      ToolbarItemGroup(placement: .topBarTrailing) {
+      ToolbarItemGroup(placement: .confirmationAction) {
         Button {
-          dismiss()
+          dismiss = true
         } label: {
           Text(Strings.done)
         }
@@ -299,7 +294,7 @@ private struct BookmarksListView: View {
           }
         } label: {
           Label {
-            Text("CREATE NEW BOOKMARKS FOLDER")  // TODO: Localize
+            Text(Strings.newFolderTitle)
           } icon: {
             Image(braveSystemName: viewModel.folder == nil ? "leo.share.macos" : "leo.folder.new")
               .foregroundStyle(Color(braveSystemName: .iconInteractive))
@@ -314,7 +309,7 @@ private struct BookmarksListView: View {
             editMode = editMode.isEditing ? .inactive : .active
           } label: {
             Label {
-              Text("EDIT BOOKMARKS")  // TODO: Localize
+              Text(Strings.editBookmarkTitle)
             } icon: {
               Image(braveSystemName: "leo.edit.pencil")
                 .foregroundStyle(Color(braveSystemName: .iconInteractive))
@@ -381,14 +376,14 @@ private struct BookmarksListView: View {
             if let url = urls.first, await importer.importBookmarks(from: url) {
               importExportResult = .init(
                 showAlert: true,
-                title: "Success",
-                message: "Your bookmarks has been imported successfully"
+                title: Strings.Bookmarks.bookmarksImportExportSuccessTitle,
+                message: Strings.Bookmarks.bookmarksImportSuccessMessage
               )
             } else {
               importExportResult = .init(
                 showAlert: true,
-                title: "Error",
-                message: "Sorry, an error occurred while importing your bookmarks"
+                title: Strings.Bookmarks.bookmarksImportExportErrorTitle,
+                message: Strings.Bookmarks.bookmarksImportErrorMessage
               )
             }
           }
@@ -396,8 +391,8 @@ private struct BookmarksListView: View {
           print(error)
           importExportResult = .init(
             showAlert: true,
-            title: "Error",
-            message: "Sorry, an error occurred while importing your bookmarks"
+            title: Strings.Bookmarks.bookmarksImportExportErrorTitle,
+            message: Strings.Bookmarks.bookmarksImportErrorMessage
           )
         }
       }
@@ -411,15 +406,15 @@ private struct BookmarksListView: View {
         case .success(_):
           importExportResult = .init(
             showAlert: true,
-            title: "Success",
-            message: "Your bookmarks has been exported successfully"
+            title: Strings.Bookmarks.bookmarksImportExportSuccessTitle,
+            message: Strings.Bookmarks.bookmarksExportSuccessMessage
           )
         case .failure(let error):
           print(error)
           importExportResult = .init(
             showAlert: true,
-            title: "Error",
-            message: "Sorry, an error occurred while exporting your bookmarks"
+            title: Strings.Bookmarks.bookmarksImportExportErrorTitle,
+            message: Strings.Bookmarks.bookmarksExportErrorMessage
           )
         }
       }
@@ -467,7 +462,10 @@ private struct BookmarksListView: View {
   private var bookmarkFile: BookmarkFile {
     BookmarkFile(
       fileURL: FileManager.default.temporaryDirectory
-        .appendingPathComponent("Bookmarks")
+        .appendingPathComponent(
+          Strings.bookmarks.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+            ?? "Bookmarks"
+        )
         .appendingPathExtension("html")
     )
   }
@@ -481,37 +479,53 @@ private struct BookmarksListView: View {
 
 struct BookmarksView: View {
 
-  @ObservedObject
+  @Environment(\.dismiss)
+  private var dismiss
+
   var model: BookmarkModel
 
   @State
-  private var currentStack: [Bookmarkv2] = []
+  private var currentStack: [BookmarkNode] = []
 
-  //  private let importExportUtility = BookmarksImportExportUtility()
+  @State
+  private var dismissOnPop = false
 
   var body: some View {
     NavigationStack(path: $currentStack) {
       BookmarksListView(
         model: model,
-        viewModel: BookmarkViewModel(model: model, folder: nil)
+        viewModel: BookmarkViewModel(model: model, folder: nil),
+        dismiss: $dismissOnPop
       )
-      .navigationDestination(for: Bookmarkv2.self) { node in
+      .navigationDestination(for: BookmarkNode.self) { node in
         BookmarksListView(
           model: model,
-          viewModel: BookmarkViewModel(model: model, folder: node)
+          viewModel: BookmarkViewModel(model: model, folder: node),
+          dismiss: $dismissOnPop
         )
       }
     }
-    .onAppear {
-      var stack: [Bookmarkv2] = []
-      var current = model.lastVisitedFolder?.parent
+    .task {
+      var stack: [BookmarkNode] = []
+      var current = model.lastVisitedFolder
 
       while let folder = current {
         stack.append(folder)
-        current = folder.parent
+        current = folder.parentNode
       }
 
-      currentStack = stack
+      currentStack = stack.reversed()
+    }
+    .onChange(of: dismissOnPop) { _, newValue in
+      if newValue {
+        currentStack = []
+        dismiss()
+      }
+    }
+    .onChange(of: currentStack) { _, currentStack in
+      if !currentStack.isEmpty {
+        Preferences.Chromium.lastBookmarksFolderNodeId.value = currentStack.last?.id ?? -1
+      }
     }
   }
 }

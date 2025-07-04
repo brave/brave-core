@@ -46,6 +46,6 @@ public struct BookmarkValidation {
   }
 
   private static func validateUrl(_ urlString: String) -> Bool {
-    return URL(string: urlString)?.schemeIsValid == true
+    return (NSURL(idnString: urlString) as? URL)?.schemeIsValid == true
   }
 }

@@ -6338,6 +6338,82 @@ extension Strings {
 }
 
 extension Strings {
+  public struct Bookmarks {
+    public static let bookmarksEmptySearchTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksEmptySearchTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Search Bookmarks",
+        comment: "Title displayed for placeholder inside Search Bar in Bookmarks"
+      )
+
+    public static let bookmarksEmptyStateTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksEmptyStateTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "No Search Results",
+        comment: "Title which is displayed on Bookmarks screen when you search for something but no results are found"
+      )
+
+    public static let bookmarksImportExportSuccessTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksImportExportSuccess",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Success",
+        comment: "Title which is displayed success alert for import/export bookmarks"
+      )
+
+    public static let bookmarksImportSuccessMessage =
+      NSLocalizedString(
+        "bookmarks.bookmarksImportSuccessMessage",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Your bookmarks has been imported successfully",
+        comment: "Message which is displayed success alert for import bookmarks"
+      )
+
+    public static let bookmarksExportSuccessMessage =
+      NSLocalizedString(
+        "bookmarks.bookmarksExportSuccessMessage",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Your bookmarks has been exported successfully",
+        comment: "Message which is displayed success alert for export bookmarks"
+      )
+
+    public static let bookmarksImportExportErrorTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksImportExportErrorTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Error",
+        comment: "Title which is displayed error alert for import/export bookmarks"
+      )
+
+    public static let bookmarksImportErrorMessage =
+      NSLocalizedString(
+        "bookmarks.bookmarksImportErrorMessage",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Sorry, an error occurred while importing your bookmarks",
+        comment: "Message which is displayed error alert for import bookmarks"
+      )
+
+    public static let bookmarksExportErrorMessage =
+      NSLocalizedString(
+        "bookmarks.bookmarksExportErrorMessage",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Sorry, an error occurred while exporting your bookmarks",
+        comment: "Message which is displayed error alert for export bookmarks"
+      )
+  }
+}
+
+extension Strings {
   public struct Privacy {
     public static let browserLock =
       NSLocalizedString(

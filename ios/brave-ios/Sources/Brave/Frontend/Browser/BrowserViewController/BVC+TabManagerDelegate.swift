@@ -380,17 +380,20 @@ extension BrowserViewController: TabManagerDelegate {
           ),
           image: UIImage(systemName: "book"),
           handler: UIAction.deferredActionHandler { [unowned self] _ in
-            let mode = BookmarkEditMode.addFolderUsingTabs(
-              title: Strings.savedTabsFolderTitle,
-              tabList: tabManager.tabsForCurrentMode
-            )
-            let addBookMarkController = AddEditBookmarkTableViewController(
-              bookmarkManager: bookmarkManager,
-              mode: mode,
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+            let navigationController = UINavigationController()
+
+            let addBookmarksController = UIHostingController(
+              rootView: BookmarksAddEditFolderView(
+                model: BookmarkModel(api: profileController.bookmarksAPI),
+                action: .addTabs(tabManager.tabsForCurrentMode),
+                dismiss: { [weak navigationController] in
+                  navigationController?.dismiss(animated: true)
+                }
+              )
             )
 
-            presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+            navigationController.viewControllers = [addBookmarksController]
+            present(navigationController, animated: true)
           }
         )
         bookmarkMenuChildren.append(bookmarkAllTabs)
