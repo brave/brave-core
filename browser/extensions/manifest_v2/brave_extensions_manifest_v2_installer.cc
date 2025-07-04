@@ -35,10 +35,6 @@ namespace extensions_mv2 {
 
 namespace {
 
-bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
-  return kPreconfiguredManifestV2Extensions.contains(id);
-}
-
 GURL GetUpdaterExtensionDownloadUrl(
     const extensions::ExtensionId& extenion_id) {
   const std::string params[] = {base::JoinString({"id", extenion_id}, "="),
@@ -98,6 +94,10 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 }
 
 }  // namespace
+
+bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
+  return kPreconfiguredManifestV2Extensions.contains(id);
+}
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,
