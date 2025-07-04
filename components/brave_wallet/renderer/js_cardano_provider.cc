@@ -115,7 +115,7 @@ void JSCardanoProvider::OnEnableResponse(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -126,7 +126,7 @@ void JSCardanoProvider::OnEnableResponse(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     gin::Handle<JSCardanoWalletApi> wallet_api = gin::CreateHandle(
         isolate, new JSCardanoWalletApi(base::PassKey<JSCardanoProvider>(),
                                         global_context.Get(isolate), isolate,
@@ -151,8 +151,8 @@ void JSCardanoProvider::OnEnableResponse(
 
     std::ignore = resolver->Resolve(context, std::move(wallet_api_object));
   } else {
-    std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+    std::ignore =
+        resolver->Reject(context, ConvertError(isolate, context, error));
   }
 }
 
