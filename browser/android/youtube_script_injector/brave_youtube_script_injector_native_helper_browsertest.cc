@@ -33,7 +33,9 @@ constexpr std::u16string_view kSimulateDelayedScriptLoad =
   if (moviePlayer) {
     moviePlayer.innerHTML = `
       <video class="html5-main-video" src="mov_bbb.mp4" controls></video>
-      <button class="fullscreen-icon" onclick="document.querySelector('video.html5-main-video').requestFullscreen();">⛶</button>
+      <button class="fullscreen-icon"
+      onclick="document.querySelector('video.html5-main-video')
+        .requestFullscreen();">⛶</button>
     `;
   })";
 
