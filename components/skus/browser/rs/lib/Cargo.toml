@@ -32,8 +32,8 @@ base64 = "0.22"
 git-version = { version = "0.3.5", optional = true }
 
 [dev-dependencies]
-isahc = "1.7"
-async-std = "1.5.0"
+isahc = "=1.7.2"
+async-std = "=1.5.0"
 
 [features]
 default = []
