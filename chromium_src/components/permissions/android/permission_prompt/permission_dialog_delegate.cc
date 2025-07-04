@@ -29,6 +29,9 @@
 namespace permissions {
 namespace {
 
+// This method doesn't belong to PermissionDialogJavaDelegate because
+// when it is invoked, PermissionDialogJavaDelegate::j_delegate_ is not ready
+// yet
 void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
   if (!base::FeatureList::IsEnabled(features::kPermissionLifetime)) {
     return;
@@ -53,15 +56,17 @@ void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
       base::android::ToJavaArrayOfStrings(env, lifetime_labels));
 }
 
-void ApplyLifetimeToPermissionRequests(
+}  // namespace
+
+void PermissionDialogJavaDelegate::ApplyLifetimeToPermissionRequests(
     JNIEnv* env,
-    const JavaParamRef<jobject>& obj,
     PermissionPromptAndroid* permission_prompt) {
   if (!base::FeatureList::IsEnabled(features::kPermissionLifetime)) {
     return;
   }
   const int selected_lifetime_option =
-      Java_BravePermissionDialogDelegate_getSelectedLifetimeOption(env, obj);
+      Java_BravePermissionDialogDelegate_getSelectedLifetimeOption(env,
+                                                                   j_delegate_);
   DCHECK(!ShouldShowLifetimeOptions(permission_prompt->delegate_public()) ||
          selected_lifetime_option != -1);
   if (selected_lifetime_option != -1) {
@@ -72,20 +77,17 @@ void ApplyLifetimeToPermissionRequests(
   }
 }
 
-void ApplyDontAskAgainOption(JNIEnv* env,
-                             const JavaParamRef<jobject>& obj,
-                             PermissionPromptAndroid* permission_prompt) {
+void PermissionDialogJavaDelegate::ApplyDontAskAgainOption(
+    JNIEnv* env,
+    PermissionPromptAndroid* permission_prompt) {
   if (permission_prompt->delegate_public()->Requests().size() < 1) {
     return;
   }
-
   const bool dont_ask_again =
-      Java_BravePermissionDialogDelegate_getDontAskAgain(env, obj);
+      Java_BravePermissionDialogDelegate_getDontAskAgain(env, j_delegate_);
   const auto& request = permission_prompt->delegate_public()->Requests()[0];
   request->set_dont_ask_again(dont_ask_again);
 }
-
-}  // namespace
 
 // static
 std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
@@ -116,12 +118,12 @@ void PermissionDialogJavaDelegate::
 
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                    \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
-  ApplyDontAskAgainOption(env, obj, permission_prompt_);
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                    \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_); \
-  ApplyDontAskAgainOption(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                               \
+  java_delegate_->ApplyLifetimeToPermissionRequests(env, permission_prompt_); \
+  java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                               \
+  java_delegate_->ApplyLifetimeToPermissionRequests(env, permission_prompt_); \
+  java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 
