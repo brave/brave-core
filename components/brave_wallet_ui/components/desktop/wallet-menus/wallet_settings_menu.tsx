@@ -85,8 +85,20 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
 
-    const route =
-      selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
+    let route: string
+    switch (selectedNetwork.coin) {
+      case BraveWallet.CoinType.ETH:
+        route = 'ethereum'
+        break
+      case BraveWallet.CoinType.SOL:
+        route = 'solana'
+        break
+      case BraveWallet.CoinType.ADA:
+        route = 'cardano'
+        break
+      default:
+        throw new Error('Coin not supported')
+    }
 
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {

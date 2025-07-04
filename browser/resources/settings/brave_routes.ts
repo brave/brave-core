@@ -93,9 +93,14 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
     const isNativeBraveWalletFeatureEnabled =
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+    const isCardanoDappSupportFeatureEnabled =
+      loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
+      if (isCardanoDappSupportFeatureEnabled) {
+        r.SITE_SETTINGS_CARDANO = r.SITE_SETTINGS.createChild('cardano')
+      }
     }
     r.SITE_SETTINGS_SHIELDS_STATUS = r.SITE_SETTINGS.createChild('braveShields')
     if (r.SITE_SETTINGS_ADS) {

@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -162,6 +163,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+  html_source->AddBoolean("isCardanoDappSupportFeatureEnabled",
+                          brave_wallet::IsCardanoDAppSupportEnabled());
   html_source->AddBoolean("isBraveWalletAllowed",
                           brave_wallet::IsAllowedForContext(profile));
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",

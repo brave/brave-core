@@ -199,6 +199,8 @@ leo_icons = [
   "carat-left.svg",
   "carat-right.svg",
   "carat-up.svg",
+  "cardano-off.svg",
+  "cardano-on.svg",
   "check-circle-filled.svg",
   "check-circle-outline.svg",
   "check-normal.svg",
