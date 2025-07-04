@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Ενεργοποιήστε το, για να εμφανιστεί συντόμευση για εκκίνηση του Leo από τη γραμμή διευθύνσεων.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Εμφάνιση στη γραμμή διευθύνσεων";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Προεπιλεγμένο μοντέλο";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Όραμα γενικού σκοπού";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας πλήρως διαδικτυακός βοηθός AI από το Brave. Χρησιμοποιώ το Mixtral 8x7B, ένα μοντέλο που δημιουργήθηκε από την Mistral AI για διαχείριση προηγμένων εργασιών. Το Mixtral φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Προηγμένες εργασίες συνομιλίας";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας πλήρως διαδικτυακός βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 14B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Ο Leo δεν είναι προς το παρόν διαθέσιμος σε λειτουργία ιδιωτικής περιήγησης. Για να χρησιμοποιήσετε τον Leo, βγείτε από τη λειτουργία ιδιωτικής περιήγησης και δοκιμάστε ξανά.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Ο Leo δεν είναι διαθέσιμος";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Μεταφόρτωση εικόνας";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Καταλαβαίνω";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Το Brave Leo είναι ένας ιδιωτικός έξυπνος βοηθός AI που βελτιώνει τη χρήση του Internet. Το Leo είναι δωρεάν με περιορισμένη πρόσβαση. Το Brave Leo Premium προσφέρει περισσότερα μοντέλα, υψηλότερα όρια και παρέχει στους συνδρομητές πρόσβαση πριν από τους υπόλοιπους χρήστες σε νέες δυνατότητες. Το προεπιλεγμένο μοντέλο για όλους τους χρήστες είναι αυτήν τη στιγμή το Mixtral 8x7B. Δείτε το **[Κέντρο βοήθειας](%1$@)** του Brave για περισσότερες πληροφορίες.\n\nΑπό προεπιλογή, όταν κάνετε μια ερώτηση στο Leo, μπορεί να στέλνει και να χρησιμοποιεί το περιεχόμενο της ιστοσελίδας που βλέπετε ή οποιοδήποτε κείμενο επισημαίνετε σε μια σελίδα στο Brave Leo, για να σας δώσει μια απάντηση. Σε κάποιες περιπτώσεις, το Leo θα στείλει ερωτήματα που προέρχονται από την καταχώρισή σας στην Αναζήτηση Brave και θα χρησιμοποιήσει τα αποτελέσματα αναζήτησης για να απαντήσει καλύτερα στην ερώτησή σας. Η ακρίβεια των απαντήσεων δεν είναι εγγυημένη και μπορεί να περιλαμβάνουν ανακριβείς, παραπλανητικές ή ψευδείς πληροφορίες. Μην υποβάλλετε ευαίσθητες ή προσωπικές πληροφορίες, και να αντιμετωπίζετε με επιφύλαξη απαντήσεις που σχετίζονται με την υγεία, τα οικονομικά, την προσωπική ασφάλεια ή παρόμοια θέματα. Μπορείτε να προσαρμόσετε τις επιλογές του Leo στις Ρυθμίσεις ανά πάσα στιγμή. Μεταβείτε στις Ρυθμίσεις > Leo.\n\nΤο Leo δεν συλλέγει αναγνωριστικά, όπως τη διεύθυνση IP σας, που μπορούν να συνδεθούν με εσάς. Δεν χρησιμοποιούνται δεδομένα για την εκπαίδευση των μοντέλων AI και δεν διατηρούνται προσωπικά δεδομένα από τα μοντέλα AI (εκτός από το Anthropic που διατηρεί δεδομένα για 30 ημέρες πριν να τα διαγράψει). Δείτε την **[Πολιτική απορρήτου](%2$@)** για περισσότερες πληροφορίες.";
+"aichat.termsConditionsDescription" = "Ο Brave Leo είναι ένας ιδιωτικός έξυπνος βοηθός AI που εμπλουτίζει τη χρήση του Internet. Ο Leo είναι δωρεάν για χρήση με περιορισμένη πρόσβαση. Ο Brave Leo Premium προσφέρει περισσότερα μοντέλα, υψηλότερα όρια και παρέχει στους συνδρομητές πρόσβαση σε νέες δυνατότητες πριν από τους υπόλοιπους χρήστες. Το προεπιλεγμένο μοντέλο για όλους τους χρήστες είναι αυτήν τη στιγμή το Mixtral 8x7B. Δείτε το **[Κέντρο βοήθειας](%1$@)** του Brave για περισσότερες πληροφορίες.\n\nΑπό προεπιλογή, όταν κάνετε μια ερώτηση στον Leo, μπορεί να στέλνει και να χρησιμοποιεί το περιεχόμενο της ιστοσελίδας που βλέπετε ή οποιοδήποτε κείμενο επισημαίνετε σε μια σελίδα στον Brave Leo, για να σας δώσει μια απάντηση. Σε κάποιες περιπτώσεις, ο Leo θα στείλει ερωτήματα που προέρχονται από την καταχώρισή σας στην Αναζήτηση Brave και θα χρησιμοποιήσει τα αποτελέσματα αναζήτησης για να απαντήσει καλύτερα στην ερώτησή σας. Η ακρίβεια των απαντήσεων δεν είναι εγγυημένη και μπορεί να περιλαμβάνουν ανακριβείς, παραπλανητικές ή ψευδείς πληροφορίες. Μην υποβάλλετε ευαίσθητες ή ιδιωτικές πληροφορίες, και να αντιμετωπίζετε με επιφύλαξη απαντήσεις που σχετίζονται με την υγεία, τα οικονομικά, την προσωπική ασφάλεια ή παρόμοια θέματα. Μπορείτε να προσαρμόσετε τις επιλογές του Leo στις Ρυθμίσεις ανά πάσα στιγμή. Μεταβείτε στις Ρυθμίσεις > Leo.\n\nΟ Leo δεν συλλέγει αναγνωριστικά, όπως τη διεύθυνση IP σας, που μπορούν να συνδεθούν με εσάς. Δεν χρησιμοποιούνται δεδομένα για την εκπαίδευση των μοντέλων AI και δεν διατηρούνται προσωπικά δεδομένα από τα μοντέλα AI (εκτός από το Anthropic που διατηρεί δεδομένα για 30 ημέρες πριν να τα διαγράψει). Δείτε την **[Πολιτική απορρήτου](%2$@)** για περισσότερες πληροφορίες.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Συνομιλήστε ιδιωτικά με το Brave Leo";

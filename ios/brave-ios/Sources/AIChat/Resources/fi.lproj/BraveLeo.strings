@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Ota käyttöön näyttääksesi osoitepalkissa pikakuvakkeen Leon käynnistämiseen.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Näytä osoitepalkissa";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Oletusmalli";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Yleiskäyttöinen vision";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan ylläpitämä tekoälyavustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin tehtäviin. Brave ylläpitää Mixtralia oman suojatun infrastruktuurinsa kautta.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Kehittyneet chat-tehtävät";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan ylläpitämä tekoälyavustaja. Toimintani perustuu Qwen 14B:hen, Alibaba Cloudin luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave ylläpitää Qwenia oman suojatun infrastruktuurinsa kautta.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo ei ole tällä hetkellä käytettävissä yksityisessä selaustilassa. Jos haluat käyttää Leoa, poistu yksityisestä selaustilasta ja yritä uudelleen.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo ei ole saatavilla";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Lataa kuva";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Tällä hetkellä oletusmalli kaikille käyttäjille on Mixtral 8x7B. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nOletuksena, kun kysyt Leolta kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave Leolle tarjotakseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
+"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Lue lisätietoja Braven **[Ohjekeskuksesta](%1$@)**.\n\nKun kysyt Leolta kysymyksen, se voi oletusarvoisesti käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave Leolle löytääkseen kysymykseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisia äläkä yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, jotka voidaan liittää sinuun, kuten IP-osoitettasi. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Lue lisätietoja **[tietosuojakäytännöstä](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Juttele Brave Leon kanssa yksityisesti ";

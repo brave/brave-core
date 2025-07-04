@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "开启从地址栏快捷打开 Leo";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "在地址栏显示";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "默认模型";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "通用视觉";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mixtral 8x7B 提供支持，这是一个由 Mistral AI 为处理高级任务而创建的模型。Mixtral 通过我们自己的安全基础设施由 Brave 托管。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "高级聊天任务";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo 已禁用";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo 当前在无痕浏览模式中不可用。如要使用 Leo，请退出无痕浏览模式并重试。";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo 不可用";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "上传图片";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 助理，能提升您的网络使用体验。Leo 免费使用，但有一定访问限制。Brave Leo 高级版支持更多模型，限制更少，订阅用户可以抢先体验新功能。当前面向所有用户的默认模型是 Mixtral 8x7B，详情可参阅 Brave **[帮助中心](%1$@)**。\n\n默认设置下，收到您的提问后，Leo 会从您当前正在阅览的网页页面或基于您高亮的内容，经由 Brave Leo 予以回应。在一些情况下，Leo 会提炼您输入的内容，通过 Brave 搜索获取搜索结果，改善回复内容。回应精度无可保证，内容可能包含不准确、误导、虚假信息。请勿提交敏感信息或私密信息，谨慎看待所有关于健康、财务、个人安全等相关的回应。您可以随时在设置中调整 Leo 相关选项，只需前往设置 > Leo。\n\nLeo 不会收集身份识别信息，如 IP 地址等与您息息相关的内容。任何数据都不会用于训练相关 AI 模型，这些 AI 模型也不会保存个人数据（但依据 Anthropic 政策，其将保留数据 30 天，再删除）。详情可参阅**[隐私政策](%2$@)**。";
+"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智能助理，能够提升您的网络使用体验。Leo 可免费使用，但有一定的访问限制。Brave Leo 高级版支持更多模型，限制更少，订阅用户可以抢先体验新功能。详情可参阅 Brave **[帮助中心](%1$@)**。\n\n在默认设置下，当您向 Leo 提问时，Leo 可能会使用您当前正在浏览的网页内容或您在网页中高亮的文本，并将它们发送给 Brave Leo，以给您提供答复。在一些情况下，Leo 会提炼您输入的内容，将查询发送给 Brave 搜索，通过搜索结果更好地为您提供答复。答复的准确度无可保证，可能会包含不准确、误导性或虚假信息。请勿提交敏感信息或私密信息，谨慎看待所有关于健康、财务、个人安全等方面的答复。您可以随时在设置中调整 Leo 的相关选项，只需前往设置 > Leo 即可。\n\nLeo 不会收集身份识别信息，例如可以关联到您的 IP 地址。任何数据都不会用于训练相关 AI 模型，这些 AI 模型也不会保存个人数据（但根据 Anthropic 的政策，其将保留数据 30 天再删除）。详情可参阅**[隐私政策](%2$@)**。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";
