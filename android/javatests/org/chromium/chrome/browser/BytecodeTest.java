@@ -659,7 +659,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
-                        "updateSearchProviderHasLogo",
+                        "updateSearchProvider",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
@@ -847,6 +847,7 @@ public class BytecodeTest {
                         "showUndoBar",
                         MethodModifier.REGULAR,
                         void.class,
+                        List.class,
                         List.class,
                         boolean.class));
         Assert.assertTrue(
@@ -1117,9 +1118,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
-                        "shouldUseParentIds",
+                        "shouldGroupWithParent",
                         MethodModifier.REGULAR,
                         boolean.class,
+                        Tab.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(

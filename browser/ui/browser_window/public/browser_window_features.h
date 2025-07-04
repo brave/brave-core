@@ -25,11 +25,8 @@ class SidebarController;
 // could avoid dependency cycle with //chrome/browser/ui/browser_window.
 class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
  public:
-  static std::unique_ptr<BrowserWindowFeatures> CreateBrowserWindowFeatures();
+  BrowserWindowFeatures();
   ~BrowserWindowFeatures() override;
-
-  static void ReplaceBrowserWindowFeaturesForTesting(
-      BrowserWindowFeaturesFactory factory);
 
   // BrowserWindowFeatures_ChromiumImpl:
   void Init(BrowserWindowInterface* browser) override;
@@ -46,9 +43,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   SplitViewBrowserData* split_view_browser_data() {
     return split_view_browser_data_.get();
   }
-
- protected:
-  BrowserWindowFeatures();
 
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;

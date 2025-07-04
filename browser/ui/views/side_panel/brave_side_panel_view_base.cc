@@ -34,9 +34,9 @@ void BraveSidePanelViewBase::StartObservingWebWebViewVisibilityChange(
   view_observation_.Observe(web_view);
 }
 
-void BraveSidePanelViewBase::OnViewVisibilityChanged(
-    views::View* observed_view,
-    views::View* starting_view) {
+void BraveSidePanelViewBase::OnViewVisibilityChanged(views::View* observed_view,
+                                                     views::View* starting_view,
+                                                     bool visible) {
   // Once it becomes available, stop observing becuase its availablity is
   // not changed from now on.
   if (observed_view->GetVisible()) {

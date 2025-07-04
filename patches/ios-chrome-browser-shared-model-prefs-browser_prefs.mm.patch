@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 1688b118dc3a47e55318443ded9a77e280562789..6b5c1e3471b1ba99cf08979aff535dec7ae56ff8 100644
+index 75f167b4c6037aea97ce8a00ed176191a3725029..7b92e1541e4e30f353df6cb616379163ef289adb 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -688,6 +688,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Deprecated 06/2025.
-   registry->RegisterBooleanPref(
-       prefs::kIosCredentialProviderPromoHasRegisteredWithPromoManager, false);
+@@ -691,6 +691,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterIntegerPref(prefs::kNTPLensEntryPointNewBadgeShownCount, 0);
+   registry->RegisterIntegerPref(
+       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1098,6 +1099,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
+@@ -1104,6 +1105,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 06/2025.
    registry->RegisterDoublePref(kGaiaCookiePeriodicReportTimeDeprecated, 0);
+   registry->RegisterStringPref(kSyncedDefaultSearchProviderGUID, std::string());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

@@ -31,10 +31,11 @@ namespace brave_wallet {
 // content::RenderFrameObserver
 void JSCardanoWalletApi::OnDestruct() {}
 
-// gin::Wrappable<JSCardanoProvider>
+// gin::DeprecatedWrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::Wrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(isolate)
+  return gin::DeprecatedWrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(
+             isolate)
       .SetMethod("getNetworkId", &JSCardanoWalletApi::GetNetworkId)
       .SetMethod("getUsedAddresses", &JSCardanoWalletApi::GetUsedAddresses)
       .SetMethod("getUnusedAddresses", &JSCardanoWalletApi::GetUnusedAddresses)
@@ -54,7 +55,8 @@ const char* JSCardanoWalletApi::GetTypeName() {
 }
 
 // JSCardanoProvider
-gin::WrapperInfo JSCardanoWalletApi::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::DeprecatedWrapperInfo JSCardanoWalletApi::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 JSCardanoWalletApi::~JSCardanoWalletApi() = default;
 

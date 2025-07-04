@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/compound_tab_container.cc b/chrome/browser/ui/views/tabs/compound_tab_container.cc
-index e655cb3c2c7e221ef25f419648f8ca9b1d3256ee..0b215a930d7ba05a8c44cf79caee11c7f08202b9 100644
+index e0bc23beddade8782ed5e05ceecebd0ef6407d17..712cba9bf79e0c0aba322a17aafaf153a479da40 100644
 --- a/chrome/browser/ui/views/tabs/compound_tab_container.cc
 +++ b/chrome/browser/ui/views/tabs/compound_tab_container.cc
 @@ -52,7 +52,7 @@ class PinnedTabContainerController final : public TabContainerController {

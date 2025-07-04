@@ -31,7 +31,7 @@ ItemName EdgeStorageSet::GetItemName() const {
 }
 
 ItemDesc EdgeStorageSet::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeStorage::GetItemDesc() << " [value: " << value_ << "]";
   return ts.ReleaseString();
 }

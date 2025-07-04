@@ -1,8 +1,8 @@
 diff --git a/components/crx_file/BUILD.gn b/components/crx_file/BUILD.gn
-index 272b6f4f34e486804113475b9ae290b652236be8..b0fb4f603c196c86b1b6bffb275d03b70a789ded 100644
+index 31edb2e296189a6d8619a4294032cf424599504c..3c009cfba4b7d46ed6fad87d5f5d3ab7b32aee0a 100644
 --- a/components/crx_file/BUILD.gn
 +++ b/components/crx_file/BUILD.gn
-@@ -75,7 +75,6 @@ proto_library("crx3_proto") {
+@@ -76,7 +76,6 @@ proto_library("crx3_proto") {
  
  if (host_toolchain == current_toolchain) {
    executable("crx3_build_action") {

@@ -19,6 +19,7 @@
 #include "base/containers/extend.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/no_destructor.h"
 #include "base/not_fatal_until.h"
