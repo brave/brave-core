@@ -195,6 +195,11 @@ void ExtensionsManifectV2Migrator::Shutdown() {
   registry_observation_.Reset();
 }
 
+void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
+    extensions::ExtensionPrefs* prefs) {
+  prefs_observation_.Reset();
+}
+
 void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {

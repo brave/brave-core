@@ -34,6 +34,8 @@ class ExtensionsManifectV2Migrator
 
  private:
   // ExtensionPrefsObserver:
+  void OnExtensionPrefsWillBeDestroyed(
+      extensions::ExtensionPrefs* prefs) override;
   void OnExtensionDisableReasonsChanged(
       const extensions::ExtensionId& extension_id,
       extensions::DisableReasonSet disabled_reasons) override;
