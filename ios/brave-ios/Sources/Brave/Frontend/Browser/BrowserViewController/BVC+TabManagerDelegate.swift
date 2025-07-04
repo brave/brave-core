@@ -380,20 +380,33 @@ extension BrowserViewController: TabManagerDelegate {
           ),
           image: UIImage(systemName: "book"),
           handler: UIAction.deferredActionHandler { [unowned self] _ in
-            let navigationController = UINavigationController()
+            if FeatureList.kNewBookmarksUI.enabled {
+              let navigationController = UINavigationController()
 
-            let addBookmarksController = UIHostingController(
-              rootView: BookmarksAddEditFolderView(
-                model: BookmarkModel(api: profileController.bookmarksAPI),
-                action: .addTabs(tabManager.tabsForCurrentMode),
-                dismiss: { [weak navigationController] in
-                  navigationController?.dismiss(animated: true)
-                }
+              let addBookmarksController = UIHostingController(
+                rootView: BookmarksAddEditFolderView(
+                  model: BookmarkModel(api: profileController.bookmarksAPI),
+                  action: .addTabs(tabManager.tabsForCurrentMode),
+                  dismiss: { [weak navigationController] in
+                    navigationController?.dismiss(animated: true)
+                  }
+                )
               )
-            )
 
-            navigationController.viewControllers = [addBookmarksController]
-            present(navigationController, animated: true)
+              navigationController.viewControllers = [addBookmarksController]
+              present(navigationController, animated: true)
+            } else {
+              let mode = BookmarkEditMode.addFolderUsingTabs(
+                title: Strings.savedTabsFolderTitle,
+                tabList: tabManager.tabsForCurrentMode
+              )
+              let addBookMarkController = AddEditBookmarkTableViewController(
+                bookmarkManager: bookmarkManager,
+                mode: mode,
+                isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+              )
+              presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+            }
           }
         )
         bookmarkMenuChildren.append(bookmarkAllTabs)
