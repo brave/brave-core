@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
@@ -36,6 +37,7 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -188,6 +190,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryServiceFactory::GetInstance();
 #endif
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    brave_account::BraveAccountServiceFactory::GetInstance();
+  }
 }
 
 }  // namespace brave
