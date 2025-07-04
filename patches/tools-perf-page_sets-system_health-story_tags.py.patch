@@ -1,12 +1,12 @@
 diff --git a/tools/perf/page_sets/system_health/story_tags.py b/tools/perf/page_sets/system_health/story_tags.py
-index 24881e7639bd16a11c4c842b156ce1690fffd6e3..fd79969257d6fed4e2431478740c2eb638ca4a11 100644
+index b6ae8fdc9d6916222031697f0292e1def36b95ee..989e918107caa2f16ab66498bb823aed5ea9f774 100644
 --- a/tools/perf/page_sets/system_health/story_tags.py
 +++ b/tools/perf/page_sets/system_health/story_tags.py
-@@ -64,6 +64,7 @@ YEAR_2019 = Tag('2019', 'Story was created or updated in 2019.')
- YEAR_2020 = Tag('2020', 'Story was created or updated in 2020.')
- YEAR_2021 = Tag('2021', 'Story was created or updated in 2021.')
- YEAR_2023 = Tag('2023', 'Story was created or updated in 2023.')
+@@ -57,6 +57,7 @@ WEB_STORAGE = Tag(
+     'web_storage', 'Story has sites with heavy uses of Web storage.')
+ 
+ # Tags by year.
 +YEAR_2024 = Tag('2024', 'Story was created or updated in 2024.')
- YEAR_2025 = Tag('2025', 'Story was created or updated in 2025.')
- 
- 
+ YEAR_2016 = Tag('2016', 'Story was created or updated in 2016.')
+ YEAR_2017 = Tag('2017', 'Story was created or updated in 2017.')
+ YEAR_2018 = Tag('2018', 'Story was created or updated in 2018.')

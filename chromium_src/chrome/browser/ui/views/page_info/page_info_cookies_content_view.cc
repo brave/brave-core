@@ -32,7 +32,7 @@ void PageInfoCookiesContentView::SetCookieInfo(
   // [1]: on-site data button row, which we want to keep
   if (cookies_buttons_container_view_) {
     if (cookies_buttons_container_view_->children().size() > 0) {
-      cookies_buttons_container_view_->RemoveChildView(
+      cookies_buttons_container_view_->RemoveChildViewT(
           cookies_buttons_container_view_->children()[0]);
     }
   }

@@ -52,9 +52,9 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarC
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.components.browser_ui.edge_to_edge.SystemBarColorHelper;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
-import org.chromium.ui.InsetObserver;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
+import org.chromium.ui.insets.InsetObserver;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
@@ -112,7 +112,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull ObservableSupplier<Integer> overviewColorSupplier,
             @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
-            @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier) {
+            @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -160,7 +161,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 overviewColorSupplier,
                 manualFillingComponentSupplier,
                 edgeToEdgeManager,
-                bookmarkManagerOpenerSupplier);
+                bookmarkManagerOpenerSupplier,
+                xrSpaceModeObservableSupplier);
 
         mActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
@@ -192,7 +194,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                                             .getResources()
                                             .getDimensionPixelSize(R.dimen.bottom_controls_height)
                                     * -1;
-                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled()
+                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mActivity)
                             && mEdgeToEdgeControllerSupplier.get() != null) {
                         bottomToolbarHeight -=
                                 mEdgeToEdgeControllerSupplier.get().getBottomInsetPx();

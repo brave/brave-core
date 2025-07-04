@@ -1,20 +1,16 @@
 [package]
-
 name = "getopts"
-version = "0.2.21" # don't forget to update html_root_url
+version = "0.2.23"
 authors = ["The Rust Project Developers"]
-license = "MIT/Apache-2.0"
-readme = "README.md"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-lang/getopts"
-documentation = "https://doc.rust-lang.org/getopts"
-homepage = "https://github.com/rust-lang/getopts"
-description = """
-getopts-like option parsing.
-"""
+description = "getopts-like option parsing"
 categories = ["command-line-interface"]
+edition = "2021"
+rust-version = "1.66"
 
 [dependencies]
-unicode-width = "0.1.5"
+unicode-width = "0.2.0"
 std = { version = "1.0", package = "rustc-std-workspace-std", optional = true }
 core = { version = "1.0", package = "rustc-std-workspace-core", optional = true }
 
@@ -22,4 +18,4 @@ core = { version = "1.0", package = "rustc-std-workspace-core", optional = true 
 log = "0.4"
 
 [features]
-rustc-dep-of-std = ['unicode-width/rustc-dep-of-std', 'std', 'core']
+rustc-dep-of-std = ["unicode-width/rustc-dep-of-std", "std", "core"]

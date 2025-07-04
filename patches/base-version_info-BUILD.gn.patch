@@ -1,8 +1,8 @@
 diff --git a/base/version_info/BUILD.gn b/base/version_info/BUILD.gn
-index b1f13fa6e555a874d1f96eacefcd5a8401739c75..aa0a9cd343d9ba3134e3673f295a2c73c7104474 100644
+index 96937eddc05602917e3e9988959f1feee46b831c..ba8dc02f709a4936d5f16a9a5ff3335efc5a6bbc 100644
 --- a/base/version_info/BUILD.gn
 +++ b/base/version_info/BUILD.gn
-@@ -23,6 +23,7 @@ static_library("version_info") {
+@@ -22,6 +22,7 @@ static_library("version_info") {
      ":generate_version_info",
      "//base",
    ]

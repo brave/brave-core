@@ -149,6 +149,7 @@ void TopSitesFacade::SetSitesUpdatedCallback(
 }
 
 void TopSitesFacade::OnURLsAvailable(
+    bool is_user_triggered,
     const std::map<ntp_tiles::SectionType, ntp_tiles::NTPTilesVector>&
         sections) {
   current_sites_ = TopSitesFromSections(sections);
