@@ -68,6 +68,10 @@ constexpr char kIsMetaMask[] = "isMetaMask";
 constexpr char kMetaMask[] = "_metamask";
 constexpr char kIsUnlocked[] = "isUnlocked";
 
+constexpr char kEthereumChainChangedEvent[] = "chainChanged";
+constexpr char kEthereumAccountsChangedEvent[] = "accountsChanged";
+constexpr char kEthereumMessageEvent[] = "message";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -647,7 +651,7 @@ void JSEthereumProvider::ChainChangedEvent(const std::string& chain_id) {
     return;
   }
 
-  FireEvent(ethereum::kChainChangedEvent, base::Value(chain_id));
+  FireEvent(kEthereumChainChangedEvent, base::Value(chain_id));
   chain_id_ = chain_id;
 }
 
@@ -661,7 +665,7 @@ void JSEthereumProvider::AccountsChangedEvent(
   if (accounts.size() > 0) {
     first_allowed_account_ = accounts[0];
   }
-  FireEvent(ethereum::kAccountsChangedEvent, event_args);
+  FireEvent(kEthereumAccountsChangedEvent, event_args);
 }
 
 void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
@@ -672,7 +676,7 @@ void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
   data.Set("result", std::move(result));
   event_args.Set("type", "eth_subscription");
   event_args.Set("data", std::move(data));
-  FireEvent(ethereum::kMessageEvent, event_args);
+  FireEvent(kEthereumMessageEvent, event_args);
 }
 
 void JSEthereumProvider::OnProviderRequested() {

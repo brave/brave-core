@@ -89,6 +89,8 @@ constexpr char kSolanaProxyHandlerScript[] = R"((function() {
   return handler;
 })())";
 
+constexpr char kSolanaAccountChangedEvent[] = "accountChanged";
+
 }  // namespace
 
 JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
@@ -229,7 +231,7 @@ void JSSolanaProvider::AccountChangedEvent(
     v8::Local<v8::Value> v8_public_key = CreatePublicKey(context, *account);
     args.push_back(std::move(v8_public_key));
   }
-  FireEvent(solana::kAccountChangedEvent, std::move(args));
+  FireEvent(kSolanaAccountChangedEvent, std::move(args));
 }
 
 void JSSolanaProvider::DisconnectEvent() {

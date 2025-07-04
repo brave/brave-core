@@ -16,13 +16,16 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_util.h"
 
 namespace brave_wallet {
 
 namespace {
+
+constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
+constexpr char kEthBlockNumber[] = "eth_blockNumber";
+
 std::optional<std::string> EthGetBlockByNumberParamsForCache(
     const base::Value::List& params_list) {
   std::string cleaned_params;

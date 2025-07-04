@@ -25,10 +25,13 @@
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "url/gurl.h"
 
 namespace {
+
+constexpr char kId[] = "id";
+constexpr char kMethod[] = "method";
+constexpr char kParams[] = "params";
 
 std::optional<base::Value::List> GetParamsList(std::string_view json) {
   auto json_value =
@@ -39,7 +42,7 @@ std::optional<base::Value::List> GetParamsList(std::string_view json) {
   }
 
   auto& value = *json_value;
-  auto* params = value.FindListByDottedPath(brave_wallet::kParams);
+  auto* params = value.FindListByDottedPath(kParams);
   if (!params) {
     return std::nullopt;
   }
@@ -64,7 +67,7 @@ std::optional<base::Value::Dict> GetParamsDict(std::string_view json) {
   if (!json_value) {
     return std::nullopt;
   }
-  auto* value = json_value->FindDict(brave_wallet::kParams);
+  auto* value = json_value->FindDict(kParams);
   if (!value) {
     return std::nullopt;
   }

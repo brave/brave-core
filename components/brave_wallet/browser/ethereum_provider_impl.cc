@@ -38,7 +38,6 @@
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "crypto/random.h"
@@ -48,6 +47,33 @@
 namespace brave_wallet {
 
 namespace {
+
+constexpr char kEthAccounts[] = "eth_accounts";
+constexpr char kEthCoinbase[] = "eth_coinbase";
+constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
+constexpr char kEthSendTransaction[] = "eth_sendTransaction";
+constexpr char kEthSignTransaction[] = "eth_signTransaction";
+constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
+constexpr char kEthSign[] = "eth_sign";
+constexpr char kPersonalSign[] = "personal_sign";
+constexpr char kPersonalEcRecover[] = "personal_ecRecover";
+constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
+constexpr char kEthDecrypt[] = "eth_decrypt";
+constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
+constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
+constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
+constexpr char kEthSubscribe[] = "eth_subscribe";
+constexpr char kEthSubscribeNewHeads[] = "newHeads";
+constexpr char kEthSubscribeLogs[] = "logs";
+constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
+
+constexpr char kEthSignTypedDataV3[] = "eth_signTypedData_v3";
+constexpr char kEthSignTypedDataV4[] = "eth_signTypedData_v4";
+constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
+constexpr char kSwitchEthereumChainMethod[] = "wallet_switchEthereumChain";
+constexpr char kRequestPermissionsMethod[] = "wallet_requestPermissions";
+constexpr char kGetPermissionsMethod[] = "wallet_getPermissions";
+constexpr char kParams[] = "params";
 
 void RejectInvalidParams(base::Value id,
                          mojom::EthereumProvider::RequestCallback callback) {
@@ -177,7 +203,7 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   }
   const auto& root = *json_value;
 
-  const auto* params = root.FindList(brave_wallet::kParams);
+  const auto* params = root.FindList(kParams);
   if (!params || params->empty()) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
