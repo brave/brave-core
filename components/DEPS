@@ -1,8 +1,12 @@
 include_rules = [
   # Do not add chrome/ or brave/ as an allowed include.
 
+  # Individual components must explicitly declare their dependencies
+  # on other components. Cycles in the dependency graph within
+  # components/ are not allowed.
+  "-components",
+
   # TODO(bridiver) - narrow this down
-  "+components",
   "+net",
   "+mojo/public",
   "+ui/base",
@@ -16,66 +20,6 @@ include_rules = [
 
   # This is equivalent to chrome/test/base
   "-brave/test/base",
-]
-
-# Work in progress: https://github.com/brave/brave-browser/issues/46907
-# This list disallows implicitly depend on some chromium components. Eventually
-# would removed and "+components" above would be changed to "-components"
-include_rules += [
-  "-components/affiliations",
-  "-components/assist_ranker",
-  "-components/autofill",
-  "-components/base32",
-  "-components/bookmarks",
-  "-components/browsing_data",
-  "-components/browsing_topics",
-  "-components/captive_portal",
-  "-components/cbor",
-  "-components/client_update_protocol",
-  "-components/component_updater",
-  "-components/content_settings",
-  "-components/country_codes",
-  "-components/crx_file",
-  "-components/download",
-  "-components/embedder_support",
-  "-components/favicon",
-  "-components/google",
-  "-components/grit",
-  "-components/history",
-  "-components/image_fetcher",
-  "-components/infobars",
-  "-components/keep_alive_registry",
-  "-components/keyed_service",
-  "-components/language",
-  "-components/metrics",
-  "-components/network_session_configurator",
-  "-components/network_time",
-  "-components/ntp_tiles",
-  "-components/omnibox",
-  "-components/page_load_metrics",
-  "-components/paint_preview",
-  "-components/password_manager",
-  "-components/pdf",
-  "-components/permissions",
-  "-components/pref_registry",
-  "-components/prefs",
-  "-components/privacy_sandbox",
-  "-components/profile_metrics",
-  "-components/proxy_config",
-  "-components/regional_capabilities",
-  "-components/schema_org",
-  "-components/search_engines",
-  "-components/security_interstitials",
-  "-components/sessions",
-  "-components/signin",
-  "-components/sync_device_info",
-  "-components/sync_preferences",
-  "-components/sync",
-  "-components/update_client",
-  "-components/user_prefs",
-  "-components/value_store",
-  "-components/variations",
-  "-components/version_info",
 ]
 
 specific_include_rules = {
