@@ -213,6 +213,11 @@ void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
   BackupExtensionSettings(extension_id);
 }
 
+void ExtensionsManifectV2Migrator::OnShutdown(
+    extensions::ExtensionRegistry* registry) {
+  registry_observation_.Reset();
+}
+
 void ExtensionsManifectV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
