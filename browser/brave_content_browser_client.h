@@ -182,6 +182,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::optional<GURL> SanitizeURL(content::RenderFrameHost* render_frame_host,
                                   const GURL& url) override;
 
+  bool IsWindowsRecallDisabled() override;
+
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
  private:
