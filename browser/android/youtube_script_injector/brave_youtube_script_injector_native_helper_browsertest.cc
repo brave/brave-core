@@ -187,9 +187,14 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
           .ExtractBool());
 
   // Simulate a playing video before entering fullscreen.
-  ASSERT_TRUE(content::ExecJs(
-      web_contents(),
-      "document.querySelector('video.html5-main-video').play()"));
+  ASSERT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "(async () => {"
+          "await document.querySelector('video.html5-main-video').play();"
+          "return true;"
+          "})();")
+          .ExtractBool());
   youtube_script_injector::SetFullscreen(web_contents());
 
   EXPECT_TRUE(IsVideoPlaying());
