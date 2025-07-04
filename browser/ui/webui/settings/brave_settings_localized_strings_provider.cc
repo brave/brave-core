@@ -1018,6 +1018,7 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
     return;
   }
   webui::LocalizedString localized_strings[] = {
+      {"emailAliasesLabel", IDS_SETTINGS_EMAIL_ALIASES_LABEL},
       {"emailAliasesShortDescription",
        IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION},
       {"emailAliasesDescription", IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION},
