@@ -41,6 +41,7 @@ class ExtensionsManifectV2Migrator
       extensions::DisableReasonSet disabled_reasons) override;
 
   // ExtensionRegistryObserver:
+  void OnShutdown(extensions::ExtensionRegistry* registry) override;
   void OnExtensionInstalled(content::BrowserContext* browser_context,
                             const extensions::Extension* extension,
                             bool is_updates) override;
