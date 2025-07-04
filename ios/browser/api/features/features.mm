@@ -25,6 +25,7 @@
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/api/bookmarks/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
@@ -348,6 +349,10 @@
 + (Feature*)kModernTabTrayEnabled {
   return
       [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
+}
+
++ (Feature*)kNewBookmarksUI {
+  return [[Feature alloc] initWithFeature:&brave::features::kNewBookmarksUI];
 }
 
 @end
