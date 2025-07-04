@@ -13,10 +13,10 @@
 #undef DoesDefaultSearchEngineHaveLogo
 
 jboolean TemplateUrlServiceAndroid::DoesDefaultSearchEngineHaveLogo(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& obj) {
-  if (IsDefaultSearchEngineGoogle(env, obj))
+    JNIEnv* env) {
+  if (IsDefaultSearchEngineGoogle(env)) {
     return false;
+  }
 
-  return DoesDefaultSearchEngineHaveLogo_ChromiumImpl(env, obj);
+  return DoesDefaultSearchEngineHaveLogo_ChromiumImpl(env);
 }
