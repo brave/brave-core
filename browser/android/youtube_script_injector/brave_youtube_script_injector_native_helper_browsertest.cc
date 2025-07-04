@@ -26,6 +26,17 @@ namespace {
 const base::TimeDelta kCheckFrequency = base::Milliseconds(200);
 const base::TimeDelta kTaskTimeout = base::Seconds(10);
 
+constexpr std::u16string_view kSimulateDelayedScriptLoad =
+    uR"(
+  // Replace the contents of #movie_player with video and button.
+  const moviePlayer = document.getElementById('movie_player');
+  if (moviePlayer) {
+    moviePlayer.innerHTML = `
+      <video class="html5-main-video" src="mov_bbb.mp4" controls></video>
+      <button class="fullscreen-icon" onclick="document.querySelector('video.html5-main-video').requestFullscreen();">⛶</button>
+    `;
+  })";
+
 }  // namespace
 
 class BraveYouTubeScriptInjectorNativeHelperBrowserTest
@@ -72,9 +83,10 @@ class BraveYouTubeScriptInjectorNativeHelperBrowserTest
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  void InjectScript(const std::u16string& script) {
+  void InjectScript(const std::u16string_view script) {
     content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
-    frame->ExecuteJavaScriptForTests(script, base::NullCallback(),
+    frame->ExecuteJavaScriptForTests(std::u16string(script),
+                                     base::NullCallback(),
                                      content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
@@ -271,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
 
   // Inject a script to simulate delayed loading of the video element fullscreen
   // button.
-  InjectScript(u"window.simulateDelayedScriptLoad();");
+  InjectScript(kSimulateDelayedScriptLoad);
   // Assert that the video element is now present.
   ASSERT_TRUE(content::EvalJs(
                   web_contents(),
