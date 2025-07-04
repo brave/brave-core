@@ -10,57 +10,21 @@
 #include "base/functional/callback.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
-#include "chrome/test/base/testing_browser_process.h"
-#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
-const base::TimeDelta kPredicateCheckFrequency = base::Milliseconds(200);
-
-class TestPredicateWaiter {
- public:
-  explicit TestPredicateWaiter(
-      const base::RepeatingCallback<bool(void)>& is_fulfilled)
-      : is_fulfilled_(is_fulfilled) {}
-
-  ~TestPredicateWaiter() = default;
-
-  void Wait() {
-    if (is_fulfilled_.Run()) {
-      return;
-    }
-
-    timer_.Start(FROM_HERE, kPredicateCheckFrequency, this,
-                 &TestPredicateWaiter::CheckPredicate);
-    run_loop_.Run();
-    is_fulfilled_.Run();
-  }
-
- private:
-  void CheckPredicate() {
-    if (is_fulfilled_.Run()) {
-      run_loop_.Quit();
-      timer_.Stop();
-    } else {
-      timer_.Reset();
-    }
-  }
-
-  base::RepeatingCallback<bool(void)> is_fulfilled_;
-  base::RepeatingTimer timer_;
-  base::RunLoop run_loop_;
-};
+const base::TimeDelta kCheckFrequency = base::Milliseconds(200);
+const base::TimeDelta kTaskTimeout = base::Seconds(10);
 
 }  // namespace
 
@@ -116,19 +80,42 @@ class BraveYouTubeScriptInjectorNativeHelperBrowserTest
 
   bool WaitForJsResult(content::WebContents* web_contents,
                        const std::string& script) {
+    base::RunLoop run_loop;
     bool fulfilled = false;
-    TestPredicateWaiter waiter(base::BindRepeating(
-        [](content::WebContents* web_contents, const std::string& script,
+    bool timed_out = false;
+
+    auto check = std::make_unique<base::RepeatingClosure>();
+    *check = base::BindRepeating(
+        [](base::RepeatingClosure* check, base::RunLoop* run_loop,
+           content::WebContents* web_contents, const std::string& script,
            bool* fulfilled) {
-          bool result = content::EvalJs(web_contents, script).ExtractBool();
-          if (result) {
+          if (content::EvalJs(web_contents, script).ExtractBool()) {
             *fulfilled = true;
+            run_loop->Quit();
+          } else {
+            base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+                FROM_HERE, base::BindOnce((*check)), kCheckFrequency);
           }
-          return result;
         },
-        web_contents, script, &fulfilled));
-    waiter.Wait();
-    return fulfilled;
+        check.get(), &run_loop, web_contents, script, &fulfilled);
+
+    // Start the first check.
+    (*check).Run();
+
+    // Set up timeout.
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](base::RunLoop* run_loop, bool* timed_out) {
+              *timed_out = true;
+              run_loop->Quit();
+            },
+            &run_loop, &timed_out),
+        kTaskTimeout);
+
+    run_loop.Run();
+
+    return fulfilled && !timed_out;
   }
 
   bool IsVideoPlaying() {
