@@ -5,14 +5,26 @@
 
 source_set("brave_account") {
   sources = [
+    "brave_account_page_handler.cc",
+    "brave_account_page_handler.h",
     "brave_account_service.cc",
     "brave_account_service.h",
     "brave_account_ui_base.h",
+    "endpoints/password/finalize.cc",
+    "endpoints/password/finalize.h",
+    "endpoints/password/init.cc",
+    "endpoints/password/init.h",
+    "pref_names.h",
+    "prefs.cc",
+    "prefs.h",
   ]
 
   deps = [
     "//base",
+    "//brave/brave_domains",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
     "//brave/components/password_strength_meter",
@@ -22,9 +34,11 @@ source_set("brave_account") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
+    "//url",
   ]
 }
 

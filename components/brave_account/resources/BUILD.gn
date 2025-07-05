@@ -52,8 +52,13 @@ build_webui("build") {
     "//ui/webui/resources/mojo:build_ts",
   ]
 
-  mojo_files = [ "$root_gen_dir/brave/components/password_strength_meter/password_strength_meter.mojom-webui.ts" ]
+  mojo_files = [
+    "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
+    "$root_gen_dir/brave/components/password_strength_meter/password_strength_meter.mojom-webui.ts",
+  ]
 
-  mojo_files_deps =
-      [ "//brave/components/password_strength_meter:mojom_ts__generator" ]
+  mojo_files_deps = [
+    "//brave/components/brave_account/mojom:mojom_ts__generator",
+    "//brave/components/password_strength_meter:mojom_ts__generator",
+  ]
 }
