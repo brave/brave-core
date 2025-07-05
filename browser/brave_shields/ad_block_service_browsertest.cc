@@ -56,6 +56,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -709,8 +711,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
   UpdateAdBlockInstanceWithRules("*$websocket");
 
-  net::SpawnedTestServer ws_server(net::SpawnedTestServer::TYPE_WS,
-                                   net::GetWebSocketTestDataDirectory());
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
   ASSERT_TRUE(ws_server.Start());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
