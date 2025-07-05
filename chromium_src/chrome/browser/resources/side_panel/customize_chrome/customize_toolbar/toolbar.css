@@ -51,6 +51,11 @@
 }
 
 #resetToDefaultButton {
-  margin: var(--leo-spacing-xl);
+  margin: 0;
+  padding: var(--leo-spacing-xl);
   width: calc(100% - 2 * var(--leo-spacing-xl));
+  position: sticky;
+  /* Compensate #container's padding */
+  bottom: calc(-1 * var(--sp-body-padding));
+  background-color: var(--leo-color-container-background);
 }
