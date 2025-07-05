@@ -8,6 +8,7 @@ source_set("brave_account") {
 
   deps = [
     "//base",
+    "//brave/components/brave_account:features",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
     "//brave/components/password_strength_meter",
@@ -18,4 +19,13 @@ source_set("brave_account") {
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
   ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
 }
