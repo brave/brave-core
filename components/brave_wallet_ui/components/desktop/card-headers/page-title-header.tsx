@@ -39,15 +39,17 @@ export const PageTitleHeader = ({
 }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
-  return isPanel && !showBackButton ? (
+  return isAndroidOrPanel && !showBackButton ? (
     <DefaultPanelHeader
       title={title}
       expandRoute={expandRoute}
     />
   ) : (
     <Row
-      padding={isPanel ? '17px 20px' : '24px 0px'}
+      padding={isAndroidOrPanel ? '17px 20px' : '24px 0px'}
       justifyContent='flex-start'
     >
       {showBackButton && (
@@ -61,7 +63,7 @@ export const PageTitleHeader = ({
           />
         </MenuButton>
       )}
-      <HeaderTitle isPanel={isPanel}>{title}</HeaderTitle>
+      <HeaderTitle isAndroidOrPanel={isAndroidOrPanel}>{title}</HeaderTitle>
     </Row>
   )
 }

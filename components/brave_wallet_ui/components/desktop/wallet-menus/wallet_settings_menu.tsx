@@ -56,6 +56,8 @@ export const WalletSettingsMenu = (props: Props) => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // Routing
   const history = useHistory()
@@ -184,6 +186,16 @@ export const WalletSettingsMenu = (props: Props) => {
     history.push(WalletRoutes.Backup)
   }
 
+  // Memos
+  const accountSettingsOptions = React.useMemo(() => {
+    if (isAndroid) {
+      return CreateAccountOptions.filter(
+        (option) => option.name !== 'braveWalletConnectHardwareWallet',
+      )
+    }
+    return CreateAccountOptions
+  }, [isAndroid])
+
   return (
     <StyledWrapper
       yPosition={yPosition}
@@ -212,21 +224,24 @@ export const WalletSettingsMenu = (props: Props) => {
         </PopupButton>
 
         {(selectedNetwork?.coin === BraveWallet.CoinType.ETH
-          || selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
-          <PopupButton onClick={onClickConnectedSites}>
-            <ButtonIcon name='link-normal' />
+          || selectedNetwork?.coin === BraveWallet.CoinType.SOL)
+          && !isAndroid && (
+            <PopupButton onClick={onClickConnectedSites}>
+              <ButtonIcon name='link-normal' />
+              <PopupButtonText>
+                {getLocale('braveWalletWalletPopupConnectedSites')}
+              </PopupButtonText>
+            </PopupButton>
+          )}
+
+        {!isAndroid && (
+          <PopupButton onClick={onClickSettings}>
+            <ButtonIcon name='settings' />
             <PopupButtonText>
-              {getLocale('braveWalletWalletPopupConnectedSites')}
+              {getLocale('braveWalletWalletPopupSettings')}
             </PopupButtonText>
           </PopupButton>
         )}
-
-        <PopupButton onClick={onClickSettings}>
-          <ButtonIcon name='settings' />
-          <PopupButtonText>
-            {getLocale('braveWalletWalletPopupSettings')}
-          </PopupButtonText>
-        </PopupButton>
       </Column>
 
       {(walletLocation === WalletRoutes.PortfolioNFTs
@@ -285,7 +300,7 @@ export const WalletSettingsMenu = (props: Props) => {
         </>
       )}
 
-      {walletLocation === WalletRoutes.Accounts && isPanel && (
+      {walletLocation === WalletRoutes.Accounts && isAndroidOrPanel && (
         <>
           <SectionLabel justifyContent='flex-start'>
             {getLocale('braveWalletAccountSettings')}
@@ -294,7 +309,7 @@ export const WalletSettingsMenu = (props: Props) => {
             fullWidth={true}
             padding='8px 8px 0px 8px'
           >
-            {CreateAccountOptions.map((option) => (
+            {accountSettingsOptions.map((option) => (
               <PopupButton
                 key={option.name}
                 onClick={() => onClickRoute(option.route)}
