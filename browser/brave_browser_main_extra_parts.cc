@@ -9,7 +9,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "components/metrics/metrics_pref_names.h"

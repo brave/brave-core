@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace brave_news {
