@@ -11,6 +11,7 @@ import SwiftUI
 struct WalletPromptContentView<Content, Footer>: View where Content: View, Footer: View {
   let content: () -> Content
   var primaryButton: WalletPromptButton
+  @Binding var isPrimaryButtonEnabled: Bool
   var secondaryButton: WalletPromptButton?
   var buttonsAxis: Axis
   let showCloseButton: Bool
@@ -19,6 +20,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
 
   init(
     primaryButton: WalletPromptButton,
+    isPrimaryButtonEnabled: Binding<Bool>,
     secondaryButton: WalletPromptButton?,
     buttonsAxis: Axis,
     showCloseButton: Bool,
@@ -27,6 +29,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
     @ViewBuilder footer: @escaping () -> Footer
   ) {
     self.primaryButton = primaryButton
+    self._isPrimaryButtonEnabled = isPrimaryButtonEnabled
     self.secondaryButton = secondaryButton
     self.buttonsAxis = buttonsAxis
     self.showCloseButton = showCloseButton
@@ -49,6 +52,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .disabled(!isPrimaryButtonEnabled)
             Button {
               secondaryButton.action(nil)
             } label: {
@@ -66,6 +70,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
               Text(secondaryButton.title)
                 .font(.footnote.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(BraveOutlineButtonStyle(size: .large))
             Button {
@@ -73,9 +78,10 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
             } label: {
               Text(primaryButton.title)
                 .font(.footnote.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .disabled(!isPrimaryButtonEnabled)
           }
         }
       } else {
@@ -84,8 +90,10 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
         } label: {
           Text(primaryButton.title)
             .font(.footnote.weight(.semibold))
+            .frame(maxWidth: .infinity)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .disabled(!isPrimaryButtonEnabled)
       }
       footer()
     }
@@ -117,6 +125,7 @@ struct WalletPromptButton {
 struct WalletPromptView<Content, Footer>: UIViewControllerRepresentable
 where Content: View, Footer: View {
   @Binding var isPresented: Bool
+  @Binding var isPrimaryButtonEnabled: Bool
   var primaryButton: WalletPromptButton
   var secondaryButton: WalletPromptButton?
   var buttonsAxis: Axis
@@ -127,6 +136,7 @@ where Content: View, Footer: View {
 
   init(
     isPresented: Binding<Bool>,
+    isPrimaryButtonEnabled: Binding<Bool>,
     primaryButton: WalletPromptButton,
     secondaryButton: WalletPromptButton? = nil,
     buttonsAxis: Axis = .vertical,
@@ -136,6 +146,7 @@ where Content: View, Footer: View {
     @ViewBuilder footer: @escaping () -> Footer
   ) {
     _isPresented = isPresented
+    _isPrimaryButtonEnabled = isPrimaryButtonEnabled
     self.primaryButton = primaryButton
     self.secondaryButton = secondaryButton
     self.buttonsAxis = buttonsAxis
@@ -172,6 +183,7 @@ where Content: View, Footer: View {
       let controller = PopupViewController(
         rootView: WalletPromptContentView(
           primaryButton: newPrimaryButton,
+          isPrimaryButtonEnabled: $isPrimaryButtonEnabled,
           secondaryButton: newSecodaryButton,
           buttonsAxis: buttonsAxis,
           showCloseButton: showCloseButton,
@@ -182,19 +194,18 @@ where Content: View, Footer: View {
           footer: footer
         )
       )
-      context.coordinator.presentedViewController = .init(controller)
+      context.coordinator.presentedWalletPrompt = true
       uiViewController.present(controller, animated: true)
     } else {
-      if let presentedViewController = context.coordinator.presentedViewController?.value,
-        presentedViewController == uiViewController.presentedViewController
-      {
+      if context.coordinator.presentedWalletPrompt {
+        context.coordinator.presentedWalletPrompt = false
         uiViewController.presentedViewController?.dismiss(animated: true)
       }
     }
   }
 
   class Coordinator {
-    var presentedViewController: WeakRef<UIViewController>?
+    var presentedWalletPrompt: Bool = false
   }
 
   func makeCoordinator() -> Coordinator {
@@ -205,6 +216,7 @@ where Content: View, Footer: View {
 extension WalletPromptView where Content: View, Footer == EmptyView {
   init(
     isPresented: Binding<Bool>,
+    isPrimaryButtonEnabled: Binding<Bool> = .constant(true),
     primaryButton: WalletPromptButton,
     secondaryButton: WalletPromptButton? = nil,
     buttonsAxis: Axis = .vertical,
@@ -213,6 +225,7 @@ extension WalletPromptView where Content: View, Footer == EmptyView {
     @ViewBuilder content: @escaping () -> Content
   ) {
     _isPresented = isPresented
+    _isPrimaryButtonEnabled = isPrimaryButtonEnabled
     self.primaryButton = primaryButton
     self.secondaryButton = secondaryButton
     self.buttonsAxis = buttonsAxis
