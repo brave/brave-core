@@ -22,22 +22,9 @@
   background-color: var(--leo-color-container-highlight);
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-secondary);
-  font: var(--leo-font-small-regular);
-  text-transform: uppercase;
-  position: absolute;
-  border-radius: 8px 8px 0px 0px;
-  border-top: 1px solid var(--leo-color-divider-subtle);
-  border-left: 1px solid var(--leo-color-divider-subtle);
-  border-right: 1px solid var(--leo-color-divider-subtle);
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
+  font: var(--leo-font-components-label);
 }
 
-.headerGap {
-  min-height: 43px;
-}
 
 .anchorButton {
   display: flex;
@@ -54,25 +41,20 @@
   flex-direction: row;
 }
 
-.footerGap {
-  min-height: 53px;
-}
 
 .menuFooter {
   display: flex;
   width: 100%;
   padding: var(--leo-spacing-s);
-  border: 1px solid var(--leo-color-divider-subtle);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  margin: var(--leo-spacing-s) 0 0 0;
+  border-top: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
   border-radius: 0px 0px 8px 8px;
   leo-menu-item {
     justify-content: flex-start;
     border-radius: var(--leo-radius-s);
     margin: 0;
+    gap: var(--leo-spacing-m);
     &:hover {
       background-color: var(--leo-color-container-highlight);
     }

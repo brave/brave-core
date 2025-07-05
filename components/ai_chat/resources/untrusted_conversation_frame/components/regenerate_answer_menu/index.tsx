@@ -50,7 +50,6 @@ export function RegenerateAnswerMenu(props: Props) {
       <div className={styles.menuHeader}>
         {getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TITLE)}
       </div>
-      <div className={styles.headerGap} />
       <Button
         fab
         slot='anchor-content'
@@ -97,7 +96,6 @@ export function RegenerateAnswerMenu(props: Props) {
           </leo-menu-item>
         )
       })}
-      <div className={styles.footerGap} />
       <div className={styles.menuFooter}>
         <leo-menu-item
           onClick={() => handleRegenerate(turnModelKey)}
