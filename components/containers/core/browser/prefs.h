@@ -29,6 +29,10 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs);
 
+// Returns true if the container is stored in preferences.
+bool IsContainerStoredInPrefs(const mojom::ContainerPtr& container,
+                              const PrefService& prefs);
+
 }  // namespace containers
 
 #endif  // BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_H_

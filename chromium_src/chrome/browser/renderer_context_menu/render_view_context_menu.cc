@@ -69,6 +69,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -778,16 +779,26 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveRenderViewContextMenu::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
-  // TODO(https://github.com/brave/brave-browser/issues/47118)
-  // Open |params_.link_url| in the selected container.
-  NOTIMPLEMENTED();
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::IsolateUrl(GetBrowser(), params_.link_url, container);
 }
 
 base::flat_set<std::string>
 BraveRenderViewContextMenu::GetCurrentContainerIds() {
-  // TODO(https://github.com/brave/brave-browser/issues/47118) If the tab is in
-  // a container, return the container ID.
-  NOTIMPLEMENTED();
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  const auto& storage_partition_config =
+      source_web_contents_->GetSiteInstance()->GetStoragePartitionConfig();
+  if (auto container_id = containers::GetContainerIdFromStoragePartition(
+          storage_partition_config)) {
+    return {std::string(*container_id)};
+  }
+
   return {};
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)

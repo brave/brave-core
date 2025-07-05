@@ -53,6 +53,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -117,6 +118,11 @@
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #endif
 
 using content::WebContents;
@@ -1280,5 +1286,53 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   CHECK(split_id.has_value());
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void IsolateTab(Browser* browser,
+                tabs::TabHandle tab,
+                const containers::mojom::ContainerPtr& container) {
+  const auto* tab_ptr = tab.Get();
+  if (!tab_ptr) {
+    return;
+  }
+
+  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return;
+  }
+
+  // If a container was removed from the prefs, it is not valid to use it.
+  if (!containers::IsContainerStoredInPrefs(container,
+                                            *browser->profile()->GetPrefs())) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = containers::CreateContainerStoragePartition(
+      browser->profile(), container);
+  Navigate(&params);
+}
+
+void IsolateUrl(Browser* browser,
+                const GURL& url,
+                const containers::mojom::ContainerPtr& container) {
+  if (!url.is_valid()) {
+    return;
+  }
+
+  // If a container was removed from the prefs, it is not valid to use it.
+  if (!containers::IsContainerStoredInPrefs(container,
+                                            *browser->profile()->GetPrefs())) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = containers::CreateContainerStoragePartition(
+      browser->profile(), container);
+  Navigate(&params);
+}
+#endif
 
 }  // namespace brave
