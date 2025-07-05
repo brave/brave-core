@@ -235,7 +235,10 @@ struct ToolUseEvent {
   // Arguments for the Tool. The LLM may hallucinate and generate
   // incorrect arguments or even invalid JSON, so this should be
   // interpreted defensively.
-  mojo_base.mojom.DictionaryValue arguments;
+  string arguments_json;
+  // Allow consumers to store a cache of the interpreted arguments
+  // for the Tool, so that they can be used later without re-parsing.
+  mojo_base.mojom.DictionaryValue? arguments;
 
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
