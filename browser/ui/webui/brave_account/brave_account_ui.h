@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
 
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_ui_base.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -16,8 +18,11 @@ namespace content {
 class WebUI;
 }  // namespace content
 
-class BraveAccountUI : public BraveAccountUIBase<content::WebUIDataSource>,
-                       public ConstrainedWebDialogUI {
+class BraveAccountUI
+    : public BraveAccountUIBase<Profile,
+                                content::WebUIDataSource,
+                                brave_account::BraveAccountServiceFactory>,
+      public ConstrainedWebDialogUI {
  public:
   explicit BraveAccountUI(content::WebUI* web_ui);
 
