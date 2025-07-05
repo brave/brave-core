@@ -178,7 +178,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
-  void SetShouldSendPageContents(bool should_send) override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
   void ClearErrorAndGetFailedMessage(
