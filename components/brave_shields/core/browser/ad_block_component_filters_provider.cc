@@ -14,6 +14,7 @@
 #include "base/rand_util.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -25,8 +26,6 @@ constexpr char kListFile[] = "list.txt";
 namespace brave_shields {
 
 namespace {
-
-void AddNothingToFilterSet(rust::Box<adblock::FilterSet>*) {}
 
 // static
 void AddDATBufferToFilterSet(uint8_t permission_mask,
@@ -44,11 +43,12 @@ void OnReadDATFileData(
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
     uint8_t permission_mask,
     const perfetto::Flow& flow,
-    DATFileDataBuffer buffer) {
+    std::optional<DATFileDataBuffer> buffer) {
   TRACE_EVENT("brave.adblock",
               "OnReadDATFileData_AdBlockComponentFiltersProvider", flow);
   std::move(cb).Run(
-      base::BindOnce(&AddDATBufferToFilterSet, permission_mask, buffer, flow));
+      base::BindOnce(&AddDATBufferToFilterSet, permission_mask,
+                     std::move(buffer).value_or(DATFileDataBuffer()), flow));
 }
 
 }  // namespace
@@ -101,54 +101,51 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
 }
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
-    const base::FilePath& path) {
-  TRACE_EVENT(
-      "brave.adblock", "AdBlockComponentFiltersProvider::OnComponentReady",
-      perfetto::TerminatingFlow::FromPointer(this), "path", path.value());
-  base::FilePath old_path = component_path_;
-  component_path_ = path;
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  TRACE_EVENT("brave.adblock",
+              "AdBlockComponentFiltersProvider::OnComponentReady",
+              perfetto::TerminatingFlow::FromPointer(this), "path",
+              reader->GetComponentRootDeprecated().value());
 
-  NotifyObservers(engine_is_default_);
-
-  if (!old_path.empty()) {
+  if (component_reader_) {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-        base::BindOnce(IgnoreResult(&base::DeletePathRecursively), old_path));
+        base::GetDeletePathRecursivelyCallback(
+            component_reader_->GetComponentRootDeprecated()));
   }
+  component_reader_ = std::move(reader);
+
+  NotifyObservers(engine_is_default_);
 }
 
 bool AdBlockComponentFiltersProvider::IsInitialized() const {
-  return !component_path_.empty();
+  return !!component_reader_;
 }
 
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
-  if (component_path_.empty()) {
-    // Since we know it's empty return it as is.
-    return component_path_;
+  if (!component_reader_) {
+    return base::FilePath();
   }
-
-  return component_path_.AppendASCII(kListFile);
+  return component_reader_->GetComponentRootDeprecated().AppendASCII(kListFile);
 }
 
 void AdBlockComponentFiltersProvider::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
-  base::FilePath list_file_path = GetFilterSetPath();
-
   const auto flow = perfetto::Flow::ProcessScoped(base::RandUint64());
   TRACE_EVENT("brave.adblock", "AdBlockComponentFiltersProvider::LoadFilterSet",
               flow);
 
-  if (list_file_path.empty()) {
-    // If the path is not ready yet, provide a no-op callback immediately. An
-    // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
+  if (!component_reader_) {
+    // If the component is not ready yet, provide a no-op callback
+    // immediately. An update will be pushed later to notify about the newly
+    // available list.
+    std::move(cb).Run(base::DoNothing());
     return;
   }
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
+  component_reader_->GetFileAsBytes(
+      base::FilePath::FromASCII(kListFile),
       base::BindOnce(&OnReadDATFileData, std::move(cb), permission_mask_,
                      flow));
 }

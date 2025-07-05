@@ -7,13 +7,15 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -63,6 +65,8 @@ class AdBlockComponentInstallerPolicy
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
   std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  mutable std::unique_ptr<component_updater::ComponentContentsReader>
+      component_reader_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -103,13 +107,16 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  ready_callback_.Run(path);
+  CHECK(component_reader_);
+  ready_callback_.Run(std::move(component_reader_));
 }
 
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
-  return true;
+  component_reader_ =
+      component_updater::ComponentContentsReader::Create(install_dir);
+  return !!component_reader_;
 }
 
 base::FilePath AdBlockComponentInstallerPolicy::GetRelativeInstallDir() const {
@@ -142,42 +149,7 @@ void OnRegistered(const std::string& component_id) {
       component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND);
 }
 
-}  // namespace
-
-void RegisterAdBlockDefaultResourceComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus) {
-    return;
-  }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockResourceComponentBase64PublicKey, kAdBlockResourceComponentId,
-          kAdBlockResourceComponentName, callback));
-  installer->Register(
-      cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
-}
-
-void RegisterAdBlockFilterListCatalogComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus) {
-    return;
-  }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockFilterListCatalogComponentBase64PublicKey,
-          kAdBlockFilterListCatalogComponentId,
-          kAdBlockFilterListCatalogComponentName, callback));
-  installer->Register(
-      cus, base::BindOnce(&OnRegistered, kAdBlockFilterListCatalogComponentId));
-}
-
-void RegisterAdBlockFiltersComponent(
+void RegisterAdBlockComponentInternal(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
     const std::string& component_id,
@@ -187,11 +159,41 @@ void RegisterAdBlockFiltersComponent(
   if (!cus) {
     return;
   }
-
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
-          component_public_key, component_id, component_name, callback));
+          component_public_key, component_id, component_name,
+          std::move(callback)));
   installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
+}
+
+}  // namespace
+
+void RegisterAdBlockDefaultResourceComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(
+      cus, kAdBlockResourceComponentBase64PublicKey,
+      kAdBlockResourceComponentId, kAdBlockResourceComponentName,
+      std::move(callback));
+}
+
+void RegisterAdBlockFilterListCatalogComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(
+      cus, kAdBlockFilterListCatalogComponentBase64PublicKey,
+      kAdBlockFilterListCatalogComponentId,
+      kAdBlockFilterListCatalogComponentName, std::move(callback));
+}
+
+void RegisterAdBlockFiltersComponent(
+    component_updater::ComponentUpdateService* cus,
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
+    OnComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(cus, component_public_key, component_id,
+                                   component_name, std::move(callback));
 }
 
 }  // namespace brave_shields
