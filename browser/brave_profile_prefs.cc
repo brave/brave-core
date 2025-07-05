@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_account/prefs.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
@@ -478,6 +479,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
+
+  brave_account::RegisterPrefs(registry);
 
   brave_search_conversion::RegisterPrefs(registry);
 
