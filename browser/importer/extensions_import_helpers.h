@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -38,6 +39,10 @@ enum class ExtensionImportStatus : int32_t {
   kFailedToImportSettings,
 };
 
+using InstallExtensionFnForTesting =
+    base::RepeatingCallback<ExtensionImportStatus(
+        const std::string& extension_id)>;
+
 class ExtensionsImporter {
  public:
   using OnReady = base::OnceCallback<void(bool ready)>;
@@ -55,9 +60,8 @@ class ExtensionsImporter {
   const ImportingExtension* GetExtension(const std::string& id) const;
   bool IsImportInProgress() const;
 
-  static base::RepeatingCallback<
-      ExtensionImportStatus(const std::string& extension_id)>&
-  GetExtensionInstallerForTesting();
+  [[nodiscard]] static base::AutoReset<InstallExtensionFnForTesting*>
+  OverrideExtensionInstallerForTesting(InstallExtensionFnForTesting* installer);
 
  private:
   using ExtensionsListResult =
@@ -65,6 +69,11 @@ class ExtensionsImporter {
   using OnOneExtensionImported =
       base::OnceCallback<void(const std::string& id,
                               ExtensionImportStatus status)>;
+
+  void StartExtensionInstall(
+      ImportingExtension& extension,
+      base::OnceCallback<void(const std::string& id,
+                              ExtensionImportStatus status)> done_callback);
 
   ImportingExtension* FindExtension(const std::string& id);
 
