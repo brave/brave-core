@@ -1018,7 +1018,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent) {
                          associated_content.GetContentId(),
                          associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = std::move(
+      handler->associated_content_manager()->GetAssociatedContent()[0]);
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1037,7 +1039,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttached) {
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1062,7 +1066,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttachedInvalidScheme) {
                          associated_content.GetContentId(),
                          associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1099,7 +1105,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_AttachedToOtherConversation) {
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler1->get_conversation_uuid());
 
   EXPECT_FALSE(handler1->associated_content_manager()->HasAssociatedContent());

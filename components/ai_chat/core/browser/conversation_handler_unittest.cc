@@ -220,21 +220,19 @@ class ConversationHandlerUnitTest : public testing::Test {
     }
     if (!multi) {
       ON_CALL(*associated_content_, GetStagedEntriesFromContent)
-          .WillByDefault(
-              [](GetStagedEntriesCallback callback) {
-                std::move(callback).Run(std::vector<SearchQuerySummary>{
-                    SearchQuerySummary("query", "summary")});
-              });
+          .WillByDefault([](GetStagedEntriesCallback callback) {
+            std::move(callback).Run(std::vector<SearchQuerySummary>{
+                SearchQuerySummary("query", "summary")});
+          });
       return;
     }
     ON_CALL(*associated_content_, GetStagedEntriesFromContent)
-        .WillByDefault(
-            [](GetStagedEntriesCallback callback) {
-              std::move(callback).Run(
-                  std::make_optional(std::vector<SearchQuerySummary>{
-                      SearchQuerySummary("query", "summary"),
-                      SearchQuerySummary("query2", "summary2")}));
-            });
+        .WillByDefault([](GetStagedEntriesCallback callback) {
+          std::move(callback).Run(
+              std::make_optional(std::vector<SearchQuerySummary>{
+                  SearchQuerySummary("query", "summary"),
+                  SearchQuerySummary("query2", "summary2")}));
+        });
   }
 
   // Pair of text and whether it's from Brave Search SERP
@@ -760,6 +758,50 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(conversation_handler_->associated_content_manager()
                 ->GetCachedTextContent(),
             "Content 2");
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_RemoveArchivedContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
+
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "Content 1");
+  conversation_handler_->associated_content_manager()->SetArchiveContent(
+      1, "Content 1", false);
+
+  // Should not be able to remove the content via
+  // RemoveContent(associated_content1) now.
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+
+  auto associated_content = mojom::AssociatedContent::New();
+  associated_content->uuid = associated_content1.uuid();
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      associated_content);
+
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            0u);
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,

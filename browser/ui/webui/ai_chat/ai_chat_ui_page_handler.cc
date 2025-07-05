@@ -396,21 +396,11 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                     conversation_uuid));
 }
 
-void AIChatUIPageHandler::DisassociateTab(
-    mojom::TabDataPtr mojom_tab,
+void AIChatUIPageHandler::DisassociateContent(
+    mojom::AssociatedContentPtr content,
     const std::string& conversation_uuid) {
-  auto* contents = GetWebContentsFromTabId(mojom_tab->id);
-  if (!contents) {
-    return;
-  }
-
-  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebContents(contents);
-  if (!tab_helper) {
-    return;
-  }
-
-  AIChatServiceFactory::GetForBrowserContext(contents->GetBrowserContext())
-      ->DisassociateContent(tab_helper, conversation_uuid);
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
+  service->DisassociateContent(content, conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(

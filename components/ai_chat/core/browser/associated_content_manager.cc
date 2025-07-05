@@ -168,6 +168,20 @@ void AssociatedContentManager::RemoveContent(
   }
 }
 
+void AssociatedContentManager::RemoveContent(
+    const mojom::AssociatedContentPtr& content,
+    bool notify_updated) {
+  DVLOG(1) << __func__;
+
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content](const auto& delegate) {
+                                   return delegate->uuid() == content->uuid;
+                                 });
+  if (it != content_delegates_.end()) {
+    RemoveContent(*it, notify_updated);
+  }
+}
+
 std::vector<mojom::AssociatedContentPtr>
 AssociatedContentManager::GetAssociatedContent() const {
   DVLOG(1) << __func__;
