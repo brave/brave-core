@@ -131,6 +131,12 @@
     <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_NAME_LABEL" desc="The label for container name input field" formatter_data="webui=Containers">
       Name
     </message>
+    <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_ICON_LABEL" desc="The label for container section to select icon" formatter_data="webui=Containers">
+      Icon
+    </message>
+    <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_COLOR_LABEL" desc="The label for container section to select color" formatter_data="webui=Containers">
+      Color
+    </message>
     <message name="IDS_SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER" desc="The placeholder for container name input field" formatter_data="webui=Containers">
       Give your container a name like Work or Personal
     </message>

@@ -7,11 +7,13 @@
 
 #include <utility>
 
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 namespace containers {
 
@@ -32,11 +34,15 @@ std::vector<mojom::ContainerPtr> GetContainersFromPrefs(
     const base::Value::Dict& dict = container.GetDict();
     auto* id = dict.FindString("id");
     auto* name = dict.FindString("name");
-    if (!id || !name) {
-      LOG(ERROR) << "Container is missing id or name";
+    auto icon = dict.FindInt("icon");
+    auto background_color = dict.FindInt("background_color");
+    if (!id || !name || !icon.has_value() || !background_color.has_value()) {
+      LOG(ERROR) << "Container is missing id, name, icon, or background_color";
       continue;
     }
-    containers.push_back(mojom::Container::New(*id, *name));
+
+    containers.push_back(mojom::Container::New(
+        *id, *name, static_cast<mojom::Icon>(*icon), *background_color));
   }
   return containers;
 }
@@ -48,7 +54,10 @@ void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
   for (const auto& container : containers) {
     list.Append(base::Value::Dict()
                     .Set("id", container->id)
-                    .Set("name", container->name));
+                    .Set("name", container->name)
+                    .Set("icon", base::to_underlying(container->icon))
+                    .Set("background_color",
+                         static_cast<int>(container->background_color)));
   }
   prefs.SetList(prefs::kContainersList, std::move(list));
 }

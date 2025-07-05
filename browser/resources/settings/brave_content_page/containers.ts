@@ -3,21 +3,30 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
+import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
+
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { assert } from '//resources/js/assert.js'
+import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {
   CrLitElement,
   PropertyValues,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
-import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
+
+import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 import {
   Container,
   ContainerOperationError,
+  Icon,
 } from '../containers.mojom-webui.js'
+
+import backgroundColors from './background_colors.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
-import { assert } from '//resources/js/assert.js'
-import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
-import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import type { ColorSelectedEvent } from './containers_background_chip.js'
+import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
+import type { IconSelectedEvent } from './containers_icon.js'
 
 const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 
@@ -83,7 +92,12 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onAddContainerClick_() {
-    this.editingContainer_ = { id: '', name: '' }
+    this.editingContainer_ = {
+      id: '',
+      name: '',
+      icon: Icon.kDefault,
+      backgroundColor: backgroundColors[0],
+    }
     this.editDialogError_ = undefined
   }
 
@@ -114,6 +128,22 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       name: input.value,
     }
     this.isEditDialogNameInvalid_ = input.invalid
+  }
+
+  onContainersIconSelected_(event: IconSelectedEvent) {
+    assert(this.editingContainer_)
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      icon: event.detail.icon,
+    }
+  }
+
+  onContainersBackgroundColorSelected_(event: ColorSelectedEvent) {
+    assert(this.editingContainer_)
+    this.editingContainer_ = {
+      ...this.editingContainer_,
+      backgroundColor: event.detail.color,
+    }
   }
 
   async onSaveContainerFromDialog_() {

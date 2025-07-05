@@ -5,6 +5,31 @@
 
 module containers.mojom;
 
+import "skia/public/mojom/skcolor.mojom";
+
+// Represents the icons that can be used for containers. These icons are
+// used to visually distinguish different containers in the user interface.
+//
+// IMPORTANT: The values of these icons are stored in preferences, so they
+// should not be changed or reordered. If a new icon is added, it should be
+// appended to the end of the enum. When removing an icon, it should be
+// suffixed with "_DEPRECATED" to maintain compatibility with existing preferences.
+enum Icon {
+  kPersonal = 0,
+  kWork = 1,
+  kShopping = 2,
+  kSocial = 3,
+  kEvents = 4,
+  kBanking = 5,
+  kStar = 6,
+  kTravel = 7,
+  kSchool = 8,
+  kPrivate = 9,
+  kMessaging = 10,
+
+  kDefault = kPersonal,  // Default icon used when no specific icon is set.
+};
+
 // Represents a container that holds a separate browsing context/identity.
 // Containers allow users to maintain different identities within the same
 // browser profile, keeping cookies, storage, and other site data separate
@@ -14,6 +39,10 @@ struct Container {
   string id;
   // User-friendly name for the container.
   string name;
+  // User-friendly icon for the container.
+  Icon icon;
+  // Background color for the container icon.
+  skia.mojom.SkColor background_color;
 };
 
 // Represents an error that occurred during a container CRUD operation.
@@ -24,6 +53,10 @@ enum ContainerOperationError {
   kIdShouldBeSet,
   // The container name is invalid.
   kInvalidName,
+  // The container icon is invalid.
+  kInvalidIcon,
+  // The container background color is invalid.
+  kInvalidBackgroundColor,
   // The container was not found.
   kNotFound,
 };

@@ -13,5 +13,7 @@ mojom("mojom") {
 
   deps = [ "//mojo/public/mojom/base" ]
 
+  public_deps = [ "//skia/public/mojom" ]
+
   webui_module_path = "/"
 }

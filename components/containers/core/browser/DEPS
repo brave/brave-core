@@ -4,4 +4,5 @@ include_rules = [
     "+components/sync_preferences",
     "+components/user_prefs",
     "+third_party/re2",
+    "+third_party/skia/include"
 ]

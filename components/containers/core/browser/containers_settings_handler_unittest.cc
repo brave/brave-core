@@ -13,12 +13,15 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom-data-view.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace containers {
@@ -94,20 +97,76 @@ class ContainersSettingsHandlerTest : public testing::Test {
   std::unique_ptr<ContainersSettingsHandler> handler_;
 };
 
-TEST_F(ContainersSettingsHandlerTest, IsContainerNameValid) {
+TEST_F(ContainersSettingsHandlerTest, ValidateContainerProperties) {
+  // Valid properties
+  EXPECT_EQ(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                mojom::Container::New("id", "Valid Name",
+                                      mojom::Icon::kPersonal, SK_ColorWHITE)),
+            std::nullopt);
+
+  // Valid/Invalid names
   for (const auto& test_name : kContainerTestNames) {
-    EXPECT_EQ(ContainersSettingsHandler::IsContainerNameValid(test_name.name),
-              test_name.is_valid)
-        << test_name.name << " should be "
-        << (test_name.is_valid ? "valid" : "invalid");
+    if (test_name.is_valid) {
+      EXPECT_THAT(
+          ContainersSettingsHandler::ValidateEditableContainerProperties(
+              mojom::Container::New("id", test_name.name,
+                                    mojom::Icon::kPersonal, SK_ColorWHITE)),
+          std::nullopt);
+    } else {
+      EXPECT_THAT(
+          ContainersSettingsHandler::ValidateEditableContainerProperties(
+              mojom::Container::New("id", test_name.name,
+                                    mojom::Icon::kPersonal, SK_ColorWHITE)),
+          testing::Optional(mojom::ContainerOperationError::kInvalidName));
+    }
+  }
+
+  // Invalid icons
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
+    EXPECT_THAT(
+        ContainersSettingsHandler::ValidateEditableContainerProperties(
+            mojom::Container::New("id", "Valid Name", mojom::Icon(icon),
+                                  SK_ColorWHITE)),
+        testing::Optional(mojom::ContainerOperationError::kInvalidIcon));
+  }
+
+  // Valid icons
+  for (const auto& icon : {mojom::Icon::kPersonal, mojom::Icon::kBanking,
+                           mojom::Icon::kShopping}) {
+    EXPECT_THAT(
+        ContainersSettingsHandler::ValidateEditableContainerProperties(
+            mojom::Container::New("id", "Valid Name", icon, SK_ColorWHITE)),
+        std::nullopt);
+  }
+
+  // Invalid background colors
+  for (const auto& color :
+       {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
+    EXPECT_THAT(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                    mojom::Container::New("id", "Valid Name",
+                                          mojom::Icon::kPersonal, color)),
+                testing::Optional(
+                    mojom::ContainerOperationError::kInvalidBackgroundColor));
+  }
+
+  // Valid background colors
+  for (const auto& color : {SK_ColorWHITE, SK_ColorBLACK, SK_ColorRED,
+                            SK_ColorGREEN, SK_ColorBLUE}) {
+    EXPECT_THAT(ContainersSettingsHandler::ValidateEditableContainerProperties(
+                    mojom::Container::New("id", "Valid Name",
+                                          mojom::Icon::kPersonal, color)),
+                std::nullopt);
   }
 }
 
 TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
       error_future;
-  handler_->AddContainer(mojom::Container::New("", "Test Container"),
-                         error_future.GetCallback());
+  handler_->AddContainer(
+      mojom::Container::New("", "Test Container", mojom::Icon::kPersonal,
+                            SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
   base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
@@ -116,23 +175,50 @@ TEST_F(ContainersSettingsHandlerTest, AddContainer) {
   ASSERT_EQ(1u, containers.size());
   EXPECT_FALSE(containers[0]->id.empty());  // Should have generated UUID
   EXPECT_EQ("Test Container", containers[0]->name);
+  EXPECT_EQ(mojom::Icon::kPersonal, containers[0]->icon);
+  EXPECT_EQ(SK_ColorWHITE, containers[0]->background_color);
 
   EXPECT_EQ(1, mock_observer_->containers_changed_count());
 
   // Invalid ID.
-  handler_->AddContainer(mojom::Container::New("test-id", ""),
-                         error_future.GetCallback());
+  handler_->AddContainer(
+      mojom::Container::New("test-id", "", mojom::Icon::kPersonal,
+                            SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(mojom::ContainerOperationError::kIdShouldBeEmpty,
             error_future.Take());
 
   // Invalid name.
   for (const auto& test_name : kContainerTestNames) {
-    handler_->AddContainer(mojom::Container::New("", test_name.name),
-                           error_future.GetCallback());
+    handler_->AddContainer(
+        mojom::Container::New("", test_name.name, mojom::Icon::kPersonal,
+                              SK_ColorWHITE),
+        error_future.GetCallback());
     EXPECT_EQ(test_name.is_valid
                   ? std::nullopt
                   : std::optional<mojom::ContainerOperationError>(
                         mojom::ContainerOperationError::kInvalidName),
+              error_future.Take());
+  }
+
+  // Invalid icon.
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
+    handler_->AddContainer(
+        mojom::Container::New("", "Invalid icon", mojom::Icon(icon),
+                              SK_ColorWHITE),
+        error_future.GetCallback());
+    EXPECT_EQ(mojom::ContainerOperationError::kInvalidIcon,
+              error_future.Take());
+  }
+
+  // Invalid background color.
+  for (const auto& color :
+       {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
+    handler_->AddContainer(mojom::Container::New("", "Invalid icon",
+                                                 mojom::Icon::kPersonal, color),
+                           error_future.GetCallback());
+    EXPECT_EQ(mojom::ContainerOperationError::kInvalidBackgroundColor,
               error_future.Take());
   }
 }
@@ -141,8 +227,10 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   // First add a container
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
       error_future;
-  handler_->AddContainer(mojom::Container::New("", "Original Name"),
-                         error_future.GetCallback());
+  handler_->AddContainer(
+      mojom::Container::New("", "Original Name", mojom::Icon::kPersonal,
+                            SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
   // Get the container with generated ID
@@ -152,7 +240,8 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
   ASSERT_EQ(1u, containers.size());
 
   // Update the container
-  auto updated = mojom::Container::New(containers[0]->id, "Updated Name");
+  auto updated = mojom::Container::New(containers[0]->id, "Updated Name",
+                                       mojom::Icon::kBanking, SK_ColorMAGENTA);
   handler_->UpdateContainer(std::move(updated), error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
@@ -162,29 +251,57 @@ TEST_F(ContainersSettingsHandlerTest, UpdateContainer) {
 
   ASSERT_EQ(1u, containers.size());
   EXPECT_EQ("Updated Name", containers[0]->name);
+  EXPECT_EQ(mojom::Icon::kBanking, containers[0]->icon);
+  EXPECT_EQ(SK_ColorMAGENTA, containers[0]->background_color);
 
   EXPECT_EQ(2, mock_observer_->containers_changed_count());
 
   // Not found.
-  handler_->UpdateContainer(mojom::Container::New("non-existing-id", "name"),
-                            error_future.GetCallback());
+  handler_->UpdateContainer(
+      mojom::Container::New("non-existing-id", "name", mojom::Icon::kPersonal,
+                            SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
 
   // Empty ID.
-  handler_->UpdateContainer(mojom::Container::New("", "name"),
-                            error_future.GetCallback());
+  handler_->UpdateContainer(
+      mojom::Container::New("", "name", mojom::Icon::kPersonal, SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(mojom::ContainerOperationError::kIdShouldBeSet,
             error_future.Take());
 
   // Invalid name.
   for (const auto& test_name : kContainerTestNames) {
     handler_->UpdateContainer(
-        mojom::Container::New(containers[0]->id, test_name.name),
+        mojom::Container::New(containers[0]->id, test_name.name,
+                              mojom::Icon::kPersonal, SK_ColorWHITE),
         error_future.GetCallback());
     EXPECT_EQ(test_name.is_valid
                   ? std::nullopt
                   : std::optional<mojom::ContainerOperationError>(
                         mojom::ContainerOperationError::kInvalidName),
+              error_future.Take());
+  }
+
+  // Invalid icon.
+  for (const auto& icon : {base::to_underlying(mojom::Icon::kMinValue) - 1,
+                           base::to_underlying(mojom::Icon::kMaxValue) + 1}) {
+    handler_->UpdateContainer(
+        mojom::Container::New(containers[0]->id, "Invalid icon",
+                              mojom::Icon(icon), SK_ColorWHITE),
+        error_future.GetCallback());
+    EXPECT_EQ(mojom::ContainerOperationError::kInvalidIcon,
+              error_future.Take());
+  }
+
+  // Invalid background color.
+  for (const auto& color :
+       {SK_ColorBLACK - 1, SK_ColorWHITE + 1, SkColorSetA(SK_ColorWHITE, 0)}) {
+    handler_->UpdateContainer(
+        mojom::Container::New(containers[0]->id, "Invalid icon",
+                              mojom::Icon::kPersonal, color),
+        error_future.GetCallback());
+    EXPECT_EQ(mojom::ContainerOperationError::kInvalidBackgroundColor,
               error_future.Take());
   }
 }
@@ -193,8 +310,10 @@ TEST_F(ContainersSettingsHandlerTest, RemoveContainer) {
   // Add a container
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
       error_future;
-  handler_->AddContainer(mojom::Container::New("", "Test Container"),
-                         error_future.GetCallback());
+  handler_->AddContainer(
+      mojom::Container::New("", "Test Container", mojom::Icon::kPersonal,
+                            SK_ColorWHITE),
+      error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
   // Get the container with generated ID
@@ -231,7 +350,8 @@ TEST_F(ContainersSettingsHandlerTest, RemoveInvalidContainer) {
 TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   // Simulate external change to container list
   std::vector<mojom::ContainerPtr> containers;
-  containers.push_back(mojom::Container::New("test-id", "Test Container"));
+  containers.push_back(mojom::Container::New(
+      "test-id", "Test Container", mojom::Icon::kPersonal, SK_ColorWHITE));
   SetContainersToPrefs(containers, prefs_);
 
   EXPECT_EQ(1, mock_observer_->containers_changed_count());
