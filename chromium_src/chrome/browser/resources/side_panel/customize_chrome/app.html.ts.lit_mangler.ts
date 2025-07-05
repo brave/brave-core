@@ -5,6 +5,41 @@
 
 import { mangle } from 'lit_mangler'
 
+// Insert icon to "Appearance" section's heading
+mangle(
+  (element: DocumentFragment) => {
+    const headingEl = element.querySelector('#appearance sp-heading h2[slot="heading"]')
+    if (!headingEl) {
+      throw new Error('[Customize Chrome] <#appearance sp-heading h2> is gone.')
+    }
+
+    headingEl.removeAttribute('slot')
+
+    // Create a wrapper div element to hold the icon and h2 together.
+    if (!headingEl.parentElement) {
+      throw new Error('[Customize Chrome] <#appearance sp-heading h2> has no parent element.')
+    }
+    headingEl.parentElement.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+      <div class="heading-icon-and-text" slot="heading"></div>`,
+    )
+
+    // Create an icon element and append it to the wrapper.
+    const wrapperEl = element.querySelector('.heading-icon-and-text')!
+    wrapperEl.setAttribute('slot', 'heading')
+    wrapperEl.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+      <leo-icon name="themes" slot="prefix-icon" class="heading-icon"></leo-icon>`,
+    )
+
+    // Append the original heading element
+    wrapperEl.appendChild(headingEl)
+  },
+  (template) => template.text.includes('id="appearance"'),
+)
+
 // Update "Customize toolbar" button's icon
 mangle(
   (element) => {

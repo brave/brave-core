@@ -10,6 +10,21 @@
  * #include=toolbar-chromium
  * #css_wrapper_metadata_end */
 
+#heading {
+  height: 60px;
+}
+
+#heading .heading-icon-and-text {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  flex-grow: 1;
+}
+
+#heading .heading-icon-and-text .heading-icon {
+  --leo-icon-color: var(--leo-gradient-icons-active);
+}
+
 /* except header*/
 .sp-card:not(:first-child) {
   margin: 0;
