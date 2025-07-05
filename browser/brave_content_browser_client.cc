@@ -60,6 +60,7 @@
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -649,6 +650,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUI>()
+        .Add<brave_account::mojom::PageHandler>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 }
