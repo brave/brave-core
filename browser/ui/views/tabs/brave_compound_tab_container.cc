@@ -228,6 +228,8 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
   }
 
   if (layout_dirty) {
+    // Tab could have different insets per containers(ex, split tabs).
+    tab->UpdateInsets();
     DeprecatedLayoutImmediately();
   }
 }

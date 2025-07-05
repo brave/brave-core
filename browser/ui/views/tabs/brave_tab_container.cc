@@ -297,6 +297,13 @@ void BraveTabContainer::UpdateLayoutOrientation() {
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
   layout_helper_->set_tab_strip(
       static_cast<TabStrip*>(base::to_address(tab_slot_controller_)));
+
+  // Tab could have different insets per orientation(ex, split tabs).
+  const int tab_count = GetTabCount();
+  for (int i = 0; i < tab_count; ++i) {
+    GetTabAtModelIndex(i)->UpdateInsets();
+  }
+
   InvalidateLayout();
 }
 
