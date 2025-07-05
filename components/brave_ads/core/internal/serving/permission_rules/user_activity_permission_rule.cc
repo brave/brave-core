@@ -13,7 +13,9 @@
 namespace brave_ads {
 
 bool HasUserActivityPermission() {
-  if (!UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
+    // Allow ads if the user has not joined Brave Rewards and connected a
+    // wallet.
     return true;
   }
 

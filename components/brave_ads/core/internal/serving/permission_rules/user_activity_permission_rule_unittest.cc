@@ -50,8 +50,21 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   EXPECT_TRUE(HasUserActivityPermission());
 }
 
+TEST_F(
+    BraveAdsUserActivityPermissionRuleTest,
+    ShouldAllowIfUserHasJoinedBraveRewardsAndNotConnectedWalletAndUserActivityScoreIsLessThanThreshold) {
+  // Arrange
+  test::DisconnectExternalBraveRewardsWallet();
+
+  UserActivityManager::GetInstance().RecordEvent(
+      UserActivityEventType::kOpenedNewTab);
+
+  // Act & Assert
+  EXPECT_TRUE(HasUserActivityPermission());
+}
+
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
-       ShouldAllowIfUserActivityScoreIsGreaterThanTheThreshold) {
+       ShouldAllowIfUserActivityScoreIsGreaterThanThreshold) {
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
@@ -65,7 +78,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
-       ShouldNotAllowIfUserActivityScoreIsLessThanTheThreshold) {
+       ShouldNotAllowIfUserActivityScoreIsLessThanThreshold) {
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
