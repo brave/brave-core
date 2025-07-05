@@ -16,6 +16,7 @@ declare namespace WebcompatReporter {
     shieldsEnabled: string
     contactInfo: string
     contactInfoSaveFlag: boolean
+    components: string[]
   }
 
   export interface State {

@@ -28,7 +28,7 @@ class WebcompatReporterServiceDelegateBase : public WebCompatServiceDelegate {
       const WebcompatReporterServiceDelegateBase&) = delete;
   ~WebcompatReporterServiceDelegateBase() override;
 
-  std::optional<std::vector<ComponentInfo>> GetComponentInfos() const override;
+  std::vector<ComponentInfo> GetComponentInfos() const override;
 
  private:
   const raw_ptr<component_updater::ComponentUpdateService>

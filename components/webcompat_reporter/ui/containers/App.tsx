@@ -39,6 +39,7 @@ class WebcompatReportContainer extends React.Component<Props, {}> {
         submitted={reporterState.submitted}
         onSubmitReport={actions.onSubmitReport}
         onClose={actions.onClose}
+        components={reporterState.dialogArgs.components}
       />
     )
   }

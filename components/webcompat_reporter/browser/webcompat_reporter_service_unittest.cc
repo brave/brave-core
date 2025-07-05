@@ -55,10 +55,7 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               (),
               (const));
   MOCK_METHOD(std::optional<std::string>, GetChannelName, (), (const));
-  MOCK_METHOD(std::optional<std::vector<ComponentInfo>>,
-              GetComponentInfos,
-              (),
-              (const));
+  MOCK_METHOD(std::vector<ComponentInfo>, GetComponentInfos, (), (const));
   MOCK_METHOD(std::optional<std::string>,
               GetCookiePolicy,
               (const std::optional<std::string>& current_url),
@@ -109,8 +106,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     auto report_info = webcompat_reporter::mojom::ReportInfo::New(
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
         "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-        "languages", "true", "true", "details", contact, "block", "true",
-        std::move(components), screenshot, webcompat_errors);
+        "languages", "true", "true", "category", "details", contact, "block",
+        "true", std::move(components), screenshot, webcompat_errors);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -127,6 +124,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
           EXPECT_EQ(report->cookie_policy, "block");
           EXPECT_EQ(report->block_scripts, "true");
 
+          EXPECT_EQ(report->category, "category");
           EXPECT_EQ(report->details, "details");
           EXPECT_EQ(report->contact, contact);
 
