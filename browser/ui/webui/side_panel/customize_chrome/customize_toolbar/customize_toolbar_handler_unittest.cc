@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"
 
+#include "base/functional/bind.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 #include "chrome/test/base/testing_profile.h"
@@ -14,6 +15,7 @@
 #include "content/public/test/test_web_contents_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -87,6 +89,21 @@ TEST_F(CustomizeToolbarHandlerUnitTest,
     EXPECT_CALL(mock_page_, SetActionPinned(id, !pinned));
     GetTestingPrefService()->SetBoolean(brave_action->pref_name, !pinned);
   }
+}
+
+TEST_F(CustomizeToolbarHandlerUnitTest, YourChromeLabelShouldBeBraveMenu) {
+  handler_->ListCategories(base::BindOnce(
+      [](std::vector<side_panel::customize_chrome::mojom::CategoryPtr>
+             categories) {
+        auto your_chrome_it = std::ranges::find(
+            categories,
+            side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
+            [](const auto& category) { return category->id; });
+        ASSERT_NE(your_chrome_it, categories.end());
+        EXPECT_EQ((*your_chrome_it)->display_name,
+                  l10n_util::GetStringUTF8(
+                      IDS_CUSTOMIZE_TOOLBAR_CATEGORY_BRAVE_MENU));
+      }));
 }
 
 }  // namespace customize_chrome
