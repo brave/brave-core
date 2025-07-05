@@ -20,7 +20,7 @@ BraveAccountServiceFactoryIOS* BraveAccountServiceFactoryIOS::GetInstance() {
 }
 
 // static
-BraveAccountService* BraveAccountServiceFactoryIOS::GetForBrowserState(
+BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
     web::BrowserState* state) {
   CHECK(state);
   return static_cast<BraveAccountService*>(

@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_account/brave_account_page_handler.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -21,6 +24,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
@@ -33,14 +37,17 @@
 // configuration of a WebUIDataSource.
 //
 // Intended to be subclassed with the appropriate WebUIDataSource type.
-template <typename WebUIDataSource>
-class BraveAccountUIBase {
+template <typename BraveAccountServiceFactory,
+          typename Profile,
+          typename WebUIDataSource>
+class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
  public:
   explicit BraveAccountUIBase(
-      auto* profile,
-      base::OnceCallback<
-          void(WebUIDataSource*, base::span<const webui::ResourcePath>, int)>
-          setup_webui_data_source = base::DoNothing()) {
+      Profile* profile,
+      base::OnceCallback<void(WebUIDataSource*,
+                              base::span<const webui::ResourcePath>,
+                              int)> setup_webui_data_source = base::DoNothing())
+      : profile_(profile) {
     CHECK(brave_account::features::IsBraveAccountEnabled());
 
     auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
@@ -54,6 +61,13 @@ class BraveAccountUIBase {
                      password_strength_meter::mojom::PasswordStrengthMeter>
                          pending_receiver) {
     password_strength_meter::BindInterface(std::move(pending_receiver));
+  }
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::PageHandlerFactory>
+          receiver) {
+    page_factory_receiver_.reset();
+    page_factory_receiver_.Bind(std::move(receiver));
   }
 
  private:
@@ -157,6 +171,20 @@ class BraveAccountUIBase {
     source->AddResourcePath("full_brave_brand_dark.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
   }
+
+ private:
+  // brave_account::mojom::PageHandlerFactory:
+  void CreatePageHandler(
+      mojo::PendingReceiver<brave_account::mojom::PageHandler> receiver)
+      override {
+    page_handler_ = std::make_unique<BraveAccountPageHandler>(
+        BraveAccountServiceFactory::GetFor(profile_), std::move(receiver));
+  }
+
+  raw_ptr<Profile> profile_;
+  mojo::Receiver<brave_account::mojom::PageHandlerFactory>
+      page_factory_receiver_{this};
+  std::unique_ptr<BraveAccountPageHandler> page_handler_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_

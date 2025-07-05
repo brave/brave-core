@@ -5,11 +5,13 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
-assert(
-    !is_android && !is_ios,
-    "Mobile platforms should load the WebUI by navigating to it in a browser tab!")
-
 mojom("mojom") {
-  sources = [ "brave_account_settings_handler.mojom" ]
+  sources = [ "brave_account.mojom" ]
+
+  # Mobile platforms should load the WebUI by navigating to it in a browser tab.
+  if (!is_android && !is_ios) {
+    sources += [ "brave_account_settings_handler.mojom" ]
+  }
+
   webui_module_path = "/"
 }

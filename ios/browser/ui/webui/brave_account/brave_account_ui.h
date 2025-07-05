@@ -7,7 +7,9 @@
 #define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
 
 #include "brave/components/brave_account/brave_account_ui_base.h"
+#include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 
 class GURL;
@@ -16,8 +18,11 @@ namespace web {
 class WebUIIOS;
 }
 
-class BraveAccountUI : public BraveAccountUIBase<BraveWebUIIOSDataSource>,
-                       public web::WebUIIOSController {
+class BraveAccountUI
+    : public BraveAccountUIBase<brave_account::BraveAccountServiceFactoryIOS,
+                                ProfileIOS,
+                                BraveWebUIIOSDataSource>,
+      public web::WebUIIOSController {
  public:
   BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url);
 
