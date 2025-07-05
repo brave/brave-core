@@ -162,6 +162,25 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     this.isCheckboxChecked = detail.checked
   }
 
+  protected async onCreateAccountButtonClicked() {
+    try {
+      const blindedMessage = this.registration.start(this.password)
+      const { verificationToken, serializedResponse } =
+        await this.browserProxy.handler.registerInitialize(
+          this.email,
+          blindedMessage,
+        )
+      const serializedRecord = this.registration.finish(
+        serializedResponse,
+        this.password,
+        this.email,
+      )
+      await this.browserProxy.handler.registerFinalize(verificationToken, serializedRecord)
+    } catch (e) {
+      console.error('onCreateAccountButtonClicked():', e)
+    }
+  }
+
   // TODO(sszaloki): we should consider exporting `noChange`
   // from third_party/lit/v3_0/lit.ts instead, so that such
   // a workaround is not needed.

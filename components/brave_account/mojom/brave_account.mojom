@@ -1,0 +1,35 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+import "mojo/public/mojom/base/empty.mojom";
+
+enum RegisterFailureReason {
+  kInitializeBadRequest, //          /v2/accounts/password/init: 400
+  kInitializeUnauthorized, //        /v2/accounts/password/init: 401
+  kInitializeForbidden, //           /v2/accounts/password/init: 403
+  kInitializeInternalServerError, // /v2/accounts/password/init: 500
+  kInitializeUnknown,
+  kInitializeUnexpected,
+  kFinalizeBadRequest, //            /v2/accounts/password/finalize: 400
+  kFinalizeUnauthorized, //          /v2/accounts/password/finalize: 401
+  kFinalizeForbidden, //             /v2/accounts/password/finalize: 403
+  kFinalizeNotFound, //              /v2/accounts/password/finalize: 404
+  kFinalizeInternalServerError, //   /v2/accounts/password/finalize: 500
+  kFinalizeUnknown,
+  kFinalizeUnexpected,
+};
+
+struct RegisterInitializeResult {
+  string verificationToken;
+  string serializedResponse;
+};
+
+interface PageHandler {
+  RegisterInitialize(string email,
+                     string blindedMessage) => result<RegisterInitializeResult, RegisterFailureReason>;
+  RegisterFinalize(string verificationToken, string serializedRecord) => result<mojo_base.mojom.Empty, RegisterFailureReason>;
+};

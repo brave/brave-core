@@ -28,8 +28,7 @@ class BraveAccountServiceFactory : public ProfileKeyedServiceFactory {
       delete;
 
   static BraveAccountServiceFactory* GetInstance();
-  static BraveAccountService* GetForBrowserContext(
-      content::BrowserContext* context);
+  static BraveAccountService* GetFor(content::BrowserContext* context);
 
  private:
   friend base::NoDestructor<BraveAccountServiceFactory>;
