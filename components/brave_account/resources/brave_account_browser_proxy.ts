@@ -3,18 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { PageHandler } from './brave_account.mojom-webui.js'
+import type { PageHandlerInterface } from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
 
 export interface BraveAccountBrowserProxy {
+  handler: PageHandlerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
+  handler: PageHandlerInterface
   password_strength_meter: PasswordStrengthMeterInterface
 
   private constructor() {
+    this.handler = PageHandler.getRemote()
     this.password_strength_meter = PasswordStrengthMeter.getRemote()
   }
 
