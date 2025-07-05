@@ -80,4 +80,9 @@ bool BraveUserAgentExceptions::CanShowBrave(const GURL& url) {
   return !base::Contains(excepted_domains_, domain);
 }
 
+void BraveUserAgentExceptions::AddToExceptedDomainsForTesting(
+    const std::string& domain) {
+  excepted_domains_.insert(domain);
+}
+
 }  // namespace brave_user_agent

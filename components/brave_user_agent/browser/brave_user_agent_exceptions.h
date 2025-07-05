@@ -32,6 +32,7 @@ class BraveUserAgentExceptions {
   void OnComponentReady(const base::FilePath&);
   bool CanShowBrave(const GURL& url);
   void SetIsReadyForTesting() { is_ready_ = true; }
+  void AddToExceptedDomainsForTesting(const std::string& domain);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveUserAgentExceptionsUnitTest,
