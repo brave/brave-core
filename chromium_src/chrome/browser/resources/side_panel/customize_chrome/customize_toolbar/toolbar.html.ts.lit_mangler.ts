@@ -5,6 +5,41 @@
 
 import { mangle } from 'lit_mangler'
 
+// Insert icon to "Toolbar" section's heading
+mangle(
+  (element: DocumentFragment) => {
+    const firstSpCard = element.querySelector('.sp-card')
+    if (!firstSpCard) {
+      throw new Error('[Customize Chrome > Toolbar] .sp-card is gone.')
+    }
+
+    const headingEl = firstSpCard.querySelector('sp-heading h2[slot="heading"]')
+    if (!headingEl) {
+      throw new Error('[Customize Chrome > Toolbar] <sp-heading h2[slot="heading"]> is gone.')
+    }
+
+    // Create a wrapper div element to hold the icon and h2 together.
+    headingEl.parentElement!.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+      <div class="heading-icon-and-text" slot="heading"></div>`,
+    )
+
+    // Create an icon element and append it to the wrapper.
+    const wrapperEl = element.querySelector('.heading-icon-and-text')!
+    wrapperEl.setAttribute('slot', 'heading')
+    wrapperEl.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+      <leo-icon name="window-edit" slot="prefix-icon" class="heading-icon"></leo-icon>`,
+    )
+
+    // Append the original heading element
+    wrapperEl.appendChild(headingEl)
+  },
+  /* omit selector to access the top level node */
+)
+
 // Remove #miniToolbarBackground
 mangle(
   (element: DocumentFragment) => {
