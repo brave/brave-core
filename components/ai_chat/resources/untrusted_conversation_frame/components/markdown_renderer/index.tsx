@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import type { Root, Element as HastElement } from 'hast'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Label from '@brave/leo/react/label'
@@ -55,7 +56,15 @@ const allowedElements = [
   'hr',
 
   // Hyperlinks
-  'a'
+  'a',
+
+  // Tables
+  'table',
+  'thead',
+  'tbody',
+  'tr',
+  'th',
+  'td'
 ]
 
 interface CursorDecoratorProps {
@@ -146,6 +155,55 @@ export function RenderLink(props: RenderLinkProps) {
   )
 }
 
+function buildTableRenderer() {
+  // For table header tracking
+  const tableHeaders: string[] = []
+  let columnIndex = 0
+
+  return {
+    table: (props: { children: React.ReactNode }) => {
+      // Reset headers for each table
+      tableHeaders.length = 0
+      return (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>{props.children}</table>
+        </div>
+      )
+    },
+    thead: (props: { children: React.ReactNode }) => (
+      <thead className={styles.tableHead}>{props.children}</thead>
+    ),
+    tbody: (props: { children: React.ReactNode }) => {
+      // Reset row index for each tbody
+      columnIndex = 0
+      return <tbody className={styles.tableBody}>{props.children}</tbody>
+    },
+    tr: (props: { children: React.ReactNode }) => {
+      // Reset row index for each tr
+      columnIndex = 0
+      return <tr className={styles.tableRow}>{props.children}</tr>
+    },
+    th: (props: { children: React.ReactNode }) => {
+      // Store header text
+      const text = React.Children.map(props.children, (child) =>
+        typeof child === 'string' ? child : '',
+      )?.join(' ')
+      if (text) tableHeaders.push(text)
+      return <th className={styles.tableHeader}>{props.children}</th>
+    },
+    td: (props: { children: React.ReactNode }) => {
+      // Assign data-label from headers
+      const label = tableHeaders[columnIndex] || ''
+      columnIndex++
+      return (
+        <td className={styles.tableCell} data-label={label}>
+          {props.children}
+        </td>
+      )
+    }
+  }
+}
+
 interface MarkdownRendererProps {
   text: string
   shouldShowTextCursor: boolean
@@ -181,6 +239,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         // We only read the total lines value from AST
         // if the component is allowed to show the text cursor.
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
+        remarkPlugins={[remarkGfm]}
         unwrapDisallowed={true}
         children={mainProps.text}
         components={{
@@ -224,7 +283,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
               allowedLinks={mainProps.allowedLinks}
               disableLinkRestrictions={mainProps.disableLinkRestrictions}
             />
-          )
+          ),
+          ...buildTableRenderer()
         }}
       />
     </div>
