@@ -111,9 +111,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
-#if BUILDFLAG(IS_WIN)
-  bool GetSupportsTitle() const override;
-#endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
