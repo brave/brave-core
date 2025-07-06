@@ -41,8 +41,6 @@
   void UpdateExclusiveAccessBubble
 
 #if BUILDFLAG(IS_WIN)
-#define GetSupportsTitle virtual GetSupportsTitle
-
 // On Windows <winuser.h> defines LoadAccelerators
 // Using push_macro seems to be causing #undef not to work in Chromium 125.
 // Unclear what causes this.
@@ -64,7 +62,6 @@
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
 // #pragma pop_macro("LoadAccelerators")
-#undef GetSupportsTitle
 #endif
 
 #undef UpdateExclusiveAccessBubble
