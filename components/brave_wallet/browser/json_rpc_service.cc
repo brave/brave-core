@@ -50,6 +50,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
@@ -397,21 +398,22 @@ void JsonRpcService::RequestInternal(
       std::move(conversion_callback));
 }
 
-void JsonRpcService::Request(const std::string& chain_id,
-                             const std::string& json_payload,
-                             bool auto_retry_on_network_change,
-                             base::Value id,
-                             mojom::CoinType coin,
-                             RequestCallback callback) {
-  RequestInternal(
-      json_payload, auto_retry_on_network_change, GetNetworkURL(chain_id, coin),
-      base::BindOnce(&JsonRpcService::OnRequestResult, base::Unretained(this),
-                     std::move(callback), std::move(id)));
+void JsonRpcService::Request(
+    const std::string& chain_id,
+    JsonRpcRequest request,
+    mojom::EthereumProvider::RequestCallback callback) {
+  RequestInternal(GetJSON(GetJsonRpcDictionary(std::move(request.method),
+                                               (request.params))),
+                  true, GetNetworkURL(chain_id, mojom::CoinType::ETH),
+                  base::BindOnce(&JsonRpcService::OnRequestResult,
+                                 weak_ptr_factory_.GetWeakPtr(),
+                                 std::move(callback), std::move(request.id)));
 }
 
-void JsonRpcService::OnRequestResult(RequestCallback callback,
-                                     base::Value id,
-                                     APIRequestResult api_request_result) {
+void JsonRpcService::OnRequestResult(
+    mojom::EthereumProvider::RequestCallback callback,
+    base::Value id,
+    APIRequestResult api_request_result) {
   bool reject;
   base::Value formed_response = GetProviderRequestReturnFromEthJsonResponse(
       api_request_result.response_code(), api_request_result.value_body(),
@@ -2550,10 +2552,11 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   }
 }
 
-bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
-                                                   const url::Origin& origin,
-                                                   RequestCallback callback,
-                                                   base::Value id) {
+bool JsonRpcService::AddSwitchEthereumChainRequest(
+    const std::string& chain_id,
+    const url::Origin& origin,
+    mojom::EthereumProvider::RequestCallback callback,
+    base::Value id) {
   bool reject = false;
   if (!GetNetworkURL(chain_id, mojom::CoinType::ETH).is_valid()) {
     base::Value formed_response = GetProviderErrorDictionary(
