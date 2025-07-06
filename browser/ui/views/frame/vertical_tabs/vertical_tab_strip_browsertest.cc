@@ -1178,3 +1178,33 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripScrollBarFlagTest, MigrationTest) {
   EXPECT_FALSE(pref->IsDefaultValue());
   EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
 }
+
+class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripHideCompletelyTest()
+      : feature_list_(tabs::features::kBraveVerticalTabHideCompletely) {}
+
+  ~VerticalTabStripHideCompletelyTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
+  // Given vertical tab strip is enabled and collapsed with the flag is on
+  ToggleVerticalTabStrip();
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+
+  // The minimum width of the region view should be 4px, which is narrower than
+  // it used to be.
+  EXPECT_EQ(4, region_view->GetMinimumSize().width());
+}

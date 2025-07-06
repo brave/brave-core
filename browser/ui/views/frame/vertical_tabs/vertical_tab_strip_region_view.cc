@@ -14,12 +14,14 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/dcheck_is_on.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_split.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
@@ -1132,8 +1134,17 @@ void VerticalTabStripRegionView::OnBoundsChanged(
 
 #if DCHECK_IS_ON()
   DCHECK(GetWidget());
+  // In this mode,vertical tab strip takes a little width, such as 4px, and
+  // when mouse is hovered, it expands to the full width.
+  const bool is_hot_corner =
+      IsBrowserFullscren() ||
+      (base::FeatureList::IsEnabled(
+           tabs::features::kBraveVerticalTabHideCompletely) &&
+       state_ == State::kCollapsed);
+
+  // Checks if the width is in valid range when it's visible.
   if (auto width = GetContentsBounds().width();
-      width && !IsBrowserFullscren() && GetWidget()->IsVisible()) {
+      width && !is_hot_corner && GetWidget()->IsVisible()) {
     CHECK_GE(
         width,
         tabs::kVerticalTabMinWidth + tabs::kMarginForVerticalTabContainers * 2 -
@@ -1362,6 +1373,11 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
   };
 
   auto calculate_collapsed_width = [&]() {
+    if (base::FeatureList::IsEnabled(
+            tabs::features::kBraveVerticalTabHideCompletely)) {
+      return 4;
+    }
+
     return tabs::kVerticalTabMinWidth +
            tabs::kMarginForVerticalTabContainers * 2 +
            (include_border ? GetInsets().width() : 0);
@@ -1394,7 +1410,9 @@ VerticalTabStripRegionView::GetTabStripScrollContainer() {
 
 bool VerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
   return IsFloatingEnabledForBrowserFullscreen() ||
-         tabs::utils::IsFloatingVerticalTabsEnabled(browser_);
+         tabs::utils::IsFloatingVerticalTabsEnabled(browser_) ||
+         base::FeatureList::IsEnabled(
+             tabs::features::kBraveVerticalTabHideCompletely);
 }
 
 bool VerticalTabStripRegionView::IsFloatingEnabledForBrowserFullscreen() const {
