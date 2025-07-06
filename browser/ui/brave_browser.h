@@ -42,6 +42,9 @@ class BraveBrowser : public Browser {
       const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
+  bool NormalBrowserSupportsWindowFeature(
+      WindowFeature feature,
+      bool check_can_support) const override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.

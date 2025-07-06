@@ -446,16 +446,6 @@ bool BraveBrowserView::GetTabStripVisible() const {
   return BrowserView::GetTabStripVisible();
 }
 
-#if BUILDFLAG(IS_WIN)
-bool BraveBrowserView::GetSupportsTitle() const {
-  if (tabs::utils::SupportsVerticalTabs(browser())) {
-    return true;
-  }
-
-  return BrowserView::GetSupportsTitle();
-}
-#endif
-
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BraveBookmarkButton* button =
       static_cast<BraveToolbarView*>(toolbar())->bookmark_button();
