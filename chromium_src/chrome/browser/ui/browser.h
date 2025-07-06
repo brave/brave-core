@@ -20,6 +20,8 @@
   FullscreenControllerInteractiveTest;      \
   friend class BookmarkPrefsService;        \
   friend class BraveBrowser
+#define NormalBrowserSupportsWindowFeature \
+  virtual NormalBrowserSupportsWindowFeature
 
 // Override to create new BraveBrowser object instead of Browser.
 #define DeprecatedCreateOwnedForTesting(...)           \
@@ -28,6 +30,7 @@
 
 #include <chrome/browser/ui/browser.h>  // IWYU pragma: export
 
+#undef NormalBrowserSupportsWindowFeature
 #undef DeprecatedCreateOwnedForTesting
 #undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow
