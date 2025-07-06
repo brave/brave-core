@@ -22,6 +22,7 @@ source_set("unit_tests") {
       "//base",
       "//brave/browser/user_education:features",
       "//chrome/browser",
+      "//chrome/browser/user_education",
       "//chrome/test:test_support",
       "//content/test:test_support",
       "//testing/gmock",
