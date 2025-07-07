@@ -10,6 +10,8 @@ import { SearchState, SearchActions, defaultSearchActions } from '../state/searc
 
 export function createSearchHandler(store: Store<SearchState>): SearchActions {
   store.update({
+    initialized: true,
+
     searchFeatureEnabled: true,
 
     showSearchBox: true,
