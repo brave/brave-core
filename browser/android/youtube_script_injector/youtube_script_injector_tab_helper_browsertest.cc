@@ -16,6 +16,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -45,20 +46,23 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-
     base::FilePath test_data_dir = GetTestDataDir();
 
     https_server_.RegisterRequestHandler(base::BindRepeating(
         [](const base::FilePath& test_data_dir,
-           const std::string* file_to_serve,
            const net::test_server::HttpRequest& request)
             -> std::unique_ptr<net::test_server::HttpResponse> {
-          if (!file_to_serve || file_to_serve->empty()) {
+          GURL url = request.GetURL();
+          std::string v_param;
+          if (!net::GetValueForKeyInQuery(url, "v", &v_param) ||
+              v_param.empty()) {
             return nullptr;
           }
-          base::FilePath file_path = test_data_dir.AppendASCII(*file_to_serve);
+          base::FilePath file_path = test_data_dir.AppendASCII(v_param);
           std::string file_contents;
-          base::ReadFileToString(file_path, &file_contents);
+          if (!base::ReadFileToString(file_path, &file_contents)) {
+            return nullptr;
+          }
 
           auto response =
               std::make_unique<net::test_server::BasicHttpResponse>();
@@ -67,7 +71,7 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
           response->set_content_type("text/html");
           return response;
         },
-        test_data_dir, base::Unretained(&file_to_serve_)));
+        test_data_dir));
 
     ASSERT_TRUE(https_server_.Start());
   }
@@ -95,15 +99,22 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
   GURL GetTestUrlToServe(const std::string& host,
                          const std::string& path_and_query,
                          const std::string& file_to_serve) {
-    // Set the file to serve for this test.
-    file_to_serve_ = file_to_serve;
-    return https_server_.GetURL(host, path_and_query);
+    // Replace the v parameter with the file to serve.
+    std::string modified_query = path_and_query;
+    size_t v_pos = modified_query.find("v=");
+    if (v_pos != std::string::npos) {
+      size_t end_pos = modified_query.find("&", v_pos);
+      if (end_pos == std::string::npos) {
+        end_pos = modified_query.length();
+      }
+      modified_query.replace(v_pos + 2, end_pos - v_pos - 2, file_to_serve);
+    }
+    return https_server_.GetURL(host, modified_query);
   }
 
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
-  std::string file_to_serve_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
