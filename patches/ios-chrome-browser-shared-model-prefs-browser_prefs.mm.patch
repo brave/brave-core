@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 75f167b4c6037aea97ce8a00ed176191a3725029..7b92e1541e4e30f353df6cb616379163ef289adb 100644
+index 5dcac25c8ad5f760e49a4ec6c16c96b0ef8f63c1..b3cc47c8d45027774486eaabce8357c736d18bcc 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -691,6 +691,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -697,6 +697,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(prefs::kNTPLensEntryPointNewBadgeShownCount, 0);
    registry->RegisterIntegerPref(
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
@@ -10,10 +10,10 @@ index 75f167b4c6037aea97ce8a00ed176191a3725029..7b92e1541e4e30f353df6cb616379163
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1104,6 +1105,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Deprecated 06/2025.
-   registry->RegisterDoublePref(kGaiaCookiePeriodicReportTimeDeprecated, 0);
-   registry->RegisterStringPref(kSyncedDefaultSearchProviderGUID, std::string());
+@@ -1115,6 +1116,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(kFirstSyncCompletedInFullSyncMode, false);
+   registry->RegisterStringPref(kGoogleServicesSecondLastSyncingGaiaId,
+                                std::string());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
