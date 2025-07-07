@@ -15,7 +15,7 @@
 #define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION \
   if (static_cast<intmax_t>(sample) >= 0)
 
-#include "src/base/metrics/histogram_functions.h"  // IWYU pragma: export
+#include <base/metrics/histogram_functions.h>  // IWYU pragma: export
 
 #undef BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION
 
