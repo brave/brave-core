@@ -12,6 +12,8 @@ source_set("containers") {
   sources = [
     "container_model.cc",
     "container_model.h",
+    "containers_icon_generator.cc",
+    "containers_icon_generator.h",
     "containers_menu_model.cc",
     "containers_menu_model.h",
   ]
@@ -23,6 +25,7 @@ source_set("containers") {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom:mojom",
+    "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//ui/base",
     "//ui/menus",

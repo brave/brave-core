@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
 
@@ -120,6 +121,22 @@ aggregate_vector_icons("brave_components_vector_icons") {
       "leo_product_playlist.icon",
       "leo_product_playlist_add.icon",
       "leo_product_playlist_added.icon",
+    ]
+  }
+
+  if (enable_containers) {
+    leo_icons += [
+      "leo_container_banking.icon",
+      "leo_container_events.icon",
+      "leo_container_messaging.icon",
+      "leo_container_personal.icon",
+      "leo_container_private.icon",
+      "leo_container_school.icon",
+      "leo_container_shopping.icon",
+      "leo_container_social.icon",
+      "leo_container_star.icon",
+      "leo_container_travel.icon",
+      "leo_container_work.icon",
     ]
   }
 

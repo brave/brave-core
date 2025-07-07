@@ -7,27 +7,33 @@
 
 #include <utility>
 
-#include "base/notimplemented.h"
+#include "base/functional/bind.h"
+#include "brave/browser/ui/containers/containers_icon_generator.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "ui/gfx/geometry/size.h"
 
 namespace containers {
 
 namespace {
 
-ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container) {
+ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container,
+                                         float scale_factor) {
   CHECK(container) << "Container must be valid";
-  // TODO(https://github.com/brave/brave-browser/issues/47117)
-  // At the moment, we don't have data filled into `container` to decide which
-  // icon to use to represent the container. When the data is ready, implement
-  // this function to return the appropriate icon based on the container data.
-  NOTIMPLEMENTED();
-  return ui::ImageModel();
+  constexpr int kDipSize = 16;
+  return ui::ImageModel::FromImageGenerator(
+      base::BindRepeating(&ContainersIconGenerator::operator(),
+                          base::Owned(new ContainersIconGenerator(
+                              container->icon, container->background_color,
+                              kDipSize, scale_factor))),
+      gfx::Size(kDipSize, kDipSize));
 }
 
 }  // namespace
 
-ContainerModel::ContainerModel(mojom::ContainerPtr container)
+ContainerModel::ContainerModel(mojom::ContainerPtr container,
+                               float scale_factor)
     : container_(std::move(container)),
-      icon_(GetImageModelForContainer(container_)) {
+      icon_(GetImageModelForContainer(container_, scale_factor)) {
   CHECK(container_) << "Container must be valid";
 }
 
