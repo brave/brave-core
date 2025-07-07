@@ -13,25 +13,30 @@ import WebKit
 
 class YoutubeQualityTabHelper: NSObject, TabObserver {
   private var url: URL?
+  private weak var tab: (any TabState)?
   private var reachableObserver: AnyCancellable?
 
-  init(tab: some TabState) {
-    self.url = tab.visibleURL
+  public init(tab: (any TabState)?) {
+    self.tab = tab
+    self.url = tab?.visibleURL
     super.init()
 
-    tab.addObserver(self)
+    tab?.addObserver(self)
 
     reachableObserver = Reachability.shared.publisher.sink { [weak tab] status in
-      guard let tab = tab else { return }
-      Self.handleConnectionStatusChanged(status, tab: tab)
+      tab?.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: status)
     }
   }
 
-  static func handleConnectionStatusChanged(
-    _ status: Reachability.Status,
-    tab: some TabState
-  ) {
-    YoutubeQualityScriptHandler.setQuality(for: tab, status: status)
+  func handleConnectionStatusChanged(status: Reachability.Status) {
+    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: status)
+    tab?.evaluateJavaScript(
+      functionName: "window.__firefox__.\(YoutubeQualityScriptHandler.setQuality)",
+      args: [enabled ? YoutubeQualityScriptHandler.highestQuality : "'auto'"],
+      contentWorld: YoutubeQualityScriptHandler.scriptSandbox,
+      escapeArgs: false,
+      asFunction: true
+    )
   }
 
   static func canEnableHighQuality(connectionStatus: Reachability.Status) -> Bool {
@@ -68,7 +73,11 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     }
 
     url = tab.visibleURL
-    YoutubeQualityScriptHandler.refreshQuality(for: tab)
+    tab.evaluateJavaScript(
+      functionName: "window.__firefox__.\(YoutubeQualityScriptHandler.refreshQuality)",
+      contentWorld: YoutubeQualityScriptHandler.scriptSandbox,
+      asFunction: true
+    )
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {

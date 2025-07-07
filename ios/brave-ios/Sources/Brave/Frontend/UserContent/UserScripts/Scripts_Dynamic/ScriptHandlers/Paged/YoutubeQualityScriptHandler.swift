@@ -12,16 +12,10 @@ import Web
 import WebKit
 
 class YoutubeQualityScriptHandler: NSObject, TabContentScript {
-  private let tabHelper: YoutubeQualityTabHelper
 
-  init(tab: some TabState) {
-    self.tabHelper = .init(tab: tab)
-    super.init()
-  }
-
-  private static let refreshQuality = "refresh_youtube_quality_\(uniqueID)"
-  private static let setQuality = "set_youtube_quality_\(uniqueID)"
-  private static let highestQuality = "'hd2160p'"
+  static let refreshQuality = "refresh_youtube_quality_\(uniqueID)"
+  static let setQuality = "set_youtube_quality_\(uniqueID)"
+  static let highestQuality = "'hd2160p'"
 
   static let scriptName = "YoutubeQualityScript"
   static let scriptId = UUID().uuidString
@@ -49,26 +43,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
   }()
 
   static func setEnabled(for tab: some TabState) {
-    setQuality(for: tab, status: Reachability.shared.status)
-  }
-
-  static func setQuality(for tab: some TabState, status: Reachability.Status) {
-    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: status)
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(Self.setQuality)",
-      args: [enabled ? Self.highestQuality : "'auto'"],
-      contentWorld: Self.scriptSandbox,
-      escapeArgs: false,
-      asFunction: true
-    )
-  }
-
-  static func refreshQuality(for tab: some TabState) {
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(Self.refreshQuality)",
-      contentWorld: Self.scriptSandbox,
-      asFunction: true
-    )
+    tab.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: Reachability.shared.status)
   }
 
   func tab(
