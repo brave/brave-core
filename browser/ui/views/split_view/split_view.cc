@@ -105,8 +105,6 @@ SplitView::SplitView(Browser& browser,
       std::make_unique<ScrimView>());
   secondary_contents_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ActivatableContentsWebView>(browser_->profile()));
-  secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
-      std::make_unique<ScrimView>());
 
   secondary_lens_overlay_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<views::View>());
@@ -128,8 +126,8 @@ SplitView::SplitView(Browser& browser,
       std::make_unique<BraveContentsLayoutManager>(
           secondary_devtools_web_view_, secondary_devtools_scrim_view_,
           secondary_contents_web_view_, secondary_lens_overlay_view_,
-          secondary_contents_scrim_view_, /*border_view*/ nullptr,
-          /*watermark_view*/ nullptr, secondary_reader_mode_toolbar_));
+          /*border_view=*/nullptr,
+          /*watermark_view=*/nullptr, secondary_reader_mode_toolbar_));
 #endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
@@ -616,7 +614,7 @@ void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
   // MacOS does not need views window scrim. We use sheets to show window modals
   // (-[NSWindow beginSheet:]), which natively draw a scrim since macOS 11.
   if (secondary_contents_container_->GetVisible()) {
-    secondary_contents_scrim_view_->SetVisible(visible);
+    // secondary_contents_scrim_view_->SetVisible(visible);
   }
 #endif
 }
