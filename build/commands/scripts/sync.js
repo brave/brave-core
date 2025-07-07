@@ -55,7 +55,7 @@ function syncBrave(program) {
   }
 
   if (program.history === false) {
-    args.push('--no-history');
+    args.push('--no-history')
   }
 
   util.runGClient(
