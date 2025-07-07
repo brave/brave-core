@@ -16,10 +16,10 @@ class NodeHTMLText final : public NodeHTML {
  public:
   NodeHTMLText(GraphItemContext* context,
                const blink::DOMNodeId dom_node_id,
-               const String& text);
+               const blink::String& text);
   ~NodeHTMLText() override;
 
-  const String& GetText() const { return text_; }
+  const blink::String& GetText() const { return text_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -33,7 +33,7 @@ class NodeHTMLText final : public NodeHTML {
   void AddInEdge(const GraphEdge* in_edge) override;
 
  private:
-  String text_;
+  blink::String text_;
 };
 
 }  // namespace brave_page_graph
