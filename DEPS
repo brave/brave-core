@@ -158,10 +158,20 @@ hooks = [
     'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
   },
   {
-    # Generate .clang-format.
-    'name': 'generate_clang_format',
+    # Chromium_src files require custom formatting to correctly sort includes
+    # that reference original files.
+    'name': 'generate_chromium_src_clang_format',
     'pattern': '.',
-    'action': ['vpython3', 'build/util/generate_clang_format.py', '../.clang-format', '.clang-format']
+    'action': ['vpython3', 'tools/chromium_src/generate_clang_format.py',
+               '../.clang-format', 'chromium_src/.clang-format'],
+  },
+  {
+    # We only need a custom .clang-format in chromium_src. It was previously
+    # generated in the root of brave/, so we remove it now. This hook can be
+    # removed after 08/2025.
+    'name': 'remove_stale_clang_format',
+    'pattern': '.',
+    'action': ['python3', '../tools/remove_stale_files.py', '.clang-format']
   },
   {
     'name': 'update_midl_files',

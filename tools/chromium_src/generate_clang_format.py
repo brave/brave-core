@@ -42,6 +42,19 @@ def add_chromium_src_include_categories_rule(data):
     # wildcard rule.
     include_categories.insert(wildcard_rule_idx, chromium_src_rule)
 
+    # Add a new category for original source file #include statements. This
+    # category will put those includes after all other includes by default.
+    # However it still be possible to rearrange them by having a #define or a
+    # comment or anything else before the #include statement.
+    lowest_rule_priority = max(rule['Priority'] for rule in include_categories)
+    chromium_src_source_rule = {
+        'Regex': r'^<.*\.(c|cc|cpp|m|mm)>',
+        'Priority': lowest_rule_priority + 1,
+    }
+    # The rule is placed at the beginning of the list to match interesting files
+    # first. Otherwise, the wildcard rule will match them.
+    include_categories.insert(0, chromium_src_source_rule)
+
 
 def load_clang_format(path):
     with open(path, 'r') as file:
