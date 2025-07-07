@@ -47,6 +47,11 @@ protocol BrowserColors {
   // MARK: - TabBar
   var tabBarTabBackground: UIColor { get }
   var tabBarTabActiveBackground: UIColor { get }
+
+  // MARK: - Favorites/Search View Controller
+  var favoritesAndSearchScreenBackground: UIColor { get }
+  var favoritesAndSearchScreenSectionBackground: UIColor { get }
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor { get }
 }
 
 extension BrowserColors where Self == StandardBrowserColors {
@@ -144,6 +149,18 @@ struct StandardBrowserColors: BrowserColors {
   var tabBarTabActiveBackground: UIColor {
     .init(light: .primitiveNeutral98, dark: .primitiveNeutral10)
   }
+
+  var favoritesAndSearchScreenBackground: UIColor {
+    .init(light: .primitiveNeutral95, dark: .primitiveNeutral0)
+  }
+
+  var favoritesAndSearchScreenSectionBackground: UIColor {
+    .init(braveSystemName: .materialThin)
+  }
+
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor {
+    self.containerBackground
+  }
 }
 
 /// The set of browser colors specific to private mode
@@ -230,6 +247,18 @@ struct PrivateModeBrowserColors: BrowserColors {
 
   var tabBarTabActiveBackground: UIColor {
     .init(braveSystemName: .primitivePrivateWindow10)
+  }
+
+  var favoritesAndSearchScreenBackground: UIColor {
+    .init(light: .primitivePrivateWindow25, dark: .primitivePrivateWindow5)
+  }
+
+  var favoritesAndSearchScreenSectionBackground: UIColor {
+    .init(light: .primitivePrivateWindow40, dark: .primitivePrivateWindow15)
+  }
+
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor {
+    .init(light: .primitivePrivateWindow50, dark: .primitivePrivateWindow25)
   }
 }
 
