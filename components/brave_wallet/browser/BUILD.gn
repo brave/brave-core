@@ -703,6 +703,7 @@ source_set("unit_tests") {
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
     "permission_utils_unittest.cc",
+    "polkadot/sr25519_unittest.cc",
     "rlp_decode_unittest.cc",
     "rlp_encode_unittest.cc",
     "simple_hash_client_unittest.cc",
