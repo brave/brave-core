@@ -4,23 +4,105 @@
     font-weight: 600;
     height: 68px;
   }
+  .label.primary-title
+  {
+    font-size: 1.05em;
+    font-weight: 500;
+    padding-top: 1em;
+  }
+  .label.secondary-title {
+    padding-bottom: 1em;
+  }
 </style>
-<template is="dom-if" if="[[braveOriginEnabled_]]" restamp>
+<div hidden="[[!braveOriginEnabled_]]">
   <div class="cr-row title">$i18n{braveOriginTitle}</div>
+
   <settings-origin-page prefs="{{prefs}}">
+    <div class="settings-box first">
+      <div class="flex">
+        <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+        <div class="label secondary secondary-title">
+          <p>$i18n{braveOriginHeadingDescription1}</p>
+          <p>$i18n{braveOriginHeadingDescription2}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+
     <settings-toggle-button id="toggleNtpAdsButton"
         pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
         label="$i18n{braveOriginNtpAdsToggleTitle}">
     </settings-toggle-button>
 
+    <settings-toggle-button id="toggleRewardsButton"
+        pref="[[toggleRewards_]]"
+        label="$i18n{braveOriginRewardsToggleTitle}"
+        on-settings-boolean-control-change="toggleRewardsButtonChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleSearchAdsButton"
+        pref="[[toggleSearchAds_]]"
+        label="$i18n{braveOriginSearchAdsToggleTitle}"
+        on-settings-boolean-control-change="toggleSearchAdsButtonChange_">
+    </settings-toggle-button>
+
+    <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+
     <settings-toggle-button id="toggleEmailAliasButton"
         pref="[[toggleEmailAlias_]]"
-        label="$i18n{braveOriginEmailAliasToggleTitle}">
+        label="$i18n{braveOriginEmailAliasToggleTitle}"
+        on-settings-boolean-control-change="toggleEmailAliasChange_">
     </settings-toggle-button>
 
     <settings-toggle-button id="toggleLeoAiButton"
         pref="[[toggleLeoAi_]]"
-        label="$i18n{braveOriginLeoAiToggleTitle}">
+        label="$i18n{braveOriginLeoAiToggleTitle}"
+        on-settings-boolean-control-change="toggleLeoAiChange_">
     </settings-toggle-button>
+
+    <settings-toggle-button id="toggleNewsButton"
+        pref="[[toggleNews_]]"
+        label="$i18n{braveOriginNewsToggleTitle}"
+        on-settings-boolean-control-change="toggleNewsChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleP3ACrashReportButton"
+        pref="[[toggleP3ACrashReport_]]"
+        label="$i18n{braveOriginP3ACrashReportToggleTitle}"
+        on-settings-boolean-control-change="toggleP3ACrashReportChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleSidebarButton"
+        pref="[[toggleSidebar_]]"
+        label="$i18n{braveOriginSidebarToggleTitle}"
+        on-settings-boolean-control-change="toggleSidebarChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleTorWindowsButton"
+        pref="[[toggleTorWindows_]]"
+        label="$i18n{braveOriginTorWindowsToggleTitle}"
+        on-settings-boolean-control-change="toggleTorWindowsChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleVpnButton"
+        pref="[[toggleVpn_]]"
+        label="$i18n{braveOriginVpnToggleTitle}"
+        on-settings-boolean-control-change="toggleVpnChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleWalletButton"
+        pref="[[toggleWallet_]]"
+        label="$i18n{braveOriginWalletToggleTitle}"
+        on-settings-boolean-control-change="toggleWalletChange_">
+    </settings-toggle-button>
+
+    <settings-toggle-button id="toggleWeb3DomainsButton"
+        pref="[[toggleWeb3Domains_]]"
+        label="$i18n{braveOriginWeb3DomainsToggleTitle}"
+        on-settings-boolean-control-change="toggleWeb3DomainsChange_">
+    </settings-toggle-button>
+
+    <div class="cr-row">$i18n{braveOriginResetToDefaultsTitle}</div>
   </settings-origin-page>
-</template>
+</div>
