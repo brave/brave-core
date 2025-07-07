@@ -19,19 +19,19 @@ BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* devtools_scrim_view,
     views::View* contents_view,
     views::View* lens_overlay_view,
-    views::View* scrim_view,
     views::View* border_view,
     views::View* watermark_view,
-    views::View* reader_mode_toolbar)
+    views::View* reader_mode_toolbar,
+    views::View* scrim_view)
     : ContentsLayoutManager(devtools_view,
                             devtools_scrim_view,
                             contents_view,
                             lens_overlay_view,
-                            scrim_view,
                             border_view,
                             watermark_view),
       contents_view_(contents_view),
-      reader_mode_toolbar_(reader_mode_toolbar) {
+      reader_mode_toolbar_(reader_mode_toolbar),
+      scrim_view_(scrim_view) {
   CHECK(reader_mode_toolbar_);
 }
 
@@ -71,6 +71,20 @@ views::ProposedLayout BraveContentsLayoutManager::CalculateProposedLayout(
         reader_mode_toolbar_.get(), /*visible=*/false,
         host_view()->GetMirroredRect(gfx::Rect()),
         views::SizeBounds(layouts.host_size));
+  }
+
+  if (scrim_view_) {
+    if (scrim_view_->GetVisible()) {
+      layouts.child_layouts.emplace_back(
+          scrim_view_.get(), /*visible=*/true,
+          host_view()->GetMirroredRect(contents_layout->bounds),
+          views::SizeBounds(layouts.host_size));
+    } else {
+      layouts.child_layouts.emplace_back(
+          scrim_view_.get(), /*visible=*/false,
+          host_view()->GetMirroredRect(gfx::Rect()),
+          views::SizeBounds(layouts.host_size));
+    }
   }
 
   return layouts;
