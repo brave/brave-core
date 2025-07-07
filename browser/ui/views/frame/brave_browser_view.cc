@@ -235,7 +235,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       contents_container_->AddChildView(std::make_unique<ReaderModeToolbarView>(
           browser_->profile(), use_rounded_corners));
 
-  views::View* contents_view = contents_web_view_;
+  views::View* contents_view = contents_container_view_;
   // MultiContentsView is contents view with SideBySide feature.
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     contents_view = multi_contents_view_;
