@@ -135,7 +135,7 @@ function syncChromium(program) {
     args.push('--force')
   }
 
-  if (program.history == false) {
+  if (program.history === false) {
     args.push('--no-history');
   }
 

@@ -54,7 +54,7 @@ function syncBrave(program) {
     args.push('-D')
   }
 
-  if (program.history == false) {
+  if (program.history === false) {
     args.push('--no-history');
   }
 
