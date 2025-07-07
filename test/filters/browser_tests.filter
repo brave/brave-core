@@ -2238,6 +2238,11 @@
 -TabStripComboButtonBrowserTest.BuildsComboButton
 -TabStripComboButtonBrowserTest.SeparatorVisibility
 
+# These tests fail because we default to saving bookmarks in the "Bookmarks"
+# folder, not in "Other bookmarks"
+-BookmarkBrowsertest.BookmarkCurrentTab_WithAccountNodes
+-BookmarkBrowsertest.BookmarkCurrentTab_WithoutAccountNodes
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
