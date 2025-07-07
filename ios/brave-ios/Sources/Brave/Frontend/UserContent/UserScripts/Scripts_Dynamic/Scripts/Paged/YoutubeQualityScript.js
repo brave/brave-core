@@ -35,7 +35,7 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
       let quality = qualities.includes(requestedQuality) ? requestedQuality : qualities[0];
 
       if (player.setPlaybackQualityRange) {
-        player.setPlaybackQualityRange(quality);
+        player.setPlaybackQualityRange(quality, quality);
         return true;
       }
 
