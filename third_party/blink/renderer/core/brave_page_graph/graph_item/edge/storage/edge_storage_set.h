@@ -23,7 +23,7 @@ class EdgeStorageSet final : public EdgeStorage {
                  NodeActor* out_node,
                  NodeStorage* in_node,
                  const FrameId& frame_id,
-                 const String& key,
+                 const blink::String& key,
                  const blink::PageGraphValue& value);
   ~EdgeStorageSet() override;
 
