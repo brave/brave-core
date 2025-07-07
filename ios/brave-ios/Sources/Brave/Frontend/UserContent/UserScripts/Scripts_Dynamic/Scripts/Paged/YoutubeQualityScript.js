@@ -39,11 +39,6 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
         return true;
       }
 
-      if (player.setPlaybackQuality) {
-        player.setPlaybackQuality(quality);
-        return true;
-      }
-
       return false;
     } else {
       // Sometimes the video qualities do not load fast enough.
