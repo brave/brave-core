@@ -13,11 +13,11 @@ namespace brave_page_graph {
 
 class NodeTrackerFilter : public NodeFilter {
  public:
-  NodeTrackerFilter(GraphItemContext* context, const String& host);
+  NodeTrackerFilter(GraphItemContext* context, const blink::String& host);
 
   ~NodeTrackerFilter() override;
 
-  const String& GetHost() const { return host_; }
+  const blink::String& GetHost() const { return host_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -28,7 +28,7 @@ class NodeTrackerFilter : public NodeFilter {
   bool IsNodeTrackerFilter() const override;
 
  private:
-  const String host_;
+  const blink::String host_;
 };
 
 }  // namespace brave_page_graph

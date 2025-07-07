@@ -20,14 +20,14 @@ class EdgeEventListenerAdd;
 
 class NodeHTMLElement : public NodeHTML {
  public:
-  using Attributes = HashMap<String, String>;
+  using Attributes = HashMap<blink::String, blink::String>;
 
   NodeHTMLElement(GraphItemContext* context,
                   const blink::DOMNodeId dom_node_id,
-                  const String& tag_name);
+                  const blink::String& tag_name);
   ~NodeHTMLElement() override;
 
-  const String& TagName() const { return tag_name_; }
+  const blink::String& TagName() const { return tag_name_; }
 
   const HTMLNodeList& GetChildNodes() const { return child_nodes_; }
 
@@ -54,7 +54,7 @@ class NodeHTMLElement : public NodeHTML {
   void AddInEdge(const GraphEdge* in_edge) override;
 
  private:
-  const String tag_name_;
+  const blink::String tag_name_;
 
   HTMLNodeList child_nodes_;
 
