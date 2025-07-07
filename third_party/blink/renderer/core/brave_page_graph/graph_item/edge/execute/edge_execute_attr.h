@@ -22,11 +22,11 @@ class EdgeExecuteAttr : public EdgeExecute {
                   NodeHTMLElement* out_node,
                   NodeScript* in_node,
                   const FrameId& frame_id,
-                  const String& attribute_name);
+                  const blink::String& attribute_name);
 
   ~EdgeExecuteAttr() override;
 
-  const String& GetAttributeName() { return attribute_name_; }
+  const blink::String& GetAttributeName() { return attribute_name_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -37,7 +37,7 @@ class EdgeExecuteAttr : public EdgeExecute {
   bool IsEdgeExecuteAttr() const override;
 
  private:
-  const String attribute_name_;
+  const blink::String attribute_name_;
 };
 
 }  // namespace brave_page_graph

@@ -14,7 +14,7 @@ EdgeExecuteAttr::EdgeExecuteAttr(GraphItemContext* context,
                                  NodeHTMLElement* out_node,
                                  NodeScript* in_node,
                                  const FrameId& frame_id,
-                                 const String& attribute_name)
+                                 const blink::String& attribute_name)
     : EdgeExecute(context, out_node, in_node, frame_id),
       attribute_name_(attribute_name) {}
 

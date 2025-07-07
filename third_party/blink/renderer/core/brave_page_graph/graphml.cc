@@ -24,7 +24,7 @@ uint32_t graphml_index = 0;
 }
 
 GraphMLAttr::GraphMLAttr(const GraphMLAttrForType for_value,
-                         const String& name,
+                         const blink::String& name,
                          const GraphMLAttrType type)
     : for_(for_value),
       name_(name),
@@ -54,7 +54,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
-                               const String& value) const {
+                               const blink::String& value) const {
   AddValueNodeXmlChar(doc, parent_node, XmlUtf8String(value).get());
 }
 

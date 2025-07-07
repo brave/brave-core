@@ -15,8 +15,8 @@ EdgeAttributeSet::EdgeAttributeSet(GraphItemContext* context,
                                    NodeActor* out_node,
                                    NodeHTMLElement* in_node,
                                    const FrameId& frame_id,
-                                   const String& name,
-                                   const String& value,
+                                   const blink::String& name,
+                                   const blink::String& value,
                                    const bool is_style)
     : EdgeAttribute(context, out_node, in_node, frame_id, name, is_style),
       value_(value) {}
