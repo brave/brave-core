@@ -404,7 +404,7 @@ extension SyncSettingsTableViewController {
 
     let removeAction = UIAlertAction(title: Strings.Sync.removeDeviceAction, style: .destructive) {
       _ in
-      if !DeviceInfo.hasConnectivity() {
+      if !DeviceInfo.hasConnectivity {
         self.present(SyncAlerts.noConnection, animated: true)
         return
       }

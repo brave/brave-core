@@ -473,7 +473,7 @@ class SettingsViewController: TableViewController {
           text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
             if syncAPI.isInSyncGroup {
-              if !DeviceInfo.hasConnectivity() {
+              if !DeviceInfo.hasConnectivity {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
               }

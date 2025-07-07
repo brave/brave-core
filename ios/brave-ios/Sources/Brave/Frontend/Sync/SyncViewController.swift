@@ -71,7 +71,7 @@ class SyncViewController: AuthenticationController {
   /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
   /// Most of sync initialization methods require an internet connection.
   func doIfConnected(code: () -> Void) {
-    if !DeviceInfo.hasConnectivity() {
+    if !DeviceInfo.hasConnectivity {
       present(SyncAlerts.noConnection, animated: true)
       return
     }
