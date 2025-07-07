@@ -97,3 +97,50 @@ extension ReachabilityStatus {
     }
   }
 }
+
+extension Reach {
+  private static var monitor: SCNetworkReachability?
+
+  public static func startMonitoring() {
+    if Self.monitor != nil { return }
+
+    var zeroAddress = sockaddr_in()
+    zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+    zeroAddress.sin_family = sa_family_t(AF_INET)
+
+    Self.monitor = withUnsafePointer(to: &zeroAddress) {
+      $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+        SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, $0)
+      }
+    }
+
+    guard let monitor = Self.monitor else {
+      print("Reachability monitor could not be created.")
+      return
+    }
+
+    var context = SCNetworkReachabilityContext(
+      version: 0,
+      info: nil,
+      retain: nil,
+      release: nil,
+      copyDescription: nil
+    )
+
+    let callback: SCNetworkReachabilityCallBack = { (_, flags, _) in
+      let status = ReachabilityStatus(reachabilityFlags: flags)
+      NotificationCenter.default.post(
+        name: .reachabilityStatusChanged,
+        object: nil,
+        userInfo: ["status": status]
+      )
+    }
+
+    let callbackSet = SCNetworkReachabilitySetCallback(monitor, callback, &context)
+    let queueSet = SCNetworkReachabilitySetDispatchQueue(monitor, DispatchQueue.main)
+
+    if !callbackSet || !queueSet {
+      Self.monitor = nil
+    }
+  }
+}

@@ -12,13 +12,24 @@ import WebKit
 
 class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   private var url: URL?
-  private var urlObserver: NSObjectProtocol?
+  private var reachableObserver: NSObjectProtocol?
 
   init(tab: some TabState) {
     self.url = tab.visibleURL
     super.init()
 
     tab.addObserver(self)
+    Reach.startMonitoring()
+
+    reachableObserver = NotificationCenter.default.addObserver(
+      forName: .reachabilityStatusChanged,
+      object: nil,
+      queue: .main
+    ) { [weak tab] notification in
+      if let status = notification.userInfo?["status"] as? ReachabilityStatus, let tab = tab {
+        Self.handleConnectionStatusChanged(status, tab: tab)
+      }
+    }
   }
 
   private static let refreshQuality = "refresh_youtube_quality_\(uniqueID)"
@@ -112,5 +123,19 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+  }
+
+  private static func handleConnectionStatusChanged(
+    _ status: ReachabilityStatus,
+    tab: some TabState
+  ) {
+    let enabled = canEnableHighQuality(option: Preferences.General.youtubeHighQuality)
+    tab.evaluateJavaScript(
+      functionName: "window.__firefox__.\(Self.setQuality)",
+      args: [enabled ? Self.highestQuality : "'medium'"],
+      contentWorld: Self.scriptSandbox,
+      escapeArgs: false,
+      asFunction: true
+    )
   }
 }
