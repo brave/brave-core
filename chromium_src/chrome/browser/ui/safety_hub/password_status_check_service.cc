@@ -5,16 +5,14 @@
 
 #include "chrome/browser/ui/safety_hub/password_status_check_service.h"
 
-#define GetPasswordCardData GetPasswordCardData_ChromiumImpl
-#include "src/chrome/browser/ui/safety_hub/password_status_check_service.cc"
-#undef GetPasswordCardData
-
 // We hide the password card in brave://settings/safetyCheck, so we don't want
 // to return recommendations that involve that card
-base::Value::Dict PasswordStatusCheckService::GetPasswordCardData(
-    bool signed_in) {
-  base::Value::Dict dict;
-  dict.Set(safety_hub::kCardStateKey,
-           static_cast<int>(safety_hub::SafetyHubCardState::kSafe));
+#define BRAVE_PASSWORD_STATUS_CHECK_SERVICE_GET_PASSWORD_CARD_DATA   \
+  base::Value::Dict dict;                                            \
+  dict.Set(safety_hub::kCardStateKey,                                \
+           static_cast<int>(safety_hub::SafetyHubCardState::kSafe)); \
   return dict;
-}
+
+#include "src/chrome/browser/ui/safety_hub/password_status_check_service.cc"
+
+#undef BRAVE_PASSWORD_STATUS_CHECK_SERVICE_GET_PASSWORD_CARD_DATA
