@@ -15,7 +15,7 @@ namespace brave_page_graph {
 EdgeEventListener::EdgeEventListener(GraphItemContext* context,
                                      NodeHTMLElement* out_node,
                                      NodeActor* in_node,
-                                     const String& event_type,
+                                     const blink::String& event_type,
                                      const EventListenerId listener_id)
     : GraphEdge(context, out_node, in_node),
       event_type_(event_type),

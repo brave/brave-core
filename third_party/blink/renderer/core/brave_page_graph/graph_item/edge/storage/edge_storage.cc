@@ -16,7 +16,7 @@ EdgeStorage::EdgeStorage(GraphItemContext* context,
                          GraphNode* out_node,
                          GraphNode* in_node,
                          const FrameId& frame_id,
-                         const String& key)
+                         const blink::String& key)
     : GraphEdge(context, out_node, in_node), frame_id_(frame_id), key_(key) {}
 
 EdgeStorage::~EdgeStorage() = default;
