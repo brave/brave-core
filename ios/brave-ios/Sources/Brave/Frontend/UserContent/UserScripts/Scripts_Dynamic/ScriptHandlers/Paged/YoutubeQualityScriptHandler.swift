@@ -11,20 +11,12 @@ import Shared
 import Web
 import WebKit
 
-class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
-  private var url: URL?
-  private var reachableObserver: AnyCancellable?
+class YoutubeQualityScriptHandler: NSObject, TabContentScript {
+  private let tabHelper: YoutubeQualityTabHelper
 
   init(tab: some TabState) {
-    self.url = tab.visibleURL
+    self.tabHelper = .init(tab: tab)
     super.init()
-
-    tab.addObserver(self)
-
-    reachableObserver = Reachability.shared.publisher.sink { [weak tab] status in
-      guard let tab = tab else { return }
-      Self.handleConnectionStatusChanged(status, tab: tab)
-    }
   }
 
   private static let refreshQuality = "refresh_youtube_quality_\(uniqueID)"
@@ -57,7 +49,26 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   }()
 
   static func setEnabled(for tab: some TabState) {
-    handleConnectionStatusChanged(Reachability.shared.status, tab: tab)
+    setQuality(for: tab, status: Reachability.shared.status)
+  }
+
+  static func setQuality(for tab: some TabState, status: Reachability.Status) {
+    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: status)
+    tab.evaluateJavaScript(
+      functionName: "window.__firefox__.\(Self.setQuality)",
+      args: [enabled ? Self.highestQuality : "'auto'"],
+      contentWorld: Self.scriptSandbox,
+      escapeArgs: false,
+      asFunction: true
+    )
+  }
+
+  static func refreshQuality(for tab: some TabState) {
+    tab.evaluateJavaScript(
+      functionName: "window.__firefox__.\(Self.refreshQuality)",
+      contentWorld: Self.scriptSandbox,
+      asFunction: true
+    )
   }
 
   func tab(
@@ -71,68 +82,9 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     }
 
     replyHandler(
-      Self.canEnableHighQuality(connectionStatus: Reachability.shared.status)
+      YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: Reachability.shared.status)
         ? Self.highestQuality : "",
       nil
-    )
-  }
-
-  private static func canEnableHighQuality(connectionStatus: Reachability.Status) -> Bool {
-    guard
-      let qualityPreference = YoutubeHighQualityPreference(
-        rawValue: Preferences.General.youtubeHighQuality.value
-      )
-    else {
-      return false
-    }
-
-    switch connectionStatus.connectionType {
-    case .wifi, .ethernet:
-      if connectionStatus.isLowDataMode || connectionStatus.isExpensive {
-        return qualityPreference == .on
-      }
-
-      return qualityPreference == .wifi || qualityPreference == .on
-
-    case .cellular, .other:
-      return qualityPreference == .on && !connectionStatus.isLowDataMode
-        && !connectionStatus.isExpensive
-
-    case .offline:
-      return false
-    }
-  }
-
-  // MARK: - TabObserver
-
-  func tabDidUpdateURL(_ tab: some TabState) {
-    if url?.withoutFragment == tab.visibleURL?.withoutFragment {
-      return
-    }
-
-    url = tab.visibleURL
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(Self.refreshQuality)",
-      contentWorld: Self.scriptSandbox,
-      asFunction: true
-    )
-  }
-
-  func tabWillBeDestroyed(_ tab: some TabState) {
-    tab.removeObserver(self)
-  }
-
-  private static func handleConnectionStatusChanged(
-    _ status: Reachability.Status,
-    tab: some TabState
-  ) {
-    let enabled = canEnableHighQuality(connectionStatus: status)
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(Self.setQuality)",
-      args: [enabled ? Self.highestQuality : "'auto'"],
-      contentWorld: Self.scriptSandbox,
-      escapeArgs: false,
-      asFunction: true
     )
   }
 }
