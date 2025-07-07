@@ -1250,10 +1250,6 @@ test("brave_browser_tests") {
     sources -= android_test_exception_sources
     sources += android_only_test_sources
   }
-
-  if (enable_omaha4) {
-    deps += [ "//brave/browser/updater:browser_tests" ]
-  }
 }
 
 # All in this section is for running instrumentation java tests

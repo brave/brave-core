@@ -18,14 +18,16 @@ BraveBrowserMainExtraPartsP3A::~BraveBrowserMainExtraPartsP3A() = default;
 
 void BraveBrowserMainExtraPartsP3A::PostBrowserStart() {
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
-      ->PostTask(
-          FROM_HERE, base::BindOnce([]() {
-            if (!g_browser_process || g_browser_process->IsShuttingDown()) {
-              return;
-            }
-            brave_updater::ReportLaunch(base::Time::Now(),
-                                        chrome::kChromeVersion,
-                                        brave_updater::ShouldUseOmaha4(),
-                                        g_browser_process->local_state());
-          }));
+      ->PostTask(FROM_HERE,
+                 base::BindOnce(&BraveBrowserMainExtraPartsP3A::ReportLaunch,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveBrowserMainExtraPartsP3A::ReportLaunch() {
+  if (g_browser_process && !g_browser_process->IsShuttingDown()) {
+    brave_updater::ReportLaunch(base::Time::Now(), chrome::kChromeVersion,
+                                brave_updater::ShouldUseOmaha4(),
+                                g_browser_process->local_state());
+  }
+  was_post_browser_start_called_ = true;
 }

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_P3A_H_
 
 #include "base/compiler_specific.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/chrome_browser_main.h"
 #include "chrome/browser/chrome_browser_main_extra_parts.h"
 
@@ -19,8 +20,19 @@ class BraveBrowserMainExtraPartsP3A : public ChromeBrowserMainExtraParts {
   BraveBrowserMainExtraPartsP3A& operator=(
       const BraveBrowserMainExtraPartsP3A&) = delete;
 
-  // ChromeBrowserMainExtraParts overrides.
+  // ChromeBrowserMainExtraParts override:
   void PostBrowserStart() override;
+
+  // For tests:
+  bool WasPostBrowserStartCalled() const {
+    return was_post_browser_start_called_;
+  }
+
+ private:
+  void ReportLaunch();
+  bool was_post_browser_start_called_;
+
+  base::WeakPtrFactory<BraveBrowserMainExtraPartsP3A> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_P3A_H_

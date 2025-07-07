@@ -42,20 +42,4 @@ if (enable_omaha4) {
       "//components/prefs:test_support",
     ]
   }
-
-  source_set("browser_tests") {
-    testonly = true
-
-    sources = [ "updater_p3a_browsertest.cc" ]
-
-    deps = [
-      ":p3a",
-      "//base/test:test_support",
-      "//chrome/browser:browser_process",
-      "//chrome/test:test_support_ui",
-    ]
-
-    # We get an error without this define:
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  }
 }

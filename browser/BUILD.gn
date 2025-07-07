@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -76,6 +77,17 @@ source_set("unit_tests") {
     deps += [
       "//base",
       "//brave/browser",
+      "//testing/gtest",
+    ]
+  }
+
+  if (enable_omaha4) {
+    sources += [ "brave_browser_main_extra_parts_p3a_unittest.cc" ]
+    deps += [
+      "//base/test:test_support",
+      "//brave/browser/updater:p3a",
+      "//chrome/test:test_support",
+      "//content/test:test_support",
       "//testing/gtest",
     ]
   }
