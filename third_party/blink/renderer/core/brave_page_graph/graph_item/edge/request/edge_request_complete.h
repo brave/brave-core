@@ -23,13 +23,13 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
                       GraphNode* in_node,
                       const InspectorId request_id,
                       const FrameId& frame_id,
-                      const String& resource_type,
+                      const blink::String& resource_type,
                       const ResponseMetadata& metadata,
-                      const String& hash);
+                      const blink::String& hash);
 
   ~EdgeRequestComplete() override;
 
-  const String& GetResourceType() const { return resource_type_; }
+  const blink::String& GetResourceType() const { return resource_type_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -40,8 +40,8 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
   bool IsEdgeRequestComplete() const override;
 
  private:
-  const String resource_type_;
-  const String hash_;
+  const blink::String resource_type_;
+  const blink::String hash_;
 };
 
 }  // namespace brave_page_graph
