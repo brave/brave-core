@@ -7,7 +7,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
-export const threeColumnBreakpoint = '1420px'
+export const threeColumnBreakpoint = '1275px'
 
 export const style = scoped.css`
   & {
@@ -177,7 +177,7 @@ export const style = scoped.css`
 
     anchor-name: --ntp-widget-container;
 
-    align-self: stretch;
+    align-self: center;
     flex: 0 0 var(--widget-height);
 
     display: flex;
@@ -195,7 +195,6 @@ export const style = scoped.css`
 
     &:has(> :nth-child(2)) {
       --widget-count: 2;
-      justify-content: space-between;
     }
 
     &:has(> :nth-child(3)) {
@@ -208,9 +207,20 @@ export const style = scoped.css`
       width: 100cqi;
       min-width: var(--widget-min-width);
       max-width: var(--widget-max-width);
-      align-self: center;
       flex-basis: auto;
       flex-direction: column-reverse;
+    }
+
+    @container (width > ${narrowBreakpoint}) {
+      &:has(> :nth-child(2)) {
+        justify-content: space-between;
+        align-self: stretch;
+      }
+
+      &:has(> :nth-child(3)) {
+        justify-content: center;
+        align-self: center;
+      }
     }
   }
 
