@@ -196,10 +196,9 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
           "})();")
           .ExtractBool());
   youtube_script_injector::MaybeSetFullscreen(web_contents());
-
-  EXPECT_TRUE(IsVideoPlaying());
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
+  EXPECT_TRUE(IsVideoPlaying());
 
   // Check the video is in fullscreen mode.
   EXPECT_TRUE(
