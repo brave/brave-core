@@ -50,7 +50,7 @@ class BraveMultiContentsView : public MultiContentsView,
   // SplitViewSeparatorDelegate:
   void OnDoubleClicked() override;
 
-  float GetCornerRadius() const;
+  float GetCornerRadius(bool for_border) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {

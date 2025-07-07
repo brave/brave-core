@@ -13,6 +13,8 @@
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
@@ -69,7 +71,7 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
       [this](ContentsContainerView* contents_container_view) {
         const bool is_active = contents_container_view->GetContentsView() ==
                                GetActiveContentsView();
-        const float corner_radius = GetCornerRadius();
+        const float corner_radius = GetCornerRadius(true);
         if (is_active) {
           contents_container_view->SetBorder(views::CreateRoundedRectBorder(
               kBorderThickness, corner_radius,
@@ -106,7 +108,7 @@ void BraveMultiContentsView::Layout(PassKey) {
       gfx::Size(widths.resize_width, available_space.height()));
   gfx::Rect end_rect(resize_rect.top_right(),
                      gfx::Size(widths.end_width, available_space.height()));
-  gfx::RoundedCornersF corners(GetCornerRadius());
+  gfx::RoundedCornersF corners(GetCornerRadius(false));
   for (auto* contents_container_view : contents_container_views_) {
     auto* contents_web_view = contents_container_view->GetContentsView();
     contents_web_view->layer()->SetRoundedCornerRadius(corners);
@@ -121,10 +123,18 @@ void BraveMultiContentsView::Layout(PassKey) {
   BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
 }
 
-float BraveMultiContentsView::GetCornerRadius() const {
+float BraveMultiContentsView::GetCornerRadius(bool for_border) const {
+  auto* exclusive_access_manager =
+      browser_view_->browser()->exclusive_access_manager();
+  if (exclusive_access_manager &&
+      exclusive_access_manager->fullscreen_controller()->IsTabFullscreen()) {
+    return 0;
+  }
+
   return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
              browser_view_->browser())
-             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
+             ? BraveContentsViewUtil::kBorderRadius +
+                   (for_border ? kBorderThickness : 0)
              : 0;
 }
 
