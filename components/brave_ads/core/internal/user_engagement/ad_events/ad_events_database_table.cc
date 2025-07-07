@@ -466,8 +466,7 @@ void AdEvents::GetVirtualPrefs(const base::flat_set<std::string>& ids,
               OR advertiser_id IN ($1)
           )
           WHERE id IS NOT NULL
-          GROUP BY id, confirmation_type;
-        )",
+          GROUP BY id, confirmation_type;)",
       {base::JoinString(quoted_ids, ", ")}, nullptr);
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kString,  // id
