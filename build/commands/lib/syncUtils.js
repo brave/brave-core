@@ -117,6 +117,7 @@ function syncChromium(program) {
   const deleteUnusedDeps = program.delete_unused_deps
   const gclientWithoutRevision = program.with_issue_44921
 
+
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = ['sync', '--nohooks', '--reset', '--upstream']
 
@@ -132,6 +133,10 @@ function syncChromium(program) {
 
   if (syncWithForce) {
     args.push('--force')
+  }
+
+  if (program.history == false) {
+    args.push('--no-history');
   }
 
   const latestSyncInfoFilePath = path.join(

@@ -26,6 +26,7 @@ program
   )
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
+  .option('--no-history', 'performs a shallow clone') // NOTE: sets program.history = false
   .option('--fetch_all', 'fetch all tags and branch heads')
   .option(
     '-C, --sync_chromium [arg]',
@@ -51,6 +52,10 @@ function syncBrave(program) {
 
   if (program.delete_unused_deps) {
     args.push('-D')
+  }
+
+  if (program.history == false) {
+    args.push('--no-history');
   }
 
   util.runGClient(
