@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
-#include "brave/components/vector_icons/vector_icons.h"
 #include "ui/gfx/geometry/size.h"
 
 namespace containers {
