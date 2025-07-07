@@ -14,6 +14,7 @@ export function createRewardsHandler(
   store: Store<RewardsState>
 ): RewardsActions {
   store.update({
+    initialized: true,
     rewardsFeatureEnabled: true,
     rewardsEnabled: true,
     showRewardsWidget: true,

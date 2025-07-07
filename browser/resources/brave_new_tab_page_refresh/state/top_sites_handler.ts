@@ -40,6 +40,8 @@ export function createTopSitesHandler(
       updateTopSites(),
       updatePrefs()
     ])
+
+    store.update({ initialized: true })
   }
 
   function currentListKind() {

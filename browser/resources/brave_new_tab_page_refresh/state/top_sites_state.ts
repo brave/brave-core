@@ -8,6 +8,7 @@ import { TopSite, TopSitesListKind } from 'gen/brave/browser/ui/webui/brave_new_
 export { TopSite, TopSitesListKind }
 
 export interface TopSitesState {
+  initialized: boolean
   showTopSites: boolean
   topSitesListKind: TopSitesListKind
   topSites: TopSite[]
@@ -15,6 +16,7 @@ export interface TopSitesState {
 
 export function defaultTopSitesState(): TopSitesState {
   return {
+    initialized: false,
     showTopSites: true,
     topSitesListKind: TopSitesListKind.kMostVisited,
     topSites: []

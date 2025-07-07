@@ -26,6 +26,7 @@ export type Background =
     & SponsoredImageBackground
 
 export interface BackgroundState {
+  initialized: boolean
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
   sponsoredImagesEnabled: boolean
@@ -65,6 +66,7 @@ export const gradientPreviewBackground = gradientBackgrounds[0]
 
 export function defaultBackgroundState(): BackgroundState {
   return {
+    initialized: false,
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
     sponsoredImagesEnabled: true,

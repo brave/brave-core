@@ -14,6 +14,7 @@ export function createNewTabHandler(
   store: Store<NewTabState>
 ): NewTabActions {
   store.update({
+    initialized: true,
     showClock: true,
     showShieldsStats: true,
     shieldsStats: {
