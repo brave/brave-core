@@ -50,6 +50,12 @@ source_set("hd_key") {
     ]
     deps += [ "//brave/components/brave_wallet/browser/zcash/rust" ]
   }
+
+  sources += [
+    "hd_key_sr25519.cc",
+    "hd_key_sr25519.h",
+  ]
+  deps += [ "//brave/components/brave_wallet/browser/internal/polkadot/rust" ]
 }
 
 if (enable_orchard) {
