@@ -11,6 +11,17 @@ import Shared
 import Web
 import WebKit
 
+extension TabDataValues {
+  private struct YoutubeQualityTabHelperKey: TabDataKey {
+    static var defaultValue: YoutubeQualityTabHelper?
+  }
+
+  var youtubeQualityTabHelper: YoutubeQualityTabHelper? {
+    get { self[YoutubeQualityTabHelperKey.self] }
+    set { self[YoutubeQualityTabHelperKey.self] = newValue }
+  }
+}
+
 class YoutubeQualityTabHelper: NSObject, TabObserver {
   private var url: URL?
   private weak var tab: (any TabState)?

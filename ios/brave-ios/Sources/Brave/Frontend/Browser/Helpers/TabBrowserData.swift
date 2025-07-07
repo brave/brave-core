@@ -265,7 +265,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   var translateHelper: BraveTranslateTabHelper?
   private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: tab)
-  private(set) lazy var youtubeQualityTabHelper = YoutubeQualityTabHelper(tab: tab)
 
   /// Boolean tracking custom url-scheme alert presented
   var isExternalAppAlertPresented = false
