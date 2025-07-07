@@ -14,18 +14,18 @@ namespace brave_page_graph {
 
 class NodeShield final : public GraphNode {
  public:
-  NodeShield(GraphItemContext* context, const String& type);
+  NodeShield(GraphItemContext* context, const blink::String& type);
 
   ~NodeShield() override;
 
-  const String& Type() { return type_; }
+  const blink::String& Type() { return type_; }
 
   ItemName GetItemName() const override;
 
   bool IsNodeShield() const override;
 
  private:
-  const String type_;
+  const blink::String type_;
 };
 
 }  // namespace brave_page_graph

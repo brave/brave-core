@@ -15,7 +15,7 @@ EdgeStorageDelete::EdgeStorageDelete(GraphItemContext* context,
                                      NodeActor* out_node,
                                      NodeStorage* in_node,
                                      const FrameId& frame_id,
-                                     const String& key)
+                                     const blink::String& key)
     : EdgeStorage(context, out_node, in_node, frame_id, key) {
   CHECK(!out_node->IsNodeParser());
 }

@@ -109,9 +109,9 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   }
 
   // Avoid blocking fingerprinting in WebUI, extensions, etc.
-  const String protocol = context->GetSecurityOrigin()
-                              ->GetOriginOrPrecursorOriginIfOpaque()
-                              ->Protocol();
+  const blink::String protocol = context->GetSecurityOrigin()
+                                     ->GetOriginOrPrecursorOriginIfOpaque()
+                                     ->Protocol();
   static constexpr const char* kExcludedProtocols[] = {
       url::kFileScheme,
       "chrome-extension",

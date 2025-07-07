@@ -30,8 +30,8 @@ class GraphNode;
 class NodeHTML;
 
 using FrameId = blink::DOMNodeId;
-using ItemDesc = String;
-using ItemName = String;
+using ItemDesc = blink::String;
+using ItemName = blink::String;
 using GraphMLId = std::string;
 
 using Binding = const char*;
@@ -42,7 +42,7 @@ using ScriptId = int;
 using ScriptPosition = int;
 using EventListenerId = int;
 using GraphItemId = uint64_t;
-using MethodName = String;
+using MethodName = blink::String;
 using RequestURL = blink::KURL;
 using InspectorId = uint64_t;
 
@@ -73,7 +73,7 @@ struct ScriptSource {
   blink::DOMNodeId dom_node_id = blink::kInvalidDOMNodeId;
   ScriptId parent_script_id = 0;
   blink::KURL url;
-  String function_name;
+  blink::String function_name;
   blink::ScriptSourceLocationType location_type =
       blink::ScriptSourceLocationType::kUnknown;
   bool is_module = false;
@@ -83,7 +83,7 @@ struct ScriptSource {
 };
 
 struct ScriptData {
-  String code;
+  blink::String code;
   ScriptSource source;
 
   bool operator==(const ScriptData& rhs) const;

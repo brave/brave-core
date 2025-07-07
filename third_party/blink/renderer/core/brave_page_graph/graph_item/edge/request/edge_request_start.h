@@ -22,11 +22,11 @@ class EdgeRequestStart final : public EdgeRequest {
                    NodeResource* in_node,
                    const InspectorId request_id,
                    const FrameId& frame_id,
-                   const String& resource_type);
+                   const blink::String& resource_type);
 
   ~EdgeRequestStart() override;
 
-  const String& GetResourceType() const { return resource_type_; }
+  const blink::String& GetResourceType() const { return resource_type_; }
 
   NodeResource* GetResourceNode() const override;
   GraphNode* GetRequestingNode() const override;
@@ -40,7 +40,7 @@ class EdgeRequestStart final : public EdgeRequest {
   bool IsEdgeRequestStart() const override;
 
  private:
-  const String resource_type_;
+  const blink::String resource_type_;
 };
 
 }  // namespace brave_page_graph
