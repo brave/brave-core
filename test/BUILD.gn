@@ -198,7 +198,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui/brave_rewards:unit_tests",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui:unit_tests",
-    "//brave/browser/updater:unit_tests",
     "//brave/browser/user_education:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
@@ -604,6 +603,10 @@ test("brave_unit_tests") {
       "//brave/browser/ui/containers:unit_tests",
       "//brave/components/containers/core/browser:unit_tests",
     ]
+  }
+
+  if (enable_omaha4) {
+    deps += [ "//brave/browser/updater:unit_tests" ]
   }
 }
 
