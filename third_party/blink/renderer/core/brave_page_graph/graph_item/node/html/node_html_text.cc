@@ -23,7 +23,7 @@ namespace brave_page_graph {
 
 NodeHTMLText::NodeHTMLText(GraphItemContext* context,
                            const DOMNodeId dom_node_id,
-                           const String& text)
+                           const blink::String& text)
     : NodeHTML(context, dom_node_id), text_(text) {}
 
 NodeHTMLText::~NodeHTMLText() = default;
