@@ -80,6 +80,7 @@ class ContainersIconImageSource : public gfx::CanvasImageSource {
   const SkColor background_;
   const int dip_size_;
 };
+
 }  // namespace
 
 ContainersIconGenerator::ContainersIconGenerator(mojom::Icon icon,
