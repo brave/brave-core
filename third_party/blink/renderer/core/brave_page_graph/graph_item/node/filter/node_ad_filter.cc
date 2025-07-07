@@ -10,7 +10,7 @@
 
 namespace brave_page_graph {
 
-NodeAdFilter::NodeAdFilter(GraphItemContext* context, const String& rule)
+NodeAdFilter::NodeAdFilter(GraphItemContext* context, const blink::String& rule)
     : NodeFilter(context), rule_(rule) {}
 
 NodeAdFilter::~NodeAdFilter() = default;

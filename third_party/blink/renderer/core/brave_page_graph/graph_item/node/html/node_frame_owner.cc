@@ -14,7 +14,7 @@ namespace brave_page_graph {
 
 NodeFrameOwner::NodeFrameOwner(GraphItemContext* context,
                                const DOMNodeId dom_node_id,
-                               const String& tag_name)
+                               const blink::String& tag_name)
     : NodeHTMLElement(context, dom_node_id, tag_name) {}
 
 ItemName NodeFrameOwner::GetItemName() const {

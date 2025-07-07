@@ -11,7 +11,7 @@
 namespace brave_page_graph {
 
 NodeTrackerFilter::NodeTrackerFilter(GraphItemContext* context,
-                                     const String& host)
+                                     const blink::String& host)
     : NodeFilter(context), host_(host) {}
 
 NodeTrackerFilter::~NodeTrackerFilter() = default;
