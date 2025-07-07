@@ -83,17 +83,11 @@ class ContainersIconImageSource : public gfx::CanvasImageSource {
 
 }  // namespace
 
-ContainersIconGenerator::ContainersIconGenerator(mojom::Icon icon,
-                                                 SkColor background,
-                                                 int dip_size,
-                                                 float scale_factor)
-    : icon(icon),
-      background(background),
-      dip_size(dip_size),
-      scale_factor(scale_factor) {}
-
-gfx::ImageSkia ContainersIconGenerator::operator()(
-    const ui::ColorProvider* color_provider) const {
+gfx::ImageSkia GenerateContainerIcon(mojom::Icon icon,
+                                     SkColor background,
+                                     int dip_size,
+                                     float scale_factor,
+                                     const ui::ColorProvider* color_provider) {
   auto image_source =
       std::make_unique<ContainersIconImageSource>(icon, background, dip_size);
   return gfx::ImageSkia(std::move(image_source), scale_factor);

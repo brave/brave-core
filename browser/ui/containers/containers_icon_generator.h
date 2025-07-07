@@ -16,23 +16,14 @@ class ColorProvider;
 
 namespace containers {
 
-// This is a functor to generate icons for Containers, which can be used in
-// ui::ImageModel directly. Typical use cases of this functor include context
+// This is a function to generate icons for Containers, which can be used in
+// ui::ImageModel directly. Typical use cases of this function include context
 // menus, tab indicators, page actions, and etc.
-struct ContainersIconGenerator {
-  ContainersIconGenerator(mojom::Icon icon,
-                          SkColor background,
-                          int dip_size,
-                          float scale_factor);
-  ~ContainersIconGenerator() = default;
-
-  gfx::ImageSkia operator()(const ui::ColorProvider* color_provider) const;
-
-  const mojom::Icon icon;
-  const SkColor background;
-  const int dip_size;
-  const float scale_factor;
-};
+gfx::ImageSkia GenerateContainerIcon(mojom::Icon icon,
+                                     SkColor background,
+                                     int dip_size,
+                                     float scale_factor,
+                                     const ui::ColorProvider* color_provider);
 
 }  // namespace containers
 
