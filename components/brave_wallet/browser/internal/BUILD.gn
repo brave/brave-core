@@ -50,6 +50,8 @@ source_set("hd_key") {
     ]
     deps += [ "//brave/components/brave_wallet/browser/zcash/rust" ]
   }
+
+  deps += [ "//brave/components/brave_wallet/browser/polkadot/rust" ]
 }
 
 if (enable_orchard) {

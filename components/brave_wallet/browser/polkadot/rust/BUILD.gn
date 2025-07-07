@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+group("rust") {
+  # This should only be used by internal wallet code
+  visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
+
+  deps = [":polkadot_impl"]
+}
+
+source_set("polkadot_impl") {
+  sources = [
+    "sr25519.cc",
+    "sr25519.h"
+  ]
+
+  deps = [":rust_lib"]
+}
+
+rust_static_library("rust_lib") {
+
+  crate_name = "polkadot"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/schnorrkel/v0_11:lib"
+  ]
+}
