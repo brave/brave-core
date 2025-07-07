@@ -35,7 +35,7 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestStart(
     GraphNode* requester,
     const FrameId& frame_id,
     NodeResource* resource,
-    const String& resource_type) {
+    const blink::String& resource_type) {
   auto item = tracked_requests_.find(request_id);
   if (item == tracked_requests_.end()) {
     auto request_record = std::make_unique<TrackedRequest>(

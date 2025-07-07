@@ -21,8 +21,8 @@ class NodeScriptLocal : public NodeScript {
 
   const ScriptData& GetScriptData() const { return script_data_; }
 
-  const String& GetURL() const { return url_; }
-  void SetURL(const String url) { url_ = url; }
+  const blink::String& GetURL() const { return url_; }
+  void SetURL(const blink::String url) { url_ = url; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -37,7 +37,7 @@ class NodeScriptLocal : public NodeScript {
 
  private:
   const ScriptData script_data_;
-  String url_;
+  blink::String url_;
 };
 
 }  // namespace brave_page_graph
