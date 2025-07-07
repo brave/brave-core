@@ -47,7 +47,7 @@ XmlUtf8String::XmlUtf8String(std::string_view str) {
       xmlCharStrndup(str.data(), base::saturated_cast<int>(str.size()));
 }
 
-XmlUtf8String::XmlUtf8String(const String& str)
+XmlUtf8String::XmlUtf8String(const blink::String& str)
     : XmlUtf8String(WTF::StringUTF8Adaptor(
                         str,
                         blink::Utf8ConversionMode::kStrictReplacingErrors)
