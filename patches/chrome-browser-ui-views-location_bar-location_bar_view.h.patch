@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 87ebe76a1603a69a06177853771752b8e9461ab8..371730fcd79068c5b7ddbb57481b793153c01cf0 100644
+index 98a005a9521c9dcebf9995b9fb0de36335f600b3..576cb15320576fd34eb1b73d9e5bbbdf98a3999d 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -132,6 +132,7 @@ class LocationBarView
+@@ -131,6 +131,7 @@ class LocationBarView
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index 87ebe76a1603a69a06177853771752b8e9461ab8..371730fcd79068c5b7ddbb57481b7931
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -191,6 +192,7 @@ class LocationBarView
+@@ -190,6 +191,7 @@ class LocationBarView
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,11 +18,11 @@ index 87ebe76a1603a69a06177853771752b8e9461ab8..371730fcd79068c5b7ddbb57481b7931
    void Update(content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -285,6 +287,7 @@ class LocationBarView
+@@ -284,6 +286,7 @@ class LocationBarView
    GetContentSettingViewsForTest() {
      return content_setting_views_;
    }
 +  BRAVE_LOCATION_BAR_VIEW_H_
  
-   void RecordPageInfoMetrics();
+   SkColor GetBackgroundColorForTesting() const { return background_color_; }
  
