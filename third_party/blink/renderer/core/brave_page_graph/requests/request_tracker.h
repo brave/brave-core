@@ -56,7 +56,7 @@ class RequestTracker {
       GraphNode* requester,
       const FrameId& frame_id,
       NodeResource* resource,
-      const String& resource_type);
+      const blink::String& resource_type);
   void RegisterRequestRedirect(const InspectorId request_id,
                                const FrameId& frame_id,
                                const blink::KURL& url,
