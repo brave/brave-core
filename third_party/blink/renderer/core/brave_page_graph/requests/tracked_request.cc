@@ -27,7 +27,7 @@ TrackedRequest::TrackedRequest(PageGraphContext* page_graph_context,
                                GraphNode* requester,
                                const FrameId& frame_id,
                                NodeResource* resource,
-                               const String& resource_type)
+                               const blink::String& resource_type)
     : page_graph_context_(page_graph_context),
       request_id_(request_id),
       resource_type_(resource_type) {
@@ -70,14 +70,14 @@ bool TrackedRequest::GetIsError() const {
   return request_status_ == RequestStatus::kError;
 }
 
-const String& TrackedRequest::GetResourceType() const {
+const blink::String& TrackedRequest::GetResourceType() const {
   return resource_type_;
 }
 
 void TrackedRequest::AddRequest(GraphNode* requester,
                                 const FrameId& frame_id,
                                 NodeResource* resource,
-                                const String& resource_type) {
+                                const blink::String& resource_type) {
   CHECK(requester != nullptr);
   CHECK(resource != nullptr);
   CHECK(!resource_type.empty());
@@ -147,7 +147,7 @@ const ResponseMetadata& TrackedRequest::GetResponseMetadata() const {
   return response_metadata_;
 }
 
-const String& TrackedRequest::GetResponseBodyHash() const {
+const blink::String& TrackedRequest::GetResponseBodyHash() const {
   CHECK(request_status_ == RequestStatus::kSuccess);
   CHECK(!hash_.empty());
   return hash_;
