@@ -977,5 +977,4 @@ brave_android_features_java_resources = [
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_left.xml",
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_right.xml",
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_top_window.xml",
-  "java/res/drawable-night/tablet_tab_switcher_empty_state_illustration.xml",
 ]
