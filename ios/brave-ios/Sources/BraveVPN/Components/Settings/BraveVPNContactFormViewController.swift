@@ -317,14 +317,12 @@ class BraveVPNContactFormViewController: TableViewController {
   }
 
   private var getNetworkType: String {
-    let status = Reach().connectionStatus()
-
-    switch status {
-    case .offline, .unknown:
+    let type = Reachability.shared.connectionType
+    if type == .offline || type == .other {
       return "-"
-    case .online(let type):
-      return type.description
     }
+
+    return type.description
   }
 
   nonisolated private func fetchReceipt() async -> String? {
