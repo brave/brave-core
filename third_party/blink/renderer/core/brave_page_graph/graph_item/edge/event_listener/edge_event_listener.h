@@ -20,11 +20,11 @@ class EdgeEventListener : public GraphEdge {
   EdgeEventListener(GraphItemContext* context,
                     NodeHTMLElement* out_node,
                     NodeActor* in_node,
-                    const String& event_type,
+                    const blink::String& event_type,
                     const EventListenerId listener_id);
   ~EdgeEventListener() override;
 
-  const String& GetEventType() const { return event_type_; }
+  const blink::String& GetEventType() const { return event_type_; }
   EventListenerId GetListenerId() const { return listener_id_; }
 
   ItemName GetItemName() const override;
@@ -36,7 +36,7 @@ class EdgeEventListener : public GraphEdge {
   bool IsEdgeEventListener() const override;
 
  private:
-  const String event_type_;
+  const blink::String event_type_;
   const EventListenerId listener_id_;
 };
 
