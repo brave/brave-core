@@ -161,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
       content::EvalJs(web_contents(), "document.fullscreenElement === null")
           .ExtractBool());
 
-  youtube_script_injector::SetFullscreen(web_contents());
+  youtube_script_injector::MaybeSetFullscreen(web_contents());
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
 
@@ -195,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
           "return true;"
           "})();")
           .ExtractBool());
-  youtube_script_injector::SetFullscreen(web_contents());
+  youtube_script_injector::MaybeSetFullscreen(web_contents());
 
   EXPECT_TRUE(IsVideoPlaying());
   // Wait for the resize to complete triggered by fullscreen change.
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   ASSERT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  youtube_script_injector::SetFullscreen(web_contents());
+  youtube_script_injector::MaybeSetFullscreen(web_contents());
 
   EXPECT_TRUE(WaitForJsResult(
       web_contents(),
@@ -251,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
       content::EvalJs(web_contents(), "document.body.innerHTML")
           .ExtractString();
   // Attempt to set fullscreen, which should not change anything.
-  youtube_script_injector::SetFullscreen(web_contents());
+  youtube_script_injector::MaybeSetFullscreen(web_contents());
 
   std::string dom_after =
       content::EvalJs(web_contents(), "document.body.innerHTML")
@@ -286,7 +286,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
                   "document.querySelector('button.fullscreen-icon') === null")
                   .ExtractBool());
 
-  youtube_script_injector::SetFullscreen(web_contents());
+  youtube_script_injector::MaybeSetFullscreen(web_contents());
 
   // Inject a script to simulate delayed loading of the video element fullscreen
   // button.

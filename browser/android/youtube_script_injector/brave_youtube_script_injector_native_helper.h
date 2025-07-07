@@ -29,7 +29,7 @@ static void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     BRAVE_JNI_MARK_UNUSED_FOR_TESTS;
 
 // Non-static free function that can be easily tested.
-void SetFullscreen(content::WebContents* web_contents);
+void MaybeSetFullscreen(content::WebContents* web_contents);
 
 }  // namespace youtube_script_injector
 
