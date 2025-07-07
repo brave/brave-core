@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Combine
 import Foundation
 import Preferences
 import Shared
@@ -12,23 +13,17 @@ import WebKit
 
 class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   private var url: URL?
-  private var reachableObserver: NSObjectProtocol?
+  private var reachableObserver: AnyCancellable?
 
   init(tab: some TabState) {
     self.url = tab.visibleURL
     super.init()
 
     tab.addObserver(self)
-    Reach.startMonitoring()
 
-    reachableObserver = NotificationCenter.default.addObserver(
-      forName: .reachabilityStatusChanged,
-      object: nil,
-      queue: .main
-    ) { [weak tab] notification in
-      if let status = notification.userInfo?["status"] as? ReachabilityStatus, let tab = tab {
-        Self.handleConnectionStatusChanged(status, tab: tab)
-      }
+    reachableObserver = Reachability.shared.publisher.sink { [weak tab] status in
+      guard let tab = tab else { return }
+      Self.handleConnectionStatusChanged(status, tab: tab)
     }
   }
 
@@ -61,16 +56,8 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     )
   }()
 
-  static func setEnabled(option: Preferences.Option<String>, for tab: some TabState) {
-    let enabled = canEnableHighQuality(option: option)
-
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(Self.setQuality)",
-      args: [enabled ? Self.highestQuality : "''"],
-      contentWorld: Self.scriptSandbox,
-      escapeArgs: false,
-      asFunction: true
-    )
+  static func setEnabled(for tab: some TabState) {
+    handleConnectionStatusChanged(Reachability.shared.status, tab: tab)
   }
 
   func tab(
@@ -84,25 +71,35 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     }
 
     replyHandler(
-      Self.canEnableHighQuality(option: Preferences.General.youtubeHighQuality)
+      Self.canEnableHighQuality(connectionStatus: Reachability.shared.status)
         ? Self.highestQuality : "",
       nil
     )
   }
 
-  private static func canEnableHighQuality(option: Preferences.Option<String>) -> Bool {
-    guard let qualityPreference = YoutubeHighQualityPreference(rawValue: option.value) else {
+  private static func canEnableHighQuality(connectionStatus: Reachability.Status) -> Bool {
+    guard
+      let qualityPreference = YoutubeHighQualityPreference(
+        rawValue: Preferences.General.youtubeHighQuality.value
+      )
+    else {
       return false
     }
 
-    switch Reach().connectionStatus() {
-    case .offline, .unknown: return false
-    case .online(let type):
-      if type == .wiFi {
-        return qualityPreference == .wifi || qualityPreference == .on
+    switch connectionStatus.connectionType {
+    case .wifi, .ethernet:
+      if connectionStatus.isLowDataMode || connectionStatus.isExpensive {
+        return qualityPreference == .on
       }
 
-      return qualityPreference == .on
+      return qualityPreference == .wifi || qualityPreference == .on
+
+    case .cellular, .other:
+      return qualityPreference == .on && !connectionStatus.isLowDataMode
+        && !connectionStatus.isExpensive
+
+    case .offline:
+      return false
     }
   }
 
@@ -126,10 +123,10 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   private static func handleConnectionStatusChanged(
-    _ status: ReachabilityStatus,
+    _ status: Reachability.Status,
     tab: some TabState
   ) {
-    let enabled = canEnableHighQuality(option: Preferences.General.youtubeHighQuality)
+    let enabled = canEnableHighQuality(connectionStatus: status)
     tab.evaluateJavaScript(
       functionName: "window.__firefox__.\(Self.setQuality)",
       args: [enabled ? Self.highestQuality : "'medium'"],

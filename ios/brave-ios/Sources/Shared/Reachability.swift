@@ -1,146 +1,116 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2015 Isuru Nanayakkara
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
+import Combine
 import Foundation
-import SystemConfiguration
+import Network
 
 public enum ReachabilityType: CustomStringConvertible {
-  case wwan
-  case wiFi
-
-  public var description: String {
-    switch self {
-    case .wwan: return "WWAN"
-    case .wiFi: return "WiFi"
-    }
-  }
-}
-
-public enum ReachabilityStatus: CustomStringConvertible {
+  case wifi
+  case cellular
+  case ethernet
+  case other
   case offline
-  case online(ReachabilityType)
-  case unknown
 
   public var description: String {
     switch self {
+    case .wifi: return "WiFi"
+    case .cellular: return "Cellular"
+    case .ethernet: return "Ethernet"
+    case .other: return "Other"
     case .offline: return "Offline"
-    case .online(let type): return "Online (\(type))"
-    case .unknown: return "Unknown"
     }
   }
 }
 
-open class Reach {
+open class Reachability {
+  public let publisher: CurrentValueSubject<Status, Never>
 
-  public init() {}
+  public static let shared = Reachability()
 
-  public func connectionStatus() -> ReachabilityStatus {
-    var zeroAddress = sockaddr_in()
-    zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-    zeroAddress.sin_family = sa_family_t(AF_INET)
+  public struct Status {
+    public var isReachable: Bool
+    public var connectionType: ReachabilityType
+    public var isLowDataMode: Bool
+    public var isExpensive: Bool
+  }
 
-    guard
-      let defaultRouteReachability = withUnsafePointer(
-        to: &zeroAddress,
-        {
-          $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-            SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, $0)
-          }
-        }
+  public var status: Status {
+    let type = connectionType
+
+    return Status(
+      isReachable: type != .offline,
+      connectionType: type,
+      isLowDataMode: isLowDataMode,
+      isExpensive: isExpensive
+    )
+  }
+
+  public var connectionType: ReachabilityType {
+    return Self.type(from: monitor.currentPath)
+  }
+
+  public var isLowDataMode: Bool {
+    return monitor.currentPath.isConstrained
+  }
+
+  public var isExpensive: Bool {
+    return monitor.currentPath.isExpensive
+  }
+
+  // MARK: - Private
+
+  private var monitor: NWPathMonitor
+  private let queue = DispatchQueue(label: "ReachabilityMonitor")
+
+  private init() {
+    let monitor = NWPathMonitor()
+
+    let type = Self.type(from: monitor.currentPath)
+    self.monitor = monitor
+    self.publisher = .init(
+      Status(
+        isReachable: type != .offline,
+        connectionType: type,
+        isLowDataMode: monitor.currentPath.isConstrained,
+        isExpensive: monitor.currentPath.isExpensive
       )
-    else {
-      return .unknown
-    }
-
-    var flags: SCNetworkReachabilityFlags = []
-    if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
-      return .unknown
-    }
-
-    return ReachabilityStatus(reachabilityFlags: flags)
-  }
-}
-
-extension ReachabilityStatus {
-  fileprivate init(reachabilityFlags flags: SCNetworkReachabilityFlags) {
-    let connectionRequired = flags.contains(.connectionRequired)
-    let isReachable = flags.contains(.reachable)
-    let isWWAN = flags.contains(.isWWAN)
-
-    if !connectionRequired && isReachable {
-      if isWWAN {
-        self = .online(.wwan)
-      } else {
-        self = .online(.wiFi)
-      }
-    } else {
-      self = .offline
-    }
-  }
-}
-
-extension Reach {
-  private static var monitor: SCNetworkReachability?
-
-  public static func startMonitoring() {
-    if Self.monitor != nil { return }
-
-    var zeroAddress = sockaddr_in()
-    zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-    zeroAddress.sin_family = sa_family_t(AF_INET)
-
-    Self.monitor = withUnsafePointer(to: &zeroAddress) {
-      $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-        SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, $0)
-      }
-    }
-
-    guard let monitor = Self.monitor else {
-      print("Reachability monitor could not be created.")
-      return
-    }
-
-    var context = SCNetworkReachabilityContext(
-      version: 0,
-      info: nil,
-      retain: nil,
-      release: nil,
-      copyDescription: nil
     )
 
-    let callback: SCNetworkReachabilityCallBack = { (_, flags, _) in
-      let status = ReachabilityStatus(reachabilityFlags: flags)
-      NotificationCenter.default.post(
-        name: .reachabilityStatusChanged,
-        object: nil,
-        userInfo: ["status": status]
-      )
+    monitor.pathUpdateHandler = { [weak self] path in
+      let type = Self.type(from: path)
+
+      DispatchQueue.main.async {
+        self?.publisher.send(
+          Status(
+            isReachable: type != .offline,
+            connectionType: type,
+            isLowDataMode: path.isConstrained,
+            isExpensive: path.isExpensive
+          )
+        )
+      }
     }
 
-    let callbackSet = SCNetworkReachabilitySetCallback(monitor, callback, &context)
-    let queueSet = SCNetworkReachabilitySetDispatchQueue(monitor, DispatchQueue.main)
+    monitor.start(queue: queue)
+  }
 
-    if !callbackSet || !queueSet {
-      Self.monitor = nil
+  deinit {
+    monitor.cancel()
+  }
+
+  private static func type(from path: NWPath) -> ReachabilityType {
+    let type: ReachabilityType
+    if path.status == .satisfied {
+      if path.usesInterfaceType(.wifi) {
+        type = .wifi
+      } else if path.usesInterfaceType(.cellular) {
+        type = .cellular
+      } else if path.usesInterfaceType(.wiredEthernet) {
+        type = .ethernet
+      } else {
+        type = .other
+      }
+    } else {
+      type = .offline
     }
+    return type
   }
 }
