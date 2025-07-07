@@ -34,28 +34,46 @@ class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
   void ExpectReportedUpdate();
   void ExpectReportedNoUpdate();
 
+  void ResetHistogramTester() {
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
+  }
+
  private:
   void ExpectReportedStatus(UpdateStatus status);
 };
 
-TEST_P(UpdaterP3ATest, TestUpdate) {
-  // Initial launch on day 0:
-  SimulateLaunch(0, "0.0.0.1");
+TEST_P(UpdaterP3ATest, TestNoReportInInitialLaunch) {
+  SimulateLaunch(0, "1.0.0.0");
+  histogram_tester_->ExpectTotalCount(kUpdateStatusHistogramName, 0);
+}
 
-  // No update on days 1 - 5:
-  for (int day = 1; day <= 5; day++) {
-    SimulateLaunch(day, "0.0.0.1");
-    ExpectReportedNoUpdate();
-  }
+TEST_P(UpdaterP3ATest, TestReportsNoUpdate) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "1.0.0.0");
+  ExpectReportedNoUpdate();
+}
 
-  // An update on day 6. Should report it for 7 days:
-  for (int day = 6; day <= 12; day++) {
-    SimulateLaunch(day, "0.0.0.2");
-    ExpectReportedUpdate();
-  }
+TEST_P(UpdaterP3ATest, TestReportsUpdate) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "2.0.0.0");
+  ExpectReportedUpdate();
+}
 
-  // Should no longer report the update afterwards:
-  SimulateLaunch(13, "0.0.0.2");
+TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeek) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "2.0.0.0");
+  ResetHistogramTester();
+
+  SimulateLaunch(7, "2.0.0.0");
+  ExpectReportedUpdate();
+}
+
+TEST_P(UpdaterP3ATest, TestStopsReportingAfterOneWeek) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "2.0.0.0");
+  ResetHistogramTester();
+
+  SimulateLaunch(8, "2.0.0.0");
   ExpectReportedNoUpdate();
 }
 
@@ -89,8 +107,7 @@ void UpdaterP3ATest::ExpectReportedNoUpdate() {
 
 void UpdaterP3ATest::ExpectReportedStatus(UpdateStatus status) {
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName, status, 1);
-  // Reset the histogram tester:
-  histogram_tester_ = std::make_unique<base::HistogramTester>();
+  ResetHistogramTester();
 }
 
 }  // namespace brave_updater
