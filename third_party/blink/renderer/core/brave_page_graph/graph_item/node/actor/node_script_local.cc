@@ -16,7 +16,7 @@ namespace brave_page_graph {
 
 namespace {
 
-String GetScriptTypeAsString(const ScriptSource& script_source) {
+blink::String GetScriptTypeAsString(const ScriptSource& script_source) {
   if (script_source.is_module) {
     return "module";
   }

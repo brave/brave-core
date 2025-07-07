@@ -33,7 +33,7 @@ namespace brave_page_graph {
 
 NodeHTMLElement::NodeHTMLElement(GraphItemContext* context,
                                  const DOMNodeId dom_node_id,
-                                 const String& tag_name)
+                                 const blink::String& tag_name)
     : NodeHTML(context, dom_node_id), tag_name_(tag_name) {}
 
 NodeHTMLElement::~NodeHTMLElement() = default;
@@ -74,7 +74,7 @@ void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,
   // node to which it's attached.
   for (auto& event_listener : event_listeners_) {
     const EventListenerId listener_id = event_listener.key;
-    const String& event_type = event_listener.value->GetEventType();
+    const blink::String& event_type = event_listener.value->GetEventType();
     NodeActor* listener_node = event_listener.value->GetListenerNode();
 
     EdgeEventListener event_listener_edge(

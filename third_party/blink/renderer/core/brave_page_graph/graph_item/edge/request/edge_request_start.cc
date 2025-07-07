@@ -16,7 +16,7 @@ EdgeRequestStart::EdgeRequestStart(GraphItemContext* context,
                                    NodeResource* in_node,
                                    const InspectorId request_id,
                                    const FrameId& frame_id,
-                                   const String& resource_type)
+                                   const blink::String& resource_type)
     : EdgeRequest(context,
                   out_node,
                   in_node,

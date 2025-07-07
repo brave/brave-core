@@ -35,21 +35,21 @@ class TrackedRequest {
                  GraphNode* requester,
                  const FrameId& frame_id,
                  NodeResource* resource,
-                 const String& resource_type);
+                 const blink::String& resource_type);
   ~TrackedRequest();
 
   bool IsComplete() const;
 
   InspectorId GetRequestId() const;
   const Vector<RequestInstance>& GetRequesters() const;
-  const String& GetResourceType() const;
+  const blink::String& GetResourceType() const;
   NodeResource* GetResource() const;
   bool GetIsError() const;
 
   void AddRequest(GraphNode* requester,
                   const FrameId& frame_id,
                   NodeResource* resource,
-                  const String& request_type);
+                  const blink::String& request_type);
   void AddRequestRedirect(const blink::KURL& url,
                           const blink::ResourceResponse& redirect_response,
                           NodeResource* resource,
@@ -61,7 +61,7 @@ class TrackedRequest {
   ResponseMetadata& GetResponseMetadata();
   const ResponseMetadata& GetResponseMetadata() const;
 
-  const String& GetResponseBodyHash() const;
+  const blink::String& GetResponseBodyHash() const;
   void UpdateResponseBodyHash(base::span<const char> data);
 
  protected:
@@ -77,7 +77,7 @@ class TrackedRequest {
   const InspectorId request_id_;
 
   Vector<RequestInstance> request_instances_;
-  String resource_type_;
+  blink::String resource_type_;
 
   NodeResource* resource_ = nullptr;
 
@@ -88,7 +88,7 @@ class TrackedRequest {
   ResponseMetadata response_metadata_;
   int64_t size_ = -1;
   blink::Digestor body_digestor_{blink::kHashAlgorithmSha256};
-  String hash_;
+  blink::String hash_;
 };
 
 }  // namespace brave_page_graph

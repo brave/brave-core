@@ -15,7 +15,7 @@ namespace brave_page_graph {
 EdgeTextChange::EdgeTextChange(GraphItemContext* context,
                                NodeScript* out_node,
                                NodeHTMLText* in_node,
-                               const String& text)
+                               const blink::String& text)
     : GraphEdge(context, out_node, in_node), text_(text) {}
 
 ItemName EdgeTextChange::GetItemName() const {
