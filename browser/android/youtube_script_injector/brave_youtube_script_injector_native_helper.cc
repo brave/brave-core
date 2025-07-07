@@ -103,8 +103,13 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsYouTubeVideo(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
-  auto url = web_contents->GetLastCommittedURL();
-  return YouTubeScriptInjectorTabHelper::IsYouTubeVideo(url);
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
+  if (!helper) {
+    return false;
+  }
+
+  return helper->IsYouTubeVideo();
 }
 
 // static

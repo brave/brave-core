@@ -87,6 +87,7 @@ source_set("unit_tests") {
   deps = [
     ":youtube_script_injector",
     "//base/test:test_support",
+    "//chrome/test:test_support",
     "//testing/gtest",
   ]
 }

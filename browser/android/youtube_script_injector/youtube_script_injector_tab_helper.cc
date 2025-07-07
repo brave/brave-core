@@ -103,7 +103,7 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
-  if (!IsYouTubeVideo(contents->GetLastCommittedURL())) {
+  if (!IsYouTubeVideo()) {
     return;
   }
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -118,8 +118,8 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   }
 }
 
-// static
-bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(const GURL& url) {
+bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo() const {
+  const GURL& url = web_contents()->GetLastCommittedURL();
   if (!url.is_valid() || url.is_empty()) {
     return false;
   }

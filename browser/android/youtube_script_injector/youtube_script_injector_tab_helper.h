@@ -19,7 +19,7 @@ class YouTubeScriptInjectorTabHelper
   YouTubeScriptInjectorTabHelper& operator=(
       const YouTubeScriptInjectorTabHelper&) = delete;
   ~YouTubeScriptInjectorTabHelper() override;
-  static bool IsYouTubeVideo(const GURL& url);
+  bool IsYouTubeVideo() const;
 
   // content::WebContentsObserver overrides:
   void PrimaryMainDocumentElementAvailable() override;
