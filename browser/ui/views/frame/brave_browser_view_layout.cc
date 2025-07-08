@@ -52,7 +52,6 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* unified_side_panel,
     views::View* right_aligned_side_panel_separator,
     views::View* side_panel_rounded_corner,
-    ImmersiveModeController* immersive_mode_controller,
     views::View* contents_separator)
     : BrowserViewLayout(
           std::move(delegate),
@@ -72,7 +71,6 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           unified_side_panel,
           right_aligned_side_panel_separator,
           side_panel_rounded_corner,
-          immersive_mode_controller,
           contents_separator) {}
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
