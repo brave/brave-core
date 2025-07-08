@@ -38,10 +38,6 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
     csp_header.append(GetContentSecurityPolicy(directive));
   }
 
-  // TODO(crbug.com/40118579): Both CSP frame ancestors and XFO headers may be
-  // added to the response but frame ancestors would take precedence. In the
-  // future, XFO will be removed so when that happens remove the check and
-  // always add frame ancestors.
   if (ShouldDenyXFrameOptions()) {
     csp_header.append(GetContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FrameAncestors));
