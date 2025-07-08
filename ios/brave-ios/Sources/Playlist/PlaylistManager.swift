@@ -644,7 +644,7 @@ public class PlaylistManager: NSObject {
 
     // Only download when the preference is on OR when the preference is on Wifi
     return downloadType == .on
-      || downloadType == .wifi && Reachability.shared.connectionType == .wifi
+      || downloadType == .wifi && Reachability.shared.status.connectionType == .wifi
   }
 
   public func autoDownload(item: PlaylistInfo) {
@@ -856,7 +856,7 @@ extension PlaylistManager {
       }
     }
 
-    if Reachability.shared.connectionType == .offline {
+    if Reachability.shared.status.connectionType == .offline {
       return item.duration  // Return the database duration
     }
 
