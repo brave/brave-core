@@ -524,6 +524,17 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
 
   // Pin active tab(split tab at 4).
   chrome::PinTab(browser());
+
+  // unpinned active tab 4 becomes active pinned tab at 2 because
+  // it has one pinned tab before.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return tab_strip_model->IsTabPinned(1) && tab_strip_model->IsTabPinned(2);
+  }));
+  EXPECT_EQ(2, tab_strip_model->active_index());
+
+  // Unpin active split tab.
+  EXPECT_TRUE(IsSplitTabAt(2));
+  chrome::PinTab(browser());
 }
 
 IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
