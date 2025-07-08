@@ -13,6 +13,8 @@ source_set("manifest_v2") {
     "brave_extensions_manifest_v2_installer.h",
     "brave_extensions_manifest_v2_migrator.cc",
     "brave_extensions_manifest_v2_migrator.h",
+    "features.cc",
+    "features.h",
   ]
 
   deps = [

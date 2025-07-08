@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_prefs.h"
@@ -203,6 +204,9 @@ void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
 void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
+  if (!features::kExtensionsManifestV2BackupSettings.Get()) {
+    return;
+  }
   if (!IsKnownCwsMV2Extension(extension_id)) {
     return;
   }
@@ -210,6 +214,7 @@ void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
           extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION)) {
     return;
   }
+
   BackupExtensionSettings(extension_id);
 }
 
@@ -222,6 +227,9 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
+  if (!features::kExtensionsManifestV2BImportSettingsOnInstall.Get()) {
+    return;
+  }
   if (is_updates || !extensions_mv2::IsKnownMV2Extension(extension->id())) {
     return;
   }
@@ -259,9 +267,24 @@ ExtensionsManifectV2MigratorFactory::GetInstance() {
   return base::Singleton<ExtensionsManifectV2MigratorFactory>::get();
 }
 
+//  static
+ExtensionsManifectV2Migrator*
+ExtensionsManifectV2MigratorFactory::GetForBrowserContextForTesting(
+    content::BrowserContext* context) {
+  return static_cast<ExtensionsManifectV2Migrator*>(
+      GetInstance()->GetServiceForBrowserContext(context, false));
+}
+
 std::unique_ptr<KeyedService>
 ExtensionsManifectV2MigratorFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(features::kExtensionsManifestV2)) {
+    return nullptr;
+  }
+  if (!features::kExtensionsManifestV2BackupSettings.Get() &&
+      !features::kExtensionsManifestV2BImportSettingsOnInstall.Get()) {
+    return nullptr;
+  }
   return std::make_unique<ExtensionsManifectV2Migrator>(
       Profile::FromBrowserContext(context));
 }
