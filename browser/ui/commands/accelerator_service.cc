@@ -14,11 +14,21 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/app/command_utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/tor/pref_names.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -80,7 +90,8 @@ AcceleratorService::AcceleratorService(
     PrefService* pref_service,
     Accelerators default_accelerators,
     base::flat_set<ui::Accelerator> system_managed)
-    : pref_manager_(pref_service, commands::GetCommands()),
+    : pref_service_(pref_service),
+      pref_manager_(pref_service, commands::GetCommands()),
       default_accelerators_(std::move(default_accelerators)),
       system_managed_(std::move(system_managed)) {
   Initialize();
@@ -234,8 +245,14 @@ void AcceleratorService::AddCommandsListener(
     mojo::PendingRemote<mojom::CommandsListener> listener) {
   auto id = mojo_listeners_.Add(std::move(listener));
   auto event = mojom::CommandsEvent::New();
-  event->addedOrUpdated =
-      ToMojoCommands(accelerators_, default_accelerators_, system_managed_);
+
+  // Filter out commands that are disabled by policy
+  auto filtered_accelerators = FilterCommandsByPolicy(accelerators_);
+  auto filtered_default_accelerators =
+      FilterCommandsByPolicy(default_accelerators_);
+
+  event->addedOrUpdated = ToMojoCommands(
+      filtered_accelerators, filtered_default_accelerators, system_managed_);
   mojo_listeners_.Get(id)->Changed(std::move(event));
 }
 
@@ -244,6 +261,11 @@ void AcceleratorService::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
   const auto& system_managed = system_managed_;
   for (const auto& [command_id, accelerators] : accelerators_) {
+    // Skip commands that are disabled by policy
+    if (IsCommandDisabledByPolicy(command_id)) {
+      continue;
+    }
+
     std::ranges::copy_if(accelerators, std::back_inserter(changed[command_id]),
                          [&system_managed](const ui::Accelerator& accelerator) {
                            return !system_managed.contains(accelerator);
@@ -316,6 +338,11 @@ void AcceleratorService::NotifyCommandsChanged(
   const auto& system_managed = system_managed_;
 
   for (const auto& command_id : modified_ids) {
+    // Skip commands that are disabled by policy
+    if (IsCommandDisabledByPolicy(command_id)) {
+      continue;
+    }
+
     const auto& changed_command = accelerators_[command_id];
     auto it = default_accelerators_.find(command_id);
     event->addedOrUpdated[command_id] = ToMojoCommand(
@@ -340,6 +367,52 @@ void AcceleratorService::NotifyCommandsChanged(
   for (auto& listener : observers_) {
     listener.OnAcceleratorsChanged(changed);
   }
+}
+
+bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
+  switch (command_id) {
+    case IDC_CONFIGURE_BRAVE_NEWS:
+      return pref_service_->GetBoolean(
+          brave_news::prefs::kBraveNewsDisabledByPolicy);
+    case IDC_SHOW_BRAVE_TALK:
+      return pref_service_->GetBoolean(kBraveTalkDisabledByPolicy);
+    case IDC_SHOW_BRAVE_VPN_PANEL:
+    case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
+    case IDC_TOGGLE_BRAVE_VPN_TRAY_ICON:
+    case IDC_SEND_BRAVE_VPN_FEEDBACK:
+    case IDC_ABOUT_BRAVE_VPN:
+    case IDC_MANAGE_BRAVE_VPN_PLAN:
+    case IDC_TOGGLE_BRAVE_VPN:
+      return pref_service_->GetBoolean(
+          brave_vpn::prefs::kManagedBraveVPNDisabled);
+    case IDC_SHOW_BRAVE_WALLET:
+    case IDC_SHOW_BRAVE_WALLET_PANEL:
+    case IDC_CLOSE_BRAVE_WALLET_PANEL:
+      return pref_service_->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
+    case IDC_SHOW_BRAVE_REWARDS:
+    case IDC_OFFERS_AND_REWARDS_FOR_PAGE:
+      return pref_service_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
+    case IDC_TOGGLE_AI_CHAT:
+    case IDC_OPEN_FULL_PAGE_CHAT:
+      return !pref_service_->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
+    case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
+    case IDC_NEW_TOR_CONNECTION_FOR_SITE:
+      return g_browser_process->local_state()->GetBoolean(
+          tor::prefs::kTorDisabled);
+    default:
+      return false;
+  }
+}
+
+Accelerators AcceleratorService::FilterCommandsByPolicy(
+    const Accelerators& commands) const {
+  Accelerators filtered_commands;
+  for (const auto& [command_id, accelerators] : commands) {
+    if (!IsCommandDisabledByPolicy(command_id)) {
+      filtered_commands[command_id] = accelerators;
+    }
+  }
+  return filtered_commands;
 }
 
 }  // namespace commands
