@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -299,7 +300,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
-                       !browser_->profile()->IsOffTheRecord());
+                       !browser_->profile()->IsOffTheRecord() &&
+                           !browser_->profile()->GetPrefs()->GetBoolean(
+                               brave_news::prefs::kBraveNewsDisabledByPolicy));
 
   UpdateCommandEnabled(
       IDC_CONFIGURE_SHORTCUTS,

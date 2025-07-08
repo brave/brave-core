@@ -51,11 +51,13 @@
 </settings-toggle-button>
 <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
 </settings-brave-appearance-bookmark-bar>
-<settings-toggle-button
-  class="cr-row"
-  pref="{{prefs.brave.today.should_show_toolbar_button}}"
-  label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
-</settings-toggle-button>
+<template is="dom-if" if="[[shouldShowBraveNewsButton_()]]">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.today.should_show_toolbar_button}}"
+    label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
+  </settings-toggle-button>
+</template>
 <template is="dom-if" if="[[showLeoAssistant_()]]">
   <settings-toggle-button
     class="cr-row"

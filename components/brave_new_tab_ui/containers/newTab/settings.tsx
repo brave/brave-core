@@ -113,7 +113,8 @@ const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget
 export default function Settings(props: Props) {
   const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
     (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
-    (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
+    (featureFlagSearchWidget || t !== TabType.Search) &&
+    (!props.newTabData.isBraveNewsDisabledByPolicy || t !== TabType.BraveNews)), [props.allowBackgroundCustomization, props.newTabData.isBraveNewsDisabledByPolicy])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
     ? TabType.BackgroundImage
     : TabType.BraveStats)

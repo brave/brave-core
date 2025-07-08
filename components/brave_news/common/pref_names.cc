@@ -23,6 +23,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kBraveNewsChannels);
   registry->RegisterDictionaryPref(kBraveNewsDirectFeeds);
   registry->RegisterBooleanPref(kBraveNewsOpenArticlesInNewTab, true);
+  registry->RegisterBooleanPref(kBraveNewsDisabledByPolicy, false);
 
   brave_news::p3a::prefs::RegisterProfileNewsMetricsPrefs(registry);
 }
@@ -30,6 +31,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }  // namespace prefs
 
 bool IsEnabled(PrefService* prefs) {
+  if (prefs->GetBoolean(prefs::kBraveNewsDisabledByPolicy)) {
+    return false;
+  }
   return prefs->GetBoolean(prefs::kNewTabPageShowToday) &&
          prefs->GetBoolean(prefs::kBraveNewsOptedIn);
 }

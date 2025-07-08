@@ -246,6 +246,7 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
       this.props.newTabData.initialDataLoaded && // Wait for accurate showToday
       this.props.newTabData.showToday &&
+      !this.props.newTabData.isBraveNewsDisabledByPolicy &&
       // Don't prompt if the user has navigated back and we're going to scroll
       // down to a previous place in the feed.
       !this.props.todayData.articleScrollTo
@@ -813,14 +814,14 @@ class NewTabPage extends React.Component<Props, State> {
                   && <React.Suspense fallback={null}>
                     <SearchPlaceholder />
                   </React.Suspense>}
-                {newTabData.showToday && (defaultState.featureFlagBraveNewsFeedV2Enabled
+                {newTabData.showToday && !newTabData.isBraveNewsDisabledByPolicy && (defaultState.featureFlagBraveNewsFeedV2Enabled
                   ? <React.Suspense fallback={null}>
                     <BraveNewsPeek/>
                   </React.Suspense>
                   : <BraveNewsHint />)}
               </Page.GridItemPageFooter>
           </Page.Page>
-        { newTabData.showToday &&
+        { newTabData.showToday && !newTabData.isBraveNewsDisabledByPolicy &&
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
