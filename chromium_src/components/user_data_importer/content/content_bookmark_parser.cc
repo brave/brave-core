@@ -18,4 +18,4 @@ std::optional<std::vector<uint8_t>> ReencodeFavicon(
 }  // namespace importer
 #endif
 
-#include "src/chrome/utility/importer/bookmark_html_reader.cc"
+#include "src/components/user_data_importer/content/content_bookmark_parser.cc"
