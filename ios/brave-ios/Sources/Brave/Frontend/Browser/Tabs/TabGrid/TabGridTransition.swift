@@ -137,18 +137,20 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     dimmingView.frame = finalFrame
     dimmingView.alpha = 0
 
+    toView.frame = finalFrame
+    toView.alpha = 0
+
     context.containerView.addSubview(dimmingView)
     context.containerView.addSubview(toView)
 
-    toView.frame = finalFrame
     toView.setNeedsLayout()
     toView.layoutIfNeeded()
 
     guard let selectedTab = tabManager.selectedTab,
       let sourceIndexPath = containerView.dataSource.indexPath(for: selectedTab.id),
-      let sourceCell = containerView.collectionView.cellForItem(at: sourceIndexPath),
-      sourceCell.bounds.size != .zero,
-      let sourceCellSnapshot = sourceCell.snapshotView(afterScreenUpdates: true)
+      let sourceAttributes = containerView.collectionView.layoutAttributesForItem(
+        at: sourceIndexPath
+      )
     else {
       let fallbackAnimation = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
       toView.alpha = 0
@@ -162,32 +164,29 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       return
     }
 
-    context.containerView.insertSubview(sourceCellSnapshot, aboveSubview: dimmingView)
-
-    let cellCenterInContainer = context.containerView.convert(
-      sourceCell.center,
-      from: containerView.collectionView
-    )
-    let cellFrameInContainer = sourceCell.convert(
-      sourceCell.bounds,
-      to: context.containerView
-    )
-
-    toView.alpha = 0
-
-    sourceCell.alpha = 0
-    sourceCellSnapshot.center = cellCenterInContainer
+    // If the source cell is visible on the screen we'll include a snapshot of said cell to
+    // animate from
+    let sourceCell = containerView.collectionView.cellForItem(at: sourceIndexPath)
+    let sourceCellSnapshot = sourceCell?.snapshotView(afterScreenUpdates: true)
+    if let sourceCell, let sourceCellSnapshot {
+      context.containerView.insertSubview(sourceCellSnapshot, aboveSubview: dimmingView)
+      sourceCellSnapshot.center = context.containerView.convert(
+        sourceAttributes.center,
+        from: containerView.collectionView
+      )
+      sourceCell.alpha = 0
+    }
 
     toView.layer.cornerCurve = .continuous
-    toView.layer.cornerRadius = 16 * max(sourceCell.transform.a, sourceCell.transform.d)
+    toView.layer.cornerRadius = 16
 
     toView.center = containerView.collectionView.convert(
-      sourceCell.center,
+      sourceAttributes.center,
       to: context.containerView
     )
     toView.transform = .init(
-      scaleX: sourceCell.bounds.width / toView.bounds.width,
-      y: sourceCell.bounds.height / toView.bounds.height
+      scaleX: sourceAttributes.bounds.width / toView.bounds.width,
+      y: sourceAttributes.bounds.height / toView.bounds.height
     )
 
     let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1)
@@ -196,11 +195,11 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       toView.alpha = 1
       toView.center = finalFrame.center
       containerView.collectionView.transform = .init(scaleX: 0.9, y: 0.9)
-      sourceCellSnapshot.transform = .init(
-        scaleX: view.bounds.width / cellFrameInContainer.width,
-        y: view.bounds.height / cellFrameInContainer.height
+      sourceCellSnapshot?.transform = .init(
+        scaleX: view.bounds.width / sourceAttributes.bounds.width,
+        y: view.bounds.height / sourceAttributes.bounds.height
       )
-      sourceCellSnapshot.center = context.containerView.convert(
+      sourceCellSnapshot?.center = context.containerView.convert(
         view.center,
         from: view.superview
       )
@@ -209,8 +208,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     }
     animator.addCompletion { _ in
       toView.layer.cornerRadius = 0
-      sourceCell.alpha = 1
-      sourceCellSnapshot.removeFromSuperview()
+      sourceCellSnapshot?.removeFromSuperview()
       dimmingView.removeFromSuperview()
       context.completeTransition(!context.transitionWasCancelled)
     }
