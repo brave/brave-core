@@ -173,7 +173,7 @@ public class UserReferralProgram {
   }
 
   public func pingIfEnoughTimePassed() {
-    if !DeviceInfo.hasConnectivity {
+    if Reachability.shared.isOffline {
       Logger.module.info("No internet connection, not sending update ping.")
       return
     }

@@ -196,7 +196,7 @@ class SyncPairCameraViewController: SyncViewController {
     )
 
     // Check Internet Connectivity
-    if !DeviceInfo.hasConnectivity {
+    if Reachability.shared.isOffline {
       task.cancel()
       showErrorAlert(title: Strings.Sync.noConnectionTitle, message: Strings.Sync.noConnectionBody)
       return

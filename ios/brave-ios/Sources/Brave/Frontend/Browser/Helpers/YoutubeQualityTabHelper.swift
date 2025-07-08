@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveUI
 import Combine
 import Foundation
@@ -34,8 +35,8 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
 
     tab?.addObserver(self)
 
-    reachableObserver = Reachability.shared.publisher.sink { [weak tab] status in
-      tab?.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: status)
+    reachableObserver = Reachability.shared.$status.sink { [weak self] status in
+      self?.tab?.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: status)
     }
   }
 
