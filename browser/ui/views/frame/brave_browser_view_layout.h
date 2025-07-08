@@ -30,7 +30,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          views::View* unified_side_panel,
                          views::View* right_aligned_side_panel_separator,
                          views::View* side_panel_rounded_corner,
-                         ImmersiveModeController* immersive_mode_controller,
                          views::View* contents_separator);
   ~BraveBrowserViewLayout() override;
 
