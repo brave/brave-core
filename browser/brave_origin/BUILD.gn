@@ -18,6 +18,7 @@ source_set("brave_origin") {
     "//brave/components/brave_rewards/core:core",
     "//brave/components/brave_vpn/common:common",
     "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/constants:constants",
     "//brave/components/sidebar/browser:browser",
     "//brave/components/tor:pref_names",
     "//chrome/browser:browser_process",
