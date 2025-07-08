@@ -28,7 +28,6 @@ extension TabDataValues {
 class YoutubeQualityTabHelper: NSObject, TabObserver {
   private var url: URL?
   private weak var tab: (any TabState)?
-  private var reachableObserver: AnyCancellable?
 
   public init(tab: (any TabState)?) {
     self.tab = tab

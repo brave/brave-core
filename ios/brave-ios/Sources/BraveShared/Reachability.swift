@@ -57,14 +57,11 @@ public class Reachability {
 
   // MARK: - Private
 
-  private var monitor: NWPathMonitor
+  private let monitor = NWPathMonitor()
   private let queue = DispatchQueue(label: "com.brave.network-reachability")
 
   private init() {
-    let monitor = NWPathMonitor()
-
     let type = ReachabilityType(path: monitor.currentPath)
-    self.monitor = monitor
     self.status = Status(
       connectionType: type,
       isLowDataMode: monitor.currentPath.isConstrained,
