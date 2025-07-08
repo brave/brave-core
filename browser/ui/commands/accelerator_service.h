@@ -75,6 +75,13 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void UnassignAccelerator(int command_id, const ui::Accelerator& accelerator);
   void NotifyCommandsChanged(const std::vector<int>& modified_ids);
 
+  // Returns true if the command should be hidden due to policy restrictions.
+  bool IsCommandDisabledByPolicy(int command_id) const;
+
+  // Filters out commands that are disabled by policy.
+  Accelerators FilterCommandsByPolicy(const Accelerators& commands) const;
+
+  raw_ptr<PrefService> pref_service_;
   AcceleratorPrefManager pref_manager_;
   Accelerators accelerators_;
   Accelerators default_accelerators_;
