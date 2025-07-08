@@ -11,7 +11,6 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
@@ -75,6 +74,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #else
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
