@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index acaea4ea835b0e2ba916dbdb830201ddb328813c..c5bbdb7a185d65ead3c4cd103ed001c09728e617 100644
+index 9700307522be59552622bf0b7b13bcc5e91144bd..cc054152e4a925ff61a6df43f8ef6ed8111cf49d 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -24,6 +24,7 @@
@@ -42,7 +42,7 @@ index acaea4ea835b0e2ba916dbdb830201ddb328813c..c5bbdb7a185d65ead3c4cd103ed001c0
  <if expr="_google_chrome">
  <if expr="not chromeos_ash">
      <settings-toggle-button id="spellCheckControl"
-@@ -138,6 +142,7 @@
+@@ -151,6 +155,7 @@
        </settings-toggle-button>
      </template>
  
@@ -50,7 +50,7 @@ index acaea4ea835b0e2ba916dbdb830201ddb328813c..c5bbdb7a185d65ead3c4cd103ed001c0
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -158,3 +163,4 @@
+@@ -171,3 +176,4 @@
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>
