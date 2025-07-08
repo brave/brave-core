@@ -317,6 +317,7 @@ if (!is_android) {
     "//brave/browser/user_education:features",
     "//brave/components/brave_account/mojom",
     "//chrome/browser/regional_capabilities",
+    "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
