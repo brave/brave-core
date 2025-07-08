@@ -232,7 +232,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &safe_browsing::kDownloadsPageReferrerUrl,
-      &safe_browsing::kExtensionTelemetryForEnterprise,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
