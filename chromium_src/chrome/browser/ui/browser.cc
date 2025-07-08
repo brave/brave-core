@@ -6,12 +6,10 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
-#include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 
 #define BRAVE_BROWSER_CREATE return new BraveBrowser(params);
 
@@ -27,8 +25,6 @@
   return IsShowingNTP(active_tab->GetContents()) && \
          prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP);
 
-#define BrowserContentSettingBubbleModelDelegate \
-  BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
@@ -39,7 +35,6 @@
 #undef DeprecatedCreateOwnedForTesting
 #undef BrowserActions
 #undef BrowserTabStripModelDelegate
-#undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_SHOULD_SHOW_BOOKMARK_BAR
 #undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING
