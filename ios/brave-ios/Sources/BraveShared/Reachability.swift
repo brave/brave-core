@@ -42,7 +42,8 @@ public enum ReachabilityType: CustomStringConvertible {
   }
 }
 
-public class Reachability: Observable {
+@Observable
+public class Reachability {
 
   public static let shared = Reachability()
 
@@ -52,7 +53,6 @@ public class Reachability: Observable {
     public var isExpensive: Bool
   }
 
-  @Published
   public private(set) var status: Status
 
   // MARK: - Private
