@@ -232,15 +232,6 @@ extension TabGridContainerView: UICollectionViewDelegate {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
-    point: CGPoint
-  ) -> UIContextMenuConfiguration? {
-    // TODO: Add context menu options for shred, select, remove, etc.
-    return nil
-  }
-
-  func collectionView(
-    _ collectionView: UICollectionView,
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
