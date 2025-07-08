@@ -250,9 +250,11 @@ class TabTrayController: AuthenticationController {
     syncServicStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if self.braveCore.syncAPI.shouldLeaveSyncGroup {
-        self.tabSyncView.do {
-          $0.updateSyncStatusPanel(for: self.emptyPanelState)
+      DispatchQueue.main.async {
+        if self.braveCore.syncAPI.shouldLeaveSyncGroup {
+          self.tabSyncView.do {
+            $0.updateSyncStatusPanel(for: self.emptyPanelState)
+          }
         }
       }
     }
