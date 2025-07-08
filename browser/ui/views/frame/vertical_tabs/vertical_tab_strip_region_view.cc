@@ -1075,9 +1075,6 @@ void VerticalTabStripRegionView::OnMouseExited() {
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating) {
     SetState(State::kCollapsed);
-    if (IsFloatingEnabledForBrowserFullscreen()) {
-      SetVisible(false);
-    }
   }
 }
 
@@ -1211,6 +1208,11 @@ void VerticalTabStripRegionView::AnimationProgressed(
 void VerticalTabStripRegionView::AnimationEnded(
     const gfx::Animation* animation) {
   PreferredSizeChanged();
+
+  if (IsFloatingEnabledForBrowserFullscreen() && state_ == State::kCollapsed) {
+    // When the animation ends, we should hide the vertical tab strip.
+    SetVisible(false);
+  }
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
