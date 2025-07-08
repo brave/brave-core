@@ -36,12 +36,12 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     tab?.addObserver(self)
 
     reachableObserver = Reachability.shared.$status.sink { [weak self] status in
-      self?.tab?.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: status)
+      self?.tab?.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
     }
   }
 
-  func handleConnectionStatusChanged(status: Reachability.Status) {
-    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: status)
+  func setHighQuality(networkStatus: Reachability.Status) {
+    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: networkStatus)
     tab?.evaluateJavaScript(
       functionName: "window.__firefox__.\(YoutubeQualityScriptHandler.setQuality)",
       args: [enabled ? YoutubeQualityScriptHandler.highestQuality : "'auto'"],
