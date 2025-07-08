@@ -62,6 +62,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
+    {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
 
 #if BUILDFLAG(DEPRECATE_IPFS)
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,

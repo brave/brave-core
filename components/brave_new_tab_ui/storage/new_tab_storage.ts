@@ -39,6 +39,7 @@ export const defaultState: NewTab.State = {
   isBrandedWallpaperNotificationDismissed: true,
   isBraveNewsOptedIn: false,
   isBraveNewsDisabledByPolicy: false,
+  isBraveTalkDisabledByPolicy: false,
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
@@ -115,14 +116,15 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     showRewards,
     showBraveTalk,
     braveRewardsSupported,
-    braveTalkSupported
+    braveTalkSupported,
+    isBraveTalkDisabledByPolicy
   } = state
   const displayLookup: { [p: string]: { display: boolean } } = {
     'rewards': {
       display: braveRewardsSupported && showRewards
     },
     'braveTalk': {
-      display: braveTalkSupported && showBraveTalk
+      display: braveTalkSupported && showBraveTalk && !isBraveTalkDisabledByPolicy
     }
   }
   for (const key in displayLookup) {

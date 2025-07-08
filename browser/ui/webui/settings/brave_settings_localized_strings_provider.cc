@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -1217,6 +1218,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "braveNewsDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(
           brave_news::prefs::kBraveNewsDisabledByPolicy));
+
+  html_source->AddBoolean(
+      "braveTalkDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
