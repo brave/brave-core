@@ -1,5 +1,5 @@
-extern crate schnorrkel;
 extern crate cxx;
+extern crate schnorrkel;
 
 #[allow(unused)]
 #[allow(unsafe_op_in_unsafe_fn)]
@@ -9,7 +9,7 @@ mod ffi {
         type CxxSr25519KeyPair;
         type CxxSr25519KeyPairResult;
 
-        fn generate_sr25519_keypair_from_seed(bytes: &[u8],) -> Box<CxxSr25519KeyPairResult>;
+        fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSr25519KeyPairResult>;
         fn use_keypair(p: &Box<CxxSr25519KeyPairResult>);
         fn is_ok(self: &CxxSr25519KeyPairResult) -> bool;
         fn unwrap(self: &mut CxxSr25519KeyPairResult) -> Box<CxxSr25519KeyPair>;
@@ -18,7 +18,7 @@ mod ffi {
 
 #[derive(Clone, Debug)]
 pub enum Error {
-    Schnorrkel(schnorrkel::SignatureError)
+    Schnorrkel(schnorrkel::SignatureError),
 }
 
 #[derive(Clone)]
@@ -32,16 +32,30 @@ struct Sr25519KeyPair {
     kp: schnorrkel::Keypair,
 }
 
-fn generate_sr25519_keypair_from_seed(bytes: &[u8],) -> Box<CxxSr25519KeyPairResult> {
+fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSr25519KeyPairResult> {
     let kp = schnorrkel::MiniSecretKey::from_bytes(bytes)
-        .map(|kp| Some(CxxSr25519KeyPair(Sr25519KeyPair {kp: kp.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519)})))
+        .map(|kp| {
+            Some(CxxSr25519KeyPair(Sr25519KeyPair {
+                kp: kp.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
+            }))
+        })
         .map_err(|e| Error::Schnorrkel(e));
 
     Box::new(CxxSr25519KeyPairResult(kp))
 }
 
 fn use_keypair(p: &Box<CxxSr25519KeyPairResult>) {
-    assert!(<std::result::Result<Option<CxxSr25519KeyPair>, Error> as Clone>::clone(&(&p.0)).unwrap().unwrap().0.kp.secret.to_bytes().len() > 0);
+    assert!(
+        <std::result::Result<Option<CxxSr25519KeyPair>, Error> as Clone>::clone(&(&p.0))
+            .unwrap()
+            .unwrap()
+            .0
+            .kp
+            .secret
+            .to_bytes()
+            .len()
+            > 0
+    );
 }
 
 impl CxxSr25519KeyPairResult {
@@ -52,8 +66,7 @@ impl CxxSr25519KeyPairResult {
         }
     }
 
-    fn unwrap(self: &mut CxxSr25519KeyPairResult) -> Box<CxxSr25519KeyPair>
-    {
+    fn unwrap(self: &mut CxxSr25519KeyPairResult) -> Box<CxxSr25519KeyPair> {
         Box::new(self.0.as_mut().unwrap().take().unwrap())
     }
 }
