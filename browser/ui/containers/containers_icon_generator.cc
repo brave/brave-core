@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/notreached.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
@@ -42,10 +43,12 @@ const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
       return kLeoContainerPrivateIcon;
     case mojom::Icon::kMessaging:
       return kLeoContainerMessagingIcon;
-    default:
-      // Since icon is read from prefs and can be synced from a newer version
-      // with a new set of icons, we return a default icon for compatibility.
-      return kLeoContainerPersonalIcon;
+  }
+
+  if (icon < mojom::Icon::kMinValue || icon >= mojom::Icon::kMaxValue) {
+    // Since icon is read from prefs and can be synced from a newer version
+    // with a new set of icons, we return a default icon for compatibility.
+    return GetVectorIconFromIconType(mojom::Icon::kDefault);
   }
 }
 
