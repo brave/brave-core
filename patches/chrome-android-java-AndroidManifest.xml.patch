@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43c30d88e9 100644
+index a5e6f0bd3c80ba00fb60ecf798f1225ddee6e0ae..8f3521cc2544aef3f8dfcf4d8e78a8b41b3e568b 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -20,7 +20,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -83,25 +86,33 @@ by a child template that "extends" this file.
+@@ -83,14 +86,20 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
@@ -42,8 +42,10 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_AUDIO"/>
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES"/>
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_VIDEO"/>
-     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+@@ -102,12 +111,14 @@ by a child template that "extends" this file.
+       resizeTo, moveBy}|).
+     -->
+     <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
 +<!--
      <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +-->
@@ -56,7 +58,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -148,7 +159,9 @@ by a child template that "extends" this file.
+@@ -154,7 +165,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -66,7 +68,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -359,6 +372,7 @@ by a child template that "extends" this file.
+@@ -365,6 +378,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -74,15 +76,15 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -887,6 +901,7 @@ by a child template that "extends" this file.
+@@ -893,6 +907,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
-+        <!-- 
++        <!--
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -910,6 +925,7 @@ by a child template that "extends" this file.
+@@ -916,6 +931,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -90,7 +92,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1220,6 +1236,7 @@ by a child template that "extends" this file.
+@@ -1226,6 +1242,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
