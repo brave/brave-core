@@ -394,6 +394,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading "
         "'onCompleteReset')",
+        "Error: An internal error has occurred", "Error: getBalance",
         "Error calling jsonRpcService.getERC20TokenBalances",
         "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);

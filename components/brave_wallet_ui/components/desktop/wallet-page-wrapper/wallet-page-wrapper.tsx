@@ -85,6 +85,7 @@ export const WalletPageWrapper = (props: Props) => {
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // State
   const [headerShadowOpacity, setHeaderShadowOpacity] =
@@ -94,17 +95,17 @@ export const WalletPageWrapper = (props: Props) => {
   const [headerHeight, setHeaderHeight] = React.useState<number>(0)
 
   // Computed
-  const shouldUsePanelCard = useCardInPanel && isPanel
+  const shouldUsePanelCard = useCardInPanel && isAndroidOrPanel
 
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
   const headerRef = React.createRef<HTMLDivElement>()
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     // Keeps track of the Header height to update
     // the card top position and headers shadow.
-    if (cardHeader) {
-      setHeaderHeight(headerRef?.current?.clientHeight ?? 0)
+    if (cardHeader && headerRef?.current) {
+      setHeaderHeight(headerRef.current.clientHeight)
     }
   }, [cardHeader, headerRef])
 
@@ -149,7 +150,7 @@ export const WalletPageWrapper = (props: Props) => {
   return (
     <>
       <StaticBackground />
-      {!isPanel && (
+      {!isAndroidOrPanel && (
         <BackgroundGradientWrapper>
           <BackgroundGradientTopLayer />
           <BackgroundGradientBottomLayer />
@@ -157,7 +158,7 @@ export const WalletPageWrapper = (props: Props) => {
       )}
       <Wrapper
         noPadding={noPadding}
-        noTopPosition={isPanel || isAndroid}
+        noTopPosition={isAndroidOrPanel}
       >
         {isPanel && isPortfolio && <PortfolioBackgroundWatermark />}
         {isPanel && isConnection && (
@@ -186,8 +187,8 @@ export const WalletPageWrapper = (props: Props) => {
             hideNav={hideNav}
             padding={useFullHeight ? '0px' : undefined}
           >
-            {cardHeader && !isPanel && (
-              <CardHeaderWrapper isPanel={isPanel}>
+            {!!cardHeader && !isAndroidOrPanel && (
+              <CardHeaderWrapper>
                 <CardHeaderShadow headerHeight={headerHeight} />
               </CardHeaderWrapper>
             )}
@@ -199,21 +200,20 @@ export const WalletPageWrapper = (props: Props) => {
               noBorderRadius={noBorderRadius}
               useDarkBackground={useDarkBackground}
               useFullHeight={useFullHeight}
-              noBackground={isPanel && (isPortfolio || isConnection)}
+              noBackground={isAndroidOrPanel && (isPortfolio || isConnection)}
               usePanelCard={shouldUsePanelCard}
             >
               {children}
             </ContainerCard>
 
-            {cardHeader && (
+            {!!cardHeader && (
               <CardHeaderWrapper
                 ref={headerRef}
-                isPanel={isPanel}
+                isAndroidOrPanel={isAndroidOrPanel}
               >
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
-                  isPanel={isPanel}
-                  isAndroid={isAndroid}
+                  isAndroidOrPanel={isAndroidOrPanel}
                   useDarkBackground={useDarkBackground || shouldUsePanelCard}
                   backgroundOpacity={headerBackgroundOpacity}
                 >
