@@ -15,6 +15,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -446,4 +447,11 @@ bool BraveSyncWorker::IsSyncFeatureActive() {
   }
 
   return sync_service->IsSyncFeatureActive();
+}
+
+bool BraveSyncWorker::IsSyncEnabled() {
+  auto* sync_service = static_cast<syncer::SyncServiceImpl*>(GetSyncService());
+  syncer::SyncPrefs::SyncAccountState account_state =
+      sync_service->GetSyncAccountStateForPrefs();
+  return account_state != syncer::SyncPrefs::SyncAccountState::kNotSignedIn;
 }

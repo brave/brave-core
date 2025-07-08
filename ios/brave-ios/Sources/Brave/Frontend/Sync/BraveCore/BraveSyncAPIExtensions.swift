@@ -28,16 +28,6 @@ extension BraveSyncAPI {
 
   public static let seedByteLength = 32
 
-  /// Property that determines if the local sync chain should be resetted
-  var shouldLeaveSyncGroup: Bool {
-    guard isInSyncGroup else {
-      return false
-    }
-
-    return (!isSyncFeatureActive && !isInitialSyncFeatureSetupComplete)
-      || isSyncAccountDeletedNoticePending
-  }
-
   var isSendTabToSelfVisible: Bool {
     guard let json = getDeviceListJSON(), let data = json.data(using: .utf8) else {
       return false

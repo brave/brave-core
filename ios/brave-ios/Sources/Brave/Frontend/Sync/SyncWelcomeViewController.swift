@@ -252,7 +252,7 @@ class SyncWelcomeViewController: SyncViewController {
 
       func pushAddDeviceVC() {
         self.syncServiceObserver = nil
-        guard self.syncAPI.isInSyncGroup else {
+        guard self.syncAPI.isSyncEnabled else {
           addDevice.disableNavigationPrevention()
           let alert = UIAlertController(
             title: Strings.Sync.syncUnsuccessful,
@@ -270,7 +270,7 @@ class SyncWelcomeViewController: SyncViewController {
         self.navigationController?.pushViewController(view, animated: true)
       }
 
-      if self.syncAPI.isInSyncGroup {
+      if self.syncAPI.isSyncEnabled {
         pushAddDeviceVC()
         return
       }
@@ -354,7 +354,7 @@ class SyncWelcomeViewController: SyncViewController {
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive
+      if !self.syncAPI.isSyncEnabled && !self.syncAPI.isSyncFeatureActive
         && !self.syncAPI.isInitialSyncFeatureSetupComplete
       {
         let bvc = self.currentScene?.browserViewController

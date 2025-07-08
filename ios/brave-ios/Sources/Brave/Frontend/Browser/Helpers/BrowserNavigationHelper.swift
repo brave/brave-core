@@ -69,7 +69,7 @@ class BrowserNavigationHelper {
         urlActionHandler: bvc,
         openSyncSettings: { [unowned bvc] in
           let controller: UIViewController
-          if Preferences.Chromium.syncEnabled.value {
+          if bvc.profileController.syncAPI.isSyncEnabled {
             controller = SyncSettingsTableViewController(
               isModallyPresented: true,
               braveCoreMain: bvc.profileController,

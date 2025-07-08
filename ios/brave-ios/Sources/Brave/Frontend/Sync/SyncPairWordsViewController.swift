@@ -230,7 +230,7 @@ class SyncPairWordsViewController: SyncViewController {
   }
 
   private func showAlert(title: String? = nil, message: String? = nil) {
-    if syncAPI.isInSyncGroup {
+    if syncAPI.isSyncEnabled {
       return
     }
 

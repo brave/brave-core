@@ -194,6 +194,10 @@ BraveSyncAPIWordsValidationStatus const
   return _worker->IsSyncFeatureActive();
 }
 
+- (bool)isSyncEnabled {
+  return _worker->IsSyncEnabled();
+}
+
 - (bool)isInitialSyncFeatureSetupComplete {
   return _worker->IsInitialSyncFeatureSetupComplete();
 }

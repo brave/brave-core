@@ -163,7 +163,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   }
 
   private func restartSyncSetupIfNecessary() {
-    if syncAPI.shouldLeaveSyncGroup {
+    if !syncAPI.isSyncEnabled {
       syncAPI.leaveSyncGroup()
       navigationController?.popToRootViewController(animated: true)
     }

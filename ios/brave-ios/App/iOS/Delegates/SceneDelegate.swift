@@ -276,19 +276,6 @@ extension SceneDelegate {
     return (defaultProfileController, profileState)
   }
 
-  @objc private func enableUserSelectedTypesForSync() {
-    guard let profileController = AppState.shared.braveCore.profileController,
-      profileController.syncAPI.isInSyncGroup
-    else {
-      Logger.module.info("Sync is not active")
-      return
-    }
-
-    profileController.syncAPI.enableSyncTypes(
-      syncProfileService: profileController.syncProfileService
-    )
-  }
-
   private func setupThemeObservation(
     on browserViewController: BrowserViewController,
     windowScene: UIWindowScene
@@ -415,14 +402,6 @@ extension SceneDelegate {
         }
       }
     }
-
-    // Adding Observer to enable sync types
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(enableUserSelectedTypesForSync),
-      name: BraveServiceStateObserver.coreServiceLoadedNotification,
-      object: nil
-    )
 
     if Preferences.URP.installAttributionLookupOutstanding.value == nil {
       // Similarly to referral lookup, this prefrence should be set if it is a new user
