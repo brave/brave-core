@@ -18,7 +18,11 @@ source_set("polkadot_impl") {
     "sr25519.h"
   ]
 
-  deps = [":rust_lib"]
+  deps = [
+    ":rust_lib",
+    "//brave/components/brave_wallet/common",
+    "//build/rust:cxx_cppdeps",
+  ]
 }
 
 rust_static_library("rust_lib") {
