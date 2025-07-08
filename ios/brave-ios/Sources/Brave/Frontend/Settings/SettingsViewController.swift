@@ -473,7 +473,7 @@ class SettingsViewController: TableViewController {
           text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
             if syncAPI.isInSyncGroup {
-              if Reachability.shared.isOffline {
+              if Reachability.shared.status.connectionType == .offline {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
               }

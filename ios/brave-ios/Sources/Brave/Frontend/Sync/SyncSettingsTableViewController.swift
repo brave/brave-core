@@ -405,7 +405,7 @@ extension SyncSettingsTableViewController {
 
     let removeAction = UIAlertAction(title: Strings.Sync.removeDeviceAction, style: .destructive) {
       _ in
-      if Reachability.shared.isOffline {
+      if Reachability.shared.status.connectionType == .offline {
         self.present(SyncAlerts.noConnection, animated: true)
         return
       }

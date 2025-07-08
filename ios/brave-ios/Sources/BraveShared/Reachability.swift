@@ -22,14 +22,31 @@ public enum ReachabilityType: CustomStringConvertible {
     case .offline: return "Offline"
     }
   }
+
+  fileprivate init(path: NWPath) {
+    let type: ReachabilityType
+    if path.status == .satisfied {
+      if path.usesInterfaceType(.wifi) {
+        type = .wifi
+      } else if path.usesInterfaceType(.cellular) {
+        type = .cellular
+      } else if path.usesInterfaceType(.wiredEthernet) {
+        type = .ethernet
+      } else {
+        type = .other
+      }
+    } else {
+      type = .offline
+    }
+    self = type
+  }
 }
 
-open class Reachability: ObservableObject {
+public class Reachability: Observable {
 
   public static let shared = Reachability()
 
   public struct Status {
-    public var isReachable: Bool
     public var connectionType: ReachabilityType
     public var isLowDataMode: Bool
     public var isExpensive: Bool
@@ -37,22 +54,6 @@ open class Reachability: ObservableObject {
 
   @Published
   public private(set) var status: Status
-
-  public var connectionType: ReachabilityType {
-    return Self.type(from: monitor.currentPath)
-  }
-
-  public var isLowDataMode: Bool {
-    return monitor.currentPath.isConstrained
-  }
-
-  public var isExpensive: Bool {
-    return monitor.currentPath.isExpensive
-  }
-
-  public var isOffline: Bool {
-    return connectionType == .offline
-  }
 
   // MARK: - Private
 
@@ -62,10 +63,9 @@ open class Reachability: ObservableObject {
   private init() {
     let monitor = NWPathMonitor()
 
-    let type = Self.type(from: monitor.currentPath)
+    let type = ReachabilityType(path: monitor.currentPath)
     self.monitor = monitor
     self.status = Status(
-      isReachable: type != .offline,
       connectionType: type,
       isLowDataMode: monitor.currentPath.isConstrained,
       isExpensive: monitor.currentPath.isExpensive
@@ -86,11 +86,10 @@ open class Reachability: ObservableObject {
           """
       )
 
-      let type = Self.type(from: path)
+      let type = ReachabilityType(path: path)
 
       Task { @MainActor in
         self?.status = Status(
-          isReachable: type != .offline,
           connectionType: type,
           isLowDataMode: path.isConstrained,
           isExpensive: path.isExpensive
@@ -103,23 +102,5 @@ open class Reachability: ObservableObject {
 
   deinit {
     monitor.cancel()
-  }
-
-  private static func type(from path: NWPath) -> ReachabilityType {
-    let type: ReachabilityType
-    if path.status == .satisfied {
-      if path.usesInterfaceType(.wifi) {
-        type = .wifi
-      } else if path.usesInterfaceType(.cellular) {
-        type = .cellular
-      } else if path.usesInterfaceType(.wiredEthernet) {
-        type = .ethernet
-      } else {
-        type = .other
-      }
-    } else {
-      type = .offline
-    }
-    return type
   }
 }
