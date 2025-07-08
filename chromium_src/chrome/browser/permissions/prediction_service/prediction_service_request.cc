@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/permissions/prediction_service_request.h"
+#include "chrome/browser/permissions/prediction_service/prediction_service_request.h"
 
 #include <utility>
 
@@ -19,13 +19,13 @@ PredictionServiceRequest::PredictionServiceRequest(
   // Fail the prediction service request
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&PredictionServiceRequest::LookupReponseReceived,
+      base::BindOnce(&PredictionServiceRequest::LookupResponseReceived,
                      weak_factory_.GetWeakPtr(), false, false, std::nullopt));
 }
 
 PredictionServiceRequest::~PredictionServiceRequest() = default;
 
-void PredictionServiceRequest::LookupReponseReceived(
+void PredictionServiceRequest::LookupResponseReceived(
     bool lookup_succesful,
     bool response_from_cache,
     const std::optional<permissions::GeneratePredictionsResponse>& response) {
