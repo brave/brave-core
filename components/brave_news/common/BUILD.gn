@@ -10,6 +10,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_news_policy_unittest.cc",
     "locales_helper_unittest.cc",
     "subscriptions_snapshot_unittest.cc",
   ]
@@ -17,6 +18,7 @@ source_set("unit_tests") {
   deps = [
     ":common",
     "//base",
+    "//components/sync_preferences:test_support",
     "//testing/gtest",
   ]
 }

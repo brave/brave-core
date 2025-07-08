@@ -25,6 +25,10 @@ inline constexpr char kShouldShowToolbarButton[] =
 inline constexpr char kBraveNewsOpenArticlesInNewTab[] =
     "brave.news.open-articles-in-new-tab";
 
+// Used to enable/disable Brave News via a policy.
+inline constexpr char kBraveNewsDisabledByPolicy[] =
+    "brave.news.disabled_by_policy";
+
 // Dictionary value keys
 inline constexpr char kBraveNewsDirectFeedsKeyTitle[] = "title";
 inline constexpr char kBraveNewsDirectFeedsKeySource[] = "source";

@@ -87,6 +87,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.Set("isBraveNewsOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
+  pref_data.Set(
+      "isBraveNewsDisabledByPolicy",
+      prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -250,6 +253,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   // News
   pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_news::prefs::kBraveNewsDisabledByPolicy,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   // New Tab Page preferences

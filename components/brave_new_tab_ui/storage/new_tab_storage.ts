@@ -38,6 +38,7 @@ export const defaultState: NewTab.State = {
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   isBraveNewsOptedIn: false,
+  isBraveNewsDisabledByPolicy: false,
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
