@@ -87,6 +87,7 @@ static_library("brave_test_support_unit") {
   }
 }
 
+
 group("all_unit_tests") {
   testonly = true
 
@@ -100,12 +101,107 @@ group("all_unit_tests") {
   }
 }
 
+
+template("cachable_test") {
+  test(target_name + ".gtest") {
+    testonly = true
+    forward_variables_from(invoker, "*", ["configs"])
+
+    # Apply configs if the invoker provided any
+    if (defined(invoker.configs)) {
+      configs = invoker.configs
+    }
+
+    if(!defined(invoker.public_deps)) {
+      public_deps = [
+        "//testing/gtest",
+        "//third_party/googletest:gtest_main"
+      ]
+    }
+  }
+
+  action(target_name) {
+    testonly = true
+    script = "//brave/test_runner.py"
+    deps = [":"+target_name + ".gtest"]
+    depfile = "$root_out_dir/"+target_name + ".gtest.d"
+
+    inputs = [
+      "$root_out_dir/"+ target_name + ".gtest",
+      "$root_out_dir/"+ target_name + ".gtest.runtime_deps"
+    ]
+    
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    outputs = [ 
+      "$target_gen_dir/"+target_name+"/result.json",
+    #  "$target_gen_dir/"+target_name+"/stdout.txt"
+    ]
+
+    args = [
+      rebase_path("$root_out_dir/"+target_name + ".gtest"), 
+      rebase_path("$target_gen_dir/"+target_name)
+    ]
+  }
+}
+
+cachable_test("some_unit_tests") {
+  deps = [
+    "//brave/components/json:brave_json_unit_tests",
+    "//brave/components/variations:unit_tests",
+    "//brave/components/version_info:unit_tests",
+  ]
+}
+
+cachable_test("brave_wallet_unit_test") {
+  deps = [
+    ":crypto_unittests",
+    "//brave/browser",
+    "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:unit_tests",
+  ]
+}
+
+cachable_test("chromium_src_unit_tests") {
+  deps = [
+
+    ":brave_test_support_unit",
+    "//base",
+    "//base/test:test_support",
+    "//brave:browser_dependencies",
+    "//brave/browser",
+    "//brave/common",
+    "//brave/renderer",
+    "//brave/utility",
+
+    "//chrome:dependencies",
+    "//chrome:resources",
+    "//chrome:strings",
+    "//chrome/app:command_ids",
+    "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/favicon",
+    "//chrome/browser/permissions",
+    "//chrome/browser/prefs",
+    "//chrome/browser/sync",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+
+    "//brave/chromium_src/components/privacy_sandbox:unit_tests",
+    "//brave/chromium_src/components/webui/flags:unit_tests",
+    "//brave/chromium_src/net/base:unit_tests",
+  ] 
+}
+
 test("brave_unit_tests") {
   testonly = true
+  write_runtime_deps = "$target_gen_dir/brave_unit_tests.runtime_deps"
 
   configs += [
     "//build/config:precompiled_headers",
-    "//chrome/test:disable_thinlto_cache_flags",
+    "//chrome/test:disable_thinlto_cache_flags"
   ]
 
   sources = [
@@ -398,8 +494,6 @@ test("brave_unit_tests") {
 
   data = [
     "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-    "//brave/test/data/",
-    "//chrome/test/data/extensions/",
     "//components/test/data/update_client/updatecheck_reply_1.json",
   ]
 
@@ -731,7 +825,7 @@ if (!is_android) {
       "//third_party/re2",
     ]
 
-    data = [ "//brave/test/data/" ]
+    data = [ ]
 
     if (toolkit_views) {
       deps += [ "//brave/components/sidebar/browser" ]
@@ -1008,11 +1102,6 @@ test("brave_browser_tests") {
 
   data = [
     "//.vpython3",
-    "//brave/test/data/",
-    "//chrome/test/data/",
-    "//content/test/data/",
-    "//extensions/test/data/",
-    "//net/tools/testserver/",
     "//third_party/depot_tools/cipd",
     "//third_party/depot_tools/cipd_bin_setup.sh",
     "//third_party/depot_tools/cipd_client_version",
@@ -1020,7 +1109,6 @@ test("brave_browser_tests") {
     "//third_party/depot_tools/cipd_manifest.txt",
     "//third_party/depot_tools/cipd_manifest.versions",
     "//third_party/depot_tools/vpython3",
-    "//third_party/pywebsocket3/",
   ]
 
   if (is_mac) {
@@ -1392,3 +1480,22 @@ if (is_android) {
     deps = [ "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage" ]
   }
 }  # if (is_android) {
+
+
+action("brave_unit_tests.cached") {
+    testonly = true
+    script = "//brave/test_runner.py"
+    deps = [":brave_unit_tests"]
+    inputs = [ "$root_out_dir/brave_unit_tests" ]
+  
+
+    outputs = [ 
+      "$target_gen_dir/brave_unit_tests/result.json",
+      "$target_gen_dir/brave_unit_tests/stdout.txt"
+    ]
+
+    args = [
+      rebase_path("$root_out_dir/brave_unit_tests"), 
+      rebase_path("$target_gen_dir/brave_unit_tests")
+    ]
+}

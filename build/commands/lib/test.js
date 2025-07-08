@@ -95,7 +95,7 @@ const test = async (
   options = {},
 ) => {
   await buildTests(suite, buildConfig, options)
-  runTests(passthroughArgs, suite, buildConfig, options)
+  await runTests(passthroughArgs, suite, buildConfig, options)
 }
 
 const buildTests = async (
@@ -132,7 +132,7 @@ const deleteFile = (filePath) => {
   }
 }
 
-const runTests = (passthroughArgs, suite, buildConfig, options) => {
+const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -217,7 +217,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       ...getChromiumUnitTestsSuites(),
     ]
     // Run the tests
-    getTestsToRun(config, suite).every((testSuite) => {
+    for (const testSuite of getTestsToRun(config, suite)) {
       // Filter out upstream tests that are known to fail for Brave
       if (upstreamTestSuites.includes(testSuite)) {
         const previousFilters = braveArgs.findIndex((arg) => {
@@ -283,18 +283,37 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // failures (by looking at the output file) from compilation errors.
         runOptions.continueOnFail = true
       }
+      
+      const testBinaryPath = getTestBinary(testSuite);
+      let cached = false;
+      if (process.env.BRAVE_TEST_CACHE_PATH) {
+        await util.buildTargets(testBinaryPath + ".hash.json");
+        const {hash} = JSON.parse(fs.readFile(testBinaryPath + ".hash.json", "utf-8"));
+        const cacheFile = `${process.env.BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
+
+        if( fs.existsSync(cacheFile)) {
+          continue;
+        }
+      }
+      
+      
       let prog = util.run(
-        path.join(config.outputDir, getTestBinary(testSuite)),
+        path.join(config.outputDir, testBinaryPath),
         braveArgs,
         runOptions,
       )
+
+
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
+
       // Don't run other tests if one has failed already.
-      return prog.status === 0
-    })
+      if(prog.status === 0) {
+        break;
+      }
+    }
   }
 }
 
