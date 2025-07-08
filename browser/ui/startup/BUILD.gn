@@ -15,6 +15,8 @@ source_set("unit_tests") {
       "//base/test:test_support",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
+      "//chrome/browser/ui/startup",
+      "//chrome/browser/ui/startup:test_support_ui",
       "//chrome/common:constants",
       "//chrome/test:test_support",
       "//components/signin/public/identity_manager:test_support",
