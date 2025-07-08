@@ -65,6 +65,8 @@ class ExtensionsManifectV2MigratorFactory : public ProfileKeyedServiceFactory {
       const ExtensionsManifectV2MigratorFactory&) = delete;
 
   static ExtensionsManifectV2MigratorFactory* GetInstance();
+  static ExtensionsManifectV2Migrator* GetForBrowserContextForTesting(
+      content::BrowserContext* context);
 
  private:
   friend struct base::DefaultSingletonTraits<

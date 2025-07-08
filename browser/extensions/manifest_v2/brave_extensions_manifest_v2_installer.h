@@ -14,6 +14,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 
 namespace extensions {

@@ -10,15 +10,12 @@
 #include <string>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
-
-BASE_DECLARE_FEATURE(kExtensionsManifestV2);
 
 namespace extensions_mv2 {
 class ExtensionManifestV2Installer;
