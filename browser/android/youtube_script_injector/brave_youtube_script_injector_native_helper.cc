@@ -22,12 +22,22 @@ constexpr char16_t kYoutubeFullscreen[] =
   const videoPlaySelector = "video.html5-main-video";
   const fullscreenButtonSelector = "button.fullscreen-icon";
 
+  // Track fullscreen state to prevent multiple concurrent attempts.
+  let fullscreenInProgress = false;
+
   function triggerFullscreen() {
+    // Prevent multiple concurrent fullscreen attempts.
+    if (fullscreenInProgress) {
+      return;
+    }
+
     // Always play video before entering fullscreen mode.
     document.querySelector(videoPlaySelector)?.play();
 
     // Check if the video is not in fullscreen mode already.
     if (!document.fullscreenElement) {
+      fullscreenInProgress = true;
+
       let observerTimeout;
       // Create a MutationObserver to watch for changes in the DOM.
       const observer = new MutationObserver((_mutationsList, observer) => {
@@ -55,11 +65,15 @@ constexpr char16_t kYoutubeFullscreen[] =
           // a reasonable duration picked after some testing.
           observerTimeout = setTimeout(() => {
             observer.disconnect();
+            fullscreenInProgress = false;
           }, 30000);
           // Start observing the DOM.
           observer.observe(playerContainer, { childList: true, subtree: true });
           // Make sure the player is in focus or responsive.
           moviePlayer.click();
+        } else {
+          // No fullscreen elements found, reset state
+          fullscreenInProgress = false;
         }
       }
     }
@@ -80,6 +94,7 @@ constexpr char16_t kYoutubeFullscreen[] =
       videoPlayer.play();
     }, 500);
     fullscreenBtn.click();
+    fullscreenInProgress = false;
   }
 
   if (document.readyState === "loading") {

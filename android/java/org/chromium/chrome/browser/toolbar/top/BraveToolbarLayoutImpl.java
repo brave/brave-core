@@ -213,7 +213,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         Amazon
     }
 
-    private int mYouTubePipTabId = -1;
+    private boolean mPipTransitionInProgress;
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -660,7 +660,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void hideYouTubePipIcon() {
-        mYouTubePipTabId = -1;
+        mPipTransitionInProgress = false;
         // The layout could be null in Custom Tabs layout.
         if (mYouTubePipLayout == null) {
             return;
@@ -1169,12 +1169,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel();
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
-            // Prevent PIP action from being
-            // fired twice on same tab in case PIP icon is
-            // quickly tapped multiple times.
-            if (mYouTubePipTabId != -1) {
-                return;
-            }
             Tab currentTab = getToolbarDataProvider().getTab();
             if (currentTab == null
                     || currentTab.isLoading()
@@ -1183,7 +1177,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     || currentTab.isShowingCustomView()) {
                 return;
             }
-            mYouTubePipTabId = currentTab.getId();
+            mPipTransitionInProgress = true;
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
         }
     }
@@ -1711,7 +1705,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     // FullscreenManager.Observer method.
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        if (mYouTubePipTabId == tab.getId()) {
+        if (mPipTransitionInProgress) {
             Activity activity = tab.getWindowAndroid().getActivity().get();
             if (activity != null) {
                 try {
@@ -1722,7 +1716,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
             }
         }
-        mYouTubePipTabId = -1;
+        mPipTransitionInProgress = false;
     }
 
     private boolean isToolbarPhone() {
