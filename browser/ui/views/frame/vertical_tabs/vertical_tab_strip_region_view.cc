@@ -1354,12 +1354,6 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     return {};
   }
 
-  if (IsFloatingEnabledForBrowserFullscreen() && state_ == State::kCollapsed) {
-    // In this case, vertical tab strip should be invisible but show up when
-    // mouse hovers.
-    return {2, View::CalculatePreferredSize({}).height()};
-  }
-
   return {GetPreferredWidthForState(state, include_border, ignore_animation),
           View::CalculatePreferredSize({}).height()};
 }
@@ -1373,8 +1367,17 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
   };
 
   auto calculate_collapsed_width = [&]() {
+    if (IsFloatingEnabledForBrowserFullscreen()) {
+      // In this case, vertical tab strip should be invisible but show up when
+      // mouse hovers.
+      // there's no border visible, so 2px is enough.
+      return 2;
+    }
+
     if (base::FeatureList::IsEnabled(
             tabs::features::kBraveVerticalTabHideCompletely)) {
+      // Typical window frame border is 8px, so we can use 4px as vertical tab
+      // space only takes inner 4px.
       return 4;
     }
 
