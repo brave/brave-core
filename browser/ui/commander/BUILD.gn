@@ -18,6 +18,7 @@ source_set("browser_tests") {
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/location_bar",
     "//chrome/test:test_support_ui",
     "//components/omnibox/browser",
     "//content/test:test_support",
@@ -56,7 +57,7 @@ source_set("fuzzy_finder") {
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
 
   deps = [
-    "//base:base",
+    "//base",
     "//base:i18n",
     "//ui/gfx/range",
   ]
@@ -66,6 +67,6 @@ fuzzer_test("fuzzy_finder_fuzzer") {
   sources = [ "fuzzy_finder_fuzzer.cc" ]
   deps = [
     ":fuzzy_finder",
-    "//base:base",
+    "//base",
   ]
 }
