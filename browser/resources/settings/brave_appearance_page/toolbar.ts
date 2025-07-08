@@ -65,7 +65,7 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     if (!elemToHighlight) {
       return;
     }
-    
+
     const elem = this.shadowRoot?.querySelector(elemToHighlight)
     if (!elem) {
       return

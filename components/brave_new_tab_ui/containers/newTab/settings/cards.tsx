@@ -63,9 +63,13 @@ const ToggleButton = ({ on, toggleFunc, float }: { on: boolean, toggleFunc: any,
 
 function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
   const [showBraveVPN, saveShowBraveVPN] = useNewTabPref('showBraveVPN')
+  const [isBraveTalkDisabledByPolicy] = useNewTabPref(
+    'isBraveTalkDisabledByPolicy'
+  )
 
   return <StyledWidgetSettings>
-    {braveTalkSupported && <FeaturedSettingsWidget>
+    {braveTalkSupported && !isBraveTalkDisabledByPolicy &&
+      <FeaturedSettingsWidget>
       <StyledBannerImage src={braveTalkBanner} />
       <StyledSettingsInfo>
         <StyledSettingsTitle>

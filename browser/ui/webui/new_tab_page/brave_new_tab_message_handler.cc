@@ -92,6 +92,8 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set("isBraveTalkDisabledByPolicy",
+                prefs->GetBoolean(kBraveTalkDisabledByPolicy));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_data.Set("showBraveVPN", prefs->GetBoolean(kNewTabPageShowBraveVPN));
 #endif
@@ -310,6 +312,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       kNewTabPageShowBraveTalk,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBraveTalkDisabledByPolicy,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

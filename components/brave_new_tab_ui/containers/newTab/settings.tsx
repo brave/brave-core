@@ -153,7 +153,7 @@ export default function Settings(props: Props) {
     <SettingsContent id='settingsBody'>
       <Sidebar id="sidebar">
         <NavigationMenu>
-          {allowedTabTypes.map(tabType => (
+          {allowedTabTypes.map(tabType =>
             <SidebarItem
               key={tabType}
               icon={tabIcons[tabType]}
@@ -161,8 +161,7 @@ export default function Settings(props: Props) {
               onClick={() => changeTab(tabType)}
             >
               {getLocale(tabTranslationKeys[tabType])}
-            </SidebarItem>
-          ))}
+            </SidebarItem>)}
         </NavigationMenu>
       </Sidebar>
       <SettingsFeatureBody id='content'>
