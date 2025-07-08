@@ -31,6 +31,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -308,7 +309,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       IDC_CONFIGURE_SHORTCUTS,
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
+  UpdateCommandEnabled(
+      IDC_SHOW_BRAVE_TALK,
+      !browser_->profile()->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
 

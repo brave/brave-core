@@ -17,11 +17,13 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_p3a.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -203,6 +205,8 @@ class SidebarServiceTest : public testing::Test {
   void SetUp() override {
     SidebarService::RegisterProfilePrefs(
         prefs_.registry(), SidebarService::ShowSidebarOption::kShowAlways);
+    // Register the Brave Talk policy preference that SidebarService now checks
+    prefs_.registry()->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
   }
   void TearDown() override { ResetService(); }
 

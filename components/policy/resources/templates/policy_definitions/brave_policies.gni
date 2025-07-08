@@ -11,6 +11,7 @@ _brave_policies = [
   "BraveSoftware/BraveShieldsDisabledForUrls.yaml",
   "BraveSoftware/BraveShieldsEnabledForUrls.yaml",
   "BraveSoftware/BraveSyncUrl.yaml",
+  "BraveSoftware/BraveTalkDisabled.yaml",
   "BraveSoftware/BraveVPNDisabled.yaml",
   "BraveSoftware/BraveWalletDisabled.yaml",
   "BraveSoftware/IPFSEnabled.yaml",

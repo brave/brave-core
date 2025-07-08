@@ -49,6 +49,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/constants:constants",
     "//brave/components/sidebar/browser",
     "//components/prefs",
     "//components/prefs:test_support",

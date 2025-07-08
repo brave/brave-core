@@ -449,6 +449,7 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBraveTalk,
       showBraveVPN,
+      isBraveTalkDisabledByPolicy
     } = this.props.newTabData
 
     const lookup: { [p: string]: { display: boolean, render: any } } = {
@@ -461,7 +462,8 @@ class NewTabPage extends React.Component<Props, State> {
         render: this.renderBraveVPNWidget
       },
       'braveTalk': {
-        display: braveTalkSupported && showBraveTalk,
+        display: braveTalkSupported && showBraveTalk &&
+          !isBraveTalkDisabledByPolicy,
         render: this.renderBraveTalkWidget.bind(this)
       }
     }
@@ -495,11 +497,13 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBraveTalk,
       showBraveVPN,
-      hideAllWidgets
+      hideAllWidgets,
+      isBraveTalkDisabledByPolicy
     } = this.props.newTabData
     return hideAllWidgets || [
       braveRewardsSupported && showRewards,
-      braveTalkSupported && showBraveTalk,
+      braveTalkSupported && showBraveTalk &&
+        !isBraveTalkDisabledByPolicy,
       this.braveVPNSupported && showBraveVPN,
     ].every((widget: boolean) => !widget)
   }
@@ -608,9 +612,14 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderBraveTalkWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { showBraveTalk, textDirection, braveTalkSupported } = newTabData
+    const {
+      showBraveTalk,
+      textDirection,
+      braveTalkSupported,
+      isBraveTalkDisabledByPolicy
+    } = newTabData
 
-    if (!showBraveTalk || !braveTalkSupported) {
+    if (!showBraveTalk || !braveTalkSupported || isBraveTalkDisabledByPolicy) {
       return null
     }
 
