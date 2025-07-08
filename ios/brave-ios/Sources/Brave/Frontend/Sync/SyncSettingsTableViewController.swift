@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveUI
 import CoreData
 import Data
@@ -404,7 +405,7 @@ extension SyncSettingsTableViewController {
 
     let removeAction = UIAlertAction(title: Strings.Sync.removeDeviceAction, style: .destructive) {
       _ in
-      if !DeviceInfo.hasConnectivity {
+      if Reachability.shared.isOffline {
         self.present(SyncAlerts.noConnection, animated: true)
         return
       }

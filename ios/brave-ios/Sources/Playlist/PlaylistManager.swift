@@ -643,7 +643,8 @@ public class PlaylistManager: NSObject {
     )
 
     // Only download when the preference is on OR when the preference is on Wifi
-    return downloadType == .on || downloadType == .wifi && DeviceInfo.hasWifiConnection
+    return downloadType == .on
+      || downloadType == .wifi && Reachability.shared.connectionType == .wifi
   }
 
   public func autoDownload(item: PlaylistInfo) {

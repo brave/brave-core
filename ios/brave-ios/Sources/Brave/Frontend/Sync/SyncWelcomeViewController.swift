@@ -334,7 +334,7 @@ class SyncWelcomeViewController: SyncViewController {
   // MARK: Internal
 
   private func pushSettings() {
-    if !DeviceInfo.hasConnectivity {
+    if Reachability.shared.isOffline {
       present(SyncAlerts.noConnection, animated: true)
       return
     }

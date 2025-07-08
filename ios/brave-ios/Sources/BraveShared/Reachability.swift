@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Combine
 import Foundation
 import Network
 
@@ -25,8 +24,7 @@ public enum ReachabilityType: CustomStringConvertible {
   }
 }
 
-open class Reachability {
-  public let publisher: CurrentValueSubject<Status, Never>
+open class Reachability: ObservableObject {
 
   public static let shared = Reachability()
 
@@ -37,16 +35,8 @@ open class Reachability {
     public var isExpensive: Bool
   }
 
-  public var status: Status {
-    let type = connectionType
-
-    return Status(
-      isReachable: type != .offline,
-      connectionType: type,
-      isLowDataMode: isLowDataMode,
-      isExpensive: isExpensive
-    )
-  }
+  @Published
+  public private(set) var status: Status
 
   public var connectionType: ReachabilityType {
     return Self.type(from: monitor.currentPath)
@@ -60,36 +50,50 @@ open class Reachability {
     return monitor.currentPath.isExpensive
   }
 
+  public var isOffline: Bool {
+    return connectionType == .offline
+  }
+
   // MARK: - Private
 
   private var monitor: NWPathMonitor
-  private let queue = DispatchQueue(label: "ReachabilityMonitor")
+  private let queue = DispatchQueue(label: "com.brave.network-reachability")
 
   private init() {
     let monitor = NWPathMonitor()
 
     let type = Self.type(from: monitor.currentPath)
     self.monitor = monitor
-    self.publisher = .init(
-      Status(
-        isReachable: type != .offline,
-        connectionType: type,
-        isLowDataMode: monitor.currentPath.isConstrained,
-        isExpensive: monitor.currentPath.isExpensive
-      )
+    self.status = Status(
+      isReachable: type != .offline,
+      connectionType: type,
+      isLowDataMode: monitor.currentPath.isConstrained,
+      isExpensive: monitor.currentPath.isExpensive
     )
 
     monitor.pathUpdateHandler = { [weak self] path in
+      let interfaces = path.availableInterfaces.map({ String(describing: $0.type) }).joined(
+        separator: ", "
+      )
+
+      DebugLogger.log(
+        for: .secureState,
+        text:
+          """
+          Network State Changed: \(String(describing: path.status))
+          - Reason: \(path.status == .unsatisfied ? String(describing: path.unsatisfiedReason) : "None")
+          - Available: \(String(interfaces))
+          """
+      )
+
       let type = Self.type(from: path)
 
-      DispatchQueue.main.async {
-        self?.publisher.send(
-          Status(
-            isReachable: type != .offline,
-            connectionType: type,
-            isLowDataMode: path.isConstrained,
-            isExpensive: path.isExpensive
-          )
+      Task { @MainActor in
+        self?.status = Status(
+          isReachable: type != .offline,
+          connectionType: type,
+          isLowDataMode: path.isConstrained,
+          isExpensive: path.isExpensive
         )
       }
     }

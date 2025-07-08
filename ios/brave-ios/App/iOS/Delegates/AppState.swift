@@ -7,6 +7,7 @@ import AIChat
 import Brave
 import BraveCore
 import BraveNews
+import BraveShared
 import Data
 import Foundation
 import Growth
@@ -71,7 +72,7 @@ public class AppState {
         }
 
         if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
-          NetworkMonitor.shared.start()
+          _ = Reachability.shared
         }
         break
       case .active:

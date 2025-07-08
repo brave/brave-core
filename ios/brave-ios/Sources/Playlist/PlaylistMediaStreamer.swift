@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveShared
 import Combine
 import Data
 import Foundation
@@ -77,7 +78,7 @@ public class PlaylistMediaStreamer {
       return true
     }
 
-    if Reachability.shared.connectionType == .offline {
+    if Reachability.shared.isOffline {
       Logger.module.error("Couldn't load asset's playability -- Offline")
 
       // We have no other way of knowing the playable status
