@@ -167,13 +167,21 @@ class Patchfile:
                 # Output in this case should look like:
                 #   Applied patch to 'build/android/gyp/dex.py' with conflicts.
                 #   U build/android/gyp/dex.py
-                # We get the file name from the last line.
-                return self.ApplyResult(
-                    status=self.ApplyStatus.CONFLICT,
-                    patch=replace(
-                        self,
-                        source_from_git=e.stderr.strip().splitlines()
-                        [-1].split()[-1]))
+                # Find the line starting with 'U ' to get the conflicted file
+                # path from.
+                conflict_line = next(
+                    (line for line in e.stderr.strip().splitlines()
+                     if line.startswith('U ')), None)
+                if conflict_line:
+                    conflicted_file = conflict_line.split()[-1]
+                else:
+                    raise NotImplementedError(
+                        'Could not find conflicted file in error '
+                        f'output: {e.stderr}') from e
+                return self.ApplyResult(status=self.ApplyStatus.CONFLICT,
+                                        patch=replace(
+                                            self,
+                                            source_from_git=conflicted_file))
             if e.stderr.startswith('error:'):
                 [_, reason] = e.stderr.strip().split(': ', 1)
 
