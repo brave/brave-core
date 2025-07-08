@@ -3,7 +3,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveShields
 import CoreData
 import Foundation
 import Preferences
@@ -22,7 +21,7 @@ public final class Domain: NSManagedObject, CRUD {
   // swift-format-ignore
   @NSManaged public var shield_allOff: NSNumber?
   // swift-format-ignore
-  @NSManaged private var shield_adblockAndTp: NSNumber?
+  @NSManaged public var shield_adblockAndTp: NSNumber?
 
   // swift-format-ignore
   @available(*, deprecated, message: "Per domain HTTPSE shield is currently unused.")
@@ -46,88 +45,14 @@ public final class Domain: NSManagedObject, CRUD {
 
   /// A string version of the shield shred level
   // swift-format-ignore
-  @NSManaged private var shield_shredLevel: String?
+  @NSManaged public var shield_shredLevel: String?
 
   /// A string version of the shield ad-block and tracking protection
   // swift-format-ignore
-  @NSManaged private var shield_blockAdsAndTrackingLevel: String?
-
-  /// The shred level for this current domain
-  ///
-  /// When getting, it will return the global shred level if the domain level is not set
-  @MainActor public var shredLevel: SiteShredLevel {
-    get {
-      guard let shredLevel = self.shield_shredLevel else {
-        return ShieldPreferences.shredLevel
-      }
-      return SiteShredLevel(rawValue: shredLevel) ?? ShieldPreferences.shredLevel
-    }
-
-    set {
-      shield_shredLevel = newValue.rawValue
-    }
-  }
+  @NSManaged public var shield_blockAdsAndTrackingLevel: String?
 
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
-  }
-
-  // TODO: @JS Replace this with the 1st party ad-block list
-  // https://github.com/brave/brave-ios/issues/7611
-  /// A list of etld+1s that are always aggressive
-  private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
-
-  /// The shield level for this current domain (standard/aggressive/disabled).
-  @MainActor public var domainBlockAdsAndTrackingLevel: ShieldLevel {
-    get {
-      guard let level = self.shield_blockAdsAndTrackingLevel else {
-        return ShieldPreferences.blockAdsAndTrackingLevel
-      }
-      return ShieldLevel(rawValue: level) ?? ShieldPreferences.blockAdsAndTrackingLevel
-    }
-
-    set {
-      shield_blockAdsAndTrackingLevel = newValue.rawValue
-    }
-  }
-
-  /// Moves data from the old `shield_adblockAndTp` to the new `shield_blockAdsAndTrackingLevel`
-  @MainActor public func migrateShieldLevel() {
-    guard let isEnabled = shield_adblockAndTp?.boolValue else { return }
-    domainBlockAdsAndTrackingLevel = isEnabled ? .standard : .disabled
-  }
-
-  /// Return the shield level for this domain.
-  ///
-  /// - Warning: This does not consider the "all off" setting
-  /// This also takes into consideration certain domains that are always aggressive.
-  @MainActor public var globalBlockAdsAndTrackingLevel: ShieldLevel {
-    guard !areAllShieldsOff else { return .disabled }
-    let globalLevel = domainBlockAdsAndTrackingLevel
-
-    switch globalLevel {
-    case .standard:
-      guard let urlString = self.url else { return globalLevel }
-      guard let url = URL(string: urlString) else { return globalLevel }
-      guard let etldPlusOne = url.baseDomain else { return globalLevel }
-
-      if alwaysAggressiveETLDs.contains(etldPlusOne) {
-        return .aggressive
-      } else {
-        return globalLevel
-      }
-    case .disabled, .aggressive:
-      return globalLevel
-    }
-  }
-
-  /// Return the finterprinting protection level for this domain.
-  ///
-  /// - Warning: This does not consider the "all off" setting
-  @MainActor public var finterprintProtectionLevel: ShieldLevel {
-    guard isShieldExpected(.fpProtection, considerAllShieldsOption: false) else { return .disabled }
-    // We don't have aggressive finterprint protection in iOS
-    return .standard
   }
 
   private static let containsEthereumPermissionsPredicate = NSPredicate(
@@ -136,10 +61,6 @@ public final class Domain: NSManagedObject, CRUD {
   private static let containsSolanaPermissionsPredicate = NSPredicate(
     format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''"
   )
-
-  @MainActor public var areAllShieldsOff: Bool {
-    return shield_allOff?.boolValue ?? false
-  }
 
   /// A domain can be created in many places,
   /// different save strategies are used depending on its relationship(eg. attached to a Bookmark) or browsing mode.
@@ -192,26 +113,18 @@ public final class Domain: NSManagedObject, CRUD {
 
   // MARK: Shields
 
-  /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-  @MainActor public func isShieldExpected(
-    _ shield: BraveShield,
-    considerAllShieldsOption: Bool
-  ) -> Bool {
-    let isShieldOn = { () -> Bool in
-      switch shield {
-      case .allOff:
-        return self.shield_allOff?.boolValue ?? false
-      case .fpProtection:
-        return self.shield_fpProtection?.boolValue
-          ?? Preferences.Shields.fingerprintingProtection.value
-      case .noScript:
-        return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
-      }
-    }()
+  public class func allDomainsWithExplicitShieldLevel() -> [Domain]? {
+    Domain.all(
+      where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
+    )
+  }
 
-    let isAllShieldsOff = self.shield_allOff?.boolValue ?? false
-    let isSpecificShieldOn = isShieldOn
-    return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
+  public class func allDomainsWithAutoShredLevel(_ autoShredLevel: String) -> [Domain]? {
+    let shredLevelPredicate = NSPredicate(
+      format: "shield_shredLevel == %@",
+      autoShredLevel
+    )
+    return Domain.all(where: shredLevelPredicate)
   }
 
   public static func clearInMemoryDomains() {
@@ -224,52 +137,6 @@ public final class Domain: NSManagedObject, CRUD {
         format: "shield_adblockAndTp != nil AND shield_blockAdsAndTrackingLevel == nil"
       )
     )
-  }
-
-  @MainActor public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
-    guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
-      let domains = Domain.all(
-        where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
-      )
-    else {
-      return 0  // Can't be lower than disabled
-    }
-
-    return domains.filter({
-      $0.domainBlockAdsAndTrackingLevel.strength
-        < ShieldPreferences.blockAdsAndTrackingLevel.strength
-    }).count
-  }
-
-  @MainActor public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
-    guard ShieldPreferences.blockAdsAndTrackingLevel != .aggressive,
-      let domains = Domain.all(
-        where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
-      )
-    else {
-      return 0  // Can't be higher than aggressive
-    }
-    return domains.filter({
-      $0.domainBlockAdsAndTrackingLevel.strength
-        > ShieldPreferences.blockAdsAndTrackingLevel.strength
-    }).count
-  }
-
-  @MainActor public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
-    let appExitPredicate = NSPredicate(
-      format: "shield_shredLevel == %@",
-      SiteShredLevel.appExit.rawValue
-    )
-    let allExplicitlySet = Domain.all(
-      where: appExitPredicate
-    )
-    guard ShieldPreferences.shredLevel.shredOnAppExit else { return allExplicitlySet }
-    // Default value is SiteShredLevel.appExit, include all with default value nil
-    let nilPredicate = NSPredicate(format: "shield_shredLevel == nil")
-    return (allExplicitlySet ?? [])
-      + (Domain.all(
-        where: nilPredicate
-      ) ?? [])
   }
 
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
