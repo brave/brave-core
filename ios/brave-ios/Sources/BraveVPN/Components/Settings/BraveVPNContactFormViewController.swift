@@ -318,7 +318,7 @@ class BraveVPNContactFormViewController: TableViewController {
   }
 
   private var getNetworkType: String {
-    let type = Reachability.shared.connectionType
+    let type = Reachability.shared.status.connectionType
     if type == .offline || type == .other {
       return "-"
     }

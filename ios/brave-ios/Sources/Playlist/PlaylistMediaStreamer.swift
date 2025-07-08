@@ -78,7 +78,7 @@ public class PlaylistMediaStreamer {
       return true
     }
 
-    if Reachability.shared.isOffline {
+    if Reachability.shared.status.connectionType == .offline {
       Logger.module.error("Couldn't load asset's playability -- Offline")
 
       // We have no other way of knowing the playable status
