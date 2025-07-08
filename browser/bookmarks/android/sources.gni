@@ -9,3 +9,7 @@ brave_browser_bookmarks_android_sources = [
   "//brave/browser/bookmarks/android/java/src/org/chromium/chrome/browser/bookmarks/BraveBookmarkModel.java",
   "//brave/browser/bookmarks/android/java/src/org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs.java",
 ]
+
+# Additional deps for //chrome/browser/bookmarks/android:impl to support bookmarks import on Android
+brave_browser_bookmarks_android_impl_deps =
+    [ "//components/user_data_importer/content" ]
