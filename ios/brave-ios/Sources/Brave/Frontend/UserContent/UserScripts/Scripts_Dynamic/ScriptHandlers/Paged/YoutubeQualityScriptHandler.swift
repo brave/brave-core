@@ -43,10 +43,6 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  static func setEnabled(for tab: some TabState) {
-    tab.youtubeQualityTabHelper?.handleConnectionStatusChanged(status: Reachability.shared.status)
-  }
-
   func tab(
     _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
