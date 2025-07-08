@@ -6,15 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_CONTENT_SETTING_BUBBLE_MODEL_DELEGATE_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_CONTENT_SETTING_BUBBLE_MODEL_DELEGATE_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 class BraveBrowserContentSettingBubbleModelDelegate
     : public BrowserContentSettingBubbleModelDelegate {
  public:
-  explicit BraveBrowserContentSettingBubbleModelDelegate(Browser* browser);
+  explicit BraveBrowserContentSettingBubbleModelDelegate(
+      BrowserWindowInterface* browser);
   BraveBrowserContentSettingBubbleModelDelegate(
       const BraveBrowserContentSettingBubbleModelDelegate&) = delete;
   BraveBrowserContentSettingBubbleModelDelegate& operator=(
@@ -25,7 +26,7 @@ class BraveBrowserContentSettingBubbleModelDelegate
   void ShowLearnMorePage(ContentSettingsType type) override;
 
  private:
-  const raw_ptr<Browser> browser_;
+  const raw_ref<BrowserWindowInterface> browser_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_CONTENT_SETTING_BUBBLE_MODEL_DELEGATE_H_
