@@ -64,6 +64,7 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_AUTO_LABEL},
     {"adsSettingsTitle", IDS_REWARDS_ADS_SETTINGS_TITLE},
     {"adsSettingsText", IDS_REWARDS_ADS_SETTINGS_TEXT},
+    {"adsViewedTooltip", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
     {"adTypeInlineContentLabel", IDS_REWARDS_AD_TYPE_INLINE_CONTENT_LABEL},
     {"adTypeNewTabPageLabel", IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL},
     {"adTypeNotificationLabel", IDS_REWARDS_AD_TYPE_NOTIFICATION_LABEL},

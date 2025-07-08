@@ -32,6 +32,7 @@ export type StringKey =
   'adsSettingsSubdivisionAutoLabel' |
   'adsSettingsTitle' |
   'adsSettingsText' |
+  'adsViewedTooltip' |
   'adTypeInlineContentLabel' |
   'adTypeNewTabPageLabel' |
   'adTypeNotificationLabel' |
