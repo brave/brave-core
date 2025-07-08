@@ -24,7 +24,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -247,7 +246,25 @@ class AIChatService : public KeyedService,
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<AssociatedContentDelegate> associated_content);
-  void MaybeUnloadConversation(ConversationHandler* conversation);
+
+  // Determines whether a conversation could be unloaded.
+  bool CanUnloadConversation(ConversationHandler* conversation);
+
+  // If a conversation is unloadable, queues an event to unload it after a
+  // delay. The delay is to prevent situations where the conversation is
+  // unloaded while its being used in a function, and to give clients a chance
+  // to connect.
+  // Solves this in a block:
+  // auto conversation = CreateConversation();
+  // conversation->SomeMethodThatTriggersMaybeUnload();
+  // /* conversation is unloaded */
+  // conversation->SomeOtherMethod(); // use after free!
+  void QueueMaybeUnloadConversation(ConversationHandler* conversation);
+
+  // Unloads |conversation| if:
+  // 1. It hasn't already been unloaded
+  // 2. |CanUnloadConversation| is true
+  void MaybeUnloadConversation(base::WeakPtr<ConversationHandler> conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,
                         std::optional<std::vector<std::string>> maybe_content,
