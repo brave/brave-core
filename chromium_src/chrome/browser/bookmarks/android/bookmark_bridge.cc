@@ -13,10 +13,10 @@
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/common/url_constants.h"
-#include "chrome/utility/importer/bookmark_html_reader.h"
 #include "components/url_formatter/url_fixer.h"
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
+#include "components/user_data_importer/content/content_bookmark_parser.h"
 
 #define BraveBookmarkBridge BookmarkBridge
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
@@ -178,10 +178,11 @@ BookmarkBridge::ImportBookmarksReader(
     std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks,
     std::vector<SearchEngineInfo> search_engines) {
   base::FilePath import_path_ = base::FilePath::FromUTF16Unsafe(import_path);
-  bookmark_html_reader::ImportBookmarksFile(
-      base::RepeatingCallback<bool(void)>(),
-      base::BindRepeating(internal::CanImportURL), import_path_, &bookmarks,
-      &search_engines, nullptr);
+
+  user_data_importer::ContentBookmarkParser bookmark_parser;
+  bookmark_parser.Parse(base::RepeatingCallback<bool(void)>(),
+                        base::BindRepeating(internal::CanImportURL),
+                        import_path_, &bookmarks, &search_engines, nullptr);
 
   return std::make_pair(bookmarks, search_engines);
 }
