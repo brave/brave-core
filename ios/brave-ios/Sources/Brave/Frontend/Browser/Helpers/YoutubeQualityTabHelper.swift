@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import Combine
 import Foundation
+import Observation
 import Preferences
 import Shared
 import Web
@@ -23,6 +24,7 @@ extension TabDataValues {
   }
 }
 
+@MainActor
 class YoutubeQualityTabHelper: NSObject, TabObserver {
   private var url: URL?
   private weak var tab: (any TabState)?
@@ -34,9 +36,16 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     super.init()
 
     tab?.addObserver(self)
+    self.observeReachability()
+  }
 
-    reachableObserver = Reachability.shared.$status.sink { [weak self] status in
-      self?.tab?.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
+  private func observeReachability() {
+    _ = withObservationTracking { [weak self] in
+      self?.tab?.youtubeQualityTabHelper?.setHighQuality(networkStatus: Reachability.shared.status)
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.observeReachability()
+      }
     }
   }
 
