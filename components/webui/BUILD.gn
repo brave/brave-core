@@ -10,6 +10,7 @@ static_library("webui") {
   visibility = [
     "//brave/browser/ui",
     "//brave/ios/browser/ui/webui",
+    "//brave/ios/web/webui",
   ]
 
   sources = [

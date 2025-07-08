@@ -19,6 +19,10 @@ source_set("webui") {
 
   deps = [
     "//base",
+    "//brave/components/constants",
+    "//brave/components/webui",
+    "//components/resources:components_resources_grit",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/url:constants",
     "//ios/components/webui:url_constants",
     "//ios/web/public",
