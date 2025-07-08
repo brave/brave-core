@@ -7,19 +7,19 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
      <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 +    {% include "//brave/android/java/AndroidManifest_user_permissions.xml" %}
- 
+
      <!--
        Enable runtime permissions as uses-permission in tip of tree builds
 @@ -62,7 +63,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
- 
+
 +<!--
      <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
- 
+
 @@ -76,32 +79,42 @@ by a child template that "extends" this file.
      {% endif %}
      {% set enable_screen_capture = enable_screen_capture|default(0) %}
@@ -32,7 +32,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
- 
+
 +<!--
      <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 +-->
@@ -51,8 +51,10 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_AUDIO"/>
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES"/>
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_VIDEO"/>
-     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+@@ -102,12 +111,14 @@ by a child template that "extends" this file.
+       resizeTo, moveBy}|).
+     -->
+     <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
 +<!--
      <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +-->
@@ -62,17 +64,17 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
 -    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 +    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
- 
+
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
 @@ -148,7 +161,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
- 
+
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
- 
+
      {% block extra_uses_permissions %}
      {% endblock %}
 @@ -359,6 +374,7 @@ by a child template that "extends" this file.
@@ -85,9 +87,9 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
          </activity-alias>
 @@ -887,6 +903,7 @@ by a child template that "extends" this file.
          </service>
- 
+
          <!-- Quick Action Search widget -->
-+        <!-- 
++        <!--
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
@@ -96,7 +98,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
 +         -->
- 
+
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
 @@ -1146,7 +1164,7 @@ by a child template that "extends" this file.
@@ -111,7 +113,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625
 @@ -1220,6 +1238,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
- 
+
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
          {% endblock %}
