@@ -22,8 +22,7 @@
   background-color: var(--leo-color-container-highlight);
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-secondary);
-  font: var(--leo-font-small-regular);
-  text-transform: uppercase;
+  font: var(--leo-font-components-label);
   position: absolute;
   border-radius: 8px 8px 0px 0px;
   border-top: 1px solid var(--leo-color-divider-subtle);
@@ -36,8 +35,8 @@
 }
 
 .headerGap {
-  min-height: 43px;
-}
+  min-height: 37px;
+} 
 
 .anchorButton {
   display: flex;
@@ -54,30 +53,32 @@
   flex-direction: row;
 }
 
-.footerGap {
-  min-height: 53px;
-}
-
 .menuFooter {
   display: flex;
   width: 100%;
   padding: var(--leo-spacing-s);
-  border: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   background-color: var(--leo-color-container-background);
   border-radius: 0px 0px 8px 8px;
+  border: 1px solid var(--leo-color-divider-subtle);
   leo-menu-item {
     justify-content: flex-start;
     border-radius: var(--leo-radius-s);
     margin: 0;
+    gap: var(--leo-spacing-m);
     &:hover {
       background-color: var(--leo-color-container-highlight);
     }
   }
 }
+
+.footerGap {
+  min-height: 51px;
+} 
 
 .modelIconAndName {
   --leo-icon-size: 20px;
