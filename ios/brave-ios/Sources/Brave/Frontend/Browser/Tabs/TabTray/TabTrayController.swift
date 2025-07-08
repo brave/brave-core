@@ -917,7 +917,7 @@ class TabTrayController: AuthenticationController {
         )
       )
     case .openTabsDisabled, .noSyncedSessions:
-      if !DeviceInfo.hasConnectivity {
+      if Reachability.shared.isOffline {
         present(SyncAlerts.noConnection, animated: true)
         return
       }
