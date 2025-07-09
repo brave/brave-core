@@ -576,10 +576,18 @@ extension BrowserViewController: TopToolbarDelegate {
     components?.queryItems = nil
     guard let cleanedURL = components?.url else { return }
 
+    let enabledFilterListComponentIds = FilterListStorage.shared.enabledSources.compactMap {
+      if case .filterList(let componentId) = $0 {
+        return componentId
+      }
+      return nil
+    }
+
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        enabledFilterListComponentIds: enabledFilterListComponentIds
       )
     )
 

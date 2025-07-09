@@ -23,7 +23,7 @@ public struct BraveTextEditor: View {
 
   public var body: some View {
     TextEditor(text: $text)
-      .braveTextEditorStyle()
+      .braveInputStyle()
       .introspectTextView { textView in
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
