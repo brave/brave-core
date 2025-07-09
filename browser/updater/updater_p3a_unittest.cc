@@ -101,6 +101,29 @@ TEST_P(UpdaterP3ATest, TestReportsUpdateIfVersionDowngrade) {
                                         StatusUpdate(), 1);
 }
 
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfVersionChangeSameDay) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(0, "1.0.0.1");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
+}
+
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfMulitpleVersionChanges) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "1.0.0.1");
+  SimulateLaunch(2, "1.0.0.2");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 2);
+}
+
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfMulitpleVersionChangeSameDay) {
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(0, "1.0.0.1");
+  SimulateLaunch(0, "1.0.0.2");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 2);
+}
+
 TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeekIfVersionChanges) {
   SimulateLaunch(0, "1.0.0.0");
   for (int i = 1; i <= 7; i++) {
