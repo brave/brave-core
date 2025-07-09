@@ -468,22 +468,16 @@ RegisterPolymerTemplateModifications({
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
       // Advanced
-      const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility_.advancedSettings)]]"]')
+      const advancedTemplate = templateContent.querySelector(
+        'template[if="[[showBasicPage_(currentRoute_, inSearchMode)]]"]')
       if (!advancedTemplate) {
-        console.error('[Brave Settings Overrides] Could not find advanced section')
+        throw new Error('[Settings] Missing advanced section on basic page')
       }
-      const advancedSubSectionsTemplate = advancedTemplate.content.querySelector('settings-idle-load template')
-      if (!advancedSubSectionsTemplate) {
-        console.error('[Brave Settings Overrides] Could not find advanced sub-sections container')
-      }
-      // Move autofill to before languages
-      const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
+      // Move autofill to the top of the "advanced" section
+      const sectionAutofill =
+        getSectionElement(advancedTemplate.content, 'autofill')
       if (sectionAutofill) {
-        const sectionLanguages =
-          getSectionElement(advancedSubSectionsTemplate.content, 'languages')
-        if (sectionLanguages) {
-          sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
-        }
+        advancedTemplate.insertAdjacentElement('beforebegin', sectionAutofill)
       }
     }
   }
