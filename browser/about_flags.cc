@@ -74,6 +74,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #else
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -338,6 +339,18 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
+constexpr flags_ui::FeatureEntry::Choice kVerticalTabExpandDelayChoices[] = {
+    {"default", "", ""},
+    {"0ms", tabs::switches::kVerticalTabExpandDelaySwitch, "0"},
+    {"50ms", tabs::switches::kVerticalTabExpandDelaySwitch, "50"},
+    {"100ms", tabs::switches::kVerticalTabExpandDelaySwitch, "100"},
+    {"150ms", tabs::switches::kVerticalTabExpandDelaySwitch, "150"},
+    {"200ms", tabs::switches::kVerticalTabExpandDelaySwitch, "200"},
+    {"250ms", tabs::switches::kVerticalTabExpandDelaySwitch, "250"},
+    {"300ms", tabs::switches::kVerticalTabExpandDelaySwitch, "300"},
+    {"400ms", tabs::switches::kVerticalTabExpandDelaySwitch, "400"},
+};
+
 #define BRAVE_TABS_FEATURE_ENTRIES                                             \
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
@@ -374,6 +387,13 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "Hides the vertical tab strip when collapsed",                       \
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabHideCompletely), \
+      },                                                                       \
+      {                                                                        \
+          "brave-vertical-tab-expand-delay",                                   \
+          "Brave Vertical Tab Expand Delay",                                   \
+          "Delay before expanding the vertical tab strip when hovering",       \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                    \
       },                                                                       \
       {                                                                        \
           kSplitViewFeatureInternalName,                                       \
@@ -1086,7 +1106,7 @@ namespace {
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
-}
+}  // namespace
 
 }  // namespace
 }  // namespace flags_ui

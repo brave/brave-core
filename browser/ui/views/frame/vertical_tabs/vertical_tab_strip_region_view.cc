@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/command_line.h"
 #include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
@@ -27,6 +28,7 @@
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -1441,8 +1443,27 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
   }
 
   if (state_ == State::kCollapsed) {
+    auto get_expand_delay = []() {
+      constexpr int kDefaultDelay = 400;
+      auto* cmd_line = base::CommandLine::ForCurrentProcess();
+      if (!cmd_line->HasSwitch(tabs::switches::kVerticalTabExpandDelaySwitch)) {
+        return kDefaultDelay;
+      }
+
+      auto delay_string = cmd_line->GetSwitchValueASCII(
+          tabs::switches::kVerticalTabExpandDelaySwitch);
+
+      int override_delay = 0;
+      if (delay_string.empty() ||
+          !base::StringToInt(delay_string, &override_delay)) {
+        return kDefaultDelay;
+      }
+
+      return override_delay;
+    };
+
     mouse_enter_timer_.Start(
-        FROM_HERE, base::Milliseconds(400),
+        FROM_HERE, base::Milliseconds(get_expand_delay()),
         base::BindOnce(&VerticalTabStripRegionView::SetState,
                        base::Unretained(this), State::kFloating));
   }
