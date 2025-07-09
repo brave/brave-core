@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/time/time.h"
 
 namespace brave_updater {
 
@@ -34,11 +35,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kLastUpdateUsedOmaha4Pref, false);
 }
 
-void ReportLaunch(base::Time now,
-                  std::string current_version,
+void ReportLaunch(std::string current_version,
                   bool is_using_omaha4,
                   PrefService* prefs) {
   CHECK(prefs);
+  auto now = base::Time::Now();
   std::string last_launch_version = prefs->GetString(kLastLaunchVersionPref);
   prefs->SetString(kLastLaunchVersionPref, current_version);
 

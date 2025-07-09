@@ -35,8 +35,7 @@ class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
 
   void SimulateLaunch(int advance_by_days, std::string current_version) {
     task_environment_.AdvanceClock(base::Days(advance_by_days));
-    ReportLaunch(base::Time::Now(), current_version, IsUsingOmaha4(),
-                 &local_state_);
+    ReportLaunch(current_version, IsUsingOmaha4(), &local_state_);
   }
 
   void ResetHistogramTester() {
@@ -74,21 +73,21 @@ TEST_P(UpdaterP3ATest, TestReportsUpdateIfPatchVersionChanges) {
 }
 
 TEST_P(UpdaterP3ATest, TestReportsUpdateIfBuildVersionChanges) {
-  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(0, "1.0.0.100");
   SimulateLaunch(1, "1.0.1.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
 }
 
 TEST_P(UpdaterP3ATest, TestReportsUpdateIfMinorVersionChanges) {
-  SimulateLaunch(0, "2.0.0.0");
+  SimulateLaunch(0, "2.0.100.0");
   SimulateLaunch(1, "2.1.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
 }
 
 TEST_P(UpdaterP3ATest, TestReportsUpdateIfMajorVersionChanges) {
-  SimulateLaunch(0, "2.0.0.0");
+  SimulateLaunch(0, "2.100.0.0");
   SimulateLaunch(1, "3.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
@@ -124,7 +123,7 @@ TEST_P(UpdaterP3ATest, TestReportsUpdateIfMulitpleVersionChangeSameDay) {
                                         StatusUpdate(), 2);
 }
 
-TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeekIfVersionChanges) {
+TEST_P(UpdaterP3ATest, TestReportsUpdateForSevenDaysIfVersionChanges) {
   SimulateLaunch(0, "1.0.0.0");
   for (int i = 1; i <= 7; i++) {
     SimulateLaunch(1, "2.0.0.0");
@@ -133,13 +132,15 @@ TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeekIfVersionChanges) {
   }
 }
 
-TEST_P(UpdaterP3ATest, TestStopReportingAfterOneWeek) {
+TEST_P(UpdaterP3ATest, TestStopReportingAfterSevenDays) {
   SimulateLaunch(0, "1.0.0.0");
+  // Report 1 day after first launch
   SimulateLaunch(1, "2.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
 
   ResetHistogramTester();
+  // 1 + 7 days after first launch
   SimulateLaunch(7, "2.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusNoUpdate(), 1);

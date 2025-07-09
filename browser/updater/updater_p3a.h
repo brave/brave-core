@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/time/time.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -35,8 +34,7 @@ enum class UpdateStatus {
 // in one week, it reports this to UMA as well. The reports include whether
 // Omaha 4 or the legacy updater were used. This lets us compare the success
 // rates of the two implementations.
-void ReportLaunch(base::Time now,
-                  std::string current_version,
+void ReportLaunch(std::string current_version,
                   bool is_using_omaha4,
                   PrefService* prefs);
 

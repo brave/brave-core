@@ -15,7 +15,7 @@ BraveBrowserMainExtraPartsP3A::BraveBrowserMainExtraPartsP3A() = default;
 BraveBrowserMainExtraPartsP3A::~BraveBrowserMainExtraPartsP3A() = default;
 
 void BraveBrowserMainExtraPartsP3A::PostBrowserStart() {
-  brave_updater::ReportLaunch(base::Time::Now(), chrome::kChromeVersion,
+  brave_updater::ReportLaunch(chrome::kChromeVersion,
                               brave_updater::ShouldUseOmaha4(),
                               g_browser_process->local_state());
 }
