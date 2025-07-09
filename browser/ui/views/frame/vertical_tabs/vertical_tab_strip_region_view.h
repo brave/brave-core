@@ -24,7 +24,6 @@
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
-class TabSearchButton;
 class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
@@ -81,8 +80,6 @@ class VerticalTabStripRegionView : public views::View,
   // This should be called when height of this view or tab strip changes.
   void UpdateNewTabButtonVisibility();
 
-  TabSearchBubbleHost* GetTabSearchBubbleHost();
-
   int GetTabStripViewportMaxHeight() const;
 
   void ResetExpandedWidth();
@@ -126,7 +123,6 @@ class VerticalTabStripRegionView : public views::View,
   class MouseWatcher;
 
  private:
-  friend class VerticalTabSearchButtonBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
@@ -152,8 +148,6 @@ class VerticalTabStripRegionView : public views::View,
   void OnBrowserPanelsMoved();
 
   void UpdateLayout(bool in_destruction = false);
-
-  void UpdateOriginalTabSearchButtonVisibility();
 
   void UpdateBorder();
 
@@ -185,7 +179,6 @@ class VerticalTabStripRegionView : public views::View,
   void OnMenuClosed();
 
   views::LabelButton& GetToggleButtonForTesting();
-  TabSearchButton* GetTabSearchButtonForTesting();
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;

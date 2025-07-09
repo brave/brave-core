@@ -116,7 +116,6 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
-  TabSearchBubbleHost* GetTabSearchBubbleHost() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,

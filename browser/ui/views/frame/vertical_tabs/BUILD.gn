@@ -45,7 +45,6 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
-    "vertical_tab_search_button_browsertest.cc",
     "vertical_tab_strip_browsertest.cc",
     "vertical_tab_strip_root_view_browsertest.cc",
   ]

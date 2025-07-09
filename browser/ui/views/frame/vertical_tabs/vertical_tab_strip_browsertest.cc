@@ -764,44 +764,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
-
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  ASSERT_TRUE(region_view);
-
-  auto* original_tab_search_button =
-      region_view->original_region_view_->GetTabSearchButton();
-  if (!original_tab_search_button) {
-    // On Windows 10, the button is on the window frame and vertical tab strip
-    // does nothing to it.
-    return;
-  }
-
-  ASSERT_TRUE(original_tab_search_button->GetVisible());
-
-  // The button should be hidden when using vertical tab strip
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-
-  // The button should reappear when getting back to horizontal tab strip.
-  ToggleVerticalTabStrip();
-  EXPECT_TRUE(original_tab_search_button->GetVisible());
-
-  // Turn off the button with a preference.
-  browser()->profile()->GetPrefs()->SetBoolean(kTabsSearchShow, false);
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-
-  // Turn on and off vertical tab strip
-  ToggleVerticalTabStrip();
-  ToggleVerticalTabStrip();
-
-  // the original tab search button should stay hidden
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-}
-
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   // Regression check for https://github.com/brave/brave-browser/issues/40201
   ToggleVerticalTabStrip();

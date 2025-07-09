@@ -856,16 +856,6 @@ void BraveBrowserView::OnThemeChanged() {
   }
 }
 
-TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser())) {
-    return BrowserView::GetTabSearchBubbleHost();
-  }
-
-  return vertical_tab_strip_widget_delegate_view_
-      ->vertical_tab_strip_region_view()
-      ->GetTabSearchBubbleHost();
-}
-
 void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
