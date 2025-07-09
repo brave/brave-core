@@ -386,7 +386,6 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
-    dismissVisibleMenus()
   }
 
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
