@@ -322,9 +322,13 @@ class WebKitTabState: TabState, TabStateImpl {
     configuration.userContentController = .init()
     configuration.preferences = initialConfiguration.preferences.copy() as! WKPreferences
 
-    let webView = WKWebView(frame: .zero, configuration: configuration)
+    let webView = WebKitWebView(frame: .zero, configuration: configuration)
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
+    webView.buildMenu = { [weak self] builder in
+      guard let self else { return }
+      self.delegate?.tab(self, buildEditMenuWithBuilder: builder)
+    }
     webView.allowsBackForwardNavigationGestures = true
     webView.allowsLinkPreview = true
     webView.isFindInteractionEnabled = true
@@ -594,6 +598,24 @@ class WebKitTabState: TabState, TabStateImpl {
   weak var downloadDelegate: TabDownloadDelegate?
   var observers: OrderedSet<AnyTabObserver> = []
   var policyDeciders: OrderedSet<AnyTabPolicyDecider> = []
+}
+
+private class WebKitWebView: WKWebView {
+  var buildMenu: ((any UIMenuBuilder) -> Void)?
+
+  override func buildMenu(with builder: any UIMenuBuilder) {
+    super.buildMenu(with: builder)
+    if !canPerformAction(#selector(copy(_:)), withSender: self) {
+      // This matches CRWWebView's implementation
+      //
+      // `WKWebView buildMenuWithBuilder:` is called too often in WKWebView,
+      // sometimes when there is no selection.
+      // As a proxy to detect if we should add our items, only add Chrome
+      // features if there is something to copy in the view.
+      return
+    }
+    buildMenu?(builder)
+  }
 }
 
 // Unfortunately neccessary because UIScrollView is optional in WebViewProxy
