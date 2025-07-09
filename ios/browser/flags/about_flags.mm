@@ -92,6 +92,15 @@
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredCacheData),   \
       },                                                                       \
       {                                                                        \
+          "brave-shields-content-settings",                                    \
+          "Brave Shields use Content Settings",                                \
+          "Brave Shields will use content settings for persisting Shields "    \
+          "preferences",                                                       \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShieldsContentSettingsIOS),       \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \
