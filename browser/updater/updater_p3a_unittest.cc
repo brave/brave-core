@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,19 +21,26 @@ class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
   ~UpdaterP3ATest() override = default;
 
   void SetUp() override {
+    ResetHistogramTester();
     RegisterLocalStatePrefs(local_state_.registry());
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
  protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 
   bool IsUsingOmaha4() const { return GetParam(); }
 
-  void SimulateLaunch(int day, std::string current_version) {
-    base::Time now = base::Time::FromTimeT(1) + base::Days(day);
-    ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
+  void SimulateLaunch(int advance_by_days, std::string current_version) {
+    task_environment_.AdvanceClock(base::Days(advance_by_days));
+    ReportLaunch(base::Time::Now(), current_version, IsUsingOmaha4(),
+                 &local_state_);
+  }
+
+  void ResetHistogramTester() {
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
   UpdateStatus StatusUpdate() {
@@ -43,10 +51,6 @@ class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
   UpdateStatus StatusNoUpdate() {
     return IsUsingOmaha4() ? UpdateStatus::kNoUpdateWithOmaha4
                            : UpdateStatus::kNoUpdateWithLegacy;
-  }
-
-  void ResetHistogramTester() {
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 };
 
@@ -62,59 +66,58 @@ TEST_P(UpdaterP3ATest, TestReportNoUpdateIfNoVersionChange) {
                                         StatusNoUpdate(), 1);
 }
 
-TEST_P(UpdaterP3ATest, TestReportsUpdateIfVersionChanges) {
-  // patch version change
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfPatchVersionChanges) {
   SimulateLaunch(0, "1.0.0.0");
   SimulateLaunch(1, "1.0.0.1");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
-  ResetHistogramTester();
+}
 
-  // build version change
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfBuildVersionChanges) {
   SimulateLaunch(0, "1.0.0.0");
   SimulateLaunch(1, "1.0.1.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
-  ResetHistogramTester();
+}
 
-  // minor version change
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfMinorVersionChanges) {
   SimulateLaunch(0, "2.0.0.0");
   SimulateLaunch(1, "2.1.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
-  ResetHistogramTester();
+}
 
-  // major version change
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfMajorVersionChanges) {
   SimulateLaunch(0, "2.0.0.0");
   SimulateLaunch(1, "3.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
-  ResetHistogramTester();
+}
 
-  // Install older version
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfVersionDowngrade) {
   SimulateLaunch(0, "2.0.0.0");
   SimulateLaunch(1, "1.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusUpdate(), 1);
-  ResetHistogramTester();
 }
 
 TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeekIfVersionChanges) {
+  SimulateLaunch(0, "1.0.0.0");
   for (int i = 1; i <= 7; i++) {
-    SimulateLaunch(0, "1.0.0.0");
-    SimulateLaunch(i, "2.0.0.0");
+    SimulateLaunch(1, "2.0.0.0");
     histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
-                                          StatusUpdate(), 1);
-    ResetHistogramTester();
+                                          StatusUpdate(), i);
   }
 }
 
 TEST_P(UpdaterP3ATest, TestStopReportingAfterOneWeek) {
   SimulateLaunch(0, "1.0.0.0");
   SimulateLaunch(1, "2.0.0.0");
-  ResetHistogramTester();
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
 
-  SimulateLaunch(8, "2.0.0.0");
+  ResetHistogramTester();
+  SimulateLaunch(7, "2.0.0.0");
   histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
                                         StatusNoUpdate(), 1);
 }
