@@ -14,12 +14,56 @@ struct BuyTokenSearchView: View {
 
   @State private var isPresentingAddAccount: Bool = false
   @State private var isPresentingAddAccountConfirmation: Bool = false
+  @State private var isPresentingNetworkFilter = false
+  @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var savedSelectedBuyToken: BraveWallet.MeldCryptoCurrency?
   @Environment(\.presentationMode) @Binding private var presentationMode
 
+  private var networkFilterButton: some View {
+    Button {
+      self.isPresentingNetworkFilter = true
+    } label: {
+      Image(braveSystemName: "leo.tune")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
+    }
+    .sheet(isPresented: $isPresentingNetworkFilter) {
+      NavigationView {
+        NetworkFilterView(
+          networks: networkFilters,
+          networkStore: networkStore,
+          saveAction: { networkFilters in
+            self.networkFilters = networkFilters
+          }
+        )
+      }
+      .navigationViewStyle(.stack)
+      .onDisappear {
+        networkStore.closeNetworkSelectionStore()
+      }
+    }
+  }
+
+  private var filteredTokensByNetworks: [BraveWallet.MeldCryptoCurrency] {
+    let filterByNetwork = !networkFilters.allSatisfy(\.isSelected)
+    if !filterByNetwork {
+      return buyTokenStore.supportedCryptoCurrencies
+    }
+    let selectedNetworks = networkFilters.filter(\.isSelected)
+    return buyTokenStore.supportedCryptoCurrencies.filter { token in
+      if filterByNetwork,
+        !selectedNetworks.contains(where: { token.chainId == $0.model.chainId })
+      {
+        return false
+      }
+      return true
+    }
+  }
+
   var body: some View {
     TokenList(
-      tokens: buyTokenStore.supportedCryptoCurrencies
+      tokens: filteredTokensByNetworks
     ) { query, token in
       let symbolMatch = token.currencyCode.localizedCaseInsensitiveContains(query)
       let nameMatch = token.name?.localizedCaseInsensitiveContains(query) ?? false
@@ -37,8 +81,15 @@ struct BuyTokenSearchView: View {
       } label: {
         MeldCryptoView(token: token)
       }
+      .modifier(WalletButtonStyleModifier())
     }
     .navigationTitle(Strings.Wallet.searchTitle.capitalized)
+    .toolbar {
+      ToolbarItemGroup(placement: .bottomBar) {
+        networkFilterButton
+        Spacer()
+      }
+    }
     .addAccount(
       keyringStore: keyringStore,
       networkStore: networkStore,
@@ -61,6 +112,11 @@ struct BuyTokenSearchView: View {
         }
       }
     )
+    .onAppear {
+      networkFilters = networkStore.visibleChains.map {
+        .init(isSelected: true, model: $0)
+      }
+    }
   }
 
   private func onAccountCreationNeeded(_ asset: BraveWallet.MeldCryptoCurrency) {

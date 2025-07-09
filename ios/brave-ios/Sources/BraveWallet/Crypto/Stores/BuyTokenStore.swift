@@ -13,15 +13,7 @@ import os.log
 /// A store contains data for buying tokens
 public class BuyTokenStore: ObservableObject {
   /// The current selected token to buy. Default with nil value.
-  @Published var selectedBuyToken: BraveWallet.MeldCryptoCurrency = .init(
-    currencyCode: "ETH",
-    name: "Ethereum",
-    chainCode: "ETH",
-    chainName: "Ethereum",
-    chainId: "0x1",
-    contractAddress: "0x0000000000000000000000000000000000000000",
-    symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
-  )
+  @Published var selectedBuyToken: BraveWallet.MeldCryptoCurrency = WalletConstants.defaultBuyToken
   {
     didSet {
       if selectedBuyToken.coin != selectedAccount?.coin {
@@ -32,7 +24,7 @@ public class BuyTokenStore: ObservableObject {
     }
   }
   @Published var selectedAccount: BraveWallet.AccountInfo?
-  /// The country input to get avaialbe service provider from Meld
+  /// The country input to get available service provider from Meld
   @Published var selectedCountry: BraveWallet.MeldCountry = .init(
     countryCode: "US",
     name: "United States",
@@ -40,25 +32,13 @@ public class BuyTokenStore: ObservableObject {
     regions: nil
   )
   /// The currency user wishes to purchase with
-  @Published var selectedFiatCurrency: BraveWallet.MeldFiatCurrency = .init(
-    currencyCode: "USD",
-    name: "US Dollar",
-    symbolImageUrl: "https://images-currency.meld.io/fiat/USD/symbol.png"
-  )
+  @Published var selectedFiatCurrency: BraveWallet.MeldFiatCurrency = WalletConstants
+    .defaultFiatCurrency
   /// The amount user wishes to purchase
   @Published var buyAmount: String = "100"
   /// The payment type user wishes to use
-  @Published var selectedPaymentType: BraveWallet.MeldPaymentMethod = .init(
-    paymentMethod: "CREDIT_DEBIT_CARD",
-    name: "Credit & Debit Card",
-    paymentType: "CARD",
-    logoImages: .init(
-      darkUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png",
-      darkShortUrl: nil,
-      lightUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png",
-      lightShortUrl: nil
-    )
-  )
+  @Published var selectedPaymentType: BraveWallet.MeldPaymentMethod = WalletConstants
+    .defaultPaymentMethod
   /// Supported service provider for user selected account, crypto currency, fiat currency, country
   @Published var supportedServiceProviders: [BraveWallet.MeldServiceProvider] = []
   /// The supported crypto currencies for purchasing
@@ -173,7 +153,7 @@ public class BuyTokenStore: ObservableObject {
         countries: nil,
         fiatCurrencies: nil,
         cryptoCurrencies: nil,
-        cryptoChains: WalletConstants.supportedChainsForMeld.joined(separator: ","),
+        cryptoChains: nil,
         serviceProviders: nil,
         paymentMethodTypes: nil,
         statuses: nil
@@ -196,7 +176,7 @@ public class BuyTokenStore: ObservableObject {
           return cryptoName.caseInsensitiveCompare(prefilledToken.name) == .orderedSame
             && cryptoChainId.caseInsensitiveCompare(prefilledToken.chainId) == .orderedSame
         } else {
-          return false
+          return $0.displaySymbol.caseInsensitiveCompare(prefilledToken.symbol) == .orderedSame
         }
       })
       guard let matchedCyptoCurrency else {

@@ -57,6 +57,7 @@ struct SwapTokenSearchView: View {
           )
         }
       }
+      .modifier(WalletButtonStyleModifier())
     }
     .navigationTitle(Strings.Wallet.searchTitle)
   }

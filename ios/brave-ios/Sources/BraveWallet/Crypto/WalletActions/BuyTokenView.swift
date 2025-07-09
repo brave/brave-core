@@ -73,7 +73,12 @@ struct BuyTokenView: View {
             )
           ) {
             HStack {
-              MeldCryptoImageView(token: buyTokenStore.selectedBuyToken, length: 26)
+              AssetIconView(
+                token: nil,
+                meldCryptoCurrency: buyTokenStore.selectedBuyToken,
+                shouldShowNetworkIcon: true,
+                length: 26
+              )
               Text(
                 buyTokenStore.selectedBuyToken.name ?? buyTokenStore.selectedBuyToken.displaySymbol
               )
@@ -351,64 +356,16 @@ struct BuyTokenView_Previews: PreviewProvider {
 }
 #endif
 
-struct MeldCryptoImageView: View {
-  let token: BraveWallet.MeldCryptoCurrency
-  @ScaledMetric var length: CGFloat = 40
-  var maxLength: CGFloat?
-  @ScaledMetric var networkSymbolLength: CGFloat = 15
-  var maxNetworkSymbolLength: CGFloat?
-
-  var body: some View {
-    Group {
-      if let urlString = token.symbolImageUrl, let url = URL(string: urlString) {
-        WebImageReader(url: url) { image in
-          if let image = image {
-            Image(uiImage: image)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-          } else {
-            MogogramView(
-              seed: token.contractAddress?.lowercased() ?? token.name ?? "",
-              symbol: token.name ?? ""
-            )
-          }
-        }
-      } else {
-        MogogramView(
-          seed: token.contractAddress?.lowercased() ?? token.name ?? "",
-          symbol: token.name ?? ""
-        )
-      }
-    }
-    .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
-    .overlay(alignment: .bottomTrailing) {
-      if let chainId = token.chainId,
-        let chainIconName = chainId.chainIconName,
-        let chainLogoImage = UIImage(named: chainIconName, in: .module, with: nil)
-      {
-        Image(uiImage: chainLogoImage)
-          .resizable()
-          .overlay(
-            Circle()
-              .stroke(lineWidth: 2)
-              .foregroundColor(Color(braveSystemName: .containerBackground))
-          )
-          .frame(
-            width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
-            height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
-          )
-      }
-    }
-    .accessibilityHidden(true)
-  }
-}
-
 struct MeldCryptoView: View {
   let token: BraveWallet.MeldCryptoCurrency
 
   var body: some View {
     HStack(spacing: 8) {
-      MeldCryptoImageView(token: token)
+      AssetIconView(
+        token: nil,
+        meldCryptoCurrency: token,
+        shouldShowNetworkIcon: true
+      )
       VStack(alignment: .leading) {
         Text(token.name ?? "")
           .fontWeight(.semibold)

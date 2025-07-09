@@ -101,6 +101,7 @@ struct TransactionsListView: View {
                             parsedTransaction: parsedTransaction
                           )
                         }
+                        .modifier(WalletButtonStyleModifier())
                         .contextMenu(menuItems: {
                           if parsedTransaction.transaction.isRetriable {
                             Button {

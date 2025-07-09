@@ -220,6 +220,7 @@ private struct TokenRow: View {
       if let token = token, let network = network {
         AssetIconView(
           token: token,
+          meldCryptoCurrency: nil,
           network: network,
           shouldShowNetworkIcon: true,
           length: assetIconSize,

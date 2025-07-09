@@ -129,6 +129,7 @@ struct DepositTokenView: View {
                   .foregroundColor(Color(.separator))
               }
             }
+            .modifier(WalletButtonStyleModifier())
             .padding(.vertical, 6)
             .accessibilityElement()
             .accessibilityLabel(accessibilityLabel(viewModel))

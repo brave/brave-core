@@ -524,6 +524,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: userAssetManager,
       assetDetailType: assetDetailType
     )

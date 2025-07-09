@@ -26,14 +26,14 @@ struct AssetIcon: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
           } else {
-            MogogramView(
+            MonogramView(
               seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased(),
               symbol: token.symbol
             )
           }
         }
       } else {
-        MogogramView(
+        MonogramView(
           seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased(),
           symbol: token.symbol
         )
@@ -42,7 +42,7 @@ struct AssetIcon: View {
   }
 }
 
-struct MogogramView: View {
+struct MonogramView: View {
   let seed: String
   let symbol: String
   @State private var monogramSize: CGSize = .zero
@@ -75,7 +75,8 @@ struct MogogramView: View {
 /// By default, creating an `AssetIconView` will result in a dynamically sized icon based
 /// on the users size category.
 struct AssetIconView: View {
-  var token: BraveWallet.BlockchainToken
+  var token: BraveWallet.BlockchainToken?
+  var meldCryptoCurrency: BraveWallet.MeldCryptoCurrency?
   var network: BraveWallet.NetworkInfo?
   /// If we should show the network logo on non-native assets. NetworkInfo is required.
   var shouldShowNetworkIcon: Bool = false
@@ -85,30 +86,76 @@ struct AssetIconView: View {
   var maxNetworkSymbolLength: CGFloat?
 
   var body: some View {
-    AssetIcon(token: token, network: network)
+    if let token {
+      AssetIcon(token: token, network: network)
+        .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
+        .overlay(alignment: .bottomTrailing) {
+          if let network,
+            shouldShowNetworkIcon,  // explicitly show/not show network logo
+            // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
+            !network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName,
+            let image = network.networkLogoImage
+          {
+            Image(uiImage: image)
+              .resizable()
+              .overlay(
+                Circle()
+                  .stroke(lineWidth: 2)
+                  .foregroundColor(Color(braveSystemName: .containerBackground))
+              )
+              .frame(
+                width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
+                height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
+              )
+          }
+        }
+        .accessibilityHidden(true)
+    } else if let meldCryptoCurrency {
+      Group {
+        if let urlString = meldCryptoCurrency.symbolImageUrl, let url = URL(string: urlString) {
+          WebImageReader(url: url) { image in
+            if let image = image {
+              Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            } else {
+              MonogramView(
+                seed: meldCryptoCurrency.contractAddress?.lowercased() ?? meldCryptoCurrency.name
+                  ?? "",
+                symbol: meldCryptoCurrency.name ?? ""
+              )
+            }
+          }
+        } else {
+          MonogramView(
+            seed: meldCryptoCurrency.contractAddress?.lowercased() ?? meldCryptoCurrency.name ?? "",
+            symbol: meldCryptoCurrency.name ?? ""
+          )
+        }
+      }
       .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
-      .overlay(tokenNetworkLogo, alignment: .bottomTrailing)
+      .overlay(alignment: .bottomTrailing) {
+        if let chainId = meldCryptoCurrency.chainId,
+          let chainIconName = chainId.chainIconName,
+          let chainLogoImage = UIImage(named: chainIconName, in: .module, with: nil),
+          shouldShowNetworkIcon
+        {
+          Image(uiImage: chainLogoImage)
+            .resizable()
+            .overlay(
+              Circle()
+                .stroke(lineWidth: 2)
+                .foregroundColor(Color(braveSystemName: .containerBackground))
+            )
+            .frame(
+              width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
+              height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
+            )
+        }
+      }
       .accessibilityHidden(true)
-  }
-
-  @ViewBuilder private var tokenNetworkLogo: some View {
-    if let network,
-      shouldShowNetworkIcon,  // explicitly show/not show network logo
-      // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
-      !network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName,
-      let image = network.networkLogoImage
-    {
-      Image(uiImage: image)
-        .resizable()
-        .overlay(
-          Circle()
-            .stroke(lineWidth: 2)
-            .foregroundColor(Color(braveSystemName: .containerBackground))
-        )
-        .frame(
-          width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
-          height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
-        )
+    } else {
+      EmptyView()
     }
   }
 }
@@ -116,10 +163,14 @@ struct AssetIconView: View {
 #if DEBUG
 struct AssetIconView_Previews: PreviewProvider {
   static var previews: some View {
-    AssetIconView(token: .previewToken, network: .mockMainnet)
-      .previewLayout(.sizeThatFits)
-      .padding()
-      .previewSizeCategories()
+    AssetIconView(
+      token: .previewToken,
+      meldCryptoCurrency: nil,
+      network: .mockMainnet
+    )
+    .previewLayout(.sizeThatFits)
+    .padding()
+    .previewSizeCategories()
     AssetIconView(
       token: .init(
         contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
@@ -141,6 +192,7 @@ struct AssetIconView_Previews: PreviewProvider {
         coin: .eth,
         isShielded: false
       ),
+      meldCryptoCurrency: nil,
       network: .mockMainnet
     )
     .previewLayout(.sizeThatFits)
@@ -240,6 +292,7 @@ struct StackedAssetIconsView: View {
         if let bottomToken {
           AssetIconView(
             token: bottomToken,
+            meldCryptoCurrency: nil,
             network: network,
             shouldShowNetworkIcon: false,
             length: assetIconLength,
@@ -262,6 +315,7 @@ struct StackedAssetIconsView: View {
         if let topToken {
           AssetIconView(
             token: topToken,
+            meldCryptoCurrency: nil,
             network: network,
             shouldShowNetworkIcon: false,
             length: assetIconLength,

@@ -22,37 +22,65 @@ struct BuyProviderSelectionView: View {
   private let maxIconSize: CGFloat = 80.0
 
   var body: some View {
-    List {
-      Section(
-        header: WalletListHeaderView(
-          title: Text(Strings.Wallet.providerSelectionSectionHeader)
-        )
-      ) {
-        ForEach(sortedQuotes.indices, id: \.self) { index in
-          if let quote = sortedQuotes[safe: index],
-            let provider = providers.first(where: {
-              $0.serviceProvider == quote.serviceProvider
-            })
-          {
-            ProviderView(
-              buyTokenStore: buyTokenStore,
-              quote: quote,
-              provider: provider,
-              isBestOption: index == 0
+    Group {
+      if sortedQuotes.isEmpty {
+        VStack {
+          Image(braveSystemName: "leo.info.outline")
+            .resizable()
+            .frame(width: 24, height: 24)
+            .padding(16)
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+            .background(
+              Color(
+                braveSystemName: .pageBackground
+              ).clipShape(.circle)
             )
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.providerListNoProviderTitle,
+              buyTokenStore.selectedBuyToken.displaySymbol
+            )
+          )
+          .fontWeight(.semibold)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          Text(Strings.Wallet.providerListNoProviderDescription)
+            .font(.footnote)
+            .foregroundColor(Color(braveSystemName: .textTertiary))
+        }
+      } else {
+        List {
+          Section(
+            header: WalletListHeaderView(
+              title: Text(Strings.Wallet.providerSelectionSectionHeader)
+            )
+          ) {
+            ForEach(sortedQuotes.indices, id: \.self) { index in
+              if let quote = sortedQuotes[safe: index],
+                let provider = providers.first(where: {
+                  $0.serviceProvider == quote.serviceProvider
+                })
+              {
+                ProviderView(
+                  buyTokenStore: buyTokenStore,
+                  quote: quote,
+                  provider: provider,
+                  isBestOption: index == 0
+                )
+              }
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .listStyle(InsetGroupedListStyle())
+        .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       }
     }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.providerSelectionScreenTitle)
   }
 }
 
-struct ProviderView: View {
+private struct ProviderView: View {
   let buyTokenStore: BuyTokenStore
   let quote: BraveWallet.MeldCryptoQuote
   let provider: BraveWallet.MeldServiceProvider
@@ -126,21 +154,19 @@ struct ProviderView: View {
           }
           Spacer()
           if isBestOption {
-            HStack {
-              Image(braveSystemName: "leo.thumb.up")
-              Text(Strings.Wallet.providerListBestOption)
-            }
-            .padding(4)
-            .font(.caption2.weight(.semibold))
-            .foregroundColor(Color(braveSystemName: .green60))
-            .background(Color(braveSystemName: .green10))
-            .cornerRadius(4)
+            Label(Strings.Wallet.providerListBestOption, braveSystemImage: "leo.thumb.up")
+              .padding(4)
+              .font(.caption2.weight(.semibold))
+              .foregroundColor(Color(braveSystemName: .green60))
+              .background(Color(braveSystemName: .green10))
+              .cornerRadius(4)
           }
           Image(braveSystemName: isExpanded ? "leo.carat.up" : "leo.carat.down")
             .animation(.default, value: isExpanded)
         }
         .padding(.vertical, 10)
       }
+      .modifier(WalletButtonStyleModifier())
       if isExpanded {
         VStack {
           Group {

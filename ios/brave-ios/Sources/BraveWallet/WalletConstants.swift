@@ -130,13 +130,6 @@ public struct WalletConstants {
     return result
   }
 
-  /// All of currently supported `OnRampProvider`s.
-  /// Use `OnRampProvider.allSupportedOnRampProviders` to get providers available for current device locale.
-  /// Exclude `.ramp` due to #44542
-  static let supportedOnRampProviders: OrderedSet<BraveWallet.OnRampProvider> = [
-    .sardine, .stripe, .coinbase, .transak,
-  ]
-
   /// The supported Ethereum Name Service (ENS) extensions
   static let supportedENSExtensions = [".eth"]
   /// The supported Solana Name Service (SNS) extensions
@@ -313,4 +306,35 @@ public struct WalletConstants {
 
   /// The link for users to open Meld Term of Use site
   static let meldTermOfUseLink: URL = URL(string: "https://www.meld.io/terms-of-use")!
+
+  /// The default selected buy token
+  static let defaultBuyToken: BraveWallet.MeldCryptoCurrency = .init(
+    currencyCode: "ETH",
+    name: "Ethereum",
+    chainCode: "ETH",
+    chainName: "Ethereum",
+    chainId: "0x1",
+    contractAddress: "0x0000000000000000000000000000000000000000",
+    symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
+  )
+
+  /// The default buy fiat currency
+  static let defaultFiatCurrency: BraveWallet.MeldFiatCurrency = .init(
+    currencyCode: "USD",
+    name: "US Dollar",
+    symbolImageUrl: "https://images-currency.meld.io/fiat/USD/symbol.png"
+  )
+
+  /// The default buy payment method
+  static let defaultPaymentMethod: BraveWallet.MeldPaymentMethod = .init(
+    paymentMethod: "CREDIT_DEBIT_CARD",
+    name: "Credit & Debit Card",
+    paymentType: "CARD",
+    logoImages: .init(
+      darkUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png",
+      darkShortUrl: nil,
+      lightUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png",
+      lightShortUrl: nil
+    )
+  )
 }

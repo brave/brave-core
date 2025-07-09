@@ -160,6 +160,7 @@ extension AssetDetailStore {
       swapService: MockSwapService(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
       userAssetManager: TestableWalletUserAssetManager(),
       assetDetailType: .blockchainToken(.previewToken)
     )
