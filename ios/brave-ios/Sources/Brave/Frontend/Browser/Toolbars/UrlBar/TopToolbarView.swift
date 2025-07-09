@@ -43,6 +43,7 @@ protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressQrCodeButton(_ urlBar: TopToolbarView)
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView)
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView)
+  func topToolbarIsShieldsEnabled(_ topToolbar: TopToolbarView, for url: URL?) -> Bool
 }
 
 class TopToolbarView: UIView, ToolbarProtocol {
@@ -875,9 +876,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     var shieldIcon = "brave.logo"
     let shieldsOffIcon = "brave.logo.greyscale"
     if let currentURL = currentURL, currentURL.isWebPage(includeDataURIs: false) {
-      let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-      let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
-      if domain.areAllShieldsOff {
+      let isShieldsEnabled =
+        delegate?.topToolbarIsShieldsEnabled(self, for: locationView.url) ?? true
+      if !isShieldsEnabled {
         shieldIcon = shieldsOffIcon
       }
       if currentURL.isLocal || currentURL.isLocalUtility {

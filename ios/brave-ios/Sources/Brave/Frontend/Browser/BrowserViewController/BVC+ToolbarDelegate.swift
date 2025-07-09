@@ -276,6 +276,20 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
+  func topToolbarIsShieldsEnabled(_ topToolbar: TopToolbarView, for url: URL?) -> Bool {
+    guard let url else { return true }
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      return profileController.braveShieldsUtils.isBraveShieldsEnabled(
+        for: url,
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
+    } else {
+      let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
+      return !domain.areAllShieldsOff
+    }
+  }
+
   @MainActor private func submitValidURL(
     _ text: String,
     isUserDefinedURLNavigation: Bool
@@ -409,7 +423,8 @@ extension BrowserViewController: TopToolbarDelegate {
         rootViewController: ShieldsPanelViewController(
           url: url,
           tab: selectedTab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
+          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate),
+          braveShieldsUtils: profileController.braveShieldsUtils
         ) { [weak self, weak selectedTab] action in
           switch action {
           case .navigate(let target, let dismiss):

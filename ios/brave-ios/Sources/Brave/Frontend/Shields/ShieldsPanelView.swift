@@ -38,11 +38,17 @@ struct ShieldsPanelView: View {
     url: URL,
     tab: some TabState,
     domain: Domain,
+    braveShieldsUtils: BraveShieldsUtilsIOS,
     callback: @escaping (Action) -> Void
   ) {
     self.url = url
     self.tab = tab
-    self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
+    self.viewModel = ShieldsSettingsViewModel(
+      tab: tab,
+      domain: domain,
+      url: url,
+      braveShieldsUtils: braveShieldsUtils
+    )
     self.actionCallback = callback
     self.displayHost =
       "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString))"
@@ -357,12 +363,14 @@ class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, Popover
     url: URL,
     tab: some TabState,
     domain: Domain,
+    braveShieldsUtils: BraveShieldsUtilsIOS,
     callback: @escaping (ShieldsPanelView.Action) -> Void
   ) {
     let shieldsPanelView = ShieldsPanelView(
       url: url,
       tab: tab,
       domain: domain,
+      braveShieldsUtils: braveShieldsUtils,
       callback: callback
     )
     self.shieldsPanelView = shieldsPanelView

@@ -505,6 +505,7 @@ var braveTarget: PackageDescription.Target = .target(
     "PlaylistUI",
     "BrowserMenu",
     "Web",
+    "BraveShields",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",
