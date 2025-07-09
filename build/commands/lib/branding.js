@@ -1,3 +1,7 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const path = require('path')
 const config = require('./config')
@@ -109,24 +113,12 @@ exports.update = () => {
     path.join(chromeAppDir, 'theme', 'brave'),
   ])
   fileMap.add([
-    path.join(braveAppDir, 'theme', 'brave'),
-    path.join(chromeAppDir, 'theme', 'chromium'),
-  ])
-  fileMap.add([
     path.join(braveAppDir, 'theme', 'default_100_percent', 'brave'),
     path.join(chromeAppDir, 'theme', 'default_100_percent', 'brave'),
   ])
   fileMap.add([
     path.join(braveAppDir, 'theme', 'default_200_percent', 'brave'),
     path.join(chromeAppDir, 'theme', 'default_200_percent', 'brave'),
-  ])
-  fileMap.add([
-    path.join(braveAppDir, 'theme', 'default_100_percent', 'brave'),
-    path.join(chromeAppDir, 'theme', 'default_100_percent', 'chromium'),
-  ])
-  fileMap.add([
-    path.join(braveAppDir, 'theme', 'default_200_percent', 'brave'),
-    path.join(chromeAppDir, 'theme', 'default_200_percent', 'chromium'),
   ])
   fileMap.add([
     path.join(braveAppDir, 'theme', 'default_100_percent', 'common'),
@@ -141,12 +133,7 @@ exports.update = () => {
     path.join(chromeComponentsDir, 'resources', 'default_100_percent'),
   ])
   fileMap.add([
-    path.join(
-      braveComponentsDir,
-      'resources',
-      'default_100_percent',
-      'brave',
-    ),
+    path.join(braveComponentsDir, 'resources', 'default_100_percent', 'brave'),
     path.join(
       chromeComponentsDir,
       'resources',
@@ -159,12 +146,7 @@ exports.update = () => {
     path.join(chromeComponentsDir, 'resources', 'default_200_percent'),
   ])
   fileMap.add([
-    path.join(
-      braveComponentsDir,
-      'resources',
-      'default_200_percent',
-      'brave',
-    ),
+    path.join(braveComponentsDir, 'resources', 'default_200_percent', 'brave'),
     path.join(
       chromeComponentsDir,
       'resources',
@@ -219,20 +201,10 @@ exports.update = () => {
   ])
   fileMap.add([
     path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
-    path.join(
-      chromeBrowserResourcesDir,
-      'signin',
-      'profile_picker',
-      'images',
-    ),
+    path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images'),
   ])
   fileMap.add([
-    path.join(
-      braveBrowserResourcesDir,
-      'side_panel',
-      'reading_list',
-      'images',
-    ),
+    path.join(braveBrowserResourcesDir, 'side_panel', 'reading_list', 'images'),
     path.join(
       chromeBrowserResourcesDir,
       'side_panel',
@@ -377,9 +349,9 @@ exports.update = () => {
       )
       sourceFile = explicitSourceFiles[destinationFile] || sourceFile
       if (
-        !fs.existsSync(destinationFile) ||
-        util.calculateFileChecksum(sourceFile) !==
-        util.calculateFileChecksum(destinationFile)
+        !fs.existsSync(destinationFile)
+        || util.calculateFileChecksum(sourceFile)
+          !== util.calculateFileChecksum(destinationFile)
       ) {
         fs.copySync(sourceFile, destinationFile)
         console.log(sourceFile + ' copied to ' + destinationFile)
@@ -423,8 +395,8 @@ exports.update = () => {
 
       for (const untrackedChromiumPath of untrackedChromiumPaths) {
         if (
-          isChildOf(untrackedChromiumPath, suspectedDir) &&
-          !braveOverwrittenFiles.has(untrackedChromiumPath)
+          isChildOf(untrackedChromiumPath, suspectedDir)
+          && !braveOverwrittenFiles.has(untrackedChromiumPath)
         ) {
           fs.removeSync(untrackedChromiumPath)
           console.log(`Deleted not listed file: ${untrackedChromiumPath}`)
@@ -734,10 +706,20 @@ exports.update = () => {
       'res',
     )
 
-    const uiAndroidResSource =
-      path.join(config.braveCoreDir, "ui", "android", "java", "res")
-    const uiAndroidResDest =
-      path.join(config.srcDir, "ui", "android", "java", "res")
+    const uiAndroidResSource = path.join(
+      config.braveCoreDir,
+      'ui',
+      'android',
+      'java',
+      'res',
+    )
+    const uiAndroidResDest = path.join(
+      config.srcDir,
+      'ui',
+      'android',
+      'java',
+      'res',
+    )
 
     // Mapping for copying Brave's Android resource into chromium folder.
     const copyAndroidResourceMapping = {
@@ -757,9 +739,7 @@ exports.update = () => {
       [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
       [androidBrowserUiOmniboxResSource]: [androidBrowserUiOmniboxResDest],
       [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest],
-      [androidBrowserHubInternalResSource]: [
-        androidBrowserHubInternalResDest,
-      ],
+      [androidBrowserHubInternalResSource]: [androidBrowserHubInternalResDest],
       [uiAndroidResSource]: [uiAndroidResDest],
     }
 
@@ -780,9 +760,9 @@ exports.update = () => {
               path.relative(sourcePath, androidSourceFile),
             )
             if (
-              !fs.existsSync(destinationFile) ||
-              util.calculateFileChecksum(androidSourceFile) !==
-              util.calculateFileChecksum(destinationFile)
+              !fs.existsSync(destinationFile)
+              || util.calculateFileChecksum(androidSourceFile)
+                !== util.calculateFileChecksum(destinationFile)
             ) {
               fs.copySync(androidSourceFile, destinationFile)
             }

@@ -38,7 +38,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   checkVersionsMatch()
 
   util.touchOverriddenFiles()
-  branding.update();
+  branding.update()
   await util.buildNativeRedirectCC()
 
   if (options.prepare_only) {
