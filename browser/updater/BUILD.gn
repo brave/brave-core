@@ -17,7 +17,7 @@ if (enable_omaha4) {
       "features.cc",
       "features.h",
     ]
-    deps = [ "//base" ]
+    public_deps = [ "//base" ]
   }
 
   source_set("p3a") {
@@ -26,7 +26,7 @@ if (enable_omaha4) {
       "updater_p3a.h",
     ]
 
-    deps = [
+    public_deps = [
       "//base",
       "//components/prefs",
     ]
@@ -38,8 +38,10 @@ if (enable_omaha4) {
 
     deps = [
       ":p3a",
+      "//base",
       "//base/test:test_support",
       "//components/prefs:test_support",
+      "//testing/gtest",
     ]
   }
 }

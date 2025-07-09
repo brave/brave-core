@@ -22,17 +22,6 @@ class BraveBrowserMainExtraPartsP3A : public ChromeBrowserMainExtraParts {
 
   // ChromeBrowserMainExtraParts override:
   void PostBrowserStart() override;
-
-  // For tests:
-  bool WasPostBrowserStartCalled() const {
-    return was_post_browser_start_called_;
-  }
-
- private:
-  void ReportLaunch();
-  bool was_post_browser_start_called_;
-
-  base::WeakPtrFactory<BraveBrowserMainExtraPartsP3A> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_P3A_H_

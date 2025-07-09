@@ -80,8 +80,4 @@ void ReportLaunch(base::Time now,
   UMA_HISTOGRAM_ENUMERATION(kUpdateStatusHistogramName, status);
 }
 
-void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs) {
-  prefs->SetString(kLastLaunchVersionPref, version);
-}
-
 }  // namespace brave_updater

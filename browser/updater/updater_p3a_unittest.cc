@@ -30,16 +30,24 @@ class UpdaterP3ATest : public ::testing::TestWithParam<bool> {
 
   bool IsUsingOmaha4() const { return GetParam(); }
 
-  void SimulateLaunch(int day, std::string current_version);
-  void ExpectReportedUpdate();
-  void ExpectReportedNoUpdate();
+  void SimulateLaunch(int day, std::string current_version) {
+    base::Time now = base::Time::FromTimeT(1) + base::Days(day);
+    ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
+  }
+
+  UpdateStatus StatusUpdate() {
+    return IsUsingOmaha4() ? UpdateStatus::kUpdatedWithOmaha4
+                           : UpdateStatus::kUpdatedWithLegacy;
+  }
+
+  UpdateStatus StatusNoUpdate() {
+    return IsUsingOmaha4() ? UpdateStatus::kNoUpdateWithOmaha4
+                           : UpdateStatus::kNoUpdateWithLegacy;
+  }
 
   void ResetHistogramTester() {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
-
- private:
-  void ExpectReportedStatus(UpdateStatus status);
 };
 
 TEST_P(UpdaterP3ATest, TestNoReportInInitialLaunch) {
@@ -47,34 +55,68 @@ TEST_P(UpdaterP3ATest, TestNoReportInInitialLaunch) {
   histogram_tester_->ExpectTotalCount(kUpdateStatusHistogramName, 0);
 }
 
-TEST_P(UpdaterP3ATest, TestReportsNoUpdate) {
+TEST_P(UpdaterP3ATest, TestReportNoUpdateIfNoVersionChange) {
   SimulateLaunch(0, "1.0.0.0");
   SimulateLaunch(1, "1.0.0.0");
-  ExpectReportedNoUpdate();
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusNoUpdate(), 1);
 }
 
-TEST_P(UpdaterP3ATest, TestReportsUpdate) {
+TEST_P(UpdaterP3ATest, TestReportsUpdateIfVersionChanges) {
+  // patch version change
   SimulateLaunch(0, "1.0.0.0");
-  SimulateLaunch(1, "2.0.0.0");
-  ExpectReportedUpdate();
-}
-
-TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeek) {
-  SimulateLaunch(0, "1.0.0.0");
-  SimulateLaunch(1, "2.0.0.0");
+  SimulateLaunch(1, "1.0.0.1");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
   ResetHistogramTester();
 
-  SimulateLaunch(7, "2.0.0.0");
-  ExpectReportedUpdate();
+  // build version change
+  SimulateLaunch(0, "1.0.0.0");
+  SimulateLaunch(1, "1.0.1.0");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
+  ResetHistogramTester();
+
+  // minor version change
+  SimulateLaunch(0, "2.0.0.0");
+  SimulateLaunch(1, "2.1.0.0");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
+  ResetHistogramTester();
+
+  // major version change
+  SimulateLaunch(0, "2.0.0.0");
+  SimulateLaunch(1, "3.0.0.0");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
+  ResetHistogramTester();
+
+  // Install older version
+  SimulateLaunch(0, "2.0.0.0");
+  SimulateLaunch(1, "1.0.0.0");
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusUpdate(), 1);
+  ResetHistogramTester();
 }
 
-TEST_P(UpdaterP3ATest, TestStopsReportingAfterOneWeek) {
+TEST_P(UpdaterP3ATest, TestReportsUpdateForOneWeekIfVersionChanges) {
+  for (int i = 1; i <= 7; i++) {
+    SimulateLaunch(0, "1.0.0.0");
+    SimulateLaunch(i, "2.0.0.0");
+    histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                          StatusUpdate(), 1);
+    ResetHistogramTester();
+  }
+}
+
+TEST_P(UpdaterP3ATest, TestStopReportingAfterOneWeek) {
   SimulateLaunch(0, "1.0.0.0");
   SimulateLaunch(1, "2.0.0.0");
   ResetHistogramTester();
 
   SimulateLaunch(8, "2.0.0.0");
-  ExpectReportedNoUpdate();
+  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName,
+                                        StatusNoUpdate(), 1);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -85,29 +127,5 @@ INSTANTIATE_TEST_SUITE_P(
     [](const ::testing::TestParamInfo<bool>& info) {
       return info.param ? "Omaha4" : "Legacy";
     });
-
-void UpdaterP3ATest::SimulateLaunch(int day, std::string current_version) {
-  base::Time now = base::Time::FromTimeT(1) + base::Days(day);
-  ReportLaunch(now, current_version, IsUsingOmaha4(), &local_state_);
-}
-
-void UpdaterP3ATest::ExpectReportedUpdate() {
-  using enum UpdateStatus;
-  UpdateStatus status =
-      IsUsingOmaha4() ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
-  ExpectReportedStatus(status);
-}
-
-void UpdaterP3ATest::ExpectReportedNoUpdate() {
-  using enum UpdateStatus;
-  UpdateStatus status =
-      IsUsingOmaha4() ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
-  ExpectReportedStatus(status);
-}
-
-void UpdaterP3ATest::ExpectReportedStatus(UpdateStatus status) {
-  histogram_tester_->ExpectUniqueSample(kUpdateStatusHistogramName, status, 1);
-  ResetHistogramTester();
-}
 
 }  // namespace brave_updater

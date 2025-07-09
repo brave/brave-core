@@ -1,6 +1,0 @@
-include_rules = [
-  "+chrome/browser/browser_process.h",
-  "+chrome/test/base/in_process_browser_test.h",
-  "+components/prefs",
-  "+content/public/test/browser_test.h",
-]

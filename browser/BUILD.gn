@@ -80,15 +80,4 @@ source_set("unit_tests") {
       "//testing/gtest",
     ]
   }
-
-  if (enable_omaha4) {
-    sources += [ "brave_browser_main_extra_parts_p3a_unittest.cc" ]
-    deps += [
-      "//base/test:test_support",
-      "//brave/browser/updater:p3a",
-      "//chrome/test:test_support",
-      "//content/test:test_support",
-      "//testing/gtest",
-    ]
-  }
 }

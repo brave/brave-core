@@ -43,8 +43,6 @@ void ReportLaunch(base::Time now,
 // Register the prefs for use by ReportLaunch(...) above.
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-void SetLastLaunchVersionForTesting(std::string version, PrefService* prefs);
-
 }  // namespace brave_updater
 
 #endif  // BRAVE_BROWSER_UPDATER_UPDATER_P3A_H_
