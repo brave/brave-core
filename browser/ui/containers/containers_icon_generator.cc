@@ -45,11 +45,13 @@ const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
       return kLeoContainerMessagingIcon;
   }
 
-  if (icon < mojom::Icon::kMinValue || icon >= mojom::Icon::kMaxValue) {
+  if (icon < mojom::Icon::kMinValue || icon > mojom::Icon::kMaxValue) {
     // Since icon is read from prefs and can be synced from a newer version
     // with a new set of icons, we return a default icon for compatibility.
     return GetVectorIconFromIconType(mojom::Icon::kDefault);
   }
+
+  NOTREACHED() << "Unknown icon type: " << static_cast<int>(icon);
 }
 
 class ContainersIconImageSource : public gfx::CanvasImageSource {
