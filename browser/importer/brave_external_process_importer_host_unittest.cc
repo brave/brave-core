@@ -197,8 +197,8 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
         return extensions_import::ExtensionImportStatus::kOk;
       });
 
-  extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
-      extension_installer;
+  auto installer_override = extensions_import::ExtensionsImporter::
+      OverrideExtensionInstallerForTesting(&extension_installer);
 
   LaunchExtensionsImportAndWait(source_profile);
 
@@ -216,7 +216,4 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[2], "leveldb").empty());
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[3], "blob").empty());
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[3], "leveldb").empty());
-
-  extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting()
-      .Reset();
 }
