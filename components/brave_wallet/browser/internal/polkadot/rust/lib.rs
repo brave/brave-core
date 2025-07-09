@@ -1,3 +1,5 @@
+use schnorrkel::Signature;
+
 extern crate cxx;
 extern crate schnorrkel;
 
@@ -11,6 +13,8 @@ mod ffi {
 
         fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPairResult>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
+        fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64];
+        fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
         fn is_ok(self: &CxxSchnorrkelKeyPairResult) -> bool;
         fn unwrap(self: &mut CxxSchnorrkelKeyPairResult) -> Box<CxxSchnorrkelKeyPair>;
     }
@@ -32,6 +36,8 @@ struct SchnorrkelKeyPair {
     kp: schnorrkel::Keypair,
 }
 
+const SIGNING_CTX: &'static [u8] = b"substrate";
+
 fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPairResult> {
     let kp = schnorrkel::MiniSecretKey::from_bytes(bytes)
         .map(|kp| {
@@ -44,23 +50,24 @@ fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPairR
     Box::new(CxxSchnorrkelKeyPairResult(kp))
 }
 
-// fn use_keypair(p: &Box<CxxSchnorrkelKeyPairResult>) {
-//     assert!(
-//         <std::result::Result<Option<CxxSchnorrkelKeyPair>, Error> as
-// Clone>::clone(&(&p.0))             .unwrap()
-//             .unwrap()
-//             .0
-//             .kp
-//             .secret
-//             .to_bytes()
-//             .len()
-//             > 0
-//     );
-// }
-
 impl CxxSchnorrkelKeyPair {
     fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32] {
         self.0.kp.public.to_bytes()
+    }
+
+    fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64] {
+        self.0.kp.sign_simple(SIGNING_CTX, msg).to_bytes()
+    }
+
+    fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool {
+        let Ok(signature) = Signature::from_bytes(sig_bytes) else {
+            return false;
+        };
+
+        match self.0.kp.verify_simple(SIGNING_CTX, msg, &signature) {
+            Ok(_) => true,
+            _ => false,
+        }
     }
 }
 

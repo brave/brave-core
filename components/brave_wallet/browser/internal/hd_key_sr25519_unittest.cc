@@ -4,7 +4,7 @@
 
 namespace brave_wallet {
 
-TEST(HDKeySr25519, GenerateFromSeed) {
+TEST(HDKeySr25519, Basics) {
   auto kpresult = HDKeySr25519::GenerateFromSeed({});
   EXPECT_FALSE(kpresult);
 
@@ -20,6 +20,20 @@ TEST(HDKeySr25519, GenerateFromSeed) {
 
   auto public_key = kpresult->GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
+
+  unsigned char const message[] = {1, 2, 3, 4, 5, 6};
+  auto sig = kpresult->SignMessage(message);
+
+  auto is_verified = kpresult->VerifyMessage(sig, message);
+  EXPECT_TRUE(is_verified);
+
+  std::array<uint8_t, 64> bad_sig = {};
+  is_verified = kpresult->VerifyMessage(bad_sig, message);
+  EXPECT_FALSE(is_verified);
+
+  std::array<uint8_t, 64> bad_message = {};
+  is_verified = kpresult->VerifyMessage(sig, bad_message);
+  EXPECT_FALSE(is_verified);
 }
 
 }  // namespace brave_wallet
