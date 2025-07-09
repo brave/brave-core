@@ -15,21 +15,15 @@ mangle(
 
     const headingEl = firstSpCard.querySelector('sp-heading h2[slot="heading"]')
     if (!headingEl) {
-      throw new Error('[Customize Chrome > Toolbar] <sp-heading h2[slot="heading"]> is gone.')
+      throw new Error(
+        '[Customize Chrome > Toolbar] <sp-heading h2[slot="heading"]> is gone.',
+      )
     }
 
-    // Create a wrapper div element to hold the icon and h2 together.
-    headingEl.parentElement!.insertAdjacentHTML(
+    headingEl.insertAdjacentHTML(
       'afterbegin',
-      /* html */ `
-      <div class="heading-icon-and-text" slot="heading">
-        <leo-icon name="window-edit" class="heading-icon"></leo-icon>
-      </div>`,
+      /* html */ `<leo-icon name="window-edit"></leo-icon>`,
     )
-
-    // Append the original heading element
-    const wrapperEl = element.querySelector('.heading-icon-and-text')!
-    wrapperEl.appendChild(headingEl)
   },
   /* omit selector to access the top level node */
 )
