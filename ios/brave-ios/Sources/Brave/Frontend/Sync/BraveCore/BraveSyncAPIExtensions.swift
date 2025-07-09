@@ -28,10 +28,6 @@ extension BraveSyncAPI {
 
   public static let seedByteLength = 32
 
-  public var isInSyncGroup: Bool {
-    return Preferences.Chromium.syncEnabled.value
-  }
-
   /// Property that determines if the local sync chain should be resetted
   var shouldLeaveSyncGroup: Bool {
     guard isInSyncGroup else {
