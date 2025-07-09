@@ -6,22 +6,26 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLER_BROWSER_POLKADOT_RUST_SR25519_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLER_BROWSER_POLKADOT_RUST_SR25519_H_
 
+#include <array>
 #include <memory>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/polkadot/rust/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
-namespace brave_wallet {
+namespace brave_wallet::schnorrkel {
 
-namespace polkadot {}  // namespace polkadot
+using SR25519PublicKey = std::array<uint8_t, 32>;
 
-class HDKeySr25519 {
+class SchnorrkelKeyPair {
  public:
-  static std::unique_ptr<HDKeySr25519> GenerateFromSeed(
+  virtual ~SchnorrkelKeyPair() = default;
+
+  static std::unique_ptr<SchnorrkelKeyPair> GenerateFromSeed(
       base::span<const uint8_t> seed);
+
+  virtual SR25519PublicKey GetPublicKey() = 0;
 };
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::schnorrkel
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLER_BROWSER_POLKADOT_RUST_SR25519_H_
