@@ -262,7 +262,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"rewardsConnectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
                {"rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
                {"rewardsEarningsTitle", IDS_REWARDS_ESTIMATED_EARNINGS_TITLE},
-               {"rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT},
+               {"rewardsEarningInfoText", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
                {"rewardsHowDoesItWork", IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK},
                {"rewardsLearnMore", IDS_REWARDS_LEARN_MORE},
                {"rewardsManageAds", IDS_REWARDS_WALLET_MANAGE_ADS},
@@ -692,7 +692,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"walletViewStatement", IDS_REWARDS_WALLET_VIEW_STATEMENT},
                {"walletVerified", IDS_REWARDS_WALLET_VERIFIED},
                {"walletBalanceTitle", IDS_REWARDS_WALLET_BALANCE_TITLE},
-               {"walletEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT},
+               {"walletEarningInfoText", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
 
                {"loading", IDS_BRAVE_REWARDS_LOADING_LABEL},
            }},

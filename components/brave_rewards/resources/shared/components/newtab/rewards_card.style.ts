@@ -210,7 +210,6 @@ export const earningsHeaderText = styled.div`
 
 export const earningsInfo = styled.span`
   position: relative;
-  display: none;
 
   .icon {
     height: 12px;
@@ -255,24 +254,6 @@ export const earningsTooltip = styled.div.attrs({ 'data-theme': 'light' })`
     height: 15px;
     width: 15px;
     transform: rotate(45deg);
-  }
-`
-
-export const manageAds = styled.div.attrs({ 'data-theme': 'light' })`
-  margin-top: 14px;
-
-  a {
-    color: ${color.text.interactive};
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    text-decoration: none;
-  }
-
-  .icon {
-    height: 9px;
-    width: auto;
-    color: ${color.icon.interactive};
   }
 `
 

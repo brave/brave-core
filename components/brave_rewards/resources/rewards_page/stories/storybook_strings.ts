@@ -30,6 +30,7 @@ export const localeStrings: { [K in StringKey]: string }  = {
   adsSettingsSubdivisionAutoLabel: 'Auto-detect',
   adsSettingsTitle: 'Ads settings',
   adsSettingsText: 'Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.',
+  adsViewedTooltip: 'This shows the number of Brave Ads you\'ve seen this month that qualify for earning BAT.',
   adTypeInlineContentLabel: 'Brave News ads',
   adTypeNewTabPageLabel: 'New tab page ads',
   adTypeNotificationLabel: 'Notification ads',
