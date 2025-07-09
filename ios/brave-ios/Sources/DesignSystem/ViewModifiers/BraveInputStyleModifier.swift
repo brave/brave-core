@@ -6,13 +6,14 @@
 import SwiftUI
 import UIKit
 
-struct BraveTextInputStyleModifier: ViewModifier {
+struct BraveInputStyleModifier: ViewModifier {
   var strokeColor: Color?
   var lineWidthFactor: CGFloat?
   var backgroundColor: Color?
+  var cornerRadius: CGFloat?
 
   private var borderShape: some InsettableShape {
-    RoundedRectangle(cornerRadius: 4, style: .continuous)
+    RoundedRectangle(cornerRadius: cornerRadius ?? 4, style: .continuous)
   }
 
   func body(content: Content) -> some View {
@@ -32,8 +33,14 @@ struct BraveTextInputStyleModifier: ViewModifier {
   }
 }
 
-extension TextEditor {
-  public func braveTextEditorStyle() -> some View {
-    return self.modifier(BraveTextInputStyleModifier())
+extension View {
+  public func braveInputStyle() -> some View {
+    return self.modifier(
+      BraveInputStyleModifier(
+        strokeColor: .clear,
+        backgroundColor: Color(braveSystemName: .containerBackground),
+        cornerRadius: 8
+      )
+    )
   }
 }

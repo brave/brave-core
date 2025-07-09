@@ -4499,6 +4499,146 @@ extension Strings {
         "A label for a text entry field where the user can provide additional details for a web-compatibility report"
     )
 
+    /// A label for a text entry field where the user can provide additional details for a web-compatibility report
+    public static let reportBrokenAdditionalDetailsRequired = NSLocalizedString(
+      "reportBrokenAdditionalDetailsRequired",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Additional details",
+      comment:
+        "A label for a text entry field where the user can provide additional details for a web-compatibility report"
+    )
+
+    /// A label for drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategory = NSLocalizedString(
+      "reportBrokenCategory",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "What is not working correctly?",
+      comment:
+        "A label for a drop down where the user provides a category for a web-compatibility report"
+    )
+
+    /// A placeholder for the drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenPlaceholder = NSLocalizedString(
+      "reportBrokenCategory",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Select one option",
+      comment:
+        "A placeholder for a drop down where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryAds = NSLocalizedString(
+      "reportBrokenCategoryAds",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Visible ads",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryBlank = NSLocalizedString(
+      "reportBrokenCategoryBlank",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Blank page or missing content",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryScroll = NSLocalizedString(
+      "reportBrokenCategoryScroll",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Can't scroll",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryForm = NSLocalizedString(
+      "reportBrokenCategoryForm",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Broken form entry",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryCookie = NSLocalizedString(
+      "reportBrokenCategoryCookie",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Visible cookie notice",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryAntiAdBlock = NSLocalizedString(
+      "reportBrokenCategoryAntiAdBlock",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Anti-adblock measure",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryTracking = NSLocalizedString(
+      "reportBrokenCategoryTracking",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unblocked tracking/analytics script",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryNewsletter = NSLocalizedString(
+      "reportBrokenCategoryNewsletter",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Newsletter popup",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategorySocial = NSLocalizedString(
+      "reportBrokenCategorySocial",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Social widget",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryChat = NSLocalizedString(
+      "reportBrokenCategoryChat",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Chat widget",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
+    /// A label for item in drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategoryOther = NSLocalizedString(
+      "reportBrokenCategoryOther",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Other",
+      comment:
+        "A label for a drop down item where the user provides a category for a web-compatibility report"
+    )
+
     public static let reportBrokenContactMe = NSLocalizedString(
       "ReportBrokenContactMe",
       tableName: "BraveShared",

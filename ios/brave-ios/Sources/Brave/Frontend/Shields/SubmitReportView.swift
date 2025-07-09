@@ -18,6 +18,7 @@ struct SubmitReportView: View {
   @Environment(\.dismiss) private var dismiss: DismissAction
   let url: URL
   let isPrivateBrowsing: Bool
+  let enabledFilterListComponentIds: [String]
 
   @ScaledMetric private var textEditorHeight = 80.0
   @State private var additionalDetails = ""
@@ -25,6 +26,11 @@ struct SubmitReportView: View {
   @State private var isSubmittingReport = false
   @State private var isSubmitted = false
   @State private var isContactInfoDescVisible: Bool = false
+  @State private var selectedCategory: ReportCategory?
+
+  var isSubmitDisabled: Bool {
+    isSubmittingReport || (selectedCategory == .other && additionalDetails.isEmpty)
+  }
 
   private var scrollContent: some View {
     ScrollView {
@@ -34,9 +40,44 @@ struct SubmitReportView: View {
           .foregroundStyle(Color(braveSystemName: .textInteractive))
         Text(Strings.Shields.reportBrokenSiteBody2)
           .font(.footnote)
+        VStack(alignment: .leading) {
+          Text(Strings.Shields.reportBrokenCategory)
+            .font(.caption)
+          Menu(
+            content: {
+              Picker(
+                "",
+                selection: $selectedCategory,
+                content: {
+                  ForEach(ReportCategory.allCases, id: \.self) { category in
+                    Text(category.title)
+                      .tag(category)
+                  }
+                }
+              )
+            },
+            label: {
+              HStack {
+                if let selectedCategory {
+                  Text(selectedCategory.title)
+                    .foregroundStyle(Color(braveSystemName: .textPrimary))
+                } else {
+                  Text(Strings.Shields.reportBrokenPlaceholder)
+                    .foregroundColor(Color(.placeholderText))
+                }
+                Spacer()
+                Image(systemName: "chevron.up.chevron.down")
+                  .foregroundColor(Color(.secondaryBraveLabel))
+              }
+            }
+          )
+          .braveInputStyle()
+        }
         BraveTextEditor(
           text: $additionalDetails,
-          prompt: Strings.Shields.reportBrokenAdditionalDetails
+          prompt: selectedCategory == .other
+            ? Strings.Shields.reportBrokenAdditionalDetailsRequired
+            : Strings.Shields.reportBrokenAdditionalDetails
         ).frame(height: textEditorHeight)
 
         VStack(alignment: .leading, spacing: 4) {
@@ -47,7 +88,13 @@ struct SubmitReportView: View {
             prompt: Text(Strings.Shields.reportBrokenContactMeSuggestions)
           )
           .textContentType(.emailAddress)
-          .textFieldStyle(BraveTextFieldStyle())
+          .textFieldStyle(
+            BraveTextFieldStyle(
+              strokeColor: .clear,
+              backgroundColor: Color(braveSystemName: .containerBackground),
+              cornerRadius: 8
+            )
+          )
           .autocorrectionDisabled()
           .textInputAutocapitalization(.never)
           .onAppear {
@@ -81,7 +128,7 @@ struct SubmitReportView: View {
         EmptyView()
       }
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .iosBrowserChromeBackgroundIos))
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .navigationTitle(Strings.Shields.reportABrokenSite)
     .toolbar {
@@ -89,7 +136,7 @@ struct SubmitReportView: View {
         Button(Strings.cancelButtonTitle) {
           dismiss()
         }
-        .disabled(isSubmittingReport)
+        .disabled(isSubmitDisabled)
       }
 
       ToolbarItem(placement: .confirmationAction) {
@@ -160,6 +207,7 @@ struct SubmitReportView: View {
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
         braveVpnConnected: String(BraveVPN.isConnected),
+//        category: selectedCategory.rawValue,
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
@@ -175,7 +223,8 @@ struct SubmitReportView: View {
 #Preview {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
-    isPrivateBrowsing: false
+    isPrivateBrowsing: false,
+    enabledFilterListComponentIds: []
   )
 }
 
@@ -193,5 +242,76 @@ extension ShieldLevel {
 extension AppBuildChannel {
   fileprivate var webCompatReportName: String {
     return self == .debug ? "developer" : rawValue
+  }
+}
+
+private enum ReportCategory: String, CaseIterable {
+  case ads
+  case blank
+  case scroll
+  case form
+  case cookie = "cookie notice"
+  case antiAdBlock = "anti adblock"
+  case tracking
+  case newsletter
+  case social
+  case chat
+  case other
+
+  var additionalDetailsRequired: Bool {
+    self == .other
+  }
+
+  var title: String {
+    switch self {
+    case .ads:
+      return Strings.Shields.reportBrokenCategoryAds
+    case .blank:
+      return Strings.Shields.reportBrokenCategoryBlank
+    case .scroll:
+      return Strings.Shields.reportBrokenCategoryScroll
+    case .form:
+      return Strings.Shields.reportBrokenCategoryForm
+    case .cookie:
+      return Strings.Shields.reportBrokenCategoryCookie
+    case .antiAdBlock:
+      return Strings.Shields.reportBrokenCategoryAntiAdBlock
+    case .tracking:
+      return Strings.Shields.reportBrokenCategoryTracking
+    case .newsletter:
+      return Strings.Shields.reportBrokenCategoryNewsletter
+    case .social:
+      return Strings.Shields.reportBrokenCategorySocial
+    case .chat:
+      return Strings.Shields.reportBrokenCategoryChat
+    case .other:
+      return Strings.Shields.reportBrokenCategoryOther
+    }
+  }
+
+  /// The required component id to display category, or nil if always shown.
+  private var categoryComponentId: String? {
+    switch self {
+    case .ads, .blank, .scroll, .form, .antiAdBlock, .tracking, .other:
+      return nil
+    case .cookie:
+      return AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
+    case .newsletter:
+      return AdblockFilterListCatalogEntry.antiNewsletterComponentID
+    case .social:
+      return AdblockFilterListCatalogEntry.socialComponentID
+    case .chat:
+      return AdblockFilterListCatalogEntry.antiChatComponentID
+    }
+  }
+
+  func visibleCategories(from componentIds: String) -> [Self] {
+    ReportCategory.allCases.compactMap({ category in
+      if let categoryComponentId = category.categoryComponentId {
+        return componentIds.contains(categoryComponentId) ? category : nil
+      } else {
+        return category
+      }
+    })
   }
 }
