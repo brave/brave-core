@@ -27,11 +27,10 @@ mangle(
 
     // Create an icon element and append it to the wrapper.
     const wrapperEl = element.querySelector('.heading-icon-and-text')!
-    wrapperEl.setAttribute('slot', 'heading')
     wrapperEl.insertAdjacentHTML(
       'afterbegin',
       /* html */ `
-      <leo-icon name="themes" slot="prefix-icon" class="heading-icon"></leo-icon>`,
+      <leo-icon name="themes" class="heading-icon"></leo-icon>`,
     )
 
     // Append the original heading element
