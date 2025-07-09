@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/constants/brave_paths.h"
 #include "crypto/hash.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
@@ -203,14 +202,14 @@ TEST(HDKeyEd25519Slip23UnitTest, CustomED25519Sign) {
 }
 
 TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
-  auto test_data_dir = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-
   std::string file_contents;
 
-  ASSERT_TRUE(base::ReadFileToString(
-      test_data_dir.AppendASCII(
-          "brave-wallet/cardano/cardano_sdk_crypto_slip23/test_vectors.json"),
-      &file_contents));
+  ASSERT_TRUE(
+      base::ReadFileToString(BraveWalletComponentsTestDataFolder()
+                                 .AppendASCII("cardano")
+                                 .AppendASCII("cardano_sdk_crypto_slip23")
+                                 .AppendASCII("test_vectors.json"),
+                             &file_contents));
 
   auto test_items = base::test::ParseJsonList(file_contents);
   ASSERT_EQ(test_items.size(), 1000u);

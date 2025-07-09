@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ref.h"
 #include "base/notreached.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
@@ -66,6 +67,23 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
 }
 
 }  // namespace
+
+base::FilePath BraveWalletComponentsTestDataFolder() {
+  return base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+      .AppendASCII("brave")
+      .AppendASCII("components")
+      .AppendASCII("test")
+      .AppendASCII("data")
+      .AppendASCII("brave_wallet");
+}
+
+base::FilePath BraveWalletTestDataFolder() {
+  return base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+      .AppendASCII("brave")
+      .AppendASCII("test")
+      .AppendASCII("data")
+      .AppendASCII("brave_wallet");
+}
 
 AccountUtils::AccountUtils(KeyringService* keyring_service)
     : keyring_service_(keyring_service) {}

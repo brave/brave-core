@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
@@ -50,6 +51,9 @@ inline constexpr char kTestWalletPassword[] = "brave";
 class KeyringService;
 class TxStorageDelegate;
 class TxStorageDelegateImpl;
+
+base::FilePath BraveWalletComponentsTestDataFolder();
+base::FilePath BraveWalletTestDataFolder();
 
 class AccountResolverDelegateForTest : public AccountResolverDelegate {
  public:

@@ -5,8 +5,6 @@
 
 #include <optional>
 
-#include "base/command_line.h"
-#include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -26,7 +24,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -393,10 +390,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     https_server_for_files_.SetSSLConfig(
         net::EmbeddedTestServer::CERT_TEST_NAMES);
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII("brave-wallet");
-    https_server_for_files_.ServeFilesFromDirectory(test_data_dir);
+    https_server_for_files_.ServeFilesFromDirectory(
+        BraveWalletTestDataFolder());
     ASSERT_TRUE(https_server_for_files()->Start());
 
     AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
@@ -1006,7 +1001,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
 
-  // navigate second iframe awau will clear its connected status
+  // navigate second iframe away will clear its connected status
   EXPECT_TRUE(
       NavigateIframeToURL(web_contents(), "test-iframe-1", new_iframe_url));
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
@@ -1040,7 +1035,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   CallSolanaDisconnect(web_contents());
   EXPECT_FALSE(IsSolanaConnected(web_contents()));
 
-  // Swtich back to first tab and it should still be connected,
+  // Switch back to first tab and it should still be connected,
   browser()->tab_strip_model()->ActivateTabAt(0);
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
@@ -1336,7 +1331,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectWithNonSelectedAccount) {
   UserGrantPermission(true, account_1);
   selected_account = keyring_service()->GetSelectedSolanaDappAccount();
   ASSERT_TRUE(selected_account);
-  // Connect successfuly will set selected acount automatically
+  // Connect successfully will set selected acount automatically
   EXPECT_EQ(selected_account, account_1);
   EXPECT_TRUE(IsSolanaConnected(web_contents()));
 

@@ -7,18 +7,15 @@
 #include <optional>
 
 #include "base/notreached.h"
-#include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -26,7 +23,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -37,7 +33,6 @@
 
 namespace {
 
-constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 constexpr char kSomeChainId[] = "0xabcde";
 
 constexpr char kScriptWaitForEvent[] = R"(
@@ -185,10 +180,8 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
-    https_server_->ServeFilesFromDirectory(test_data_dir);
+    https_server_->ServeFilesFromDirectory(
+        brave_wallet::BraveWalletTestDataFolder());
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&BraveWalletEthereumChainTest::HandleChainRequest,
                             base::Unretained(this)));

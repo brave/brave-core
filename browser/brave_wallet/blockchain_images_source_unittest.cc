@@ -12,8 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "brave/components/constants/brave_paths.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,11 +32,10 @@ class BlockchainImagesSourceTest : public testing::Test {
 
   void SetUp() override {
     base::FilePath test_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
-    base::FilePath wallet_dir = test_dir.AppendASCII("wallet");
-    // brave/test/data/wallet/1.0.1
+    // brave/test/data/brave_wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
-    source_ = std::make_unique<BlockchainImagesSource>(wallet_dir);
+    source_ =
+        std::make_unique<BlockchainImagesSource>(BraveWalletTestDataFolder());
   }
   void TearDown() override { source_.reset(); }
 
