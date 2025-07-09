@@ -167,7 +167,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -        <h2 slot=\\"heading\\">$i18n{appearanceHeader}</h2>
 +      <sp-heading hide-back-button=\\"\\">
 +      <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
-+        <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{appearanceHeader}</h2>
++        <h2 slot=\\"heading\\"><leo-icon name=\\"themes\\"></leo-icon>$i18n{appearanceHeader}</h2>
        </sp-heading>
 -      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
 -          @wallpaper-search-click=\\"\${this.onWallpaperSearchSelect_}\\"
@@ -335,7 +335,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
 +  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\">
 +        <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
-+    <h2 slot=\\"heading\\"><leo-icon name=\\"themes\\"></leo-icon>$i18n{toolbarHeader}</h2>
++    <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
 -  <div id=\\"miniToolbarBackground\\">
 -    <svg id=\\"miniToolbar\\" src=\\"icons/mini_toolbar.svg\\">
