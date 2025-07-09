@@ -27,8 +27,8 @@ using blink::Member;
 using blink::MimeClassInfo;
 using blink::PluginData;
 using blink::PluginInfo;
+using blink::StringBuilder;
 using WTF::String;
-using WTF::StringBuilder;
 
 namespace brave {
 
@@ -52,13 +52,49 @@ String PluginReplacementName(FarblingPRNG* prng) {
   return result.ToString();
 }
 
-void FarblePlugins(DOMPluginArray* owner,
-                   PluginData* data,
+// General helper to add a mime type to a plugin info, with a single extension
+MimeClassInfo* AddMimeTypeToPluginInfo(PluginInfo* plugin_info,
+                                       const String& mime_type,
+                                       const String& description,
+                                       const char* extension) {
+  Vector<String> extensions{String(extension)};
+  auto* mime_info = MakeGarbageCollected<MimeClassInfo>(
+      mime_type, description, *plugin_info, extensions);
+  plugin_info->AddMimeType(mime_info);
+  return mime_info;
+}
+
+// Helper to create a fake plugin with multiple mime types
+DOMPlugin* BraveMakeFakePlugin(blink::LocalDOMWindow* window,
+                               const String& name,
+                               const String& filename,
+                               const String& description,
+                               const std::vector<const char*>& mime_types,
+                               const String& mime_description,
+                               const char* plugin_extension) {
+  auto* plugin_info = MakeGarbageCollected<PluginInfo>(
+      name, filename, description, blink::Color::FromRGBA32(0), false);
+  for (const char* mime_type : mime_types) {
+    AddMimeTypeToPluginInfo(plugin_info, mime_type, mime_description,
+                            plugin_extension);
+  }
+  return MakeGarbageCollected<DOMPlugin>(window, *plugin_info);
+}
+
+DOMPlugin* MakePdfPlugin(const String& plugin_name,
+                         blink::LocalDOMWindow* window) {
+  String description = "Portable Document Format";
+  String filename = "internal-pdf-viewer";
+  std::vector<const char*> mime_types{"application/pdf", "text/pdf"};
+  return BraveMakeFakePlugin(window, plugin_name, filename, description,
+                             mime_types, description, "pdf");
+}
+
+void FarblePlugins(blink::LocalDOMWindow* window,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
-  // |owner| is guaranteed to be non-null here.
-  // |owner->DomWindow()| might be null but function can handle it.
+  // |window| might be null but function can handle it.
   auto farbling_level = brave::GetBraveFarblingLevelFor(
-      owner->DomWindow(), ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
+      window, ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
       BraveFarblingLevel::OFF);
   switch (farbling_level) {
     case BraveFarblingLevel::OFF: {
@@ -71,73 +107,54 @@ void FarblePlugins(DOMPluginArray* owner,
       [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
-      LocalFrame* frame = owner->DomWindow()->GetFrame();
-      FarblingPRNG prng = BraveSessionCache::From(*(frame->DomWindow()))
-                              .MakePseudoRandomGenerator();
-      // The item() method will populate plugin info if any item of
-      // |dom_plugins_| is null, but when it tries, it assumes the
-      // length of |dom_plugins_| == the length of the underlying
-      // GetPluginData()->Plugins(). Once we add our fake plugins, that
-      // assumption will break and the item() method will crash with an
-      // out-of-bounds array access. Rather than patch the item() method, we
-      // ensure that the cache is fully populated now while the assumptions
-      // still hold, so the problematic code is never executed later.
+      FarblingPRNG prng =
+          BraveSessionCache::From(*(window)).MakePseudoRandomGenerator();
       for (unsigned index = 0; index < dom_plugins->size(); index++) {
-        DCHECK_EQ(dom_plugins->size(), data->Plugins().size());
-        auto plugin = data->Plugins()[index];
-        String name = plugin->Name();
+        auto plugin = (*dom_plugins)[index];
+        String name = plugin->name();
+        String description = plugin->description();
         // Built-in plugins get their names and descriptions farbled as well.
         if ((name == "Chrome PDF Plugin") || (name == "Chrome PDF Viewer")) {
-          plugin->SetName(PluginReplacementName(&prng));
-          plugin->SetFilename(
-              BraveSessionCache::From(*(frame->DomWindow()))
-                  .GenerateRandomString(plugin->Filename().Ascii(), 32));
+          std::vector<const char*> mime_types{"application/pdf", "text/pdf"};
+          (*dom_plugins)[index] = BraveMakeFakePlugin(
+              window, PluginReplacementName(&prng),
+              BraveSessionCache::From(*window).GenerateRandomString(
+                  plugin->filename().Ascii(), 32),
+              description, mime_types, description, "pdf");
         }
-        (*dom_plugins)[index] =
-            MakeGarbageCollected<DOMPlugin>(frame->DomWindow(), *plugin);
       }
       // Add fake plugin #1.
-      auto* fake_plugin_info_1 = MakeGarbageCollected<PluginInfo>(
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_1_NAME", 8),
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_1_FILENAME", 16),
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_1_DESCRIPTION", 32),
-          blink::Color::FromRGBA32(0) /* background_color */, false);
-      Vector<String> fake_plugin_extensions_1{
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_1_EXTENSION", 3)};
-      auto* fake_mime_info_1 = MakeGarbageCollected<MimeClassInfo>(
-          "",
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("MIME_1_DESCRIPTION", 32),
-          *fake_plugin_info_1, fake_plugin_extensions_1);
-      fake_plugin_info_1->AddMimeType(fake_mime_info_1);
-      auto* fake_dom_plugin_1 = MakeGarbageCollected<DOMPlugin>(
-          frame->DomWindow(), *fake_plugin_info_1);
-      dom_plugins->push_back(fake_dom_plugin_1);
+      dom_plugins->push_back(BraveMakeFakePlugin(
+          window,
+          BraveSessionCache::From(*window).GenerateRandomString("PLUGIN_1_NAME",
+                                                                8),
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "PLUGIN_1_FILENAME", 16),
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "PLUGIN_1_DESCRIPTION", 32),
+          std::vector<const char*>{"", ""},
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "MIME_1_DESCRIPTION", 32),
+          BraveSessionCache::From(*window)
+              .GenerateRandomString("PLUGIN_1_EXTENSION", 3)
+              .Ascii()
+              .data()));
       // Add fake plugin #2.
-      auto* fake_plugin_info_2 = MakeGarbageCollected<PluginInfo>(
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_2_NAME", 7),
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_2_FILENAME", 15),
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_2_DESCRIPTION", 31),
-          blink::Color::FromRGBA32(0) /* background_color */, false);
-      Vector<String> fake_plugin_extensions_2{
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("PLUGIN_2_EXTENSION", 3)};
-      auto* fake_mime_info_2 = MakeGarbageCollected<MimeClassInfo>(
-          "",
-          BraveSessionCache::From(*(frame->DomWindow()))
-              .GenerateRandomString("MIME_2_DESCRIPTION", 32),
-          *fake_plugin_info_2, fake_plugin_extensions_2);
-      fake_plugin_info_2->AddMimeType(fake_mime_info_2);
-      auto* fake_dom_plugin_2 = MakeGarbageCollected<DOMPlugin>(
-          frame->DomWindow(), *fake_plugin_info_2);
-      dom_plugins->push_back(fake_dom_plugin_2);
+      dom_plugins->push_back(BraveMakeFakePlugin(
+          window,
+          BraveSessionCache::From(*window).GenerateRandomString("PLUGIN_2_NAME",
+                                                                7),
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "PLUGIN_2_FILENAME", 15),
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "PLUGIN_2_DESCRIPTION", 31),
+          std::vector<const char*>{"", ""},
+          BraveSessionCache::From(*window).GenerateRandomString(
+              "MIME_2_DESCRIPTION", 32),
+          BraveSessionCache::From(*window)
+              .GenerateRandomString("PLUGIN_2_EXTENSION", 3)
+              .Ascii()
+              .data()));
       // Shuffle the list of plugins pseudo-randomly, based on the domain key.
       std::shuffle(dom_plugins->begin(), dom_plugins->end(), prng);
       return;
@@ -149,14 +166,9 @@ void FarblePlugins(DOMPluginArray* owner,
 
 }  // namespace brave
 
-#define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA \
-  if (PluginData* data = GetPluginData())                       \
-    data->ResetPluginData();
-
 #define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA \
-  brave::FarblePlugins(this, data, &dom_plugins_);
+  brave::FarblePlugins(window, &dom_plugins_);
 
 #include <third_party/blink/renderer/modules/plugins/dom_plugin_array.cc>
 
 #undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA
-#undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
