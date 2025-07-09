@@ -239,7 +239,7 @@ RegisterPolymerTemplateModifications({
     const originEl = createMenuElement(
       loadTimeData.getString('braveOriginTitle'),
       '/origin',
-      'shield-done',// TODO(bsclifton): fix me (ICON).
+      'product-origin',
       'origin',
     )
     getStartedEl.insertAdjacentElement('afterend', originEl)
