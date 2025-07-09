@@ -425,6 +425,14 @@
         Tab group expanded
       </message>
 
+      <!-- GTS Tab Group Suggestions strings -->
+      <message name="IDS_TAB_GROUP_SUGGESTION_MESSAGE" desc="The message card title for tab group suggestions in the tab switcher.">
+        Group <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs to work faster?
+      </message>
+      <message name="IDS_TAB_GROUP_SUGGESTION_MESSAGE_ACTION_TEXT" desc="The label for the action button for tab group suggestion message cards in the tab switcher.">
+        Group
+      </message>
+
       <!-- Tab Grid Drag-and-drop IPH strings -->
       <message name="IDS_IPH_DRAG_AND_DROP_INTRODUCTION" desc="This text shows on the entry point for the in-product help for drag-and-drop. It introduces that this IPH is about how to use drag-and-drop.">
         Drag tabs to group them
@@ -881,22 +889,43 @@
       </message>
 
     <!-- Archived tabs strings -->
-      <message name="IDS_ARCHIVED_TABS_DIALOG_TITLE" desc="The toolbar title for the archived tabs dialog.">
+      <message name="IDS_ARCHIVED_TABS_DIALOG_TITLE" desc="The toolbar title for the archived tabs dialog. This includes tabs and tab groups.">
         {TABS_COUNT, plural,
-          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> inactive tab}
-          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> inactive tabs}
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> inactive item}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> inactive items}
         }
       </message>
-      <message name="IDS_ARCHIVED_TABS_DIALOG_CLOSE_ALL_BUTTON" desc="The button title for the archived tabs dialog. Closes all inactive tabs.">
-        Close all inactive tabs
+      <message name="IDS_ARCHIVED_TABS_DIALOG_CLOSE_ALL_BUTTON" desc="The button title for the archived tabs dialog. Closes all tabs and tab groups.">
+        Close all
       </message>
-      <message name="IDS_ARCHIVED_TABS_DIALOG_RESTORE_ALL_ACTION" desc="A menu item for the archived tabs dialog. Restores all archived tabs.">
+      <message name="IDS_ARCHIVED_TABS_DIALOG_RESTORE_ALL_ACTION" desc="A menu item for the archived tabs dialog. Restores all archived tabs and tab groups.">
         Restore all
       </message>
-      <message name="IDS_ARCHIVED_TABS_DIALOG_RESTORE_ACTION" desc="A menu item for the archived tabs dialog. Restores selected archived tabs.">
+      <message name="IDS_ARCHIVED_TABS_DIALOG_RESTORE_ACTION" desc="A menu item for the archived tabs dialog. Restores selected archived tabs and tab groups.">
         {TAB_COUNT, plural,
-          =1 {Restore tab}
-          other {Restore tabs}
+          =1 {Restore item}
+          other {Restore items}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_ARCHIVED_TABS_DIALOG_RESTORE_ACTION" desc="The accessibility text to read when the 'Restore items' menu item in the selection mode menu is focused. When this menu item is tapped, all the selected items will be restored.">
+        {TABS_COUNT, plural,
+          =1 {Restore <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> selected item}
+          other {Restore <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected items}
+        }
+      </message>
+      <message name="IDS_ARCHIVED_TABS_DIALOG_SELECT_ACTION" desc="A menu item for the archived tabs dialog. Enters selection mode and allows archived tabs and tab groups to be selected.">
+        Select items
+      </message>
+      <message name="IDS_ARCHIVED_TABS_DIALOG_CLOSE_ACTION" desc="A menu item for the archived tabs dialog. Closes selected archived tabs and tab groups.">
+        {TAB_COUNT, plural,
+          =1 {Close item}
+          other {Close items}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_ARCHIVED_TABS_DIALOG_CLOSE_ACTION" desc="The accessibility text to read when the 'Close items' menu item in the selection mode menu is focused. When this menu item is tapped, all the selected items will be closed.">
+        {TABS_COUNT, plural,
+          =1 {Close <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> selected item}
+          other {Close <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected items}
         }
       </message>
       <message name="IDS_ARCHIVED_TABS_DIALOG_SETTINGS_ACTION" desc="A menu item for the archived tabs dialog. Navigates to the settings activity.">
@@ -937,8 +966,8 @@
       </message>
       <message name="IDS_ARCHIVE_DIALOG_CLOSE_ALL_INACTIVE_TABS_CONFIRMATION_TITLE" desc="The title to show in the action confirmation dialog.">
         {TAB_COUNT, plural,
-          =1 {Close 1 inactive tab?}
-          other {Close <ph name="TAB_COUNT_MANY">%1$d<ex>12</ex></ph> inactive tabs?}
+          =1 {Close 1 inactive item?}
+          other {Close <ph name="TAB_COUNT_MANY">%1$d<ex>12</ex></ph> inactive items?}
         }
       </message>
       <message name="IDS_ARCHIVE_DIALOG_CLOSE_ALL_INACTIVE_TABS_CONFIRMATION_DESCRIPTION" desc="The description for the option to never archive tabs.">
@@ -962,8 +991,20 @@
       <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_TITLE" desc="Title text for the Auto Delete Decision Bottom Sheet.">
         Keep your inactive section tidy?
       </message>
-      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_DESCRIPTION" desc="Description text or the Auto Delete Decision Bottom Sheet.">
-        Brave automatically closes items in the inactive section that you haven't used in 3 months. You can turn this off now or anytime in Settings.
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_DESCRIPTION" desc="Description text for the Auto Delete Decision Bottom Sheet.">
+          {AUTO_DELETE_DELAY, plural,
+            =1 {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_ONE">%1$d<ex>1</ex></ph> day. You can turn this off now or anytime in Settings.}
+            other {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_MANY">%1$d<ex>14</ex></ph> days. You can turn this off now or anytime in Settings.}
+          }
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_CLOSED" desc="The announcement when the Tabs Auto Delete Promo bottom sheet is closed.">
+        Notice about Tabs Auto Delete changes closed.
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_HALF_HEIGHT" desc="The announcement when the Tabs Auto Delete Promo bottom sheet is opened to half height.">
+        Notice about Tabs Auto Delete at half height.
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_FULL_HEIGHT" desc="The announcement when the Tabs Auto Delete Promo bottom sheet is opened to full height.">
+        Notice about Tabs Auto Delete at full height
       </message>
       <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_YES_BUTTON" desc="Button to accept the Auto Delete feature. ">
         Yes. I'm in
@@ -1000,6 +1041,9 @@
         {WINDOW_COUNT, plural,
           =1 {Move tab to new window}
           other {Move tab to another window}}
+      </message>
+      <message name="IDS_PIN_TAB" desc="Content description for an action which pins a singular tab.">
+        Pin tab
       </message>
 
       <!-- Tab Group List Bottom Sheet -->
