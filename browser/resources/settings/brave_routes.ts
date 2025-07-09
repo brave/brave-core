@@ -29,6 +29,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+      r.SHORTCUTS.hasMigratedToPlugin = true
     } else if (!isGuest) {
       console.error('[Settings] Routes: could not find SYSTEM page')
     }
