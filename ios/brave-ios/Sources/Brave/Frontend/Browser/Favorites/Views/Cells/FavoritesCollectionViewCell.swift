@@ -66,7 +66,8 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
       $0.layer.cornerRadius = 12.0
       $0.layer.borderWidth = isPrivateBrowsing ? 0 : 0.5
       $0.layer.cornerCurve = .continuous
-      $0.layer.borderColor = isPrivateBrowsing ? nil : UIColor(braveSystemName: .dividerSubtle).cgColor
+      $0.layer.borderColor =
+        isPrivateBrowsing ? nil : UIColor(braveSystemName: .dividerSubtle).cgColor
       $0.backgroundColor = isPrivateBrowsing ? UIColor(braveSystemName: .containerBackground) : nil
     }
 
