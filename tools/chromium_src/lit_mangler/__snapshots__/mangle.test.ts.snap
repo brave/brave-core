@@ -152,7 +152,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,31 +4,26 @@
+@@ -4,31 +4,24 @@
  
  export function getHtml(this: AppElement) {
    // clang-format off
@@ -167,9 +167,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -        <h2 slot=\\"heading\\">$i18n{appearanceHeader}</h2>
 +      <sp-heading hide-back-button=\\"\\">
 +      <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
-+      <div class=\\"heading-icon-and-text\\" slot=\\"heading\\">
-+      <leo-icon name=\\"themes\\" slot=\\"prefix-icon\\" class=\\"heading-icon\\"></leo-icon><h2>$i18n{appearanceHeader}</h2></div>
-+        
++        <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{appearanceHeader}</h2>
        </sp-heading>
 -      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
 -          @wallpaper-search-click=\\"\${this.onWallpaperSearchSelect_}\\"
@@ -195,7 +193,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
       \${this.isSourceTabFirstPartyNtp_() ? html\`<hr class=\\"sp-cards-separator\\">
      <div id=\\"shortcuts\\" class=\\"section sp-card\\">
        <sp-heading hide-back-button>
-@@ -98,10 +93,9 @@
+@@ -98,10 +91,9 @@
      <customize-chrome-wallpaper-search @back-click=\\"\${this.onBackClick_}\\"
          page-name=\\"wallpaper-search\\" id=\\"wallpaperSearchPage\\">
      </customize-chrome-wallpaper-search>
@@ -326,7 +324,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/customize_toolbar/toolbar.html.ts
-@@ -4,26 +4,24 @@
+@@ -4,26 +4,22 @@
  
  export function getHtml(this: ToolbarElement) {
    return html\`<!--_html_template_start_-->
@@ -337,9 +335,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
 +  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\">
 +        <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
-+      <div class=\\"heading-icon-and-text\\" slot=\\"heading\\">
-+      <leo-icon name=\\"window-edit\\" slot=\\"prefix-icon\\" class=\\"heading-icon\\"></leo-icon><h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2></div>
-+    
++    <h2 slot=\\"heading\\"><leo-icon name=\\"themes\\"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
 -  <div id=\\"miniToolbarBackground\\">
 -    <svg id=\\"miniToolbar\\" src=\\"icons/mini_toolbar.svg\\">
@@ -367,7 +363,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  <div class=\\"sp-card\\" id=\\"pinningSelectionCard\\">
    \${
        this.categories_.map(
-@@ -71,14 +69,12 @@
+@@ -71,14 +67,12 @@
                categoryIndex !== this.categories_.length - 1 ?
                    html\`<hr class=\\"sp-hr\\">\` :
                    ''}
