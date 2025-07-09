@@ -64,9 +64,6 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://pcdn.brave.com/",
 
     // p3a
-    "https://p3a-creative.brave.com/",
-    "https://p3a-json.brave.com/",
-    "https://p3a.brave.com/",
     "https://star-randsrv.bsg.brave.com/",
 
     // Other
