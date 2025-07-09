@@ -573,7 +573,8 @@ extension BrowserViewController: TopToolbarDelegate {
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        braveShieldsUtils: profileController.braveShieldsUtils
       )
     )
 

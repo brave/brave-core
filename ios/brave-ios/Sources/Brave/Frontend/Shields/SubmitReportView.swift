@@ -18,6 +18,7 @@ struct SubmitReportView: View {
   @Environment(\.dismiss) private var dismiss: DismissAction
   let url: URL
   let isPrivateBrowsing: Bool
+  let braveShieldsUtils: BraveShieldsUtilsIOS
 
   @ScaledMetric private var textEditorHeight = 80.0
   @State private var additionalDetails = ""
@@ -128,11 +129,6 @@ struct SubmitReportView: View {
   }
 
   @MainActor func createAndSubmitReport() async {
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-    var blockScripts: String?
-    if let noScript = domain.shield_noScript {
-      blockScripts = noScript == 1 ? "true" : "false"
-    }
     guard
       let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
         privateMode: isPrivateBrowsing
@@ -148,14 +144,47 @@ struct SubmitReportView: View {
     let adblkList = FilterListStorage.shared.filterLists
       .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
       .joined(separator: ",")
+    let isAdBlockEnabled: Bool
+    let adBlockSetting: String
+    let fpBlockSetting: String
+    let isBlockScriptsEnabled: Bool
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      let adBlockMode =
+        braveShieldsUtils.adBlockMode(
+          for: url,
+          isPrivate: isPrivateBrowsing,
+          considerAllShieldsOption: true
+        )
+      isAdBlockEnabled = adBlockMode != .allow
+      adBlockSetting = adBlockMode.shieldLevel.reportLabel
+      fpBlockSetting =
+        braveShieldsUtils.isShieldExpected(
+          url: url,
+          isPrivate: isPrivateBrowsing,
+          shield: .fpProtection,
+          considerAllShieldsOption: true
+        ) ? ShieldLevel.standard.reportLabel : ShieldLevel.disabled.reportLabel
+      isBlockScriptsEnabled = braveShieldsUtils.isShieldExpected(
+        url: url,
+        isPrivate: isPrivateBrowsing,
+        shield: .noScript,
+        considerAllShieldsOption: true
+      )
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
+      isAdBlockEnabled = domain.globalBlockAdsAndTrackingLevel.isEnabled
+      adBlockSetting = domain.globalBlockAdsAndTrackingLevel.reportLabel
+      fpBlockSetting = domain.finterprintProtectionLevel.reportLabel
+      isBlockScriptsEnabled = domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
+    }
     webcompatReporterAPI.submitWebcompatReport(
       reportInfo: .init(
         channel: AppConstants.buildChannel.webCompatReportName,
         braveVersion: version,
         reportUrl: url.absoluteString,
-        shieldsEnabled: String(!domain.areAllShieldsOff),
-        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
-        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        shieldsEnabled: String(isAdBlockEnabled),
+        adBlockSetting: adBlockSetting,
+        fpBlockSetting: fpBlockSetting,
         adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
@@ -163,20 +192,13 @@ struct SubmitReportView: View {
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
-        blockScripts: blockScripts,
+        blockScripts: String(isBlockScriptsEnabled),
         adBlockComponentsVersion: nil,
         screenshotPng: nil,
         webcompatReporterErrors: nil
       )
     )
   }
-}
-
-#Preview {
-  SubmitReportView(
-    url: URL(string: "https://brave.com/privacy-features")!,
-    isPrivateBrowsing: false
-  )
 }
 
 extension ShieldLevel {
