@@ -378,13 +378,18 @@ import os
   }
 
   /// Get all required rule lists for the given domain
-  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
-    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
-    let level = domain.globalBlockAdsAndTrackingLevel
+  public func ruleLists(
+    isShieldsEnabled: Bool,
+    adBlockMode: BraveShields.AdBlockMode
+  ) async -> Set<WKContentRuleList> {
+    let validBlocklistTypes = self.validBlocklistTypes(
+      isShieldsEnabled: isShieldsEnabled,
+      isAdBlockEnabled: adBlockMode != .allow
+    )
 
     return await Set(
       validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
-        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
+        let mode = blocklistType.mode(isAggressiveMode: adBlockMode == .aggressive)
 
         do {
           return try await self.contentBlockerManager.ruleList(for: blocklistType, mode: mode)
@@ -399,12 +404,17 @@ import os
   }
 
   /// A list of all valid (enabled) blocklist types for the given domain
-  private func validBlocklistTypes(for domain: Domain) -> Set<(ContentBlockerManager.BlocklistType)>
-  {
-    guard !domain.areAllShieldsOff else { return [] }
+  private func validBlocklistTypes(
+    isShieldsEnabled: Bool,
+    isAdBlockEnabled: Bool
+  ) -> Set<(ContentBlockerManager.BlocklistType)> {
+    guard !isShieldsEnabled else { return [] }
 
     // 1. Get the generic types
-    let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
+    let genericTypes = contentBlockerManager.validGenericTypes(
+      isShieldsEnabled: isShieldsEnabled,
+      isAdBlockEnabled: isAdBlockEnabled
+    ).filter { type in
       switch type {
       case .blockAds:
         // We only use this list during first install if the standard manager is not ready
@@ -420,7 +430,7 @@ import os
       return .generic(genericType)
     }
 
-    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
+    guard isAdBlockEnabled else {
       return Set(genericRuleLists)
     }
 
@@ -552,15 +562,15 @@ import os
     requestURL: URL,
     sourceURL: URL,
     resourceType: AdblockEngine.ResourceType,
-    domain: Domain
+    adBlockMode: BraveShields.AdBlockMode
   ) async -> Bool {
-    return await cachedEngines(isAdBlockEnabled: domain.globalBlockAdsAndTrackingLevel.isEnabled)
+    return await cachedEngines(isAdBlockEnabled: adBlockMode != .allow)
       .asyncConcurrentMap({ cachedEngine in
         return await cachedEngine.shouldBlock(
           requestURL: requestURL,
           sourceURL: sourceURL,
           resourceType: resourceType,
-          isAggressiveMode: domain.globalBlockAdsAndTrackingLevel.isAggressive
+          isAggressiveMode: adBlockMode == .aggressive
         )
       }).contains(where: { $0 })
   }

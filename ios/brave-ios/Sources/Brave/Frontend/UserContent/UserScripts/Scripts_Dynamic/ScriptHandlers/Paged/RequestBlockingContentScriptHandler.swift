@@ -78,7 +78,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           requestURL: requestURL,
           sourceURL: windowOriginURL,
           resourceType: dto.data.resourceType,
-          domain: domain
+          adBlockMode: domain.globalBlockAdsAndTrackingLevel.adBlockMode  // TODO: Use BraveShieldsUtilsIOS
         )
 
         // Ensure we check that the stats we're tracking is still for the same page
@@ -118,7 +118,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
               requestURL: requestURL,
               sourceURL: windowOriginURL,
               resourceType: dto.data.resourceType,
-              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,  // TODO: Use BraveShieldsUtilsIOS
               location: .requestBlocking
             )
           )

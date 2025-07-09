@@ -328,7 +328,7 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
           requestURL: requestURL,
           sourceURL: requestURL,
           resourceType: .document,
-          domain: domain
+          adBlockMode: domain.domainBlockAdsAndTrackingLevel.adBlockMode  // TODO: Use BraveShieldsUtilsIOS
         )
 
         if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
@@ -342,16 +342,11 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
         requestInfo.isMainFrame
       {
-        let domainForShields = Domain.getOrCreate(
-          forUrl: mainDocumentURL,
-          persistent: !false
-        )
-
         // Force adblocking on
-        domainForShields.shield_allOff = 0
-        domainForShields.domainBlockAdsAndTrackingLevel = .standard
-
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+          isShieldsEnabled: true,
+          adBlockMode: .standard
+        )
         tab.contentBlocker?.set(ruleLists: ruleLists)
       }
 

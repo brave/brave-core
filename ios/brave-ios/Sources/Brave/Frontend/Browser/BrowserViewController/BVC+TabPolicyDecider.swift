@@ -284,31 +284,6 @@ extension BrowserViewController: TabPolicyDecider {
         }
       }
 
-      let domainForMainFrame = Domain.getOrCreate(
-        forUrl: mainDocumentURL,
-        persistent: !isPrivateBrowsing
-      )
-
-      if let modifiedRequest = getInternalRedirect(
-        from: request,
-        isMainFrame: requestInfo.isMainFrame,
-        in: tab,
-        domainForMainFrame: domainForMainFrame
-      ) {
-        tab.isInternalRedirect = true
-        tab.loadRequest(modifiedRequest)
-
-        if let url = modifiedRequest.url {
-          Logger.module.debug(
-            "Redirected to `\(url.absoluteString, privacy: .private)`"
-          )
-        }
-
-        return .cancel
-      } else {
-        tab.isInternalRedirect = false
-      }
-
       let isAdBlockEnabled: Bool
       let isBlockFingerprintingEnabled: Bool
       if FeatureList.kBraveShieldsContentSettings.enabled {
@@ -325,11 +300,35 @@ extension BrowserViewController: TabPolicyDecider {
           considerAllShieldsOption: true
         )
       } else {
+        let domainForMainFrame = Domain.getOrCreate(
+          forUrl: mainDocumentURL,
+          persistent: !isPrivateBrowsing
+        )
         isAdBlockEnabled = domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled
         isBlockFingerprintingEnabled = domainForMainFrame.isShieldExpected(
           .fpProtection,
           considerAllShieldsOption: true
         )
+      }
+
+      if let modifiedRequest = getInternalRedirect(
+        from: request,
+        isMainFrame: requestInfo.isMainFrame,
+        in: tab,
+        isAdBlockEnabledForMainDocumentURL: isAdBlockEnabled
+      ) {
+        tab.isInternalRedirect = true
+        tab.loadRequest(modifiedRequest)
+
+        if let url = modifiedRequest.url {
+          Logger.module.debug(
+            "Redirected to `\(url.absoluteString, privacy: .private)`"
+          )
+        }
+
+        return .cancel
+      } else {
+        tab.isInternalRedirect = false
       }
 
       // Set some additional user scripts
@@ -380,16 +379,22 @@ extension BrowserViewController: TabPolicyDecider {
           cookies: cookies
         )
 
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
-        let isAggressiveAdsBlocking =
-          domain.globalBlockAdsAndTrackingLevel.isAggressive
-          && adsBlockingShieldUp
+        let adBlockMode: BraveShields.AdBlockMode
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          adBlockMode = profileController.braveShieldsUtils.adBlockMode(
+            for: requestURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          )
+        } else {
+          let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+          adBlockMode = domain.globalBlockAdsAndTrackingLevel.adBlockMode
+        }
 
         if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
           requestURL,
           isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: isAggressiveAdsBlocking
+          isAggressiveAdsBlocking: adBlockMode == .aggressive
         ) {
           // Ensure the webView is not a link preview popup.
           if self.presentedViewController == nil {
@@ -430,7 +435,7 @@ extension BrowserViewController: TabPolicyDecider {
             url: requestURL,
             rewards: rewards,
             isPrivateBrowsing: isPrivateBrowsing,
-            isAggressiveAdsBlocking: isAggressiveAdsBlocking
+            isAggressiveAdsBlocking: adBlockMode == .aggressive
           )
         }
 
@@ -468,13 +473,23 @@ extension BrowserViewController: TabPolicyDecider {
         let etldP1 = requestURL.baseDomain,
         tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+        let adBlockMode: BraveShields.AdBlockMode
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          adBlockMode = profileController.braveShieldsUtils.adBlockMode(
+            for: requestURL,
+            isPrivate: !tab.isPrivate,
+            considerAllShieldsOption: true
+          )
+        } else {
+          let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+          adBlockMode = domain.globalBlockAdsAndTrackingLevel.adBlockMode
+        }
 
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
           sourceURL: requestURL,
           resourceType: .document,
-          domain: domain
+          adBlockMode: adBlockMode
         )
 
         if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
@@ -498,13 +513,32 @@ extension BrowserViewController: TabPolicyDecider {
         requestInfo.isMainFrame
       {
         // Identify specific block lists that need to be applied to the requesting domain
-        let domainForShields = Domain.getOrCreate(
-          forUrl: mainDocumentURL,
-          persistent: !isPrivateBrowsing
-        )
 
+        let isShieldsEnabled: Bool
+        let adBlockMode: BraveShields.AdBlockMode
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          isShieldsEnabled = profileController.braveShieldsUtils.isBraveShieldsEnabled(
+            for: mainDocumentURL,
+            isPrivate: tab.isPrivate
+          )
+          adBlockMode = profileController.braveShieldsUtils.adBlockMode(
+            for: mainDocumentURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          )
+        } else {
+          let domainForShields = Domain.getOrCreate(
+            forUrl: mainDocumentURL,
+            persistent: !isPrivateBrowsing
+          )
+          isShieldsEnabled = !domainForShields.areAllShieldsOff
+          adBlockMode = domainForShields.globalBlockAdsAndTrackingLevel.adBlockMode
+        }
         // Load rule lists
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+          isShieldsEnabled: isShieldsEnabled,
+          adBlockMode: adBlockMode
+        )
         tab.contentBlocker?.set(ruleLists: ruleLists)
       }
 
@@ -610,13 +644,13 @@ extension BrowserViewController {
     from request: URLRequest,
     isMainFrame: Bool,
     in tab: some TabState,
-    domainForMainFrame: Domain
+    isAdBlockEnabledForMainDocumentURL: Bool
   ) -> URLRequest? {
     guard let requestURL = request.url else { return nil }
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+      isAdBlockEnabledForMainDocumentURL,
       isMainFrame
     else { return nil }
 

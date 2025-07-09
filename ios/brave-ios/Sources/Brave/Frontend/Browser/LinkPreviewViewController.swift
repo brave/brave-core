@@ -55,7 +55,11 @@ class LinkPreviewViewController: UIViewController {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !currentTab.isPrivate)
 
     Task(priority: .userInitiated) {
-      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
+      // TODO: Use BraveShieldsUtilsIOS
+      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+        isShieldsEnabled: !domain.areAllShieldsOff,
+        adBlockMode: domain.globalBlockAdsAndTrackingLevel.adBlockMode
+      )
       for ruleList in ruleLists {
         currentTab.configuration.userContentController.add(ruleList)
       }
