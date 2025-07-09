@@ -216,7 +216,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     )
   } else {
     // Run the tests
-    let testsDidFail = false
     getTestsToRun(config, suite).every((testSuite) => {
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
@@ -304,15 +303,12 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             'inherit',
           ],
         })
-      } else {
-        testsDidFail = prog.status !== 0
       }
       // If we output results into an xml file (CI), then we want to run all
       // suites to get all potential failures. Otherwise, for example, if
       // running locally, it makes sense to stop once one suite has failures.
-      return options.output_xml || !testsDidFail
+      return options.output_xml || prog.status === 0
     })
-    return testsDidFail ? -1 : 0
   }
 }
 
