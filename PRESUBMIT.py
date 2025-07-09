@@ -226,26 +226,6 @@ def CheckLicense(input_api, output_api):
                                               items=bad_files))
     return result
 
-
-def get_src_override(path: str) -> str:
-    """Convert path into `//chrome` override path."""
-    assert path, path
-    if not os.path.isabs(path):
-        path = os.path.abspath(path)
-    assert os.path.exists(path), path
-    src_dir = get_src_dir()
-    assert path.startswith(src_dir), (path, src_dir)
-    src_path = path[len(src_dir) + 1:]
-    override_path = wspath(f'//brave/chromium_src/{src_path}')
-    if not os.path.exists(override_path):
-        for override_extension in get_additional_extensions():
-            alt_path = override_path + override_extension
-            if os.path.exists(alt_path):
-                override_path = alt_path
-                break
-    return override_path
-
-
 def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     """Checks newly added theme resources to ensure there is a corresponding
        file in upstream """
