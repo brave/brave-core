@@ -307,6 +307,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       } else {
         testsDidFail = prog.status !== 0
       }
+      return true
     })
     return testsDidFail ? -1 : 0
   }
