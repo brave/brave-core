@@ -27,7 +27,7 @@
 namespace {
 
 inline constexpr char kGetPluginsAsStringScript[] =
-    "Array.from(navigator.plugins).map(p => p.name).join(', ');";
+    "Array.from(navigator.plugins).map(p => p.name).join(',');";
 inline constexpr char kNavigatorPluginsFilename[] = "navigator_plugins.txt";
 
 }  // namespace
@@ -81,7 +81,8 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
   EXPECT_EQ(plugins_str,
-            "Online PDF Viewer, HqVxgvf, 4cOuf2jw, Browser com.adobe.pdf ");
+            "4cOuf2jw,Microsoft Edge PDF Viewer,Chromium PDF Viewer,PDF "
+            "Viewer,HqVxgvf,Online PDF Viewer,WebKit built-in PDF");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
