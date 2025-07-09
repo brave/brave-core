@@ -12,6 +12,9 @@ class SchnorrkelKeyPairImpl : public SchnorrkelKeyPair {
 
   ~SchnorrkelKeyPairImpl() override;
   SR25519PublicKey GetPublicKey() override;
+  SR25519Signature SignMessage(base::span<const uint8_t> msg) override;
+  bool VerifyMessage(SR25519Signature const& sig,
+                     base::span<const uint8_t> msg) override;
 
  private:
   rust::Box<CxxSchnorrkelKeyPair> impl_;
@@ -25,7 +28,7 @@ SchnorrkelKeyPairImpl::SchnorrkelKeyPairImpl(
 
 std::unique_ptr<SchnorrkelKeyPair> SchnorrkelKeyPair::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  rust::Slice<uint8_t const> bytes{seed.data(), seed.size()};
+  rust::Slice<const uint8_t> bytes{seed.data(), seed.size()};
   auto mk = generate_sr25519_keypair_from_seed(bytes);
   if (mk->is_ok()) {
     return std::make_unique<SchnorrkelKeyPairImpl>(mk->unwrap());
@@ -35,6 +38,19 @@ std::unique_ptr<SchnorrkelKeyPair> SchnorrkelKeyPair::GenerateFromSeed(
 
 SR25519PublicKey SchnorrkelKeyPairImpl::GetPublicKey() {
   return impl_->get_public_key();
+}
+
+SR25519Signature SchnorrkelKeyPairImpl::SignMessage(
+    base::span<const uint8_t> msg) {
+  rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
+  return impl_->sign_message(bytes);
+}
+
+bool SchnorrkelKeyPairImpl::VerifyMessage(SR25519Signature const& sig,
+                                          base::span<const uint8_t> msg) {
+  rust::Slice<const uint8_t> sig_bytes{sig.data(), sig.size()};
+  rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
+  return impl_->verify_message(sig_bytes, bytes);
 }
 
 }  // namespace brave_wallet::schnorrkel

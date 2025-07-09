@@ -17,7 +17,8 @@ namespace schnorrkel {
 class SchnorrkelKeyPair;
 }  // namespace schnorrkel
 
-using Sr25519PublicKey = std::array<uint8_t, 32>;
+using SR25519PublicKey = std::array<uint8_t, 32>;
+using SR25519Signature = std::array<uint8_t, 64>;
 
 class HDKeySr25519 {
  public:
@@ -29,7 +30,10 @@ class HDKeySr25519 {
   static std::unique_ptr<HDKeySr25519> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
-  Sr25519PublicKey GetPublicKey();
+  SR25519PublicKey GetPublicKey();
+  SR25519Signature SignMessage(base::span<const uint8_t> msg);
+  bool VerifyMessage(SR25519Signature const& sig,
+                     base::span<const uint8_t> msg);
 
  private:
   explicit HDKeySr25519(std::unique_ptr<schnorrkel::SchnorrkelKeyPair> key);

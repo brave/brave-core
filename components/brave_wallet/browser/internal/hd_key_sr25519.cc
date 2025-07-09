@@ -27,8 +27,17 @@ std::unique_ptr<HDKeySr25519> HDKeySr25519::GenerateFromSeed(
   return nullptr;
 }
 
-Sr25519PublicKey HDKeySr25519::GetPublicKey() {
+SR25519PublicKey HDKeySr25519::GetPublicKey() {
   return schnorrkel_key_pair_->GetPublicKey();
+}
+
+SR25519Signature HDKeySr25519::SignMessage(base::span<const uint8_t> msg) {
+  return schnorrkel_key_pair_->SignMessage(msg);
+}
+
+bool HDKeySr25519::VerifyMessage(SR25519Signature const& sig,
+                                 base::span<const uint8_t> msg) {
+  return schnorrkel_key_pair_->VerifyMessage(sig, msg);
 }
 
 }  // namespace brave_wallet
