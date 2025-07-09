@@ -226,6 +226,7 @@ def CheckLicense(input_api, output_api):
                                               items=bad_files))
     return result
 
+
 def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     """Checks newly added theme resources to ensure there is a corresponding
        file in upstream """
