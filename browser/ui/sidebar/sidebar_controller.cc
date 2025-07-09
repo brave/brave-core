@@ -87,6 +87,11 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
   return false;
 }
 
+void SidebarController::TearDownPreBrowserWindowDestruction() {
+  sidebar_service_observed_.Reset();
+  sidebar_ = nullptr;
+}
+
 void SidebarController::ActivateItemAt(std::optional<size_t> index,
                                        WindowOpenDisposition disposition) {
   // disengaged means there is no active item.
