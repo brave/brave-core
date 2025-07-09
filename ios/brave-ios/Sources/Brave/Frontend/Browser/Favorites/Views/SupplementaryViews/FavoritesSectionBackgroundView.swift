@@ -20,9 +20,9 @@ class FavoritesSectionBackgroundLayoutAttribute: UICollectionViewLayoutAttribute
 
   override func isEqual(_ object: Any?) -> Bool {
     guard let other = object as? FavoritesSectionBackgroundLayoutAttribute else { return false }
-    return super.isEqual(object) &&
-      backgroundColour == other.backgroundColour &&
-      groupBackgroundColour == other.groupBackgroundColour
+
+    return super.isEqual(object) && backgroundColour.rgba == other.backgroundColour.rgba
+      && groupBackgroundColour.rgba == other.groupBackgroundColour.rgba
   }
 }
 
