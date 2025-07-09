@@ -67,7 +67,8 @@ bool BraveOriginState::LoadStateFromJsonFile(
   // {
   //   "is_brave_origin_user": true
   // }
-  base::FilePath file_path = user_data_dir.Append(kBraveOriginStateFilename);
+  base::FilePath file_path =
+      user_data_dir.AppendASCII(kBraveOriginStateFilename);
   std::string content;
   if (!base::ReadFileToString(file_path, &content)) {
     return false;
