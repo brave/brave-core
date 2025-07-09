@@ -22,18 +22,13 @@ mangle(
     headingEl.parentElement!.insertAdjacentHTML(
       'afterbegin',
       /* html */ `
-      <div class="heading-icon-and-text" slot="heading"></div>`,
-    )
-
-    // Create an icon element and append it to the wrapper.
-    const wrapperEl = element.querySelector('.heading-icon-and-text')!
-    wrapperEl.insertAdjacentHTML(
-      'afterbegin',
-      /* html */ `
-      <leo-icon name="window-edit" class="heading-icon"></leo-icon>`,
+      <div class="heading-icon-and-text" slot="heading">
+        <leo-icon name="window-edit" class="heading-icon"></leo-icon>
+      </div>`,
     )
 
     // Append the original heading element
+    const wrapperEl = element.querySelector('.heading-icon-and-text')!
     wrapperEl.appendChild(headingEl)
   },
   /* omit selector to access the top level node */
