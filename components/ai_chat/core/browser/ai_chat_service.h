@@ -251,14 +251,17 @@ class AIChatService : public KeyedService,
   bool CanUnloadConversation(ConversationHandler* conversation);
 
   // If a conversation is unloadable, queues an event to unload it after a
-  // delay. The delay is to prevent situations where the conversation is
-  // unloaded while its being used in a function, and to give clients a chance
-  // to connect.
-  // Solves this in a block:
-  // auto conversation = CreateConversation();
-  // conversation->SomeMethodThatTriggersMaybeUnload();
-  // /* conversation is unloaded */
-  // conversation->SomeOtherMethod(); // use after free!
+  // delay. The delay is to allow for these situations:
+  // - Primarily to guarantee that any references to the conversation during the
+  // current stack frame will remain valid during the current stack frame.
+  //   Solves this in a block:
+  //       auto conversation = CreateConversation();
+  //       conversation->SomeMethodThatTriggersMaybeUnload();
+  //       /* conversation is unloaded */
+  //       conversation->SomeOtherMethod(); // use after free!
+  // - To give clients a chance to connect, which often happens in a separate
+  // process, e.g. WebUI. This is not critical, but it avoids unloading and then
+  // re-loading the conversation data whilst waiting for the UI to connect.
   void QueueMaybeUnloadConversation(ConversationHandler* conversation);
 
   // Unloads |conversation| if:

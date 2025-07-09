@@ -853,7 +853,7 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
 
   // Disable storage
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
-  
+
   WaitForConversationUnload();
 
   // Conversation with no client was erased from memory
