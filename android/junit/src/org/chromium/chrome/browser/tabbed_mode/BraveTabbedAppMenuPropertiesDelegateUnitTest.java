@@ -416,6 +416,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     }
 
     /** Options for tests that control how Menu is being rendered. */
+    // Suppressed warnings for withShowUpdate / withShowPaintPreview / withNativePage /
+    // withShowReaderModePrefs as we may want to use it when will expand the tests
+    @SuppressWarnings("UnusedMethod")
     private static class MenuOptions {
         private boolean mIsNativePage;
         private boolean mShowTranslate;
