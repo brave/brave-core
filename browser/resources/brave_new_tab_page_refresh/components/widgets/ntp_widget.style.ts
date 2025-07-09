@@ -15,6 +15,5 @@ export const style = scoped.css`
     backdrop-filter: blur(50px);
     display: flex;
     align-items: stretch;
-    overflow: clip;
   }
 `

@@ -19,6 +19,8 @@ export const style = scoped.css`
 
     display: flex;
     flex-direction: column;
+    border-radius: 16px 0 0 16px;
+    overflow: clip;
 
     > * {
       background: rgba(255, 255, 255, 0.10);

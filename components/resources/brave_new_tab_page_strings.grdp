@@ -101,6 +101,18 @@
     Ready to start earning?
   </message>
 
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_BUTTON_LABEL" desc="Label for button allowing users to reconnect to their account">
+    Log in
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TEXT" desc="Text describing action needed to reconnect a Rewards account">
+    Log in to your <ph name="PROVIDER">$1</ph> account to see your balance
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TITLE" desc="Title for action needed to reconnect a Rewards account">
+    Log in to see your balance
+  </message>
+
   <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL" desc="Label for the Rewards onboarding button">
     Start using Brave Rewards
   </message>
