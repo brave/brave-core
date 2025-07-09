@@ -11,6 +11,7 @@
 #include "brave/ios/browser/api/ai_chat/ai_chat+private.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_shields/brave_shields_utils_ios+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
@@ -90,6 +91,7 @@
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
+@property(nonatomic) BraveShieldsUtilsIOS* braveShieldsUtils;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) WebImageDownloader* webImageDownloader;
@@ -293,6 +295,14 @@
     _braveWalletAPI = [[BraveWalletAPI alloc] initWithBrowserState:_profile];
   }
   return _braveWalletAPI;
+}
+
+- (BraveShieldsUtilsIOS*)braveShieldsUtils {
+  if (!_braveShieldsUtils) {
+    _braveShieldsUtils =
+        [[BraveShieldsUtilsIOS alloc] initWithBrowserState:_profile];
+  }
+  return _braveShieldsUtils;
 }
 
 - (DeAmpPrefs*)deAmpPrefs {

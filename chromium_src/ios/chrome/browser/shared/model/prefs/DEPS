@@ -15,6 +15,7 @@ include_rules = [
   "+brave/components/p3a",
   "+brave/components/skus/browser",
   "+brave/ios/browser/brave_stats",
+  "+brave/components/brave_shields/core/browser",
 ]
 
 specific_include_rules = {

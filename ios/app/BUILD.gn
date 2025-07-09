@@ -12,6 +12,7 @@ source_set("app") {
   configs += [
     "//brave/ios/browser/api/ai_chat:mojom_header_config",
     "//brave/ios/browser/api/webcompat_reporter:mojom_header_config",
+    "//brave/ios/browser/api/brave_shields:mojom_header_config",
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
   ]
