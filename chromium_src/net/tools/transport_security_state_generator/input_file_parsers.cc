@@ -67,13 +67,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
 
     // P2A/P3A
     { "name": "collector.bsg.brave.com", "pins": "brave"},
-    { "name": "p2a.brave.com", "pins": "brave"},
-    { "name": "p2a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.brave.com", "pins": "brave"},
-    { "name": "p3a-creative.brave.com", "pins": "brave"},
-    { "name": "p3a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.bravesoftware.com", "pins": "brave"},
-    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
     { "name": "star-randsrv.bsg.brave.com", "pins": "brave"},
 
     // Creators
@@ -216,41 +209,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "name": "go-updater.brave.com",
       "mode": "force-https",
       "policy": "custom"
-    },
-    {
-      "name": "p2a.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "p2a-json.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "p3a.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-creative.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-json.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a.bravesoftware.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-dev.bravesoftware.com",
-      "policy": "custom",
-      "mode": "force-https"
     },
     {
       "name": "pcdn.brave.com",
