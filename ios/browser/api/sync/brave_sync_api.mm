@@ -179,6 +179,13 @@ BraveSyncAPIWordsValidationStatus const
   _profile = nullptr;
 }
 
+- (bool)isInSyncGroup {
+  auto* service = static_cast<syncer::SyncServiceImpl*>(
+      SyncServiceFactory::GetForProfile(_profile));
+  return service->GetSyncAccountStateForPrefs() !=
+         syncer::SyncPrefs::SyncAccountState::kNotSignedIn;
+}
+
 - (bool)canSyncFeatureStart {
   return _worker->CanSyncFeatureStart();
 }

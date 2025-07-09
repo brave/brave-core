@@ -386,13 +386,19 @@ public class BrowserViewController: UIViewController {
       }
     )
 
+    // Update the preference based on the underlying Chromium prefs
+    // Remove this when the pref is deleted: https://github.com/brave/brave-browser/issues/47487
+    Preferences.Chromium.syncEnabled.value = profileController.syncAPI.isInSyncGroup
+
     // Observer watching state change in sync chain
     syncServiceStateListener = profileController.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
-      // Observe Sync State in order to determine if the sync chain is deleted
-      // from another device - Clean local sync chain
-      if self.profileController.syncAPI.shouldLeaveSyncGroup {
-        self.profileController.syncAPI.leaveSyncGroup()
+      DispatchQueue.main.async {
+        // Observe Sync State in order to determine if the sync chain is deleted
+        // from another device - Clean local sync chain
+        if self.profileController.syncAPI.shouldLeaveSyncGroup {
+          self.profileController.syncAPI.leaveSyncGroup()
+        }
       }
     }
 
