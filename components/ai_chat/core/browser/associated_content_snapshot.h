@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_ARCHIVE_CONTENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_ARCHIVE_CONTENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_SNAPSHOT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_SNAPSHOT_H_
 
 #include <string>
 #include <string_view>
@@ -26,16 +26,17 @@ namespace ai_chat {
 // multiple conversations, consider changing owner to the AIChatService and
 // having it subclass AssociatedContentDriver for related conversation
 // management.
-class AssociatedArchiveContent : public AssociatedContentDelegate {
+class AssociatedContentSnapshot : public AssociatedContentDelegate {
  public:
-  AssociatedArchiveContent(GURL url,
-                           std::string text_content,
-                           std::u16string title,
-                           bool is_video,
-                           std::string uuid);
-  ~AssociatedArchiveContent() override;
-  AssociatedArchiveContent(const AssociatedArchiveContent&) = delete;
-  AssociatedArchiveContent& operator=(const AssociatedArchiveContent&) = delete;
+  AssociatedContentSnapshot(GURL url,
+                            std::string text_content,
+                            std::u16string title,
+                            bool is_video,
+                            std::string uuid);
+  ~AssociatedContentSnapshot() override;
+  AssociatedContentSnapshot(const AssociatedContentSnapshot&) = delete;
+  AssociatedContentSnapshot& operator=(const AssociatedContentSnapshot&) =
+      delete;
 
   // Occassionally even an archive is updated, such as when content is deleted
   // for privacy reasons.
@@ -59,4 +60,4 @@ class AssociatedArchiveContent : public AssociatedContentDelegate {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_ARCHIVE_CONTENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_SNAPSHOT_H_

@@ -123,14 +123,14 @@ struct Conversation {
   array<AssociatedContent> associated_content;
 };
 
-struct ContentArchive {
+struct ContentSnapshot {
   string content_uuid;
   string content;
 };
 
 struct ConversationArchive {
   array<ConversationTurn> entries;
-  array<ContentArchive> associated_content;
+  array<ContentSnapshot> associated_content;
 };
 
 // Which action the user was taking for the entry. This can be used

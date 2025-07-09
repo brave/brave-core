@@ -16,8 +16,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_multi_source_observation.h"
-#include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_snapshot.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
@@ -30,8 +30,8 @@ using GetAllContentCallback = base::OnceCallback<void(PageContents)>;
 // This class is responsible for managing the content associated with a
 // conversation. This includes:
 // - Adding/removing content
-// - Loading archived content
-// - Archiving content as the user navigates aways
+// - Loading snapshotted content
+// - Snapshotting content as the user navigates between pages
 // - Managing whether content should be used as part of the context
 class AssociatedContentManager : public AssociatedContentDelegate::Observer {
  public:
@@ -39,14 +39,14 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   ~AssociatedContentManager() override;
 
   // Sets the content from the conversation archive.
-  void LoadArchivedContent(
+  void LoadContentSnapshots(
       const mojom::Conversation* metadata,
       const mojom::ConversationArchivePtr& conversation_archive);
 
-  // Replaces |content_uuid| with some archived content.
-  void SetArchiveContent(std::string content_uuid,
-                         std::string text_content,
-                         bool is_video);
+  // Replaces |content_uuid| with a snapshot of the content.
+  void SetContentSnapshot(std::string content_uuid,
+                          std::string text_content,
+                          bool is_video);
 
   // Adds a content delegate to the list of content delegates.
   // If |notify_updated| is true, the conversation will be notified that the
@@ -82,7 +82,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   PageContents GetCachedContents() const;
 
   bool HasOpenAIChatPermission() const;
-  bool HasNonArchiveContent() const;
+  bool HasLiveContent() const;
   bool HasAssociatedContent() const;
 
   // Determines if the content for this conversation is a single video.
@@ -106,7 +106,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   std::vector<AssociatedContentDelegate*> content_delegates_;
 
   // Used for ownership - still stored in the above array.
-  std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;
+  std::vector<std::unique_ptr<AssociatedContentSnapshot>> content_snapshots_;
 
   base::ScopedMultiSourceObservation<AssociatedContentDelegate,
                                      AssociatedContentDelegate::Observer>
