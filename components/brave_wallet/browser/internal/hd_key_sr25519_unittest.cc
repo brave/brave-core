@@ -1,10 +1,10 @@
-#include "brave/components/brave_wallet/browser/polkadot/rust/sr25519.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-TEST(PolkdadotSR25519, GenerateFromSeed) {
+TEST(HDKeySr25519, GenerateFromSeed) {
   auto kpresult = HDKeySr25519::GenerateFromSeed({});
   EXPECT_FALSE(kpresult);
 
@@ -17,6 +17,9 @@ TEST(PolkdadotSR25519, GenerateFromSeed) {
       105, 025, 112, 59,  172, 003, 28,  174, 127, 96,
   });
   EXPECT_TRUE(kpresult);
+
+  auto public_key = kpresult->GetPublicKey();
+  EXPECT_EQ(public_key.size(), std::size_t{32});
 }
 
 }  // namespace brave_wallet
