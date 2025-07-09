@@ -71,11 +71,27 @@ class HistoryImportExportUtility {
         }
       }
 
-      let historyFileURL = zipFileExtractedURL.appending(path: "History").appendingPathExtension(
-        "json"
+      // File names in the zip file are localized, so we iterate all json files
+      // and try to import
+      let contents = try? await AsyncFileManager.default.contentsOfDirectory(
+        at: zipFileExtractedURL,
+        includingPropertiesForKeys: nil
       )
+      let potentialHistoryFiles = contents?.filter { $0.pathExtension.lowercased() == "json" } ?? []
 
-      return await doImport(historyFileURL, historyFileURL.path)
+      // If there's no files to import, return true
+      // as it is fine to have not export history in the zip file
+      if potentialHistoryFiles.isEmpty {
+        return true
+      }
+
+      for historyFileURL in potentialHistoryFiles {
+        if await doImport(historyFileURL, historyFileURL.path) {
+          return true
+        }
+      }
+
+      return false
     }
 
     return await doImport(path, path.path)
