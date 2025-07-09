@@ -27,8 +27,8 @@ using blink::Member;
 using blink::MimeClassInfo;
 using blink::PluginData;
 using blink::PluginInfo;
+using blink::StringBuilder;
 using WTF::String;
-using WTF::StringBuilder;
 
 namespace brave {
 
@@ -52,13 +52,12 @@ String PluginReplacementName(FarblingPRNG* prng) {
   return result.ToString();
 }
 
-void FarblePlugins(DOMPluginArray* owner,
+void FarblePlugins(blink::LocalDOMWindow* window,
                    PluginData* data,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
-  // |owner| is guaranteed to be non-null here.
-  // |owner->DomWindow()| might be null but function can handle it.
+  // |window| might be null but function can handle it.
   auto farbling_level = brave::GetBraveFarblingLevelFor(
-      owner->DomWindow(), ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
+      window, ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
       BraveFarblingLevel::OFF);
   switch (farbling_level) {
     case BraveFarblingLevel::OFF: {
@@ -71,7 +70,7 @@ void FarblePlugins(DOMPluginArray* owner,
       [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
-      LocalFrame* frame = owner->DomWindow()->GetFrame();
+      LocalFrame* frame = window->GetFrame();
       FarblingPRNG prng = BraveSessionCache::From(*(frame->DomWindow()))
                               .MakePseudoRandomGenerator();
       // The item() method will populate plugin info if any item of
@@ -154,7 +153,7 @@ void FarblePlugins(DOMPluginArray* owner,
     data->ResetPluginData();
 
 #define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA \
-  brave::FarblePlugins(this, data, &dom_plugins_);
+  brave::FarblePlugins(window, GetPluginData(), &dom_plugins_);
 
 #include "src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc"
 
