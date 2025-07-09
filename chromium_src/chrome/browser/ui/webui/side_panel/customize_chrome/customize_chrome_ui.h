@@ -8,6 +8,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome.mojom.h"
+#include "ui/webui/resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom.h"
 
 #define AttachedTabStateUpdated                                            \
   AttachedTabStateUpdated_Unused();                                        \
@@ -30,8 +31,19 @@
           pending_page_handler);                                           \
   void CreatePageHandler
 
+#define CreateCustomizeColorSchemeModeHandler                                  \
+  CreateCustomizeColorSchemeModeHandlerChromium(                               \
+      mojo::PendingRemote<                                                     \
+          customize_color_scheme_mode::mojom::CustomizeColorSchemeModeClient>  \
+          client,                                                              \
+      mojo::PendingReceiver<                                                   \
+          customize_color_scheme_mode::mojom::CustomizeColorSchemeModeHandler> \
+          handler);                                                            \
+  void CreateCustomizeColorSchemeModeHandler
+
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"  // IWYU pragma: export
 
+#undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
 #undef AttachedTabStateUpdated
 
