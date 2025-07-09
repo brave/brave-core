@@ -66,12 +66,12 @@ void ReportLaunch(base::Time now,
     last_update_used_omaha4 = prefs->GetBoolean(kLastUpdateUsedOmaha4Pref);
   }
 
-  bool updated_this_week =
+  bool updated_in_past_7_days =
       !last_update_time.is_null() && (now - last_update_time).InDays() < 7;
 
   UpdateStatus status;
   using enum UpdateStatus;
-  if (updated_this_week) {
+  if (updated_in_past_7_days) {
     status = last_update_used_omaha4 ? kUpdatedWithOmaha4 : kUpdatedWithLegacy;
   } else {
     status = is_using_omaha4 ? kNoUpdateWithOmaha4 : kNoUpdateWithLegacy;
