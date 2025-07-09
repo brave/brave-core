@@ -32,6 +32,8 @@ function getPageVisibility () {
     // Hide appropriate brave sections as well as chromium ones
     return {
       ...chromiumPageVisibility,
+      // TODO(bsclifton): have this check the actual SKU
+      origin: true,
       shields: true,
       socialBlocking: true,
       braveSync: false,

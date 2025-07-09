@@ -234,6 +234,16 @@ RegisterPolymerTemplateModifications({
       peopleEl.insertAdjacentElement('afterend', getStartedEl)
     }
 
+    // Brave Origin
+    // TODO(bsclifton): make sure it's purchased first.
+    const originEl = createMenuElement(
+      loadTimeData.getString('braveOriginTitle'),
+      '/origin',
+      'shield-done',// TODO(bsclifton): fix me (ICON).
+      'origin',
+    )
+    getStartedEl.insertAdjacentElement('afterend', originEl)
+
     // Move Appearance item
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
@@ -243,7 +253,7 @@ RegisterPolymerTemplateModifications({
     )
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     if (appearanceBrowserEl && contentEl) {
-      getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
+      originEl.insertAdjacentElement('afterend', appearanceBrowserEl)
       appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
     }
 
