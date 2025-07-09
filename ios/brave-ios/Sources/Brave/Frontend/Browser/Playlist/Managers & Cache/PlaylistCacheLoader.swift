@@ -302,8 +302,6 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         tab.currentPageData = PageData(mainFrameURL: mainDocumentURL)
       }
 
-      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
-
       if !requestInfo.isNewWindow {
         tab.currentPageData?.addSubframeURL(
           forRequestURL: requestURL,
@@ -311,8 +309,9 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
-            domain: domainForMainFrame,
-            isDeAmpEnabled: false
+            isDeAmpEnabled: false,
+            isAdBlockEnabled: true,
+            isBlockFingerprintingEnabled: true
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }

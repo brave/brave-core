@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import Foundation
 import Shared
@@ -40,6 +41,11 @@ class SiteStateListenerScriptHandler: TabContentScript {
       in: scriptSandbox
     )
   }()
+  private let braveShieldsUtils: BraveShieldsUtilsIOS
+
+  init(braveShieldsUtils: BraveShieldsUtilsIOS) {
+    self.braveShieldsUtils = braveShieldsUtils
+  }
 
   func tab(
     _ tab: some TabState,
@@ -63,8 +69,19 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
       Task { @MainActor in
         if let pageData = tab.currentPageData {
-          let domain = pageData.domain(persistent: !tab.isPrivate)
-          guard domain.globalBlockAdsAndTrackingLevel.isEnabled,
+          let adBlockMode: BraveShields.AdBlockMode
+          if FeatureList.kBraveShieldsContentSettings.enabled {
+            adBlockMode = braveShieldsUtils.adBlockMode(
+              for: frameURL,
+              isPrivate: tab.isPrivate,
+              considerAllShieldsOption: true
+            )
+          } else {
+            let domain = pageData.domain(persistent: !tab.isPrivate)
+            adBlockMode = domain.globalBlockAdsAndTrackingLevel.adBlockMode
+          }
+
+          guard adBlockMode != .allow,
             pageData.mainFrameURL.isWebPage(includeDataURIs: false)
           else {
             return
@@ -72,7 +89,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
           let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
             forFrameURL: frameURL,
-            domain: domain
+            isAdBlockEnabled: adBlockMode != .allow
           )
 
           var cachedStandardSelectors: Set<String> = .init()
@@ -85,7 +102,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           }
           let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
             from: models,
-            isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+            isAggressive: adBlockMode == .aggressive,
             cachedStandardSelectors: cachedStandardSelectors,
             cachedAggressiveSelectors: cachedAggressiveSelectors
           )

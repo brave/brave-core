@@ -32,16 +32,40 @@ extension BrowserViewController: TabPolicyDecider {
 
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
     if let responseURL = responseURL,
-      let domain = tab.currentPageData?.domain(persistent: !isPrivateBrowsing),
+      let tabPageData = tab.currentPageData,
       tab.currentPageData?.upgradeFrameURL(
         forResponseURL: responseURL,
         isForMainFrame: responseInfo.isForMainFrame
       ) == true
     {
+      let domain = tabPageData.domain(persistent: !isPrivateBrowsing)
+      let isAdBlockEnabled: Bool
+      let isBlockFingerprintingEnabled: Bool
+      if FeatureList.kBraveShieldsContentSettings.enabled {
+        isAdBlockEnabled =
+          profileController.braveShieldsUtils.adBlockMode(
+            for: tabPageData.mainFrameURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ) != .allow
+        isBlockFingerprintingEnabled = profileController.braveShieldsUtils.isShieldExpected(
+          url: tabPageData.mainFrameURL,
+          isPrivate: tab.isPrivate,
+          shield: .fpProtection,
+          considerAllShieldsOption: true
+        )
+      } else {
+        isAdBlockEnabled = domain.globalBlockAdsAndTrackingLevel.isEnabled
+        isBlockFingerprintingEnabled = domain.isShieldExpected(
+          .fpProtection,
+          considerAllShieldsOption: true
+        )
+      }
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
-          domain: domain,
-          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
+          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+          isAdBlockEnabled: isAdBlockEnabled,
+          isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
         ) ?? []
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -285,6 +309,29 @@ extension BrowserViewController: TabPolicyDecider {
         tab.isInternalRedirect = false
       }
 
+      let isAdBlockEnabled: Bool
+      let isBlockFingerprintingEnabled: Bool
+      if FeatureList.kBraveShieldsContentSettings.enabled {
+        isAdBlockEnabled =
+          profileController.braveShieldsUtils.adBlockMode(
+            for: mainDocumentURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ) != .allow
+        isBlockFingerprintingEnabled = profileController.braveShieldsUtils.isShieldExpected(
+          url: mainDocumentURL,
+          isPrivate: tab.isPrivate,
+          shield: .fpProtection,
+          considerAllShieldsOption: true
+        )
+      } else {
+        isAdBlockEnabled = domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled
+        isBlockFingerprintingEnabled = domainForMainFrame.isShieldExpected(
+          .fpProtection,
+          considerAllShieldsOption: true
+        )
+      }
+
       // Set some additional user scripts
       if requestInfo.isMainFrame {
         tab.browserData?.setScripts(scripts: [
@@ -294,13 +341,11 @@ extension BrowserViewController: TabPolicyDecider {
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
-          .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+          .requestBlocking: requestURL.isWebPage(includeDataURIs: false) && isAdBlockEnabled,
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
-          .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+          .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false) && isAdBlockEnabled,
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -316,8 +361,9 @@ extension BrowserViewController: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
-            domain: domainForMainFrame,
-            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
+            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+            isAdBlockEnabled: isAdBlockEnabled,
+            isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }

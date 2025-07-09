@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Foundation
 import Shared
@@ -30,6 +31,11 @@ class CosmeticFiltersScriptHandler: TabContentScript {
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
+  private let braveShieldsUtils: BraveShieldsUtilsIOS
+
+  init(braveShieldsUtils: BraveShieldsUtilsIOS) {
+    self.braveShieldsUtils = braveShieldsUtils
+  }
 
   func tab(
     _ tab: some TabState,
@@ -52,11 +58,24 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       }
 
       Task { @MainActor in
-        let domain = Domain.getOrCreate(
-          forUrl: frameURL,
-          persistent: !tab.isPrivate
+        let isAdBlockEnabled: Bool
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          isAdBlockEnabled =
+            braveShieldsUtils.adBlockMode(
+              for: frameURL,
+              isPrivate: tab.isPrivate,
+              considerAllShieldsOption: true
+            ) != .allow
+        } else {
+          let domain = Domain.getOrCreate(
+            forUrl: frameURL,
+            persistent: !tab.isPrivate
+          )
+          isAdBlockEnabled = domain.globalBlockAdsAndTrackingLevel.isEnabled
+        }
+        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
+          isAdBlockEnabled: isAdBlockEnabled
         )
-        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(for: domain)
 
         let selectorArrays = await cachedEngines.asyncCompactMap {
           cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
