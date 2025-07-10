@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -102,6 +103,9 @@ void NewTabPageInitializer::Initialize() {
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+
+  content::URLDataSource::Add(GetProfile(),
+                              std::make_unique<ThemeSource>(GetProfile()));
 }
 
 Profile* NewTabPageInitializer::GetProfile() {

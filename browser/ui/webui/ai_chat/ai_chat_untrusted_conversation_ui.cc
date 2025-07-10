@@ -25,6 +25,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -173,7 +174,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "script-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
+      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources "
+      "chrome-untrusted://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome-untrusted://resources "
@@ -194,6 +196,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                                   /*serve_untrusted=*/true));
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
