@@ -14,6 +14,8 @@
 #define Init virtual Init
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 #define InitPostWindowConstruction virtual InitPostWindowConstruction
+#define TearDownPreBrowserViewDestruction \
+  virtual TearDownPreBrowserViewDestruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
@@ -21,6 +23,7 @@
 #undef InitPostBrowserViewConstruction
 #undef Init
 #undef BrowserWindowFeatures
+#undef TearDownPreBrowserViewDestruction
 
 #include "brave/browser/ui/browser_window/public/browser_window_features.h"
 

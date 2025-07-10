@@ -84,3 +84,13 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
         browser, browser->profile());
   }
 }
+
+void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
+  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserViewDestruction();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn_controller_.reset();
+#endif
+  if (sidebar_controller_) {
+    sidebar_controller_->TearDownPreBrowserWindowDestruction();
+  }
+}
