@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 4bc3a129c08969fd66b2886fd500e16d8e51ef48..4122878e0b6ef1b29f6d30e720e3f16d766949b1 100644
+index 6db1ac8c7ad2dd165dc9be9876d9f3707158de41..837d93c3a010c6ae224750c00429cf3625cc33f1 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -123,7 +123,7 @@ class SplitTabScrimController;
+@@ -138,7 +138,7 @@ class SplitTabScrimController;
  class BrowserWindowFeatures {
   public:
    BrowserWindowFeatures();

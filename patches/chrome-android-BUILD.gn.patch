@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 778e6a2e31dce3851812a80b6236efa1be047924..c66d9f1528a36cc873db4211a1844cfb1ac022cc 100644
+index a41764e4ad7a7c966dcc11419119f1b1d76ef3d0..692394007b0b674e2edf51f8cdff5a625ab63f67 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -194,6 +194,7 @@ if (_is_default_toolchain) {
+@@ -192,6 +192,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,7 +10,7 @@ index 778e6a2e31dce3851812a80b6236efa1be047924..c66d9f1528a36cc873db4211a1844cfb
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -291,6 +292,7 @@ if (_is_default_toolchain) {
+@@ -289,6 +290,7 @@ if (_is_default_toolchain) {
      if (enable_screen_capture) {
        deps += [ "//chrome/browser:screen_capture_java_resources" ]
      }
@@ -18,7 +18,7 @@ index 778e6a2e31dce3851812a80b6236efa1be047924..c66d9f1528a36cc873db4211a1844cfb
    }
  
    android_resources("java_overlay_resources") {
-@@ -798,6 +800,7 @@ if (_is_default_toolchain) {
+@@ -797,6 +799,7 @@ if (_is_default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index 778e6a2e31dce3851812a80b6236efa1be047924..c66d9f1528a36cc873db4211a1844cfb
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -814,6 +817,7 @@ if (_is_default_toolchain) {
+@@ -813,6 +816,7 @@ if (_is_default_toolchain) {
        "//components/sharing_message:sharing_send_message_result_generated_enum",
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
      ]
@@ -34,7 +34,7 @@ index 778e6a2e31dce3851812a80b6236efa1be047924..c66d9f1528a36cc873db4211a1844cfb
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -940,6 +944,7 @@ if (_is_default_toolchain) {
+@@ -939,6 +943,7 @@ if (_is_default_toolchain) {
        "//components/segmentation_platform/internal:internal_java",
        "//components/visited_url_ranking/internal:internal_java",
      ]

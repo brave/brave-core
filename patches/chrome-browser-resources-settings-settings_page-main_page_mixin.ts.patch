@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_page/main_page_mixin.ts b/chrome/browser/resources/settings/settings_page/main_page_mixin.ts
-index 9bf997210eea95e160c623c875b348c0cd9c570f..e737d94eb992803d1bcd0640fe586d0b4795dccd 100644
+index 409e24f655d6745067ab4b10abd67fb8f5d071ce..4a359e43b38065c520a13b69cddc6af04c368251 100644
 --- a/chrome/browser/resources/settings/settings_page/main_page_mixin.ts
 +++ b/chrome/browser/resources/settings/settings_page/main_page_mixin.ts
-@@ -40,7 +40,7 @@ guestTopLevelRoute = routes.PRIVACY;
+@@ -39,7 +39,7 @@ guestTopLevelRoute = routes.PRIVACY;
  // </if>
  
  const TOP_LEVEL_EQUIVALENT_ROUTE: Route =
