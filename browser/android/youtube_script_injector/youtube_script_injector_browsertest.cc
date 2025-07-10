@@ -41,13 +41,13 @@ constexpr std::u16string_view kSimulateDelayedScriptLoad =
 
 }  // namespace
 
-class BraveYouTubeScriptInjectorNativeHelperBrowserTest
+class YouTubeScriptInjectorBrowserTest
     : public PlatformBrowserTest {
  public:
-  BraveYouTubeScriptInjectorNativeHelperBrowserTest()
+  YouTubeScriptInjectorBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  ~BraveYouTubeScriptInjectorNativeHelperBrowserTest() override = default;
+  ~YouTubeScriptInjectorBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
@@ -147,7 +147,7 @@ class BraveYouTubeScriptInjectorNativeHelperBrowserTest
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        SetFullscreenFromPausedVideo) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -175,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
       "document.querySelector('video.html5-main-video').paused === false"));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        SetFullscreenFromPlayingVideo) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -208,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   EXPECT_TRUE(IsVideoPlaying());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        VideoIsPlayedFromFullscreenState) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -233,7 +233,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
       "document.querySelector('video.html5-main-video').paused === false"));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        NoOpIfPlayerIsNotFound) {
   // Load a page without a video.
   const GURL url = https_server_.GetURL("youtube.com", "/ytcftg_mock.html");
@@ -266,7 +266,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
 // recreates a delay by injecting the video and button elements after the
 // fullscreen script has already started observing, mimicking YouTube's actual
 // loading behavior.
-IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        SetFullscreenOnElementsLoadingDelayed) {
   const GURL url =
       https_server_.GetURL("youtube.com", "/yt_fullscreen_delayed.html");
