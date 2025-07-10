@@ -9,13 +9,13 @@ group("rust") {
   # This should only be used by internal wallet code
   visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
 
-  deps = [":polkadot_impl"]
+  deps = [ ":polkadot_impl" ]
 }
 
 source_set("polkadot_impl") {
   sources = [
     "sr25519.cc",
-    "sr25519.h"
+    "sr25519.h",
   ]
 
   deps = [
@@ -26,14 +26,11 @@ source_set("polkadot_impl") {
 }
 
 rust_static_library("rust_lib") {
-
   crate_name = "sr25519"
   crate_root = "lib.rs"
   allow_unsafe = true
   sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
-  deps = [
-    "//brave/third_party/rust/schnorrkel/v0_11:lib"
-  ]
+  deps = [ "//brave/third_party/rust/schnorrkel/v0_11:lib" ]
 }
