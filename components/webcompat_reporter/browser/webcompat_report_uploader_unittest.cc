@@ -108,7 +108,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   auto report = webcompat_reporter::mojom::ReportInfo::New(
       "dev", "1.231.45", "https://abc.url/p1/p2", "true", "ad_block_setting",
       "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
-      "details", "contact", "block", "true", std::move(components),
+      "category", "details", "contact", "block", "true", std::move(components),
       std::nullopt, webcompat_errors);
 
   base::Value::List errors_list;

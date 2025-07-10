@@ -904,8 +904,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     }
                 });
         if (mWebcompatReporterHandler != null) {
-            mWebcompatReporterHandler.getContactInfo(
-                    (contactInfo, contactInfoSaveFlag) -> {
+            mWebcompatReporterHandler.getBrowserParams(
+                    (contactInfo, contactInfoSaveFlag, _components) -> {
                         if (contactInfo != null && !contactInfo.isEmpty()) {
                             mEditTextContact.setText(contactInfo);
                         }
@@ -921,6 +921,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.category = "";
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         return reportInfo;
