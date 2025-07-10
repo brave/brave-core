@@ -286,6 +286,10 @@ const runTests = (passthroughArgs, suite, config, options) => {
       args.push('-s')
       args.push('18.3.1')
       args.push(getTestBinary(Config, testSuite))
+      if (options.filter) {
+        args.push('-t')
+        args.push(options.filter)
+      }
       const xctest = path.join(getTestBinary(Config, testSuite), `Plugins/${suite}_module.xctest`)
       if (fs.existsSync(xctest)) {
         args.push(xctest)
