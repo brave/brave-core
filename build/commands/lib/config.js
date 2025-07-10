@@ -10,6 +10,7 @@ const fs = require('fs')
 const assert = require('assert')
 const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
+const dotenv = require('dotenv')
 
 let envConfig = null
 
@@ -948,7 +949,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.updateInternal = function (options) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -1003,8 +1004,13 @@ Config.prototype.update = function (options) {
     }
   }
 
-  if (this.targetOS === 'ios' && options.target_environment) {
-    this.targetEnvironment = options.target_environment
+  if (this.targetOS === 'ios') {
+    if (options.target_environment) {
+      this.targetEnvironment = options.target_environment
+    } else if (this.targetArch === 'x64') {
+      // x64 can only run on simulator
+      this.targetEnvironment = 'simulator'
+    }
   }
 
   if (options.build_config) {
@@ -1147,6 +1153,19 @@ Config.prototype.update = function (options) {
 
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
+  }
+}
+
+Config.prototype.fromGnArgs = function (outputDir) {
+  const gnArgs = dotenv.parse(fs.readFileSync(path.join(outputDir,
+    'args_generated.gni')))
+  this.updateInternal(gnArgs)
+}
+
+Config.prototype.update = function (options) {
+  this.updateInternal(options)
+  if (options.no_gn_gen !== undefined) {
+    this.fromGnArgs(this.outputDir)
   }
 }
 
