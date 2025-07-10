@@ -62,6 +62,11 @@
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
+#endif
+
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -169,6 +174,21 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
+
+  // Brave Origin (group policy related values)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  (*s_brave_allowlist)[brave_rewards::prefs::kDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_news::prefs::kBraveNewsDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  (*s_brave_allowlist)[brave_vpn::prefs::kManagedBraveVPNDisabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+  (*s_brave_allowlist)[brave_wallet::prefs::kDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#endif
+
   // De-AMP feature
   (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
       settings_api::PrefType::kBoolean;
