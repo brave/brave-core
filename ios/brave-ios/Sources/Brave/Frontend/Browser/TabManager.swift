@@ -772,12 +772,10 @@ class TabManager: NSObject {
       let baseDomain = url.baseDomain
     else { return }
     forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
-    let siteDomain = Domain.getOrCreate(
-      forUrl: url,
-      persistent: !tab.isPrivate
-    )
+    let shredLevel =
+      tab.braveShieldsHelper?.shredLevel(for: url, isPrivate: tab.isPrivate) ?? .never
 
-    switch siteDomain.shredLevel {
+    switch shredLevel {
     case .never:
       return
     case .appExit:
@@ -1250,6 +1248,8 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
+        // TODO: Remove `Domain` usage.
+        // Shouldn't access `shredLevel` directly, but TabState is unavailable.
         let siteDomain = Domain.getOrCreate(
           forUrl: url,
           persistent: !isPrivate

@@ -32,7 +32,7 @@ extension BrowserViewController: TabPolicyDecider {
 
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
     if let responseURL = responseURL,
-      let domain = tab.currentPageData?.domain(persistent: !isPrivateBrowsing),
+      let pageData = tab.currentPageData,
       tab.currentPageData?.upgradeFrameURL(
         forResponseURL: responseURL,
         isForMainFrame: responseInfo.isForMainFrame
@@ -40,8 +40,18 @@ extension BrowserViewController: TabPolicyDecider {
     {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
-          domain: domain,
-          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
+          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+          isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
+            for: pageData.mainFrameURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ).isEnabled ?? true,
+          isBlockFingerprintingEnabled: tab.braveShieldsHelper?.isShieldExpected(
+            for: pageData.mainFrameURL,
+            isPrivate: tab.isPrivate,
+            shield: .fpProtection,
+            considerAllShieldsOption: true
+          ) ?? true
         ) ?? []
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -260,16 +270,25 @@ extension BrowserViewController: TabPolicyDecider {
         }
       }
 
-      let domainForMainFrame = Domain.getOrCreate(
-        forUrl: mainDocumentURL,
-        persistent: !isPrivateBrowsing
-      )
+      let isAdBlockEnabled =
+        tab.braveShieldsHelper?.shieldLevel(
+          for: mainDocumentURL,
+          isPrivate: tab.isPrivate,
+          considerAllShieldsOption: true
+        ).isEnabled ?? true
+      let isBlockFingerprintingEnabled =
+        tab.braveShieldsHelper?.isShieldExpected(
+          for: mainDocumentURL,
+          isPrivate: tab.isPrivate,
+          shield: .noScript,
+          considerAllShieldsOption: true
+        ) ?? true
 
       if let modifiedRequest = getInternalRedirect(
         from: request,
         isMainFrame: requestInfo.isMainFrame,
         in: tab,
-        domainForMainFrame: domainForMainFrame
+        isAdBlockEnabled: isAdBlockEnabled
       ) {
         tab.isInternalRedirect = true
         tab.loadRequest(modifiedRequest)
@@ -295,12 +314,12 @@ extension BrowserViewController: TabPolicyDecider {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+            && isAdBlockEnabled,
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
           .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+            && isAdBlockEnabled,
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -316,8 +335,9 @@ extension BrowserViewController: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
-            domain: domainForMainFrame,
-            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
+            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+            isAdBlockEnabled: isAdBlockEnabled,
+            isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }
@@ -334,16 +354,17 @@ extension BrowserViewController: TabPolicyDecider {
           cookies: cookies
         )
 
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
-        let isAggressiveAdsBlocking =
-          domain.globalBlockAdsAndTrackingLevel.isAggressive
-          && adsBlockingShieldUp
+        let isAdBlockModeAggressive =
+          tab.braveShieldsHelper?.shieldLevel(
+            for: requestURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ).isAggressive ?? true
 
         if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
           requestURL,
           isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: isAggressiveAdsBlocking
+          isAggressiveAdsBlocking: isAdBlockModeAggressive
         ) {
           // Ensure the webView is not a link preview popup.
           if self.presentedViewController == nil {
@@ -384,7 +405,7 @@ extension BrowserViewController: TabPolicyDecider {
             url: requestURL,
             rewards: rewards,
             isPrivateBrowsing: isPrivateBrowsing,
-            isAggressiveAdsBlocking: isAggressiveAdsBlocking
+            isAggressiveAdsBlocking: isAdBlockModeAggressive
           )
         }
 
@@ -422,13 +443,19 @@ extension BrowserViewController: TabPolicyDecider {
         let etldP1 = requestURL.baseDomain,
         tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+        let shieldLevel =
+          tab.braveShieldsHelper?.shieldLevel(
+            for: requestURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ) ?? .standard
 
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
           sourceURL: requestURL,
           resourceType: .document,
-          domain: domain
+          isAdBlockEnabled: shieldLevel.isEnabled,
+          isAdBlockModeAggressive: shieldLevel.isAggressive
         )
 
         if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
@@ -452,13 +479,23 @@ extension BrowserViewController: TabPolicyDecider {
         requestInfo.isMainFrame
       {
         // Identify specific block lists that need to be applied to the requesting domain
-        let domainForShields = Domain.getOrCreate(
-          forUrl: mainDocumentURL,
-          persistent: !isPrivateBrowsing
-        )
+        let isBraveShieldsEnabled =
+          tab.braveShieldsHelper?.isBraveShieldsEnabled(
+            for: mainDocumentURL,
+            isPrivate: tab.isPrivate
+          ) ?? true
+        let shieldLevel =
+          tab.braveShieldsHelper?.shieldLevel(
+            for: mainDocumentURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ) ?? .standard
 
         // Load rule lists
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+          isBraveShieldsEnabled: isBraveShieldsEnabled,
+          shieldLevel: shieldLevel
+        )
         tab.contentBlocker?.set(ruleLists: ruleLists)
       }
 
@@ -564,13 +601,13 @@ extension BrowserViewController {
     from request: URLRequest,
     isMainFrame: Bool,
     in tab: some TabState,
-    domainForMainFrame: Domain
+    isAdBlockEnabled: Bool
   ) -> URLRequest? {
     guard let requestURL = request.url else { return nil }
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+      isAdBlockEnabled,
       isMainFrame
     else { return nil }
 

@@ -65,17 +65,4 @@ enum DomainUserScript: CaseIterable {
       ])
     }
   }
-
-  /// Returns a shield type for a given user script domain.
-  /// Returns nil if the domain's user script can't be turned off via a shield toggle. (i.e. it's always enabled)
-  var requiredShield: BraveShield? {
-    switch self {
-    case .braveSearchHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
-      return nil
-    #if canImport(BraveTalk)
-    case .braveTalkHelper:
-      return nil
-    #endif
-    }
-  }
 }

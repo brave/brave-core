@@ -52,10 +52,19 @@ class LinkPreviewViewController: UIViewController {
     }
 
     // Add rule lists for this page
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !currentTab.isPrivate)
-
     Task(priority: .userInitiated) {
-      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
+      let isBraveShieldsEnabled =
+        tab.braveShieldsHelper?.isBraveShieldsEnabled(for: url, isPrivate: tab.isPrivate) ?? true
+      let shieldLevel =
+        tab.braveShieldsHelper?.shieldLevel(
+          for: url,
+          isPrivate: tab.isPrivate,
+          considerAllShieldsOption: true
+        ) ?? .standard
+      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+        isBraveShieldsEnabled: isBraveShieldsEnabled,
+        shieldLevel: shieldLevel
+      )
       for ruleList in ruleLists {
         currentTab.configuration.userContentController.add(ruleList)
       }

@@ -13,7 +13,7 @@ import Preferences
 private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
 
 extension Domain {
-  @MainActor public var areAllShieldsOff: Bool {
+  @MainActor internal var areAllShieldsOff: Bool {
     return shield_allOff?.boolValue ?? false
   }
 
@@ -34,7 +34,7 @@ extension Domain {
   }
 
   /// The shield level for this current domain (standard/aggressive/disabled).
-  @MainActor public var domainBlockAdsAndTrackingLevel: ShieldLevel {
+  @MainActor internal var domainBlockAdsAndTrackingLevel: ShieldLevel {
     get {
       guard let level = self.shield_blockAdsAndTrackingLevel else {
         return ShieldPreferences.blockAdsAndTrackingLevel
@@ -57,7 +57,7 @@ extension Domain {
   ///
   /// - Warning: This does not consider the "all off" setting
   /// This also takes into consideration certain domains that are always aggressive.
-  @MainActor public var globalBlockAdsAndTrackingLevel: ShieldLevel {
+  @MainActor internal var globalBlockAdsAndTrackingLevel: ShieldLevel {
     guard !areAllShieldsOff else { return .disabled }
     let globalLevel = domainBlockAdsAndTrackingLevel
 
@@ -75,37 +75,6 @@ extension Domain {
     case .disabled, .aggressive:
       return globalLevel
     }
-  }
-
-  /// Return the finterprinting protection level for this domain.
-  ///
-  /// - Warning: This does not consider the "all off" setting
-  @MainActor public var finterprintProtectionLevel: ShieldLevel {
-    guard isShieldExpected(.fpProtection, considerAllShieldsOption: false) else { return .disabled }
-    // We don't have aggressive finterprint protection in iOS
-    return .standard
-  }
-
-  /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-  @MainActor public func isShieldExpected(
-    _ shield: BraveShield,
-    considerAllShieldsOption: Bool
-  ) -> Bool {
-    let isShieldOn = { () -> Bool in
-      switch shield {
-      case .allOff:
-        return self.shield_allOff?.boolValue ?? false
-      case .fpProtection:
-        return self.shield_fpProtection?.boolValue
-          ?? Preferences.Shields.fingerprintingProtection.value
-      case .noScript:
-        return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
-      }
-    }()
-
-    let isAllShieldsOff = self.shield_allOff?.boolValue ?? false
-    let isSpecificShieldOn = isShieldOn
-    return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
   }
 
   @MainActor public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
