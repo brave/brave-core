@@ -153,6 +153,11 @@ void FarblePlugins(blink::LocalDOMWindow* window,
     data->ResetPluginData();
 
 #define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA \
+  if (PluginData* data = GetPluginData()) {                      \
+    if (dom_plugins_.size() > data->Plugins().size()) {          \
+      dom_plugins_.resize(data->Plugins().size());               \
+    }                                                            \
+  }                                                              \
   brave::FarblePlugins(window, GetPluginData(), &dom_plugins_);
 
 #include "src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc"

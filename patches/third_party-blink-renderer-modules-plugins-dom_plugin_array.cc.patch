@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index 2ad42072cf150ad9e9fd52128fe7b5791a0f4bb8..cb7c1d5a9efd08da9294fbc65e66ecf259460296 100644
+index 2ad42072cf150ad9e9fd52128fe7b5791a0f4bb8..42dc1663c8cfd2e2c4e69518d5b6e68cfc26a24c 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 @@ -57,12 +57,14 @@ DOMPluginArray::DOMPluginArray(LocalDOMWindow* window) : window_(window) {
      // See crbug.com/1164635 and https://github.com/whatwg/html/pull/6738.
      // To reduce fingerprinting and make plugins/mimetypes more
      // interoperable, this is the spec'd, hard-coded list of plugins:
-+    BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
++//    BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
      Vector<String> plugins{"PDF Viewer", "Chrome PDF Viewer",
                             "Chromium PDF Viewer", "Microsoft Edge PDF Viewer",
                             "WebKit built-in PDF"};
