@@ -694,6 +694,12 @@ Brave is unable to recover your settings.
         <message name="IDS_UNINSTALL_BUTTON_TEXT" desc="Label for uninstall button on Uninstall confirmation dialog.">
           Uninstall
         </message>
+        <message name="IDS_PIN_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not pinned to the taskbar.">
+          Pin Brave to your taskbar to get to it quickly anytime
+        </message>
+        <message name="IDS_PIN_INFOBAR_BUTTON" desc="Label for the button on an infobar offering to pin Brave to the taskbar. Pins Brave when clicked.">
+          Pin Brave
+        </message>
       </if>
         <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
           Brave isn't your default browser

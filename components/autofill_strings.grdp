@@ -242,6 +242,10 @@
     </message>
   </if>
 
+  <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS_A11Y_HINT" desc="Voice over text that is read out when the manage loyalty cards at the bottom of the Autofill popup is selected.">
+    Manage loyalty cards in Brave Wallet
+  </message>
+
   <message name="IDS_AUTOFILL_SCAN_CREDIT_CARD" desc="An item in the autofill popup that triggers a new credit card to be scanned using the camera on the device." formatter_data="android_java">
     Scan new card
   </message>
@@ -371,6 +375,9 @@
   </message>
   <message name="IDS_AUTOFILL_ENABLE_PROFILES_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether addresses should be saved and forms should be autofilled with them. Sentence-Cased." formatter_data="android_java">
     Save and fill addresses
+  </message>
+  <message name="IDS_AUTOFILL_DISABLE_SETTINGS_EXPLANATION" desc="Explanation why the settings page was disabled. Sentence-Cased." formatter_data="android_java">
+    Brave isn’t your autofill provider. To enable these settings and use payment info from your Brave sync chain, visit <ph name="BEGIN_LINK">&lt;link&gt;</ph>Autofill services settings<ph name="END_LINK">&lt;/link&gt;</ph>.
   </message>
   <message name="IDS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it. Sentence-Cased." formatter_data="android_java">
     Save and fill payment methods

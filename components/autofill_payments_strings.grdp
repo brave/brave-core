@@ -290,6 +290,15 @@
     <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_INVALID_CARD_NUMBER" desc="Error message to show when a user has input an invalid card number.">
       Card number is invalid
     </message>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_INVALID_CVC" desc="Error message to show when a user has input an invalid security code.">
+      Code is invalid
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_INVALID_EXPIRATION_DATE" desc="Error message to show when a user has input an invalid expiration date.">
+      Date is invalid
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_INVALID_NAME_ON_CARD" desc="Error message to show when a user has input an invalid name on card.">
+      Name on card is invalid
+    </message>
   </if>
 
   <!-- Autofill error dialog related strings -->
@@ -1261,6 +1270,12 @@
     </message>
     <message name="IDS_AUTOFILL_BOTTOM_SHEET_EXPAND_ALL_LOYALTY_CARDS_DESCRIPTION" desc="Accessibility string for the icon that allows entering the screen with all loyalty cards of a user." formatter_data="android_java">
       Change to all loyalty cards under this menu item.
+    </message>
+    <message name="IDS_AUTOFILL_BOTTOM_SHEET_ALL_LOYALTY_CARDS_SCREEN_TITLE" desc="The title of the screen in the loyalty card filling bottom sheet that displays all loyalty cards of a user." formatter_data="android_java">
+      Your loyalty cards
+    </message>
+    <message name="IDS_AUTOFILL_BOTTOM_SHEET_BACK_BUTTON_DESCRIPTION" desc="Accessibility string for the icon that allows closing the all loyalty cards screen and going back to the intial loyalty card filling screen." formatter_data="android_java">
+      Back
     </message>
     <message name="IDS_AUTOFILL_BOTTOM_SHEET_MANAGE_LOYALTY_CARDS" desc="An option in the autofill bottom sheet that triggers navigation to the loyalty cards management UI in Brave Wallet." formatter_data="android_java">
       Manage loyalty cards
