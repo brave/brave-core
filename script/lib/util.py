@@ -119,7 +119,9 @@ def extract_zip(zip_path, destination, path_prefix=None):
         with zipfile.ZipFile(zip_path) as z:
             members = None
             if path_prefix is not None:
-                members = [m for m in z.namelist() if m.startswith(path_prefix)]
+                members = [
+                    m for m in z.namelist() if m.startswith(path_prefix)
+                ]
             z.extractall(destination, members=members)
 
 
