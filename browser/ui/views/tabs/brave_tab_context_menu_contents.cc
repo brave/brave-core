@@ -37,6 +37,7 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/compositor/compositor.h"
 #include "ui/views/controls/menu/menu_runner.h"
 
 BraveTabContextMenuContents::BraveTabContextMenuContents(
@@ -183,6 +184,14 @@ BraveTabContextMenuContents::GetCurrentContainerIds() {
 
 Browser* BraveTabContextMenuContents::GetBrowserToOpenSettings() {
   return browser_;
+}
+
+float BraveTabContextMenuContents::GetScaleFactor() {
+  auto* widget = tab_->GetWidget();
+  CHECK(widget);
+  auto* compositor = widget->GetCompositor();
+  CHECK(compositor);
+  return compositor->device_scale_factor();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
