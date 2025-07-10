@@ -7,14 +7,12 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {

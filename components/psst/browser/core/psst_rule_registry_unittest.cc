@@ -18,7 +18,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "brave/components/psst/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
