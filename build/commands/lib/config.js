@@ -129,6 +129,7 @@ const getHostOS = () => {
 }
 
 const Config = function () {
+  this.argsGeneratedGni = false
   this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
   this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
   this.internalDepsUrl =
@@ -397,6 +398,9 @@ Config.prototype.getBraveLogoIconName = function () {
 }
 
 Config.prototype.buildArgs = function () {
+  if (this.argsGeneratedGni) {
+    return this.argsGeneratedGni
+  }
   const version = this.braveVersion
   let versionParts = version.split('+')[0]
   versionParts = versionParts.split('.')
@@ -1154,12 +1158,15 @@ Config.prototype.updateInternal = function (options) {
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
   }
+
+  this.argsGeneratedGni = false
 }
 
 Config.prototype.fromGnArgs = function (outputDir) {
   const gnArgs = dotenv.parse(fs.readFileSync(path.join(outputDir,
     'args_generated.gni')))
   this.updateInternal(gnArgs)
+  this.argsGeneratedGni = gnArgs
 }
 
 Config.prototype.update = function (options) {
