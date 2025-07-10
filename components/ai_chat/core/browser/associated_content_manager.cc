@@ -78,12 +78,12 @@ void AssociatedContentManager::LoadArchivedContent(
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::SetArchiveContent(std::string uuid,
+void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
                                                  std::string text_content,
                                                  bool is_video) {
   DVLOG(1) << __func__;
 
-  auto it = std::ranges::find(content_delegates_, uuid,
+  auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
   CHECK(it != content_delegates_.end()) << "Couldn't find |content_id|";
 
