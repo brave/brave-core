@@ -322,6 +322,7 @@ struct SwapCryptoView: View {
           if let token = swapTokensStore.selectedFromToken {
             AssetIconView(
               token: token,
+              meldCryptoCurrency: nil,
               network: networkStore.defaultSelectedChain,
               length: 26
             )

@@ -25,7 +25,8 @@ extension WalletStore {
       ipfsApi: TestIpfsAPI(),
       walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService(),
-      zcashWalletService: BraveWallet.TestZCashWalletService()
+      zcashWalletService: BraveWallet.TestZCashWalletService(),
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService()
     )
   }
 }
@@ -45,7 +46,8 @@ extension CryptoStore {
       ipfsApi: TestIpfsAPI(),
       walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService
+      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService
     )
   }
 }
@@ -114,13 +116,11 @@ extension KeyringStore {
 extension BuyTokenStore {
   static var previewStore: BuyTokenStore {
     .init(
-      blockchainRegistry: MockBlockchainRegistry(),
       keyringService: MockKeyringService(),
-      rpcService: MockJsonRpcService(),
       walletService: BraveWallet.TestBraveWalletService.previewWalletService,
-      assetRatioService: BraveWallet.TestAssetRatioService.previewAssetRatioService,
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
       prefilledToken: .previewToken
     )
   }
@@ -160,6 +160,7 @@ extension AssetDetailStore {
       swapService: MockSwapService(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
+      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
       userAssetManager: TestableWalletUserAssetManager(),
       assetDetailType: .blockchainToken(.previewToken)
     )
@@ -378,6 +379,12 @@ extension BraveWallet.TestBitcoinWalletService {
 extension BraveWallet.TestZCashWalletService {
   static var previewZCashWalletService: BraveWallet.TestZCashWalletService {
     return BraveWallet.TestZCashWalletService()
+  }
+}
+
+extension BraveWallet.TestMeldIntegrationService {
+  static var previewMeldIntegrationService: BraveWallet.TestMeldIntegrationService {
+    return BraveWallet.TestMeldIntegrationService()
   }
 }
 

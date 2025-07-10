@@ -491,9 +491,9 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     )
   }
 
-  func network(for token: BraveWallet.BlockchainToken) -> BraveWallet.NetworkInfo? {
-    return allChains.first { $0.chainId == token.chainId }
-      ?? customChains.first { $0.chainId == token.chainId }
+  func network(for chainId: String) -> BraveWallet.NetworkInfo? {
+    return allChains.first { $0.chainId == chainId }
+      ?? customChains.first { $0.chainId == chainId }
   }
 }
 

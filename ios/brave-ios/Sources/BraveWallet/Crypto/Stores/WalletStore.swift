@@ -75,7 +75,8 @@ public class WalletStore {
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
-    zcashWalletService: BraveWalletZCashWalletService
+    zcashWalletService: BraveWalletZCashWalletService,
+    meldIntegrationService: BraveWalletMeldIntegrationService
   ) {
     self.keyringStore = .init(
       keyringService: keyringService,
@@ -96,7 +97,8 @@ public class WalletStore {
       ipfsApi: ipfsApi,
       walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService
+      zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService
     )
   }
 
@@ -123,7 +125,8 @@ public class WalletStore {
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
-    zcashWalletService: BraveWalletZCashWalletService
+    zcashWalletService: BraveWalletZCashWalletService,
+    meldIntegrationService: BraveWalletMeldIntegrationService
   ) {
     self.cancellable = self.keyringStore.$isWalletCreated
       .removeDuplicates()
@@ -149,6 +152,7 @@ public class WalletStore {
             walletP3A: walletP3A,
             bitcoinWalletService: bitcoinWalletService,
             zcashWalletService: zcashWalletService,
+            meldIntegrationService: meldIntegrationService,
             origin: self.origin
           )
           if let cryptoStore = self.cryptoStore {
