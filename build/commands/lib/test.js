@@ -283,8 +283,6 @@ const runTests = (passthroughArgs, suite, config, options) => {
     if (config.targetOS === 'ios') {
       runArgs.push('-d')
       runArgs.push('iPhone 16')
-      runArgs.push('-s')
-      runArgs.push('18.3.1')
       runArgs.push(getTestBinary(Config, testSuite))
       const xctest = path.join(getTestBinary(Config, testSuite), `Plugins/${suite}_module.xctest`)
       if (fs.existsSync(xctest)) {
