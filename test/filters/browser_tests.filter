@@ -1417,6 +1417,7 @@
 -PersonalizedHintsFetcherBrowserTest.UserSignedIn
 -PlusAddressContextMenuManagerTest.*
 -PlusAddressCreationDialogTest.*
+-ProfileManagementDisclaimerServiceStartupBrowserTest.CreateNewManagedProfile
 -ProfilePickerUIPixelTest.InvokeUi_default/*
 -SigninInterceptFirstRunExperienceDialogWithUnoParamBrowserTest.*
 -SupervisedUserExtensionWebstorePrivateApiTest.InstallBlockedWhenPermissionsToggleOff
