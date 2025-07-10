@@ -20,11 +20,16 @@
 namespace updater {
 
 void DoPeriodicTasks(base::OnceClosure callback) {
+  bool need_to_run_callback = true;
 #if BUILDFLAG(ENABLE_OMAHA4)
   if (brave_updater::ShouldUseOmaha4()) {
     DoPeriodicTasks_ChromiumImpl(std::move(callback));
+    need_to_run_callback = false;
   }
 #endif  // BUILDFLAG(ENABLE_OMAHA4)
+  if (need_to_run_callback) {
+    std::move(callback).Run();
+  }
 }
 
 }  // namespace updater
