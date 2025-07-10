@@ -1,0 +1,87 @@
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+# Finds all runtime data (eg. testdata) of an executable and depend on it
+# Hashes all data and recompute a collective hash
+# This rule and any rules that depend on this will re-run
+# on file change.
+# Runtime Data are dynamically loaded libraries and any data specified 
+# via the data attribute 
+# input: 
+# - binary: path to executable binary
+# - dep: dependency to binary
+# - testonly: must be set if dep is a test
+# - files: extra files you want to track
+# generates a json file of the shape:
+# { hash: sha256string, files: string[] }
+# in "$root_out_dir/$target_name"
+
+template("hashRuntime") {
+  action(target_name) {
+    script = "//runtime_dep_tracker.py"
+    depfile = "$root_out_dir/" + target_name + ".d"
+    forward_variables_from(invoker, ["testonly"])
+    inputs = [invoker.binary]
+    forward_variables_from(invoker, ["deps"])    
+    outputs = ["$root_out_dir/"+ target_name]
+    args = [
+      rebase_path(invoker.binary)
+    ]
+
+    if (defined(invoker.files)) {
+      foreach(file, invoker.files) {
+        inputs += [file]
+        args += [rebase_path(file)]
+      }
+    }
+  }
+}
+
+template("cacheTest") {
+  test(target_name + ".gtest") {
+    testonly = true
+    forward_variables_from(invoker, "*", ["configs", "files"])
+
+    # Apply configs if the invoker provided any
+    if (defined(invoker.configs)) {
+      configs = invoker.configs
+    }
+
+    if(!defined(invoker.public_deps)) {
+      public_deps = [
+        "//testing/gtest",
+        "//third_party/googletest:gtest_main"
+      ]
+    }
+  }
+
+  hashRuntime(target_name + ".gtest.hash.json") {
+    testonly = true
+    binary = "$root_out_dir/"+ target_name + ".gtest"
+    forward_variables_from(invoker, ["files"])
+  }
+
+  action(target_name) {
+    testonly = true
+    script = "//brave/test_runner.py"
+    deps = [":"+target_name + ".gtest.hash.json"]
+
+    inputs = [
+      "$root_out_dir/"+ target_name + ".gtest"
+    ]
+
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    outputs = [
+      "$target_gen_dir/"+target_name+"/result.json",
+      "$target_gen_dir/"+target_name+"/stdout.txt"
+    ]
+
+    args = [
+      rebase_path("$root_out_dir/"+target_name + ".gtest"), 
+      rebase_path("$target_gen_dir/"+target_name)
+    ]
+  }
+}
