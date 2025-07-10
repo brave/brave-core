@@ -1,28 +1,19 @@
 #!/usr/bin/env python3
 # This is a script that invokes googleTest executables in order to allow calls from a gn action
 # This script is meant to be called via ./test_runner.py <gtest_exe> <out_dir> <...gtest_args>
-# Which in turn executes: gtest_exe -gtest_output=json:${out_dir}/results.json ...gtest_args > ${out_dir}/stdout.txt
+# Which in turn executes: 
+#   gtest_exe -gtest_output=json:${out_dir}/results.json ...gtest_args > ${out_dir}/stdout.txt
 # stdout.txt acts as a cache and the script will print stdout.txt if it's newer than gtest_exe
 
+# This script generates a depfile enabling ninja and gn to determine when to rerun the tests.
+# It assumes that a <exe_path>.runtime_deps file exists. 
+# This file is present test targets or if you explicitly set write_runtime_deps = <path>
+# Note: all filepaths in a dep file need to be relative to build folder as your local absolute path might not exist on RBE
 
 import sys
 import os
 import subprocess
 from datetime import datetime
-
-def runtimeDeps(exePath, jsonPath):
-  runtimeDeps = exePath + '.runtime_deps'
-  nameOfSelf =  jsonPath
-
-  print(exePath+".d")
-
-  with open(runtimeDeps, 'r') as f:
-    deps = " ".join(f.read().split('\n'))
-  
-  with open(exePath+".d", "a") as f:
-    f.write(f"{nameOfSelf}: {deps}")
-
-
 
 def main():
   print(datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
@@ -37,27 +28,13 @@ def main():
 
   print(' '.join(sys.argv[1:]))
 
-
-
   input_files = [x for x in args if not x.startswith('-')]
   other_args = [x for x in args if x.startswith('-')]
 
   stdout_path = os.path.join(out_dir, "stdout.txt")
   result_path = os.path.join(out_dir, "result.json")
 
-  runtimeDeps(exe, result_path)
-  print(result_path)
-
-  if os.environ.get("TEST_RUNNER_CACHE", None) == "1" and os.path.exists(stdout_path):
-    with open(stdout_path, "r") as f:
-      print(f.read())
-    print("^^^ from cache: "+out_dir+"\n")
-
-    sys.exit(0)
-
   gtest_output = f"--gtest_output=json:{result_path}"
-
-  
 
   try:
     process = subprocess.Popen(
@@ -71,7 +48,6 @@ def main():
     print(f"Failed to start process: {e}")
     sys.exit(1)
 
-    
   with open(stdout_path, "w") as output_file:
     while True:
       stdout_line = process.stdout.readline()

@@ -25,6 +25,7 @@ import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//brave/test/actions/caching.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -86,52 +87,9 @@ static_library("brave_test_support_unit") {
   }
 }
 
-template("cachable_test") {
-  test(target_name + ".gtest") {
-    testonly = true
-    forward_variables_from(invoker, "*", ["configs"])
 
-    # Apply configs if the invoker provided any
-    if (defined(invoker.configs)) {
-      configs = invoker.configs
-    }
 
-    if(!defined(invoker.public_deps)) {
-      public_deps = [
-        "//testing/gtest",
-        "//third_party/googletest:gtest_main"
-      ]
-    }
-  }
-
-  action(target_name) {
-    testonly = true
-    script = "//brave/test_runner.py"
-    deps = [":"+target_name + ".gtest"]
-    depfile = "$root_out_dir/"+target_name + ".gtest.d"
-
-    inputs = [
-      "$root_out_dir/"+ target_name + ".gtest",
-      "$root_out_dir/"+ target_name + ".gtest.runtime_deps"
-    ]
-    
-    if (defined(invoker.inputs)) {
-      inputs += invoker.inputs
-    }
-
-    outputs = [ 
-      "$target_gen_dir/"+target_name+"/result.json",
-    #  "$target_gen_dir/"+target_name+"/stdout.txt"
-    ]
-
-    args = [
-      rebase_path("$root_out_dir/"+target_name + ".gtest"), 
-      rebase_path("$target_gen_dir/"+target_name)
-    ]
-  }
-}
-
-cachable_test("some_unit_tests") {
+cacheTest("some_unit_tests") {
   deps = [
     "//brave/components/json:brave_json_unit_tests",
     "//brave/components/variations:unit_tests",
@@ -139,19 +97,17 @@ cachable_test("some_unit_tests") {
   ]
 }
 
-cachable_test("brave_wallet_unit_test") {
-  deps = [
-    ":crypto_unittests",
-    "//brave/browser",
-    "//brave/browser/brave_wallet",
-    "//brave/browser/brave_wallet:unit_tests",
-  ]
-}
+cacheTest("chromium_src_unit_tests") {
 
-cachable_test("chromium_src_unit_tests") {
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  
+  public_deps = [ ":browser_tests_runner" ]
   deps = [
-
     ":brave_test_support_unit",
+    "//chrome/test:test_support",
+    "//brave/browser:unit_tests",
+
+
     "//base",
     "//base/test:test_support",
     "//brave:browser_dependencies",
@@ -171,27 +127,12 @@ cachable_test("chromium_src_unit_tests") {
     "//chrome/browser/prefs",
     "//chrome/browser/sync",
     "//chrome/browser/ui",
-    "//chrome/test:test_support",
 
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/webui/flags:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
   ] 
 }
-
-action("blub") {
-  testonly=true
-  script = "//action.py"
-  deps= [":some_unit_tests.gtest"]
-  inputs = ["$root_out_dir/some_unit_tests.gtest"]
-  outputs = [
-    "$target_gen_dir/blub"
-  ]
-  args = [
-    rebase_path("$target_gen_dir/blub")
-  ]
-}
-
 
 test("brave_unit_tests") {
   testonly = true
@@ -1482,19 +1423,27 @@ if (is_android) {
 
 
 action("brave_unit_tests.cached") {
-    testonly = true
-    script = "//brave/test_runner.py"
-    deps = [":brave_unit_tests"]
-    inputs = [ "$root_out_dir/brave_unit_tests" ]
-  
+  testonly = true
+  script = "//brave/test_runner.py"
+  deps = [":brave_unit_tests"]
+  inputs = [ "$root_out_dir/brave_unit_tests" ]
 
-    outputs = [ 
-      "$target_gen_dir/brave_unit_tests/result.json",
-      "$target_gen_dir/brave_unit_tests/stdout.txt"
-    ]
 
-    args = [
-      rebase_path("$root_out_dir/brave_unit_tests"), 
-      rebase_path("$target_gen_dir/brave_unit_tests")
-    ]
+  outputs = [ 
+    "$target_gen_dir/brave_unit_tests/result.json",
+    "$target_gen_dir/brave_unit_tests/stdout.txt"
+  ]
+
+  args = [
+    rebase_path("$root_out_dir/brave_unit_tests"), 
+    rebase_path("$target_gen_dir/brave_unit_tests")
+  ]
+}
+
+
+hashRuntime("brave_unit_tests.hash.json") {
+  deps = [":brave_unit_tests"]
+  binary = "$root_out_dir/brave_unit_tests"
+  files = ["//brave/test/filters/browser_tests-linux.filter"]
+  testonly=true
 }
