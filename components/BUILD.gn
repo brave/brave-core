@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//testing/test.gni")
@@ -19,6 +20,13 @@ test("brave_components_unittests") {
     "//brave/components/ai_chat/core/common:unit_tests",
     "//components/test:run_all_unittests",
   ]
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/browser/content:unit_tests",
+      "//brave/components/psst/browser/core:unit_tests",
+    ]
+  }
 
   if (use_blink) {
     deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
