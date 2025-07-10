@@ -101,6 +101,8 @@ export const Swap = () => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // Refs
   const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
@@ -134,9 +136,9 @@ export const Swap = () => {
         wrapContentInBox={true}
         noCardPadding={true}
         noMinCardHeight={true}
-        hideNav={isPanel}
+        hideNav={isAndroidOrPanel}
         cardHeader={
-          isPanel ? (
+          isAndroidOrPanel ? (
             <PanelActionHeader
               title={
                 isBridge
@@ -282,7 +284,7 @@ export const Swap = () => {
           onClose={() => setShowPrivacyModal(false)}
         />
       )}
-      {!isPanel && showSwapProviders && (
+      {!isAndroidOrPanel && showSwapProviders && (
         <PopupModal
           title=''
           onClose={() => setShowSwapProviders(false)}
@@ -297,7 +299,7 @@ export const Swap = () => {
           />
         </PopupModal>
       )}
-      {isPanel && (
+      {isAndroidOrPanel && (
         <BottomSheet
           onClose={() => setShowSwapProviders(false)}
           isOpen={showSwapProviders}

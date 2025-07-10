@@ -28,7 +28,12 @@ interface RenderComponentProps {
 
 describe('AccountDetailsHeader', () => {
   const renderComponent = (props: RenderComponentProps) => {
-    const store = createMockStore({})
+    const store = createMockStore({
+      uiStateOverride: {
+        isAndroid: props.isAndroid,
+        isPanel: props.isPanel,
+      },
+    })
     const { container } = render(
       <Provider store={store}>
         <BraveCoreThemeProvider>
@@ -36,8 +41,6 @@ describe('AccountDetailsHeader', () => {
             account={mockAccount}
             onClickMenuOption={() => {}}
             tokenBalancesRegistry={mockTokenBalanceRegistry}
-            isAndroid={props.isAndroid}
-            isPanel={props.isPanel}
           />
         </BraveCoreThemeProvider>
       </Provider>,
@@ -110,7 +113,7 @@ describe('AccountDetailsHeader', () => {
       expect(
         container.querySelector('[data-key="account-details-header"]'),
       ).toHaveStyle({
-        padding: '16px 0px 0px 0px',
+        padding: '16px',
       })
     })
   })

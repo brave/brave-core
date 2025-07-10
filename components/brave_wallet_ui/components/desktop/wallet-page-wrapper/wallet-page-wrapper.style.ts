@@ -11,8 +11,8 @@ import TopLayerLight from './assets/top_layer_light.svg'
 import BottomLayerLight from './assets/bottom_layer_light.svg'
 import TopLayerDark from './assets/top_layer_dark.svg'
 import BottomLayerDark from './assets/bottom_layer_dark.svg'
-import LinesLight from './assets/portfolio_lines_background_light.svg'
-import LinesDark from './assets/portfolio_lines_background_dark.svg'
+import LinesLight from './assets/portfolio_lines_background_light.png'
+import LinesDark from './assets/portfolio_lines_background_dark.png'
 import ConnectionDotsBackground from './assets/connection_dots_background.svg'
 
 // Shared Styles
@@ -153,7 +153,7 @@ export const ContainerCard = styled.div<{
 `
 
 export const CardHeaderWrapper = styled.div<{
-  isPanel?: boolean
+  isAndroidOrPanel?: boolean
 }>`
   display: flex;
   flex-direction: column;
@@ -170,15 +170,14 @@ export const CardHeaderWrapper = styled.div<{
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
-    z-index: ${(p) => (p.isPanel ? 10 : 'unset')};
+    z-index: ${(p) => (p.isAndroidOrPanel ? 10 : 'unset')};
   }
 `
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
   backgroundOpacity?: number
-  isPanel?: boolean
-  isAndroid?: boolean
+  isAndroidOrPanel?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
@@ -201,10 +200,9 @@ export const CardHeader = styled.div<{
     p.useDarkBackground
       ? 'var(--dark-background-color)'
       : leo.color.container.background};
-  border-radius: ${(p) =>
-    p.isPanel || p.isAndroid ? '0px' : '24px 24px 0px 0px'};
+  border-radius: ${(p) => (p.isAndroidOrPanel ? '0px' : '24px 24px 0px 0px')};
   width: 100%;
-  padding: ${(p) => (p.isPanel ? '0px' : '0px 32px')};
+  padding: ${(p) => (p.isAndroidOrPanel ? '0px' : '0px 32px')};
   position: relative;
   max-width: ${maxCardWidth}px;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));

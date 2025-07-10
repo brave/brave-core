@@ -14,13 +14,13 @@ import {
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const HeaderTitle = styled.span<{
-  isPanel?: boolean
+  isAndroidOrPanel?: boolean
 }>`
   font-family: Poppins;
   font-style: normal;
-  font-size: ${(p) => (p.isPanel ? 16 : 28)}px;
-  font-weight: ${(p) => (p.isPanel ? 600 : 500)};
-  line-height: ${(p) => (p.isPanel ? 24 : 40)}px;
+  font-size: ${(p) => (p.isAndroidOrPanel ? 16 : 28)}px;
+  font-weight: ${(p) => (p.isAndroidOrPanel ? 600 : 500)};
+  line-height: ${(p) => (p.isAndroidOrPanel ? 24 : 40)}px;
   color: ${leo.color.text.primary};
   word-break: break-all;
 `

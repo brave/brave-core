@@ -137,6 +137,7 @@ export const SendScreen = React.memo(() => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
@@ -571,10 +572,9 @@ export const SendScreen = React.memo(() => {
       <WalletPageWrapper
         wrapContentInBox={true}
         noCardPadding={true}
-        hideNav={isAndroid || isPanel}
-        hideHeader={isAndroid}
+        hideNav={isAndroidOrPanel}
         cardHeader={
-          isPanel ? (
+          isAndroidOrPanel ? (
             <PanelActionHeader
               title={getLocale('braveWalletSend')}
               expandRoute={WalletRoutes.Send}

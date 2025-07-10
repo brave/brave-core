@@ -6,6 +6,12 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
+// Selectors
+import {
+  useSafeUISelector, //
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // Types
 import { WalletRoutes } from '../../../constants/types'
 
@@ -24,10 +30,14 @@ import { HeaderTitle } from './shared-card-headers.style'
 interface Props {
   title: string
   expandRoute: WalletRoutes
+  onBack?: () => void
 }
 
 export const PanelActionHeader = (props: Props) => {
-  const { title, expandRoute } = props
+  const { title, expandRoute, onBack } = props
+
+  // UI Selectors (safe)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // Routing
   const history = useHistory()
@@ -50,11 +60,18 @@ export const PanelActionHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        <Button onClick={() => openWalletRouteTab(expandRoute)}>
-          <ButtonIcon name='expand' />
-        </Button>
+        {!isAndroid && (
+          <Button onClick={() => openWalletRouteTab(expandRoute)}>
+            <ButtonIcon name='expand' />
+          </Button>
+        )}
+        {onBack && (
+          <Button onClick={onBack}>
+            <ButtonIcon name='arrow-left' />
+          </Button>
+        )}
       </LeftRightContainer>
-      <HeaderTitle isPanel={true}>{title}</HeaderTitle>
+      <HeaderTitle isAndroidOrPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'

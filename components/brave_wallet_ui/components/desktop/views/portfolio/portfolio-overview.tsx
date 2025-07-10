@@ -144,6 +144,7 @@ export const PortfolioOverview = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // custom hooks
   const {
@@ -175,8 +176,6 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
     true,
   )
-
-  const isPortfolioGraphHidden = !isAndroid && hidePortfolioGraph
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
@@ -356,7 +355,7 @@ export const PortfolioOverview = () => {
       && visibleTokensForFilteredChains.length
       && tokenBalancesRegistry
       && defaultFiat
-      && !isPortfolioGraphHidden
+      && !hidePortfolioGraph
       ? {
           tokens: visibleTokensForFilteredChains,
           timeframe: selectedTimeframe,
@@ -548,13 +547,13 @@ export const PortfolioOverview = () => {
       wrapContentInBox={true}
       noCardPadding={true}
       cardHeader={<PortfolioOverviewHeader />}
-      useDarkBackground={isPanel}
+      useDarkBackground={isAndroidOrPanel}
       isPortfolio={true}
     >
       <DefaultPageWrapper>
         <Column
           fullWidth={true}
-          padding={isPanel ? '0px' : '20px 20px 0px 20px'}
+          padding={isAndroidOrPanel ? '0px' : '20px 20px 0px 20px'}
         >
           <Banners />
         </Column>
@@ -584,7 +583,7 @@ export const PortfolioOverview = () => {
                       />
                     </Column>
                   )}
-                  {!isPortfolioGraphHidden && (
+                  {!hidePortfolioGraph && (
                     <Row
                       alignItems='center'
                       justifyContent='center'
@@ -621,7 +620,7 @@ export const PortfolioOverview = () => {
                 </BalanceAndChangeWrapper>
                 <BuySendSwapDepositNav />
               </BalanceAndButtonsWrapper>
-              <ColumnReveal hideContent={isPortfolioGraphHidden}>
+              <ColumnReveal hideContent={hidePortfolioGraph}>
                 <PortfolioOverviewChart
                   timeframe={selectedTimeframe}
                   onTimeframeChanged={setSelectedTimeframe}
@@ -680,7 +679,7 @@ export const PortfolioOverview = () => {
               fullWidth={true}
               fullHeight={true}
               justifyContent='flex-start'
-              isPanel={isPanel}
+              isAndroidOrPanel={isAndroidOrPanel}
             >
               <TransactionsScreen isPortfolio={true} />
             </ActivityWrapper>
