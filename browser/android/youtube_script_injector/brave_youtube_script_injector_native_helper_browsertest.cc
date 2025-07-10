@@ -259,6 +259,13 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   EXPECT_EQ(dom_before, dom_after);
 }
 
+// Simulates the real-world scenario where the fullscreen injection
+// script runs before YouTube's player is fully initialized. The test verifies
+// that the mutation observer correctly waits for and detects when all key
+// elements become available. kSimulateDelayedScriptLoad constant artificially
+// recreates a delay by injecting the video and button elements after the
+// fullscreen script has already started observing, mimicking YouTube's actual
+// loading behavior.
 IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
                        SetFullscreenOnElementsLoadingDelayed) {
   const GURL url =
@@ -266,7 +273,7 @@ IN_PROC_BROWSER_TEST_F(BraveYouTubeScriptInjectorNativeHelperBrowserTest,
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
 
-  // Simluate delayed script load by presenting a player ('movie_player') that
+  // Simulate async video loading by presenting a player ('movie_player') that
   // is not immediately available. Assert that movie player is present.
   ASSERT_TRUE(
       content::EvalJs(web_contents(),
