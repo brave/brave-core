@@ -21,7 +21,6 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -105,7 +104,7 @@ class AIChatMetricsUnitTest : public testing::Test {
 
   MockConversationHandler conversation_handler_;
   bool is_premium_ = false;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   TestingPrefServiceSimple profile_prefs_;
   base::HistogramTester histogram_tester_;
