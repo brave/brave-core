@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">启用绕过顶级重定向跟踪链接支持。</translation>
 <translation id="94154759592465111">拦截脚本</translation>
 <translation id="7714773920987474116">拦截 JavaScript（可能导致一些网站无法正常运作）</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">屏蔽 YouTube 推荐内容</translation>
 <translation id="1005372663692637999">屏蔽 youtube.com 上的上一页和尾页卡元素。</translation>
 <translation id="5152595963250646670">屏蔽 YouTube 的干扰元素</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">显示热门建议</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
-<translation id="412411722208944922">快速搜索引擎</translation>
-<translation id="2836969042340015500">快速搜索引擎</translation>
-<translation id="9120455214794270250">显示快速搜索栏</translation>
-<translation id="1052991798173010693">当前使用的搜索引擎</translation>
-<translation id="335303688425891752">长按可更改顺序</translation>
 <translation id="9148058034647219655">退出</translation>
 <translation id="8047754398610073499">阻止 cookie 同意通知</translation>
 <translation id="2621893359845808115">阻止要求您接受或拒绝其网站上 cookie 的网页弹出窗口</translation>
@@ -499,7 +493,7 @@
 <translation id="8459191579769999214">查看截图</translation>
 <translation id="6476216365964140603">其他详细信息（可选）</translation>
 <translation id="6145852496180774737">联系方式：（可选）</translation>
-<translation id="6367576083705149078">如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用.</translation>
+<translation id="6367576083705149078">如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用。</translation>
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
@@ -677,6 +671,7 @@
 <translation id="3952797765659730604">输入、粘贴或导入您的私钥字符串文件或 JSON。</translation>
 <translation id="569068482611873351">导入...</translation>
 <translation id="4522570452068850558">详细信息</translation>
+<translation id="3114681061018999547">正在屏蔽</translation>
 <translation id="3784455785234192852">锁定</translation>
 <translation id="4412698727486357573">帮助中心</translation>
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
@@ -808,18 +803,6 @@
 <translation id="2199215899212542417">功能类型：<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">无数据</translation>
 <translation id="1105525362447173583">Solana Dapp 签署交易</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 已转账 <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 已发送 <ph name="ASSET"/> #<ph name="ASSET_ID"/>（<ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> 已批准 <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">批准无限制 <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> 兑换 - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">未批准</translation>
-<translation id="8034530868111548216">批准</translation>
-<translation id="6015436276085482001">拒绝</translation>
-<translation id="6666273175654835609">已提交</translation>
-<translation id="2331676293859649642">确认</translation>
-<translation id="8214232307424031138">已签名</translation>
-<translation id="1165039591588034296">错误</translation>
 <translation id="2561824823738097741">您在用高速浏览器吗？</translation>
 <translation id="2065971949051836200">您的手机已可体验 3 倍网速。使用 Brave 浏览网页。</translation>
 <translation id="2888278614497184977">Brave = 享受 3 倍网页浏览速度</translation>
@@ -1226,9 +1209,9 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="4010699428656610296">请将其他标签页合并至另一个 Brave 窗口。</translation>
 <translation id="4306918392910017801">自动重新连接 VPN</translation>
 <translation id="1599073346542156922">如何打开此功能：</translation>
-<translation id="7001163334415463127">1. 从应用程序抽屉开始设备的设置，或点击下列按钮。</translation>
+<translation id="7001163334415463127">1. 从应用程序抽屉打开设备的设置，或点击下方的按钮。</translation>
 <translation id="887443138775437899">2. 找到 Brave VPN，点击右侧的设置图标。</translation>
-<translation id="7546805138087561624">3. 切换 <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>总是打开 VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> 以启用此选项。</translation>
+<translation id="7546805138087561624">3. 切换到<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>总是打开 VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> 以启用此选项。</translation>
 <translation id="2446001600399646984">请注意，由于 Android 的限制，“在没有 VPN 的情况下阻止连接 ”无法正常工作。 <ph name="LEARN_MORE_START"/>了解更多信息。<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">打开 Android 设置</translation>
 <translation id="2728518864712716830">已下载更新。</translation>
@@ -1241,4 +1224,5 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="6859935199732075666">显示安全浏览时出错</translation>
 <translation id="2735247450315842119">允许在无痕标签页中截图</translation>
 <translation id="8420414929552321089">如果允许，在打开多个应用程序时，无痕标签页也将可见。</translation>
+<translation id="7956713633345437162">移动书签</translation>
 </translationbundle>

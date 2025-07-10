@@ -3,5 +3,4 @@ include_rules = [
   "+third_party/zlib",
 
   "+brave/components/l10n/common/ofac_sanction_util.h",
-  "!brave/components/l10n/common/prefs.h",
 ]

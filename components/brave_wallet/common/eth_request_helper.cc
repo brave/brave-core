@@ -25,10 +25,13 @@
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "url/gurl.h"
 
 namespace {
+
+constexpr char kId[] = "id";
+constexpr char kMethod[] = "method";
+constexpr char kParams[] = "params";
 
 std::optional<base::Value::List> GetParamsList(std::string_view json) {
   auto json_value =
@@ -39,7 +42,7 @@ std::optional<base::Value::List> GetParamsList(std::string_view json) {
   }
 
   auto& value = *json_value;
-  auto* params = value.FindListByDottedPath(brave_wallet::kParams);
+  auto* params = value.FindListByDottedPath(kParams);
   if (!params) {
     return std::nullopt;
   }
@@ -64,7 +67,7 @@ std::optional<base::Value::Dict> GetParamsDict(std::string_view json) {
   if (!json_value) {
     return std::nullopt;
   }
-  auto* value = json_value->FindDict(brave_wallet::kParams);
+  auto* value = json_value->FindDict(kParams);
   if (!value) {
     return std::nullopt;
   }
@@ -456,16 +459,20 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
 
-  const std::string* typed_data_str = params_list[1].GetIfString();
-  if (!typed_data_str) {
-    return nullptr;
+  const base::Value::Dict* dict = nullptr;
+  std::optional<base::Value::Dict> dict_from_str;
+
+  if (const auto* typed_data_str = params_list[1].GetIfString()) {
+    dict_from_str = base::JSONReader::ReadDict(
+        *typed_data_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                             base::JSON_ALLOW_TRAILING_COMMAS);
+    if (dict_from_str) {
+      dict = &*dict_from_str;
+    }
+  } else {
+    dict = params_list[1].GetIfDict();
   }
 
-  // TODO(apaymyshev): support dict there per
-  // https://github.com/MetaMask/metamask-extension/issues/18462
-  auto dict = base::JSONReader::ReadDict(
-      *typed_data_str,
-      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!dict) {
     return nullptr;
   }

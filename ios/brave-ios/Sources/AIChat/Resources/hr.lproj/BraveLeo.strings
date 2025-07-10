@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Uključite za pokazivanje prečaca za pokretanje pomoćnika Lea iz adresne trake.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Prikaz u adresnoj traci";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Zadani model";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Vizualni model opće namjene ";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Mistra 8x7B koji je kreirao Mistral AI kako bih obavaljo napredne zadatke. Mistral je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Napredni zadaci čavrljanja";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Qwen 14B koji je kreirao Alibaba Cloud, a izrađen je za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo onesposobljen";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo trenutačno nije dostupan u načinu rada Privatno pregledavanje. Kako biste koristili Lea, izađite iz ovog načina rada i pokušajte ponovno.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo nije dostupan";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Učitaj sliku";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Razumijem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Leo preglednika Brave privatni je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) kojim se poboljšava vaša upotreba interneta. Pomoćnik Leo besplatan je za upotrebu, ali ima ograničen pristup. Pomoćnikom Leo Premium preglednika Brave nudi se veći broj modela, veća ograničenja i daje pretplatnicima rani pristup novim značajkama. Zadani model za sve korisnike trenutačno je Mixtral 8x7B. Pogledajte [Help Center](%1$@)** preglednika Brave za više pojedinosti.\n\nKada pomoćniku Leu postavite pitanje, njime se može poslati i upotrijebiti sadržaj mrežne stranice koju prikazujete ili tekst koji označite za pružanje odgovora. U nekim slučajevima pomoćnik Leo šalje upite na osnovi vašeg upisa u pretraživanje Brave i služi se rezultatima pretraživanja za pružanje boljeg odgovora na vaše pitanje. Točnost odgovorā nije zajamčena i mogu se uključivati ​​netočne, obmanjujuće ili lažne informacije. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima koji se odnose na zdravlje, financije, osobnu sigurnost ili slično. Možete namjestiti mogućnosti pomoćnika Lea u postavkama u bilo kojem trenutku. Idite na: Postavke > Leo.\n\nPomoćnikom Leom ne prikupljaju se identifikatori kao što je vaša adresa IP koja se može povezati s vama. Nikakvi se podatci ne upotrebljavaju za učenje modelā umjetne inteligencije i nikakvi se osobni podatci ne zadržavaju putem modelā umjetne inteligencije (osim modela Anthropic koji zadržava podatke 30 dana prije brisanja). Pogledajte **[privacy policy](%2$@)** za više informacija.";
+"aichat.termsConditionsDescription" = "Braveov Leo privatni je pametni pomoćnik potpomognut umjetnom inteligencijom (AI) kojim se poboljšava vaša upotreba interneta. Leo je besplatan za upotrebu, ali ima ograničen pristup. Braveov Leo Premium nudi veći broj modela, viša ograničenja i daje pretplatnicima rani pristup novim značajkama. Zadani model za sve korisnike trenutačno je Mixtral 8x7B. Pogledajte [Help Center](%1$@)** preglednika Brave za više pojedinosti.\n\nKada Leu postavite pitanje on može poslati i upotrijebiti sadržaj mrežne stranice koju prikazujete ili tekst koji označite za pružanje odgovora. U nekim slučajevima Leo šalje upite na osnovi vašeg upisa u pretraživanje Brave i služi se rezultatima pretraživanja kako bi bolje odgovorio na vaše pitanje. Točnost odgovora nije zajamčena i mogu se uključivati ​​netočne, obmanjujuće ili lažne informacije. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima koji se odnose na zdravlje, financije, osobnu sigurnost ili slično. U bilo kojem trenutku možete namjestiti mogućnosti Lea u postavkama. Idite na: Postavke > Leo.\n\nLeo ne prikuplja identifikatore kao što je vaša IP adresa koja se može povezati s vama. Nikakvi se podaci ne upotrebljavaju za učenje modela umjetne inteligencije i nikakvi se osobni podaci ne zadržavaju putem modela umjetne inteligencije (osim modela Anthropic koji zadržava podatke 30 dana prije nego što se ih obriše). Više informacija potražite na **[privacy policy](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Privatno čavrljajte s Brave Leo";

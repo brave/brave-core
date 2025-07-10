@@ -24,7 +24,7 @@ bool NewTabPageAdPermissionRules::HasPermission(const AdEventList& ad_events) {
   TRACE_EVENT(kTraceEventCategory,
               "NewTabPageAdPermissionRules::HasPermission");
 
-  if (!UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
     // If the user has not joined Brave Rewards, always grant permission.
     return true;
   }

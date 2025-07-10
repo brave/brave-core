@@ -10,7 +10,6 @@
 
 #include "base/logging.h"
 #include "base/strings/string_split.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "net/base/load_flags.h"

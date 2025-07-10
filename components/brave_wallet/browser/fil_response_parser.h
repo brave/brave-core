@@ -13,10 +13,13 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
-// TODO(apaymyshev): refactor utility methods to return std::optional instead
-// of bool + out-parameter.
-
 namespace brave_wallet {
+
+struct ParseFilEstimateGasResult {
+  std::string gas_premium;
+  std::string gas_fee_cap;
+  int64_t gas_limit = 0;
+};
 
 // Returns the balance of the account of given address.
 std::optional<std::string> ParseFilGetBalance(const base::Value& json_value);
@@ -24,19 +27,17 @@ std::optional<std::string> ParseFilGetBalance(const base::Value& json_value);
 std::optional<uint64_t> ParseFilGetTransactionCount(
     const base::Value& json_value);
 // Returns Gas estimation values.
-bool ParseFilEstimateGas(const base::Value& json_value,
-                         std::string* gas_premium,
-                         std::string* gas_fee_cap,
-                         int64_t* gas_limit);
+std::optional<ParseFilEstimateGasResult> ParseFilEstimateGas(
+    const base::Value& json_value);
 // Returns parsed chain head CID.
-bool ParseFilGetChainHead(const base::Value& json_value, uint64_t* height);
+std::optional<uint64_t> ParseFilGetChainHead(const base::Value& json_value);
 // Returns parsed receipt exit code.
-bool ParseFilStateSearchMsgLimited(const base::Value& json_value,
-                                   const std::string& cid,
-                                   int64_t* exit_code);
+std::optional<int64_t> ParseFilStateSearchMsgLimited(
+    const base::Value& json_value,
+    const std::string& cid);
 // Returns parsed transaction CID.
-bool ParseSendFilecoinTransaction(const base::Value& json_value,
-                                  std::string* tx_hash);
+std::optional<std::string> ParseSendFilecoinTransaction(
+    const base::Value& json_value);
 
 }  // namespace brave_wallet
 

@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Włącz obsługę pomijania przekierowywania najwyższego poziomu w przypadku śledzących adresów URL.</translation>
 <translation id="94154759592465111">Zablokuj skrypty</translation>
 <translation id="7714773920987474116">Blokuje skrypty Javascript (może popsuć działanie stron internetowych)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokuj treści rekomendowane przez YouTube</translation>
 <translation id="1005372663692637999">Blokuje ekrany końcowe i następne w serwisie youtube.com.</translation>
 <translation id="5152595963250646670">Blokuje rozpraszające elementy YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Pokaż popularne sugestie</translation>
 <translation id="6285118765755298263">Indeksowanie innych wyszukiwarek</translation>
 <translation id="919715748352669592">Automatycznie indeksuje strony internetowe, które są zgodne ze specyfikacją OpenSearch.</translation>
-<translation id="412411722208944922">Szybkie wyszukiwarki</translation>
-<translation id="2836969042340015500">Szybkie wyszukiwarki</translation>
-<translation id="9120455214794270250">Pokaż pasek szybkiego wyszukiwania</translation>
-<translation id="1052991798173010693">Obecnie używane silniki wyszukiwania</translation>
-<translation id="335303688425891752">Naciśnij i przytrzymaj, by zmienić kolejność</translation>
 <translation id="9148058034647219655">Wyjście</translation>
 <translation id="8047754398610073499">Blokuj powiadomienia o wyrażeniu zgody na pliki cookie</translation>
 <translation id="2621893359845808115">Blokuj okna pop-up na stronie internetowej, które wymagają potwierdzenia/odrzucenia plików cookie</translation>
@@ -678,6 +672,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3952797765659730604">Wprowadź, wklej lub zaimportuj plik ciągu klucza prywatnego lub JSON.</translation>
 <translation id="569068482611873351">Importowanie...</translation>
 <translation id="4522570452068850558">Szczegóły</translation>
+<translation id="3114681061018999547">Chronione</translation>
 <translation id="3784455785234192852">Zablokuj</translation>
 <translation id="4412698727486357573">Centrum pomocy</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
@@ -809,18 +804,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2199215899212542417">TYP FUNKCJI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Brak danych</translation>
 <translation id="1105525362447173583">Rejestrowanie transakcji aplikacji zdecentralizowanej sieci Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> wysłało <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> USD) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046">Konto <ph name="ACCOUNT_NAME"/> wysłało <ph name="ASSET"/> nr <ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> zatwierdzone <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Zatwierdzone, nielimitowane <ph name="ASSET"/> – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> dokonało wymiany – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Niezatwierdzone</translation>
-<translation id="8034530868111548216">Zatwierdzone</translation>
-<translation id="6015436276085482001">Odrzucone</translation>
-<translation id="6666273175654835609">Wysłane</translation>
-<translation id="2331676293859649642">Potwierdzone</translation>
-<translation id="8214232307424031138">Podpisano</translation>
-<translation id="1165039591588034296">Błąd</translation>
 <translation id="2561824823738097741">Czy używasz najszybszej przeglądarki internetowej?</translation>
 <translation id="2065971949051836200">3x szybszy Internet jest już w Twoim telefonie. Korzystaj z Brave do przeglądania wszystkich stron internetowych.</translation>
 <translation id="2888278614497184977">Brave = 3x szybsze przeglądanie sieci</translation>
@@ -1226,11 +1209,11 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="4010699428656610296">Scal inne karty w innym oknie Brave.</translation>
 <translation id="4306918392910017801">Automatyczne ponowne łączenie z VPN</translation>
 <translation id="1599073346542156922">Włączanie:</translation>
-<translation id="7001163334415463127">1. Otwórz ustawienia urządzenia z menu wyboru aplikacji albo klikając przycisk poniżej.</translation>
+<translation id="7001163334415463127">1. Otwórz ustawienia urządzenia w menu wyboru aplikacji albo poprzez kliknięcie poniższego przycisku.</translation>
 <translation id="887443138775437899">2. Znajdź Sieć VPN Brave i kliknij ikonę ustawień po prawej.</translation>
 <translation id="7546805138087561624">3. Włącz opcję <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Zawsze aktywna sieć VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
 <translation id="2446001600399646984">Ze względu na ograniczenia Androida funkcja „Blokuj połączenia bez VPN” nie działa zgodnie z oczekiwaniami. <ph name="LEARN_MORE_START"/>Dowiedz się więcej.<ph name="LEARN_MORE_END"/></translation>
-<translation id="4776146737004271126">Otwórz ustawienia Androida</translation>
+<translation id="4776146737004271126">Otwórz ustawienia systemu Android</translation>
 <translation id="2728518864712716830">Aktualizacja została pobrana.</translation>
 <translation id="8403338849301491865">Lista filtru została pomyślnie zaktualizowana</translation>
 <translation id="4650851936784160359">Nie można zaktualizować listy filtru. Spróbuj ponownie</translation>
@@ -1241,4 +1224,5 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6859935199732075666">Pokazuj błędy Bezpiecznego przeglądania</translation>
 <translation id="2735247450315842119">Zezwalaj na zrzuty ekranu w kartach prywatnych</translation>
 <translation id="8420414929552321089">Po zezwoleniu karty prywatne będą również widoczne, gdy otwartych jest wiele aplikacji.</translation>
+<translation id="7956713633345437162">Zakładki mobilne</translation>
 </translationbundle>

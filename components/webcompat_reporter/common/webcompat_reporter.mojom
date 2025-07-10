@@ -22,6 +22,7 @@ struct ReportInfo {
   string? languages;
   string? language_farbling;
   string? brave_vpn_connected;
+  string? category;
   string? details;
   string? contact;
   string? cookie_policy;
@@ -34,5 +35,6 @@ struct ReportInfo {
 interface WebcompatReporterHandler {
   SubmitWebcompatReport(ReportInfo report_info);
   SetContactInfoSaveFlag(bool value);
-  GetContactInfo() => (string? val, bool contact_info_save_flag);
+  GetBrowserParams() => (string? contact_info, bool contact_info_save_flag,
+    array<string> components);
 };

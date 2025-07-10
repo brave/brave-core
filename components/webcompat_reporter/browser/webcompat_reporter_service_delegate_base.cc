@@ -20,25 +20,17 @@ WebcompatReporterServiceDelegateBase::WebcompatReporterServiceDelegateBase(
 WebcompatReporterServiceDelegateBase::~WebcompatReporterServiceDelegateBase() =
     default;
 
-std::optional<std::vector<ComponentInfo>>
+std::vector<ComponentInfo>
 WebcompatReporterServiceDelegateBase::GetComponentInfos() const {
   if (!component_update_service_) {
-    return std::nullopt;
+    return {};
   }
 
   std::vector<ComponentInfo> result;
   auto components(component_update_service_->GetComponents());
   for (const auto& ci : components) {
-    if (!NeedsToGetComponentInfo(ci.id)) {
-      continue;
-    }
-
     result.emplace_back(ComponentInfo{ci.id, base::UTF16ToUTF8(ci.name),
                                       ci.version.GetString()});
-  }
-
-  if (result.empty()) {
-    return std::nullopt;
   }
 
   return result;

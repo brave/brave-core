@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
 # This is required for chromium_src overrides.
@@ -16,6 +17,7 @@ brave_browser_ui_webui_configs_deps = [
   "//brave/components/brave_private_cdn",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_vpn/common/buildflags",
+  "//brave/components/containers/buildflags",
   "//brave/components/playlist/common/buildflags",
 ]
 
@@ -32,4 +34,12 @@ if (enable_brave_vpn) {
 if (enable_brave_education) {
   brave_browser_ui_webui_configs_deps +=
       [ "//brave/browser/ui/webui/brave_education" ]
+}
+
+if (enable_containers) {
+  brave_browser_ui_webui_configs_deps += [
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom",
+  ]
 }

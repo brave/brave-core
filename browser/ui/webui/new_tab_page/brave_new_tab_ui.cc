@@ -18,6 +18,7 @@
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -39,8 +40,8 @@
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
@@ -58,26 +59,6 @@
 #endif
 
 using ntp_background_images::NTPCustomImagesSource;
-
-namespace {
-
-constexpr char kBraveSearchHost[] = "search.brave.com";
-constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
-
-std::string_view GetSearchWidgetDefaultHost(
-    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
-  regional_capabilities::CountryIdHolder country_id =
-      regional_capabilities->GetCountryId();
-  regional_capabilities::CountryIdHolder japan_country_id(
-      country_codes::CountryId("JP"));
-  if (country_id == japan_country_id) {
-    return kYahooSearchHost;
-  }
-
-  return kBraveSearchHost;
-}
-
-}  // namespace
 
 BraveNewTabUI::BraveNewTabUI(
     content::WebUI* web_ui,
@@ -144,8 +125,9 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddBoolean(
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
-  source->AddString("searchWidgetDefaultHost",
-                    GetSearchWidgetDefaultHost(regional_capabilities_));
+  source->AddString(
+      "searchWidgetDefaultHost",
+      brave_new_tab_page_refresh::GetSearchDefaultHost(regional_capabilities_));
 
   source->AddString("newTabTakeoverLearnMoreLinkUrl",
                     ntp_background_images::kNewTabTakeoverLearnMoreLinkUrl);
@@ -184,6 +166,8 @@ BraveNewTabUI::BraveNewTabUI(
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       ads_service, ntp_p3a_helper);
+
+  source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,

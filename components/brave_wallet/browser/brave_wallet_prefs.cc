@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/values.h"
@@ -22,10 +20,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/sync_preferences/pref_service_syncable.h"
 
 namespace brave_wallet {
 
@@ -241,6 +239,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletSelectedWalletAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedEthDappAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedSolDappAccount, "");
+  registry->RegisterStringPref(kBraveWalletSelectedAdaDappAccount, "");
 
   registry->RegisterIntegerPref(
       kBraveWalletTransactionSimulationOptInStatus,
@@ -307,6 +306,7 @@ void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletSelectedWalletAccount);
   prefs->ClearPref(kBraveWalletSelectedEthDappAccount);
   prefs->ClearPref(kBraveWalletSelectedSolDappAccount);
+  prefs->ClearPref(kBraveWalletSelectedAdaDappAccount);
 }
 
 void ClearBraveWalletServicePrefs(PrefService* prefs) {

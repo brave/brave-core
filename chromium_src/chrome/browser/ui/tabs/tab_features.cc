@@ -5,8 +5,10 @@
 
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
-#define TabFeatures TabFeatures_Chromium
+#define CreateTabFeatures CreateTabFeatures_Unused
+#define ReplaceTabFeaturesForTesting ReplaceTabFeaturesForTesting_Unused
 
 #include "src/chrome/browser/ui/tabs/tab_features.cc"
 
-#undef TabFeatures
+#undef CreateTabFeatures
+#undef ReplaceTabFeaturesForTesting

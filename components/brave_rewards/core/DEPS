@@ -1,3 +1,8 @@
+include_rules = [
+  "+components/country_codes",
+  "+components/prefs",
+]
+
 specific_include_rules = {
   "rewards_util\.cc": [
     "+brave/components/l10n/common/locale_util.h",

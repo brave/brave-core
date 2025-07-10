@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Include this early so that the real include inside of screen_ios.mm is
-// ignored due to header guard.
 #include "base/apple/foundation_util.h"
 
+// Replaces the strict cast to a standard cast since its possible for Brave to
+// have a non-window scene thanks to the CarPlay support
 #define ObjCCastStrict ObjCCast
 #include "src/ui/display/ios/screen_ios.mm"
 #undef ObjCCastStrict

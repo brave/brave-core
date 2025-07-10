@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Lubage ümbersuunavate jälgimis-URL-ide tipptasemest möödumise tugi</translation>
 <translation id="94154759592465111">Blokeeri skriptid</translation>
 <translation id="7714773920987474116">Blokeerib JavaScripti (veebisaidi funktsioonid ei pruugi enam toimida)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blokeeri YouTube’i soovitatud sisu</translation>
 <translation id="1005372663692637999">Blokeerib aadressil youtube.com elemendid järgmine ja lõpukaart.</translation>
 <translation id="5152595963250646670">Blokeeri YouTube’i segavad elemendid</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Näita otsingusoovitusi</translation>
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
 <translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
-<translation id="412411722208944922">Kiirotsingumootorid</translation>
-<translation id="2836969042340015500">Kiirotsingumootorid</translation>
-<translation id="9120455214794270250">Kuva kiirotsinguriba</translation>
-<translation id="1052991798173010693">Praegu kasutatavad otsingumootorid</translation>
-<translation id="335303688425891752">Järjekorra muutmiseks vajutage pikalt</translation>
 <translation id="9148058034647219655">Välju</translation>
 <translation id="8047754398610073499">Blokeeri küpsistega nõustumise teated</translation>
 <translation id="2621893359845808115">Blokeerib veebisaitide hüpikaknad, mis paluvad teil sellel saidil küpsistega nõustuda või neist keelduda</translation>
@@ -678,6 +672,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="3952797765659730604">Sisestage, kleepige või importige oma privaatvõtme stringi fail või JSON.</translation>
 <translation id="569068482611873351">Importimine...</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
+<translation id="3114681061018999547">Varjestus</translation>
 <translation id="3784455785234192852">Lukusta</translation>
 <translation id="4412698727486357573">Abikeskus</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
@@ -809,18 +804,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2199215899212542417">FUNKTSIOONI TÜÜP: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Andmeid pole</translation>
 <translation id="1105525362447173583">Solana detsentraliseeritud rakenduse allkirjastamistehing</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> saatis <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) – <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> saatis <ph name="ASSET"/> nr <ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> kinnitas <ph name="ASSET"/> – <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Kinnitati piiramatu <ph name="ASSET"/> – <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> vahetustehing – <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Kinnitamata</translation>
-<translation id="8034530868111548216">Kinnitatud</translation>
-<translation id="6015436276085482001">Tagasi lükatud</translation>
-<translation id="6666273175654835609">Edastatud</translation>
-<translation id="2331676293859649642">Kinnitatud</translation>
-<translation id="8214232307424031138">Allkirjastatud</translation>
-<translation id="1165039591588034296">Viga</translation>
 <translation id="2561824823738097741">Kas kasutate kiireimat veebibrauserit?</translation>
 <translation id="2065971949051836200">3 korda kiirem internetiühendus on juba olemas teie telefonis. Kasutage Brave’i kogu veebisirvimiseks.</translation>
 <translation id="2888278614497184977">Brave = 3 korda kiirem veebisirvimine</translation>
@@ -1242,4 +1225,5 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="6859935199732075666">Näita turvalise lehitsemise vigu</translation>
 <translation id="2735247450315842119">Luba ekraanipildid privaatsetel vahelehtedel</translation>
 <translation id="8420414929552321089">Kui see on lubatud, on privaatsed vahelehed nähtavad ka siis, kui mitu rakendust on avatud.</translation>
+<translation id="7956713633345437162">Mobiilne järjehoidja</translation>
 </translationbundle>

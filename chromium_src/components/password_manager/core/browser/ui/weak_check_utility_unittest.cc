@@ -8,6 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
+
 namespace password_manager {
 
 using ParamType = std::pair<std::string,  // password

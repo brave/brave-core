@@ -7,3 +7,4 @@
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -CreditCardAccessManagerAuthFlowTest.FetchServerCardCVCSuccess/1
+-VerdictCacheManagerTest.TestCleanUpExpiredVerdict

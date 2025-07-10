@@ -3,12 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import tempfile
-import subprocess
 from pathlib import Path
 from typing import List, Dict
 import json
 import shutil
+import subprocess
+import tempfile
 
 CHROME_VERSION_TEMPLATE: str = """MAJOR={major}
 MINOR={minor}
@@ -29,7 +29,10 @@ class FakeChromiumRepo:
             tempfile.TemporaryDirectory())
         self.base_path: Path = Path(self.temp_dir.name) / 'workspace'
         self._init_repo(self.chromium)
-        self._init_repo(self.brave)  # Create the brave repository
+
+        # Set a brave repository under src/.
+        self._init_repo(self.brave)
+        self.brave_patches.mkdir(parents=True, exist_ok=True)
 
     @property
     def chromium(self) -> Path:
@@ -85,6 +88,8 @@ class FakeChromiumRepo:
         self._run_git_command(['init'], path)
         (path / 'README.md').write_text(f'# Fake {path.name} repo\n')
         self._run_git_command(['add', 'README.md'], path)
+        self._run_git_command(['config', 'user.name', 'Fake User'], path)
+        self._run_git_command(['config', 'user.email', 'fake@brave.com'], path)
         self._run_git_command(['commit', '-m', 'Initial commit'], path)
 
     def create_brave_remote(self) -> None:
@@ -147,7 +152,8 @@ class FakeChromiumRepo:
         self._run_git_command(['add', str(version_file)], self.chromium)
         self._run_git_command(['commit', '-m', f'VERSION {version}'],
                               self.chromium)
-        self._run_git_command(['tag', version], self.chromium)
+        self._run_git_command(['tag', version, '-m', f'VERSION {version}'],
+                              self.chromium)
 
     def commit_empty(self, commit_message: str, repo_path: Path) -> str:
         """Creates an empty commit for a repository and returns a hash.
@@ -274,19 +280,26 @@ class FakeChromiumRepo:
             for filename in modified_files:
                 # Generate the patch file path
                 patch_file = self.brave / self.get_patchfile_path_for_source(
-                    relative_repo_path, filename)
+                    relative_repo_path, Path(filename))
 
-                # Generate and write the patch content
-                patch_content = self._run_git_command([
-                    'diff', '--src-prefix=a/', '--dst-prefix=b/',
-                    '--full-index', filename
-                ],
-                                                      repo_path,
-                                                      strip=False)
-                patch_file.write_text(patch_content)
+                # Generates the patch file for the changed file. This is an
+                # ad-hoc call to `git diff`, capturing the full binary output,
+                # to prevent string encoding from dropping any carriage
+                # returns from the diff file.
+                result = subprocess.run(
+                    [
+                        'git', 'diff', '--src-prefix=a/', '--dst-prefix=b/',
+                        '--default-prefix', '--full-index', filename
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True,
+                    cwd=repo_path,
+                )
+                patch_file.write_bytes(result.stdout)
 
     def get_patchfile_path_for_source(self, repo_path: Path,
-                                      filename: str) -> Path:
+                                      filename: Path) -> Path:
         """Generates the patch file path for a given source file.
 
         Args:
@@ -301,8 +314,9 @@ class FakeChromiumRepo:
         if repo_path.is_absolute():
             repo_path = repo_path.relative_to(self.chromium)
         return (self.brave_patches / repo_path /
-                f'{str(filename).replace("/", "-")}.patch').relative_to(
+                f'{filename.as_posix().replace("/", "-")}.patch').relative_to(
                     self.brave)
+
 
     def run_apply_patches(self) -> List[Dict]:
         """Similar to `npm run apply_patches`.

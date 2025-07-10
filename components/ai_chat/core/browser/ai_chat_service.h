@@ -20,12 +20,10 @@
 #include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -248,7 +246,28 @@ class AIChatService : public KeyedService,
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<AssociatedContentDelegate> associated_content);
-  void MaybeUnloadConversation(ConversationHandler* conversation);
+
+  // Determines whether a conversation could be unloaded.
+  bool CanUnloadConversation(ConversationHandler* conversation);
+
+  // If a conversation is unloadable, queues an event to unload it after a
+  // delay. The delay is to allow for these situations:
+  // - Primarily to guarantee that any references to the conversation during the
+  // current stack frame will remain valid during the current stack frame.
+  //   Solves this in a block:
+  //       auto conversation = CreateConversation();
+  //       conversation->SomeMethodThatTriggersMaybeUnload();
+  //       /* conversation is unloaded */
+  //       conversation->SomeOtherMethod(); // use after free!
+  // - To give clients a chance to connect, which often happens in a separate
+  // process, e.g. WebUI. This is not critical, but it avoids unloading and then
+  // re-loading the conversation data whilst waiting for the UI to connect.
+  void QueueMaybeUnloadConversation(ConversationHandler* conversation);
+
+  // Unloads |conversation| if:
+  // 1. It hasn't already been unloaded
+  // 2. |CanUnloadConversation| is true
+  void MaybeUnloadConversation(base::WeakPtr<ConversationHandler> conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,
                         std::optional<std::vector<std::string>> maybe_content,

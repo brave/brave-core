@@ -389,14 +389,14 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(false, StrEq(""),
                                         LastTurnHasSelectedText(selected_text),
-                                        StrEq(""), _, _))
+                                        StrEq(""), _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(expected_response)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -499,14 +499,14 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(false, StrEq(page_content),
                                         LastTurnHasSelectedText(selected_text),
-                                        StrEq(""), _, _))
+                                        StrEq(""), _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(expected_response)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1175,13 +1175,13 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Modify an entry for the first time.
   EXPECT_CALL(*engine, GenerateAssistantResponse(false, StrEq(""),
                                                  LastTurnHasText("prompt2"),
-                                                 StrEq(""), _, _))
+                                                 StrEq(""), _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
               "chat-basic" /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1211,11 +1211,13 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   first_edit->uuid = "ignore_me";
   first_edit->selected_text = std::nullopt;
   first_edit->text = "prompt2";
+  first_edit->created_time = base::Time::Now();
 
   first_edit_expected_history[0]->edits.emplace();
   first_edit_expected_history[0]->edits->push_back(first_edit->Clone());
 
   first_edit_expected_history[1]->text = "new answer";
+  first_edit_expected_history[1]->created_time = base::Time::Now();
   first_edit_expected_history[1]->events.emplace();
   first_edit_expected_history[1]->events->emplace_back(
       expected_new_completion_event->Clone());
@@ -1236,13 +1238,13 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Modify the same entry again.
   EXPECT_CALL(*engine, GenerateAssistantResponse(false, StrEq(""),
                                                  LastTurnHasText("prompt3"),
-                                                 StrEq(""), _, _))
+                                                 StrEq(""), _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
               "chat-basic" /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1268,7 +1270,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Modifying server response should have text and completion event updated in
   // the entry of edits.
   // Engine should not be called for an assistant edit
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _)).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
+      .Times(0);
   conversation_handler_->ModifyConversation(1, " answer2 ");
 
   auto third_edit_expected_history = CloneHistory(second_edit_expected_history);
@@ -1317,13 +1320,13 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
   // that came before the assistant turn we're regenerating
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            false, StrEq(""), LastTurnHasText(history[0]->text),
-                           StrEq(""), _, _))
+                           StrEq(""), _, _, _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("regenerated answer")),
               new_model_key)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1576,11 +1579,11 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("new answer")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1812,14 +1815,13 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](bool send_page_contents, const std::string& page_contents,
+          [](const bool& send_page_contents, const std::string& page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language,
-             base::RepeatingCallback<void(EngineConsumer::GenerationResultData)>
-                 callback,
-             base::OnceCallback<void(
-                 base::expected<EngineConsumer::GenerationResultData,
-                                mojom::APIError>)> done_callback) {
+             const std::vector<base::WeakPtr<Tool>>& tools,
+             std::optional<std::string_view> preferred_tool_name,
+             EngineConsumer::GenerationDataCallback callback,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2115,7 +2117,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   // The prompt should be submitted to the engine, not the title.
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            false, StrEq(""), LastTurnHasText("do the thing!"),
-                           StrEq(""), _, _))
+                           StrEq(""), _, _, _, _))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
   conversation_handler_->SubmitSuggestion("the thing");
@@ -2137,19 +2139,19 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
 
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            false, StrEq(""), LastTurnHasText(expected_input1),
-                           StrEq(""), _, _))
+                           StrEq(""), _, _, _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Tis but a scratch.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
                   mojom::SelectedLanguageEvent::New(
                       expected_selected_language)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -2168,13 +2170,13 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
 
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            false, StrEq(""), LastTurnHasText(expected_input2),
-                           StrEq(expected_selected_language), _, _))
+                           StrEq(expected_selected_language), _, _, _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("No, it isn't.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -2230,22 +2232,23 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
   uint64_t expected_total_tokens = 1000;
   uint64_t expected_trimmed_tokens = 200;
 
-  EXPECT_CALL(*engine, GenerateAssistantResponse(
-                           false, StrEq("This is the way - page contents"),
-                           LastTurnHasText(expected_input), StrEq(""), _, _))
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(
+                  false, StrEq("This is the way - page contents"),
+                  LastTurnHasText(expected_input), StrEq(""), _, _, _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(
                       "That may be your way, but it's not mine.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewContentReceiptEvent(
                   mojom::ContentReceiptEvent::New(expected_total_tokens,
                                                   expected_trimmed_tokens)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<5>(
+          base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),

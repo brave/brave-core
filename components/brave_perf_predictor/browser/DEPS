@@ -1,19 +1,23 @@
 include_rules = [
-    "+components/grit/brave_components_resources.h",
-    "+content/public/browser",
-    "+content/public/test",
-    "+services/metrics/public",
-    "+third_party/blink/public/mojom",
-    "+ui/base",
+  "+components/keyed_service",
+  "+components/grit/brave_components_resources.h",
+  "+components/page_load_metrics",
+  "+components/prefs",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/test",
+  "+services/metrics/public",
+  "+third_party/blink/public/mojom",
+  "+ui/base",
 ]
 
 specific_include_rules = {
-    "bandwidth_savings_predictor_unittest\.cc": [
-        # chrome deps are not allowed in components
-        "!chrome/browser/predictors/loading_test_util.h",
-    ],
-    "perf_predictor_tab_helper\.cc": [
-        # brave/browser deps are not allowed in components
-        "!brave/browser/android/brave_shields_content_settings.h",
-    ],
+  "bandwidth_savings_predictor_unittest\.cc": [
+    # chrome deps are not allowed in components
+    "!chrome/browser/predictors/loading_test_util.h",
+  ],
+  "perf_predictor_tab_helper\.cc": [
+    # brave/browser deps are not allowed in components
+    "!brave/browser/android/brave_shields_content_settings.h",
+  ],
 }

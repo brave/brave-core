@@ -6,8 +6,8 @@
 import Foundation
 
 extension Locale {
-  /// Regions focus onboarding is shown UK and Japan
+  /// Regions focus onboarding is shown in
   public var isNewOnboardingRegion: Bool {
-    return Locale.current.region?.identifier == "JP" || Locale.current.region?.identifier == "GB"
+    return true
   }
 }

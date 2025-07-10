@@ -162,7 +162,8 @@ class BuyTokenStoreTests: XCTestCase {
           accounts: [.previewAccount],
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
-          solDappSelectedAccount: nil
+          solDappSelectedAccount: nil,
+          adaDappSelectedAccount: nil
         )
       )
     }

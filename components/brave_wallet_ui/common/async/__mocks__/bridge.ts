@@ -30,6 +30,7 @@ import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 import {
   NativeAssetBalanceRegistry,
   mockAccount,
+  mockCardanoAccount,
   mockEthAccountInfo,
   mockFilecoinAccountInfo,
   mockFilecoinMainnetNetwork,
@@ -610,6 +611,7 @@ export class MockedWalletApiProxy {
         selectedAccount: selectedAccount,
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccountInfo,
+        adaDappSelectedAccount: mockCardanoAccount,
       }
       return { allAccounts }
     },
@@ -1357,6 +1359,7 @@ export class MockedWalletApiProxy {
             BraveWallet.CoinType.SOL,
             BraveWallet.CoinType.ADA,
           ],
+          isCardanoDappSupportEnabled: false,
         },
       }
     },

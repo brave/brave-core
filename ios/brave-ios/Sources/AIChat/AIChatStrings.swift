@@ -585,13 +585,6 @@ extension Strings {
       value: "None",
       comment: "Title showing the user has no subscription."
     )
-    public static let advancedSettingsAutocompleteTitle = NSLocalizedString(
-      "aichat.advancedSettingsAutocompleteTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Show In Address Bar",
-      comment: "The title for the settings to show search suggestions from Leo in url-address bar"
-    )
     public static let advancedSettingsAutocompleteDescription = NSLocalizedString(
       "aichat.advancedSettingsAutocompleteDescription",
       tableName: "BraveLeo",
@@ -817,7 +810,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the **[privacy policy](%@)** for more information.",
+        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question about a website or page you are viewing, the content of the webpage you are viewing or any text you highlight on a page, as well as your search query will be sent to Brave servers in order for Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. Brave does not guarantee the accuracy of responses, and responses may include inaccurate, misleading, or false information. Don't submit sensitive or private information to Brave Leo, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. We do not train our models based on your data, including your search queries or Brave Leo’s responses. No personal data is stored on our servers, or retained by Brave. See the **[privacy policy](%@)** for more information.",
       comment:
         "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
     )

@@ -16,7 +16,6 @@ static_library("common") {
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
-    "//brave/components/ntp_background_images/browser",
     "//brave/components/p3a",
     "//brave/components/sidebar/browser",
     "//brave/components/text_recognition/browser",
@@ -31,16 +30,12 @@ static_library("common") {
   ]
 
   public = [
-    "country_code_util.h",
     "locale_util.h",
     "ofac_sanction_util.h",
     "prefs.h",
   ]
 
   sources = [
-    "country_code_feature.cc",
-    "country_code_feature.h",
-    "country_code_util.cc",
     "default_locale.cc",
     "default_locale.h",
     "locale_subtag_info.cc",
@@ -82,7 +77,6 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "country_code_util_unittest.cc",
     "locale_subtag_parser_util_unittest.cc",
     "locale_util_unittest.cc",
     "ofac_sanction_util_unittest.cc",

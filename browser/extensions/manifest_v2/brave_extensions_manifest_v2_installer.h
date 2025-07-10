@@ -43,6 +43,8 @@ inline constexpr auto kPreconfiguredManifestV2Extensions =
                                                  kUBlockId,
                                              });
 
+bool IsKnownMV2Extension(const extensions::ExtensionId& id);
+
 class ExtensionManifestV2Installer {
  public:
   ExtensionManifestV2Installer(

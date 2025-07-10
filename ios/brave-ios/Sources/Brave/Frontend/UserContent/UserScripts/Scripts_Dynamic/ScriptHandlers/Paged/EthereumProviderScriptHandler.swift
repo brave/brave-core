@@ -105,21 +105,17 @@ class EthereumProviderScriptHandler: TabContentScript {
     tab.isWalletIconVisible = true
 
     func handleResponse(
-      id: MojoBase.Value,
-      formedResponse: MojoBase.Value,
-      reject: Bool,
-      firstAllowedAccount: String,
-      updateJSProperties: Bool
+      response: BraveWallet.EthereumProviderResponse
     ) {
       Task { @MainActor in
-        if updateJSProperties {
+        if response.updateBindJsProperties {
           await tab.browserData?.updateEthereumProperties()
         }
 
-        if reject {
-          replyHandler(nil, formedResponse.jsonString)
+        if response.reject {
+          replyHandler(nil, response.formedResponse.jsonString)
         } else {
-          replyHandler(formedResponse.jsonObject, nil)
+          replyHandler(response.formedResponse.jsonObject, nil)
         }
       }
     }

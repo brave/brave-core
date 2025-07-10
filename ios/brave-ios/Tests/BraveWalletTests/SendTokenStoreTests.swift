@@ -74,7 +74,8 @@ class SendTokenStoreTests: XCTestCase {
           accounts: [selectedAccount],
           selectedAccount: selectedAccount,
           ethDappSelectedAccount: [selectedAccount].first(where: { $0.coin == .eth }),
-          solDappSelectedAccount: [selectedAccount].first(where: { $0.coin == .sol })
+          solDappSelectedAccount: [selectedAccount].first(where: { $0.coin == .sol }),
+          adaDappSelectedAccount: nil
         )
       )
     }

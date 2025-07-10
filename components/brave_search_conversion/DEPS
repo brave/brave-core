@@ -1,3 +1,5 @@
 include_rules = [
+  "+components/prefs",
+  "+components/search_engines",
   "+content/public/test",
 ]

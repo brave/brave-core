@@ -11,37 +11,44 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/views/split_view/split_view_menu_bubble.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/gfx/animation/slide_animation.h"
 #include "ui/gfx/animation/tween.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/transform.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/text_constants.h"
+#include "ui/menus/simple_menu_model.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
 class MenuButtonDelegate : public views::WidgetDelegateView,
-                           public gfx::AnimationDelegate {
+                           public gfx::AnimationDelegate,
+                           public ui::SimpleMenuModel::Delegate {
   METADATA_HEADER(MenuButtonDelegate, views::WidgetDelegateView)
 
  public:
-  explicit MenuButtonDelegate(Browser* browser) {
+  explicit MenuButtonDelegate(Browser* browser) : browser_(browser) {
+    BuildMenuModel();
     SetLayoutManager(std::make_unique<views::FillLayout>());
     constexpr auto kCornerRadius = 4;
     constexpr auto kBorderThickness = 1;
@@ -105,9 +112,32 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     SchedulePaint();
   }
 
+  // ui::SimpleMenuModel::Delegate:
+  void ExecuteCommand(int command_id, int event_flags) override {
+    chrome::ExecuteCommand(browser_, command_id);
+  }
+
  private:
   void OnMenuPressed(Browser* browser, const ui::Event& event) {
-    SplitViewMenuBubble::Show(browser, this);
+    CHECK(menu_model_);
+    menu_runner_ = std::make_unique<views::MenuRunner>(
+        menu_model_.get(), views::MenuRunner::HAS_MNEMONICS);
+    menu_runner_->RunMenuAt(GetWidget(), nullptr, GetAnchorBoundsInScreen(),
+                            views::MenuAnchorPosition::kTopLeft,
+                            ui::mojom::MenuSourceType::kNone);
+  }
+
+  void BuildMenuModel() {
+    CHECK(!menu_model_);
+    menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
+    menu_model_->AddItemWithIcon(
+        IDC_SWAP_SPLIT_VIEW, l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
+        ui::ImageModel::FromVectorIcon(kLeoSwapHorizontalIcon,
+                                       kColorBraveSplitViewMenuItemIcon, 16));
+    menu_model_->AddItemWithIcon(
+        IDC_BREAK_TILE, l10n_util::GetStringUTF16(IDS_IDC_BREAK_TILE),
+        ui::ImageModel::FromVectorIcon(kLeoBrowserSplitViewUnsplitIcon,
+                                       kColorBraveSplitViewMenuItemIcon, 16));
   }
 
   std::unique_ptr<gfx::ScopedCanvas> TransformCanvasForBackground(
@@ -123,7 +153,10 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     return scoped_canvas;
   }
 
+  raw_ptr<Browser> browser_ = nullptr;
   gfx::SlideAnimation background_animation_{this};
+  std::unique_ptr<ui::SimpleMenuModel> menu_model_;
+  std::unique_ptr<views::MenuRunner> menu_runner_;
 };
 
 BEGIN_METADATA(MenuButtonDelegate)

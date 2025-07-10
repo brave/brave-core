@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Activați suportul pentru eliminarea URL-urilor principale de urmărire prin redirecționare.</translation>
 <translation id="94154759592465111">Blocare script</translation>
 <translation id="7714773920987474116">Blochează JavaScript (poate bloca site-urile)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blocați conținutul recomandat de YouTube</translation>
 <translation id="1005372663692637999">Blochează elementele up next și end card de pe youtube.com.</translation>
 <translation id="5152595963250646670">Blocați elementele care distrag atenția de pe YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Afișează sugestiile de top</translation>
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
-<translation id="412411722208944922">Motoare de căutare rapidă</translation>
-<translation id="2836969042340015500">Motoare de căutare rapidă</translation>
-<translation id="9120455214794270250">Afișați bara de căutare rapidă</translation>
-<translation id="1052991798173010693">Motoare de căutare folosite în prezent</translation>
-<translation id="335303688425891752">Apăsați lung pentru a schimba ordinea</translation>
 <translation id="9148058034647219655">Ieși</translation>
 <translation id="8047754398610073499">Blocați avertismentele de consimțire a modulelor cookie</translation>
 <translation id="2621893359845808115">Blochează mesajele pop-up care vă solicită să acceptați/refuzați modulele cookie de pe site-uri</translation>
@@ -677,6 +671,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3952797765659730604">Introduceți, lipiți sau importați fișierul cu cheia privată sau în format JSON.</translation>
 <translation id="569068482611873351">Importați...</translation>
 <translation id="4522570452068850558">Detalii</translation>
+<translation id="3114681061018999547">Se protejează</translation>
 <translation id="3784455785234192852">Blocați</translation>
 <translation id="4412698727486357573">Centrul de ajutor</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
@@ -810,18 +805,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2199215899212542417">TIPUL FUNCȚIEI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nu există date</translation>
 <translation id="1105525362447173583">Tranzacția Solana Dapp Sign</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> a trimis <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> a trimis <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823">Contul <ph name="ACCOUNT_NAME"/> a aprobat <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">S-a aprobat un nivel nelimitat de <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Schimbare <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Neaprobat</translation>
-<translation id="8034530868111548216">Aprobat</translation>
-<translation id="6015436276085482001">Respins</translation>
-<translation id="6666273175654835609">Trimis</translation>
-<translation id="2331676293859649642">Confirmat</translation>
-<translation id="8214232307424031138">Semnat</translation>
-<translation id="1165039591588034296">Eroare</translation>
 <translation id="2561824823738097741">Folosiți cel mai rapid browser?</translation>
 <translation id="2065971949051836200">Internetul de 3 ori mai rapid este deja disponibil pe telefonul dvs. Folosiți Brave pentru navigarea pe internet!</translation>
 <translation id="2888278614497184977">Brave înseamnă o navigare de 3 ori mai rapidă.</translation>
@@ -1226,9 +1209,9 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4010699428656610296">Comasați alte file într-o altă fereastră Brave.</translation>
 <translation id="4306918392910017801">Re-conectare automată VPN</translation>
 <translation id="1599073346542156922">Cum se activează:</translation>
-<translation id="7001163334415463127">1. Deschideți setările dispozitivului dvs. din sertarul aplicației sau atingeți butonul de mai jos.</translation>
-<translation id="887443138775437899">2. Găsiți VPN Brave și apăsați pe pictograma de setări din dreapta.</translation>
-<translation id="7546805138087561624">3. Comutați <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN activat permanent<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> pentru a-l activa.</translation>
+<translation id="7001163334415463127">1. Deschide setările dispozitivului tău din sertarul aplicației sau atinge butonul de mai jos.</translation>
+<translation id="887443138775437899">2. Găsește VPN Brave și apasă pe pictograma de setări din dreapta.</translation>
+<translation id="7546805138087561624">3. Comută <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN activat permanent<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> pentru a-l activa.</translation>
 <translation id="2446001600399646984">Reține că, din cauza limitărilor Android, „Blocarea conexiunilor fără VPN” nu funcționează conform așteptărilor. <ph name="LEARN_MORE_START"/>Află mai multe.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Deschide setările Android</translation>
 <translation id="2728518864712716830">Actualizarea este descărcată.</translation>
@@ -1241,4 +1224,5 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6859935199732075666">Afișează erorile de navigare sigură</translation>
 <translation id="2735247450315842119">Permite capturi de ecran în filele private</translation>
 <translation id="8420414929552321089">Dacă este permis, filele private vor fi vizibile și atunci când sunt deschise mai multe aplicații.</translation>
+<translation id="7956713633345437162">Marcaje mobile</translation>
 </translationbundle>

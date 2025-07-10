@@ -1,4 +1,6 @@
 include_rules = [
+  "+components/prefs",
+  "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",

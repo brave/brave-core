@@ -32,7 +32,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, mojom::AdType::kNotificationAd,
+      /*value=*/0.1, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
@@ -66,6 +66,13 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
       /*should_generate_random_uuids=*/true);
   transaction_6.ad_type = mojom::AdType::kInlineContentAd;
   transactions.push_back(transaction_6);
+
+  TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
+      /*value=*/0.00, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
+  transaction_7.ad_type = mojom::AdType::kNewTabPageAd;
+  transactions.push_back(transaction_7);
 
   // Act
   const base::flat_map<mojom::AdType, int32_t> ads_summary =

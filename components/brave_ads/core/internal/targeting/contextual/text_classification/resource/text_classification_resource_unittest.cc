@@ -122,36 +122,6 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       LoadResourceForOnLocaleDidChange) {
-  // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
-
-  // Act
-  NotifyLocaleDidChange(/*locale=*/"en_GB");
-
-  // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceForOnLocaleDidChangeIfOptedOutOfAllAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
-
-  // Act
-  NotifyLocaleDidChange(/*locale=*/"en_GB");
-
-  // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotLoadResourceWhenOptingInToBraveNewsAds) {
   // Arrange
   test::OptOutOfAllAds();

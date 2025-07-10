@@ -40,8 +40,7 @@ class WebcompatReporterService : public KeyedService,
     virtual std::optional<std::vector<std::string>> GetAdblockFilterListNames()
         const = 0;
     virtual std::optional<std::string> GetChannelName() const = 0;
-    virtual std::optional<std::vector<ComponentInfo>> GetComponentInfos()
-        const = 0;
+    virtual std::vector<ComponentInfo> GetComponentInfos() const = 0;
     virtual std::optional<std::string> GetCookiePolicy(
         const std::optional<std::string>& current_url) const = 0;
     virtual std::optional<std::string> GetScriptBlockingFlag(
@@ -63,7 +62,7 @@ class WebcompatReporterService : public KeyedService,
 
   void SetContactInfoSaveFlag(bool value) override;
 
-  void GetContactInfo(GetContactInfoCallback callback) override;
+  void GetBrowserParams(GetBrowserParamsCallback callback) override;
 
  private:
   friend class WebcompatReporterServiceUnitTest;

@@ -19,7 +19,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kLocale[] = "Locale";
 constexpr char kPrefPath[] = "PrefPath";
 constexpr char kManifestVersion[] = "ManifestVersion";
 constexpr char kResourceId[] = "ResourceId";
@@ -56,8 +55,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
   void FireAdsClientNotifiers() {
     ads_client_notifier_.NotifyDidInitializeAds();
 
-    ads_client_notifier_.NotifyLocaleDidChange(kLocale);
-
     ads_client_notifier_.NotifyPrefDidChange(kPrefPath);
 
     ads_client_notifier_.NotifyResourceComponentDidChange(kManifestVersion,
@@ -93,10 +90,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
   void ExpectAdsClientNotifierCallCount(int expected_call_count) {
     EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyDidInitializeAds())
-        .Times(expected_call_count);
-
-    EXPECT_CALL(ads_client_notifier_observer_mock_,
-                OnNotifyLocaleDidChange(kLocale))
         .Times(expected_call_count);
 
     EXPECT_CALL(ads_client_notifier_observer_mock_,

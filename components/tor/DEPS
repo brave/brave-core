@@ -1,6 +1,9 @@
 include_rules = [
   "+brave/net",
+  "+components/component_updater",
   "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/prefs",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",

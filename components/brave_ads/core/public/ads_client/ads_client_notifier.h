@@ -37,7 +37,6 @@ class AdsClientNotifier final : public AdsClientNotifierInterface {
   void RemoveObserver(AdsClientNotifierObserver* observer) override;
   void NotifyPendingObservers() override;
   void NotifyDidInitializeAds() override;
-  void NotifyLocaleDidChange(const std::string& locale) override;
   void NotifyPrefDidChange(const std::string& path) override;
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;

@@ -75,6 +75,7 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool isInitialSyncFeatureSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
 @property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
+@property(readonly) bool isInSyncGroup;
 
 - (instancetype)init NS_UNAVAILABLE;
 

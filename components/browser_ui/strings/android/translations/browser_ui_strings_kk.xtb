@@ -84,6 +84,7 @@
 <translation id="2028449514182362831">Қозғалыс датчиктерін қажет ететін функциялар істемейді.</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> қойындысына оралу үшін түртіңіз.</translation>
 <translation id="2079545284768500474">Қайтару</translation>
+<translation id="2080070583977670716">Қосымша параметрлер</translation>
 <translation id="2091887806945687916">Дыбыс</translation>
 <translation id="2096716221239095980">Барлық деректі жою</translation>
 <translation id="2102396546234652240">Сайттардың микрофоныңызды пайдалануына рұқсат бермеу</translation>
@@ -232,7 +233,6 @@
 <translation id="3779154269823594982">Құпия сөздерді өзгерту</translation>
 <translation id="3797520601150691162">Белгілі бір сайтқа қараңғы режим қолданылмайды.</translation>
 <translation id="3803367742635802571">Сіз кірген сайттар жобаланғандай жұмысын тоқтатуы мүмкін</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Телефон нөмірлері</translation>
 <translation id="3826050100957962900">Үшінші тараптың кіруі</translation>
 <translation id="3835233591525155343">Құрылғыны пайдалануыңыз</translation>
@@ -444,7 +444,6 @@
 <translation id="6452138246455930388">Ашық қойындыда баға төмендеді: <ph name="OLD_PRICE"/> &gt; <ph name="NEW_PRICE"/> (<ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/>)</translation>
 <translation id="6500423977866688905">Терезе тар болғанда, мобильді нұсқаны сұраңыз</translation>
 <translation id="6527303717912515753">Бөлісу</translation>
-<translation id="652937045869844725">Үшінші тарап cookie файлдарын рұқсат етіп көріңіз, бұл қорғаныстың аз екенін, бірақ сайт мүмкіндіктерінің жұмыс істеу ықтималдығы жоғары екенін білдіреді.</translation>
 <translation id="6530703012083415527">Қосылса, сайттар қалқымалы терезелер мен бағыттау функциясын пайдалана алады. Өшірілсе, пайдалана алмайды.</translation>
 <translation id="6540488083026747005">Сіз осы сайтта үшінші тарап cookie файлдарына рұқсат еттіңіз.</translation>
 <translation id="6545864417968258051">Bluetooth құрылғыларын іздеу</translation>
@@ -458,6 +457,7 @@
 <translation id="6612358246767739896">Қорғалған контент</translation>
 <translation id="662080504995468778">Қалу</translation>
 <translation id="6635327442719709864">Қосулы болса, сайттар тізбекті порттарды пайдалануды сұрай алады. Өшірулі болса, сайттар тізбекті порттарды пайдалана алмайды.</translation>
+<translation id="6678072580827808850">Қауіпсіздік тексерісін көру</translation>
 <translation id="6683865262523156564">Бұл сайт әрекетіңізді көре алатын топқа кіреді. Топты <ph name="RWS_OWNER"/> белгілеген.</translation>
 <translation id="6689172468748959065">Профиль фотосуреттері</translation>
 <translation id="6697925417670533197">Жүктеп алынып жатқандар</translation>
@@ -492,7 +492,6 @@
 <translation id="7141896414559753902">Сайттардың қалқымалы терезе көрсетуіне және бағыттауына тыйым салу (ұсынылады)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> КБ</translation>
 <translation id="7180611975245234373">Жаңарту</translation>
-<translation id="7180865173735832675">Реттеу</translation>
 <translation id="7188508872042490670">Құрылғыдағы сайт деректері</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> доменіндегі барлық сайт немесе негізгі экрандағы оның қолданбасы сақтаған барлық дерек пен cookie файлы жойылады.</translation>
 <translation id="7203150201908454328">Кеңейтілген</translation>

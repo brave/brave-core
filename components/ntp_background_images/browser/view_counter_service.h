@@ -211,8 +211,7 @@ class ViewCounterService : public KeyedService,
   void UpdateP3AValues();
 
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
-  const raw_ptr<NTPBackgroundImagesService> background_images_service_ =
-      nullptr;
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
   const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_ = nullptr;

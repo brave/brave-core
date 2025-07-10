@@ -22,6 +22,7 @@ import {
   useSetSelectedAccountMutation,
 } from '../../../../../common/slices/api.slice'
 import {
+  useSelectedADAAccountQuery,
   useSelectedETHAccountQuery,
   useSelectedSOLAccountQuery,
 } from '../../../../../common/slices/api.slice.extra'
@@ -88,12 +89,16 @@ export const ConnectionSection = (props: Props) => {
     useGetActiveOriginQuery()
   const { data: selectedSOLAccount } = useSelectedSOLAccountQuery()
   const { data: selectedETHAccount } = useSelectedETHAccountQuery()
+  const { data: selectedADAAccount } = useSelectedADAAccountQuery()
+
   const { data: networkForAccount } =
     useGetNetworkForAccountOnActiveOriginQuery({
       accountId:
         coin === BraveWallet.CoinType.ETH
           ? selectedETHAccount?.accountId
-          : selectedSOLAccount?.accountId,
+          : coin === BraveWallet.CoinType.SOL
+            ? selectedSOLAccount?.accountId
+            : selectedADAAccount?.accountId,
     })
   const { data: networks = [] } = useGetNetworksQuery()
   const firstNetworkByCoin = networks.filter(
@@ -109,7 +114,11 @@ export const ConnectionSection = (props: Props) => {
   // Computed
   const isChromeOrigin = activeOrigin?.originSpec.startsWith('chrome')
   const selectedAccount =
-    coin === BraveWallet.CoinType.SOL ? selectedSOLAccount : selectedETHAccount
+    coin === BraveWallet.CoinType.ETH
+      ? selectedETHAccount
+      : coin === BraveWallet.CoinType.SOL
+        ? selectedSOLAccount
+        : selectedADAAccount
 
   // Memos
   const isConnected = React.useMemo((): boolean => {

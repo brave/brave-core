@@ -1,17 +1,14 @@
 include_rules = [
+  "+components/component_updater",
+  "+components/content_settings",
+  "+components/keyed_service",
+  "+components/metrics",
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/variations",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
   "+crypto",
   "+ui/gfx",
 ]
-
-specific_include_rules = {
-  "ntp_background_images_service\.cc": [
-    "!brave/components/l10n/common/country_code_util.h",
-    "!brave/components/l10n/common/prefs.h",
-  ],
-  "ntp_background_images_service_unittest\.cc": [
-    "!brave/components/l10n/common/prefs.h",
-  ],
-}

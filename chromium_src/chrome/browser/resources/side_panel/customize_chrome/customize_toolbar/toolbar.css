@@ -10,6 +10,19 @@
  * #include=toolbar-chromium
  * #css_wrapper_metadata_end */
 
+#heading {
+  height: 60px;
+}
+
+sp-heading h2[slot="heading"] {
+  --leo-icon-color: var(--leo-gradient-icons-active);
+
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  flex-grow: 1;
+}
+
 /* except header*/
 .sp-card:not(:first-child) {
   margin: 0;
@@ -51,6 +64,11 @@
 }
 
 #resetToDefaultButton {
-  margin: var(--leo-spacing-xl);
+  margin: 0;
+  padding: var(--leo-spacing-xl);
   width: calc(100% - 2 * var(--leo-spacing-xl));
+  position: sticky;
+  /* Compensate #container's padding */
+  bottom: calc(-1 * var(--sp-body-padding));
+  background-color: var(--leo-color-container-background);
 }

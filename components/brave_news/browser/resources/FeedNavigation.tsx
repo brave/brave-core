@@ -147,12 +147,12 @@ export default function Sidebar() {
     .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
-    <Item id='all' name={getLocale('braveNewsForYouFeed')} />
-    <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
+    <Item id='all' name={getLocale(S.BRAVE_NEWS_FOR_YOU_FEED)} />
+    <Item id='following' name={getLocale(S.BRAVE_NEWS_FOLLOWING_FEED)} />
     <Section open>
       <summary>
         {subscribedChannels.length ? Marker : PlaceholderMarker}
-        {getLocale('braveNewsChannelsHeader')}
+        {getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}
         <AddButton size="tiny" onClick={(event) => {
           event.preventDefault()
           setCustomizePage('news')
@@ -164,14 +164,14 @@ export default function Sidebar() {
       {subscribedChannels.length > DEFAULT_SHOW_COUNT
         && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>
           {showingMoreChannels
-            ? getLocale('braveNewsShowLess')
-            : getLocale('braveNewsShowAll')}
+            ? getLocale(S.BRAVE_NEWS_SHOW_LESS)
+            : getLocale(S.BRAVE_NEWS_SHOW_ALL)}
         </CustomButton>}
     </Section>
     <Section open>
       <summary>
         {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
-        {getLocale('braveNewsPublishersHeading')}
+        {getLocale(S.BRAVE_NEWS_PUBLISHERS_HEADING)}
         <AddButton size="tiny" onClick={(event) => {
           event.preventDefault()
           setCustomizePage('popular')
@@ -183,8 +183,8 @@ export default function Sidebar() {
       {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT
         && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>
           {showingMorePublishers
-            ? getLocale('braveNewsShowLess')
-            : getLocale('braveNewsShowAll')}
+            ? getLocale(S.BRAVE_NEWS_SHOW_LESS)
+            : getLocale(S.BRAVE_NEWS_SHOW_ALL)}
         </CustomButton>}
     </Section>
   </Container>

@@ -1565,6 +1565,10 @@ provideStrings({
   braveWalletReviewShield: 'Review shield',
   braveWalletShielding: 'Shielding',
   braveWalletShieldZEC: 'Shield ZEC',
+  braveWalletShieldFunds: 'Shield funds',
+  braveWalletShieldingFundsAlertDescription:
+    'You are sending funds from your transparent account to your shielded'
+    + 'account.',
 
   // Page Not Found
   braveWalletPageNotFoundTitle:

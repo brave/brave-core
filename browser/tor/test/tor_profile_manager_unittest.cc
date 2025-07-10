@@ -9,7 +9,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -76,10 +75,6 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   // Check SafeBrowsing status
   EXPECT_FALSE(
       tor_profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kWebTorrentEnabled));
-#endif
 
   // Check translate.enabled for translate bubble.
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(

@@ -320,11 +320,6 @@ public class BrowserViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager
     )
 
-    // Add Regular tabs to Sync Chain
-    if Preferences.Chromium.syncOpenTabsEnabled.value {
-      tabManager.addRegularTabsToSyncChain()
-    }
-
     // Remove outdated Recently Closed tabs
     tabManager.deleteOutdatedRecentlyClosed()
 
@@ -382,13 +377,19 @@ public class BrowserViewController: UIViewController {
       }
     )
 
+    // Update the preference based on the underlying Chromium prefs
+    // Remove this when the pref is deleted: https://github.com/brave/brave-browser/issues/47487
+    Preferences.Chromium.syncEnabled.value = profileController.syncAPI.isInSyncGroup
+
     // Observer watching state change in sync chain
     syncServiceStateListener = profileController.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
-      // Observe Sync State in order to determine if the sync chain is deleted
-      // from another device - Clean local sync chain
-      if self.profileController.syncAPI.shouldLeaveSyncGroup {
-        self.profileController.syncAPI.leaveSyncGroup()
+      DispatchQueue.main.async {
+        // Observe Sync State in order to determine if the sync chain is deleted
+        // from another device - Clean local sync chain
+        if self.profileController.syncAPI.shouldLeaveSyncGroup {
+          self.profileController.syncAPI.leaveSyncGroup()
+        }
       }
     }
 
@@ -886,6 +887,13 @@ public class BrowserViewController: UIViewController {
 
     // Adding Screenshot Service Delegate to browser to fetch full screen webview screenshots
     currentScene?.screenshotService?.delegate = self
+
+    // Add Regular tabs to Sync Chain
+    executeAfterSetup {
+      if Preferences.Chromium.syncOpenTabsEnabled.value {
+        self.tabManager.addRegularTabsToSyncChain()
+      }
+    }
 
     self.setupInteractions()
   }
@@ -2560,6 +2568,16 @@ extension BrowserViewController: SearchViewControllerDelegate {
     didSelectOpenTab tabInfo: (id: UUID?, url: URL)
   ) {
     switchToTabOrOpen(id: tabInfo.id, url: tabInfo.url)
+  }
+
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSelectPlaylistItem item: PlaylistItem
+  ) {
+    guard let tab = tabManager.selectedTab else { return }
+    popToBVC(isAnimated: true) { [weak self] in
+      self?.openPlaylist(tab: tab, item: PlaylistInfo(item: item))
+    }
   }
 
   func searchViewController(

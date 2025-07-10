@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_NEW_TAB_PAGE_INITIALIZER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_NEW_TAB_PAGE_INITIALIZER_H_
 
+#include <string_view>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 
@@ -14,9 +16,18 @@ class WebUI;
 class WebUIDataSource;
 }  // namespace content
 
+namespace regional_capabilities {
+class RegionalCapabilitiesService;
+}
+
 class Profile;
 
 namespace brave_new_tab_page_refresh {
+
+// Returns the hostname of the default search engine used on the NTP based upon
+// the user's region.
+std::string_view GetSearchDefaultHost(
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities);
 
 // Responsible for initialization of the Brave NTP WebUI, including strings,
 // resources, data sources, and CSP.

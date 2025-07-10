@@ -45,6 +45,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   if (profile_prefs_) {
     language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
     pref_change_registrar_.Init(profile_prefs_);
+    pref_change_registrar_.Add(
+        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
     if (local_state) {
       ai_chat_metrics_ =
           std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
@@ -82,10 +86,6 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     new_tab_metrics_ = std::make_unique<ProfileNewTabMetrics>(profile_prefs_);
     pref_change_registrar_.Add(
         prefs::kSearchSuggestEnabled,
-        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
-                            base::Unretained(this)));
-    pref_change_registrar_.Add(
-        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
   }

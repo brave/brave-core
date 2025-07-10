@@ -55,9 +55,15 @@ public class AppState {
           Migration.migrateLostTabsActiveWindow()
 
           let useChromiumWebViews = FeatureList.kUseChromiumWebViews.enabled
+          var purgeSessionData =
+            useChromiumWebViews && !Preferences.Chromium.invalidatedRestorationOnUpgrade.value
           if let value = Preferences.Chromium.lastWebViewsFlagState.value,
             value != useChromiumWebViews
           {
+            purgeSessionData = true
+          }
+          if purgeSessionData {
+            Preferences.Chromium.invalidatedRestorationOnUpgrade.value = true
             SessionTab.purgeSessionData()
           }
 

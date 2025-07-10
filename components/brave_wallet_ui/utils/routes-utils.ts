@@ -303,6 +303,7 @@ export const makeDepositFundsAccountRoute = (assetId: string) => {
 export const makeSendRoute = (
   asset: BraveWallet.BlockchainToken,
   account?: BraveWallet.AccountInfo,
+  recipient?: string,
 ) => {
   const isNftTab = asset.isErc721 || asset.isNft
   const baseQueryParams = {
@@ -318,10 +319,14 @@ export const makeSendRoute = (
     ? { ...accountIdQueryParams, tokenId: asset.tokenId }
     : accountIdQueryParams
 
+  const recipientQueryParams = recipient
+    ? { ...tokenIdQueryParams, recipient: recipient }
+    : tokenIdQueryParams
+
   const params = new URLSearchParams(
     asset.isShielded
-      ? { ...tokenIdQueryParams, isShielded: 'true' }
-      : tokenIdQueryParams,
+      ? { ...recipientQueryParams, isShielded: 'true' }
+      : recipientQueryParams,
   )
 
   if (isNftTab) {

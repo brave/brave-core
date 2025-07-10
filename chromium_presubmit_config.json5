@@ -81,8 +81,8 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
-      "android/java/res/drawable/.*\\.xml",
       "android/java/res/values/.*\\.xml",
+      ".*/java/res/drawable/.*\\.xml",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
@@ -185,6 +185,7 @@
       "android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.java",
       "android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabRootUiCoordinator.java",
       "android/java/org/chromium/chrome/browser/firstrun/WelcomeOnboardingActivity.java",
+      "android/java/org/chromium/chrome/browser/infobar/BraveInfoBarContainerView.java",
       "android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
       "android/java/org/chromium/chrome/browser/settings/BraveNewsPreferencesDetails.java",
       "android/java/org/chromium/chrome/browser/settings/BraveNewsPreferencesV2.java",

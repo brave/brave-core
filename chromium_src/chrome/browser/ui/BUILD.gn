@@ -3,14 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/browser/updater/buildflags.gni")
 import("//build/config/ui.gni")
 
 group("ui") {
   deps = [ "//brave/components/brave_vpn/common/buildflags" ]
 
   if (is_mac) {
-    deps += [ "//brave/browser:mac_features" ]
+    deps += [ "//brave/browser/updater:buildflags" ]
+  }
+
+  if (enable_omaha4) {
+    deps += [ "//brave/browser/updater:features" ]
   }
 
   if (toolkit_views) {
@@ -20,9 +24,5 @@ group("ui") {
       "//brave/components/ai_chat/core/common",
       "//brave/components/sidebar/browser",
     ]
-  }
-
-  if (enable_brave_webtorrent) {
-    deps += [ "//brave/components/brave_webtorrent/browser" ]
   }
 }

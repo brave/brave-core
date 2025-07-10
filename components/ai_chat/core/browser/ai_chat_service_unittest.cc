@@ -26,6 +26,7 @@
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
@@ -46,6 +47,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -174,7 +176,6 @@ class MockAIChatDatabase : public AIChatDatabase {
               AddConversationEntry,
               (std::string_view,
                mojom::ConversationTurnPtr,
-               std::optional<std::string_view>,
                std::optional<std::string>),
               (override));
 
@@ -188,6 +189,11 @@ class MockAIChatDatabase : public AIChatDatabase {
   MOCK_METHOD(bool,
               UpdateConversationTitle,
               (std::string_view, std::string_view),
+              (override));
+
+  MOCK_METHOD(bool,
+              UpdateConversationModelKey,
+              (std::string_view, std::optional<std::string>),
               (override));
 
   MOCK_METHOD(bool,
@@ -219,7 +225,8 @@ class MockAIChatDatabase : public AIChatDatabase {
 class AIChatServiceUnitTest : public testing::Test,
                               public ::testing::WithParamInterface<bool> {
  public:
-  AIChatServiceUnitTest() {
+  AIChatServiceUnitTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     scoped_feature_list_.InitWithFeatureState(features::kAIChatHistory,
                                               GetParam());
   }
@@ -326,6 +333,14 @@ class AIChatServiceUnitTest : public testing::Test,
     task_environment_.RunUntilIdle();
   }
 
+  // Conversations are unloaded after a delay, so we advance the clock by that
+  // delay and let the task environment run until idle to give the deletion
+  // handlers a chance to run.
+  void WaitForConversationUnload() {
+    task_environment_.AdvanceClock(base::Seconds(5));
+    task_environment_.RunUntilIdle();
+  }
+
   bool IsAIChatHistoryEnabled() { return GetParam(); }
 
   void EmulateUserOptedIn() { ::ai_chat::SetUserOptedIn(&prefs_, true); }
@@ -414,17 +429,20 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
   // Connect a client then disconnect
   auto client1 = CreateConversationClient(conversation_handler1);
   DisconnectConversationClient(client1.get());
+  WaitForConversationUnload();
   // Only 1 should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
 
   // Connect a client then disconnect
   auto client2 = CreateConversationClient(conversation_handler2);
   DisconnectConversationClient(client2.get());
+  WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 
   // Connect a client then disconnect for temporary conversation
   auto temp_client = CreateConversationClient(temporary_conversation);
   DisconnectConversationClient(temp_client.get());
+  WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
   testing::Mock::VerifyAndClearExpectations(client_.get());
@@ -446,11 +464,13 @@ TEST_P(AIChatServiceUnitTest,
 
   // Function to call to finish generating the response.
   base::OnceClosure resolve;
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](bool send_page_contents, const std::string& page_contents,
+          [&resolve](const bool& is_video, const std::string& page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
+                     const std::vector<base::WeakPtr<Tool>>& tools,
+                     std::optional<std::string_view> preferred_tool_name,
                      base::RepeatingCallback<void(
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(
@@ -476,6 +496,9 @@ TEST_P(AIChatServiceUnitTest,
       ai_chat::mojom::ConversationTurn::New());
   EXPECT_TRUE(conversation->IsRequestInProgress());
 
+  // Check nothing has a pending unload.
+  WaitForConversationUnload();
+
   // Conversation should not be unloaded
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 
@@ -484,6 +507,8 @@ TEST_P(AIChatServiceUnitTest,
 
   // Let the engine complete the request
   std::move(resolve).Run();
+
+  WaitForConversationUnload();
 
   // Conversation should be unloaded
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
@@ -516,6 +541,9 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 
   ExpectConversationsSize(FROM_HERE, 3u);
 
+  // Make sure nothing is queued to unload.
+  WaitForConversationUnload();
+
   // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 3u);
 
@@ -525,6 +553,8 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   auto temp_client = CreateConversationClient(temporary_conversation);
 
   DisconnectConversationClient(client1.get());
+  WaitForConversationUnload();
+
   // Only 1 should be deleted, whether we preserve history or not (is preserved
   // in the database).
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
@@ -533,12 +563,14 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 
   // Connect a client then disconnect
   DisconnectConversationClient(client2.get());
+  WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 3u : 1u);
 
   // Disconnect temporary conversation client
   DisconnectConversationClient(temp_client.get());
+  WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
@@ -568,6 +600,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   auto client1 =
       CreateConversationClient(conversation_with_content_no_messages);
   DisconnectConversationClient(client1.get());
+  WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
   ExpectConversationsSize(FROM_HERE, 0u);
 
@@ -581,6 +614,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
   auto client2 = CreateConversationClient(conversation_with_content);
   DisconnectConversationClient(client2.get());
+  WaitForConversationUnload();
   // Disconnecting all clients should keep the handler in memory until
   // the content is destroyed.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
@@ -602,6 +636,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   auto temp_client =
       CreateConversationClient(temporary_conversation_with_content);
   DisconnectConversationClient(temp_client.get());
+  WaitForConversationUnload();
   // Handler would still be in memory until the content is destroyed unless
   // it is a temporary chat.
   // Conversation would be unloaded when there are no live associated content.
@@ -612,6 +647,8 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   conversation_with_content->associated_content_manager()->AddContent(
       nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
 
+  WaitForConversationUnload();
+
   if (IsAIChatHistoryEnabled()) {
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
     ExpectConversationsSize(FROM_HERE, 1u);
@@ -619,6 +656,37 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
     ExpectConversationsSize(FROM_HERE, 0u);
   }
+}
+
+TEST_P(AIChatServiceUnitTest, ConversationLifecycle_IsNotDeletedImmediately) {
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+  DisconnectConversationClient(client.get());
+
+  // Should not have been deleted yet
+  ExpectConversationsSize(FROM_HERE, 1u);
+
+  WaitForConversationUnload();
+
+  // Should have been deleted after the delay.
+  ExpectConversationsSize(FROM_HERE, 0u);
+}
+
+TEST_P(AIChatServiceUnitTest, ConversationLifecycle_DeleteCanBeCancelled) {
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+  DisconnectConversationClient(client.get());
+
+  // Should not have been deleted yet
+  ExpectConversationsSize(FROM_HERE, 1u);
+
+  // Reconnect a client.
+  client = CreateConversationClient(conversation);
+
+  WaitForConversationUnload();
+
+  // Should not have been deleted after the delay as a client connected.
+  ExpectConversationsSize(FROM_HERE, 1u);
 }
 
 TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
@@ -681,6 +749,8 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
   std::string conversation2_uuid = conversation2->get_conversation_uuid();
   auto client1 = CreateConversationClient(conversation2);
   DisconnectConversationClient(client1.get());
+  WaitForConversationUnload();
+
   ConversationHandler* conversation_with_content3 =
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr());
@@ -726,6 +796,7 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
     conversation_handler->SetChatHistoryForTesting(CloneHistory(history));
     ExpectConversationsSize(FROM_HERE, 1);
     DisconnectConversationClient(client.get());
+    WaitForConversationUnload();
   }
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
 
@@ -782,8 +853,8 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
 
   // Disable storage
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
-  // Wait for OnConversationListChanged which indicates data has been removed
-  task_environment_.RunUntilIdle();
+
+  WaitForConversationUnload();
 
   // Conversation with no client was erased from memory
   ExpectConversationsSize(FROM_HERE, 2);
@@ -791,6 +862,9 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   // Disconnecting conversations should erase them fom memory
   DisconnectConversationClient(client1.get());
   DisconnectConversationClient(client3.get());
+
+  WaitForConversationUnload();
+
   ExpectConversationsSize(FROM_HERE, 0);
 
   // Restart service and verify still doesn't load from storage
@@ -1264,9 +1338,10 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
 
   // Set up expectations - no database calls should be made
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(0);
-  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, AddOrUpdateAssociatedContent(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTitle(_, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTokenInfo(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversationEntry(_)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversation(_)).Times(0);
@@ -1306,7 +1381,8 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   ASSERT_FALSE(permanent_conversation->GetIsTemporary());
   permanent_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(1);
-  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(1);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _)).Times(1);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(1);
   DisconnectConversationClient(client2.get());
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
 }

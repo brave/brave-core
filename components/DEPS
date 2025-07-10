@@ -1,8 +1,12 @@
 include_rules = [
   # Do not add chrome/ or brave/ as an allowed include.
 
+  # Individual components must explicitly declare their dependencies
+  # on other components. Cycles in the dependency graph within
+  # components/ are not allowed.
+  "-components",
+
   # TODO(bridiver) - narrow this down
-  "+components",
   "+net",
   "+mojo/public",
   "+ui/base",
@@ -13,13 +17,9 @@ include_rules = [
 
   # In most cases you want l10n_util - see comments in the source
   "-brave/components/l10n",
-]
 
-# Work in progress: https://github.com/brave/brave-browser/issues/46907
-# This list disallows implicitly depend on some chromium components. Eventually
-# would removed and "+components" above would be changed to "-components"
-include_rules += [
-  "-components/grit",
+  # This is equivalent to chrome/test/base
+  "-brave/test/base",
 ]
 
 specific_include_rules = {

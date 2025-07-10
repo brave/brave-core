@@ -68,12 +68,30 @@ class PasswordsImportExportUtility {
         }
       }
 
-      let passwordsFileURL = zipFileExtractedURL.appending(path: "Passwords")
-        .appendingPathExtension(
-          "csv"
-        )
+      // File names in the zip file are localized, so we iterate all csv files
+      // and try to import
+      let contents = try? await AsyncFileManager.default.contentsOfDirectory(
+        at: zipFileExtractedURL,
+        includingPropertiesForKeys: nil
+      )
+      let potentialPasswordsFiles =
+        contents?.filter { $0.pathExtension.lowercased() == "csv" } ?? []
 
-      return await doImport(passwordsFileURL, passwordsFileURL.path)
+      // If there's no files to import, return nil
+      // as it is fine to have not export passwords in the zip file
+      if potentialPasswordsFiles.isEmpty {
+        return nil
+      }
+
+      for passwordsFileURL in potentialPasswordsFiles {
+        if let result = await doImport(passwordsFileURL, passwordsFileURL.path),
+          result.status != .badFormat
+        {
+          return result
+        }
+      }
+
+      return nil
     }
 
     return await doImport(path, path.path)

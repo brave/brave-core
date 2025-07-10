@@ -35,8 +35,8 @@
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -73,7 +73,9 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -854,16 +856,6 @@ void BraveBrowserView::OnThemeChanged() {
   }
 }
 
-TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser())) {
-    return BrowserView::GetTabSearchBubbleHost();
-  }
-
-  return vertical_tab_strip_widget_delegate_view_
-      ->vertical_tab_strip_region_view()
-      ->GetTabSearchBubbleHost();
-}
-
 void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
@@ -888,18 +880,44 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   UpdateReaderModeToolbar();
 #endif
 
+  // Some managers need to consider tab's active state with web content's
+  // visibility.
   if (old_contents) {
-    auto* manager =
+    auto* permission_manager =
         permissions::PermissionRequestManager::FromWebContents(old_contents);
-    CHECK(manager);
-    manager->OnTabActiveStateChanged(false);
+    CHECK(permission_manager);
+    permission_manager->OnTabActiveStateChanged(false);
+
+    // web/tab modal dialog manger can get tab activation state fromm their
+    // delegates.
+    auto* web_modal_dialog_manager =
+        web_modal::WebContentsModalDialogManager::FromWebContents(old_contents);
+    CHECK(web_modal_dialog_manager);
+    web_modal_dialog_manager->OnTabActiveStateChanged();
+
+    auto* tab_modal_dialog_manager =
+        javascript_dialogs::TabModalDialogManager::FromWebContents(
+            old_contents);
+    CHECK(tab_modal_dialog_manager);
+    tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
 
   if (new_contents) {
-    auto* manager =
+    auto* permission_manager =
         permissions::PermissionRequestManager::FromWebContents(new_contents);
-    CHECK(manager);
-    manager->OnTabActiveStateChanged(true);
+    CHECK(permission_manager);
+    permission_manager->OnTabActiveStateChanged(true);
+
+    auto* web_modal_dialog_manager =
+        web_modal::WebContentsModalDialogManager::FromWebContents(new_contents);
+    CHECK(web_modal_dialog_manager);
+    web_modal_dialog_manager->OnTabActiveStateChanged();
+
+    auto* tab_modal_dialog_manager =
+        javascript_dialogs::TabModalDialogManager::FromWebContents(
+            new_contents);
+    CHECK(tab_modal_dialog_manager);
+    tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
 }
 

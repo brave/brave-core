@@ -116,11 +116,6 @@ void TextClassificationResource::Unload() {
   text_processing_pipeline_.reset();
 }
 
-void TextClassificationResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  MaybeLoad();
-}
-
 void TextClassificationResource::OnNotifyPrefDidChange(
     const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||

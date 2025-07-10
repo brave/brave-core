@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -56,6 +57,7 @@ source_set("command_ids") {
 brave_grit("brave_generated_resources_grit") {
   defines = [
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_containers=$enable_containers",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_request_otr=$enable_request_otr",
@@ -66,6 +68,8 @@ brave_grit("brave_generated_resources_grit") {
   output_dir = "$root_gen_dir/brave"
   outputs = [
     "grit/brave_generated_resources.h",
+    "grit/brave_generated_resources_webui_strings.h",
+    "grit/brave_generated_resources_webui_strings.ts",
 
     # This is needed for the includes and not the localized messages
     "brave_generated_resources.pak",
@@ -101,6 +105,7 @@ source_set("browser_tests") {
       "//chrome/test:test_support_ui",
       "//components/component_updater",
       "//components/embedder_support",
+      "//services/network/public/cpp",
       "//testing/gtest",
     ]
   }
@@ -122,6 +127,7 @@ source_set("unit_tests") {
     "//chrome/browser",
     "//chrome/browser/devtools",
     "//chrome/browser/enterprise/connectors/analysis:features",
+    "//chrome/browser/policy:policy_util",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/common/privacy_budget",
@@ -159,7 +165,6 @@ source_set("unit_tests") {
     "//components/sync/base:features",
     "//components/user_education/common",
     "//components/webapps/browser",
-    "//components/webui/chrome_urls",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",

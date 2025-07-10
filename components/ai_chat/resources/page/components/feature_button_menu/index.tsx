@@ -14,6 +14,7 @@ import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { getModelIcon } from '../../../common/constants'
 import styles from './style.module.scss'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 
@@ -68,6 +69,9 @@ export default function FeatureMenu(props: Props) {
             onClick={() => conversationContext.setCurrentModel(model)}
           >
             <div className={styles.menuItemWithIcon}>
+              <div className={styles.modelIcon} data-key={model.key}>
+                <Icon name={getModelIcon(model.key)} />
+              </div>
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
                 <p className={styles.modelSubtitle}>

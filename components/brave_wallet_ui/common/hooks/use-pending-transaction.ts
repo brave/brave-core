@@ -30,6 +30,7 @@ import {
   isZCashTransaction,
   isBitcoinTransaction,
   isEIP1559Transaction,
+  isCardanoTransaction,
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -681,6 +682,7 @@ export const usePendingTransactions = () => {
     insufficientFundsForGasError,
     isZCashTransaction: isZCashTransaction(transactionInfo),
     isBitcoinTransaction: isBitcoinTransaction(transactionInfo),
+    isCardanoTransaction: isCardanoTransaction(transactionInfo),
     isAccountSyncing,
     isShieldingFunds,
   }

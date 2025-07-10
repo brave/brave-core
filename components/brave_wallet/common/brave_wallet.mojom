@@ -156,6 +156,15 @@ union ProviderErrorUnion {
   CardanoProviderError cardano_provider_error;
 };
 
+// Result struct for some EthereumProvider's methods.
+struct EthereumProviderResponse {
+  mojo_base.mojom.Value id;
+  mojo_base.mojom.Value formed_response;
+  bool reject;
+  string first_allowed_account;
+  bool update_bind_js_properties;
+};
+
 // There is one EthereumProvider per renderer, the renderer communicates
 // with this for window.ethereum usage.
 interface EthereumProvider {
@@ -163,12 +172,12 @@ interface EthereumProvider {
   Init(pending_remote<EventsListener> events_listener);
 
   // Corresponds to window.ethereum.request
-  Request(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(mojo_base.mojom.Value input) => (EthereumProviderResponse response);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.ListValue params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  SendAsync(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Enable() => (EthereumProviderResponse response);
+  Send(string method, mojo_base.mojom.ListValue params) => ( EthereumProviderResponse response);
+  SendAsync(mojo_base.mojom.Value input) => (EthereumProviderResponse response);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -189,7 +198,7 @@ struct CardanoProviderPagination {
 
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (bool success);
+  Enable() => (string? error_message);
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
@@ -1018,6 +1027,7 @@ struct AllAccountsInfo {
   AccountInfo? selected_account;
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
+  AccountInfo? ada_dapp_selected_account;
 };
 
 struct WalletInfo {
@@ -1033,6 +1043,7 @@ struct WalletInfo {
   bool is_z_cash_shielded_transactions_enabled;
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
+  bool is_cardano_dapp_support_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1739,9 +1750,7 @@ interface JsonRpcService {
   Request(string chain_id, string json_payload,
           bool auto_retry_on_network_change,
           mojo_base.mojom.Value id, CoinType coin) =>
-      (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,
-        bool reject, string first_allowed_account,
-        bool update_bind_js_properties);
+      (EthereumProviderResponse response);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);

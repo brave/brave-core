@@ -416,8 +416,8 @@ void JsonRpcService::OnRequestResult(RequestCallback callback,
   base::Value formed_response = GetProviderRequestReturnFromEthJsonResponse(
       api_request_result.response_code(), api_request_result.value_body(),
       &reject);
-  std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
-                          false);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), std::move(formed_response), reject, "", false));
 }
 
 void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
@@ -784,20 +784,20 @@ void JsonRpcService::OnGetFilStateSearchMsgLimited(
     GetFilStateSearchMsgLimitedCallback callback,
     const std::string& cid,
     APIRequestResult api_request_result) {
-  int64_t exit_code = -1;
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        exit_code, mojom::FilecoinProviderError::kInternalError,
+        std::nullopt, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  if (!ParseFilStateSearchMsgLimited(api_request_result.value_body(), cid,
-                                     &exit_code)) {
+  std::optional<int64_t> exit_code =
+      ParseFilStateSearchMsgLimited(api_request_result.value_body(), cid);
+  if (!exit_code) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
         api_request_result.value_body(), &error, &error_message);
-    std::move(callback).Run(exit_code, error, error_message);
+    std::move(callback).Run(std::nullopt, error, error_message);
     return;
   }
 
@@ -997,17 +997,19 @@ void JsonRpcService::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  uint64_t height = 0;
-  if (!ParseFilGetChainHead(api_request_result.value_body(), &height)) {
+
+  std::optional<uint64_t> height =
+      ParseFilGetChainHead(api_request_result.value_body());
+  if (!height) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
         api_request_result.value_body(), &error, &error_message);
-    std::move(callback).Run(height, error, error_message);
+    std::move(callback).Run(0, error, error_message);
     return;
   }
 
-  std::move(callback).Run(height, mojom::FilecoinProviderError::kSuccess, "");
+  std::move(callback).Run(*height, mojom::FilecoinProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetFilTransactionCount(const std::string& chain_id,
@@ -1910,11 +1912,10 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
     return;
   }
 
-  std::string gas_fee_cap;
-  int64_t gas_limit = 0;
-  std::string gas_premium;
-  if (!ParseFilEstimateGas(api_request_result.value_body(), &gas_premium,
-                           &gas_fee_cap, &gas_limit)) {
+  std::optional<ParseFilEstimateGasResult> parse_result =
+      ParseFilEstimateGas(api_request_result.value_body());
+
+  if (!parse_result) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
@@ -1923,7 +1924,9 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
     return;
   }
 
-  std::move(callback).Run(gas_premium, gas_fee_cap, gas_limit,
+  std::move(callback).Run(std::move(parse_result->gas_premium),
+                          std::move(parse_result->gas_fee_cap),
+                          parse_result->gas_limit,
                           mojom::FilecoinProviderError::kSuccess, "");
 }
 
@@ -2535,14 +2538,15 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   bool reject = false;
   if (approved) {
     reject = false;
-    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(), reject, "", false));
   } else {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
   }
 }
 
@@ -2557,15 +2561,16 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
         l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
                                   base::ASCIIToUTF16(chain_id)));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return false;
   }
 
   // Already on the chain
   if (GetChainIdSync(mojom::CoinType::ETH, origin) == chain_id) {
     reject = false;
-    std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), base::Value(), reject, "", false));
     return false;
   }
 
@@ -2575,8 +2580,8 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     reject = true;
-    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                            "", false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
     return false;
   }
 
@@ -2816,8 +2821,8 @@ void JsonRpcService::Reset() {
     auto callback = std::move(pending_request.second.switch_chain_callback);
     base::Value id = std::move(pending_request.second.switch_chain_id);
 
-    std::move(callback).Run(std::move(id), formed_response.Clone(), reject, "",
-                            false);
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), formed_response.Clone(), reject, "", false));
   }
   pending_switch_chain_requests_.clear();
 }
@@ -3080,8 +3085,9 @@ void JsonRpcService::OnSendFilecoinTransaction(
     return;
   }
 
-  std::string cid;
-  if (!ParseSendFilecoinTransaction(api_request_result.value_body(), &cid)) {
+  std::optional<std::string> cid =
+      ParseSendFilecoinTransaction(api_request_result.value_body());
+  if (!cid) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
@@ -3090,7 +3096,7 @@ void JsonRpcService::OnSendFilecoinTransaction(
     return;
   }
 
-  std::move(callback).Run(cid, mojom::FilecoinProviderError::kSuccess, "");
+  std::move(callback).Run(*cid, mojom::FilecoinProviderError::kSuccess, "");
 }
 
 void JsonRpcService::SendSolanaTransaction(

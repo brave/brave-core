@@ -13,7 +13,6 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/json/json_reader.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
@@ -24,10 +23,6 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_p3a.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/sync_preferences/pref_service_mock_factory.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/version_info/channel.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -38,7 +33,6 @@
 using ::testing::Eq;
 using ::testing::NiceMock;
 using ::testing::Optional;
-using version_info::Channel;
 
 namespace {
 

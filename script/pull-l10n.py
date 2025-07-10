@@ -29,6 +29,7 @@ def parse_args():
                         nargs='?',
                         default='Release',
                         const='Release')
+    parser.add_argument('--lang', nargs=1, help='only download this language')
     parser.add_argument('--debug', dest='debug', action='store_true',
                         help='dump downloaded content for the current ' \
                              'language to the CrowdinCurrent.txt file ' \
@@ -53,13 +54,17 @@ def main():
         print(f'Skipping {filename}.grd - no translations needed.')
         return
 
+    lang = args.lang[0] if args.lang else None
+    if lang:
+        print(f'Downloading only for language = {lang}')
+
     should_use_service_for_file = should_use_crowdin_for_file(
         source_string_path, filename)
 
     if should_use_service_for_file:
         print(f'Crowdin: {source_string_path}')
         pull_source_file_from_crowdin(channel, source_string_path, filename,
-                                      dump_path)
+                                      lang, dump_path)
     else:
         print('Local: ', source_string_path)
         override_path = get_override_file_path(source_string_path)
@@ -68,13 +73,13 @@ def main():
             print(f'Crowdin override: {override_path}')
             override_filename = os.path.basename(override_path).split('.')[0]
             pull_source_file_from_crowdin(channel, override_path,
-                                          override_filename, dump_path)
+                                          override_filename, lang, dump_path)
         else:
             print('No Crowdin override.')
 
-        update_xtbs_locally(source_string_path, BRAVE_SOURCE_ROOT)
+        update_xtbs_locally(source_string_path, BRAVE_SOURCE_ROOT, lang)
         if override_exists:
-            combine_override_xtb_into_original(source_string_path)
+            combine_override_xtb_into_original(source_string_path, lang)
 
 
 if __name__ == '__main__':

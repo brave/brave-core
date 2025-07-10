@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/skus/browser/pref_names.h"

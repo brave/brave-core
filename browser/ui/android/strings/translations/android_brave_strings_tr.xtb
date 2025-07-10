@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">En üst seviye yönlendirme izleme URL'lerini atlamak için desteği etkinleştir</translation>
 <translation id="94154759592465111">Komut Dizilerini Engelle</translation>
 <translation id="7714773920987474116">JavaScript'i engeller (sitelerde bozulma olabilir)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">YouTube'da tavsiye edilen içerikleri engelle</translation>
 <translation id="1005372663692637999">youtube.com adresinde sonraki ve bitiş kartı öğelerini engeller.</translation>
 <translation id="5152595963250646670">Youtube'da dikkat dağıtıcı öğeleri engelle</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Popüler önerileri göster</translation>
 <translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
 <translation id="919715748352669592">OpenSearch özelliklerine uygun web siteleri otomatik olarak indeksler.</translation>
-<translation id="412411722208944922">Hızlı arama motorları</translation>
-<translation id="2836969042340015500">Hızlı Arama Motorları</translation>
-<translation id="9120455214794270250">Hızlı arama çubuğunu göster</translation>
-<translation id="1052991798173010693">Şu anda kullanılan arama motorları</translation>
-<translation id="335303688425891752">Sıralamayı değiştirmek için basılı tutun</translation>
 <translation id="9148058034647219655">Çıkış</translation>
 <translation id="8047754398610073499">Çerez onay bildirimlerini engelle</translation>
 <translation id="2621893359845808115">Sitelerinde çerezleri kabul etmenizi / reddetmenizi isteyen web site açılır pencerelerini engeller</translation>
@@ -678,6 +672,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3952797765659730604">Özel anahtar dize dosyanızı veya JSON'unuzu girin, yapıştırın ya da içe aktarın.</translation>
 <translation id="569068482611873351">İçe aktar...</translation>
 <translation id="4522570452068850558">Detaylar</translation>
+<translation id="3114681061018999547">Kalkanla Gizleme</translation>
 <translation id="3784455785234192852">Kilit</translation>
 <translation id="4412698727486357573">Yardım merkezi</translation>
 <translation id="8239147115686034860">Brave Cüzdan'ı otomatik olarak kilitle</translation>
@@ -809,18 +804,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2199215899212542417">FONKSİYON TİPİ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Veri yok</translation>
 <translation id="1105525362447173583">Solana Dapp İşlemini İmzala</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>, <ph name="CRYPTO_VALUE"/><ph name="ASSET"/> (<ph name="FIAT_VALUE"/>$) gönderdi - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/><ph name="ASSET"/> #<ph name="ASSET_ID"/> gönderdi - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> onaylı <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Onaylı Sınırsız <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> takası - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Onaylanmadı</translation>
-<translation id="8034530868111548216">Onaylandı</translation>
-<translation id="6015436276085482001">Rededildi</translation>
-<translation id="6666273175654835609">Gönderildi</translation>
-<translation id="2331676293859649642">Onaylandı</translation>
-<translation id="8214232307424031138">İmzalandı</translation>
-<translation id="1165039591588034296">Hata</translation>
 <translation id="2561824823738097741">En hızlı web tarayıcısını kullanıyor musunuz?</translation>
 <translation id="2065971949051836200">3 kat daha hızlı internet zaten telefonunuzda. Tüm web gezintileriniz için Brave'i kullanın.</translation>
 <translation id="2888278614497184977">Brave = 3 kat hızlı web gezintisi</translation>
@@ -1239,4 +1222,5 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6859935199732075666">Güvenli Gezinti hatalarını göster</translation>
 <translation id="2735247450315842119">Gizli sekmelerde ekran görüntülerine izin ver</translation>
 <translation id="8420414929552321089">İzin verilirse, gizli sekmeler birden fazla uygulama açıkken de görünür olacaktır.</translation>
+<translation id="7956713633345437162">Mobil yer işaretleri</translation>
 </translationbundle>

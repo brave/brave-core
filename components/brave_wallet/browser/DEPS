@@ -1,6 +1,19 @@
 include_rules = [
+  "+brave/components/constants",
+  "+brave/components/version_info",
   "+brave/net/base",
+  "+components/cbor",
+  "+components/component_updater",
+  "+components/content_settings",
+  "+components/country_codes",
   "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/permissions",
+  "+components/pref_registry",
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/update_client",
+  "+components/value_store",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
@@ -12,8 +25,6 @@ include_rules = [
   "+third_party/blink/public/common",
   "+third_party/boringssl",
   "+third_party/re2",
-  "+brave/components/constants",
-  "+brave/components/version_info",
   "+tools/json_schema_compiler",
   "+ui/base",
 ]
@@ -21,5 +32,5 @@ include_rules = [
 specific_include_rules = {
   "bip39\.cc": [
     "+brave/third_party/bip39wally-core-native/include",
-  ]
+  ],
 }

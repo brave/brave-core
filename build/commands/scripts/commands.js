@@ -270,10 +270,6 @@ program
   )
   .option('--disable_pdfjs_extension', 'disable loading the PDFJS extension')
   .option(
-    '--disable_webtorrent_extension',
-    'disable loading the WebTorrent extension',
-  )
-  .option(
     '--ui_mode <ui_mode>',
     'which built-in ui appearance mode to use',
     /^(dark|light)$/i,
@@ -312,6 +308,7 @@ program
     '--grd_path <grd_path>',
     `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`,
   )
+  .option('--lang <language>', 'Only download content for this language')
   .option(
     '--debug',
     `Dumps downloaded content for one language into CrowdinCurrent.txt file in the temp directory.`,
@@ -359,7 +356,12 @@ program
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
-  .option('--output <output>', 'set test output (results) file path')
+  .option(
+    '--output_xml',
+    'indicates if test results xml output file(s) should be generated. '
+      + '<suite>.txt file will contain the list of xml files with results. '
+      + 'All output files are generated in the src directory',
+  )
   .option('--disable_brave_extension', 'disable loading the Brave extension')
   .option(
     '--single_process',

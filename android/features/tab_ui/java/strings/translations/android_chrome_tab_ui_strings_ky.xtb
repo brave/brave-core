@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ky">
-<translation id="1045448422538531528">Топко кошуу</translation>
+<translation id="1036348656032585052">Өчүрүү</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> апта мурун түзүлдү}other{<ph name="NUM_WEEKS_MANY"/> апта мурун түзүлдү}}</translation>
 <translation id="1063300264396686489">Башка түзмөктөрдөгү өтмөк топторун автоматтык түрдө ачуу</translation>
 <translation id="1075622780330595106">Өтмөктөрүңүздүн <ph name="NUMBER_OF_TABS"/> акыркы убакта колдонулган жок. Алар жабылсынбы?</translation>
@@ -43,7 +43,6 @@
 <translation id="2536366509642644298">"<ph name="TAB_GROUP_NAME_1"/>" жана "<ph name="TAB_GROUP_NAME_2"/>" өтмөктөр топтору мындан ары жеткиликсиз</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> өтмөк жыйыштырылсын.}other{<ph name="TABS_COUNT_MANY"/> өтмөктөн турган өтмөктөр тобу жыйыштырылсын.}}</translation>
 <translation id="2569352796411618312">Сунуш: Өтмөктөрүңүздүн <ph name="NUMBER_OF_TABS"/> акыркы убакта колдонулган жок. Алар жабылсынбы?</translation>
-<translation id="2656693375914502139">Топко жылдыруу</translation>
 <translation id="2662028055331606429">Рейтинг: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Сайтка баш багуу</translation>
 <translation id="2671423594960767771">Топту бөлүшүү</translation>
@@ -55,7 +54,6 @@
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> өтмөк жабылды}other{<ph name="MANY_CLOSED"/> өтмөк жабылды}}</translation>
 <translation id="2894757982205307093">Топтогу жаңы өтмөк</translation>
 <translation id="4691798003247738043">Brave | Бул дүкөн тууралуу</translation>
-<translation id="2977480621796371840">Топтон алып салуу</translation>
 <translation id="29919168204617356">Жигерсиз өтмөктөр автоматтык түрдө жабылат. Аларды Таржымалдан каалаган убакта таба аласыз.</translation>
 <translation id="3008554597174452548">Товарга көз салууну токтотуу</translation>
 <translation id="3026391124054406831">Өтмөктөрдү иреттөө үчүн топторду түзүңүз.</translation>
@@ -121,7 +119,9 @@
 <translation id="6051432659151380973">Өтмөк топторуңуз автоматтык түрдө сакталат</translation>
 <translation id="6054741997831917303"><ph name="PREVIOUS_PRICE"/> турган бул нерсенин баасы <ph name="NEW_PRICE"/> болуп калды</translation>
 <translation id="6109251075362363230">Эми эң акыркы колдонулгандан башка бардык кайталанма өтмөктөр архивделет.</translation>
+<translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Топту жаңы терезеге жылдыруу}other{Топту башка терезеге жылдыруу}}</translation>
 <translation id="6193448654517602979">Өтмөктөрдү тандоо</translation>
+<translation id="6220820548421939212">Ооба</translation>
 <translation id="6228793724645064692">(дүкөндүн рейтинги)</translation>
 <translation id="6271513594716432922">Жигерсиз өтмөктөрдүн баарын жабуу</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Өтмөктү жаңы топко кошуу}other{Өтмөктү жаңы топко кошуу}}</translation>
@@ -170,10 +170,12 @@
 <translation id="7853202427316060426">Аракеттер</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Рейтинг: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> сын-пикир}other{Рейтинг: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> сын-пикир}}</translation>
 <translation id="7885132941432959125">Өтмөктү оңго жылдыруу</translation>
+<translation id="788914896430720926">Колдонулбаган өтмөктөрдөн арылгыңыз келеби?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> тандалган жок</translation>
 <translation id="7942349550061667556">Кызыл</translation>
 <translation id="7961015016161918242">Эч качан</translation>
 <translation id="7966321538264951561">Сунушту жабуу.</translation>
+<translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Өтмөктү жаңы терезеге жылдыруу}other{Өтмөктү башка терезеге жылдыруу}}</translation>
 <translation id="799469866974412355">Башка түзмөгүңүздөгү жаңы топ</translation>
 <translation id="8029301326595421733">Бул дүкөн тууралуу маалымат толук экранда ачылды</translation>
 <translation id="8053770993984522566">Өтмөктөр тобунун тизмеси жарым экранда ачылды</translation>
@@ -195,10 +197,11 @@
 <translation id="8730621377337864115">Бүттү</translation>
 <translation id="6687920250729800417">Ушул Жашыруун өтмөктөрдө издеген нерселериңиз бул түзмөктөн өчүрүлөт</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> ай мурун түзүлдү}other{<ph name="NUM_MONTHS_MANY"/> ай мурун түзүлдү}}</translation>
+<translation id="8813708480179818649">Өтмөктү топтон өчүрүү</translation>
 <translation id="8820741577754260431">Төмөндөгөн бааларды өтмөктөрдө көрөсүз</translation>
+<translation id="5495695379719652610">3 айдын ичинде колдонбогон Brave'догу өтмөктөрүңүз автоматтык түрдө жабылат. Бул функцияны азыр же каалаган убакта параметрлерден өчүрүп койсоңуз болот.</translation>
 <translation id="8887921976452567404">Жабылган өтмөктөр менен топторду Акыркы өтмөктөр жана Өтмөк топтору бөлүмүнөн кайра ачууга болот.</translation>
 <translation id="8915916167043355778">Баарын жабуу</translation>
-<translation id="8917994835293470029">{WINDOW_COUNT,plural, =1{Жаңы терезеге жылдыруу}other{Башка терезеге жылдыруу}}</translation>
 <translation id="9090098097337832354">Бул дүкөн тууралуу маалымат жабык</translation>
 <translation id="9114502155681725011"><ph name="COLOR_NAME"/> түсүндөгү <ph name="TITLE_OF_GROUP"/> өтмөктөр тобу үчүн өтмөктөр тобунун аракет менюсун ачыңыз.</translation>
 <translation id="9169594135889675189">Топко жаңы өтмөк кошуу</translation>

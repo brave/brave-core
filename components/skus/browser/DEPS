@@ -1,4 +1,7 @@
 include_rules = [
+  "+components/keyed_service",
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+services/network/public",
   "+services/data_decoder/public",
   "+services/preferences/public",

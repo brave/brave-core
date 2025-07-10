@@ -20,7 +20,7 @@ import {
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 
-const MAX_INPUT_CHAR = 2000
+const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
 
 export interface CharCountContext {
@@ -66,6 +66,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
+  disassociateContent: (content: Mojom.AssociatedContent) => void,
+  associateDefaultContent?: () => void,
   conversationHandler?: Mojom.ConversationHandlerRemote
 
   isTemporaryChat: boolean
@@ -87,7 +89,7 @@ export const defaultCharCountContext: CharCountContext = {
   inputTextCharCountDisplay: ''
 }
 
-const defaultContext: ConversationContext = {
+export const defaultContext: ConversationContext = {
   historyInitialized: false,
   conversationHistory: [],
   allModels: [],
@@ -120,6 +122,7 @@ const defaultContext: ConversationContext = {
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
   isTemporaryChat: false,
+  disassociateContent: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
@@ -440,6 +443,26 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     resetSelectedActionType()
   }
 
+  const disassociateContent = (content: Mojom.AssociatedContent) => {
+    const tab = aiChatContext.tabs.find(t => t.contentId === content.contentId)
+    if (!tab) {
+      console.error('Could not find tab for content', content)
+      return
+    }
+    aiChatContext.uiHandler?.disassociateTab(tab, context.conversationUuid!)
+  }
+
+  const associateDefaultContent = React.useMemo(() => {
+    const existingAttachedContent = context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
+    const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
+
+    return aiChatContext.defaultTabContentId && !existingAttachedContent && tab
+      ? () => {
+        aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
+      }
+      : undefined
+  }, [aiChatContext.defaultTabContentId, aiChatContext.uiHandler, aiChatContext.tabs, context.associatedContentInfo, context.conversationUuid])
+
   // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
@@ -646,7 +669,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     conversationHandler,
     setGeneratedUrlToBeOpened:
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
-    setIgnoreExternalLinkWarning
+    setIgnoreExternalLinkWarning,
+    disassociateContent,
+    associateDefaultContent,
   }
 
   return (
@@ -667,10 +692,4 @@ export function useIsNewConversation() {
   // A conversation is new if it isn't in the list of conversations or doesn't have content
   return !aiChatContext.conversations.find(
     c => c.uuid === conversationContext.conversationUuid && c.hasContent)
-}
-
-export function useSupportsAttachments() {
-  const aiChatContext = useAIChat()
-  const isNew = useIsNewConversation()
-  return aiChatContext.isStandalone && isNew
 }

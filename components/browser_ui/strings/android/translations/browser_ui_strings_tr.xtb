@@ -84,6 +84,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="2028449514182362831">Hareket sensörlerinin kullanılmasını gerektiren özellikler çalışmaz</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> sekmesine dönmek için dokunun</translation>
 <translation id="2079545284768500474">Geri al</translation>
+<translation id="2080070583977670716">Daha fazla ayar</translation>
 <translation id="2091887806945687916">Ses</translation>
 <translation id="2096716221239095980">Tüm verileri sil</translation>
 <translation id="2102396546234652240">Sitelerin mikrofonumu kullanmasına izin verme</translation>
@@ -229,7 +230,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3779154269823594982">Şifreleri değiştir</translation>
 <translation id="3797520601150691162">Belirli bir siteye koyu tema uygulama</translation>
 <translation id="3803367742635802571">Ziyaret ettiğiniz siteler tasarlandığı şekilde çalışmayabilir</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefon numaraları</translation>
 <translation id="3826050100957962900">Üçüncü taraf oturum açma</translation>
 <translation id="3835233591525155343">Cihaz kullanımınız</translation>
@@ -437,7 +437,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="6452138246455930388"><ph name="DOMAIN_NAME"/> adresinin açık olduğu sekmenizde <ph name="PRODUCT_NAME"/> ürününün <ph name="OLD_PRICE"/> olan fiyatı düştü ve <ph name="NEW_PRICE"/> oldu</translation>
 <translation id="6500423977866688905">Pencere küçükse mobil görünümü iste</translation>
 <translation id="6527303717912515753">Paylaş</translation>
-<translation id="652937045869844725">Üçüncü taraf çerezlerine izin vermeyi deneyin. Bu durumda daha az korunursunuz ancak site özelliklerinin çalışma olasılığı daha yüksektir</translation>
 <translation id="6530703012083415527">Bu düğme açıkken siteler, pop-up'ları ve yönlendirmeleri kullanabilir. Düğme kapalıyken siteler, pop-up'ları ve yönlendirmeleri kullanamaz.</translation>
 <translation id="6540488083026747005">Bu sitede üçüncü taraf çerezlerine izin verdiniz</translation>
 <translation id="6545864417968258051">Bluetooth taraması</translation>
@@ -451,6 +450,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="6612358246767739896">Korunan içerik</translation>
 <translation id="662080504995468778">Kal</translation>
 <translation id="6635327442719709864">Bu düğme açıkken siteler seri bağlantı noktalarını kullanmak için izin isteyebilir. Düğme kapalıyken siteler seri bağlantı noktalarını kullanamaz.</translation>
+<translation id="6678072580827808850">Güvenlik Kontrolü'nü inceleyin</translation>
 <translation id="6683865262523156564">Bu site, etkinliğinizi görebilen bir grupta bulunuyor. Grup, <ph name="RWS_OWNER"/> tarafından tanımlanmıştır.</translation>
 <translation id="6689172468748959065">Profil fotoğrafları</translation>
 <translation id="6697925417670533197">Etkin indirme işlemleri</translation>
@@ -485,7 +485,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="7141896414559753902">Sitelerin pop-up göstermesini ve yönlendirme yapmasını engelle (önerilir)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Yenile</translation>
-<translation id="7180865173735832675">Özelleştir</translation>
 <translation id="7188508872042490670">Cihaz üzerindeki site verileri</translation>
 <translation id="7201549776650881587">Bu işlem, <ph name="ORIGIN"/> altındaki tüm siteler veya ana ekranınızdaki uygulaması tarafından depolanan verilerin ve çerezlerin tamamını temizler</translation>
 <translation id="7203150201908454328">Genişletilmiş</translation>

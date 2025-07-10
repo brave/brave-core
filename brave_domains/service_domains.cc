@@ -9,8 +9,9 @@
 
 #include "base/command_line.h"
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -62,20 +63,19 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
 }
 
 #if !defined(OFFICIAL_BUILD)
-std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
-  static const base::flat_map<ServicesEnvironment, std::string> envMap = {
-      {brave_domains::ServicesEnvironment::DEV, kBraveServicesSwitchValueDev},
-      {brave_domains::ServicesEnvironment::STAGING,
-       kBraveServicesSwitchValueStaging},
-      {brave_domains::ServicesEnvironment::PROD,
-       kBraveServicesSwitchValueProduction}};
+std::string_view ConvertEnvironmentToString(
+    brave_domains::ServicesEnvironment env) {
+  static constexpr auto kEnvs = base::MakeFixedFlatMap<
+      brave_domains::ServicesEnvironment, std::string_view>(
+      {{brave_domains::ServicesEnvironment::DEV, kBraveServicesSwitchValueDev},
+       {brave_domains::ServicesEnvironment::STAGING,
+        kBraveServicesSwitchValueStaging},
+       {brave_domains::ServicesEnvironment::PROD,
+        kBraveServicesSwitchValueProduction}});
 
-  auto it = envMap.find(env);
-  if (it != envMap.end()) {
-    return it->second;
-  }
-
-  NOTREACHED();
+  auto* value = base::FindOrNull(kEnvs, env);
+  CHECK(value);
+  return *value;
 }
 #endif
 

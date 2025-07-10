@@ -71,7 +71,7 @@ class PatchfileTest(unittest.TestCase):
                     THEME,
                     SHARED_MODULE
                   };
-                
+
                   enum Location {
                     FROM_STORE,
                     UNPACKED,
@@ -119,7 +119,76 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(applied.patch.path, patchfile.path)
         self.assertFalse(patchfile.source_from_git)
         self.assertTrue(applied.patch.source_from_git)
-        self.assertEqual(applied.patch.source_from_git, str(test_idl))
+        self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
+
+    def test_apply_conflict_with_whitespace_error(self):
+        """Tests the behavior when applying a patch with whitespace errors."""
+
+        test_idl = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+
+                  enum Location {
+                    FROM_STORE,
+                    UNPACKED,
+                    THIRD_PARTY,
+                    INSTALLED_BY_DEFAULT,
+                    UNKNOWN
+                  };
+                """, self.fake_chromium_src.chromium)
+
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Let's create a patch for it
+        target_file = self.fake_chromium_src.chromium / test_idl
+        target_file.write_text(target_file.read_text().replace(
+            'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'))
+
+        # Let's create a patch with trailing spaces
+        target_file.write_text(target_file.read_text().replace(
+            'UNKNOWN', 'UNKNOWN,\n    ANOTHER '))
+
+        self.fake_chromium_src.run_update_patches()
+        # clearing out our custom change so we can have upstream changes
+        # piling to this file
+        self.fake_chromium_src._run_git_command(
+            ["checkout", "."], self.fake_chromium_src.chromium)
+        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+
+        # Adding an upstream chromium change that should conflict with our
+        # patch
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl,
+            target_file.read_text().replace('FROM_STORE',
+                                            'FROM_STORE,\n    DELETED'),
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(
+            'Added DELETED to developer_private.idl Location',
+            self.fake_chromium_src.chromium)
+
+        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_idl))
+        applied = patchfile.apply()
+        self.assertEqual(applied.status, Patchfile.ApplyStatus.CONFLICT)
+
+        # Check that in the case of conflict it returns an updated patchfile
+        # instance with an updated source from git.
+        self.assertTrue(applied.patch)
+        self.assertEqual(applied.patch.path, patchfile.path)
+        self.assertFalse(patchfile.source_from_git)
+        self.assertTrue(applied.patch.source_from_git)
+        self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
 
     def test_apply_clean(self):
         test_idl = Path('chrome/common/extensions/api/developer_private.idl')
@@ -133,7 +202,7 @@ class PatchfileTest(unittest.TestCase):
                     THEME,
                     SHARED_MODULE
                   };
-                
+
                   enum Location {
                     FROM_STORE,
                     UNPACKED,
@@ -287,28 +356,49 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(applied.patch.path, patchfile.path)
         self.assertFalse(patchfile.source_from_git)
         self.assertTrue(applied.patch.source_from_git)
-        self.assertEqual(applied.patch.source_from_git, str(test_idl))
+        self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
 
     def test_source_from_brave(self):
         """Tests the source_from_brave method of Patchfile."""
         self.assertEqual(
             Patchfile(path=PurePath('patches/v8/build-android-gyp-dex.py.patch'
-                                    )).source_from_brave(),
+                                    )).source_from_brave().as_posix(),
             '../v8/build/android/gyp/dex.py')
         self.assertEqual(
+            Patchfile(path=PurePath('patches/build-android-gyp-dex.py.patch')).
+            source_from_brave().as_posix(), '../build/android/gyp/dex.py')
+
+        self.assertEqual(
             Patchfile(path=PurePath(
-                'patches/build-android-gyp-dex.py.patch')).source_from_brave(),
-            '../build/android/gyp/dex.py')
+                'patches/third_party/devtools-frontend/src/front_end-panels-timeline-components-LiveMetricsView.ts.patch'
+            )).source_from_brave().as_posix(),
+            '../third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
+        )
+
+        # Checking that we can handle the source path provided by the report
+        # produced by `npm run apply_patches`, which uses relative paths from
+        # src/ when listing source files that failed to apply.
+        self.assertEqual(
+            Patchfile(
+                path=PurePath(
+                    'patches/third_party/devtools-frontend/src/front_end-panels-timeline-components-LiveMetricsView.ts.patch'
+                ),
+                provided_source=
+                'third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
+            ).source_from_brave().as_posix(),
+            '../third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
+        )
+
 
     def test_path_from_repo(self):
         """Tests the path_from_repo method of Patchfile."""
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/v8/build-android-gyp-dex.py.patch')).path_from_repo(),
+            Patchfile(path=PurePath('patches/v8/build-android-gyp-dex.py.patch'
+                                    )).path_from_repo().as_posix(),
             '../brave/patches/v8/build-android-gyp-dex.py.patch')
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/build-android-gyp-dex.py.patch')).path_from_repo(),
+            Patchfile(path=PurePath('patches/build-android-gyp-dex.py.patch')
+                      ).path_from_repo().as_posix(),
             'brave/patches/build-android-gyp-dex.py.patch')
 
     def test_fetch_source_from_git(self):
@@ -348,9 +438,8 @@ class PatchfileTest(unittest.TestCase):
         patchfile = Patchfile(path=renamed_patch_path)
 
         # Verify the source file path matches the original file
-        self.assertEqual(
-            str(patchfile.fetch_source_from_git().source_from_git),
-            str(test_idl))
+        self.assertEqual(patchfile.fetch_source_from_git().source_from_git,
+                         test_idl.as_posix())
 
     def test_get_last_commit_for_source(self):
         """Test get_last_commit_for_source method."""
@@ -523,7 +612,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(rename_status.status, 'R')  # 'R' indicates rename
         self.assertIn('Rename developer_private.idl to renamed_private.idl',
                       rename_status.commit_details)
-        self.assertEqual(rename_status.renamed_to, str(renamed_file))
+        self.assertEqual(rename_status.renamed_to, renamed_file.as_posix())
 
 
 if __name__ == "__main__":

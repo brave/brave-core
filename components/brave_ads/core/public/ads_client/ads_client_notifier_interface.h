@@ -34,12 +34,6 @@ class AdsClientNotifierInterface {
   // Invoked when ads did initialize.
   virtual void NotifyDidInitializeAds() = 0;
 
-  // Invoked when the user changes the locale of their operating system. This
-  // call is not required if the operating system restarts the browser when
-  // changing the locale. `locale` should be specified in either
-  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  virtual void NotifyLocaleDidChange(const std::string& locale) = 0;
-
   // Invoked when a preference has changed for the specified `path`.
   virtual void NotifyPrefDidChange(const std::string& path) = 0;
 

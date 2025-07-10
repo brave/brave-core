@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .main {
-  --conversation-content-margin: var(--leo-spacing-2xl);
+  --conversation-content-margin: var(--leo-spacing-5xl);
   --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
 
   display: flex;
@@ -13,6 +13,14 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.mainPanel {
+  --conversation-content-margin: var(--leo-spacing-2xl);
+}
+
+.mainMobile {
+  --conversation-content-margin: var(--leo-spacing-xl);
 }
 
 .attachmentsDialog {
@@ -29,9 +37,13 @@
   flex-direction: column;
   width: 100%;
   min-height: fit-content;
+  min-width: 0;
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
   padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
+
+  container-name: input-container;
+  container-type: inline-size;
 }
 
 .siteTitleContainer {
@@ -47,6 +59,8 @@
 
     height: 100%;
     width: 100%;
+
+    overflow: hidden;
   }
 
   display: contents;
@@ -58,6 +72,11 @@
   align-self: stretch;
   position: sticky;
   top: 0;
+
+  grid-column: 2;
+  grid-row: 1 / 3;
+
+  max-height: min(90vh, 720px);
 
   overflow: hidden;
 }
@@ -86,8 +105,7 @@
   max-width: var(--conversation-content-max-width);
   // Adjust padding to account for scrollbar width so content lines up with
   // input area which is outside of the scroller.
-  padding:
-    0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+  padding: 0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 var(--conversation-content-margin);
 
   // Hide until content is ready
   opacity: 0;
@@ -217,4 +235,11 @@
 
 .feedbackForm {
   padding: 0 16px;
+}
+
+.aichatIframeContainer {
+  // Negative margin to account for the additional height
+  // added to the iframe.
+  // See https://github.com/brave/brave-browser/issues/46042
+  margin-bottom: calc(-1 * var(--iframe-additional-margin-for-menus));
 }

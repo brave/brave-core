@@ -24,12 +24,22 @@ const getChromiumUnitTestsSuites = () => {
   ]
 }
 
+const getBraveUnitTestsSuites = (config) => {
+  let tests = []
+
+  if (config.targetOS !== 'android') {
+    // TODO(bridiver) https://github.com/brave/brave-browser/issues/47310
+    tests.push('brave_components_unittests')
+    tests.push('brave_installer_unittests')
+  }
+
+  return tests
+}
+
 const getTestsToRun = (config, suite) => {
   let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
-    if (config.targetOS !== 'android') {
-      testsToRun.push('brave_installer_unittests')
-    }
+    testsToRun = testsToRun.concat(getBraveUnitTestsSuites(config))
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
   } else if (suite === 'brave_junit_tests') {
@@ -97,13 +107,14 @@ const buildTests = async (
   config.update(options)
 
   let testSuites = [
-    'brave_unit_tests',
     'brave_browser_tests',
     'brave_java_unit_tests',
     'brave_junit_tests',
     'brave_network_audit_tests',
   ]
-  if (testSuites.includes(suite)) {
+  if (suite === 'brave_unit_tests') {
+    config.buildTargets = ['all_unit_tests']
+  } else if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
   } else if (suite === 'chromium_unit_tests') {
     config.buildTargets = getChromiumUnitTestsSuites()
@@ -115,11 +126,20 @@ const buildTests = async (
   await util.buildTargets()
 }
 
+const deleteFile = (filePath) => {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath)
+  }
+}
+
 const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
   const isJunitTestSuite = suite.endsWith('_junit_tests')
+  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
+  // Clear previous results file
+  deleteFile(allResultsFilePath)
 
   let braveArgs = []
 
@@ -142,10 +162,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   if (options.run_disabled_tests) {
     braveArgs.push('--gtest_also_run_disabled_tests')
-  }
-
-  if (options.output) {
-    braveArgs.push('--gtest_output=xml:' + options.output)
   }
 
   if (options.disable_brave_extension) {
@@ -224,7 +240,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
           }
         }
       }
-      if (options.output) {
+      if (options.output_xml) {
         const previousOutput = braveArgs.findIndex((arg) => {
           return arg.startsWith('--gtest_output=xml:')
         })
@@ -256,7 +272,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
       }
-      if (options.output) {
+      if (options.output_xml) {
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
         // not interested in the exit code of running the tests, because they
@@ -272,8 +288,11 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs,
         runOptions,
       )
-      // Don't run other tests if one has failed already, especially because
-      // this would overwrite the --output file (if given).
+      if (options.output_xml) {
+        // Add filename of xml output of each test suite into the results file
+        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+      }
+      // Don't run other tests if one has failed already.
       return prog.status === 0
     })
   }

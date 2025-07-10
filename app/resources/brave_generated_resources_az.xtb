@@ -7,19 +7,11 @@
 <translation id="6406506848690869874">Sinxronlaşdırma</translation>
 <translation id="1544192797660353713">Balans</translation>
 <translation id="1990886731975529483">Google Widevine quraşdırın və işə salın</translation>
-<translation id="4900351245762303149">Google Widevine quraşdır</translation>
-<translation id="8342816622062204340"><ph name="URL"/> Widevine üçün Android sistemi dəstəyinə icazə vermənizi tələb edən qorunan Google Widevine məzmununu açmaq istəyir. İcazə verməklə, Google-un istifadə şərtləri ilə razılaşırsınız.</translation>
 <translation id="7658239707568436148">Ləğv et</translation>
 <translation id="5039804452771397117">İcazə ver</translation>
 <translation id="8915916167043355778">Hamısını bağla</translation>
 <translation id="4870911314065352661">Bütün tabulyasiyalar bağlansın?</translation>
 <translation id="9194637241566114638">Anonim istifadə verilənləri göndərərək <ph name="SEARCH_NAME"/> funksiyasını təkmilləşdirməyə kömək edin. <ph name="MORE_INFO"/></translation>
-<translation id="7404610376221341525">Brave Axtarış</translation>
-<translation id="8184318863960255706">Əlavə məlumat</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="780301667611848630">Xeyr, təşəkkürlər</translation>
-<translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
-<translation id="8659271182272561965">Brave Axtarışı təkmilləşdirmək üçün bəzi anonim axtarış &amp; baxış məlumatları aparın.</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="5916664084637901428">Açıq</translation>
 <translation id="5860033963881614850">Bağlı</translation>
@@ -41,13 +33,10 @@
 <translation id="7781069478569868053">Yeni tab-səhifə</translation>
 <translation id="3719826155360621982">Ana səhifə</translation>
 <translation id="2133317862976486547">İzləyicilər &amp; reklamların bloklanması</translation>
+<translation id="4618274268052410139">Aşağıdakı sahəyə bir sətirə bir olmaqla, yaratdığınız xüsusi filterləri əlavə edin. Adblock filter sintaksisindən <ph name="BEGIN_LINK"/>istifadə etməyinizə əmin olun<ph name="END_LINK"/>.</translation>
 <translation id="5327248766486351172">Ad</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="3858860766373142691">Ad</translation>
-<translation id="298546024891487702">Başlamaq üçün, sinxronizasiya etməyi planlaşdırdığınız bütün cihazlarda Brave-i quraşdırmalısınız. Onları bir-birinə qoşmaq üçün bütün cihazlarınızı təhlükəsiz şəkildə əlaqələndirərkən istifadə edəcəyiniz bir sinxronizasiya zənciri başladın.</translation>
-<translation id="5249433283143453448">Brauzerdə qorunan video silsiləsi və digər məzmuna baxmaq üçün Widevine rəqəmsal hüquqların idarə edilməsi (DRM) komponentindən istifadə edin.</translation>
 <translation id="8488282162676695335">Brave Balansı</translation>
-<translation id="5781842473834867765">Söhbət tarixçəmi yaddaşda saxla</translation>
-<translation id="6106701981952170121">Bütün Leo Sİ söhbət məlumatlarını sil</translation>
 <translation id="614530507403667291">Yeni söhbətlər üçün standart model</translation>
 </translationbundle>

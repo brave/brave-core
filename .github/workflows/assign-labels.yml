@@ -12,11 +12,20 @@ jobs:
     name: Assign labels
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594 # v4.3.0
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+    - name: set ci managed labels (automatically set and unset)
+      uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        # Workaround for https://github.com/actions/labeler/issues/104
-        # Explained at https://github.com/wesnoth/wesnoth/commit/958c82d0867568057caaf58356502ec8c87d8366
-        # Should continue working https://github.com/actions/labeler/pull/113#issuecomment-865404272
-        # The above are not fixed in v4.3.0, which is currently the last v4 before v5
-        sync-labels: ""
+        sync-labels: true
+        configuration-path: .github/synced-labels.yml
+
+
+    - name: set optional labels
+      uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        sync-labels: false
+        configuration-path: .github/optional-labels.yml
+

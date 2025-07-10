@@ -10,7 +10,7 @@
   gap: var(--leo-spacing-xl);
   font: var(--leo-font-large-regular);
   color: var(--leo-color-text-primary);
-  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
+  padding-top: var(--leo-spacing-2xl);
 }
 
 .turnContainerMobile {
@@ -43,7 +43,7 @@
   padding: var(--leo-spacing-xl);
   border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-s) var(--leo-spacing-xl);
   background-color: var(--leo-color-neutral-10);
-  max-width: 520px;
+  max-width: min(520px, 100%);
   gap: var(--leo-spacing-m);
   word-break: break-word;
 }
@@ -78,7 +78,7 @@
   min-width: 16px;
 }
 
-.uploadedImages {
+.attachmentsContainer {
   display: flex;
   flex-direction: column;
   width: 100%;

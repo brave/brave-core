@@ -64,18 +64,6 @@ void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
   }
 }
 
-void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) {
-  if (task_queue_->should_queue()) {
-    return task_queue_->Add(
-        base::BindOnce(&AdsClientNotifier::NotifyLocaleDidChange,
-                       weak_factory_.GetWeakPtr(), locale));
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnNotifyLocaleDidChange(locale);
-  }
-}
-
 void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(

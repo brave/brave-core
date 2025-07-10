@@ -40,7 +40,13 @@ export const DAppConnectionAccounts = (props: Props) => {
 
   // Memos
   const accountByCoinType = React.useMemo(() => {
-    return accounts.filter((account) => account.accountId.coin === coin)
+    // Allow only first account for ADA
+    return accounts.filter(
+      (account) =>
+        account.accountId.coin === coin
+        && (coin !== BraveWallet.CoinType.ADA
+          || account.accountId.accountIndex === 0),
+    )
   }, [accounts, coin])
 
   const connectedAccounts = React.useMemo(() => {

@@ -64,9 +64,6 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://pcdn.brave.com/",
 
     // p3a
-    "https://p3a-creative.brave.com/",
-    "https://p3a-json.brave.com/",
-    "https://p3a.brave.com/",
     "https://star-randsrv.bsg.brave.com/",
 
     // Other
@@ -77,9 +74,6 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
     "https://static1.brave.com/",
-
-    // Temporary allow GCM (push messaging) endpoint
-    "https://android.clients.google.com/",
 });
 
 }  // namespace brave

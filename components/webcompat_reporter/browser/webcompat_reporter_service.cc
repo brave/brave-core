@@ -5,8 +5,10 @@
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 
 namespace {
@@ -53,18 +56,34 @@ struct ReportFiller {
       return *this;
     }
 
-    auto component_infos = service_delegate->GetComponentInfos();
-    if (!component_infos) {
+    auto all_components = service_delegate->GetComponentInfos();
+    std::vector<
+        webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo>
+        components_to_send = {};
+    std::copy_if(
+        all_components.begin(), all_components.end(),
+        std::back_inserter(components_to_send),
+        [](webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo
+               ci) {
+          return webcompat_reporter::SendComponentVersionInReport(ci.id);
+        });
+    std::vector<webcompat_reporter::mojom::ComponentInfoPtr>
+        mojom_components_to_send = {};
+    std::transform(
+        components_to_send.begin(), components_to_send.end(),
+        std::back_inserter(mojom_components_to_send),
+        [](webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo
+               ci) {
+          return webcompat_reporter::mojom::ComponentInfo::New(ci.name, ci.id,
+                                                               ci.version);
+        });
+
+    if (components_to_send.empty()) {
       return *this;
     }
 
-    std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components_list;
-    for (const auto& component : component_infos.value()) {
-      components_list.emplace_back(
-          webcompat_reporter::mojom::ComponentInfo::New(
-              component.name, component.id, component.version));
-    }
-    (*report_info)->ad_block_components_version = std::move(components_list);
+    (*report_info)->ad_block_components_version =
+        std::move(mojom_components_to_send);
     return *this;
   }
 
@@ -175,20 +194,28 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
   profile_prefs_->SetBoolean(prefs::kContactInfoSaveFlagPrefs, value);
 }
 
-void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
+void WebcompatReporterService::GetBrowserParams(
+    GetBrowserParamsCallback callback) {
+  auto components = service_delegate_->GetComponentInfos();
+  std::vector<std::string> component_ids(components.size());
+  std::transform(components.begin(), components.end(), component_ids.begin(),
+                 [](auto c) { return c.id; });
+
   if (!profile_prefs_) {
-    std::move(callback).Run(std::nullopt, false);
+    std::move(callback).Run(std::nullopt, false, std::move(component_ids));
     return;
   }
   auto save_flag_value =
       profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
   if (!save_flag_value) {
-    std::move(callback).Run(std::nullopt, save_flag_value);
+    std::move(callback).Run(std::nullopt, save_flag_value,
+                            std::move(component_ids));
     return;
   }
 
   auto contact_value = profile_prefs_->GetString(prefs::kContactInfoPrefs);
-  std::move(callback).Run(std::move(contact_value), save_flag_value);
+  std::move(callback).Run(std::move(contact_value), save_flag_value,
+                          std::move(component_ids));
 }
 
 void WebcompatReporterService::SetPrefServiceTest(PrefService* pref_service) {

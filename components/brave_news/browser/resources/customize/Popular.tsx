@@ -37,9 +37,9 @@ export function PopularCarousel () {
   const popularPublisherIds = usePopularPublisherIds()
   return (
     <Carousel title={<Flex justify='space-between'>
-      {getLocale('braveNewsPopularTitle')}
+      {getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}
       <CustomizeLink onClick={() => setCustomizePage('popular')}>
-        {getLocale('braveNewsViewAllButton')}
+        {getLocale(S.BRAVE_NEWS_VIEW_ALL_BUTTON)}
       </CustomizeLink>
     </Flex>} publisherIds={popularPublisherIds} />
   )
@@ -47,7 +47,7 @@ export function PopularCarousel () {
 
 export function PopularPage () {
   const popularPublisherIds = usePopularPublisherIds()
-  return <CustomizePage title={getLocale('braveNewsPopularTitle')}>
+  return <CustomizePage title={getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}>
     <DiscoverSection>
       {popularPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
     </DiscoverSection>

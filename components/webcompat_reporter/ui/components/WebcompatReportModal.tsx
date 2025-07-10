@@ -15,6 +15,7 @@ interface Props {
   contactInfo: string
   contactInfoSaveFlag: boolean
   isErrorPage: boolean
+  components: string[]
   submitted: boolean
   onSubmitReport: () => void
   onClose: () => void
@@ -30,9 +31,10 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
       siteUrl,
       contactInfo,
       contactInfoSaveFlag,
+      isErrorPage,
+      components,
       submitted,
       onSubmitReport,
-      isErrorPage,
       onClose
     } = this.props
 
@@ -56,6 +58,7 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
               isLocalPage={isLocalPage}
               onSubmitReport={onSubmitReport}
               onClose={onClose}
+              components={components}
             />
           )}
         </RectangularCard>

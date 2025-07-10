@@ -26,7 +26,6 @@ class BraveBrowser : public Browser {
   static bool ShouldUseBraveWebViewRoundedCorners(Browser* browser);
 
   // Browser overrides:
-  bool ShouldShowBookmarkBar() const override;
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;
   bool ShouldDisplayFavicon(content::WebContents* web_contents) const override;
@@ -43,6 +42,14 @@ class BraveBrowser : public Browser {
       const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
+
+  // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
+  // and it's called from WebContentsModalDialogManager.
+  // That manager prevents web modal dialog when web contents is not visible.
+  // As we have visible but inactive tabs in split tab, this should return false
+  // when it's inactive tab. Otherwse, web modal from inactive split tab can be
+  // shown.
+  bool IsWebContentsVisible(content::WebContents* web_contents) override;
 
   void OnTabClosing(content::WebContents* contents) override;
   void TabStripEmpty() override;

@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
-#include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -110,7 +109,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   base::ScopedObservation<SiteVisit, SiteVisitObserver> site_visit_observation_{
       this};
 
-  CountryCode country_code_;
   SubdivisionTargeting subdivision_targeting_;
   Subdivision subdivision_;
 

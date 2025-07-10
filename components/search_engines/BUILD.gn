@@ -18,4 +18,5 @@ source_set("unit_tests") {
     "//components/search_engines:test_support",
     "//testing/gtest",
   ]
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
 }

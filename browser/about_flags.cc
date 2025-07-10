@@ -11,6 +11,7 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
@@ -41,6 +42,7 @@
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/webui/flags/feature_entry.h"
 #include "components/webui/flags/feature_entry_macros.h"
@@ -72,6 +74,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #else
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -92,8 +95,8 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
-#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
-#include "brave/browser/mac_features.h"
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -115,6 +118,10 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
      std::size(kZCashShieldedTransactionsEnabled), nullptr}
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 };
+
+namespace {
+const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
+}
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -281,16 +288,16 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_CONTAINERS_FEATURE_ENTRIES                                       \
+#define CONTAINERS_FEATURE_ENTRIES                                             \
   IF_BUILDFLAG(                                                                \
       ENABLE_CONTAINERS,                                                       \
       EXPAND_FEATURE_ENTRIES({                                                 \
-          "brave-containers",                                                  \
+          "containers",                                                        \
           "Enable Containers",                                                 \
           "Allows websites to be opened in contained tabs, keeping different " \
           "identities separate within the same browser profile",               \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(containers::features::kBraveContainers),          \
+          FEATURE_VALUE_TYPE(containers::features::kContainers),               \
       }))
 
 #if BUILDFLAG(IS_LINUX)
@@ -332,42 +339,68 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_TABS_FEATURE_ENTRIES                                         \
-  EXPAND_FEATURE_ENTRIES(                                                  \
-      {                                                                    \
-          "brave-shared-pinned-tabs",                                      \
-          "Shared pinned tab",                                             \
-          "Pinned tabs are shared across windows",                         \
-          kOsWin | kOsMac | kOsLinux,                                      \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),      \
-      },                                                                   \
-      {                                                                    \
-          "brave-horizontal-tabs-update",                                  \
-          "Updated horizontal tabs design",                                \
-          "Updates the look and feel or horizontal tabs",                  \
-          kOsWin | kOsMac | kOsLinux,                                      \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate),  \
-      },                                                                   \
-      {                                                                    \
-          "brave-compact-horizontal-tabs",                                 \
-          "Compact horizontal tabs design",                                \
-          "Reduces the height of horizontal tabs",                         \
-          kOsWin | kOsMac | kOsLinux,                                      \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveCompactHorizontalTabs), \
-      },                                                                   \
-      {                                                                    \
-          "brave-vertical-tab-scroll-bar",                                 \
-          "Show scroll bar on vertical tab strip",                         \
-          "Shows scroll bar on vertical tab strip when it overflows",      \
-          kOsWin | kOsMac | kOsLinux,                                      \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar),  \
-      },                                                                   \
-      {                                                                    \
-          kSplitViewFeatureInternalName,                                   \
-          "Enable split view",                                             \
-          "Enables split view",                                            \
-          kOsWin | kOsMac | kOsLinux,                                      \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),             \
+constexpr flags_ui::FeatureEntry::Choice kVerticalTabExpandDelayChoices[] = {
+    {"default", "", ""},
+    {"0ms", tabs::switches::kVerticalTabExpandDelaySwitch, "0"},
+    {"50ms", tabs::switches::kVerticalTabExpandDelaySwitch, "50"},
+    {"100ms", tabs::switches::kVerticalTabExpandDelaySwitch, "100"},
+    {"150ms", tabs::switches::kVerticalTabExpandDelaySwitch, "150"},
+    {"200ms", tabs::switches::kVerticalTabExpandDelaySwitch, "200"},
+    {"250ms", tabs::switches::kVerticalTabExpandDelaySwitch, "250"},
+    {"300ms", tabs::switches::kVerticalTabExpandDelaySwitch, "300"},
+    {"400ms", tabs::switches::kVerticalTabExpandDelaySwitch, "400"},
+};
+
+#define BRAVE_TABS_FEATURE_ENTRIES                                             \
+  EXPAND_FEATURE_ENTRIES(                                                      \
+      {                                                                        \
+          "brave-shared-pinned-tabs",                                          \
+          "Shared pinned tab",                                                 \
+          "Pinned tabs are shared across windows",                             \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),          \
+      },                                                                       \
+      {                                                                        \
+          "brave-horizontal-tabs-update",                                      \
+          "Updated horizontal tabs design",                                    \
+          "Updates the look and feel or horizontal tabs",                      \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-compact-horizontal-tabs",                                     \
+          "Compact horizontal tabs design",                                    \
+          "Reduces the height of horizontal tabs",                             \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveCompactHorizontalTabs),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-vertical-tab-scroll-bar",                                     \
+          "Show scroll bar on vertical tab strip",                             \
+          "Shows scroll bar on vertical tab strip when it overflows",          \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-vertical-tab-hide-completely",                                \
+          "Brave Vertical Tab Hide Completely",                                \
+          "Hides the vertical tab strip when collapsed",                       \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabHideCompletely), \
+      },                                                                       \
+      {                                                                        \
+          "brave-vertical-tab-expand-delay",                                   \
+          "Brave Vertical Tab Expand Delay",                                   \
+          "Delay before expanding the vertical tab strip when hovering",       \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                    \
+      },                                                                       \
+      {                                                                        \
+          kSplitViewFeatureInternalName,                                       \
+          "Enable split view",                                                 \
+          "Enables split view",                                                \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),                 \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
@@ -512,14 +545,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #define BRAVE_EDUCATION_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
-#define BRAVE_UPDATER_FEATURE_ENTRIES                  \
-  EXPAND_FEATURE_ENTRIES({                             \
-      "brave-use-omaha4-alpha",                        \
-      "Use Omaha 4 Alpha",                             \
-      "Use the new automatic update system",           \
-      kOsDesktop | kOsMac,                             \
-      FEATURE_VALUE_TYPE(brave::kBraveUseOmaha4Alpha), \
+#if BUILDFLAG(ENABLE_OMAHA4)
+#define BRAVE_UPDATER_FEATURE_ENTRIES                          \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-use-omaha4-alpha",                                \
+      "Use Omaha 4 Alpha",                                     \
+      "Use the new automatic update system",                   \
+      kOsMac,                                                  \
+      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4Alpha), \
   })
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES
@@ -954,6 +987,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
       },                                                                       \
       {                                                                        \
+          "brave-clean-link-js-api",                                           \
+          "Sanitize URLs in the clipboard",                                    \
+          "Sanitize URLs in the clipboard when they are added via the JS API " \
+          "(share/copy buttons). ",                                            \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkFromJs),             \
+      },                                                                       \
+      {                                                                        \
           "brave-global-privacy-control-enabled",                              \
           "Enable Global Privacy Control",                                     \
           "Enable the Sec-GPC request header and the "                         \
@@ -1011,6 +1052,20 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-override-sync-server-url",                                    \
+          "Override Brave Sync server URL",                                    \
+          "Allows you to use a self-hosted server with Brave Sync. You can "   \
+          "learn more about the server implementation in the repository link " \
+          "mentioned below. "                                                  \
+          "Note: Only HTTPS URLs are supported by default. HTTP URLs are "     \
+          "only allowed for potentially trustworthy origins like localhost."   \
+          "Insecure URLs that don't meet these requirements will be ignored"   \
+          "in favor of the official Brave-hosted server",                      \
+          kOsAll,                                                              \
+          ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
+          kBraveSyncImplLink,                                                  \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1020,7 +1075,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
-  BRAVE_CONTAINERS_FEATURE_ENTRIES                                             \
+  CONTAINERS_FEATURE_ENTRIES                                                   \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
@@ -1038,18 +1093,20 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 namespace flags_ui {
 namespace {
 
-// Unused function to reference Brave feature entries for clang checks.
+// Unused function to reference Brave feature entries for clang
+// checks.
 [[maybe_unused]] void UseBraveAboutFlags() {
   // These vars are declared in anonymous namespace in
-  // //chrome/browser/about_flags.cc. We declare them here manually to
-  // instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES without errors.
+  // //chrome/browser/about_flags.cc. We declare them here
+  // manually to instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+  // without errors.
   constexpr int kOsAll = 0;
   constexpr int kOsDesktop = 0;
 
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
-}
+}  // namespace
 
 }  // namespace
 }  // namespace flags_ui

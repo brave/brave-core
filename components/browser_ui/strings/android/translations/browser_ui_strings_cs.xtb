@@ -84,6 +84,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="2028449514182362831">Funkce vyžadující senzory pohybu nebudou k dispozici</translation>
 <translation id="2030769033451695672">Klepnutím se vrátíte na web <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Vrátit zpět</translation>
+<translation id="2080070583977670716">Další nastavení</translation>
 <translation id="2091887806945687916">Zvuk</translation>
 <translation id="2096716221239095980">Vymazat všechna data</translation>
 <translation id="2102396546234652240">Nepovolovat webům používat mikrofon</translation>
@@ -229,7 +230,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="3779154269823594982">Změnit hesla</translation>
 <translation id="3797520601150691162">Nepoužívat tmavý motiv pro konkrétní web</translation>
 <translation id="3803367742635802571">Navštívené weby mohou přestat fungovat podle očekávání</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefonní čísla</translation>
 <translation id="3826050100957962900">Externí přihlašování</translation>
 <translation id="3835233591525155343">Využití vašeho zařízení</translation>
@@ -437,7 +437,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="6452138246455930388">Pokles ceny na otevřené kartě z <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Když je okno úzké, požádejte o mobilní zobrazení</translation>
 <translation id="6527303717912515753">Sdílet</translation>
-<translation id="652937045869844725">Zkuste povolit soubory cookie třetích stran – budete méně chráněni, ale funkce webu budou s větší pravděpodobností fungovat</translation>
 <translation id="6530703012083415527">Když je tato možnost zapnutá, weby mohou používat vyskakovací okna a přesměrování. Když je vypnutá, weby vyskakovací okna ani přesměrování používat nemohou.</translation>
 <translation id="6540488083026747005">Pro tento web jste povolili soubory cookie třetích stran</translation>
 <translation id="6545864417968258051">Vyhledávání Bluetooth</translation>
@@ -451,6 +450,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="6612358246767739896">Chráněný obsah</translation>
 <translation id="662080504995468778">Zůstat</translation>
 <translation id="6635327442719709864">Když je tato možnost zapnutá, mohou weby žádat o použití sériových portů. Když je vypnutá, weby sériové porty používat nemohou.</translation>
+<translation id="6678072580827808850">Provést bezpečnostní kontrolu</translation>
 <translation id="6683865262523156564">Tento web je ve skupině, která může sledovat vaši aktivitu. Skupinu definoval vlastník <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profilové fotky</translation>
 <translation id="6697925417670533197">Aktivní stahování</translation>
@@ -485,7 +485,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:
 <translation id="7141896414559753902">Bránit webům v zobrazování vyskakovacích oken a v přesměrování (doporučeno)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Obnovit</translation>
-<translation id="7180865173735832675">Personalizovat</translation>
 <translation id="7188508872042490670">Data webu v zařízení</translation>
 <translation id="7201549776650881587">Touto akcí vymažete veškerá data a soubory cookie, které uložily weby v doméně <ph name="ORIGIN"/> nebo její aplikací na ploše</translation>
 <translation id="7203150201908454328">Rozbaleno</translation>

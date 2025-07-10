@@ -1519,7 +1519,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls()
-                        || BottomToolbarConfiguration.isToolbarBottomAnchored());
+                        || (isToolbarPhone()
+                                && BottomToolbarConfiguration.isToolbarBottomAnchored()));
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
@@ -1528,10 +1529,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void updateMenuButtonState() {
-        // No need to change the state if bottom controls are not enabled.
-        if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) return;
-
-        BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
+        if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+            BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
+        } else {
+            BraveMenuButtonCoordinator.setMenuFromBottom(
+                    isToolbarPhone() && BottomToolbarConfiguration.isToolbarBottomAnchored());
+        }
     }
 
     @Override
@@ -1588,5 +1591,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 showPlaylistButton(playlistItems);
             }
         }
+    }
+
+    private boolean isToolbarPhone() {
+        return BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class);
     }
 }

@@ -327,10 +327,10 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4034992002364254340">Samle alle relaterte faner i et nytt vindu</translation>
 <translation id="8012125596344613514">Foreslåtte tema</translation>
 <translation id="7529120186020617755">Skriv inn et tema du vil fokusere på ...</translation>
-<translation id="6847541693235449912">Gå videre</translation>
+<translation id="6847541693235449912">Start</translation>
 <translation id="2079545284768500474">Angre</translation>
 <translation id="1533980864758658574">Nytt vindu opprettet for <ph name="TOPIC"/></translation>
-<translation id="7985042437720138349">Denne funksjonen sender data om de åpne fanene dine til Leo, som er Braves KI-drevne nettleserassistent.</translation>
+<translation id="7985042437720138349">Denne funksjonen sender data om de åpne fanene dine til Leo, som er Braves KI-drevne assistent.</translation>
 <translation id="6165508094623778733">Finn ut mer</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
 <translation id="1035309871698658326">Når det er åpent, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem.</translation>
@@ -344,6 +344,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8081858229109418493">Profilnavn og -ikon</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="984275831282074731">Betalingsmåter</translation>
+<translation id="6278858909990433658">Importer profil fortsatt i bruk</translation>
+<translation id="9071187015476020102">For å importere utvidelser og andre innstillinger, må du først lukke nettleseren du importer fra.</translation>
 <translation id="2044383478723007273">Brave farger</translation>
 <translation id="1807246157184219062">Lyst</translation>
 <translation id="2414886740292270097">Mørkt</translation>
@@ -738,7 +740,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="8055509865174199683">Vis Leo i kontekstmenyen på nettsteder</translation>
 <translation id="1529674267267221673">Leo vises i kontekstmenyen når du høyreklikker på et nettsted. Dette sender kontekst fra den gjeldende nettsiden til Leo.</translation>
 <translation id="5226020406479918122">Fanefokus-modus</translation>
-<translation id="3705539672403311123">Aktiver fanesortering på søkesiden. Når det er åpent, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem. <ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/>.</translation>
+<translation id="3705539672403311123">Aktiver fanesortering på søkesiden. Når den er åpen, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem. <ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/>.</translation>
 <translation id="8172263161008556851">Vis foreslåtte spørsmål i samtalen</translation>
 <translation id="5781842473834867765">Lagre samtaleloggen min</translation>
 <translation id="1082960401708055995">Dersom du deaktiverer lagring av samtaler vil alle samtalene dine slettes permanent. Dette kan ikke angres.</translation>
@@ -762,7 +764,7 @@ Leo AI. Dette kan ikke angres.</translation>
 <translation id="7634775528597575156">Serverendepunkt</translation>
 <translation id="6374563306438145841">API-nøkkel</translation>
 <translation id="3295756655687327124">Støtte for bilder</translation>
-<translation id="1415432774589088566">Viser om modellen har støtte for bilder, f. eks. llama 3.2b vision</translation>
+<translation id="1415432774589088566">Viser om modellen har støtte for bilder, f. eks. llama 3.2b Vision</translation>
 <translation id="8008271349880309090">Navnet på modellen slik det vil vises i modellvalgmenyen</translation>
 <translation id="1355326130503900056">Navnet på modellen slik det skal vises i forespørselen til serveringsrammeverket, dvs. phi-3 (merk at hvis dette navnet ikke samsvarer nøyaktig med det som forventes av server-rammeverket, vil ikke integrasjonen fungere)</translation>
 <translation id="3213787232304349732">Nettadressen der rammeverket ditt søker etter forespørsler. Dersom du ikke er sikker, kan du sjekke dokumentasjonen om rammeverket. For Ollama, er dette for eksempel alltid http://localhost:11434/v1/chat/completions</translation>
@@ -826,4 +828,7 @@ Leo AI. Dette kan ikke angres.</translation>
 <translation id="5318548116565208315">Bonbon-avatar: mais</translation>
 <translation id="1959966725083452288">Bonbon-avatar: kongelig</translation>
 <translation id="2039034364578911089">Bonbon-avatar: ninja</translation>
+<translation id="154702742922788359">Åpningsmodus</translation>
+<translation id="2249111429176737533">Åpne som vindu med faner</translation>
+<translation id="7022756207310403729">Åpne i nettleser</translation>
 </translationbundle>

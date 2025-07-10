@@ -154,3 +154,35 @@ export const ScreenshotLink = styled.a`
     text-decoration: underline;
   }
 `
+
+export const Dropdown = styled.select`
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  background-color: ${(p) => p.theme.color.background02};
+  box-shadow: none;
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+  resize: none;
+  font-size: 13px;
+  font-family: ${p => p.theme.fontFamily.body};
+  font-weight: normal;
+  padding: 10px;
+  margin: 0px;
+  color: ${(p) => p.theme.color.text01};
+  border-radius: 4px;
+  & > option {
+    color: ${(p) => p.theme.color.text01};
+  }
+  & > option.hidden {
+    display: none;
+  }
+  :invalid {
+    color: ${(p) => p.theme.color.text03};
+    font-weight: normal;
+    font-size: 12px;
+    font-family: ${p => p.theme.fontFamily.body};
+  }
+  :focus {
+    outline: none;
+  }
+`

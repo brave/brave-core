@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SIDEBAR" desc="Title for a toggle button to show or hide sidebar">
+    Sidebar
+  </message>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_WALLET" desc="Title for a toggle button to show or hide wallet">
+    Wallet
+  </message>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_AI_CHAT" desc="Title for a toggle button to show or hide AI Chat">
+    Leo AI
+  </message>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_VPN" desc="Title for a toggle button to show or hide VPN">
+    VPN
+  </message>
+  <message name="IDS_CUSTOMIZE_TOOLBAR_CATEGORY_BRAVE_MENU" desc="Title for the Brave menu category in the customize toolbar page">
+    Brave Menu
+  </message>
+</grit-part>

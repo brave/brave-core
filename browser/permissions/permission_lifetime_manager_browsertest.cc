@@ -69,9 +69,8 @@ constexpr TestCase kTestCases[] = {
      blink::PermissionType::BRAVE_ETHEREUM},
     {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
      ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA},
-    {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qrud"
-     "2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
-     ContentSettingsType::BRAVE_CARDANO, blink::PermissionType::BRAVE_CARDANO}};
+    {"1815_0_0_0", ContentSettingsType::BRAVE_CARDANO,
+     blink::PermissionType::BRAVE_CARDANO}};
 
 constexpr char kPreTestDataFileName[] = "pre_test_data";
 

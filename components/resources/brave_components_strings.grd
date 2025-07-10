@@ -235,7 +235,7 @@
         Customize list
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is the selected search engine">
-        Search the web privately
+        Search the web privately with AI
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is not the selected search engine">
         Search the web
@@ -463,14 +463,28 @@
       <!-- WebUI webcompat reporter resources -->
       <if expr="not is_android">
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site isn't working as expected:</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_NON_HTTP_EXPLANATION" desc="Notifies the user that non-HTTP/HTTPS browser pages cannot be reported">This page cannot be reported because it was not served over HTTP/HTTPS.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_LOCAL_EXPLANATION" desc="Notifies the user that local pages (i.e. via localhost) cannot be reported">This page is a local web page and is not eligible for reporting.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">This is an error page. It cannot be reported as a broken site.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_INFO_APOPUP_EXPL" desc="Informs user about auto populating of the contact information.">If you provide contact info it will be stored for future reports.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2" desc="Thanks the user for sending the report, and informs them that relevant website information will be reported to Brave servers.">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_INFO_LINK" desc="Text for link to webcompat report wiki page.">Learn more.</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_LABEL" desc="Label for a dropdown containing categories of issues on a webpage">What's the main issue you're seeing?</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_PLACEHOLDER" desc="Placeholder text that instructs the user to select one of the following categories of issues on a webpage">Select one option</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS" desc="Category of website problems relating to visible advertisements">Ads are still visible</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK" desc="Category of website problems relating to blank pages or missing content">Blank page or missing content</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SCROLL" desc="Category of website problems relating to inability to scroll on the page">Can't scroll</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_FORM" desc="Category of website problems relating to form entry elements not working">Can't enter text in a form</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_COOKIE" desc="Category of website problems relating to visible cookie notices">Visible cookie-consent notice</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ANTIADBLOCK" desc="Category of website problems relating to appeals to disable the user's adblocker">There's an anti-adblock measure</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_TRACKING" desc="Category of website problems relating to unblocked tracking or analytics scripts">Unblocked tracking/analytics script</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER" desc="Category of website problems relating to visible newsletter popups">Newsletter popup</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL" desc="Category of website problems relating to visible social media icons or sharing requests">Social widget</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT" desc="Category of website problems relating to visible chatbot or customer service chat buttons">Chat widget</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER" desc="Category of miscellaneous website problems">Other</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the details field in the broken website report">Additional details</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_OPTIONAL_FIELD" desc="Appended to a field label in the broken website report if it is not required to be filled out">(optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL" desc="Label for the checkbox for attaching a screenshot with the broken website report">Include screenshot of the current page</message>
@@ -786,10 +800,6 @@
       <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
 
-      <message name="IDS_PAGE_INFO_BRAVE_WEBTORRENT" desc="The message showed to the user in the HTTP info bubble view when viewing a webtorrent: page">
-        You're viewing a WebTorrent page
-      </message>
-
       <message name="IDS_TEST_STRING_FOR_PLACEHOLDERS" desc="Only for test purpose. Don't need to translate">
         Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
       </message>
@@ -815,6 +825,7 @@
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
         <part file="email_aliases_strings.grdp" />
+        <part file="customize_toolbar_ui_strings.grdp" />
       </if>
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
@@ -823,6 +834,7 @@
       <if expr="enable_playlist">
         <part file="playlist_strings.grdp" />
       </if>
+      <part file="../brave_account/resources/brave_account_strings.grdp" />
     </messages>
   </release>
 </grit>

@@ -1,0 +1,74 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import("//build/config/ozone.gni")
+import("//build/config/ui.gni")
+
+source_set("vertical_tabs") {
+  sources = [
+    "vertical_tab_strip_region_view.cc",
+    "vertical_tab_strip_region_view.h",
+    "vertical_tab_strip_root_view.cc",
+    "vertical_tab_strip_root_view.h",
+    "vertical_tab_strip_widget_delegate_view.cc",
+    "vertical_tab_strip_widget_delegate_view.h",
+  ]
+
+  if (is_mac) {
+    sources += [ "vertical_tab_strip_region_view_mac.mm" ]
+  }
+  deps = [
+    "//base",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/components/constants",
+    "//brave/components/vector_icons",
+    "//chrome/app:command_ids",
+    "//chrome/browser/profiles",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui:browser_list",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/tabs",
+    "//chrome/browser/ui/views/toolbar",
+    "//chrome/common:constants",
+    "//components/prefs",
+    "//ui/views",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [
+    "vertical_tab_strip_browsertest.cc",
+    "vertical_tab_strip_root_view_browsertest.cc",
+  ]
+
+  deps = [
+    ":vertical_tabs",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/base:test_support",
+    "//ui/views",
+    "//ui/views:test_support",
+  ]
+
+  if (use_aura) {
+    deps += [ "//ui/aura:test_support" ]
+  }
+
+  if (use_ozone) {
+    deps += [
+      "//ui/ozone",
+      "//ui/platform_window/common",
+    ]
+  }
+}

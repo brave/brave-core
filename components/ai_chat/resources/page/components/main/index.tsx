@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
-import { useConversation, useSupportsAttachments } from '../../state/conversation_context'
+import { useConversation, useIsNewConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
@@ -32,10 +32,8 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
-import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
 import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
 import ToolsMenu from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
@@ -44,6 +42,7 @@ import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
+import TabsMenu from '../filter_menu/tabs_menu'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -83,16 +82,7 @@ function Main() {
     conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
-
-  const isLastTurnBraveSearchSERPSummary =
-    conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
-
-  const showContextToggle =
-    (conversationContext.conversationHistory.length === 0 ||
-      isLastTurnBraveSearchSERPSummary) &&
-    !!conversationContext.associatedContentInfo.length
-
-  const showAttachments = useSupportsAttachments()
+  const showAttachments = useIsNewConversation()
     && conversationContext.showAttachments
     && aiChatContext.tabs.length > 0
 
@@ -196,7 +186,11 @@ function Main() {
   })
 
   return (
-    <main className={styles.main} ref={setMainElement}>
+    <main className={classnames({
+      [styles.main]: true,
+      [styles.mainPanel]: !aiChatContext.isStandalone,
+      [styles.mainMobile]: aiChatContext.isMobile
+    })} ref={setMainElement}>
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
@@ -249,13 +243,10 @@ function Main() {
                   </div>
                 )}
 
-                {conversationContext.associatedContentInfo && conversationContext.shouldSendPageContents && (
-                  <div className={styles.siteTitleContainer}>
-                    <SiteTitle size='default' />
-                  </div>
-                )}
-
-                <div ref={scrollAnchor}>
+                <div
+                  className={styles.aichatIframeContainer}
+                  ref={scrollAnchor}
+                >
                   {!!conversationContext.conversationUuid &&
                     <aiChatContext.conversationEntriesComponent
                       onIsContentReady={setIsContentReady}
@@ -345,11 +336,6 @@ function Main() {
             <Attachments />
           </div>)}
         <div className={styles.input}>
-          {showContextToggle && (
-            <div className={styles.toggleContainer}>
-              <PageContextToggle />
-            </div>
-          )}
           <ToolsMenu
             isOpen={conversationContext.isToolsMenuOpen}
             setIsOpen={conversationContext.setIsToolsMenuOpen}
@@ -357,16 +343,17 @@ function Main() {
             categories={aiChatContext.actionList}
             handleClick={conversationContext.handleActionTypeClick}
           />
+          {!hasConversationStarted && <TabsMenu />}
           <InputBox
             conversationStarted={hasConversationStarted}
             context={{ ...conversationContext, ...aiChatContext }}
             maybeShowSoftKeyboard={maybeShowSoftKeyboard}
           />
         </div>
-        <DeleteConversationModal />
-        <OpenExternalLinkModal />
-        <RateMessagePrivacyModal />
       </div>
+      <DeleteConversationModal />
+      <OpenExternalLinkModal />
+      <RateMessagePrivacyModal />
     </main>
   )
 }

@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Attiva il supporto per bypassare gli URL di tracciamento di reindirizzamento di primo livello.</translation>
 <translation id="94154759592465111">Blocca gli Script</translation>
 <translation id="7714773920987474116">Blocca JavaScript (potrebbe non far funzionare alcuni siti)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Blocca i contenuti consigliati di YouTube</translation>
 <translation id="1005372663692637999">Blocca l’avvio del video successivo e le end card su youtube.com.</translation>
 <translation id="5152595963250646670">Blocca gli elementi di disturbo di YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostra i risultati più popolari</translation>
 <translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
 <translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
-<translation id="412411722208944922">Motori di ricerca rapidi</translation>
-<translation id="2836969042340015500">Motori di ricerca rapida</translation>
-<translation id="9120455214794270250">Mostra la barra di ricerca rapida</translation>
-<translation id="1052991798173010693">Motori di ricerca utilizzati attualmente</translation>
-<translation id="335303688425891752">Tieni premuto per cambiare l'ordine</translation>
 <translation id="9148058034647219655">Esci</translation>
 <translation id="8047754398610073499">Blocca le notifiche di consenso ai cookie</translation>
 <translation id="2621893359845808115">Blocca i pop-up dei siti che ti chiedono di accettare/rifiutare i cookie</translation>
@@ -677,6 +671,7 @@ Confermi di voler procedere?</translation>
 <translation id="3952797765659730604">Inserisci, incolla o importa il file stringa della chiave privata o il file JSON.</translation>
 <translation id="569068482611873351">Importazione...</translation>
 <translation id="4522570452068850558">Dettagli</translation>
+<translation id="3114681061018999547">Importo protetto:</translation>
 <translation id="3784455785234192852">Blocca</translation>
 <translation id="4412698727486357573">Centro assistenza</translation>
 <translation id="8239147115686034860">Blocca automaticamente il portafoglio Brave</translation>
@@ -808,18 +803,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2199215899212542417">TIPO DI FUNZIONE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Niente dati</translation>
 <translation id="1105525362447173583">Firma dapp Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ha inviato <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ha inviato <ph name="ASSET"/> n.<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ha approvato <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Approvato senza limitazioni: <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> ha effettuato un cambio - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Non approvata</translation>
-<translation id="8034530868111548216">Approvato</translation>
-<translation id="6015436276085482001">Respinta</translation>
-<translation id="6666273175654835609">Inviata</translation>
-<translation id="2331676293859649642">Confermata</translation>
-<translation id="8214232307424031138">Firmata</translation>
-<translation id="1165039591588034296">Errore</translation>
 <translation id="2561824823738097741">Stai utilizzando il browser più veloce?</translation>
 <translation id="2065971949051836200">Internet 3 volte più veloce è già sul tuo telefono. Usa Brave per navigare sul web.</translation>
 <translation id="2888278614497184977">Brave = navigazione 3 volte più veloce</translation>
@@ -1223,9 +1206,9 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="4010699428656610296">Unisci altre schede in un’altra finestra Brave.</translation>
 <translation id="4306918392910017801">Riconnetti VPN automaticamente</translation>
 <translation id="1599073346542156922">Come attivarlo:</translation>
-<translation id="7001163334415463127">1. Apri le impostazioni del tuo dispositivo dall’app drawer o toccando il pulsante di seguito.</translation>
+<translation id="7001163334415463127">1. Apri le impostazioni del tuo dispositivo dall'elenco delle app o toccando il pulsante qui sotto.</translation>
 <translation id="887443138775437899">2. Cerca la VPN di Brave e tocca l’icona delle impostazioni a destra.</translation>
-<translation id="7546805138087561624">3. Attiva <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre attiva<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> per abilitarlo.</translation>
+<translation id="7546805138087561624">3. Attiva <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN Sempre attiva<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> per abilitarlo.</translation>
 <translation id="2446001600399646984">Nota: a causa delle limitazioni di Android, l'opzione "blocca connessioni senza VPN" non funziona come programmato. <ph name="LEARN_MORE_START"/>Scopri di più.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Apri le impostazioni Android</translation>
 <translation id="2728518864712716830">Aggiornamento scaricato.</translation>
@@ -1238,4 +1221,5 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6859935199732075666">Mostra gli errori di Navigazione Sicura</translation>
 <translation id="2735247450315842119">Consenti gli screenshot nelle finestre private</translation>
 <translation id="8420414929552321089">Se abilitata, questa opzione rende visibili le finestre private anche quando vengono aperte altre app.</translation>
+<translation id="7956713633345437162">Segnalibri mobili</translation>
 </translationbundle>

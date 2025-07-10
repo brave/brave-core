@@ -12,7 +12,6 @@
 # pytype: disable=import-error
 
 import os
-import sys
 import time
 
 from benchmarks import loading_metrics_category
@@ -36,9 +35,7 @@ def CreateCoreTBMOptions(metric_list):
   tbm_options = timeline_based_measurement.Options()
   loading_metrics_category.AugmentOptionsForLoadingMetrics(tbm_options)
   cat_filter = tbm_options.config.chrome_trace_config.category_filter
-  if sys.platform != 'darwin':
-    # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
-    cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
+  cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
   tbm_options.ExtendTimelineBasedMetric(metric_list)
   return tbm_options
 
@@ -56,9 +53,6 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
     metrics = ['braveNavigationMetric']
-    if sys.platform != 'darwin':
-      # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
-      metrics.append('braveGeneralUmaMetric')
     return CreateCoreTBMOptions(metrics)
 
   def WillRunStory(self, _story):
@@ -74,7 +68,7 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
                 component='Blink>Loader',
                 documentation_url='https://bit.ly/loading-benchmarks')
 class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
-  """ A benchmark measuring loading performance of desktop sites. """
+  """ A benchmark measuring loading startup performance of desktop sites. """
   SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
   SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
 
@@ -83,9 +77,7 @@ class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
     metrics = []
-    if sys.platform != 'darwin':
-      # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
-      metrics.extend(['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
+    metrics.extend(['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
     return CreateCoreTBMOptions(metrics)
 
   @classmethod

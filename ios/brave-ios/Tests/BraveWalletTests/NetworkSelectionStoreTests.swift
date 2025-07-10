@@ -30,7 +30,8 @@ import XCTest
           accounts: [.previewAccount],
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
-          solDappSelectedAccount: nil
+          solDappSelectedAccount: nil,
+          adaDappSelectedAccount: nil
         )
       )
     }
@@ -236,7 +237,8 @@ import XCTest
           accounts: accountInfosDict.values.flatMap { $0 },
           selectedAccount: accountInfosDict[.eth]?.first,
           ethDappSelectedAccount: accountInfosDict[.eth]?.first,
-          solDappSelectedAccount: accountInfosDict[.sol]?.first
+          solDappSelectedAccount: accountInfosDict[.sol]?.first,
+          adaDappSelectedAccount: nil
         )
       )
     }

@@ -1,4 +1,7 @@
 include_rules = [
   "-content",
+  "+components/keyed_service",
+  "+components/prefs",
+  "+components/variations",
   "-third_party/blink",
 ]

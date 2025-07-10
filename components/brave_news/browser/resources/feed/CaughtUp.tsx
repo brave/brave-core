@@ -24,7 +24,7 @@ export default function CaughtUp() {
   return <Container align='center' justify='stretch'>
     <hr />
     <Flex align='center' gap={6}>
-      <Icon name='check-circle-outline' /> <span>{getLocale('braveNewsCaughtUp')}</span>
+      <Icon name='check-circle-outline' /> <span>{getLocale(S.BRAVE_NEWS_CAUGHT_UP)}</span>
     </Flex>
     <hr />
   </Container>

@@ -27,8 +27,6 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
 
   MOCK_METHOD(void, OnNotifyDidInitializeAds, ());
 
-  MOCK_METHOD(void, OnNotifyLocaleDidChange, (const std::string&));
-
   MOCK_METHOD(void, OnNotifyPrefDidChange, (const std::string&));
 
   MOCK_METHOD(void,

@@ -17,9 +17,7 @@ namespace search_engine_utils {
 SearchEngineType GetEngineType(const GURL& url) {
   SearchEngineType type = GetEngineType_ChromiumImpl(url);
   if (type == SEARCH_ENGINE_OTHER) {
-    const auto& brave_engines_map =
-        TemplateURLPrepopulateData::GetBraveEnginesMap();
-    for (const auto& entry : brave_engines_map) {
+    for (const auto& entry : TemplateURLPrepopulateData::kBraveEngines) {
       const auto* engine = entry.second;
       if (SameDomain(url, GURL(engine->search_url))) {
         return engine->type;

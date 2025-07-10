@@ -42,6 +42,5 @@ export const style = scoped.css`
     scrollbar-width: none;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
   }
 `

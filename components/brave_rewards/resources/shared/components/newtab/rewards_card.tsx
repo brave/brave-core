@@ -16,10 +16,8 @@ import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
 import { OptInIcon } from '../icons/optin_icon'
 import { InfoIcon } from './icons/info_icon'
-import { CaretIcon } from '../icons/caret_icon'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
-import { NewTabLink } from '../new_tab_link'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { TosUpdateNotice } from '../tos_update_notice'
@@ -251,12 +249,6 @@ export function RewardsCard (props: Props) {
               <div className='tooltip'>
                 <style.earningsTooltip>
                   {getString('rewardsEarningInfoText')}
-                  <style.manageAds>
-                    <NewTabLink href={urls.settingsURL}>
-                      {getString('rewardsManageAds')}
-                      <CaretIcon direction='right' />
-                    </NewTabLink>
-                  </style.manageAds>
                 </style.earningsTooltip>
               </div>
             </style.earningsInfo>

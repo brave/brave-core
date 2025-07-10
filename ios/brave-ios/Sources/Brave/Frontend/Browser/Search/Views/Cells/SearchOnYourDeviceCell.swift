@@ -4,7 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Data
 import DesignSystem
+import PlaylistUI
 import Shared
 import Storage
 import UIKit
@@ -34,17 +36,26 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     let badge: UIImage
   }
 
+  private let thumbnailLoader: MediaThumbnailLoader = .init()
+
   private let stackView = UIStackView().then {
     $0.spacing = 16.0
     $0.alignment = .center
   }
 
-  private let imageContainerView = UIView().then {
+  private let imageContainerView = UIView()
+  private let siteImageContainerView = UIView().then {
     $0.layer.cornerRadius = 8.0
     $0.layer.cornerCurve = .continuous
     $0.backgroundColor = UIColor(braveSystemName: .containerHighlight)
   }
-  private let imageView = UIImageView().then {
+  private let siteImageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+  }
+  private let thumbnailImageView = UIImageView().then {
+    $0.layer.cornerRadius = 4.0
+    $0.layer.cornerCurve = .continuous
+    $0.layer.masksToBounds = true
     $0.contentMode = .scaleAspectFit
   }
 
@@ -89,7 +100,9 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     setTheme()
 
     contentView.addSubview(stackView)
-    imageContainerView.addSubview(imageView)
+    imageContainerView.addSubview(thumbnailImageView)
+    imageContainerView.addSubview(siteImageContainerView)
+    siteImageContainerView.addSubview(siteImageView)
     stackView.addArrangedSubview(imageContainerView)
     stackView.addArrangedSubview(textStackView)
     stackView.addArrangedSubview(badgeImageView)
@@ -105,8 +118,17 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
       $0.width.height.equalTo(36.0)
     }
 
-    imageView.snp.makeConstraints {
+    siteImageContainerView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+    siteImageView.snp.makeConstraints {
       $0.size.equalTo(20.0)
+      $0.center.equalToSuperview()
+    }
+    thumbnailImageView.snp.makeConstraints {
+      $0.width.equalToSuperview()
+      $0.height.equalTo(27.0)
       $0.center.equalToSuperview()
     }
 
@@ -162,10 +184,13 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   func setSite(_ site: Site, isPrivateBrowsing: Bool) {
-    imageView.loadFavicon(
+    siteImageView.loadFavicon(
       for: site.tileURL,
       isPrivateBrowsing: isPrivateBrowsing
     )
+    siteImageContainerView.isHidden = false
+    thumbnailImageView.isHidden = true
+
     if site.siteType == .tab {
       titleLabel.text = site.title
 
@@ -196,5 +221,52 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     if let badgeImage = site.siteType.icon?.template {
       badgeImageView.image = badgeImage
     }
+  }
+
+  func setPlaylistItem(_ item: PlaylistItem) {
+    Task {
+      if let assetURL = URL(string: item.mediaSrc), let pageURL = URL(string: item.pageSrc) {
+        do {
+          try await thumbnailLoader.loadThumbnail(assetURL: assetURL, pageURL: pageURL)
+          if let image = thumbnailLoader.image {
+            thumbnailImageView.image = image
+          } else {
+            thumbnailImageView.loadFavicon(for: pageURL, isPrivateBrowsing: false)
+          }
+        } catch {
+          thumbnailImageView.loadFavicon(for: pageURL, isPrivateBrowsing: false)
+        }
+      }
+    }
+
+    siteImageContainerView.isHidden = true
+    thumbnailImageView.isHidden = false
+
+    titleLabel.text = item.name
+
+    let detailTextForPlaylistSuggestions = NSMutableAttributedString()
+    detailTextForPlaylistSuggestions.append(
+      NSAttributedString(
+        string: Strings.searchSuggestionOpenPlaylistActionTitle,
+        attributes: [
+          .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
+          .foregroundColor: UIColor(braveSystemName: .textSecondary),
+        ]
+      )
+    )
+    if item.duration != 0 {
+      detailTextForPlaylistSuggestions.append(
+        NSAttributedString(
+          string: " · \(Duration.seconds(item.duration).formatted(.timestamp))",
+          attributes: [
+            .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
+            .foregroundColor: UIColor(braveSystemName: .textSecondary),
+          ]
+        )
+      )
+    }
+    subtitleLabel.attributedText = detailTextForPlaylistSuggestions
+
+    badgeImageView.image = UIImage(braveSystemNamed: "leo.product.playlist")
   }
 }

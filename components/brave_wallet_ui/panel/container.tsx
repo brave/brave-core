@@ -6,6 +6,9 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
+// constants
+import { BraveWallet } from '../constants/types'
+
 // Components
 import {
   ConnectWithSite, //
@@ -166,9 +169,13 @@ function Container() {
   }
 
   if (selectedPanel === 'connectWithSite') {
-    const accountsToConnect = accounts.filter((account) =>
-      connectingAccounts.includes(account.address.toLowerCase()),
-    )
+    const accountsToConnect = accounts.filter((account) => {
+      if (account.accountId.coin === BraveWallet.CoinType.ADA) {
+        return connectingAccounts.includes(account.accountId.uniqueKey)
+      } else {
+        return connectingAccounts.includes(account.address.toLowerCase())
+      }
+    })
     return (
       <PanelWrapper
         width={390}

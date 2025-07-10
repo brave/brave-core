@@ -184,7 +184,7 @@ class BookmarkManager {
 
   public func byFrequency(
     query: String? = nil,
-    completion: @escaping ([WebsitePresentable]) -> Void
+    completion: @escaping ([Bookmarkv2]) -> Void
   ) {
     // Invalid query.. BraveCore doesn't store bookmarks based on last visited.
     // Any last visited bookmarks would show up in `History` anyway.

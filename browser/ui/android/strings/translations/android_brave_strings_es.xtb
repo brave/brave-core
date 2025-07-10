@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Habilitar la compatibilidad para derivar las URL de seguimiento de redirección de nivel superior.</translation>
 <translation id="94154759592465111">Bloquear Scripts</translation>
 <translation id="7714773920987474116">Bloquea JavaScript (podría provocar el mal funcionamiento de algunos sitios web)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Bloquear contenido recomendado de YouTube</translation>
 <translation id="1005372663692637999">Bloquea los elementos de las pantallas siguiente y final en youtube.com.</translation>
 <translation id="5152595963250646670">Bloquear distracciones en YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostrar las sugerencias principales</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
-<translation id="412411722208944922">Buscadores rápidos</translation>
-<translation id="2836969042340015500">Buscadores rápidos</translation>
-<translation id="9120455214794270250">Mostrar barra de búsqueda rápida</translation>
-<translation id="1052991798173010693">Utilizado actualmente en buscadores</translation>
-<translation id="335303688425891752">Pulsación larga para cambiar el orden</translation>
 <translation id="9148058034647219655">Salir</translation>
 <translation id="8047754398610073499">Bloquear avisos de consentimiento de cookies</translation>
 <translation id="2621893359845808115">Bloquea las ventanas emergentes que solicitan aceptar o rechazar las cookies en sitios web</translation>
@@ -677,6 +671,7 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="3952797765659730604">Introduce, pega o importa el archivo o JSON que contenga la cadena de tu clave privada.</translation>
 <translation id="569068482611873351">Importar…</translation>
 <translation id="4522570452068850558">Detalles</translation>
+<translation id="3114681061018999547">Protección</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="4412698727486357573">Centro de Ayuda</translation>
 <translation id="8239147115686034860">Bloquear automáticamente la cartera de Brave</translation>
@@ -808,18 +803,6 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="2199215899212542417">TIPO DE FUNCIÓN: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No hay datos</translation>
 <translation id="1105525362447173583">Firmar transacción de aplicación descentralizada de Solana</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> sent <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ha enviado <ph name="ASSET"/> n.º <ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ha aprobado <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Se ha aprobado una cantidad ilimitada de <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Intercambio de <ph name="ACCOUNT_NAME"/> - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">No aprobado</translation>
-<translation id="8034530868111548216">Aprobado</translation>
-<translation id="6015436276085482001">Rechazado</translation>
-<translation id="6666273175654835609">Enviado</translation>
-<translation id="2331676293859649642">Confirmado</translation>
-<translation id="8214232307424031138">Signed</translation>
-<translation id="1165039591588034296">Error</translation>
 <translation id="2561824823738097741">¿Estás usando ya el navegador más rápido?</translation>
 <translation id="2065971949051836200">Ahora puedes navegar 3 veces más rápido desde tu teléfono. Usa Brave para navegar por Internet.</translation>
 <translation id="2888278614497184977">Brave = navegación por Internet 3 veces más rápida</translation>
@@ -1238,4 +1221,5 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="6859935199732075666">Mostrar errores de navegación segura</translation>
 <translation id="2735247450315842119">Permitir capturas de pantalla en pestañas privadas</translation>
 <translation id="8420414929552321089">Si se permite, las pestañas privadas también serán visibles cuando varias aplicaciones estén abiertas.</translation>
+<translation id="7956713633345437162">Marcadores móviles</translation>
 </translationbundle>

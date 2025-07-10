@@ -10,6 +10,7 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
@@ -50,7 +51,6 @@
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
-#include "components/webui/chrome_urls/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
 #include "content/public/common/buildflags.h"
@@ -225,6 +225,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
+      &policy::kDevicePolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kDeviceLocalAccountPolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kCbcmPolicyInvalidationWithDirectMessagesEnabled,
+      &policy::kUserPolicyInvalidationWithDirectMessagesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kFingerprintingProtectionUx,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
@@ -238,6 +242,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
+      &switches::kEnableImprovedGuestProfileMenu,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
@@ -263,6 +268,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if BUILDFLAG(IS_ANDROID)
@@ -289,6 +295,10 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
 // it via its helper function
 TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
   EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
+}
+
+TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
+  EXPECT_TRUE(features::HasTabSearchToolbarButton());
 }
 
 #if !BUILDFLAG(IS_ANDROID)

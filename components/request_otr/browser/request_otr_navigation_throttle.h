@@ -6,17 +6,15 @@
 #ifndef BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_NAVIGATION_THROTTLE_H_
 
-#include <memory>
 #include <string>
-#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "content/public/browser/navigation_throttle.h"
-#include "url/gurl.h"
 
 class PrefService;
+class GURL;
 
 namespace ephemeral_storage {
 class EphemeralStorageService;
@@ -40,7 +38,7 @@ class RequestOTRNavigationThrottle : public content::NavigationThrottle {
   RequestOTRNavigationThrottle& operator=(const RequestOTRNavigationThrottle&) =
       delete;
 
-  static std::unique_ptr<RequestOTRNavigationThrottle> MaybeCreateThrottleFor(
+  static void MaybeCreateAndAdd(
       content::NavigationThrottleRegistry& registry,
       RequestOTRService* request_otr_service,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,

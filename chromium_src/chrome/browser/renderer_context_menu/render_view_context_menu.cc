@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
@@ -66,6 +67,10 @@
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
@@ -433,6 +438,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
+    case IDC_OPEN_IN_CONTAINER:
+      return true;
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -693,6 +700,26 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveRenderViewContextMenu::BuildContainersMenu() {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers) ||
+      !params_.link_url.is_valid()) {
+    return;
+  }
+
+  containers_submenu_model_ = std::make_unique<containers::ContainersMenuModel>(
+      *this, *GetProfile()->GetPrefs());
+
+  menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
+                                     IDS_CXMENU_OPEN_IN_CONTAINER,
+                                     containers_submenu_model_.get());
+}
+
+Browser* BraveRenderViewContextMenu::GetBrowserToOpenSettings() {
+  return GetBrowser();
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call our implementation, not the one in the base class.
   // Assumption:
@@ -747,6 +774,23 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     }
   }
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveRenderViewContextMenu::OnContainerSelected(
+    const containers::mojom::ContainerPtr& container) {
+  // TODO(https://github.com/brave/brave-browser/issues/47118)
+  // Open |params_.link_url| in the selected container.
+  NOTIMPLEMENTED();
+}
+
+base::flat_set<std::string>
+BraveRenderViewContextMenu::GetCurrentContainerIds() {
+  // TODO(https://github.com/brave/brave-browser/issues/47118) If the tab is in
+  // a container, return the container ID.
+  NOTIMPLEMENTED();
+  return {};
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveRenderViewContextMenu::SetAIEngineForTesting(
     std::unique_ptr<ai_chat::EngineConsumer> ai_engine) {
@@ -834,6 +878,10 @@ void BraveRenderViewContextMenu::InitMenu() {
         index.value(), IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  BuildContainersMenu();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 void BraveRenderViewContextMenu::NotifyMenuShown() {

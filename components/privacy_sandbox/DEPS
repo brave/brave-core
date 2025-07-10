@@ -1,0 +1,6 @@
+include_rules = [
+  "+components/browsing_topics",
+  "+components/content_settings",
+  "+components/prefs",
+  "+components/privacy_sandbox",
+]

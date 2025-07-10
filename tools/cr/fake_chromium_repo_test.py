@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import json
+from pathlib import Path
 import unittest
 
 from test.fake_chromium_repo import FakeChromiumRepo
@@ -217,26 +218,34 @@ class FakeChromiumRepoTest(unittest.TestCase):
         """Tests the run_apply_patches method of FakeChromiumRepo."""
         # Add a file to the Chromium repo and commit it
         file_path_chromium = 'modified_file_chromium.txt'
-        content_chromium = 'This is a modified file in the Chromium repo.'
+        content_chromium = ('This is the original chromium content\n'
+                            'Second line waiting change\n'
+                            'Final line.')
         self.repo.write_and_stage_file(file_path_chromium, content_chromium,
                                        self.repo.chromium)
         self.repo.commit('Add file to Chromium repo', self.repo.chromium)
 
         # Add a file to another repo and commit it
         repo_path = 'test_repo'
+        self.repo.add_repo(repo_path)
         file_path_repo = 'modified_file_repo.txt'
-        content_repo = 'This is a modified file in the test_repo.'
+        content_repo = ('This is the original test_repo content\n'
+                        'Second line waiting change\n'
+                        'Final line.')
         self.repo.write_and_stage_file(file_path_repo, content_repo,
                                        self.repo.chromium / repo_path)
         self.repo.commit('Add file to test_repo',
                          self.repo.chromium / repo_path)
 
         # Modify the files without staging (leave the tree dirty)
-        new_content_chromium = 'Modified content in Chromium repo.'
         full_file_path_chromium = self.repo.chromium / file_path_chromium
+        self.assertEqual(full_file_path_chromium.read_text(), content_chromium)
+        new_content_chromium = content_chromium.replace(
+            'Second line waiting change', 'Modified second line')
         full_file_path_chromium.write_text(new_content_chromium)
 
-        new_content_repo = 'Modified content in test_repo.'
+        new_content_repo = content_repo.replace('Second line waiting change',
+                                                'Modified second line')
         full_file_path_repo = self.repo.chromium / repo_path / file_path_repo
         full_file_path_repo.write_text(new_content_repo)
 
@@ -249,16 +258,14 @@ class FakeChromiumRepoTest(unittest.TestCase):
                                    self.repo.chromium / repo_path)
 
         # Run apply_patches to apply the patches
-        self.repo.run_apply_patches()
+        self.assertEqual(full_file_path_chromium.read_text(), content_chromium)
+        self.assertEqual(full_file_path_repo.read_text(), content_repo)
+        self.assertEqual([], self.repo.run_apply_patches())
 
         # Verify the changes from the patches are applied
-        with full_file_path_chromium.open('r') as f:
-            applied_content_chromium = f.read()
-        self.assertEqual(applied_content_chromium, new_content_chromium)
-
-        with full_file_path_repo.open('r') as f:
-            applied_content_repo = f.read()
-        self.assertEqual(applied_content_repo, new_content_repo)
+        self.assertEqual(full_file_path_chromium.read_text(),
+                         new_content_chromium)
+        self.assertEqual(full_file_path_repo.read_text(), new_content_repo)
 
     def test_run_apply_patches_with_failures(self):
         """Tests run_apply_patches with conflict/corrupted patch failures."""
@@ -284,8 +291,7 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.repo._run_git_command(['checkout', '.'], self.repo.chromium)
 
         # Run apply_patches to apply the patches
-        apply_failures = self.repo.run_apply_patches()
-        self.assertEqual(len(apply_failures), 0)
+        self.assertEqual([], self.repo.run_apply_patches())
 
         # Reset the changes to simulate a clean state
         self.repo._run_git_command(['checkout', '.'], self.repo.chromium)
@@ -302,14 +308,18 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/b.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
 
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/a.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -326,14 +336,18 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/b.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/a.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -350,14 +364,18 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/b.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
-        failure = (next((f for f in apply_failures
-                         if f['patchPath'] == 'patches/a.txt.patch'), None))
+        failure = (next(
+            (f for f in apply_failures
+             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
+            None))
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], None)
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')

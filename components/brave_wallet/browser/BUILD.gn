@@ -330,8 +330,8 @@ static_library("browser") {
     "//components/content_settings/core/browser",
     "//components/country_codes",
     "//components/keyed_service/core",
+    "//components/pref_registry",
     "//components/prefs",
-    "//components/sync_preferences",
     "//components/update_client",
     "//components/value_store",
     "//crypto",
@@ -368,8 +368,8 @@ static_library("browser") {
     ]
 
     deps += [
-      "internal:orchard_bundle",
-      "internal/orchard_storage:orchard_storage",
+      "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+      "//brave/components/brave_wallet/browser/internal/orchard_storage:orchard_storage",
       "//sql",
     ]
   }
@@ -442,6 +442,11 @@ source_set("utils") {
     "//third_party/boringssl",
     "//ui/base",
     "//url",
+
+    # TODO(https://github.com/brave/brave-browser/issues/46940): Remove this
+    # dependency to version_info once crash dumps have been collected for
+    # MakeChainIdLowerCase.
+    "//base/version_info:version_info",
   ]
 
   public_deps = [ "//brave/components/brave_wallet/common" ]
@@ -515,16 +520,34 @@ source_set("transaction") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "bitcoin/bitcoin_test_utils.cc",
+    "bitcoin/bitcoin_test_utils.h",
+    "cardano/cardano_test_utils.cc",
+    "cardano/cardano_test_utils.h",
+    "json_rpc_service_test_utils.cc",
+    "json_rpc_service_test_utils.h",
     "solana_test_utils.cc",
     "solana_test_utils.h",
     "test_utils.cc",
     "test_utils.h",
+    "zcash/zcash_test_utils.cc",
+    "zcash/zcash_test_utils.h",
   ]
 
   deps = [
     ":browser",
-    "//brave/components/brave_wallet/browser/test:test_support",
+    ":test_data",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
+    "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
   ]
@@ -535,6 +558,8 @@ source_set("test_support") {
     "//components/value_store",
     "//components/value_store:test_support",
   ]
+
+  data = [ "$root_gen_dir/brave/wallet-test-data/" ]
 }  # source_set("test_support")
 
 generated_types("generated_blockchain_list_schemas") {
@@ -543,7 +568,7 @@ generated_types("generated_blockchain_list_schemas") {
   deps = [ "//base" ]
   visibility = [
     ":browser",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
 }
 
@@ -553,7 +578,7 @@ generated_types("generated_json_rpc_responses") {
   deps = [ "//base" ]
   visibility = [
     ":browser",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
 }
 
@@ -563,7 +588,7 @@ generated_types("generated_simulation_responses") {
   deps = [ "//base" ]
   visibility = [
     ":browser",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
 }
 
@@ -573,7 +598,7 @@ generated_types("generated_swap_responses") {
   deps = [ "//base" ]
   visibility = [
     ":browser",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
 }
 
@@ -590,6 +615,216 @@ generated_types("meld_integration_responses") {
   deps = [ "//base" ]
   visibility = [
     ":browser",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "account_discovery_manager_unittest.cc",
+    "account_resolver_delegate_impl_unittest.cc",
+    "asset_ratio_response_parser_unittest.cc",
+    "asset_ratio_service_unittest.cc",
+    "bip39_unittest.cc",
+    "bitcoin/bitcoin_block_tracker_unittest.cc",
+    "bitcoin/bitcoin_hardware_keyring_unittest.cc",
+    "bitcoin/bitcoin_hd_keyring_unittest.cc",
+    "bitcoin/bitcoin_import_keyring_unittest.cc",
+    "bitcoin/bitcoin_knapsack_solver_unittest.cc",
+    "bitcoin/bitcoin_max_send_solver_unittest.cc",
+    "bitcoin/bitcoin_rpc_unittest.cc",
+    "bitcoin/bitcoin_serializer_unittest.cc",
+    "bitcoin/bitcoin_transaction_unittest.cc",
+    "bitcoin/bitcoin_tx_manager_unittest.cc",
+    "bitcoin/bitcoin_tx_meta_unittest.cc",
+    "bitcoin/bitcoin_tx_state_manager_unittest.cc",
+    "bitcoin/bitcoin_wallet_service_unittest.cc",
+    "blockchain_list_parser_unittest.cc",
+    "blockchain_registry_unittest.cc",
+    "brave_wallet_p3a_unittest.cc",
+    "brave_wallet_prefs_unittest.cc",
+    "brave_wallet_utils_unittest.cc",
+    "cardano/cardano_block_tracker_unittest.cc",
+    "cardano/cardano_create_transaction_task_unittest.cc",
+    "cardano/cardano_get_utxos_task_unittest.cc",
+    "cardano/cardano_hd_keyring_unittest.cc",
+    "cardano/cardano_knapsack_solver_unittest.cc",
+    "cardano/cardano_max_send_solver_unittest.cc",
+    "cardano/cardano_rpc_schema_unittest.cc",
+    "cardano/cardano_rpc_unittest.cc",
+    "cardano/cardano_serializer_unittest.cc",
+    "cardano/cardano_transaction_unittest.cc",
+    "cardano/cardano_tx_manager_unittest.cc",
+    "cardano/cardano_tx_meta_unittest.cc",
+    "cardano/cardano_tx_state_manager_unittest.cc",
+    "cardano/cardano_wallet_service_unittest.cc",
+    "eip1559_transaction_unittest.cc",
+    "eip2930_transaction_unittest.cc",
+    "eth_abi_decoder_unittest.cc",
+    "eth_block_tracker_unittest.cc",
+    "eth_data_builder_unittest.cc",
+    "eth_data_parser_unittest.cc",
+    "eth_gas_utils_unittest.cc",
+    "eth_nonce_tracker_unittest.cc",
+    "eth_requests_unittest.cc",
+    "eth_response_parser_unittest.cc",
+    "eth_topics_builder_unittest.cc",
+    "eth_transaction_unittest.cc",
+    "eth_tx_manager_unittest.cc",
+    "eth_tx_meta_unittest.cc",
+    "eth_tx_state_manager_unittest.cc",
+    "ethereum_keyring_unittest.cc",
+    "fil_block_tracker_unittest.cc",
+    "fil_nonce_tracker_unittest.cc",
+    "fil_requests_unittest.cc",
+    "fil_response_parser_unittest.cc",
+    "fil_transaction_unittest.cc",
+    "fil_tx_manager_unittest.cc",
+    "fil_tx_meta_unittest.cc",
+    "fil_tx_state_manager_unittest.cc",
+    "filecoin_keyring_unittest.cc",
+    "internal/hd_key_common_unittest.cc",
+    "internal/hd_key_ed25519_slip23_unittest.cc",
+    "internal/hd_key_ed25519_unittest.cc",
+    "internal/hd_key_unittest.cc",
+    "internal/secp256k1_signature_unittest.cc",
+    "json_keystore_parser_unittest.cc",
+    "json_rpc_requests_helper_unittest.cc",
+    "json_rpc_response_parser_unittest.cc",
+    "json_rpc_service_test_utils_unittest.cc",
+    "json_rpc_service_unittest.cc",
+    "keyring_service_migrations_unittest.cc",
+    "keyring_service_prefs_unittest.cc",
+    "keyring_service_unittest.cc",
+    "meld_integration_response_parser_unittest.cc",
+    "meld_integration_service_unittest.cc",
+    "network_manager_unittest.cc",
+    "nft_metadata_fetcher_unittest.cc",
+    "password_encryptor_unittest.cc",
+    "permission_utils_unittest.cc",
+    "rlp_decode_unittest.cc",
+    "rlp_encode_unittest.cc",
+    "simple_hash_client_unittest.cc",
+    "simulation_request_helper_unittest.cc",
+    "simulation_response_parser_unittest.cc",
+    "simulation_service_unittest.cc",
+    "siwe_message_parser_unittest.cc",
+    "sns_resolver_task_unittest.cc",
+    "solana_account_meta_unittest.cc",
+    "solana_block_tracker_unittest.cc",
+    "solana_compiled_instruction_unittest.cc",
+    "solana_instruction_builder_unittest.cc",
+    "solana_instruction_data_decoder_unittest.cc",
+    "solana_instruction_decoded_data_unittest.cc",
+    "solana_instruction_unittest.cc",
+    "solana_keyring_unittest.cc",
+    "solana_message_address_table_lookup_unittest.cc",
+    "solana_message_header_unittest.cc",
+    "solana_message_unittest.cc",
+    "solana_requests_unittest.cc",
+    "solana_response_parser_unittest.cc",
+    "solana_transaction_unittest.cc",
+    "solana_tx_manager_unittest.cc",
+    "solana_tx_meta_unittest.cc",
+    "solana_tx_state_manager_unittest.cc",
+    "swap_request_helper_unittest.cc",
+    "swap_response_parser_unittest.cc",
+    "swap_service_unittest.cc",
+    "tx_meta_unittest.cc",
+    "tx_state_manager_unittest.cc",
+    "tx_storage_delegate_impl_unittest.cc",
+    "unstoppable_domains_dns_resolve_unittest.cc",
+    "unstoppable_domains_multichain_calls_unittest.cc",
+    "wallet_data_files_installer_unittest.cc",
+    "zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
+    "zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
+    "zcash/zcash_create_transparent_transaction_task_unittest.cc",
+    "zcash/zcash_grpc_utils_unittest.cc",
+    "zcash/zcash_keyring_unittest.cc",
+    "zcash/zcash_resolve_transaction_status_task_unittest.cc",
+    "zcash/zcash_serializer_unittest.cc",
+    "zcash/zcash_transaction_unittest.cc",
+    "zcash/zcash_transaction_utils_unittest.cc",
+    "zcash/zcash_wallet_service_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    ":constants",
+    ":generated_json_rpc_responses",
+    ":generated_swap_responses",
+    ":hd_keyring",
+    ":pref_names",
+    ":test_data",
+    ":test_support",
+    ":transaction",
+    ":utils",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
+    "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
+    "//brave/components/brave_wallet/browser/internal:hd_key",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:rust_lib",
+    "//brave/components/brave_wallet/common:test_support",
+    "//brave/components/constants",
+    "//brave/components/decentralized_dns/core",
+    "//brave/components/ipfs",
+    "//brave/components/json",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//components/component_updater:test_support",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//components/update_client",
+    "//net:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+    "//ui/base:base",
+    "//url",
+  ]
+
+  if (enable_orchard) {
+    sources += [
+      "internal/hd_key_zip32_unittest.cc",
+      "internal/orchard_block_scanner_unittest.cc",
+      "internal/orchard_bundle_manager_unittest.cc",
+      "internal/orchard_storage/orchard_storage_unittest.cc",
+      "internal/orchard_sync_state_unittest.cc",
+      "zcash/zcash_auto_sync_manager_unittest.cc",
+      "zcash/zcash_blocks_batch_scan_task_unittest.cc",
+      "zcash/zcash_get_chaintip_status_task_unittest.cc",
+      "zcash/zcash_scan_blocks_task_unittest.cc",
+      "zcash/zcash_shield_sync_service_unittest.cc",
+      "zcash/zcash_verify_chain_state_task_unittest.cc",
+    ]
+    deps += [
+      "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+      "//brave/components/brave_wallet/browser/internal:test_support",
+      "//brave/components/brave_wallet/browser/internal/orchard_storage",
+    ]
+  }
+
+  if (!is_ios) {
+    deps += [
+      ":permission_utils",
+      "//components/permissions",
+      "//content/test:test_support",
+    ]
+  }
+}  # source_set("unit_tests")
+
+copy("test_data") {
+  testonly = true
+  sources =
+      [ "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json" ]
+  outputs = [ "$root_gen_dir/brave/wallet-test-data/{{source_file_part}}" ]
 }

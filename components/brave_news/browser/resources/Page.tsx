@@ -101,7 +101,7 @@ export default function FeedV2() {
     </SidebarContainer>
     <Flex align='center' direction='column' gap={spacing.l}>
       {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
-        {getLocale('braveNewsNewContentAvailable')}
+        {getLocale(S.BRAVE_NEWS_NEW_CONTENT_AVAILABLE)}
       </LoadNewContentButton>}
       <Feed feed={feedV2} onViewCountChange={reportViewCount} onSessionStart={reportSessionStart} />
     </Flex>
@@ -109,10 +109,10 @@ export default function FeedV2() {
     <ButtonsContainer className='brave-news-feed-controls'>
       <ButtonSpacer>
         {isSmall && <React.Suspense fallback={null}><SidebarMenu /></React.Suspense>}
-        <SettingsButton onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
+        <SettingsButton onClick={() => setCustomizePage('news')} title={getLocale(S.BRAVE_NEWS_CUSTOMIZE_FEED)}>
           <Icon name="tune" />
         </SettingsButton>
-        <SettingsButton isLoading={!feedV2} title={getLocale('braveNewsRefreshFeed')} onClick={() => {
+        <SettingsButton isLoading={!feedV2} title={getLocale(S.BRAVE_NEWS_REFRESH_FEED)} onClick={() => {
           refreshFeedV2()
         }}><Icon name="refresh" /></SettingsButton>
       </ButtonSpacer>

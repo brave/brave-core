@@ -83,15 +83,21 @@ export const style = scoped.css`
     background: inherit;
   }
 
-  .engine-picker-button {
+  .engine-icon {
     --leo-icon-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
 
+  .engine-picker-button {
     anchor-name: --engine-picker-button;
 
     order: 1;
     padding: 7px;
     border-radius: 4px;
     border: solid 1px transparent;
+    display: flex;
+    align-items: center;
 
     &:hover {
       background-color: ${color.container.interactive};

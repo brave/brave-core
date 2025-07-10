@@ -409,7 +409,7 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
     all_conversation_handlers.push_back(conversation_handler.get());
   }
   for (auto* conversation_handler : all_conversation_handlers) {
-    MaybeUnloadConversation(conversation_handler);
+    QueueMaybeUnloadConversation(conversation_handler);
   }
   // Remove any conversation metadata that isn't connected to a still-alive
   // handler.
@@ -653,15 +653,11 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
   std::move(callback).Run(status, std::move(info));
 }
 
-void AIChatService::MaybeUnloadConversation(
-    ConversationHandler* conversation_handler) {
+bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // Don't unload if there is active UI for the conversation
-  if (conversation_handler->IsAnyClientConnected()) {
-    return;
+  if (conversation->IsAnyClientConnected()) {
+    return false;
   }
-
-  bool has_history = conversation_handler->HasAnyHistory();
-  bool is_temporary = conversation_handler->GetIsTemporary();
 
   // We can keep a conversation with history in memory until there is no active
   // content unless it is a temporary chat which we remove it if no active UI.
@@ -669,9 +665,10 @@ void AIChatService::MaybeUnloadConversation(
   // there is no request in progress). However, we can only do this when
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
-  if (!is_temporary && conversation_handler->IsAssociatedContentAlive() &&
-      has_history) {
-    return;
+  if (!conversation->GetIsTemporary() &&
+      conversation->IsAssociatedContentAlive() &&
+      conversation->HasAnyHistory()) {
+    return false;
   }
 
   // Don't unload conversations that are in the middle of a request (they will
@@ -693,12 +690,45 @@ void AIChatService::MaybeUnloadConversation(
   // 1. History is enabled: We'll reload the conversation from storage.
   // 2. History is disabled: We'll show a blank conversation.
 
-  if (conversation_handler->IsRequestInProgress()) {
+  if (conversation->IsRequestInProgress()) {
+    return false;
+  }
+
+  return true;
+}
+
+void AIChatService::QueueMaybeUnloadConversation(
+    ConversationHandler* conversation_handler) {
+  // Only queue the MaybeUnload if we can unload the conversation now.
+  if (!CanUnloadConversation(conversation_handler)) {
     return;
   }
 
+  constexpr base::TimeDelta kUnloadDelay = base::Seconds(5);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&AIChatService::MaybeUnloadConversation,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     conversation_handler->GetWeakPtr()),
+      kUnloadDelay);
+}
+
+void AIChatService::MaybeUnloadConversation(
+    base::WeakPtr<ConversationHandler> conversation_handler) {
+  // If the conversation has already been destroyed there's nothing to do.
+  if (!conversation_handler) {
+    return;
+  }
+
+  if (!CanUnloadConversation(conversation_handler.get())) {
+    return;
+  }
+
+  bool has_history = conversation_handler->HasAnyHistory();
+  bool is_temporary = conversation_handler->GetIsTemporary();
+
   auto uuid = conversation_handler->get_conversation_uuid();
-  conversation_observations_.RemoveObservation(conversation_handler);
+  conversation_observations_.RemoveObservation(conversation_handler.get());
   conversation_handlers_.erase(uuid);
 
   DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
@@ -765,7 +795,7 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   // We don't unload a conversation if it has a request in progress, so check
   // again when that changes.
   if (!in_progress) {
-    MaybeUnloadConversation(handler);
+    QueueMaybeUnloadConversation(handler);
   }
 }
 
@@ -840,7 +870,13 @@ void AIChatService::HandleNewEntry(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
         .WithArgs(handler->get_conversation_uuid(), entry.Clone(),
-                  conversation->model_key, std::nullopt);
+                  std::nullopt);
+
+    // update the model name if it changed for this entry
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationModelKey))
+        .WithArgs(handler->get_conversation_uuid(), conversation->model_key);
 
     if (maybe_associated_content.has_value() &&
         !conversation->associated_content.empty()) {
@@ -877,7 +913,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     ai_chat_metrics_->RecordConversationUnload(
         handler->get_conversation_uuid());
   }
-  MaybeUnloadConversation(handler);
+  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::OnConversationTitleChanged(
@@ -931,7 +967,7 @@ void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
   if (handler->associated_content_manager()->HasAssociatedContent()) {
     return;
   }
-  MaybeUnloadConversation(handler);
+  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::GetConversations(GetConversationsCallback callback) {

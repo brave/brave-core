@@ -13,7 +13,8 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import { AttachmentImageItem, AttachmentSpinnerItem } from '../attachment_item'
+import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import usePromise from '$web-common/usePromise'
 
 type Props = Pick<
   ConversationContext,
@@ -38,13 +39,29 @@ type Props = Pick<
   | 'conversationHistory'
   | 'associatedContentInfo'
   | 'isUploadingFiles'
+  | 'shouldSendPageContents'
+  | 'disassociateContent'
+  | 'associateDefaultContent'
+  | 'setShowAttachments'
 > &
-  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
+  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs'>
 
-interface InputBoxProps {
+export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
+}
+
+function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
+  const { result: attachmentsPlaceholder } = usePromise(async () => getter(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount), [attachmentsCount, getter])
+
+  if (conversationStarted) return getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)
+
+  if (shouldSendPageContents && attachmentsCount > 0) {
+    return attachmentsPlaceholder
+  }
+
+  return getLocale(S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)
 }
 
 function InputBox(props: InputBoxProps) {
@@ -113,6 +130,20 @@ function InputBox(props: InputBoxProps) {
     }
   }, [props.context.pendingMessageImages])
 
+  const placeholderText = usePlaceholderText(
+    props.context.associatedContentInfo.length,
+    props.context.shouldSendPageContents,
+    props.conversationStarted,
+    props.context.getPluralString
+  )
+
+  const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
+  const showPageAttachments = props.context.associatedContentInfo.length > 0
+    && props.context.shouldSendPageContents
+    && !props.conversationStarted
+  const isSendButtonDisabled =
+    props.context.shouldDisableUserInput || props.context.inputText === ''
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -124,8 +155,7 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles) && (
+      {(showImageAttachments || showPageAttachments) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -134,10 +164,18 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
+          {showPageAttachments && props.context.associatedContentInfo.map((content) => (
+            <AttachmentPageItem
+              key={content.contentId}
+              title={content.title}
+              url={content.url.url}
+              remove={() => props.context.disassociateContent(content)}
+            />
+          ))}
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)} />
           )}
-          {props.context.pendingMessageImages?.map((img, i) => (
+          {showImageAttachments && props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
               uploadedImage={img}
@@ -148,13 +186,11 @@ function InputBox(props: InputBoxProps) {
       )}
       <div
         className={styles.growWrap}
-        data-replicated-value={props.context.inputText}
+        data-replicated-value={props.context.inputText || placeholderText}
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? S.CHAT_UI_PLACEHOLDER_LABEL
-            : S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)}
+          placeholder={placeholderText}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -179,12 +215,11 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                e.stopPropagation()
-                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-              }
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }
             }
             title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
           >
@@ -211,28 +246,42 @@ function InputBox(props: InputBoxProps) {
             getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
+            associateDefaultContent={props.context.associateDefaultContent}
+            conversationStarted={props.conversationStarted}
             isMobile={props.context.isMobile}
+            tabs={props.context.tabs}
+            setShowAttachments={props.context.setShowAttachments}
           />
         </div>
         <div>
           {props.context.isGenerating ? (
             <Button
               fab
-              kind='plain-faint'
+              kind='filled'
+              className={classnames({
+                [styles.button]: true,
+                [styles.streamingButton]: true
+              })}
               onClick={handleStopGenerating}
               title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
             >
-              <Icon name='stop-circle' />
+              <Icon name='stop-circle' className={styles.streamingIcon} />
             </Button>
           ) : (
             <Button
               fab
-              kind='plain-faint'
+              kind='filled'
+              className={classnames({
+                [styles.button]: true,
+                [styles.sendButtonDisabled]: isSendButtonDisabled
+              })}
               onClick={handleSubmit}
-              disabled={props.context.shouldDisableUserInput}
+              disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
             >
-              <Icon name='send' />
+              <Icon className={classnames({
+                [styles.sendIconDisabled]: isSendButtonDisabled
+              })} name='arrow-up' />
             </Button>
           )}
         </div>

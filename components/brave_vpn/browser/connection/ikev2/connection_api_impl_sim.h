@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/system_vpn_connection_api_impl_base.h"

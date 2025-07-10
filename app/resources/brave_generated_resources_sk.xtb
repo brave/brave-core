@@ -326,7 +326,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1233913566967531780">Tab focus</translation>
 <translation id="4034992002364254340">Zhromaždiť všetky súvisiace karty do nového okna</translation>
 <translation id="8012125596344613514">Odporúčané témy</translation>
-<translation id="7529120186020617755">Zadajte tému, na ktorú sa chcete sústrediť...</translation>
+<translation id="7529120186020617755">Zadajte tému, na ktorú sa chcete zamerať...</translation>
 <translation id="6847541693235449912">Prejsť</translation>
 <translation id="2079545284768500474">Otvoriť</translation>
 <translation id="1533980864758658574">Pre <ph name="TOPIC"/> bolo vytvorené nové okno</translation>
@@ -344,6 +344,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8081858229109418493">Meno a ikonka profilu</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="984275831282074731">Spôsoby platby</translation>
+<translation id="6278858909990433658">Import profilu je stále používaný</translation>
+<translation id="9071187015476020102">Na import rozšírení alebo iných nastavení najprv zatvorte prehliadač, z ktorého importujete.</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
 <translation id="1807246157184219062">Svetlý</translation>
 <translation id="2414886740292270097">Tmavý</translation>
@@ -610,7 +612,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="294985549514492876">Webové aplikácie (PWA)</translation>
 <translation id="7029809446516969842">Heslá</translation>
 <translation id="6011308810877101166">Zlepšovať návrhy vyhľadávania</translation>
-<translation id="2332576387809612040">Keď je funkcia zapnutá, Brave odosiela to, čo zadáte do adresného riadka alebo vyhľadávacieho poľa, do vášho predvoleného vyhľadávača, aby vám mohol ponúknuť lepšie návrhy. Keď je funkcia vypnutá, zobrazuje len návrhy generované vo vašom zariadení. V súkromných oknách je táto funkcia vždy vypnutá.</translation>
+<translation id="2332576387809612040">Keď je funkcia zapnutá, Brave odosiela to, čo zadáte do adresného riadka alebo vyhľadávacieho poľa, do vášho predvoleného vyhľadávača, aby vám mohol ponúknuť lepšie návrhy. Keď je funkcia vypnutá, zobrazuje len návrhy generované na vašom zariadení. V súkromných oknách je táto funkcia vždy vypnutá.</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
 <translation id="5522403133543437426">Vyhľadávač používaný v adresnom riadku.</translation>
@@ -780,7 +782,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="7265212806651512211">Ešte ste nepripojili model.</translation>
 <translation id="7304802428852949897">Vaše modely</translation>
 <translation id="7435587476558117990">Pripojte svoj vlastný model LLM alebo model LLM tretej strany k Leo a používajte ich v prehliadači.</translation>
-<translation id="8137606697798069075">Použite akýkoľvek framework kompatibilný s protokolom OpenAI Chat, napríklad Ollama. <ph name="BEGIN_LINK"/>Viac informácií<ph name="END_LINK"/></translation>
+<translation id="8137606697798069075">Použiť akýkoľvek framework kompatibilný s protokolom OpenAI Chat, napríklad Ollama. <ph name="BEGIN_LINK"/>Viac informácií<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Uložiť model</translation>
 <translation id="6304169450064541679">Systémová výzva</translation>
 <translation id="3081947790648024460">Vlastné inštrukcie a/alebo kontext, ktoré sú dané modelu na usmernenie jeho odpovedí alebo dodanie špecifického štýlu. Použite %datetime% tam, kde chcete, aby sa vložil aktuálny dátum a čas.</translation>
@@ -826,4 +828,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="5318548116565208315">Avatar bonbón kukurica</translation>
 <translation id="1959966725083452288">Avatar bonbón kráľovský</translation>
 <translation id="2039034364578911089">Avatar bonbón nindža</translation>
+<translation id="154702742922788359">Režim otvorenia</translation>
+<translation id="2249111429176737533">Otvoriť ako okno s kartami</translation>
+<translation id="7022756207310403729">Otvoriť v prehliadači</translation>
 </translationbundle>

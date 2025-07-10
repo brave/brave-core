@@ -139,16 +139,14 @@ describe('EmailAliasModal', () => {
   })
 
   it('handles alias creation', async () => {
-    await act(async () => {
-      render(
-        <EmailAliasModal
-        editing={false}
-        mainEmail={mockEmail}
-        aliasCount={0}
-        onReturnToMain={mockOnReturnToMain}
-        emailAliasesService={mockEmailAliasesService}
-      />)
-    })
+    render(
+      <EmailAliasModal
+      editing={false}
+      mainEmail={mockEmail}
+      aliasCount={0}
+      onReturnToMain={mockOnReturnToMain}
+      emailAliasesService={mockEmailAliasesService}
+    />)
 
     // Wait for generated alias
     await waitFor(() => {
@@ -198,9 +196,7 @@ describe('EmailAliasModal', () => {
 
     // Click regenerate button
     const regenerateButton = screen.getByTitle('emailAliasesRefreshButtonTitle')
-    await act(async () => {
-      clickLeoButton(regenerateButton)
-    })
+    clickLeoButton(regenerateButton)
 
     // Check that generateAlias was called again
     await waitFor(() => {
@@ -209,18 +205,16 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows limit reached message in bubble mode', async () => {
-    await act(async () => {
-      render(
-        <EmailAliasModal
-          editing={false}
-          mainEmail={mockEmail}
-          aliasCount={5}
-          onReturnToMain={mockOnReturnToMain}
-        emailAliasesService={mockEmailAliasesService}
-          bubble={true}
-        />
-      )
-    })
+    render(
+      <EmailAliasModal
+        editing={false}
+        mainEmail={mockEmail}
+        aliasCount={5}
+        onReturnToMain={mockOnReturnToMain}
+      emailAliasesService={mockEmailAliasesService}
+        bubble={true}
+      />
+    )
 
     // Wait for limit check
     await waitFor(() => {
@@ -404,10 +398,8 @@ describe('EmailAliasModal', () => {
     )
 
     // Click delete button
-    await act(async () => {
-      const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-      clickLeoButton(deleteButton)
-    })
+    const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
+    clickLeoButton(deleteButton)
 
     // Wait for error message to appear. Delete button should be enabled.
     await waitFor(() => {

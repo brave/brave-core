@@ -210,27 +210,27 @@ class BrockitTest(unittest.TestCase):
         staged_files = self.fake_chromium_src._run_git_command(
             ['diff', '--cached', '--name-only'], self.fake_chromium_src.brave)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium, test_file_chromium)),
-            staged_files)
+                    self.fake_chromium_src.chromium,
+                    test_file_chromium)).as_posix(), staged_files)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium / 'v8', test_file_v8)),
-            staged_files)
+                    self.fake_chromium_src.chromium / 'v8',
+                    test_file_v8)).as_posix(), staged_files)
         self.assertIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
                     self.fake_chromium_src.chromium / 'third_party/test1',
-                    test_file_third_party)), staged_files)
+                    test_file_third_party)).as_posix(), staged_files)
 
         # Verify that unrelated patches are not staged
         self.assertNotIn(
-            str(
+            Path(
                 self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium, unrelated_file)),
-            staged_files)
+                    self.fake_chromium_src.chromium,
+                    unrelated_file)).as_posix(), staged_files)
 
     def test_continuation_file_save_and_load(self):
         """Test saving and loading of ContinuationFile."""
@@ -362,6 +362,352 @@ class BrockitTest(unittest.TestCase):
         # Check double delete is noop
         brockit.ContinuationFile.clear()
 
+    ############################################################################
+    #### Test Versioned class
 
-if __name__ == "__main__":
+    def test_versioned_basic_initialisation(self):
+        """Test Versioned with explicit target_version provided."""
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('135.0.7037.1')
+
+        versioned = brockit.Versioned(base_version=base_version,
+                                      target_version=target_version)
+
+        self.assertEqual(versioned.base_version, base_version)
+        self.assertEqual(versioned.target_version, target_version)
+
+    def test_versioned_without_target_version(self):
+        """Test Versioned without target_version (defaults to HEAD)."""
+        # Set up a specific version in the test repository
+        test_version = "135.0.7037.1"
+        self.fake_chromium_src.update_brave_version(test_version)
+
+        base_version = brockit.Version('134.0.7035.0')
+
+        versioned = brockit.Versioned(base_version=base_version)
+
+        self.assertEqual(versioned.base_version, base_version)
+        self.assertEqual(str(versioned.target_version), test_version)
+
+    def test_versioned_base_same_as_target(self):
+        """Test Versioned with base version same as target."""
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('134.0.7035.0')
+
+        with self.assertRaises(brockit.InvalidInputException) as context:
+            brockit.Versioned(base_version=base_version,
+                              target_version=target_version)
+
+        self.assertIn(
+            ('Target version 134.0.7035.0 is not higher than base version '
+             '134.0.7035.0'), str(context.exception))
+
+    def test_versioned_target_lower_than_base(self):
+        """Test Versioned target lower than base."""
+        base_version = brockit.Version('135.0.7037.1')
+        target_version = brockit.Version('134.0.7035.0')  # Lower than base
+
+        with self.assertRaises(brockit.InvalidInputException) as context:
+            brockit.Versioned(base_version=base_version,
+                              target_version=target_version)
+
+        self.assertIn(
+            ('Target version 134.0.7035.0 is not higher than base version '
+             '135.0.7037.1'), str(context.exception))
+
+    def test_versioned_head_target_version_lower_than_base(self):
+        """Test Versioned with None target_version validates against HEAD."""
+        # Set up a version in HEAD that's lower than base - should raise
+        # exception
+        head_version = "133.0.7000.0"
+        self.fake_chromium_src.update_brave_version(head_version)
+
+        base_version = brockit.Version('134.0.7035.0')  # Higher than HEAD
+
+        with self.assertRaises(brockit.InvalidInputException) as context:
+            brockit.Versioned(base_version=base_version)
+
+        self.assertIn(
+            ('Target version 133.0.7000.0 is not higher than base version '
+             '134.0.7035.0'), str(context.exception))
+
+    def test_versioned_save_updated_patches(self):
+        """Test Versioned._save_updated_patches method."""
+        # Set up versions
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('135.0.7037.1')
+
+        # Create a Versioned instance
+        versioned = brockit.Versioned(base_version=base_version,
+                                      target_version=target_version)
+
+        # Create some patch files in the patches directory
+        patch1_path = self.fake_chromium_src.brave_patches / 'test1.patch'
+        patch2_path = self.fake_chromium_src.brave_patches / 'test2.patch'
+        patch3_path = (self.fake_chromium_src.brave_patches / 'v8' /
+                       'test3.patch')
+
+        # Create patch files with content
+        patch1_path.write_text('patch content 1')
+        patch2_path.write_text('patch content 2')
+        patch3_path.parent.mkdir(parents=True, exist_ok=True)
+        patch3_path.write_text('patch content 3')
+
+        # Stage and commit the initial patches
+        self.fake_chromium_src._run_git_command(
+            ['add', str(patch1_path)], self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(
+            ['add', str(patch2_path)], self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(
+            ['add', str(patch3_path)], self.fake_chromium_src.brave)
+        self.fake_chromium_src.commit('Add initial patches',
+                                      self.fake_chromium_src.brave)
+
+        # Modify the patch files (this simulates updated patches)
+        patch1_path.write_text('modified patch content 1')
+        patch2_path.write_text('modified patch content 2')
+        patch3_path.write_text('modified patch content 3')
+
+        # Add a non-patch file to ensure it's not included
+        non_patch_path = (self.fake_chromium_src.brave_patches /
+                          'not_a_patch.txt')
+        non_patch_path.write_text('not a patch file')
+
+        # Call _save_updated_patches
+        versioned._save_updated_patches()
+
+        # Verify the commit was created with the correct message
+        log_output = self.fake_chromium_src._run_git_command(
+            ['log', '-1', '--pretty=format:%s'], self.fake_chromium_src.brave)
+        expected_message = (f'Update patches from Chromium {base_version} to '
+                            f'Chromium {target_version}.')
+        self.assertEqual(log_output, expected_message)
+
+        # Verify that the patch files were staged and committed
+        # Check that there are no unstaged changes for patch files
+        diff_output = self.fake_chromium_src._run_git_command(
+            ['diff', '--name-only', '*.patch'], self.fake_chromium_src.brave)
+        self.assertEqual(diff_output, '')
+
+        # Verify that the non-patch file was not staged
+        status_output = self.fake_chromium_src._run_git_command(
+            ['status', '--porcelain'], self.fake_chromium_src.brave)
+        self.assertIn('?? patches/not_a_patch.txt', status_output)
+
+    def test_versioned_save_updated_patches_no_changes_to_commit(self):
+        """Test _save_updated_patches with nothing to commit."""
+        # Set up versions
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('135.0.7037.1')
+
+        # Create a Versioned instance
+        versioned = brockit.Versioned(base_version=base_version,
+                                      target_version=target_version)
+
+        # Adding a single patch because otherwise the command to add *.patch
+        # files errors out as git doesn't see a single patch file in the repo.
+        # This should have no effect overall.
+        patchfile = self.fake_chromium_src.brave_patches / 'test1.patch'
+        patchfile.write_text('test patch content')
+        self.fake_chromium_src._run_git_command(['add', str(patchfile)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src.commit('Add initial patches',
+                                      self.fake_chromium_src.brave)
+
+        last_commit_log = self.fake_chromium_src._run_git_command(
+            ['log', '-1', '--pretty=format:%s'], self.fake_chromium_src.brave)
+
+        # Call _save_updated_patches with nothing should have no effect to the
+        # repo.
+        versioned._save_updated_patches()
+        self.assertEqual(
+            last_commit_log,
+            self.fake_chromium_src._run_git_command(
+                ['log', '-1', '--pretty=format:%s'],
+                self.fake_chromium_src.brave))
+
+        untracked_patch1 = (self.fake_chromium_src.brave_patches /
+                            'untracked1.patch')
+        untracked_patch2 = (self.fake_chromium_src.brave_patches / 'v8' /
+                            'untracked2.patch')
+
+        untracked_patch1.write_text('untracked patch content 1')
+        untracked_patch2.parent.mkdir(parents=True, exist_ok=True)
+        untracked_patch2.write_text('untracked patch content 2')
+
+        # Untracked patch files should have no effect when calling
+        # `_save_updated_patches`.
+        versioned._save_updated_patches()
+        self.assertEqual(
+            last_commit_log,
+            self.fake_chromium_src._run_git_command(
+                ['log', '-1', '--pretty=format:%s'],
+                self.fake_chromium_src.brave))
+
+        non_patch_file = self.fake_chromium_src.brave / 'foo.txt'
+        non_patch_file.write_text('not a patch file')
+
+        # Untracked non-patch file should have no effect when calling
+        # `_save_updated_patches`.
+        versioned._save_updated_patches()
+        self.assertEqual(
+            last_commit_log,
+            self.fake_chromium_src._run_git_command(
+                ['log', '-1', '--pretty=format:%s'],
+                self.fake_chromium_src.brave))
+
+    def test_versioned_save_rebased_l10n_no_changes_to_commit(self):
+        """Test _save_rebased_l10n with nothing to commit."""
+        # Set up versions
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('135.0.7037.1')
+
+        # Create a Versioned instance
+        versioned = brockit.Versioned(base_version=base_version,
+                                      target_version=target_version)
+
+        # Adding l10n files because otherwise the command to add *.grd, *.grdp,
+        #  *.xtb files errors out as git doesn't see any l10n files in the repo.
+        # This should have no effect overall.
+        grd_file = self.fake_chromium_src.brave / 'test_strings.grd'
+        grdp_file = self.fake_chromium_src.brave / 'test_strings.grdp'
+        xtb_file = self.fake_chromium_src.brave / 'test_strings.xtb'
+
+        grd_file.write_text('<grd>test l10n content</grd>')
+        grdp_file.write_text('<grdp>test l10n content</grdp>')
+        xtb_file.write_text(
+            '<?xml version="1.0" ?><translationbundle></translationbundle>')
+
+        self.fake_chromium_src._run_git_command(['add', str(grd_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(['add', str(grdp_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(['add', str(xtb_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src.commit('Add initial l10n files',
+                                      self.fake_chromium_src.brave)
+
+        last_commit_log = self.fake_chromium_src._run_git_command(
+            ['log', '-1', '--pretty=format:%s'], self.fake_chromium_src.brave)
+
+        # Call _save_rebased_l10n with nothing should have no effect to the
+        # repo.
+        versioned._save_rebased_l10n()
+        self.assertEqual(
+            last_commit_log,
+            self.fake_chromium_src._run_git_command(
+                ['log', '-1', '--pretty=format:%s'],
+                self.fake_chromium_src.brave))
+
+        # Create untracked non-l10n files
+        non_l10n_file = self.fake_chromium_src.brave / 'foo.txt'
+        non_l10n_file.write_text('not an l10n file')
+
+        # Untracked non-l10n file should have no effect when calling
+        # `_save_rebased_l10n`.
+        versioned._save_rebased_l10n()
+        self.assertEqual(
+            last_commit_log,
+            self.fake_chromium_src._run_git_command(
+                ['log', '-1', '--pretty=format:%s'],
+                self.fake_chromium_src.brave))
+
+    def test_versioned_save_rebased_l10n(self):
+        """Test Versioned._save_rebased_l10n method."""
+        # Set up versions
+        base_version = brockit.Version('134.0.7035.0')
+        target_version = brockit.Version('135.0.7037.1')
+
+        # Create a Versioned instance
+        versioned = brockit.Versioned(base_version=base_version,
+                                      target_version=target_version)
+
+        # Create some tracked l10n files and commit them
+        grd_file = self.fake_chromium_src.brave / 'test_strings.grd'
+        grdp_file = self.fake_chromium_src.brave / 'test_strings.grdp'
+        xtb_file = self.fake_chromium_src.brave / 'test_strings.xtb'
+
+        grd_file.write_text('<grd>initial grd content</grd>')
+        grdp_file.write_text('<grdp>initial grdp content</grdp>')
+        xtb_file.write_text(
+            '<?xml version="1.0" ?><translationbundle></translationbundle>')
+
+        self.fake_chromium_src._run_git_command(['add', str(grd_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(['add', str(grdp_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src._run_git_command(['add', str(xtb_file)],
+                                                self.fake_chromium_src.brave)
+        self.fake_chromium_src.commit('Add initial l10n files',
+                                      self.fake_chromium_src.brave)
+
+        # Modify the tracked l10n files
+        grd_file.write_text('<grd>modified grd content</grd>')
+        grdp_file.write_text('<grdp>modified grdp content</grdp>')
+        xtb_file.write_text(
+            '<?xml version="1.0" ?><translationbundle><translation id="test">'
+            'modified</translation></translationbundle>')
+
+        # Create untracked l10n files (these should also be staged since git
+        #  add uses patterns, not -u)
+        untracked_grd = self.fake_chromium_src.brave / 'untracked.grd'
+        untracked_grdp = self.fake_chromium_src.brave / 'untracked.grdp'
+        untracked_xtb = self.fake_chromium_src.brave / 'untracked.xtb'
+
+        untracked_grd.write_text('<grd>untracked grd content</grd>')
+        untracked_grdp.write_text('<grdp>untracked grdp content</grdp>')
+        untracked_xtb.write_text(
+            '<?xml version="1.0" ?><translationbundle><translation '
+            'id="untracked">new</translation></translationbundle>')
+
+        # Add a non-l10n file to ensure it's not included
+        non_l10n_file = self.fake_chromium_src.brave / 'not_l10n.txt'
+        non_l10n_file.write_text('not an l10n file')
+
+        # Call _save_rebased_l10n
+        versioned._save_rebased_l10n()
+
+        # Verify the commit was created with the correct message
+        log_output = self.fake_chromium_src._run_git_command(
+            ['log', '-1', '--pretty=format:%s'], self.fake_chromium_src.brave)
+        expected_message = f'Updated strings for Chromium {target_version}.'
+        self.assertEqual(log_output, expected_message)
+
+        # Verify that both tracked and untracked l10n files were staged and
+        # committed. Check that there are no unstaged changes for l10n files.
+        status_output = self.fake_chromium_src._run_git_command(
+            ['status', '--porcelain'], self.fake_chromium_src.brave)
+
+        # All l10n files should be committed, so no changes should show for them
+        self.assertNotIn('M test_strings.grd', status_output)
+        self.assertNotIn('M test_strings.grdp', status_output)
+        self.assertNotIn('M test_strings.xtb', status_output)
+        self.assertNotIn('?? untracked.grd', status_output)
+        self.assertNotIn('?? untracked.grdp', status_output)
+        self.assertNotIn('?? untracked.xtb', status_output)
+
+        # Verify that the non-l10n file was not staged
+        self.assertIn('?? not_l10n.txt', status_output)
+
+        # Verify that the correct files were committed in the most recent commit
+        committed_files = self.fake_chromium_src._run_git_command(
+            ['show', '--name-only', '--pretty=format:'],
+            self.fake_chromium_src.brave).strip().split('\n')
+        committed_files = [f for f in committed_files
+                           if f]  # Remove empty strings
+
+        # Should contain all l10n files (both tracked modifications and new
+        # untracked files)
+        self.assertIn('test_strings.grd', committed_files)
+        self.assertIn('test_strings.grdp', committed_files)
+        self.assertIn('test_strings.xtb', committed_files)
+        self.assertIn('untracked.grd', committed_files)
+        self.assertIn('untracked.grdp', committed_files)
+        self.assertIn('untracked.xtb', committed_files)
+
+        # Should not contain non-l10n files
+        self.assertNotIn('not_l10n.txt', committed_files)
+
+
+if __name__ == '__main__':
     unittest.main()

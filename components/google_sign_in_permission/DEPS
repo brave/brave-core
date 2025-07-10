@@ -1,5 +1,8 @@
 include_rules = [
   "+base",
+  "+components/content_settings",
+  "+components/prefs",
+  "+components/user_prefs",
   "+content/public/browser",
   "+services/network/public/cpp",
   "+third_party/blink/public/common",

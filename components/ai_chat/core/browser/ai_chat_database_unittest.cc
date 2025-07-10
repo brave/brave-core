@@ -154,6 +154,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     auto& conversation = has_content ? conversations[0] : conversations[1];
     ExpectConversationEquals(FROM_HERE, conversation, metadata);
     EXPECT_EQ(conversation->updated_time, history.front()->created_time);
+    EXPECT_TRUE(conversation->has_content);
 
     // Persist the response entry
     EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
@@ -169,10 +170,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
     // Add another pair of entries
     auto next_history = CreateSampleChatHistory(1u, 1);
-    // Change the model this time
-    std::string new_model_key = "model-2";
-    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone(),
-                                          new_model_key));
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone()));
     EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[1]->Clone()));
 
     // Verify all entries are returned
@@ -422,6 +420,45 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     conversations = db_->GetAllConversations();
     conversation = GetConversation(FROM_HERE, conversations, uuid);
     EXPECT_EQ(conversation->title, updated_title);
+  }
+}
+
+TEST_P(AIChatDatabaseTest, UpdateConversationModelKey) {
+  const std::vector<std::optional<std::string>> initial_model_keys = {
+      "model-1", std::nullopt};
+  for (const auto& initial_model_key : initial_model_keys) {
+    SCOPED_TRACE(testing::Message() << "With initial model key: "
+                                    << initial_model_key.value_or("[null]"));
+
+    const std::string uuid = base::StrCat(
+        {"for_conversation_model_key_", initial_model_key.value_or("null")});
+    std::optional<std::string> updated_model_key;
+    if (initial_model_key.has_value()) {
+      updated_model_key = "model-2";
+    }
+    mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, "title", base::Time::Now(), true, initial_model_key, 0, 0, false,
+        std::vector<mojom::AssociatedContentPtr>());
+
+    // Persist the first entry (and get the response ready)
+    const auto history = CreateSampleChatHistory(1u);
+
+    EXPECT_TRUE(
+        db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+    // Verify initial model key
+    std::vector<mojom::ConversationPtr> conversations =
+        db_->GetAllConversations();
+    auto* conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(conversation->model_key, initial_model_key);
+
+    // Update model key
+    EXPECT_TRUE(db_->UpdateConversationModelKey(uuid, updated_model_key));
+
+    // Verify updated model key
+    conversations = db_->GetAllConversations();
+    conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(conversation->model_key, updated_model_key);
   }
 }
 
@@ -706,6 +743,7 @@ class AIChatDatabaseMigrationTest : public testing::Test,
     OSCryptMocker::SetUp();
     CHECK(temp_directory_.CreateUniqueTempDir());
     database_dump_location_ = database_dump_location_.AppendASCII("brave")
+                                  .AppendASCII("components")
                                   .AppendASCII("test")
                                   .AppendASCII("data")
                                   .AppendASCII("ai_chat");
@@ -949,8 +987,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_TRUE(db_->AddConversation(
         metadata->Clone(), std::vector<std::string>(), history[0]->Clone()));
 
-    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone(),
-                                          conversation_model_key));
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
 
     // Verify model_keys are stored correctly in both conversation and entry
     // level.

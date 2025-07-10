@@ -161,7 +161,8 @@ class SelectAccountTokenStoreTests: XCTestCase {
           ],
           selectedAccount: .mockEthAccount,
           ethDappSelectedAccount: .mockEthAccount,
-          solDappSelectedAccount: .mockSolAccount
+          solDappSelectedAccount: .mockSolAccount,
+          adaDappSelectedAccount: nil
         )
       )
     }
