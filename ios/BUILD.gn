@@ -71,9 +71,12 @@ group("brave_ios") {
   ]
 }
 
-group("brave_ios_tests") {
+group("all_unit_tests") {
   testonly = true
-  public_deps = [ "testing:brave_core_ios_tests" ]
+  public_deps = [
+    "//brave/ios/testing:brave_unit_tests",
+    "//brave/components:brave_components_unittests",
+  ]
 }
 
 brave_core_public_headers = [

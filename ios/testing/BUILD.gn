@@ -6,7 +6,7 @@
 import("//build/config/ios/rules.gni")
 import("//testing/test.gni")
 
-ios_xctest_test("brave_core_ios_tests") {
+ios_xctest_test("brave_unit_tests") {
   sources = [
     "dictionary_transform_test.mm",
     "main.mm",
