@@ -29,6 +29,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -102,7 +103,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "script-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome://resources;");
+      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome://resources chrome://favicon2;");
@@ -119,6 +120,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
                     profile_, chrome::FaviconUrlFormat::kFavicon2));
+  content::URLDataSource::Add(profile_,
+                              std::make_unique<ThemeSource>(profile_));
 }
 
 AIChatUI::~AIChatUI() = default;

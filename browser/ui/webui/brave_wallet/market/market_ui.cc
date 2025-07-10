@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 
+#include <memory>
 #include <string>
 
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
@@ -12,6 +13,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
@@ -49,8 +51,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
       std::string("style-src 'self' 'unsafe-inline';"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string(
-          "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;"));
+      std::string("style-src 'self' 'unsafe-inline' "
+                  "chrome-untrusted://resources chrome-untrusted://theme;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data: chrome-untrusted://resources;"));
@@ -73,6 +75,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile,
+                              std::make_unique<ThemeSource>(profile, true));
 }
 
 UntrustedMarketUI::~UntrustedMarketUI() = default;

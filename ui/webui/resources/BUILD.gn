@@ -78,6 +78,7 @@ static_files = [
   "css/md_colors.css",
   "css/text_defaults_md.css",
   "css/reset.css",
+  "css/nala.css",
 ]
 
 if (include_polymer) {
