@@ -1008,13 +1008,8 @@ Config.prototype.updateInternal = function (options) {
     }
   }
 
-  if (this.targetOS === 'ios') {
-    if (options.target_environment) {
-      this.targetEnvironment = options.target_environment
-    } else if (this.targetArch === 'x64') {
-      // x64 can only run on simulator
-      this.targetEnvironment = 'simulator'
-    }
+  if (this.targetOS === 'ios' && options.target_environment) {
+    this.targetEnvironment = options.target_environment
   }
 
   if (options.build_config) {
