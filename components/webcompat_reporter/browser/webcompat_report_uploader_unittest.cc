@@ -129,6 +129,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "api_key": "%s",
   "block_scripts": "%s",
   "braveVPNEnabled": "%s",
+  "category": "%s",
   "channel": "%s",
   "contactInfo": "%s",
   "cookie_policy": "%s",
@@ -146,8 +147,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
           report_copy->ad_block_setting->c_str(), report_copy->details->c_str(),
           brave_stats::GetAPIKey().c_str(), report_copy->block_scripts->c_str(),
           report_copy->brave_vpn_connected ? "true" : "false",
-          report_copy->channel->c_str(), report_copy->contact->c_str(),
-          report_copy->cookie_policy->c_str(),
+          report_copy->category->c_str(), report_copy->channel->c_str(),
+          report_copy->contact->c_str(), report_copy->cookie_policy->c_str(),
           url::Origin::Create(GURL(report_copy->report_url.value()))
               .Serialize()
               .c_str(),
