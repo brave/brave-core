@@ -196,8 +196,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
-
     // Resetting this test callback, as it gets stored in a discreet global, and
     // in some cases it was causing stack-use-after-return.
     SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
