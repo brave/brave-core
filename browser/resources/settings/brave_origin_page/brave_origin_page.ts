@@ -22,12 +22,9 @@ export interface SettingsBraveOriginPageElement {
     toggleSearchAdsButton: SettingsToggleButtonElement,
     toggleEmailAliasButton: SettingsToggleButtonElement,
     toggleLeoAiButton: SettingsToggleButtonElement,
-    toggleNewsButton: SettingsToggleButtonElement,
     toggleP3ACrashReportButton: SettingsToggleButtonElement,
     toggleSidebarButton: SettingsToggleButtonElement,
     toggleTorWindowsButton: SettingsToggleButtonElement,
-    toggleVpnButton: SettingsToggleButtonElement,
-    toggleWalletButton: SettingsToggleButtonElement,
     toggleWeb3DomainsButton: SettingsToggleButtonElement
   }
 }
@@ -76,10 +73,6 @@ export class SettingsBraveOriginPageElement
       // },
       //
       // but we can do that later. important part is having handlers.
-      toggleRewards_: {
-        type: Boolean,
-        value: false
-      },
       toggleSearchAds_: {
         type: Boolean,
         value: false
@@ -89,10 +82,6 @@ export class SettingsBraveOriginPageElement
         value: false
       },
       toggleLeoAi_: {
-        type: Boolean,
-        value: false
-      },
-      toggleNews_: {
         type: Boolean,
         value: false
       },
@@ -108,14 +97,6 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false
       },
-      toggleVpn_: {
-        type: Boolean,
-        value: false
-      },
-      toggleWallet_: {
-        type: Boolean,
-        value: false
-      },
       toggleWeb3Domains_: {
         type: Boolean,
         value: false
@@ -124,16 +105,12 @@ export class SettingsBraveOriginPageElement
   }
 
   private declare braveOriginEnabled_: boolean
-  private declare toggleRewards_: boolean
   private declare toggleSearchAds_: boolean
   private declare toggleEmailAlias_: boolean
   private declare toggleLeoAi_: boolean
-  private declare toggleNews_: boolean
   private declare toggleP3ACrashReport_: boolean
   private declare toggleSidebar_: boolean
   private declare toggleTorWindows_: boolean
-  private declare toggleVpn_: boolean
-  private declare toggleWallet_: boolean
   private declare toggleWeb3Domains_: boolean
 
   private originBrowserProxy_: BraveOriginBrowserProxy =
@@ -147,16 +124,12 @@ export class SettingsBraveOriginPageElement
   private onGetInitialState(initial_state: any) {
     console.log(initial_state)
     this.braveOriginEnabled_ = initial_state.enabled;
-    this.toggleRewards_ = initial_state.rewards;
     this.toggleSearchAds_ = initial_state.search_ads;
     this.toggleEmailAlias_ = initial_state.toggle_email_alias;
     this.toggleLeoAi_ = initial_state.toggle_leo_ai;
-    this.toggleNews_ = initial_state.toggle_news;
     this.toggleP3ACrashReport_ = initial_state.toggle_p3a_crash_report;
     this.toggleSidebar_ = initial_state.toggle_sidebar;
     this.toggleTorWindows_ = initial_state.toggle_tor_windows;
-    this.toggleVpn_ = initial_state.toggle_vpn;
-    this.toggleWallet_ = initial_state.toggle_wallet;
     this.toggleWeb3Domains_ = initial_state.toggle_web3domains;
   }
 
@@ -176,10 +149,6 @@ export class SettingsBraveOriginPageElement
     console.log('toggleLeoAi_', this.$.toggleLeoAiButton.checked)
   }
 
-  private toggleNewsChange_ () {
-    console.log('toggleNews_', this.$.toggleNewsButton.checked)
-  }
-
   private toggleP3ACrashReportChange_ () {
     console.log('toggleP3ACrashReport_', this.$.toggleP3ACrashReportButton.checked)
   }
@@ -190,14 +159,6 @@ export class SettingsBraveOriginPageElement
 
   private toggleTorWindowsChange_ () {
     console.log('toggleTorWindows_', this.$.toggleTorWindowsButton.checked)
-  }
-
-  private toggleVpnChange_ () {
-    console.log('toggleVpn_', this.$.toggleVpnButton.checked)
-  }
-
-  private toggleWalletChange_ () {
-    console.log('this.toggleWallet_', this.$.toggleWalletButton.checked)
   }
 
   private toggleWeb3DomainsChange_ () {
