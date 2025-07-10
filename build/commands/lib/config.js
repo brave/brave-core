@@ -10,6 +10,7 @@ const fs = require('fs')
 const assert = require('assert')
 const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
+const dotenv = require('dotenv')
 
 let envConfig = null
 
@@ -947,7 +948,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.updateInternal = function (options) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -1148,6 +1149,27 @@ Config.prototype.update = function (options) {
 
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
+  }
+}
+
+Config.prototype.fromGnArgs = function (options) {
+  if (options.C === undefined) {
+    Log.error(`You must specific output directory with -C to use --no_gn_gen`)
+    process.exit(1)
+  }
+  const gnArgs = dotenv.parse(
+    fs.readFileSync(path.join(options.C, 'args_generated.gni')),
+  )
+  // only gnArgs that match command line options for updateInternal will be
+  // processed here
+  this.updateInternal(gnArgs)
+}
+
+Config.prototype.update = function (options) {
+  if (options.no_gn_gen !== undefined) {
+    this.fromGnArgs(options)
+  } else {
+    this.updateInternal(options)
   }
 }
 
