@@ -18,11 +18,10 @@ import("//testing/test.gni")
 
 template("hashRuntime") {
   action(target_name) {
-    script = "//runtime_dep_tracker.py"
+    forward_variables_from(invoker, ["deps", "testonly"])
+    script = "//brave/test/actions/hashRuntime.py"
     depfile = "$root_out_dir/" + target_name + ".d"
-    forward_variables_from(invoker, ["testonly"])
     inputs = [invoker.binary]
-    forward_variables_from(invoker, ["deps"])    
     outputs = ["$root_out_dir/"+ target_name]
     args = [
       rebase_path(invoker.binary)
@@ -38,9 +37,10 @@ template("hashRuntime") {
 }
 
 template("cacheTest") {
-  test(target_name + ".gtest") {
+  name = target_name
+  test(name + ".gtest") {
     testonly = true
-    forward_variables_from(invoker, "*", ["configs", "files"])
+    forward_variables_from(invoker, "*", ["configs"])
 
     # Apply configs if the invoker provided any
     if (defined(invoker.configs)) {
@@ -55,19 +55,21 @@ template("cacheTest") {
     }
   }
 
-  hashRuntime(target_name + ".gtest.hash.json") {
+  hashRuntime(target_name + ".hash.json") {
     testonly = true
-    binary = "$root_out_dir/"+ target_name + ".gtest"
+    deps = [":"+name+".gtest"]
+    binary = "$root_out_dir/"+name+".gtest"
     forward_variables_from(invoker, ["files"])
   }
 
   action(target_name) {
     testonly = true
-    script = "//brave/test_runner.py"
-    deps = [":"+target_name + ".gtest.hash.json"]
+    script = "//brave/test/actions/testRunner.py"
+    deps = [":"+name+".hash.json", ":"+name+".gtest"]
 
     inputs = [
-      "$root_out_dir/"+ target_name + ".gtest"
+      "$root_out_dir/"+ name + ".gtest",
+      "$root_out_dir/"+ name + ".hash.json"
     ]
 
     if (defined(invoker.inputs)) {
@@ -75,13 +77,13 @@ template("cacheTest") {
     }
 
     outputs = [
-      "$target_gen_dir/"+target_name+"/result.json",
-      "$target_gen_dir/"+target_name+"/stdout.txt"
+      "$target_gen_dir/"+name+"/result.json",
+      "$target_gen_dir/"+name+"/stdout.txt"
     ]
 
     args = [
-      rebase_path("$root_out_dir/"+target_name + ".gtest"), 
-      rebase_path("$target_gen_dir/"+target_name)
+      rebase_path("$root_out_dir/"+name + ".gtest"), 
+      rebase_path("$target_gen_dir/"+name)
     ]
   }
 }

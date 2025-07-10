@@ -110,43 +110,6 @@ cacheTest("some_unit_tests") {
   ]
 }
 
-cacheTest("chromium_src_unit_tests") {
-
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  
-  public_deps = [ ":browser_tests_runner" ]
-  deps = [
-    ":brave_test_support_unit",
-    "//chrome/test:test_support",
-    "//brave/browser:unit_tests",
-
-
-    "//base",
-    "//base/test:test_support",
-    "//brave:browser_dependencies",
-    "//brave/browser",
-    "//brave/common",
-    "//brave/renderer",
-    "//brave/utility",
-
-    "//chrome:dependencies",
-    "//chrome:resources",
-    "//chrome:strings",
-    "//chrome/app:command_ids",
-    "//chrome/browser/browsing_data:constants",
-    "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/favicon",
-    "//chrome/browser/permissions",
-    "//chrome/browser/prefs",
-    "//chrome/browser/sync",
-    "//chrome/browser/ui",
-
-    "//brave/chromium_src/components/privacy_sandbox:unit_tests",
-    "//brave/chromium_src/components/webui/flags:unit_tests",
-    "//brave/chromium_src/net/base:unit_tests",
-  ] 
-}
-
 test("brave_unit_tests") {
   testonly = true
   write_runtime_deps = "$target_gen_dir/brave_unit_tests.runtime_deps"
