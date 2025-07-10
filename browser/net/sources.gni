@@ -39,6 +39,8 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_stp_util.h",
   "//brave/browser/net/brave_system_request_handler.cc",
   "//brave/browser/net/brave_system_request_handler.h",
+  "//brave/browser/net/brave_user_agent_network_delegate_helper.cc",
+  "//brave/browser/net/brave_user_agent_network_delegate_helper.h",
   "//brave/browser/net/decentralized_dns_network_delegate_helper.cc",
   "//brave/browser/net/decentralized_dns_network_delegate_helper.h",
   "//brave/browser/net/global_privacy_control_network_delegate_helper.cc",
