@@ -368,34 +368,3 @@ struct BuyTokenView_Previews: PreviewProvider {
   }
 }
 #endif
-
-struct MeldCryptoView: View {
-  let token: BraveWallet.MeldCryptoCurrency
-
-  var body: some View {
-    HStack(spacing: 8) {
-      AssetIconView(
-        token: nil,
-        meldCryptoCurrency: token,
-        shouldShowNetworkIcon: true
-      )
-      VStack(alignment: .leading) {
-        Text(token.name ?? "")
-          .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
-        Text(
-          String.localizedStringWithFormat(
-            Strings.Wallet.userAssetSymbolNetworkDesc,
-            token.displaySymbol,
-            token.chainName ?? ""
-          )
-        )
-        .font(.caption)
-        .foregroundColor(Color(.secondaryBraveLabel))
-      }
-      .font(.footnote)
-      Spacer()
-    }
-    .padding(.vertical, 6)
-  }
-}
