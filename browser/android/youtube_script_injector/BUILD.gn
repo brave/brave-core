@@ -60,7 +60,7 @@ source_set("browser_tests") {
   ]
   testonly = true
   sources = [
-    "brave_youtube_script_injector_native_helper_browsertest.cc",
+    "youtube_script_injector_browsertest.cc",
     "youtube_script_injector_tab_helper_browsertest.cc",
   ]
 
