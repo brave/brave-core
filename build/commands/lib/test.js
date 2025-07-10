@@ -279,24 +279,26 @@ const runTests = (passthroughArgs, suite, config, options) => {
       runOptions.stdio = 'inherit'
     }
 
-    let prog;
     if (config.targetOS === 'ios') {
-      runArgs.push('-d')
-      runArgs.push('iPhone 16')
-      runArgs.push(getTestBinary(Config, testSuite))
+      let args = []
+      args.push('-d')
+      args.push('iPhone 16')
+      args.push('-s')
+      args.push('18.3.1')
+      args.push(getTestBinary(Config, testSuite))
       const xctest = path.join(getTestBinary(Config, testSuite), `Plugins/${suite}_module.xctest`)
       if (fs.existsSync(xctest)) {
-        runArgs.push(xctest)
+        args.push(xctest)
       }
-      prog = util.run(path.join(config.outputDir, 'iossim'), runArgs,
+      util.run(path.join(config.outputDir, 'iossim'), args,
         config.defaultOptions)
     } else {
-      prog = util.run(getTestBinary(Config, testSuite), runArgs, runOptions)
+      util.run(getTestBinary(Config, testSuite), runArgs, runOptions)
     }
 
     // convert json results to xml
-    if (prog.status === 0 && convertJSONToXML) {
-      prog = util.run('vpython3', [path.join('script', 'json2xunit.py')], {
+    if (convertJSONToXML) {
+      util.run('vpython3', [path.join('script', 'json2xunit.py')], {
         ...config.defaultOptions,
         cwd: config.braveCoreDir,
         stdio: [

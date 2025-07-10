@@ -7,12 +7,9 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 import("//testing/test.gni")
 
-<<<<<<< HEAD
-ios_xctest_test("brave_unit_tests") {
-=======
-source_set("basic_unit_tests") {
+test("brave_unit_tests") {
   testonly = true
->>>>>>> 340926b168d ([iOS] Replace Xcode unit tests with GTest unit tests)
+
   sources = [
     "certificate_unittest.mm",
     "dictionary_transform_unittest.mm",
@@ -20,26 +17,19 @@ source_set("basic_unit_tests") {
     "test_foo.mm",
     "vector_transform_unittest.mm",
   ]
+
   deps = [
     "//base",
+    "//base/test:run_all_unittests",
+    "//base/test:test_support",
     "//brave/ios/browser/api/net",
     "//net",
     "//testing/gtest",
   ]
+
   frameworks = [
     "Foundation.framework",
     "Security.framework",
-  ]
-}
-
-test("brave_core_ios_tests") {
-  testonly = true
-
-  deps = [
-    ":basic_unit_tests",
-    "//base",
-    "//base/test:run_all_unittests",
-    "//base/test:test_support",
   ]
 
   assert_no_deps = ios_assert_no_deps
