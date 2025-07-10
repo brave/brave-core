@@ -19,6 +19,40 @@
 namespace containers {
 namespace {
 
+class ContainersIconImageSource : public gfx::CanvasImageSource {
+ public:
+  ContainersIconImageSource(mojom::Icon icon, SkColor background, int dip_size)
+      : gfx::CanvasImageSource(gfx::Size(dip_size, dip_size)),
+        icon_(icon),
+        background_(background),
+        dip_size_(dip_size) {}
+
+  void Draw(gfx::Canvas* canvas) override {
+    DrawBackground(canvas);
+    DrawIcon(canvas);
+  }
+
+ private:
+  void DrawBackground(gfx::Canvas* canvas) const {
+    cc::PaintFlags flags;
+    flags.setColor(background_);
+    flags.setAntiAlias(true);
+    const auto radius = dip_size_ / 2.0;
+    canvas->DrawCircle(gfx::PointF(radius, radius), radius, flags);
+  }
+
+  void DrawIcon(gfx::Canvas* canvas) const {
+    gfx::PaintVectorIcon(canvas, GetVectorIconFromIconType(icon_), dip_size_,
+                         SK_ColorWHITE);
+  }
+
+  const mojom::Icon icon_;
+  const SkColor background_;
+  const int dip_size_;
+};
+
+}  // namespace
+
 const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
   switch (icon) {
     case mojom::Icon::kPersonal:
@@ -53,40 +87,6 @@ const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
 
   NOTREACHED() << "Unknown icon type: " << static_cast<int>(icon);
 }
-
-class ContainersIconImageSource : public gfx::CanvasImageSource {
- public:
-  ContainersIconImageSource(mojom::Icon icon, SkColor background, int dip_size)
-      : gfx::CanvasImageSource(gfx::Size(dip_size, dip_size)),
-        icon_(icon),
-        background_(background),
-        dip_size_(dip_size) {}
-
-  void Draw(gfx::Canvas* canvas) override {
-    DrawBackground(canvas);
-    DrawIcon(canvas);
-  }
-
- private:
-  void DrawBackground(gfx::Canvas* canvas) const {
-    cc::PaintFlags flags;
-    flags.setColor(background_);
-    flags.setAntiAlias(true);
-    const auto radius = dip_size_ / 2.0;
-    canvas->DrawCircle(gfx::PointF(radius, radius), radius, flags);
-  }
-
-  void DrawIcon(gfx::Canvas* canvas) const {
-    gfx::PaintVectorIcon(canvas, GetVectorIconFromIconType(icon_), dip_size_,
-                         SK_ColorWHITE);
-  }
-
-  const mojom::Icon icon_;
-  const SkColor background_;
-  const int dip_size_;
-};
-
-}  // namespace
 
 gfx::ImageSkia GenerateContainerIcon(mojom::Icon icon,
                                      SkColor background,

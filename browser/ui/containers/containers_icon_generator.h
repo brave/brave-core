@@ -10,11 +10,19 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/image/image_skia.h"
 
+namespace gfx {
+struct VectorIcon;
+}
+
 namespace ui {
 class ColorProvider;
 }  // namespace ui
 
 namespace containers {
+
+// This is a function to get the vector icon corresponding to the
+// mojom::Icon type.
+const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon);
 
 // This is a function to generate icons for Containers, which can be used in
 // ui::ImageModel directly. Typical use cases of this function include context
