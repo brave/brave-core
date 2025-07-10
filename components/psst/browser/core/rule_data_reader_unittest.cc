@@ -46,8 +46,7 @@ class RuleDataReaderUnitTest : public testing::Test {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
     test_data_dir_base_ =
-        test_data_dir.AppendASCII("brave/components/test/data/psst")
-            .AppendASCII(kPsstComponentId);
+        test_data_dir.AppendASCII("brave/components/test/data/psst");
   }
 
   base::FilePath GetBasePath() { return test_data_dir_base_; }
