@@ -10,15 +10,13 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/jni_zero/jni_zero.gni")
 
 android_library("java") {
-  sources = [
-    "java/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler.java",
-  ]
+  sources = [ "java/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler.java" ]
 
   deps = [
-    "//chrome/browser/ui/android/toolbar:java",
+    "//base:supplier_java",
     "//chrome/browser/android/lifecycle:java",
     "//chrome/browser/profiles/android:java",
+    "//chrome/browser/ui/android/toolbar:java",
     "//ui/android:ui_no_recycler_view_java",
-    "//base:supplier_java",
   ]
 }
