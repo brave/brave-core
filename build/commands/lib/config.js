@@ -44,6 +44,29 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
+const readArgsGn = (srcDir, outputDir) => {
+  const util = require('./util')
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+
+  const script = `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`
+
+  const result = util.run('python3', ['-'], {
+    skipLogging: true,
+    input: script,
+    encoding: 'utf8',
+  })
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
@@ -762,6 +785,10 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetOS === 'ios') {
+    // Configure unit tests to run outside of chromium infra
+    // https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
+    args.enable_run_ios_unittests_with_xctest = true
+
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
@@ -947,7 +974,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.updateInternal = function (options) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -959,6 +986,10 @@ Config.prototype.update = function (options) {
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
+  }
+
+  if (options.target_cpu) {
+    options.target_arch = options.target_cpu
   }
 
   if (options.target_arch === 'x86') {
@@ -1147,6 +1178,29 @@ Config.prototype.update = function (options) {
   }
 }
 
+Config.prototype.fromGnArgs = function (options) {
+  if (options.C === undefined) {
+    Log.error(`You must specify output directory with -C to use --no_gn_gen`)
+    process.exit(1)
+  }
+  const gnArgs = readArgsGn(this.srcDir, options.C)
+  Object.assign({}, gnArgs, { 'C': options.C })
+  Log.warn(
+    '--no-gn-gen is experimental and only gn args that match command '
+      + 'line options will be processed',
+  )
+  this.updateInternal(gnArgs)
+  assert(!this.isCI)
+}
+
+Config.prototype.update = function (options) {
+  if (options.no_gn_gen !== undefined) {
+    this.fromGnArgs(options)
+  } else {
+    this.updateInternal(options)
+  }
+}
+
 Object.defineProperty(Config.prototype, 'targetOS', {
   get: function () {
     if (this._targetOS) {
@@ -1170,6 +1224,18 @@ Object.defineProperty(Config.prototype, 'targetOS', {
 
 Config.prototype.getCachePath = function () {
   return this.git_cache_path || process.env.GIT_CACHE_PATH
+}
+
+Config.prototype.isIOS = function () {
+  return this.targetOS === 'ios'
+}
+
+Config.prototype.isAndroid = function () {
+  return this.targetOS === 'android'
+}
+
+Config.prototype.isMobile = function () {
+  return this.isIOS() || this.isAndroid()
 }
 
 Object.defineProperty(Config.prototype, 'defaultOptions', {
@@ -1348,7 +1414,11 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (this.targetEnvironment && this.targetEnvironment !== 'device') {
+    if (
+      this.targetOS === 'ios'
+      && this.targetEnvironment
+      && this.targetEnvironment !== 'device'
+    ) {
       buildConfigDir = buildConfigDir + '_' + this.targetEnvironment
     }
     if (this.isChromium) {
