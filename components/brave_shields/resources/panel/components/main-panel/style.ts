@@ -274,7 +274,7 @@ export const ManagedText = styled.div`
   width: 228px;
   height: 20px;
 
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;

@@ -49,7 +49,7 @@ export const PopupButton = styled(WalletButton)`
 
 export const PopupButtonText = styled.span`
   color: ${leo.color.text.primary};
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

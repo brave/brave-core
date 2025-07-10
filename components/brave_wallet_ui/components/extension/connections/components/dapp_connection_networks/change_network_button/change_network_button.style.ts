@@ -34,7 +34,7 @@ export const ActiveIndicator = styled.div`
   padding: 2px 6px;
   background-color: ${leo.color.primary[20]};
   color: ${leo.color.primary[50]};
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-weight: 600;
   font-size: 10px;
   line-height: 15px;
@@ -43,7 +43,7 @@ export const ActiveIndicator = styled.div`
 `
 
 export const NetworkName = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   color: ${leo.color.text.primary};
   line-height: 24px;
   word-wrap: wrap;

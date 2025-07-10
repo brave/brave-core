@@ -37,7 +37,7 @@ export const BarProgressTooltipContainer = styled.div<{
 
 export const BarMessage = styled.p<{ criteria: boolean[] }>`
   color: ${(p) => getCriteriaPercentColor(p)};
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

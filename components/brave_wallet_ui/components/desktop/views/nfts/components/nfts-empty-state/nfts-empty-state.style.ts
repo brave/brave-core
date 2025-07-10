@@ -21,7 +21,7 @@ export const EmptyStateImage = styled.img`
 `
 
 export const Heading = styled.h2`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -32,7 +32,7 @@ export const Heading = styled.h2`
 `
 
 export const SubHeading = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -52,7 +52,7 @@ export const ImportButton = styled(WalletButton)`
   gap: 7px;
   background-color: ${(p) => p.theme.color.interactive05};
   border-radius: 48px;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
@@ -65,7 +65,7 @@ export const ImportButton = styled(WalletButton)`
 `
 
 export const DisclaimerText = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 11px;

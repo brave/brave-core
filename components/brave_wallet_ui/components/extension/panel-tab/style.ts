@@ -23,7 +23,7 @@ export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;

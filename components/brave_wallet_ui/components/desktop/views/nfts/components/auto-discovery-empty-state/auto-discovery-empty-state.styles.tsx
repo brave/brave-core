@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Heading = styled.h3`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -30,7 +30,7 @@ export const Heading = styled.h3`
 `
 
 export const Description = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -39,7 +39,7 @@ export const Description = styled.span`
 `
 
 export const ActionButton = styled(WalletButton)`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -57,7 +57,7 @@ export const LoadingRing = styled(Ring)`
 export const RefreshText = styled.div`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

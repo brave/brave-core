@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components'
 import { WalletButton } from '../../shared/style'
 
 const Font = css`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;

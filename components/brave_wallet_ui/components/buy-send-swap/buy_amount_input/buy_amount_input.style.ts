@@ -38,7 +38,7 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 export const AssetTicker = styled.span<{
   role?: 'currency' | 'symbol'
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 20px;
   line-height: 30px;
   letter-spacing: 0.02em;
@@ -63,7 +63,7 @@ export const MarketLimitButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   margin-top: 4px;
   letter-spacing: 0.01em;
@@ -78,7 +78,7 @@ export const Input = styled.input<{ hasError?: boolean }>`
   background-color: ${leo.color.container.highlight};
   box-shadow: none;
   border: none;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 28px;
   line-height: 40px;
   letter-spacing: 0.02em;

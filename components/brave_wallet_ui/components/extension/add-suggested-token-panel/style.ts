@@ -41,7 +41,7 @@ export const TopRow = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
@@ -52,7 +52,7 @@ export const Title = styled.span`
 `
 
 export const Description = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.text02};
@@ -62,7 +62,7 @@ export const Description = styled.span`
 `
 
 export const TokenName = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
@@ -78,7 +78,7 @@ export const ContractAddress = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -102,7 +102,7 @@ export const ButtonWrapper = styled.div`
 `
 
 export const NetworkText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

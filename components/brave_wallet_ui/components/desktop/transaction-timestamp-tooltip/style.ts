@@ -24,7 +24,7 @@ export const Tip = styled.div`
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
   white-space: nowrap;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   letter-spacing: 0.01em;
   top: 9px;

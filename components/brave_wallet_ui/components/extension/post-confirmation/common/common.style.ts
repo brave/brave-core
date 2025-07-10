@@ -21,7 +21,7 @@ export const Title = styled(Text)`
 `
 
 export const TransactionStatusDescription = styled.div`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -39,7 +39,7 @@ export const LinkIcon = styled.div`
 `
 
 export const DetailButton = styled(WalletButton)`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

@@ -57,7 +57,7 @@ export const DisclaimerWrapper = styled.div`
 `
 
 export const DisclaimerText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

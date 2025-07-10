@@ -101,7 +101,7 @@ export const StyledInput = styled('input')<{}>`
   height: 40px;
   padding: 10px 18px;
   border-radius: 4px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;

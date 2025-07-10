@@ -10,7 +10,7 @@ import {
 } from './default'
 
 export const Intro = styled(StandardBlock)`
-  font-family: Poppins;
+  font-family: sans-serif;
   color: white;
   text-align: center;
   padding: 44px 82px 36px;

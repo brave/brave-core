@@ -48,7 +48,7 @@ export const Tip = styled.div<{
   border-radius: 4px;
   padding: 6px;
 
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   letter-spacing: 0.01em;
 

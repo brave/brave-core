@@ -16,7 +16,7 @@ export const StyledWrapper = styled(WalletButton)`
   outline: none;
   background: none;
   padding: 3px 14px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;

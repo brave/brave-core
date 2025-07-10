@@ -52,7 +52,7 @@ export const NameAndSymbol = styled.div`
 `
 
 export const AssetName = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
@@ -62,7 +62,7 @@ export const AssetName = styled.span`
 `
 
 export const AssetSymbol = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -75,7 +75,7 @@ export const Balance = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;

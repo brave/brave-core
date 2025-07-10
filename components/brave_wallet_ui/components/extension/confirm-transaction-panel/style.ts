@@ -67,7 +67,7 @@ export const ToCircle = styled.div<{ orb: string }>`
 
 export const AccountNameText = styled.span`
   cursor: default;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
@@ -76,7 +76,7 @@ export const AccountNameText = styled.span`
 `
 
 export const NetworkText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -84,7 +84,7 @@ export const NetworkText = styled.span`
 `
 
 export const TransactionAmountBig = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 18px;
   line-height: 22px;
   letter-spacing: 0.02em;
@@ -95,7 +95,7 @@ export const TransactionAmountBig = styled.span`
 `
 
 export const TransactionFiatAmountBig = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -124,7 +124,7 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
 `
 
 export const TransactionTitle = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -133,7 +133,7 @@ export const TransactionTitle = styled.span`
 `
 
 export const TransactionTypeText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -179,7 +179,7 @@ export const SectionColumn = styled.div`
 `
 
 export const EditButton = styled(WalletButton)`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -195,7 +195,7 @@ export const EditButton = styled(WalletButton)`
 `
 
 export const TransactionText = styled.span<{ hasError?: boolean }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -227,7 +227,7 @@ export const ContractButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

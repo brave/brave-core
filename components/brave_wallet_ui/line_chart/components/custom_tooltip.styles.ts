@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const ChartBalance = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -16,7 +16,7 @@ export const ChartBalance = styled.span`
 `
 
 export const ChartDate = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 11px;

@@ -52,7 +52,7 @@ export const VerticalSpacer = styled.div<{ space: number | string }>`
 
 // Text
 export const LinkText = styled.a`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -68,7 +68,7 @@ export const LinkText = styled.a`
 `
 
 export const MutedLinkText = styled(LinkText)`
-  font-family: 'Inter', 'Poppins';
+  font-family: 'sans-serif';
   font-size: 12px;
   font-weight: 400;
   color: ${leo.color.text.tertiary};
@@ -76,7 +76,7 @@ export const MutedLinkText = styled(LinkText)`
 `
 
 export const ErrorText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
@@ -155,7 +155,7 @@ export const Row = styled.div<
   }
 >`
   cursor: ${(p) => (p.onClick ? 'pointer' : 'unset')};
-  font-family: 'Poppins';
+  font-family: sans-serif;
   display: flex;
   flex-direction: row;
   flex-wrap: ${(p) => (p.$wrap ? 'wrap' : 'unset')};
@@ -196,7 +196,7 @@ export const Column = styled.div<
     margin?: number | string
   }
 >`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   height: ${(p) => (p.fullHeight ? '100%' : p?.height || 'unset')};
   width: ${(p) => (p.fullWidth ? '100%' : p?.width || 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
@@ -265,7 +265,7 @@ export const WalletButton = styled.button`
 `
 
 export const WalletLink = styled(Link)`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
@@ -364,7 +364,7 @@ export const SellButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border-radius: 40px;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -562,7 +562,7 @@ export const HorizontalSpace = styled.div<{ space: string }>`
 
 // Forms
 export const InputLabelText = styled.label`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   display: block;
   margin-bottom: 8px;
@@ -582,7 +582,7 @@ export const BraveRewardsIndicator = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 10px;
   line-height: 15px;
   font-weight: 500;

@@ -71,7 +71,7 @@ export const Title = styled.p<{
   maxWidth?: string
   textAlign?: 'right' | 'center'
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
@@ -86,7 +86,7 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   flex-direction: column;
   align-items: flex-start;
 
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

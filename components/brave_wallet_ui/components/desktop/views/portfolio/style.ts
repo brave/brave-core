@@ -46,7 +46,7 @@ export const TopRow = styled.div`
 `
 
 export const BalanceText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 36px;
   font-weight: 500;
@@ -55,7 +55,7 @@ export const BalanceText = styled.span`
 `
 
 export const FiatChange = styled.span<{ isDown?: boolean }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 12px;
   font-weight: 400;
@@ -109,7 +109,7 @@ export const SubDivider = styled.div`
 `
 
 export const DividerText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.04em;
@@ -124,7 +124,7 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   border-radius: 4px;
   background-color: ${(p) =>
     p.isDown ? leo.color.red[20] : leo.color.green[20]};
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.02em;

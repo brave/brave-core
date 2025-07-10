@@ -32,7 +32,7 @@ export const StyledNoContent = styled('div')<{}>`
   padding: 30px 0;
   color: ${(p) => p.theme.color.text03};
   font-size: 14px;
-  font-family: Poppins;
+  font-family: sans-serif;
 `
 
 export const StyledTable = styled('table')`
@@ -50,7 +50,7 @@ export const StyledTHead = styled('thead')``
 
 export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 600;
   line-height: 18px;
@@ -81,11 +81,11 @@ export const StyledTR = styled('tr')`
 export const StyledTD = styled('td')`
   vertical-align: middle;
   letter-spacing: 0.01em;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: ${(p) => p.theme.color.text01};
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 20px;
   padding: 0 0 16px 10px;

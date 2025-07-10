@@ -32,7 +32,7 @@ export const TooltipContent = styled.div`
 `
 
 export const Heading = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
@@ -47,7 +47,7 @@ export const List = styled.ul`
   padding-left: 20px;
 
   li {
-    font-family: 'Poppins';
+    font-family: sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

@@ -55,7 +55,7 @@ export const HeaderItem = styled.div<{
   align-items: center;
   gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -107,7 +107,7 @@ export const Cell = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -163,7 +163,7 @@ export const TextWrapper = styled.div<{
     }
   }};
   width: 100%;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -204,7 +204,7 @@ export const ActionButton = styled(WalletButton)`
   border: 1px solid ${leo.color.divider.interactive};
   margin-right: 6px;
   pointer-events: auto;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

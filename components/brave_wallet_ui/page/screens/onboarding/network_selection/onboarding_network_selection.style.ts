@@ -20,7 +20,7 @@ export const GroupingText = styled.h3`
 
 export const SelectAllText = styled.a`
   color: ${leo.color.text.interactive};
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;

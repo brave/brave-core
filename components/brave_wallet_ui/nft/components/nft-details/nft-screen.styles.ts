@@ -36,7 +36,7 @@ export const TopWrapper = styled.div`
 `
 
 export const NftName = styled.h2`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -52,7 +52,7 @@ export const NftName = styled.h2`
 `
 
 export const CollectionName = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -68,7 +68,7 @@ export const CollectionName = styled.p`
 `
 
 export const PurchaseDate = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -87,7 +87,7 @@ export const SectionTitle = styled.h3`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -122,7 +122,7 @@ export const InfoBox = styled.div`
 `
 
 export const InfoTitle = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -137,7 +137,7 @@ export const InfoTitle = styled.p`
 `
 
 export const InfoText = styled.p`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -152,7 +152,7 @@ export const InfoText = styled.p`
 `
 
 export const AccountName = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -175,7 +175,7 @@ export const CopyIcon = styled(Icon)`
 `
 
 export const ViewAccount = styled(WalletButton)`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -196,7 +196,7 @@ export const ViewAccount = styled(WalletButton)`
 
 export const Description = styled.p`
   width: 100%;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -277,7 +277,7 @@ export const Trait = styled.div`
 `
 
 export const TraitType = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -289,7 +289,7 @@ export const TraitType = styled.span`
 `
 
 export const TraitValue = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -301,7 +301,7 @@ export const TraitValue = styled.span`
 `
 
 export const TraitRarity = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -325,7 +325,7 @@ export const ErrorMessage = styled.p`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: Poppins;
+  font-family: sans-serif;
   letter-spacing: 0.01em;
   font-size: 11px;
   line-height: 16px;

@@ -48,7 +48,7 @@ export const ButtonRow = styled(Row)`
 `
 
 export const ErrorText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
@@ -72,7 +72,7 @@ export const SubDivider = styled.div`
 `
 
 export const DividerText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.04em;

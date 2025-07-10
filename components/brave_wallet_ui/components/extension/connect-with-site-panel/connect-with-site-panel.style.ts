@@ -104,7 +104,7 @@ export const PermissionsContainer = styled(Column)`
 `
 
 export const SectionLabel = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -115,7 +115,7 @@ export const SectionLabel = styled.span`
 `
 
 export const SectionPoint = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -153,7 +153,7 @@ export const BulletIcon = styled(Icon)<{ status: 'success' | 'error' }>`
 `
 
 export const AddAccountText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -204,7 +204,7 @@ export const DurationLabel = styled.div`
   background-color: ${leo.color.container.highlight};
   outline: none;
   border-radius: 8px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 export const HeaderTitle = styled.div`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

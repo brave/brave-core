@@ -21,7 +21,7 @@ export const Text = styled.span<{
   --error: ${leo.color.red[40]};
   --success: ${leo.color.green[30]};
   --warning: ${leo.color.yellow[30]};
-  font-family: 'Poppins';
+  font-family: sans-serif;
   color: ${(p) =>
     p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
@@ -45,7 +45,7 @@ export const StyledDiv = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   color: ${(p) => p.theme.color.text01};
   font-weight: 400;
   font-size: 18px;
@@ -172,7 +172,7 @@ export const Loader = styled(StyledDiv)`
 
 export const StyledButton = styled.button`
   display: flex;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   cursor: pointer;
   border: none;
   outline: none;
@@ -212,7 +212,7 @@ export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
 `
 
 export const StyledInput = styled.input`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -243,7 +243,7 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

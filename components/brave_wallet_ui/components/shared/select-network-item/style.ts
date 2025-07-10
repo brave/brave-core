@@ -29,7 +29,7 @@ export const LeftSide = styled.div`
 `
 
 export const NetworkName = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;

@@ -47,7 +47,7 @@ export const CollapseIcon = styled(Icon)`
 
 export const CollapseTitleRow = styled(WalletButton)`
   cursor: pointer;
-  font-family: 'Poppins';
+  font-family: sans-serif;
   display: flex;
   flex-direction: row;
   align-items: center;

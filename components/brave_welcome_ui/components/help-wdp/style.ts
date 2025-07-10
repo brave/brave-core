@@ -58,7 +58,7 @@ export const MainBox = styled.div`
 `
 
 export const BodyBox = styled.div`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

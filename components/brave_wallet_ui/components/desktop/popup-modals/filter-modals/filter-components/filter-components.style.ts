@@ -32,7 +32,7 @@ export const SelectAllButton = styled(WalletButton)`
   border: none;
   background: none;
   padding: 0px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   letter-spacing: 0.03em;
   line-height: 16px;

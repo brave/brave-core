@@ -56,7 +56,7 @@ export const QRCodeImage = styled.img`
 `
 
 export const AddressText = styled.div`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -74,7 +74,7 @@ export const AddressTextLabel = styled(AddressText)`
 `
 
 export const Title = styled.p`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
@@ -85,7 +85,7 @@ export const Title = styled.p`
 `
 
 export const Description = styled.p`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 24px;
   color: ${leo.color.text.secondary};
@@ -117,7 +117,7 @@ export const InfoIcon = styled(Icon)`
 
 export const AlertText = styled.p`
   font-size: 14px;
-  font-family: Poppins;
+  font-family: sans-serif;
   line-height: 24px;
   color: ${leo.color.text.primary};
   margin: 0;

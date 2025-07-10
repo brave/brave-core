@@ -22,7 +22,7 @@ export const Input = styled.input<{ hasError: boolean }>`
       : `2px solid transparent`};
   padding: 10px 8px 10px 16px;
   border-radius: 8px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 14px;
   line-height: 24px;

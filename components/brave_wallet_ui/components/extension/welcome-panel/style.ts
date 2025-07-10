@@ -15,7 +15,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 20px;
   font-weight: 600;
   line-height: 20px;
@@ -25,7 +25,7 @@ export const Title = styled.span`
 `
 
 export const Description = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   line-height: 20px;
   font-weight: 300;

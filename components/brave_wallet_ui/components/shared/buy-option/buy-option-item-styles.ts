@@ -46,7 +46,7 @@ export const Content = styled.div`
 `
 
 export const Name = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-style: normal;
   font-size: 16px;
   line-height: 28px;
@@ -55,7 +55,7 @@ export const Name = styled.span`
 `
 
 export const Description = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: ${leo.color.text.secondary};
@@ -75,7 +75,7 @@ export const StyledButton = styled(WalletButton)`
 `
 
 export const ButtonText = styled.span`
-  font-family: 'Poppins';
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;

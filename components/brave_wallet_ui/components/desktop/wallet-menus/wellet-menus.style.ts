@@ -79,7 +79,7 @@ export const PopupButton = styled(WalletButton)<{
 
 export const PopupButtonText = styled.span`
   flex: 1;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 14px;
   font-weight: 400;

@@ -26,7 +26,7 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;

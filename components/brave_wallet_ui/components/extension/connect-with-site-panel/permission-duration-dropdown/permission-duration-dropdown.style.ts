@@ -28,7 +28,7 @@ export const DropDownButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border-radius: 8px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -80,7 +80,7 @@ export const PermissionButton = styled(WalletButton)`
   border: none;
   background: none;
   padding: 8px 8px;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

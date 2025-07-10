@@ -16,7 +16,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Description = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;

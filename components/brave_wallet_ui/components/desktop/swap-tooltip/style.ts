@@ -20,7 +20,7 @@ export const Tip = styled.div`
   color: ${(p) => p.theme.palette.white};
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;

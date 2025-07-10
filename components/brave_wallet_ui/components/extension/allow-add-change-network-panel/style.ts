@@ -23,7 +23,7 @@ export const MessageBox = styled.div`
 `
 
 export const NetworkTitle = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -60,7 +60,7 @@ export const MessageBoxColumn = styled.div`
 `
 
 export const DetailsButton = styled(WalletButton)`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 12px;
   line-height: 18px;
@@ -75,7 +75,7 @@ export const DetailsButton = styled(WalletButton)`
 `
 
 export const NetworkDetail = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

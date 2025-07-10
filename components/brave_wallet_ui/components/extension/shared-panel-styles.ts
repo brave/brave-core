@@ -50,7 +50,7 @@ export const AddressAndOrb = styled.div`
 
 export const AddressText = styled.span`
   cursor: default;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   font-weight: 600;
@@ -60,7 +60,7 @@ export const AddressText = styled.span`
 `
 
 export const NetworkText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -68,7 +68,7 @@ export const NetworkText = styled.span`
 `
 
 export const PanelTitle = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.04em;
@@ -81,7 +81,7 @@ export const PanelTitle = styled.span`
 
 export const Description = styled.span`
   width: 90%;
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -100,7 +100,7 @@ export const TabRow = styled.div`
 `
 
 export const DetailTextDarkBold = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -109,7 +109,7 @@ export const DetailTextDarkBold = styled.span`
 `
 
 export const URLText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 10px;
@@ -139,7 +139,7 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
 `
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -159,7 +159,7 @@ export const WarningBoxTitleRow = styled.div`
 `
 
 export const WarningText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -184,7 +184,7 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LearnMoreButton = styled(WalletButton)`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: 12px;
   line-height: 18px;

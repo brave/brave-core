@@ -36,7 +36,7 @@ export const NameAndIcon = styled.div`
 `
 
 export const AssetName = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 24px;
@@ -51,7 +51,7 @@ export const NameColumn = styled.div`
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: ${leo.color.text.secondary};
@@ -63,7 +63,7 @@ export const PriceContainer = styled.div`
 `
 
 export const PriceText = styled.span`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 24px;

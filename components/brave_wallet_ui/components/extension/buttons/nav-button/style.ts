@@ -38,7 +38,7 @@ interface StyledButtonProps {
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
   return css<StyledButtonProps>`
     ${walletButtonFocusMixin}
-    font-family: Poppins;
+    font-family: sans-serif;
     font-style: normal;
     min-width: ${(p) => p?.minWidth || 'unset'};
     min-height: ${(p) => p?.minHeight || 'unset'};
@@ -91,7 +91,7 @@ export const ButtonText = styled.span<{
   buttonType: PanelButtonTypes
   isV2?: boolean
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: ${(p) => (p.isV2 ? '16px' : '13px')};
   font-weight: 600;
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};

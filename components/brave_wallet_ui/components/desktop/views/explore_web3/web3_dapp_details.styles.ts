@@ -10,7 +10,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 export const DappCategoryLabel = styled.div`
   display: inline-flex;
   color: ${leo.color.neutral[50]};
-  font-family: Inter, 'Poppins';
+  font-family: sans-serif;
   font-size: 10px;
   font-style: normal;
   font-weight: 700;

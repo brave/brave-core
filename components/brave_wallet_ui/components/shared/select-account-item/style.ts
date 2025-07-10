@@ -42,7 +42,7 @@ export const AccountAndAddress = styled.div`
 export const AccountName = styled.span<{
   isV2?: boolean
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   font-weight: 600;
@@ -52,7 +52,7 @@ export const AccountName = styled.span<{
 export const AccountAddress = styled.span<{
   isV2?: boolean
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-size: ${(p) => (p.isV2 ? '11px' : '12px')};
   line-height: ${(p) => (p.isV2 ? '16px' : '18px')};
   color: ${leo.color.text.secondary};

@@ -16,7 +16,7 @@ import {
 export const HeaderTitle = styled.span<{
   isPanel?: boolean
 }>`
-  font-family: Poppins;
+  font-family: sans-serif;
   font-style: normal;
   font-size: ${(p) => (p.isPanel ? 16 : 28)}px;
   font-weight: ${(p) => (p.isPanel ? 600 : 500)};
