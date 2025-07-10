@@ -29,7 +29,7 @@ struct BuyTokenView: View {
   @ViewBuilder private var accountPickerView: some View {
     Menu {
       if let account = buyTokenStore.selectedAccount {
-        Text(account.address.zwspOutput)
+        Text(buyTokenStore.selectedAccountAddress.zwspOutput)
       }
       Button {
         UIPasteboard.general.string = keyringStore.selectedAccount.address
@@ -38,16 +38,27 @@ struct BuyTokenView: View {
       }
     } label: {
       if let account = buyTokenStore.selectedAccount {
-        HStack {
-          Blockie(address: account.blockieSeed, shape: .rectangle)
-            .frame(width: avatarSize, height: avatarSize)
-          Text(account.name)
-            .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
-          Spacer()
-          Image(systemName: "chevron.down")
-            .imageScale(.small)
-            .foregroundColor(Color(.secondaryBraveLabel))
+        VStack(alignment: .leading) {
+          HStack {
+            Blockie(address: account.blockieSeed, shape: .rectangle)
+              .frame(width: avatarSize, height: avatarSize)
+            Text(account.name)
+              .font(.title3.weight(.semibold))
+              .foregroundColor(Color(.braveLabel))
+            Spacer()
+            Image(systemName: "chevron.down")
+              .imageScale(.small)
+              .foregroundColor(Color(.secondaryBraveLabel))
+          }
+          Text(buyTokenStore.selectedAccountAddress)
+            .padding(4)
+            .font(.caption)
+            .foregroundColor(Color(braveSystemName: .textSecondary))
+            .multilineTextAlignment(.leading)
+            .background(
+              RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(Color(braveSystemName: .pageBackground))
+            )
         }
       }
     } primaryAction: {
@@ -334,7 +345,9 @@ struct BuyTokenView: View {
       )
       .onAppear {
         if !Preferences.Wallet.meldAPIAgreementShownAndAgreed.value {
-          isPresentingMeldAPIAgreement = true
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isPresentingMeldAPIAgreement = true
+          }
         }
       }
     }

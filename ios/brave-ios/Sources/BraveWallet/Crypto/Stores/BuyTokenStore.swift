@@ -23,7 +23,16 @@ public class BuyTokenStore: ObservableObject {
       }
     }
   }
-  @Published var selectedAccount: BraveWallet.AccountInfo?
+  @Published var selectedAccount: BraveWallet.AccountInfo? {
+    didSet {
+      if oldValue != selectedAccount {
+        Task { @MainActor in
+          await updateSelectedAccountAddress()
+        }
+      }
+    }
+  }
+  @Published private(set) var selectedAccountAddress: String = ""
   /// The country input to get available service provider from Meld
   @Published var selectedCountry: BraveWallet.MeldCountry = .init(
     countryCode: "US",
@@ -100,21 +109,8 @@ public class BuyTokenStore: ObservableObject {
   func fetchBuyUrl(
     provider: BraveWallet.MeldServiceProvider
   ) async -> URL? {
-    guard let selectedAccount else { return nil }
-    var accountAddress = selectedAccount.address
-    if selectedAccount.coin == .btc,
-      let bitcoinAccountInfo = await bitcoinWalletService.bitcoinAccountInfo(
-        accountId: selectedAccount.accountId
-      )
-    {
-      accountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
-    } else if selectedAccount.coin == .zec,
-      let zcashAccountInfo = await zcashWalletService.zCashAccountInfo(
-        accountId: selectedAccount.accountId
-      )
-    {
-      accountAddress = zcashAccountInfo.nextTransparentChangeAddress.addressString
-    }
+    guard !selectedAccountAddress.isEmpty else { return nil }
+
     let (widget, error) = await meldIntegrationService.cryptoBuyWidgetCreate(
       sessionData: .init(
         countryCode: selectedCountry.countryCode,
@@ -125,7 +121,7 @@ public class BuyTokenStore: ObservableObject {
         serviceProvider: provider.serviceProvider,
         sourceAmount: buyAmount,
         sourceCurrencyCode: selectedFiatCurrency.currencyCode,
-        walletAddress: accountAddress,
+        walletAddress: selectedAccountAddress,
         walletTag: nil
       ),
       customerData: nil
@@ -133,6 +129,25 @@ public class BuyTokenStore: ObservableObject {
 
     guard let widget, error == nil else { return nil }
     return URL(string: widget.widgetUrl)
+  }
+
+  @MainActor
+  func updateSelectedAccountAddress() async {
+    guard let selectedAccount else { return }
+    selectedAccountAddress = selectedAccount.address
+    if selectedAccount.coin == .btc,
+      let bitcoinAccountInfo = await bitcoinWalletService.bitcoinAccountInfo(
+        accountId: selectedAccount.accountId
+      )
+    {
+      selectedAccountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
+    } else if selectedAccount.coin == .zec,
+      let zcashAccountInfo = await zcashWalletService.zCashAccountInfo(
+        accountId: selectedAccount.accountId
+      )
+    {
+      selectedAccountAddress = zcashAccountInfo.nextTransparentChangeAddress.addressString
+    }
   }
 
   @MainActor
