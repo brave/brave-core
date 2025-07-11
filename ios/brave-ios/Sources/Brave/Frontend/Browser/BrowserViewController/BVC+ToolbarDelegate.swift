@@ -43,22 +43,44 @@ extension BrowserViewController: TopToolbarDelegate {
 
     isTabTrayActive = true
 
-    let tabTrayController = TabTrayController(
-      tabManager: tabManager,
-      braveCore: profileController,
-      windowProtection: windowProtection
-    ).then {
-      $0.delegate = self
-      $0.toolbarUrlActionsDelegate = self
-    }
-    let container = UINavigationController(rootViewController: tabTrayController)
-    container.delegate = self
+    if FeatureList.kModernTabTrayEnabled.enabled {
+      let tabTrayController = TabGridHostingController(
+        tabManager: tabManager,
+        historyModel: HistoryModel(
+          api: self.profileController.historyAPI,
+          tabManager: self.tabManager,
+          toolbarUrlActionsDelegate: self,
+          dismiss: { [weak self] in self?.dismiss(animated: true) },
+          askForAuthentication: self.askForLocalAuthentication
+        ),
+        openTabsModel: profileController.openTabsAPI,
+        toolbarUrlActionsDelegate: self,
+        profileController: profileController,
+        windowProtection: windowProtection
+      )
+      tabTrayController.modalPresentationStyle = .fullScreen
+      if !UIAccessibility.isReduceMotionEnabled {
+        tabTrayController.transitioningDelegate = tabTrayController
+      }
+      present(tabTrayController, animated: true)
+    } else {
+      let tabTrayController = TabTrayController(
+        tabManager: tabManager,
+        braveCore: profileController,
+        windowProtection: windowProtection
+      ).then {
+        $0.delegate = self
+        $0.toolbarUrlActionsDelegate = self
+      }
+      let container = UINavigationController(rootViewController: tabTrayController)
+      container.delegate = self
 
-    if !UIAccessibility.isReduceMotionEnabled {
-      container.transitioningDelegate = tabTrayController
-      container.modalPresentationStyle = .fullScreen
+      if !UIAccessibility.isReduceMotionEnabled {
+        container.transitioningDelegate = tabTrayController
+        container.modalPresentationStyle = .fullScreen
+      }
+      present(container, animated: true)
     }
-    present(container, animated: true)
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {

@@ -31,6 +31,7 @@ source_set("features") {
     "//brave/ios/browser/playlist",
     "//brave/ios/browser/ui/browser_menu:features",
     "//brave/ios/browser/ui/commerce:features",
+    "//brave/ios/browser/ui/tab_tray:features",
     "//brave/ios/browser/ui/web_view:features",
     "//build:blink_buildflags",
     "//net",

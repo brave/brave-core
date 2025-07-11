@@ -18,6 +18,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
@@ -160,6 +161,13 @@
           "testing only.",                                                     \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-modern-tab-tray",                                         \
+          "Use modern tab tray UI",                                            \
+          "Replace the tab tray UI with a modern replacement",                 \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kModernTabTrayEnabled),          \
       },                                                                       \
       {                                                                        \
           "brave-use-modern-browser-menu",                                     \
