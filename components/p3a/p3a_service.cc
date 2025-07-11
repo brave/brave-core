@@ -91,9 +91,6 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
-
-  // TODO(bsclifton): this won't work
-  // `registry` in this case is `Local State` file not preferences.
   registry->RegisterBooleanPref(kP3ADisabledByPolicy, false);
 }
 
@@ -169,7 +166,8 @@ base::CallbackListSubscription P3AService::RegisterMetricCycledCallback(
 }
 
 bool P3AService::IsP3AEnabled() const {
-  return local_state_->GetBoolean(kP3AEnabled);
+  return local_state_->GetBoolean(kP3AEnabled) &&
+         !local_state_->GetBoolean(kP3ADisabledByPolicy);
 }
 
 void P3AService::Init(
@@ -185,9 +183,10 @@ void P3AService::Init(
 
   if (pref_change_registrar_.IsEmpty()) {
     pref_change_registrar_.Init(&*local_state_);
-    pref_change_registrar_.Add(
-        kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
-                                         base::Unretained(this)));
+    auto callback = base::BindRepeating(&P3AService::OnP3AEnabledChanged,
+                                        base::Unretained(this));
+    pref_change_registrar_.Add(kP3AEnabled, callback);
+    pref_change_registrar_.Add(kP3ADisabledByPolicy, callback);
   }
 
   if (initialized_ || !url_loader_factory_ ||
@@ -203,7 +202,7 @@ void P3AService::Init(
   }
   histogram_values_.clear();
 
-  if (local_state_->GetBoolean(kP3AEnabled)) {
+  if (IsP3AEnabled()) {
     message_manager_->Start(url_loader_factory_);
   }
 }
@@ -279,7 +278,7 @@ void P3AService::LoadDynamicMetrics() {
 
 void P3AService::OnP3AEnabledChanged() {
   if (initialized_) {
-    if (local_state_->GetBoolean(kP3AEnabled)) {
+    if (IsP3AEnabled()) {
       message_manager_->Start(url_loader_factory_);
     } else {
       message_manager_->Stop();

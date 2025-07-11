@@ -3,7 +3,7 @@ default: null
 desc: |-
   Disable Privacy Preserving Product Analytics in Brave.
 
-  Privacy Preserving Product Analytics (P3A) is an opt-in feature that helps Brave estimate (using private and non-identifying responses) the overall usage of certain features and make them better for you.
+  Privacy Preserving Product Analytics (P3A) is an opt-in feature that helps Brave estimate (using private and non-identifying responses) the overall usage of certain features and make them better for users.
 
             If this policy is set to true, P3A will always be disabled and all related UI elements will be hidden.
 
@@ -17,13 +17,13 @@ features:
   can_be_mandatory: true
   can_be_recommended: false
   dynamic_refresh: false
-  per_profile: true
+  per_profile: false
 items:
-- caption: Enable P3A
+- caption: Allow the user to decide (enabled by default)
   value: false
-- caption: Disable P3A
+- caption: Disable P3A functionality
   value: true
-- caption: Allow the user to decide
+- caption: Allow the user to decide (enabled by default)
   value: null
 owners:
 - bbondy@brave.com
@@ -32,6 +32,6 @@ owners:
 schema:
   type: boolean
 supported_on:
-- chrome.*:140-
+- chrome.*:138-
 tags: []
 type: main
