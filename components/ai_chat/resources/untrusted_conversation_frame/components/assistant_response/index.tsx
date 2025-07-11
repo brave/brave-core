@@ -14,7 +14,8 @@ import MarkdownRenderer from '../markdown_renderer'
 import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
 import {
-  removeReasoning //
+  removeReasoning,
+  removeCitationsWithMissingLinks
 } from '../conversation_entries/conversation_entries_utils'
 
 function SearchSummary (props: { searchQueries: string[] }) {
@@ -67,10 +68,18 @@ function AssistantEvent(props: {
                            `[${index + 1}]: ${url}`).join('\n') + '\n\n'
         : '';
 
+    // Remove citations with missing links
+    const filteredOutCitationsWithMissingLinks =
+      removeCitationsWithMissingLinks(
+        event.completionEvent.completion,
+        allowedLinks
+      )
+
     // Replaces 2 consecutive citations with a separator and also
     // adds a space before the citation and the text.
-     const completion =
-       event.completionEvent.completion.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+    const completion =
+      filteredOutCitationsWithMissingLinks
+        .replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
 
     const fullText = `${numberedLinks}${removeReasoning(completion)}`;
 
