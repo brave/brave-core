@@ -1102,7 +1102,7 @@ void AIChatService::DisassociateContent(
   if (!conversation) {
     return;
   }
-  conversation->associated_content_manager()->RemoveContent(content);
+  conversation->associated_content_manager()->RemoveContent(content->uuid);
 
   // If this conversation is the most recent one for the content, remove it from
   // content_conversations_.

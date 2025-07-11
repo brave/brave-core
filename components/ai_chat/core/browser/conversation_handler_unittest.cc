@@ -774,7 +774,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
                 ->GetCachedTextContent(),
             "Content 1");
   conversation_handler_->associated_content_manager()->SetArchiveContent(
-      1, "Content 1", false);
+      associated_content1.uuid(), "Content 1", false);
 
   // Should not be able to remove the content via
   // RemoveContent(associated_content1) now.
@@ -785,10 +785,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
                 .size(),
             1u);
 
-  auto associated_content = mojom::AssociatedContent::New();
-  associated_content->uuid = associated_content1.uuid();
   conversation_handler_->associated_content_manager()->RemoveContent(
-      associated_content);
+      associated_content1.uuid());
 
   EXPECT_EQ(conversation_handler_->associated_content_manager()
                 ->GetAssociatedContent()
