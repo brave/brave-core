@@ -980,6 +980,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
+      CHECK(speedreader_service);
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(

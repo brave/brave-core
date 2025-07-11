@@ -36,6 +36,8 @@
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -91,6 +93,14 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
 void SpeedreaderTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
   if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    return;
+  }
+
+  // Check if speedreader is available (feature enabled and not disabled by
+  // policy)
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForBrowserContext(
+      contents->GetBrowserContext());
+  if (!speedreader_service) {
     return;
   }
 
@@ -168,6 +178,10 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
     return false;
   }
   auto* speedreader_service = GetSpeedreaderService();
+  if (!speedreader_service) {
+    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+    return false;
+  }
 
   const DistillState state =
       SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);

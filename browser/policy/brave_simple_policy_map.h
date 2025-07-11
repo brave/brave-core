@@ -11,6 +11,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
@@ -33,6 +34,10 @@
 #if BUILDFLAG(DEPRECATE_IPFS)
 #include "brave/components/ipfs/ipfs_prefs.h"
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
 
 namespace policy {
 
@@ -65,6 +70,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    {policy::key::kBraveSpeedreaderDisabled,
+     speedreader::kSpeedreaderDisabledByPolicy, base::Value::Type::BOOLEAN},
+#endif
 #endif
 #if BUILDFLAG(DEPRECATE_IPFS)
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,
