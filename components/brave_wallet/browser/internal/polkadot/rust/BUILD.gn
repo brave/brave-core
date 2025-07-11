@@ -34,7 +34,6 @@ source_set("polkadot_impl") {
 
   sources = [
     "sr25519.cc",
-    "sr25519.h",
   ]
 
   deps = [
@@ -57,7 +56,6 @@ rust_static_library("rust_lib") {
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
-    "//brave/components/brave_wallet/common:rust_lib",
     "//brave/third_party/rust/schnorrkel/v0_11:lib",
   ]
 }
