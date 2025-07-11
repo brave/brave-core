@@ -28,6 +28,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webui/webui_resources.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/browser/ui/webui/favicon_source.h"
@@ -56,20 +57,13 @@
 namespace {
 
 web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
-  BrowserList* browser_list =
-      BrowserListFactory::GetForProfile(ProfileIOS::FromWebUIIOS(web_ui));
-
-  for (Browser* browser :
-       browser_list->BrowsersOfType(BrowserList::BrowserType::kRegular)) {
-    web::WebState* active_web_state =
-        browser->GetWebStateList()->GetActiveWebState();
-    if (active_web_state) {
-      //      DCHECK_EQ(active_web_state, web_ui->GetWebState());  // TODO: iOS
-      //      doesn't currently set WebStates as active.
-      return active_web_state;
-    }
+  web::WebState* active_web_state =
+      ai_chat::TabDataWebStateObserver::GetActiveTab();
+  if (active_web_state) {
+    DCHECK_EQ(active_web_state->GetBrowserState(),
+              web_ui->GetWebState()->GetBrowserState());
+    return active_web_state;
   }
-
   return nullptr;
 }
 
@@ -77,7 +71,8 @@ web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
 
 AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
-      profile_(ProfileIOS::FromWebUIIOS(web_ui)) {
+      profile_(ProfileIOS::FromWebUIIOS(web_ui)),
+      active_web_state_(GetActiveWebState(web_ui)) {
   DCHECK(profile_);
   // DCHECK(profile_->IsRegularProfile());
   DCHECK(!profile_->IsOffTheRecord());
@@ -154,15 +149,14 @@ AIChatUI::~AIChatUI() {
 
 void AIChatUI::BindInterfaceUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
-  web::WebState* web_state = GetActiveWebState(web_ui());
-
   // Don't associate with the WebUI's web_state
-  if (web_state == web_ui()->GetWebState()) {
-    web_state = nullptr;
+  if (active_web_state_ == web_ui()->GetWebState()) {
+    active_web_state_ = nullptr;
   }
 
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebState(), web_state, profile_, std::move(receiver));
+      web_ui()->GetWebState(), active_web_state_, profile_,
+      std::move(receiver));
 }
 
 void AIChatUI::BindInterfaceChatService(

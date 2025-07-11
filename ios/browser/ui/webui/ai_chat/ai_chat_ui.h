@@ -42,6 +42,7 @@ class AIChatUI : public web::WebUIIOSController {
  private:
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
   raw_ptr<ProfileIOS> profile_ = nullptr;
+  raw_ptr<web::WebState> active_web_state_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AICHAT_AI_CHAT_UI_H_
