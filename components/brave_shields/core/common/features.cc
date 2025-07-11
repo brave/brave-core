@@ -35,11 +35,6 @@ BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
 BASE_FEATURE(kBraveAdblockCookieListDefault,
              "BraveAdblockCookieListDefault",
              base::FEATURE_ENABLED_BY_DEFAULT);
-// When enabled, Brave will display a bubble inviting the user to turn on the
-// "Easylist-Cookie List" filter.
-BASE_FEATURE(kBraveAdblockCookieListOptIn,
-             "BraveAdblockCookieListOptIn",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockCosmeticFiltering,
              "BraveAdblockCosmeticFiltering",
              base::FEATURE_ENABLED_BY_DEFAULT);
