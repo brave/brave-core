@@ -23,6 +23,7 @@ brave_updater_branding = {
   mac_updater_bundle_identifier = "com.brave.BraveUpdater"
   privileged_helper_bundle_name = "BraveUpdaterPrivilegedHelper"
   privileged_helper_name = "com.brave.Browser.UpdaterPrivilegedHelper"
+  updater_app_icon_path = "//brave/app/theme/chromium/mac/app.icns"
   updater_company_full_name = "Brave Software, Inc"
   updater_company_short_name = "BraveSoftware"
   updater_company_short_name_uppercase = "BRAVESOFTWARE"
