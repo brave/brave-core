@@ -465,40 +465,6 @@ extension BrowserViewController: TabPolicyDecider {
         }
       }
 
-      // Adblock logic,
-      // Only use main document URL, not the request URL
-      // If an iFrame is loaded, shields depending on the main frame, not the iFrame request
-
-      // Weird behavior here with `targetFram` and `sourceFrame`, on refreshing page `sourceFrame` is not nil (it is non-optional)
-      //  however, it is still an uninitialized object, making it an unreliable source to compare `isMainFrame` against.
-      //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
-      // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
-      // request then the page is reloaded with a proper url and adblocking rules are applied.
-      if let mainDocumentURL = request.mainDocumentURL,
-        mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
-        requestInfo.isMainFrame
-      {
-        // Identify specific block lists that need to be applied to the requesting domain
-        let isBraveShieldsEnabled =
-          tab.braveShieldsHelper?.isBraveShieldsEnabled(
-            for: mainDocumentURL,
-            isPrivate: tab.isPrivate
-          ) ?? true
-        let shieldLevel =
-          tab.braveShieldsHelper?.shieldLevel(
-            for: mainDocumentURL,
-            isPrivate: tab.isPrivate,
-            considerAllShieldsOption: true
-          ) ?? .standard
-
-        // Load rule lists
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
-          isBraveShieldsEnabled: isBraveShieldsEnabled,
-          shieldLevel: shieldLevel
-        )
-        tab.contentBlocker?.set(ruleLists: ruleLists)
-      }
-
       // Cookie Blocking code below
       tab.browserData?.setScript(
         script: .cookieBlocking,
