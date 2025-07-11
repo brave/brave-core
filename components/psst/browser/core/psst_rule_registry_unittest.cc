@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
+#include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
 
 #include <cstddef>
 #include <memory>
@@ -69,18 +69,19 @@ class PsstRuleRegistryUnitTest : public testing::Test {
     return GetTestDataDirBase().Append(
         base::FilePath::FromUTF8Unsafe("wrong_psst"));
   }
+  PsstRuleRegistryImpl& psst_rule_registry() { return registry_; }
 
  private:
+  PsstRuleRegistryImpl registry_;
   base::test::TaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
   base::FilePath test_data_dir_base_;
 };
 
 TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
-  PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+    psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -94,7 +95,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
           run_loop.Quit();
         });
 
-    registry.LoadRules(GetTestDataDirBase());
+    psst_rule_registry().LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
@@ -117,21 +118,19 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
         run_loop.Quit();
       });
 
-  registry.CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
-  PsstRuleRegistry registry;
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  registry.CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
-  PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+  psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -145,14 +144,13 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
             run_loop.Quit();
           });
 
-  registry.LoadRules(GetTestDataDirBase());
+  psst_rule_registry().LoadRules(GetTestDataDirBase());
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
-  PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+  psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -164,14 +162,13 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
             run_loop.Quit();
           });
 
-  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
+  psst_rule_registry().LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
-  PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+  psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -185,16 +182,15 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
             run_loop.Quit();
           });
 
-  registry.LoadRules(GetBrokenTestDataDirBase());
+  psst_rule_registry().LoadRules(GetBrokenTestDataDirBase());
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
   const auto non_existing_path =
       base::FilePath(FILE_PATH_LITERAL("non-existing-path"));
-  PsstRuleRegistry registry;
   LoadRulesTestCallback mock_callback;
-  registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+  psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -206,15 +202,14 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
             run_loop.Quit();
           });
 
-  registry.LoadRules(non_existing_path);
+  psst_rule_registry().LoadRules(non_existing_path);
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
-  PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+    psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -228,7 +223,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
           run_loop.Quit();
         });
 
-    registry.LoadRules(GetTestDataDirBase());
+    psst_rule_registry().LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
@@ -243,15 +238,14 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
         run_loop.Quit();
       });
 
-  registry.CheckIfMatch(GURL("https://url.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://url.test"), mock_callback.Get());
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
-  PsstRuleRegistry registry;
   {
     LoadRulesTestCallback mock_callback;
-    registry.SetOnLoadCallbackForTesting(mock_callback.Get());
+    psst_rule_registry().SetOnLoadCallbackForTesting(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -265,13 +259,13 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
           run_loop.Quit();
         });
 
-    registry.LoadRules(GetTestDataDirBase());
+    psst_rule_registry().LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  registry.CheckIfMatch(GURL("https://notexisted.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://notexisted.test"), mock_callback.Get());
 }
 
 }  // namespace psst

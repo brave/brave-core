@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
+#include "brave/components/psst/browser/core/psst_rule.h"
+#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -36,20 +38,26 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(
-          contents, prefs,
-          std::make_unique<PsstScriptsHandlerImpl>(
-              prefs, contents, contents->GetPrimaryMainFrame(), world_id)));
+          contents, PsstRuleRegistry::GetInstance(), prefs,
+          std::make_unique<PsstScriptsHandlerImpl>(contents, world_id)));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
+    PsstRuleRegistry* registry,
     PrefService* prefs,
     std::unique_ptr<ScriptsHandler> script_handler)
     : WebContentsObserver(web_contents),
-      script_handler_(std::move(script_handler)),
-      prefs_(prefs) {}
+      registry_(registry),
+      prefs_(prefs),
+      script_handler_(std::move(script_handler)) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
+
+void PsstTabWebContentsObserver::WebContentsDestroyed() {
+  script_handler_.reset();
+  should_process_.reset();
+}
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
     content::NavigationHandle* handle) {
@@ -61,18 +69,54 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
   if (handle->IsSameDocument() ||
       handle->GetRestoreType() == content::RestoreType::kRestored ||
       !prefs_->GetBoolean(prefs::kPsstEnabled)) {
-    should_process_ = false;
+    should_process_.reset();
   } else {
-    should_process_ = true;
+    should_process_ = handle->GetRenderFrameHost()->GetGlobalFrameToken();
   }
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  if (!std::exchange(should_process_, false)) {
+  auto token = web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken();
+  if (!ShouldInsertScriptForPage(token)) {
     return;
   }
 
-  script_handler_->Start();
+  registry_->CheckIfMatch(
+      web_contents()->GetLastCommittedURL(),
+      base::BindOnce(
+          &PsstTabWebContentsObserver::InsertUserScript,
+          weak_factory_.GetWeakPtr(), token));
+}
+
+bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(
+    content::GlobalRenderFrameHostToken token) {
+  return script_handler_ && should_process_.has_value() &&
+         should_process_.value() == token;
+}
+
+void PsstTabWebContentsObserver::InsertUserScript(
+    content::GlobalRenderFrameHostToken token,
+    std::unique_ptr<MatchedRule> rule) {
+  if (!rule || !ShouldInsertScriptForPage(token)) {
+    return;
+  }
+
+  script_handler_->InsertScriptInPage(
+      rule->user_script(),
+      base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
+                     weak_factory_.GetWeakPtr(), token, rule->policy_script()));
+}
+
+void PsstTabWebContentsObserver::OnUserScriptResult(
+    content::GlobalRenderFrameHostToken token,
+    const std::string& policy_script,
+    base::Value user_script_result) {
+  if (!ShouldInsertScriptForPage(token)  || policy_script.empty() ||
+      !user_script_result.is_dict()) {
+    return;
+  }
+  script_handler_->InsertScriptInPage(policy_script, base::DoNothing());
+  should_process_.reset();
 }
 
 }  // namespace psst

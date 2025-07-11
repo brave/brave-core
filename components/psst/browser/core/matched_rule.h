@@ -35,10 +35,12 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
 
  private:
   friend class RuleDataReaderUnitTest;
-  MatchedRule(const std::string& name,
-              const std::string& user_script,
-              const std::string& policy_script,
-              int version);
+  friend class PsstTabWebContentsObserverUnitTestBase;
+  MatchedRule(
+      const std::string& name,
+      const std::string& user_script,
+      const std::string& policy_script,
+      int version);
 
   const std::string name_;
   const std::string user_script_;

@@ -7,15 +7,10 @@
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_REGISTRY_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
 #include "base/component_export.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
-#include "base/memory/weak_ptr.h"
-#include "base/no_destructor.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "url/gurl.h"
@@ -28,50 +23,13 @@ namespace psst {
 // policy.js script contents) with using of rule data reader.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
  public:
-  PsstRuleRegistry(const PsstRuleRegistry&) = delete;
-  PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
-
-  ~PsstRuleRegistry();
-
   static PsstRuleRegistry* GetInstance();
 
   // Returns the matched PSST rule, if any.
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb);
+  virtual void CheckIfMatch(const GURL& url,
+                    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) = 0;
 
-  void LoadRules(const base::FilePath& path);
-
- private:
-  PsstRuleRegistry();
-  friend base::NoDestructor<PsstRuleRegistry>;
-
-  friend class PsstRuleRegistryUnitTest;
-  friend class PsstTabWebContentsObserverBrowserTest;
-  friend class PsstTabWebContentsObserverBrowserTestDisabled;
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoading);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
-                           CheckIfMatchWithNoRulesLoaded);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
-                           RulesLoadingBrokenRulesFile);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
-                           RulesLoadingNonExistingPath);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, LoadConcreteRule);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists);
-  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
-                           RuleReferencesToNotExistedPath);
-
-  void OnLoadRules(const std::string& data);
-  void SetOnLoadCallbackForTesting(
-      base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
-          callback);
-  std::optional<base::OnceCallback<void(const std::string&,
-                                        const std::vector<PsstRule>&)>>
-      onload_test_callback_;
-
-  std::vector<PsstRule> rules_;
-  base::FilePath component_path_;
-  base::WeakPtrFactory<PsstRuleRegistry> weak_factory_{this};
+  virtual void LoadRules(const base::FilePath& path) = 0;
 };
 
 }  // namespace psst

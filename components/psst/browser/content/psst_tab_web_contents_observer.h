@@ -7,21 +7,31 @@
 #define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/values.h"
+#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "content/public/browser/global_routing_id.h"
 
 class PrefService;
 
 namespace psst {
 
+class MatchedRule;
+
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
  public:
+  using InsertScriptInPageCallback =
+      base::OnceCallback<void(base::Value)>;
   class ScriptsHandler {
    public:
     virtual ~ScriptsHandler() = default;
-    virtual void Start() = 0;
+    virtual void InsertScriptInPage(const std::string& script,
+                            InsertScriptInPageCallback cb) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
@@ -39,16 +49,29 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   friend class PsstTabWebContentsObserverUnitTestBase;
 
   PsstTabWebContentsObserver(content::WebContents* web_contents,
+                             PsstRuleRegistry* registry,
                              PrefService* prefs,
                              std::unique_ptr<ScriptsHandler> script_handler);
+
+  bool ShouldInsertScriptForPage(content::GlobalRenderFrameHostToken token);
+  void InsertUserScript(content::GlobalRenderFrameHostToken token,
+                        std::unique_ptr<MatchedRule> rule);
+
+  void OnUserScriptResult(content::GlobalRenderFrameHostToken token,
+                          const std::string& policy_script,
+                          base::Value script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
+  void WebContentsDestroyed() override;
 
-  std::unique_ptr<ScriptsHandler> script_handler_;
+  const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
-  bool should_process_ = false;
+  std::unique_ptr<ScriptsHandler> script_handler_;
+
+  std::optional<content::GlobalRenderFrameHostToken> should_process_;
+  base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
 
 }  // namespace psst

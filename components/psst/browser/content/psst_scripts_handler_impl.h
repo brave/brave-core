@@ -6,16 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
 
-#include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/global_routing_id.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
@@ -24,35 +18,22 @@ namespace psst {
 class PsstScriptsHandlerImpl
     : public PsstTabWebContentsObserver::ScriptsHandler {
  public:
-  using InsertScriptInPageCallback = base::OnceCallback<void(::base::Value)>;
-
   explicit PsstScriptsHandlerImpl(
-      PrefService* prefs,
       content::WebContents* web_contents,
-      const content::RenderFrameHost* render_frame_host,
       const int32_t world_id);
   ~PsstScriptsHandlerImpl() override;
 
-  void Start() override;
+  // PsstScriptsHandler overrides
+  void InsertScriptInPage(
+      const std::string& script,
+      PsstTabWebContentsObserver::InsertScriptInPageCallback cb) override;
 
  private:
-  void InsertUserScript(std::unique_ptr<MatchedRule> rule);
-
-  void OnUserScriptResult(std::unique_ptr<MatchedRule> rule,
-                          base::Value script_result);
-
-  void InsertScriptInPage(const std::string& script,
-                          InsertScriptInPageCallback cb);
-
-  const raw_ptr<PrefService> prefs_;
-
-  const content::GlobalRenderFrameHostId render_frame_host_id_;
-  base::WeakPtr<content::WebContents> web_contents_;
+  raw_ptr<content::WebContents> web_contents_;
   const int32_t world_id_;
 
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  base::WeakPtrFactory<PsstScriptsHandlerImpl> weak_factory_{this};
 };
 
 }  // namespace psst

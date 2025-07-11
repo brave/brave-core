@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
+#include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
 
 #include <memory>
 #include <string>
@@ -21,7 +21,6 @@
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
-#include "brave/components/psst/common/features.h"
 #include "url/origin.h"
 
 namespace psst {
@@ -43,20 +42,20 @@ std::string ReadFile(const base::FilePath& file_path) {
 
 // static
 PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
-  static base::NoDestructor<PsstRuleRegistry> instance;
+  static base::NoDestructor<PsstRuleRegistryImpl> instance;
   return instance.get();
 }
 
-void PsstRuleRegistry::SetOnLoadCallbackForTesting(
+PsstRuleRegistryImpl::PsstRuleRegistryImpl() = default;
+PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
+
+void PsstRuleRegistryImpl::SetOnLoadCallbackForTesting(
     base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
         callback) {
   onload_test_callback_ = std::move(callback);
 }
 
-PsstRuleRegistry::PsstRuleRegistry() = default;
-PsstRuleRegistry::~PsstRuleRegistry() = default;
-
-void PsstRuleRegistry::CheckIfMatch(
+void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) {
   for (const PsstRule& rule : rules_) {
@@ -73,17 +72,17 @@ void PsstRuleRegistry::CheckIfMatch(
   }
 }
 
-void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
+void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path) {
   component_path_ = path;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
-      base::BindOnce(&PsstRuleRegistry::OnLoadRules,
+      base::BindOnce(&PsstRuleRegistryImpl::OnLoadRules,
                      weak_factory_.GetWeakPtr()));
 }
 
-void PsstRuleRegistry::OnLoadRules(const std::string& contents) {
+void PsstRuleRegistryImpl::OnLoadRules(const std::string& contents) {
   auto parsed_rules = PsstRule::ParseRules(contents);
   if (parsed_rules) {
     rules_ = std::move(parsed_rules.value());

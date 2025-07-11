@@ -6,6 +6,7 @@
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -14,6 +15,8 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
+#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "build/build_config.h"
@@ -30,14 +33,18 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::_;
+using ::testing::InvokeArgument;
+
 namespace psst {
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
  public:
   explicit DocumentOnLoadObserver(content::WebContents* web_contents)
       : content::WebContentsObserver(web_contents) {}
-
-  void Wait() { loop_.Run(); }
+  void Wait() {
+    loop_.Run();
+  }
 
   void SetDidFinishNavigationCallback(base::OnceClosure callback) {
     callback_ = std::move(callback);
@@ -60,14 +67,57 @@ class DocumentOnLoadObserver : public content::WebContentsObserver {
   base::OnceClosure callback_;
 };
 
+class MockPsstRuleRegistry final : public PsstRuleRegistry {
+ public:
+  MockPsstRuleRegistry() = default;
+  ~MockPsstRuleRegistry() = default;
+
+  MOCK_METHOD(void,
+              CheckIfMatch,
+              (const GURL&,
+               base::OnceCallback<void(std::unique_ptr<MatchedRule>)>),
+              (override));
+
+  MOCK_METHOD(void, LoadRules, (const base::FilePath& path), (override));
+};
+
+// testing::InvokeArgument<N> does not work with base::OnceCallback, so we
+// define our own gMock action to run the 2nd argument.
+ACTION_P(CheckIfMatchCallback, loop, match_rule) {
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(base::WrapUnique(match_rule));
+  loop->Quit();
+}
+
+ACTION_P(CheckIfMatchFailsCallback, loop) {
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(nullptr);
+  loop->Quit();
+}
+
 class MockPsstScriptsHandler
     : public PsstTabWebContentsObserver::ScriptsHandler {
  public:
   MockPsstScriptsHandler() = default;
   ~MockPsstScriptsHandler() override = default;
 
-  MOCK_METHOD(void, Start, (), (override));
+  MOCK_METHOD(void,
+              InsertScriptInPage,
+              (const std::string& script,
+               PsstTabWebContentsObserver::InsertScriptInPageCallback cb),
+              (override));
 };
+
+// testing::InvokeArgument<N> does not work with base::OnceCallback, so we
+// define our own gMock action to run the 2nd argument.
+ACTION_P(InsertScriptInPageCallback, loop, value) {
+  std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
+      .Run(value.Clone());
+  loop->Quit();
+}
 
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
@@ -77,9 +127,10 @@ class PsstTabWebContentsObserverUnitTestBase
 
     psst::RegisterProfilePrefs(prefs_.registry());
     scripts_handler_ = new MockPsstScriptsHandler();
+    rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(
-            web_contents(), &prefs_,
+            web_contents(), rule_registry_.get(), &prefs_,
             base::WrapUnique<MockPsstScriptsHandler>(scripts_handler_)));
   }
 
@@ -88,16 +139,30 @@ class PsstTabWebContentsObserverUnitTestBase
     scripts_handler_ = nullptr;
   }
 
-  bool ShouldProcess() { return psst_web_contents_observer_->should_process_; }
-  MockPsstScriptsHandler& GetScriptHandler() { return *scripts_handler_; }
+  bool ShouldProcess() {
+    return psst_web_contents_observer_->should_process_.has_value();
+  }
+
+  MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
+  MockPsstScriptsHandler& scripts_handler() {
+    return *scripts_handler_;
+  }
   PrefService* prefs() { return &prefs_; }
+
+  MatchedRule* CreateMatchedRule(
+      const std::string& user_script,
+      const std::string& policy_script) {
+    return new MatchedRule("name", user_script, policy_script, 1);
+  }
 
  protected:
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<MockPsstScriptsHandler> scripts_handler_;
-  std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
+  raw_ptr<MockPsstScriptsHandler> scripts_handler_; // not owned
+  std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
+  std::unique_ptr<PsstTabWebContentsObserver>
+          psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
@@ -111,9 +176,10 @@ class PsstTabWebContentsObserverUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
-  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
-            nullptr);
+  EXPECT_NE(
+      PsstTabWebContentsObserver::MaybeCreateForWebContents(
+          web_contents(), browser_context(), prefs(), 2),
+      nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -131,12 +197,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessRestoredNavigationEntry) {
+  auto url = GURL("https://example1.com");
+
   content::NavigationController& controller = web_contents()->GetController();
-  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch).Times(0);
 
   std::unique_ptr<content::NavigationEntry> restored_entry =
       content::NavigationEntry::Create();
-  auto url = GURL("https://example1.com");
   restored_entry->SetURL(url);
   restored_entry->SetTitle(u"Restored Page");
 
@@ -156,7 +223,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
-  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(0);
   {
     DocumentOnLoadObserver observer(web_contents());
     content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -183,10 +250,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
   }
 }
 
+// TODO(bridiver) - test multiple main frame navigations in a row
+
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNotPrimaryMainFrame) {
   // first load the main frame so we can create a subframe
-  EXPECT_CALL(GetScriptHandler(), Start).Times(1);
+  GURL url("https://example.com/");
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(1);
   DocumentOnLoadObserver main_frame_observer(web_contents());
   base::RunLoop main_frame_loop;
   auto main_frame_callback = base::BindLambdaForTesting([&]() {
@@ -196,7 +267,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   });
   main_frame_observer.SetDidFinishNavigationCallback(main_frame_callback);
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
-      web_contents(), GURL("https://example.com/"));
+      web_contents(), url);
   main_frame_observer.Wait();
 
   // should_process_ should be reset to false
@@ -230,7 +301,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
       GURL("https://example.com"), web_contents());
 
-  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(0);
   // Simulate navigation start but NOT commit
   simulator->Start();
   simulator->Fail(net::ERR_ABORTED);  // Simulates cancel before commit
@@ -240,7 +311,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfSameDocumentNavigation) {
   const GURL url("https://example1.com");
 
-  EXPECT_CALL(GetScriptHandler(), Start).Times(1);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(1);
   DocumentOnLoadObserver observer(web_contents());
   base::RunLoop loop;
   auto callback = base::BindLambdaForTesting([&]() {
@@ -270,24 +341,149 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   sim->CommitSameDocument();
 }
 
+// TODO(bridiver) - test for navigating after should_process_ but before script
+
 TEST_F(PsstTabWebContentsObserverUnitTest,
-       DefaultPrefEnabledStartScriptHandler) {
+       DefaultPrefEnabledShouldProcess) {
   const GURL url("https://example1.com");
-  EXPECT_CALL(GetScriptHandler(), Start).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),                                                           url);
+  observer.Wait();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
+  const GURL url("https://example1.com");
+  prefs()->SetBoolean(prefs::kPsstEnabled, false);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url);
   observer.Wait();
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontStartScriptHandler) {
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       CheckIfMatchReturnsNull) {
   const GURL url("https://example1.com");
-  prefs()->SetBoolean(prefs::kPsstEnabled, false);
-  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&check_loop));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                            url);
+  observer.Wait();
+
+  check_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsEmptyHasPolicyScript) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  auto value = base::Value();
+
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(value)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url);
   observer.Wait();
+  check_loop.Run();
+  user_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, UserScriptReturnsEmptyNoPolicyScript) {
+  const std::string user_script = "user";
+  const std::string policy_script = "";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  auto value = base::Value();
+
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(value)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, UserScriptReturnsDictHasPolicyScript) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
+  auto dict = base::Value(base::Value::Dict());
+  auto value = base::Value();
+
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(dict)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(value)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+  policy_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsDictNoPolicyScript) {
+  const std::string user_script = "user";
+  const std::string policy_script = "";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  auto dict = base::Value(base::Value::Dict());
+  auto value = base::Value();
+
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(dict)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
 }
 
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
