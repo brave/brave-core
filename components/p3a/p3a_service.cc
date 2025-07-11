@@ -91,6 +91,10 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
+
+  // TODO(bsclifton): this won't work
+  // `registry` in this case is `Local State` file not preferences.
+  registry->RegisterBooleanPref(kP3ADisabledByPolicy, false);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {

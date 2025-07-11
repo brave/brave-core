@@ -11,6 +11,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
@@ -59,6 +60,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
+     base::Value::Type::BOOLEAN},
+    {policy::key::kP3ADisabled, p3a::kP3ADisabledByPolicy,
      base::Value::Type::BOOLEAN},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
