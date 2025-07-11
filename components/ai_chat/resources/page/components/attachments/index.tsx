@@ -17,11 +17,12 @@ import { getLocale } from '$web-common/locale'
 function TabItem({ tab }: { tab: TabData }) {
     const aiChat = useAIChat()
     const { conversationUuid, associatedContentInfo } = useConversation()
-    return <Checkbox className={styles.tabItem} checked={associatedContentInfo.some(c => c.contentId === tab.contentId)} onChange={(e) => {
+    const content = React.useMemo(() => associatedContentInfo.find(c => c.contentId === tab.contentId), [associatedContentInfo, tab.contentId])
+    return <Checkbox className={styles.tabItem} checked={!!content} onChange={(e) => {
         if (e.checked) {
             aiChat.uiHandler?.associateTab(tab, conversationUuid!)
-        } else {
-            aiChat.uiHandler?.disassociateTab(tab, conversationUuid!)
+        } else if (content){
+            aiChat.uiHandler?.disassociateContent(content, conversationUuid!)
         }
     }}>
         <span className={styles.title}>{tab.title}</span>

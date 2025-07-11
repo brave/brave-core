@@ -56,6 +56,11 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
+  // Removes the content delegate with |content_uuid| from the list of content
+  // delegates.
+  void RemoveContent(const std::string& content_uuid,
+                     bool notify_updated = true);
+
   void GetContent(base::OnceClosure callback);
   void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
