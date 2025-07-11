@@ -10,8 +10,34 @@ package ai_chat.store;
 option optimize_for = LITE_RUNTIME;
 
 //
-// Structured data stored by the client, usually in SQL_FROM_HERE
+// Structured data stored by the client, usually in SQL
 //
+
+message ImageContentBlockProto {
+  string image_url = 1;
+}
+
+message TextContentBlockProto {
+  string text = 1;
+}
+
+message ContentBlockProto {
+  oneof content {
+    ImageContentBlockProto image_content_block = 1;
+    TextContentBlockProto text_content_block = 2;
+  }
+}
+
+message ToolUseEventProto {
+  string tool_name = 1;
+  string id = 2;
+
+  // We can't use google.protobuf.Struct in Chromium
+  // so we use JSON string for something that's easily convertable
+  // to DictionaryValue.
+  string arguments_json = 3;
+  repeated ContentBlockProto output = 4;
+}
 
 message WebSourceProto {
   string title = 1;

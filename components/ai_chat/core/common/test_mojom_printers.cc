@@ -51,10 +51,19 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
   *os << "--ToolUseEvent--\n";
   *os << "tool_name: " << event.tool_name << "\n";
   *os << "id: " << event.id << "\n";
-  *os << "arguments: ";
-  std::string args_json;
-  base::JSONWriter::Write(event.arguments, &args_json);
-  *os << args_json << "\n";
+  *os << "arguments_json: " << event.arguments_json << "\n";
+  if (event.arguments) {
+    *os << "arguments (stored as parsed ): ";
+    std::string args_json;
+    base::JSONWriter::Write(event.arguments.value(), &args_json);
+    *os << args_json << "\n";
+  }
+
+  *os << "output:\n"
+      << (!event.output.has_value()
+              ? "[nullopt]"
+              : " array with " + base::NumberToString(event.output->size()) +
+                    " elements");
 
   *os << "output:\n";
   if (event.output) {

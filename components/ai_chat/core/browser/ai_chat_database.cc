@@ -21,6 +21,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/proto_conversion.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/init_status.h"
@@ -112,49 +113,6 @@ bool MigrateFrom5to6(sql::Database* db) {
       db->GetUniqueStatement(kRemoveIsContentRefinedColumnQuery));
 
   return statement.is_valid() && statement.Run();
-}
-void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
-                              store::WebSourcesEventProto* proto_event) {
-  proto_event->clear_sources();
-
-  for (const auto& mojom_source : mojom_event->sources) {
-    if (!mojom_source->url.is_valid() ||
-        !mojom_source->favicon_url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found for persistence, with url: "
-               << mojom_source->url.spec()
-               << " and favicon url: " << mojom_source->favicon_url.spec();
-      continue;
-    }
-    store::WebSourceProto* proto_source = proto_event->add_sources();
-    proto_source->set_title(mojom_source->title);
-    proto_source->set_url(mojom_source->url.spec());
-    proto_source->set_favicon_url(mojom_source->favicon_url.spec());
-  }
-}
-
-mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
-    const store::WebSourcesEventProto& proto_event) {
-  auto mojom_event = mojom::WebSourcesEvent::New();
-  mojom_event->sources.reserve(proto_event.sources_size());
-
-  for (const auto& proto_source : proto_event.sources()) {
-    auto mojom_source = mojom::WebSource::New();
-    mojom_source->title = proto_source.title();
-    mojom_source->url = GURL(proto_source.url());
-    if (!mojom_source->url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found in database with url: "
-               << proto_source.url();
-      continue;
-    }
-    mojom_source->favicon_url = GURL(proto_source.favicon_url());
-    if (!mojom_source->favicon_url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found in database with favicon url: "
-               << proto_source.favicon_url();
-      continue;
-    }
-    mojom_event->sources.push_back(std::move(mojom_source));
-  }
-  return mojom_event;
 }
 
 }  // namespace
@@ -506,6 +464,35 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
           }
           events.emplace_back(
               Event{event_order, mojom::ConversationEntryEvent::NewSourcesEvent(
+                                     std::move(mojom_event))});
+        }
+      }
+    }
+
+    // Tool use events
+    {
+      sql::Statement event_statement(
+          GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                     "SELECT event_order, tool_use_serialized"
+                                     " FROM conversation_entry_event_tool_use"
+                                     " WHERE conversation_entry_uuid=?"
+                                     " ORDER BY event_order ASC"));
+      event_statement.BindString(0, entry_uuid);
+
+      while (event_statement.Step()) {
+        int event_order = event_statement.ColumnInt(0);
+        auto data = DecryptColumnToString(event_statement, 1);
+        store::ToolUseEventProto proto_event;
+        if (proto_event.ParseFromString(data)) {
+          mojom::ToolUseEventPtr mojom_event =
+              DeserializeToolUseEvent(proto_event);
+          if (!mojom_event) {
+            DLOG(ERROR) << "Invalid ToolUseEvent found in database for entry "
+                        << entry_uuid;
+            continue;
+          }
+          events.emplace_back(
+              Event{event_order, mojom::ConversationEntryEvent::NewToolUseEvent(
                                      std::move(mojom_event))});
         }
       }
@@ -903,6 +890,33 @@ bool AIChatDatabase::AddConversationEntry(
           SerializeWebSourcesEvent(event->get_sources_event(), &proto_event);
           if (proto_event.sources().empty()) {
             DVLOG(0) << "Empty WebSourcesEvent found for persistence";
+            break;
+          }
+          event_statement.BindInt(0, static_cast<int>(i));
+          if (!BindAndEncryptString(event_statement, 1,
+                                    proto_event.SerializeAsString())) {
+            return false;
+          }
+          event_statement.BindString(2, entry->uuid.value());
+          event_statement.Run();
+          break;
+        }
+        case mojom::ConversationEntryEvent::Tag::kToolUseEvent: {
+          sql::Statement event_statement(GetDB().GetCachedStatement(
+              SQL_FROM_HERE,
+              "INSERT INTO conversation_entry_event_tool_use"
+              " (event_order, tool_use_serialized, conversation_entry_uuid)"
+              " VALUES(?, ?, ?)"));
+          CHECK(event_statement.is_valid());
+
+          store::ToolUseEventProto proto_event;
+          if (!SerializeToolUseEvent(event->get_tool_use_event(),
+                                     &proto_event) ||
+              proto_event.tool_name().empty() || proto_event.id().empty()) {
+            // If we failed to parse the event, we can ignore the event
+            // for now. Perhaps we're persisting the entry whilst it's still
+            // partial.
+            DLOG(ERROR) << "Invalid ToolUseEvent found for persistence";
             break;
           }
           event_statement.BindInt(0, static_cast<int>(i));
@@ -1483,6 +1497,19 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateWebSourcesTableQuery));
   if (!GetDB().Execute(kCreateWebSourcesTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateToolUseEventsTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS conversation_entry_event_tool_use("
+      "conversation_entry_uuid INTEGER NOT NULL,"
+      "event_order INTEGER NOT NULL,"
+      // encrypted ToolUseEventProto data
+      "tool_use_serialized BLOB NOT NULL,"
+      "PRIMARY KEY(conversation_entry_uuid, event_order)"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateToolUseEventsTableQuery));
+  if (!GetDB().Execute(kCreateToolUseEventsTableQuery)) {
     return false;
   }
 
