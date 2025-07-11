@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
@@ -15,6 +16,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -44,11 +46,33 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-
     base::FilePath test_data_dir = GetTestDataDir();
 
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    content::SetupCrossSiteRedirector(&https_server_);
+    https_server_.RegisterRequestHandler(base::BindRepeating(
+        [](const base::FilePath& test_data_dir,
+           const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          GURL url = request.GetURL();
+          std::string v_param;
+          if (!net::GetValueForKeyInQuery(url, "v", &v_param) ||
+              v_param.empty()) {
+            return nullptr;
+          }
+          base::FilePath file_path = test_data_dir.AppendASCII(v_param);
+          std::string file_contents;
+          if (!base::ReadFileToString(file_path, &file_contents)) {
+            return nullptr;
+          }
+
+          auto response =
+              std::make_unique<net::test_server::BasicHttpResponse>();
+          response->set_code(net::HTTP_OK);
+          response->set_content(file_contents);
+          response->set_content_type("text/html");
+          return response;
+        },
+        test_data_dir));
+
     ASSERT_TRUE(https_server_.Start());
   }
 
@@ -72,6 +96,22 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
                                      content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
+  GURL GetTestUrlToServe(const std::string& host,
+                         const std::string& path_and_query,
+                         const std::string& file_to_serve) {
+    // Replace the v parameter with the file to serve.
+    std::string modified_query = path_and_query;
+    size_t v_pos = modified_query.find("v=");
+    if (v_pos != std::string::npos) {
+      size_t end_pos = modified_query.find("&", v_pos);
+      if (end_pos == std::string::npos) {
+        end_pos = modified_query.length();
+      }
+      modified_query.replace(v_pos + 2, end_pos - v_pos - 2, file_to_serve);
+    }
+    return https_server_.GetURL(host, modified_query);
+  }
+
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
@@ -84,7 +124,8 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        ReplaceExperimentalFlagValues) {
-  const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
+  const GURL url =
+      GetTestUrlToServe("youtube.com", "/watch?v=abcd", "ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -140,7 +181,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        ReplaceExperimentalFlagValuesInjectedBeforeOnLoad) {
-  const GURL url = https_server_.GetURL("youtube.com", "/load_ytcfg_mock.html");
+  const GURL url =
+      GetTestUrlToServe("youtube.com", "/watch?v=abcd", "load_ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -202,7 +244,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        DontReplaceExperimentalFlagValuesForSamePageNavigation) {
-  const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
+  const GURL url =
+      GetTestUrlToServe("youtube.com", "/watch?v=abcd", "ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -286,7 +329,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        OnlyReplaceExperimentalFlagValuesForYouTubeDomains) {
-  const GURL url = https_server_.GetURL("youtub.com", "/ytcfg_mock.html");
+  const GURL url = GetTestUrlToServe("different-domain.com", "/watch?v=abcd",
+                                     "ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -296,8 +340,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        NoOpIfSerializedExperimentFlagsIsMissing) {
-  const GURL url =
-      https_server_.GetURL("youtube.com", "/ytcfg_mock_no_flags.html");
+  const GURL url = GetTestUrlToServe("youtube.com", "/watch?v=abcd",
+                                     "ytcfg_mock_no_flags.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -316,7 +360,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        NoOpIfYtcfgIsMissing) {
-  const GURL url = https_server_.GetURL("youtube.com", "/no_ytcfg_mock.html");
+  const GURL url =
+      GetTestUrlToServe("youtube.com", "/watch?v=abcd", "no_ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
@@ -330,8 +375,8 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        IgnoreMissingSerializedExperimentalFlags) {
-  const GURL url =
-      https_server_.GetURL("youtube.com", "/ytcfg_mock_reduced_flags.html");
+  const GURL url = GetTestUrlToServe("youtube.com", "/watch?v=abcd",
+                                     "ytcfg_mock_reduced_flags.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);

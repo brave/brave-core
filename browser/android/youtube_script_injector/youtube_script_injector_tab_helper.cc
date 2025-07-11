@@ -5,6 +5,8 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
+#include <string>
+
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -16,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/url_util.h"
 
 namespace {
 constexpr char16_t kYoutubeBackgroundPlayback[] =
@@ -79,16 +82,6 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
-bool IsYouTubeDomain(const GURL& url) {
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          url, GURL("https://www.youtube.com"),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return true;
-  }
-
-  return false;
-}
-
 bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
@@ -109,8 +102,8 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   content::WebContents* contents = web_contents();
-  // Filter only YT domain here
-  if (!IsYouTubeDomain(contents->GetLastCommittedURL())) {
+  // Filter only YouTube videos.
+  if (!IsYouTubeVideo()) {
     return;
   }
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -123,6 +116,48 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
+}
+
+bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo() const {
+  const GURL& url = web_contents()->GetLastCommittedURL();
+  if (!url.is_valid() || url.is_empty()) {
+    return false;
+  }
+
+  // Check if domain is youtube.com (including subdomains).
+  if (!net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://www.youtube.com"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return false;
+  }
+
+  // Check if path is exactly "/watch" (case sensitive).
+  const auto path = url.path_piece();
+  constexpr std::string_view watch_path = "/watch";
+  if (path != watch_path) {
+    return false;
+  }
+
+  // Check if query exists and contains a non-empty "v" parameter.
+  const auto query = url.query_piece();
+  if (query.empty()) {
+    return false;
+  }
+
+  // Key-value pairs are '&' delimited and the keys/values are '=' delimited.
+  // Example: "https://www.youtube.com/watch?v=abcdefg&somethingElse=12345".
+  std::string video_id;
+  url::Component query_component(0, static_cast<int>(query.size()));
+  url::Component key, value;
+  while (url::ExtractQueryKeyValue(query, &query_component, &key, &value)) {
+    if (query.substr(key.begin, key.len) == "v") {
+      video_id = std::string(query.substr(value.begin, value.len));
+      base::TrimWhitespaceASCII(video_id, base::TRIM_ALL, &video_id);
+      break;
+    }
+  }
+
+  return !video_id.empty();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
