@@ -105,8 +105,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
-
     local_state_ = std::make_unique<ScopedTestingLocalState>(
         TestingBrowserProcess::GetGlobal());
     web_contents_ =

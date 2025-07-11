@@ -296,8 +296,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
-
     scoped_feature_list_.InitAndEnableFeature(
         features::kBraveWalletBitcoinFeature);
 
