@@ -79,6 +79,15 @@
                             menu-options="[[solana_provider_options_]]">
     </settings-dropdown-menu>
   </div>
+  <div hidden="[[!isCardanoDAppSupportEnabled_]]">
+    <div class="settings-box">
+      <div class="start">$i18n{defaultCardanoWalletDesc}</div>
+      <settings-dropdown-menu id="defaultCardanoWalletType"
+                              pref="{{prefs.brave.wallet.default_cardano_wallet}}"
+                              menu-options="[[cardano_provider_options_]]">
+      </settings-dropdown-menu>
+    </div>
+  </div>
   <div class="settings-box">
     <div class="start">$i18n{defaultBaseCurrencyDesc}</div>
     <settings-dropdown-menu id="defaultBaseCurrencyType"

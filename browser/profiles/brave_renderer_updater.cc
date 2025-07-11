@@ -46,6 +46,8 @@ BraveRendererUpdater::BraveRendererUpdater(
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
+  brave_wallet_cardano_provider_.Init(kDefaultCardanoWallet, pref_service);
+
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
 #if BUILDFLAG(ENABLE_TOR)
   onion_only_in_tor_windows_.Init(tor::prefs::kOnionOnlyInTorWindows,
@@ -241,9 +243,10 @@ void BraveRendererUpdater::UpdateRenderer(
       ->SetConfiguration(brave::mojom::DynamicParams::New(
           install_window_brave_ethereum_provider,
           install_window_ethereum_provider,
+          install_window_brave_cardano_provider,
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider,
-          install_window_brave_cardano_provider, de_amp_enabled,
+          de_amp_enabled,
           onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
 }
