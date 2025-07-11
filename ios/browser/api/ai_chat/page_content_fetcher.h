@@ -8,17 +8,16 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_tab_helper.h"
+#include "ios/web/public/web_state.h"
+#include "ios/web/public/web_state_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-
-namespace web {
-class WebState;
-}  // namespace web
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -52,7 +51,7 @@ class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
   }
 
  private:
-  raw_ptr<web::WebState, DanglingUntriaged> web_state_;
+  raw_ptr<web::WebState> web_state_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 
