@@ -72,6 +72,7 @@ extends SettingBraveDataCollectionPageElementBase
       },
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
+      isP3ADisabledByPolicy_: Boolean,
     }
   }
 
@@ -80,6 +81,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
+  private declare isP3ADisabledByPolicy_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -90,11 +92,14 @@ extends SettingBraveDataCollectionPageElementBase
     // Can't use `prefs` property of `settings-toggle-button` directly
     // because p3a enabled is a local state setting, but PrefControlMixin
     // checks for a pref being valid, so have to fake it, same as upstream.
-    const setP3AEnabledPref = (enabled: boolean) =>
-      this.setP3AEnabledPref_(enabled)
+    const setP3AEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
+      this.setP3AEnabledPref_(userEnabled, policyDisabled)
+  
+    this.isP3ADisabledByPolicy_ = loadTimeData.getBoolean('isP3ADisabledByPolicy')
+
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
-      (enabled: boolean) => setP3AEnabledPref(enabled))
+      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3ADisabledByPolicy_))
 
     const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
         this.setMetricsReportingPref_(metricsReporting)
@@ -111,13 +116,14 @@ extends SettingBraveDataCollectionPageElementBase
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
 
-  setP3AEnabledPref_(enabled: boolean) {
+  setP3AEnabledPref_(userEnabled: boolean, policyDisabled: boolean) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
+      value: userEnabled,
     }
     this.p3aEnabledPref_ = pref
+    this.isP3ADisabledByPolicy_ = policyDisabled
   }
 
   onP3AEnabledChange_() {
