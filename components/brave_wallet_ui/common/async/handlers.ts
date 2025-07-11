@@ -36,6 +36,7 @@ async function refreshWalletInfo(store: Store) {
       'ConnectedAccounts',
       'DefaultEthWallet',
       'DefaultSolWallet',
+      'DefaultAdaWallet',
       'IsMetaMaskInstalled',
     ]),
   )

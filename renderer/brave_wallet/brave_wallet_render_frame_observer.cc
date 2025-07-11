@@ -99,6 +99,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.install_window_brave_ethereum_provider &&
       !dynamic_params.install_window_ethereum_provider &&
+      !dynamic_params.install_window_brave_cardano_provider &&
       !dynamic_params.brave_use_native_solana_wallet) {
     return;
   }

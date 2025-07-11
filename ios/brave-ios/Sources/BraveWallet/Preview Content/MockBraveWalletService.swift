@@ -272,10 +272,17 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(.braveWallet)
   }
 
+  func defaultCardanoWallet(completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+    completion(.braveWallet)
+  }
+
   func setDefaultEthereumWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
   func setDefaultSolanaWallet(defaultWallet: BraveWallet.DefaultWallet) {
+  }
+
+  func setDefaultCardanoWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
   func nftDiscoveryEnabled(completion: @escaping (Bool) -> Void) {

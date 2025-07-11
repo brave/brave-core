@@ -20,6 +20,8 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
 
         default void onDefaultSolanaWalletChanged(int wallet) {}
 
+        default void onDefaultCardanoWalletChanged(int wallet) {}
+
         default void onDefaultBaseCurrencyChanged(String currency) {}
 
         default void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {}
