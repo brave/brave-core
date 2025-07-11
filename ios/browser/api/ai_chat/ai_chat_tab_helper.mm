@@ -61,7 +61,7 @@ void AIChatTabHelper::GetOpenAIChatButtonNonce(
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
 }
 
-void AIChatTabHelper::DidStartNavigation(
+void AIChatTabHelper::DidFinishNavigation(
     web::WebState* web_state,
     web::NavigationContext* navigation_context) {
   pending_navigation_id_ = navigation_context->GetNavigationId();
@@ -80,14 +80,10 @@ void AIChatTabHelper::DidStartNavigation(
   previous_page_title_ = GetPageTitle();
 }
 
-void AIChatTabHelper::DidRedirectNavigation(
+void AIChatTabHelper::PageLoaded(
     web::WebState* web_state,
-    web::NavigationContext* navigation_context) {}
-
-void AIChatTabHelper::DidFinishNavigation(
-    web::WebState* web_state,
-    web::NavigationContext* navigation_context) {
-  if (navigation_context->GetUrl() == GetPageURL()) {
+    web::PageLoadCompletionStatus load_completion_status) {
+  if (web_state->GetVisibleURL() == GetPageURL()) {
     is_page_loaded_ = true;
     if (pending_get_page_content_callback_) {
       GetPageContent(std::move(pending_get_page_content_callback_), "");
