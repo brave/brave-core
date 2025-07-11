@@ -11,7 +11,11 @@ import { ScrollableColumn as ScrollableCol } from '../../../../components/shared
 
 export const GroupingText = styled.h3`
   color: ${leo.color.text.tertiary};
+<<<<<<< Updated upstream
   font-family: sans-serif;
+=======
+  font-family: 'sans-serif';
+>>>>>>> Stashed changes
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
