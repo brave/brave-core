@@ -1114,7 +1114,6 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/ui/views/bookmarks/bookmark_bar_browsertest.cc",
       "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc",
-      "//brave/browser/ui/views/brave_shields/cookie_list_opt_in_browsertest.cc",
       "//brave/browser/ui/views/frame/brave_non_client_hit_test_helper_browsertest.cc",
       "//brave/browser/ui/views/frame/brave_tabs_search_button_browsertest.cc",
       "//brave/browser/ui/views/omnibox/brave_omnibox_view_views_browsertest.cc",
