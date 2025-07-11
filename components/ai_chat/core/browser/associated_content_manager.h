@@ -38,8 +38,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
       const mojom::Conversation* metadata,
       const mojom::ConversationArchivePtr& conversation_archive);
 
-  // Replaces |content_id| with some archived content.
-  void SetArchiveContent(int content_id,
+  // Replaces |content_uuid| with some archived content.
+  void SetArchiveContent(std::string content_uuid,
                          std::string text_content,
                          bool is_video);
 
