@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 import { P3APhase, WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import { getLocale, formatLocale } from '$web-common/locale'
 
@@ -110,9 +110,9 @@ function HelpImprove() {
       <S.ActionBox>
         <div className="box-center">
           <Button
-            isPrimary={true}
+            kind="filled"
             onClick={handleFinish}
-            scale="jumbo"
+            size="large"
           >
             {getLocale('braveWelcomeFinishButtonLabel')}
           </Button>

@@ -9,7 +9,7 @@ import { getLocale } from '$web-common/locale'
 
 import * as S from './style'
 
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 
 import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 
@@ -54,15 +54,15 @@ function HelpWDP () {
       </S.BodyBox>
       <S.ActionBox>
         <Button
-          isPrimary={true}
-          scale='jumbo'
+          kind="filled"
+          size="large"
           onClick={handleAccept}
         >
           {getLocale('braveWelcomeHelpWDPAccept')}
         </Button>
         <Button
-          isTertiary={true}
-          scale='jumbo'
+          kind="plain-faint"
+          size="large"
           onClick={handleReject}
         >
           {getLocale('braveWelcomeHelpWDPReject')}

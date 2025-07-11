@@ -8,7 +8,7 @@ import * as S from './style'
 
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 
 import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'
@@ -78,16 +78,16 @@ function Welcome () {
         </div>
         <S.ActionBox>
           <Button
-            isPrimary={true}
+            kind="filled"
             onClick={handleSetAsDefaultBrowser}
-            scale="jumbo"
+            size="large"
           >
             {getLocale('braveWelcomeSetDefaultButtonLabel')}
           </Button>
           <Button
-            isTertiary={true}
+            kind="plain-faint"
             onClick={handleSkip}
-            scale="jumbo"
+            size="large"
           >
             {getLocale('braveWelcomeSkipButtonLabel')}
           </Button>

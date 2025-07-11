@@ -79,6 +79,9 @@ export const ActionBox = styled.div`
 
   .box-center {
     grid-column: 2;
+    & leo-button {
+      width: 100%;
+    }
   }
 
   button:first-child {

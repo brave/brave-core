@@ -300,17 +300,15 @@ export default class ReportView extends React.PureComponent<Props, State> {
           {!isIneligiblePage ?
           <>
             <PaddedButton
-              isTertiary
-              isCallToAction
-              scale='small'
+              kind="plain-faint"
+              size="small"
               onClick={onClose}
             >
               {getLocale('cancel')}
             </PaddedButton>
             <PaddedButton
-              isPrimary
-              isCallToAction
-              scale='small'
+              kind="filled"
+              size='small'
               isDisabled={!this.canSubmitReport()}
               onClick={() => onSubmitReport(category, details, contact,
                                             attachScreenshot)}
@@ -320,9 +318,8 @@ export default class ReportView extends React.PureComponent<Props, State> {
           </>
         :
           <PaddedButton
-            isPrimary
-            isCallToAction
-            scale='small'
+            kind="filled"
+            size="small"
             onClick={onClose}
           >
             {getLocale('close')}
