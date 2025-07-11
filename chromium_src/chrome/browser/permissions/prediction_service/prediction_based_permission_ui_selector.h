@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PREDICTION_SERVICE_PREDICTION_BASED_PERMISSION_UI_SELECTOR_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PREDICTION_SERVICE_PREDICTION_BASED_PERMISSION_UI_SELECTOR_H_
 
-#include "components/permissions/permission_ui_selector.h"
+#include "components/permissions/prediction_service/permission_ui_selector.h"
 
 #define IsPermissionRequestSupported          \
   IsPermissionRequestSupported_ChromiumImpl(  \
