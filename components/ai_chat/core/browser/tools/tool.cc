@@ -9,6 +9,9 @@
 
 namespace ai_chat {
 
+Tool::Tool() = default;
+Tool::~Tool() = default;
+
 std::string_view Tool::Type() const {
   return "function";
 }
