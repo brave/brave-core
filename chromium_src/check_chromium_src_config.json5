@@ -44,7 +44,6 @@
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
         "v8/include/DO NOT PUT FILES HERE",
-        "ui/views/controls/button/md_text_button_constants_unittest.cc"
     ],
 
     // These symbols found in associated paths will be ignored.
