@@ -43,9 +43,11 @@
   <settings-toggle-button
     class="cr-row"
     pref="{{prefs.brave.wayback_machine_enabled}}"
-    label="$i18n{braveWaybackMachineLabel}">
+    label="$i18n{braveWaybackMachineLabel}"
+    hidden="[[isWaybackMachineDisabledByPolicy_]]">
   </settings-toggle-button>
 </if>
+
 <settings-animated-pages id="pages" section="content">
     <template is="dom-if" route-path="/fonts">
         <settings-subpage associated-control="[[$$('#customize-fonts-subpage-trigger')]]"

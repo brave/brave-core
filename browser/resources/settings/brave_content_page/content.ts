@@ -71,6 +71,16 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
        * as percentages.
        */
       pageZoomLevels_: Array,
+
+      /**
+       * Whether wayback machine is disabled by policy.
+       */
+      isWaybackMachineDisabledByPolicy_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('braveWaybackMachineDisabledByPolicy');
+        },
+      },
     }
   }
 
@@ -83,6 +93,7 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   private declare fontSizeOptions_: DropdownMenuOptionList
   private declare pageZoomLevels_: number[]
   private declare defaultZoom_: number;
+  private declare isWaybackMachineDisabledByPolicy_: boolean;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
       AppearanceBrowserProxyImpl.getInstance();
 
