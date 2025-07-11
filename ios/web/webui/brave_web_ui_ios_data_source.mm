@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
+#include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 
 #include "base/check.h"
 #include "base/containers/span.h"
@@ -12,7 +12,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/ios/browser/ui/webui/brave_url_data_source_ios.h"
+#include "brave/ios/web/webui/brave_url_data_source_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/browser_state.h"
@@ -193,9 +193,6 @@ void BraveWebUIIOSDataSource::AddFrameAncestor(const GURL& frame_ancestor) {
 }
 
 void BraveWebUIIOSDataSource::DisableTrustedTypesCSP() {
-  // TODO(crbug.com/40137141): Trusted Type remaining WebUI
-  // This removes require-trusted-types-for and trusted-types directives
-  // from the CSP header.
   OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::RequireTrustedTypesFor, std::string());
   OverrideContentSecurityPolicy(network::mojom::CSPDirectiveName::TrustedTypes,
