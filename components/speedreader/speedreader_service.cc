@@ -44,6 +44,10 @@ bool IsSpeedreaderEnabled() {
 
 }  // namespace features
 
+bool IsDisabledByPolicy(PrefService* prefs) {
+  return prefs->GetBoolean(kSpeedreaderDisabledByPolicy);
+}
+
 SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
                                        PrefService* local_state,
                                        HostContentSettingsMap* content_rules)
@@ -83,6 +87,7 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSpeedreaderPrefTtsVoice, "");
   registry->RegisterIntegerPref(kSpeedreaderPrefTtsSpeed,
                                 static_cast<int>(PlaybackSpeed::k100));
+  registry->RegisterBooleanPref(kSpeedreaderDisabledByPolicy, false);
 }
 
 // static
@@ -99,7 +104,9 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
 }
 
 bool SpeedreaderService::IsEnabledForAllSites() {
-  return prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+  bool disabled_by_policy = speedreader::IsDisabledByPolicy(prefs_);
+  bool enabled_pref = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+  return !disabled_by_policy && enabled_pref;
 }
 
 ContentSetting SpeedreaderService::GetEnabledForSiteSetting(const GURL& url) {

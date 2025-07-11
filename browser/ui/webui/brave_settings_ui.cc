@@ -63,6 +63,7 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -158,6 +159,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
+  html_source->AddBoolean("isSpeedreaderDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              speedreader::kSpeedreaderDisabledByPolicy));
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",

@@ -31,6 +31,9 @@ namespace features {
 bool IsSpeedreaderEnabled();
 }
 
+// Returns true if Speedreader is disabled by policy.
+bool IsDisabledByPolicy(PrefService* prefs);
+
 class SpeedreaderService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
