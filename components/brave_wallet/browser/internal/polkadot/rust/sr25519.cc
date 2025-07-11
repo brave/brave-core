@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::polkadot {
 

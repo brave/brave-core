@@ -10,7 +10,6 @@
 #include <memory>
 
 #include "base/containers/span.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::polkadot {
 
