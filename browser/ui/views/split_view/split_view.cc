@@ -127,7 +127,8 @@ SplitView::SplitView(Browser& browser,
           secondary_devtools_web_view_, secondary_devtools_scrim_view_,
           secondary_contents_web_view_, secondary_lens_overlay_view_,
           /*border_view=*/nullptr,
-          /*watermark_view=*/nullptr, secondary_reader_mode_toolbar_));
+          /*watermark_view=*/nullptr, secondary_reader_mode_toolbar_,
+          secondary_contents_scrim_view_));
 #endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
@@ -614,7 +615,7 @@ void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
   // MacOS does not need views window scrim. We use sheets to show window modals
   // (-[NSWindow beginSheet:]), which natively draw a scrim since macOS 11.
   if (secondary_contents_container_->GetVisible()) {
-    // secondary_contents_scrim_view_->SetVisible(visible);
+    secondary_contents_scrim_view_->SetVisible(visible);
   }
 #endif
 }

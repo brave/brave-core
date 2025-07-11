@@ -18,7 +18,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
                              views::View* lens_overlay_view,
                              views::View* border_view,
                              views::View* watermark_view,
-                             views::View* reader_mode_toolbar);
+                             views::View* reader_mode_toolbar,
+                             views::View* scrim_view = nullptr);
   ~BraveContentsLayoutManager() override;
 
   // We want to set a contents container border for split view.
@@ -35,6 +36,9 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
  private:
   raw_ptr<views::View> contents_view_ = nullptr;
   raw_ptr<views::View> reader_mode_toolbar_ = nullptr;
+  // Only valid when this layout manager is for secondary web contents view in
+  // Brave split view.
+  raw_ptr<views::View> scrim_view_ = nullptr;
   gfx::Insets border_insets_;
 };
 
