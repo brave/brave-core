@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/internal/polkadot/rust/sr25519.h"
 
 namespace brave_wallet {
 
@@ -17,8 +18,8 @@ namespace schnorrkel {
 class SchnorrkelKeyPair;
 }  // namespace schnorrkel
 
-using SR25519PublicKey = std::array<uint8_t, 32>;
-using SR25519Signature = std::array<uint8_t, 64>;
+using schnorrkel::SR25519PublicKey;
+using schnorrkel::SR25519Signature;
 
 class HDKeySr25519 {
  public:
