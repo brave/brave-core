@@ -57,6 +57,7 @@ export function createBackgroundHandler(
   store: Store<BackgroundState>
 ): BackgroundActions {
   store.update({
+    initialized: true,
     braveBackgrounds: [
       {
         author: 'John Doe',

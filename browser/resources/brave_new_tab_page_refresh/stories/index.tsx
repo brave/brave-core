@@ -5,8 +5,10 @@
 
 import * as React from 'react'
 
-import './news_mock'
 import './storybook_locale'
+
+import { BraveNewsContextProvider } from '../../../../components/brave_news/browser/resources/shared/Context'
+import '../../../../components/brave_new_tab_ui/stories/default/data/mockBraveNewsController'
 
 import { NewTabProvider } from '../context/new_tab_context'
 import { BackgroundProvider } from '../context/background_context'
@@ -36,7 +38,9 @@ function StorybookAppProvider(props: { children: React.ReactNode }) {
             <TopSitesProvider createHandler={createTopSitesHandler}>
               <VpnProvider createHandler={createVpnHandler}>
                 <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
+                  <BraveNewsContextProvider>
+                    {props.children}
+                  </BraveNewsContextProvider>
                 </RewardsProvider>
               </VpnProvider>
             </TopSitesProvider>

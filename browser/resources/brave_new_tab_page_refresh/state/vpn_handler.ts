@@ -62,6 +62,7 @@ export function createVpnHandler(
       updatePrefs(),
       updateConnectionInfo()
     ])
+    store.update({ initialized: true })
   }
 
   newTabProxy.addListeners({

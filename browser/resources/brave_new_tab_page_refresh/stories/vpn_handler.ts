@@ -15,6 +15,7 @@ export function createVpnHandler(
   store: Store<VpnState>
 ): VpnActions {
   store.update({
+    initialized: true,
     vpnFeatureEnabled: true,
     showVpnWidget: true,
     vpnPurchased: true,
