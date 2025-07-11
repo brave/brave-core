@@ -7,8 +7,8 @@
 
 #include <memory>
 
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/gfx/color_palette.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/test/views_test_base.h"
 #include "ui/views/test/widget_test.h"
@@ -24,15 +24,33 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
 
   auto* button = widget->SetContentsView(
       std::make_unique<MdTextButton>(Button::PressedCallback(), u" "));
-  button->SetEnabled(false);
+  button->SetStyle(ui::ButtonStyle::kProminent);
 
-  // Check proper text color is used for each theme options.
   auto* const native_theme = widget->GetNativeTheme();
+  auto* color_provider = widget->GetColorProvider();
+
+  // Smoke test a few colors:
+  EXPECT_EQ(color_provider->GetColor(nala::kColorButtonBackground),
+            button->GetButtonColors().background_color);
+  EXPECT_EQ(color_provider->GetColor(nala::kColorPrimitiveNeutral90),
+            button->GetButtonColors().text_color);
+
+  // Check that dark mode overrides are coming through:
+  button->SetState(Button::ButtonState::STATE_HOVERED);
   native_theme->set_preferred_color_scheme(ColorScheme::kLight);
-  EXPECT_EQ(gfx::kColorTextDisabled, button->GetButtonColors().text_color);
+  EXPECT_EQ(color_provider->GetColor(nala::kColorPrimary60),
+            button->GetButtonColors().background_color);
 
   native_theme->set_preferred_color_scheme(ColorScheme::kDark);
-  EXPECT_EQ(gfx::kColorTextDisabledDark, button->GetButtonColors().text_color);
+  EXPECT_EQ(color_provider->GetColor(nala::kColorPrimary50),
+            button->GetButtonColors().background_color);
+
+  // Check that setting Disabled adds opacity:
+  button->SetState(Button::ButtonState::STATE_NORMAL);
+  button->SetEnabled(false);
+  EXPECT_EQ(SkColorSetA(color_provider->GetColor(nala::kColorButtonBackground),
+                        0.5 * 0xFF),
+            button->GetButtonColors().background_color);
 }
 
 }  // namespace views

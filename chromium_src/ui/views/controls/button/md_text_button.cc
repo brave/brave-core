@@ -46,9 +46,12 @@ SkColor AddOpacity(SkColor color, float opacity) {
 using ButtonState = views::Button::ButtonState;
 
 struct ButtonStyle {
-  std::optional<ui::ColorId> background_color;
-  std::optional<ui::ColorId> border_color;
-  std::optional<ui::ColorId> text_color;
+  std::optional<ui::ColorId> background_color = std::nullopt;
+  std::optional<ui::ColorId> border_color = std::nullopt;
+  std::optional<ui::ColorId> text_color = std::nullopt;
+
+  // If unset, use the |background_color| for dark mode.
+  std::optional<ui::ColorId> dark_background_color = std::nullopt;
 };
 
 struct MdTextButtonStyleKey {
@@ -72,18 +75,14 @@ static constexpr auto kButtonThemes =
     base::MakeFixedFlatMap<MdTextButtonStyleKey, ButtonStyle>({
         // Kind=Filled
         {{ui::ButtonStyle::kProminent, ButtonState::STATE_NORMAL},
-         {.background_color = nala::kColorButtonBackground,
-          .border_color = std::nullopt,
-          .text_color = std::nullopt}},
+         {.background_color = nala::kColorButtonBackground}},
         {{ui::ButtonStyle::kProminent, ButtonState::STATE_HOVERED},
          {.background_color = nala::kColorPrimary60,
-          .border_color = std::nullopt,
-          .text_color = std::nullopt}},
+          .dark_background_color = nala::kColorPrimary50}},
 
         // Kind=Outline
         {{ui::ButtonStyle::kDefault, ButtonState::STATE_NORMAL},
-         {.background_color = std::nullopt,
-          .border_color = nala::kColorDividerInteractive,
+         {.border_color = nala::kColorDividerInteractive,
           .text_color = nala::kColorTextInteractive}},
         {{ui::ButtonStyle::kDefault, ButtonState::STATE_HOVERED},
          {.background_color = nala::kColorNeutral20,
@@ -92,37 +91,17 @@ static constexpr auto kButtonThemes =
 
         // Kind=Plain
         {{ui::ButtonStyle::kTonal, ButtonState::STATE_NORMAL},
-         {.background_color = std::nullopt,
-          .border_color = std::nullopt,
-          .text_color = nala::kColorTextInteractive}},
+         {.text_color = nala::kColorTextInteractive}},
         {{ui::ButtonStyle::kTonal, ButtonState::STATE_HOVERED},
          {.background_color = nala::kColorNeutral10,
-          .border_color = std::nullopt,
           .text_color = nala::kColorTextInteractive}},
 
         // Kind=Plain-Faint
         {{ui::ButtonStyle::kText, ButtonState::STATE_NORMAL},
-         {.background_color = std::nullopt,
-          .border_color = std::nullopt,
-          .text_color = nala::kColorTextPrimary}},
+         {.text_color = nala::kColorTextPrimary}},
         {{ui::ButtonStyle::kText, ButtonState::STATE_HOVERED},
-         {.background_color = std::nullopt,
-          .border_color = std::nullopt,
-          .text_color = nala::kColorTextSecondary}},
+         {.text_color = nala::kColorTextSecondary}},
     });
-
-class BraveTextButtonHighlightPathGenerator
-    : public views::HighlightPathGenerator {
- public:
-  BraveTextButtonHighlightPathGenerator() = default;
-  BraveTextButtonHighlightPathGenerator(
-      const BraveTextButtonHighlightPathGenerator&) = delete;
-  BraveTextButtonHighlightPathGenerator& operator=(
-      const BraveTextButtonHighlightPathGenerator&) = delete;
-
-  // HighlightPathGenerator
-  SkPath GetHighlightPath(const views::View* view) override;
-};
 
 }  // namespace
 
@@ -139,23 +118,12 @@ MdTextButton::MdTextButton(
                        button_context,
                        use_text_color_for_icon,
                        std::move(image_container)) {
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
-
   // Disabled upstream's ink-drop as we have specific color for hover state.
   InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
   SetImageLabelSpacing(6);
 }
 
 MdTextButton::~MdTextButton() = default;
-
-SkPath MdTextButton::GetHighlightPath() const {
-  SkPath path;
-  gfx::RoundedCornersF radii = GetCornerRadii();
-  path.addRRect(SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()),
-                                    radii.upper_left(), radii.lower_right()));
-  return path;
-}
 
 void MdTextButton::SetIcon(const gfx::VectorIcon* icon, int icon_size) {
   icon_ = icon;
@@ -228,6 +196,8 @@ void MdTextButton::UpdateColors() {
 
 MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   auto state = GetVisualState();
+  bool is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+                 ui::NativeTheme::PreferredColorScheme::kDark;
   float opacity = 1;
 
   // Leo buttons don't have a pressed state, so use the normal state instead.
@@ -254,10 +224,26 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
                  << ", ButtonState: " << state;
   }
 
-  SkColor bg_color = GetBgColorOverrideDeprecated().value_or(
-      style->background_color.has_value()
-          ? GetColorProvider()->GetColor(style->background_color.value())
-          : SK_ColorTRANSPARENT);
+  // Determine the background color.
+  // 1. Use the BgColorOverride, if set
+  // 2. Try and use the |background_color| if set
+  // 3. If dark mode, prefer the |dark_background_color|.
+  // 4. If none of the above the background color is transparent.
+  SkColor bg_color = SK_ColorTRANSPARENT;
+  if (auto override_color = GetBgColorOverrideDeprecated();
+      override_color.has_value()) {
+    bg_color = override_color.value();
+  } else {
+    std::optional<ui::ColorId> bg_color_id = style->background_color;
+    if (is_dark && style->dark_background_color.has_value()) {
+      bg_color_id = style->dark_background_color;
+    }
+
+    if (bg_color_id.has_value()) {
+      bg_color = GetColorProvider()->GetColor(bg_color_id.value());
+    }
+  }
+
   SkColor border_color =
       style->border_color.has_value()
           ? GetColorProvider()->GetColor(style->border_color.value())
@@ -285,12 +271,3 @@ BEGIN_METADATA(MdTextButton)
 END_METADATA
 
 }  // namespace views
-
-namespace {
-
-SkPath BraveTextButtonHighlightPathGenerator::GetHighlightPath(
-    const views::View* view) {
-  return static_cast<const views::MdTextButton*>(view)->GetHighlightPath();
-}
-
-}  // namespace
