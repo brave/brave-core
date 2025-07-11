@@ -38,7 +38,7 @@ void ShieldsPanelHandler::ShowUI() {
   if (embedder) {
     embedder->ShowUI();
   }
-  brave_shields::MaybeRecordShieldsUsageP3A(
+  P3A(profile_.get()) << MaybeRecordShieldsUsageP3A(
       brave_shields::ShieldsIconUsage::kClicked,
       g_browser_process->local_state());
 }
