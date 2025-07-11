@@ -12,6 +12,8 @@
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
 
+class PrefService;
+
 namespace brave_stats {
 
 enum class ProcessArch {
@@ -45,6 +47,11 @@ enum : uint8_t {
 
 uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
                                    const base::Time& last_reported_usage_time);
+
+// Returns true if stats reporting is enabled by user preference and not
+// disabled by policy. Use this instead of reading kStatsReportingEnabled
+// directly.
+bool IsStatsReportingEnabled(PrefService& pref_service);
 
 }  // namespace brave_stats
 
