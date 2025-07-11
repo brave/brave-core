@@ -14,6 +14,7 @@
 #include "chrome/browser/extensions/chrome_content_verifier_delegate.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/install_verifier.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -269,6 +270,9 @@ class BraveExtensionsManifestV2InstallerBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
                        InstallExtension) {
+  extensions::ScopedInstallVerifierBypassForTest scoped_install_verifier{
+      extensions::ScopedInstallVerifierBypassForTest::kForceOn};
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), GURL("brave://settings/extensions/v2")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -290,6 +294,9 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
                        InstallCancelExtension) {
+  extensions::ScopedInstallVerifierBypassForTest scoped_install_verifier{
+      extensions::ScopedInstallVerifierBypassForTest::kForceOn};
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), GURL("brave://settings/extensions/v2")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
