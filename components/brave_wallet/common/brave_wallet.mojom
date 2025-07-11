@@ -1759,13 +1759,6 @@ interface JsonRpcService {
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
   UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
 
-  // Used for making requests to the currently selected EVM compatible node for
-  // coin ETH and other nodes with corresponding coin types
-  Request(string chain_id, string json_payload,
-          bool auto_retry_on_network_change,
-          mojo_base.mojom.Value id, CoinType coin) =>
-      (EthereumProviderResponse response);
-
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 

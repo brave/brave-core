@@ -13,13 +13,13 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/compiler_specific.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_requests.h"
@@ -33,56 +33,11 @@ constexpr char kId[] = "id";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
 
-std::optional<base::Value::List> GetParamsList(std::string_view json) {
-  auto json_value =
-      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                           base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!json_value) {
-    return std::nullopt;
-  }
-
-  auto& value = *json_value;
-  auto* params = value.FindListByDottedPath(kParams);
-  if (!params) {
-    return std::nullopt;
-  }
-
-  return std::move(*params);
-}
-
-std::optional<base::Value::Dict> GetObjectFromParamsList(
-    std::string_view json) {
-  auto list = GetParamsList(json);
-  if (!list || list->size() != 1 || !(*list)[0].is_dict()) {
-    return std::nullopt;
-  }
-
-  return std::move((*list)[0]).TakeDict();
-}
-
-std::optional<base::Value::Dict> GetParamsDict(std::string_view json) {
-  auto json_value =
-      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                           base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!json_value) {
-    return std::nullopt;
-  }
-  auto* value = json_value->FindDict(kParams);
-  if (!value) {
-    return std::nullopt;
-  }
-
-  return std::move(*value);
-}
-
 // This is a best effort parsing of the data
 brave_wallet::mojom::TxDataPtr ValueToTxData(
-    const brave_wallet::json_rpc_requests::Transaction& tx,
-    std::string* from_out) {
-  CHECK(from_out);
+    const brave_wallet::json_rpc_requests::Transaction& tx) {
   auto tx_data = brave_wallet::mojom::TxData::New();
 
-  *from_out = tx.from;
   if (tx.to) {
     tx_data->to = *tx.to;
   }
@@ -148,27 +103,14 @@ mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(
 
 }  // namespace
 
-mojom::TxDataPtr ParseEthTransactionParams(std::string_view json,
-                                           std::string* from) {
-  CHECK(from);
-  from->clear();
-
-  auto param_obj = GetObjectFromParamsList(json);
-  if (!param_obj) {
+mojom::TxData1559Ptr ParseEthTransaction1559Params(
+    const base::Value::List& params,
+    std::string& from_out) {
+  if (params.size() != 1) {
     return nullptr;
   }
-  auto tx = brave_wallet::json_rpc_requests::Transaction::FromValue(*param_obj);
-  if (!tx) {
-    return nullptr;
-  }
-  return ValueToTxData(*tx, from);
-}
 
-mojom::TxData1559Ptr ParseEthTransaction1559Params(std::string_view json,
-                                                   std::string* from) {
-  CHECK(from);
-  from->clear();
-  auto param_obj = GetObjectFromParamsList(json);
+  const auto* param_obj = params.front().GetIfDict();
   if (!param_obj) {
     return nullptr;
   }
@@ -177,9 +119,10 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(std::string_view json,
   if (!tx) {
     return nullptr;
   }
+  from_out = tx->from;
 
   auto tx_data = mojom::TxData1559::New();
-  auto base_data_ret = ValueToTxData(*tx, from);
+  auto base_data_ret = ValueToTxData(*tx);
   if (!base_data_ret) {
     return nullptr;
   }
@@ -246,14 +189,52 @@ bool GetEthJsonRequestInfo(std::string_view json,
     if (auto* found_params = response_dict->FindByDottedPath(kParams)) {
       if (found_params->is_list()) {
         *params_list = std::move(found_params->GetList());
-      } else if (!found_params->is_dict()) {
-        // dict is a valid type of params but we don't support it.
+      } else if (found_params->is_dict()) {
+        params_list->Append(std::move(found_params->GetDict()));
+      } else {
         return false;
       }
     }
   }
 
   return true;
+}
+
+std::optional<JsonRpcRequest> ParseJsonRpcRequest(base::Value input_value) {
+  auto* dict = input_value.GetIfDict();
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  JsonRpcRequest result;
+  auto* found_id = dict->Find(kId);
+  if (found_id) {
+    result.id = std::move(*found_id);
+  } else {
+    result.id = base::Value(kDefaultRequestIdWhenUnspecified);
+  }
+
+  auto* found_method = dict->FindString(kMethod);
+  if (!found_method) {
+    return std::nullopt;
+  }
+  result.method = std::move(*found_method);
+
+  // Only list and dict types for `params` are supported. Otherwise parsing
+  // fails.
+  // If it is a list just use it. It is a dict use it as a 1-item list to
+  // simplify further methods handling.
+  if (auto* found_params = dict->Find(kParams)) {
+    if (found_params->is_list()) {
+      result.params = std::move(found_params->GetList());
+    } else if (found_params->is_dict()) {
+      result.params.Append(std::move(found_params->GetDict()));
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  return result;
 }
 
 bool NormalizeEthRequest(std::string_view input_json,
@@ -277,48 +258,37 @@ bool NormalizeEthRequest(std::string_view input_json,
   return true;
 }
 
-bool ParseEthSignParams(std::string_view json,
-                        std::string* address,
-                        std::string* message) {
-  if (!address || !message) {
-    return false;
+std::optional<EthSignParams> ParseEthSignParams(
+    const base::Value::List& params) {
+  if (params.size() != 2) {
+    return std::nullopt;
   }
 
-  auto list = GetParamsList(json);
-  if (!list || list->size() != 2) {
-    return false;
-  }
-
-  const std::string* address_str = (*list)[0].GetIfString();
-  const std::string* message_str = (*list)[1].GetIfString();
+  const std::string* address_str = params[0].GetIfString();
+  const std::string* message_str = params[1].GetIfString();
   if (!address_str || !message_str) {
-    return false;
+    return std::nullopt;
   }
 
-  *address = *address_str;
-  *message = *message_str;
+  EthSignParams result;
+  result.address = *address_str;
+  result.message = *message_str;
 
-  return true;
+  return result;
 }
 
-bool ParsePersonalSignParams(std::string_view json,
-                             std::string* address,
-                             std::string* message) {
-  if (!address || !message) {
-    return false;
-  }
-
+std::optional<EthSignParams> ParsePersonalSignParams(
+    const base::Value::List& params) {
   // personal_sign allows extra params
-  auto list = GetParamsList(json);
-  if (!list || list->size() < 2) {
-    return false;
+  if (params.size() < 2) {
+    return std::nullopt;
   }
 
   // personal_sign has the reversed order
-  const std::string* message_str = (*list)[0].GetIfString();
-  const std::string* address_str = (*list)[1].GetIfString();
+  const std::string* message_str = params[0].GetIfString();
+  const std::string* address_str = params[1].GetIfString();
   if (!address_str || !message_str) {
-    return false;
+    return std::nullopt;
   }
 
   // MetaMask accepts input in the wrong order, so we try for the right order
@@ -326,66 +296,48 @@ bool ParsePersonalSignParams(std::string_view json,
   // is valid
   if (!EthAddress::IsValidAddress(*address_str) &&
       EthAddress::IsValidAddress(*message_str)) {
-    const std::string* temp = address_str;
-    address_str = message_str;
-    message_str = temp;
+    std::swap(address_str, message_str);
   }
 
-  *address = *address_str;
+  EthSignParams result;
+  result.address = *address_str;
   // MM encodes 0x as a string and not an empty value
   if (IsValidHexString(*message_str) && *message_str != "0x") {
-    *message = *message_str;
+    result.message = *message_str;
   } else if (IsValidHexString("0x" + *message_str)) {
-    *message = "0x" + *message_str;
+    result.message = "0x" + *message_str;
   } else {
-    *message = ToHex(*message_str);
+    result.message = ToHex(*message_str);
   }
 
-  return true;
+  return result;
 }
 
-bool ParseEthGetEncryptionPublicKeyParams(std::string_view json,
-                                          std::string* address) {
-  if (!address) {
-    return false;
-  }
-
+std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
+    const base::Value::List& params) {
   // eth_getEncryptionPublicKey allows extra params
-  auto list = GetParamsList(json);
-  if (!list || list->size() < 1) {
-    return false;
+  if (params.empty()) {
+    return std::nullopt;
   }
 
-  const std::string* address_str = (*list)[0].GetIfString();
-  if (!address_str) {
-    return false;
-  }
-
-  *address = *address_str;
-  return true;
+  return base::OptionalFromPtr(params.front().GetIfString());
 }
 
-bool ParseEthDecryptParams(std::string_view json,
-                           std::string* untrusted_encrypted_data_json,
-                           std::string* address) {
-  if (!address) {
-    return false;
-  }
-
+std::optional<EthDecryptParams> ParseEthDecryptParams(
+    const base::Value::List& params) {
   // eth_decrypt allows extra params
-  auto list = GetParamsList(json);
-  if (!list || list->size() < 2) {
-    return false;
+  if (params.size() < 2) {
+    return std::nullopt;
   }
 
-  const std::string* untrusted_hex_json_str = (*list)[0].GetIfString();
+  const std::string* untrusted_hex_json_str = params[0].GetIfString();
   if (!untrusted_hex_json_str) {
-    return false;
+    return std::nullopt;
   }
 
-  const std::string* address_str = (*list)[1].GetIfString();
+  const std::string* address_str = params[1].GetIfString();
   if (!address_str) {
-    return false;
+    return std::nullopt;
   }
 
   std::string untrusted_json;
@@ -399,62 +351,58 @@ bool ParseEthDecryptParams(std::string_view json,
   // }
 
   if (!IsValidHexString(*untrusted_hex_json_str)) {
-    return false;
+    return std::nullopt;
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
   if (!base::HexStringToString(
           base::as_string_view(*untrusted_hex_json_str).substr(2),
           &untrusted_json)) {
-    return false;
+    return std::nullopt;
   }
 
-  *untrusted_encrypted_data_json = untrusted_json;
-  *address = *address_str;
-  return true;
+  EthDecryptParams result;
+  result.untrusted_encrypted_data_json = untrusted_json;
+  result.address = *address_str;
+  return result;
 }
 
-bool ParsePersonalEcRecoverParams(std::string_view json,
-                                  std::string* message,
-                                  std::string* signature) {
-  if (!message || !signature) {
-    return false;
-  }
-
+std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
+    const base::Value::List& params) {
   // personal_ecRecover allows extra params
-  auto list = GetParamsList(json);
-  if (!list || list->size() < 2) {
-    return false;
+  if (params.size() < 2) {
+    return std::nullopt;
   }
 
-  const std::string* message_str = (*list)[0].GetIfString();
-  const std::string* signature_str = (*list)[1].GetIfString();
+  const std::string* message_str = params[0].GetIfString();
+  const std::string* signature_str = params[1].GetIfString();
   if (!message_str || !signature_str) {
-    return false;
+    return std::nullopt;
   }
 
+  PersonalEcRecoverParams result;
   if (IsValidHexString(*message_str)) {
-    *message = *message_str;
+    result.message = *message_str;
   } else {
-    *message = ToHex(*message_str);
+    result.message = ToHex(*message_str);
   }
 
   if (!IsValidHexString(*signature_str)) {
-    return false;
+    return std::nullopt;
   }
 
-  *signature = *signature_str;
-  return true;
+  result.signature = *signature_str;
+  return result;
 }
 
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
-    const base::Value::List& params_list,
+    const base::Value::List& params,
     EthSignTypedDataHelper::Version version) {
-  if (params_list.size() != 2) {
+  if (params.size() != 2) {
     return nullptr;
   }
 
-  const std::string* address_str = params_list[0].GetIfString();
+  const std::string* address_str = params[0].GetIfString();
   if (!address_str) {
     return nullptr;
   }
@@ -462,7 +410,7 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
   const base::Value::Dict* dict = nullptr;
   std::optional<base::Value::Dict> dict_from_str;
 
-  if (const auto* typed_data_str = params_list[1].GetIfString()) {
+  if (const auto* typed_data_str = params[1].GetIfString()) {
     dict_from_str = base::JSONReader::ReadDict(
         *typed_data_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                              base::JSON_ALLOW_TRAILING_COMMAS);
@@ -470,7 +418,7 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
       dict = &*dict_from_str;
     }
   } else {
-    dict = params_list[1].GetIfDict();
+    dict = params[1].GetIfDict();
   }
 
   if (!dict) {
@@ -550,147 +498,137 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
   return result;
 }
 
-bool ParseEthDecryptData(const base::Value& obj,
-                         std::string* version,
-                         std::vector<uint8_t>* nonce,
-                         std::vector<uint8_t>* ephemeral_public_key,
-                         std::vector<uint8_t>* ciphertext) {
+EthDecryptData::EthDecryptData() = default;
+EthDecryptData::~EthDecryptData() = default;
+EthDecryptData::EthDecryptData(EthDecryptData&&) = default;
+
+std::optional<EthDecryptData> ParseEthDecryptData(
+    const base::Value::Dict& dict) {
   // {
   //   "version": "x25519-xsalsa20-poly1305",
   //   "nonce": "base64-string",
   //   "ephemPublicKey": "base64-string",
   //   "ciphertext":"base64-string"
   // }
-  auto* dict = obj.GetIfDict();
-  if (!dict) {
-    return false;
-  }
 
-  const std::string* version_str = dict->FindString("version");
+  EthDecryptData result;
+  const std::string* version_str = dict.FindString("version");
   if (!version_str) {
-    return false;
+    return std::nullopt;
   }
-  *version = *version_str;
+  result.version = *version_str;
 
-  const std::string* nonce_str = dict->FindString("nonce");
+  const std::string* nonce_str = dict.FindString("nonce");
   if (!nonce_str) {
-    return false;
+    return std::nullopt;
   }
-  std::string decoded_nonce;
-  if (!base::Base64Decode(*nonce_str, &decoded_nonce)) {
-    return false;
+  auto nonce = base::Base64Decode(*nonce_str);
+  if (!nonce) {
+    return std::nullopt;
   }
-  *nonce = std::vector<uint8_t>(decoded_nonce.begin(), decoded_nonce.end());
+  result.nonce = std::move(*nonce);
 
   const std::string* ephemeral_public_key_str =
-      dict->FindString("ephemPublicKey");
+      dict.FindString("ephemPublicKey");
   if (!ephemeral_public_key_str) {
-    return false;
+    return std::nullopt;
   }
-  std::string ephemeral_public_key_decoded;
-  if (!base::Base64Decode(*ephemeral_public_key_str,
-                          &ephemeral_public_key_decoded)) {
-    return false;
+  auto ephemeral_public_key = base::Base64Decode(*ephemeral_public_key_str);
+  if (!ephemeral_public_key) {
+    return std::nullopt;
   }
-  *ephemeral_public_key = std::vector<uint8_t>(
-      ephemeral_public_key_decoded.begin(), ephemeral_public_key_decoded.end());
+  result.ephemeral_public_key = std::move(*ephemeral_public_key);
 
-  const std::string* ciphertext_str = dict->FindString("ciphertext");
+  const std::string* ciphertext_str = dict.FindString("ciphertext");
   if (!ciphertext_str) {
-    return false;
+    return std::nullopt;
   }
-  std::string decoded_ciphertext;
-  if (!base::Base64Decode(*ciphertext_str, &decoded_ciphertext)) {
-    return false;
+  auto ciphertext = base::Base64Decode(*ciphertext_str);
+  if (!ciphertext) {
+    return std::nullopt;
   }
-  *ciphertext = std::vector<uint8_t>(decoded_ciphertext.begin(),
-                                     decoded_ciphertext.end());
-  return true;
+  result.ciphertext = std::move(*ciphertext);
+
+  return result;
 }
 
-bool ParseSwitchEthereumChainParams(std::string_view json,
-                                    std::string* chain_id) {
-  if (!chain_id) {
-    return false;
+std::optional<std::string> ParseSwitchEthereumChainParams(
+    const base::Value::List& params) {
+  if (params.size() != 1 || !params.front().is_dict()) {
+    return std::nullopt;
   }
 
-  auto param_obj = GetObjectFromParamsList(json);
-  if (!param_obj) {
-    return false;
-  }
+  auto& param_obj = params.front().GetDict();
 
-  const std::string* chain_id_str = param_obj->FindString("chainId");
+  const std::string* chain_id_str = param_obj.FindString("chainId");
   if (!chain_id_str) {
-    return false;
+    return std::nullopt;
   }
 
   if (!IsValidHexString(*chain_id_str)) {
-    return false;
+    return std::nullopt;
   }
 
-  *chain_id = base::ToLowerASCII(*chain_id_str);
-
-  return true;
+  return base::ToLowerASCII(*chain_id_str);
 }
 
 mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
-    std::string_view json,
-    std::string_view chain_id,
-    std::string* error_message) {
-  *error_message = "";
+    const base::Value::List& params,
+    std::string& error_message) {
+  error_message = "";
 
-  // Might be a list from legacy send method.
-  std::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
-  if (!params) {
-    params = GetParamsDict(json);
-  }
-
-  if (!params) {
-    *error_message = "params parameter is required";
+  if (params.size() != 1) {
     return nullptr;
   }
 
-  const std::string* type = params->FindString("type");
+  auto* dict = params.front().GetIfDict();
+
+  if (!dict) {
+    error_message = "params parameter is required";
+    return nullptr;
+  }
+
+  const std::string* type = dict->FindString("type");
   if (!type) {
-    *error_message = "type parameter is required";
+    error_message = "type parameter is required";
     return nullptr;
   }
   // Only ERC20 is supported currently.
   if (*type != "ERC20") {
-    *error_message =
+    error_message =
         base::StringPrintf("Asset of type '%s' not supported", type->c_str());
     return nullptr;
   }
 
-  const auto* options_dict = params->FindDict("options");
+  const auto* options_dict = dict->FindDict("options");
   if (!options_dict) {
-    *error_message = "options parameter is required";
+    error_message = "options parameter is required";
     return nullptr;
   }
 
   const std::string* address = options_dict->FindString("address");
   if (!address) {
-    *error_message = "address parameter is required";
+    error_message = "address parameter is required";
     return nullptr;
   }
 
   const auto eth_addr = EthAddress::FromHex(*address);
   if (eth_addr.IsEmpty()) {
-    *error_message =
+    error_message =
         base::StringPrintf("Invalid address '%s'", address->c_str());
     return nullptr;
   }
 
   const std::string* symbol = options_dict->FindString("symbol");
   if (!symbol) {
-    *error_message = "symbol parameter is required";
+    error_message = "symbol parameter is required";
     return nullptr;
   }
 
   // EIP-747 limits the symbol length to 5, but metamask uses 11, so we use
   // the same limit here for compatibility.
   if (symbol->size() == 0 || symbol->size() > 11) {
-    *error_message = base::StringPrintf(
+    error_message = base::StringPrintf(
         "Invalid symbol '%s': symbol length should be greater than 0 and less "
         "than 12",
         symbol->c_str());
@@ -703,13 +641,13 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   const base::Value* decimals_value = options_dict->Find("decimals");
   if (!decimals_value ||
       (!decimals_value->is_int() && !decimals_value->is_string())) {
-    *error_message = "decimals parameter is required.";
+    error_message = "decimals parameter is required.";
     return nullptr;
   }
   int decimals = decimals_value->is_int() ? decimals_value->GetInt() : 0;
   if (decimals_value->is_string() &&
       !base::StringToInt(decimals_value->GetString(), &decimals)) {
-    *error_message = base::StringPrintf(
+    error_message = base::StringPrintf(
         "Invalid decimals '%s': decimals should be a number greater than 0 and "
         "less than 36",
         decimals_value->GetString().c_str());
@@ -717,7 +655,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   }
 
   if (decimals < 0 || decimals > 36) {
-    *error_message = base::StringPrintf(
+    error_message = base::StringPrintf(
         "Invalid decimals '%d': decimals should be greater than 0 and less "
         "than 36",
         decimals);
@@ -739,17 +677,22 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
       false /* is_compressed */, true /* is_erc20 */, false /* is_erc721 */,
       false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",
-      base::ToLowerASCII(chain_id), mojom::CoinType::ETH, false);
+      "" /* chain_id */, mojom::CoinType::ETH, false);
 }
 
 // Parses param request objects from
 // https://eips.ethereum.org/EIPS/eip-2255
 std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
-    std::string_view json) {
+    const base::Value::List& params) {
   // [{
   //   "eth_accounts": {}
   // }]
-  auto param_obj = GetObjectFromParamsList(json);
+
+  if (params.size() != 1) {
+    return std::nullopt;
+  }
+
+  const auto* param_obj = params.front().GetIfDict();
   if (!param_obj) {
     return std::nullopt;
   }
@@ -760,73 +703,45 @@ std::optional<base::flat_set<std::string>> ParseRequestPermissionsParams(
   return restricted_methods;
 }
 
-bool ParseEthSendRawTransactionParams(std::string_view json,
-                                      std::string* signed_transaction) {
-  if (!signed_transaction) {
-    return false;
+std::optional<std::string> ParseEthSendRawTransactionParams(
+    const base::Value::List& params) {
+  if (params.size() != 1) {
+    return std::nullopt;
   }
 
-  auto list = GetParamsList(json);
-  if (!list || list->size() != 1) {
-    return false;
-  }
-
-  const std::string* signed_tx_str = (*list)[0].GetIfString();
-  if (!signed_tx_str) {
-    return false;
-  }
-
-  *signed_transaction = *signed_tx_str;
-  return true;
+  return base::OptionalFromPtr(params.front().GetIfString());
 }
 
-bool ParseEthSubscribeParams(std::string_view json,
-                             std::string* event_type,
-                             base::Value::Dict* filter) {
-  if (filter == nullptr) {
-    return false;
+std::optional<EthSubscribeParams> ParseEthSubscribeParams(
+    const base::Value::List& params) {
+  if (params.size() != 1 && params.size() != 2) {
+    return std::nullopt;
   }
 
-  auto list = GetParamsList(json);
-  if (!list || list->empty() || list->size() > 2) {
-    return false;
+  if (!params[0].is_string()) {
+    return std::nullopt;
   }
 
-  if (!(*list)[0].is_string()) {
-    return false;
+  if (params.size() == 2 && !params[1].is_dict()) {
+    return std::nullopt;
   }
 
-  *event_type = (*list)[0].GetString();
-
-  if (list->size() == 2) {
-    if (!(*list)[1].is_dict()) {
-      return false;
-    }
-
-    *filter = std::move((*list)[1].GetDict());
+  EthSubscribeParams result;
+  result.event_type = params[0].GetString();
+  if (params.size() == 2) {
+    result.filter = params[1].GetDict().Clone();
   }
 
-  return true;
+  return result;
 }
 
-bool ParseEthUnsubscribeParams(std::string_view json,
-                               std::string* subscription_id) {
-  if (!subscription_id) {
-    return false;
+std::optional<std::string> ParseEthUnsubscribeParams(
+    const base::Value::List& params) {
+  if (params.size() != 1) {
+    return std::nullopt;
   }
 
-  auto list = GetParamsList(json);
-  if (!list || list->size() != 1) {
-    return false;
-  }
-
-  const std::string* subscription_id_str = (*list)[0].GetIfString();
-  if (!subscription_id_str) {
-    return false;
-  }
-
-  *subscription_id = *subscription_id_str;
-  return true;
+  return base::OptionalFromPtr(params.front().GetIfString());
 }
 
 }  // namespace brave_wallet
