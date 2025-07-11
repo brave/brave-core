@@ -39,6 +39,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
 
   void GetAutoLockMinutes(const base::Value::List& args);
   void GetSolanaProviderOptions(const base::Value::List& args);
+  void GetCardanoProviderOptions(const base::Value::List& args);
   void GetTransactionSimulationOptInStatusOptions(
       const base::Value::List& args);
   void RemoveChain(const base::Value::List& args);
@@ -53,6 +54,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void IsZCashEnabled(const base::Value::List& args);
   void IsZCashShieldedTxEnabled(const base::Value::List& args);
   void IsCardanoEnabled(const base::Value::List& args);
+  void IsCardanoDAppSupportEnabled(const base::Value::List& args);
   void IsTransactionSimulationsEnabled(const base::Value::List& args);
   void SetWalletInPrivateWindowsEnabled(const base::Value::List& args);
   void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);

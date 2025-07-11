@@ -68,6 +68,7 @@ class BraveRendererUpdater : public KeyedService {
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_ethereum_provider_;
   IntegerPrefMember brave_wallet_solana_provider_;
+  IntegerPrefMember brave_wallet_cardano_provider_;
   BooleanPrefMember de_amp_enabled_;
 #if BUILDFLAG(ENABLE_TOR)
   BooleanPrefMember onion_only_in_tor_windows_;

@@ -194,6 +194,9 @@ export function makeBraveWalletServiceObserver(store: Store) {
       onDefaultSolanaWalletChanged: function (defaultWallet) {
         store.dispatch(walletApi.util.invalidateTags(['DefaultSolWallet']))
       },
+      onDefaultCardanoWalletChanged: function (defaultWallet) {
+        store.dispatch(walletApi.util.invalidateTags(['DefaultAdaWallet']))
+      },
       onDefaultBaseCurrencyChanged: function (currency) {
         store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))
       },

@@ -66,6 +66,7 @@ export function createWalletApiBase() {
       'ConnectedAccounts',
       'DefaultEthWallet',
       'DefaultSolWallet',
+      'DefaultAdaWallet',
       'IsMetaMaskInstalled',
       'IsPrivateWindow',
       'PendingAddChainRequests',

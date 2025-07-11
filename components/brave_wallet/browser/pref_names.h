@@ -11,6 +11,8 @@ inline constexpr char kShouldShowWalletSuggestionBadge[] =
 inline constexpr char kDefaultEthereumWallet[] = "brave.wallet.default_wallet2";
 inline constexpr char kDefaultSolanaWallet[] =
     "brave.wallet.default_solana_wallet";
+inline constexpr char kDefaultCardanoWallet[] =
+    "brave.wallet.default_cardano_wallet";
 inline constexpr char kDefaultBaseCurrency[] =
     "brave.wallet.default_base_currency";
 inline constexpr char kDefaultBaseCryptocurrency[] =
