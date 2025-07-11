@@ -54,11 +54,6 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
-void PsstTabWebContentsObserver::WebContentsDestroyed() {
-  script_handler_.reset();
-  should_process_.reset();
-}
-
 void PsstTabWebContentsObserver::DidFinishNavigation(
     content::NavigationHandle* handle) {
   if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
@@ -83,9 +78,8 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
-      base::BindOnce(
-          &PsstTabWebContentsObserver::InsertUserScript,
-          weak_factory_.GetWeakPtr(), token));
+      base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
+                     weak_factory_.GetWeakPtr(), token));
 }
 
 bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(
@@ -111,7 +105,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     content::GlobalRenderFrameHostToken token,
     const std::string& policy_script,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(token)  || policy_script.empty() ||
+  if (!ShouldInsertScriptForPage(token) || policy_script.empty() ||
       !user_script_result.is_dict()) {
     return;
   }

@@ -17,8 +17,7 @@ namespace psst {
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     content::WebContents* web_contents,
     const int32_t world_id)
-    : web_contents_(web_contents),
-      world_id_(world_id) {
+    : web_contents_(web_contents), world_id_(world_id) {
   CHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
   CHECK(web_contents_);
 }
@@ -28,8 +27,8 @@ PsstScriptsHandlerImpl::~PsstScriptsHandlerImpl() = default;
 void PsstScriptsHandlerImpl::InsertScriptInPage(
     const std::string& script,
     PsstTabWebContentsObserver::InsertScriptInPageCallback cb) {
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(base::UTF8ToUTF16(script),
-                                                      std::move(cb), world_id_);
+  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      base::UTF8ToUTF16(script), std::move(cb), world_id_);
 }
 
 }  // namespace psst

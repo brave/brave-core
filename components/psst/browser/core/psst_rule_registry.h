@@ -26,8 +26,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   static PsstRuleRegistry* GetInstance();
 
   // Returns the matched PSST rule, if any.
-  virtual void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) = 0;
+  virtual void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) = 0;
 
   virtual void LoadRules(const base::FilePath& path) = 0;
 };

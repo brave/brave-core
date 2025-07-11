@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
-
 #include <cstddef>
 #include <memory>
 #include <optional>
@@ -18,6 +16,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
 #include "brave/components/psst/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -118,14 +117,16 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
         run_loop.Quit();
       });
 
-  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"),
+                                    mock_callback.Get());
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"),
+                                    mock_callback.Get());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
@@ -238,7 +239,8 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
         run_loop.Quit();
       });
 
-  psst_rule_registry().CheckIfMatch(GURL("https://url.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://url.test"),
+                                    mock_callback.Get());
   run_loop.Run();
 }
 
@@ -265,7 +267,8 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
 
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  psst_rule_registry().CheckIfMatch(GURL("https://notexisted.test"), mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://notexisted.test"),
+                                    mock_callback.Get());
 }
 
 }  // namespace psst

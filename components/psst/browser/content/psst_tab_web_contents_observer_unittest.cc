@@ -42,9 +42,7 @@ class DocumentOnLoadObserver : public content::WebContentsObserver {
  public:
   explicit DocumentOnLoadObserver(content::WebContents* web_contents)
       : content::WebContentsObserver(web_contents) {}
-  void Wait() {
-    loop_.Run();
-  }
+  void Wait() { loop_.Run(); }
 
   void SetDidFinishNavigationCallback(base::OnceClosure callback) {
     callback_ = std::move(callback);
@@ -144,14 +142,11 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  MockPsstScriptsHandler& scripts_handler() {
-    return *scripts_handler_;
-  }
+  MockPsstScriptsHandler& scripts_handler() { return *scripts_handler_; }
   PrefService* prefs() { return &prefs_; }
 
-  MatchedRule* CreateMatchedRule(
-      const std::string& user_script,
-      const std::string& policy_script) {
+  MatchedRule* CreateMatchedRule(const std::string& user_script,
+                                 const std::string& policy_script) {
     return new MatchedRule("name", user_script, policy_script, 1);
   }
 
@@ -159,10 +154,9 @@ class PsstTabWebContentsObserverUnitTestBase
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<MockPsstScriptsHandler> scripts_handler_; // not owned
+  raw_ptr<MockPsstScriptsHandler> scripts_handler_;  // not owned
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
-  std::unique_ptr<PsstTabWebContentsObserver>
-          psst_web_contents_observer_;
+  std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
@@ -176,10 +170,9 @@ class PsstTabWebContentsObserverUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
-  EXPECT_NE(
-      PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          web_contents(), browser_context(), prefs(), 2),
-      nullptr);
+  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                web_contents(), browser_context(), prefs(), 2),
+            nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -266,8 +259,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
     main_frame_loop.Quit();
   });
   main_frame_observer.SetDidFinishNavigationCallback(main_frame_callback);
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(
-      web_contents(), url);
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
   main_frame_observer.Wait();
 
   // should_process_ should be reset to false
@@ -343,13 +336,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 // TODO(bridiver) - test for navigating after should_process_ but before script
 
-TEST_F(PsstTabWebContentsObserverUnitTest,
-       DefaultPrefEnabledShouldProcess) {
+TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
   const GURL url("https://example1.com");
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
 
   DocumentOnLoadObserver observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),                                                           url);
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
   observer.Wait();
 }
 
@@ -363,8 +356,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
   observer.Wait();
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest,
-       CheckIfMatchReturnsNull) {
+TEST_F(PsstTabWebContentsObserverUnitTest, CheckIfMatchReturnsNull) {
   const GURL url("https://example1.com");
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
@@ -373,7 +365,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                            url);
+                                                             url);
   observer.Wait();
 
   check_loop.Run();
@@ -404,7 +396,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   user_script_insert_loop.Run();
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest, UserScriptReturnsEmptyNoPolicyScript) {
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsEmptyNoPolicyScript) {
   const std::string user_script = "user";
   const std::string policy_script = "";
   const GURL url("https://example1.com");
@@ -429,7 +422,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UserScriptReturnsEmptyNoPolicyScript)
   user_script_insert_loop.Run();
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest, UserScriptReturnsDictHasPolicyScript) {
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsDictHasPolicyScript) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");

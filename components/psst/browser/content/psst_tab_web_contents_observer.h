@@ -8,13 +8,14 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
 
@@ -25,13 +26,12 @@ class MatchedRule;
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
  public:
-  using InsertScriptInPageCallback =
-      base::OnceCallback<void(base::Value)>;
+  using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   class ScriptsHandler {
    public:
     virtual ~ScriptsHandler() = default;
     virtual void InsertScriptInPage(const std::string& script,
-                            InsertScriptInPageCallback cb) = 0;
+                                    InsertScriptInPageCallback cb) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
@@ -64,7 +64,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
-  void WebContentsDestroyed() override;
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;

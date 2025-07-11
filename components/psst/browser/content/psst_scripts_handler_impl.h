@@ -18,9 +18,8 @@ namespace psst {
 class PsstScriptsHandlerImpl
     : public PsstTabWebContentsObserver::ScriptsHandler {
  public:
-  explicit PsstScriptsHandlerImpl(
-      content::WebContents* web_contents,
-      const int32_t world_id);
+  explicit PsstScriptsHandlerImpl(content::WebContents* web_contents,
+                                  const int32_t world_id);
   ~PsstScriptsHandlerImpl() override;
 
   // PsstScriptsHandler overrides
