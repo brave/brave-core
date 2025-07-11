@@ -10,10 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/ptr_util.h"
 #include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -44,25 +42,10 @@ class DocumentOnLoadObserver : public content::WebContentsObserver {
       : content::WebContentsObserver(web_contents) {}
   void Wait() { loop_.Run(); }
 
-  void SetDidFinishNavigationCallback(base::OnceClosure callback) {
-    callback_ = std::move(callback);
-  }
-
  private:
-  void DidFinishNavigation(content::NavigationHandle* handle) override {
-    if (!handle->HasCommitted()) {
-      return;
-    }
-
-    if (!callback_.is_null()) {
-      std::move(callback_).Run();
-    }
-  }
-
   void DocumentOnLoadCompletedInPrimaryMainFrame() override { loop_.Quit(); }
 
   base::RunLoop loop_;
-  base::OnceClosure callback_;
 };
 
 class MockPsstRuleRegistry final : public PsstRuleRegistry {
@@ -135,10 +118,6 @@ class PsstTabWebContentsObserverUnitTestBase
   void TearDown() override {
     content::RenderViewHostTestHarness::TearDown();
     scripts_handler_ = nullptr;
-  }
-
-  bool ShouldProcess() {
-    return psst_web_contents_observer_->should_process_.has_value();
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
@@ -216,7 +195,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(_, _)).Times(0);
   {
     DocumentOnLoadObserver observer(web_contents());
     content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -244,27 +223,20 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
 }
 
 // TODO(bridiver) - test multiple main frame navigations in a row
+// TODO(bridiver) - test redirects
+// TODO(bridiver) - test for navigating after OnLoad but before script
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNotPrimaryMainFrame) {
   // first load the main frame so we can create a subframe
   GURL url("https://example.com/");
+
+  // call one for the main frame and then not again
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(1);
-  DocumentOnLoadObserver main_frame_observer(web_contents());
-  base::RunLoop main_frame_loop;
-  auto main_frame_callback = base::BindLambdaForTesting([&]() {
-    // should process for main frame
-    EXPECT_TRUE(ShouldProcess());
-    main_frame_loop.Quit();
-  });
-  main_frame_observer.SetDidFinishNavigationCallback(main_frame_callback);
+  DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url);
-  main_frame_observer.Wait();
-
-  // should_process_ should be reset to false
-  EXPECT_FALSE(ShouldProcess());
+  observer.Wait();
 
   // create sub-frame
   auto* main_rfh = web_contents()->GetPrimaryMainFrame();
@@ -272,29 +244,18 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       content::RenderFrameHostTester::For(main_rfh)->AppendChild("subframe");
 
   // navigate sub-frame
-  DocumentOnLoadObserver sub_frame_observer(web_contents());
-  base::RunLoop sub_frame_loop;
-  auto sub_frame_callback = base::BindLambdaForTesting([&]() {
-    // should not process for subframe frame
-    EXPECT_FALSE(ShouldProcess());
-    sub_frame_loop.Quit();
-  });
-  sub_frame_observer.SetDidFinishNavigationCallback(
-      std::move(sub_frame_callback));
   content::NavigationSimulator::CreateRendererInitiated(
       GURL("https://sub.example.com"), child_rfh)
       ->Commit();
-  sub_frame_loop.Run();
-  // should again be reset to false
-  EXPECT_FALSE(ShouldProcess());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNavigationNotCommitted) {
-  auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
-      GURL("https://example.com"), web_contents());
+  const GURL url("https://example.com");
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(0);
+  auto simulator =
+      content::NavigationSimulator::CreateBrowserInitiated(url, web_contents());
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(0);
   // Simulate navigation start but NOT commit
   simulator->Start();
   simulator->Fail(net::ERR_ABORTED);  // Simulates cancel before commit
@@ -303,38 +264,18 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfSameDocumentNavigation) {
   const GURL url("https://example1.com");
-
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage).Times(1);
+  // should call once for the initial load and then not again
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
   DocumentOnLoadObserver observer(web_contents());
-  base::RunLoop loop;
-  auto callback = base::BindLambdaForTesting([&]() {
-    // should process for normal load
-    EXPECT_TRUE(ShouldProcess());
-    loop.Quit();
-  });
-  observer.SetDidFinishNavigationCallback(std::move(callback));
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url);
-  loop.Run();
   observer.Wait();
 
-  // should be reset to false
-  EXPECT_FALSE(ShouldProcess());
-
-  base::RunLoop sub_frame_loop;
-  auto sub_frame_callback = base::BindLambdaForTesting([&]() {
-    // should not process for same page
-    EXPECT_FALSE(ShouldProcess());
-    sub_frame_loop.Quit();
-  });
-  observer.SetDidFinishNavigationCallback(std::move(sub_frame_callback));
   auto sim = content::NavigationSimulator::CreateRendererInitiated(
       GURL(base::JoinString({url.spec(), "anchor"}, "#")),
       web_contents()->GetPrimaryMainFrame());
   sim->CommitSameDocument();
 }
-
-// TODO(bridiver) - test for navigating after should_process_ but before script
 
 TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
   const GURL url("https://example1.com");

@@ -20,6 +20,15 @@
 
 namespace psst {
 
+const char kShouldProcessKey[] = "should_process_key";
+
+struct PsstNavigationData : public base::SupportsUserData::Data {
+ public:
+  explicit PsstNavigationData(int id) : id(id) {}
+
+  int id;
+};
+
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
@@ -64,53 +73,55 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
   if (handle->IsSameDocument() ||
       handle->GetRestoreType() == content::RestoreType::kRestored ||
       !prefs_->GetBoolean(prefs::kPsstEnabled)) {
-    should_process_.reset();
   } else {
-    should_process_ = handle->GetRenderFrameHost()->GetGlobalFrameToken();
+    auto entry = handle->GetNavigationEntry();
+    entry->SetUserData(kShouldProcessKey, std::make_unique<PsstNavigationData>(
+                                              entry->GetUniqueID()));
   }
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  auto token = web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken();
-  if (!ShouldInsertScriptForPage(token)) {
+  int id =
+      web_contents()->GetController().GetLastCommittedEntry()->GetUniqueID();
+  if (!ShouldInsertScriptForPage(id)) {
     return;
   }
 
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
-                     weak_factory_.GetWeakPtr(), token));
+                     weak_factory_.GetWeakPtr(), id));
 }
 
-bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(
-    content::GlobalRenderFrameHostToken token) {
-  return script_handler_ && should_process_.has_value() &&
-         should_process_.value() == token;
+bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
+  auto entry = web_contents()->GetController().GetLastCommittedEntry();
+  auto data = entry->GetUserData(kShouldProcessKey);
+  return script_handler_ && data &&
+         static_cast<PsstNavigationData*>(data)->id == id;
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
-    content::GlobalRenderFrameHostToken token,
+    int id,
     std::unique_ptr<MatchedRule> rule) {
-  if (!rule || !ShouldInsertScriptForPage(token)) {
+  if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
 
   script_handler_->InsertScriptInPage(
       rule->user_script(),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), token, rule->policy_script()));
+                     weak_factory_.GetWeakPtr(), id, rule->policy_script()));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
-    content::GlobalRenderFrameHostToken token,
+    int id,
     const std::string& policy_script,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(token) || policy_script.empty() ||
+  if (!ShouldInsertScriptForPage(id) || policy_script.empty() ||
       !user_script_result.is_dict()) {
     return;
   }
   script_handler_->InsertScriptInPage(policy_script, base::DoNothing());
-  should_process_.reset();
 }
 
 }  // namespace psst

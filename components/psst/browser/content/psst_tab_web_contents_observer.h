@@ -13,8 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
-#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -22,6 +20,7 @@ class PrefService;
 namespace psst {
 
 class MatchedRule;
+class PsstRuleRegistry;
 
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
@@ -53,11 +52,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
                              PrefService* prefs,
                              std::unique_ptr<ScriptsHandler> script_handler);
 
-  bool ShouldInsertScriptForPage(content::GlobalRenderFrameHostToken token);
-  void InsertUserScript(content::GlobalRenderFrameHostToken token,
-                        std::unique_ptr<MatchedRule> rule);
+  bool ShouldInsertScriptForPage(int id);
+  void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
 
-  void OnUserScriptResult(content::GlobalRenderFrameHostToken token,
+  void OnUserScriptResult(int id,
                           const std::string& policy_script,
                           base::Value script_result);
 
@@ -69,7 +67,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   const raw_ptr<PrefService> prefs_;
   std::unique_ptr<ScriptsHandler> script_handler_;
 
-  std::optional<content::GlobalRenderFrameHostToken> should_process_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
 
