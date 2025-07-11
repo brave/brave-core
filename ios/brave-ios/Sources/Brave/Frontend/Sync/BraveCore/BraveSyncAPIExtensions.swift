@@ -45,15 +45,12 @@ extension BraveSyncAPI {
   }
 
   @discardableResult
-  func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
+  func joinSyncGroup(codeWords: String) -> Bool {
     if setSyncCode(codeWords) {
       // Enable default sync type Bookmarks when joining a chain
-      Preferences.Chromium.syncBookmarksEnabled.value = true
-      enableSyncTypes(syncProfileService: syncProfileService)
+      userSelectedTypes = [.BOOKMARKS]
       requestSync()
       setSetupComplete()
-      Preferences.Chromium.syncEnabled.value = true
-
       return true
     }
     return false
@@ -73,35 +70,10 @@ extension BraveSyncAPI {
     }
 
     resetSyncChain()
-    Preferences.Chromium.syncEnabled.value = false
   }
 
   func resetSyncChain() {
-    Preferences.Chromium.syncHistoryEnabled.value = false
-    Preferences.Chromium.syncPasswordsEnabled.value = false
-    Preferences.Chromium.syncOpenTabsEnabled.value = false
-
     resetSync()
-  }
-
-  public func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
-    syncProfileService.userSelectedTypes = []
-
-    if Preferences.Chromium.syncBookmarksEnabled.value {
-      syncProfileService.userSelectedTypes.update(with: .BOOKMARKS)
-    }
-
-    if Preferences.Chromium.syncHistoryEnabled.value {
-      syncProfileService.userSelectedTypes.update(with: .HISTORY)
-    }
-
-    if Preferences.Chromium.syncPasswordsEnabled.value {
-      syncProfileService.userSelectedTypes.update(with: .PASSWORDS)
-    }
-
-    if Preferences.Chromium.syncOpenTabsEnabled.value {
-      syncProfileService.userSelectedTypes.update(with: .TABS)
-    }
   }
 
   /// Stores a token that is NOT backed up when the user backs up to iCloud

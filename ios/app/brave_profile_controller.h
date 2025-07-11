@@ -9,10 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @class BraveBookmarksAPI, BraveHistoryAPI, BravePasswordAPI, BraveOpenTabsAPI,
-    BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
-    BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
-    DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
-    NTPBackgroundImagesService;
+    BraveSendTabAPI, BraveSyncAPI, DeAmpPrefs, BraveTabGeneratorAPI,
+    BraveWalletAPI, BraveStats, AIChat, DefaultHostContentSettings,
+    CWVWebViewConfiguration, WebImageDownloader, NTPBackgroundImagesService;
 @protocol AIChatDelegate
 , IpfsAPI;
 
@@ -26,7 +25,6 @@ OBJC_EXPORT
 @property(readonly) BraveOpenTabsAPI* openTabsAPI;
 @property(readonly) BraveSendTabAPI* sendTabAPI;
 @property(readonly) BraveSyncAPI* syncAPI;
-@property(readonly) BraveSyncProfileServiceIOS* syncProfileService;
 @property(readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 @property(readonly) BraveStats* braveStats;

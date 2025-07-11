@@ -449,7 +449,7 @@ bool BraveSyncWorker::IsSyncFeatureActive() {
   return sync_service->IsSyncFeatureActive();
 }
 
-bool BraveSyncWorker::IsSyncEnabled() {
+bool BraveSyncWorker::IsInSyncGroup() {
   auto* sync_service = static_cast<syncer::SyncServiceImpl*>(GetSyncService());
   syncer::SyncPrefs::SyncAccountState account_state =
       sync_service->GetSyncAccountStateForPrefs();

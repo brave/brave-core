@@ -8,6 +8,7 @@
 #import <CoreImage/CoreImage.h>
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "base/compiler_specific.h"
@@ -23,10 +24,13 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
+#include "components/sync/base/data_type.h"
+#include "components/sync/base/user_selectable_type.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
 #include "components/sync/service/sync_service_observer.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -34,6 +38,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
+#include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -115,6 +120,67 @@ BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
+// MARK: - syncer::UserSelectableType
+
+static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kCookies) ==
+                  static_cast<NSInteger>(syncer::UserSelectableType::kLastType),
+              "syncer::UserSelectableType has changed in a Chromium update");
+
+namespace brave {
+namespace ios {
+std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
+    mapping = {
+        {syncer::UserSelectableType::kBookmarks,
+         BraveSyncUserSelectableTypes_BOOKMARKS},
+        {syncer::UserSelectableType::kPreferences,
+         BraveSyncUserSelectableTypes_PREFERENCES},
+        {syncer::UserSelectableType::kPasswords,
+         BraveSyncUserSelectableTypes_PASSWORDS},
+        {syncer::UserSelectableType::kAutofill,
+         BraveSyncUserSelectableTypes_AUTOFILL},
+        {syncer::UserSelectableType::kThemes,
+         BraveSyncUserSelectableTypes_THEMES},
+        {syncer::UserSelectableType::kHistory,
+         BraveSyncUserSelectableTypes_HISTORY},
+        {syncer::UserSelectableType::kExtensions,
+         BraveSyncUserSelectableTypes_EXTENSIONS},
+        {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
+        {syncer::UserSelectableType::kReadingList,
+         BraveSyncUserSelectableTypes_READING_LIST},
+        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
+        {syncer::UserSelectableType::kSavedTabGroups,
+         BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS},
+        {syncer::UserSelectableType::kPayments,
+         BraveSyncUserSelectableTypes_PAYMENTS},
+        {syncer::UserSelectableType::kProductComparison,
+         BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
+        {syncer::UserSelectableType::kCookies,
+         BraveSyncUserSelectableTypes_COOKIES}};
+
+syncer::UserSelectableTypeSet user_types_from_options(
+    BraveSyncUserSelectableTypes options) {
+  syncer::UserSelectableTypeSet results;
+  for (auto it = mapping.begin(); it != mapping.end(); ++it) {
+    if (options & it->second) {
+      results.Put(it->first);
+    }
+  }
+  return results;
+}
+
+BraveSyncUserSelectableTypes options_from_user_types(
+    const syncer::UserSelectableTypeSet& types) {
+  BraveSyncUserSelectableTypes results = BraveSyncUserSelectableTypes_NONE;
+  for (auto it = mapping.begin(); it != mapping.end(); ++it) {
+    if (types.Has(it->first)) {
+      results |= it->second;
+    }
+  }
+  return results;
+}
+}  // namespace ios
+}  // namespace brave
+
 // MARK: - BraveSyncDeviceObserver
 
 @interface BraveSyncDeviceObserver : NSObject {
@@ -179,13 +245,6 @@ BraveSyncAPIWordsValidationStatus const
   _profile = nullptr;
 }
 
-- (bool)isInSyncGroup {
-  auto* service = static_cast<syncer::SyncServiceImpl*>(
-      SyncServiceFactory::GetForProfile(_profile));
-  return service->GetSyncAccountStateForPrefs() !=
-         syncer::SyncPrefs::SyncAccountState::kNotSignedIn;
-}
-
 - (bool)canSyncFeatureStart {
   return _worker->CanSyncFeatureStart();
 }
@@ -194,12 +253,47 @@ BraveSyncAPIWordsValidationStatus const
   return _worker->IsSyncFeatureActive();
 }
 
-- (bool)isSyncEnabled {
-  return _worker->IsSyncEnabled();
+- (bool)isInSyncGroup {
+  return _worker->IsInSyncGroup();
 }
 
 - (bool)isInitialSyncFeatureSetupComplete {
   return _worker->IsInitialSyncFeatureSetupComplete();
+}
+
+- (BraveSyncUserSelectableTypes)activeUserSelectableTypes {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+
+  auto* sync_service_ = SyncServiceFactory::GetForProfile(_profile);
+  syncer::DataTypeSet active_types = sync_service_->GetActiveDataTypes();
+
+  syncer::UserSelectableTypeSet user_types;
+  for (syncer::UserSelectableType type : syncer::UserSelectableTypeSet::All()) {
+    if (active_types.Has(syncer::UserSelectableTypeToCanonicalDataType(type))) {
+      user_types.Put(type);
+    }
+  }
+  return brave::ios::options_from_user_types(user_types);
+}
+
+- (BraveSyncUserSelectableTypes)userSelectedTypes {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+
+  auto* sync_service_ = SyncServiceFactory::GetForProfile(_profile);
+  syncer::UserSelectableTypeSet types =
+      sync_service_->GetUserSettings()->GetSelectedTypes();
+  return brave::ios::options_from_user_types(types);
+}
+
+- (void)setUserSelectedTypes:(BraveSyncUserSelectableTypes)options {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+
+  bool sync_everything = false;
+  auto* sync_service_ = SyncServiceFactory::GetForProfile(_profile);
+  syncer::UserSelectableTypeSet selected_types =
+      brave::ios::user_types_from_options(options);
+  sync_service_->GetUserSettings()->SetSelectedTypes(sync_everything,
+                                                     selected_types);
 }
 
 - (void)setSetupComplete {

@@ -167,8 +167,6 @@ class AppReviewManagerTests: XCTestCase {
     Preferences.Review.numberBookmarksAdded.reset()
     Preferences.Review.dateWalletConnectedToDapp.value = nil
     Preferences.Review.numberPlaylistItemsAdded.reset()
-    Preferences.Chromium.syncEnabled.reset()
-    Preferences.Chromium.syncOpenTabsEnabled.reset()
     Preferences.Review.lastReviewDate.value = nil
     Preferences.Review.newsCardShownDate.value = nil
   }

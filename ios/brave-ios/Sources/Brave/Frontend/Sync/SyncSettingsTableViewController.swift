@@ -58,7 +58,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   private let braveCoreMain: BraveProfileController
   private let syncAPI: BraveSyncAPI
-  private let syncProfileService: BraveSyncProfileServiceIOS
 
   private var syncDeviceObserver: AnyObject?
   private var syncServiceObserver: AnyObject?
@@ -95,7 +94,6 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     self.isModallyPresented = isModallyPresented
     self.braveCoreMain = braveCoreMain
     self.syncAPI = braveCoreMain.syncAPI
-    self.syncProfileService = braveCoreMain.syncProfileService
 
     // Local Authentication (Biometric - Pincode) needed only for actions
     // Enabling - disabling password sync and add new device
@@ -163,7 +161,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
   }
 
   private func restartSyncSetupIfNecessary() {
-    if !syncAPI.isSyncEnabled {
+    if !syncAPI.isInSyncGroup {
       syncAPI.leaveSyncGroup()
       navigationController?.popToRootViewController(animated: true)
     }
@@ -279,21 +277,21 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
       return
     }
 
-    let toggleExistingStatus = !toggle.isOn
+    let toggleWasOn = toggle.isOn
 
     if syncDataType == .passwords {
-      if toggleExistingStatus {
-        performSyncDataTypeStatusChange(type: syncDataType)
-      } else {
+      if toggleWasOn {
         askForAuthentication(viewType: .sync) { status, error in
           guard status else {
-            toggle.setOn(toggleExistingStatus, animated: false)
+            toggle.setOn(toggleWasOn, animated: false)
             return
           }
 
-          toggle.setOn(!toggleExistingStatus, animated: false)
+          toggle.setOn(!toggleWasOn, animated: false)
           performSyncDataTypeStatusChange(type: syncDataType)
         }
+      } else {
+        performSyncDataTypeStatusChange(type: syncDataType)
       }
     } else {
       performSyncDataTypeStatusChange(type: syncDataType)
@@ -302,16 +300,30 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     func performSyncDataTypeStatusChange(type: SyncDataTypes) {
       switch type {
       case .bookmarks:
-        Preferences.Chromium.syncBookmarksEnabled.value = !toggleExistingStatus
+        if toggle.isOn {
+          syncAPI.userSelectedTypes.update(with: .BOOKMARKS)
+        } else {
+          syncAPI.userSelectedTypes.remove(.BOOKMARKS)
+        }
       case .history:
-        Preferences.Chromium.syncHistoryEnabled.value = !toggleExistingStatus
+        if toggle.isOn {
+          syncAPI.userSelectedTypes.update(with: .HISTORY)
+        } else {
+          syncAPI.userSelectedTypes.remove(.HISTORY)
+        }
       case .passwords:
-        Preferences.Chromium.syncPasswordsEnabled.value = !toggleExistingStatus
+        if toggle.isOn {
+          syncAPI.userSelectedTypes.update(with: .PASSWORDS)
+        } else {
+          syncAPI.userSelectedTypes.remove(.PASSWORDS)
+        }
       case .openTabs:
-        Preferences.Chromium.syncOpenTabsEnabled.value = !toggleExistingStatus
+        if toggle.isOn {
+          syncAPI.userSelectedTypes.update(with: .TABS)
+        } else {
+          syncAPI.userSelectedTypes.remove(.TABS)
+        }
       }
-
-      syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
     }
   }
 
@@ -554,13 +566,13 @@ extension SyncSettingsTableViewController {
     func isOn(syncType: SyncDataTypes) -> Bool {
       switch syncType {
       case .bookmarks:
-        return Preferences.Chromium.syncBookmarksEnabled.value
+        return syncAPI.userSelectableTypes.contains(.BOOKMARKS)
       case .history:
-        return Preferences.Chromium.syncHistoryEnabled.value
+        return syncAPI.userSelectedTypes.contains(.HISTORY)
       case .passwords:
-        return Preferences.Chromium.syncPasswordsEnabled.value
+        return syncAPI.userSelectedTypes.contains(.PASSWORDS)
       case .openTabs:
-        return Preferences.Chromium.syncOpenTabsEnabled.value
+        return syncAPI.userSelectedTypes.contains(.TABS)
       }
     }
   }

@@ -67,16 +67,36 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber;
 
+typedef NS_OPTIONS(NSUInteger, BraveSyncUserSelectableTypes) {
+  BraveSyncUserSelectableTypes_NONE = 1ULL << 0,
+  BraveSyncUserSelectableTypes_BOOKMARKS = 1ULL << 1,
+  BraveSyncUserSelectableTypes_PREFERENCES = 1ULL << 2,
+  BraveSyncUserSelectableTypes_PASSWORDS = 1ULL << 3,
+  BraveSyncUserSelectableTypes_AUTOFILL = 1ULL << 4,
+  BraveSyncUserSelectableTypes_THEMES = 1ULL << 5,
+  BraveSyncUserSelectableTypes_HISTORY = 1ULL << 6,
+  BraveSyncUserSelectableTypes_EXTENSIONS = 1ULL << 7,
+  BraveSyncUserSelectableTypes_APPS = 1ULL << 8,
+  BraveSyncUserSelectableTypes_READING_LIST = 1ULL << 9,
+  BraveSyncUserSelectableTypes_TABS = 1ULL << 10,
+  BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS = 1ULL << 11,
+  BraveSyncUserSelectableTypes_PAYMENTS = 1ULL << 12,
+  BraveSyncUserSelectableTypes_PRODUCT_COMPARISON = 1ULL << 14,
+  BraveSyncUserSelectableTypes_COOKIES = 1ULL << 15
+};
+
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
 @property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
-@property(nonatomic, readonly) bool isSyncEnabled;
+@property(nonatomic, readonly) bool isInSyncGroup;
 @property(nonatomic, readonly) bool isInitialSyncFeatureSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
 @property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
-@property(readonly) bool isInSyncGroup;
+@property(nonatomic, readonly)
+    BraveSyncUserSelectableTypes activeUserSelectableTypes;
+@property(nonatomic, assign) BraveSyncUserSelectableTypes userSelectedTypes;
 
 - (instancetype)init NS_UNAVAILABLE;
 

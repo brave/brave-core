@@ -65,7 +65,6 @@ class SettingsViewController: TableViewController {
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
-  private let syncProfileServices: BraveSyncProfileServiceIOS
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
   private let attributionManager: AttributionManager
@@ -104,7 +103,6 @@ class SettingsViewController: TableViewController {
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
-    self.syncProfileServices = braveCore.syncProfileService
     self.p3aUtilities = p3aUtils
     self.deAmpPrefs = braveCore.deAmpPrefs
     self.attributionManager = attributionManager
@@ -472,7 +470,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
-            if syncAPI.isSyncEnabled {
+            if syncAPI.isInSyncGroup {
               if !DeviceInfo.hasConnectivity() {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return

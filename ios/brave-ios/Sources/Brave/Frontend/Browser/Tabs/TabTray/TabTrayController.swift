@@ -62,8 +62,8 @@ class TabTrayController: AuthenticationController {
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
 
   private var emptyPanelState: SyncStatusState {
-    if braveCore.syncAPI.isSyncEnabled {
-      if !Preferences.Chromium.syncOpenTabsEnabled.value {
+    if braveCore.syncAPI.isInSyncGroup {
+      if !braveCore.syncAPI.userSelectedTypes.contains(.TABS) {
         return .openTabsDisabled
       }
     } else {
@@ -250,7 +250,7 @@ class TabTrayController: AuthenticationController {
     syncServicStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.braveCore.syncAPI.isSyncEnabled {
+      if !self.braveCore.syncAPI.isInSyncGroup {
         self.tabSyncView.do {
           $0.updateSyncStatusPanel(for: self.emptyPanelState)
         }

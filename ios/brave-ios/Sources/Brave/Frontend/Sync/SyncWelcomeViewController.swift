@@ -166,7 +166,6 @@ class SyncWelcomeViewController: SyncViewController {
 
   private let braveCore: BraveProfileController
   private let syncAPI: BraveSyncAPI
-  private let syncProfileServices: BraveSyncProfileServiceIOS
   private var isModallyPresented = false
 
   init(
@@ -176,7 +175,6 @@ class SyncWelcomeViewController: SyncViewController {
   ) {
     self.braveCore = braveCore
     self.syncAPI = braveCore.syncAPI
-    self.syncProfileServices = braveCore.syncProfileService
     self.isModallyPresented = isModallyPresented
 
     super.init(windowProtection: windowProtection, isModallyPresented: isModallyPresented)
@@ -252,7 +250,7 @@ class SyncWelcomeViewController: SyncViewController {
 
       func pushAddDeviceVC() {
         self.syncServiceObserver = nil
-        guard self.syncAPI.isSyncEnabled else {
+        guard self.syncAPI.isInSyncGroup else {
           addDevice.disableNavigationPrevention()
           let alert = UIAlertController(
             title: Strings.Sync.syncUnsuccessful,
@@ -270,7 +268,7 @@ class SyncWelcomeViewController: SyncViewController {
         self.navigationController?.pushViewController(view, animated: true)
       }
 
-      if self.syncAPI.isSyncEnabled {
+      if self.syncAPI.isInSyncGroup {
         pushAddDeviceVC()
         return
       }
@@ -295,8 +293,7 @@ class SyncWelcomeViewController: SyncViewController {
       }
 
       self.syncAPI.joinSyncGroup(
-        codeWords: self.syncAPI.getSyncCode(),
-        syncProfileService: self.syncProfileServices
+        codeWords: self.syncAPI.getSyncCode()
       )
       self.handleSyncSetupFailure()
     }
@@ -354,7 +351,7 @@ class SyncWelcomeViewController: SyncViewController {
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.syncAPI.isSyncEnabled && !self.syncAPI.isSyncFeatureActive
+      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive
         && !self.syncAPI.isInitialSyncFeatureSetupComplete
       {
         let bvc = self.currentScene?.browserViewController
@@ -390,7 +387,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
 
     // In parallel set code words - request sync and setup complete
     // should be called on brave-core side
-    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
+    syncAPI.joinSyncGroup(codeWords: codeWords)
     handleSyncSetupFailure()
   }
 
@@ -558,8 +555,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
 
   private func enableDefaultTypeAndPushSettings() {
     // Enable default sync type Bookmarks and push settings
-    Preferences.Chromium.syncBookmarksEnabled.value = true
-    syncAPI.enableSyncTypes(syncProfileService: syncProfileServices)
+    syncAPI.userSelectedTypes = [.BOOKMARKS]
     pushSettings()
   }
 

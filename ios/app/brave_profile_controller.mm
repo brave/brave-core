@@ -24,7 +24,6 @@
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
-#include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
@@ -87,7 +86,6 @@
 @property(nonatomic) BraveOpenTabsAPI* openTabsAPI;
 @property(nonatomic) BraveSendTabAPI* sendTabAPI;
 @property(nonatomic) BraveSyncAPI* syncAPI;
-@property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
@@ -248,16 +246,6 @@
     _syncAPI = [[BraveSyncAPI alloc] initWithBrowserState:_profile];
   }
   return _syncAPI;
-}
-
-- (BraveSyncProfileServiceIOS*)syncProfileService {
-  if (!_syncProfileService) {
-    syncer::SyncService* sync_service_ =
-        SyncServiceFactory::GetForProfile(_profile);
-    _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
-        initWithProfileSyncService:sync_service_];
-  }
-  return _syncProfileService;
 }
 
 - (BraveTabGeneratorAPI*)tabGeneratorAPI {

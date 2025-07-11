@@ -224,28 +224,6 @@ extension Preferences {
   }
 
   public final class Chromium {
-    /// Whether the device is in sync chain
-    public static let syncEnabled = Option<Bool>(key: "chromium.sync.enabled", default: false)
-    /// The sync type bookmarks enabled for the device in sync chain
-    public static let syncBookmarksEnabled = Option<Bool>(
-      key: "chromium.sync.syncBookmarksEnabled",
-      default: true
-    )
-    /// The sync type history enabled for the device in sync chain
-    public static let syncHistoryEnabled = Option<Bool>(
-      key: "chromium.sync.syncHistoryEnabled",
-      default: false
-    )
-    /// The sync type passwords enabled the device in sync chain
-    public static let syncPasswordsEnabled = Option<Bool>(
-      key: "chromium.sync.syncPasswordsEnabled",
-      default: false
-    )
-    /// The sync type open tabs enabled the device in sync chain
-    public static let syncOpenTabsEnabled = Option<Bool>(
-      key: "chromium.sync.openTabsEnabled",
-      default: false
-    )
     /// Node Id for last bookmark folder
     public static let lastBookmarksFolderNodeId = Option<Int?>(
       key: "chromium.last.bookmark.folder.node.id",
