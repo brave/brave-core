@@ -28,6 +28,7 @@ const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (
     case types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT:
       submitReport({
         ...state.dialogArgs,
+        category: action.payload.category || null,
         additionalDetails: action.payload.details || null,
         contactInfo: action.payload.contact || null,
         attachScreenshot: action.payload.attachScreenshot || false
