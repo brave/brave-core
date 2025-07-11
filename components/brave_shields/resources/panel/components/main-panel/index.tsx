@@ -4,14 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/leo/react/button'
+
 import * as S from './style'
-import Toggle from '../../../../../web-components/toggle'
 import AdvancedControlsContent from '../advanced-controls-content'
 import AdvancedControlsContentScroller from '../advanced-controls-scroller'
 import { formatLocale, getLocale } from '$web-common/locale'
 import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
-import Button from '$web-components/button'
 import { useIsExpanded } from '../../state/hooks'
 
 const handleLearnMoreClick = () => {
@@ -39,9 +40,9 @@ function MainPanel () {
       $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
     })
 
-  const handleToggleChange = async (isOn: boolean) => {
-    await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(isOn)
-    if (isOn) {
+  const handleToggleChange = async (detail: { checked: boolean }) => {
+    await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(detail.checked)
+    if (detail.checked) {
       if (getSiteSettings) getSiteSettings()
     }
   }
@@ -133,7 +134,7 @@ function MainPanel () {
         <S.ReportSiteAction>
           <span>{getLocale('braveShieldsReportSiteDesc')}</span>
           <Button
-            isPrimary
+            kind="filled"
             onClick={handleReportSite}
           >
             {getLocale('braveShieldsReportSite')}
@@ -170,10 +171,8 @@ function MainPanel () {
           </S.StatusText>
           <S.StatusToggle>
             <Toggle
-              brand="shields"
-              isOn={siteBlockInfo?.isBraveShieldsEnabled}
+              checked={siteBlockInfo?.isBraveShieldsEnabled}
               onChange={handleToggleChange}
-              accessibleLabel={getLocale('braveShieldsEnable')}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </S.StatusToggle>
