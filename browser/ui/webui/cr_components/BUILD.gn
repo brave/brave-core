@@ -15,6 +15,7 @@ source_set("cr_components") {
     "//brave/components/constants",
     "//chrome/browser:browser_process",
     "//components/prefs",
+    "//ui/webui/resources/cr_components/customize_color_scheme_mode:mojom",
   ]
 }
 
