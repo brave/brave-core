@@ -356,6 +356,7 @@ program
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
+  .option('--no_gn_gen', 'Use args_generated.gni as default values')
   .option(
     '--output_xml',
     'indicates if test results xml output file(s) should be generated. '
