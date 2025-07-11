@@ -35,11 +35,7 @@ void RegisterComponentsForUpdate() {
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
   psst::RegisterPsstComponent(cus);
-  auto* p3a_service = g_brave_browser_process->p3a_service();
-  if (p3a_service) {
-    p3a::RegisterP3AComponent(
-        cus, p3a_service->remote_config_manager()->GetWeakPtr());
-  }
+  p3a::MaybeToggleP3AComponent(cus, g_brave_browser_process->p3a_service());
 #if BUILDFLAG(IS_ANDROID)
   // Currently behind !BUILDFLAG(IS_ANDROID) in upstream.
   RegisterZxcvbnDataComponent(cus);

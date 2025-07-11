@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/remote_config_manager.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -95,20 +96,32 @@ class P3AComponentInstallerPolicy
 
 }  // namespace
 
-void RegisterP3AComponent(
-    ComponentUpdateService* cus,
-    base::WeakPtr<RemoteConfigManager> remote_config_manager) {
-  if (!cus || !remote_config_manager) {
+void MaybeToggleP3AComponent(ComponentUpdateService* cus,
+                             P3AService* p3a_service) {
+  if (!cus || !p3a_service) {
     return;
   }
 
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<P3AComponentInstallerPolicy>(remote_config_manager));
-  installer->Register(
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kP3AComponentId);
-      }));
+  bool p3a_enabled = p3a_service->IsP3AEnabled();
+
+  if (p3a_enabled) {
+    auto* remote_config_manager = p3a_service->remote_config_manager();
+    if (!remote_config_manager) {
+      return;
+    }
+
+    auto installer =
+        base::MakeRefCounted<component_updater::ComponentInstaller>(
+            std::make_unique<P3AComponentInstallerPolicy>(
+                remote_config_manager->GetWeakPtr()));
+    installer->Register(
+        cus, base::BindOnce([]() {
+          brave_component_updater::BraveOnDemandUpdater::GetInstance()
+              ->EnsureInstalled(kP3AComponentId);
+        }));
+  } else {
+    cus->UnregisterComponent(kP3AComponentId);
+  }
 }
 
 }  // namespace p3a
