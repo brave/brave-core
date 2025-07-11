@@ -100,7 +100,7 @@
 
 - ({{cpp_namespace}}::{{union.name}}Ptr)cppObjPtr
 {
-  auto obj = {{cpp_namespace}}::{{union.name}}Ptr(std::in_place);
+  {{cpp_namespace}}::{{union.name}}Ptr obj;
   switch (self.tag) {
     case {{tag_enum_name}}Null: {
       break;
@@ -108,7 +108,7 @@
 {%- for field in union.fields %}
 {%-   set field_tag = "%s%s"|format(tag_enum_name, field.name|objc_enum_formatter) %}
     case {{field_tag}}: {
-      obj->set_{{field.name}}({{field|objc_to_cpp_assign('self')}});
+      obj = {{cpp_namespace}}::{{union.name}}::New{{field.name|under_to_camel}}({{field|objc_to_cpp_assign('self')}});
       break;
     }
 {%- endfor %}
