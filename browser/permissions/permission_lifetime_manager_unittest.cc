@@ -244,15 +244,17 @@ class PermissionLifetimeManagerTest : public testing::Test {
 };
 
 TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
-  for (ContentSetting content_setting :
-       {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK}) {
+  for (PermissionDecision decision :
+       {PermissionDecision::kAllow, PermissionDecision::kDeny}) {
+    ContentSetting content_setting =
+        PermissionUtil::PermissionDecisionToContentSetting(decision);
+
     auto request(CreateRequestAndChooseContentSetting(
         kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime,
         content_setting));
     const base::Time expected_expiration_time =
         base::Time::Now() + *request->GetLifetime();
-    manager()->PermissionDecided(*request, kOrigin, kOrigin, content_setting,
-                                 false);
+    manager()->PermissionDecided(*request, kOrigin, kOrigin, decision);
     EXPECT_TRUE(timer().IsRunning());
 
     browser_task_environment_.RunUntilIdle();
@@ -291,7 +293,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   browser_task_environment_.FastForwardBy(kOneSecond);
@@ -301,7 +303,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   browser_task_environment_.RunUntilIdle();
 
   // Check data stored in prefs.
@@ -343,7 +345,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   browser_task_environment_.FastForwardBy(kOneSecond);
@@ -353,7 +355,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
       base::Time::Now() + *request2->GetLifetime();
   ASSERT_EQ(expected_expiration_time, expected_expiration_time2);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   // Check data stored in prefs.
   CheckExpirationsPref(
@@ -381,7 +383,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
   EXPECT_EQ(timer().desired_run_time(), expected_expiration_time);
 
@@ -390,7 +392,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   // Timer should be restarted.
   EXPECT_EQ(timer().desired_run_time(), expected_expiration_time2);
 
@@ -427,7 +429,7 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   ResetManager();
@@ -467,7 +469,7 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   ResetManager();
@@ -491,12 +493,12 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   ResetManager();
   browser_task_environment_.FastForwardBy(kLifetime);
@@ -534,7 +536,7 @@ TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
     auto request(CreateRequestAndAllowContentSetting(
         kOrigin, ContentSettingsType::GEOLOCATION, kLifetime));
     manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                                 ContentSetting::CONTENT_SETTING_ALLOW, false);
+                                 PermissionDecision::kAllow);
     EXPECT_TRUE(timer().IsRunning());
 
     host_content_settings_map_->SetContentSettingDefaultScope(
@@ -554,12 +556,12 @@ TEST_F(PermissionLifetimeManagerTest, ClearAllExpiredAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, kOneSecond));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   ResetManager();
   browser_task_environment_.FastForwardBy(kLifetime);
@@ -614,7 +616,7 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin))
       .WillOnce(testing::Return(kOrigin.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_FALSE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -650,9 +652,9 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin2))
       .WillOnce(testing::Return(kOrigin2.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_FALSE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -690,9 +692,9 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin2))
       .WillOnce(testing::Return(kOrigin2.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -732,7 +734,7 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin))
       .WillOnce(testing::Return(std::string()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   // Nothing should be stored in prefs.
   CheckExpirationsPref(FROM_HERE, "{}");

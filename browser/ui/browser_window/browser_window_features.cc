@@ -85,8 +85,8 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
   }
 }
 
-void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
-  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserViewDestruction();
+void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_.reset();
 #endif

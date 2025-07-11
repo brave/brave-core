@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index b38a0789e27791c60e7330f68768b130c72f3b53..42e18dfc534eefe438ca9ecafbbe1e1929127ae6 100644
+index fdd4f3582c4dc8233f83bc7bc5f395dcf36e07ce..601027bef1f85c9d47f44e0d3f0d02a7012cfce2 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-@@ -86,6 +86,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
+@@ -116,6 +116,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
        return loadTimeData.getString('clearDownloadHistory');
      case BrowsingDataType.HOSTED_APPS_DATA:
        return loadTimeData.getString('clearHostedAppData');
@@ -10,7 +10,7 @@ index b38a0789e27791c60e7330f68768b130c72f3b53..42e18dfc534eefe438ca9ecafbbe1e19
    }
  }
  
-@@ -105,6 +106,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
+@@ -135,6 +136,7 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
        return 'browser.clear_data.download_history';
      case BrowsingDataType.HOSTED_APPS_DATA:
        return 'browser.clear_data.hosted_apps_data';

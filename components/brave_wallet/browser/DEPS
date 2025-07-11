@@ -11,6 +11,7 @@ include_rules = [
   "+components/permissions",
   "+components/pref_registry",
   "+components/prefs",
+  "+components/regional_capabilities",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+components/update_client",
   "+components/value_store",

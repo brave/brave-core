@@ -27,7 +27,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "components/permissions/permission_context_base.h"
+#include "components/permissions/content_setting_permission_context_base.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
 #include "content/public/browser/web_contents.h"
@@ -118,7 +118,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   BravePermissionManager* permission_manager() { return permission_manager_; }
 
   bool IsPendingGroupedRequestsEmpty(ContentSettingsType type) {
-    PermissionContextBase* context =
+    ContentSettingPermissionContextBase* context =
         permission_manager()->GetPermissionContextForTesting(type);
     return context->IsPendingGroupedRequestsEmptyForTesting();
   }

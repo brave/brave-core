@@ -42,12 +42,10 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   BraveVpnDnsObserverServiceUnitTest() {}
 
   void SetUp() override {
-    RegisterLocalState(local_state_.registry());
-    TestingBrowserProcess::GetGlobal()->SetLocalState(&local_state_);
     BraveVpnDnsObserverFactory::GetInstance()->RegisterProfilePrefs(
         profile_pref_service_.registry());
-    stub_resolver_config_reader_ =
-        std::make_unique<StubResolverConfigReader>(&local_state_);
+    stub_resolver_config_reader_ = std::make_unique<StubResolverConfigReader>(
+        scoped_testing_local_state_.Get());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
     CreateDnsObserverService();
@@ -69,14 +67,13 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     // BraveVpnDnsObserverService destructor must be called before the task
     // runner is destroyed.
     ResetDnsObserverService();
-    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
   void EnableParentalControl(bool value) {
     StubResolverConfigReader* config_reader =
         SystemNetworkContextManager::GetStubResolverConfigReader();
     config_reader->OverrideParentalControlsForTesting(value);
   }
-  PrefService* local_state() { return &local_state_; }
+  PrefService* local_state() { return scoped_testing_local_state_.Get(); }
   PrefService* pref_service() { return &profile_pref_service_; }
 
   void FireBraveVPNStateChange(mojom::ConnectionState state) {
@@ -141,7 +138,8 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   }
 
   void SetManagedMode(const std::string& value) {
-    local_state_.SetManagedPref(::prefs::kDnsOverHttpsMode, base::Value(value));
+    scoped_testing_local_state_.Get()->SetManagedPref(
+        ::prefs::kDnsOverHttpsMode, base::Value(value));
   }
 
  private:
@@ -149,7 +147,8 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_observer_service_;
   sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
-  TestingPrefServiceSimple local_state_;
+  ScopedTestingLocalState scoped_testing_local_state_{
+      TestingBrowserProcess::GetGlobal()};
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 };
 

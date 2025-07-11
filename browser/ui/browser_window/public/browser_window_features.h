@@ -35,7 +35,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   void Init(BrowserWindowInterface* browser) override;
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
   void InitPostWindowConstruction(Browser* browser) override;
-  void TearDownPreBrowserViewDestruction() override;
+  void TearDownPreBrowserWindowDestruction() override;
 
   sidebar::SidebarController* sidebar_controller() {
     return sidebar_controller_.get();

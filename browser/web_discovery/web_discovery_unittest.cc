@@ -14,6 +14,7 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_test_util.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -35,17 +36,11 @@ class WebDiscoveryCTATest : public testing::Test {
   void SetUp() override {
     // Setup g_browser_process because local_state() is refered during the
     // TemplateURLServiceTestUtil initialization.
-    RegisterLocalState(test_local_state_.registry());
-    TestingBrowserProcess::GetGlobal()->SetLocalState(&test_local_state_);
     test_clock_.SetNow(base::Time::Now());
     test_util_ = std::make_unique<TemplateURLServiceTestUtil>();
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
     ASSERT_TRUE(web_contents_.get());
-  }
-
-  void TearDown() override {
-    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
 
   WebDiscoveryTabHelper* tab_helper() {
@@ -99,7 +94,8 @@ class WebDiscoveryCTATest : public testing::Test {
 
   base::SimpleTestClock test_clock_;
   content::BrowserTaskEnvironment task_environment_;
-  TestingPrefServiceSimple test_local_state_;
+  ScopedTestingLocalState scoped_testing_local_state_{
+      TestingBrowserProcess::GetGlobal()};
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<TemplateURLServiceTestUtil> test_util_;
   std::unique_ptr<content::WebContents> web_contents_;

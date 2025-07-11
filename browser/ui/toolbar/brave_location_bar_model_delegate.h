@@ -9,11 +9,11 @@
 #include "base/compiler_specific.h"
 #include "chrome/browser/ui/browser_location_bar_model_delegate.h"
 
-class Browser;
+class TabStripModel;
 
 class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
  public:
-  explicit BraveLocationBarModelDelegate(Browser* browser);
+  explicit BraveLocationBarModelDelegate(TabStripModel* tab_strip_model);
   BraveLocationBarModelDelegate(const BraveLocationBarModelDelegate&) = delete;
   BraveLocationBarModelDelegate& operator=(
       const BraveLocationBarModelDelegate&) = delete;
@@ -27,7 +27,7 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
       const std::u16string& formatted_url) const override;
   bool GetURL(GURL* url) const override;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  const raw_ptr<TabStripModel> tab_strip_model_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_

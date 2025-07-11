@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java b/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
-index d29e8efb6d084a7bb9356d737574da8e8be5f78d..75307f4940d383afa3f4aa68c4bf3ba7a1a633bf 100644
+index dbdfa3777ce0bbbac88c98c00a85b8fd1ce480b1..b3683b1f6d07b8a906e65c11994b6ebedfb92d72 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
-@@ -46,7 +46,7 @@ public class HomepageManager
+@@ -47,7 +47,7 @@ public class HomepageManager
      private final SharedPreferencesManager mSharedPreferencesManager;
      private final ObserverList<HomepageStateListener> mHomepageStateListeners;
  

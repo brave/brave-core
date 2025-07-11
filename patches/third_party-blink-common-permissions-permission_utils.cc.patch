@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/permissions/permission_utils.cc b/third_party/blink/common/permissions/permission_utils.cc
-index 6886f5764a87dd8b41746969745e80c82b69430b..c643482ba830e276945dd29ae1ef380be8732d63 100644
+index 4dd8b8d4498cbe00b5739f620037ebe6915b6033..03d9e25008d1eb355a0630e50b897d3fb9ed6136 100644
 --- a/third_party/blink/common/permissions/permission_utils.cc
 +++ b/third_party/blink/common/permissions/permission_utils.cc
-@@ -27,6 +27,7 @@ mojom::PermissionStatus ToPermissionStatus(const std::string& status) {
+@@ -28,6 +28,7 @@ mojom::PermissionStatus ToPermissionStatus(const std::string& status) {
  
  std::string GetPermissionString(PermissionType permission) {
    switch (permission) {
@@ -10,7 +10,7 @@ index 6886f5764a87dd8b41746969745e80c82b69430b..c643482ba830e276945dd29ae1ef380b
      case PermissionType::GEOLOCATION:
        return "Geolocation";
      case PermissionType::NOTIFICATIONS:
-@@ -249,6 +250,7 @@ std::optional<PermissionType> PermissionDescriptorInfoToPermissionType(
+@@ -250,6 +251,7 @@ std::optional<PermissionType> PermissionDescriptorInfoToPermissionType(
      bool clipboard_has_user_gesture,
      bool fullscreen_allow_without_user_gesture) {
    switch (name) {

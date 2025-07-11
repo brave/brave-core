@@ -31,6 +31,9 @@
     <message name="IDS_IDLE_DETECTION_INFOBAR_TEXT" desc="Text requesting permission for a site to know when the user is idle.">
       <ph name="URL">$1<ex>google.com</ex></ph> wants to know when you're actively using this device
     </message>
+    <message name="IDS_LOCAL_NETWORK_ACCESS_INFOBAR_TEXT" desc="Text requesting permission for a site to access the user's local network.">
+      <ph name="URL">$1<ex>google.com</ex></ph> wants to look for and connect to any device on your local network
+    </message>
     <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_TITLE" desc="Text used as notification title when requesting permission for Web Notifications via a notification.">
       Notifications for <ph name="ORIGIN">$1<ex>example.com</ex></ph> are blocked
     </message>
@@ -94,6 +97,9 @@
     </message>
     <message name="IDS_IDENTITY_PROVIDER_INFOBAR_TEXT" desc="Text requesting permission for a site to register itself as an Federated Identity Provider." translateable="false">
       Would you like to use your <ph name="URL">$1<ex>google.com</ex></ph> accounts to login to websites?
+    </message>
+    <message name="IDS_WINDOW_MANAGEMENT_INFOBAR_TEXT" desc="Text requesting permission for a site that wants to manage windows.">
+      <ph name="URL">$1<ex>google.com</ex></ph> wants to manage windows on all your displays
     </message>
 </if>
   <if expr="is_android or is_chromeos or is_win">
@@ -478,7 +484,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   </if>
   <if expr="is_chromeos">
     <message name="IDS_SMART_CARD_PERMISSION_PROMPT" desc="Text on dialog that asks the user for permission to access a smart card reader device and the card inserted in it (or presented to it, if contactless).">
-      Control readers named <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and smart cards used with them
+      Control authentication devices named <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and smart cards used with them
     </message>
     <message name="IDS_SMART_CARD_PERMISSION_ALWAYS_ALLOW" desc="Label on button to always allow access to this smart card reader and any card inserted in (or presented to) it.">
       Always allow, with any card
