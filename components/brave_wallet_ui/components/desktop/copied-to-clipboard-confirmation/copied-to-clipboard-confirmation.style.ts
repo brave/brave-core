@@ -18,7 +18,7 @@ export const CopiedToClipboardContainer = styled.div`
 
   & p {
     margin-left: 4px;
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-weight: 500;
     font-size: 12px;

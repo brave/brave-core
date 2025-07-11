@@ -42,7 +42,7 @@ export const Header = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

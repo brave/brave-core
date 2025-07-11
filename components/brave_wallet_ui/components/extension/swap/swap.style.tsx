@@ -13,7 +13,7 @@ import {
 } from '../../shared/style'
 
 export const ExchangeRate = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -78,7 +78,7 @@ export const SwapAssetHeader = styled.div`
 `
 
 export const SwapAssetTitle = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -106,7 +106,7 @@ export const AddressOrb = styled.div<{ orb: string }>`
 
 export const AccountNameText = styled.span`
   cursor: default;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 10px;
@@ -145,7 +145,7 @@ export const Spacer = styled.div`
 `
 
 export const SwapAssetAmountSymbol = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 22px;
@@ -155,7 +155,7 @@ export const SwapAssetAmountSymbol = styled.span`
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -165,7 +165,7 @@ export const NetworkDescriptionText = styled.span`
 `
 
 export const LaunchButton = styled(WalletButton)`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

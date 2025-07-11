@@ -23,7 +23,7 @@ export const StyledWrapper = styled.div`
 export const Header = styled.div`
   color: ${leo.color.text.primary};
   text-align: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 22px;
   font-style: normal;
   font-weight: 500;
@@ -36,7 +36,7 @@ export const Header = styled.div`
 export const Description = styled.div`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

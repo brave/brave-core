@@ -25,7 +25,7 @@ export const InfoColumn = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
@@ -35,7 +35,7 @@ export const Title = styled.span`
 `
 
 export const Description = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

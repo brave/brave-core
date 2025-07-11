@@ -39,7 +39,7 @@ export const AccountCircle = styled.div<Partial<StyleProps>>`
 `
 
 export const AccountNameText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
@@ -53,7 +53,7 @@ export const AccountNameText = styled.span`
 `
 
 export const NetworkText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -62,7 +62,7 @@ export const NetworkText = styled.span`
 
 export const PanelTitle = styled.span`
   width: 236px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 18px;
   line-height: 26px;
   letter-spacing: 0.02em;
@@ -89,7 +89,7 @@ export const MessageBox = styled.div<{ height?: string; width?: string }>`
 `
 
 export const MessageHeader = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -101,7 +101,7 @@ export const MessageHeader = styled.span`
 `
 
 export const MessageText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -126,7 +126,7 @@ export const WarningTitleRow = styled(WarningBoxTitleRow)`
 `
 
 export const HeaderTitle = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

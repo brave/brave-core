@@ -28,7 +28,7 @@ export const FormColumn = styled.div`
 `
 
 export const InputLabel = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
@@ -52,7 +52,7 @@ export const Input = styled.input<{
       ? leo.color.systemfeedback.errorIcon
       : p.theme.color.interactive08};
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
@@ -61,7 +61,7 @@ export const Input = styled.input<{
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
@@ -93,7 +93,7 @@ export const ButtonRow = styled.div`
 
 export const Description = styled.span`
   width: 100%;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -102,7 +102,7 @@ export const Description = styled.span`
 `
 
 export const CurrentBaseText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
@@ -120,7 +120,7 @@ export const CurrentBaseRow = styled.div`
 `
 
 export const MaximumFeeText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
@@ -144,7 +144,7 @@ export const SliderWrapper = styled.div`
 `
 
 export const SliderValue = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
@@ -217,7 +217,7 @@ export const SliderLabelRow = styled.div`
 `
 
 export const SliderLabel = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
@@ -225,7 +225,7 @@ export const SliderLabel = styled.span`
 `
 
 export const WarningText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.errorText};

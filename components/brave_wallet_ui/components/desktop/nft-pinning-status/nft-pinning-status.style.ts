@@ -43,7 +43,7 @@ export const ContentWrapper = styled.div<{
   gap: 4px;
   border-radius: 4px;
   padding: 2px 4px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -92,7 +92,7 @@ export const ReportButton = styled(WalletButton)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -105,7 +105,7 @@ export const ReportButton = styled(WalletButton)`
 `
 
 export const Text = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -136,7 +136,7 @@ export const TooltipContent = styled.div`
 `
 
 export const TooltipHeading = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
@@ -151,7 +151,7 @@ export const TooltipList = styled.ul`
   padding: 0;
 
   li {
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

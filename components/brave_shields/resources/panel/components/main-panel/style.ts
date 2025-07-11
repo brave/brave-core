@@ -274,7 +274,7 @@ export const ManagedText = styled.div`
   width: 228px;
   height: 20px;
 
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;

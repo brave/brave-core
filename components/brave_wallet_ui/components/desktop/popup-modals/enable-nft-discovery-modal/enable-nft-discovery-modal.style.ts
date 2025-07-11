@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Header = styled.h1`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -19,7 +19,7 @@ export const Header = styled.h1`
 `
 
 export const Description = styled.p`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

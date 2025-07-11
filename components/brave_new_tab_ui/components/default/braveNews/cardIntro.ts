@@ -10,7 +10,7 @@ import {
 } from './default'
 
 export const Intro = styled(StandardBlock)`
-  font-family: sans-serif;
+  font-family: system-ui;
   color: white;
   text-align: center;
   padding: 44px 82px 36px;

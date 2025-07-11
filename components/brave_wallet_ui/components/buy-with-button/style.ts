@@ -26,7 +26,7 @@ export const Button = styled(WalletButton)`
   width: 100%;
   border: none;
   color: ${(p) => p.theme.color.text02};
-  font-family: sans-serif;
+  font-family: system-ui;
   font-weight: 400;
   box-sizing: border-box;
   background-color: ${(p) => p.theme.color.background02};
@@ -69,7 +69,7 @@ export const Option = styled.li<Partial<OptionProps>>`
   display: flex;
   align-items: center;
   padding: 10px 0;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;

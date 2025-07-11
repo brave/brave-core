@@ -50,7 +50,7 @@ export const DIVForClickableArea = styled.div`
 `
 
 export const NFTText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -64,7 +64,7 @@ export const NFTText = styled.span`
 `
 
 export const NFTSymbol = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -132,7 +132,7 @@ export const JunkMarker = styled.div`
   border-radius: ${leo.radius.s};
   background-color: ${leo.color.red[20]};
   color: ${leo.color.red[50]};
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 10px;
   font-style: normal;
   font-weight: 600;

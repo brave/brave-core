@@ -17,7 +17,7 @@ export const Header = styled.div`
 `
 
 export const HeaderText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;

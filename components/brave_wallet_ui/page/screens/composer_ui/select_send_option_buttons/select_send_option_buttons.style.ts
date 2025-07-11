@@ -17,7 +17,7 @@ export const Button = styled(WalletButton)<{
   justify-content: center;
   flex-direction: column;
   cursor: pointer;
-  font-family: sans-serif;
+  font-family: system-ui;
   outline: none;
   border: none;
   background-color: none;

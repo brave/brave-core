@@ -20,7 +20,7 @@ export const TokenBalanceRow = styled.div`
   align-items: center;
 `
 export const CryptoBalance = styled.p`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 45px;
@@ -31,7 +31,7 @@ export const CryptoBalance = styled.p`
 `
 
 export const FiatBalance = styled.h6`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 18px;
   font-weight: 400;
@@ -49,7 +49,7 @@ export const DetailColumn = styled.div`
 `
 
 export const TokenDetailLabel = styled.h6`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 14px;
   font-weight: 600;
@@ -59,7 +59,7 @@ export const TokenDetailLabel = styled.h6`
 `
 
 export const TokenDetailValue = styled.h6`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 14px;
   font-weight: 400;
@@ -78,7 +78,7 @@ export const HideTokenButton = styled(WalletButton)`
   height: 40px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 14px;
   font-weight: 400;

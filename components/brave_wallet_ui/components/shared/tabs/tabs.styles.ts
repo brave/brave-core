@@ -30,7 +30,7 @@ export const Tab = styled.div<{ isActive: boolean }>`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -59,7 +59,7 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   height: 20px;
   border-radius: 6px;
   padding: 4px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 11px;

@@ -52,7 +52,7 @@ export const Text = styled.span<{
             : p.textSize === '32px'
               ? '48px'
               : '20px'}
-    font-family: sans-serif;
+    font-family: system-ui;
   color: ${(p) =>
     p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
@@ -71,7 +71,7 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 })
 
 export const AmountInput = styled.input`
-  font-family: sans-serif;
+  font-family: system-ui;
   color: ${(p) => p.theme.color.text01};
   font-weight: 500;
   font-size: 32px;
@@ -100,7 +100,7 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
     --button-background-hover: ${(p) => p.theme.color.background01};
   }
   display: flex;
-  font-family: sans-serif;
+  font-family: system-ui;
   cursor: pointer;
   border: none;
   outline: none;

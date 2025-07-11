@@ -39,7 +39,7 @@ export const PopupButton = styled(WalletButton)`
 `
 
 export const PopupButtonText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.01em;

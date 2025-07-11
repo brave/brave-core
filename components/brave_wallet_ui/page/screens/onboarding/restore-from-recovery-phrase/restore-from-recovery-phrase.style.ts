@@ -69,7 +69,7 @@ export const RecoveryBaseCss = css`
   padding-top: 8px;
   padding-bottom: 8px;
 
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

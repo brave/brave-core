@@ -31,7 +31,7 @@ export const DropDownButton = styled(WalletButton)<{
   border: ${(p) =>
     p.isV2 ? 'none' : `1px solid ${p.theme.color.interactive08}`};
   border-radius: ${(p) => (p.isV2 ? '8px' : '4px')};
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
@@ -123,7 +123,7 @@ export const SelectorLeftSide = styled(LeftSide)`
 `
 
 export const NetworkName = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   letter-spacing: 0.01em;
   font-weight: 400;
@@ -141,7 +141,7 @@ export const BigCheckMark = styled.div`
 `
 
 export const SecondaryNetworkText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   letter-spacing: 0.01em;
   font-weight: 400;

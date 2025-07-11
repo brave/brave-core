@@ -44,7 +44,7 @@ export const SearchInput = styled.input<{
   background-color: var(--background-color);
   box-shadow: none;
   border: none;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: ${(p) => (p.useWithFilter || p.isV2 ? '14px' : '12px')};
   letter-spacing: 0.01em;
@@ -52,7 +52,7 @@ export const SearchInput = styled.input<{
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-size: ${(p) => (p.isV2 ? '14px' : '12px')};
     letter-spacing: 0.01em;

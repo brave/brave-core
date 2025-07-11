@@ -14,7 +14,7 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 })
 
 export const AssetNameText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 16px;
   line-height: 18px;
@@ -23,7 +23,7 @@ export const AssetNameText = styled.span`
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 12px;
   line-height: 18px;
@@ -32,7 +32,7 @@ export const NetworkDescriptionText = styled.span`
 `
 
 export const PriceText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 14px;
   line-height: 24px;
@@ -45,7 +45,7 @@ export const PercentChange = styled.div<{ isDown?: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 12px;
   font-weight: 400;

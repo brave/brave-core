@@ -84,7 +84,7 @@ export const Bubble = styled.a`
 
 export const BubbleText = styled.span`
   height: 20px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;

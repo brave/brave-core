@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
@@ -29,7 +29,7 @@ export const Title = styled.span`
 export const Description = styled.span<StyleProps>`
   display: flex;
   align-items: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
@@ -39,7 +39,7 @@ export const Description = styled.span<StyleProps>`
 `
 
 export const FormText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 15px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
@@ -57,7 +57,7 @@ export const FormWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
@@ -87,7 +87,7 @@ export const RecoveryPhraseInput = styled.input`
   box-shadow: none;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
@@ -96,7 +96,7 @@ export const RecoveryPhraseInput = styled.input`
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;

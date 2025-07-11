@@ -46,7 +46,7 @@ export const IconWrapper = styled.div<{
 export const PlaceholderText = styled.span<{
   size: AssetIconSizes
 }>`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: ${(p) =>
     p.size === 'big' ? '16px' : p.size === 'tiny' ? '10px' : '12px'};
   font-weight: 600;

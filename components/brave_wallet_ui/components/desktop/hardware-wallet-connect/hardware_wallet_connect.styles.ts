@@ -88,7 +88,7 @@ export const HardwareWalletAccountListItem = styled.div`
 export const HardwareWalletAccountListItemRow = styled.div`
   flex: 1;
   flex-direction: row;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -144,7 +144,7 @@ export const SelectWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
@@ -168,7 +168,7 @@ export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
 `
 
 export const NoSearchResultText = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   text-align: center;
   letter-spacing: 0.01em;
@@ -234,13 +234,13 @@ export const AccountListContent = styled.div`
 `
 
 export const DropdownLabel = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font: ${leo.font.small.semibold};
   color: ${leo.color.text.primary};
 `
 
 export const HelpLink = styled.a`
-  font-family: sans-serif;
+  font-family: system-ui;
   font: ${leo.font.small.semibold};
   color: ${leo.color.text.interactive};
   text-decoration: none;

@@ -14,7 +14,7 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   display: flex;
   align-items: flex-start;
@@ -55,7 +55,7 @@ export const Input = styled.input<{ hasError: boolean }>`
   padding: ${(p) => (p.hasError ? 7 : 10)}px;
 
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
@@ -64,7 +64,7 @@ export const Input = styled.input<{ hasError: boolean }>`
   color: ${(p) => p.theme.color.text01};
 
   ::placeholder {
-    font-family: sans-serif;
+    font-family: system-ui;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
@@ -101,7 +101,7 @@ export const ErrorText = styled.span`
   align-items: flex-start;
   justify-content: flex-start;
   width: 240px;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   letter-spacing: 0.01em;
   line-height: 18px;

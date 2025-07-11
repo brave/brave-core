@@ -18,7 +18,7 @@ export const PriceChange = styled.span<{
 }>`
   display: flex;
   align-items: center;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

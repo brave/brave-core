@@ -129,7 +129,7 @@ export const DisabledLabel = styled.div`
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  font-family: sans-serif;
+  font-family: system-ui;
   padding: 4px 6px;
   border-radius: 4px;
 `

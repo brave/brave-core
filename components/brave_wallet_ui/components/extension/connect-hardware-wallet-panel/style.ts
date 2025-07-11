@@ -21,7 +21,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
@@ -33,7 +33,7 @@ export const Title = styled.span`
 `
 
 export const Description = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   line-height: 20px;
   color: ${(p) => p.theme.color.text01};
@@ -55,7 +55,7 @@ export const InstructionsButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-size: 14px;
   line-height: 20px;

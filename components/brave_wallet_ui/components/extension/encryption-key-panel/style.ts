@@ -31,7 +31,7 @@ export const AccountCircle = styled.div<Partial<StyleProps>>`
 `
 
 export const AccountNameText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
@@ -43,7 +43,7 @@ export const AccountNameText = styled.span`
 
 export const PanelTitle = styled.span`
   width: 80%;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 18px;
   line-height: 26px;
   letter-spacing: 0.02em;
@@ -70,7 +70,7 @@ export const MessageBox = styled.div<Partial<StyleProps>>`
 `
 
 export const MessageText = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -94,7 +94,7 @@ export const DecryptButton = styled(WalletButton)`
   outline: none;
   border: none;
   font-weight: 600;
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

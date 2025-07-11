@@ -40,7 +40,7 @@ export const CurrencyNameAndCode = styled.div`
 `
 
 export const CurrencyName = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
@@ -50,7 +50,7 @@ export const CurrencyName = styled.span`
 `
 
 export const CurrencySymbol = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

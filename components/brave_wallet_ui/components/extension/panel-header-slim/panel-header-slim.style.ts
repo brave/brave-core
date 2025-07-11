@@ -8,7 +8,7 @@ import CloseIcon from '../../../assets/svg-icons/close.svg'
 import { WalletButton } from '../../shared/style'
 
 export const HeaderTitle = styled.span`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   font-weight: 500;

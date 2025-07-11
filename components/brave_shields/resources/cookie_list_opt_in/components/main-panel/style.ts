@@ -37,7 +37,7 @@ export const Root = styled.div`
   max-height: var(--available-height);
   overflow-y: auto;
   position: relative;
-  font-family: sans-serif;
+  font-family: system-ui;
 
   a {
     color: var(--color-link);

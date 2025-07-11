@@ -58,7 +58,7 @@ export const MainBox = styled.div`
 `
 
 export const BodyBox = styled.div`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

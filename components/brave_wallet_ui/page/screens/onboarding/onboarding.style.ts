@@ -71,7 +71,7 @@ export const Title = styled.p<{
   maxWidth?: string
   textAlign?: 'right' | 'center'
 }>`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
@@ -86,7 +86,7 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   flex-direction: column;
   align-items: flex-start;
 
-  font-family: sans-serif;
+  font-family: system-ui;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

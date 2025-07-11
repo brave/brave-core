@@ -8,7 +8,7 @@ import styled from 'styled-components'
 export const PlaceholderText = styled.p<{
   isBig: boolean
 }>`
-  font-family: sans-serif;
+  font-family: system-ui;
   font-size: ${(p) => (p.isBig ? '32px' : '14px')};
   line-height: ${(p) => (p.isBig ? '32px' : '20px')};
   letter-spacing: 0.01em;
