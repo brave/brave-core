@@ -280,8 +280,10 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
     // New conversation needed
     conversation = CreateConversation();
     // Provide the content delegate, if allowed
-    MaybeAssociateContent(conversation, associated_content_id,
-                          associated_content);
+    if (features::IsPageContextEnabledInitially()) {
+      MaybeAssociateContent(conversation, associated_content_id,
+                            associated_content);
+    }
   }
 
   return conversation;
@@ -292,8 +294,10 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
   ConversationHandler* conversation = CreateConversation();
   // Provide the content delegate, if allowed
-  MaybeAssociateContent(conversation, associated_content_id,
-                        associated_content);
+  if (features::IsPageContextEnabledInitially()) {
+    MaybeAssociateContent(conversation, associated_content_id,
+                          associated_content);
+  }
 
   return conversation;
 }

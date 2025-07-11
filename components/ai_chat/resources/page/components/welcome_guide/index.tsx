@@ -26,8 +26,7 @@ function WelcomeGuide() {
         <h4 className={styles.cardTitle}>
           {getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE)}
         </h4>
-        {conversationContext.associatedContentInfo &&
-        conversationContext.shouldSendPageContents ? (
+        {conversationContext.associatedContentInfo.length > 0 ? (
           <>
             <p>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION)}</p>
             <div className={styles.actions}>
