@@ -59,8 +59,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.FailedHTTPSUpgrades.2", MetricConfig{.ephemeral = true}},
     {"Brave.Core.FirstPageLoadTime", MetricConfig{.ephemeral = true}},
     {"Brave.Core.IsDefault", MetricConfig{
-      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kGeneralPlatform, MetricAttribute::kYoi, MetricAttribute::kWoi, MetricAttribute::kWeekOfActivation, MetricAttribute::kSubregion, MetricAttribute::kVersion},
-      .record_activation_date = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kGeneralPlatform, MetricAttribute::kYoi, MetricAttribute::kSubregion, MetricAttribute::kVersion, MetricAttribute::kWoi},
     }},
     {"Brave.Core.NumberOfExtensions", {}},
     {"Brave.Core.PagesLoaded.NonRewards", {}},
