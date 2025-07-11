@@ -397,6 +397,9 @@ PageContentFetcher::~PageContentFetcher() = default;
 void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
                                           FetchPageContentCallback callback) {
   VLOG(2) << __func__ << " Extracting page content from renderer...";
+  if (!web_state_) {
+    return;
+  }
 
   if (web_state_->GetContentsMimeType() == "application/pdf") {
     // TODO: Extract PDF HERE
@@ -422,6 +425,10 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 
 void PageContentFetcher::GetSearchSummarizerKey(
     mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+  if (!web_state_) {
+    return;
+  }
+
   auto* fetcher = new PageContentFetcherInternal(nullptr);
   mojo::Remote<mojom::PageContentExtractor> extractor;
   web_state_->GetInterfaceBinderForMainFrame()->BindInterface(
@@ -431,6 +438,10 @@ void PageContentFetcher::GetSearchSummarizerKey(
 
 void PageContentFetcher::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  if (!web_state_) {
+    return;
+  }
+
   auto* fetcher = new PageContentFetcherInternal(nullptr);
   mojo::Remote<mojom::PageContentExtractor> extractor;
 

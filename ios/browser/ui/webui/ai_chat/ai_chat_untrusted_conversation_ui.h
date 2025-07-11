@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_
 
 #include <memory>
 
@@ -39,4 +39,4 @@ class AIChatUntrustedConversationUI : public web::WebUIIOSController {
   std::unique_ptr<ai_chat::mojom::UntrustedUIHandler> ui_handler_;
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_

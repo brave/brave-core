@@ -29,6 +29,7 @@ component("common") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/core/proto",
+    "//brave/components/constants",
     "//components/prefs",
     "//url",
   ]
