@@ -28,6 +28,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webui/webui_resources.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
@@ -54,21 +55,10 @@
 namespace {
 
 web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
-  BrowserList* browser_list =
-      BrowserListFactory::GetForProfile(ProfileIOS::FromWebUIIOS(web_ui));
-
-  for (Browser* browser :
-       browser_list->BrowsersOfType(BrowserList::BrowserType::kRegular)) {
-    web::WebState* active_web_state =
-        browser->GetWebStateList()->GetActiveWebState();
-    if (active_web_state) {
-      //      DCHECK_EQ(active_web_state, web_ui->GetWebState());  // TODO: iOS
-      //      doesn't currently set WebStates as active.
-      return active_web_state;
-    }
-  }
-
-  return nullptr;
+  web::WebState* active_web_state =
+      ai_chat::TabDataWebStateObserver::GetActiveTab();
+  DCHECK_EQ(active_web_state, web_ui->GetWebState());
+  return active_web_state;
 }
 
 }  // namespace
