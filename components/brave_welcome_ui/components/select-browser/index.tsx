@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
@@ -160,17 +160,17 @@ function SelectBrowser () {
       </S.BrowserListBox>
       <S.ActionBox>
         <Button
-          isTertiary={true}
+          kind="plain-faint"
           onClick={handleSkip}
-          scale="jumbo"
+          size="large"
         >
           {getLocale('braveWelcomeSkipButtonLabel')}
         </Button>
           <Button
-            isPrimary={true}
+            kind="filled"
             isDisabled={!hasSelectedBrowser}
             onClick={handleImport}
-            scale="jumbo"
+            size="large"
           >
             {getLocale('braveWelcomeImportButtonLabel')}
           </Button>
