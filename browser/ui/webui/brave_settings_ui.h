@@ -30,6 +30,10 @@ namespace content {
 class WebUIDataSource;
 }
 
+namespace settings {
+class BraveLeoAssistantHandler;
+}
+
 class Profile;
 
 class BraveSettingsUIConfig
