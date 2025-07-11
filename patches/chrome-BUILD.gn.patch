@@ -64,7 +64,7 @@ index 86007c8b041c44c14257245376326bc94ca050a9..4590fe7674830514a68c6761e61f260f
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
-+      } else if (!enable_omaha4) {} else if (use_prebuilt_omaha4) { sources += ["//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app"]
++      } else if (!enable_omaha4) {} else if (use_prebuilt_omaha4) { sources += ["//brave/third_party/updater/mac/${updater_product_full_name}.app"]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
