@@ -6,7 +6,7 @@
 #include <string_view>
 
 #include "base/path_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"

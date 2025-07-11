@@ -16,7 +16,7 @@ source_set("brave_search") {
   deps = [
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//chrome/browser/content_extraction",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",

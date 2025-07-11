@@ -19,7 +19,7 @@
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"

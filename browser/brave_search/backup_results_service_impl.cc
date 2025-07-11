@@ -12,7 +12,7 @@
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
