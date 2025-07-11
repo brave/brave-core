@@ -235,7 +235,7 @@
         Customize list
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is the selected search engine">
-        Search the web privately
+        Search the web privately with AI
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is not the selected search engine">
         Search the web
