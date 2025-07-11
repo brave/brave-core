@@ -211,7 +211,11 @@ void BraveConfirmInfoBar::MaybeLayoutMultiLineLabelAndLink() {
   const int target_height = std::max(
       max_height,
       ChromeLayoutProvider::Get()->GetDistanceMetric(DISTANCE_INFOBAR_HEIGHT));
-  SetTargetHeight(target_height);
+
+  // Don't call SetTargetHeight() as it causes another nested layout pass inside
+  // the layout. Instead, just set the target height and update the computed
+  // height.
+  BraveSetTargetHeight(target_height);
 }
 
 void BraveConfirmInfoBar::CheckboxPressed() {
