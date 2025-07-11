@@ -76,7 +76,8 @@ function getPageVisibility () {
     // </if>
     content: alwaysTrueProxy,
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
-    speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled'),
+    speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled') &&
+                 !loadTimeData.getBoolean('isSpeedreaderDisabledByPolicy'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

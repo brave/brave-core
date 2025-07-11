@@ -960,14 +960,18 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         std::make_unique<body_sniffer::BodySnifferThrottle>(
             base::SingleThreadTaskRunner::GetCurrentDefault());
 
-    // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
     if (tab_helper && isMainFrame) {
+      // Check if speedreader service is available (feature enabled and not
+      // disabled by policy)
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
+      if (!speedreader_service) {
+        return result;
+      }
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(
