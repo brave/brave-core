@@ -24,6 +24,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/brave_wallet/features.h"

@@ -35,6 +35,7 @@ source_set("features") {
     "//brave/ios/browser/ui/web_view:features",
     "//build:blink_buildflags",
     "//net",
+    "//brave/ios/browser/brave_wallet",
   ]
 
   frameworks = [ "Foundation.framework" ]
