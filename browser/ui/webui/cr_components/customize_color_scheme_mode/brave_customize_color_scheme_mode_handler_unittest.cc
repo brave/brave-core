@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/run_loop.h"
+#include "base/test/test_future.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -74,32 +74,31 @@ class BraveCustomizeColorSchemeModeHandlerUnitTest : public testing::Test {
 
 TEST_F(BraveCustomizeColorSchemeModeHandlerUnitTest,
        ClientSetColorSchemeModeShouldBeCalledWhenBraveDarkModeTypeChanges) {
-  auto run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(mock_client_,
-              SetColorSchemeMode(
-                  customize_color_scheme_mode::mojom::ColorSchemeMode::kDark))
-      .WillOnce([&]() { run_loop->Quit(); });
+  base::test::TestFuture<customize_color_scheme_mode::mojom::ColorSchemeMode>
+      future;
+  EXPECT_CALL(mock_client_, SetColorSchemeMode(testing::_))
+      .WillOnce([&](auto mode) { future.SetValue(mode); });
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  run_loop->Run();
+  EXPECT_EQ(future.Take(),
+            customize_color_scheme_mode::mojom::ColorSchemeMode::kDark);
+  testing::Mock::VerifyAndClearExpectations(&mock_client_);
 
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(mock_client_,
-              SetColorSchemeMode(
-                  customize_color_scheme_mode::mojom::ColorSchemeMode::kLight))
-      .WillOnce([&]() { run_loop->Quit(); });
+  EXPECT_CALL(mock_client_, SetColorSchemeMode(testing::_))
+      .WillOnce([&](auto mode) { future.SetValue(mode); });
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  run_loop->Run();
+  EXPECT_EQ(future.Take(),
+            customize_color_scheme_mode::mojom::ColorSchemeMode::kLight);
+  testing::Mock::VerifyAndClearExpectations(&mock_client_);
 
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(mock_client_,
-              SetColorSchemeMode(
-                  customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem))
-      .WillOnce([&]() { run_loop->Quit(); });
+  EXPECT_CALL(mock_client_, SetColorSchemeMode(testing::_))
+      .WillOnce([&](auto mode) { future.SetValue(mode); });
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
-  run_loop->Run();
+  EXPECT_EQ(future.Take(),
+            customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem);
+  testing::Mock::VerifyAndClearExpectations(&mock_client_);
 }
 
 TEST_F(
@@ -110,16 +109,15 @@ TEST_F(
   ASSERT_EQ(dark_mode::GetBraveDarkModeType(),
             dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
 
-  base::RunLoop run_loop;
-
   // Color mode callback should be called with the value from dark_mode util,
   // which uses local state instead of ThemeService.
-  EXPECT_CALL(mock_client_,
-              SetColorSchemeMode(
-                  customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem))
-      .WillOnce([&]() { run_loop.Quit(); });
+  base::test::TestFuture<customize_color_scheme_mode::mojom::ColorSchemeMode>
+      future;
+  EXPECT_CALL(mock_client_, SetColorSchemeMode(testing::_))
+      .WillOnce([&](auto mode) { future.SetValue(mode); });
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
-  run_loop.Run();
+  EXPECT_EQ(future.Get(),
+            customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem);
 }
 
 TEST_F(
@@ -127,13 +125,13 @@ TEST_F(
     InitializeColorSchemeModeShouldGetValueDarkModeUtilInsteadOfThemeService) {
   // Color mode callback should be called with the value from dark_mode util,
   // which uses local state instead of ThemeService.
-  base::RunLoop run_loop;
-  EXPECT_CALL(mock_client_,
-              SetColorSchemeMode(
-                  customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem))
-      .WillOnce([&]() { run_loop.Quit(); });
+  base::test::TestFuture<customize_color_scheme_mode::mojom::ColorSchemeMode>
+      future;
+  EXPECT_CALL(mock_client_, SetColorSchemeMode(testing::_))
+      .WillOnce([&](auto mode) { future.SetValue(mode); });
   handler_->InitializeColorSchemeMode();
-  run_loop.Run();
+  EXPECT_EQ(future.Get(),
+            customize_color_scheme_mode::mojom::ColorSchemeMode::kSystem);
 }
 
 TEST_F(BraveCustomizeColorSchemeModeHandlerUnitTest,
