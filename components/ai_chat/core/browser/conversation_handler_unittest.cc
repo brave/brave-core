@@ -793,10 +793,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
                 .size(),
             1u);
 
-  auto associated_content = mojom::AssociatedContent::New();
-  associated_content->uuid = associated_content1.uuid();
   conversation_handler_->associated_content_manager()->RemoveContent(
-      associated_content);
+      associated_content1.uuid());
 
   EXPECT_EQ(conversation_handler_->associated_content_manager()
                 ->GetAssociatedContent()
