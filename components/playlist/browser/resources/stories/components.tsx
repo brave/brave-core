@@ -34,7 +34,7 @@ export default {
     (Story: any) => (
       <div
         style={{
-          fontFamily: 'Poppins',
+          fontFamily: 'sans-serif',
           width: '100%',
           minHeight: '100vh'
         }}

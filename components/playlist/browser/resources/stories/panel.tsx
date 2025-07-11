@@ -26,7 +26,6 @@ export default {
     (Story: any) => (
       <div
         style={{
-          fontFamily: 'Poppins',
           width: '100%',
           minHeight: '100vh'
         }}

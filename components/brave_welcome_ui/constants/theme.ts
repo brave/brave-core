@@ -38,13 +38,13 @@ export const theme = {
     width: '300px'
   },
   title: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: 'sans-serif',
     fontSize: '32px',
     color: '#212121',
     margin: '40px 0 0'
   },
   text: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: 'sans-serif',
     fontSize: '18px',
     color: '#76777A',
     lineHeight: '34px',

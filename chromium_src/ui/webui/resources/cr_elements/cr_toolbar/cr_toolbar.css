@@ -61,7 +61,7 @@
     text-decoration: none;
     transition: background 100ms ease-out;
     height: 44px;
-    border-radius: var(--leo-radius-l);
+    border-radius: var(--leo-radius-full);
 }
 
 .fonts-loaded .nav-item {
