@@ -23,23 +23,13 @@
  public:                                                                   \
   void AttachedTabStateUpdated
 
-#define CreatePageHandler                                                  \
-  CreatePageHandlerChromium(                                               \
-      mojo::PendingRemote<side_panel::mojom::CustomizeChromePage>          \
-          pending_page,                                                    \
-      mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler> \
-          pending_page_handler);                                           \
-  void CreatePageHandler
+#define CreatePageHandler(...)            \
+  CreatePageHandlerChromium(__VA_ARGS__); \
+  void CreatePageHandler(__VA_ARGS__)
 
-#define CreateCustomizeColorSchemeModeHandler                                  \
-  CreateCustomizeColorSchemeModeHandlerChromium(                               \
-      mojo::PendingRemote<                                                     \
-          customize_color_scheme_mode::mojom::CustomizeColorSchemeModeClient>  \
-          client,                                                              \
-      mojo::PendingReceiver<                                                   \
-          customize_color_scheme_mode::mojom::CustomizeColorSchemeModeHandler> \
-          handler);                                                            \
-  void CreateCustomizeColorSchemeModeHandler
+#define CreateCustomizeColorSchemeModeHandler(...)           \
+  CreateCustomizeColorSchemeModeHandler_Unused(__VA_ARGS__); \
+  void CreateCustomizeColorSchemeModeHandler(__VA_ARGS__)
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"  // IWYU pragma: export
 

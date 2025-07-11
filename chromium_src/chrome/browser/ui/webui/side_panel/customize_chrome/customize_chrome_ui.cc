@@ -14,7 +14,7 @@
                              IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL)
 #define CreatePageHandler CreatePageHandlerChromium
 #define CreateCustomizeColorSchemeModeHandler \
-  CreateCustomizeColorSchemeModeHandlerChromium
+  CreateCustomizeColorSchemeModeHandler_Unused
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc"
 
