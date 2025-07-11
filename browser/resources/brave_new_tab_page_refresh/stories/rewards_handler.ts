@@ -20,11 +20,12 @@ export function createRewardsHandler(
     rewardsBalance: 1.204,
     rewardsExchangeRate: 1,
     rewardsExternalWallet: {
-      provider: 'uphold',
-      authenticated: true,
+      provider: 'gemini',
+      authenticated: false,
       name: 'Joe',
       url: 'https://brave.com'
-    }
+    },
+    rewardsAdsViewed: 1
   })
 
   return {
