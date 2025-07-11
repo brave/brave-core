@@ -5,7 +5,6 @@ edition = "2021"
 license = "MPL-2.0"
 
 [dependencies]
-brave_wallet = { version = "1" }
 cxx = { version = "1" }
 schnorrkel = { version = "0.11.4" }
 
