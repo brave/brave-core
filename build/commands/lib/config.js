@@ -747,6 +747,8 @@ Config.prototype.buildArgs = function () {
       args.default_min_sdk_version = 28
     }
 
+    args.android_static_analysis = 'on'
+
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
