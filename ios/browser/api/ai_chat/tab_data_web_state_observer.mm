@@ -8,15 +8,15 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/public/favicon/favicon_url.h"
 #include "ios/web/public/navigation/navigation_item.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
-#include "ios/web/public/favicon/favicon_url.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace ai_chat {
 
@@ -24,7 +24,9 @@ namespace {
 
 mojom::TabDataPtr CreateTabDataFromWebState(web::WebState* web_state) {
   auto tab = mojom::TabData::New();
-  if (auto* last_committed_item = web_state->GetNavigationManager()->GetLastCommittedItem(); last_committed_item != nullptr) {
+  if (auto* last_committed_item =
+          web_state->GetNavigationManager()->GetLastCommittedItem();
+      last_committed_item != nullptr) {
     tab->content_id = last_committed_item->GetUniqueID();
   } else {
     tab->content_id = -1;
@@ -36,8 +38,11 @@ mojom::TabDataPtr CreateTabDataFromWebState(web::WebState* web_state) {
 
 }  // namespace
 
-TabDataWebStateObserver::TabDataWebStateObserver(web::WebState* web_state) : tab_handle_(web_state->GetUniqueIdentifier().identifier()), web_state_(web_state),
-service_(*TabTrackerServiceFactory::GetForProfile(ProfileIOS::FromBrowserState(web_state->GetBrowserState()))) {
+TabDataWebStateObserver::TabDataWebStateObserver(web::WebState* web_state)
+    : tab_handle_(web_state->GetUniqueIdentifier().identifier()),
+      web_state_(web_state),
+      service_(*TabTrackerServiceFactory::GetForProfile(
+          ProfileIOS::FromBrowserState(web_state->GetBrowserState()))) {
   web_state_->AddObserver(this);
   GetWebStateList()[tab_handle_] = {web_state_, false};
 }
@@ -58,18 +63,21 @@ void TabDataWebStateObserver::WasHidden(web::WebState* web_state) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::DidStartNavigation(web::WebState* web_state,
-                        web::NavigationContext* navigation_context) {
+void TabDataWebStateObserver::DidStartNavigation(
+    web::WebState* web_state,
+    web::NavigationContext* navigation_context) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::DidRedirectNavigation(web::WebState* web_state,
-                           web::NavigationContext* navigation_context) {
+void TabDataWebStateObserver::DidRedirectNavigation(
+    web::WebState* web_state,
+    web::NavigationContext* navigation_context) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::DidFinishNavigation(web::WebState* web_state,
-                         web::NavigationContext* navigation_context) {
+void TabDataWebStateObserver::DidFinishNavigation(
+    web::WebState* web_state,
+    web::NavigationContext* navigation_context) {
   UpdateTab();
 }
 
@@ -81,12 +89,14 @@ void TabDataWebStateObserver::DidStopLoading(web::WebState* web_state) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::PageLoaded(web::WebState* web_state,
-                web::PageLoadCompletionStatus load_completion_status) {
+void TabDataWebStateObserver::PageLoaded(
+    web::WebState* web_state,
+    web::PageLoadCompletionStatus load_completion_status) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::DidChangeBackForwardState(web::WebState* web_state) {
+void TabDataWebStateObserver::DidChangeBackForwardState(
+    web::WebState* web_state) {
   UpdateTab();
 }
 
@@ -94,17 +104,20 @@ void TabDataWebStateObserver::TitleWasSet(web::WebState* web_state) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::DidChangeVisibleSecurityState(web::WebState* web_state) {
+void TabDataWebStateObserver::DidChangeVisibleSecurityState(
+    web::WebState* web_state) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::FaviconUrlUpdated(web::WebState* web_state,
-                       const std::vector<web::FaviconURL>& candidates) {
+void TabDataWebStateObserver::FaviconUrlUpdated(
+    web::WebState* web_state,
+    const std::vector<web::FaviconURL>& candidates) {
   UpdateTab();
 }
 
-void TabDataWebStateObserver::PermissionStateChanged(web::WebState* web_state,
-                            web::Permission permission) {
+void TabDataWebStateObserver::PermissionStateChanged(
+    web::WebState* web_state,
+    web::Permission permission) {
   UpdateTab();
 }
 
@@ -123,7 +136,8 @@ web::WebState* TabDataWebStateObserver::GetActiveTab() {
   return nullptr;
 }
 
-void TabDataWebStateObserver::SetActiveTab(web::WebState* web_state, bool active) {
+void TabDataWebStateObserver::SetActiveTab(web::WebState* web_state,
+                                           bool active) {
   for (auto& pair : GetWebStateList()) {
     if (pair.first == web_state->GetUniqueIdentifier().identifier()) {
       pair.second.is_active = active;
@@ -133,7 +147,17 @@ void TabDataWebStateObserver::SetActiveTab(web::WebState* web_state, bool active
   }
 }
 
-base::flat_map<std::int32_t, TabDataWebStateObserver::TabInfo>& TabDataWebStateObserver::GetWebStateList() {
+web::WebState* TabDataWebStateObserver::GetTabById(std::int32_t tab_id) {
+  for (auto& pair : GetWebStateList()) {
+    if (pair.first == tab_id) {
+      return pair.second.web_state;
+    }
+  }
+  return nullptr;
+}
+
+base::flat_map<std::int32_t, TabDataWebStateObserver::TabInfo>&
+TabDataWebStateObserver::GetWebStateList() {
   static base::NoDestructor<base::flat_map<std::int32_t, TabInfo>> map;
   return *map;
 }
