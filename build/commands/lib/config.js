@@ -497,7 +497,6 @@ Config.prototype.buildArgs = function () {
     use_reclient: this.useRemoteExec,
     use_siso: false,
     use_libfuzzer: this.use_libfuzzer,
-    enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
@@ -506,6 +505,10 @@ Config.prototype.buildArgs = function () {
     service_key_aichat: this.service_key_aichat,
     service_key_stt: this.service_key_stt,
     generate_about_credits: true,
+  }
+
+  if (this.isOfficialBuild()) {
+    args.enable_updater = true
   }
 
   if (!this.isBraveReleaseBuild()) {

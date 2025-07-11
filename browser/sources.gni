@@ -352,6 +352,7 @@ if (is_mac) {
   brave_chrome_browser_deps += [
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
+    "//brave/browser/updater:buildflags",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
@@ -367,7 +368,14 @@ if (enable_sparkle) {
 }
 
 if (enable_omaha4) {
-  brave_chrome_browser_deps += [ "//brave/browser/updater:features" ]
+  brave_chrome_browser_sources += [
+    "//brave/browser/brave_browser_main_extra_parts_p3a.cc",
+    "//brave/browser/brave_browser_main_extra_parts_p3a.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/updater:features",
+    "//brave/browser/updater:p3a",
+  ]
 }
 
 if (enable_speedreader) {

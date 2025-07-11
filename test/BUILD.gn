@@ -5,6 +5,7 @@
 
 import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -602,6 +603,10 @@ test("brave_unit_tests") {
       "//brave/browser/ui/containers:unit_tests",
       "//brave/components/containers/core/browser:unit_tests",
     ]
+  }
+
+  if (enable_omaha4) {
+    deps += [ "//brave/browser/updater:unit_tests" ]
   }
 }
 
