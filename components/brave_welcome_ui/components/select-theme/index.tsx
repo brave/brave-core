@@ -8,7 +8,7 @@ import * as S from './style'
 
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'
@@ -112,16 +112,16 @@ function SelectTheme () {
       <div className="view-note">{getLocale('braveWelcomeSelectThemeNote')}</div>
       <S.ActionBox>
         <Button
-          isTertiary={true}
+          kind="plain-faint"
           onClick={handleSkip}
-          scale="jumbo"
+          size="large"
         >
           {getLocale('braveWelcomeSkipButtonLabel')}
         </Button>
         <Button
-          isPrimary={true}
+          kind="filled"
           onClick={handleNext}
-          scale="jumbo"
+          size="large"
         >
           {getLocale('braveWelcomeNextButtonLabel')}
         </Button>

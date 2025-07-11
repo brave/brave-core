@@ -4,20 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale'
+
 import * as S from './style'
 import DataContext from '../../state/context'
-import { getLocale } from '../../../../../common/locale'
 import TreeNode from './tree-node'
 import {
   ViewType
 } from '../../state/component_types'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import Button from '$web-components/button'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList, ListDescription } from './style'
 import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m.js';
 
-import Toggle from '../../../../../web-components/toggle'
 
 interface WebcompatSettingsMap { [index: ContentSettingsType]: boolean }
 
@@ -227,11 +228,10 @@ export function ToggleList (props: {
         <label key={name}>
           <span>{name}</span>
           <Toggle
-            onChange={(isEnabled: boolean) => handleWebcompatToggle(value, isEnabled)}
-            isOn={!props.webcompatSettings[value]}
-            size='sm'
-            accessibleLabel={name}
-            disabled={false}
+            onChange={(detail: { checked: boolean }) => handleWebcompatToggle(value, detail.checked)}
+            checked={!props.webcompatSettings[value]}
+            size='small'
+            aria-label={name}
           />
         </label>
       ))}

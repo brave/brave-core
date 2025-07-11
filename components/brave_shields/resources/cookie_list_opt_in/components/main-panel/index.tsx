@@ -5,10 +5,11 @@
 
 import * as React from 'react'
 
+import Button from '@brave/leo/react/button'
+
 import { CloseIcon } from '../icons/close_icon'
 import { ShieldsIcon } from '../icons/shields_icon'
-import { getLocale } from '../../../../../common/locale'
-import Button from '$web-components/button'
+import { getLocale } from '$web-common/locale'
 
 import * as S from './style'
 
@@ -51,9 +52,8 @@ function MainPanel (props: Props) {
         </S.Description>
         <S.OptIn className='opt-in-action'>
           <Button
-            isPrimary
-            isCallToAction
-            scale='large'
+            kind='filled'
+            size='large'
             onClick={onEnablePressed}
           >
             {getLocale('cookieListButtonText')}
