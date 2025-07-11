@@ -54,3 +54,14 @@ export const removeReasoning = (text: string) => {
     ? text.split('</think>')[1]
     : text
 }
+
+export const removeCitationsWithMissingLinks = (
+  text: string,
+  citationLinks: string[],
+) => {
+  return text.replace(/\[(\d+)\]/g, (match, citationNumber) => {
+    // Convert to 0-based index
+    const index = parseInt(citationNumber) - 1
+    return index >= 0 && index < citationLinks.length ? match : ''
+  })
+}

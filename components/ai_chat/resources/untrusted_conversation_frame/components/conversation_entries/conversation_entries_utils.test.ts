@@ -3,7 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getReasoningText, removeReasoning } from './conversation_entries_utils'
+import {
+  getReasoningText,
+  removeReasoning,
+  removeCitationsWithMissingLinks,
+} from './conversation_entries_utils'
 
 describe('getReasoningText', () => {
   it('Should extract reasoning text between start and end tags', () => {
@@ -57,5 +61,18 @@ describe('removeReasoning', () => {
   it('should not fail if there is not starting tag', () => {
     const input = 'Reasoning text here.</think>'
     expect(removeReasoning(input)).toBe('Reasoning text here.</think>')
+  })
+})
+
+describe('removeCitationsWithMissingLinks', () => {
+  it('should remove citations with missing links', () => {
+    const input = 'Citation [1] and [2] thats it[3].'
+    const citationLinks = [
+      'https://example.com/link1',
+      'https://example.com/link2',
+    ]
+    expect(removeCitationsWithMissingLinks(input, citationLinks)).toBe(
+      'Citation [1] and [2] thats it.',
+    )
   })
 })
