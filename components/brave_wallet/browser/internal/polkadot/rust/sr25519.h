@@ -9,10 +9,12 @@
 #include <memory>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::schnorrkel {
+
+using SR25519PublicKey = std::array<uint8_t, 32>;
+using SR25519Signature = std::array<uint8_t, 64>;
 
 class SchnorrkelKeyPair {
  public:

@@ -203,7 +203,7 @@ rust_static_library("rust_lib") {
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:unit_tests",
-    "//brave/components/brave_wallet/browser/polkadota/rust:*",
+    "//brave/components/brave_wallet/browser/internal/polkadot/rust:*",
     "//brave/components/brave_wallet/browser/zcash/rust:*",
     "//brave/components/brave_wallet/common",
   ]
