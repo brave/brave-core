@@ -217,7 +217,7 @@ public final class PlayerModel: ObservableObject {
 
   // MARK: - Playback Extras
 
-  enum RepeatMode: Hashable {
+  public enum RepeatMode: Int, Hashable {
     case none
     case one
     case all
@@ -231,17 +231,21 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @MainActor @Published var repeatMode: RepeatMode = .none {
+  @MainActor @Published var repeatMode: RepeatMode =
+    .init(rawValue: Preferences.Playlist.repeatMode.value) ?? .none
+  {
     didSet {
       updateSystemPlayer()
+      Preferences.Playlist.repeatMode.value = repeatMode.rawValue
     }
   }
 
-  @MainActor @Published var isShuffleEnabled: Bool = false {
+  @MainActor @Published var isShuffleEnabled: Bool = Preferences.Playlist.isShuffleEnabled.value {
     didSet {
       if oldValue != isShuffleEnabled {
         makeItemQueue(selectedItemID: selectedItemID)
         updateSystemPlayer()
+        Preferences.Playlist.isShuffleEnabled.value = isShuffleEnabled
       }
     }
   }

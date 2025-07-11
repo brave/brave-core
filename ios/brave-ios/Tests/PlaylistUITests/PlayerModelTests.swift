@@ -21,6 +21,8 @@ class PlayerModelTests: CoreDataTestCase {
     Preferences.Playlist.firstLoadAutoPlay.value = false
     Preferences.Playlist.lastPlayedItemUrl.value = nil
     Preferences.Playlist.playbackLeftOff.value = false
+    Preferences.Playlist.isShuffleEnabled.value = false
+    Preferences.Playlist.repeatMode.value = 0
   }
 
   private func addFolder() async throws -> PlaylistFolder {
@@ -424,6 +426,42 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.selectedItemID, items[1].id)
     // Initial item takes precedence
     XCTAssertEqual(playerModel.currentTime, initialItemOffset, accuracy: 0.1)
+  }
+
+  @MainActor func testPersistedShuffleMode() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 10, to: folder)
+
+    var playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.isShuffleEnabled, false)
+
+    playerModel.isShuffleEnabled = true
+
+    playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.isShuffleEnabled, true)
+    XCTAssertEqual(Preferences.Playlist.isShuffleEnabled.value, true)
+  }
+
+  @MainActor func testPersistedRepeatMode() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 10, to: folder)
+
+    var playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.repeatMode, .none)
+
+    playerModel.repeatMode = .all
+
+    playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.repeatMode, .all)
+    XCTAssertEqual(Preferences.Playlist.repeatMode.value, PlayerModel.RepeatMode.all.rawValue)
   }
 
   // MARK: - Playback

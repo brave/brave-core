@@ -73,5 +73,10 @@ extension Preferences {
     /// The date of the last cached data cleanup for dangling playlist items
     public static let lastCacheDataCleanupDate =
       Option<Date?>(key: "playlist.lastCacheDataCleanupDate", default: nil)
+    /// Whether or not shuffle mode is enabled
+    public static let isShuffleEnabled =
+      Option<Bool>(key: "playlist.isShuffleEnabled", default: false)
+    /// The last used repeat mode the user had set
+    public static let repeatMode = Option<Int>(key: "playlist.repeatMode", default: 0)
   }
 }
