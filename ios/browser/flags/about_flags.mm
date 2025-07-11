@@ -15,6 +15,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/api/bookmarks/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
@@ -148,6 +149,15 @@
       FEATURE_VALUE_TYPE(playlist::features::kNewPlaylistUI), \
   })
 
+#define BRAVE_BOOKMARKS_FEATURE_ENTRIES                      \
+  EXPAND_FEATURE_ENTRIES({                                   \
+      "brave-new-bookmarks-ui",                              \
+      "Enables new Bookmarks UI",                            \
+      "Enable the new faster & more efficient Bookmarks UI", \
+      flags_ui::kOsIos,                                      \
+      FEATURE_VALUE_TYPE(brave::features::kNewBookmarksUI),  \
+  })
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -244,4 +254,5 @@
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
+  BRAVE_BOOKMARKS_FEATURE_ENTRIES                                              \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

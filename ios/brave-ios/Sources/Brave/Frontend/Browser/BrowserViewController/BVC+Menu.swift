@@ -195,13 +195,29 @@ extension BrowserViewController {
   ) -> some View {
     VStack(spacing: 0) {
       MenuItemFactory.button(for: .bookmarks) { [unowned self, unowned menuController] in
-        let vc = BookmarksViewController(
-          folder: bookmarkManager.lastVisitedFolder(),
-          bookmarkManager: bookmarkManager,
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-        )
-        vc.toolbarUrlActionsDelegate = self
-        menuController.presentInnerMenu(vc)
+        if FeatureList.kNewBookmarksUI.enabled {
+          let vc = UIHostingController(
+            rootView: BookmarksView(
+              model: BookmarkModel(
+                api: self.profileController.bookmarksAPI,
+                tabManager: self.tabManager,
+                bookmarksManager: self.bookmarkManager,
+                toolbarUrlActionsDelegate: self,
+                dismiss: { [weak self] in self?.dismiss(animated: true) }
+              )
+            )
+          )
+
+          menuController.presentInnerMenu(vc)
+        } else {
+          let vc = BookmarksViewController(
+            folder: bookmarkManager.lastVisitedFolder(),
+            bookmarkManager: bookmarkManager,
+            isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+          )
+          vc.toolbarUrlActionsDelegate = self
+          menuController.presentInnerMenu(vc)
+        }
       }
       MenuItemFactory.button(for: .history) { [weak self, unowned menuController] in
         guard let self else { return }
@@ -807,15 +823,33 @@ extension BrowserViewController {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     return [
       .init(id: .bookmarks) { @MainActor [unowned self] _ in
-        let vc = BookmarksViewController(
-          folder: bookmarkManager.lastVisitedFolder(),
-          bookmarkManager: bookmarkManager,
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-        )
-        vc.toolbarUrlActionsDelegate = self
-        let container = UINavigationController(rootViewController: vc)
-        self.dismiss(animated: true) {
-          self.present(container, animated: true)
+        if FeatureList.kNewBookmarksUI.enabled {
+          let vc = UIHostingController(
+            rootView: BookmarksView(
+              model: BookmarkModel(
+                api: self.profileController.bookmarksAPI,
+                tabManager: self.tabManager,
+                bookmarksManager: self.bookmarkManager,
+                toolbarUrlActionsDelegate: self,
+                dismiss: { [weak self] in self?.dismiss(animated: true) }
+              )
+            )
+          )
+
+          self.dismiss(animated: true) {
+            self.present(vc, animated: true)
+          }
+        } else {
+          let vc = BookmarksViewController(
+            folder: bookmarkManager.lastVisitedFolder(),
+            bookmarkManager: bookmarkManager,
+            isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+          )
+          vc.toolbarUrlActionsDelegate = self
+          let container = UINavigationController(rootViewController: vc)
+          self.dismiss(animated: true) {
+            self.present(container, animated: true)
+          }
         }
         return .none
       },
