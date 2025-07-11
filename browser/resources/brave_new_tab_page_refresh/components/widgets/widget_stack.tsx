@@ -28,12 +28,14 @@ interface Props {
 
 export function WidgetStack(props: Props) {
   const showTalkWidget = useNewTabState((s) => s.showTalkWidget)
+  const talkFeatureEnabled = useNewTabState((s) => s.talkFeatureEnabled)
   const showShieldsStats = useNewTabState((s) => s.showShieldsStats)
   const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
   const showNews = useBraveNews().isShowOnNTPPrefEnabled
+  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
@@ -41,10 +43,10 @@ export function WidgetStack(props: Props) {
     return props.tabs.filter((tab) => {
       switch (tab) {
         case 'rewards': return rewardsFeatureEnabled && showRewardsWidget
-        case 'talk': return showTalkWidget
+        case 'talk': return talkFeatureEnabled && showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
         case 'stats': return showShieldsStats
-        case 'news': return showNews
+        case 'news': return newsFeatureEnabled && showNews
       }
     })
   }, [
