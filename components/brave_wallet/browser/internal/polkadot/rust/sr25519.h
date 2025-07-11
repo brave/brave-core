@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_POLKADOT_RUST_SR25519_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_POLKADOT_RUST_SR25519_H_
 
+#include <array>
 #include <memory>
 
 #include "base/containers/span.h"
