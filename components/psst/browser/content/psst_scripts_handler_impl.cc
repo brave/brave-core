@@ -20,31 +20,6 @@
 
 namespace psst {
 
-namespace {
-std::string GetScriptWithParams(const std::string& script,
-                                std::optional<base::Value> params) {
-  if (!params) {
-    return script;
-  }
-
-  const auto* params_dict = params->GetIfDict();
-  if (!params_dict) {
-    return script;
-  }
-
-  std::optional<std::string> params_json = base::WriteJsonWithOptions(
-      *params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
-  if (!params_json) {
-    return script;
-  }
-
-  std::string result =
-      base::StrCat({"const params = ", *params_json, ";\n", script});
-  return result;
-}
-
-}  // namespace
-
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     PrefService* prefs,
     content::WebContents* web_contents,
@@ -79,7 +54,7 @@ void PsstScriptsHandlerImpl::InsertUserScript(
 
   const auto user_script = rule->user_script();
   InsertScriptInPage(
-      user_script, std::nullopt /* no params */,
+      user_script,
       base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), std::move(rule)));
 }
@@ -91,12 +66,11 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(
     return;
   }
 
-  InsertScriptInPage(rule->policy_script(), std::nullopt, base::DoNothing());
+  InsertScriptInPage(rule->policy_script(), base::DoNothing());
 }
 
 void PsstScriptsHandlerImpl::InsertScriptInPage(
     const std::string& script,
-    std::optional<base::Value> value,
     InsertScriptInPageCallback cb) {
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id_);
@@ -109,12 +83,8 @@ void PsstScriptsHandlerImpl::InsertScriptInPage(
     return;
   }
 
-  // Add params as JS preamble to the script.
-  std::string script_with_params =
-      GetScriptWithParams(script, std::move(value));
-
-  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-      base::UTF8ToUTF16(script_with_params), std::move(cb), world_id_);
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(base::UTF8ToUTF16(script),
+                                                      std::move(cb), world_id_);
 }
 
 }  // namespace psst

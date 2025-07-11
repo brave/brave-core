@@ -42,7 +42,6 @@ class PsstScriptsHandlerImpl
                           base::Value script_result);
 
   void InsertScriptInPage(const std::string& script,
-                          std::optional<base::Value> value,
                           InsertScriptInPageCallback cb);
 
   const raw_ptr<PrefService> prefs_;
