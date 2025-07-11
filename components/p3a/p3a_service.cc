@@ -15,6 +15,7 @@
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
@@ -168,9 +169,21 @@ bool P3AService::IsP3AEnabled() const {
 }
 
 void P3AService::Init(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    component_updater::ComponentUpdateService* cus) {
   if (url_loader_factory) {
     url_loader_factory_ = url_loader_factory;
+  }
+
+  if (cus) {
+    component_update_service_ = cus;
+  }
+
+  if (pref_change_registrar_.IsEmpty()) {
+    pref_change_registrar_.Init(&*local_state_);
+    pref_change_registrar_.Add(
+        kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
+                                         base::Unretained(this)));
   }
 
   if (initialized_ || !url_loader_factory_ ||
@@ -189,11 +202,6 @@ void P3AService::Init(
   if (local_state_->GetBoolean(kP3AEnabled)) {
     message_manager_->Start(url_loader_factory_);
   }
-
-  pref_change_registrar_.Init(&*local_state_);
-  pref_change_registrar_.Add(
-      kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
-                                       base::Unretained(this)));
 }
 
 void P3AService::OnRotation(MetricLogType log_type) {
@@ -229,7 +237,7 @@ const MetricConfig* P3AService::GetMetricConfig(
 
 void P3AService::OnRemoteConfigLoaded() {
   if (!initialized_) {
-    Init(nullptr);
+    Init(nullptr, nullptr);
   } else {
     message_manager_->RemoveObsoleteLogs();
   }
@@ -266,11 +274,15 @@ void P3AService::LoadDynamicMetrics() {
 }
 
 void P3AService::OnP3AEnabledChanged() {
-  if (local_state_->GetBoolean(kP3AEnabled)) {
-    message_manager_->Start(url_loader_factory_);
-  } else {
-    message_manager_->Stop();
+  if (initialized_) {
+    if (local_state_->GetBoolean(kP3AEnabled)) {
+      message_manager_->Start(url_loader_factory_);
+    } else {
+      message_manager_->Stop();
+    }
   }
+
+  MaybeToggleP3AComponent(component_update_service_, this);
 }
 
 void P3AService::OnHistogramChanged(std::string_view histogram_name,

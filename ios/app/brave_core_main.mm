@@ -318,9 +318,8 @@ static bool CustomLogHandler(int severity,
   // because iOS needs to pass in the install date from the Swift side we don't
   // initialize the P3A service until after WebMain is started. If this changes
   // in the future, move this call there.
-  p3a::RegisterP3AComponent(
-      GetApplicationContext()->GetComponentUpdateService(),
-      _p3a_service->remote_config_manager()->GetWeakPtr());
+  p3a::MaybeToggleP3AComponent(
+      GetApplicationContext()->GetComponentUpdateService(), _p3a_service.get());
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
