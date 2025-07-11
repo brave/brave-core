@@ -13,6 +13,7 @@
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -147,7 +148,13 @@
 }
 
 - (void)setShouldSendPageContents:(bool)should_send {
-  current_conversation_->SetShouldSendPageContents(should_send);
+  if (should_send) {
+    current_conversation_->associated_content_manager()->AddContent(
+        current_content_.get());
+  } else {
+    current_conversation_->associated_content_manager()->RemoveContent(
+        current_content_.get());
+  }
 }
 
 - (void)clearErrorAndGetFailedMessage:
