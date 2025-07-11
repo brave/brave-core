@@ -327,6 +327,7 @@ const Config = function () {
   this.service_key_stt = getEnvConfig(['service_key_stt'])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.checkoutClangd = false
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -1151,6 +1152,8 @@ Config.prototype.update = function (options) {
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
   }
+
+  this.checkoutClangd = options.checkout_clangd
 }
 
 Config.prototype.getTargetOS = function () {
