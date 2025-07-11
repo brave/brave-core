@@ -41,6 +41,11 @@ group("ui_public_dependencies") {
   ]
 }
 
+group("browser_navigator_params_headers_public_dependencies") {
+  visibility = [ "//chrome/browser/ui:browser_navigator_params_headers" ]
+  public_deps = [ "//brave/components/containers/buildflags" ]
+}
+
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
@@ -1354,10 +1359,11 @@ source_set("ui") {
   }
 
   if (enable_containers) {
+    public_deps += [ "//brave/components/containers/core/mojom" ]
     deps += [
+      "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
-      "//brave/components/containers/core/mojom",
     ]
   }
 }
