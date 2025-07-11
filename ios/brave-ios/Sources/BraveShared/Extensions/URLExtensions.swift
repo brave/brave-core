@@ -306,7 +306,8 @@ extension URL {
       // only allow reader mode InternalURL to be shred
       return nil
     }
-    return self
+    // Use `domainURL` to align with `Domain.getOrCreateInternal` storage
+    return domainURL
   }
 
   // Returns true if a string is a valid URL, with the specified optional scheme,
