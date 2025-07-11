@@ -10,14 +10,16 @@ namespace permissions {
 class ContentSettingPermissionContextBase;
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_CONTEXT_BASE \
-  friend ContentSettingPermissionContextBase;
+#define PermissionContextBaseTests \
+  PermissionContextBaseTests;      \
+  friend ContentSettingPermissionContextBase
+
 #define PermissionDecided virtual PermissionDecided
 #define CleanUpRequest virtual CleanUpRequest
 
 #include "src/components/permissions/permission_context_base.h"  // IWYU pragma: export
 
-#undef BRAVE_PERMISSION_CONTEXT_BASE
+#undef PermissionContextBaseTests
 #undef PermissionDecided
 #undef CleanUpRequest
 
