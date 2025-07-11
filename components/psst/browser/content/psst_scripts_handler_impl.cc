@@ -6,12 +6,10 @@
 #include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -54,9 +52,8 @@ void PsstScriptsHandlerImpl::InsertUserScript(
 
   const auto user_script = rule->user_script();
   InsertScriptInPage(
-      user_script,
-      base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), std::move(rule)));
+      user_script, base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
+                                  weak_factory_.GetWeakPtr(), std::move(rule)));
 }
 
 void PsstScriptsHandlerImpl::OnUserScriptResult(
@@ -69,9 +66,8 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(
   InsertScriptInPage(rule->policy_script(), base::DoNothing());
 }
 
-void PsstScriptsHandlerImpl::InsertScriptInPage(
-    const std::string& script,
-    InsertScriptInPageCallback cb) {
+void PsstScriptsHandlerImpl::InsertScriptInPage(const std::string& script,
+                                                InsertScriptInPageCallback cb) {
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id_);
 

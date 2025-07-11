@@ -13,7 +13,6 @@
 #include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 
@@ -75,7 +74,5 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
   script_handler_->Start();
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PsstTabWebContentsObserver);
 
 }  // namespace psst

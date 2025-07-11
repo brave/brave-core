@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 
 class PrefService;
 
@@ -47,12 +46,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
-    std::unique_ptr<ScriptsHandler> script_handler_;
-    const raw_ptr<PrefService> prefs_;
-    bool should_process_ = false;
-
-    WEB_CONTENTS_USER_DATA_KEY_DECL();
-  };
+  std::unique_ptr<ScriptsHandler> script_handler_;
+  const raw_ptr<PrefService> prefs_;
+  bool should_process_ = false;
+};
 
 }  // namespace psst
 
