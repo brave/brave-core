@@ -135,8 +135,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     registry_.reset();
     web_contents_.reset();
     client_.reset();
-    browser_.reset();
-    browser_window_.reset();
+    ResetBrowser();
     profile_.reset();
 
     // We run into a DCHECK on Windows. The scenario is addressed explicitly
