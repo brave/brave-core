@@ -20,9 +20,12 @@
   FullscreenControllerInteractiveTest;      \
   friend class BookmarkPrefsService;        \
   friend class BraveBrowser
+#define NormalBrowserSupportsWindowFeature \
+  virtual NormalBrowserSupportsWindowFeature
 
 #include "src/chrome/browser/ui/browser.h"  // IWYU pragma: export
 
+#undef NormalBrowserSupportsWindowFeature
 #undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow
 #undef TryToCloseWindow
