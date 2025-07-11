@@ -12,7 +12,7 @@
 
 namespace brave_wallet {
 
-HDKeySr25519::HDKeySr25519(std::unique_ptr<schnorrkel::SchnorrkelKeyPair> skp)
+HDKeySr25519::HDKeySr25519(std::unique_ptr<SchnorrkelKeyPair> skp)
     : schnorrkel_key_pair_(std::move(skp)) {}
 
 HDKeySr25519::~HDKeySr25519() = default;
@@ -20,7 +20,7 @@ HDKeySr25519::~HDKeySr25519() = default;
 // static
 std::unique_ptr<HDKeySr25519> HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  auto skp = schnorrkel::SchnorrkelKeyPair::GenerateFromSeed(seed);
+  auto skp = SchnorrkelKeyPair::GenerateFromSeed(seed);
   if (skp) {
     return base::WrapUnique(new HDKeySr25519(std::move(skp)));
   }

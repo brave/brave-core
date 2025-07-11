@@ -10,7 +10,7 @@ extern crate schnorrkel;
 
 #[allow(unused)]
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace = brave_wallet::schnorrkel)]
+#[cxx::bridge(namespace = brave_wallet::polkadot)]
 mod ffi {
     extern "Rust" {
         type CxxSchnorrkelKeyPair;

@@ -14,12 +14,13 @@
 
 namespace brave_wallet {
 
-namespace schnorrkel {
+namespace polkadot {
 class SchnorrkelKeyPair;
-}  // namespace schnorrkel
+}  // namespace polkadot
 
-using schnorrkel::SR25519PublicKey;
-using schnorrkel::SR25519Signature;
+using polkadot::SchnorrkelKeyPair;
+using polkadot::SR25519PublicKey;
+using polkadot::SR25519Signature;
 
 class HDKeySr25519 {
  public:
@@ -37,8 +38,8 @@ class HDKeySr25519 {
                      base::span<const uint8_t> msg);
 
  private:
-  explicit HDKeySr25519(std::unique_ptr<schnorrkel::SchnorrkelKeyPair> key);
-  std::unique_ptr<schnorrkel::SchnorrkelKeyPair> schnorrkel_key_pair_;
+  explicit HDKeySr25519(std::unique_ptr<SchnorrkelKeyPair> key);
+  std::unique_ptr<SchnorrkelKeyPair> schnorrkel_key_pair_;
 };
 
 }  // namespace brave_wallet

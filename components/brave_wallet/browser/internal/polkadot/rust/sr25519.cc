@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
 
-namespace brave_wallet::schnorrkel {
+namespace brave_wallet::polkadot {
 
 class SchnorrkelKeyPairImpl : public SchnorrkelKeyPair {
  public:
@@ -59,4 +59,4 @@ bool SchnorrkelKeyPairImpl::VerifyMessage(SR25519Signature const& sig,
   return impl_->verify_message(sig_bytes, bytes);
 }
 
-}  // namespace brave_wallet::schnorrkel
+}  // namespace brave_wallet::polkadot

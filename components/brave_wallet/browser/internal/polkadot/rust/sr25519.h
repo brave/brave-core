@@ -11,7 +11,7 @@
 #include "base/containers/span.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
-namespace brave_wallet::schnorrkel {
+namespace brave_wallet::polkadot {
 
 using SR25519PublicKey = std::array<uint8_t, 32>;
 using SR25519Signature = std::array<uint8_t, 64>;
@@ -29,6 +29,6 @@ class SchnorrkelKeyPair {
                              base::span<const uint8_t> msg) = 0;
 };
 
-}  // namespace brave_wallet::schnorrkel
+}  // namespace brave_wallet::polkadot
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_POLKADOT_RUST_SR25519_H_
