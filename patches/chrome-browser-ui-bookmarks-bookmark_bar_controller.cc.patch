@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+index 77fec75f06f7ad02840ce764da2ef984cb0f6346..88468ae3dabee435b91c957aa87c050a6d84fcc0 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+@@ -161,6 +161,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+   if (tabs.empty()) {
+     return false;
+   }
++  BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR
+ 
+   bookmarks::BookmarkModel* bookmark_model =
+       BookmarkModelFactory::GetForBrowserContext(profile);
