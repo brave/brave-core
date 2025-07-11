@@ -261,10 +261,7 @@ export const earningsDisplay = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
+  font: ${font.large.regular};
 
   .currency {
     font: ${font.small.semibold};
