@@ -63,6 +63,7 @@
   gap: var(--leo-spacing-xs);
   border-radius: var(--leo-radius-s);
   background: var( --leo-color-container-background);
+  white-space: nowrap;
 }
 
 .editLabelText {
