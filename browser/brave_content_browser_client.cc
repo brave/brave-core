@@ -235,7 +235,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
-#include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -247,7 +246,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
-#include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
@@ -835,12 +833,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCookieListOptIn)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        brave_shields::mojom::CookieListOptInPageHandlerFactory,
-        CookieListOptInUI>(map);
-  }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);

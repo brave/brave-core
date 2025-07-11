@@ -228,6 +228,12 @@ class AdBlockService {
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
 
+// Registers local_state Adblock preferences needed for migration
+void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry);
+
+// Migrates or clears obsolete local_state preferences used by Adblock
+void MigrateObsoletePrefsForAdBlockService(PrefService* local_state);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SERVICE_H_
