@@ -7,6 +7,25 @@ import BraveUI
 import Shared
 import UIKit
 
+class FavoritesSectionBackgroundLayoutAttribute: UICollectionViewLayoutAttributes {
+  var backgroundColour = UIColor(braveSystemName: .materialThin)
+  var groupBackgroundColour = UIColor(braveSystemName: .containerBackground)
+
+  override func copy(with zone: NSZone? = nil) -> Any {
+    let copy = super.copy(with: zone) as! FavoritesSectionBackgroundLayoutAttribute
+    copy.backgroundColour = self.backgroundColour
+    copy.groupBackgroundColour = self.groupBackgroundColour
+    return copy
+  }
+
+  override func isEqual(_ object: Any?) -> Bool {
+    guard let other = object as? FavoritesSectionBackgroundLayoutAttribute else { return false }
+
+    return super.isEqual(object) && backgroundColour.rgba == other.backgroundColour.rgba
+      && groupBackgroundColour.rgba == other.groupBackgroundColour.rgba
+  }
+}
+
 class FavoritesSectionBackgroundView: UICollectionReusableView {
 
   let sectionGroupBackground = UIView()
@@ -35,5 +54,15 @@ class FavoritesSectionBackgroundView: UICollectionReusableView {
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
+  }
+
+  override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    super.apply(layoutAttributes)
+
+    guard let customAttrs = layoutAttributes as? FavoritesSectionBackgroundLayoutAttribute else {
+      return
+    }
+    self.backgroundColor = customAttrs.backgroundColour
+    self.sectionGroupBackground.backgroundColor = customAttrs.groupBackgroundColour
   }
 }

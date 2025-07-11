@@ -16,6 +16,12 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
 
   let textLabel = UILabel()
 
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
+
   override var isHighlighted: Bool {
     didSet {
       UIView.animate(
@@ -58,9 +64,11 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
   private func setTheme() {
     imageContainer.do {
       $0.layer.cornerRadius = 12.0
-      $0.layer.borderWidth = 0.5
+      $0.layer.borderWidth = isPrivateBrowsing ? 0 : 0.5
       $0.layer.cornerCurve = .continuous
-      $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
+      $0.layer.borderColor =
+        isPrivateBrowsing ? nil : UIColor(braveSystemName: .dividerSubtle).cgColor
+      $0.backgroundColor = isPrivateBrowsing ? UIColor(braveSystemName: .containerBackground) : nil
     }
 
     textLabel.do {
@@ -79,6 +87,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
       )
       $0.font = font
       $0.lineBreakMode = NSLineBreakMode.byTruncatingTail
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary)
     }
   }
 

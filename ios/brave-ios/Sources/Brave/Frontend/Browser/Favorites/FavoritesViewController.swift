@@ -12,57 +12,67 @@ import Shared
 import UIKit
 import os.log
 
+class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
+  let browserColors: BrowserColors
+
+  init(
+    browserColors: BrowserColors,
+    sectionProvider: @escaping UICollectionViewCompositionalLayoutSectionProvider,
+    configuration: UICollectionViewCompositionalLayoutConfiguration
+  ) {
+    self.browserColors = browserColors
+    super.init(sectionProvider: sectionProvider, configuration: configuration)
+    self.register(FavoritesSectionBackgroundView.self, forDecorationViewOfKind: "background")
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layoutAttributesForElements(
+    in rect: CGRect
+  ) -> [UICollectionViewLayoutAttributes]? {
+    guard let attributes = super.layoutAttributesForElements(in: rect) else { return nil }
+
+    var modifiedAttributes: [UICollectionViewLayoutAttributes] = []
+
+    for attr in attributes {
+      if attr.representedElementKind == "background",
+        let indexPath = attr.indexPath as IndexPath?
+      {
+        let customAttr = FavoritesSectionBackgroundLayoutAttribute(
+          forDecorationViewOfKind: "background",
+          with: indexPath
+        )
+        customAttr.frame = attr.frame
+        customAttr.zIndex = attr.zIndex
+        customAttr.backgroundColour =
+          browserColors.favoritesAndSearchScreenSectionBackground
+        customAttr.groupBackgroundColour =
+          browserColors.favoritesAndSearchScreenSectionGroupBackground
+        modifiedAttributes.append(customAttr)
+      } else {
+        modifiedAttributes.append(attr)
+      }
+    }
+
+    return modifiedAttributes
+  }
+}
+
 class FavoritesViewController: UIViewController {
 
   // UI Properties
-  lazy var collectionView: UICollectionView =
-    UICollectionView(
-      frame: .zero,
-      collectionViewLayout: compositionalLayout
-    )
+  var collectionView: UICollectionView!
   private let backgroundView = UIView()
-
-  private var favoriteGridSize: CGSize = .zero
 
   // Data Source
   private typealias DataSource = UICollectionViewDiffableDataSource<
     FavoritesSection, FavoritesDataWrapper
   >
   private typealias Snapshot = NSDiffableDataSourceSnapshot<FavoritesSection, FavoritesDataWrapper>
-  private lazy var dataSource =
-    DataSource(
-      collectionView: self.collectionView,
-      cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
-        self?.cellProvider(
-          collectionView: collectionView,
-          indexPath: indexPath,
-          wrapper: wrapper
-        )
-      }
-    )
-  private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
-    $0.interSectionSpacing = 8.0
-  }
-  private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
-    sectionProvider: { [weak self] sectionIndex, _ in
-      guard let self else { return nil }
-      let section = self.availableSections[sectionIndex]
-      switch section {
-      case .favorites:
-        return self.favoritesLayoutSection()
-      case .recentSearches:
-        return self.recentSearchesLayoutSection()
-      case .recentSearchesOptIn:
-        return self.recentSearchesOptInLayoutSection()
-      }
-    },
-    configuration: layoutConfig
-  ).then {
-    $0.register(
-      FavoritesSectionBackgroundView.self,
-      forDecorationViewOfKind: "background"
-    )
-  }
+  private var dataSource: DataSource!
 
   // Actions
   var bookmarkAction: (Favorite, BookmarksAction) -> Void
@@ -116,28 +126,6 @@ class FavoritesViewController: UIViewController {
 
     super.init(nibName: nil, bundle: nil)
 
-    collectionView.do {
-      $0.register(FavoritesCollectionViewCell.self)
-      $0.register(FavoritesRecentSearchCell.self)
-      $0.register(SearchActionsCell.self)
-      $0.register(
-        FavoritesHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "fav_header"
-      )
-      $0.register(
-        FavoritesRecentSearchHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "recent_searches_header"
-      )
-      $0.register(
-        FavoritesRecentSearchFooterView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-        withReuseIdentifier: "recent_search_footer"
-      )
-      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
-    }
-
     favoritesFRC.delegate = self
     recentSearchesFRC.delegate = self
 
@@ -164,6 +152,56 @@ class FavoritesViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
+      $0.interSectionSpacing = 8.0
+    }
+    let compositionLayout = FavoritesCompositionalLayout(
+      browserColors: privateBrowsingManager.browserColors,
+      sectionProvider: { [weak self] sectionIndex, _ in
+        guard let self else { return nil }
+        let section = self.availableSections[sectionIndex]
+        switch section {
+        case .favorites:
+          return self.favoritesLayoutSection()
+        case .recentSearches:
+          return self.recentSearchesLayoutSection()
+        case .recentSearchesOptIn:
+          return self.recentSearchesOptInLayoutSection()
+        }
+      },
+      configuration: layoutConfig
+    )
+    collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionLayout).then {
+      $0.register(FavoritesCollectionViewCell.self)
+      $0.register(FavoritesRecentSearchCell.self)
+      $0.register(SearchActionsCell.self)
+      $0.register(
+        FavoritesHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: "fav_header"
+      )
+      $0.register(
+        FavoritesRecentSearchHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: "recent_searches_header"
+      )
+      $0.register(
+        FavoritesRecentSearchFooterView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+        withReuseIdentifier: "recent_search_footer"
+      )
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
+    }
+    dataSource = DataSource(
+      collectionView: collectionView,
+      cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
+        self?.cellProvider(
+          collectionView: collectionView,
+          indexPath: indexPath,
+          wrapper: wrapper
+        )
+      }
+    )
     dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
       self?.supplementaryViewProvider(
         collectionView: collectionView,
@@ -204,7 +242,7 @@ class FavoritesViewController: UIViewController {
 
     let headerItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(50)
+      heightDimension: .absolute(46)
     )
     let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
       layoutSize: headerItemSize,
@@ -239,7 +277,7 @@ class FavoritesViewController: UIViewController {
 
     let headerItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(50)
+      heightDimension: .absolute(46)
     )
     let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
       layoutSize: headerItemSize,
@@ -290,7 +328,7 @@ class FavoritesViewController: UIViewController {
 
     let headerItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(50)
+      heightDimension: .absolute(46)
     )
     let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
       layoutSize: headerItemSize,
@@ -341,7 +379,7 @@ class FavoritesViewController: UIViewController {
 
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
-    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
+    backgroundView.backgroundColor = browserColors.favoritesAndSearchScreenBackground
   }
 
   private func fetchRecentSearches() {
@@ -607,6 +645,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
       let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesCollectionViewCell
 
+      cell.isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
         cell.imageView.loadFavicon(
@@ -734,13 +773,14 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     if kind == UICollectionView.elementKindSectionHeader {
       switch section {
       case .favorites:
-        return
-          collectionView
-          .dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: "fav_header",
-            for: indexPath
-          )
+        if let header = collectionView.dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: "fav_header",
+          for: indexPath
+        ) as? FavoritesHeaderView {
+          header.isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+          return header
+        }
       case .recentSearches, .recentSearchesOptIn:
         if let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
