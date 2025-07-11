@@ -138,7 +138,7 @@ std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   return result;
 }
 
-std::string GetRequstObject(std::string_view method) {
+std::string GetRequestObject(std::string_view method) {
   return content::JsReplace(R"({method: $1, params: {}})", method);
 }
 
@@ -1003,22 +1003,22 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
 }
 
 // Request test here won't be testing params object, renderer just convert the
-// object to dictionary and pass it to browser and it is resposibility of
+// object to dictionary and pass it to browser and it is responsibility of
 // browser process to extract the info
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
   const std::string request =
-      base::StrCat({"(", GetRequstObject("connect"), ")"});
+      base::StrCat({"(", GetRequestObject("connect"), ")"});
   auto result = EvalJs(web_contents(browser()), RequestScript(request));
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 
   const std::string request2 =
-      base::StrCat({"(", GetRequstObject("signAndSendTransaction"), ")"});
+      base::StrCat({"(", GetRequestObject("signAndSendTransaction"), ")"});
   auto result2 = EvalJs(web_contents(browser()), RequestScript(request2));
   EXPECT_EQ(base::Value(true), result2.value);
 
   // allow extra parameters
   const std::string request3 =
-      base::StrCat({"(", GetRequstObject("signTransaction"), ", 123)"});
+      base::StrCat({"(", GetRequestObject("signTransaction"), ", 123)"});
   auto result3 = EvalJs(web_contents(browser()), RequestScript(request3));
   EXPECT_EQ(base::Value(true), result2.value);
 

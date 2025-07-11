@@ -17,11 +17,17 @@ test("brave_components_unittests") {
     "//base",
     "//brave/components/ai_chat/core/browser:unit_tests",
     "//brave/components/ai_chat/core/common:unit_tests",
+    "//brave/components/api_request_helper:unit_tests",
+    "//brave/components/brave_wallet/browser:unit_tests",
+    "//brave/components/brave_wallet/common:unit_tests",
     "//components/test:run_all_unittests",
   ]
 
   if (use_blink) {
-    deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
+    deps += [
+      "//brave/components/ai_chat/content/browser:unit_tests",
+      "//brave/components/brave_wallet/renderer/test:unit_tests",
+    ]
   }
 
   if (is_ios) {

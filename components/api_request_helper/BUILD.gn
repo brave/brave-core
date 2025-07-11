@@ -21,7 +21,7 @@ static_library("api_request_helper") {
   ]
 }
 
-source_set("api_request_helper_unit_tests") {
+source_set("unit_tests") {
   testonly = true
   sources =
       [ "//brave/components/api_request_helper/api_request_helper_unittest.cc" ]
