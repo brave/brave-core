@@ -47,12 +47,12 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
-  std::unique_ptr<ScriptsHandler> script_handler_;
-  const raw_ptr<PrefService> prefs_;
-  bool should_process_ = false;
+    std::unique_ptr<ScriptsHandler> script_handler_;
+    const raw_ptr<PrefService> prefs_;
+    bool should_process_ = false;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-};
+    WEB_CONTENTS_USER_DATA_KEY_DECL();
+  };
 
 }  // namespace psst
 

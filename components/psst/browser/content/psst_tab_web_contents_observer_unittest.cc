@@ -9,10 +9,10 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/ptr_util.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
@@ -20,6 +20,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/navigation_simulator.h"
@@ -36,9 +37,7 @@ class DocumentOnLoadObserver : public content::WebContentsObserver {
   explicit DocumentOnLoadObserver(content::WebContents* web_contents)
       : content::WebContentsObserver(web_contents) {}
 
-  void Wait() {
-    loop_.Run();
-  }
+  void Wait() { loop_.Run(); }
 
   void SetDidFinishNavigationCallback(base::OnceClosure callback) {
     callback_ = std::move(callback);
@@ -46,13 +45,16 @@ class DocumentOnLoadObserver : public content::WebContentsObserver {
 
  private:
   void DidFinishNavigation(content::NavigationHandle* handle) override {
-    if (!callback_.is_null())
+    if (!handle->HasCommitted()) {
+      return;
+    }
+
+    if (!callback_.is_null()) {
       std::move(callback_).Run();
+    }
   }
 
-  void DocumentOnLoadCompletedInPrimaryMainFrame() override {
-    loop_.Quit();
-  }
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override { loop_.Quit(); }
 
   base::RunLoop loop_;
   base::OnceClosure callback_;
@@ -153,8 +155,37 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 }
 
+TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
+  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), GURL("chrome://flags"));
+    observer.Wait();
+  }
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), GURL("about:blank"));
+    observer.Wait();
+  }
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), GURL("file:///somepath"));
+    observer.Wait();
+  }
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), GURL("ftp://example.com"));
+    observer.Wait();
+  }
+}
+
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNotPrimaryMainFrame) {
+  // first load the main frame so we can create a subframe
   EXPECT_CALL(GetScriptHandler(), Start).Times(1);
   DocumentOnLoadObserver main_frame_observer(web_contents());
   base::RunLoop main_frame_loop;
@@ -166,16 +197,17 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   main_frame_observer.SetDidFinishNavigationCallback(main_frame_callback);
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://example.com/"));
-  main_frame_loop.Run();
   main_frame_observer.Wait();
 
   // should_process_ should be reset to false
-  ASSERT_FALSE(ShouldProcess());
+  EXPECT_FALSE(ShouldProcess());
 
+  // create sub-frame
   auto* main_rfh = web_contents()->GetPrimaryMainFrame();
   auto* child_rfh =
       content::RenderFrameHostTester::For(main_rfh)->AppendChild("subframe");
 
+  // navigate sub-frame
   DocumentOnLoadObserver sub_frame_observer(web_contents());
   base::RunLoop sub_frame_loop;
   auto sub_frame_callback = base::BindLambdaForTesting([&]() {
@@ -183,7 +215,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
     EXPECT_FALSE(ShouldProcess());
     sub_frame_loop.Quit();
   });
-  sub_frame_observer.SetDidFinishNavigationCallback(std::move(sub_frame_callback));
+  sub_frame_observer.SetDidFinishNavigationCallback(
+      std::move(sub_frame_callback));
   content::NavigationSimulator::CreateRendererInitiated(
       GURL("https://sub.example.com"), child_rfh)
       ->Commit();
@@ -192,84 +225,84 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_FALSE(ShouldProcess());
 }
 
-  TEST_F(PsstTabWebContentsObserverUnitTest,
-         ShouldNotProcessIfNavigationNotCommitted) {
-    auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
-        GURL("https://example.com"), web_contents());
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       ShouldNotProcessIfNavigationNotCommitted) {
+  auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
+      GURL("https://example.com"), web_contents());
 
-    EXPECT_CALL(GetScriptHandler(), Start).Times(0);
-    // Simulate navigation start but NOT commit
-    simulator->Start();
-    simulator->Fail(net::ERR_ABORTED);  // Simulates cancel before commit
-  }
+  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  // Simulate navigation start but NOT commit
+  simulator->Start();
+  simulator->Fail(net::ERR_ABORTED);  // Simulates cancel before commit
+}
 
-  TEST_F(PsstTabWebContentsObserverUnitTest,
-         ShouldNotProcessIfSameDocumentNavigation) {
-    const GURL url("https://example1.com");
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       ShouldNotProcessIfSameDocumentNavigation) {
+  const GURL url("https://example1.com");
 
-    EXPECT_CALL(GetScriptHandler(), Start).Times(1);
-    DocumentOnLoadObserver observer(web_contents());
-    base::RunLoop loop;
-    auto callback = base::BindLambdaForTesting([&]() {
-      // should process for normal load
-      EXPECT_TRUE(ShouldProcess());
-      loop.Quit();
-    });
-    observer.SetDidFinishNavigationCallback(std::move(callback));
-    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                               url);
-    loop.Run();
-    observer.Wait();
+  EXPECT_CALL(GetScriptHandler(), Start).Times(1);
+  DocumentOnLoadObserver observer(web_contents());
+  base::RunLoop loop;
+  auto callback = base::BindLambdaForTesting([&]() {
+    // should process for normal load
+    EXPECT_TRUE(ShouldProcess());
+    loop.Quit();
+  });
+  observer.SetDidFinishNavigationCallback(std::move(callback));
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  loop.Run();
+  observer.Wait();
 
-    // should be reset to false
+  // should be reset to false
+  EXPECT_FALSE(ShouldProcess());
+
+  base::RunLoop sub_frame_loop;
+  auto sub_frame_callback = base::BindLambdaForTesting([&]() {
+    // should not process for same page
     EXPECT_FALSE(ShouldProcess());
+    sub_frame_loop.Quit();
+  });
+  observer.SetDidFinishNavigationCallback(std::move(sub_frame_callback));
+  auto sim = content::NavigationSimulator::CreateRendererInitiated(
+      GURL(base::JoinString({url.spec(), "anchor"}, "#")),
+      web_contents()->GetPrimaryMainFrame());
+  sim->CommitSameDocument();
+}
 
-    base::RunLoop sub_frame_loop;
-    auto sub_frame_callback = base::BindLambdaForTesting([&]() {
-      // should not process for same page
-      EXPECT_FALSE(ShouldProcess());
-      sub_frame_loop.Quit();
-    });
-    observer.SetDidFinishNavigationCallback(std::move(sub_frame_callback));
-    auto sim = content::NavigationSimulator::CreateRendererInitiated(
-        GURL(base::JoinString({url.spec(), "anchor"}, "#")),
-        web_contents()->GetPrimaryMainFrame());
-    sim->CommitSameDocument();
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       DefaultPrefEnabledStartScriptHandler) {
+  const GURL url("https://example1.com");
+  EXPECT_CALL(GetScriptHandler(), Start).Times(1);
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontStartScriptHandler) {
+  const GURL url("https://example1.com");
+  prefs()->SetBoolean(prefs::kPsstEnabled, false);
+  EXPECT_CALL(GetScriptHandler(), Start).Times(0);
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+}
+
+class PsstTabWebContentsObserverFeatureDisabledUnitTest
+    : public PsstTabWebContentsObserverUnitTestBase {
+ public:
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
+    PsstTabWebContentsObserverUnitTestBase::SetUp();
   }
+};
 
-  TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledStartScriptHandler) {
-    const GURL url("https://example1.com");
-    EXPECT_CALL(GetScriptHandler(), Start).Times(1);
-    DocumentOnLoadObserver observer(web_contents());
-    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                               url);
-    observer.Wait();
-  }
-
-  TEST_F(PsstTabWebContentsObserverUnitTest,
-         PrefDisabledDontStartScriptHandler) {
-    const GURL url("https://example1.com");
-    prefs()->SetBoolean(prefs::kPsstEnabled, false);
-    EXPECT_CALL(GetScriptHandler(), Start).Times(0);
-    DocumentOnLoadObserver observer(web_contents());
-    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                               url);
-    observer.Wait();
-  }
-
-  class PsstTabWebContentsObserverFeatureDisabledUnitTest
-      : public PsstTabWebContentsObserverUnitTestBase {
-   public:
-    void SetUp() override {
-      feature_list_.InitAndDisableFeature(psst::features::kEnablePsst);
-      PsstTabWebContentsObserverUnitTestBase::SetUp();
-    }
-  };
-
-  TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
-    EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                  web_contents(), browser_context(), prefs(), 2),
-              nullptr);
-  }
+TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                web_contents(), browser_context(), prefs(), 2),
+            nullptr);
+}
 
 }  // namespace psst

@@ -13,19 +13,11 @@
 #include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_details.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace psst {
-
-bool ShouldProcess(const content::NavigationHandle* handle) {
-  if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
-      handle->IsSameDocument() ||
-      handle->GetRestoreType() == content::RestoreType::kRestored) {
-    return false;
-  }
-
-  return true;
-}
 
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
@@ -62,10 +54,17 @@ PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
     content::NavigationHandle* handle) {
-  if (!prefs_->GetBoolean(prefs::kPsstEnabled)) {
+  if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
+      !handle->GetURL().SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  if (handle->IsSameDocument() ||
+      handle->GetRestoreType() == content::RestoreType::kRestored ||
+      !prefs_->GetBoolean(prefs::kPsstEnabled)) {
     should_process_ = false;
   } else {
-    should_process_ = ShouldProcess(handle);
+    should_process_ = true;
   }
 }
 

@@ -252,8 +252,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       if (config.targetOS === 'android' && !isJunitTestSuite) {
         assert(
           config.targetArch === 'x86'
-          || config.targetArch === 'x64'
-          || options.manual_android_test_device,
+            || config.targetArch === 'x64'
+            || options.manual_android_test_device,
           'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.',
         )
       }
