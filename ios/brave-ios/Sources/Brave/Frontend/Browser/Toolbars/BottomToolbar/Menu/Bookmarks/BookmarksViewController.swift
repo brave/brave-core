@@ -521,11 +521,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             self.toolbarUrlActionsDelegate?.select(url: url, isUserDefinedURLNavigation: true)
           }
 
-          if presentingViewController is MenuViewController {
-            presentingViewController?.dismiss(animated: true, completion: bookmarkClickEvent)
-          } else {
-            dismiss(animated: true, completion: bookmarkClickEvent)
-          }
+          dismiss(animated: true, completion: bookmarkClickEvent)
         }
       }
     } else {

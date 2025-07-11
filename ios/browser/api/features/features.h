@@ -76,7 +76,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kNewPlaylistUI;
 @property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
 @property(class, nonatomic, readonly) Feature* kBlockAllCookiesToggle;
-@property(class, nonatomic, readonly) Feature* kModernBrowserMenuEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
