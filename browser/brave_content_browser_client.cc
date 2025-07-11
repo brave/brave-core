@@ -59,6 +59,7 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -645,8 +646,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  registry.ForWebUI<BraveAccountUI>()
-      .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 }
 
 std::optional<base::UnguessableToken>
@@ -843,8 +846,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
+        map);
+  }
 #endif
 
   auto* prefs =
