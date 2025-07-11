@@ -74,15 +74,6 @@ class PlaylistSettingsViewController: TableViewController {
       Section(
         rows: [
           .boolRow(
-            title: Strings.PlayList.menuBadgeOptionTitle,
-            option: Preferences.Playlist.enablePlaylistMenuBadge
-          )
-        ],
-        footer: .title(Strings.PlayList.menuBadgeOptionFooterText)
-      ),
-      Section(
-        rows: [
-          .boolRow(
             title: Strings.PlayList.playlistLongPressSettingsOptionTitle,
             option: Preferences.Playlist.enableLongPressAddToPlaylist
           )

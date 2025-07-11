@@ -5068,25 +5068,6 @@ extension Strings {
           "Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action"
       )
 
-    public static let menuBadgeOptionTitle =
-      NSLocalizedString(
-        "playlist.menuBadgeOptionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Show Menu Notification Badge",
-        comment: "Title for playlist menu badge option"
-      )
-
-    public static let menuBadgeOptionFooterText =
-      NSLocalizedString(
-        "playlist.menuBadgeOptionFooterText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "When enabled, a badge will be displayed on the main menu icon, indicating media on the page may be added to Brave Playlist.",
-        comment: "Description footer for playlist menu badge option"
-      )
-
     public static let playlistLongPressSettingsOptionTitle =
       NSLocalizedString(
         "playlist.playlistLongPressSettingsOptionTitle",
