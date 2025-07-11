@@ -28,7 +28,7 @@ public struct WalletConstants {
 
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(
-    string: "https://support.brave.com/hc/categories/360001062531-Wallet"
+    string: "https://support.brave.app/hc/categories/360001062531-Wallet"
   )!
 
   // TODO: update wiki link
@@ -224,7 +224,7 @@ public struct WalletConstants {
 
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(
-    string: "https://support.brave.com/hc/en-us/articles/5546517853325"
+    string: "https://support.brave.app/hc/en-us/articles/5546517853325"
   )!
 
   /// The list of token contract addresses that are supported to bridge to Aurora app
@@ -271,7 +271,7 @@ public struct WalletConstants {
 
   /// The link for for users to learn more about sign transactions
   static let signTransactionRiskLink: URL = URL(
-    string: "https://support.brave.com/hc/en-us/articles/4409513799693"
+    string: "https://support.brave.app/hc/en-us/articles/4409513799693"
   )!
 
   /// Solana Transacation Instruction Type Name

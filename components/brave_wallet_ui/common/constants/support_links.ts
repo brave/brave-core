@@ -5,5 +5,5 @@
 
 export const SUPPORT_LINKS = {
   WhatIsTheAssociatedTokenAccountProgram:
-    'https://support.brave.com/hc/en-us/articles/27490686330125-What-is-the-Associated-Token-Account-Program',
+    'https://support.brave.app/hc/en-us/articles/27490686330125-What-is-the-Associated-Token-Account-Program',
 } as const
