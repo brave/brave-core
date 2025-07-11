@@ -23,7 +23,7 @@ export default {
       <div
         style={{
           display: 'flex',
-          fontFamily: 'Poppins',
+          fontFamily: 'sans-serif',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '20px',

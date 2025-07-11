@@ -101,12 +101,7 @@ export const StyledInput = styled('input')<{}>`
   height: 40px;
   padding: 10px 18px;
   border-radius: 4px;
-  font-family: sans-serif;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0.01em;
+  font: var(--leo-font-default-regular);
   text-align: left;
 
   background: white;

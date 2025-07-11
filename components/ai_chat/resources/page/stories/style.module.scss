@@ -8,10 +8,7 @@
   width: calc(100vw - 30px);
   height: 95vh;
   border: 1px solid var(--leo-color-divider-subtle);
-  font-family: sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 24px;
+  font: var(--leo-font-default-regular);
   background-color: var(--leo-color-container-background);
   color: var(--leo-color-text-primary);
   position: relative;

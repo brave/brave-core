@@ -35,7 +35,7 @@ abbr[title] {
 }
 
 body {
-  color: #3b3b3b;
+  color: var(--leo-color-text-primary);
   /* default to system fonts */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", sans-serif;
   font-size: 13px;
@@ -85,8 +85,8 @@ sup {
 }
 
 ::selection {
-  background-color: #b3d4fc;
-  color: #000000;
+  background-color: var(--leo-color-primary-20);
+  color: var(--leo-color-primary-70);
   text-shadow: none;
 }
 
