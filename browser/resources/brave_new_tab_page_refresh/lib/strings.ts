@@ -80,6 +80,8 @@ export type StringKey =
   'topSitesMostVisitedOptionTitle' |
   'topSitesSettingsTitle' |
   'topSitesShowCustomLabel' |
+  'topSitesShowLessLabel' |
+  'topSitesShowMoreLabel' |
   'topSitesShowMostVisitedLabel' |
   'topSitesTitleLabel' |
   'topSitesURLLabel' |
