@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_UTILS_H_
 
 class GURL;
+class PrefService;
 
 bool IsWaybackMachineDisabledFor(const GURL& url);
 GURL FixupWaybackQueryURL(const GURL& url);
+
+// Returns true if Wayback Machine is disabled by policy.
+bool IsDisabledByPolicy(PrefService* prefs);
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_UTILS_H_

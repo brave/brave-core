@@ -17,6 +17,8 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -1137,6 +1139,12 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "braveWaybackMachineDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
+#endif
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

@@ -35,6 +35,7 @@
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
@@ -72,6 +73,10 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -158,6 +163,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "braveWaybackMachineDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
