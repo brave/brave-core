@@ -1005,6 +1005,51 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
 }
 
+TEST_P(
+    AIChatServiceUnitTest,
+    CreateConversationHandlerForContent_ShouldNotAssociate_WhenPageContextEnabledInitiallyDisabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      features::kPageContextEnabledInitially);
+
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  EXPECT_FALSE(conversation->should_send_page_contents());
+
+  // Conversation should still be associated with the content, even though its
+  // not being sent.
+  EXPECT_EQ(
+      conversation,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+}
+
+TEST_P(
+    AIChatServiceUnitTest,
+    CreateConversationHandlerForContent_ShouldAssociate_WhenPageContextEnabledInitiallyEnabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      features::kPageContextEnabledInitially);
+
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  EXPECT_TRUE(conversation->should_send_page_contents());
+
+  // Conversation should be associated with the content
+  EXPECT_EQ(
+      conversation,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+}
+
 TEST_P(AIChatServiceUnitTest, MaybeAssociateContent) {
   NiceMock<MockAssociatedContent> associated_content;
   ON_CALL(associated_content, GetURL())

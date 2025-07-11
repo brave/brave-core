@@ -278,10 +278,8 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
   }
   if (!conversation) {
     // New conversation needed
-    conversation = CreateConversation();
-    // Provide the content delegate, if allowed
-    MaybeAssociateContent(conversation, associated_content_id,
-                          associated_content);
+    conversation = CreateConversationHandlerForContent(associated_content_id,
+                                                       associated_content);
   }
 
   return conversation;
@@ -291,9 +289,12 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
   ConversationHandler* conversation = CreateConversation();
-  // Provide the content delegate, if allowed
-  MaybeAssociateContent(conversation, associated_content_id,
-                        associated_content);
+  // Provide the content delegate, if allowed. If we aren't initially enabling
+  // the context we still need to call MaybeAssociateContent so the conversation
+  // knows what the current tab is.
+  MaybeAssociateContent(
+      conversation, associated_content_id,
+      features::IsPageContextEnabledInitially() ? associated_content : nullptr);
 
   return conversation;
 }
