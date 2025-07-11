@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -97,22 +98,7 @@ void EnsureWebStateLoaded(
 }
 
 web::WebState* GetTabFromId(ProfileIOS* profile, int tab_id) {
-  BrowserList* browser_list = BrowserListFactory::GetForProfile(profile);
-
-  for (Browser* browser : browser_list->BrowsersOfType(
-           BrowserList::BrowserType::kRegular)) {  // kAll ???
-    WebStateList* web_state_list = browser->GetWebStateList();
-    if (web_state_list->count() > tab_id) {
-      return web_state_list->GetWebStateAt(tab_id);
-    }
-
-    //    for (int i = 0; i < web_state_list->count(); ++i) {
-    //      auto* tab = web_state_list->GetWebStateAt(i);
-    //      if (tab_id == tab->GetUniqueIdentifier()) {
-    //        return tab;
-    //      }
-  }
-  return nullptr;
+  return TabDataWebStateObserver::GetTabById(tab_id);
 }
 
 }  // namespace

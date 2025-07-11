@@ -36,6 +36,8 @@ source_set("ai_chat") {
     "model_service_factory.mm",
     "page_content_fetcher.h",
     "page_content_fetcher.mm",
+    "tab_data_web_state_observer.h",
+    "tab_data_web_state_observer.mm",
     "tab_tracker_service_factory.h",
     "tab_tracker_service_factory.mm",
   ]
