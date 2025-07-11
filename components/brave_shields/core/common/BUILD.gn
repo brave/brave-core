@@ -40,7 +40,6 @@ mojom_component("mojom") {
   sources = [
     "brave_shields.mojom",
     "brave_shields_panel.mojom",
-    "cookie_list_opt_in.mojom",
     "filter_list.mojom",
     "shields_settings.mojom",
   ]
