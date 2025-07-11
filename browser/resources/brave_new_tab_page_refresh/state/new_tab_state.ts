@@ -14,6 +14,8 @@ export interface NewTabState {
   showShieldsStats: boolean
   shieldsStats: ShieldsStats | null
   showTalkWidget: boolean
+  talkFeatureEnabled: boolean
+  newsFeatureEnabled: boolean
 }
 
 export function defaultNewTabState(): NewTabState {
@@ -23,7 +25,9 @@ export function defaultNewTabState(): NewTabState {
     clockFormat: ClockFormat.kAuto,
     showShieldsStats: false,
     shieldsStats: null,
-    showTalkWidget: true
+    showTalkWidget: false,
+    talkFeatureEnabled: false,
+    newsFeatureEnabled: false
   }
 }
 
