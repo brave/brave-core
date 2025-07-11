@@ -457,23 +457,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             return mIsAutoDarkEnabled;
         }
 
-        protected MenuOptions setNativePage(boolean state) {
-            mIsNativePage = state;
-            return this;
-        }
-
         protected MenuOptions setShowTranslate(boolean state) {
             mShowTranslate = state;
-            return this;
-        }
-
-        protected MenuOptions setShowUpdate(boolean state) {
-            mShowUpdate = state;
-            return this;
-        }
-
-        protected MenuOptions setShowReaderModePrefs(boolean state) {
-            mShowReaderModePrefs = state;
             return this;
         }
 
@@ -482,38 +467,17 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             return this;
         }
 
-        protected MenuOptions setShowPaintPreview(boolean state) {
-            mShowPaintPreview = state;
-            return this;
-        }
-
         protected MenuOptions setAutoDarkEnabled(boolean state) {
             mIsAutoDarkEnabled = state;
             return this;
-        }
-
-        protected MenuOptions withNativePage() {
-            return setNativePage(true);
         }
 
         protected MenuOptions withShowTranslate() {
             return setShowTranslate(true);
         }
 
-        protected MenuOptions withShowUpdate() {
-            return setShowUpdate(true);
-        }
-
-        protected MenuOptions withShowReaderModePrefs() {
-            return setShowReaderModePrefs(true);
-        }
-
         protected MenuOptions withShowAddToHomeScreen() {
             return setShowAddToHomeScreen(true);
-        }
-
-        protected MenuOptions withShowPaintPreview() {
-            return setShowPaintPreview(true);
         }
 
         protected MenuOptions withAutoDarkEnabled() {
