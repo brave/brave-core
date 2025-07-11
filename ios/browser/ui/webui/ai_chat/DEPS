@@ -1,6 +1,10 @@
 include_rules = [
-  "+brave/components/ai_chat/common",
+  "+brave/browser/ai_chat",
   "+brave/components/ai_chat/browser",
+  "+brave/components/ai_chat/common",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/core/common/mojom",
+  "+brave/components/ai_chat/resources/grit",
   "+brave/components/constants",
   "+brave/components/l10n/common",
 ]

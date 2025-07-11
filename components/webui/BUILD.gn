@@ -9,7 +9,7 @@ import("//build/buildflag_header.gni")
 static_library("webui") {
   visibility = [
     "//brave/browser/ui",
-    "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/ui/webui/ai_chat",
     "//brave/ios/web/webui",
   ]
 

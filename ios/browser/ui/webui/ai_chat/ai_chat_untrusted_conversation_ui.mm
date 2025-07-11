@@ -20,11 +20,11 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/ios/browser/ui/webui/favicon_source.h"
-#include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_url_data_source_ios.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/favicon_source.h"
+#include "brave/ios/web/webui/untrusted_sanitized_image_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -150,11 +150,13 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
-  //  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
 
-  // TODO: Fix
-  //  content::URLDataSource::Add(
-  //      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+  web::URLDataSourceIOS::Add(
+      profile, new FaviconSource(profile, chrome::FaviconUrlFormat::kFavicon2,
+                                 /*serve_untrusted=*/true));
+  web::URLDataSourceIOS::Add(profile,
+                             new UntrustedSanitizedImageSource(profile));
 
   // Bind Mojom Interface
   web_ui->GetWebState()

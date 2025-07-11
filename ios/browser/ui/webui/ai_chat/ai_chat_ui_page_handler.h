@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -23,10 +23,6 @@
 
 class ProfileIOS;
 
-namespace favicon {
-class FaviconService;
-}  // namespace favicon
-
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AIChatTabHelper::Observer {
@@ -43,9 +39,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   ~AIChatUIPageHandler() override;
 
   // mojom::AIChatUIHandler
-  void GetPluralString(const std::string& key,
-                       int32_t count,
-                       GetPluralStringCallback callback) override;
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
@@ -58,6 +51,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ShowSoftKeyboard() override;
   void UploadImage(bool use_media_capture,
                    UploadImageCallback callback) override;
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
@@ -67,8 +63,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void AssociateTab(mojom::TabDataPtr tab,
                     const std::string& conversation_uuid) override;
-  void DisassociateTab(::ai_chat::mojom::TabDataPtr tab,
-                       const std::string& conversation_uuid) override;
+  void DisassociateContent(mojom::AssociatedContentPtr content,
+                           const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
@@ -114,4 +110,4 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
