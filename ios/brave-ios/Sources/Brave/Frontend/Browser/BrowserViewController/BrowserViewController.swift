@@ -1569,22 +1569,9 @@ public class BrowserViewController: UIViewController {
         $0.edges.equalTo(pageOverlayLayoutGuide)
       }
       ntpController.view.layoutIfNeeded()
-      ntpController.view.alpha = 0
 
-      // We have to run this animation, even if the view is already showing because there may be a hide animation running
-      // and we want to be sure to override its results.
-      let animator = UIViewPropertyAnimator(
-        duration: 0.2,
-        curve: .easeInOut,
-        animations: {
-          ntpController.view.alpha = 1
-        }
-      )
-      animator.addCompletion { _ in
-        self.webViewContainer.accessibilityElementsHidden = true
-        UIAccessibility.post(notification: .screenChanged, argument: nil)
-      }
-      animator.startAnimation()
+      self.webViewContainer.accessibilityElementsHidden = true
+      UIAccessibility.post(notification: .screenChanged, argument: nil)
     }
   }
 
@@ -1593,36 +1580,26 @@ public class BrowserViewController: UIViewController {
   fileprivate func hideActiveNewTabPageController(_ isReaderModeURL: Bool = false) {
     guard let controller = activeNewTabPageViewController else { return }
 
-    let animator = UIViewPropertyAnimator(
-      duration: 0.2,
-      curve: .easeInOut,
-      animations: {
-        controller.view.alpha = 0.0
-      }
-    )
-    animator.addCompletion { _ in
-      controller.willMove(toParent: nil)
-      controller.view.removeFromSuperview()
-      controller.removeFromParent()
-      controller.view.alpha = 1
-      self.webViewContainer.accessibilityElementsHidden = false
-      UIAccessibility.post(notification: .screenChanged, argument: nil)
+    controller.willMove(toParent: nil)
+    controller.view.removeFromSuperview()
+    controller.removeFromParent()
+    controller.view.alpha = 1
+    self.webViewContainer.accessibilityElementsHidden = false
+    UIAccessibility.post(notification: .screenChanged, argument: nil)
 
-      // Refresh the reading view toolbar since the article record may have changed
-      if let tab = self.tabManager.selectedTab,
-        let readerMode = tab.browserData?.getContentScript(
-          name: ReaderModeScriptHandler.scriptName
-        )
-          as? ReaderModeScriptHandler,
-        readerMode.state == .active,
-        isReaderModeURL,
-        let state = tab.playlistItemState
-      {
-        self.showReaderModeBar(animated: false)
-        self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
-      }
+    // Refresh the reading view toolbar since the article record may have changed
+    if let tab = self.tabManager.selectedTab,
+      let readerMode = tab.browserData?.getContentScript(
+        name: ReaderModeScriptHandler.scriptName
+      )
+        as? ReaderModeScriptHandler,
+      readerMode.state == .active,
+      isReaderModeURL,
+      let state = tab.playlistItemState
+    {
+      self.showReaderModeBar(animated: false)
+      self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
     }
-    animator.startAnimation()
   }
 
   func updateInContentHomePanel(_ url: URL?) {
