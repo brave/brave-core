@@ -64,6 +64,7 @@ group("all") {
 
   if (!is_ios) {
     deps += [
+      "//brave/components:brave_components_unittests",
       "//brave/test:brave_browser_tests",
       "//brave/test:brave_unit_tests",
     ]
