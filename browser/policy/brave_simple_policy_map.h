@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -33,6 +34,10 @@
 #if BUILDFLAG(DEPRECATE_IPFS)
 #include "brave/components/ipfs/ipfs_prefs.h"
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
 
 namespace policy {
 
@@ -65,6 +70,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+    {policy::key::kBraveWaybackMachineDisabled,
+     kBraveWaybackMachineDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
 #if BUILDFLAG(DEPRECATE_IPFS)
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,

@@ -79,6 +79,7 @@ class BraveWaybackMachineTabHelper
   raw_ref<PrefService> pref_service_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
   BooleanPrefMember wayback_enabled_;
+  BooleanPrefMember wayback_disabled_by_policy_;
 
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
