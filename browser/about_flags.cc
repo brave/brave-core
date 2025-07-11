@@ -351,6 +351,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabExpandDelayChoices[] = {
     {"400ms", tabs::switches::kVerticalTabExpandDelaySwitch, "400"},
 };
 
+constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
+    {"default", "", ""},
+    {"0ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "0"},
+    {"50ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "50"},
+    {"100ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "100"},
+    {"150ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "150"},
+    {"200ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "200"},
+    {"250ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "250"},
+    {"300ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "300"},
+    {"400ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "400"},
+};
+
 #define BRAVE_TABS_FEATURE_ENTRIES                                             \
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
@@ -394,6 +406,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabExpandDelayChoices[] = {
           "Delay before expanding the vertical tab strip when hovering",       \
           kOsWin | kOsMac | kOsLinux,                                          \
           MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                    \
+      },                                                                       \
+      {                                                                        \
+          "brave-vertical-tab-collapse-delay",                                 \
+          "Brave Vertical Tab Collapse Delay",                                 \
+          "Delay before collapsing the vertical tab strip when mouse exits",   \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                  \
       },                                                                       \
       {                                                                        \
           kSplitViewFeatureInternalName,                                       \
