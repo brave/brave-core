@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
-import static org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils.buildMenuListItem;
+import static org.chromium.components.browser_ui.widget.ListItemBuilder.buildSimpleMenuItem;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -260,10 +260,10 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             final ModelList menuItems = new ModelList();
             if (customNetwork) {
-                menuItems.add(buildMenuListItem(R.string.edit, 0, 0));
-                menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
+                menuItems.add(buildSimpleMenuItem(R.string.edit));
+                menuItems.add(buildSimpleMenuItem(R.string.remove));
             }
-            menuItems.add(buildMenuListItem(R.string.brave_wallet_add_network_set_as_active, 0, 0));
+            menuItems.add(buildSimpleMenuItem(R.string.brave_wallet_add_network_set_as_active));
 
             ListMenu.Delegate delegate =
                     (model) -> {
