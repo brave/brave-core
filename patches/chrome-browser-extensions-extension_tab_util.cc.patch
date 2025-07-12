@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index b689f50476dc47271417955b6000a9c443b1cde7..a4fc4b35b22937fa866f42b7128938a7bc28c1bd 100644
+index 63f450a604996d9543513edd018cf18315070c04..e9699d6baaed019cd5e23a90831b4a49755dc7c4 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -1175,6 +1175,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
+@@ -1190,6 +1190,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
    }
  
    if (!url.SchemeIs(content::kChromeUIScheme)) {
