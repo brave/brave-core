@@ -73,6 +73,7 @@ extends SettingBraveDataCollectionPageElementBase
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
       isP3ADisabledByPolicy_: Boolean,
+      isStatsReportingDisabledByPolicy_: Boolean,
     }
   }
 
@@ -82,6 +83,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
   private declare isP3ADisabledByPolicy_: boolean
+  private declare isStatsReportingDisabledByPolicy_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -94,8 +96,9 @@ extends SettingBraveDataCollectionPageElementBase
     // checks for a pref being valid, so have to fake it, same as upstream.
     const setP3AEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
       this.setP3AEnabledPref_(userEnabled, policyDisabled)
-  
+ 
     this.isP3ADisabledByPolicy_ = loadTimeData.getBoolean('isP3ADisabledByPolicy')
+    this.isStatsReportingDisabledByPolicy_ = loadTimeData.getBoolean('isStatsReportingDisabledByPolicy')
 
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
@@ -106,12 +109,12 @@ extends SettingBraveDataCollectionPageElementBase
     this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref)
     this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref)
 
-    const setStatsUsagePingEnabledPref = (enabled: boolean) =>
-      this.setStatsUsagePingEnabledPref_(enabled)
+    const setStatsUsagePingEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
+      this.setStatsUsagePingEnabledPref_(userEnabled, policyDisabled)
     this.addWebUiListener(
       'stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref)
     this.browserProxy_.getStatsUsagePingEnabled().then(
-      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled))
+      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingDisabledByPolicy_))
 
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
@@ -130,13 +133,14 @@ extends SettingBraveDataCollectionPageElementBase
     this.browserProxy_.setP3AEnabled(this.$.p3aEnabled.checked)
   }
 
-  setStatsUsagePingEnabledPref_(enabled: boolean) {
+  setStatsUsagePingEnabledPref_(userEnabled: boolean, policyDisabled: boolean) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
+      value: userEnabled,
     }
     this.statsUsagePingEnabledPref_ = pref
+    this.isStatsReportingDisabledByPolicy_ = policyDisabled
   }
 
   onStatsUsagePingEnabledChange_() {
