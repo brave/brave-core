@@ -105,7 +105,7 @@ void BraveDownloadItemView::OnPaint(gfx::Canvas* canvas) {
 void BraveDownloadItemView::OnDownloadUpdated() {
   // Check for conditions that would disregard origin url change and fall back
   // onto base implementation to handle them.
-  if (!model()->ShouldShowInShelf() ||
+  if (!model()->ShouldShowInUi() ||
       (model_->GetState() == DownloadItem::COMPLETE &&
        model()->ShouldRemoveFromShelfWhenComplete())) {
     DownloadItemView::OnDownloadUpdated();
