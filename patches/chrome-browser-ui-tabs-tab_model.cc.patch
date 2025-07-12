@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
+index 82217da00040ceb9984e5f41dc668e5cf4333a74..aca7a391f6a2edb30334e1e31f671bd3667fc8d4 100644
+--- a/chrome/browser/ui/tabs/tab_model.cc
++++ b/chrome/browser/ui/tabs/tab_model.cc
+@@ -80,7 +80,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
+   // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
+   // one place, which is here.
+   TabHelpers::AttachTabHelpers(contents_);
+-  tab_features_ = std::make_unique<TabFeatures>();
++  tab_features_ = std::make_unique<BraveTabFeatures>();
+ 
+   // Once tabs are pulled into a standalone module, TabFeatures and its
+   // initialization will need to be delegated back to the main module.
