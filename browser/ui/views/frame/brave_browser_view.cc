@@ -31,7 +31,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
-#include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
@@ -265,9 +264,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   // Show the correct value in settings on initial start
   UpdateSearchTabsButtonState();
 
-  brave_shields::CookieListOptInBubbleHost::MaybeCreateForBrowser(
-      browser_.get());
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
       brave_vpn::prefs::kBraveVPNShowButton,
@@ -375,14 +371,6 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
 
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
-  // Removes the bubble from the browser, as it uses the `ToolbarView` as an
-  // archor, and that leaves a dangling reference once the `TopContainerView` is
-  // destroyed before all `SupportsUserData` is cleared.
-  if (brave_shields::CookieListOptInBubbleHost::FromBrowser(browser_.get())) {
-    brave_shields::CookieListOptInBubbleHost::RemoveFromBrowser(browser_.get());
-  }
-
-  DCHECK(!tab_cycling_event_handler_);
 }
 
 sidebar::Sidebar* BraveBrowserView::InitSidebar() {
