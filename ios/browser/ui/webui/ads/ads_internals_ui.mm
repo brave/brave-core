@@ -16,6 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -25,21 +26,6 @@
 #include "ui/base/webui/resource_path.h"
 
 namespace {
-
-web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
-    web::WebUIIOS* web_ui,
-    const std::string& name,
-    base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id) {
-  web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
-  source->UseStringsJs();
-
-  // Add required resources.
-  source->AddResourcePaths(resource_paths);
-  source->SetDefaultResource(html_resource_id);
-  return source;
-}
 
 ProfileIOS* GetProfile(web::WebUIIOS* web_ui) {
   ProfileIOS* const profile = ProfileIOS::FromWebUIIOS(web_ui);
@@ -51,12 +37,12 @@ ProfileIOS* GetProfile(web::WebUIIOS* web_ui) {
 
 AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
-      handler_(
-          brave_ads::AdsServiceFactoryIOS::GetForProfile(GetProfile(web_ui)),
-          *GetProfile(web_ui)->GetPrefs()) {
-  CreateAndAddWebUIDataSource(web_ui, url.host(),
-                              base::span(kAdsInternalsGenerated),
-                              IDR_ADS_INTERNALS_HTML);
+      handler_(brave_ads::AdsServiceFactoryIOS::GetForProfile(
+                   ProfileIOS::FromWebUIIOS(web_ui)),
+               *GetProfile(web_ui)->GetPrefs()) {
+  brave::CreateAndAddWebUIDataSource(web_ui, url.host(),
+                                     base::span(kAdsInternalsGenerated),
+                                     IDR_ADS_INTERNALS_HTML);
 
   // Bind Mojom Interface
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
