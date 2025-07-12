@@ -72,6 +72,8 @@ class WebDiscoveryService : public KeyedService {
   void Stop();
   void ClearPrefs();
 
+  bool IsWebDiscoveryEnabled() const;
+
   void OnEnabledChange();
 
   void OnConfigChange();
