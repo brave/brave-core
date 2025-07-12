@@ -11,7 +11,6 @@
 #import "ios/chrome/browser/https_upgrades/model/https_upgrade_service_factory.h"
 #import "ios/chrome/browser/https_upgrades/model/typed_navigation_upgrade_tab_helper.h"
 #import "ios/chrome/browser/prerender/model/prerender_service_factory.h"
-#include "ios/chrome/browser/sessions/model/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/sessions/model/web_session_state_tab_helper.h"
 #import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
@@ -19,7 +18,6 @@
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
-  IOSChromeSessionTabHelper::CreateForWebState(web_state);
   IOSChromeSyncedTabDelegate::CreateForWebState(web_state);
   WebSessionStateTabHelper::CreateForWebState(web_state);
   IOSTaskTabHelper::CreateForWebState(web_state);
