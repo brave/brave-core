@@ -6,7 +6,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "chrome/browser/download/download_commands.h"
 #include "chrome/browser/download/download_item_model.h"
-#include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
+#include "chrome/browser/ui/views/download/download_ui_context_menu_view.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -102,7 +102,7 @@ TEST_F(DownloadBubbleTest, ContextMenuCompletedItemTest) {
   SetupCompletedDownloadItem();
 
   // Check complete item has remove from list menu entry;
-  DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
+  DownloadUiContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_TRUE(menu_model->GetIndexOfCommandId(
       static_cast<int>(BraveDownloadCommands::REMOVE_FROM_LIST)));
@@ -113,7 +113,7 @@ TEST_F(DownloadBubbleTest, ContextMenuInProgressItemTest) {
   SetupInProgressDownloadItem();
 
   // Check in-progress item doesn't have remove from list menu entry;
-  DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
+  DownloadUiContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_FALSE(menu_model->GetIndexOfCommandId(
       static_cast<int>(BraveDownloadCommands::REMOVE_FROM_LIST)));
@@ -124,7 +124,7 @@ TEST_F(DownloadBubbleTest, ContextMenuCancelledItemTest) {
   SetupCancelledDownloadItem();
 
   // Check cancelled item has remove from list menu entry;
-  DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
+  DownloadUiContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_TRUE(menu_model->GetIndexOfCommandId(
       static_cast<int>(BraveDownloadCommands::REMOVE_FROM_LIST)));
