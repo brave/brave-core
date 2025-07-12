@@ -58,8 +58,8 @@ IN_PROC_BROWSER_TEST_F(GeolocationPermissionRequestBrowserTest,
   const std::string get_current_position_js_with_high =
       "navigator.geolocation.getCurrentPosition(() => {}, () => {}, { "
       "enableHighAccuracy : true })";
-  ASSERT_EQ(nullptr, content::EvalJs(active_contents(),
-                                     get_current_position_js_with_high));
+  ASSERT_EQ(base::Value(), content::EvalJs(active_contents(),
+                                           get_current_position_js_with_high));
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(tab_helper->enable_high_accuracy());
 
@@ -72,8 +72,9 @@ IN_PROC_BROWSER_TEST_F(GeolocationPermissionRequestBrowserTest,
   const std::string get_current_position_js_without_high =
       "navigator.geolocation.getCurrentPosition(() => {}, () => {}, { "
       "enableHighAccuracy : false })";
-  ASSERT_EQ(nullptr, content::EvalJs(active_contents(),
-                                     get_current_position_js_without_high));
+  ASSERT_EQ(
+      base::Value(),
+      content::EvalJs(active_contents(), get_current_position_js_without_high));
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(tab_helper->enable_high_accuracy());
 }
