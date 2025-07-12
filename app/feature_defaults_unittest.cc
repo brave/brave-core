@@ -190,7 +190,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kLaunchedHistoryEmbeddings,
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
-      &manta::features::kMantaService,
       &media::kLiveCaption,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
