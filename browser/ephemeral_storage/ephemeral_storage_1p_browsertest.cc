@@ -105,9 +105,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   EXPECT_EQ("a.com", site_a_tab2_values.iframe_1.local_storage);
   EXPECT_EQ("a.com", site_a_tab2_values.iframe_2.local_storage);
 
-  EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab2_values.main_frame.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab2_values.iframe_1.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab2_values.iframe_2.session_storage);
 
   EXPECT_EQ("from=a.com", site_a_tab2_values.main_frame.cookies);
   EXPECT_EQ("from=a.com", site_a_tab2_values.iframe_1.cookies);
@@ -214,9 +214,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
     EXPECT_EQ("b.com", first_party_values.iframe_1.local_storage);
     EXPECT_EQ("b.com", first_party_values.iframe_2.local_storage);
 
-    EXPECT_EQ(nullptr, first_party_values.main_frame.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.main_frame.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_2.session_storage);
 
     EXPECT_EQ("from=b.com", first_party_values.main_frame.cookies);
     EXPECT_EQ("from=b.com", first_party_values.iframe_1.cookies);
@@ -232,9 +232,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
     EXPECT_EQ("b2.com", first_party_values.iframe_1.local_storage);
     EXPECT_EQ("b2.com", first_party_values.iframe_2.local_storage);
 
-    EXPECT_EQ(nullptr, first_party_values.main_frame.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.main_frame.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_2.session_storage);
 
     EXPECT_EQ("from=b.com", first_party_values.main_frame.cookies);
     EXPECT_EQ("from=b.com", first_party_values.iframe_1.cookies);
@@ -378,13 +378,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
       a_site_ephemeral_storage_url_, "name=acom"));
 
   ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
-  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.local_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.local_storage);
 
-  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.main_frame.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.session_storage);
 
   EXPECT_EQ("name=acom", site_a_tab_values.main_frame.cookies);
   EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
@@ -443,12 +443,12 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   {
     ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
     EXPECT_EQ("a.com", site_a_tab_values.main_frame.local_storage);
-    EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
-    EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+    EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.local_storage);
+    EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.local_storage);
 
-    EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
-    EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
-    EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+    EXPECT_EQ(base::Value(), site_a_tab_values.main_frame.session_storage);
+    EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.session_storage);
+    EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.session_storage);
 
     EXPECT_EQ("from=a.com", site_a_tab_values.main_frame.cookies);
     EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
@@ -463,13 +463,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   // global CONTENT_SETTING_SESSION_ONLY mode is enabled.
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
-  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.local_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.local_storage);
 
-  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.main_frame.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_1.session_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values.iframe_2.session_storage);
 
   EXPECT_EQ("", site_a_tab_values.main_frame.cookies);
   EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
@@ -687,12 +687,12 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
   {
     ValuesFromFrames first_party_values = GetValuesFromFrames(first_party_tab);
     EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_1.local_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_2.local_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_1.local_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_2.local_storage);
 
     EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
-    EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(base::Value(), first_party_values.iframe_2.session_storage);
 
     EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
     EXPECT_EQ("", first_party_values.iframe_1.cookies);
