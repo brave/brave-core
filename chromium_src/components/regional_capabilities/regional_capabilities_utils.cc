@@ -769,7 +769,8 @@ TemplateURLPrepopulateData::BravePrepopulatedEngineID GetDefaultSearchEngine(
 
 std::vector<const PrepopulatedEngine*> GetPrepopulatedEngines(
     CountryId country_id,
-    PrefService& prefs) {
+    PrefService& prefs,
+    SearchEngineListType search_engine_list_type) {
   return GetBravePrepopulatedEnginesForCountryID(country_id);
 }
 
