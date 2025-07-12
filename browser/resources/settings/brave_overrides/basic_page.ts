@@ -418,10 +418,6 @@ RegisterPolymerTemplateModifications({
         sectionGetStarted)
       // Insert New Tab
       last = last.insertAdjacentElement('afterend', sectionNewTab)
-      // Move Appearance item
-      const sectionAppearance = getSectionElement(actualTemplate.content,
-        'appearance')
-      last = last.insertAdjacentElement('afterend', sectionAppearance)
       // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
       last = last.insertAdjacentElement('afterend', sectionToolbar)
       last = last.insertAdjacentElement('afterend', sectionTabs)
