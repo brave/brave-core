@@ -7,7 +7,7 @@ desc: |-
 
   If this policy is set to true, the usage ping will always be disabled and all related UI elements will be hidden.
 
-  If this policy is set to false, the usage ping will always be enabled.
+  If this policy is set to false, the usage ping will be enabled by default.
 
   If you set this policy, users cannot change or override it.
 

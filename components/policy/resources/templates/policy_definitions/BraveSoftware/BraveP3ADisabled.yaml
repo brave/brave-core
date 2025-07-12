@@ -7,7 +7,7 @@ desc: |-
 
             If this policy is set to true, P3A will always be disabled and all related UI elements will be hidden.
 
-            If this policy is set to false, P3A will always be enabled.
+            If this policy is set to false, P3A will be enabled by default.
 
             If you set this policy, users cannot change or override it.
 
