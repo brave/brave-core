@@ -23,17 +23,17 @@ namespace ai_chat {
 namespace {
 
 mojom::TabDataPtr CreateTabDataFromWebState(web::WebState* web_state) {
-  auto tab = mojom::TabData::New();
   if (auto* last_committed_item =
           web_state->GetNavigationManager()->GetLastCommittedItem();
       last_committed_item != nullptr) {
+    auto tab = mojom::TabData::New();
     tab->content_id = last_committed_item->GetUniqueID();
-  } else {
-    tab->content_id = -1;
+    tab->title = base::UTF16ToUTF8(web_state->GetTitle());
+    tab->url = web_state->GetLastCommittedURL();
+    return tab;
   }
-  tab->title = base::UTF16ToUTF8(web_state->GetTitle());
-  tab->url = web_state->GetLastCommittedURL();
-  return tab;
+  
+  return nullptr;
 }
 
 }  // namespace
@@ -121,10 +121,24 @@ void TabDataWebStateObserver::PermissionStateChanged(
   UpdateTab();
 }
 
+void TabDataWebStateObserver::RenderProcessGone(web::WebState* web_state) {
+  UpdateTab();
+}
+
+void TabDataWebStateObserver::WebStateRealized(web::WebState* web_state) {
+  UpdateTab();
+}
+
+void TabDataWebStateObserver::WebStateDestroyed(web::WebState* web_state) {
+  UpdateTab();
+}
+
 void TabDataWebStateObserver::UpdateTab() {
   auto tab = CreateTabDataFromWebState(web_state_.get());
-  tab->id = tab_handle_;
-  service_->UpdateTab(tab_handle_, std::move(tab));
+  if (tab) {
+    tab->id = tab_handle_;
+    service_->UpdateTab(tab_handle_, std::move(tab));
+  }
 }
 
 web::WebState* TabDataWebStateObserver::GetActiveTab() {

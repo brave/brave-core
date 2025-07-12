@@ -57,15 +57,20 @@ namespace {
 web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
   web::WebState* active_web_state =
       ai_chat::TabDataWebStateObserver::GetActiveTab();
-  DCHECK_EQ(active_web_state, web_ui->GetWebState());
-  return active_web_state;
+  if (active_web_state) {
+    DCHECK_EQ(active_web_state->GetBrowserState(),
+              web_ui->GetWebState()->GetBrowserState());
+    return active_web_state;
+  }
+  return nullptr;
 }
 
 }  // namespace
 
 AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
-      profile_(ProfileIOS::FromWebUIIOS(web_ui)) {
+      profile_(ProfileIOS::FromWebUIIOS(web_ui)),
+      active_web_state_(GetActiveWebState(web_ui)) {
   DCHECK(profile_);
   // DCHECK(profile_->IsRegularProfile());
   DCHECK(!profile_->IsOffTheRecord());
@@ -142,15 +147,14 @@ AIChatUI::~AIChatUI() {
 
 void AIChatUI::BindInterfaceUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
-  web::WebState* web_state = GetActiveWebState(web_ui());
-
   // Don't associate with the WebUI's web_state
-  if (web_state == web_ui()->GetWebState()) {
-    web_state = nullptr;
+  if (active_web_state_ == web_ui()->GetWebState()) {
+    active_web_state_ = nullptr;
   }
 
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebState(), web_state, profile_, std::move(receiver));
+      web_ui()->GetWebState(), active_web_state_, profile_,
+      std::move(receiver));
 }
 
 void AIChatUI::BindInterfaceChatService(

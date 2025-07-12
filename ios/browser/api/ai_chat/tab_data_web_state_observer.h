@@ -78,6 +78,12 @@ class TabDataWebStateObserver
   void PermissionStateChanged(web::WebState* web_state,
                               web::Permission permission) override;
 
+  void RenderProcessGone(web::WebState* web_state) override;
+
+  void WebStateRealized(web::WebState* web_state) override;
+
+  void WebStateDestroyed(web::WebState* web_state) override;
+
   void UpdateTab();
 
   static void SetActiveTab(web::WebState* web_state, bool active);
