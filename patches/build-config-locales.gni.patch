@@ -1,12 +1,21 @@
 diff --git a/build/config/locales.gni b/build/config/locales.gni
-index 428136f8fcbda7f538a018932ecc2a04ff06132a..762d5538854c258735e8f5fe427ee105fa434b9e 100644
+index 37632eb876b207e6aa303796e9c4ffe788a612ae..7f3455d6a66308a7784306c282191ed613762aaa 100644
 --- a/build/config/locales.gni
 +++ b/build/config/locales.gni
+@@ -16,7 +16,7 @@ declare_args() {
+   # pass the "--translate-genders" flag into GRIT to generate 4 translation
+   # files per locale ("", "_FEMININE", "_MASCULINE", "_NEUTER") instead of
+   # one.
+-  translate_genders = true
++  translate_genders = is_android
+ }
+
+ # The following additional platform specific lists are created:
 @@ -174,6 +174,7 @@ extended_locales = [
    "zh-HK",
    "zu",
  ]
 +import("//brave/build/config/locales.gni") extended_locales -= brave_extended_locales_exclusions
- 
+
  # Chrome locales not on Android.
  # These locales have not yet been tested yet. Specifically, AOSP has not been
