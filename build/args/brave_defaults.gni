@@ -11,3 +11,7 @@
 disable_fieldtrial_testing_config = true
 root_extra_deps = [ "//brave" ]
 generate_about_credits = true
+
+# This has been disabled after some discussion deciding it is not relevant for
+# our use case since it was introduced in M140, and caused build problems.
+translate_genders = false
