@@ -6,11 +6,11 @@
 #include "brave/ios/browser/api/web/web_state/web_state_native.h"
 
 #include "base/check.h"
-#include "ios/chrome/browser/sessions/model/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_opener.h"
+#include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
 #include "ios/chrome/browser/tabs/model/synced_window_delegate_browser_agent.h"
 #include "ios/web/public/session/crw_navigation_item_storage.h"
 #include "ios/web/public/session/crw_session_storage.h"
@@ -61,7 +61,8 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
                                 .Activate());
 
   // Finally Set the WebState WindowID
-  IOSChromeSessionTabHelper::FromWebState(web_state_)->SetWindowID(session_id_);
+  IOSChromeSyncedTabDelegate::FromWebState(web_state_)
+      ->SetWindowId(session_id_);
 }
 
 NativeWebState::~NativeWebState() {
