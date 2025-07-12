@@ -30,6 +30,7 @@ class TabInterface;
 class BraveTabFeatures : public TabFeatures {
  public:
   static BraveTabFeatures* FromTabFeatures(TabFeatures* tab_features);
+  BraveTabFeatures();
   ~BraveTabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
@@ -39,10 +40,6 @@ class BraveTabFeatures : public TabFeatures {
     return psst_web_contents_observer_.get();
   }
 #endif
-
- protected:
-  friend TabFeatures;
-  BraveTabFeatures();
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
