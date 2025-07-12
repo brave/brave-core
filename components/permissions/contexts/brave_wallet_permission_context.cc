@@ -21,6 +21,7 @@
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
+#include "components/permissions/resolvers/content_setting_permission_resolver.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/permission_descriptor_util.h"
@@ -113,9 +114,10 @@ void BraveWalletPermissionContext::RequestPermission(
     request_address_queues_.erase(addr_queue_it);
   }
   std::unique_ptr<PermissionRequestData> data =
-      std::make_unique<PermissionRequestData>(this, request_data->id,
-                                              request_data->user_gesture,
-                                              sub_request_origin->GetURL());
+      std::make_unique<PermissionRequestData>(
+          std::make_unique<ContentSettingPermissionResolver>(type),
+          request_data->id, request_data->user_gesture,
+          sub_request_origin->GetURL());
   // This will prevent PermissionRequestManager from reprioritize the request
   // queue.
   data->embedded_permission_element_initiated = true;
