@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
+#include "chrome/browser/ui/views/download/download_ui_context_menu_view.h"
 
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/bubble/download_bubble_prefs.h"
@@ -12,16 +12,16 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/menus/simple_menu_model.h"
 
-#define DownloadShelfContextMenuView DownloadShelfContextMenuViewChromium
+#define DownloadUiContextMenuView DownloadUiContextMenuViewChromium
 
-#include "src/chrome/browser/ui/views/download/download_shelf_context_menu_view.cc"
+#include "src/chrome/browser/ui/views/download/download_ui_context_menu_view.cc"
 
-#undef DownloadShelfContextMenuView
+#undef DownloadUiContextMenuView
 
-DownloadShelfContextMenuView::~DownloadShelfContextMenuView() = default;
+DownloadUiContextMenuView::~DownloadUiContextMenuView() = default;
 
-ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
-  auto* model = DownloadShelfContextMenuViewChromium::GetMenuModel();
+ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
+  auto* model = DownloadUiContextMenuViewChromium::GetMenuModel();
   if (!model) {
     return nullptr;
   }
@@ -59,40 +59,40 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
   return model;
 }
 
-bool DownloadShelfContextMenuView::IsCommandIdEnabled(int command_id) const {
+bool DownloadUiContextMenuView::IsCommandIdEnabled(int command_id) const {
   if (static_cast<BraveDownloadCommands>(command_id) ==
       BraveDownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
-  return DownloadShelfContextMenuViewChromium::IsCommandIdEnabled(command_id);
+  return DownloadUiContextMenuViewChromium::IsCommandIdEnabled(command_id);
 }
 
-bool DownloadShelfContextMenuView::IsCommandIdChecked(int command_id) const {
+bool DownloadUiContextMenuView::IsCommandIdChecked(int command_id) const {
   if (static_cast<BraveDownloadCommands>(command_id) ==
       BraveDownloadCommands::REMOVE_FROM_LIST) {
     return false;
   }
 
-  return DownloadShelfContextMenuViewChromium::IsCommandIdChecked(command_id);
+  return DownloadUiContextMenuViewChromium::IsCommandIdChecked(command_id);
 }
 
-bool DownloadShelfContextMenuView::IsCommandIdVisible(int command_id) const {
+bool DownloadUiContextMenuView::IsCommandIdVisible(int command_id) const {
   if (static_cast<BraveDownloadCommands>(command_id) ==
       BraveDownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
-  return DownloadShelfContextMenuViewChromium::IsCommandIdVisible(command_id);
+  return DownloadUiContextMenuViewChromium::IsCommandIdVisible(command_id);
 }
 
-void DownloadShelfContextMenuView::ExecuteCommand(int command_id,
-                                                  int event_flags) {
+void DownloadUiContextMenuView::ExecuteCommand(int command_id,
+                                               int event_flags) {
   if (static_cast<BraveDownloadCommands>(command_id) ==
       BraveDownloadCommands::REMOVE_FROM_LIST) {
     GetDownload()->GetDownloadItem()->Remove();
     return;
   }
 
-  DownloadShelfContextMenuViewChromium::ExecuteCommand(command_id, event_flags);
+  DownloadUiContextMenuViewChromium::ExecuteCommand(command_id, event_flags);
 }
