@@ -14,6 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/web_discovery/common/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/search_engines/template_url.h"
@@ -86,8 +87,9 @@ bool ShouldShowWebDiscoveryInfoBar(TemplateURLService* service,
                                    PrefService* prefs,
                                    const WebDiscoveryCTAState& state,
                                    base::Clock* test_clock) {
-  if (prefs->GetBoolean(kWebDiscoveryEnabled))
+  if (web_discovery::IsWebDiscoveryEnabled(*prefs)) {
     return false;
+  }
 
   if (!service || !IsBraveSearchDefault(service))
     return false;

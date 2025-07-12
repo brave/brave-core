@@ -75,6 +75,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+    {policy::key::kBraveWebDiscoveryDisabled, kWebDiscoveryDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},

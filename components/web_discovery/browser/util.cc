@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
