@@ -439,9 +439,6 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
       last = last.insertAdjacentElement('afterend', sectionSync)
-      // Move search
-      const sectionSearch = getSectionElement(actualTemplate.content, 'search')
-      last = last.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       last = last.insertAdjacentElement('afterend', sectionExtensions)
       // Insert Wallet
