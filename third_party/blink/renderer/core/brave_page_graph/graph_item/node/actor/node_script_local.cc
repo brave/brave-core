@@ -16,7 +16,7 @@ namespace brave_page_graph {
 
 namespace {
 
-String GetScriptTypeAsString(const ScriptSource& script_source) {
+blink::String GetScriptTypeAsString(const ScriptSource& script_source) {
   if (script_source.is_module) {
     return "module";
   }
@@ -59,7 +59,7 @@ ItemName NodeScriptLocal::GetItemName() const {
 }
 
 ItemDesc NodeScriptLocal::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeScript::GetItemDesc();
 
   if (!script_data_.source.url.IsEmpty()) {

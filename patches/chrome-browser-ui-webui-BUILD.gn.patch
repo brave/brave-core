@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index fb704595cdeb3249d6541bb04801117f18d1d8cb..99551c12a16a903aff4ea9b049b7155816ae03c4 100644
+index 0781c82df15cfb8e930faf7768f061ce9647c1d7..6c0677f00156d8ca9e8e8e967b739c183c70ae34 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -101,6 +101,7 @@ source_set("configs") {
+@@ -102,6 +102,7 @@ source_set("configs") {
    if (enable_glic) {
      deps += [ "//chrome/browser/glic" ]
    }

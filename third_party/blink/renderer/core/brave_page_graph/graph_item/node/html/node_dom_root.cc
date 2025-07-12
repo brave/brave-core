@@ -15,7 +15,7 @@ namespace brave_page_graph {
 
 NodeDOMRoot::NodeDOMRoot(GraphItemContext* context,
                          const DOMNodeId dom_node_id,
-                         const String& tag_name,
+                         const blink::String& tag_name,
                          bool is_attached)
     : NodeHTMLElement(context, dom_node_id, tag_name),
       is_attached_{is_attached} {}
@@ -25,7 +25,7 @@ ItemName NodeDOMRoot::GetItemName() const {
 }
 
 ItemDesc NodeDOMRoot::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeHTMLElement::GetItemDesc();
   ts << " [is attached: " << is_attached_;
 

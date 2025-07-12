@@ -16,7 +16,7 @@ EdgeRequestStart::EdgeRequestStart(GraphItemContext* context,
                                    NodeResource* in_node,
                                    const InspectorId request_id,
                                    const FrameId& frame_id,
-                                   const String& resource_type)
+                                   const blink::String& resource_type)
     : EdgeRequest(context,
                   out_node,
                   in_node,
@@ -40,7 +40,7 @@ ItemName EdgeRequestStart::GetItemName() const {
 }
 
 ItemDesc EdgeRequestStart::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeRequest::GetItemDesc() << " [" << resource_type_ << "]";
   return ts.ReleaseString();
 }

@@ -21,7 +21,7 @@
 namespace {
 
 blink::WebWindowFeatures MaybeFarbleWindowFeatures(
-    const String& feature_string,
+    const blink::String& feature_string,
     blink::LocalDOMWindow* dom_window) {
   blink::WebWindowFeatures window_features =
       GetWindowFeaturesFromString_ChromiumImpl(feature_string, dom_window);
@@ -51,11 +51,11 @@ blink::WebWindowFeatures MaybeFarbleWindowFeatures(
 
 }  // namespace
 
-#define GetWindowFeaturesFromString                               \
-  GetWindowFeaturesFromString(const String& feature_string,       \
-                              LocalDOMWindow* dom_window) {       \
-    return MaybeFarbleWindowFeatures(feature_string, dom_window); \
-  }                                                               \
+#define GetWindowFeaturesFromString                                \
+  GetWindowFeaturesFromString(const blink::String& feature_string, \
+                              LocalDOMWindow* dom_window) {        \
+    return MaybeFarbleWindowFeatures(feature_string, dom_window);  \
+  }                                                                \
   WebWindowFeatures GetWindowFeaturesFromString_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/page/create_window.cc"

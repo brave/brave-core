@@ -213,7 +213,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
-      &optimization_guide::features::kRemoteOptimizationGuideFetching,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
       &permissions::features::kCpssUseTfliteSignatureRunner,
@@ -233,9 +232,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &safe_browsing::kDownloadsPageReferrerUrl,
-      &safe_browsing::kExtensionTelemetryForEnterprise,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
-      &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
@@ -297,6 +294,10 @@ TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
 
 TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
   EXPECT_TRUE(features::HasTabSearchToolbarButton());
+}
+
+TEST(FeatureDefaultsTest, IsModelDownloadingEnabled) {
+  EXPECT_FALSE(optimization_guide::features::IsModelDownloadingEnabled());
 }
 
 #if !BUILDFLAG(IS_ANDROID)

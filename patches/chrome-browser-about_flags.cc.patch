@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 44de1dd03cb650aa07e4555f0b14a42737558a85..2723225ae2860de235e44c197d31c93f2eee9d72 100644
+index 83abae2070d5817c27c121e0d2d518663c682508..5e5aff2a3de6a246503c204077f0cc8ae9337937 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4850,6 +4850,7 @@ const FeatureEntry::Choice kDataSharingVersioningStateChoices[] = {
+@@ -4687,6 +4687,7 @@ const FeatureEntry::Choice kDataSharingVersioningStateChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

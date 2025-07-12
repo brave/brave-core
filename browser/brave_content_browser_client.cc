@@ -1294,9 +1294,6 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
-  // This will stop NavigatorPlugins from returning fixed plugins data and will
-  // allow us to return our farbled data
-  web_prefs->allow_non_empty_navigator_plugins = true;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
