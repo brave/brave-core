@@ -122,6 +122,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
                            MessageManagerNotStartedWhenP3ADisabled);
   FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
+                           MessageManagerNotStartedWhenP3ADisabledByPolicy);
+  FRIEND_TEST_ALL_PREFIXES(P3AServiceTest,
                            MessageManagerStartsAndStopsOnPrefChange);
   FRIEND_TEST_ALL_PREFIXES(P3AServiceTest, MetricValueStored);
 

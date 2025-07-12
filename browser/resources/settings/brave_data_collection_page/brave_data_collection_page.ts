@@ -96,7 +96,7 @@ extends SettingBraveDataCollectionPageElementBase
     // checks for a pref being valid, so have to fake it, same as upstream.
     const setP3AEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
       this.setP3AEnabledPref_(userEnabled, policyDisabled)
- 
+
     this.isP3ADisabledByPolicy_ = loadTimeData.getBoolean('isP3ADisabledByPolicy')
     this.isStatsReportingDisabledByPolicy_ = loadTimeData.getBoolean('isStatsReportingDisabledByPolicy')
 
