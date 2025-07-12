@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/download/download_shelf_context_menu.h"
+#include "chrome/browser/download/download_ui_context_menu.h"
 
 #include "chrome/browser/download/download_commands.h"
 
@@ -17,7 +17,7 @@
   case DownloadCommands::REMOVE_FROM_LIST: \
   case DownloadCommands::DELETE_LOCAL_FILE
 
-#include <chrome/browser/download/download_shelf_context_menu.cc>
+#include <chrome/browser/download/download_ui_context_menu.cc>
 
 #undef EDIT_WITH_MEDIA_APP
 #undef RecordCommandsEnabled
