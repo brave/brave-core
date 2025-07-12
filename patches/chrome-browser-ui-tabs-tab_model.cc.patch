@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
+index 6dc52edf7a2d1323dc8aa08c88c433cbe56e6c59..3ddd9db23fa7d4f3437204dc3a503b94e2704e32 100644
+--- a/chrome/browser/ui/tabs/tab_model.cc
++++ b/chrome/browser/ui/tabs/tab_model.cc
+@@ -79,7 +79,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
+   // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
+   // one place, which is here.
+   TabHelpers::AttachTabHelpers(contents_);
+-  tab_features_ = std::make_unique<TabFeatures>();
++  tab_features_ = std::make_unique<BraveTabFeatures>();
+   const SessionID session_id = sessions::SessionTabHelper::IdForTab(contents_);
+   CHECK(session_id.is_valid());
+   SetSessionId(session_id.id());
