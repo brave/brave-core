@@ -12,7 +12,11 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ios/chrome/browser/shared/model/browser/browser.h"
+#include "ios/chrome/browser/shared/model/browser/browser_list.h"
+#include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/web/public/favicon/favicon_url.h"
 #include "ios/web/public/navigation/navigation_item.h"
 #include "ios/web/public/navigation/navigation_manager.h"
@@ -23,6 +27,21 @@ namespace ai_chat {
 namespace {
 
 mojom::TabDataPtr CreateTabDataFromWebState(web::WebState* web_state) {
+  // If the WebState is in a WebStateList, it's Brave's fake `NativeWebState`
+  // used for syncing. So ignore it.
+  BrowserList* browser_list = BrowserListFactory::GetForProfile(
+      ProfileIOS::FromBrowserState(web_state->GetBrowserState()));
+  if (browser_list) {
+    for (Browser* browser :
+         browser_list->BrowsersOfType(BrowserList::BrowserType::kAll)) {
+      WebStateList* web_state_list = browser->GetWebStateList();
+      if (web_state_list && web_state_list->GetIndexOfWebState(web_state) !=
+                                WebStateList::kInvalidIndex) {
+        return nullptr;
+      }
+    }
+  }
+
   if (auto* last_committed_item =
           web_state->GetNavigationManager()->GetLastCommittedItem();
       last_committed_item != nullptr) {
@@ -32,7 +51,7 @@ mojom::TabDataPtr CreateTabDataFromWebState(web::WebState* web_state) {
     tab->url = web_state->GetLastCommittedURL();
     return tab;
   }
-  
+
   return nullptr;
 }
 
