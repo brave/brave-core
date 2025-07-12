@@ -657,6 +657,23 @@ const util = {
       )
       explicitSourceFiles[iconDest] = iconSource
 
+      const assetCatalogSource = path.join(
+        braveAppDir,
+        'theme',
+        'brave',
+        'mac',
+        config.channel,
+        'Assets.car',
+      )
+      const assetCatalogDest = path.join(
+        chromeAppDir,
+        'theme',
+        'brave',
+        'mac',
+        'Assets.car',
+      )
+      explicitSourceFiles[assetCatalogDest] = assetCatalogSource
+
       // Set proper branding file.
       let brandingFileName = 'BRANDING'
       if (config.channel)
