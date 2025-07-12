@@ -35,6 +35,9 @@ inline constexpr char kThresholdCheckMade[] =
 // Anonymous usage pings enabled
 inline constexpr char kStatsReportingEnabled[] =
     "brave.stats.reporting_enabled";
+// Used to enable/disable stats reporting via a policy.
+inline constexpr char kStatsReportingDisabledByPolicy[] =
+    "brave.stats.reporting_disabled_by_policy";
 // Serialized query for to send to the stats-updater server. Needs to be saved
 // in the case that the user sends the standard usage ping, stops the browser,
 // meets the threshold requirements, and then starts the browser before the

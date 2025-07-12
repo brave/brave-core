@@ -79,6 +79,16 @@ TEST_F(P3AServiceTest, MessageManagerNotStartedWhenP3ADisabled) {
   EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
 }
 
+TEST_F(P3AServiceTest, MessageManagerNotStartedWhenP3ADisabledByPolicy) {
+  local_state_.SetBoolean(kP3ADisabledByPolicy, true);
+  CreateP3AService();
+
+  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+
+  TriggerRemoteConfigLoad();
+  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+}
+
 TEST_F(P3AServiceTest, MessageManagerStartsAndStopsOnPrefChange) {
   local_state_.SetBoolean(kP3AEnabled, false);
   CreateP3AService();
