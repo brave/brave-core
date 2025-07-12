@@ -13,6 +13,7 @@ import re
 import shlex
 from typing import Any, Dict, List, Optional
 from pathlib import Path
+import aiofiles
 
 try:
     from mcp import ClientSession, StdioServerParameters
@@ -123,15 +124,15 @@ async def handle_read_resource(uri: str) -> str:
     file_path = Path(uri[7:])  # Remove file:// prefix
     
     if not file_path.exists():
-        raise FileNotFoundError(f"File not found: {file_path}")
+        raise FileNotFoundError("File not found: " + str(file_path))
     
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
+        async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
+            content = await f.read()
         return content
     except UnicodeDecodeError:
         # Handle binary files
-        return f"Binary file: {file_path}"
+        return "Binary file: " + str(file_path)
 
 @app.list_tools()
 async def handle_list_tools() -> List[Tool]:
@@ -215,209 +216,244 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
     """Handle tool calls for source code operations."""
     
     if name == "search_files":
-        pattern = arguments["pattern"]
-        directory = arguments.get("directory", ".")
-        
-        # Security validation
-        if not validate_path(directory):
-            return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
-        
-        if not validate_file_pattern(pattern):
-            return [TextContent(type="text", text="Error: Invalid file pattern")]
-        
-        try:
-            # Sanitize inputs for shell command
-            safe_directory = shlex.quote(directory)
-            safe_pattern = shlex.quote(pattern)
-            
-            # Use find command for file search with size limit
-            cmd = ["find", safe_directory, "-name", safe_pattern, "-type", "f", "-size", f"-{MAX_FILE_SIZE}c"]
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR, timeout=30)
-            
-            if result.returncode == 0:
-                files = result.stdout.strip().split('\n') if result.stdout.strip() else []
-                # Limit results for performance
-                files = files[:MAX_SEARCH_RESULTS]
-                content = f"Found {len(files)} files matching '{pattern}':\n\n"
-                for file in files:
-                    content += f"- {file}\n"
-                if len(files) == MAX_SEARCH_RESULTS:
-                    content += f"\n... (limited to {MAX_SEARCH_RESULTS} results)"
-            else:
-                content = f"No files found matching '{pattern}'"
-                
-        except subprocess.TimeoutExpired:
-            content = "Error: Search operation timed out"
-        except Exception as e:
-            content = f"Error: {str(e)}"
-            
-        return [TextContent(type="text", text=content)]
-    
+        return await handle_search_files(arguments)
     elif name == "search_code":
-        query = arguments["query"]
-        file_pattern = arguments.get("file_pattern", "*")
-        directory = arguments.get("directory", ".")
-        
-        # Security validation
-        if not validate_path(directory):
-            return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
-        
-        if not validate_file_pattern(file_pattern):
-            return [TextContent(type="text", text="Error: Invalid file pattern")]
-        
-        # Sanitize search query
-        safe_query = sanitize_search_input(query)
-        if not safe_query:
-            return [TextContent(type="text", text="Error: Invalid search query")]
-        
-        try:
-            # Sanitize inputs for shell command
-            safe_directory = shlex.quote(directory)
-            safe_pattern = shlex.quote(file_pattern)
-            safe_query_quoted = shlex.quote(safe_query)
-            
-            # Use ripgrep if available, otherwise grep with limits
-            try:
-                if subprocess.run(["which", "rg"], capture_output=True, timeout=5).returncode == 0:
-                    cmd = ["rg", "--max-count", str(MAX_SEARCH_RESULTS), "-n", safe_query_quoted, safe_directory, "--glob", safe_pattern]
-                else:
-                    cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
-            except subprocess.TimeoutExpired:
-                # Fall back to grep if which command times out
-                cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
-                
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR, timeout=60)
-            
-            if result.returncode == 0:
-                # Limit output size
-                output = result.stdout[:50000]  # Limit to 50KB
-                if len(result.stdout) > 50000:
-                    output += "\n... (output truncated)"
-                content = f"Code search results for '{safe_query}':\n\n{output}"
-            else:
-                content = f"No matches found for '{safe_query}'"
-                
-        except subprocess.TimeoutExpired:
-            content = "Error: Search operation timed out"
-        except Exception as e:
-            content = f"Error: {str(e)}"
-            
-        return [TextContent(type="text", text=content)]
-    
+        return await handle_search_code(arguments)
     elif name == "get_file_info":
-        file_path = arguments["file_path"]
-        
-        # Security validation
-        if not validate_path(file_path):
-            return [TextContent(type="text", text="Error: Invalid or unsafe file path")]
-        
-        try:
-            full_path = (CURRENT_DIR / file_path).resolve()
-            
-            # Double-check the resolved path is still safe
-            if not validate_path(str(full_path)):
-                return [TextContent(type="text", text="Error: Resolved path is outside allowed directories")]
-            
-            if not full_path.exists():
-                content = f"File not found: {file_path}"
-            else:
-                # Get file stats
-                stat = full_path.stat()
-                size = stat.st_size
-                
-                # Check file size limit
-                if size > MAX_FILE_SIZE:
-                    content = f"File: {file_path}\n"
-                    content += f"Size: {size} bytes (too large to read)\n"
-                    content += "File exceeds maximum readable size limit"
-                    return [TextContent(type="text", text=content)]
-                
-                # Check file extension is allowed
-                suffix = full_path.suffix.lower()
-                is_allowed = suffix in ALLOWED_FILE_EXTENSIONS
-                is_source = suffix in {'.cc', '.cpp', '.c', '.h', '.hpp', '.py', '.js', '.ts', '.java'}
-                
-                content = f"File: {file_path}\n"
-                content += f"Size: {size} bytes\n"
-                content += f"Type: {'Source code' if is_source else 'Other'}\n"
-                
-                if is_allowed and is_source and size < MAX_FILE_SIZE:
-                    try:
-                        with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
-                            lines = f.readlines()[:100]  # Limit to first 100 lines
-                        content += f"Lines: {len(lines)} (showing first {min(20, len(lines))})\n\n"
-                        content += "Preview:\n"
-                        content += "```\n"
-                        content += "".join(lines[:20])
-                        if len(lines) > 20:
-                            content += "\n... (truncated)"
-                        content += "```"
-                    except (UnicodeDecodeError, PermissionError):
-                        content += "Cannot read file content (binary or permission denied)"
-                elif not is_allowed:
-                    content += "File type not allowed for reading"
-                        
-        except Exception as e:
-            content = f"Error: {str(e)}"
-            
-        return [TextContent(type="text", text=content)]
-    
+        return await handle_get_file_info(arguments)
     elif name == "find_brave_components":
-        component_name = arguments.get("component_name", "")
-        
-        # Sanitize component name input
-        if component_name:
-            safe_component_name = sanitize_search_input(component_name)
-            if not safe_component_name:
-                return [TextContent(type="text", text="Error: Invalid component name")]
-        else:
-            safe_component_name = ""
-        
-        try:
-            # Search for Brave-specific directories and files
-            brave_paths = []
-            
-            # Search in brave/ directory with security constraints
-            brave_dir = CURRENT_DIR / "src" / "brave"
-            if brave_dir.exists():
-                if safe_component_name:
-                    safe_pattern = shlex.quote(f"*{safe_component_name}*")
-                    cmd = ["find", str(brave_dir), "-name", safe_pattern, "-type", "d", "-maxdepth", "5"]
-                else:
-                    cmd = ["find", str(brave_dir), "-maxdepth", "2", "-type", "d"]
-                    
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-                if result.returncode == 0:
-                    paths = result.stdout.strip().split('\n') if result.stdout.strip() else []
-                    # Validate all returned paths
-                    for path in paths:
-                        if path and validate_path(path):
-                            brave_paths.append(path)
-            
-            content = f"Brave components"
-            if safe_component_name:
-                content += f" matching '{safe_component_name}'"
-            content += ":\n\n"
-            
-            # Limit and validate results
-            for path in brave_paths[:MAX_SEARCH_RESULTS//5]:  # Smaller limit for directory searches
-                if path:
-                    try:
-                        rel_path = Path(path).relative_to(CURRENT_DIR)
-                        content += f"- {rel_path}\n"
-                    except ValueError:
-                        # Skip paths that can't be made relative (security)
-                        continue
-                        
-        except subprocess.TimeoutExpired:
-            content = "Error: Component search timed out"
-        except Exception as e:
-            content = f"Error: {str(e)}"
-            
-        return [TextContent(type="text", text=content)]
-    
+        return await handle_find_brave_components(arguments)
     else:
-        raise ValueError(f"Unknown tool: {name}")
+        raise ValueError("Unknown tool: " + name)
+
+async def run_subprocess_async(cmd: List[str], timeout: int = 30) -> subprocess.CompletedProcess:
+    """Run subprocess asynchronously."""
+    process = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        cwd=CURRENT_DIR
+    )
+    try:
+        stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=timeout)
+        return subprocess.CompletedProcess(
+            args=cmd,
+            returncode=process.returncode,
+            stdout=stdout.decode('utf-8') if stdout else '',
+            stderr=stderr.decode('utf-8') if stderr else ''
+        )
+    except asyncio.TimeoutError:
+        process.kill()
+        await process.wait()
+        raise subprocess.TimeoutExpired(cmd, timeout)
+
+async def handle_search_files(arguments: Dict[str, Any]) -> List[TextContent]:
+    """Handle search_files tool call."""
+    pattern = arguments["pattern"]
+    directory = arguments.get("directory", ".")
+    
+    # Security validation
+    if not validate_path(directory):
+        return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
+    
+    if not validate_file_pattern(pattern):
+        return [TextContent(type="text", text="Error: Invalid file pattern")]
+    
+    try:
+        # Sanitize inputs for shell command
+        safe_directory = shlex.quote(directory)
+        safe_pattern = shlex.quote(pattern)
+        
+        # Use find command for file search with size limit
+        cmd = ["find", safe_directory, "-name", safe_pattern, "-type", "f", "-size", "-" + str(MAX_FILE_SIZE) + "c"]
+        result = await run_subprocess_async(cmd, timeout=30)
+        
+        if result.returncode == 0:
+            files = result.stdout.strip().split('\n') if result.stdout.strip() else []
+            # Limit results for performance
+            files = files[:MAX_SEARCH_RESULTS]
+            content = "Found " + str(len(files)) + " files matching '" + pattern + "':\n\n"
+            for file in files:
+                content += "- " + file + "\n"
+            if len(files) == MAX_SEARCH_RESULTS:
+                content += "\n... (limited to " + str(MAX_SEARCH_RESULTS) + " results)"
+        else:
+            content = "No files found matching '" + pattern + "'"
+            
+    except subprocess.TimeoutExpired:
+        content = "Error: Search operation timed out"
+    except Exception as e:
+        content = "Error: " + str(e)
+        
+    return [TextContent(type="text", text=content)]
+
+async def handle_search_code(arguments: Dict[str, Any]) -> List[TextContent]:
+    """Handle search_code tool call."""
+    query = arguments["query"]
+    file_pattern = arguments.get("file_pattern", "*")
+    directory = arguments.get("directory", ".")
+    
+    # Security validation
+    if not validate_path(directory):
+        return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
+    
+    if not validate_file_pattern(file_pattern):
+        return [TextContent(type="text", text="Error: Invalid file pattern")]
+    
+    # Sanitize search query
+    safe_query = sanitize_search_input(query)
+    if not safe_query:
+        return [TextContent(type="text", text="Error: Invalid search query")]
+    
+    try:
+        # Sanitize inputs for shell command
+        safe_directory = shlex.quote(directory)
+        safe_pattern = shlex.quote(file_pattern)
+        safe_query_quoted = shlex.quote(safe_query)
+        
+        # Use ripgrep if available, otherwise grep with limits
+        try:
+            which_result = await run_subprocess_async(["which", "rg"], timeout=5)
+            if which_result.returncode == 0:
+                cmd = ["rg", "--max-count", str(MAX_SEARCH_RESULTS), "-n", safe_query_quoted, safe_directory, "--glob", safe_pattern]
+            else:
+                cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
+        except subprocess.TimeoutExpired:
+            # Fall back to grep if which command times out
+            cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
+            
+        result = await run_subprocess_async(cmd, timeout=60)
+        
+        if result.returncode == 0:
+            # Limit output size
+            output = result.stdout[:50000]  # Limit to 50KB
+            if len(result.stdout) > 50000:
+                output += "\n... (output truncated)"
+            content = "Code search results for '" + safe_query + "':\n\n" + output
+        else:
+            content = "No matches found for '" + safe_query + "'"
+            
+    except subprocess.TimeoutExpired:
+        content = "Error: Search operation timed out"
+    except Exception as e:
+        content = "Error: " + str(e)
+        
+    return [TextContent(type="text", text=content)]
+
+async def handle_get_file_info(arguments: Dict[str, Any]) -> List[TextContent]:
+    """Handle get_file_info tool call."""
+    file_path = arguments["file_path"]
+    
+    # Security validation
+    if not validate_path(file_path):
+        return [TextContent(type="text", text="Error: Invalid or unsafe file path")]
+    
+    try:
+        full_path = (CURRENT_DIR / file_path).resolve()
+        
+        # Double-check the resolved path is still safe
+        if not validate_path(str(full_path)):
+            return [TextContent(type="text", text="Error: Resolved path is outside allowed directories")]
+        
+        if not full_path.exists():
+            content = "File not found: " + file_path
+        else:
+            # Get file stats
+            stat = full_path.stat()
+            size = stat.st_size
+            
+            # Check file size limit
+            if size > MAX_FILE_SIZE:
+                content = "File: " + file_path + "\n"
+                content += "Size: " + str(size) + " bytes (too large to read)\n"
+                content += "File exceeds maximum readable size limit"
+                return [TextContent(type="text", text=content)]
+            
+            # Check file extension is allowed
+            suffix = full_path.suffix.lower()
+            is_allowed = suffix in ALLOWED_FILE_EXTENSIONS
+            is_source = suffix in {'.cc', '.cpp', '.c', '.h', '.hpp', '.py', '.js', '.ts', '.java'}
+            
+            content = "File: " + file_path + "\n"
+            content += "Size: " + str(size) + " bytes\n"
+            content += "Type: " + ('Source code' if is_source else 'Other') + "\n"
+            
+            if is_allowed and is_source and size < MAX_FILE_SIZE:
+                try:
+                    async with aiofiles.open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        lines_content = await f.read()
+                        lines = lines_content.splitlines()[:100]  # Limit to first 100 lines
+                    content += "Lines: " + str(len(lines)) + " (showing first " + str(min(20, len(lines))) + ")\n\n"
+                    content += "Preview:\n"
+                    content += "```\n"
+                    content += "\n".join(lines[:20])
+                    if len(lines) > 20:
+                        content += "\n... (truncated)"
+                    content += "```"
+                except (UnicodeDecodeError, PermissionError):
+                    content += "Cannot read file content (binary or permission denied)"
+            elif not is_allowed:
+                content += "File type not allowed for reading"
+                    
+    except Exception as e:
+        content = "Error: " + str(e)
+        
+    return [TextContent(type="text", text=content)]
+
+async def handle_find_brave_components(arguments: Dict[str, Any]) -> List[TextContent]:
+    """Handle find_brave_components tool call."""
+    component_name = arguments.get("component_name", "")
+    
+    # Sanitize component name input
+    if component_name:
+        safe_component_name = sanitize_search_input(component_name)
+        if not safe_component_name:
+            return [TextContent(type="text", text="Error: Invalid component name")]
+    else:
+        safe_component_name = ""
+    
+    try:
+        # Search for Brave-specific directories and files
+        brave_paths = []
+        
+        # Search in brave/ directory with security constraints
+        brave_dir = CURRENT_DIR / "src" / "brave"
+        if brave_dir.exists():
+            if safe_component_name:
+                safe_pattern = shlex.quote("*" + safe_component_name + "*")
+                cmd = ["find", str(brave_dir), "-name", safe_pattern, "-type", "d", "-maxdepth", "5"]
+            else:
+                cmd = ["find", str(brave_dir), "-maxdepth", "2", "-type", "d"]
+                
+            result = await run_subprocess_async(cmd, timeout=30)
+            if result.returncode == 0:
+                paths = result.stdout.strip().split('\n') if result.stdout.strip() else []
+                # Validate all returned paths
+                for path in paths:
+                    if path and validate_path(path):
+                        brave_paths.append(path)
+        
+        content = "Brave components"
+        if safe_component_name:
+            content += " matching '" + safe_component_name + "'"
+        content += ":\n\n"
+        
+        # Limit and validate results
+        for path in brave_paths[:MAX_SEARCH_RESULTS//5]:  # Smaller limit for directory searches
+            if path:
+                try:
+                    rel_path = Path(path).relative_to(CURRENT_DIR)
+                    content += "- " + str(rel_path) + "\n"
+                except ValueError:
+                    # Skip paths that can't be made relative (security)
+                    continue
+                    
+    except subprocess.TimeoutExpired:
+        content = "Error: Component search timed out"
+    except Exception as e:
+        content = "Error: " + str(e)
+        
+    return [TextContent(type="text", text=content)]
 
 async def main():
     """Main entry point for the MCP server."""

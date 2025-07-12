@@ -45,7 +45,7 @@ def test_python_execution():
             print("✅ Server module can be executed")
             return True
         else:
-            print(f"⚠️  Server execution test inconclusive (this may be normal)")
+            print("⚠️  Server execution test inconclusive (this may be normal)")
             print(f"Return code: {result.returncode}")
             if result.stdout:
                 print(f"Stdout: {result.stdout[:200]}")
