@@ -24,28 +24,6 @@
 #endif
 
 namespace tabs {
-namespace {
-TabFeatures::TabFeaturesFactory& GetFactory() {
-  static base::NoDestructor<TabFeatures::TabFeaturesFactory> factory;
-  return *factory;
-}
-}  // namespace
-
-// static
-void TabFeatures::ReplaceTabFeaturesForTesting(
-    TabFeatures::TabFeaturesFactory factory) {
-  TabFeatures::TabFeaturesFactory& f = GetFactory();
-  f = std::move(factory);
-}
-
-// static
-std::unique_ptr<TabFeatures> TabFeatures::CreateTabFeatures() {
-  if (GetFactory()) {
-    return GetFactory().Run();
-  }
-  // Constructor is protected.
-  return base::WrapUnique(new BraveTabFeatures());
-}
 
 // static
 BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
