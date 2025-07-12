@@ -9,6 +9,10 @@
 #include "chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
+// This class overrides the default behavior of CustomizeColorSchemeModeHandler
+// to use Brave's dark mode utilities instead of the ThemeService for color
+// scheme mode handling. It listens for changes in the local state preference
+// `kBraveDarkMode` and updates the color scheme mode accordingly.
 class BraveCustomizeColorSchemeModeHandler
     : public CustomizeColorSchemeModeHandler {
  public:
