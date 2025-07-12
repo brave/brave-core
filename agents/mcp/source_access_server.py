@@ -9,6 +9,8 @@ import os
 import sys
 import subprocess
 import asyncio
+import re
+import shlex
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
@@ -35,6 +37,56 @@ app = Server("brave-source-access")
 BRAVE_CORE_PATH = os.environ.get("BRAVE_CORE_PATH", "../brave-core")
 CHROMIUM_SRC_PATH = os.environ.get("CHROMIUM_SRC_PATH", "./src")
 CURRENT_DIR = Path(__file__).parent.parent.parent
+
+# Security configuration
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB limit for file reads
+MAX_SEARCH_RESULTS = 100  # Limit search results
+ALLOWED_FILE_EXTENSIONS = {'.py', '.js', '.ts', '.cc', '.h', '.cpp', '.c', '.hpp', '.java', '.gn', '.gni', '.md', '.json', '.xml', '.html', '.css', '.proto', '.mojom'}
+
+def validate_path(path: str) -> bool:
+    """Validate that a path is safe and within allowed directories."""
+    try:
+        # Resolve path and check it's within allowed bounds
+        resolved_path = Path(path).resolve()
+        current_dir = CURRENT_DIR.resolve()
+        
+        # Must be within the current directory tree
+        try:
+            resolved_path.relative_to(current_dir)
+        except ValueError:
+            return False
+            
+        # Block dangerous path components
+        path_str = str(resolved_path)
+        dangerous_patterns = ['..', '~', '$', '`', ';', '|', '&', '<', '>', '*', '?']
+        for pattern in dangerous_patterns:
+            if pattern in path:
+                return False
+                
+        return True
+    except (OSError, ValueError):
+        return False
+
+def sanitize_search_input(input_str: str) -> str:
+    """Sanitize search input to prevent command injection."""
+    if not input_str:
+        return ""
+    
+    # Remove dangerous characters for shell commands
+    # Allow alphanumeric, spaces, dots, dashes, underscores, and basic regex chars
+    sanitized = re.sub(r'[^a-zA-Z0-9\s._\-\[\]\(\)\+\*\?\|\^$\\]', '', input_str)
+    
+    # Limit length
+    return sanitized[:500]
+
+def validate_file_pattern(pattern: str) -> bool:
+    """Validate file pattern to prevent dangerous glob patterns."""
+    if not pattern:
+        return False
+    
+    # Basic validation for safe file patterns
+    safe_pattern = re.match(r'^[\w\*\?\.\-/]+$', pattern)
+    return bool(safe_pattern) and len(pattern) < 100
 
 @app.list_resources()
 async def handle_list_resources() -> List[Resource]:
@@ -166,21 +218,36 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
         pattern = arguments["pattern"]
         directory = arguments.get("directory", ".")
         
+        # Security validation
+        if not validate_path(directory):
+            return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
+        
+        if not validate_file_pattern(pattern):
+            return [TextContent(type="text", text="Error: Invalid file pattern")]
+        
         try:
-            # Use find command for file search
-            cmd = ["find", directory, "-name", pattern, "-type", "f"]
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR)
+            # Sanitize inputs for shell command
+            safe_directory = shlex.quote(directory)
+            safe_pattern = shlex.quote(pattern)
+            
+            # Use find command for file search with size limit
+            cmd = ["find", safe_directory, "-name", safe_pattern, "-type", "f", "-size", f"-{MAX_FILE_SIZE}c"]
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR, timeout=30)
             
             if result.returncode == 0:
                 files = result.stdout.strip().split('\n') if result.stdout.strip() else []
+                # Limit results for performance
+                files = files[:MAX_SEARCH_RESULTS]
                 content = f"Found {len(files)} files matching '{pattern}':\n\n"
-                for file in files[:50]:  # Limit to first 50 results
+                for file in files:
                     content += f"- {file}\n"
-                if len(files) > 50:
-                    content += f"\n... and {len(files) - 50} more files"
+                if len(files) == MAX_SEARCH_RESULTS:
+                    content += f"\n... (limited to {MAX_SEARCH_RESULTS} results)"
             else:
-                content = f"Error searching for files: {result.stderr}"
+                content = f"No files found matching '{pattern}'"
                 
+        except subprocess.TimeoutExpired:
+            content = "Error: Search operation timed out"
         except Exception as e:
             content = f"Error: {str(e)}"
             
@@ -191,20 +258,47 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
         file_pattern = arguments.get("file_pattern", "*")
         directory = arguments.get("directory", ".")
         
+        # Security validation
+        if not validate_path(directory):
+            return [TextContent(type="text", text="Error: Invalid or unsafe directory path")]
+        
+        if not validate_file_pattern(file_pattern):
+            return [TextContent(type="text", text="Error: Invalid file pattern")]
+        
+        # Sanitize search query
+        safe_query = sanitize_search_input(query)
+        if not safe_query:
+            return [TextContent(type="text", text="Error: Invalid search query")]
+        
         try:
-            # Use ripgrep if available, otherwise grep
-            if subprocess.run(["which", "rg"], capture_output=True).returncode == 0:
-                cmd = ["rg", "--type-add", f"custom:{file_pattern}", "-t", "custom", "-n", query, directory]
-            else:
-                cmd = ["grep", "-r", "-n", "--include", file_pattern, query, directory]
+            # Sanitize inputs for shell command
+            safe_directory = shlex.quote(directory)
+            safe_pattern = shlex.quote(file_pattern)
+            safe_query_quoted = shlex.quote(safe_query)
+            
+            # Use ripgrep if available, otherwise grep with limits
+            try:
+                if subprocess.run(["which", "rg"], capture_output=True, timeout=5).returncode == 0:
+                    cmd = ["rg", "--max-count", str(MAX_SEARCH_RESULTS), "-n", safe_query_quoted, safe_directory, "--glob", safe_pattern]
+                else:
+                    cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
+            except subprocess.TimeoutExpired:
+                # Fall back to grep if which command times out
+                cmd = ["grep", "-r", "-n", "--include", safe_pattern, "--max-count", str(MAX_SEARCH_RESULTS), safe_query_quoted, safe_directory]
                 
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR)
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=CURRENT_DIR, timeout=60)
             
             if result.returncode == 0:
-                content = f"Code search results for '{query}':\n\n{result.stdout}"
+                # Limit output size
+                output = result.stdout[:50000]  # Limit to 50KB
+                if len(result.stdout) > 50000:
+                    output += "\n... (output truncated)"
+                content = f"Code search results for '{safe_query}':\n\n{output}"
             else:
-                content = f"No matches found for '{query}'"
+                content = f"No matches found for '{safe_query}'"
                 
+        except subprocess.TimeoutExpired:
+            content = "Error: Search operation timed out"
         except Exception as e:
             content = f"Error: {str(e)}"
             
@@ -212,9 +306,18 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
     
     elif name == "get_file_info":
         file_path = arguments["file_path"]
-        full_path = CURRENT_DIR / file_path
+        
+        # Security validation
+        if not validate_path(file_path):
+            return [TextContent(type="text", text="Error: Invalid or unsafe file path")]
         
         try:
+            full_path = (CURRENT_DIR / file_path).resolve()
+            
+            # Double-check the resolved path is still safe
+            if not validate_path(str(full_path)):
+                return [TextContent(type="text", text="Error: Resolved path is outside allowed directories")]
+            
             if not full_path.exists():
                 content = f"File not found: {file_path}"
             else:
@@ -222,25 +325,37 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 stat = full_path.stat()
                 size = stat.st_size
                 
-                # Try to determine if it's a source file
-                suffix = full_path.suffix
-                is_source = suffix in ['.cc', '.cpp', '.c', '.h', '.hpp', '.py', '.js', '.ts']
+                # Check file size limit
+                if size > MAX_FILE_SIZE:
+                    content = f"File: {file_path}\n"
+                    content += f"Size: {size} bytes (too large to read)\n"
+                    content += "File exceeds maximum readable size limit"
+                    return [TextContent(type="text", text=content)]
+                
+                # Check file extension is allowed
+                suffix = full_path.suffix.lower()
+                is_allowed = suffix in ALLOWED_FILE_EXTENSIONS
+                is_source = suffix in {'.cc', '.cpp', '.c', '.h', '.hpp', '.py', '.js', '.ts', '.java'}
                 
                 content = f"File: {file_path}\n"
                 content += f"Size: {size} bytes\n"
                 content += f"Type: {'Source code' if is_source else 'Other'}\n"
                 
-                if is_source and size < 1000000:  # Only read if < 1MB
+                if is_allowed and is_source and size < MAX_FILE_SIZE:
                     try:
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            lines = f.readlines()
-                        content += f"Lines: {len(lines)}\n\n"
-                        content += "First 20 lines:\n"
+                        with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            lines = f.readlines()[:100]  # Limit to first 100 lines
+                        content += f"Lines: {len(lines)} (showing first {min(20, len(lines))})\n\n"
+                        content += "Preview:\n"
                         content += "```\n"
                         content += "".join(lines[:20])
+                        if len(lines) > 20:
+                            content += "\n... (truncated)"
                         content += "```"
-                    except UnicodeDecodeError:
-                        content += "Binary file - cannot display content"
+                    except (UnicodeDecodeError, PermissionError):
+                        content += "Cannot read file content (binary or permission denied)"
+                elif not is_allowed:
+                    content += "File type not allowed for reading"
                         
         except Exception as e:
             content = f"Error: {str(e)}"
@@ -250,32 +365,52 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
     elif name == "find_brave_components":
         component_name = arguments.get("component_name", "")
         
+        # Sanitize component name input
+        if component_name:
+            safe_component_name = sanitize_search_input(component_name)
+            if not safe_component_name:
+                return [TextContent(type="text", text="Error: Invalid component name")]
+        else:
+            safe_component_name = ""
+        
         try:
             # Search for Brave-specific directories and files
             brave_paths = []
             
-            # Search in brave/ directory
+            # Search in brave/ directory with security constraints
             brave_dir = CURRENT_DIR / "src" / "brave"
             if brave_dir.exists():
-                if component_name:
-                    cmd = ["find", str(brave_dir), "-name", f"*{component_name}*", "-type", "d"]
+                if safe_component_name:
+                    safe_pattern = shlex.quote(f"*{safe_component_name}*")
+                    cmd = ["find", str(brave_dir), "-name", safe_pattern, "-type", "d", "-maxdepth", "5"]
                 else:
                     cmd = ["find", str(brave_dir), "-maxdepth", "2", "-type", "d"]
                     
-                result = subprocess.run(cmd, capture_output=True, text=True)
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
                 if result.returncode == 0:
-                    brave_paths.extend(result.stdout.strip().split('\n'))
+                    paths = result.stdout.strip().split('\n') if result.stdout.strip() else []
+                    # Validate all returned paths
+                    for path in paths:
+                        if path and validate_path(path):
+                            brave_paths.append(path)
             
             content = f"Brave components"
-            if component_name:
-                content += f" matching '{component_name}'"
+            if safe_component_name:
+                content += f" matching '{safe_component_name}'"
             content += ":\n\n"
             
-            for path in brave_paths[:20]:  # Limit results
+            # Limit and validate results
+            for path in brave_paths[:MAX_SEARCH_RESULTS//5]:  # Smaller limit for directory searches
                 if path:
-                    rel_path = Path(path).relative_to(CURRENT_DIR)
-                    content += f"- {rel_path}\n"
-                    
+                    try:
+                        rel_path = Path(path).relative_to(CURRENT_DIR)
+                        content += f"- {rel_path}\n"
+                    except ValueError:
+                        # Skip paths that can't be made relative (security)
+                        continue
+                        
+        except subprocess.TimeoutExpired:
+            content = "Error: Component search timed out"
         except Exception as e:
             content = f"Error: {str(e)}"
             
