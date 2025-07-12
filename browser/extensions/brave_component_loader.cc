@@ -18,6 +18,8 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/browser/util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -44,6 +46,10 @@ BraveComponentLoader::BraveComponentLoader(Profile* profile)
 
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
+      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      web_discovery::kWebDiscoveryDisabledByPolicy,
       base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
                           base::Unretained(this)));
 }
@@ -84,7 +90,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 
 bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
   // Keep sync with `pref_change_registrar_` in the ctor.
-  return profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  return web_discovery::IsWebDiscoveryEnabled(profile_prefs_);
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

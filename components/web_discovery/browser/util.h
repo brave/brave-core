@@ -15,6 +15,8 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
+class PrefService;
+
 namespace web_discovery {
 
 inline constexpr size_t kMaxResponseSize = 16 * 1024;
@@ -62,6 +64,10 @@ std::optional<std::string> ExtractValueFromQueryString(
 
 // Strips non-alphanumeric characters from string
 void TransformToAlphanumeric(std::string& str);
+
+// Returns true if web discovery is enabled by user preference and not
+// disabled by policy.
+bool IsWebDiscoveryEnabled(PrefService* profile_prefs);
 
 }  // namespace web_discovery
 
