@@ -196,6 +196,10 @@ void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  // Don't allow enabling web discovery if it's disabled by policy
+  if (profile_->GetPrefs()->GetBoolean(kWebDiscoveryDisabledByPolicy)) {
+    return;
+  }
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 #endif
 }
