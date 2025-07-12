@@ -15,6 +15,9 @@ using RequestQueuePrefName =
 
 // Profile prefs
 inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+// Used to enable/disable web discovery via a policy.
+inline constexpr char kWebDiscoveryDisabledByPolicy[] =
+    "brave.web_discovery_disabled_by_policy";
 
 // The following pref values are used for generating
 // anonymous signatures for user submissions.
