@@ -239,8 +239,8 @@
       </message>
 
       <!-- Tab Selection Editor strings -->
-      <message name="IDS_TAB_SELECTION_EDITOR_TOOLBAR_SELECT_TABS" desc="Label shown on Tab Selection Editor Toolbar asking user to select tabs from the list.">
-        Select tabs
+      <message name="IDS_TAB_SELECTION_EDITOR_TOOLBAR_SELECT_ITEMS" desc="Label shown on Tab Selection Editor Toolbar asking user to select tabs and tab groups denoted as items from the list.">
+        Select items
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SELECTION_EDITOR_BACK_BUTTON" desc="Accessibility string for the back button in the Tab Selection Editor Toolbar. Tap this button to exit out of the multi-select mode">
         Hide multi-select mode
@@ -288,10 +288,10 @@
           other {Bookmark <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_TABS_COUNT" desc="The text for the selection counter shown in the Tab Selection Editor Toolbar. This shows the number of selected tabs including those within selected groups.">
+      <message name="IDS_TAB_SELECTION_EDITOR_ITEM_COUNT" desc="The text for the selection counter shown in the Tab Selection Editor Toolbar. This shows the number of selected tabs and tab groups as singular items.">
         {TABS_COUNT, plural,
-          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab}
-          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> tabs}
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> item}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> items}
         }
       </message>
       <message name="IDS_TAB_SELECTION_EDITOR_GROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Group' is a verb. When the user taps the menu item, Brave creates a new group that contains the selected tabs. [CHAR_LIMIT=27]">
@@ -684,6 +684,33 @@
           other {Expand shared <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>, with label <ph name="CARD_LABEL">%4$s<ex>New Activity</ex></ph>.}
         }
       </message>
+      <message name="IDS_ACCESSIBILITY_RESTORE_TAB" desc="The accessibility text to read when a tab is clicked in the inactive tabs surface. TAB_TITLE is the title of the tab.s">
+        Restore and open <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_RESTORE_TAB_GROUP_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in the inactive tabs surface. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Restore and open tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+          other {Restore and open tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_RESTORE_TAB_GROUP_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in the inactive tabs surface. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Restore and open <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+          other {Restore and open <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+          other {Close tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+          other {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+        }
+      </message>
       <message name="IDS_TAB_GROUP_CREATION_DIALOG_DESCRIPTION_TEXT_SYNC_ON" desc="A subtitle on the dialog for new tab group creations. Explains the group automatically saves and updates across all devices.">
         Your tab groups automatically save and update across all your signed-in devices
       </message>
@@ -876,7 +903,7 @@
 
       <!-- Tabs Settings Strings -->
       <message name="IDS_TABS_SETTINGS_TITLE" desc="A title to show in the top toolbar when the Tabs settings page is open.">
-        Tabs
+        Tabs and tab groups
       </message>
       <message name="IDS_AUTO_OPEN_SYNCED_TAB_GROUPS_SUMMARY" desc="A title to show in the top toolbar when the Tabs settings page is open.">
         Automatically open tab groups from other devices
@@ -931,20 +958,23 @@
       <message name="IDS_ARCHIVED_TABS_DIALOG_SETTINGS_ACTION" desc="A menu item for the archived tabs dialog. Navigates to the settings activity.">
         Settings
       </message>
-      <message name="IDS_ARCHIVE_SETTINGS_TITLE" desc="The title for the entry-point to declutter settings.">
+      <message name="IDS_ARCHIVE_SETTINGS_TITLE" desc="The title for the declutter settings page.">
         Inactive
+      </message>
+      <message name="IDS_ARCHIVE_SETTINGS_SECTION_TITLE" desc="The title for the entry-point to declutter settings.">
+        Move to inactive section
       </message>
       <message name="IDS_ARCHIVE_SETTINGS_SUMMARY" desc="The summary for the entry-point to declutter settings.">
         {DAY_COUNT, plural,
-          =1 {After 1 day}
-          other {After <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days}
+          =1 {After 1 day inactive}
+          other {After <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days inactive}
         }
       </message>
-      <message name="IDS_ARCHIVE_SETTINGS_ALLOW_AUTODELETE_TITLE" desc="The title for toggle to allow tabs to be deleted automatically.">
-        {DAY_COUNT, plural,
-          =1 {Close after 1 day}
-          other {Close after <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days}
-        }
+      <message name="IDS_ARCHIVE_SETTINGS_DESCRIPTION_SECTION" desc="The information section for describing the use of declutter settings.">
+        Choose when tabs and tab groups are automatically moved to the inactive section.
+      </message>
+      <message name="IDS_ARCHIVE_SETTINGS_ALLOW_AUTODELETE_TITLE" desc="The title for toggle to allow tabs and tab groups to be deleted automatically.">
+        Automatically close inactive items
       </message>
       <message name="IDS_ARCHIVE_SETTINGS_ARCHIVE_DUPLICATE_TABS_SUMMARY" desc="The summary for toggle to allow duplicate tabs to be archived.">
         All duplicate tabs will now also be archived, with the exception of the most recently used copy.
@@ -952,13 +982,16 @@
       <message name="IDS_ARCHIVE_SETTINGS_ARCHIVE_DUPLICATE_TABS_TITLE" desc="The title for toggle to allow duplicate tabs to be archived.">
         Archive duplicate tabs
       </message>
-      <message name="IDS_ARCHIVE_SETTINGS_ALLOW_AUTODELETE_SUMMARY" desc="The summary for toggle to allow tabs to be deleted automatically.">
-        Inactive tabs will automatically be closed. You can always find them in History.
+      <message name="IDS_ARCHIVE_SETTINGS_ALLOW_AUTODELETE_SUMMARY" desc="The summary for toggle to allow tabs and tab groups to be deleted automatically.">
+        {DAY_COUNT, plural,
+          =1 {Inactive tabs and groups will be closed after 1 month}
+          other {Inactive tabs and groups will be closed after <ph name="MONTH_COUNT_MANY">%1$d<ex>3</ex></ph> months}
+        }
       </message>
       <message name="IDS_ARCHIVE_SETTINGS_TIME_DELTA" desc="The string to show how many days until a tab is considered inactive.">
         {DAY_COUNT, plural,
-          =1 {After 1 day}
-          other {After <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days}
+          =1 {After 1 day inactive}
+          other {After <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days inactive}
         }
       </message>
       <message name="IDS_ARCHIVE_SETTINGS_TIME_DELTA_NEVER" desc="The string for the option to never archive tabs.">
@@ -993,8 +1026,8 @@
       </message>
       <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_DESCRIPTION" desc="Description text for the Auto Delete Decision Bottom Sheet.">
           {AUTO_DELETE_DELAY, plural,
-            =1 {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_ONE">%1$d<ex>1</ex></ph> day. You can turn this off now or anytime in Settings.}
-            other {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_MANY">%1$d<ex>14</ex></ph> days. You can turn this off now or anytime in Settings.}
+            =1 {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_ONE">%1$d<ex>1</ex></ph> month. You can turn this off now or anytime in Settings.}
+            other {Brave automatically closes items in the inactive section that you haven't used in <ph name="AUTO_DELETE_DELAY_MANY">%1$d<ex>3</ex></ph> months. You can turn this off now or anytime in Settings.}
           }
       </message>
       <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_CLOSED" desc="The announcement when the Tabs Auto Delete Promo bottom sheet is closed.">

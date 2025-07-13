@@ -125,6 +125,9 @@
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
     Sign in to get your passwords and more on all your devices
   </message>
+  <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION_WITH_BOOKMARKS" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in, mentioning bookmarks.">
+    Sign in to get your bookmarks, passwords and more on all your devices
+  </message>
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
   </message>
@@ -545,6 +548,11 @@
         Sorry, your password could not be verified. Please try again.
       </message>
     </if>
+    <!-- On Sign-in Avatar Button Label Desktop -->
+    <!-- TODO(crbug.com/417928515): Finalize the string and make it translateable. -->
+    <message translateable="false" name="IDS_AVATAR_BUTTON_MAKING_CHROME_YOURS" desc="">
+      Making Brave Yours
+    </message>
   </if>
 
   <if expr="not is_chromeos and not is_android">
@@ -607,12 +615,6 @@
     </message>
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_DEVICE_MANAGED" desc="Subtitle of the enterprise profile welcome screen, informing that the device is managed.">
       Your device is managed by your organization
-    </message>
-    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITH_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is enabled by the administrator).">
-      You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data. Bookmarks, history, passwords, and other settings can be synced to your account and managed by your administrator.
-    </message>
-    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITHOUT_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is disabled by the administrator).">
-      You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data.
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_REQUIRED_TITLE" desc="Title of the enterprise profile welcome screen when a profile is required. It is shown after a user signs into a managed account outside of the profile creation flow.">
       Your organization requires a profile
@@ -931,6 +933,8 @@
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_UNO" desc="Profile picker profile type choice subtitle"> Sign in to get your passwords and more on all your devices
     </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_UNO_BOOKMARKS" desc="Profile picker profile type choice subtitle"> Sign in to get your bookmarks, passwords and more on all your devices
+    </message>
 
     <!-- First Run Experience strings -->
     <message name="IDS_FRE_SIGN_IN_SUBTITLE_0" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
@@ -1132,7 +1136,7 @@
       You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_ACCEPT_BUTTON" desc="">
-      Yes, I 'm in
+      Yes, I'm in
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_REJECT_BUTTON" desc="">
       No thanks

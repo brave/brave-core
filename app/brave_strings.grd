@@ -694,6 +694,12 @@ Brave is unable to recover your settings.
         <message name="IDS_UNINSTALL_BUTTON_TEXT" desc="Label for uninstall button on Uninstall confirmation dialog.">
           Uninstall
         </message>
+        <message name="IDS_PIN_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not pinned to the taskbar.">
+          Pin Brave to your taskbar to get to it quickly anytime
+        </message>
+        <message name="IDS_PIN_INFOBAR_BUTTON" desc="Label for the button on an infobar offering to pin Brave to the taskbar. Pins Brave when clicked.">
+          Pin Brave
+        </message>
       </if>
         <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
           Brave isn't your default browser
@@ -1123,6 +1129,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
           To get your passwords and more on all your devices, sign in to Brave
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_WITH_BOOKMARKS" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
+          To get your bookmarks, passwords and more on all your devices, sign in to Brave
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
           To stay safer online with your parent’s choices, sign in to Brave
@@ -2420,6 +2429,23 @@ Brave is unable to recover your settings.
       <!-- UNO Promo strings for bookmarks -->
       <message name="IDS_BOOKMARK_INSTALLED_PROMO_EXPLICIT_SIGNIN_MESSAGE" desc="Text of the promo displayed at the bottom of the bookmark bubble asking the user to enable UNO.">
         To get this bookmark and more on all your devices, sign in to Brave
+      </message>
+
+      <!-- Dice Migration strings -->
+      <message name="IDS_DICE_MIGRATION_DIALOG_TITLE" desc="The title in the Dice Migration dialog advertising the sign-in benefit.">
+        Your Brave, everywhere
+      </message>
+      <message name="IDS_DICE_MIGRATION_DIALOG_DESCRIPTION" desc="The content of the Dice Migration dialog advertising the benefits of signing in to Brave.">
+        When you click 'Got it', you can save and use passwords and more in your Brave sync chain whenever you're signed in to Brave. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+      </message>
+      <message name="IDS_DICE_MIGRATION_DIALOG_OK_BUTTON" desc="The primary button label in the Dice Migration dialog, letting the user acknowledge signing in to Brave.">
+        Got it
+      </message>
+      <message name="IDS_DICE_MIGRATION_CONFIRMATION_TOAST_MESSAGE" desc="The confirmation message shown in a toast after the user clicks on the accept button on the Dice Migration dialog.">
+        You now have more features available in Brave
+      </message>
+      <message name="IDS_DICE_MIGRATION_CONFIRMATION_TOAST_BUTTON" desc="The text on the button of the confirmation toast shown after the user clicks the accept button on the Dice Migration dialog, that allows the users to control the sync settings or sign out of Brave.">
+        Manage
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta

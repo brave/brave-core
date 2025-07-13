@@ -1079,7 +1079,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR_LIMIT=32]">
         Theme
       </message>
-      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR_LIMIT=32]">
+      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System       Default option. [CHAR_LIMIT=32]" meaning="default theme">
         System default
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY" desc="Summary for the System Default option.">
@@ -1135,11 +1135,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_CONTEXTUAL_SEARCH_SEE_BETTER_RESULTS_SUMMARY" desc="Summary for the see better results switch in Contextual Search preference.">
         By including more of a page’s text, you might see better results
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT" desc="The text for a button, which when pressed opens the latest search results for the currently selected text.">
-        Latest results
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT_VARIANT" desc="The text for a button, which when pressed allows the user to see more information about the currently selected text.">
-        See more
+      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_IPH" desc="Text shown on in-product-help bubble to inform a user that dragging up on the panel will expand it, opening the latest search results for the currently selected text.">
+        Drag up to see search results
       </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for the 'Do Not Track' preference. Please leave the 'Do Not Track' part in English according to the glossary.">
         Send a “Do Not Track” request
@@ -1973,7 +1970,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         =1 {Unsubscribed from one unused site}
         other {Unsubscribed from # unused sites}}
       </message>
-      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
         {NUM_REVOKED_PERMISSIONS, plural,
         =1 {Brave stopped notifications from this site. You can review and manage.}
         other {Brave stopped notifications from these sites. You can review and manage.}}
@@ -2199,10 +2196,16 @@ Your Brave account may have other forms of browsing history like searches and ac
         Download anyway
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file.">
-        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> anyway?
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_DOMAIN" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, including the domain of the download.">
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" from <ph name="DOWNLOAD_DOMAIN">^2<ex>badsite.com</ex></ph> anyway?
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_SIZE" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, with size information.">
-        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> (<ph name="FILE_SIZE">%2$s<ex>100MB</ex></ph>) anyway?
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" (<ph name="FILE_SIZE">^2<ex>100MB</ex></ph>) anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_SIZE_AND_DOMAIN" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, with size information and the domain of the download.">
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" (<ph name="FILE_SIZE">^2<ex>100MB</ex></ph>) from <ph name="DOWNLOAD_DOMAIN">^3<ex>badsite.com</ex></ph> anyway?
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a dangerous download">
         File might be harmful
@@ -2596,6 +2599,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR_LIMIT=32]">
         Bookmarks
       </message>
+      <message name="IDS_SYNC_EXTENSIONS" desc="Title for preference which enables sync'ing of Brave browser extensions. [CHAR_LIMIT=32]">
+        Extensions
+      </message>
       <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR_LIMIT=32]">
         History
       </message>
@@ -2634,6 +2640,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_SECTION_BOOKMARKS_TOGGLE" desc="Bookmarks, one of the data types that we allow syncing. Shown on next to the toggle that controls whether bookmarks should be saved in the Brave sync chain and synced across devices.">
         Bookmarks
+      </message>
+      <message name="IDS_ACCOUNT_SECTION_EXTENSIONS_TOGGLE" desc="Brave browser extensions, one of the data types that we allow syncing. Shown on next to the toggle that controls whether extensions should be saved in the Brave sync chain and synced across devices.">
+        Extensions
       </message>
       <message name="IDS_ACCOUNT_SECTION_READING_LIST_TOGGLE" desc="Reading List, one of the data types that we allow syncing. Shown on next to the toggle that controls whether reading list should be saved in the Brave sync chain and synced across devices.">
         Reading list
@@ -2818,24 +2827,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SYNC_LOADING" desc="Preference title to let the user change their encryption password. [CHAR_LIMIT=20]">
         Loading…
-      </message>
-      <message name="IDS_SYNC_IMPORT_DATA_PROMPT" desc="Prompt for the user to choose how they want to handle their existing sync data">
-         You have bookmarks, history, passwords, and other settings from <ph name="FROM_ACCOUNT">%1$s<ex>johndoe@old.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_IMPORT_DATA_PROMPT_WITHOUT_PASSWORDS" desc="Prompt for the user to choose how they want to handle their existing sync data. Similar to IDS_SYNC_IMPORT_DATA_PROMPT but without mentioning passwords.">
-         You have bookmarks, history, and other settings from <ph name="FROM_ACCOUNT">%1$s<ex>johndoe@old.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_IMPORT_EXISTING_DATA" desc="Option to import existing data to the newly selected sync account">
-        Combine my data
-      </message>
-      <message name="IDS_SYNC_IMPORT_EXISTING_DATA_SUBTEXT" desc="Subtext describing what happens if the user elects to import existing data to the newly selected sync account">
-        Add existing data to <ph name="TO_ACCOUNT">%1$s<ex>johndoe@new.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE" desc="Option to keep the existing data separate from the newly selected sync account">
-        Keep my data separate
-      </message>
-      <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE_SUBTEXT_EXISTING_DATA" desc="Subtext describing what happens if the user elects to keep the existing data separate signing into a new account after have previously being signed into a different account then signed out.">
-        Delete existing data.
       </message>
 
       <!-- Hint of sync error solution strings -->
@@ -3411,13 +3402,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Manage
       </message>
       <message name="IDS_NOTIFICATION_WARNING_TITLE" desc="Title of a warning notification informing the user that the notification may be suspicious.">
-        Possible spam
+        {NUM_SUSPICIOUS_NOTIFICATIONS, plural,
+          =1 {Possible spam}
+          other {Possible spam (#)}}
       </message>
       <message name="IDS_NOTIFICATION_WARNING_BODY" desc="Body text of a warning notification informing the user that the notification from the domain may be suspicious.">
         Brave detected possible spam from <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>.
       </message>
       <message name="IDS_NOTIFICATION_SHOW_ORIGINAL_BUTTON" desc="Text of a button shown on suspicious notifications, allowing the user to see the contents of the original notification instead of the warning.">
-        Show notification
+        {NUM_SUSPICIOUS_NOTIFICATIONS, plural,
+          =1 {Show notification}
+          other {Show notifications}}
       </message>
       <message name="IDS_NOTIFICATION_ALWAYS_ALLOW_BUTTON" desc="Text of a button shown on original notifications that were displayed after the warning notifications. Clicking the button allows the user to always receive notifications from their origin without warning notifications.">
         Always allow
@@ -3768,9 +3763,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Signin First Run strings -->
       <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Button on the very first screen of Brave to continue without signing into Brave. Ensure consistency with OneBrave strings while still omitting “Brave” (see e.g. TC ID 5336438894576002929).">
         Use without an account
-      </message>
-      <message name="IDS_SIGNIN_FRE_FOOTER" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second part through a line break.">
-        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER_TOS" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.
@@ -4489,6 +4481,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR_LIMIT=27]">
         Appearance
       </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_TITLE" desc="Title of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
+        Reading mode
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
+        Reading mode bottom sheet
+      </message>
       <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
       </message>
@@ -4539,6 +4537,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_PIN_TAB" desc="Menu item for pinning a tab.">
         Pin tab
+      </message>
+      <message name="IDS_MENU_UNPIN_TAB" desc="Menu item for unpinning a tab.">
+        Unpin tab
       </message>
       <message name="IDS_MENU_ITEM_CONTENT_FILTER_HELP_CENTER_LINK" desc="Menu item to explain that the content filter is on and to direct the user to the help center article about content filters. Only available when the content filter is on.">
         Content filter is on
@@ -5336,10 +5337,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> windows.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer.
+        To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer. Inactive windows are deleted after 6 months.
+        To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
       </message>
       <message name="IDS_TAB_DROPPED_DIFFERENT_MODEL" desc="Toast that appears when a tab is dropped into tab strip with a different profile (regular v.s. private).">
         You can find all open tabs in the tab switcher
@@ -5751,23 +5752,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Unable to install <ph name="module">%1$s<ex>augmented reality</ex></ph> for Brave
       </message>
 
-      <!-- Custom Context Menu Informations -->
-      <message name="IDS_CONTEXTMENU_PAGE_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the page.">
-        PAGE
-      </message>
-      <message name="IDS_CONTEXTMENU_IMAGE_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the image.">
-        IMAGE
-      </message>
-      <message name="IDS_CONTEXTMENU_LINK_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the link.">
-        LINK
-      </message>
-      <message name="IDS_CONTEXTMENU_VIDEO_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to a video.">
-        VIDEO
-      </message>
-      <message name="IDS_CONTEXTMENU_DEVELOPER_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to tools for developers.">
-        DEVELOPER
-      </message>
-
       <!-- Multi-instance Switcher Dialog strings -->
       <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
         Manage windows
@@ -5825,6 +5809,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE" desc="The phrase used in the message when there is a single tab to delete.">
         The tab <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE_V2" desc="The phrase used in the message when there is a single tab to delete.">
+        <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY" desc="The phrase used in the message when there are multiple tabs to delete.">
         {TAB_COUNT, plural,
@@ -5899,6 +5886,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT" desc="The in-product-help text for the android tab declutter feature.">
         Review your inactive tabs here
+      </message>
+      <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT_WITH_TAB_GROUPS" desc="The in-product-help text for the android tab declutter feature.">
+        Review your inactive tabs and groups here
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text for the android tab declutter feature.">
         To open tabs and visit different pages at the same time, tap the open tabs button
@@ -7156,21 +7146,29 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Tab declutter -->
-      <message name="IDS_ARCHIVED_TAB_CARD_TITLE" desc="Shown in the tab switcher to prompt the user to review their inactive tabs. Indicates how many tabs are inactive.">
+      <message name="IDS_ARCHIVED_TAB_CARD_TITLE" desc="Shown in the tab switcher to prompt the user to review their inactive tabs and tab groups. Indicates how many tabs and tab groups are inactive.">
         {ARCHIVED_TAB_COUNT, plural,
-          =1 {Inactive tab (1)}
-          other {Inactive tabs (#)}}
+          =1 {(1) inactive item}
+          other {(#) inactive items}}
       </message>
-      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been in active for.">
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been inactive for.">
         {INACTIVE_TIME_DAYS, plural,
           =1 {Not used for 1 day or more}
           other {Not used for # days or more}}
       </message>
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user how long the relevant tabs and tab groups have been inactive for.">
+        {INACTIVE_TIME_DAYS, plural,
+          =1 {Tabs and tab groups not used for 1 day or more}
+          other {Tabs and tab groups not used for # days or more}}
+      </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE" desc="In product help shown as a message in the archived tabs dialog.">
-        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 60 days</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+      </message>
+      <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="In product help shown as a message in the archived tabs dialog.">
+        Tabs and tab groups you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_AUTODELETE_SECTION" desc="A section describing auto-delete, shown if it's enabled.">
-        \u0020and closed after <ph name="DAYS_ARCHIVED">%1$d<ex>60</ex></ph> days
+        \u0020and closed after <ph name="MONTHS_ARCHIVED">%1$d<ex>3</ex></ph> months
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_SETTINGS_TITLE" desc="The word for settings, used in IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE.">
         Settings
