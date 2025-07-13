@@ -129,9 +129,7 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
 
   // If we're adding content, we probably want to send it, otherwise, set
   // |should_send_| to the default value.
-  should_send_ =
-      !detach_existing_content ||
-      (features::IsPageContextEnabledInitially() && HasAssociatedContent());
+  should_send_ = !detach_existing_content || HasAssociatedContent();
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
