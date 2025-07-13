@@ -83,10 +83,11 @@ class RequestTracker {
   TrackedRequestRecord* GetTrackingRecord(const InspectorId request_id);
 
  private:
-  HashMap<InspectorId, scoped_refptr<TrackedRequestRecord>> tracked_requests_;
+  blink::HashMap<InspectorId, scoped_refptr<TrackedRequestRecord>>
+      tracked_requests_;
 
-  HashMap<FrameId, InspectorId> document_request_initiators_;
-  HashMap<InspectorId, DocumentRequest> document_requests_;
+  blink::HashMap<FrameId, InspectorId> document_request_initiators_;
+  blink::HashMap<InspectorId, DocumentRequest> document_requests_;
 
   // Returns the record from the above map, and cleans up the record
   // if the final requester has been responded to.
@@ -98,7 +99,7 @@ class RequestTracker {
   // This structure is just included for debugging, to make sure the
   // assumptions built into this request tracking system (e.g. that
   // request ids will not repeat, etc.).
-  HashMap<InspectorId, const NodeResource*> completed_requests_;
+  blink::HashMap<InspectorId, const NodeResource*> completed_requests_;
 
   // These methods manage writing to and from the above structure.
   void AddTracedRequestToHistory(const TrackedRequest* request);
