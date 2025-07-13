@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/browser/navigation_entry.h"
@@ -419,7 +420,11 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   // When other ways to close the tab are tried
   chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);
 
-  // Then tabs should be closed
-  EXPECT_EQ(browser->tab_strip_model()->count(), 1);
+  // Then tab should be closed (if kPinnedTabToastOnClose isn't enabled)
+  if (toast_features::IsEnabled(toast_features::kPinnedTabToastOnClose)) {
+    EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+  } else {
+    EXPECT_EQ(browser->tab_strip_model()->count(), 1);
+  }
 }
 #endif  // !BUILDFLAG(IS_MAC)
