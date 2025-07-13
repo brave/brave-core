@@ -23,8 +23,9 @@ namespace {
 using ScriptKey = std::pair<v8::Isolate*, ScriptId>;
 
 // Script nodes should be accessible from multiple PageGraph instances.
-HashMap<ScriptKey, NodeScriptLocal*>& GetScriptNodes() {
-  static base::NoDestructor<HashMap<ScriptKey, NodeScriptLocal*>> script_nodes;
+blink::HashMap<ScriptKey, NodeScriptLocal*>& GetScriptNodes() {
+  static base::NoDestructor<blink::HashMap<ScriptKey, NodeScriptLocal*>>
+      script_nodes;
   return *script_nodes;
 }
 
