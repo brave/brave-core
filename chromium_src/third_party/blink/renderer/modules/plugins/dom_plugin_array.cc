@@ -57,7 +57,7 @@ MimeClassInfo* AddMimeTypeToPluginInfo(PluginInfo* plugin_info,
                                        const String& mime_type,
                                        const String& description,
                                        const char* extension) {
-  Vector<String> extensions{String(extension)};
+  blink::Vector<String> extensions{String(extension)};
   auto* mime_info = MakeGarbageCollected<MimeClassInfo>(
       mime_type, description, *plugin_info, extensions);
   plugin_info->AddMimeType(mime_info);
