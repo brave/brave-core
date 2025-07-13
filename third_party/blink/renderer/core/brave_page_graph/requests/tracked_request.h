@@ -41,7 +41,7 @@ class TrackedRequest {
   bool IsComplete() const;
 
   InspectorId GetRequestId() const;
-  const Vector<RequestInstance>& GetRequesters() const;
+  const blink::Vector<RequestInstance>& GetRequesters() const;
   const blink::String& GetResourceType() const;
   NodeResource* GetResource() const;
   bool GetIsError() const;
@@ -76,7 +76,7 @@ class TrackedRequest {
 
   const InspectorId request_id_;
 
-  Vector<RequestInstance> request_instances_;
+  blink::Vector<RequestInstance> request_instances_;
   blink::String resource_type_;
 
   NodeResource* resource_ = nullptr;

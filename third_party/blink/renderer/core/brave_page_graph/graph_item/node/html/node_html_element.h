@@ -20,7 +20,7 @@ class EdgeEventListenerAdd;
 
 class NodeHTMLElement : public NodeHTML {
  public:
-  using Attributes = HashMap<blink::String, blink::String>;
+  using Attributes = blink::HashMap<blink::String, blink::String>;
 
   NodeHTMLElement(GraphItemContext* context,
                   const blink::DOMNodeId dom_node_id,
