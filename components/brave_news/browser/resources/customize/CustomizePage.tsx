@@ -37,7 +37,7 @@ export default function CustomizePage (props: {
   return <Flex direction="column">
     <Flex align="center">
         <BackButton onClick={() => setCustomizePage('news')}>
-          <Icon name="arrow-left" />
+          <Icon name="arrow-left" slot="icon-before" />
           {getLocale(S.BRAVE_NEWS_BACK_BUTTON)}
         </BackButton>
       <Header>{props.title}</Header>
