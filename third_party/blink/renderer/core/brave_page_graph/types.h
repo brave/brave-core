@@ -46,10 +46,10 @@ using MethodName = blink::String;
 using RequestURL = blink::KURL;
 using InspectorId = uint64_t;
 
-using GraphItemUniquePtrList = Vector<std::unique_ptr<GraphItem>>;
-using EdgeList = Vector<const GraphEdge*>;
-using NodeList = Vector<GraphNode*>;
-using HTMLNodeList = Vector<NodeHTML*>;
+using GraphItemUniquePtrList = blink::Vector<std::unique_ptr<GraphItem>>;
+using EdgeList = blink::Vector<const GraphEdge*>;
+using NodeList = blink::Vector<GraphNode*>;
+using HTMLNodeList = blink::Vector<NodeHTML*>;
 
 struct CORE_EXPORT FingerprintingRule {
   FingerprintingRule(const std::string& primary_pattern,
@@ -178,7 +178,7 @@ CORE_EXPORT std::string StorageLocationToString(const StorageLocation location);
 
 template <typename KeyArg, typename MappedArg>
 using ZeroBasedHashMap =
-    HashMap<KeyArg, MappedArg, WTF::IntWithZeroKeyHashTraits<KeyArg>>;
+    blink::HashMap<KeyArg, MappedArg, WTF::IntWithZeroKeyHashTraits<KeyArg>>;
 
 }  // namespace brave_page_graph
 
