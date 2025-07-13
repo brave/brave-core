@@ -51,8 +51,7 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
             std::move(callback).Run(browser);
           },
           std::move(callback)),
-      /*always_create=*/false, /*is_new_profile=*/false,
-      /*unblock_extensions=*/false, profile);
+      /*always_create=*/false, /*is_new_profile=*/false, profile);
 }
 
 void OpenBrowserWindowForAIChatAgentProfileWithCallback(
