@@ -1,5 +1,8 @@
 specific_include_rules = {
   "bookmark_bridge\.cc": [
     "+components/user_data_importer/content/content_bookmark_parser.h"
+  ],
+  "bookmark_bridge\.h": [
+    "+components/user_data_importer/utility/bookmark_parser.h"
   ]
 }
