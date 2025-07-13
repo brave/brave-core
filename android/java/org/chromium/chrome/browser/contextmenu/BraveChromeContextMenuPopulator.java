@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.contextmenu;
 
 import android.content.Context;
 
+import androidx.browser.customtabs.CustomContentAction;
+
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -18,6 +20,8 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDel
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
+import java.util.List;
+
 public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator {
     // To be deleted via bytecode and super field to be used
     private TabContextMenuItemDelegate mItemDelegate;
@@ -27,11 +31,19 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator 
     public BraveChromeContextMenuPopulator(
             TabContextMenuItemDelegate itemDelegate,
             Supplier<ShareDelegate> shareDelegate,
+            List<CustomContentAction> customContentActions,
             @ContextMenuMode int mode,
             Context context,
             ContextMenuParams params,
             ContextMenuNativeDelegate nativeDelegate) {
-        super(itemDelegate, shareDelegate, mode, context, params, nativeDelegate);
+        super(
+                itemDelegate,
+                shareDelegate,
+                customContentActions,
+                mode,
+                context,
+                params,
+                nativeDelegate);
     }
 
     @Override
