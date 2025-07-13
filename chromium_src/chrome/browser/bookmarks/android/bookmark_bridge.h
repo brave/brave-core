@@ -9,14 +9,7 @@
 #include <utility>
 
 #include "chrome/browser/reading_list/android/reading_list_manager.h"
-
-namespace user_data_importer {
-struct SearchEngineInfo;
-}
-
-namespace user_data_importer {
-struct ImportedBookmarkEntry;
-}  // namespace user_data_importer
+#include "components/user_data_importer/utility/bookmark_parser.h"
 
 #define SetReadStatus                                                    \
   ImportBookmarks(                                                       \
@@ -24,15 +17,9 @@ struct ImportedBookmarkEntry;
       const base::android::JavaParamRef<jobject>& java_window,           \
       const base::android::JavaParamRef<jstring>& import_file_path);     \
   void ImportBookmarksImpl(                                              \
-      std::pair<std::vector<user_data_importer::ImportedBookmarkEntry>,  \
-                std::vector<user_data_importer::SearchEngineInfo>>       \
-          importedItems);                                                \
-  std::pair<std::vector<user_data_importer::ImportedBookmarkEntry>,      \
-            std::vector<user_data_importer::SearchEngineInfo>>           \
-  ImportBookmarksReader(                                                 \
-      std::u16string import_file_path,                                   \
-      std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks,  \
-      std::vector<user_data_importer::SearchEngineInfo> search_engines); \
+      user_data_importer::BookmarkParser::BookmarkParsingResult result); \
+  user_data_importer::BookmarkParser::BookmarkParsingResult              \
+  ImportBookmarksReader(std::u16string import_file_path);                \
   void ExportBookmarks(                                                  \
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,      \
       const base::android::JavaParamRef<jobject>& java_window,           \
