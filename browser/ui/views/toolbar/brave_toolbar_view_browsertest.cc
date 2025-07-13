@@ -410,8 +410,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-  profiles::OpenBrowserWindowForProfile(base::DoNothing(), false, true, true,
-                                        &new_profile);
+  profiles::OpenBrowserWindowForProfile(base::DoNothing(),
+                                        /*always_create=*/false,
+                                        /*is_new_profile=*/true, &new_profile);
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, BrowserList::GetInstance()->size());
