@@ -58,7 +58,7 @@ InspectorId TrackedRequest::GetRequestId() const {
   return request_id_;
 }
 
-const Vector<RequestInstance>& TrackedRequest::GetRequesters() const {
+const blink::Vector<RequestInstance>& TrackedRequest::GetRequesters() const {
   return request_instances_;
 }
 
