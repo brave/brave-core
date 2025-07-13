@@ -74,7 +74,7 @@ NativeWebState::~NativeWebState() {
     int index = browser_->GetWebStateList()->GetIndexOfWebState(web_state_);
     if (index >= 0) {
       browser_->GetWebStateList()->CloseWebStateAt(
-          index, WebStateList::ClosingFlags::CLOSE_USER_ACTION);
+          index, WebStateList::ClosingReason::kUserAction);
     }
   }
 
