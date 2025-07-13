@@ -94,55 +94,6 @@ class InfoBarStyledLabel : public CustomStyledLabel {
 BEGIN_METADATA(InfoBarStyledLabel)
 END_METADATA
 
-// TODO(simonhong): Use leo MdTextButton when it's stabilized.
-class OkButton : public views::LabelButton {
-  METADATA_HEADER(OkButton, views::LabelButton)
- public:
-  explicit OkButton(PressedCallback callback, const std::u16string& text)
-      : LabelButton(std::move(callback), text) {
-    SetHorizontalAlignment(gfx::ALIGN_CENTER);
-    SetEnabledTextColors(SK_ColorWHITE);
-    SetTextColor(ButtonState::STATE_DISABLED, SK_ColorWHITE);
-  }
-
-  OkButton(const OkButton&) = delete;
-  OkButton& operator=(const OkButton&) = delete;
-
-  void UpdateBackgroundColor() override {
-    static constexpr auto kBgColor =
-        std::to_array<std::array<const SkColor, ButtonState::STATE_COUNT>>(
-            {{
-                 // Light theme.
-                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
-                 SkColorSetRGB(0x32, 0x2F, 0xB4),  // hover
-                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
-                 SkColorSetRGB(0xAC, 0xAF, 0xBB)   // disabled
-             },
-             {
-                 // Dark theme.
-                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
-                 SkColorSetRGB(0x87, 0x84, 0xF4),  // hover
-                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
-                 SkColorSetRGB(0x58, 0x5C, 0x6D),  // disabled
-             }});
-
-    bool is_dark_theme =
-        ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
-    SetBackground(CreateBackgroundFromPainter(
-        views::Painter::CreateRoundRectWith1PxBorderPainter(
-            kBgColor[is_dark_theme][GetVisualState()], SK_ColorTRANSPARENT,
-            100)));
-  }
-
-  void OnThemeChanged() override {
-    LabelButton::OnThemeChanged();
-    UpdateBackgroundColor();
-  }
-};
-
-BEGIN_METADATA(OkButton)
-END_METADATA
-
 // Subclassed for font setting.
 class NoThanksButton : public views::LabelButton {
   METADATA_HEADER(NoThanksButton, views::LabelButton)
@@ -458,10 +409,11 @@ std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetNoThanksButton(
 std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetOkButton(
     const gfx::Size& size,
     int order) {
-  auto ok_button = std::make_unique<OkButton>(
+  auto ok_button = std::make_unique<views::MdTextButton>(
       base::BindRepeating(&WebDiscoveryInfoBarContentView::EnableWebDiscovery,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_WEB_DISCOVERY_INFOBAR_OK_BUTTON_LABEL));
+  ok_button->SetStyle(ui::ButtonStyle::kProminent);
   ok_button->SetPreferredSize(size);
   ok_button->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 16, 0, 16));
   ok_button->SetProperty(
