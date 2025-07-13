@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 278f7556044a3f95f1ee0fda3989c8ae9d741572..0d079038d2294e0d2e889d39486dfda9719a6d54 100644
+index d77eca28108d835f22680f263bee2f80b3c95d22..3d1381fc0d566b9e76eb5f765c2218c9ca1ca349 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -6,7 +6,7 @@ import("//components/guest_view/buildflags/buildflags.gni")

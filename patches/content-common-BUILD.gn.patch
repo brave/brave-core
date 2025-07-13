@@ -7,6 +7,6 @@ index af1e2cc289018a8e632bb8a2417a85c115986b9f..0c06d7182e08b6b1224b1e0c0ba217e5
    # build.
    visibility = [ "//content/*" ]
 +  visibility += [ "//brave/content/*" ]
-
+ 
    sources = [
      "background_fetch/background_fetch_types.cc",

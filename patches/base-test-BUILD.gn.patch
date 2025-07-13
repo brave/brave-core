@@ -1,8 +1,8 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index 15fdad3f0cbfd2a15ab9fa63519e420dbd616b5c..ed6c21148f0351ad8eb4756eec61f82af2b1cd8c 100644
+index b1dcb6c3c4a64e409783ceadd7cceb5d5970fb94..1d65ba172c207545612ab1317abfb0b33e901dfe 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
-@@ -359,6 +359,7 @@ static_library("test_support") {
+@@ -362,6 +362,7 @@ static_library("test_support") {
      "trace_to_file.cc",
      "trace_to_file.h",
    ]

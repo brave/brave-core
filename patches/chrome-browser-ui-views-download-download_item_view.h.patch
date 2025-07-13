@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 9cbba76267003f449695bf8e34786f44b378cd31..3bd11c1e540ac9ca07deeb6b9117cb8797b435f9 100644
+index 21811f092722692ac98b8caa028ab4f373965ad8..96dc332c83bdd35528fb9ffc99773589f9bb0168 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
 @@ -119,6 +119,7 @@ class DownloadItemView : public views::View,

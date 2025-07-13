@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 87e90ea501499bbbf026fa5db2e4d81edbb0f2ca..bdd76fc311ea29153a9ad2f5e23934a03dd96be4 100644
+index 33c4c62355390515286e6c1de61f2ff731b12168..46e91cf792d0573dd125a078af1f37ab338e3544 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1964,6 +1964,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1757,6 +1757,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(prefs::kToastAlertLevel, 0);
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 87e90ea501499bbbf026fa5db2e4d81edbb0f2ca..bdd76fc311ea29153a9ad2f5e23934a0
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2407,6 +2408,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2202,6 +2203,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterDictionaryPref(prefs::kReportingEndpoints);
  
    registry->RegisterBooleanPref(prefs::kViewSourceLineWrappingEnabled, false);
