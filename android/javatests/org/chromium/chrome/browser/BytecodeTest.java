@@ -1799,6 +1799,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                         TabContextMenuItemDelegate.class,
                         Supplier.class,
+                        List.class,
                         int.class,
                         Context.class,
                         ContextMenuParams.class,
