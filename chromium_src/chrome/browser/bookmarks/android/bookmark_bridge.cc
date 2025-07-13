@@ -178,10 +178,15 @@ BookmarkBridge::ImportBookmarksReader(
     std::vector<SearchEngineInfo> search_engines) {
   base::FilePath import_path_ = base::FilePath::FromUTF16Unsafe(import_path);
 
-  user_data_importer::ContentBookmarkParser bookmark_parser;
-  bookmark_parser.Parse(base::RepeatingCallback<bool(void)>(),
-                        base::BindRepeating(internal::CanImportURL),
-                        import_path_, &bookmarks, &search_engines, nullptr);
+  // bookmark_html_reader::ImportBookmarksFile(
+  //     base::RepeatingCallback<bool(void)>(),
+  //     base::BindRepeating(internal::CanImportURL), import_path_, &bookmarks,
+  //     &search_engines, nullptr);
+
+  // user_data_importer::ContentBookmarkParser bookmark_parser;
+  // bookmark_parser.Parse(import_path_,
+  //                       base::BindOnce(&BookmarkBridge::OnBookmarksParsed,
+  //                                      base::Unretained(this)));
 
   return std::make_pair(bookmarks, search_engines);
 }
