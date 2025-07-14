@@ -5,6 +5,8 @@
 
 import Foundation
 import Network
+import Preferences
+import Shared
 
 public enum ReachabilityType: CustomStringConvertible {
   case wifi
@@ -69,19 +71,21 @@ public class Reachability {
     )
 
     monitor.pathUpdateHandler = { [weak self] path in
-      let interfaces = path.availableInterfaces.map({ String(describing: $0.type) }).joined(
-        separator: ", "
-      )
+      if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
+        let interfaces = path.availableInterfaces.map({ String(describing: $0.type) }).joined(
+          separator: ", "
+        )
 
-      DebugLogger.log(
-        for: .secureState,
-        text:
-          """
-          Network State Changed: \(String(describing: path.status))
-          - Reason: \(path.status == .unsatisfied ? String(describing: path.unsatisfiedReason) : "None")
-          - Available: \(String(interfaces))
-          """
-      )
+        DebugLogger.log(
+          for: .secureState,
+          text:
+            """
+            Network State Changed: \(String(describing: path.status))
+            - Reason: \(path.status == .unsatisfied ? String(describing: path.unsatisfiedReason) : "None")
+            - Available: \(String(interfaces))
+            """
+        )
+      }
 
       let type = ReachabilityType(path: path)
 
