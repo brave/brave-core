@@ -25,6 +25,16 @@ import './mock-data/api'
 import '@brave/leo/tokens/css/variables.css'
 import '../strings'
 
+// Unfortunately this is the easiest way to keep the storybook build working on
+// Linux (as the VPN strings aren't compiled on Linux). It doesn't result in
+// lovely strings like other platforms, but its easier than trying to exclude
+// stories on Linux.
+declare module "gen/components/grit/brave_components_webui_strings" {
+  export const BraveVPNPanelUiStrings: {
+    [key: `BRAVE_VPN_${string}`]: `BRAVE_VPN_${string}`
+  }
+}
+
 export default {
   title: 'VPN/Panels',
   parameters: {
