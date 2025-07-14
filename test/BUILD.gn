@@ -759,7 +759,7 @@ if (!is_android) {
       "//third_party/re2",
     ]
 
-    data = [ ]
+    data = [ "//brave/test/data/" ]
 
     if (toolkit_views) {
       deps += [ "//brave/components/sidebar/browser" ]
