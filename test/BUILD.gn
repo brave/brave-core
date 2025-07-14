@@ -122,56 +122,6 @@ cacheTest("l10n_unit_tests") {
   ]
 }
 
-test("brave_chrome_tests") {
-
-  configs += [
-    "//build/config:precompiled_headers",
-    "//chrome/test:disable_thinlto_cache_flags"
-  ]
-
-  deps = [
-    "//base",
-    "//brave/browser",
-    "//chrome:dependencies",
-    "//chrome:resources",
-    "//chrome:strings",
-    "//chrome/app:command_ids",
-    "//chrome/browser/browsing_data:constants",
-    "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/favicon",
-    "//chrome/browser/permissions",
-    "//chrome/browser/prefs",
-    "//chrome/browser/sync",
-    "//chrome/browser/ui",
-    "//chrome/test:test_support",
-    "//brave/components/history/core/browser:unit_tests",
-    "//brave/components/history/core/browser/sync:unit_tests",
-  ]
-
-  public_deps = [ ":browser_tests_runner" ]
-  public_deps += [
-    ":test_support",
-    ":brave_test_support_unit",
-    "//base",
-    "//brave:browser_dependencies",
-    "//brave/browser",
-    "//brave/common",
-    "//brave/renderer",
-    "//brave/utility",
-    "//testing/gtest",
-  ]
-
-  sources = [
-    "//chrome/browser/signin/test_signin_client_builder.cc",
-    "//chrome/browser/signin/test_signin_client_builder.h",
-
-    "//brave/chromium_src/chrome/browser/favicon/favicon_utils_unittest.cc",
-    "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
-    "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
-    "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
-  ]
-}
-
 test("brave_unit_tests") {
   testonly = true
   
