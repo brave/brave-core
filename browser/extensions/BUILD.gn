@@ -46,7 +46,7 @@ source_set("brave_prefs_util_impl") {
   sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 
   deps = [
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",

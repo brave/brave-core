@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/test/test_future.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"

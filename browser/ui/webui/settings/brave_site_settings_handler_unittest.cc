@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"

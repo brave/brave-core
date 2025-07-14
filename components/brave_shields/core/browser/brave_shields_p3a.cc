@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 
 #include <algorithm>
 
@@ -13,7 +13,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -28,13 +28,11 @@ namespace {
 
 constexpr int kDomainCountBuckets[] = {0, 5, 10, 20, 30};
 
-constexpr ControlType kFPSettingOrder[] = {
+constexpr std::array<ControlType, 3> kFPSettingOrder = {
     ControlType::ALLOW, ControlType::DEFAULT, ControlType::BLOCK};
 
-constexpr ControlType kAdsSettingOrder[] = {
+constexpr std::array<ControlType, 3> kAdsSettingOrder = {
     ControlType::ALLOW, ControlType::BLOCK_THIRD_PARTY, ControlType::BLOCK};
-
-constexpr int kSettingCount = 3;
 
 // Increment this version if metrics in `MaybeRecordInitialShieldsSettings`
 // change, so that all metrics can be re-reported after update.
@@ -117,15 +115,12 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
                                        bool is_fingerprint,
                                        ControlType global_setting,
                                        bool count_above) {
-  const ControlType* setting_order =
-      is_fingerprint ? kFPSettingOrder : kAdsSettingOrder;
+  auto& setting_order = is_fingerprint ? kFPSettingOrder : kAdsSettingOrder;
   // Initialized in order to start iteration near the current global_setting
-  const ControlType* setting_order_it =
-      std::find(setting_order, UNSAFE_TODO(setting_order + kSettingCount),
-                global_setting);
+  auto setting_order_it =
+      std::find(setting_order.begin(), setting_order.end(), global_setting);
 
-  bool setting_order_in_range =
-      setting_order_it < UNSAFE_TODO(setting_order + kSettingCount);
+  bool setting_order_in_range = setting_order_it != setting_order.end();
   DCHECK(setting_order_in_range)
       << "Shields global setting must be in setting_order";
   if (!setting_order_in_range) {
@@ -138,13 +133,21 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
   // Should start iterating from the setting directly below or above the
   // current global_setting, depending on the count_above parameter.
   int sum_index_start =
-      setting_order_it - setting_order + (count_above ? 1 : -1);
+      static_cast<int>(std::distance(setting_order.begin(), setting_order_it)) +
+      (count_above ? 1 : -1);
   // Iterate until end or start of setting_order, depending on count_above.
   // Will add all domain setting counts below or above the global_setting.
-  for (int i = sum_index_start; count_above ? i < kSettingCount : i >= 0;
-       count_above ? i++ : i--) {
-    total += GetDomainSettingCount(profile_prefs, is_fingerprint,
-                                   UNSAFE_TODO(setting_order[i]));
+  if (count_above) {
+    for (int i = sum_index_start; i < static_cast<int>(setting_order.size());
+         ++i) {
+      total += GetDomainSettingCount(profile_prefs, is_fingerprint,
+                                     setting_order[i]);
+    }
+  } else {
+    for (int i = sum_index_start; i >= 0; --i) {
+      total += GetDomainSettingCount(profile_prefs, is_fingerprint,
+                                     setting_order[i]);
+    }
   }
   DCHECK_GE(total, 0)
       << "DomainCountRelativeToGlobalSetting must return a positive value";

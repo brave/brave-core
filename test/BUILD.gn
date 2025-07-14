@@ -230,6 +230,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/content/test:unit_tests",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_shields/core/test:unit_tests",
