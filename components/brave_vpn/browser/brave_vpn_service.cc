@@ -337,6 +337,25 @@ void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
 #endif
 }
 
+void BraveVpnService::EnableSmartProxyRouting(bool enable) {
+  local_prefs_->SetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled, enable);
+
+  // If not connected, do nothing because smart proxy routing bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply smart proxy routing config("
+            << enable << "> to current connection";
+    Connect();
+  }
+}
+
+void BraveVpnService::GetSmartProxyRoutingState(
+    GetSmartProxyRoutingStateCallback callback) {
+  std::move(callback).Run(
+      local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(

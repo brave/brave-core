@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import * as S from './style'
+import * as Style from './style'
 import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
@@ -22,8 +22,11 @@ function SettingsPanel(props: Props) {
     enabled: false
   })
 
+  const [smartProxyRoutingEnabled, setSmartProxyRoutingEnabled] = React.useState({enabled: false})
+
   React.useEffect(() => {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+    getPanelBrowserAPI().serviceHandler.getSmartProxyRoutingState().then(setSmartProxyRoutingEnabled)
   }, [])
 
   const handleClick = (entry: ManageURLType) => {
@@ -49,9 +52,14 @@ function SettingsPanel(props: Props) {
     getPanelBrowserAPI().serviceHandler.enableOnDemand(checked)
   }
 
+  const handleSmartProxyRoutingChange = ({ checked }: { checked: boolean }) => {
+    setSmartProxyRoutingEnabled({ enabled: checked })
+    getPanelBrowserAPI().serviceHandler.enableSmartProxyRouting(checked)
+  }
+
   return (
-    <S.Box>
-      <S.PanelContent>
+    <Style.Box>
+      <Style.PanelContent>
         <PanelHeader
           title={getLocale('braveVpnSettingsPanelHeader')}
           buttonAriaLabel={
@@ -59,62 +67,78 @@ function SettingsPanel(props: Props) {
           }
           onClick={props.closeSettingsPanel}
         />
-        <S.SettingsList>
+        <Style.SettingsList>
           {onDemand.available && (
             <>
-              <S.Setting
+              <Style.Setting
                 onClick={
                   e => handleToggleChange({ checked: !onDemand.enabled })
                 }
               >
-                <S.SettingLabel>
+                <Style.SettingLabel>
                   {getLocale('braveVpnReconnectAutomatically')}
-                </S.SettingLabel>
+                </Style.SettingLabel>
                 <Toggle
                   checked={onDemand.enabled}
                   onChange={handleToggleChange}
                   size='small'
                   aria-label='Reconnect automatically'
                 />
-              </S.Setting>
-              <S.Divider />
+              </Style.Setting>
+              <Style.Divider />
             </>
           )}
-          <S.Setting
+          <Style.Setting
+            onClick={
+              e => handleSmartProxyRoutingChange({ checked: !smartProxyRoutingEnabled.enabled })
+            }
+          >
+            <Style.SettingLabel>
+              {getLocale(S.BRAVE_VPN_SMART_PROXY_ROUTING)}
+            </Style.SettingLabel>
+            <Toggle
+              checked={smartProxyRoutingEnabled.enabled}
+              onChange={handleSmartProxyRoutingChange}
+              size='small'
+              aria-label='Smart Proxy Routing'
+            />
+          </Style.Setting>
+          <Style.Divider />
+          <Style.Setting
             tabIndex={0}
             onClick={(e) => handleClick(ManageURLType.MANAGE)}
             onKeyDown={(e) => handleKeyDown(ManageURLType.MANAGE, e)}
           >
-            <S.SettingLabel>
+            <Style.SettingLabel>
               {getLocale('braveVpnManageSubscription')}
-            </S.SettingLabel>
-            <S.StyledIcon name='launch'></S.StyledIcon>
-          </S.Setting>
-          <S.Divider />
-          <S.Setting
+            </Style.SettingLabel>
+            <Style.StyledIcon name='launch'></Style.StyledIcon>
+          </Style.Setting>
+          <Style.Divider />
+          <Style.Setting
             tabIndex={0}
             onClick={props.showContactSupport}
             onKeyDown={(e) => handleKeyDown(ManageURLType.SUPPORT, e)}
           >
-            <S.SettingLabel>
+            <Style.SettingLabel>
               {getLocale('braveVpnContactSupport')}
-            </S.SettingLabel>
-            <S.StyledIcon name='carat-right'></S.StyledIcon>
-          </S.Setting>
-          <S.Divider />
-          <S.Setting
+            </Style.SettingLabel>
+            <Style.StyledIcon name='carat-right'></Style.StyledIcon>
+          </Style.Setting>
+          <Style.Divider />
+          <Style.Setting
             tabIndex={0}
             onClick={(e) => handleClick(ManageURLType.ABOUT)}
             onKeyDown={(e) => handleKeyDown(ManageURLType.ABOUT, e)}
           >
-            <S.SettingLabel>
+            <Style.SettingLabel>
               {getLocale('braveVpnAbout')} {getLocale('braveVpn')}
-            </S.SettingLabel>
-            <S.StyledIcon name='launch'></S.StyledIcon>
-          </S.Setting>
-        </S.SettingsList>
-      </S.PanelContent>
-    </S.Box>
+            </Style.SettingLabel>
+            <Style.StyledIcon name='launch'></Style.StyledIcon>
+          </Style.Setting>
+        </Style.SettingsList>
+      </Style.PanelContent>
+    </Style.Box>
   )
 }
 
