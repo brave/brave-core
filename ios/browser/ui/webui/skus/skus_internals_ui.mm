@@ -21,7 +21,7 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
-#include "brave/ios/browser/ui/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
