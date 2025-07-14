@@ -16,7 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
-#include "brave/ios/browser/ui/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -25,21 +25,11 @@
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/webui/resource_path.h"
 
-namespace {
-
-ProfileIOS* GetProfile(web::WebUIIOS* web_ui) {
-  ProfileIOS* const profile = ProfileIOS::FromWebUIIOS(web_ui);
-  CHECK(profile);
-  return profile;
-}
-
-}  // namespace
-
 AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
       handler_(brave_ads::AdsServiceFactoryIOS::GetForProfile(
                    ProfileIOS::FromWebUIIOS(web_ui)),
-               *GetProfile(web_ui)->GetPrefs()) {
+               *ProfileIOS::FromWebUIIOS(web_ui)->GetPrefs()) {
   brave::CreateAndAddWebUIDataSource(web_ui, url.host(),
                                      base::span(kAdsInternalsGenerated),
                                      IDR_ADS_INTERNALS_HTML);
