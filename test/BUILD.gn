@@ -421,6 +421,8 @@ test("brave_unit_tests") {
   data = [
     "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     "//components/test/data/update_client/updatecheck_reply_1.json",
+    "//brave/test/data/",
+    "//chrome/test/data/extensions/",
   ]
 
   public_deps = [
