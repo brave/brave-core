@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -42,6 +43,7 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
 
   brave_vpn::AddLocalizedStrings(source);
+  source->AddLocalizedStrings(webui::kBraveVPNPanelUiStrings);
   webui::SetupWebUIDataSource(source, kBraveVpnPanelGenerated,
                               IDR_VPN_PANEL_HTML);
 

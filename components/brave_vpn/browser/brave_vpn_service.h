@@ -110,6 +110,9 @@ class BraveVpnService :
   void ResetConnectionState() override;
   void EnableOnDemand(bool enable) override;
   void GetOnDemandState(GetOnDemandStateCallback callback) override;
+  void EnableSmartProxyRouting(bool enable) override;
+  void GetSmartProxyRoutingState(
+      GetSmartProxyRoutingStateCallback callback) override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;

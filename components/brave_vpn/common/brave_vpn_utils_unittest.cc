@@ -263,16 +263,21 @@ TEST(BraveVPNUtilsUnitTest, FeatureTest) {
 #endif
 }
 
-#if BUILDFLAG(IS_MAC)
 TEST(BraveVPNUtilsUnitTest, DefaultPrefsTest) {
   TestingPrefServiceSimple local_state_pref_service;
   brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
 
+#if BUILDFLAG(IS_MAC)
   // Off by default.
   EXPECT_FALSE(local_state_pref_service.GetBoolean(
       brave_vpn::prefs::kBraveVPNOnDemandEnabled));
+#endif
+
+  EXPECT_FALSE(local_state_pref_service.GetBoolean(
+      brave_vpn::prefs::kBraveVPNSmartProxyRoutingEnabled));
 }
 
+#if BUILDFLAG(IS_MAC)
 TEST(BraveVPNUtilsUnitTest, IsBraveVPNWireguardEnabledMac) {
   {
     TestingPrefServiceSimple local_state_pref_service;
