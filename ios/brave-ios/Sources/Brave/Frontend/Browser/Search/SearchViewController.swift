@@ -1077,21 +1077,25 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return header
       }
     } else if kind == UICollectionView.elementKindSectionFooter {
-      let footer =
+      if let footer =
         collectionView
         .dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
           for: indexPath
-        )
-      let tapGesture = UITapGestureRecognizer(
-        target: self,
-        action: #selector(onShowMorePressed)
-      )
-      footer.addGestureRecognizer(tapGesture)
-      footer.isUserInteractionEnabled = true
+        ) as? FavoritesRecentSearchFooterView
+      {
+        footer.isPrivateBrowsing = dataSource.isPrivate
 
-      return footer
+        let tapGesture = UITapGestureRecognizer(
+          target: self,
+          action: #selector(onShowMorePressed)
+        )
+        footer.addGestureRecognizer(tapGesture)
+        footer.isUserInteractionEnabled = true
+
+        return footer
+      }
     }
     return
       collectionView
