@@ -240,14 +240,14 @@ class TabManager: NSObject {
   /// Function for adding local tabs as synced sessions
   /// This is used when open tabs toggle is enabled in sync settings and browser constructor
   func addRegularTabsToSyncChain() {
-    let regularTabs = tabs(isPrivate: false)
-
     syncTabsTask?.cancel()
 
-    syncTabsTask = DispatchWorkItem {
-      guard let task = self.syncTabsTask, !task.isCancelled else {
+    syncTabsTask = DispatchWorkItem { [weak self] in
+      guard let self = self, let task = self.syncTabsTask, !task.isCancelled else {
         return
       }
+
+      let regularTabs = self.tabs(isPrivate: false)
 
       for tab in regularTabs {
         if let url = tab.fetchedURL, !tab.isPrivate, !url.isLocal,
