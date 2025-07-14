@@ -12,7 +12,7 @@
     BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
     BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
-    NTPBackgroundImagesService;
+    NTPBackgroundImagesService, BraveShieldsUtilsIOS;
 @protocol AIChatDelegate
 , IpfsAPI;
 
@@ -30,6 +30,7 @@ OBJC_EXPORT
 @property(readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 @property(readonly) BraveStats* braveStats;
+@property(readonly) BraveShieldsUtilsIOS* braveShieldsUtils;
 @property(readonly) DeAmpPrefs* deAmpPrefs;
 @property(readonly) id<IpfsAPI> ipfsAPI;
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
