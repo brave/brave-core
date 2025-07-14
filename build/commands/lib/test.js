@@ -11,6 +11,7 @@ const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 
+
 const getTestBinary = (suite) => {
   return process.platform === 'win32' ? `${suite}.exe` : suite
 }
@@ -293,7 +294,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         await fs.mkdirp(BRAVE_TEST_CACHE_PATH);
         try {
           console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
-          process.exit(1);
           const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
           cacheFile = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
         } catch (error) {
