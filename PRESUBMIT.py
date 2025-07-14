@@ -45,10 +45,10 @@ def CheckLeoVariables(input_api, output_api):
             brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
                                          'audit-tokens.js')
         ]
-        brave_node.RunNode(parts)
+        brave_node.RunNode(parts, include_command_in_error=False)
         return []
     except RuntimeError as err:
-        return [output_api.PresubmitError(err.args[1])]
+        return [output_api.PresubmitError(str(err))]
 
 
 # Check and fix formatting issues (supports --fix).
@@ -60,13 +60,13 @@ def CheckPatchFormatted(input_api, output_api):
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
-        brave_node.RunNode(cmd)
+        brave_node.RunNode(cmd, include_command_in_error=False)
         return []
     except RuntimeError as err:
         return [
             output_api.PresubmitError(
                 f'The code requires formatting. '
-                f'Please run: npm run presubmit -- --fix.\n\n{err.args[1]}')
+                f'Please run: npm run presubmit -- --fix.\n\n{err}')
         ]
 
 
