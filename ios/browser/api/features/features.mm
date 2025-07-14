@@ -24,6 +24,7 @@
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/api/bookmarks/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
@@ -347,6 +348,10 @@
 + (Feature*)kBraveAllowExternalPurchaseLinks {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];
+}
+
++ (Feature*)kNewBookmarksUI {
+  return [[Feature alloc] initWithFeature:&brave::features::kNewBookmarksUI];
 }
 
 @end

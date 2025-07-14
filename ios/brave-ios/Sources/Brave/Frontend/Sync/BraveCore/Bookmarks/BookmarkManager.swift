@@ -35,7 +35,7 @@ class BookmarkManager {
   // Returns the last visited folder
   // If no folder was visited, returns the mobile bookmarks folder
   // If the root folder was visited, returns nil
-  public func lastVisitedFolder() -> Bookmarkv2? {
+  public func lastVisitedFolder() -> BookmarkNode? {
     guard let bookmarksAPI = bookmarksAPI else {
       return nil
     }
@@ -45,7 +45,7 @@ class BookmarkManager {
     else {
       // Default folder is the mobile node..
       if let mobileNode = bookmarksAPI.mobileNode {
-        return Bookmarkv2(mobileNode)
+        return mobileNode
       }
       return nil
     }
@@ -59,17 +59,17 @@ class BookmarkManager {
     if let folderNode = bookmarksAPI.getNodeById(nodeId),
       folderNode.isVisible
     {
-      return Bookmarkv2(folderNode)
+      return folderNode
     }
 
     // Default folder is the mobile node..
     if let mobileNode = bookmarksAPI.mobileNode {
-      return Bookmarkv2(mobileNode)
+      return mobileNode
     }
     return nil
   }
 
-  public func lastFolderPath() -> [Bookmarkv2] {
+  public func lastVisitedFolderPath() -> [BookmarkNode] {
     guard let bookmarksAPI = bookmarksAPI else {
       return []
     }
@@ -88,19 +88,19 @@ class BookmarkManager {
       nodes.append(folderNode)
 
       while true {
-        if let parent = folderNode.parent, parent.isVisible, parent.guid != rootNodeGuid {
+        if let parent = folderNode.parentNode, parent.isVisible, parent.guid != rootNodeGuid {
           nodes.append(parent)
           folderNode = parent
           continue
         }
         break
       }
-      return nodes.map({ Bookmarkv2($0) }).reversed()
+      return nodes.reversed()
     }
 
     // Default folder is the mobile node..
     if let mobileNode = bookmarksAPI.mobileNode {
-      return [Bookmarkv2(mobileNode)]
+      return [mobileNode]
     }
 
     return []
@@ -184,7 +184,7 @@ class BookmarkManager {
 
   public func byFrequency(
     query: String? = nil,
-    completion: @escaping ([Bookmarkv2]) -> Void
+    completion: @escaping ([BookmarkNode]) -> Void
   ) {
     // Invalid query.. BraveCore doesn't store bookmarks based on last visited.
     // Any last visited bookmarks would show up in `History` anyway.
@@ -198,7 +198,7 @@ class BookmarkManager {
       withQuery: query,
       maxCount: 200,
       completion: { nodes in
-        completion(nodes.compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil }))
+        completion(nodes.compactMap({ return !$0.isFolder ? $0 : nil }))
       }
     )
   }
@@ -276,7 +276,7 @@ class BookmarkManager {
       }
 
       if let customTitle = customTitle {
-        bookmarkItem.bookmarkNode.setTitle(customTitle)
+        bookmarkItem.bookmarkNode.title = customTitle
       }
 
       if let url = url, !bookmarkItem.bookmarkNode.isFolder {
