@@ -261,3 +261,5 @@ components/skus/common/skus_utils.h @brave/sec-team
 build/dotfile_settings.gni @bridiver @goodov
 
 docs/gni_sources.md @bridiver
+
+build/commands/lib/branding.js @bridiver

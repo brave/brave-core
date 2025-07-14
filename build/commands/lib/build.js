@@ -8,6 +8,7 @@ const util = require('../lib/util')
 const path = require('path')
 const fs = require('fs-extra')
 const Log = require('../lib/logging')
+const branding = require('../lib/branding')
 
 /**
  * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
@@ -37,7 +38,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   checkVersionsMatch()
 
   util.touchOverriddenFiles()
-  util.updateBranding()
+  branding.update()
   await util.buildNativeRedirectCC()
 
   if (options.prepare_only) {
