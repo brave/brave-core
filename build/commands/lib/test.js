@@ -43,10 +43,15 @@ const cacheClient = () => {
         Key: key
       }));
 
-      await pipe(response.Body, createWriteStream(destinationPath));
+      try {
+        await pipe(response.Body, createWriteStream(dest));
 
-      console.log(`Downloaded s3://${bucket}/${key} to ${destinationPath}`);
-      return JSON.stringify(fs.readFile(dest, 'utf-8'));
+        console.log(`Downloaded s3://${bucket}/${key} to ${destinationPath}`);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
     },
 
     async upload(key, file) {
@@ -345,20 +350,23 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const testBinaryPath = path.join(config.outputDir, testBinary);
 
       let cacheFile = null;
+      let s3Key = null;
       const {BRAVE_TEST_CACHE_PATH, BRAVE_TEST_CACHE_S3_BUCKET} = process.env
+      const s3Cache = cacheClient();
       if (BRAVE_TEST_CACHE_PATH) {
         await fs.mkdirp(BRAVE_TEST_CACHE_PATH);
         try {
           console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
           const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
           cacheFile = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
+          s3Key = `${testSuite}-${hash}.xml`;
         } catch (error) {
           console.error(error);
           // TODO: propper error handling
         }
 
-        if (!fs.existsSync(cacheFile) && BRAVE_TEST_CACHE_S3_BUCKET) {
-          // TODO: download from s3 if exists
+        if (!fs.existsSync(cacheFile) && s3Cache && await s3Cache.check(`${testSuite}-${hash}.xml`)) {
+          await s3Cache.download(s3Key, cacheFile);
         }
 
         if (cacheFile && fs.existsSync(cacheFile)) {
@@ -384,10 +392,9 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
           console.log(`cached test results to ${cacheFile}`)
           fs.copyFile(`../${testSuite}.xml`, cacheFile);
 
-          if (BRAVE_TEST_CACHE_S3_BUCKET) {
-            // TODO: upload to s3 if
+          if (s3Cache) {
+            await s3Cache.upload(s3Key, cacheFile);
           }
-
         }
       }
 
