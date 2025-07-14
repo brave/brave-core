@@ -141,6 +141,10 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
                 weak_ptr_factory_.GetWeakPtr(), radius));
 }
 
+int BraveAvatarToolbarButton::GetIconSize() const {
+  return GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
+}
+
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
   if (browser_->profile()->IsOffTheRecord()) {
