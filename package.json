@@ -185,6 +185,7 @@
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.844.0",
     "@brave/brave-ui": "0.40.6",
     "@brave/leo": "github:brave/leo#99f624799f6247f1b915e37f360028051746ead537981c7",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#8685eec0851afa96d23dd424cd152854476e585d",
