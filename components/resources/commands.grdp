@@ -442,6 +442,21 @@
   <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
     Show Wayback Machine bubble
   </message>
+  <message name="IDS_IDC_CLOSE_TAB_GROUP">
+    Close tab group
+  </message>
+  <message name="IDS_IDC_CREATE_NEW_TAB_GROUP">
+    Create new tab group
+  </message>
+  <message name="IDS_IDC_FOCUS_NEXT_TAB_GROUP">
+    Focus next tab group
+  </message>
+  <message name="IDS_IDC_FOCUS_PREV_TAB_GROUP">
+    Focus previous tab group
+  </message>
+  <message name="IDS_IDC_ADD_NEW_TAB_TO_GROUP">
+    Add new tab to group
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
