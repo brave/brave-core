@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
 #include "ui/views/widget/widget.h"
 
@@ -62,9 +63,7 @@ void PlaylistContentsWrapper::EnterFullscreenModeForTab(
   fullscreen_display_id_ = options.display_id;
   if (was_browser_fullscreen_) {
     // In case it was in fullscreen for browser, we should trigger layout here.
-    auto side_panel_web_view = coordinator_->side_panel_web_view();
-    DCHECK(side_panel_web_view);
-    side_panel_web_view->InvalidateLayout();
+    coordinator_->side_panel_web_view()->InvalidateLayout();
   } else {
     widget->SetFullscreen(true, fullscreen_display_id_);
   }
@@ -165,7 +164,5 @@ void PlaylistContentsWrapper::OnExitFullscreen() {
   fullscreen_observation_.Reset();
   fullscreen_display_id_ = display::kInvalidDisplayId;
 
-  auto side_panel_web_view = coordinator_->side_panel_web_view();
-  DCHECK(side_panel_web_view);
-  side_panel_web_view->InvalidateLayout();
+  coordinator_->side_panel_web_view()->InvalidateLayout();
 }
