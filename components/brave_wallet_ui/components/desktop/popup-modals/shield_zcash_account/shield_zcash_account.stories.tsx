@@ -25,5 +25,6 @@ export const _ShieldZCashAccountModal = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Popup Modals',
   component: ShieldZCashAccountModal,
 }

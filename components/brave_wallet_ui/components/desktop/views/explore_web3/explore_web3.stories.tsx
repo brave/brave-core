@@ -38,4 +38,7 @@ export const _ExploreWeb3View = {
   },
 }
 
-export default { component: ExploreWeb3View }
+export default {
+  title: 'Wallet/Desktop/Screens',
+  component: ExploreWeb3View,
+}

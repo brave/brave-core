@@ -59,6 +59,7 @@ export const _TransactionComplete = {
 }
 
 export default {
+  title: 'Wallet/Panel/Panels/Post Confirmation',
   component: TransactionComplete,
   argTypes: {
     transactionType: {

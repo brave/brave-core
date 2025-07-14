@@ -36,5 +36,6 @@ export const AutoLock = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens/Onboarding/Components',
   component: AutoLockSettings,
 }

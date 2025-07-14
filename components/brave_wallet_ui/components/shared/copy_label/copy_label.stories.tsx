@@ -11,7 +11,6 @@ import {
 import { CopyLabel } from './copy_label'
 
 export const _CopyLabel = {
-  title: 'Copy Label',
   render: () => {
     return (
       <WalletPanelStory>
@@ -24,6 +23,6 @@ export const _CopyLabel = {
 }
 
 export default {
-  title: 'Copy Label',
+  title: 'Wallet/Desktop/Components',
   component: CopyLabel,
 }

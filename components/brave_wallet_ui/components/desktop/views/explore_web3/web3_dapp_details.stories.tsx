@@ -32,4 +32,7 @@ export const _DappDetails = () => {
   )
 }
 
-export default { component: _DappDetails }
+export default {
+  title: 'Wallet/Desktop/Screens',
+  component: _DappDetails,
+}

@@ -22,5 +22,6 @@ export const OnboardingSelectWalletDeviceStory = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingSelectWalletDevice,
 } as Meta<typeof OnboardingSelectWalletDevice>

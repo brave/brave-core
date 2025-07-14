@@ -40,5 +40,5 @@ export const _SelectCurrency = () => {
 
 export default {
   component: _SelectCurrency,
-  title: 'Fund Wallet - Select Currency',
+  title: 'Wallet/Desktop/Components/Fund Wallet',
 }

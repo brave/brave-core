@@ -24,5 +24,6 @@ export const _AddNftModal = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Popup Modals',
   component: AddOrEditNftModal,
 }

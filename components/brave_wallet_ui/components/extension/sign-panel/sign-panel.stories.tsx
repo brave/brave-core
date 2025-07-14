@@ -131,4 +131,7 @@ export const _SignData = {
   },
 }
 
-export default { component: SignPanel }
+export default {
+  title: 'Wallet/Panel/Panels/Sign Transaction',
+  component: SignPanel,
+}

@@ -60,5 +60,6 @@ export default {
   parameters: {
     layout: 'centered',
   },
+  title: 'Wallet/Panel/Panels/Sign Transaction',
   component: PendingSignatureRequestsPanel,
 }

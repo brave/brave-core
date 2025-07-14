@@ -24,4 +24,7 @@ export const _ConfirmTransactionPanel = {
   },
 }
 
-export default { component: ConfirmTransactionPanel }
+export default {
+  title: 'Wallet/Panel/Panels/Confirm Transaction',
+  component: ConfirmTransactionPanel,
+}

@@ -36,4 +36,7 @@ export const _SignCowSwapOrder = {
   },
 }
 
-export default { component: SignCowSwapOrder }
+export default {
+  title: 'Wallet/Panel/Panels/Sign Transaction',
+  component: SignCowSwapOrder,
+}

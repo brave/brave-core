@@ -39,4 +39,7 @@ export const _CancelTransaction = {
   },
 }
 
-export default { component: CancelTransaction }
+export default {
+  title: 'Wallet/Panel/Panels/Post Confirmation',
+  component: CancelTransaction,
+}

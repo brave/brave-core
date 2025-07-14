@@ -11,7 +11,7 @@ import {
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { FundWalletScreen } from './fund_wallet_v2'
 
-export const _FundWalletScreen = () => {
+export const _FundWalletScreenV2 = () => {
   return (
     <WalletPageStory>
       <FundWalletScreen />
@@ -19,11 +19,7 @@ export const _FundWalletScreen = () => {
   )
 }
 
-_FundWalletScreen.story = {
-  name: 'Fund Wallet Screen v2',
-}
-
 export default {
-  component: _FundWalletScreen,
-  title: 'Fund Wallet Screen v2',
+  component: FundWalletScreen,
+  title: 'Wallet/Desktop/Screens',
 }

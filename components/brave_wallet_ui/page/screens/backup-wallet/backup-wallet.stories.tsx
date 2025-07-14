@@ -22,4 +22,7 @@ export const _BackupWallet = {
   },
 }
 
-export default { component: BackupWalletRoutes }
+export default {
+  title: 'Wallet/Desktop/Screens/Backup Wallet',
+  component: BackupWalletRoutes,
+}

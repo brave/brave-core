@@ -19,6 +19,6 @@ export const OnboardingImportOrRestoreWalletStory = {
 }
 
 export default {
-  title: 'Import Or Restore Wallet',
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingImportOrRestoreWallet,
 }

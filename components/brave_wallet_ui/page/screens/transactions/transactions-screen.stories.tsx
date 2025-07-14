@@ -19,5 +19,6 @@ export const _TransactionsScreen = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens',
   component: TransactionsScreen,
 } as Meta<typeof TransactionsScreen>
