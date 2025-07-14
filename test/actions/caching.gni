@@ -40,17 +40,14 @@ template("cacheTest") {
   name = target_name
   test(name + ".gtest") {
     testonly = true
-    forward_variables_from(invoker, "*", ["configs"])
-
-    # Apply configs if the invoker provided any
-    if (defined(invoker.configs)) {
-      configs = invoker.configs
-    }
+    forward_variables_from(invoker, "*")
 
     if(!defined(invoker.public_deps)) {
       public_deps = [
+        "//base/test:test_support",
+        "//base/test:run_all_unittests",
         "//testing/gtest",
-        "//third_party/googletest:gtest_main"
+        "//testing/gmock"
       ]
     }
   }

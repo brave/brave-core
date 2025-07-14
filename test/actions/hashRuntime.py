@@ -42,6 +42,7 @@ def writeIfChanged(filePath, newContent):
       f.seek(0)
       f.write(newContent)   
 
+# TODO: use argparser and make things more generic
 def runtimeDeps(exePath, extraFiles):
   runtimeDeps = exePath + '.runtime_deps'
   jsonPath = exePath+".hash.json"
