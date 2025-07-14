@@ -231,7 +231,7 @@ RegisterPolymerTemplateModifications({
       sectionWeb3Domains.setAttribute('is', 'dom-if')
       sectionWeb3Domains.setAttribute('restamp', 'true')
       sectionWeb3Domains.setAttribute('if',
-        '[[showPage_(pageVisibility_.braveWeb3Domains)]]')
+        '[[showPage_(pageVisibility_.braveWallet)]]')
       sectionWeb3Domains.content.appendChild(createNestedSectionElement(
         'web3Domains',
         'web3',

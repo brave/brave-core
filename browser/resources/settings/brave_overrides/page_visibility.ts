@@ -16,7 +16,6 @@ declare module '../page_visibility' {
   export interface PageVisibility {
     braveSync?: boolean
     braveWallet?: boolean
-    braveWeb3?: boolean
     // <if expr="enable_containers">
     containers?: boolean
     // </if>
@@ -47,7 +46,6 @@ function getPageVisibility () {
       ...chromiumPageVisibility,
       braveSync: false,
       braveWallet: false,
-      braveWeb3: false,
       // <if expr="enable_containers">
       containers: false,
       // </if>

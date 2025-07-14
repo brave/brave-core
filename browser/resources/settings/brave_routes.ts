@@ -40,12 +40,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup')
   }
-  if (pageVisibility.braveWeb3) {
+  if (pageVisibility.braveWallet) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
-    if (pageVisibility.braveWallet) {
-      r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-      r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
-    }
+    r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
+    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
 
@@ -97,7 +95,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =
       loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-    if (isNativeBraveWalletFeatureEnabled) {
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+    if (isNativeBraveWalletFeatureEnabled && isBraveWalletAllowed) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
       if (isCardanoDappSupportFeatureEnabled) {
