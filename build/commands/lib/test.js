@@ -284,21 +284,37 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.continueOnFail = true
       }
       
-      const testBinaryPath = getTestBinary(testSuite);
+      const testBinary = getTestBinary(testSuite);
+      const testBinaryPath = path.join(config.outputDir, testBinary);
 
-      if (process.env.BRAVE_TEST_CACHE_PATH) {
-        await util.buildTargets(testBinaryPath + ".hash.json");
-        const {hash} = JSON.parse(fs.readFile(testBinaryPath + ".hash.json", "utf-8"));
-        const cacheFile = `${process.env.BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
+      let cacheFile = null;
+      const {BRAVE_TEST_CACHE_PATH, BRAVE_TEST_CACHE_S3_BUCKET} = process.env
+      if (BRAVE_TEST_CACHE_PATH) {
+        await fs.mkdirp(BRAVE_TEST_CACHE_PATH);
+        try {
+          console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
+          process.exit(1);
+          const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
+          cacheFile = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
+        } catch (error) {
+          console.error(error);
+          // TODO: propper error handling
+        }
 
-        if( fs.existsSync(cacheFile)) {
+        if (!fs.existsSync(cacheFile) && BRAVE_TEST_CACHE_S3_BUCKET) {
+          // TODO: download from s3 if exists
+        }
+
+        if (cacheFile && fs.existsSync(cacheFile)) {
+          console.log(`skipping ${testSuite}; Previous results at ${cacheFile}`);
+          await fs.copyFile(cacheFile, `../${testSuite}.xml`);
           continue;
         }
       }
       
       
       let prog = util.run(
-        path.join(config.outputDir, testBinaryPath),
+        path.join(config.outputDir, testBinary),
         braveArgs,
         runOptions,
       )
@@ -307,11 +323,21 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+
+        if (cacheFile !== null) {
+          console.log(`cached test results to ${cacheFile}`)
+          fs.copyFile(`../${testSuite}.xml`, cacheFile);
+
+          if (BRAVE_TEST_CACHE_S3_BUCKET) {
+            // TODO: upload to s3 if
+          }
+
+        }
       }
 
 
       // Don't run other tests if one has failed already.
-      if(prog.status === 0) {
+      if(prog.status !== 0) {
         break;
       }
     }

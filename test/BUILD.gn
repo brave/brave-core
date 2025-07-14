@@ -723,6 +723,12 @@ if (!is_android) {
       }
     }
   }
+
+  hashRuntime("brave_installer_unittests.hash.json") {
+    testonly = true
+    deps = [":brave_installer_unittests"]
+    binary = "$root_out_dir/brave_installer_unittests"
+  }
 }
 
 static_library("browser_test_support") {
@@ -810,6 +816,12 @@ if (!is_android) {
     if (enable_playlist_webui) {
       deps += [ "//brave/components/playlist/common" ]
     }
+  }
+
+  hashRuntime("brave_network_audit_tests.hash.json") {
+    testonly = true
+    deps = [":brave_network_audit_tests"]
+    binary = "$root_out_dir/brave_network_audit_tests"
   }
 }
 

@@ -7,6 +7,7 @@ import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//testing/test.gni")
 import("//tools/grit/repack.gni")
+import("//brave/test/actions/caching.gni")
 
 test("brave_components_unittests") {
   use_xvfb = use_xvfb_in_this_config
@@ -77,4 +78,11 @@ repack("components_tests_pak") {
     "//brave/components/resources",
     "//brave/components/resources:strings",
   ]
+}
+
+
+hashRuntime("brave_components_unittests.hash.json") {
+  testonly = true
+  deps = [":brave_components_unittests"]
+  binary = "$root_out_dir/brave_components_unittests"
 }
