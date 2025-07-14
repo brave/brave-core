@@ -51,11 +51,8 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     }
 
     mojom::ToolUseEventPtr tool_use_event =
-        mojom::ToolUseEvent::New(*name, *id, "", std::nullopt, std::nullopt);
+        mojom::ToolUseEvent::New(*name, *id, "", std::nullopt);
 
-    // Arguments are provided as a JSON string. We parse it here so that the
-    // rest of the code doesn't have to parse it potentially multiple times
-    // (performance), and we can add some protections.
     const std::string* arguments_raw = function->FindString("arguments");
     if (arguments_raw) {
       tool_use_event->arguments_json = *arguments_raw;
