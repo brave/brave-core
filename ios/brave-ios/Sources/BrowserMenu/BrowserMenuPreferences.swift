@@ -16,5 +16,8 @@ extension Preferences {
 
     // maps `Action.Identifier.id` to the user defined rankings
     static let actionRanks: Option<[String: Double]> = .init(key: "menu.action-ranks", default: [:])
+
+    /// The number of quick actions that are displayed on the menu
+    static let numberOfQuickActions: Option<Int> = .init(key: "menu.quick-action-count", default: 4)
   }
 }

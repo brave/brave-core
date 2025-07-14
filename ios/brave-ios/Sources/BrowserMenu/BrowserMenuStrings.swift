@@ -65,6 +65,35 @@ extension Strings {
       value: "Show All…",
       comment: "A button title that when taps shows all actions that are hidden by default"
     )
+    public static let quickActionDividerTitle = NSLocalizedString(
+      "BrowserMenu.quickActionDividerTitle",
+      bundle: .module,
+      value: "Items on top will show on the main area",
+      comment:
+        "A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list."
+    )
+    public static let resetToDefault = NSLocalizedString(
+      "BrowserMenu.resetToDefault",
+      bundle: .module,
+      value: "Reset to Default",
+      comment:
+        "A button title that when taps shows a confirmation dialog to reset the menu back to its default state"
+    )
+    public static let resetButtonTitle = NSLocalizedString(
+      "BrowserMenu.resetButtonTitle",
+      bundle: .module,
+      value: "Reset",
+      comment:
+        "A button title that when taps shows a confirmation dialog to reset the menu back to its default state"
+    )
+    public static let resetToDefaultDialogMessage = NSLocalizedString(
+      "BrowserMenu.resetToDefaultDialogMessage",
+      bundle: .module,
+      value:
+        "By resetting to default, you'll lose any customizations you've made in Brave. This action cannot be undone. Are you sure you want to proceed?",
+      comment:
+        "A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state"
+    )
   }
 
   /// Action titles that are different when shown in the new menu design
