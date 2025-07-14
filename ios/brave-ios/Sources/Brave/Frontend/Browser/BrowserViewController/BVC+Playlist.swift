@@ -99,13 +99,6 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
           browser.topToolbar.updatePlaylistButtonState(
             shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
           )
-          if Preferences.Playlist.enablePlaylistMenuBadge.value {
-            browser.topToolbar.menuButton.addBadge(.playlist, animated: true)
-            browser.toolbar?.menuButton.addBadge(.playlist, animated: true)
-          } else {
-            browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
-            browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
-          }
         case .existingItem:
           browser.topToolbar.updatePlaylistButtonState(
             shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none

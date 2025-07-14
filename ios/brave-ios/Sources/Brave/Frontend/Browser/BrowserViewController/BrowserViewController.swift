@@ -487,7 +487,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Privacy.blockAllCookies.observe(from: self)
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
-    Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
@@ -2970,8 +2969,7 @@ extension BrowserViewController: PreferencesObserver {
           for: $0
         )
       }
-    case Preferences.Playlist.enablePlaylistMenuBadge.key,
-      Preferences.Playlist.enablePlaylistURLBarButton.key:
+    case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
       updatePlaylistURLBar(
         tab: selectedTab,
