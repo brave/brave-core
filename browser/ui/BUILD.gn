@@ -975,6 +975,7 @@ source_set("ui") {
     deps += [
       "//chrome/browser/favicon",
       "//chrome/browser/image_fetcher",
+      "//chrome/browser/signin",
       "//components/favicon/core",
       "//components/favicon_base",
       "//components/history/core/browser",
