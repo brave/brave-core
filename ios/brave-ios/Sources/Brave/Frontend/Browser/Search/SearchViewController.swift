@@ -159,7 +159,32 @@ public class SearchViewController: UIViewController, LoaderListener {
   // MARK: Properties
 
   // UI Properties
-  var collectionView: UICollectionView!
+  private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
+    $0.interSectionSpacing = 8.0
+  }
+  private lazy var compositionalLayout = SearchCompositionalLayout(
+    browserColors: browserColors,
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
+      let section = self.availableSections[sectionIndex]
+      switch section {
+      case .searchSuggestionsOptIn:
+        return self.searchSuggestionOptinLayoutSection()
+      case .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
+        return self.searchLayoutSection(
+          headerEnabled: section != .searchSuggestions,
+          footerEnabled: section == .openTabsAndHistoryAndBookmarks
+        )
+      case .braveSearchPromotion:
+        return self.braveSearchPromotionLayoutSection()
+      }
+    },
+    configuration: layoutConfig
+  )
+  lazy var collectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: compositionalLayout
+  )
   // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
   // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
   private let searchEngineScrollView = ButtonScrollView().then { scrollView in
@@ -287,55 +312,8 @@ public class SearchViewController: UIViewController, LoaderListener {
     super.init(nibName: nil, bundle: nil)
 
     dataSource.delegate = self
-  }
 
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
-  }
-
-  public override func viewSafeAreaInsetsDidChange() {
-    super.viewSafeAreaInsetsDidChange()
-    if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
-      layoutCollectionView()
-    } else {
-      layoutSearchEngineScrollView()
-    }
-  }
-
-  override public func viewDidLoad() {
-    super.viewDidLoad()
-
-    let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
-      $0.interSectionSpacing = 8.0
-    }
-
-    let compositionalLayout = SearchCompositionalLayout(
-      browserColors: browserColors,
-      sectionProvider: { [weak self] sectionIndex, _ in
-        guard let self else { return nil }
-        let section = self.availableSections[sectionIndex]
-        switch section {
-        case .searchSuggestionsOptIn:
-          return self.searchSuggestionOptinLayoutSection()
-        case .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
-          return self.searchLayoutSection(
-            headerEnabled: section != .searchSuggestions,
-            footerEnabled: section == .openTabsAndHistoryAndBookmarks
-          )
-        case .braveSearchPromotion:
-          return self.braveSearchPromotionLayoutSection()
-        }
-      },
-      configuration: layoutConfig
-    )
-    collectionView = UICollectionView(
-      frame: .zero,
-      collectionViewLayout: compositionalLayout
-    ).then {
+    collectionView.do {
       $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "search_optin_separator")
       $0.register(SearchActionsCell.self)
       $0.register(SearchSuggestionCell.self)
@@ -359,6 +337,27 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.addGestureRecognizer(suggestionLongPressGesture)
       $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
     }
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
+  }
+
+  public override func viewSafeAreaInsetsDidChange() {
+    super.viewSafeAreaInsetsDidChange()
+    if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
+      layoutCollectionView()
+    } else {
+      layoutSearchEngineScrollView()
+    }
+  }
+
+  override public func viewDidLoad() {
+    super.viewDidLoad()
 
     view.addSubview(backgroundView)
     view.addSubview(collectionView)

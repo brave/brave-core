@@ -64,7 +64,29 @@ class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
 class FavoritesViewController: UIViewController {
 
   // UI Properties
-  var collectionView: UICollectionView!
+  private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
+    $0.interSectionSpacing = 8.0
+  }
+  private lazy var compositionLayout = FavoritesCompositionalLayout(
+    browserColors: privateBrowsingManager.browserColors,
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
+      let section = self.availableSections[sectionIndex]
+      switch section {
+      case .favorites:
+        return self.favoritesLayoutSection()
+      case .recentSearches:
+        return self.recentSearchesLayoutSection()
+      case .recentSearchesOptIn:
+        return self.recentSearchesOptInLayoutSection()
+      }
+    },
+    configuration: layoutConfig
+  )
+  lazy var collectionView: UICollectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: compositionLayout
+  )
   private let backgroundView = UIView()
 
   // Data Source
@@ -72,7 +94,16 @@ class FavoritesViewController: UIViewController {
     FavoritesSection, FavoritesDataWrapper
   >
   private typealias Snapshot = NSDiffableDataSourceSnapshot<FavoritesSection, FavoritesDataWrapper>
-  private var dataSource: DataSource!
+  private lazy var dataSource: DataSource = DataSource(
+    collectionView: collectionView,
+    cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
+      self?.cellProvider(
+        collectionView: collectionView,
+        indexPath: indexPath,
+        wrapper: wrapper
+      )
+    }
+  )
 
   // Actions
   var bookmarkAction: (Favorite, BookmarksAction) -> Void
@@ -142,36 +173,8 @@ class FavoritesViewController: UIViewController {
         guard let self = self else { return }
         self.updateColors()
       })
-  }
 
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
-      $0.interSectionSpacing = 8.0
-    }
-    let compositionLayout = FavoritesCompositionalLayout(
-      browserColors: privateBrowsingManager.browserColors,
-      sectionProvider: { [weak self] sectionIndex, _ in
-        guard let self else { return nil }
-        let section = self.availableSections[sectionIndex]
-        switch section {
-        case .favorites:
-          return self.favoritesLayoutSection()
-        case .recentSearches:
-          return self.recentSearchesLayoutSection()
-        case .recentSearchesOptIn:
-          return self.recentSearchesOptInLayoutSection()
-        }
-      },
-      configuration: layoutConfig
-    )
-    collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionLayout).then {
+    collectionView.do {
       $0.register(FavoritesCollectionViewCell.self)
       $0.register(FavoritesRecentSearchCell.self)
       $0.register(SearchActionsCell.self)
@@ -192,16 +195,7 @@ class FavoritesViewController: UIViewController {
       )
       $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
     }
-    dataSource = DataSource(
-      collectionView: collectionView,
-      cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
-        self?.cellProvider(
-          collectionView: collectionView,
-          indexPath: indexPath,
-          wrapper: wrapper
-        )
-      }
-    )
+
     dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
       self?.supplementaryViewProvider(
         collectionView: collectionView,
@@ -209,6 +203,15 @@ class FavoritesViewController: UIViewController {
         indexPath: indexPath
       )
     }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     doLayout()
     setTheme()
