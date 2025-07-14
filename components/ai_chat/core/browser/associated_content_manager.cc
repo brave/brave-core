@@ -157,6 +157,10 @@ void AssociatedContentManager::RemoveContent(
 
 void AssociatedContentManager::ClearContent() {
   DVLOG(1) << __func__;
+  if (!HasAssociatedContent()) {
+    return;
+  }
+
   DetachContent();
 
   conversation_->OnAssociatedContentUpdated();

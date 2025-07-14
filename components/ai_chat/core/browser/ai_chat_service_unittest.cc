@@ -644,8 +644,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   ExpectConversationsSize(FROM_HERE, 1u);
 
   // Reset the content to be empty.
-  conversation_with_content->associated_content_manager()->AddContent(
-      nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
+  conversation_with_content->associated_content_manager()->ClearContent();
 
   WaitForConversationUnload();
 

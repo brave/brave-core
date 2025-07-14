@@ -344,9 +344,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                  << "should_send_content: " << should_send_content);
     base::RunLoop run_loop;
     if (!should_send_content) {
-      conversation_handler_->associated_content_manager()->AddContent(
-          nullptr, /*notify_updated=*/true,
-          /*detach_existing_content=*/true);
+      conversation_handler_->associated_content_manager()->ClearContent();
     } else {
       conversation_handler_->associated_content_manager()->AddContent(
           associated_content_.get());
@@ -416,9 +414,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       [&](std::vector<mojom::AssociatedContentPtr> site_info) {
         EXPECT_FALSE(site_info.empty());
       }));
-  conversation_handler_->associated_content_manager()->AddContent(
-      nullptr, /*notify_updated=*/true,
-      /*detach_existing_content=*/true);
+  conversation_handler_->associated_content_manager()->ClearContent();
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](std::vector<mojom::AssociatedContentPtr> site_info) {
         EXPECT_TRUE(site_info.empty());
@@ -1485,9 +1481,7 @@ TEST_F(ConversationHandlerUnitTest,
   // MaybeFetchOrClearContentStagedConversation will always early return.
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
 
-  conversation_handler_->associated_content_manager()->AddContent(
-      nullptr, /*notify_updated=*/true,
-      /*detach_existing_content=*/true);
+  conversation_handler_->associated_content_manager()->ClearContent();
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2278,8 +2272,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
 
   // Remove content so we don't get a dangling pointer when we try and access
   // ArchiveContent during destruction.
-  conversation_handler_->associated_content_manager()->AddContent(
-      nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
+  conversation_handler_->associated_content_manager()->ClearContent();
 }
 
 TEST_F(ConversationHandlerUnitTest, StopGenerationAndMaybeGetHumanEntry) {
