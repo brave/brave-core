@@ -420,9 +420,9 @@ test("brave_unit_tests") {
 
   data = [
     "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-    "//components/test/data/update_client/updatecheck_reply_1.json",
     "//brave/test/data/",
     "//chrome/test/data/extensions/",
+    "//components/test/data/update_client/updatecheck_reply_1.json",
   ]
 
   public_deps = [
@@ -519,12 +519,12 @@ test("brave_unit_tests") {
     sources += [ "//brave/common/brave_channel_info_unittest.cc" ]
   }
 
-
+  if (is_mac) {
     sources += [
       "//brave/chromium_src/chrome/browser/shell_integration_unittest_mac.cc",
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
     ]
-
+  }
 
   if (toolkit_views) {
     sources +=
@@ -1042,6 +1042,11 @@ test("brave_browser_tests") {
 
   data = [
     "//.vpython3",
+    "//brave/test/data/",
+    "//chrome/test/data",
+    "//content/test/data/",
+    "//extensions/test/data/",
+    "//net/tools/testserver/",
     "//third_party/depot_tools/cipd",
     "//third_party/depot_tools/cipd_bin_setup.sh",
     "//third_party/depot_tools/cipd_client_version",
@@ -1049,6 +1054,7 @@ test("brave_browser_tests") {
     "//third_party/depot_tools/cipd_manifest.txt",
     "//third_party/depot_tools/cipd_manifest.versions",
     "//third_party/depot_tools/vpython3",
+    "//third_party/pywebsocket3/",
   ]
 
   if (is_mac) {
