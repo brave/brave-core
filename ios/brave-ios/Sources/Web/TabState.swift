@@ -345,12 +345,6 @@ extension TabState {
   }
 }
 
-extension TabState {
-  public func isDescendentOf(_ ancestor: any TabState) -> Bool {
-    return sequence(first: opener) { $0?.opener }.contains { $0 === ancestor }
-  }
-}
-
 /// A basic proxy over the underlying web view that may be displaying web content
 public protocol WebViewProxy {
   var scrollView: UIScrollView? { get }

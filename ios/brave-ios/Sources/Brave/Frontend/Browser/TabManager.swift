@@ -644,6 +644,8 @@ class TabManager: NSObject {
       }
       if isPopup {
         tab.opener = parent
+      } else {
+        tab.orderingParent = parent
       }
       allTabs.insert(tab, at: insertIndex)
     }
