@@ -1,3 +1,7 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "ios/web/web_state/web_state_impl.h"
 
@@ -41,7 +45,7 @@ void WebStateImpl::TearDownBraveWebUI() {
 
 void WebStateImpl::CreateBraveWebUI(const GURL& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  (void)RealizedState();
+  DCHECK(RealizedState());
 
   if (HasBraveWebUI()) {
     for (auto& web_ui : brave_web_uis_) {
@@ -61,7 +65,7 @@ void WebStateImpl::CreateBraveWebUI(const GURL& url) {
 
 void WebStateImpl::ClearBraveWebUI() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  (void)RealizedState();
+  DCHECK(RealizedState());
 
   brave_web_uis_.clear();
 }
