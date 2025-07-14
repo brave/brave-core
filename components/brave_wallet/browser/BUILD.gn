@@ -328,7 +328,6 @@ static_library("browser") {
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
-    "//components/country_codes",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
