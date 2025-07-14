@@ -9,11 +9,17 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -152,6 +158,52 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
 
   const std::string navigated_content = FetchPageContent();
   EXPECT_EQ("Navigated content", navigated_content);
+}
+
+// Test for https://github.com/brave/brave-browser/issues/47294
+IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
+                       ClosingMultiAssociatedChatDoesNotCrash) {
+  auto get_associated_content = [](content::RenderFrameHost* rfh) {
+    return AIChatTabHelper::FromWebContents(
+        content::WebContents::FromRenderFrameHost(rfh));
+  };
+  auto* content1 =
+      get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
+          browser(), GURL("https://example.com/one"),
+          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  auto* content2 =
+      get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
+          browser(), GURL("https://example.com/two"),
+          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  auto* content3 =
+      get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
+          browser(), GURL("https://example.com/three"),
+          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ai_chat_service->MaybeAssociateContent(content1,
+                                         conversation->get_conversation_uuid());
+  ai_chat_service->MaybeAssociateContent(content2,
+                                         conversation->get_conversation_uuid());
+  ai_chat_service->MaybeAssociateContent(content3,
+                                         conversation->get_conversation_uuid());
+
+  EXPECT_EQ(ai_chat_service->GetInMemoryConversationCountForTesting(), 1u);
+
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(),
+      GURL(base::StrCat(
+          {"chrome://leo-ai/", conversation->get_conversation_uuid()})),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  // Close the first tab
+  chrome::CloseWindow(browser());
 }
 
 }  // namespace ai_chat
