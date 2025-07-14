@@ -1179,6 +1179,7 @@ public class BrowserViewController: UIViewController {
         }
       }
       setupTasksCompleted = true
+      postSetupTasks.removeAll()
     }
   }
 
