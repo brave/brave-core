@@ -90,6 +90,10 @@
     Reconnect automatically
   </message>
 
+  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing" formatter_data="webui=BraveVPNPanelUi">
+    Smart Proxy Routing
+  </message>
+
   <message name="IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION" desc="Link text to redirect user to manage account page">
     Manage subscription
   </message>
