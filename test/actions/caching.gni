@@ -42,7 +42,7 @@ template("cacheTest") {
     testonly = true
     forward_variables_from(invoker, "*")
 
-    if(!defined(invoker.public_deps)) {
+    if (!defined(invoker.public_deps)) {
       public_deps = [
         "//base/test:test_support",
         "//base/test:run_all_unittests",
@@ -52,7 +52,7 @@ template("cacheTest") {
     }
   }
 
-  hashRuntime(target_name + ".hash.json") {
+  hashRuntime(target_name + ".gtest.hash.json") {
     testonly = true
     deps = [":"+name+".gtest"]
     binary = "$root_out_dir/"+name+".gtest"
@@ -62,11 +62,11 @@ template("cacheTest") {
   action(target_name) {
     testonly = true
     script = "//brave/test/actions/testRunner.py"
-    deps = [":"+name+".hash.json", ":"+name+".gtest"]
+    deps = [":"+name+".gtest.hash.json", ":"+name+".gtest"]
 
     inputs = [
       "$root_out_dir/"+ name + ".gtest",
-      "$root_out_dir/"+ name + ".hash.json"
+      "$root_out_dir/"+ name + ".gtest.hash.json"
     ]
 
     if (defined(invoker.inputs)) {
