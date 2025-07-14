@@ -31,6 +31,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -215,6 +216,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
+  html_source->AddBoolean("isBraveAccountEnabled",
+                          brave_account::features::IsBraveAccountEnabled());
 }
 
 // static
