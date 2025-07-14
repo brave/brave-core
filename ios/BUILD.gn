@@ -191,6 +191,7 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += ads_public_deps
   deps += ai_chat_component_public_deps
   deps += brave_wallet_public_deps
+  deps += brave_shields_public_deps
   deps += rewards_public_deps
   deps += skus_public_deps
   deps += credential_provider_public_deps
