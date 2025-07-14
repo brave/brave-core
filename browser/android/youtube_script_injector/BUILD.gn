@@ -9,7 +9,6 @@ import("//third_party/jni_zero/jni_zero.gni")
 source_set("youtube_script_injector") {
   sources = [
     "brave_youtube_script_injector_native_helper.cc",
-    "brave_youtube_script_injector_native_helper.h",
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
   ]
@@ -54,10 +53,7 @@ source_set("features") {
 }
 
 source_set("browser_tests") {
-  defines = [
-    "HAS_OUT_OF_PROC_TEST_RUNNER",
-    "BRAVE_JNI_UNUSED_FOR_TESTS",
-  ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   testonly = true
   sources = [
     "youtube_script_injector_browsertest.cc",

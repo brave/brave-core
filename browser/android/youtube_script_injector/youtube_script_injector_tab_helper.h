@@ -20,6 +20,7 @@ class YouTubeScriptInjectorTabHelper
       const YouTubeScriptInjectorTabHelper&) = delete;
   ~YouTubeScriptInjectorTabHelper() override;
   bool IsYouTubeVideo() const;
+  void MaybeSetFullscreen();
 
   // content::WebContentsObserver overrides:
   void PrimaryMainDocumentElementAvailable() override;

@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
-
 #include <string>
 
 #include "base/functional/callback.h"
@@ -12,6 +10,7 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
+#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -41,8 +40,7 @@ constexpr std::u16string_view kSimulateDelayedScriptLoad =
 
 }  // namespace
 
-class YouTubeScriptInjectorBrowserTest
-    : public PlatformBrowserTest {
+class YouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  public:
   YouTubeScriptInjectorBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
@@ -161,7 +159,11 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       content::EvalJs(web_contents(), "document.fullscreenElement === null")
           .ExtractBool());
 
-  youtube_script_injector::MaybeSetFullscreen(web_contents());
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  helper->MaybeSetFullscreen();
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
 
@@ -195,7 +197,12 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
           "return true;"
           "})();")
           .ExtractBool());
-  youtube_script_injector::MaybeSetFullscreen(web_contents());
+
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  helper->MaybeSetFullscreen();
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
   EXPECT_TRUE(IsVideoPlaying());
@@ -226,7 +233,11 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   ASSERT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  youtube_script_injector::MaybeSetFullscreen(web_contents());
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  helper->MaybeSetFullscreen();
 
   EXPECT_TRUE(WaitForJsResult(
       web_contents(),
@@ -249,8 +260,12 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   std::string dom_before =
       content::EvalJs(web_contents(), "document.body.innerHTML")
           .ExtractString();
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
   // Attempt to set fullscreen, which should not change anything.
-  youtube_script_injector::MaybeSetFullscreen(web_contents());
+  helper->MaybeSetFullscreen();
 
   std::string dom_after =
       content::EvalJs(web_contents(), "document.body.innerHTML")
@@ -292,7 +307,11 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                   "document.querySelector('button.fullscreen-icon') === null")
                   .ExtractBool());
 
-  youtube_script_injector::MaybeSetFullscreen(web_contents());
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  helper->MaybeSetFullscreen();
 
   // Inject a script to simulate delayed loading of the video element fullscreen
   // button.
