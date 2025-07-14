@@ -3,11 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -82,7 +83,8 @@ TEST_F(BraveShieldsP3ATest, RecordDomainAdBlockCounts) {
                                   GURL("https://brave.com"));
 
   // Test initial count
-  MaybeRecordInitialShieldsSettings(GetProfile()->GetPrefs(), map);
+  P3A(GetProfile()) << MaybeRecordInitialShieldsSettings(
+      GetProfile()->GetPrefs(), map);
   histogram_tester_->ExpectBucketCount(kDomainAdsSettingsAboveHistogramName, 1,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainAdsSettingsBelowHistogramName, 0,
@@ -147,7 +149,8 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
                                GURL("https://brave.com"));
 
   // Test initial count
-  MaybeRecordInitialShieldsSettings(GetProfile()->GetPrefs(), map);
+  P3A(GetProfile()) << MaybeRecordInitialShieldsSettings(
+      GetProfile()->GetPrefs(), map);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 1,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 0,

@@ -44,8 +44,8 @@ void RecordInitialP3AValues() {
       g_browser_process->local_state());
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
-                                            g_browser_process->local_state());
+  P3A(brave_shields::NotIncognito()) << MaybeRecordShieldsUsageP3A(
+      brave_shields::kNeverClicked, g_browser_process->local_state());
 
   // Record crash reporting status stats.
   const bool crash_reports_enabled = g_browser_process->local_state()->
