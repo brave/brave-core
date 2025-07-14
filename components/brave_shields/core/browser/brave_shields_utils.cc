@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
 #include "base/no_destructor.h"
 #include "base/types/cxx23_to_underlying.h"
