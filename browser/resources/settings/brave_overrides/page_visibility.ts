@@ -82,6 +82,7 @@ function getPageVisibility () {
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
+    braveWeb3: loadTimeData.getBoolean('isBraveWalletAllowed'),
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     surveyPanelist: loadTimeData.getBoolean('isSurveyPanelistAllowed'),
     // <if expr="enable_containers">
