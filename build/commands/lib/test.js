@@ -285,7 +285,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       }
       
       const testBinaryPath = getTestBinary(testSuite);
-      let cached = false;
+
       if (process.env.BRAVE_TEST_CACHE_PATH) {
         await util.buildTargets(testBinaryPath + ".hash.json");
         const {hash} = JSON.parse(fs.readFile(testBinaryPath + ".hash.json", "utf-8"));
@@ -308,6 +308,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
+
 
       // Don't run other tests if one has failed already.
       if(prog.status === 0) {
