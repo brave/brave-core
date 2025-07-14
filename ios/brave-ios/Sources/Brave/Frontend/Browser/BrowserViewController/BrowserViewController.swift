@@ -166,10 +166,6 @@ public class BrowserViewController: UIViewController {
 
   var customSearchBarButtonItemGroup: UIBarButtonItemGroup?
 
-  // popover rotation handling
-  var displayedPopoverController: UIViewController?
-  var updateDisplayedPopoverProperties: (() -> Void)?
-
   public let windowId: UUID
   let profile: Profile
   let attributionManager: AttributionManager
@@ -441,14 +437,8 @@ public class BrowserViewController: UIViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
 
-    dismissVisibleMenus()
-
     coordinator.animate(
       alongsideTransition: { context in
-        if let popover = self.displayedPopoverController {
-          self.updateDisplayedPopoverProperties?()
-          self.present(popover, animated: true, completion: nil)
-        }
         #if canImport(BraveTalk)
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
         #endif
@@ -712,7 +702,6 @@ public class BrowserViewController: UIViewController {
       updateToolbarStateForTraitCollection(newCollection, withTransitionCoordinator: coordinator)
     }
 
-    displayedPopoverController?.dismiss(animated: true, completion: nil)
     coordinator.animate(
       alongsideTransition: { context in
         if self.isViewLoaded {
@@ -722,21 +711,6 @@ public class BrowserViewController: UIViewController {
         }
       }
     )
-  }
-
-  func dismissVisibleMenus() {
-    displayedPopoverController?.dismiss(animated: true)
-  }
-
-  @objc func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
-    guard let scene = notification.object as? UIScene, scene == currentScene else {
-      return
-    }
-
-    displayedPopoverController?.dismiss(animated: false) {
-      self.updateDisplayedPopoverProperties = nil
-      self.displayedPopoverController = nil
-    }
   }
 
   @objc func appWillTerminateNotification() {
@@ -767,12 +741,6 @@ public class BrowserViewController: UIViewController {
     }
 
     tabManager.saveAllTabs()
-
-    // Dismiss any popovers that might be visible
-    displayedPopoverController?.dismiss(animated: false) {
-      self.updateDisplayedPopoverProperties = nil
-      self.displayedPopoverController = nil
-    }
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
     // when the app is in the home switcher
@@ -913,12 +881,6 @@ public class BrowserViewController: UIViewController {
         self,
         selector: #selector(sceneDidBecomeActiveNotification(_:)),
         name: UIScene.didActivateNotification,
-        object: nil
-      )
-      $0.addObserver(
-        self,
-        selector: #selector(sceneDidEnterBackgroundNotification),
-        name: UIScene.didEnterBackgroundNotification,
         object: nil
       )
       $0.addObserver(
@@ -2617,15 +2579,6 @@ extension BrowserViewController: SearchViewControllerDelegate {
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
-
-extension BrowserViewController: UIPopoverPresentationControllerDelegate {
-  public func popoverPresentationControllerDidDismissPopover(
-    _ popoverPresentationController: UIPopoverPresentationController
-  ) {
-    displayedPopoverController = nil
-    updateDisplayedPopoverProperties = nil
-  }
-}
 
 extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   // Returning None here makes sure that the Popover is actually presented as a Popover and
