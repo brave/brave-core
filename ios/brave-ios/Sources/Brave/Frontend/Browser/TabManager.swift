@@ -243,7 +243,10 @@ class TabManager: NSObject {
     syncTabsTask?.cancel()
 
     syncTabsTask = DispatchWorkItem { [weak self] in
-      guard let self = self else { return }
+      guard let self = self, let task = self.syncTabsTask, !task.isCancelled else {
+        return
+      }
+
       let regularTabs = self.tabs(isPrivate: false)
 
       for tab in regularTabs {
