@@ -27,6 +27,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
                     std::optional<SkColor> highlight_color) override;
   void UpdateColorsAndInsets() override;
   void OnThemeChanged() override;
+  int GetIconSize() const override;
 
  private:
   // AvatarToolbarButton:
