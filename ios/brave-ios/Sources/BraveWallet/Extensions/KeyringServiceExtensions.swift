@@ -21,6 +21,12 @@ extension BraveWalletKeyringService {
     return !allAccountsForKeyring.isEmpty
   }
 
+  /// Check if any wallet account has been created given a coin type
+  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType) async -> Bool {
+    let allAccountsForCoin = await allAccounts().accounts.filter { $0.coin == coin }
+    return !allAccountsForCoin.isEmpty
+  }
+
   /// Return a list of all accounts with checking if Bitcoin/Zcash testnet is enabled
   /// The list of account will not include Bitcoin/Zcash Testnet Accounts if Bitcoin/Zcash testnet is disabled.
   func allAccountInfos(

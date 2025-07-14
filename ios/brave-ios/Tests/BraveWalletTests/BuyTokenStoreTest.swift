@@ -11,155 +11,68 @@ import XCTest
 @testable import BraveWallet
 
 class BuyTokenStoreTests: XCTestCase {
-  private var cancellables: Set<AnyCancellable> = []
+  let mockCryptoCurrencies: [BraveWallet.MeldCryptoCurrency] = [
+    .init(
+      currencyCode: "ETH",
+      name: "Ethereum",
+      chainCode: "ETH",
+      chainName: "Ethereum",
+      chainId: "0x1",
+      contractAddress: "0x0000000000000000000000000000000000000000",
+      symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
+    ),
+    .init(
+      currencyCode: "SOL",
+      name: "Solana",
+      chainCode: "SOLANA",
+      chainName: "Solana",
+      chainId: "0x65",
+      contractAddress: nil,
+      symbolImageUrl: "https://images-currency.meld.io/crypto/SOL/symbol.png"
+    ),
+  ]
+  let mockFiatCurrencies: [BraveWallet.MeldFiatCurrency] = [
+    .init(
+      currencyCode: "USD",
+      name: "US Dollar",
+      symbolImageUrl: "https://images-currency.meld.io/fiat/USD/symbol.png"
+    )
+  ]
+  let mockCountries: [BraveWallet.MeldCountry] = [
+    .init(
+      countryCode: "US",
+      name: "United States",
+      flagImageUrl: nil,
+      regions: nil
+    )
+  ]
+  let mockPayments: [BraveWallet.MeldPaymentMethod] = [
+    .init(
+      paymentMethod: "CREDIT_DEBIT_CARD",
+      name: "Credit & Debit Card",
+      paymentType: "CARD",
+      logoImages: .init(
+        darkUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png",
+        darkShortUrl: nil,
+        lightUrl: "https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png",
+        lightShortUrl: nil
+      )
+    )
+  ]
 
-  private func setupServices(
-    selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-  ) -> (
-    BraveWallet.TestBlockchainRegistry, BraveWallet.TestKeyringService,
-    BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService,
-    BraveWallet.TestAssetRatioService,
+  private func setupServices() -> (
+    BraveWallet.TestKeyringService,
+    BraveWallet.TestBraveWalletService,
     BraveWallet.TestBitcoinWalletService,
-    BraveWallet.TestZCashWalletService
+    BraveWallet.TestZCashWalletService,
+    BraveWallet.TestMeldIntegrationService
   ) {
-    let mockTokenList: [BraveWallet.BlockchainToken] = [
-      .init(
-        contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-        name: "Basic Attention Token",
-        logo: "",
-        isCompressed: false,
-        isErc20: true,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "BAT",
-        decimals: 18,
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: BraveWallet.MainnetChainId,
-        coin: .eth,
-        isShielded: false
-      ),
-      .init(
-        contractAddress: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        name: "BNB",
-        logo: "",
-        isCompressed: false,
-        isErc20: true,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "BNB",
-        decimals: 18,
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: .eth,
-        isShielded: false
-      ),
-      .init(
-        contractAddress: "0xdac17f958d2ee523a2206206994597c13d831ec7",
-        name: "Tether USD",
-        logo: "",
-        isCompressed: false,
-        isErc20: true,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "USDT",
-        decimals: 6,
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: .eth,
-        isShielded: false
-      ),
-      .init(
-        contractAddress: "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85",
-        name: "Ethereum Name Service",
-        logo: "",
-        isCompressed: false,
-        isErc20: false,
-        isErc721: true,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "ENS",
-        decimals: 1,
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: .eth,
-        isShielded: false
-      ),
-      .init(
-        contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
-        name: "DAI Stablecoin",
-        logo: "",
-        isCompressed: false,
-        isErc20: true,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "DAI",
-        decimals: 18,
-        visible: false,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: .eth,
-        isShielded: false
-      ),
-      .init(
-        contractAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
-        name: "MATIC",
-        logo: "",
-        isCompressed: false,
-        isErc20: true,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unsupported,
-        isNft: false,
-        isSpam: false,
-        symbol: "MATIC",
-        decimals: 18,
-        visible: true,
-        tokenId: "",
-        coingeckoId: "",
-        chainId: "",
-        coin: .eth,
-        isShielded: false
-      ),
-    ]
-    let mockOnRampCurrencies: [BraveWallet.OnRampCurrency] = [
-      .mockUSD,
-      .mockEuro,
-      .mockCAD,
-      .mockGBP,
-    ]
-    let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
-    blockchainRegistry._buyTokens = { $2(mockTokenList) }
-    blockchainRegistry._onRampCurrencies = { $0(mockOnRampCurrencies) }
-
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._allAccounts = { completion in
       completion(
         .init(
-          accounts: [.previewAccount],
+          accounts: [.previewAccount, .mockSolAccount],
           selectedAccount: .previewAccount,
           ethDappSelectedAccount: .previewAccount,
           solDappSelectedAccount: nil
@@ -167,394 +80,149 @@ class BuyTokenStoreTests: XCTestCase {
       )
     }
 
-    let rpcService = MockJsonRpcService()
-    rpcService._network = { $2(selectedNetwork) }
-
     let walletService = BraveWallet.TestBraveWalletService()
-
-    let buyURL = "https://crypto.sardine.ai/"
-    let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._buyUrlV1 = { _, _, _, _, _, _, completion in
-      completion(buyURL, nil)
-    }
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
 
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
+    meldIntegrationService._fiatCurrencies = { _, completion in
+      completion(self.mockFiatCurrencies, nil)
+    }
+    meldIntegrationService._countries = { _, completion in
+      completion(self.mockCountries, nil)
+    }
+    meldIntegrationService._paymentMethods = { _, completion in
+      completion(self.mockPayments, nil)
+    }
+
     return (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
+      keyringService,
+      walletService,
+      bitcoinWalletService,
+      zcashWalletService,
+      meldIntegrationService
     )
   }
 
   @MainActor func testPrefilledToken() async {
+    let defaultEth: BraveWallet.MeldCryptoCurrency = .init(
+      currencyCode: "ETH",
+      name: "Ethereum",
+      chainCode: "ETH",
+      chainName: "Ethereum",
+      chainId: "0x1",
+      contractAddress: "0x0000000000000000000000000000000000000000",
+      symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
+    )
     let (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
+      keyringService,
+      walletService,
+      bitcoinWalletService,
+      zcashWalletService,
+      meldIntegrationService
     ) = setupServices()
     var store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
-      rpcService: rpcService,
       walletService: walletService,
-      assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       prefilledToken: nil
     )
-    XCTAssertNil(store.selectedBuyToken)
+    XCTAssertNotNil(store.selectedBuyToken)
 
     store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
-      rpcService: rpcService,
       walletService: walletService,
-      assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       prefilledToken: .previewToken
     )
 
     await store.updateInfo()
     XCTAssertEqual(
-      store.selectedBuyToken?.symbol.lowercased(),
-      BraveWallet.BlockchainToken.previewToken.symbol.lowercased()
+      store.selectedBuyToken.coin,
+      BraveWallet.BlockchainToken.previewToken.coin
     )
-  }
-
-  /// Test that given a `prefilledToken` that is not on the current network, the `BuyTokenStore` will switch networks to the `chainId` of the token.
-  @MainActor func testPrefilledTokenSwitchNetwork() async {
-    var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
-    ) = setupServices()
-    rpcService._network = { coin, origin, completion in
-      completion(selectedNetwork)
-    }
-    // simulate network switch when `setNetwork` is called
-    rpcService._setNetwork = { chainId, coin, origin, completion in
-      // verify network switched to SolanaMainnet
-      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet)
-      selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
-      completion(true)
-    }
-
-    let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      assetRatioService: assetRatioService,
-      bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService,
-      prefilledToken: .mockSolToken  // not on mainnet
-    )
-    await store.updateInfo()
     XCTAssertEqual(
-      store.selectedBuyToken?.symbol.lowercased(),
-      BraveWallet.BlockchainToken.mockSolToken.symbol.lowercased()
+      store.selectedBuyToken.contractAddress,
+      defaultEth.contractAddress ?? ""
     )
-  }
-
-  func testBuyDisabledForTestNetwork() {
-    let (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
-    ) = setupServices(selectedNetwork: .mockSepolia)
-    let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      assetRatioService: assetRatioService,
-      bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService,
-      prefilledToken: nil
+    XCTAssertEqual(
+      store.selectedBuyToken.name,
+      defaultEth.name
     )
-
-    let isSelectedNetworkSupportedExpectation = expectation(
-      description: "buyTokenStore-isSelectedNetworkSupported"
+    XCTAssertEqual(
+      store.selectedBuyToken.chainId,
+      defaultEth.chainId
     )
-    store.$isSelectedNetworkSupported
-      .dropFirst()  // initial/default value
-      .sink { isSelectedNetworkSupported in
-        defer { isSelectedNetworkSupportedExpectation.fulfill() }
-        XCTAssertFalse(isSelectedNetworkSupported)
-      }
-      .store(in: &cancellables)
-    wait(for: [isSelectedNetworkSupportedExpectation], timeout: 2)
-  }
-
-  func testBuyEnabledForNonTestNetwork() {
-    let (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
-    ) = setupServices(selectedNetwork: .mockMainnet)
-    let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      assetRatioService: assetRatioService,
-      bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService,
-      prefilledToken: nil
-    )
-
-    let isSelectedNetworkSupportedExpectation = expectation(
-      description: "buyTokenStore-isSelectedNetworkSupported"
-    )
-    store.$isSelectedNetworkSupported
-      .dropFirst()  // initial/default value
-      .sink { isSelectedNetworkSupported in
-        defer { isSelectedNetworkSupportedExpectation.fulfill() }
-        XCTAssertTrue(isSelectedNetworkSupported)
-      }
-      .store(in: &cancellables)
-    wait(for: [isSelectedNetworkSupportedExpectation], timeout: 2)
   }
 
   @MainActor
-  func testOrderedSupportedBuyOptions() async {
+  func testSelectedAccount() async {
     let (
-      _, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
+      keyringService,
+      walletService,
+      bitcoinWalletService,
+      zcashWalletService,
+      meldIntegrationService
     ) = setupServices()
-    let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
-    blockchainRegistry._buyTokens = {
-      if $0 == .ramp {
-        $2([.mockSolToken])
-      } else {
-        $2([.mockUSDCToken])
-      }
-    }
-    blockchainRegistry._onRampCurrencies = {
-      $0([
-        .init(
-          currencyCode: "usd",
-          currencyName: "United States Dollar",
-          providers: [.init(value: 0)]
-        )
-      ])
-    }
 
     let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
-      rpcService: rpcService,
       walletService: walletService,
-      assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      prefilledToken: nil
+      meldIntegrationService: meldIntegrationService,
+      prefilledToken: .mockSolToken
     )
+    // initial selected account
+    XCTAssertNil(store.selectedAccount)
 
+    await store.updateSelectedAccount()
     await store.updateInfo()
-
-    XCTAssertEqual(store.orderedSupportedBuyOptions.count, isTestRunningInUSRegion ? 3 : 2)
-    XCTAssertNotNil(store.orderedSupportedBuyOptions.first)
-    XCTAssertEqual(store.orderedSupportedBuyOptions.first, .sardine)
-    if isTestRunningInUSRegion {
-      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
-      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .stripe)
-      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 2])
-      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 2], .coinbase)
-    } else {
-      XCTAssertNotNil(store.orderedSupportedBuyOptions[safe: 1])
-      XCTAssertEqual(store.orderedSupportedBuyOptions[safe: 1], .coinbase)
+    // updated since `selectedBuyToken changed`
+    guard let account = store.selectedAccount else {
+      XCTFail("No selected account")
+      return
     }
+    XCTAssertEqual(account, .mockSolAccount)
   }
 
   @MainActor
-  func testAllTokens() async {
-    let selectedNetwork: BraveWallet.NetworkInfo = .mockSolana
+  func testUpdateInfo() async {
     let (
-      _, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
-    ) = setupServices(selectedNetwork: selectedNetwork)
-    let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
-    blockchainRegistry._buyTokens = {
-      if $0 == .sardine {
-        $2([.mockSolToken, .mockSpdToken])
-      } else {
-        $2([.mockSpdToken])
-      }
-    }
-    blockchainRegistry._onRampCurrencies = {
-      $0([
-        .init(
-          currencyCode: "usd",
-          currencyName: "United States Dollar",
-          providers: [.init(value: 0)]
-        )
-      ])
-    }
-
-    let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      assetRatioService: assetRatioService,
-      bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService,
-      prefilledToken: nil
-    )
-
-    await store.updateInfo()
-
-    XCTAssertEqual(store.allTokens.count, 2)
-    for token in store.allTokens {
-      XCTAssertEqual(token.chainId, selectedNetwork.chainId)
-    }
-  }
-
-  /// Test `supportedProviders` will only return supported `OnRampProvider`s for the `selectedCurrency`.
-  @MainActor func testSupportedProvidersSelectedCurrency() async {
-    let (
-      blockchainRegistry, keyringService,
-      rpcService, walletService,
-      assetRatioService, bitcoinWalletService,
-      zcashWalletService
+      keyringService,
+      walletService,
+      bitcoinWalletService,
+      zcashWalletService,
+      meldIntegrationService
     ) = setupServices()
-    blockchainRegistry._onRampCurrencies = {
-      $0([.mockUSD, .mockCAD, .mockGBP, .mockEuro])
-    }
-
     let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
-      rpcService: rpcService,
       walletService: walletService,
-      assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       prefilledToken: nil
     )
+
     await store.updateInfo()
 
-    // Test USD. Ramp, Sardine, Transak, Stripe (US locale only), Coinbase are all supported.
-    store.selectedCurrency = .mockUSD
-    // some providers are only available in the US. Check ourselves instead of swizzling `regionCode` / `region`.
-    if isTestRunningInUSRegion {
-      XCTAssertEqual(store.supportedProviders.count, 3)
-      XCTAssertEqual(
-        store.supportedProviders,
-        [
-          BraveWallet.OnRampProvider.sardine,
-          BraveWallet.OnRampProvider.stripe,
-          BraveWallet.OnRampProvider.coinbase,
-        ]
-      )
-    } else {
-      // stripe only supported in en-us locale
-      XCTAssertEqual(store.supportedProviders.count, 2)
-      XCTAssertEqual(
-        store.supportedProviders,
-        [
-          BraveWallet.OnRampProvider.sardine,
-          BraveWallet.OnRampProvider.coinbase,
-        ]
-      )
-    }
-
-    // Test CAD. Ramp, Sardine, Transak, Coinbase are supported. Stripe unsupported.
-    store.selectedCurrency = .mockCAD
-    XCTAssertEqual(store.supportedProviders.count, 2)
-    XCTAssertEqual(
-      store.supportedProviders,
-      [
-        BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.coinbase,
-      ]
-    )
-    XCTAssertFalse(store.supportedProviders.contains(.stripe))
-
-    // Test GBP. Ramp, Sardine, Coinbase supported. Transak, Stripe unsupported.
-    store.selectedCurrency = .mockGBP
-    XCTAssertEqual(store.supportedProviders.count, 2)
-    XCTAssertEqual(
-      store.supportedProviders,
-      [
-        BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.coinbase,
-      ]
-    )
-    XCTAssertFalse(store.supportedProviders.contains(.transak))
-    XCTAssertFalse(store.supportedProviders.contains(.stripe))
-  }
-
-  private var isTestRunningInUSRegion: Bool {
-    Locale.current.safeRegionCode?.caseInsensitiveCompare("us") == .orderedSame
-  }
-}
-
-extension BraveWallet.OnRampCurrency {
-  fileprivate static var mockUSD: BraveWallet.OnRampCurrency {
-    .init(
-      currencyCode: "usd",
-      currencyName: "United States Dollar",
-      providers: WalletConstants.supportedOnRampProviders.map {
-        .init(integerLiteral: $0.rawValue)
-      }
-    )
-  }
-
-  fileprivate static var mockCAD: BraveWallet.OnRampCurrency {
-    .init(
-      currencyCode: "cad",
-      currencyName: "Canadian Dollar",
-      providers: [
-        BraveWallet.OnRampProvider.ramp,
-        BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.transak,
-        BraveWallet.OnRampProvider.coinbase,
-          // simulate stripe not supported for CAD
-      ].map {
-        .init(integerLiteral: $0.rawValue)
-      }
-    )
-  }
-
-  fileprivate static var mockGBP: BraveWallet.OnRampCurrency {
-    .init(
-      currencyCode: "gbp",
-      currencyName: "British Pound Sterling",
-      providers: [
-        BraveWallet.OnRampProvider.ramp,
-        BraveWallet.OnRampProvider.sardine,
-        BraveWallet.OnRampProvider.coinbase,
-          // simulate transak not supported for GBP
-          // simulate stripe not supported for GBP
-      ].map {
-        .init(integerLiteral: $0.rawValue)
-      }
-    )
-  }
-
-  fileprivate static var mockEuro: BraveWallet.OnRampCurrency {
-    .init(
-      currencyCode: "eur",
-      currencyName: "Euro",
-      providers: WalletConstants.supportedOnRampProviders.map {
-        .init(integerLiteral: $0.rawValue)
-      }
-    )
+    XCTAssertEqual(store.supportedCountries.count, 1)
+    XCTAssertEqual(store.supportedCountries[safe: 0], mockCountries[safe: 0])
+    XCTAssertEqual(store.supportedPaymentTypes.count, 1)
+    XCTAssertEqual(store.supportedPaymentTypes[safe: 0], mockPayments[safe: 0])
+    XCTAssertEqual(store.supportedFiatCurrencies.count, 1)
+    XCTAssertEqual(store.supportedFiatCurrencies[safe: 0], mockFiatCurrencies[safe: 0])
+    XCTAssertEqual(store.supportedCryptoCurrencies.count, 2)
+    XCTAssertEqual(store.supportedCryptoCurrencies[safe: 0], mockCryptoCurrencies[safe: 0])
+    XCTAssertEqual(store.supportedCryptoCurrencies[safe: 1], mockCryptoCurrencies[safe: 1])
   }
 }
