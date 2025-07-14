@@ -173,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
   EXPECT_LE(1, commander()->GetResultSetId());
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(2u, items.size());
+  ASSERT_EQ(4u, items.size());
   EXPECT_EQ(u"New tab", items[0].title);
 #if BUILDFLAG(IS_MAC)
   EXPECT_EQ(u"New Tab to the Right", items[1].title);
