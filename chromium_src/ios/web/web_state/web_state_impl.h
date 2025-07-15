@@ -33,7 +33,7 @@ class WebUIIOS;
   web::WebUIIOS* GetMainWebUI() const;                         \
   void ClearBraveWebUI
 
-#include "src/ios/web/web_state/web_state_impl.h"  // IWYU pragma: export
+#include <ios/web/web_state/web_state_impl.h>  // IWYU pragma: export
 
 #undef CancelDialogs
 
