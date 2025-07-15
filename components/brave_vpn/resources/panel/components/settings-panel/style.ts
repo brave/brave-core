@@ -23,38 +23,53 @@ export const PanelContent = styled.section`
 
 export const SettingsList = styled.div`
   display: flex;
+  padding: ${spacing.m} ${spacing.s};
   flex-direction: column;
   align-items: center;
+  gap: ${spacing.s};
+  align-self: stretch;
 `
 
 export const Setting = styled.div`
   display: flex;
-  padding: ${spacing.l} ${spacing['2Xl']};
+  padding: ${spacing.m};
   align-items: center;
-  gap: ${spacing.xl};
-  justify-content: space-between;
-  width: 100%;
+  gap: ${spacing.m};
   align-self: stretch;
   cursor: pointer;
-
-  &:focus-visible {
-    outline: 1.5px solid ${color.primary[40]};
-    outline-offset: -6px;
-  }
 `
+
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
   background: ${color.divider.subtle};
 `
 
+export const SettingLabelBox = styled.div`
+  display: flex;
+  padding: 0px ${spacing.m};
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+`
+
 export const SettingLabel = styled.div`
   color: ${color.text.primary};
   font: ${font.default.regular};
+  align-self: stretch;
+`
+
+export const SettingDesc = styled.div`
+  color: ${color.text.tertiary};
+  font: ${font.small.regular};
+  align-self: stretch;
+
+  a {
+    color: ${color.text.tertiary};
+  }
 `
 
 export const StyledIcon = styled(Icon)`
   --leo-icon-size: 20px;
   --leo-icon-color: ${color.icon.default};
-  padding: 8px 0px;
 `

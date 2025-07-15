@@ -91,7 +91,11 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing" formatter_data="webui=BraveVPNPanelUi">
-    Smart Proxy Routing
+    Smart proxy routing
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING_DESC" desc="Label to smart proxy routing desc" formatter_data="webui=BraveVPNPanelUi">
+    Ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third party services.
   </message>
 
   <message name="IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION" desc="Link text to redirect user to manage account page">
