@@ -101,6 +101,9 @@ class ConversationAPIClient {
     Content content;
 
     // Optional structured properties:
+    // TODO(https://github.com/brave/brave-browser/issues/47623): Consider
+    // refactoring to multiple variants so we can properly type-check fields
+    // that are mandatory for certain event types.
 
     // Only in a role=User type=GetFocusTabsForTopic event
     std::string topic;
