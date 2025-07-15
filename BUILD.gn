@@ -49,7 +49,10 @@ declare_args() {
 # buildable in all platforms in a single build run.
 group("all") {
   testonly = true
-  deps = [ "//brave" ]
+  deps = [
+    "//base:base_unittests",
+    "//brave",
+  ]
 
   if (!is_android && !is_ios) {
     deps += [
