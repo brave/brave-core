@@ -62,6 +62,10 @@ group("all") {
     ]
   }
 
+  if (toolkit_views) {
+    deps += [ "//ui/views/examples:views_examples" ]
+  }
+
   if (!is_ios) {
     deps += [
       "//brave/test:brave_browser_tests",
