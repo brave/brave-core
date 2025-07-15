@@ -1,5 +1,5 @@
 diff --git a/components/policy/resources/webui/policy_base.ts b/components/policy/resources/webui/policy_base.ts
-index b3b7e5521b0a5f3d207ed49e276fdc3aa611c059..de1aebe5ccc12dff96bfa164b946b16a8ee169fe 100644
+index af0b2948172adb75a97b183d7298117149551e93..90ba491e56325956164457fe05952e8c7dc65297 100644
 --- a/components/policy/resources/webui/policy_base.ts
 +++ b/components/policy/resources/webui/policy_base.ts
 @@ -198,7 +198,7 @@ export class Page {
@@ -10,4 +10,4 @@ index b3b7e5521b0a5f3d207ed49e276fdc3aa611c059..de1aebe5ccc12dff96bfa164b946b16a
 +                        `https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy?policy=${
                              name}` :
                          undefined,
-                   },
+                     isExtension: value.isExtension || false,
