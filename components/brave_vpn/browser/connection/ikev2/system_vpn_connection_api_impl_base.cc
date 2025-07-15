@@ -102,6 +102,9 @@ void SystemVPNConnectionAPIImplBase::Connect() {
   if (connection_info_.IsValid()) {
     VLOG(2) << __func__
             << " : Create os vpn entry with cached connection_info.";
+
+    // smart routing could be changed for the same region.
+    connection_info_.set_smart_routing_enabled(SmartRoutingEnabled());
     CreateVPNConnectionImpl(connection_info_);
     return;
   }

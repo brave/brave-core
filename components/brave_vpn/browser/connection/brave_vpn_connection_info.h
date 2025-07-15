@@ -32,6 +32,9 @@ class BraveVPNConnectionInfo {
   std::string password() const { return password_; }
   bool smart_routing_enabled() const { return smart_routing_enabled_; }
   std::string proxy() const { return proxy_; }
+  void set_smart_routing_enabled(bool enabled) {
+    smart_routing_enabled_ = enabled;
+  }
 
  private:
   std::string connection_name_;

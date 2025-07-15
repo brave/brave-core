@@ -535,6 +535,10 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
     return GetRasSuccessResult();
   }
 
+  // Cleanup previous entry.
+  // Ignore the result as it'll be updated if remove failed.
+  RemoveEntry(entry_name);
+
   VLOG(2) << __func__ << " Create Entry(" << entry_name << ") with "
           << hostname;
 
