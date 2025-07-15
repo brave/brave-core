@@ -21,6 +21,7 @@ CI/run-upstream-tests:
     - any-glob-to-any-file:
       - browser/about_flags.cc
       - chromium_src/**/*features.cc
+      - build/commands/lib/test.js
 
 CI/storybook-url:
   - changed-files:
