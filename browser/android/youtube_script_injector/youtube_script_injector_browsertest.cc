@@ -335,3 +335,74 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       web_contents(),
       "document.querySelector('video.html5-main-video').paused === false"));
 }
+
+// Test that MaybeSetFullscreen() works with multiple calls.
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
+                       MultipleFullscreenCalls) {
+  const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  // Verify initially no fullscreen request has been made.
+  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
+
+  // First call should trigger fullscreen.
+  helper->MaybeSetFullscreen();
+  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+
+  // Wait for fullscreen to be triggered.
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+
+  // Exit fullscreen to prepare for second test.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
+
+  // Second call should work the same as first call.
+  helper->MaybeSetFullscreen();
+
+  // Should still show fullscreen was requested a second time for this page.
+  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+
+  // Wait again for fullscreen to be triggered.
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+}
+
+// Test that fullscreen state resets on navigation.
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
+                       FullscreenStateResetsOnNavigation) {
+  const GURL url1 = https_server_.GetURL("youtube.com", "/watch?v=something");
+  const GURL url2 = https_server_.GetURL("youtube.com", "/watch?v=different");
+
+  // Navigate to first YouTube page.
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url1, 1,
+                                                      true);
+
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  ASSERT_TRUE(helper);
+
+  // Verify initially no fullscreen request has been made.
+  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
+
+  // Make fullscreen request on first page.
+  helper->MaybeSetFullscreen();
+  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+
+  // Navigate to second YouTube page
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
+                                                      true);
+
+  // Verify fullscreen state resets on navigation.
+  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
+
+  // Verify MaybeSetFullscreen() works again on new page.
+  helper->MaybeSetFullscreen();
+  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+}

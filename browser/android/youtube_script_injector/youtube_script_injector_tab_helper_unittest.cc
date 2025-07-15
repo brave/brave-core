@@ -121,4 +121,45 @@ TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathSubdomain) {
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 
+// Test fullscreen state management with PageUserData.
+TEST_F(YouTubeScriptInjectorTabHelperTest, FullscreenStateManagement) {
+  // Navigate to a YouTube video.
+  NavigateToURL(GURL("https://www.youtube.com/watch?v=abcdefg"));
+
+  // Initially, no fullscreen request should be recorded.
+  EXPECT_FALSE(GetHelper()->HasFullscreenBeenRequested());
+
+  // Set fullscreen requested.
+  GetHelper()->SetFullscreenRequested(true);
+  EXPECT_TRUE(GetHelper()->HasFullscreenBeenRequested());
+
+  // Unset fullscreen requested.
+  GetHelper()->SetFullscreenRequested(false);
+  EXPECT_FALSE(GetHelper()->HasFullscreenBeenRequested());
+
+  // Set it back to true.
+  GetHelper()->SetFullscreenRequested(true);
+  EXPECT_TRUE(GetHelper()->HasFullscreenBeenRequested());
+}
+
+// Test fullscreen state resets on navigation.
+TEST_F(YouTubeScriptInjectorTabHelperTest, FullscreenStateResetsOnNavigation) {
+  // Navigate to first YouTube video.
+  NavigateToURL(GURL("https://www.youtube.com/watch?v=abcdefg"));
+
+  // Set fullscreen requested for first page.
+  GetHelper()->SetFullscreenRequested(true);
+  EXPECT_TRUE(GetHelper()->HasFullscreenBeenRequested());
+
+  // Navigate to second YouTube video.
+  NavigateToURL(GURL("https://www.youtube.com/watch?v=1234567"));
+
+  // State should reset for new page.
+  EXPECT_FALSE(GetHelper()->HasFullscreenBeenRequested());
+
+  // Should be able to set fullscreen for new page.
+  GetHelper()->SetFullscreenRequested(true);
+  EXPECT_TRUE(GetHelper()->HasFullscreenBeenRequested());
+}
+
 }  // namespace youtube_script_injector
