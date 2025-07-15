@@ -80,7 +80,8 @@ static constexpr auto kButtonThemes =
          {.background_color = nala::kColorPrimary60,
           .dark_background_color = nala::kColorPrimary50}},
         {{ui::ButtonStyle::kProminent, ButtonState::STATE_DISABLED},
-         {.background_color = nala::kColorButtonDisabled}},
+         {.background_color = nala::kColorButtonDisabled,
+          .text_color = nala::kColorTextDisabled}},
 
         // Kind=Outline
         {{ui::ButtonStyle::kDefault, ButtonState::STATE_NORMAL},
@@ -109,8 +110,8 @@ static constexpr auto kButtonThemes =
          {.text_color = nala::kColorTextPrimary}},
         {{ui::ButtonStyle::kText, ButtonState::STATE_HOVERED},
          {.text_color = nala::kColorTextSecondary}},
-         {{ui::ButtonStyle::kText, ButtonState::STATE_DISABLED},
-          {.text_color = nala::kColorTextDisabled}},
+        {{ui::ButtonStyle::kText, ButtonState::STATE_DISABLED},
+         {.text_color = nala::kColorTextDisabled}},
     });
 
 }  // namespace
