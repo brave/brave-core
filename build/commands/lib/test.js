@@ -15,7 +15,20 @@ const cacheClient = require('./cache-client')
 const { createHash } = require('crypto');
 
 function sha256(content) {
-  return createHash('sha256').update(content).digest('hex').slice(0,16);
+  return createHash('sha256').update(content).digest('hex');
+}
+
+const sha256fromFile = async (filePath) => {
+  try {
+    const hash = crypto.createHash('sha256');
+    const rs = fs.createReadStream(filePath);
+    for await (const chunk of rs) {
+      hash.update(chunk);
+    }
+    return hash.digest('hex');
+  } catch (error) {
+    console.error('Error while calculating hash:', error);
+  }
 }
 
 const getTestBinary = (suite) => {
@@ -232,8 +245,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       let runOptions = config.defaultOptions
 
       // Filter out upstream tests that are known to fail for Brave
+      const filterFilePaths = getApplicableFilters(testSuite)
       if (upstreamTestSuites.includes(testSuite)) {
-        const filterFilePaths = getApplicableFilters(testSuite)
         if (filterFilePaths.length > 0) {
           runArgs.push(
             `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
@@ -278,15 +291,22 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
             await fs.readFile(testBinary + '.hash.json', 'utf-8'),
           )
 
+          // TODO: check if we can avoid hashing this
+          const filterFileHashes = await Promise.all(
+            filterFilePaths.map(sha256fromFile)
+          );
+
           const argsToHash = [
             options.filter,
-            options.run_disabled_tests? 'run_disabled_tests' : null
+            options.run_disabled_tests? 'run_disabled_tests' : null,
+            ...filterFileHashes
           ].filter(x=>x);
 
           const argHash = argsToHash.length
             ? '-' + sha256(argsToHash.join(''))
             : ''
 
+          // we might need to be careful because windows paths have a limit...
           cacheKey = `${testSuite}-${hash}${argHash}.xml`
         } catch (error) {
           console.error(error)
