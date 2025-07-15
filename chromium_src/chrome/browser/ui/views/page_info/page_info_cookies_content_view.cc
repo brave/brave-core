@@ -11,13 +11,12 @@
 #include <chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc>
 #undef SetCookieInfo
 
-void PageInfoCookiesContentView::SetCookieInfo(
-    const CookiesNewInfo& cookie_info) {
+void PageInfoCookiesContentView::SetCookieInfo(const CookiesInfo& cookie_info) {
   // We need to call SetCookieInfo with controls_state = kHidden, or the layout
   // will DCHECK since we hide the cookie container. We can't copy the existing
   // struct when doing this because its copy constructor is implicitly deleted,
   // so we just copy over the only other setting that's relevant for us.
-  CookiesNewInfo mutable_cookie_info;
+  CookiesInfo mutable_cookie_info;
   mutable_cookie_info.allowed_sites_count = cookie_info.allowed_sites_count;
   mutable_cookie_info.controls_state = CookieControlsState::kHidden;
   SetCookieInfo_ChromiumImpl(mutable_cookie_info);
