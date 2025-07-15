@@ -625,10 +625,8 @@ extension BrowserViewController: TopToolbarDelegate {
 
     func openVoiceSearch(speechRecognizer: SpeechRecognizer) {
       // Pause active playing in PiP when Audio Search is enabled
-      if let pipMediaPlayer = PlaylistCoordinator.shared.mediaPlayer?.pictureInPictureController?
-        .playerLayer.player
-      {
-        pipMediaPlayer.pause()
+      if PlaylistCoordinator.shared.isPictureInPictureActive {
+        PlaylistCoordinator.shared.pauseAllPlayback()
       }
 
       voiceSearchViewController = PopupViewController(

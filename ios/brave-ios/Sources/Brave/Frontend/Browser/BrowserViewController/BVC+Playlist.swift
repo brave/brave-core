@@ -310,27 +310,12 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset
     )
-    // Legacy UI set up for shared playlists
-    if let playlistController = playlistController as? PlaylistViewController {
-      if let folderSharingPageUrl = folderSharingPageUrl {
-        playlistController.setFolderSharingUrl(folderSharingPageUrl)
-      }
-    }
 
     // Donate Open Playlist Activity for suggestions
     let openPlaylist = ActivityShortcutManager.shared.createShortcutActivity(type: .openPlayList)
     self.userActivity = openPlaylist
     openPlaylist.becomeCurrent()
     PlaylistP3A.recordUsage()
-
-    present(playlistController, animated: true) {
-      // Legacy UI set up for shared playlists
-      if let playlistController = playlistController as? PlaylistViewController {
-        if let folderSharingPageUrl = folderSharingPageUrl {
-          playlistController.setFolderSharingUrl(folderSharingPageUrl)
-        }
-      }
-    }
   }
 
   func addToPlayListActivity(info: PlaylistInfo?, itemDetected: Bool) {
@@ -445,32 +430,9 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
 }
 
 extension BrowserViewController {
-  private static var playlistSyncFoldersTimer: Timer?
-
   func openPlaylistSettingsMenu() {
     let playlistSettings = PlaylistSettingsViewController()
     let navigationController = UINavigationController(rootViewController: playlistSettings)
     self.present(navigationController, animated: true)
-  }
-
-  func syncPlaylistFolders() {
-    if Preferences.Playlist.syncSharedFoldersAutomatically.value {
-      BrowserViewController.playlistSyncFoldersTimer?.invalidate()
-
-      let lastSyncDate = Preferences.Playlist.lastPlaylistFoldersSyncTime.value ?? Date()
-
-      BrowserViewController.playlistSyncFoldersTimer = Timer(
-        fire: lastSyncDate,
-        interval: 4.hours,
-        repeats: true,
-        block: { _ in
-          Preferences.Playlist.lastPlaylistFoldersSyncTime.value = Date()
-
-          Task {
-            try await PlaylistManager.syncSharedFolders()
-          }
-        }
-      )
-    }
   }
 }

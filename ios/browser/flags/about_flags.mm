@@ -16,7 +16,6 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
-#include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
@@ -138,15 +137,6 @@
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
       })
 
-#define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-new-playlist-ui",                                \
-      "Enables new Playlist UI",                              \
-      "Enable the revamped Playlist experience",              \
-      flags_ui::kOsIos,                                       \
-      FEATURE_VALUE_TYPE(playlist::features::kNewPlaylistUI), \
-  })
-
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -235,5 +225,4 @@
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
-  BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
