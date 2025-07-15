@@ -49,7 +49,8 @@ export const MainEmailDisplay = ({ email, emailAliasesService }:
     <Card>
       <AccountRow>
         <Row>
-          <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
+          <BraveIconCircle
+            name='social-brave-release-favicon-fullheight-color' />
           <MainEmailTextContainer>
             <MainEmail>
               {email === ''

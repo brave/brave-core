@@ -89,6 +89,7 @@
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
@@ -852,7 +853,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         map);
   }
 
-  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
     content::RegisterWebUIControllerInterfaceBinder<
         email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
