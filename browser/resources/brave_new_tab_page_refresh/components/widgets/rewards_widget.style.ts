@@ -11,6 +11,7 @@ import rewardsConnectURL from '../../assets/rewards_connect.svg'
 
 export const style = scoped.css`
   & {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -25,6 +26,7 @@ export const style = scoped.css`
   }
 
   .content {
+    flex-grow: 1;
     display: flex;
     gap: 12px;
     align-items: center;
@@ -84,6 +86,27 @@ export const style = scoped.css`
     padding-bottom: 4px;
   }
 
+  &.login {
+    --leo-icon-size: 40px;
+    --provider-icon-color: currentcolor;
+
+    svg {
+      margin-right: 4px;
+      height: 16px;
+      width: auto;
+      display: block;
+    }
+
+    .header {
+      font: ${font.default.semibold};
+      color: #fff;
+    }
+
+    .text {
+      font: ${font.xSmall.regular};
+    }
+  }
+
   .balance {
     display: flex;
     align-items: center;
@@ -97,6 +120,32 @@ export const style = scoped.css`
     .exchange {
       font: ${font.xSmall.regular};
       padding-left: 4px;
+    }
+  }
+
+  .ads-viewed {
+    --leo-icon-size: 14px;
+
+    margin-top: 3px;
+    font: ${font.xSmall.regular};
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .ad-count {
+      color: #fff;
+      font: ${font.small.semibold};
+    }
+
+    leo-icon {
+      color: #fff;
+      opacity: 0.5;
+    }
+
+    leo-tooltip [slot='content'] {
+      font: ${font.default.regular};
+      max-width: 200px;
     }
   }
 
