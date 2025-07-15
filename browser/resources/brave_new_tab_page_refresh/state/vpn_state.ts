@@ -8,6 +8,7 @@ import { ConnectionState, Region} from 'gen/brave/components/brave_vpn/common/mo
 export { ConnectionState, Region }
 
 export interface VpnState {
+  initialized: boolean
   vpnFeatureEnabled: boolean
   showVpnWidget: boolean
   vpnPurchased: boolean
@@ -17,6 +18,7 @@ export interface VpnState {
 
 export function defaultVpnState(): VpnState {
   return {
+    initialized: false,
     vpnFeatureEnabled: false,
     showVpnWidget: false,
     vpnPurchased: false,

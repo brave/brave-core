@@ -55,6 +55,8 @@ export function createNewTabHandler(
       updateShieldsStats(),
       updateTalkPrefs()
     ])
+
+    store.update({ initialized: true })
   }
 
   loadData()
