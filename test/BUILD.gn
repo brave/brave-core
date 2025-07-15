@@ -102,7 +102,7 @@ group("all_unit_tests") {
 }
 
 
-cacheTest("quick_unit_tests") {
+cached_test("quick_unit_tests") {
   sources = [
     "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
   ]
@@ -114,7 +114,7 @@ cacheTest("quick_unit_tests") {
   ]
 }
 
-cacheTest("l10n_unit_tests") {
+cached_test("l10n_unit_tests") {
   deps = [
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
@@ -124,12 +124,10 @@ cacheTest("l10n_unit_tests") {
 
 test("brave_unit_tests") {
   testonly = true
-  
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags"
   ]
-
   sources = [
     "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
     "//brave/browser/brave_content_browser_client_unittest.cc",
@@ -676,7 +674,7 @@ if (!is_android) {
     }
   }
 
-  hashRuntime("brave_installer_unittests.hash.json") {
+  hash_runtime("brave_installer_unittests.hash.json") {
     testonly = true
     deps = [":brave_installer_unittests"]
     binary = "$root_out_dir/brave_installer_unittests"
@@ -770,7 +768,7 @@ if (!is_android) {
     }
   }
 
-  hashRuntime("brave_network_audit_tests.hash.json") {
+  hash_runtime("brave_network_audit_tests.hash.json") {
     testonly = true
     deps = [":brave_network_audit_tests"]
     binary = "$root_out_dir/brave_network_audit_tests"
@@ -1043,7 +1041,7 @@ test("brave_browser_tests") {
   data = [
     "//.vpython3",
     "//brave/test/data/",
-    "//chrome/test/data",
+    "//chrome/test/data/",
     "//content/test/data/",
     "//extensions/test/data/",
     "//net/tools/testserver/",
@@ -1428,13 +1426,13 @@ if (is_android) {
 }  # if (is_android) {
 
 
-hashRuntime("brave_unit_tests.hash.json") {
+hash_runtime("brave_unit_tests.hash.json") {
   testonly = true
   deps = [":brave_unit_tests"]
   binary = "$root_out_dir/brave_unit_tests"
 }
 
-hashRuntime("brave_browser_tests.hash.json") {
+hash_runtime("brave_browser_tests.hash.json") {
   testonly = true
   deps = [":brave_browser_tests"]
   binary = "$root_out_dir/brave_browser_tests"

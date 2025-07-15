@@ -80,8 +80,7 @@ repack("components_tests_pak") {
   ]
 }
 
-
-hashRuntime("brave_components_unittests.hash.json") {
+hash_runtime("brave_components_unittests.hash.json") {
   testonly = true
   deps = [":brave_components_unittests"]
   binary = "$root_out_dir/brave_components_unittests"

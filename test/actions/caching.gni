@@ -16,10 +16,10 @@ import("//testing/test.gni")
 # { hash: sha256string, files: string[] }
 # in "$root_out_dir/$target_name"
 
-template("hashRuntime") {
+template("hash_runtime") {
   action(target_name) {
     forward_variables_from(invoker, ["deps", "testonly"])
-    script = "//brave/test/actions/hashRuntime.py"
+    script = "//brave/test/actions/hash_runtime.py"
     depfile = "$root_out_dir/" + target_name + ".d"
     inputs = [invoker.binary]
     outputs = ["$root_out_dir/"+ target_name]
@@ -36,7 +36,7 @@ template("hashRuntime") {
   }
 }
 
-template("cacheTest") {
+template("cached_test") {
   name = target_name
   test(name + ".gtest") {
     testonly = true
@@ -52,7 +52,7 @@ template("cacheTest") {
     }
   }
 
-  hashRuntime(target_name + ".gtest.hash.json") {
+  hash_runtime(target_name + ".gtest.hash.json") {
     testonly = true
     deps = [":"+name+".gtest"]
     binary = "$root_out_dir/"+name+".gtest"
@@ -61,7 +61,7 @@ template("cacheTest") {
 
   action(target_name) {
     testonly = true
-    script = "//brave/test/actions/testRunner.py"
+    script = "//brave/test/actions/test_runner.py"
     deps = [":"+name+".gtest.hash.json", ":"+name+".gtest"]
 
     inputs = [

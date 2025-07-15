@@ -349,7 +349,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const testBinary = getTestBinary(testSuite);
       const testBinaryPath = path.join(config.outputDir, testBinary);
 
-      let cacheFile = null;
+      let cachedTestResult = null;
       let s3Key = null;
       const {BRAVE_TEST_CACHE_PATH, BRAVE_TEST_CACHE_S3_BUCKET} = process.env
       const s3Cache = cacheClient();
@@ -358,24 +358,23 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         try {
           console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
           const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
-          cacheFile = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
+          cachedTestResult = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
           s3Key = `${testSuite}-${hash}.xml`;
         } catch (error) {
           console.error(error);
           // TODO: propper error handling
         }
 
-        if (!fs.existsSync(cacheFile) && s3Cache && await s3Cache.check(`${testSuite}-${hash}.xml`)) {
-          await s3Cache.download(s3Key, cacheFile);
+        if (!fs.existsSync(cachedTestResult) && s3Cache && await s3Cache.check(`${testSuite}-${hash}.xml`)) {
+          await s3Cache.download(s3Key, cachedTestResult);
         }
 
-        if (cacheFile && fs.existsSync(cacheFile)) {
-          console.log(`skipping ${testSuite}; Previous results at ${cacheFile}`);
-          await fs.copyFile(cacheFile, `../${testSuite}.xml`);
+        if (cachedTestResult && await fs.exists(cachedTestResult)) {
+          console.log(`skipping ${testSuite}; Previous results at ${cachedTestResult}`);
+          await fs.copyFile(cachedTestResult, `../${testSuite}.xml`);
           continue;
         }
       }
-      
       
       let prog = util.run(
         path.join(config.outputDir, testBinary),
@@ -383,21 +382,19 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions,
       )
 
-
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
 
-        if (cacheFile !== null) {
-          console.log(`cached test results to ${cacheFile}`)
-          fs.copyFile(`../${testSuite}.xml`, cacheFile);
+        if (cachedTestResult !== null) {
+          console.log(`cached test results in ${cachedTestResult}`)
+          fs.copyFile(`../${testSuite}.xml`, cachedTestResult);
 
           if (s3Cache) {
-            await s3Cache.upload(s3Key, cacheFile);
+            await s3Cache.upload(s3Key, cachedTestResult);
           }
         }
       }
-
 
       // Don't run other tests if one has failed already.
       if(prog.status !== 0) {
