@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
@@ -19,8 +20,8 @@ namespace ai_chat {
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
-  Tool() = default;
-  virtual ~Tool() = default;
+  Tool();
+  virtual ~Tool();
 
   Tool(const Tool&) = delete;
   Tool& operator=(const Tool&) = delete;
@@ -52,7 +53,11 @@ class Tool {
   virtual std::optional<std::vector<std::string>> RequiredProperties() const;
 
   // Parameters for remote-defined tools that this client provides, e.g. screen
-  // width, location, etc.
+  // width, location, etc. This normally applies for non-function type tools,
+  // since for function type tools, the description includes any information
+  // needed, but for remote-defined tools, the description might need to be
+  // built to include some extra parameters that only the client knows about,
+  // e.g. location for a search tool, or screen size for a computer use tool.
   virtual std::optional<base::Value::Dict> ExtraParams() const;
 
   // If this tool requires content associated, it won't be provided if
@@ -71,6 +76,11 @@ class Tool {
   // be sent to the Assistant. This can be for permission or because
   // the tool requires the user to take some action to provide the result.
   virtual bool RequiresUserInteractionBeforeHandling() const;
+
+  base::WeakPtr<Tool> GetWeakPtr() { return weak_ptr_factory_.GetWeakPtr(); }
+
+ protected:
+  base::WeakPtrFactory<Tool> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
