@@ -12,50 +12,46 @@ const util = require('../lib/util')
 const assert = require('assert')
 const cacheClient = require('./cache-client')
 
-const { createHash } = require('crypto');
+const { createHash } = require('crypto')
 
 function hashString(content) {
-  return createHash('sha-1').update(content).digest('hex');
+  return createHash('sha-1').update(content).digest('hex')
 }
 
 const hashFile = async (filePath) => {
   try {
-    const hash = crypto.createHash('sha-1');
-    const rs = fs.createReadStream(filePath);
+    const hash = crypto.createHash('sha-1')
+    const rs = fs.createReadStream(filePath)
     for await (const chunk of rs) {
-      hash.update(chunk);
+      hash.update(chunk)
     }
-    return hash.digest('hex');
+    return hash.digest('hex')
   } catch (error) {
-    console.error('Error while calculating hash:', error);
+    console.error('Error while calculating hash:', error)
   }
 }
 
 async function calculateCacheKey(testSuite, options) {
-  const testBinary = getTestBinary(testSuite);
-  const filterFilePaths = getApplicableFilters(testSuite);
+  const testBinary = getTestBinary(testSuite)
+  const filterFilePaths = getApplicableFilters(testSuite)
   await util.buildTargets([testSuite + '.hash.json'], {
     ...config.defaultOptions,
-    continueOnFail: true
-  });
+    continueOnFail: true,
+  })
   const { hash } = JSON.parse(
     await fs.readFile(testBinary + '.hash.json', 'utf-8'),
   )
 
   // TODO: check if we can avoid hashing this
-  const filterFileHashes = await Promise.all(
-    filterFilePaths.map(hashFile)
-  );
+  const filterFileHashes = await Promise.all(filterFilePaths.map(hashFile))
 
   const argsToHash = [
     options.filter,
-    options.run_disabled_tests? 'run_disabled_tests' : null,
-    ...filterFileHashes
-  ].filter(x=>x);
+    options.run_disabled_tests ? 'run_disabled_tests' : null,
+    ...filterFileHashes,
+  ].filter((x) => x)
 
-  const argHash = argsToHash.length
-    ? '-' + hashString(argsToHash.join(''))
-    : ''
+  const argHash = argsToHash.length ? '-' + hashString(argsToHash.join('')) : ''
 
   // we might need to be careful because windows paths have a limit...
   return `${testSuite}-${hash}${argHash}.xml`
@@ -306,23 +302,25 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.continueOnFail = true
       }
 
-      const testBinary = getTestBinary(testSuite);
+      const testBinary = getTestBinary(testSuite)
 
       let cacheKey = null
       const cache = options.output_xml ? await cacheClient() : null
 
       if (cache) {
-        cacheKey = await calculateCacheKey(testSuite, options).catch((e)=>{
-          console.error(e);
-          return null;
-        });
+        cacheKey = await calculateCacheKey(testSuite, options).catch((e) => {
+          console.error(e)
+          return null
+        })
 
-        console.log({cacheKey});
+        console.log({ cacheKey })
 
         if (cacheKey && (await cache.check(cacheKey))) {
           if (await cache.download(cacheKey, `${outputFilename}.xml`)) {
-            console.log(`SKIPPING TEST; Retriving test result from cache: ${cacheKey}`)
-            continue;
+            console.log(
+              `SKIPPING TEST; Retriving test result from cache: ${cacheKey}`,
+            )
+            continue
           }
         }
       }
@@ -360,11 +358,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.stdio = 'inherit'
       }
 
-      let prog = util.run(
-        testBinary,
-        braveArgs,
-        runOptions,
-      )
+      let prog = util.run(testBinary, braveArgs, runOptions)
 
       // convert json results to xml
       if (convertJSONToXML) {
