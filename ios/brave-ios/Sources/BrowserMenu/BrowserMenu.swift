@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import DesignSystem
 import GuardianConnect
+import Preferences
 import Strings
 import SwiftUI
 
@@ -15,11 +16,9 @@ public struct BrowserMenu: View {
   var handlePresentation: (BrowserMenuPresentation) -> Void
   var onShowAllActions: (() -> Void)?
 
+  @ObservedObject private var numberOfQuickActions = Preferences.BrowserMenu.numberOfQuickActions
   @State private var isEditMenuPresented = false
 
-  /// Whether or not we may be viewing on a device that doesn't have as much horizontal space
-  /// available (such as when Display Zoom is enabled)
-  @State private var isHorizontalSpaceRestricted: Bool = false
   @State private var activeActionHandlers: [Action.ID: Task<Void, Never>] = [:]
   @State private var isAdditionalActionsVisible: Bool = false
 
@@ -49,22 +48,12 @@ public struct BrowserMenu: View {
     activeActionHandlers[id] = actionTask
   }
 
-  private var numberOfQuickActions: Int {
-    if model.visibleActions.count < 4 {
-      return model.visibleActions.count
-    }
-    if dynamicTypeSize.isAccessibilitySize || isHorizontalSpaceRestricted {
-      return 4
-    }
-    return 5
-  }
-
   private var quickActions: Binding<[Action]> {
     Binding(
-      get: { Array(model.visibleActions.prefix(numberOfQuickActions)) },
+      get: { Array(model.visibleActions.prefix(numberOfQuickActions.value)) },
       set: {
         model.visibleActions.replaceSubrange(
-          0..<min(numberOfQuickActions, model.visibleActions.count),
+          0..<min(numberOfQuickActions.value, model.visibleActions.count),
           with: $0
         )
       }
@@ -74,14 +63,14 @@ public struct BrowserMenu: View {
   private var listedActions: Binding<[Action]> {
     Binding(
       get: {
-        if model.visibleActions.count < numberOfQuickActions {
+        if model.visibleActions.count < numberOfQuickActions.value {
           return []
         }
-        return Array(model.visibleActions[numberOfQuickActions...])
+        return Array(model.visibleActions[numberOfQuickActions.value...])
       },
       set: {
-        if model.visibleActions.count > numberOfQuickActions {
-          model.visibleActions.replaceSubrange(numberOfQuickActions..., with: $0)
+        if model.visibleActions.count > numberOfQuickActions.value {
+          model.visibleActions.replaceSubrange(numberOfQuickActions.value..., with: $0)
         }
       }
     )
@@ -175,13 +164,6 @@ public struct BrowserMenu: View {
           }
       }
     }
-    .onGeometryChange(
-      for: Bool.self,
-      of: { $0.size.width <= 320 },
-      action: { newValue in
-        isHorizontalSpaceRestricted = newValue
-      }
-    )
     .onChange(of: isAdditionalActionsVisible) { _, newValue in
       if newValue {
         onShowAllActions?()
@@ -195,7 +177,10 @@ private struct QuickActionsView: View {
   var handler: (Binding<Action>) -> Void
 
   var body: some View {
-    HStack(alignment: .top, spacing: 12) {
+    LazyVGrid(
+      columns: .init(repeating: .init(.flexible(), spacing: 12, alignment: .top), count: 4),
+      spacing: 12
+    ) {
       ForEach($actions) { $action in
         Button {
           handler($action)
