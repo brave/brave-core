@@ -213,8 +213,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         Amazon
     }
 
-    private boolean mPipTransitionInProgress;
-
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -657,7 +655,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void hideYouTubePipIcon() {
-        mPipTransitionInProgress = false;
         // The layout could be null in Custom Tabs layout.
         if (mYouTubePipLayout == null) {
             return;
@@ -1177,7 +1174,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (currentTab == null || isPipUnavailable(currentTab)) {
                 return;
             }
-            mPipTransitionInProgress = true;
             BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
         }
     }
@@ -1705,7 +1701,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     // FullscreenManager.Observer method.
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        if (mPipTransitionInProgress) {
+        if (BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(
+                tab.getWebContents())) {
             Activity activity = tab.getWindowAndroid().getActivity().get();
             if (activity != null) {
                 try {
@@ -1716,7 +1713,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
             }
         }
-        mPipTransitionInProgress = false;
     }
 
     private boolean isToolbarPhone() {

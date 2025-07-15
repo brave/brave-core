@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_TAB_HELPER_H_
 #define BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_TAB_HELPER_H_
 
+#include "base/supports_user_data.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -22,8 +23,14 @@ class YouTubeScriptInjectorTabHelper
   bool IsYouTubeVideo() const;
   void MaybeSetFullscreen();
 
+  // Fullscreen state management using PageUserData
+  bool HasFullscreenBeenRequested() const;
+  void SetFullscreenRequested(bool requested);
+
   // content::WebContentsObserver overrides:
   void PrimaryMainDocumentElementAvailable() override;
+  void DidToggleFullscreenModeForTab(bool entered_fullscreen,
+                                     bool will_cause_resize) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
