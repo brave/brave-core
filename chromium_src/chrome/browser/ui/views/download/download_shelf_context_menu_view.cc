@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
 
+#include "brave/browser/download/brave_download_commands.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/bubble/download_bubble_prefs.h"
 #include "chrome/browser/download/download_ui_model.h"
@@ -37,8 +38,8 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
   }
 
   // Early return if |model| has the item. |model| is cached by base class.
-  if (auto index = model->GetIndexOfCommandId(
-          static_cast<int>(BraveDownloadCommands::REMOVE_FROM_LIST))) {
+  if (auto index =
+          model->GetIndexOfCommandId(BraveDownloadCommands::kRemoveFromList)) {
     return model;
   }
 
@@ -50,18 +51,16 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
 
   if (auto index =
           model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
-    model->InsertItemAt(
-        *index + 1, static_cast<int>(BraveDownloadCommands::REMOVE_FROM_LIST),
-        l10n_util::GetStringUTF16(
-            IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
+    model->InsertItemAt(*index + 1, BraveDownloadCommands::kRemoveFromList,
+                        l10n_util::GetStringUTF16(
+                            IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
   }
 
   return model;
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdEnabled(int command_id) const {
-  if (static_cast<BraveDownloadCommands>(command_id) ==
-      BraveDownloadCommands::REMOVE_FROM_LIST) {
+  if (command_id == BraveDownloadCommands::kRemoveFromList) {
     return true;
   }
 
@@ -69,8 +68,7 @@ bool DownloadShelfContextMenuView::IsCommandIdEnabled(int command_id) const {
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdChecked(int command_id) const {
-  if (static_cast<BraveDownloadCommands>(command_id) ==
-      BraveDownloadCommands::REMOVE_FROM_LIST) {
+  if (command_id == BraveDownloadCommands::kRemoveFromList) {
     return false;
   }
 
@@ -78,8 +76,7 @@ bool DownloadShelfContextMenuView::IsCommandIdChecked(int command_id) const {
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdVisible(int command_id) const {
-  if (static_cast<BraveDownloadCommands>(command_id) ==
-      BraveDownloadCommands::REMOVE_FROM_LIST) {
+  if (command_id == BraveDownloadCommands::kRemoveFromList) {
     return true;
   }
 
@@ -88,8 +85,7 @@ bool DownloadShelfContextMenuView::IsCommandIdVisible(int command_id) const {
 
 void DownloadShelfContextMenuView::ExecuteCommand(int command_id,
                                                   int event_flags) {
-  if (static_cast<BraveDownloadCommands>(command_id) ==
-      BraveDownloadCommands::REMOVE_FROM_LIST) {
+  if (command_id == BraveDownloadCommands::kRemoveFromList) {
     GetDownload()->GetDownloadItem()->Remove();
     return;
   }
