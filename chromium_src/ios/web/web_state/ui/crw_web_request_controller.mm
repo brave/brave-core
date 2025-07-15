@@ -13,7 +13,7 @@
 #define ClearWebUI ClearBraveWebUI
 #define HasWebUI HasBraveWebUI
 
-#include "src/ios/web/web_state/ui/crw_web_request_controller.mm"
+#include <ios/web/web_state/ui/crw_web_request_controller.mm>
 
 #undef HasWebUI
 #undef ClearWebUI
