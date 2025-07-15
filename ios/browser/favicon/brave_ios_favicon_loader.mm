@@ -119,6 +119,25 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
                              &cancelable_task_tracker_);
 }
 
+void BraveFaviconLoader::RawFaviconForPageUrlOrHost(
+    const GURL& page_url,
+    float size_in_points,
+    float min_size_in_points,
+    favicon_base::FaviconRawBitmapCallback callback) {
+  DCHECK(callback);
+
+  const CGFloat scale = UIScreen.mainScreen.scale;
+  auto favicon_block = [](favicon_base::FaviconRawBitmapCallback cb,
+                          const favicon_base::LargeIconResult& result) {
+    std::move(cb).Run(result.bitmap);
+  };
+
+  GetIconRawBitmapForPageUrl(favicon_service_, page_url,
+                             scale * min_size_in_points, scale * size_in_points,
+                             base::BindOnce(favicon_block, std::move(callback)),
+                             &cancelable_task_tracker_);
+}
+
 void BraveFaviconLoader::CancellAllRequests() {
   cancelable_task_tracker_.TryCancelAll();
 }
