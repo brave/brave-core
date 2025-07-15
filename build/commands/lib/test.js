@@ -265,7 +265,9 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const testBinaryPath = path.join(config.outputDir, testBinary);
 
       let cacheKey = null;
-      const cache = options.output_xml ?? await cacheClient();
+      const cache = options.output_xml 
+       ? await cacheClient()
+       : null;
 
       if (cache) {   
         try {
