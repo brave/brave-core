@@ -122,7 +122,7 @@ const cacheClient = async () => {
     async upload(key, upload) {
       return Promise.all([
         fsClient?.upload(key, upload),
-        s3Client.upload(key, upload),
+        s3Client?.upload(key, upload),
       ]).then( ([fs, s3]) =>  fs && s3);
     }
   }
