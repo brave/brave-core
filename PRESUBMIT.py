@@ -227,7 +227,14 @@ def CheckLicense(input_api, output_api):
 
 def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     """Checks newly added theme resources to ensure there is a corresponding
-       file in upstream """
+       file in upstream, unless they are channel-specific assets """
+
+    CHANNEL_DIRS = {'beta', 'dev', 'development', 'nightly'}
+
+    def is_channelized_path(path):
+        # Example: app/theme/chromium/mac/beta/Assets.car
+        parts = path.split('/')
+        return any(part in CHANNEL_DIRS for part in parts)
 
     source_file_filter = lambda f: input_api.FilterSourceFile(
         f,
@@ -238,13 +245,16 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     for f in input_api.AffectedSourceFiles(source_file_filter):
         if f.Action() != 'A':
             continue
-        new_sources.append(f.LocalPath())
+        new_sources.append(f.UnixLocalPath())
 
     problems = []
     for f in new_sources:
-        path = brave_chromium_utils.to_wspath(f)
+        if is_channelized_path(f):
+            continue  # Skip checking upstream for channelized files
+        upstream_file = f.replace('/brave/', '/chromium/')
+        path = brave_chromium_utils.wspath(f'//chrome/{upstream_file}')
         if not os.path.exists(path):
-            problems.append(f)
+            problems.append(upstream_file)
 
     if problems:
         return [
@@ -252,7 +262,8 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
                 'Missing upstream theme file to override',
                 items=sorted(problems),
                 long_text='app/theme should only be used for overrides of '
-                'upstream theme files in chrome/app/theme')
+                'upstream theme files in chrome/app/theme. Channel-specific '
+                'theme assets (e.g., dev/beta/nightly) are exempt.')
         ]
     return []
 
