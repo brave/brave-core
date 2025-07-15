@@ -23,4 +23,10 @@ BASE_FEATURE_PARAM(bool,
                    "import_settings",
                    false);
 
+BASE_FEATURE_PARAM(bool,
+                   kExtensionsManifestV2AutoInstallBraveHosted,
+                   &kExtensionsManifestV2,
+                   "auto_install_brave_hosted",
+                   false);
+
 }  // namespace extensions_mv2::features

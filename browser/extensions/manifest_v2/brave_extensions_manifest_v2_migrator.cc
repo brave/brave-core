@@ -15,9 +15,12 @@
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_prefs_factory.h"
+#include "extensions/browser/extension_registrar.h"
+#include "extensions/browser/extension_registrar_factory.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/common/constants.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
 
@@ -182,8 +185,21 @@ namespace extensions_mv2 {
 
 ExtensionsManifectV2Migrator::ExtensionsManifectV2Migrator(Profile* profile)
     : profile_(profile) {
-  prefs_observation_.Observe(extensions::ExtensionPrefs::Get(profile_));
-  registry_observation_.Observe(extensions::ExtensionRegistry::Get(profile_));
+  auto* registry = extensions::ExtensionRegistry::Get(profile_);
+  auto* extension_prefs = extensions::ExtensionPrefs::Get(profile_);
+
+  prefs_observation_.Observe(extension_prefs);
+  registry_observation_.Observe(registry);
+
+  for (const auto cws_extension : kCwsHosted) {
+    const auto disable_reasons = extension_prefs->GetDisableReasons(
+        extensions::ExtensionId(cws_extension.first));
+    if (disable_reasons.contains(
+            extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION)) {
+      OnExtensionDisableReasonsChanged(
+          extensions::ExtensionId(cws_extension.first), disable_reasons);
+    }
+  }
 }
 
 ExtensionsManifectV2Migrator::~ExtensionsManifectV2Migrator() {
@@ -196,6 +212,24 @@ void ExtensionsManifectV2Migrator::Shutdown() {
   registry_observation_.Reset();
 }
 
+//  static
+bool ExtensionsManifectV2Migrator::IsSettingsBackupEnabled() {
+  return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
+         features::kExtensionsManifestV2BackupSettings.Get();
+}
+
+//  static
+bool ExtensionsManifectV2Migrator::IsSettingsImportEnabled() {
+  return IsSettingsBackupEnabled() &&
+         features::kExtensionsManifestV2BImportSettingsOnInstall.Get();
+}
+
+//  static
+bool ExtensionsManifectV2Migrator::IsExtensionReplacementEnabled() {
+  return IsSettingsImportEnabled() &&
+         features::kExtensionsManifestV2AutoInstallBraveHosted.Get();
+}
+
 void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
     extensions::ExtensionPrefs* prefs) {
   prefs_observation_.Reset();
@@ -204,10 +238,7 @@ void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
 void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
-  if (!features::kExtensionsManifestV2BackupSettings.Get()) {
-    return;
-  }
-  if (!IsKnownCwsMV2Extension(extension_id)) {
+  if (!IsSettingsBackupEnabled() || !IsKnownCwsMV2Extension(extension_id)) {
     return;
   }
   if (!disabled_reasons.contains(
@@ -227,26 +258,74 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (!features::kExtensionsManifestV2BImportSettingsOnInstall.Get()) {
+  if (!IsSettingsImportEnabled()) {
     return;
   }
   if (is_updates || !extensions_mv2::IsKnownMV2Extension(extension->id())) {
     return;
   }
-  extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(&ImportExtensionSettingsOnFileThread, extension->id(),
-                     profile_->GetPath()),
-      base::DoNothing());
+  extensions::GetExtensionFileTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&ImportExtensionSettingsOnFileThread,
+                                extension->id(), profile_->GetPath()));
 }
 
 void ExtensionsManifectV2Migrator::BackupExtensionSettings(
-    const extensions::ExtensionId& extension_id) {
+    const extensions::ExtensionId& cws_extension_id) {
   extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::BindOnce(&BackupExtensionSettingsOnFileThread, extension_id,
+      base::BindOnce(&BackupExtensionSettingsOnFileThread, cws_extension_id,
                      profile_->GetPath()),
-      base::DoNothing());
+      base::BindOnce(&ExtensionsManifectV2Migrator::OnBackupSettingsCompleted,
+                     weak_factory_.GetWeakPtr(), cws_extension_id));
+}
+
+void ExtensionsManifectV2Migrator::OnBackupSettingsCompleted(
+    const extensions::ExtensionId& cws_extension_id) {
+  if (!IsExtensionReplacementEnabled()) {
+    return;
+  }
+  const auto brave_hosted_extesnion_id =
+      GetBraveHostedExtensionId(cws_extension_id);
+  if (!brave_hosted_extesnion_id) {
+    return;
+  }
+  auto* registry = extensions::ExtensionRegistry::Get(profile_);
+  const auto* extension =
+      registry->GetInstalledExtension(*brave_hosted_extesnion_id);
+  if (extension) {
+    // Already installed.
+    return;
+  }
+  auto installer = ExtensionManifestV2Installer::CreateSilent(
+      *brave_hosted_extesnion_id, profile_, profile_->GetURLLoaderFactory(),
+      base::BindOnce(&ExtensionsManifectV2Migrator::OnSilentInstall,
+                     weak_factory_.GetWeakPtr(), *brave_hosted_extesnion_id));
+  installer->BeginInstall();
+  silent_installers_.push_back(std::move(installer));
+}
+
+void ExtensionsManifectV2Migrator::OnSilentInstall(
+    const extensions::ExtensionId& extension_id,
+    bool success,
+    const std::string& error,
+    extensions::webstore_install::Result result) {
+  auto installer =
+      std::ranges::find_if(silent_installers_, [&extension_id](const auto& i) {
+        return i->extension_id() == extension_id;
+      });
+  if (installer != silent_installers_.end()) {
+    silent_installers_.erase(installer);
+  }
+
+  if (success) {
+    const auto cws_extension_id = GetCwsExtensionId(extension_id);
+    if (cws_extension_id) {
+      extensions::ExtensionRegistrar::Get(profile_)->UninstallExtension(
+          *cws_extension_id,
+          extensions::UninstallReason::UNINSTALL_REASON_MANAGEMENT_API,
+          nullptr);
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -256,6 +335,7 @@ ExtensionsManifectV2MigratorFactory::ExtensionsManifectV2MigratorFactory()
                                  ProfileSelections::BuildForRegularProfile()) {
   DependsOn(extensions::ExtensionPrefsFactory::GetInstance());
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+  DependsOn(extensions::ExtensionRegistrarFactory::GetInstance());
 }
 
 ExtensionsManifectV2MigratorFactory::~ExtensionsManifectV2MigratorFactory() =
@@ -278,11 +358,9 @@ ExtensionsManifectV2MigratorFactory::GetForBrowserContextForTesting(
 std::unique_ptr<KeyedService>
 ExtensionsManifectV2MigratorFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(features::kExtensionsManifestV2)) {
-    return nullptr;
-  }
-  if (!features::kExtensionsManifestV2BackupSettings.Get() &&
-      !features::kExtensionsManifestV2BImportSettingsOnInstall.Get()) {
+  if (!ExtensionsManifectV2Migrator::IsSettingsBackupEnabled() &&
+      !ExtensionsManifectV2Migrator::IsSettingsImportEnabled() &&
+      !ExtensionsManifectV2Migrator::IsExtensionReplacementEnabled()) {
     return nullptr;
   }
   return std::make_unique<ExtensionsManifectV2Migrator>(

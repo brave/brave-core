@@ -146,17 +146,48 @@ std::optional<extensions::ExtensionId> GetCwsExtensionId(
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,
+    content::BrowserContext* browser_context,
     content::WebContents* web_contents,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     extensions::WebstoreInstallWithPrompt::Callback callback)
     : extension_id_(extension_id),
-      web_contents_(web_contents->GetWeakPtr()),
+      browser_context_(browser_context),
+      web_contents_(web_contents ? web_contents->GetWeakPtr() : nullptr),
       url_loader_factory_(std::move(url_loader_factory)),
       callback_(std::move(callback)) {
+  CHECK(browser_context_);
+  silent_ = browser_context && !web_contents;
+  if (web_contents_) {
+    CHECK_EQ(web_contents->GetBrowserContext(), browser_context_);
+  }
   CHECK(IsKnownMV2Extension(extension_id));
 }
 
 ExtensionManifestV2Installer::~ExtensionManifestV2Installer() = default;
+
+// static
+std::unique_ptr<ExtensionManifestV2Installer>
+ExtensionManifestV2Installer::Create(
+    const extensions::ExtensionId& extension_id,
+    content::WebContents* web_contents,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    extensions::WebstoreInstallWithPrompt::Callback callback) {
+  return base::WrapUnique(new ExtensionManifestV2Installer(
+      extension_id, web_contents->GetBrowserContext(), web_contents,
+      std::move(url_loader_factory), std::move(callback)));
+}
+
+// static
+std::unique_ptr<ExtensionManifestV2Installer>
+ExtensionManifestV2Installer::CreateSilent(
+    const extensions::ExtensionId& extension_id,
+    content::BrowserContext* browser_context,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    extensions::WebstoreInstallWithPrompt::Callback callback) {
+  return base::WrapUnique(new ExtensionManifestV2Installer(
+      extension_id, browser_context, nullptr, std::move(url_loader_factory),
+      std::move(callback)));
+}
 
 void ExtensionManifestV2Installer::BeginInstall() {
   auto request = std::make_unique<network::ResourceRequest>();
@@ -241,7 +272,7 @@ void ExtensionManifestV2Installer::OnCrxDownloaded(base::FilePath path) {
         false, "Failed to download extension.",
         extensions::webstore_install::Result::OTHER_ERROR);
   }
-  if (!web_contents_) {
+  if (!web_contents_ && !silent_) {
     return std::move(callback_).Run(
         false, "Installation cancelled.",
         extensions::webstore_install::Result::USER_CANCELLED);
@@ -251,9 +282,14 @@ void ExtensionManifestV2Installer::OnCrxDownloaded(base::FilePath path) {
   crx.path = std::move(path);
   crx.required_format = crx_file::VerifierFormat::CRX3;
 
-  crx_installer_ = extensions::CrxInstaller::Create(
-      web_contents_->GetBrowserContext(),
-      std::make_unique<ExtensionInstallPrompt>(web_contents_.get()));
+  if (!silent_) {
+    crx_installer_ = extensions::CrxInstaller::Create(
+        browser_context_,
+        std::make_unique<ExtensionInstallPrompt>(web_contents_.get()));
+  } else {
+    crx_installer_ = extensions::CrxInstaller::CreateSilent(browser_context_);
+    crx_installer_->set_allow_silent_install(true);
+  }
   crx_installer_->set_expected_id(extension_id_);
   crx_installer_->set_is_gallery_install(true);
   crx_installer_->AddInstallerCallback(base::BindOnce(
