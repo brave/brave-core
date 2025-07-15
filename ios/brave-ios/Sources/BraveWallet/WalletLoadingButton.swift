@@ -31,6 +31,7 @@ struct WalletLoadingButton<Label: View>: View {
         label
           .opacity(isLoading ? 0 : 1)
         ProgressView()
+          .tint(Color(braveSystemName: .schemesOnPrimary))
           .opacity(isLoading ? 1 : 0)
       }
     }
