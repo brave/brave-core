@@ -45,7 +45,7 @@ const createS3Client = async () => {
       try {
         await pipe(response.Body, createWriteStream(dest))
 
-        console.log(`Downloaded s3://${bucket}/${key} to ${dest}`)
+        console.log(`Downloaded ${key} to ${dest}`)
         return true
       } catch (e) {
         console.error(e)
@@ -65,7 +65,7 @@ const createS3Client = async () => {
 
       await s3.send(new PutObjectCommand(uploadParams))
 
-      console.log(`Uploaded ${file} to s3://${bucket}/${key}`)
+      console.log(`Uploaded ${file} to ${key}`)
       return true
     },
   }
@@ -81,7 +81,6 @@ const createFsClient = async () => {
   return {
     async check(key) {
       const localFile = path.join(cacheDir, key)
-      console.log('checking cache', localFile);
       return fs.exists(localFile)
     },
 
@@ -95,7 +94,6 @@ const createFsClient = async () => {
 
     async upload(key, source) {
       const localFile = path.join(cacheDir, key)
-      console.log(localFile);
       return fs
         .copy(source, localFile)
         .then(() => true)

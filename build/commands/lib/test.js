@@ -12,6 +12,12 @@ const util = require('../lib/util')
 const assert = require('assert')
 const cacheClient = require('./cache-client')
 
+const { createHash } = require('crypto');
+
+function sha256(content) {
+  return createHash('sha256').update(content).digest('hex').slice(0,16);
+}
+
 const getTestBinary = (suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -264,20 +270,33 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
       if (cache) {
         try {
-          console.log(
-            await util.buildTargets([testSuite + '.hash.json']),
-          )
+          await util.buildTargets([testSuite + '.hash.json'], {
+            ...config.defaultOptions,
+            continueOnFail: true
+          });
           const { hash } = JSON.parse(
             await fs.readFile(testBinary + '.hash.json', 'utf-8'),
           )
-          cacheKey = `${testSuite}-${hash}.xml`
+
+          const argsToHash = [
+            options.filter,
+            options.run_disabled_tests? 'run_disabled_tests' : null
+          ].filter(x=>x);
+
+          const argHash = argsToHash.length
+            ? '-' + sha256(argsToHash.join(''))
+            : ''
+
+          cacheKey = `${testSuite}-${hash}${argHash}.xml`
         } catch (error) {
           console.error(error)
           // TODO: propper error handling
         }
 
         if (cacheKey && (await cache.check(cacheKey))) {
-          await cache.download(cacheKey, `${outputFilename}.xml`)
+          if (await cache.download(cacheKey, `${outputFilename}.xml`)) {
+            continue;
+          }
         }
       }
 
