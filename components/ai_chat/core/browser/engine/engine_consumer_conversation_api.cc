@@ -218,7 +218,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // approach: first identify which large tool results to keep, then build the
   // conversation in chronological order.
 
-  // First pass: identify large tool results to keep (most recent ones)
+  // Step 1: First pass - identify large tool results to keep (most recent ones)
   struct LargeToolResult {
     size_t message_index;
     size_t event_index;
@@ -252,7 +252,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
             break;
           } else if (content->is_text_content_block()) {
             content_size += content->get_text_content_block()->text.size();
-            if (content_size >= 1000) {
+            if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
               is_large = true;
               break;
             }
@@ -266,22 +266,15 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     }
   }
 
-  // Mark the most recent large tool results to keep
+  // Step 2: Mark the most recent <n> large tool results to keep
   size_t max_large_events = features::kMaxCountLargeToolUseEvents.Get();
-  if (large_tool_results.size() <= max_large_events) {
-    // Keep all large tool results
-    for (auto& result : large_tool_results) {
-      result.should_keep = true;
-    }
-  } else {
-    // Keep only the most recent ones
-    for (size_t i = large_tool_results.size() - max_large_events;
-         i < large_tool_results.size(); ++i) {
-      large_tool_results[i].should_keep = true;
-    }
+  for (size_t i =
+           std::max<size_t>(0, large_tool_results.size() - max_large_events);
+       i < large_tool_results.size(); ++i) {
+    large_tool_results[i].should_keep = true;
   }
 
-  // Main pass: build conversation in chronological order
+  // Step 3: Main pass - build conversation in chronological order
   for (size_t message_index = 0; message_index < conversation_history.size();
        ++message_index) {
     const auto& message = conversation_history[message_index];

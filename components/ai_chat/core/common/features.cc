@@ -44,6 +44,8 @@ const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 // server.
 const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
     &kAIChat, "max_count_large_tool_use_events", 2};
+const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
+    &kAIChat, "content_size_large_tool_use_events", 1000};
 
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);

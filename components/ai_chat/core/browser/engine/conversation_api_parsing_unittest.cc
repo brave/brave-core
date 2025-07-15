@@ -115,9 +115,13 @@ TEST(ConversationApiParsingTest, ContentBlocksToJson_MixedContentBlocks) {
 
   EXPECT_THAT(result, base::test::IsJson(R"([
       {"type": "text", "text": "First text"},
-      {"type": "image_url", "image_url": {"url": "https://example.com/image1.jpg"}},
+      {"type": "image_url", "image_url": {
+        "url": "https://example.com/image1.jpg"
+      }},
       {"type": "text", "text": "Second text"},
-      {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAZABkAAD"}}
+      {"type": "image_url", "image_url": {
+        "url": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAZABkAAD"
+      }}
     ])"));
 }
 

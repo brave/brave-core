@@ -113,12 +113,12 @@ GetMockEventsAndExpectedEventsBody() {
   events.emplace_back(
       ConversationEventRole::Assistant, ConversationAPIClient::ChatMessage,
       std::vector<std::string>{"Going to use a tool..."}, "",
-      MakeToolUseEvents({mojom::ToolUseEvent::New("get_weather", "123",
-                                                  "{\"location\":\"New York\"}",
-                                                  std::nullopt),
-                         mojom::ToolUseEvent::New(
-                             "get_screenshot", "456", "{\"type\":\"tab\"}",
-                             std::nullopt)}));
+      MakeToolUseEvents(
+          {mojom::ToolUseEvent::New("get_weather", "123",
+                                    "{\"location\":\"New York\"}",
+                                    std::nullopt),
+           mojom::ToolUseEvent::New("get_screenshot", "456",
+                                    "{\"type\":\"tab\"}", std::nullopt)}));
 
   // First answer from a tool
   events.emplace_back(
@@ -159,29 +159,97 @@ GetMockEventsAndExpectedEventsBody() {
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"});
 
   const std::string expected_events_body = R"([
-      {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
-      {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-      {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
-      {"role": "assistant", "type": "chatMessage", "content": "Going to use a tool...",
-       "tool_calls": [
-         {"id": "123", "type": "function", "function": {"name": "get_weather", "arguments": "{\"location\":\"New York\"}"}},
-         {"id": "456", "type": "function", "function": {"name": "get_screenshot", "arguments": "{\"type\":\"tab\"}"}}
-       ]},
-      {"role": "tool", "type": "toolUse", "content": [
-        { "type": "text", "text": "The temperature in New York is 60 degrees." },
-        { "type": "text", "text": "The wind in New York is 5 mph from the SW." }
-      ], "tool_call_id": "123"},
-      {"role": "tool", "type": "toolUse", "content": [
-        { "type": "image_url", "image_url": { "url": "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" } }
-      ], "tool_call_id": "456"},
-      {"role": "user", "type": "suggestFocusTopics", "content": "GetSuggestedTopicsForFocusTabs"},
-      {"role": "user", "type": "dedupeFocusTopics", "content": "DedupeTopics"},
-      {"role": "user", "type": "classifyTabs", "content": "GetFocusTabsForTopics", "topic": "C++"},
-      {"role": "user", "type": "uploadImage",
-       "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                   "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
-      }
-    ])";
+    {
+      "role": "user",
+      "type": "pageText",
+      "content": "This is a page about The Mandalorian."
+    },
+    {
+      "role": "user",
+      "type": "pageExcerpt",
+      "content": "The Mandalorian"
+    },
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "Est-ce lié à une série plus large?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "Going to use a tool...",
+      "tool_calls": [
+        {
+          "id": "123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"New York\"}"
+          }
+        },
+        {
+          "id": "456",
+          "type": "function",
+          "function": {
+            "name": "get_screenshot",
+            "arguments": "{\"type\":\"tab\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "text",
+          "text": "The temperature in New York is 60 degrees."
+        },
+        {
+          "type": "text",
+          "text": "The wind in New York is 5 mph from the SW."
+        }
+      ],
+      "tool_call_id": "123"
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          }
+        }
+      ],
+      "tool_call_id": "456"
+    },
+    {
+      "role": "user",
+      "type": "suggestFocusTopics",
+      "content": "GetSuggestedTopicsForFocusTabs"
+    },
+    {
+      "role": "user",
+      "type": "dedupeFocusTopics",
+      "content": "DedupeTopics"
+    },
+    {
+      "role": "user",
+      "type": "classifyTabs",
+      "content": "GetFocusTabsForTopics",
+      "topic": "C++"
+    },
+    {
+      "role": "user",
+      "type": "uploadImage",
+      "content": [
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      ]
+    }
+  ])";
 
   return std::make_pair(std::move(events), expected_events_body);
 }
@@ -742,11 +810,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
       .WillOnce([&](EngineConsumer::GenerationResultData result) {
         ASSERT_TRUE(result.event);
         ASSERT_TRUE(result.event->is_tool_use_event());
-        EXPECT_MOJOM_EQ(
-            result.event->get_tool_use_event(),
-            mojom::ToolUseEvent::New("search_web", "call_456",
-                                     "{\"query\":\"Hello, world!\"}",
-                                     std::nullopt));
+        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
+                        mojom::ToolUseEvent::New(
+                            "search_web", "call_456",
+                            "{\"query\":\"Hello, world!\"}", std::nullopt));
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
