@@ -18,7 +18,7 @@
 #define TearDown \
   TearDown();    \
   this->TearDownBraveWebUI
-#include "src/ios/web/web_state/web_state_impl.mm"
+#include <ios/web/web_state/web_state_impl.mm>
 #undef TearDown
 
 namespace web {
