@@ -6,12 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 
+// Make methods overridable for BraveDownloadCommands class.
+#define IsCommandEnabled virtual IsCommandEnabled
+#define ExecuteCommand                \
+  ExecuteCommand_Unused() {}          \
+  friend class BraveDownloadCommands; \
+  virtual void ExecuteCommand
+
 #include "src/chrome/browser/download/download_commands.h"  // IWYU pragma: export
 
-// Create brave specific commands set instead of appending to
-// DownloadCommands::Command to avoid many upstream changes.
-enum class BraveDownloadCommands {
-  REMOVE_FROM_LIST = DownloadCommands::Command::kMaxValue + 1
-};
+#undef ExecuteCommand
+#undef IsCommandEnabled
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
