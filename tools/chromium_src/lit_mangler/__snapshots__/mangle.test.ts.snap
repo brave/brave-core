@@ -333,7 +333,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      back-button-aria-label=\\"$i18n{backButton}\\"
 -      back-button-title=\\"$i18n{backButton}\\">
 -    <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
-+  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\">
++  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\" hide-back-button=\\"true\\">
 +        <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
 +    <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
