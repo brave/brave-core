@@ -30,5 +30,5 @@ export const _SelectAssetButton = () => {
 
 export default {
   component: _SelectAssetButton,
-  title: 'Fund Wallet - Select Asset Button',
+  title: 'Wallet/Desktop/Components/Fund Wallet',
 }

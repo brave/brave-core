@@ -23,4 +23,7 @@ export const _ConnectHardwareWalletPanel = {
   },
 }
 
-export default { component: ConnectHardwareWalletPanel }
+export default {
+  title: 'Wallet/Panel/Panels',
+  component: ConnectHardwareWalletPanel,
+}

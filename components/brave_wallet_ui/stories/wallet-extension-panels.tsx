@@ -48,7 +48,7 @@ import { deserializeTransaction } from '../utils/model-serialization-utils'
 import { WalletApiDataOverrides } from '../constants/testing_types'
 
 export default {
-  title: 'Wallet/Extension/Panels',
+  title: 'Wallet/Panel/Panels',
   parameters: {
     layout: 'centered',
   },

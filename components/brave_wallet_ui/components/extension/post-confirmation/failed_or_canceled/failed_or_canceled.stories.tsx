@@ -58,6 +58,7 @@ export const _TransactionFailedOrCanceled = {
 }
 
 export default {
+  title: 'Wallet/Panel/Panels/Post Confirmation',
   component: TransactionFailedOrCanceled,
   argTypes: {
     transactionType: {

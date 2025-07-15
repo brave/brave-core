@@ -20,6 +20,7 @@ export const _EditTokenModal = {}
 
 export default {
   component: EditTokenModal,
+  title: 'Wallet/Desktop/Components/Popup Modals',
   render: () => (
     <WalletPageStory>
       <EditTokenModal

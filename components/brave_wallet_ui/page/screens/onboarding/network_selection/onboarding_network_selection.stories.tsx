@@ -20,5 +20,6 @@ export const OnboardingNetworkSelectionStory = () => {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingNetworkSelectionStory,
 } as Meta<typeof OnboardingNetworkSelectionStory>

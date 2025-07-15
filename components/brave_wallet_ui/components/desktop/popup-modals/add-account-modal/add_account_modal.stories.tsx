@@ -22,7 +22,6 @@ export const _CreateAccountModal = {
       </WalletPageStory>
     )
   },
-  title: 'Create Account Modal',
 }
 
 export const _AddHardwareAccountModal = {
@@ -38,11 +37,9 @@ export const _AddHardwareAccountModal = {
       </WalletPageStory>
     )
   },
-  title: 'Add Hardware Account Modal',
 }
 
 export const _ImportAccountModal = {
-  title: 'Import Account Modal',
   render: () => {
     return (
       <WalletPageStory>
@@ -58,5 +55,6 @@ export const _ImportAccountModal = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Popup Modals/Add Account',
   component: AddAccountModal,
 }

@@ -45,4 +45,7 @@ export const _PasswordStrengthTooltipMini = {
   },
 }
 
-export default { component: PasswordStrengthTooltip }
+export default {
+  title: 'Wallet/Desktop/Components/Tooltips',
+  component: PasswordStrengthTooltip,
+}

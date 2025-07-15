@@ -33,5 +33,6 @@ export const _Connections = {
 }
 
 export default {
+  title: 'Wallet/Panel/Panels',
   component: Connections,
 }

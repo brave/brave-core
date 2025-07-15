@@ -28,4 +28,7 @@ export const _Pagination = {
   },
 }
 
-export default { component: Pagination }
+export default {
+  title: 'Wallet/Desktop/Components/Navigation',
+  component: Pagination,
+}

@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-import { Meta } from '@storybook/react'
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingRestoreFromExtension } from './restore-from-extension'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase'
@@ -18,32 +17,18 @@ export const _OnboardingRestoreFromRecoveryPhrase = {
       </WalletPageStory>
     )
   },
-  title: 'Restore From Recovery Phrase',
 }
 
-export default {
-  component: OnboardingRestoreFromExtension,
-  render: (args) => {
-    return (
-      <WalletPageStory>
-        <OnboardingRestoreFromExtension restoreFrom={args.restoreFrom} />
-      </WalletPageStory>
-    )
-  },
-} as Meta<typeof OnboardingRestoreFromExtension>
-
-export const RestoreFromRecoveryPhrase = {
+export const _RestoreFromMetamask = {
   render: () => {
     return (
       <WalletPageStory>
-        <OnboardingRestoreFromRecoveryPhrase />
+        <OnboardingRestoreFromExtension restoreFrom='metamask' />
       </WalletPageStory>
     )
   },
 }
 
-export const RestoreFromMetamaskWallet = {
-  args: {
-    restoreFrom: 'metamask',
-  },
+export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
 }

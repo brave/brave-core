@@ -31,5 +31,5 @@ export const _BuyQuote = () => {
 
 export default {
   component: _BuyQuote,
-  title: 'Fund Wallet - Buy Quote',
+  title: 'Wallet/Desktop/Components/Fund Wallet',
 }

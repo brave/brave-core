@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
 
 // components
 import {
@@ -19,37 +18,15 @@ import {
   mockTransactionInfo, //
 } from '../../../stories/mock-data/mock-transaction-info'
 
-export const CryptoViewWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  position: relative;
-`
-
-const PortfolioWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  margin-bottom: 20px;
-`
-
 export const _PortfolioTransactionItem = {}
 
 export default {
-  title: 'Portfolio Transaction Item',
+  title: 'Wallet/Desktop/Components/Transaction',
   render: () => (
     <WalletPageStory>
       <WalletPageLayout>
         <WalletSubViewLayout>
-          <CryptoViewWrapper>
-            <PortfolioWrapper>
-              <PortfolioTransactionItem transaction={mockTransactionInfo} />
-            </PortfolioWrapper>
-          </CryptoViewWrapper>
+          <PortfolioTransactionItem transaction={mockTransactionInfo} />
         </WalletSubViewLayout>
       </WalletPageLayout>
     </WalletPageStory>

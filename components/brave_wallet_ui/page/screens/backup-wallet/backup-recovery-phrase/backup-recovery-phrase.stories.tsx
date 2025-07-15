@@ -9,7 +9,6 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import { BackupRecoveryPhrase } from './backup-recovery-phrase'
 
 export const _BackupRecoveryPhrase = {
-  title: 'Backup Recovery Phrase',
   render: () => {
     return (
       <WalletPageStory>
@@ -19,4 +18,7 @@ export const _BackupRecoveryPhrase = {
   },
 }
 
-export default { component: BackupRecoveryPhrase }
+export default {
+  title: 'Wallet/Desktop/Screens/Backup Wallet',
+  component: BackupRecoveryPhrase,
+}
