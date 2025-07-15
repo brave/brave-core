@@ -1,5 +1,9 @@
-#!/usr/bin/env python3
-# pylint:disable=line-too-long,consider-using-dict-items
+#!/usr/bin/env vpython3
+
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 """
 On Android the `--output' switch to `npm run test', which produces xunit
@@ -29,41 +33,55 @@ def pick_iteration(test_case, iterations):
     def score(iteration):
         score = 1000000 if iteration['status'] == 'SUCCESS' else 0
         score += len(iteration['output_snippet'])
-        started_this_test = re.compile(
-            r'\[ RUN      \] [\w/#\.]*' + re.escape(test_case) + '\\n')
+        started_this_test = re.compile(r'\[ RUN      \] [\w/#\.]*' +
+                                       re.escape(test_case) + '\\n')
         score += 7500 if started_this_test.match(
             iteration['output_snippet']) else 0
         for string in ['Stack Trace:', 'Expected:', 'Actual:']:
             score += 2500 if string in iteration['output_snippet'] else 0
         return score
+
     return sorted(iterations, key=score, reverse=True)[0]
 
 
 def transform(input_json):
-    """Read json input and return a dictionary with information necessary to produce the xunit output"""
+    """Read json input and return a dictionary with information necessary to
+    produce the xunit output"""
 
-    output = collections.defaultdict(
-        lambda: {'xml': '', 'test_count': 0, 'failure_count': 0})
+    output = collections.defaultdict(lambda: {
+        'xml': '',
+        'test_count': 0,
+        'failure_count': 0
+    })
+    if not input_json['per_iteration_data']:
+        return output
+
     test_results = input_json['per_iteration_data'][0]
     for test_fullname, iterations in test_results.items():
-        delim = '#' if '#' in test_fullname else '/' if '/' in test_fullname else '.'
+        delim = ('#' if '#' in test_fullname else
+                 '/' if '/' in test_fullname else '.')
         test_suite, test_case = test_fullname.rsplit(delim, maxsplit=1)
         iteration = pick_iteration(test_case, iterations)
 
         output[test_suite]['test_count'] += 1
-        output[test_suite][
-            'xml'] += f'<testcase name="{test_case}" time="{int(iteration["elapsed_time_ms"])/100.0}">'
+        output[test_suite]['xml'] += (
+            f'<testcase name="{test_case}" '
+            f'time="{int(iteration["elapsed_time_ms"])/100.0}">')
         if iteration['status'] == 'SUCCESS':
             if iteration['output_snippet']:
                 sanitized_output = ''.join(
-                    filter(lambda x: x in printable, iteration['output_snippet']))
-                output[test_suite]['xml'] += f"<system-out><![CDATA[{sanitized_output}]]></system-out>"
+                    filter(lambda x: x in printable,
+                           iteration['output_snippet']))
+                output[test_suite]['xml'] += (
+                    f"<system-out><![CDATA["
+                    f"{sanitized_output}]]></system-out>")
         else:
             output[test_suite]['failure_count'] += 1
             sanitized_output = ''.join(
                 filter(lambda x: x in printable, iteration['output_snippet']))
-            output[test_suite][
-                'xml'] += f'<failure message="failed"><![CDATA[{sanitized_output}]]></failure>'
+            output[test_suite]['xml'] += (
+                f'<failure message="failed"><![CDATA['
+                f'{sanitized_output}]]></failure>')
         output[test_suite]['xml'] += "</testcase>"
     return output
 
@@ -73,14 +91,20 @@ def main():
 
     output = transform(json.load(sys.stdin))
     test_count = reduce(add, (ts['test_count'] for ts in output.values()), 0)
-    failure_count = reduce(add, (ts['failure_count']
-                           for ts in output.values()), 0)
+    failure_count = reduce(add,
+                           (ts['failure_count'] for ts in output.values()), 0)
 
-    print(f"""<?xml version="1.0" encoding="UTF-8"?>\n<testsuites name="tests" """
-          f"""tests="{test_count}" errors="0" failures="{failure_count}" skip="0">""", end='')
+    print(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n<testsuites name="tests" '
+        f'tests="{test_count}" errors="0" failures="{failure_count}" skip="0">',
+        end='')
     for test_suite in output.keys():
-        print(f'<testsuite name="{test_suite}" tests="{output[test_suite]["test_count"]}" errors="0" failures='
-              f'"{output[test_suite]["failure_count"]}" skip="0">{output[test_suite]["xml"]}</testsuite>', end='')
+        print(
+            f'<testsuite name="{test_suite}" '
+            f'tests="{output[test_suite]["test_count"]}" errors="0" failures='
+            f'"{output[test_suite]["failure_count"]}" '
+            f'skip="0">{output[test_suite]["xml"]}</testsuite>',
+            end='')
     print('</testsuites>', end='')
 
 
