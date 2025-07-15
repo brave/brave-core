@@ -13,4 +13,7 @@ export const _ToolTip = {
   },
 }
 
-export default { component: Tooltip }
+export default {
+  title: 'Wallet/Desktop/Components/Tooltips',
+  component: Tooltip,
+}

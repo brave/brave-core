@@ -24,4 +24,7 @@ export const _OnboardingConnectHardwareWallet = {
   },
 }
 
-export default { component: OnboardingConnectHardwareWallet }
+export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
+  component: OnboardingConnectHardwareWallet,
+}

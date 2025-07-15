@@ -27,5 +27,5 @@ export const _PartnersConsentModal = () => {
 
 export default {
   component: _PartnersConsentModal,
-  title: 'Partners Consent Modal',
+  title: 'Wallet/Desktop/Components/Popup Modals',
 }

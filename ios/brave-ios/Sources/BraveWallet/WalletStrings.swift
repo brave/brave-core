@@ -3757,91 +3757,6 @@ extension Strings {
       comment:
         "The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'."
     )
-    public static let rampNetworkProviderName = NSLocalizedString(
-      "wallet.rampNetworkProviderName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Ramp.Network",
-      comment: "The name of one of the on ramp provider."
-    )
-    public static let rampNetworkProviderShortName = NSLocalizedString(
-      "wallet.rampNetworkProviderShortName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Ramp",
-      comment: "The short name of one of the on ramp provider."
-    )
-    public static let rampNetworkProviderDescription = NSLocalizedString(
-      "wallet.rampNetworkProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Buy crypto with Visa or Mastercard.",
-      comment: "The description of one of the 'Ramp.Network' provider."
-    )
-    public static let sardineProviderName = NSLocalizedString(
-      "wallet.sardineProviderName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Sardine",
-      comment: "The name of one of the on ramp provider."
-    )
-    public static let sardineProviderShortName = NSLocalizedString(
-      "wallet.sardineProviderShortName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Sardine",
-      comment: "The short name of one of the on ramp provider."
-    )
-    public static let sardineProviderDescription = NSLocalizedString(
-      "wallet.sardineProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Instant buy with your bank account. Lower fees.",
-      comment: "The description of one of the 'Sardine' provider."
-    )
-    public static let transakProviderName = NSLocalizedString(
-      "wallet.transakProviderName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Transak",
-      comment: "The name of one of the on ramp provider."
-    )
-    public static let transakProviderShortName = NSLocalizedString(
-      "wallet.transakProviderShortName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Transak",
-      comment: "The short name of one of the on ramp provider."
-    )
-    public static let transakProviderDescription = NSLocalizedString(
-      "wallet.transakProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Instant buy with your bank account. Lower fees.",
-      comment: "The description of one of the 'Transak' provider."
-    )
-    public static let stripeNetworkProviderName = NSLocalizedString(
-      "wallet.stripeNetworkProviderName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "%@ by %@",
-      comment:
-        "The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names."
-    )
-    public static let stripeNetworkProviderDescription = NSLocalizedString(
-      "wallet.stripeNetworkProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Pay with credit, debit, bank account.",
-      comment: "The description of one of the 'Stripe' provider."
-    )
-    public static let coinbaseNetworkProviderDescription = NSLocalizedString(
-      "wallet.coinbaseNetworkProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Buy with the most trusted name in crypto.",
-      comment: "The description of one of the 'Coinbase Pay' provider."
-    )
     public static let solanaDappTransactionTitle = NSLocalizedString(
       "wallet.solanaDappTransactionTitle",
       tableName: "BraveWallet",
@@ -5893,6 +5808,118 @@ extension Strings {
       value:  "No more pending transactions",
       comment:
         "The title displays in confirmation screen when there is no more pending transaction."
+    )
+    public static let meldTransactionPartner = NSLocalizedString(
+      "wallet.meldTransactionPartner",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Transactions Partner",
+      comment:
+        "The title of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerDescription = NSLocalizedString(
+      "wallet.meldTransactionPartnerDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.",
+      comment:
+        "The description of the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldTransactionPartnerLegal = NSLocalizedString(
+      "wallet.meldTransactionPartnerLegal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "I have read and agree to the [Meld's Terms of Use](%@)",
+      comment:
+        "The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet."
+    )
+    public static let meldPaymentMethodHeaderTitle = NSLocalizedString(
+      "wallet.meldPaymentMethodHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Payment method",
+      comment:
+        "The header title of the section that user can pick a payment method in buy screen in Brave Wallet."
+    )
+    public static let meldCountryHeaderTitle = NSLocalizedString(
+      "wallet.meldCountryHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Country",
+      comment:
+        "The header title of the section that user can pick a country in buy screen in Brave Wallet."
+    )
+    public static let meldAccountHeaderTitle = NSLocalizedString(
+      "wallet.meldAccountHeaderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Account",
+      comment:
+        "The header title of the section that user can pick an account in buy screen in Brave Wallet."
+    )
+    public static let providerListBestOption = NSLocalizedString(
+      "wallet.providerListBestOption",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "BEST OPTION",
+      comment:
+        "A label that will display on the provider option to indicate this is the best option."
+    )
+    public static let providerListExchangeRateWithFees = NSLocalizedString(
+      "wallet.providerListExchangeRateWithFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Exchange rate with fees",
+      comment:
+        "One of title that displays under provider option. Exchange rate with fees that this provider offers."
+    )
+    public static let providerListPrice = NSLocalizedString(
+      "wallet.providerListPrice",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Price",
+      comment:
+        "One of title that displays under provider option. The price of the target currency on market."
+    )
+    public static let providerListFees = NSLocalizedString(
+      "wallet.providerListFees",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Fees",
+      comment:
+        "One of title that displays under provider option. The fees that provider will charge."
+    )
+    public static let providerListTotal = NSLocalizedString(
+      "wallet.providerListTotal",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Total",
+      comment:
+        "One of title that displays under provider option. The total cost of this purchase."
+    )
+    public static let providerListBuyWith = NSLocalizedString(
+      "wallet.providerListBuyWith",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Buy with %@",
+      comment:
+        "The title of the button that user can use to open the link to buy crypto."
+    )
+    public static let providerListNoProviderTitle = NSLocalizedString(
+      "wallet.providerListNoProviderTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "No providers found for %@",
+      comment:
+        "The title that will show when there is no available provider with givin input."
+    )
+    public static let providerListNoProviderDescription = NSLocalizedString(
+      "wallet.providerListNoProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Try searching for a different asset.",
+      comment:
+        "The description that will show when there is no available provider with givin input."
     )
   }
 }

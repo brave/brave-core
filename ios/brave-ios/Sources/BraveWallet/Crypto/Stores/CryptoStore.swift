@@ -125,6 +125,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let walletP3A: BraveWalletBraveWalletP3A
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
+  private let meldIntegrationService: BraveWalletMeldIntegrationService
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
   private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
@@ -148,6 +149,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
+    meldIntegrationService: BraveWalletMeldIntegrationService,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
@@ -163,6 +165,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.walletP3A = walletP3A
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
+    self.meldIntegrationService = meldIntegrationService
     self.userAssetManager = WalletUserAssetManager(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -376,7 +379,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     assetDetailStore?.setupObservers()
     nftDetailStore?.setupObservers()
     confirmationStore?.setupObservers()
-    buyTokenStore?.setupObservers()
     sendTokenStore?.setupObservers()
     swapTokenStore?.setupObservers()
   }
@@ -403,7 +405,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     assetDetailStore?.tearDown()
     nftDetailStore?.tearDown()
     confirmationStore?.tearDown()
-    buyTokenStore?.tearDown()
     sendTokenStore?.tearDown()
     swapTokenStore?.tearDown()
   }
@@ -414,13 +415,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       return store
     }
     let store = BuyTokenStore(
-      blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
-      rpcService: rpcService,
       walletService: walletService,
-      assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       prefilledToken: prefilledToken
     )
     buyTokenStore = store
@@ -499,7 +498,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   }
 
   func closeWalletActionStores() {
-    buyTokenStore?.tearDown()
     sendTokenStore?.tearDown()
     swapTokenStore?.tearDown()
     depositTokenStore?.tearDown()
@@ -526,6 +524,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: userAssetManager,
       assetDetailType: assetDetailType
     )

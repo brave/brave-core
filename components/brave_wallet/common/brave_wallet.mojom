@@ -196,32 +196,46 @@ struct CardanoProviderPagination {
   uint32 limit;
 };
 
+struct CardanoProviderPaginationErrorPayload {
+  int32 payload;
+};
+
+struct CardanoProviderErrorBundle {
+  int32 code;
+  string error_message;
+  // Payload for the pagination error that
+  // contains max page number.
+  CardanoProviderPaginationErrorPayload? pagination_error_payload;
+};
+
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (string? error_message);
+  Enable() => (CardanoProviderErrorBundle? error);
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
-    (int32 network_id, string? error_message);
+    (int32 network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
-    (array<string> used_addresses, string? error_message);
+    (array<string> used_addresses, CardanoProviderErrorBundle? error);
   GetUnusedAddresses() =>
-    (array<string> unused_addresses, string? error_message);
+    (array<string> unused_addresses, CardanoProviderErrorBundle? error);
   GetChangeAddress() =>
-    (string change_address, string? error_message);
+    (string change_address, CardanoProviderErrorBundle? error);
   GetRewardAddresses() =>
-    (array<string> reward_addresses, string? error_message);
+    (array<string> reward_addresses, CardanoProviderErrorBundle? error);
   GetBalance() =>
-    (string cbor_balance, string? error_message);
+    (string cbor_balance, CardanoProviderErrorBundle? error_message);
   GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
-    (array<string>? utxos, string? error_message);
+    (array<string>? utxos, CardanoProviderErrorBundle? error);
   SignTx(string tx_cbor, bool partial_sign) =>
-    (string signed_tx_cbor, string? error_message);
+    (string signed_tx_cbor, CardanoProviderErrorBundle? error);
   SubmitTx(string signed_tx_cbor) =>
-    (string tx_hash, string? error_message);
+    (string tx_hash, CardanoProviderErrorBundle? error);
   SignData(string address, string payload_hex) =>
-    (CardanoProviderSignatureResult result, string? error_message);
-  GetCollateral(string amount) => (array<string>? utxos, string? error_message);
+    (CardanoProviderSignatureResult? result,
+      CardanoProviderErrorBundle? error);
+  GetCollateral(string amount) => (array<string>? utxos,
+      CardanoProviderErrorBundle? error);
 };
 
 struct ChainId {
@@ -1744,13 +1758,6 @@ interface JsonRpcService {
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
   UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
-
-  // Used for making requests to the currently selected EVM compatible node for
-  // coin ETH and other nodes with corresponding coin types
-  Request(string chain_id, string json_payload,
-          bool auto_retry_on_network_change,
-          mojo_base.mojom.Value id, CoinType coin) =>
-      (EthereumProviderResponse response);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);

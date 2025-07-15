@@ -5,6 +5,7 @@
 
 import { afterNextRender, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js'
+import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js'
 import { loadTimeData } from "../i18n_setup.js"
 import { getTemplate } from './toolbar.html.js'
 import { BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl } from '../brave_wallet_page/brave_wallet_browser_proxy.js';
@@ -16,7 +17,9 @@ import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 import './bookmark_bar.js'
 
-const SettingsBraveAppearanceToolbarElementBase = RouteObserverMixin(I18nMixin(PolymerElement))
+const SettingsBraveAppearanceToolbarElementBase = RouteObserverMixin(
+  I18nMixin(PrefsMixin(PolymerElement))
+)
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing
@@ -62,7 +65,7 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     if (!elemToHighlight) {
       return;
     }
-    
+
     const elem = this.shadowRoot?.querySelector(elemToHighlight)
     if (!elem) {
       return
@@ -101,6 +104,11 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
 
   private showCommandsInOmnibox_() {
     return loadTimeData.getBoolean('showCommandsInOmnibox')
+  }
+
+  private shouldShowBraveNewsButton_() {
+    // Only show the Brave News button toggle if it's not disabled by policy
+    return !loadTimeData.getBoolean('braveNewsDisabledByPolicy')
   }
 }
 

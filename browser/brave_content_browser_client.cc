@@ -47,6 +47,7 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
@@ -58,6 +59,7 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -272,6 +274,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/brave_browser_main_extra_parts_p3a.h"
+#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
@@ -464,6 +470,10 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
+#if BUILDFLAG(ENABLE_OMAHA4)
+  chrome_main_parts->AddParts(
+      std::make_unique<BraveBrowserMainExtraPartsP3A>());
+#endif
   return main_parts;
 }
 
@@ -636,8 +646,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  registry.ForWebUI<BraveAccountUI>()
-      .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 }
 
 std::optional<base::UnguessableToken>
@@ -834,8 +846,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
+        map);
+  }
 #endif
 
   auto* prefs =

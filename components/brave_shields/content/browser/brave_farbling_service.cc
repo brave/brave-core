@@ -6,7 +6,7 @@
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 
 #include "base/check.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "url/gurl.h"

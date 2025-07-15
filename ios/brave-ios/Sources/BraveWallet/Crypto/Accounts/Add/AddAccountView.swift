@@ -358,7 +358,7 @@ struct AddAccountView: View {
           .foregroundColor(Color(.bravePrimary))
       )
     ) {
-      if self.selectedCoin == .btc {
+      if self.selectedCoin == .btc || self.preSelectedCoin == .btc {
         HStack {
           Image(braveSystemName: "leo.warning.triangle-filled")
             .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))

@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -873,6 +874,11 @@ const std::string& GetAccountPermissionIdentifier(
   } else {
     return account_id->address;
   }
+}
+
+bool IsBraveWalletOrigin(const url::Origin& origin) {
+  return origin == url::Origin::Create(GURL(kBraveUIWalletPanelURL)) ||
+         origin == url::Origin::Create(GURL(kBraveUIWalletPageURL));
 }
 
 }  // namespace brave_wallet

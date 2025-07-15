@@ -13,7 +13,6 @@
 #include "content/public/browser/webui_config.h"
 
 namespace content {
-class BrowserContext;
 class WebUI;
 }  // namespace content
 
@@ -30,9 +29,6 @@ class BraveAccountUIConfig
     : public content::DefaultWebUIConfig<BraveAccountUI> {
  public:
   BraveAccountUIConfig();
-
-  // content::WebUIConfig:
-  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_

@@ -118,6 +118,7 @@ struct SendTokenView: View {
           } else {
             AssetIconView(
               token: token,
+              meldCryptoCurrency: nil,
               network: networkStore.defaultSelectedChain,
               length: 26
             )

@@ -147,3 +147,16 @@ mangle(
   },
   (template) => template.text.includes('sp-heading'),
 )
+
+// Hide back button
+mangle(
+  (element: DocumentFragment) => {
+    const el = element.querySelector('sp-heading')
+    if (!el) {
+      throw new Error('[Customize Chrome > Toolbar] sp-heading is gone.')
+    }
+
+    el.setAttribute('hide-back-button', 'true')
+  },
+  (template) => template.text.includes('sp-heading'),
+)

@@ -71,4 +71,7 @@ export const _ConfirmSwapTransaction = {
   },
 }
 
-export default { component: ConfirmSwapTransaction }
+export default {
+  title: 'Wallet/Panel/Panels/Confirm Transaction',
+  component: ConfirmSwapTransaction,
+}

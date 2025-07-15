@@ -6,8 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
@@ -33,16 +32,12 @@ function PrivacyMessage () {
       </a>
   )
 
-  const aboutDescription = formatMessage(getLocale(S.CHAT_UI_ABOUT_DESCRIPTION), {
-    tags: {
-      $1: (content) => createLinkWithClickHandler(content, WIKI_URL)
-    }
+  const aboutDescription = formatLocale(S.CHAT_UI_ABOUT_DESCRIPTION, {
+    $1: (content) => createLinkWithClickHandler(content, WIKI_URL)
   })
 
-  const aboutDescription3 = formatMessage(getLocale(S.CHAT_UI_ABOUT_DESCRIPTION_3), {
-    tags: {
-      $1: (content) => createLinkWithClickHandler(content, PRIVACY_URL)
-    }
+  const aboutDescription3 = formatLocale(S.CHAT_UI_ABOUT_DESCRIPTION_3, {
+    $1: (content) => createLinkWithClickHandler(content, PRIVACY_URL)
   })
 
   React.useEffect(() => {

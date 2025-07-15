@@ -27,6 +27,10 @@ static_library("browser") {
     "ad_block_resource_provider.h",
     "ad_block_service_helper.cc",
     "ad_block_service_helper.h",
+    "brave_shields_p3a.cc",
+    "brave_shields_p3a.h",
+    "brave_shields_utils.cc",
+    "brave_shields_utils.h",
     "filter_list_catalog_entry.cc",
     "filter_list_catalog_entry.h",
   ]
@@ -35,10 +39,21 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/core/browser/adblock",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//brave/components/constants",
+    "//brave/components/content_settings/core/common",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/p3a",
+    "//brave/components/p3a_utils",
+    "//brave/components/webcompat/core/common",
     "//components/component_updater:component_updater",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/browser:cookie_settings",
+    "//components/content_settings/core/common",
     "//components/prefs",
     "//components/value_store",
     "//crypto",
+    "//url",
   ]
   public_deps = [ "//base" ]
 }

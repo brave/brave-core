@@ -159,6 +159,7 @@ class VerticalTabStripRegionView : public views::View,
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
   void ScheduleFloatingModeTimer();
+  void ScheduleCollapseTimer();
   void OnMouseExited();
   void OnMouseEntered();
   void OnMousePressedInTree();
@@ -214,6 +215,7 @@ class VerticalTabStripRegionView : public views::View,
   int expanded_width_ = 220;
 
   base::OneShotTimer mouse_enter_timer_;
+  base::OneShotTimer mouse_exit_timer_;
 
   bool mouse_events_for_test_ = false;
 

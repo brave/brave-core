@@ -24,4 +24,7 @@ export const _AddCustomTokenForm = {
   },
 }
 
-export default { component: AddCustomTokenForm }
+export default {
+  title: 'Wallet/Desktop/Components/Forms',
+  component: AddCustomTokenForm,
+}

@@ -39,6 +39,12 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -73,12 +79,12 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
     updateTitleTheme()
 
     searchImageView.do {
-      $0.tintColor = UIColor(braveSystemName: .iconDefault)
+      $0.tintColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .iconDefault)
     }
   }
 
   private func updateTitleTheme() {
-    titleLabel.textColor = UIColor(braveSystemName: .textPrimary)
+    titleLabel.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
     titleLabel.lineBreakMode = .byTruncatingTail
 
     var sizeCategory = UIApplication.shared.preferredContentSizeCategory
@@ -101,7 +107,7 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
       string: Strings.findInPageFormat,
       attributes: [
         .font: boldFont,
-        .foregroundColor: UIColor(braveSystemName: .textTertiary),
+        .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textTertiary),
       ]
     )
     attString.append(
@@ -109,7 +115,7 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
         string: "\"\(title)\"",
         attributes: [
           .font: regularFont,
-          .foregroundColor: UIColor(braveSystemName: .textPrimary),
+          .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary),
         ]
       )
     )

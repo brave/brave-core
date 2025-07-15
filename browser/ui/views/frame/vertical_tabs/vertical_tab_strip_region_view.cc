@@ -679,6 +679,7 @@ void VerticalTabStripRegionView::SetState(State state) {
   }
 
   mouse_enter_timer_.Stop();
+  mouse_exit_timer_.Stop();
 
   last_state_ = std::exchange(state_, state);
   resize_area_->SetEnabled(state == State::kExpanded);
@@ -925,7 +926,7 @@ void VerticalTabStripRegionView::OnMouseExited() {
 
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating) {
-    SetState(State::kCollapsed);
+    ScheduleCollapseTimer();
   }
 }
 
@@ -943,6 +944,7 @@ void VerticalTabStripRegionView::OnMouseEntered() {
     return;
   }
 
+  mouse_exit_timer_.Stop();
   ScheduleFloatingModeTimer();
 }
 
@@ -1274,7 +1276,7 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
 
   if (state_ == State::kCollapsed) {
     auto get_expand_delay = []() {
-      constexpr int kDefaultDelay = 400;
+      constexpr int kDefaultDelay = 0;
       auto* cmd_line = base::CommandLine::ForCurrentProcess();
       if (!cmd_line->HasSwitch(tabs::switches::kVerticalTabExpandDelaySwitch)) {
         return kDefaultDelay;
@@ -1292,11 +1294,59 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
       return override_delay;
     };
 
+    const auto delay = get_expand_delay();
+    if (delay == 0) {
+      // If the delay is 0, we should expand immediately.
+      SetState(State::kFloating);
+      return;
+    }
+
     mouse_enter_timer_.Start(
-        FROM_HERE, base::Milliseconds(get_expand_delay()),
+        FROM_HERE, base::Milliseconds(delay),
         base::BindOnce(&VerticalTabStripRegionView::SetState,
                        base::Unretained(this), State::kFloating));
   }
+}
+
+void VerticalTabStripRegionView::ScheduleCollapseTimer() {
+  if (state_ != State::kFloating) {
+    return;
+  }
+
+  if (mouse_exit_timer_.IsRunning()) {
+    return;
+  }
+
+  auto get_collapse_delay = []() {
+    constexpr int kDefaultDelay = 0;
+    auto* cmd_line = base::CommandLine::ForCurrentProcess();
+    if (!cmd_line->HasSwitch(tabs::switches::kVerticalTabCollapseDelaySwitch)) {
+      return kDefaultDelay;
+    }
+
+    auto delay_string = cmd_line->GetSwitchValueASCII(
+        tabs::switches::kVerticalTabCollapseDelaySwitch);
+
+    int override_delay = 0;
+    if (delay_string.empty() ||
+        !base::StringToInt(delay_string, &override_delay)) {
+      return kDefaultDelay;
+    }
+
+    return override_delay;
+  };
+
+  const auto delay = get_collapse_delay();
+  if (delay == 0) {
+    // If the delay is 0, we should collapse immediately.
+    SetState(State::kCollapsed);
+    return;
+  }
+
+  mouse_exit_timer_.Start(
+      FROM_HERE, base::Milliseconds(delay),
+      base::BindOnce(&VerticalTabStripRegionView::SetState,
+                     base::Unretained(this), State::kCollapsed));
 }
 
 #if !BUILDFLAG(IS_MAC)

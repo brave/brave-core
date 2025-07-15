@@ -10,6 +10,7 @@
 
 class BraveVPNController;
 class SplitViewBrowserData;
+class PlaylistSidePanelCoordinator;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -34,7 +35,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   // BrowserWindowFeatures_ChromiumImpl:
   void Init(BrowserWindowInterface* browser) override;
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
-  void InitPostWindowConstruction(Browser* browser) override;
+  void TearDownPreBrowserViewDestruction() override;
 
   sidebar::SidebarController* sidebar_controller() {
     return sidebar_controller_.get();
@@ -47,6 +48,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return split_view_browser_data_.get();
   }
 
+  PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
+    return playlist_side_panel_coordinator_.get();
+  }
+
  protected:
   BrowserWindowFeatures();
 
@@ -56,6 +61,8 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
   std::unique_ptr<brave_rewards::RewardsPanelCoordinator>
       rewards_panel_coordinator_;
+  std::unique_ptr<PlaylistSidePanelCoordinator>
+      playlist_side_panel_coordinator_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

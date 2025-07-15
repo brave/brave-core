@@ -118,6 +118,7 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
   "//brave/browser/ai_chat",
+  "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_ads",
@@ -151,6 +152,7 @@ brave_chrome_browser_deps = [
   "//brave/components/ai_chat/core/common/mojom",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
+  "//brave/components/brave_account:features",
   "//brave/components/brave_adaptive_captcha",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
@@ -177,6 +179,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
   "//brave/components/brave_user_agent/browser",
+  "//brave/components/brave_user_agent/common",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_vpn/common/mojom",
   "//brave/components/brave_wallet/browser",
@@ -351,6 +354,7 @@ if (is_mac) {
   brave_chrome_browser_deps += [
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
+    "//brave/browser/updater:buildflags",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
@@ -366,7 +370,14 @@ if (enable_sparkle) {
 }
 
 if (enable_omaha4) {
-  brave_chrome_browser_deps += [ "//brave/browser/updater:features" ]
+  brave_chrome_browser_sources += [
+    "//brave/browser/brave_browser_main_extra_parts_p3a.cc",
+    "//brave/browser/brave_browser_main_extra_parts_p3a.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/updater:features",
+    "//brave/browser/updater:p3a",
+  ]
 }
 
 if (enable_speedreader) {

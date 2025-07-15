@@ -18,4 +18,7 @@ export const _FundWalletScreen = {
   },
 }
 
-export default { component: FundWalletScreen }
+export default {
+  title: 'Wallet/Desktop/Screens',
+  component: FundWalletScreen,
+}

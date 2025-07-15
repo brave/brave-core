@@ -163,6 +163,12 @@ extension Preferences {
       key: "wallet.wallet-user-asset-to-core",
       default: false
     )
+
+    /// Used to track whether Meld APIs agreetment has been shown and agreed
+    static let meldAPIAgreementShownAndAgreed = Option<Bool>(
+      key: "wallet.meld-api-agreement-shown-and-agreed",
+      default: false
+    )
   }
 }
 

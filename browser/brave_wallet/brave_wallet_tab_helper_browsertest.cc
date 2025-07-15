@@ -3,18 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+
 #include <memory>
 
-#include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -25,7 +22,6 @@
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/fake_usb_chooser_controller.h"
 #include "components/sessions/content/session_tab_helper.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -34,8 +30,6 @@
 #include "net/dns/mock_host_resolver.h"
 
 namespace {
-
-constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 base::OnceClosure ShowChooserBubble(
     content::WebContents* contents,
@@ -115,10 +109,8 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
-    https_server_->ServeFilesFromDirectory(test_data_dir);
+    https_server_->ServeFilesFromDirectory(
+        brave_wallet::BraveWalletTestDataFolder());
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &BraveWalletTabHelperBrowserTest::HandleChainRequest,
         base::Unretained(this)));

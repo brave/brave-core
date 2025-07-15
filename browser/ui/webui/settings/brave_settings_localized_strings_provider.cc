@@ -12,10 +12,13 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -154,15 +157,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
-      // <Brave Account Row>
-      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
-      {"braveAccountRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
-      {"braveAccountGetStartedButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountManageAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
-      // </Brave Account Row>
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -1100,6 +1094,24 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(localized_strings);
 }
 
+void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
+  if (!brave_account::features::IsBraveAccountEnabled()) {
+    return;
+  }
+
+  webui::LocalizedString localized_strings[] = {
+      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
+      {"braveAccountRowDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountGetStartedButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
+      {"braveAccountManageAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+  };
+
+  html_source->AddLocalizedStrings(localized_strings);
+}
+
 }  // namespace
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
@@ -1110,6 +1122,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
   BraveAddEmailAliasesStrings(html_source);
+  BraveAddBraveAccountStrings(html_source);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
@@ -1127,6 +1140,14 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
+
+  html_source->AddBoolean("braveNewsDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_news::prefs::kBraveNewsDisabledByPolicy));
+
+  html_source->AddBoolean(
+      "braveTalkDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

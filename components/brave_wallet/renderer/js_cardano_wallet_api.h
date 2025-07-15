@@ -21,6 +21,11 @@
 
 namespace brave_wallet {
 
+v8::Local<v8::Value> ConvertError(
+    v8::Isolate* isolate,
+    const v8::Local<v8::Context>& context,
+    const mojom::CardanoProviderErrorBundlePtr& error);
+
 // https://cips.cardano.org/cip/CIP-30
 // This class implements API object which is available after
 // cardano.brave.enable() is called.
@@ -50,25 +55,25 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                           v8::Global<v8::Promise::Resolver> promise_resolver,
                           v8::Isolate* isolate,
                           const std::string& result,
-                          const std::optional<std::string>& error);
+                          mojom::CardanoProviderErrorBundlePtr error);
   void HandleStringVecResult(v8::Global<v8::Context> global_context,
                              v8::Global<v8::Promise::Resolver> promise_resolver,
                              v8::Isolate* isolate,
                              const std::vector<std::string>& result,
-                             const std::optional<std::string>& error);
+                             mojom::CardanoProviderErrorBundlePtr error);
   void HandleUtxoVecResult(
       v8::Global<v8::Context> global_context,
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       const std::optional<std::vector<std::string>>& result,
-      const std::optional<std::string>& error_message);
+      mojom::CardanoProviderErrorBundlePtr error);
 
   v8::Local<v8::Promise> GetNetworkId(v8::Isolate* isolate);
   void OnGetNetworkId(v8::Global<v8::Context> global_context,
                       v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
                       int32_t network,
-                      const std::optional<std::string>& error_message);
+                      mojom::CardanoProviderErrorBundlePtr error_message);
 
   v8::Local<v8::Promise> GetUsedAddresses(v8::Isolate* isolate);
 
@@ -89,7 +94,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                   v8::Global<v8::Promise::Resolver> promise_resolver,
                   v8::Isolate* isolate,
                   mojom::CardanoProviderSignatureResultPtr result,
-                  const std::optional<std::string>& error_message);
+                  mojom::CardanoProviderErrorBundlePtr error_message);
 
   v8::Local<v8::Promise> SubmitTx(gin::Arguments* args);
 

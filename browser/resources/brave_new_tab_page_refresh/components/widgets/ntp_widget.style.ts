@@ -8,13 +8,11 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    flex: 0 0 var(--widget-flex-basis, auto);
     color: ${color.text.primary};
     border-radius: 16px;
     background: rgba(0, 0, 0, 0.50);
     backdrop-filter: blur(50px);
     display: flex;
     align-items: stretch;
-    overflow: clip;
   }
 `

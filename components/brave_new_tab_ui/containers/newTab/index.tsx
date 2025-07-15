@@ -241,6 +241,7 @@ class NewTabPage extends React.Component<Props, State> {
   maybePeekBraveNews () {
     const hasPromptedBraveNews = !!this.braveNewsPromptTimerId
     const shouldPromptBraveNews =
+      !this.props.newTabData.isBraveNewsDisabledByPolicy &&
       !hasPromptedBraveNews && // Don't start a prompt if we already did
       window.scrollY === 0 && // Don't start a prompt if we are scrolled
       this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
@@ -448,6 +449,7 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBraveTalk,
       showBraveVPN,
+      isBraveTalkDisabledByPolicy
     } = this.props.newTabData
 
     const lookup: { [p: string]: { display: boolean, render: any } } = {
@@ -460,7 +462,8 @@ class NewTabPage extends React.Component<Props, State> {
         render: this.renderBraveVPNWidget
       },
       'braveTalk': {
-        display: braveTalkSupported && showBraveTalk,
+        display: braveTalkSupported && showBraveTalk &&
+          !isBraveTalkDisabledByPolicy,
         render: this.renderBraveTalkWidget.bind(this)
       }
     }
@@ -494,11 +497,13 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBraveTalk,
       showBraveVPN,
-      hideAllWidgets
+      hideAllWidgets,
+      isBraveTalkDisabledByPolicy
     } = this.props.newTabData
     return hideAllWidgets || [
       braveRewardsSupported && showRewards,
-      braveTalkSupported && showBraveTalk,
+      braveTalkSupported && showBraveTalk &&
+        !isBraveTalkDisabledByPolicy,
       this.braveVPNSupported && showBraveVPN,
     ].every((widget: boolean) => !widget)
   }
@@ -607,9 +612,14 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderBraveTalkWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { showBraveTalk, textDirection, braveTalkSupported } = newTabData
+    const {
+      showBraveTalk,
+      textDirection,
+      braveTalkSupported,
+      isBraveTalkDisabledByPolicy
+    } = newTabData
 
-    if (!showBraveTalk || !braveTalkSupported) {
+    if (!showBraveTalk || !braveTalkSupported || isBraveTalkDisabledByPolicy) {
       return null
     }
 
@@ -813,14 +823,17 @@ class NewTabPage extends React.Component<Props, State> {
                   && <React.Suspense fallback={null}>
                     <SearchPlaceholder />
                   </React.Suspense>}
-                {newTabData.showToday && (defaultState.featureFlagBraveNewsFeedV2Enabled
+                                {newTabData.showToday &&
+                  !newTabData.isBraveNewsDisabledByPolicy && (
+                  defaultState.featureFlagBraveNewsFeedV2Enabled
                   ? <React.Suspense fallback={null}>
                     <BraveNewsPeek/>
                   </React.Suspense>
-                  : <BraveNewsHint />)}
+                  : <BraveNewsHint />
+                )}
               </Page.GridItemPageFooter>
           </Page.Page>
-        { newTabData.showToday &&
+        { newTabData.showToday && !newTabData.isBraveNewsDisabledByPolicy &&
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
@@ -833,7 +846,9 @@ class NewTabPage extends React.Component<Props, State> {
           isUpdateAvailable={this.props.todayData.isUpdateAvailable}
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
-          onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
+          onFeedItemViewedCountChanged={
+            this.props.actions.today.feedItemViewedCountChanged
+          }
           onCustomizeBraveNews={() => { this.openSettings(SettingsTabType.BraveNews) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}
           onPromotedItemViewed={this.props.actions.today.promotedItemViewed}

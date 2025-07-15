@@ -19,7 +19,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   }
   @Published private(set) var isLoadingAccountFiat: Bool = false
   @Published private(set) var accountTotalFiat: String = "$0.00"
-  @Published private(set) var isBuySupported: Bool = true
   @Published private(set) var isSwapSupported: Bool
   @Published private(set) var userAssets: [AssetViewModel] = []
   @Published private(set) var userNFTs: [NFTAssetViewModel] = []
@@ -188,14 +187,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           break
         }
       }
-      let buyOptions: [BraveWallet.OnRampProvider] = Array(
-        BraveWallet.OnRampProvider.allSupportedOnRampProviders
-      )
-      let buyTokenOptions = await blockchainRegistry.allBuyTokens(
-        in: networksForAccount,
-        for: buyOptions
-      ).flatMap(\.value)
-      self.isBuySupported = !buyTokenOptions.isEmpty
+
       // Include user deleted for case user sent an NFT
       // then deleted it, we need it for display in transaction list
       let allUserNetworkAssets =

@@ -34,10 +34,7 @@ export const _AmountButton = () => {
   )
 }
 
-_AmountButton.story = {
-  name: 'Fund Wallet - Amount Button',
-}
-
 export default {
+  title: 'Wallet/Desktop/Components/Fund Wallet',
   component: _AmountButton,
 }

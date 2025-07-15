@@ -19,15 +19,6 @@ jest.mock('../../state/conversation_context', () => ({
   useConversation: jest.fn()
 }))
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    if (key === 'CHAT_UI_INTRO_MESSAGE_TEST_MODEL') {
-      return 'Test message $1Learn more$2'
-    }
-    return key
-  }
-}))
-
 describe('ModelIntro', () => {
   beforeEach(() => {
     ;(useAIChat as jest.Mock).mockReturnValue({
@@ -78,18 +69,8 @@ describe('ModelIntro', () => {
       tooltip?.querySelector<HTMLDivElement>('[slot="content"]')
     expect(tooltipContent).toBeInTheDocument()
 
-    // Test that the tooltip content renders the correct text
+    // Test that the tooltip content has the correct message
     const tooltipContentText = tooltipContent?.textContent
-    expect(tooltipContentText).toBe('Test message Learn more')
-
-    // Test that the learn more button is rendered
-    const learnMoreButton =
-      tooltipContent?.querySelector<HTMLButtonElement>('button')
-    expect(learnMoreButton).toBeInTheDocument()
-    expect(learnMoreButton).toHaveTextContent('Learn more')
-
-    // Test that the learn more button opens the model support url
-    learnMoreButton?.click()
-    expect(useAIChat().uiHandler?.openModelSupportUrl).toHaveBeenCalled()
+    expect(tooltipContentText).toBe(S.CHAT_UI_INTRO_MESSAGE_TEST_MODEL)
   })
 })

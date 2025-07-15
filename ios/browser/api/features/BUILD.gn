@@ -12,6 +12,7 @@ source_set("features") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common:common",
+    "//brave/components/brave_account:features",
     "//brave/components/brave_component_updater/browser:browser",
     "//brave/components/brave_news/common:common",
     "//brave/components/brave_rewards/core:features",
@@ -28,8 +29,6 @@ source_set("features") {
     "//brave/components/p3a:p3a",
     "//brave/components/skus/common:common",
     "//brave/ios/browser/api/translate:features",
-    "//brave/ios/browser/playlist",
-    "//brave/ios/browser/ui/browser_menu:features",
     "//brave/ios/browser/ui/commerce:features",
     "//brave/ios/browser/ui/web_view:features",
     "//build:blink_buildflags",

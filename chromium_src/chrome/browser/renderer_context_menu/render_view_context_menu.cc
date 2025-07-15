@@ -718,6 +718,14 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
 Browser* BraveRenderViewContextMenu::GetBrowserToOpenSettings() {
   return GetBrowser();
 }
+
+float BraveRenderViewContextMenu::GetScaleFactor() {
+  auto* render_frame_host = GetRenderFrameHost();
+  CHECK(render_frame_host);
+  auto* render_view = render_frame_host->GetView();
+  CHECK(render_view);
+  return render_view->GetDeviceScaleFactor();
+}
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {

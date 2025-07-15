@@ -29,4 +29,7 @@ export const _AllowAddChangeNetwork = {
   },
 }
 
-export default { component: AllowAddChangeNetworkPanel }
+export default {
+  title: 'Wallet/Panel/Panels',
+  component: AllowAddChangeNetworkPanel,
+}

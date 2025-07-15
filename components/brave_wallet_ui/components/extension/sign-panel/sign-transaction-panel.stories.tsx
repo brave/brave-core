@@ -93,7 +93,7 @@ export const _SignInWithEthereumPanel = {
 }
 
 export default {
-  title: 'Sign Transaction Panel',
+  title: 'Wallet/Panel/Panels/Sign Transaction',
   parameters: {
     layout: 'centered',
   },

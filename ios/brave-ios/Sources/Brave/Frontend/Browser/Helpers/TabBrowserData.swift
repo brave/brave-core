@@ -219,7 +219,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: tab)
-  let requestBlockingContentHelper = RequestBlockingContentScriptHandler()
 
   var readerModeAvailableOrActive: Bool {
     if let readerMode = getContentScript(name: ReaderModeScriptHandler.scriptName)

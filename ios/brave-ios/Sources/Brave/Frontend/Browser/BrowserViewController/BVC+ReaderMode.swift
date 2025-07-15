@@ -92,26 +92,16 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
     )
     readerModeStyleViewController.delegate = self
     readerModeStyleViewController.modalPresentationStyle = .popover
+    readerModeStyleViewController.presentationController?.delegate = self
 
-    let setupPopover = { [unowned self, weak readerModeStyleViewController] in
-
-      if let popoverPresentationController = readerModeStyleViewController?
-        .popoverPresentationController
-      {
-        popoverPresentationController.backgroundColor = .white
-        popoverPresentationController.delegate = self
-        popoverPresentationController.sourceView = view
-        popoverPresentationController.sourceRect =
-          CGRect(x: view.bounds.width / 2, y: UIConstants.toolbarHeight / 2, width: 0, height: 0)
-        popoverPresentationController.permittedArrowDirections = .up
-      }
-    }
-
-    setupPopover()
-
-    if readerModeStyleViewController.popoverPresentationController != nil {
-      displayedPopoverController = readerModeStyleViewController
-      updateDisplayedPopoverProperties = setupPopover
+    if let popoverPresentationController = readerModeStyleViewController
+      .popoverPresentationController
+    {
+      popoverPresentationController.backgroundColor = .white
+      popoverPresentationController.sourceView = view
+      popoverPresentationController.sourceRect =
+        CGRect(x: view.bounds.width / 2, y: UIConstants.toolbarHeight / 2, width: 0, height: 0)
+      popoverPresentationController.permittedArrowDirections = .up
     }
 
     present(readerModeStyleViewController, animated: true, completion: nil)

@@ -14,12 +14,14 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -155,18 +157,17 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
   base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
   base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback, Run(::testing::Eq(std::nullopt)))
+  EXPECT_CALL(first_callback,
+              Run(EqualsMojo(mojom::CardanoProviderErrorBundlePtr())))
       .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
   provider()->Enable(first_callback.Get());
 
   {
     // Request will be rejected because it is still waiting for wallet unlock.
-    base::MockCallback<CardanoProviderImpl::EnableCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->Enable(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+    provider()->Enable(future.GetCallback());
+    auto error = future.Take();
+    EXPECT_TRUE(error);
   }
 
   ON_CALL(*delegate(), RequestPermissions(_, _, _))
@@ -217,13 +218,10 @@ TEST_F(CardanoProviderImplUnitTest,
                                     std::vector<std::string>());
           });
 
-  base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
-  base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback, Run(::testing::Ne(std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
-  provider()->Enable(first_callback.Get());
-
-  main_run_loop.Run();
+  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  provider()->Enable(future.GetCallback());
+  auto error = future.Take();
+  EXPECT_TRUE(error);
 }
 
 TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
@@ -242,13 +240,10 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
 
-  base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
-  base::RunLoop main_run_loop;
-  EXPECT_CALL(first_callback, Run(::testing::Ne(std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
-  provider()->Enable(first_callback.Get());
-
-  main_run_loop.Run();
+  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  provider()->Enable(future.GetCallback());
+  auto error = future.Take();
+  EXPECT_TRUE(error);
 }
 
 TEST_F(CardanoProviderImplUnitTest, MethodReturnsError_WhenNoPermission) {
@@ -268,102 +263,124 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsError_WhenNoPermission) {
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(0);
 
   {
-    base::MockCallback<CardanoProviderImpl::GetNetworkIdCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetNetworkId(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetNetworkId(future.GetCallback());
+    auto [networkId, error] = future.Take();
+    EXPECT_EQ(0, networkId);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetUsedAddressesCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUsedAddresses(callback.Get());
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUsedAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_TRUE(addrs.empty());
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetUnusedAddressesCallback>
-        callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUnusedAddresses(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUnusedAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_TRUE(addrs.empty());
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetChangeAddressCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetChangeAddress(callback.Get());
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetChangeAddress(future.GetCallback());
+    auto [addr, error] = future.Take();
+    EXPECT_EQ(addr, "");
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetRewardAddressesCallback>
-        callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetRewardAddresses(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetRewardAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_TRUE(addrs.empty());
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetBalanceCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetBalance(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+
+    provider()->GetBalance(future.GetCallback());
+    auto [balance, error] = future.Take();
+    EXPECT_TRUE(balance.empty());
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetUtxosCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUtxos(std::nullopt, nullptr, callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
+    auto [utxos, error] = future.Take();
+    EXPECT_FALSE(utxos);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::SignTxCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SignTx("", false, callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SignTx("", false, future.GetCallback());
+    auto [tx, error] = future.Take();
+    EXPECT_EQ("", tx);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::SubmitTxCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SubmitTx("", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SubmitTx("", future.GetCallback());
+    auto [tx_hash, error] = future.Take();
+    EXPECT_EQ("", tx_hash);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::SignDataCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SignData("", "", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SignData("", "", future.GetCallback());
+    auto [data, error] = future.Take();
+    EXPECT_FALSE(data);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 
   {
-    base::MockCallback<CardanoProviderImpl::GetCollateralCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Ne(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetCollateral("", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetCollateral("", future.GetCallback());
+    auto [result, error] = future.Take();
+    EXPECT_FALSE(result);
+    EXPECT_EQ(error->code, -3);
+    EXPECT_FALSE(error->pagination_error_payload);
   }
 }
 
@@ -382,128 +399,125 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsSuccess_WhenHasPermission) {
             return std::vector<std::string>(
                 {added_account->account_id->unique_key});
           });
-
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetNetworkIdCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetNetworkId(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetNetworkId(future.GetCallback());
+    auto [networkId, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetUsedAddressesCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUsedAddresses(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUsedAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetUnusedAddressesCallback>
-        callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUnusedAddresses(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUnusedAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetChangeAddressCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetChangeAddress(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetChangeAddress(future.GetCallback());
+    auto [addr, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetRewardAddressesCallback>
-        callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetRewardAddresses(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetRewardAddresses(future.GetCallback());
+    auto [addrs, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetBalanceCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetBalance(callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+
+    provider()->GetBalance(future.GetCallback());
+    auto [balance, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetUtxosCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetUtxos(std::nullopt, nullptr, callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
+    auto [utxos, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::SignTxCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SignTx("", false, callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SignTx("", false, future.GetCallback());
+    auto [tx, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::SubmitTxCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SubmitTx("", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::string&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SubmitTx("", future.GetCallback());
+    auto [tx_hash, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::SignDataCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->SignData("", "", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SignData("", "", future.GetCallback());
+    auto [data, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::MockCallback<CardanoProviderImpl::GetCollateralCallback> callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(callback, Run(_, ::testing::Eq(std::nullopt)))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    provider()->GetCollateral("", callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetCollateral("", future.GetCallback());
+    auto [result, error] = future.Take();
+    EXPECT_FALSE(error);
   }
 }
 

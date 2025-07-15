@@ -56,6 +56,18 @@ private final class DefaultBrowserPictureInPictureController: NSObject,
     self.onStop = onStop
   }
 
+  deinit {
+    // On iOS 18 there is a bug where the AVPictureInPictureController crashes on dealloc
+    // due to a some internal KVO executing off main. This is a blind fix hoping that keeping
+    // the controller around for an extra second will ensure it deallocs off main
+    if #available(iOS 18, *) {
+      let controller = self.controller as AnyObject
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        _ = controller
+      }
+    }
+  }
+
   func start() async {
     guard let item = player.currentItem, let controller else { return }
 

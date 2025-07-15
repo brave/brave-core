@@ -22,5 +22,6 @@ export const _PageNotFound = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens',
   component: PageNotFound,
 }

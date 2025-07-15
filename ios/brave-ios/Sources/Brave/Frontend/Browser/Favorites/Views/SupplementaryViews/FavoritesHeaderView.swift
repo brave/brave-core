@@ -8,7 +8,13 @@ import Shared
 import UIKit
 
 class FavoritesHeaderView: UICollectionReusableView {
-  let label = UILabel()
+  private let label = UILabel()
+
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -34,7 +40,7 @@ class FavoritesHeaderView: UICollectionReusableView {
   private func setTheme() {
     label.do {
       $0.text = Strings.recentSearchFavorites
-      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
 
       var sizeCategory = UIApplication.shared.preferredContentSizeCategory
       if sizeCategory.isAccessibilityCategory {

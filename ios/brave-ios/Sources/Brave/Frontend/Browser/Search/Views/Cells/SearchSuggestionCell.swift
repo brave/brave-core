@@ -21,7 +21,6 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
   private let searchImageView = UIImageView().then {
     $0.image = UIImage(braveSystemNamed: "leo.search")!.template
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = UIColor(braveSystemName: .iconDefault)
   }
 
   private let titleLabel = UILabel().then {
@@ -44,6 +43,12 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
           self.contentView.alpha = self.isHighlighted ? 0.5 : 1.0
         }
       )
+    }
+  }
+
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
     }
   }
 
@@ -89,8 +94,10 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private func setTheme() {
+    searchImageView.tintColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .iconDefault)
+
     titleLabel.do {
-      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
       $0.lineBreakMode = .byTruncatingMiddle
 
       var sizeCategory = UIApplication.shared.preferredContentSizeCategory
@@ -111,7 +118,7 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
         UIImage(braveSystemNamed: "leo.arrow.diagonal-up-left")?.template,
         for: .normal
       )
-      $0.tintColor = UIColor(braveSystemName: .iconInteractive)
+      $0.tintColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .iconInteractive)
     }
   }
 

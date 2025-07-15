@@ -126,4 +126,7 @@ export const _CriticalTxWarnings = {
   },
 }
 
-export default { component: TransactionWarnings }
+export default {
+  title: 'Wallet/Panel/Components/Warnings',
+  component: TransactionWarnings,
+}

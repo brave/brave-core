@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/leo/react/toggle'
 
 import { useAppState, useAppActions, useLocale } from '../lib/app_model_context'
 
@@ -17,6 +19,7 @@ export function RewardsLog() {
 
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null)
   const [logLoaded, setLogLoaded] = React.useState(log.length > 0)
+  const [autoRefresh, setAutoRefresh] = React.useState(false)
 
   React.useEffect(() => { actions.loadRewardsLog() }, [])
 
@@ -25,6 +28,14 @@ export function RewardsLog() {
       setLogLoaded(true)
     }
   }, [log, logLoaded])
+
+  React.useEffect(() => {
+    if (!autoRefresh) {
+      return
+    }
+    const interval: any = setInterval(() => { actions.loadRewardsLog() }, 5000)
+    return () => { clearInterval(interval) }
+  }, [autoRefresh])
 
   React.useEffect(() => {
     const elem = textAreaRef.current
@@ -57,9 +68,18 @@ export function RewardsLog() {
     <div className='content-card' data-css-scope={style.scope}>
       <h4>
         <span>Rewards Log</span>
+        <span className='auto-refresh'>
+          <Toggle
+            size='small'
+            checked={autoRefresh}
+            onChange={() => setAutoRefresh(!autoRefresh)}
+          />
+          <Icon name='refresh' />
+        </span>
         <Button size='small' onClick={download}>Download</Button>
         <Button size='small' onClick={clearLog}>Clear</Button>
       </h4>
+
       <textarea ref={textAreaRef} value={log} readOnly />
     </div>
   )

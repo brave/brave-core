@@ -29,7 +29,6 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
   ~BraveWalletPermissionContextUnitTest() override = default;
 
   void SetUp() override {
-    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<BravePermissionManager*>(
