@@ -6,8 +6,7 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
@@ -30,8 +29,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
   }
 
-  const message = formatMessage(getLocale(S.CHAT_UI_SEARCH_QUERIES), {
-    placeholders: {
+  const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
       $1: props.searchQueries.map((query, i, a) => (
         <React.Fragment key={i}>
           "<a className={styles.searchQueryLink} href='#' onClick={(e) => handleOpenSearchQuery(e, query)}>
@@ -39,7 +37,6 @@ function SearchSummary (props: { searchQueries: string[] }) {
           </a>"{(i < a.length-1) ? ', ' : null}
         </React.Fragment>
       ))
-    }
   })
 
   return (

@@ -7,8 +7,7 @@ import * as React from 'react'
 import DropDown from '@brave/leo/react/dropdown'
 import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
-import { getLocale } from '$web-common/locale'
-import formatMessage from '$web-common/formatMessage'
+import { getLocale , formatLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -96,10 +95,8 @@ function FeedbackForm() {
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
-                formatMessage(getLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL), {
-                  placeholders: {
-                    $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
-                  }
+                formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
+                  $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
                 })
               }</label>
             </Checkbox>
@@ -107,14 +104,12 @@ function FeedbackForm() {
         )}
         {!aiChatContext.isPremiumUser && (
           <div className={styles.premiumNote}>
-            {formatMessage(getLocale(S.CHAT_UI_FEEDBACK_PREMIUM_NOTE), {
-              tags: {
-                $1: (linkText) => (
+            {formatLocale(S.CHAT_UI_FEEDBACK_PREMIUM_NOTE, {
+              $1: (linkText) => (
                   <Button kind='plain' size='medium' onClick={aiChatContext.goPremium}>
                     {linkText}
                   </Button>
                 )
-              }
             })}
           </div>
         )}

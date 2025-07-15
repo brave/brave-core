@@ -7,8 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
@@ -22,8 +21,8 @@ function getCategoryName(category: Mojom.ModelCategory) {
   return getLocale('CHAT_UI_MODEL_CATEGORY_' + categoryKey)
 }
 
-function getIntroMessage(model: Mojom.Model) {
-  return getLocale(`CHAT_UI_INTRO_MESSAGE_${model.key.toUpperCase().replaceAll('-', '_')}`)
+function getIntroMessageKey(model: Mojom.Model) {
+  return `CHAT_UI_INTRO_MESSAGE_${model.key.toUpperCase().replaceAll('-', '_')}`
 }
 
 export default function ModelIntro() {
@@ -60,9 +59,8 @@ export default function ModelIntro() {
                 slot='content'
                 className={styles.tooltipContent}
               >
-                {formatMessage(getIntroMessage(model), {
-                  tags: {
-                    $1: (content) => {
+                {formatLocale(getIntroMessageKey(model), {
+                  $1: (content) => {
                       return (
                         <button
                           key={content}
@@ -73,7 +71,6 @@ export default function ModelIntro() {
                           {content}
                         </button>
                       )
-                    }
                   }
                 })}
               </div>

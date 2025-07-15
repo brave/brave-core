@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getLocale , formatLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
@@ -13,7 +13,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 import { BackArrow } from '../shared/Icons'
-import formatMessage from '$web-common/formatMessage'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
 import { PopularPage } from './Popular'
@@ -138,10 +137,8 @@ export default function Configure() {
           <Flex direction='row' align='center' gap={spacing.m}>
             {BackArrow}
             <span>
-              {formatMessage(getLocale(S.BRAVE_NEWS_BACK_TO_DASHBOARD), {
-                tags: {
+              {formatLocale(S.BRAVE_NEWS_BACK_TO_DASHBOARD, {
                   $1: content => <strong key="$1">{content}</strong>
-                }
               })}
             </span>
           </Flex>

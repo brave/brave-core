@@ -8,8 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
 
@@ -46,16 +45,12 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
   const aiChatContext = useAIChat()
   const buttonRef = React.useRef<HTMLButtonElement>()
 
-  const pricingInfo = formatMessage(getLocale(S.CHAT_UI_PREMIUM_PRICING), {
-    placeholders: {
-      $1: <data>14.99</data>
-    }
+  const pricingInfo = formatLocale(S.CHAT_UI_PREMIUM_PRICING, {
+    $1: <data>14.99</data>
   })
 
-  const pricingAnnualInfo = formatMessage(getLocale(S.CHAT_UI_PREMIUM_ANNUAL_PRICING), {
-    placeholders: {
-      $1: <data>149.99</data>
-    }
+  const pricingAnnualInfo = formatLocale(S.CHAT_UI_PREMIUM_ANNUAL_PRICING, {
+    $1: <data>149.99</data>
   })
 
   React.useEffect(() => {
