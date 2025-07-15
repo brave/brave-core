@@ -148,7 +148,9 @@ constexpr char16_t kYoutubeFullscreen[] =
               resolve('timeout');
             }, 30000);
             // Start observing the DOM.
-            observer.observe(playerContainer, { childList: true, subtree: true });
+            observer.observe(playerContainer, {
+              childList: true, subtree: true
+            });
             // Make sure the player is in focus or responsive.
             moviePlayer.click();
           } else {
