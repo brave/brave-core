@@ -1329,7 +1329,7 @@ extension Strings {
       "tabGrid.privateBrowsingInfoTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "private browsing",
+      value: "private tab",
       comment: "A title shown when in private browsing mode with no tabs open"
     )
     public static let privateBrowsingInfoBulletOneTitle = NSLocalizedString(
