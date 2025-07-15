@@ -337,6 +337,7 @@ source_set("ui") {
       "//chrome/browser/ui/extensions",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
+      "//chrome/browser/ui/profiles",
       "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
