@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_file_task_runner.h"
@@ -212,24 +213,6 @@ void ExtensionsManifectV2Migrator::Shutdown() {
   registry_observation_.Reset();
 }
 
-//  static
-bool ExtensionsManifectV2Migrator::IsSettingsBackupEnabled() {
-  return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
-         features::kExtensionsManifestV2BackupSettings.Get();
-}
-
-//  static
-bool ExtensionsManifectV2Migrator::IsSettingsImportEnabled() {
-  return IsSettingsBackupEnabled() &&
-         features::kExtensionsManifestV2BImportSettingsOnInstall.Get();
-}
-
-//  static
-bool ExtensionsManifectV2Migrator::IsExtensionReplacementEnabled() {
-  return IsSettingsImportEnabled() &&
-         features::kExtensionsManifestV2AutoInstallBraveHosted.Get();
-}
-
 void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
     extensions::ExtensionPrefs* prefs) {
   prefs_observation_.Reset();
@@ -238,7 +221,8 @@ void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
 void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
-  if (!IsSettingsBackupEnabled() || !IsKnownCwsMV2Extension(extension_id)) {
+  if (!features::IsSettingsBackupEnabled() ||
+      !IsKnownCwsMV2Extension(extension_id)) {
     return;
   }
   if (!disabled_reasons.contains(
@@ -258,7 +242,7 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (!IsSettingsImportEnabled()) {
+  if (!features::IsSettingsImportEnabled()) {
     return;
   }
   if (is_updates || !extensions_mv2::IsKnownMV2Extension(extension->id())) {
@@ -281,7 +265,7 @@ void ExtensionsManifectV2Migrator::BackupExtensionSettings(
 
 void ExtensionsManifectV2Migrator::OnBackupSettingsCompleted(
     const extensions::ExtensionId& cws_extension_id) {
-  if (!IsExtensionReplacementEnabled()) {
+  if (!features::IsExtensionReplacementEnabled()) {
     return;
   }
   const auto brave_hosted_extesnion_id =
@@ -358,9 +342,9 @@ ExtensionsManifectV2MigratorFactory::GetForBrowserContextForTesting(
 std::unique_ptr<KeyedService>
 ExtensionsManifectV2MigratorFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!ExtensionsManifectV2Migrator::IsSettingsBackupEnabled() &&
-      !ExtensionsManifectV2Migrator::IsSettingsImportEnabled() &&
-      !ExtensionsManifectV2Migrator::IsExtensionReplacementEnabled()) {
+  if (!features::IsSettingsBackupEnabled() &&
+      !features::IsSettingsImportEnabled() &&
+      !features::IsExtensionReplacementEnabled()) {
     return nullptr;
   }
   return std::make_unique<ExtensionsManifectV2Migrator>(

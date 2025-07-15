@@ -29,4 +29,19 @@ BASE_FEATURE_PARAM(bool,
                    "auto_install_brave_hosted",
                    false);
 
+bool IsSettingsBackupEnabled() {
+  return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
+         features::kExtensionsManifestV2BackupSettings.Get();
+}
+
+bool IsSettingsImportEnabled() {
+  return IsSettingsBackupEnabled() &&
+         features::kExtensionsManifestV2BImportSettingsOnInstall.Get();
+}
+
+bool IsExtensionReplacementEnabled() {
+  return IsSettingsImportEnabled() &&
+         features::kExtensionsManifestV2AutoInstallBraveHosted.Get();
+}
+
 }  // namespace extensions_mv2::features

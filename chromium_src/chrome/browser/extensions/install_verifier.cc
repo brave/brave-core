@@ -43,7 +43,7 @@
 // All above headers copied from original install_verifier.cc are
 // included to prevent below GOOGLE_CHROME_BUILD affect them.
 
-#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 
 // `VerifyStatus::ENFORCE` is only defaulted for google chrome.
 #if defined(OFFICIAL_BUILD)

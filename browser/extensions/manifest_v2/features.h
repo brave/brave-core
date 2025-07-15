@@ -16,6 +16,10 @@ BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2BackupSettings);
 BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2BImportSettingsOnInstall);
 BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2AutoInstallBraveHosted);
 
+bool IsSettingsBackupEnabled();
+bool IsSettingsImportEnabled();
+bool IsExtensionReplacementEnabled();
+
 }  // namespace extensions_mv2::features
 
 #endif  // BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_FEATURES_H_

@@ -4,7 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/contains.h"
-#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
+#include "extensions/common/extension.h"
 
 #define Contains(...) \
   Contains(__VA_ARGS__) || extensions_mv2::IsKnownMV2Extension(extension_id)

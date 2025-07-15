@@ -14,6 +14,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/brave_services_key_helper.h"
 #include "brave/components/constants/network_constants.h"
@@ -34,30 +35,6 @@
 namespace extensions_mv2 {
 
 namespace {
-
-constexpr bool CheckExtensionMaps() {
-  for (const auto& [bh_key, bh_value] : kBraveHosted) {
-    if (bh_value.empty()) {
-      // skip Brave-hosted extension which doesn't have the cws counterpart.
-      continue;
-    }
-
-    bool ok = false;
-    for (const auto& [cws_key, cws_value] : kCwsHosted) {
-      if (bh_value == cws_key && bh_key == cws_value) {
-        ok = true;
-        break;
-      }
-    }
-    if (!ok) {
-      return false;
-    }
-  }
-  return true;
-}
-
-static_assert(CheckExtensionMaps(),
-              "kBraveHostedToCws & kCwsToBraveHosted aren't consistent");
 
 GURL GetUpdaterExtensionDownloadUrl(
     const extensions::ExtensionId& extenion_id) {
@@ -118,31 +95,6 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 }
 
 }  // namespace
-
-bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
-  return kBraveHosted.contains(id);
-}
-
-bool IsKnownCwsMV2Extension(const extensions::ExtensionId& id) {
-  return kCwsHosted.contains(id);
-}
-
-std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
-    const extensions::ExtensionId& cws_extension_id) {
-  if (auto fnd = kCwsHosted.find(cws_extension_id); fnd != kCwsHosted.end()) {
-    return extensions::ExtensionId(fnd->second);
-  }
-  return std::nullopt;
-}
-
-std::optional<extensions::ExtensionId> GetCwsExtensionId(
-    const extensions::ExtensionId& brave_hosted_extension_id) {
-  if (auto fnd = kBraveHosted.find(brave_hosted_extension_id);
-      fnd != kBraveHosted.end()) {
-    return extensions::ExtensionId(fnd->second);
-  }
-  return std::nullopt;
-}
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,
