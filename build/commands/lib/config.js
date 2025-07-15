@@ -327,6 +327,7 @@ const Config = function () {
   this.service_key_stt = getEnvConfig(['service_key_stt'])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.android_static_analysis = getEnvConfig(['android_static_analysis']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -745,6 +746,10 @@ Config.prototype.buildArgs = function () {
       //   - for Android 9 and above GP will supply arm64 and we can enable all
       //     optimizations.
       args.default_min_sdk_version = 28
+    }
+
+    if (this.android_static_analysis) {
+      args.android_static_analysis = this.android_static_analysis
     }
 
     if (
