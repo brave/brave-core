@@ -14,11 +14,11 @@ import {
   NonInteractiveURL,
   DisclaimerText,
   SideBySideButtons,
-  PaddedButton
 } from '../../../components/basic'
 
 // Fake data
 import { getLocale } from '../fakeLocale'
+import Button from '@brave/leo/react/button'
 
 interface Props {
   siteUrl: string
@@ -46,22 +46,20 @@ export default class ReportView extends React.PureComponent<Props, {}> {
         <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
         <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
         <SideBySideButtons>
-          <PaddedButton
-            isTertiary
-            isCallToAction
-            scale='small'
+          <Button
+            kind="plain"
+            size='small'
             onClick={onClose}
           >
             {getLocale('cancel')}
-          </PaddedButton>
-          <PaddedButton
-            isPrimary
-            isCallToAction
-            scale='small'
+          </Button>
+          <Button
+            kind="filled"
+            size='small'
             onClick={() => onSubmitReport()}
           >
             {getLocale('submit')}
-          </PaddedButton>
+          </Button>
         </SideBySideButtons>
       </ModalLayout>
     )
