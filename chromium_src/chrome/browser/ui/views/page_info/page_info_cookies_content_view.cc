@@ -20,8 +20,7 @@
 #undef SetCookieInfo
 #undef BRAVE_PAGE_INFO_COOKIES_CONTENT_VIEW_SET_THIRD_PARTY_COOKIES_INFO
 
-void PageInfoCookiesContentView::SetCookieInfo(
-    const CookiesNewInfo& cookie_info) {
+void PageInfoCookiesContentView::SetCookieInfo(const CookiesInfo& cookie_info) {
   SetCookieInfo_ChromiumImpl(cookie_info);
 
   // Hide cookies description and link to settings.
