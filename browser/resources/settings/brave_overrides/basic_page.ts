@@ -457,19 +457,6 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
       // Insert Custom Models List
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
-
-      // Advanced
-      const advancedTemplate = templateContent.querySelector(
-        'template[if="[[showBasicPage_(currentRoute_, inSearchMode)]]"]')
-      if (!advancedTemplate) {
-        throw new Error('[Settings] Missing advanced section on basic page')
-      }
-      // Move autofill to the top of the "advanced" section
-      const sectionAutofill =
-        getSectionElement(advancedTemplate.content, 'autofill')
-      if (sectionAutofill) {
-        advancedTemplate.insertAdjacentElement('beforebegin', sectionAutofill)
-      }
     }
   }
 })
