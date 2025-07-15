@@ -31,6 +31,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
@@ -218,22 +219,19 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // approach: first identify which large tool results to keep, then build the
   // conversation in chronological order.
 
-  // Step 1: First pass - identify large tool results to keep (most recent ones)
-  struct LargeToolResult {
-    size_t message_index;
-    size_t event_index;
-    bool should_keep;
-  };
-  std::vector<LargeToolResult> large_tool_results;
+  // Step 1: First pass - identify large tool results and remember which ones to
+  // remove.
+  absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
+  size_t large_tool_count = 0;
 
-  for (size_t message_index = 0; message_index < conversation_history.size();
-       ++message_index) {
-    const auto& message = conversation_history[message_index];
+  for (size_t message_index = conversation_history.size(); message_index > 0;
+       --message_index) {
+    const auto& message = conversation_history[message_index - 1];
     if (message->character_type == mojom::CharacterType::ASSISTANT &&
         message->events.has_value() && !message->events->empty()) {
-      for (size_t event_index = 0; event_index < message->events->size();
-           ++event_index) {
-        const auto& message_event = message->events.value()[event_index];
+      for (size_t event_index = message->events->size(); event_index > 0;
+           --event_index) {
+        const auto& message_event = message->events.value()[event_index - 1];
         if (!message_event->is_tool_use_event()) {
           continue;
         }
@@ -260,21 +258,17 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         }
 
         if (is_large) {
-          large_tool_results.push_back({message_index, event_index, false});
+          large_tool_count++;
+          if (large_tool_count > features::kMaxCountLargeToolUseEvents.Get()) {
+            large_tool_result_remove_set.insert(
+                {message_index - 1, event_index - 1});
+          }
         }
       }
     }
   }
 
-  // Step 2: Mark the most recent <n> large tool results to keep
-  size_t max_large_events = features::kMaxCountLargeToolUseEvents.Get();
-  for (size_t i =
-           std::max<size_t>(0, large_tool_results.size() - max_large_events);
-       i < large_tool_results.size(); ++i) {
-    large_tool_results[i].should_keep = true;
-  }
-
-  // Step 3: Main pass - build conversation in chronological order
+  // Step 2: Main pass - build conversation in chronological order
   for (size_t message_index = 0; message_index < conversation_history.size();
        ++message_index) {
     const auto& message = conversation_history[message_index];
@@ -370,14 +364,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         tool_result.tool_call_id = tool_event->id;
 
         // Check if we should keep the full content for this large tool result
-        bool should_keep_full_content = true;
-        for (const auto& large_result : large_tool_results) {
-          if (large_result.message_index == message_index &&
-              large_result.event_index == event_index) {
-            should_keep_full_content = large_result.should_keep;
-            break;
-          }
-        }
+        bool should_keep_full_content = !large_tool_result_remove_set.contains(
+            {message_index, event_index});
 
         if (should_keep_full_content) {
           std::vector<mojom::ContentBlockPtr> tool_result_content;
