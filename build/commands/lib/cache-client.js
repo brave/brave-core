@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs-extra')
+const path = require('path')
 const { pipeline } = require('stream')
 const { promisify } = require('util')
 const pipe = promisify(pipeline)
@@ -80,6 +81,7 @@ const createFsClient = async () => {
   return {
     async check(key) {
       const localFile = path.join(cacheDir, key)
+      console.log('checking cache', localFile);
       return fs.exists(localFile)
     },
 
@@ -93,6 +95,7 @@ const createFsClient = async () => {
 
     async upload(key, source) {
       const localFile = path.join(cacheDir, key)
+      console.log(localFile);
       return fs
         .copy(source, localFile)
         .then(() => true)

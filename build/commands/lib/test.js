@@ -257,8 +257,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.continueOnFail = true
       }
 
-      const testBinary = getTestBinary(testSuite)
-      const testBinaryPath = path.join(config.outputDir, testBinary)
+      const testBinary = getTestBinary(testSuite);
 
       let cacheKey = null
       const cache = options.output_xml ? await cacheClient() : null
@@ -266,12 +265,10 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       if (cache) {
         try {
           console.log(
-            await util.buildTargets([testSuite + '.hash.json'], {
-              continueOnFail: true,
-            }),
+            await util.buildTargets([testSuite + '.hash.json']),
           )
           const { hash } = JSON.parse(
-            await fs.readFile(testBinaryPath + '.hash.json', 'utf-8'),
+            await fs.readFile(testBinary + '.hash.json', 'utf-8'),
           )
           cacheKey = `${testSuite}-${hash}.xml`
         } catch (error) {
@@ -318,7 +315,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       }
 
       let prog = util.run(
-        path.join(config.outputDir, testBinary),
+        testBinary,
         braveArgs,
         runOptions,
       )
