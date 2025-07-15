@@ -6,9 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_BROWSER_PROCESS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_BROWSER_PROCESS_H_
 
+class TestingBrowserProcess;
+using TestingBrowserProcess_BraveImpl = TestingBrowserProcess;
+
+#define is_shutting_down_                 \
+  Unused();                               \
+  friend TestingBrowserProcess_BraveImpl; \
+  bool is_shutting_down_
 #define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
 #include "src/chrome/test/base/testing_browser_process.h"  // IWYU pragma: export
 #undef TestingBrowserProcess
+#undef is_shutting_down_
 
 #include "brave/test/base/testing_brave_browser_process.h"
 

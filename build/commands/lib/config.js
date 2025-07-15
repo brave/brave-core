@@ -378,7 +378,7 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan()
+  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -406,6 +406,9 @@ Config.prototype.buildArgs = function () {
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
+    is_ubsan: this.is_ubsan,
+    is_ubsan_vptr: this.is_ubsan,
+    is_ubsan_no_recover: this.is_ubsan,
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
@@ -1019,6 +1022,8 @@ Config.prototype.update = function (options) {
   } else {
     this.is_asan = false
   }
+
+  this.is_ubsan = options.is_ubsan || false
 
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec

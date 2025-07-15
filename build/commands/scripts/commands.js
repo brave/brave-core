@@ -155,6 +155,7 @@ program
   )
   .option('--ignore_compile_failure', 'Keep compiling regardless of error')
   .option('--is_asan', 'is asan enabled')
+  .option('--is_ubsan', 'is ubsan enabled')
   .option(
     '--last_chrome_installer <last_chrome_installer>',
     'folder contains previous version uncompressed chrome.7z pack file. This folder should be in out dir.',
