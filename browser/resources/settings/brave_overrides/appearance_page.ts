@@ -61,13 +61,6 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    const customizeToolbar = templateContent.getElementById('customizeToolbar')
-    if (!customizeToolbar) {
-        console.error(`[Settings] Couldn't find #customizeToolbar`)
-    } else {
-        customizeToolbar.setAttribute('hidden', 'true')
-    }
-
     // Super-referral
     // W/o super referral, we don't need to themes link option with themes sub
     // page.

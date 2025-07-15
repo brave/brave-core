@@ -58,13 +58,6 @@
     label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[showLeoAssistant_()]]">
-  <settings-toggle-button
-    class="cr-row"
-    pref="{{prefs.brave.ai_chat.show_toolbar_button}}"
-    label="$i18n{appearanceSettingsShowLeoButtonLabel}">
-  </settings-toggle-button>
-</template>
 <template is="dom-if" if="[[isBraveRewardsSupported_()]]">
   <settings-toggle-button
     class="cr-row"
@@ -72,28 +65,6 @@
     pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-  <settings-toggle-button id="showBraveWalletIconOnToolbar"
-    class="cr-row"
-    pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
-    label="$i18n{showBravewalletIconOnToolbar}">
-  </settings-toggle-button>
-</template>
-<settings-toggle-button
-  class="cr-row"
-  pref="{{prefs.brave.show_side_panel_button}}"
-  label="$i18n{appearanceSettingsShowSidebarButton}">
-</settings-toggle-button>
-<if expr="enable_brave_vpn_wireguard">
-  <template is="dom-if" if="[[showBraveVPNOption_()]]">
-    <settings-toggle-button
-      pref="{{prefs.brave.brave_vpn.show_button}}"
-      class="cr-row"
-      label="$i18n{showBraveVPNButton}"
-      sub-label="$i18n{showBraveVPNButtonSubLabel}">
-    </settings-toggle-button>
-  </template>
-</if>
 <settings-toggle-button
   id="autocomplete-suggestion-sources"
   class="cr-row"
