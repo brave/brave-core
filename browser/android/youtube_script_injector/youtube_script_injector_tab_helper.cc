@@ -336,8 +336,10 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     content::GlobalRenderFrameHostToken token,
     base::Value value) {
-  // Reset fullscreen state when the script completes
-  SetFullscreenRequested(false);
+  if (token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+    // Reset fullscreen state when the script completes
+    SetFullscreenRequested(false);
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
