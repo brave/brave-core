@@ -27,6 +27,8 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
   button->SetStyle(ui::ButtonStyle::kProminent);
 
   auto* const native_theme = widget->GetNativeTheme();
+  native_theme->set_preferred_color_scheme(ColorScheme::kLight);
+
   auto* color_provider = widget->GetColorProvider();
 
   // Smoke test a few colors:
@@ -37,7 +39,6 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
 
   // Check that dark mode overrides are coming through:
   button->SetState(Button::ButtonState::STATE_HOVERED);
-  native_theme->set_preferred_color_scheme(ColorScheme::kLight);
   EXPECT_EQ(color_provider->GetColor(nala::kColorPrimary60),
             button->GetButtonColors().background_color);
 
@@ -48,8 +49,7 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
   // Check that setting Disabled adds opacity:
   button->SetState(Button::ButtonState::STATE_NORMAL);
   button->SetEnabled(false);
-  EXPECT_EQ(SkColorSetA(color_provider->GetColor(nala::kColorButtonBackground),
-                        0.5 * 0xFF),
+  EXPECT_EQ(color_provider->GetColor(nala::kColorButtonDisabled),
             button->GetButtonColors().background_color);
 }
 
