@@ -16,8 +16,12 @@
 // Also added this before checking bookmarks/tab groups existence.
 // We show bookmarks bar on NTP if there is no bookmarks/tab groups.
 #define BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR \
-  return IsShowingNTP(active_tab->GetContents()) &&            \
-         prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP);
+  if (const tabs::TabInterface* active_tab =                   \
+          tab_strip_model_->GetActiveTab()) {                  \
+    return active_tab->GetContents() &&                        \
+           IsShowingNTP(active_tab->GetContents()) &&          \
+           prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP);     \
+  }
 
 #include <chrome/browser/ui/bookmarks/bookmark_bar_controller.cc>
 
