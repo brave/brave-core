@@ -336,7 +336,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       }
 
       if (cache) {
-        await cache.upload(s3Key, `${outputFilename}.xml`)
+        await cache.upload(cacheKey, `${outputFilename}.xml`)
       }
 
       // If we output results into an xml file (CI), then we want to run all
