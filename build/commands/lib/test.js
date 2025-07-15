@@ -264,30 +264,21 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const testBinary = getTestBinary(testSuite);
       const testBinaryPath = path.join(config.outputDir, testBinary);
 
-      let cachedTestResult = null;
-      let s3Key = null;
-      const {BRAVE_TEST_CACHE_PATH, BRAVE_TEST_CACHE_S3_BUCKET} = process.env
-      const s3Cache = await cacheClient();
-      if (s3Cache) {
-        
+      let cacheKey = null;
+      const cache = options.output_xml ?? await cacheClient();
+
+      if (cache) {   
         try {
           console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
           const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
-          cachedTestResult = `${BRAVE_TEST_CACHE_PATH}/${testSuite}-${hash}.xml`;
-          s3Key = `${testSuite}-${hash}.xml`;
+          cacheKey = `${testSuite}-${hash}.xml`;
         } catch (error) {
           console.error(error);
           // TODO: propper error handling
         }
 
-        if (!fs.existsSync(cachedTestResult) && s3Cache && await s3Cache.check(`${testSuite}-${hash}.xml`)) {
-          await s3Cache.download(s3Key, cachedTestResult);
-        }
-
-        if (cachedTestResult && await fs.exists(cachedTestResult)) {
-          console.log(`skipping ${testSuite}; Previous results at ${cachedTestResult}`);
-          await fs.copyFile(cachedTestResult, `../${testSuite}.xml`);
-          continue;
+        if (await cache.check(cacheKey)) {
+          await cache.download(cacheKey, `${outputFilename}.xml`)
         }
       }
       
@@ -302,15 +293,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
           runArgs.push(`--gtest_output=xml:${outputFilename}.xml`)
         }
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
-
-        if (cachedTestResult !== null) {
-          console.log(`cached test results in ${cachedTestResult}`)
-          fs.copyFile(`../${testSuite}.xml`, cachedTestResult);
-
-          if (s3Cache) {
-            await s3Cache.upload(s3Key, cachedTestResult);
-          }
-        }
       }
 
 
@@ -353,8 +335,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         })
       }
 
-      if (s3Cache) {
-        await s3Cache.upload(s3Key, `${outputFilename}.xml`)
+      if (cache) {
+        await cache.upload(s3Key, `${outputFilename}.xml`)
       }
 
       // If we output results into an xml file (CI), then we want to run all
