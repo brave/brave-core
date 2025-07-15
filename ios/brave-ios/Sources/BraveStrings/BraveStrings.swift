@@ -1832,91 +1832,6 @@ extension Strings {
   }
 }
 
-// MARK: - OptionsMenu
-
-extension Strings {
-  public struct OptionsMenu {
-    public static let menuSectionTitle = NSLocalizedString(
-      "optionsMenu.menuSectionTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Brave Features",
-      comment: "Privacy Features Section title"
-    )
-    public static let braveVPNItemTitle = NSLocalizedString(
-      "optionsMenu.braveVPNItemTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "VPN",
-      comment: "Brave VPN Item Menu title"
-    )
-    public static let braveVPNItemDescription = NSLocalizedString(
-      "optionsMenu.braveVPNItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Protect your entire device online",
-      comment: "The subtitle description of menu item Brave VPN"
-    )
-    public static let braveTalkItemTitle = NSLocalizedString(
-      "optionsMenu.braveTalkItemTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Talk",
-      comment: "Brave Talk Item Menu title"
-    )
-    public static let braveTalkItemDescription = NSLocalizedString(
-      "optionsMenu.braveTalkItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Private video calls, right in your browser",
-      comment: "The subtitle description of menu item Brave Talk"
-    )
-    public static let braveLeoItemDescription = NSLocalizedString(
-      "optionsMenu.braveLeoItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Leo is an AI-powered smart assistant, built right into the browser",
-      comment:
-        "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated."
-    )
-    public static let braveNewsItemTitle = NSLocalizedString(
-      "optionsMenu.braveNewsItemTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "News",
-      comment: "Brave News Item Menu title"
-    )
-    public static let braveNewsItemDescription = NSLocalizedString(
-      "optionsMenu.braveNewsItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Today's top stories in a private news feed",
-      comment: "The subtitle description of menu item Brave News"
-    )
-    public static let bravePlaylistItemTitle = NSLocalizedString(
-      "optionsMenu.bravePlaylistItemTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Playlist",
-      comment: "Brave News Item Menu title"
-    )
-    public static let bravePlaylistItemDescription = NSLocalizedString(
-      "optionsMenu.bravePlaylistItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Keep an offline playlist of any video/stream",
-      comment: "The subtitle description of menu item Brave Playlist"
-    )
-    public static let braveWalletItemDescription = NSLocalizedString(
-      "optionsMenu.braveWalletItemDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "The secure crypto wallet, no extension required",
-      comment: "The subtitle description of menu item Brave Wallet"
-    )
-  }
-}
-
 // MARK: - BraveSearch Promotion
 
 extension Strings {
@@ -3785,6 +3700,20 @@ extension Strings {
     comment:
       "Title for when a user has nothing downloaded onto their device, and the list is empty."
   )
+  public static let bravePlaylistItemTitle = NSLocalizedString(
+    "optionsMenu.bravePlaylistItemTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Playlist",
+    comment: "Brave News Item Menu title"
+  )
+  public static let braveNewsItemTitle = NSLocalizedString(
+    "optionsMenu.braveNewsItemTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "News",
+    comment: "Brave News Item Menu title"
+  )
 
   // MARK: - Themes
 
@@ -5066,25 +4995,6 @@ extension Strings {
         value: "Share...",
         comment:
           "Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action"
-      )
-
-    public static let menuBadgeOptionTitle =
-      NSLocalizedString(
-        "playlist.menuBadgeOptionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Show Menu Notification Badge",
-        comment: "Title for playlist menu badge option"
-      )
-
-    public static let menuBadgeOptionFooterText =
-      NSLocalizedString(
-        "playlist.menuBadgeOptionFooterText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "When enabled, a badge will be displayed on the main menu icon, indicating media on the page may be added to Brave Playlist.",
-        comment: "Description footer for playlist menu badge option"
       )
 
     public static let playlistLongPressSettingsOptionTitle =

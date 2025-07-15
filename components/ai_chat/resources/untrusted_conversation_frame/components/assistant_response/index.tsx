@@ -6,15 +6,15 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
 import {
-  removeReasoning //
+  removeReasoning,
+  removeCitationsWithMissingLinks
 } from '../conversation_entries/conversation_entries_utils'
 
 function SearchSummary (props: { searchQueries: string[] }) {
@@ -29,8 +29,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
   }
 
-  const message = formatMessage(getLocale(S.CHAT_UI_SEARCH_QUERIES), {
-    placeholders: {
+  const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
       $1: props.searchQueries.map((query, i, a) => (
         <React.Fragment key={i}>
           "<a className={styles.searchQueryLink} href='#' onClick={(e) => handleOpenSearchQuery(e, query)}>
@@ -38,7 +37,6 @@ function SearchSummary (props: { searchQueries: string[] }) {
           </a>"{(i < a.length-1) ? ', ' : null}
         </React.Fragment>
       ))
-    }
   })
 
   return (
@@ -67,10 +65,18 @@ function AssistantEvent(props: {
                            `[${index + 1}]: ${url}`).join('\n') + '\n\n'
         : '';
 
+    // Remove citations with missing links
+    const filteredOutCitationsWithMissingLinks =
+      removeCitationsWithMissingLinks(
+        event.completionEvent.completion,
+        allowedLinks
+      )
+
     // Replaces 2 consecutive citations with a separator and also
     // adds a space before the citation and the text.
-     const completion =
-       event.completionEvent.completion.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+    const completion =
+      filteredOutCitationsWithMissingLinks
+        .replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
 
     const fullText = `${numberedLinks}${removeReasoning(completion)}`;
 

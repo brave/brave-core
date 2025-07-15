@@ -55,9 +55,6 @@ extension Preferences {
     /// The option to disable long-press-to-add-to-playlist gesture.
     public static let enableLongPressAddToPlaylist =
       Option<Bool>(key: "playlist.longPressAddToPlaylist", default: true)
-    /// The option to enable or disable the 3-dot menu badge for playlist
-    public static let enablePlaylistMenuBadge =
-      Option<Bool>(key: "playlist.enablePlaylistMenuBadge", default: true)
     /// The option to enable or disable the URL-Bar button for playlist
     public static let enablePlaylistURLBarButton =
       Option<Bool>(key: "playlist.enablePlaylistURLBarButton", default: true)
@@ -73,5 +70,10 @@ extension Preferences {
     /// The date of the last cached data cleanup for dangling playlist items
     public static let lastCacheDataCleanupDate =
       Option<Date?>(key: "playlist.lastCacheDataCleanupDate", default: nil)
+    /// Whether or not shuffle mode is enabled
+    public static let isShuffleEnabled =
+      Option<Bool>(key: "playlist.isShuffleEnabled", default: false)
+    /// The last used repeat mode the user had set
+    public static let repeatMode = Option<Int>(key: "playlist.repeatMode", default: 0)
   }
 }

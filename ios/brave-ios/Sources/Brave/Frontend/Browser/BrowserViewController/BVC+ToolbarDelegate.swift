@@ -341,6 +341,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "ads-internals",
       "credits",
       "sync-internals",
+      "account",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
@@ -386,7 +387,6 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
-    dismissVisibleMenus()
   }
 
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
@@ -979,51 +979,12 @@ extension BrowserViewController: TopToolbarDelegate {
       )
     }
 
-    if FeatureList.kModernBrowserMenuEnabled.enabled {
-      presentBrowserMenu(
-        from: tabToolbar.menuButton,
-        activities: activities,
-        tab: tabManager.selectedTab,
-        pageURL: selectedTabURL
-      )
-      return
-    }
-
-    let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 500
-    let menuController = MenuViewController(
-      initialHeight: initialHeight,
-      content: { menuController in
-        let isShownOnWebPage = selectedTabURL != nil
-        VStack(spacing: 6) {
-          if isShownOnWebPage {
-            featuresMenuSection(menuController)
-          } else {
-            privacyFeaturesMenuSection(menuController)
-          }
-          Divider()
-          destinationMenuSection(menuController, isShownOnWebPage: isShownOnWebPage)
-          if let tabURL = selectedTabURL, let originalTabURL = selectedTabOriginalURL {
-            Divider()
-            PageActionsMenuSection(
-              browserViewController: self,
-              tabURL: tabURL,
-              originalTabURL: originalTabURL,
-              activities: activities
-            )
-          }
-        }
-        .navigationBarHidden(true)
-      }
+    presentBrowserMenu(
+      from: tabToolbar.menuButton,
+      activities: activities,
+      tab: tabManager.selectedTab,
+      pageURL: selectedTabURL
     )
-    presentPanModal(
-      menuController,
-      sourceView: tabToolbar.menuButton,
-      sourceRect: tabToolbar.menuButton.bounds
-    )
-    if menuController.modalPresentationStyle == .popover {
-      menuController.popoverPresentationController?.popoverLayoutMargins = .init(equalInset: 4)
-      menuController.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-    }
   }
 }
 

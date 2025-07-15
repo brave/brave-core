@@ -10,7 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/types/zip.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

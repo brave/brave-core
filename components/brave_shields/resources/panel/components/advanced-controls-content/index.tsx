@@ -4,14 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+import Toggle from '@brave/leo/react/toggle'
+import { getLocale } from '$web-common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
+import Select from '$web-components/select'
+
 import * as S from './style'
-import Toggle from '../../../../../web-components/toggle'
-import Select from '../../../../../web-components/select'
-import { getLocale } from '../../../../../common/locale'
 import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode, HttpsUpgradeMode } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
-import { loadTimeData } from '../../../../../common/loadTimeData'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -82,8 +83,8 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleFingerprintModeToggleChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setFingerprintMode(isEnabled ? FingerprintMode.STANDARD_MODE : FingerprintMode.ALLOW_MODE)
+  const handleFingerprintModeToggleChange = (detail: { checked: boolean }) => {
+    getPanelBrowserAPI().dataHandler.setFingerprintMode(detail.checked ? FingerprintMode.STANDARD_MODE : FingerprintMode.ALLOW_MODE)
     if (getSiteSettings) getSiteSettings()
   }
 
@@ -97,14 +98,14 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleIsNoScriptEnabledChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setIsNoScriptsEnabled(isEnabled)
+  const handleIsNoScriptEnabledChange = (detail: { checked: boolean }) => {
+    getPanelBrowserAPI().dataHandler.setIsNoScriptsEnabled(detail.checked)
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleForgetFirstPartyStorageEnabledChange = (isEnabled: boolean) => {
+  const handleForgetFirstPartyStorageEnabledChange = (detail: { checked: boolean }) => {
     getPanelBrowserAPI().dataHandler.setForgetFirstPartyStorageEnabled(
-      isEnabled
+      detail.checked
     )
     if (getSiteSettings) getSiteSettings()
   }
@@ -171,10 +172,10 @@ function AdvancedControlsContent () {
           <label>
             <span>{getLocale('braveShieldsScriptsBlocked')}</span>
             <Toggle
+              aria-label={getLocale('braveShieldsScriptsBlockedEnable')}
               onChange={handleIsNoScriptEnabledChange}
-              isOn={siteSettings?.isNoscriptEnabled}
-              size='sm'
-              accessibleLabel={getLocale('braveShieldsScriptsBlockedEnable')}
+              checked={siteSettings?.isNoscriptEnabled}
+              size='small'
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>
@@ -204,10 +205,10 @@ function AdvancedControlsContent () {
             <label>
             <span>{getLocale('braveShieldsFingerprintingBlockedStd')}</span>
             <Toggle
+              aria-label={getLocale('braveShieldsFingerprintingBlockedStd')}
               onChange={handleFingerprintModeToggleChange}
-              isOn={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW_MODE}
-              size='sm'
-              accessibleLabel={getLocale('braveShieldsFingerprintingBlockedStd')}
+              checked={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW_MODE}
+              size='small'
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
             </label>}
@@ -242,10 +243,10 @@ function AdvancedControlsContent () {
           <label>
             <span>{getLocale('braveShieldsForgetFirstPartyStorage')}</span>
             <Toggle
+              aria-label={getLocale('braveShieldsFingerprintingBlockedStd')}
               onChange={handleForgetFirstPartyStorageEnabledChange}
-              isOn={siteSettings?.isForgetFirstPartyStorageEnabled}
-              size='sm'
-              accessibleLabel={getLocale('braveShieldsForgetFirstPartyStorage')}
+              checked={siteSettings?.isForgetFirstPartyStorageEnabled}
+              size='small'
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
           </label>

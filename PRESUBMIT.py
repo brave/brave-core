@@ -227,6 +227,37 @@ def CheckLicense(input_api, output_api):
     return result
 
 
+def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
+    """Checks newly added theme resources to ensure there is a corresponding
+       file in upstream """
+
+    source_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=[r"^app/theme/.*"],
+        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+
+    new_sources = []
+    for f in input_api.AffectedSourceFiles(source_file_filter):
+        if f.Action() != 'A':
+            continue
+        new_sources.append(f.LocalPath())
+
+    problems = []
+    for f in new_sources:
+        path = brave_chromium_utils.to_wspath(f)
+        if not os.path.exists(path):
+            problems.append(f)
+
+    if problems:
+        return [
+            output_api.PresubmitError(
+                'Missing upstream theme file to override',
+                items=sorted(problems),
+                long_text='app/theme should only be used for overrides of '
+                'upstream theme files in chrome/app/theme')
+        ]
+    return []
+
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )

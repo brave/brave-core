@@ -5,7 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

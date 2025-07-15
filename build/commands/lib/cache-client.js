@@ -2,8 +2,14 @@ const { pipeline } = require("stream");
 const { promisify } = require("util");
 const pipe = promisify(pipeline);
 
-const cacheClient = () => {
+
+const cacheClient = async () => {
   const {AWS_REGION: region, BRAVE_TEST_CACHE_S3_BUCKET: bucket} = process.env;
+  
+  if (bucket) {
+      await fs.mkdirp(BRAVE_TEST_CACHE_PATH)
+  }
+  
   if (!region || !bucket) 
     return null;
 
@@ -19,11 +25,10 @@ const cacheClient = () => {
       return s3.send(new HeadObjectCommand({ 
         Bucket: bucket, 
         Key: key 
-        })).then(()=>true).catch(()=>false)
+      })).then(()=>true).catch(()=>false)
     },
     
     async download(key, dest) {
-
       const response = await s3.send(new GetObjectCommand({
         Bucket: bucket,
         Key: key
