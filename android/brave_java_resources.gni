@@ -371,6 +371,7 @@ brave_java_resources = [
   "java/res/drawable/ic_brave_smiley_happy.xml",
   "java/res/drawable/ic_brave_smiley_sad.xml",
   "java/res/drawable/ic_brave_vpn_graphic.xml",
+  "java/res/drawable/ic_browser_customizable_shortcut.xml",
   "java/res/drawable/ic_browser_mobile_tabs.xml",
   "java/res/drawable/ic_browser_mobile_tabs_bottom.xml",
   "java/res/drawable/ic_browser_mobile_tabs_top.xml",
