@@ -15,7 +15,6 @@ const modelIcons = {
   'chat-claude-sonnet': 'anthropic-color',
   'chat-qwen': 'qwen-color',
   'chat-basic': 'meta-color',
-  'chat-vision-basic': 'meta-color',
 }
 
 const fallbackModelIcon = 'product-brave-leo'

@@ -1571,9 +1571,6 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_VISION_SUPPORT" desc="An input title for model vision support.">
     Vision Support
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_VISION_SUPPORT_TOOLTIP_INFO" desc="A brief description for model vision support for adding a custom model.">
-    If this model takes image as input, e.g. llama 3.2b vision
-  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO" desc="A brief description for the input title for adding a custom model">
     The name of the model as it will appear in the model selection menu
   </message>
