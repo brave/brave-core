@@ -124,8 +124,8 @@ function ConversationEntries() {
             getImageFiles(latestTurn.uploadedFiles) || []
 
           const hasImageAttachments = imageFiles.length > 0
-          const hasTabAttachments = index === 0 && conversationContext.associatedContent.length > 0
-          const hasAttachments = hasImageAttachments || hasTabAttachments
+          const tabAttachments = conversationContext.associatedContent.filter(c => c.conversationTurnUuid === turn.uuid)
+          const hasAttachments = hasImageAttachments || tabAttachments.length > 0
 
           return (
             <div
@@ -193,7 +193,7 @@ function ConversationEntries() {
                         </div>
                         {hasAttachments &&
                           <div className={styles.attachmentsContainer}>
-                          {conversationContext.associatedContent.map(c => <AttachmentPageItem
+                          {tabAttachments.map(c => <AttachmentPageItem
                             key={c.contentId}
                             url={c.url.url}
                             title={c.title}

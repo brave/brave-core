@@ -86,6 +86,10 @@ struct AssociatedContent {
 
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
+
+  // The conversation turn that this content is associated with. nullopt if the
+  // content has not been added to the conversation yet.
+  string? conversation_turn_uuid;
 };
 
 struct Conversation {
@@ -122,6 +126,9 @@ struct Conversation {
 struct ContentArchive {
   string content_uuid;
   string content;
+
+  // The turn this Content was sent with.
+  string conversation_turn_uuid;
 };
 
 struct ConversationArchive {

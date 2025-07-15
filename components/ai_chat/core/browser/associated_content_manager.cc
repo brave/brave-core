@@ -16,6 +16,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/containers/contains.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -69,6 +70,10 @@ void AssociatedContentManager::LoadArchivedContent(
         content->url, archive_content->content,
         base::UTF8ToUTF16(content->title), is_video, content->uuid));
     AddContent(archive_content_.back().get(), /*notify_updated=*/false);
+
+    // Be sure to record the turn that this content is associated with.
+    content_uuid_to_conversation_turns_[archive_content->content_uuid] =
+        archive_content->conversation_turn_uuid;
   }
 
   conversation_->OnAssociatedContentUpdated();
@@ -178,6 +183,22 @@ void AssociatedContentManager::ClearContent() {
   conversation_->OnAssociatedContentUpdated();
 }
 
+void AssociatedContentManager::AssociateUnsentContentWithTurn(
+    const mojom::ConversationTurnPtr& turn) {
+  DVLOG(1) << __func__;
+
+  CHECK(turn->uuid.has_value());
+
+  for (const auto& content : content_delegates_) {
+    if (base::Contains(content_uuid_to_conversation_turns_, content->uuid())) {
+      continue;
+    }
+    content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();
+  }
+
+  conversation_->OnAssociatedContentUpdated();
+}
+
 std::vector<mojom::AssociatedContentPtr>
 AssociatedContentManager::GetAssociatedContent() const {
   DVLOG(1) << __func__;
@@ -216,6 +237,11 @@ AssociatedContentManager::GetAssociatedContent() const {
                                      total_consumed_chars) /
                   static_cast<float>(content_length) * 100;
       content->content_used_percentage = base::ClampRound(pct);
+    }
+
+    auto it = content_uuid_to_conversation_turns_.find(content->uuid);
+    if (it != content_uuid_to_conversation_turns_.end()) {
+      content->conversation_turn_uuid = it->second;
     }
 
     result.push_back(std::move(content));

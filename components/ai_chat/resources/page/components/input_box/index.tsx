@@ -136,8 +136,8 @@ function InputBox(props: InputBoxProps) {
   )
 
   const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
-  const showPageAttachments = props.context.associatedContentInfo.length > 0
-    && !props.conversationStarted
+  const pendingContent = props.context.associatedContentInfo
+    .filter(c => !c.conversationTurnUuid)
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput || props.context.inputText === ''
 
@@ -152,7 +152,7 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(showImageAttachments || showPageAttachments) && (
+      {(showImageAttachments || pendingContent.length > 0) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -161,7 +161,7 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {showPageAttachments && props.context.associatedContentInfo.map((content) => (
+          {pendingContent.map((content) => (
             <AttachmentPageItem
               key={content.contentId}
               title={content.title}

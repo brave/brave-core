@@ -1387,6 +1387,10 @@ void ConversationHandler::OnConversationEntryRemoved(
 
 void ConversationHandler::OnConversationEntryAdded(
     mojom::ConversationTurnPtr& entry) {
+  if (entry->character_type == mojom::CharacterType::HUMAN) {
+    associated_content_manager_->AssociateUnsentContentWithTurn(entry);
+  }
+
   // Only notify about staged entries once we have the first staged entry
   if (entry->from_brave_search_SERP) {
     OnHistoryUpdate(nullptr);
