@@ -57,6 +57,11 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     }
 
     @Override
+    public void onDefaultCardanoWalletChanged(int wallet) {
+        if (isActive()) getRef().onDefaultCardanoWalletChanged(wallet);
+    }
+
+    @Override
     public void onDefaultBaseCurrencyChanged(String currency) {
         if (isActive()) getRef().onDefaultBaseCurrencyChanged(currency);
     }

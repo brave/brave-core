@@ -1560,11 +1560,8 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultCardanoWallet) {
   SetDefaultCardanoWallet(mojom::DefaultWallet::None);
   EXPECT_EQ(GetDefaultCardanoWallet(), mojom::DefaultWallet::None);
 
-  // Setting the same value twice is ok
-  // SetDefaultCardanoWallet will check that the observer is not fired.
-  SetDefaultCardanoWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
-  EXPECT_EQ(GetDefaultCardanoWallet(),
-            mojom::DefaultWallet::BraveWalletPreferExtension);
+  SetDefaultCardanoWallet(mojom::DefaultWallet::BraveWallet);
+  EXPECT_EQ(GetDefaultCardanoWallet(), mojom::DefaultWallet::BraveWallet);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCurrency) {
