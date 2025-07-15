@@ -1276,7 +1276,7 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
 
   if (state_ == State::kCollapsed) {
     auto get_expand_delay = []() {
-      constexpr int kDefaultDelay = 400;
+      constexpr int kDefaultDelay = 0;
       auto* cmd_line = base::CommandLine::ForCurrentProcess();
       if (!cmd_line->HasSwitch(tabs::switches::kVerticalTabExpandDelaySwitch)) {
         return kDefaultDelay;
@@ -1294,8 +1294,15 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
       return override_delay;
     };
 
+    const auto delay = get_expand_delay();
+    if (delay == 0) {
+      // If the delay is 0, we should expand immediately.
+      SetState(State::kFloating);
+      return;
+    }
+
     mouse_enter_timer_.Start(
-        FROM_HERE, base::Milliseconds(get_expand_delay()),
+        FROM_HERE, base::Milliseconds(delay),
         base::BindOnce(&VerticalTabStripRegionView::SetState,
                        base::Unretained(this), State::kFloating));
   }
