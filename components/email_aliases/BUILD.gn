@@ -25,3 +25,17 @@ static_library("features") {
 
   public_deps = [ "//base" ]
 }
+
+static_library("service") {
+  sources = [
+    "email_aliases_service.cc",
+    "email_aliases_service.h",
+  ]
+  deps = [
+    ":mojom",
+    "//base",
+    "//brave/components/email_aliases:features",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
+}

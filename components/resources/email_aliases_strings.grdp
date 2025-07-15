@@ -18,6 +18,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT" desc="The label for the connecting to Brave Account">
     Connecting to Brave Account...
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases">
+    Email Aliases
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT" desc="The label for the Brave Account">
     Brave Account
   </message>
