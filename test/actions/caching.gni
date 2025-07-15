@@ -5,9 +5,9 @@ import("//testing/test.gni")
 # Hashes all data and recompute a collective hash
 # This rule and any rules that depend on this will re-run
 # on file change.
-# Runtime Data are dynamically loaded libraries and any data specified 
-# via the data attribute 
-# input: 
+# Runtime Data are dynamically loaded libraries and any data specified
+# via the data attribute
+# input:
 # - binary: path to executable binary
 # - dep: dependency to binary
 # - testonly: must be set if dep is a test
@@ -18,19 +18,21 @@ import("//testing/test.gni")
 
 template("hash_runtime") {
   action(target_name) {
-    forward_variables_from(invoker, ["deps", "testonly"])
+    forward_variables_from(invoker,
+                           [
+                             "deps",
+                             "testonly",
+                           ])
     script = "//brave/test/actions/hash_runtime.py"
     depfile = "$root_out_dir/" + target_name + ".d"
-    inputs = [invoker.binary]
-    outputs = ["$root_out_dir/"+ target_name]
-    args = [
-      rebase_path(invoker.binary)
-    ]
+    inputs = [ invoker.binary ]
+    outputs = [ "$root_out_dir/" + target_name ]
+    args = [ rebase_path(invoker.binary) ]
 
     if (defined(invoker.files)) {
       foreach(file, invoker.files) {
-        inputs += [file]
-        args += [rebase_path(file)]
+        inputs += [ file ]
+        args += [ rebase_path(file) ]
       }
     }
   }
@@ -40,33 +42,36 @@ template("cached_test") {
   name = target_name
   test(name + ".gtest") {
     testonly = true
-    forward_variables_from(invoker, "*")
+    forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
 
     if (!defined(invoker.public_deps)) {
       public_deps = [
-        "//base/test:test_support",
         "//base/test:run_all_unittests",
+        "//base/test:test_support",
+        "//testing/gmock",
         "//testing/gtest",
-        "//testing/gmock"
       ]
     }
   }
 
   hash_runtime(target_name + ".gtest.hash.json") {
     testonly = true
-    deps = [":"+name+".gtest"]
-    binary = "$root_out_dir/"+name+".gtest"
-    forward_variables_from(invoker, ["files"])
+    deps = [ ":" + name + ".gtest" ]
+    binary = "$root_out_dir/" + name + ".gtest"
+    forward_variables_from(invoker, [ "files" ])
   }
 
   action(target_name) {
     testonly = true
     script = "//brave/test/actions/test_runner.py"
-    deps = [":"+name+".gtest.hash.json", ":"+name+".gtest"]
+    deps = [
+      ":" + name + ".gtest.hash.json",
+      ":" + name + ".gtest",
+    ]
 
     inputs = [
-      "$root_out_dir/"+ name + ".gtest",
-      "$root_out_dir/"+ name + ".gtest.hash.json"
+      "$root_out_dir/" + name + ".gtest",
+      "$root_out_dir/" + name + ".gtest.hash.json",
     ]
 
     if (defined(invoker.inputs)) {
@@ -74,13 +79,13 @@ template("cached_test") {
     }
 
     outputs = [
-      "$target_gen_dir/"+name+"/result.json",
-      "$target_gen_dir/"+name+"/stdout.txt"
+      "$target_gen_dir/" + name + "/result.json",
+      "$target_gen_dir/" + name + "/stdout.txt",
     ]
 
     args = [
-      rebase_path("$root_out_dir/"+name + ".gtest"), 
-      rebase_path("$target_gen_dir/"+name)
+      rebase_path("$root_out_dir/" + name + ".gtest"),
+      rebase_path("$target_gen_dir/" + name),
     ]
   }
 }

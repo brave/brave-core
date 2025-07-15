@@ -10,8 +10,7 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-const cacheClient = require('./cache-client');
-
+const cacheClient = require('./cache-client')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -136,7 +135,6 @@ const deleteFile = (filePath) => {
 }
 
 const runTests = async (passthroughArgs, suite, buildConfig, options) => {
-
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -224,7 +222,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
     // Run the tests
 
     for (const testSuite of getTestsToRun(config, suite)) {
-
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
 
@@ -260,22 +257,25 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.continueOnFail = true
       }
 
-      
-      const testBinary = getTestBinary(testSuite);
-      const testBinaryPath = path.join(config.outputDir, testBinary);
+      const testBinary = getTestBinary(testSuite)
+      const testBinaryPath = path.join(config.outputDir, testBinary)
 
-      let cacheKey = null;
-      const cache = options.output_xml 
-       ? await cacheClient()
-       : null;
+      let cacheKey = null
+      const cache = options.output_xml ? await cacheClient() : null
 
-      if (cache) {   
+      if (cache) {
         try {
-          console.log(await util.buildTargets([testSuite + ".hash.json"], {continueOnFail: true}));
-          const {hash} = JSON.parse(await fs.readFile(testBinaryPath+ ".hash.json", "utf-8"));
-          cacheKey = `${testSuite}-${hash}.xml`;
+          console.log(
+            await util.buildTargets([testSuite + '.hash.json'], {
+              continueOnFail: true,
+            }),
+          )
+          const { hash } = JSON.parse(
+            await fs.readFile(testBinaryPath + '.hash.json', 'utf-8'),
+          )
+          cacheKey = `${testSuite}-${hash}.xml`
         } catch (error) {
-          console.error(error);
+          console.error(error)
           // TODO: propper error handling
         }
 
@@ -283,7 +283,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
           await cache.download(cacheKey, `${outputFilename}.xml`)
         }
       }
-      
+
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         if (config.targetOS === 'android') {
@@ -296,7 +296,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         }
         fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
       }
-
 
       if (config.targetOS === 'android' && !isJunitTestSuite) {
         assert(
@@ -345,7 +344,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       // suites to get all potential failures. Otherwise, for example, if
       // running locally, it makes sense to stop once one suite has failures.
       if (!options.output_xml && prog.status !== 0) {
-        break;
+        break
       }
     }
   }

@@ -17,6 +17,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//brave/test/actions/caching.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
 import("//chrome/common/features.gni")
@@ -26,7 +27,6 @@ import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
-import("//brave/test/actions/caching.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -101,11 +101,8 @@ group("brave_all_unit_tests") {
   }
 }
 
-
 cached_test("quick_unit_tests") {
-  sources = [
-    "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
-  ]
+  sources = [ "//brave/base/trace_event/brave_process_memory_dump_unittest.cc" ]
 
   deps = [
     "//brave/components/json:brave_json_unit_tests",
@@ -126,7 +123,7 @@ test("brave_unit_tests") {
   testonly = true
   configs += [
     "//build/config:precompiled_headers",
-    "//chrome/test:disable_thinlto_cache_flags"
+    "//chrome/test:disable_thinlto_cache_flags",
   ]
   sources = [
     "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
@@ -678,7 +675,7 @@ if (!is_android) {
 
   hash_runtime("brave_installer_unittests.hash.json") {
     testonly = true
-    deps = [":brave_installer_unittests"]
+    deps = [ ":brave_installer_unittests" ]
     binary = "$root_out_dir/brave_installer_unittests"
   }
 }
@@ -772,7 +769,7 @@ if (!is_android) {
 
   hash_runtime("brave_network_audit_tests.hash.json") {
     testonly = true
-    deps = [":brave_network_audit_tests"]
+    deps = [ ":brave_network_audit_tests" ]
     binary = "$root_out_dir/brave_network_audit_tests"
   }
 }
@@ -1426,15 +1423,14 @@ if (is_android) {
   }
 }  # if (is_android) {
 
-
 hash_runtime("brave_unit_tests.hash.json") {
   testonly = true
-  deps = [":brave_unit_tests"]
+  deps = [ ":brave_unit_tests" ]
   binary = "$root_out_dir/brave_unit_tests"
 }
 
 hash_runtime("brave_browser_tests.hash.json") {
   testonly = true
-  deps = [":brave_browser_tests"]
+  deps = [ ":brave_browser_tests" ]
   binary = "$root_out_dir/brave_browser_tests"
 }
