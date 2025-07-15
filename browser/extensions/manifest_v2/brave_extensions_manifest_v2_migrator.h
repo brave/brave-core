@@ -36,10 +36,6 @@ class ExtensionsManifectV2Migrator
 
   void Shutdown() override;
 
-  static bool IsSettingsBackupEnabled();
-  static bool IsSettingsImportEnabled();
-  static bool IsExtensionReplacementEnabled();
-
  private:
   // ExtensionPrefsObserver:
   void OnExtensionPrefsWillBeDestroyed(

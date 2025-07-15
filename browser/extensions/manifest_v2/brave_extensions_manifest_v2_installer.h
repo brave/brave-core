@@ -6,15 +6,11 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
 #define BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
 
-#include <array>
 #include <memory>
-#include <optional>
 #include <string>
 
-#include "base/containers/fixed_flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 
 namespace extensions {
@@ -31,58 +27,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace extensions_mv2 {
-
-inline constexpr char kNoScriptId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";
-inline constexpr char kUBlockId[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe";
-inline constexpr char kUMatrixId[] = "fplfeajmkijmaeldaknocljmmoebdgmk";
-inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
-
-inline constexpr char kCwsNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-inline constexpr char kCwsUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-inline constexpr char kCwsUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-inline constexpr char kCwsAdGuardId[] = "bgnkhhnnamicmpeenaelnjfhikgbkllg";
-
-inline constexpr auto kBraveHosted =
-    base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {{kNoScriptId, kCwsNoScriptId},
-         {kUBlockId, kCwsUBlockId},
-         {kUMatrixId, kCwsUMatrixId},
-         {kAdGuardId, kCwsAdGuardId}});
-
-inline constexpr auto kCwsHosted =
-    base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {{kCwsNoScriptId, kNoScriptId},
-         {kCwsUBlockId, kUBlockId},
-         {kCwsUMatrixId, kUMatrixId},
-         {kCwsAdGuardId, kAdGuardId}});
-
-// In future there can be more brave-hosted mv2 extensions than published on
-// CWS.
-static_assert(kBraveHosted.size() >= kCwsHosted.size());
-
-consteval std::array<std::string_view, kBraveHosted.size()>
-GetPreconfiguredManifestV2Extensions() {
-  // This can be made more idiomatic once Chromium style allows
-  // std::views::keys
-  std::array<std::string_view, kBraveHosted.size()> result{};
-  std::ranges::transform(kBraveHosted, result.begin(),
-                         [](const auto& p) { return p.first; });
-  return result;
-}
-
-inline constexpr auto kPreconfiguredManifestV2Extensions =
-    GetPreconfiguredManifestV2Extensions();
-
-static_assert(kPreconfiguredManifestV2Extensions.size() == kBraveHosted.size());
-
-bool IsKnownMV2Extension(const extensions::ExtensionId& id);
-bool IsKnownCwsMV2Extension(const extensions::ExtensionId& id);
-
-std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
-    const extensions::ExtensionId& cws_extension_id);
-
-std::optional<extensions::ExtensionId> GetCwsExtensionId(
-    const extensions::ExtensionId& brave_hosted_extension_id);
 
 class ExtensionManifestV2Installer {
  public:
