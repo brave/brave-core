@@ -193,21 +193,30 @@ void ConversationHandler::BindUntrustedConversationUI(
 
 void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
-  UpdateAssociatedContentInfo();
   associated_content_manager_->LoadArchivedContent(metadata_,
                                                    conversation_data);
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {
-  UpdateAssociatedContentInfo();
+  metadata_->associated_content =
+      associated_content_manager_->GetAssociatedContent();
+  auto& associated_content = metadata_->associated_content;
+
+  // Clone the content to avoid multiple calls to GetAssociatedContent.
+  auto clone_content = [&associated_content]() {
+    std::vector<mojom::AssociatedContentPtr> cloned_content;
+    std::ranges::transform(
+        associated_content, std::back_inserter(cloned_content),
+        [](const auto& content) { return content->Clone(); });
+    return cloned_content;
+  };
+
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAssociatedContentInfoChanged(
-        associated_content_manager_->GetAssociatedContent());
+    client->OnAssociatedContentInfoChanged(clone_content());
   }
 
   for (const auto& client : untrusted_conversation_ui_handlers_) {
-    client->AssociatedContentChanged(
-        associated_content_manager_->GetAssociatedContent());
+    client->AssociatedContentChanged(clone_content());
   }
 
   OnStateForConversationEntriesChanged();
@@ -332,8 +341,6 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                  [](auto& model) { return model.Clone(); });
   auto model_key = GetCurrentModel().key;
-
-  UpdateAssociatedContentInfo();
 
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
@@ -829,17 +836,15 @@ void ConversationHandler::GenerateQuestions() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ConversationHandler::PerformQuestionGeneration(
-    PageContents page_contents) {
+void ConversationHandler::PerformQuestionGeneration() {
   engine_->GenerateQuestionSuggestions(
-      std::move(page_contents), selected_language_,
+      associated_content_manager_->GetCachedContents(), selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
-  UpdateAssociatedContentInfo();
   std::move(callback).Run(associated_content_manager_->GetAssociatedContent());
 }
 
@@ -1039,13 +1044,11 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration(
-        associated_content_manager_->GetCachedContents());
+    PerformAssistantGeneration();
   }
 }
 
-void ConversationHandler::PerformAssistantGeneration(
-    PageContents page_contents) {
+void ConversationHandler::PerformAssistantGeneration() {
   if (chat_history_.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
@@ -1058,8 +1061,9 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), chat_history_, selected_language_,
-      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
+      associated_content_manager_->GetCachedContentsMap(), chat_history_,
+      selected_language_, IsTemporaryChat(), GetTools(),
+      std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1240,9 +1244,9 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
              suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
     // The title for the summarize page suggestion needs to be updated when
     // the number of associated content items changes.
-    suggestions_[0].title =
-        l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-                                        metadata_->associated_content.size());
+    suggestions_[0].title = l10n_util::GetPluralStringFUTF8(
+        IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+        associated_content_manager_->GetContentDelegateCount());
   }
   OnSuggestedQuestionsChanged();
 }
@@ -1308,7 +1312,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
   }
 }
 
-void ConversationHandler::GeneratePageContent(GetAllContentCallback callback) {
+void ConversationHandler::GeneratePageContent(base::OnceClosure callback) {
   VLOG(1) << __func__;
   CHECK(associated_content_manager_->HasAssociatedContent())
       << "Shouldn't have been asked to generate page text when "
@@ -1322,14 +1326,14 @@ void ConversationHandler::GeneratePageContent(GetAllContentCallback callback) {
 }
 
 void ConversationHandler::GeneratePageContentInternal(
-    GetAllContentCallback callback) {
+    base::OnceClosure callback) {
   associated_content_manager_->HasContentUpdated(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConversationHandler::OnGeneratePageContentComplete(
-    GetAllContentCallback callback,
+    base::OnceClosure callback,
     bool content_changed) {
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ = is_content_different_ || content_changed;
@@ -1365,7 +1369,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
     }
   }
 
-  std::move(callback).Run(associated_content_manager_->GetCachedContents());
+  std::move(callback).Run();
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1531,6 +1535,10 @@ void ConversationHandler::OnConversationEntryRemoved(
 
 void ConversationHandler::OnConversationEntryAdded(
     mojom::ConversationTurnPtr& entry) {
+  if (entry->character_type == mojom::CharacterType::HUMAN) {
+    associated_content_manager_->AssociateUnsentContentWithTurn(entry);
+  }
+
   // Only notify about staged entries once we have the first staged entry
   if (entry->from_brave_search_SERP) {
     OnHistoryUpdate(nullptr);
@@ -1564,11 +1572,6 @@ void ConversationHandler::OnConversationEntryAdded(
     observer.OnConversationEntryAdded(this, entry, associated_content_value);
   }
   OnHistoryUpdate(entry.Clone());
-}
-
-void ConversationHandler::UpdateAssociatedContentInfo() {
-  metadata_->associated_content =
-      associated_content_manager_->GetAssociatedContent();
 }
 
 mojom::ConversationEntriesStatePtr
@@ -1811,7 +1814,7 @@ void ConversationHandler::MaybeSwitchToVisionModel(
 }
 
 void ConversationHandler::OnAutoScreenshotsTaken(
-    GetAllContentCallback callback,
+    base::OnceClosure callback,
     std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
   // Apply MAX_IMAGES limit to automatic screenshots and calculate visual
   // percentage This function is only called for automatic screenshot capture,
@@ -1868,7 +1871,7 @@ void ConversationHandler::OnAutoScreenshotsTaken(
   }
 
   // Continue with the original callback
-  std::move(callback).Run(associated_content_manager_->GetCachedContents());
+  std::move(callback).Run();
 }
 
 }  // namespace ai_chat

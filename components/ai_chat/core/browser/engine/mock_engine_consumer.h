@@ -30,7 +30,7 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateAssistantResponse,
-              (PageContents page_contents,
+              (PageContentsMap && page_contents,
                const ConversationHistory& conversation_history,
                const std::string& selected_language,
                bool is_temporary_chat,

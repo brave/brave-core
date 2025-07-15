@@ -15,6 +15,7 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -68,6 +69,10 @@ void AssociatedContentManager::LoadArchivedContent(
         content->url, archive_content->content,
         base::UTF8ToUTF16(content->title), is_video, content->uuid));
     AddContent(archive_content_.back().get(), /*notify_updated=*/false);
+
+    // Be sure to record the turn that this content is associated with.
+    content_uuid_to_conversation_turns_[archive_content->content_uuid] =
+        archive_content->conversation_turn_uuid;
   }
 
   conversation_->OnAssociatedContentUpdated();
@@ -188,6 +193,18 @@ void AssociatedContentManager::ClearContent() {
   conversation_->OnAssociatedContentUpdated();
 }
 
+void AssociatedContentManager::AssociateUnsentContentWithTurn(
+    const mojom::ConversationTurnPtr& turn) {
+  CHECK(turn->uuid.has_value());
+
+  for (const auto& content : content_delegates_) {
+    if (base::Contains(content_uuid_to_conversation_turns_, content->uuid())) {
+      continue;
+    }
+    content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();
+  }
+}
+
 std::vector<mojom::AssociatedContentPtr>
 AssociatedContentManager::GetAssociatedContent() const {
   DVLOG(1) << __func__;
@@ -226,6 +243,11 @@ AssociatedContentManager::GetAssociatedContent() const {
                                      total_consumed_chars) /
                   static_cast<float>(content_length) * 100;
       content->content_used_percentage = base::ClampRound(pct);
+    }
+
+    auto it = content_uuid_to_conversation_turns_.find(content->uuid);
+    if (it != content_uuid_to_conversation_turns_.end()) {
+      content->conversation_turn_uuid = it->second;
     }
 
     result.push_back(std::move(content));
@@ -367,6 +389,26 @@ PageContents AssociatedContentManager::GetCachedContents() const {
   return result;
 }
 
+PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
+  PageContentsMap result;
+
+  auto contents = GetCachedContents();
+  auto meta = GetAssociatedContent();
+
+  for (size_t i = 0; i < contents.size(); ++i) {
+    auto turn_id = meta[i]->conversation_turn_uuid;
+    DCHECK(turn_id)
+        << "This method should only be called when all content has been "
+           "associated with a turn (i.e. via AssociateUnsentContentWithTurn)";
+    if (!turn_id) {
+      continue;
+    }
+    result[turn_id.value()].push_back(contents[i]);
+  }
+
+  return result;
+}
+
 bool AssociatedContentManager::HasOpenAIChatPermission() const {
   DVLOG(1) << __func__;
 
@@ -391,6 +433,10 @@ bool AssociatedContentManager::IsVideo() const {
 
   return content_delegates_.size() == 1 &&
          content_delegates_[0]->cached_page_content().is_video;
+}
+
+size_t AssociatedContentManager::GetContentDelegateCount() const {
+  return content_delegates_.size();
 }
 
 void AssociatedContentManager::OnDestroyed(

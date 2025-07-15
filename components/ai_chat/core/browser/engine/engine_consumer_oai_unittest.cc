@@ -8,17 +8,14 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/checked_iterators.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -29,10 +26,9 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -43,6 +39,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -235,30 +232,31 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
   PageContent page_content("This is content 1", false);
   PageContent video_content("This is content 2 and a video", true);
-
+  PageContents page_contents = {page_content, video_content};
+  uint32_t remaining_length = 100;
   auto message = engine_->BuildPageContentMessages(
-      {page_content, video_content}, 100,
-      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
 
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video transcript:\n\n\u003Ctranscript>\nThis is content "
             "2 and a video\n\u003C/transcript>\n\n");
+  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*message[1].GetDict().Find("content"),
+            "This is the text of a web page:\n\u003Cpage>\nThis is content "
+            "1\n\u003C/page>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   PageContent page_content("This is content 1", false);
   PageContent video_content("This is content 2 and a video", true);
+  PageContents page_contents = {video_content, page_content};
 
+  uint32_t remaining_length = 20;
   auto message = engine_->BuildPageContentMessages(
-      {page_content, video_content}, 20,
-      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
 
   EXPECT_EQ(message.size(), 2u);
@@ -269,8 +267,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThis is content 2 "
-            "an\n\u003C/transcript>\n\n");
+            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
@@ -396,12 +393,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
-  PageContent page_content;
+  PageContent page_content("Page content 1", false);
   // Create a set of options WITHOUT a custom system prompt.
   auto options = mojom::CustomModelOptions::New();
   options->endpoint = GURL("https://test.com/");
   options->model_request_name = "request_name";
   options->api_key = "api_key";
+  options->max_associated_content_length = 1000;
 
   // Build a new model with the prompt-less options.
   model_ = mojom::Model::New();
@@ -431,7 +429,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Push a single user turn into the history.
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt,
+      "turn-1",
       mojom::CharacterType::HUMAN,     // Author is the user
       mojom::ActionType::UNSPECIFIED,  // No specific action
       human_input,                     // User message
@@ -464,7 +462,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web "
-                      "page:\n\u003Cpage>\n\n\u003C/page>\n\n");
+                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>\n\n");
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"), human_input);
@@ -478,7 +476,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -506,16 +505,16 @@ TEST_F(EngineConsumerOAIUnitTest,
   std::string expected_system_message = "This is a custom system prompt.";
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
+      "turn-1", mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, false, std::nullopt /* model_key */));
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, assistant_input, std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      false, std::nullopt /* model_key */));
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      assistant_input, std::nullopt /* prompt */, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -553,6 +552,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->uuid = "turn-3";
     entry->character_type = mojom::CharacterType::HUMAN;
     entry->text = "What's his name?";
     history.push_back(std::move(entry));
@@ -693,7 +693,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
           });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false,
       std::nullopt /* model_key */));
@@ -771,7 +771,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
           });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
       std::nullopt /* model_key */));
@@ -843,7 +843,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
       std::nullopt /* model_key */));
@@ -987,7 +987,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
       });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What do you see in these files?", kTestPrompt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files), false,
       std::nullopt /* model_key */));
@@ -1031,6 +1031,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->uuid = "turn-1";
     entry->character_type = mojom::CharacterType::HUMAN;
     entry->text = "Tell me more about this page";
     history.push_back(std::move(entry));
@@ -1038,7 +1039,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   PageContent page_content("This is a page.", false);
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1068,10 +1070,13 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
     std::vector<mojom::ConversationTurnPtr> history;
-    history.push_back(mojom::ConversationTurn::New());
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
-        {page_content_1, page_content_2}, history, "", false, {}, std::nullopt,
-        base::DoNothing(), base::DoNothing());
+        {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
+        history, "", false, {}, std::nullopt, base::DoNothing(),
+        base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -1103,6 +1108,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Setup conversation history
   EngineConsumer::ConversationHistory history;
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->text = "What is my name?";
   history.push_back(std::move(entry));
@@ -1159,6 +1165,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Setup the history
   EngineConsumer::ConversationHistory history;
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->text = "What is my name?";
   history.push_back(std::move(entry));
@@ -1200,7 +1207,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       {*expected_user_memory_json}, nullptr);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest)
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
@@ -1301,6 +1308,389 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_PageContentsOrderedBeforeTurns) {
+  PageContent page_content1("Test page 1 content", false);
+  PageContent page_content2("Test page 2 content", false);
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content1)};
+  page_contents["turn-3"] = {std::cref(page_content2)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  // Create a turn with the same UUID as in page_contents
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "Assistant message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  auto turn3 = mojom::ConversationTurn::New(
+      "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn3));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Check that messages are built correctly
+  // Expected order: system message, page content, human turn, assistant turn
+  ASSERT_GE(messages.size(), 6u);
+
+  // First should be system message
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+  // Second should be the page content message
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  std::string content = *messages[1].GetDict().FindString("content");
+  EXPECT_THAT(content, testing::HasSubstr("Test page 1 content"));
+  EXPECT_THAT(content, testing::HasSubstr("<page>"));
+
+  // Third should be the human turn
+  EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[2].GetDict().Find("content"), "Human message 1");
+
+  // Fourth should be the assistant turn
+  EXPECT_EQ(*messages[3].GetDict().Find("role"), "assistant");
+  EXPECT_EQ(*messages[3].GetDict().Find("content"), "Assistant message 1");
+
+  // Fifth should be the second page content message
+  EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+  content = *messages[4].GetDict().FindString("content");
+  EXPECT_THAT(content, testing::HasSubstr("Test page 2 content"));
+  EXPECT_THAT(content, testing::HasSubstr("<page>"));
+
+  // Sixth should be the second human turn
+  EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[5].GetDict().Find("content"), "Human message 2");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_PageContentsExcludedForMissingTurns) {
+  PageContent page_content1("Content for existing turn", false);
+  PageContent page_content2("Content for missing turn", false);
+  PageContentsMap page_contents;
+  page_contents["existing-turn"] = {std::cref(page_content1)};
+  page_contents["missing-turn"] = {std::cref(page_content2)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  // Only create a turn for "existing-turn", not "missing-turn"
+  auto turn = mojom::ConversationTurn::New(
+      "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Convert messages to string for easier searching
+  std::string all_messages_json;
+  for (const auto& message : messages) {
+    std::string message_json;
+    base::JSONWriter::Write(message, &message_json);
+    all_messages_json += message_json;
+  }
+
+  // Should contain content for existing turn
+  EXPECT_THAT(all_messages_json,
+              testing::HasSubstr("Content for existing turn"));
+
+  // Should NOT contain content for missing turn
+  EXPECT_THAT(all_messages_json,
+              testing::Not(testing::HasSubstr("Content for missing turn")));
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContentsForSameTurn) {
+  PageContent page_content1("First page content", false);
+  PageContent video_content("Video content", true);
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content1),
+                             std::cref(video_content)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should have system message + 2 page content messages + human turn
+  ASSERT_EQ(messages.size(), 4u);
+
+  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
+
+  // Check that video content is included
+  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
+              testing::HasSubstr("Video content"));
+
+  // Check that the page content is included
+  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[2].GetDict().FindString("content"),
+              testing::HasSubstr("First page content"));
+
+  // Check that human turn is included after the page contents
+  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContents_MultipleTurns) {
+  PageContent page_1("Page 1", false);
+  PageContent page_2("Page 2", false);
+  PageContent page_3("Page 3", false);
+
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_1)};
+  page_contents["turn-2"] = {std::cref(page_2), std::cref(page_3)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should have system message + 3 page content messages + 2 human turns
+  ASSERT_EQ(messages.size(), 6u);
+
+  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
+
+  // Check that page content is included before the first human turn
+  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
+              testing::HasSubstr("Page 1"));
+
+  // turn-1
+  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
+
+  // Check that page 2 & 3 are included before the second human turn
+  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[3].GetDict().FindString("content"),
+              testing::HasSubstr("Page 3"));
+  EXPECT_EQ(*messages[4].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[4].GetDict().FindString("content"),
+              testing::HasSubstr("Page 2"));
+
+  // turn-2
+  EXPECT_EQ(*messages[5].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
+}
+
+TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
+  PageContentsMap empty_page_contents;
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), empty_page_contents,
+      std::nullopt, std::nullopt, conversation_history);
+
+  // Should only have system message + human turn
+  ASSERT_EQ(messages.size(), 2u);
+
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
+  PageContent page_content("This is a test page content", false);
+  PageContentsMap page_contents;
+  page_contents["non-existent-turn"] = {std::cref(page_content)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should only have system message + human turn
+  ASSERT_EQ(messages.size(), 2u);
+
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContents_MultipleTurns_TooLong) {
+  PageContent page_content_1(std::string(35, '1'), false);
+  PageContent page_content_2(std::string(35, '2'), false);
+  PageContent page_content_3(std::string(35, '3'), false);
+
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content_1),
+                             std::cref(page_content_2)};
+  page_contents["turn-2"] = {std::cref(page_content_3)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  // Gets the content of a page content event
+  auto get_page_content_event = [](char c, int length) {
+    return "This is the text of a web "
+           "page:\n<page>\n" +
+           std::string(length, c) + "\n</page>\n\n";
+  };
+
+  auto test_content_truncation = [&](uint32_t max_length,
+                                     std::vector<std::string> event_contents) {
+    SCOPED_TRACE(
+        absl::StrFormat("Testing Truncation with max length: %d", max_length));
+    engine_->SetMaxAssociatedContentLengthForTesting(max_length);
+
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    ASSERT_EQ(messages.size(), event_contents.size() + 1);
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    for (size_t i = 0; i < event_contents.size(); ++i) {
+      SCOPED_TRACE(absl::StrFormat("Checking event %zu (max length: %d)", i,
+                                   max_length));
+      EXPECT_EQ(*messages[i + 1].GetDict().Find("role"), "user");
+      EXPECT_EQ(*messages[i + 1].GetDict().FindString("content"),
+                event_contents[i]);
+    }
+  };
+
+  // Max Length = 1000 (should include all the page contents)
+  test_content_truncation(1000, {
+                                    get_page_content_event('2', 35),
+                                    get_page_content_event('1', 35),
+                                    "Human message 1",
+                                    get_page_content_event('3', 35),
+                                    "Human message 2",
+                                });
+
+  // Max Length = 100 (should truncate some of page content 1)
+  test_content_truncation(100, {
+                                   get_page_content_event('2', 35),
+                                   get_page_content_event('1', 30),
+                                   "Human message 1",
+                                   get_page_content_event('3', 35),
+                                   "Human message 2",
+                               });
+
+  // Max Length = 71 (should include all of page content 3 and all of page
+  // content 2 and 1 character of page content 1).
+  test_content_truncation(71, {
+                                  get_page_content_event('2', 35),
+                                  get_page_content_event('1', 1),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 70 (should include all of page content 3 and all of page
+  // content 2).
+  test_content_truncation(70, {
+                                  get_page_content_event('2', 35),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 65 (should include all of page content 3 and most of page
+  // content 2).
+  test_content_truncation(65, {
+                                  get_page_content_event('2', 30),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 36 (should include all of page content 3 and one character of
+  // page content 2).
+  test_content_truncation(36, {
+                                  get_page_content_event('2', 1),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 35 (should include all of page content 3).
+  test_content_truncation(35, {
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 10 (should only include some of page content 3)
+  test_content_truncation(10, {
+                                  "Human message 1",
+                                  get_page_content_event('3', 10),
+                                  "Human message 2",
+                              });
+
+  // Max Length = 1 (should include one char of page content 3).
+  test_content_truncation(1, {
+                                 "Human message 1",
+                                 get_page_content_event('3', 1),
+                                 "Human message 2",
+                             });
+
+  // Max Length = 0 (should include no page content)
+  test_content_truncation(0, {
+                                 "Human message 1",
+                                 "Human message 2",
+                             });
 }
 
 }  // namespace ai_chat

@@ -138,7 +138,7 @@ const toolEvents: Mojom.ToolUseEvent[] = [
 
 const HISTORY: Mojom.ConversationTurn[] = [
   {
-    uuid: undefined,
+    uuid: 'turn-uuid',
     text: 'Summarize this page',
     characterType: Mojom.CharacterType.HUMAN,
     actionType: Mojom.ActionType.SUMMARIZE_PAGE,
@@ -621,6 +621,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 40,
   url: { url: 'https://www.example.com/areallylongurlthatwillbetruncatedintheinputbox' },
   contentId: 1,
+  conversationTurnUuid: 'turn-uuid'
 }
 
 type CustomArgs = {

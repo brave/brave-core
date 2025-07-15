@@ -292,7 +292,7 @@ class ConversationHandlerUnitTest : public testing::Test {
       }
 
       auto entry = mojom::ConversationTurn::New(
-          std::nullopt,
+          "turn-" + base::NumberToString(i),
           is_human ? mojom::CharacterType::HUMAN
                    : mojom::CharacterType::ASSISTANT,
           is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
@@ -899,16 +899,16 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100));
+      GURL("https://one.com"), 100, "turn-1"));
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100));
+      GURL("https://two.com"), 100, "turn-1"));
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of one"));
+      mojom::ContentArchive::New("1", "The content of one", "turn-1"));
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of two"));
+      mojom::ContentArchive::New("2", "The content of two", "turn-1"));
 
   conversation_handler_->associated_content_manager()->LoadArchivedContent(
       metadata.get(), conversation_archive);
@@ -1502,16 +1502,16 @@ TEST_F(ConversationHandlerUnitTest,
   auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true,
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "summary", std::nullopt, std::nullopt, std::move(events),
+      base::Time::Now(), std::nullopt, std::nullopt, true,
       std::nullopt /* model_key */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -1844,7 +1844,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
@@ -3426,7 +3426,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   // Add existing screenshots to conversation history
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn_with_screenshots = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "turn-screenshots", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Previous question", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot), false,
@@ -3563,7 +3563,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   // Mock engine response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
@@ -3859,14 +3859,33 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_)).Times(0);
 
   // Call the callback directly with a no-op callback
-  auto noop_callback = base::BindOnce([](PageContents) {});
   conversation_handler_->OnAutoScreenshotsTaken(
-      std::move(noop_callback), std::make_optional(std::move(screenshots)));
+      base::DoNothing(), std::make_optional(std::move(screenshots)));
 
   // Verify the percentage is still the same and no UI update was triggered
   auto entries_state = conversation_handler_->GetStateForConversationEntries();
   EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
   EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AutomaticallyAssociateContentUponConversationEntryAdded) {
+  // This test verifies that human turns are automatically associated when added
+  // to conversation history. Initially content should not be associated.
+  auto initial_content = conversation_handler_->associated_content_manager()
+                             ->GetAssociatedContent();
+  ASSERT_EQ(1u, initial_content.size());
+  EXPECT_FALSE(initial_content[0]->conversation_turn_uuid.has_value());
+
+  // Submit a human turn - this should automatically associate content
+  conversation_handler_->SubmitHumanConversationEntry("Test message",
+                                                      std::nullopt);
+
+  // Verify content is now associated with a turn
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
 }
 
 }  // namespace ai_chat

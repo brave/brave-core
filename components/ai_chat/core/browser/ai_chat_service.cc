@@ -801,6 +801,9 @@ void AIChatService::OnConversationEntryAdded(
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
+  // Ensure the conversation has the latest associated content metadata.
+  conversation->associated_content =
+      handler->associated_content_manager()->GetAssociatedContent();
   std::optional<std::vector<std::string>> associated_content;
   if (maybe_associated_content.has_value()) {
     associated_content = std::vector<std::string>();

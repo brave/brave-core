@@ -14,6 +14,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -52,7 +53,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      PageContents page_contents,
+      PageContentsMap&& page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       bool is_temporary_chat,
@@ -85,12 +86,34 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildPageContentMessages_Truncates);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_PageContentsOrderedBeforeTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_PageContentsExcludedForMissingTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_MultiplePageContentsForSameTurn);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_MultiplePageContents_MultipleTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_EmptyPageContentsMap);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_NonExistentTurnId);
+  FRIEND_TEST_ALL_PREFIXES(
+      EngineConsumerOAIUnitTest,
+      BuildMessages_MultiplePageContents_MultipleTurns_TooLong);
 
   base::Value::List BuildPageContentMessages(
-      const PageContents& page_contents,
-      uint32_t max_associated_content_length,
+      PageContents& page_contents,
+      uint32_t& max_associated_content_length,
       int video_message_id,
       int page_message_id);
+
+  base::Value::List BuildMessages(
+      const mojom::CustomModelOptions& model_options,
+      PageContentsMap& page_contents,
+      std::optional<base::Value::Dict> user_memory_message,
+      const std::optional<std::string>& selected_text,
+      const EngineConsumer::ConversationHistory& conversation_history);
 
   std::optional<base::Value::Dict> BuildUserMemoryMessage(
       bool is_temporary_chat);
