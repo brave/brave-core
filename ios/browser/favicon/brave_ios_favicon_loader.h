@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "components/favicon_base/favicon_callback.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace favicon {
@@ -38,6 +39,12 @@ class BraveFaviconLoader : public KeyedService {
       float size_in_points,
       float min_size_in_points,
       FaviconAttributesCompletionBlock faviconBlockHandler);
+
+  void RawFaviconForPageUrlOrHost(
+      const GURL& page_url,
+      float size_in_points,
+      float min_size_in_points,
+      favicon_base::FaviconRawBitmapCallback callback);
 
   // Cancel all incomplete requests.
   void CancellAllRequests();
