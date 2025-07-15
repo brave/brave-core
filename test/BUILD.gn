@@ -87,7 +87,7 @@ static_library("brave_test_support_unit") {
   }
 }
 
-group("all_unit_tests") {
+group("brave_all_unit_tests") {
   testonly = true
 
   data_deps = [
