@@ -108,76 +108,87 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
-  const videoPlaySelector = "video.html5-main-video";
-  const fullscreenButtonSelector = "button.fullscreen-icon";
+  return new Promise((resolve) => {
+    const videoPlaySelector = "video.html5-main-video";
+    const fullscreenButtonSelector = "button.fullscreen-icon";
 
-  function triggerFullscreen() {
-    // Always play video before entering fullscreen mode.
-    document.querySelector(videoPlaySelector)?.play();
+    function triggerFullscreen() {
+      // Always play video before entering fullscreen mode.
+      document.querySelector(videoPlaySelector)?.play();
 
-    // Check if the video is not in fullscreen mode already.
-    if (!document.fullscreenElement) {
-      let observerTimeout;
-      // Create a MutationObserver to watch for changes in the DOM.
-      const observer = new MutationObserver((_mutationsList, observer) => {
+      // Check if the video is not in fullscreen mode already.
+      if (!document.fullscreenElement) {
+        let observerTimeout;
+        // Create a MutationObserver to watch for changes in the DOM.
+        const observer = new MutationObserver((_mutationsList, observer) => {
+          var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+          var videoPlayer = document.querySelector(videoPlaySelector);
+          if (fullscreenBtn && videoPlayer) {
+            clearTimeout(observerTimeout);
+            observer.disconnect()
+            delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve);
+          }
+        });
+
         var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
         var videoPlayer = document.querySelector(videoPlaySelector);
+        // Check if fullscreen button and video are available.
         if (fullscreenBtn && videoPlayer) {
-          clearTimeout(observerTimeout);
-          observer.disconnect()
-          delayedPlayAndClick(fullscreenBtn, videoPlayer);
+         delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve);
+        } else {
+          // When fullscreen button is not available
+          // clicking the movie player resume the UI.
+          var moviePlayer = document.getElementById("movie_player");
+          var playerContainer = document.getElementById("player-container-id");
+          if (moviePlayer && playerContainer) {
+            // Auto-disconnect the observer after 30 seconds,
+            // a reasonable duration picked after some testing.
+            observerTimeout = setTimeout(() => {
+              observer.disconnect();
+              resolve('timeout');
+            }, 30000);
+            // Start observing the DOM.
+            observer.observe(playerContainer, { childList: true, subtree: true });
+            // Make sure the player is in focus or responsive.
+            moviePlayer.click();
+          } else {
+            // No fullscreen elements found, resolve immediately
+            resolve('no_elements');
+          }
         }
-      });
-
-      var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
-      var videoPlayer = document.querySelector(videoPlaySelector);
-      // Check if fullscreen button and video are available.
-      if (fullscreenBtn && videoPlayer) {
-       delayedPlayAndClick(fullscreenBtn, videoPlayer);
       } else {
-        // When fullscreen button is not available
-        // clicking the movie player resume the UI.
-        var moviePlayer = document.getElementById("movie_player");
-        var playerContainer = document.getElementById("player-container-id");
-        if (moviePlayer && playerContainer) {
-          // Auto-disconnect the observer after 30 seconds,
-          // a reasonable duration picked after some testing.
-          observerTimeout = setTimeout(() => {
-            observer.disconnect();
-          }, 30000);
-          // Start observing the DOM.
-          observer.observe(playerContainer, { childList: true, subtree: true });
-          // Make sure the player is in focus or responsive.
-          moviePlayer.click();
-        }
+        // Already in fullscreen, resolve immediately
+        resolve('already_fullscreen');
       }
     }
-  }
 
-  // Click the fullscreen button and play the video and after a delay
-  // to ensure the video is ready.
-  // This is necessary because sometimes (rarely) when switching to fullscreen
-  // mode a video might be paused automatically from the backend if the buffer
-  // was not ready.
-  // The delay allows the video to load properly before attempting to play it.
-  // This is especially important for high quality videos, which may require
-  // some time to buffer before they can be played.
-  // The delay is set to 500 milliseconds, which is a reasonable delay for
-  // the videos to be ready for playback.
-  function delayedPlayAndClick(fullscreenBtn, videoPlayer) {
-    setTimeout(() => {
-      videoPlayer.play();
-    }, 500);
-    fullscreenBtn.click();
-  }
+    // Click the fullscreen button and play the video and after a delay
+    // to ensure the video is ready.
+    // This is necessary because sometimes (rarely) when switching to fullscreen
+    // mode a video might be paused automatically from the backend if the buffer
+    // was not ready.
+    // The delay allows the video to load properly before attempting to play it.
+    // This is especially important for high quality videos, which may require
+    // some time to buffer before they can be played.
+    // The delay is set to 500 milliseconds, which is a reasonable delay for
+    // the videos to be ready for playback.
+    function delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve) {
+      setTimeout(() => {
+        videoPlayer.play();
+      }, 500);
+      fullscreenBtn.click();
+      // Resolve after clicking fullscreen button
+      resolve('fullscreen_triggered');
+    }
 
-  if (document.readyState === "loading") {
-    // Loading hasn't finished yet.
-    document.addEventListener("DOMContentLoaded", triggerFullscreen);
-  } else {
-    // `DOMContentLoaded` has already fired.
-    triggerFullscreen();
-  }
+    if (document.readyState === "loading") {
+      // Loading hasn't finished yet.
+      document.addEventListener("DOMContentLoaded", triggerFullscreen);
+    } else {
+      // `DOMContentLoaded` has already fired.
+      triggerFullscreen();
+    }
+  });
 }());
 )";
 
@@ -243,7 +254,10 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   script_injector_remote->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
       blink::mojom::UserActivationOption::kActivate,
-      blink::mojom::PromiseResultOption::kDoNotWait, base::NullCallback());
+      blink::mojom::PromiseResultOption::kAwait,
+      base::BindOnce(
+          &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
+          weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo() const {
@@ -315,6 +329,13 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
     entry->SetUserData(kYouTubeFullscreenPageDataKey,
                        std::make_unique<YouTubeFullscreenPageData>(requested));
   }
+}
+
+void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
+    content::GlobalRenderFrameHostToken token,
+    base::Value value) {
+  // Reset fullscreen state when the script completes
+  SetFullscreenRequested(false);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
