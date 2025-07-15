@@ -3,8 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
-import {BraveSettingsAutofillPageElement} from '../brave_autofill_page/brave_autofill_page.js'
+import {
+  html,
+  RegisterPolymerTemplateModifications,
+  RegisterPolymerComponentReplacement
+} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  BraveSettingsAutofillPageElement
+} from '../brave_autofill_page/brave_autofill_page.js'
 import {loadTimeData} from '../i18n_setup.js'
 import '../email_aliases_page/email_aliases_page.js'
 
@@ -14,9 +20,14 @@ RegisterPolymerComponentReplacement(
 
 RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
-        const isEmailAliasesEnabled = loadTimeData.getBoolean(
+    const isEmailAliasesEnabled = loadTimeData.getBoolean(
       'isEmailAliasesEnabled')
-    templateContent.appendChild(html`
+    const controlsDiv = templateContent.querySelector('div[route-path=default]')
+    if (!controlsDiv) {
+      throw new Error(
+        '[Settings] Unable to find div[route-path=default] on autofill-page')
+    }
+    controlsDiv.appendChild(html`
         <settings-toggle-button
           class="hr"
           label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
