@@ -79,6 +79,8 @@ static constexpr auto kButtonThemes =
         {{ui::ButtonStyle::kProminent, ButtonState::STATE_HOVERED},
          {.background_color = nala::kColorPrimary60,
           .dark_background_color = nala::kColorPrimary50}},
+        {{ui::ButtonStyle::kProminent, ButtonState::STATE_DISABLED},
+         {.background_color = nala::kColorButtonDisabled}},
 
         // Kind=Outline
         {{ui::ButtonStyle::kDefault, ButtonState::STATE_NORMAL},
@@ -88,6 +90,9 @@ static constexpr auto kButtonThemes =
          {.background_color = nala::kColorNeutral20,
           .border_color = nala::kColorPrimary30,
           .text_color = nala::kColorTextInteractive}},
+        {{ui::ButtonStyle::kDefault, ButtonState::STATE_DISABLED},
+         {.border_color = nala::kColorButtonDisabled,
+          .text_color = nala::kColorTextDisabled}},
 
         // Kind=Plain
         {{ui::ButtonStyle::kTonal, ButtonState::STATE_NORMAL},
@@ -95,12 +100,16 @@ static constexpr auto kButtonThemes =
         {{ui::ButtonStyle::kTonal, ButtonState::STATE_HOVERED},
          {.background_color = nala::kColorNeutral10,
           .text_color = nala::kColorTextInteractive}},
+        {{ui::ButtonStyle::kTonal, ButtonState::STATE_DISABLED},
+         {.text_color = nala::kColorTextDisabled}},
 
         // Kind=Plain-Faint
         {{ui::ButtonStyle::kText, ButtonState::STATE_NORMAL},
          {.text_color = nala::kColorTextPrimary}},
         {{ui::ButtonStyle::kText, ButtonState::STATE_HOVERED},
          {.text_color = nala::kColorTextSecondary}},
+         {{ui::ButtonStyle::kText, ButtonState::STATE_DISABLED},
+          {.text_color = nala::kColorTextDisabled}},
     });
 
 }  // namespace
@@ -209,11 +218,6 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   if (loading_) {
     state = ButtonState::STATE_NORMAL;
     opacity = kLoadingOpacity;
-  }
-
-  if (state == ButtonState::STATE_DISABLED) {
-    state = ButtonState::STATE_NORMAL;
-    opacity = 0.5f;
   }
 
   MdTextButtonStyleKey style_lookup{GetBraveStyle(), state};
