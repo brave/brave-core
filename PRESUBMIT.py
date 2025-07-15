@@ -240,11 +240,11 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     for f in input_api.AffectedSourceFiles(source_file_filter):
         if f.Action() != 'A':
             continue
-        new_sources.append(f.LocalPath())
+        new_sources.append(f.UnixLocalPath())
 
     problems = []
     for f in new_sources:
-        path = brave_chromium_utils.to_wspath(f)
+        path = brave_chromium_utils.wspath(f'//chrome/{f}')
         if not os.path.exists(path):
             problems.append(f)
 
