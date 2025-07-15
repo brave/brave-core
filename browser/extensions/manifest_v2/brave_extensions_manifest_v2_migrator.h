@@ -8,15 +8,19 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
+#include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/browser/extension_prefs_observer.h"
 #include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
 
 namespace extensions_mv2 {
+
+class ExtensionManifestV2Installer;
 
 class ExtensionsManifectV2Migrator
     : public KeyedService,
@@ -32,6 +36,10 @@ class ExtensionsManifectV2Migrator
 
   void Shutdown() override;
 
+  static bool IsSettingsBackupEnabled();
+  static bool IsSettingsImportEnabled();
+  static bool IsExtensionReplacementEnabled();
+
  private:
   // ExtensionPrefsObserver:
   void OnExtensionPrefsWillBeDestroyed(
@@ -46,7 +54,14 @@ class ExtensionsManifectV2Migrator
                             const extensions::Extension* extension,
                             bool is_updates) override;
 
-  void BackupExtensionSettings(const extensions::ExtensionId& extension_id);
+  void BackupExtensionSettings(const extensions::ExtensionId& cws_extension_id);
+  void OnBackupSettingsCompleted(
+      const extensions::ExtensionId& cws_extension_id);
+
+  void OnSilentInstall(const extensions::ExtensionId& extension_id,
+                       bool success,
+                       const std::string& error,
+                       extensions::webstore_install::Result result);
 
   const raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<extensions::ExtensionPrefs,
@@ -55,6 +70,9 @@ class ExtensionsManifectV2Migrator
   base::ScopedObservation<extensions::ExtensionRegistry,
                           extensions::ExtensionRegistryObserver>
       registry_observation_{this};
+
+  std::vector<std::unique_ptr<ExtensionManifestV2Installer>> silent_installers_;
+  base::WeakPtrFactory<ExtensionsManifectV2Migrator> weak_factory_{this};
 };
 
 class ExtensionsManifectV2MigratorFactory : public ProfileKeyedServiceFactory {

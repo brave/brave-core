@@ -14,6 +14,7 @@ namespace extensions_mv2::features {
 BASE_DECLARE_FEATURE(kExtensionsManifestV2);
 BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2BackupSettings);
 BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2BImportSettingsOnInstall);
+BASE_DECLARE_FEATURE_PARAM(bool, kExtensionsManifestV2AutoInstallBraveHosted);
 
 }  // namespace extensions_mv2::features
 

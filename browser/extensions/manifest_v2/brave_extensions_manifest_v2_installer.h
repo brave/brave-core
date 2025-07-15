@@ -86,28 +86,46 @@ std::optional<extensions::ExtensionId> GetCwsExtensionId(
 
 class ExtensionManifestV2Installer {
  public:
-  ExtensionManifestV2Installer(
+  ~ExtensionManifestV2Installer();
+
+  static std::unique_ptr<ExtensionManifestV2Installer> Create(
       const extensions::ExtensionId& extension_id,
       content::WebContents* web_contents,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       extensions::WebstoreInstallWithPrompt::Callback callback);
-  ~ExtensionManifestV2Installer();
+
+  static std::unique_ptr<ExtensionManifestV2Installer> CreateSilent(
+      const extensions::ExtensionId& extension_id,
+      content::BrowserContext* browser_context,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      extensions::WebstoreInstallWithPrompt::Callback callback);
+
+  const extensions::ExtensionId& extension_id() const { return extension_id_; }
 
   void BeginInstall();
 
  private:
+  ExtensionManifestV2Installer(
+      const extensions::ExtensionId& extension_id,
+      content::BrowserContext* browser_context,
+      content::WebContents* web_contents,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      extensions::WebstoreInstallWithPrompt::Callback callback);
+
   void OnUpdateManifestResponse(std::optional<std::string> body);
   void DownloadCrx(const GURL& url);
   void OnCrxDownloaded(base::FilePath path);
   void OnInstalled(const std::optional<extensions::CrxInstallError>& error);
 
   const extensions::ExtensionId extension_id_;
+  raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   base::WeakPtr<content::WebContents> web_contents_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   extensions::WebstoreInstallWithPrompt::Callback callback_;
 
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   scoped_refptr<extensions::CrxInstaller> crx_installer_;
+  bool silent_ = false;
   base::WeakPtrFactory<ExtensionManifestV2Installer> weak_factory_{this};
 };
 
