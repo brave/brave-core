@@ -273,7 +273,7 @@ TEST(BraveVPNUtilsUnitTest, DefaultPrefsTest) {
       brave_vpn::prefs::kBraveVPNOnDemandEnabled));
 #endif
 
-  EXPECT_FALSE(local_state_pref_service.GetBoolean(
+  EXPECT_TRUE(local_state_pref_service.GetBoolean(
       brave_vpn::prefs::kBraveVPNSmartProxyRoutingEnabled));
 }
 
