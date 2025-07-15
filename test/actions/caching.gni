@@ -1,5 +1,7 @@
-import("//brave/build/config.gni")
-import("//testing/test.gni")
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Finds all runtime data (eg. testdata) of an executable and depend on it
 # Hashes all data and recompute a collective hash
@@ -15,6 +17,10 @@ import("//testing/test.gni")
 # generates a json file of the shape:
 # { hash: sha256string, files: string[] }
 # in "$root_out_dir/$target_name"
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
 
 template("hash_runtime") {
   action(target_name) {

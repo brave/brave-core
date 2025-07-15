@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # This is a script that invokes googleTest executables in order to allow calls from a gn action
 # This script is meant to be called via ./test_runner.py <gtest_exe> <out_dir> <...gtest_args>
 # Which in turn executes:
