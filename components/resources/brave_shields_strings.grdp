@@ -210,26 +210,6 @@
     Allowed fingerprints
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TITLE" desc="Title for CookieList opt-in bubble">
-    Shields
-  </message>
-
-  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_HEADER" desc="Header text for CookieList opt-in bubble">
-    Tired of cookie consent notices?
-  </message>
-
-  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TEXT" desc="Description text for CookieList opt-in bubble">
-    Brave already blocks third-party cookies. We can block cookie consent notices, too.
-  </message>
-
-  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_BUTTON_TEXT" desc="Label for button to enable the CookieList filter">
-    Yes, block cookie consent notices
-  </message>
-
-  <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_NO_THANKS" desc="Label for link to decline the CookieList filter">
-    No thanks
-  </message>
-
   <message name="IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS" desc="Label for link about invalid pattern for content setting page dialog to add a site">
     Wildcards are not allowed for Brave Shields.
   </message>
