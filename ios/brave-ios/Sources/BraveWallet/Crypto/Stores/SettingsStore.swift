@@ -169,6 +169,8 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     Preferences.Wallet.nonSelectedNetworksFilter.reset()
     // onboarding
     Preferences.Wallet.isOnboardingCompleted.reset()
+    // meld
+    Preferences.Wallet.meldAPIAgreementShownAndAgreed.reset()
 
     Task { @MainActor in
       await WalletUserAssetGroup.removeAllGroup()
