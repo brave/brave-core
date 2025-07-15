@@ -66,6 +66,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
+  void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
+
   // Checks if the content has changed from what is stored in the cache.
   void HasContentUpdated(base::OnceCallback<void(bool)> callback);
 
@@ -103,6 +105,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   raw_ptr<ConversationHandler> conversation_;
 
   std::vector<AssociatedContentDelegate*> content_delegates_;
+  base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
 
   // Used for ownership - still stored in the above array.
   std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;

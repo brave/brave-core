@@ -116,6 +116,19 @@ bool MigrateFrom5to6(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom6to7(sql::Database* db) {
+  // TODO(fallaciousreasoning): This migration should set the
+  // conversation_entry_uuid to the first message in the conversation for all
+  // associated content.
+  static constexpr char kAddConversationEntryUuidColumnQuery[] =
+      "ALTER TABLE associated_content ADD COLUMN conversation_entry_uuid TEXT "
+      "NOT NULL";
+  sql::Statement statement(
+      db->GetUniqueStatement(kAddConversationEntryUuidColumnQuery));
+
+  return statement.is_valid() && statement.Run();
+}
+
 }  // namespace
 
 // These database versions should roll together unless we develop migrations.
@@ -125,10 +138,10 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 
 // The oldest version of the schema such that a legacy Brave client using that
 // version can still read/write the current database.
-constexpr int kCompatibleDatabaseVersionNumber = 6;
+constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 6;
+constexpr int kCurrentDatabaseVersion = 7;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -237,9 +250,20 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 6;
     }
+    if (migration_success && current_version == 6) {
+      migration_success = MigrateFrom6to7(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(7);
+      }
+      current_version = 7;
+    }
 
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
+      transaction.Rollback();
+
       if (db_.Raze()) {
         return InitInternal();
       }
@@ -567,7 +591,7 @@ AIChatDatabase::GetArchiveContentsForConversation(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   static constexpr char kQuery[] =
-      "SELECT uuid, last_contents"
+      "SELECT uuid, last_contents, conversation_entry_uuid"
       " FROM associated_content"
       " WHERE conversation_uuid=?"
       " AND last_contents IS NOT NULL"
@@ -578,8 +602,10 @@ AIChatDatabase::GetArchiveContentsForConversation(
   std::vector<mojom::ContentArchivePtr> archive_contents;
 
   while (statement.Step()) {
+    // TODO(fallaciousreasoning): Add conversation_entry_uuid to the database.
     auto content = mojom::ContentArchive::New(
-        statement.ColumnString(0), DecryptColumnToString(statement, 1));
+        statement.ColumnString(0), DecryptColumnToString(statement, 1),
+        statement.ColumnString(2));
     archive_contents.emplace_back(std::move(content));
   }
   return archive_contents;
@@ -674,6 +700,9 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   CHECK(!conversation_uuid.empty());
   CHECK(!associated_content.empty());
+  CHECK(std::ranges::all_of(associated_content, [](const auto& content) {
+    return content->conversation_turn_uuid.has_value();
+  })) << "Tried to save associated content which was not associated with a turn";
 
   // Check which content ids already exist for this conversation.
   base::flat_set<std::string> existing_ids_set;
@@ -708,7 +737,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
           " url = ?,"
           " content_type = ?,"
           " last_contents = ?,"
-          " content_used_percentage = ?"
+          " content_used_percentage = ?,"
+          " conversation_entry_uuid = ?"
           " WHERE uuid=? and conversation_uuid=?";
       insert_or_update_statement.Assign(
           GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
@@ -717,14 +747,14 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                << conversation_uuid;
       static constexpr char kInsertAssociatedContentQuery[] =
           "INSERT INTO associated_content(title, url,"
-          " content_type, last_contents, content_used_percentage,"
+          " content_type, last_contents, content_used_percentage, conversation_entry_uuid,"
           " uuid, conversation_uuid)"
-          " VALUES(?, ?, ?, ?, ?, ?, ?) ";
+          " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
       insert_or_update_statement.Assign(
           GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
     }
 
-    CHECK(insert_or_update_statement.is_valid());
+    CHECK(insert_or_update_statement.is_valid()) << insert_or_update_statement.GetSQLStatement();
     int index = 0;
     BindAndEncryptOptionalString(insert_or_update_statement, index++,
                                  content->title);
@@ -736,6 +766,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
+    insert_or_update_statement.BindString(index++, content->conversation_turn_uuid.value());
     insert_or_update_statement.BindString(index++, content->uuid);
     insert_or_update_statement.BindString(index, conversation_uuid);
 
@@ -1458,7 +1489,9 @@ bool AIChatDatabase::CreateSchema() {
       // Don't need REAL for content_used_percentage since
       // we're never using decimal values.
       // UI expects 0 - 100 values.
-      "content_used_percentage INTEGER NOT NULL)";
+      "content_used_percentage INTEGER NOT NULL,"
+      // The conversation entry that this content is associated with.
+      "conversation_entry_uuid TEXT NOT NULL)";
   CHECK(GetDB().IsSQLValid(kCreateAssociatedContentTableQuery));
   if (!GetDB().Execute(kCreateAssociatedContentTableQuery)) {
     return false;
