@@ -44,6 +44,7 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   EXPECT_EQ(service, nullptr);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
   scoped_feature_list_.InitAndEnableFeature(kEmailAliases);
   auto* guest_profile = profile_manager_.CreateGuestProfile();
@@ -55,6 +56,7 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
   EXPECT_EQ(service_guest, nullptr);
   EXPECT_EQ(service_system, nullptr);
 }
+#endif
 
 TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
   scoped_feature_list_.InitAndEnableFeature(kEmailAliases);
