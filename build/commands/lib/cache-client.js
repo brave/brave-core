@@ -2,22 +2,14 @@ const { pipeline } = require("stream");
 const { promisify } = require("util");
 const pipe = promisify(pipeline);
 
-
-const nopClient = () => ({
-  check: () => false,
-  upload: () => false,
-  download: () => false,
-})
-
 const createS3Client = async () => {
   const {
     AWS_REGION: region, 
-    BRAVE_TEST_CACHE_S3_BUCKET: bucket,
-    BRAVE_TEST_CACHE_PATH: cacheDr
+    BRAVE_TEST_CACHE_S3_BUCKET: bucket
   } = process.env;
 
   if (!region || !bucket) 
-    return nopClient();
+    return null;
 
   const { 
     S3Client, 
@@ -109,26 +101,27 @@ const cacheClient = async () => {
     [createFsClient(), createS3Client()]
   );
 
-  if (!fsClient) return null;
+  if (!fsClient && !s3Client) 
+    return null;
 
   return {
     async check(key) {
       return (
-        await fsClient.check(key) || 
-        await s3Client.check(key)
+        await fsClient?.check(key) || 
+        await s3Client?.check(key)
       );
     },
 
     async download(key, dest) {
       return (
-        await fsClient.download(key, dest) ||
-        await s3Client.download(key, dest)
+        await fsClient?.download(key, dest) ||
+        await s3Client?.download(key, dest)
       );
     },
 
     async upload(key, upload) {
       return Promise.all([
-        fsClient.upload(key, upload),
+        fsClient?.upload(key, upload),
         s3Client.upload(key, upload),
       ]).then( ([fs, s3]) =>  fs && s3);
     }
