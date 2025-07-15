@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+const fs = require('fs-extra')
 const { pipeline } = require('stream')
 const { promisify } = require('util')
 const pipe = promisify(pipeline)
@@ -72,7 +73,7 @@ const createS3Client = async () => {
 const createFsClient = async () => {
   const { BRAVE_TEST_CACHE_PATH: cacheDir } = process.env
 
-  if (cacheDir) return null
+  if (!cacheDir) return null
 
   await fs.mkdirp(cacheDir)
 

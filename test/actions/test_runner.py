@@ -5,17 +5,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-
 # This is a script that invokes googleTest executables in order to allow calls
-# from a gn action. 
-# This script is meant to be called via 
+# from a gn action.
+# This script is meant to be called via
 #   ./test_runner.py <gtest_exe> <out_dir> <...gtest_args>
 # Which in turn executes:
 #   gtest_exe \
 #     -gtest_output=json:${out_dir}/results.json ...gtest_args \
 #     > ${out_dir}/stdout.txt
 
-# This script generates a depfile enabling ninja and 
+# This script generates a depfile enabling ninja and
 # gn to determine when to rerun the tests.
 # It assumes that a <exe_path>.runtime_deps file exists.
 # This file is generated for tests and any target that sets write_runtime_deps

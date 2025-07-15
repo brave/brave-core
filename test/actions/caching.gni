@@ -21,7 +21,6 @@
 import("//brave/build/config.gni")
 import("//testing/test.gni")
 
-
 template("hash_runtime") {
   action(target_name) {
     forward_variables_from(invoker,

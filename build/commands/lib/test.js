@@ -279,7 +279,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
           // TODO: propper error handling
         }
 
-        if (await cache.check(cacheKey)) {
+        if (cacheKey && (await cache.check(cacheKey))) {
           await cache.download(cacheKey, `${outputFilename}.xml`)
         }
       }
@@ -336,7 +336,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         })
       }
 
-      if (cache) {
+      if (cacheKey) {
         await cache.upload(cacheKey, `${outputFilename}.xml`)
       }
 
