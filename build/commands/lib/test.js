@@ -14,13 +14,13 @@ const cacheClient = require('./cache-client')
 
 const { createHash } = require('crypto');
 
-function sha256(content) {
-  return createHash('sha256').update(content).digest('hex');
+function hashString(content) {
+  return createHash('sha-1').update(content).digest('hex');
 }
 
-const sha256fromFile = async (filePath) => {
+const hashFile = async (filePath) => {
   try {
-    const hash = crypto.createHash('sha256');
+    const hash = crypto.createHash('sha-1');
     const rs = fs.createReadStream(filePath);
     for await (const chunk of rs) {
       hash.update(chunk);
@@ -29,6 +29,36 @@ const sha256fromFile = async (filePath) => {
   } catch (error) {
     console.error('Error while calculating hash:', error);
   }
+}
+
+async function calculateCacheKey(testSuite, options) {
+  const testBinary = getTestBinary(testSuite);
+  const filterFilePaths = getApplicableFilters(testSuite);
+  await util.buildTargets([testSuite + '.hash.json'], {
+    ...config.defaultOptions,
+    continueOnFail: true
+  });
+  const { hash } = JSON.parse(
+    await fs.readFile(testBinary + '.hash.json', 'utf-8'),
+  )
+
+  // TODO: check if we can avoid hashing this
+  const filterFileHashes = await Promise.all(
+    filterFilePaths.map(hashFile)
+  );
+
+  const argsToHash = [
+    options.filter,
+    options.run_disabled_tests? 'run_disabled_tests' : null,
+    ...filterFileHashes
+  ].filter(x=>x);
+
+  const argHash = argsToHash.length
+    ? '-' + hashString(argsToHash.join(''))
+    : ''
+
+  // we might need to be careful because windows paths have a limit...
+  return `${testSuite}-${hash}${argHash}.xml`
 }
 
 const getTestBinary = (suite) => {
@@ -282,39 +312,16 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const cache = options.output_xml ? await cacheClient() : null
 
       if (cache) {
-        try {
-          await util.buildTargets([testSuite + '.hash.json'], {
-            ...config.defaultOptions,
-            continueOnFail: true
-          });
-          const { hash } = JSON.parse(
-            await fs.readFile(testBinary + '.hash.json', 'utf-8'),
-          )
+        cacheKey = await calculateCacheKey(testSuite, options).catch((e)=>{
+          console.error(e);
+          return null;
+        });
 
-          // TODO: check if we can avoid hashing this
-          const filterFileHashes = await Promise.all(
-            filterFilePaths.map(sha256fromFile)
-          );
-
-          const argsToHash = [
-            options.filter,
-            options.run_disabled_tests? 'run_disabled_tests' : null,
-            ...filterFileHashes
-          ].filter(x=>x);
-
-          const argHash = argsToHash.length
-            ? '-' + sha256(argsToHash.join(''))
-            : ''
-
-          // we might need to be careful because windows paths have a limit...
-          cacheKey = `${testSuite}-${hash}${argHash}.xml`
-        } catch (error) {
-          console.error(error)
-          // TODO: propper error handling
-        }
+        console.log({cacheKey});
 
         if (cacheKey && (await cache.check(cacheKey))) {
           if (await cache.download(cacheKey, `${outputFilename}.xml`)) {
+            console.log(`SKIPPING TEST; Retriving test result from cache: ${cacheKey}`)
             continue;
           }
         }
@@ -373,6 +380,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       }
 
       if (cacheKey) {
+        console.log(`caching test results ${cacheKey}`)
         await cache.upload(cacheKey, `${outputFilename}.xml`)
       }
 
