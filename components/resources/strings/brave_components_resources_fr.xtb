@@ -52,7 +52,6 @@
 <translation id="1773147648972887693">Afficher les sites les plus consultés</translation>
 <translation id="4546260624932151782">Afficher les favoris</translation>
 <translation id="8975314993825375476">Personnaliser la liste</translation>
-<translation id="5525668735313040116">Recherchez sur le Web en toute confidentialité</translation>
 <translation id="1629390138158333592">Recherche sur le Web</translation>
 <translation id="4016940744851230999">Afficher le widget du moteur de recherche sur la page Nouvel onglet</translation>
 <translation id="7092560902264458951">Activer les moteurs de recherche sur la page Nouvel onglet</translation>
@@ -66,6 +65,7 @@
 <translation id="6699628638740071563">C'est l'heure de laisser tomber Google.</translation>
 <translation id="5588534392045217394">La recherche Brave ne modifie et ne censure aucun résultat, et n'établit pas de profil vous concernant.</translation>
 <translation id="6811221529729056895">Recherchez avec Brave</translation>
+<translation id="5525668735313040116">Recherchez sur le Web en toute confidentialité</translation>
 <translation id="3446024864193919737">Afficher les récompenses Brave</translation>
 <translation id="5585019845078534178">Modules</translation>
 <translation id="3870475560794762985">Afficher les images sponsorisées</translation>
@@ -2057,7 +2057,7 @@
 <translation id="1344005710343072293">Cette combinaison est utilisée pour <ph name="COMMAND"/>. L'enregistrement écrasera ce raccourci.</translation>
 <translation id="831931573200952705">Cette combinaison est utilisée pour <ph name="COMMAND"/> et ne peut pas être modifiée.</translation>
 <translation id="3537006124004887164">Cette combinaison est utilisée pour <ph name="COMMAND"/> et ne peut pas être modifiée. Essayez de la modifier par le biais des Raccourcis d'applications dans les Paramètres du système.</translation>
-<translation id="8536713137312218707">Raccourcis</translation>
+<translation id="8536713137312218707">Commandes rapides</translation>
 <translation id="712598284361781729">Nouvelle vue partagée</translation>
 <translation id="1130188644637295274">Ouvrir en mode Vue partagée</translation>
 <translation id="6459036216700972269">Annuler la vue partagée des onglets</translation>

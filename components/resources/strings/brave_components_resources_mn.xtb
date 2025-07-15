@@ -13,8 +13,8 @@
 <translation id="5317780077021120954">Хадгалах</translation>
 <translation id="7658239707568436148">Цуцлах</translation>
 <translation id="5313967007315987356">Сайт нэмэх</translation>
-<translation id="5525668735313040116">Вэбийг нууцлалтай хайх</translation>
 <translation id="780301667611848630">Үгүй баярлалаа</translation>
+<translation id="5525668735313040116">Вэбийг нууцлалтай хайх</translation>
 <translation id="5684562942023496754">Та спонсорлосон дүрс харж орлого олох боломжтой.</translation>
 <translation id="6165508094623778733">Дэлгэрэнгүйг харах</translation>
 <translation id="3333887201479867589">Brave-н Урамшуулал</translation>
@@ -244,6 +244,7 @@
 <translation id="3245401959451976966">Бүтээлч байдлаа нээх</translation>
 <translation id="4165928407303989823">Сэдвээс хазайхгүй байх</translation>
 <translation id="2389665228467129817">Илүү удаан чатлах</translation>
+<translation id="8556044455877152001">Ам.доллар $ <ph name="PRICE_VALUE"/> /сар</translation>
 <translation id="1028627582482425924">Нэг жилийн</translation>
 <translation id="36366199652730057">Шилдэг үнэ</translation>
 <translation id="5474757891469990756">Премиум багцаар Leo-н бүрэн хүчийг нээе:</translation>
@@ -324,15 +325,16 @@
 <translation id="5148943178722443958">Brave-г илүү сайжрахад туслаарай.</translation>
 <translation id="6302485303316397682">Хайлтын үр дүнгээ сайжруулахыг хүсэж байна уу?</translation>
 <translation id="7014699001826714920">Хөдөлгөөнд нэгдэж, Brave хайлтын системд хувь нэмрээ оруулаарай.</translation>
+<translation id="6821108091726602352">Brave-н Вэб дэмжих төсөлд оролцон, бидэнд вэбээ сайжруулахад минь туслаарай. Нэр бүрэн нууцалсан хайлтын тэмдэгтүүдийг хуваалцах замаар та Brave-н хайлтын системийн индексийг өргөжүүлэхэд туслаарай.</translation>
 <translation id="6764845498618413165">Илүү ихийг мэдэх.</translation>
 <translation id="7818938154803162778">Мэдээж, би тусалъя</translation>
 <translation id="3486480638399578250">Хувийн цахим шуудангийн хаягаа нууцлаарай</translation>
-<translation id="7765422154906712751">Таны Brave аккаунтын цахим шуудан луу чиглүүлдэг, дур зоргоор нь устгаж болох өвөрмөц, санамсаргүй хаягуудыг үүсгэ. Цахим шуудангийн хаягаа зар сурталчилгаанд алдахгүй хамгаалаарай.</translation>
+<translation id="7765422154906712751">Таны Brave-н бүртгэлтэй мэйл рүү давхар дамжуулж, хүссэн үедээ устгаж болох өвөрмөц, хаяг үүсгээрэй. Жинхэнэ мэйл хаягаа сурталчилгаанд алдахгүй хамгаалаарай.</translation>
 <translation id="5222676887888702881">Гарах</translation>
-<translation id="8090292425230843109">Цахим шуудангийн нууц нэрнээс гарах</translation>
-<translation id="8471990782451394141">Brave Account-т холбогдож байна...</translation>
+<translation id="8090292425230843109">Нууц мэйлээс гарах</translation>
+<translation id="8471990782451394141">Brave бүртгэлд холбогдож байна...</translation>
 <translation id="5713644099811900409">Brave Account</translation>
-<translation id="8052898407431791827">Хууллаа самбар</translation>
+<translation id="8052898407431791827">Самбарт хуулсан</translation>
 <translation id="6002159997868894136">Нууц нэрийг хуулбарлахын тулд товшино уу</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> дээр ашиглагдсан;</translation>
 <translation id="5006956315579221642">5 хүртэлх нууц хаяг үнэгүй үүсгэж, жинхэнэ мэйл хаягаа хамгаалаарай.</translation>
