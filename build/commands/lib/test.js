@@ -115,9 +115,7 @@ const buildTests = async (
     'brave_junit_tests',
     'brave_network_audit_tests',
   ]
-  if (suite === 'brave_unit_tests') {
-    config.buildTargets = ['all_unit_tests']
-  } else if (testSuites.includes(suite)) {
+  if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
   } else if (suite === 'chromium_unit_tests') {
     config.buildTargets = getChromiumUnitTestsSuites()
