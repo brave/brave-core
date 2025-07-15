@@ -31,9 +31,9 @@
 #include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
-#include "brave/ios/browser/ui/webui/favicon_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -113,10 +113,9 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
-  // TODO:
-  //  content::URLDataSource::Add(
-  //      profile_, std::make_unique<FaviconSource>(
-  //                    profile_, chrome::FaviconUrlFormat::kFavicon2));
+  web::URLDataSourceIOS::Add(
+      profile_,
+      new FaviconSource(profile_, chrome::FaviconUrlFormat::kFavicon2));
 
   // Bind Mojom Interface
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
