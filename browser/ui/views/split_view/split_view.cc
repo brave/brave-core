@@ -151,8 +151,9 @@ bool SplitView::IsSplitViewActive() const {
 }
 
 void SplitView::ListenFullscreenChanges() {
-  fullscreen_observation_.Observe(
-      browser_->exclusive_access_manager()->fullscreen_controller());
+  fullscreen_observation_.Observe(browser_->GetFeatures()
+                                      .exclusive_access_manager()
+                                      ->fullscreen_controller());
 }
 
 void SplitView::WillChangeActiveWebContents(
@@ -631,7 +632,8 @@ void SplitView::OnFullscreenStateChanged() {
 }
 
 bool SplitView::ShouldHideSecondaryContentsByTabFullscreen() const {
-  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  auto* exclusive_access_manager =
+      browser_->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
     return false;
   }

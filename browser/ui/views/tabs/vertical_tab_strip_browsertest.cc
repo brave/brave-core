@@ -100,8 +100,9 @@ class FullscreenNotificationObserver : public FullscreenObserver {
 
 FullscreenNotificationObserver::FullscreenNotificationObserver(
     Browser* browser) {
-  observation_.Observe(
-      browser->exclusive_access_manager()->fullscreen_controller());
+  observation_.Observe(browser->GetFeatures()
+                           .exclusive_access_manager()
+                           ->fullscreen_controller());
 }
 
 FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
@@ -904,13 +905,9 @@ class VerticalTabStripDragAndDropBrowserTest
   }
 };
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragTabToReorder DISABLED_DragTabToReorder
-#else
-#define MAYBE_DragTabToReorder DragTabToReorder
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToReorder) {
@@ -962,14 +959,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   }
 }
 
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
-// TODO(sko) As of Dec, 2023 this test is flaky on Mac CI.
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_DragTabToDetach DragTabToDetach
-#else
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
@@ -1005,13 +997,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
       }));
 }
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragURL DISABLED_DragURL
-#else
-#define MAYBE_DragURL DragURL
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
   // Pre-conditions ------------------------------------------------------------

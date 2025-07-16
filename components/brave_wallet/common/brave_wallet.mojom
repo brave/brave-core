@@ -2751,8 +2751,6 @@ interface BraveWalletService {
   GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
 
   SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
-
-  GetCountryCode() => (string country_code);
 };
 
 // For reporting wallet related P3A metrics.

@@ -12,9 +12,10 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -37,7 +38,7 @@ class ReadLaterSidePanelHeaderView : public views::View {
   METADATA_HEADER(ReadLaterSidePanelHeaderView, views::View)
 
  public:
-  explicit ReadLaterSidePanelHeaderView(Browser* browser) {
+  explicit ReadLaterSidePanelHeaderView(SidePanelEntryScope& scope) {
     constexpr int kHeaderInteriorMargin = 16;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
@@ -75,12 +76,12 @@ class ReadLaterSidePanelHeaderView : public views::View {
     constexpr int kHeaderButtonSize = 20;
     auto* button =
         AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
-            [](Browser* browser) {
-              if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
-                ui->Close();
+            [](SidePanelUI* side_panel_ui) {
+              if (side_panel_ui) {
+                side_panel_ui->Close();
               }
             },
-            browser)));
+            scope.GetBrowserWindowInterface().GetFeatures().side_panel_ui())));
     button->SetTooltipText(
         l10n_util::GetStringUTF16(IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP));
     button->SetImageModel(
@@ -116,16 +117,17 @@ END_METADATA
 }  // namespace
 
 BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
-    Browser* browser,
+    Profile* profile,
+    TabStripModel* tab_strip_model,
     SidePanelEntryScope& scope,
     base::RepeatingClosure close_cb) {
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
-  AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(browser));
+  AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(scope));
   AddChildView(std::make_unique<views::Separator>())
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
   auto* web_view = AddChildView(std::make_unique<ReadLaterSidePanelWebView>(
-      browser, scope, std::move(close_cb)));
+      profile, tab_strip_model, scope, std::move(close_cb)));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

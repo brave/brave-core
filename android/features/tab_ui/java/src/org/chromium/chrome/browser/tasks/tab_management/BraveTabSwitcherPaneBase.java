@@ -8,13 +8,12 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
-import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tasks.tab_management.TabListCoordinator.TabListMode;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 
@@ -29,7 +28,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
             @NonNull UserEducationHelper userEducationHelper,
             @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
-            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate) {
+            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 context,
                 factory,
@@ -38,14 +38,14 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
                 userEducationHelper,
                 edgeToEdgeSupplier,
                 compositorViewHolderSupplier,
-                tabGroupCreationUiDelegate);
+                tabGroupCreationUiDelegate,
+                xrSpaceModeObservableSupplier);
     }
 
     @Override
     public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
             @NonNull HubContainerView hubContainerView) {
-        Tab tab = getCurrentTab();
-        if (getTabListMode() != TabListMode.LIST && tab != null) {
+        if (!getTabSwitcherPaneCoordinatorSupplier().hasValue() && getCurrentTab() != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
             super.createTabSwitcherPaneCoordinator();

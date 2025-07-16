@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 489b1c806074f3b9df58c6a1629086606f6f2aea..314d5a3dc3e5924c01c139f1a5b77e771991ef9a 100644
+index 86a020535ff3066aa0c10fc8a5daadb6541b058d..d8a7bb096050d2d696135b2dae6b0aea2697df97 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -38,7 +38,7 @@
+@@ -50,7 +50,7 @@ dictionary CanvasElementHitTestRegion {
  
      [RuntimeEnabled=CanvasDrawElement] attribute boolean layoutSubtree;
  

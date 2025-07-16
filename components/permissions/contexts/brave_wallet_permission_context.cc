@@ -50,7 +50,7 @@ bool IsAccepted(PermissionRequest* request,
 BraveWalletPermissionContext::BraveWalletPermissionContext(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type)
-    : PermissionContextBase(
+    : ContentSettingPermissionContextBase(
           browser_context,
           content_settings_type,
           network::mojom::PermissionsPolicyFeature::kNotFound) {}
@@ -89,8 +89,7 @@ void BraveWalletPermissionContext::RequestPermission(
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
     NotifyPermissionSet(*request_data, std::move(callback),
-                        /*persist=*/false, CONTENT_SETTING_BLOCK,
-                        /*is_one_time=*/false,
+                        /*persist=*/false, PermissionDecision::kDeny,
                         /*is_final_decision=*/true);
     return;
   }
@@ -120,8 +119,8 @@ void BraveWalletPermissionContext::RequestPermission(
   // This will prevent PermissionRequestManager from reprioritize the request
   // queue.
   data->embedded_permission_element_initiated = true;
-  PermissionContextBase::RequestPermission(std::move(data),
-                                           std::move(callback));
+  ContentSettingPermissionContextBase::RequestPermission(std::move(data),
+                                                         std::move(callback));
 }
 
 // static

@@ -109,8 +109,6 @@ OnboardingTabHelper::~OnboardingTabHelper() = default;
 
 void OnboardingTabHelper::DidStopLoading() {
   Browser* browser = chrome::FindBrowserWithTab(web_contents());
-  DCHECK(browser);
-
   if (!browser) {
     return;
   }

@@ -323,8 +323,6 @@ class BraveWalletService : public KeyedService,
   // Might return nullptr.
   CardanoWalletService* GetCardanoWalletService();
 
-  void GetCountryCode(GetCountryCodeCallback callback) override;
-
  protected:
   // For tests
   BraveWalletService();
