@@ -68,7 +68,8 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
 
   // Convert output ContentBlocks
   if (proto_event.output_size() > 0) {
-    mojom_event->output = std::vector<mojom::ContentBlockPtr>();
+    mojom_event->output =
+        std::vector<mojom::ContentBlockPtr>(proto_event.output_size());
 
     for (const auto& proto_block : proto_event.output()) {
       switch (proto_block.content_case()) {
