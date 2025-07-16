@@ -797,11 +797,12 @@ provideStrings({
   braveWalletChainId: 'Chain ID',
   braveWalletAllowAddNetworkCurrencySymbol: 'Currency symbol',
   braveWalletAllowAddNetworkExplorer: 'Block explorer URL',
-  braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',
+  braveWalletAllowChangeNetworkTitle: 'Allow this site to switch networks?',
   braveWalletAllowChangeNetworkDescription:
     'This will switch the network to a previously added network.',
   braveWalletAllowChangeNetworkButton: 'Switch network',
   braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
+  braveWalletAddNetwork: 'Add network',
 
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',

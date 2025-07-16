@@ -773,6 +773,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER},
     {"braveWalletAllowAddNetworkNetworkPanelTitle",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE},
+    {"braveWalletAddNetwork", IDS_BRAVE_WALLET_ADD_NETWORK},
     {"braveWalletConfirmTransactionTotal",
      IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL},
     {"braveWalletConfirmTransactionGasFee",
