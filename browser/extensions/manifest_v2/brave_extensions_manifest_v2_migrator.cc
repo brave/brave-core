@@ -306,7 +306,7 @@ void ExtensionsManifectV2Migrator::OnSilentInstall(
     if (cws_extension_id) {
       extensions::ExtensionRegistrar::Get(profile_)->UninstallExtension(
           *cws_extension_id,
-          extensions::UninstallReason::UNINSTALL_REASON_MANAGEMENT_API,
+          extensions::UninstallReason::UNINSTALL_REASON_INTERNAL_MANAGEMENT,
           nullptr);
     }
   }
