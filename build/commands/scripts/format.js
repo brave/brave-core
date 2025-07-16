@@ -121,6 +121,25 @@ const runFormat = async (options = {}) => {
   }
 }
 
+const handleDifference = async (file, dryRun, formatted) => {
+  if (!dryRun) {
+    await fs.writeFile(file, formatted)
+    return
+  }
+
+  // Use `echo <formatted> | git diff --no-index <file> -` to show diff
+  const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
+    stdio: 'pipe',
+    input: formatted,
+  })
+  if (diffResult.status === 1) {
+    // Differences were found
+    return convertDiff(diffResult.stdout.toString(), file)
+  } else {
+    return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
+  }
+}
+
 const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
   const fileInfo = await prettier.getFileInfo(file, {
     ignorePath: ignorePath,
@@ -128,7 +147,7 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
   })
 
   if (fileInfo.ignored || !fileInfo.inferredParser) {
-    return null
+    return
   }
 
   const content = await fs.readFile(file, { encoding: 'utf-8' })
@@ -138,23 +157,8 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
     parser: fileInfo.inferredParser,
   })
   if (content !== formatted) {
-    if (dryRun) {
-      // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-      const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
-        stdio: 'pipe',
-        input: formatted,
-      })
-      if (diffResult.status === 1) {
-        // Differences were found
-        return convertDiff(diffResult.stdout.toString(), file)
-      } else {
-        return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
-      }
-    } else {
-      await fs.writeFile(file, formatted)
-    }
+    return await handleDifference(file, dryRun, formatted)
   }
-  return null
 }
 
 const runPrettier = async (files, dryRun) => {
@@ -181,7 +185,7 @@ const runPrettier = async (files, dryRun) => {
 
 const runMojomFormatForFile = async (file, dryRun) => {
   if (!file.endsWith('.mojom')) {
-    return null
+    return
   }
   // Mojom formatting is experimental. Only these files are formatted by now.
   const mojomFormatAllowList = [
@@ -191,12 +195,12 @@ const runMojomFormatForFile = async (file, dryRun) => {
   ]
 
   if (!mojomFormatAllowList.includes(file)) {
-    return null
+    return
   }
 
   const content = await fs.readFile(file, { encoding: 'utf-8' })
   if (!content) {
-    return null
+    return
   }
 
   const mojomFormatArgs = [
@@ -216,23 +220,8 @@ const runMojomFormatForFile = async (file, dryRun) => {
   }
 
   if (content !== formatted) {
-    if (dryRun) {
-      // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-      const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
-        stdio: 'pipe',
-        input: formatted,
-      })
-      if (diffResult.status === 1) {
-        // Differences were found
-        return convertDiff(diffResult.stdout.toString(), file)
-      } else {
-        return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
-      }
-    } else {
-      await fs.writeFile(file, formatted)
-    }
+    return await handleDifference(file, dryRun, formatted)
   }
-  return null
 }
 
 const runMojomFormat = async (files, dryRun) => {

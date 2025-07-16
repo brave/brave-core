@@ -2272,10 +2272,12 @@ interface ZCashWalletService {
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 
+  // `account_birthday_block` is 0 if use last available block.
   MakeAccountShielded(AccountId account_id, uint32 account_birthday_block)
-      => (string? error_message);  /* 0 if use last available block */
+      => (string? error_message);
 
-  StartShieldSync(AccountId account_id, uint32 to) => (string? error_message);  /* 0 if latest available block is used */
+  // `to` is 0 if latest available block is used.
+  StartShieldSync(AccountId account_id, uint32 to) => (string? error_message);
 
   StopShieldSync(AccountId account_id) => (string? error_message);
 
