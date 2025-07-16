@@ -10,7 +10,7 @@ namespace {
 
 // Test that if a form is mixed content we show a warning instead of any
 // suggestions.
-TEST_F(BrowserAutofillManagerTest, Onion_MixedForm1) {
+TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttps) {
   // Set up our form data.
   FormData form;
   form.set_name(u"MyForm");
@@ -29,7 +29,7 @@ TEST_F(BrowserAutofillManagerTest, Onion_MixedForm1) {
                   SuggestionType::kMixedFormMessage)});
 }
 
-TEST_F(BrowserAutofillManagerTest, Onion_MixedForm2) {
+TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttp) {
   // Set up our form data.
   FormData form;
   form.set_name(u"MyForm");
@@ -48,7 +48,7 @@ TEST_F(BrowserAutofillManagerTest, Onion_MixedForm2) {
                   SuggestionType::kMixedFormMessage)});
 }
 
-TEST_F(BrowserAutofillManagerTest, Onion_MixedForm3) {
+TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttpSubdomain) {
   // Set up our form data.
   FormData form;
   form.set_name(u"MyForm");
