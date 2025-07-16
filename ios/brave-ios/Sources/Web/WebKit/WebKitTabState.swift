@@ -584,10 +584,6 @@ class WebKitTabState: TabState, TabStateImpl {
     }
   }
 
-  func clearBackForwardList() {
-    webView?.backForwardList.clear()
-  }
-
   func updateScripts() {
     // Nothing to do
   }

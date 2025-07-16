@@ -40,15 +40,6 @@ extension WKWebViewConfiguration {
   }
 }
 
-extension WKBackForwardList {
-  func clear() {
-    let selector = Selector("_cl\("ea")r")
-    if responds(to: selector) {
-      perform(selector, on: .main, with: nil, waitUntilDone: true)
-    }
-  }
-}
-
 extension WKNavigationAction {
   var isSyntheticClick: Bool {
     responds(to: Selector(("_syntheticClickType")))

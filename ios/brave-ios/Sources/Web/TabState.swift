@@ -251,8 +251,6 @@ public protocol TabState: AnyObject {
   var sampledPageTopColor: UIColor? { get }
   /// The scale applied to the WKWebView which can be used to apply custom zoom settings to a page
   var viewScale: CGFloat { get set }
-  /// Clears the back forward list of the WKWebView
-  func clearBackForwardList()
 
   // MARK: - Chromium specific
   func updateScripts()

@@ -206,10 +206,6 @@ public class AnyTabState: TabState {
     set { tab.viewScale = newValue }
   }
 
-  public func clearBackForwardList() {
-    tab.clearBackForwardList()
-  }
-
   public func updateScripts() {
     tab.updateScripts()
   }

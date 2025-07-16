@@ -305,10 +305,9 @@ class TabManager: NSObject {
 
   func clearTabHistory(_ completion: (() -> Void)? = nil) {
     allTabs.filter({ $0.isWebViewCreated }).forEach({
-      $0.clearBackForwardList()
       SessionTab.update(
         tabId: $0.id,
-        interactionState: $0.sessionData ?? Data(),
+        interactionState: Data(),
         title: $0.title ?? "",
         url: $0.visibleURL ?? TabManager.ntpInteralURL
       )

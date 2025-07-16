@@ -264,9 +264,21 @@ import os
 
     try? await Task.sleep(nanoseconds: NSEC_PER_SEC * 1)
 
+    if historyCleared {
+      await withCheckedContinuation { c in
+        self.tabManager.clearTabHistory {
+          c.resume()
+        }
+      }
+
+      // Clearing Tab History should clear Recently Closed
+      RecentlyClosed.removeAll()
+    }
+
     // Reset Webkit configuration to remove data from memory
     if clearAffectsTabs {
       self.tabManager.reset()
+      self.tabManager.reloadSelectedTab()
       // Unlock the folders to allow clearing of data.
       await _toggleFolderAccessForBlockCookies(locked: false)
     }
@@ -274,13 +286,6 @@ import os
     await _clear(clearables)
     if clearAffectsTabs {
       self.tabManager.allTabs.forEach({ $0.reload() })
-    }
-
-    if historyCleared {
-      self.tabManager.clearTabHistory()
-
-      // Clearing Tab History should clear Recently Closed
-      RecentlyClosed.removeAll()
     }
 
     await _toggleFolderAccessForBlockCookies(locked: true)

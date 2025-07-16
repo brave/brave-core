@@ -75,11 +75,18 @@ class ChromiumTabState: TabState, TabStateImpl {
     // CWVBackForwardListArray. This change attempts to fix that crash by thread-hopping the
     // assignment and ensure that each stored backForwardList on `ChromiumTabState` is proxied in
     // a stable way.
-    DispatchQueue.main.async { [self] in
-      backForwardList = webView?.backForwardList.flatMap { ChromiumBackForwardList($0) }
-      observers.forEach {
-        $0.tabDidChangeBackForwardState(self)
+    backForwardList = webView.flatMap {
+      if let backForwardList = $0.backForwardList {
+        return ChromiumBackForwardList(
+          backForwardList,
+          canGoBack: $0.canGoBack,
+          canGoForward: $0.canGoForward
+        )
       }
+      return nil
+    }
+    observers.forEach {
+      $0.tabDidChangeBackForwardState(self)
     }
   }
 
@@ -512,10 +519,6 @@ class ChromiumTabState: TabState, TabStateImpl {
     }
   }
 
-  func clearBackForwardList() {
-    webView?.internalWebView?.backForwardList.clear()
-  }
-
   func updateScripts() {
     webView?.updateScripts()
   }
@@ -563,18 +566,22 @@ private struct ChromiumBackForwardList: BackForwardListProxy {
     }
   }
 
-  init(_ backForwardList: CWVBackForwardList) {
+  init(_ backForwardList: CWVBackForwardList, canGoBack: Bool, canGoForward: Bool) {
     self.backForwardList = backForwardList
-    self.backList = backForwardList.backList.map(Item.init)
-    self.forwardList = backForwardList.forwardList.map(Item.init)
     self.currentItem = backForwardList.currentItem.flatMap(Item.init)
-    self.backItem = backForwardList.backItem.flatMap(Item.init)
-    self.forwardItem = backForwardList.forwardItem.flatMap(Item.init)
+//    if canGoBack {
+      self.backItem = backForwardList.backItem.flatMap(Item.init)
+      self.backList = backForwardList.backList.map(Item.init)
+//    }
+//    if canGoForward {
+      self.forwardItem = backForwardList.forwardItem.flatMap(Item.init)
+      self.forwardList = backForwardList.forwardList.map(Item.init)
+//    }
   }
 
   var backForwardList: CWVBackForwardList
-  var backList: [any BackForwardListItemProxy]
-  var forwardList: [any BackForwardListItemProxy]
+  var backList: [any BackForwardListItemProxy] = []
+  var forwardList: [any BackForwardListItemProxy] = []
   var currentItem: (any BackForwardListItemProxy)?
   var backItem: (any BackForwardListItemProxy)?
   var forwardItem: (any BackForwardListItemProxy)?
