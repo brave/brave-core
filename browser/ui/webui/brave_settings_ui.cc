@@ -14,6 +14,7 @@
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -40,6 +41,7 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -65,6 +67,7 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -163,6 +166,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
+  html_source->AddBoolean("isSpeedreaderDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              speedreader::kSpeedreaderDisabledByPolicy));
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
@@ -213,7 +219,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
   html_source->AddBoolean(
-      "isEmailAliasesFeatureEnabled",
+      "isEmailAliasesEnabled",
       base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
@@ -266,3 +272,10 @@ void BraveSettingsUI::BindInterface(
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  email_aliases::EmailAliasesServiceFactory::BindForProfile(
+      profile, std::move(receiver));
+}

@@ -328,10 +328,10 @@ static_library("browser") {
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
-    "//components/country_codes",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/update_client",
     "//components/value_store",
     "//crypto",
@@ -377,7 +377,9 @@ static_library("browser") {
   configs += [ ":sardine_config" ]
 }
 
-if (!is_ios) {
+# TODO(https://github.com/brave/brave-browser/issues/47669) this should be
+# in content/browser subfolder of a layered brave_wallet component.
+if (use_blink) {
   static_library("permission_utils") {
     sources = [
       "permission_utils.cc",
@@ -536,7 +538,6 @@ source_set("test_support") {
 
   deps = [
     ":browser",
-    ":test_data",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser",
@@ -558,8 +559,6 @@ source_set("test_support") {
     "//components/value_store",
     "//components/value_store:test_support",
   ]
-
-  data = [ "$root_gen_dir/brave/wallet-test-data/" ]
 }  # source_set("test_support")
 
 generated_types("generated_blockchain_list_schemas") {
@@ -702,7 +701,6 @@ source_set("unit_tests") {
     "network_manager_unittest.cc",
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
-    "permission_utils_unittest.cc",
     "rlp_decode_unittest.cc",
     "rlp_encode_unittest.cc",
     "simple_hash_client_unittest.cc",
@@ -756,7 +754,6 @@ source_set("unit_tests") {
     ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
-    ":test_data",
     ":test_support",
     ":transaction",
     ":utils",
@@ -813,18 +810,18 @@ source_set("unit_tests") {
     ]
   }
 
-  if (!is_ios) {
+  if (use_blink) {
+    sources += [ "permission_utils_unittest.cc" ]
     deps += [
       ":permission_utils",
       "//components/permissions",
-      "//content/test:test_support",
+      "//third_party/blink/public/common",
     ]
   }
-}  # source_set("unit_tests")
 
-copy("test_data") {
-  testonly = true
-  sources =
-      [ "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json" ]
-  outputs = [ "$root_gen_dir/brave/wallet-test-data/{{source_file_part}}" ]
-}
+  data = [
+    # Test vectors for
+    # BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors test.
+    "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
+  ]
+}  # source_set("unit_tests")

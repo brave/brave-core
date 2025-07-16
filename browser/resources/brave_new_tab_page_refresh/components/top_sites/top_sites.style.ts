@@ -6,31 +6,24 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
-export const collapsedTileCount = 6
+export const collapsedTileColumnCount = 6
+export const collapsedTileRowCount = 1
+export const minTileColumnCount = 4
 export const maxTileColumnCount = 12
-export const maxTileRowCount = 4;
-export const maxTileCount = maxTileColumnCount * maxTileRowCount
+export const maxTileRowCount = 2
+export const tileWidth = 72
+export const tileHeight = 82
+export const nonGridWidth = 64
 
 export const style = scoped.css`
   & {
-    --self-tile-width: 72px;
-    --self-tile-height: 82px;
+    --self-tile-width: ${tileWidth}px;
+    --self-tile-height: ${tileHeight}px;
     --self-tile-icon-size: 56px;
     --self-transition-duration: 180ms;
-    --self-backdrop-transition-duration: 100ms;
-    --self-column-count: min(var(--self-tile-count), ${collapsedTileCount});
-    --self-max-grid-width: calc(100vi - 110px);
 
-    flex-grow: 1;
+    width: 100%;
     container-type: inline-size;
-  }
-
-  &.expanded {
-    --self-column-count: min(var(--self-tile-count), ${maxTileColumnCount});
-  }
-
-  &.hidden {
-    display: none;
   }
 
   .top-sites {
@@ -41,32 +34,31 @@ export const style = scoped.css`
   }
 
   .top-site-tiles-mask {
-    --self-available-width: calc(100cqi - 64px);
-
-    flex-grow: 1;
-    overflow-x: hidden;
+    position: relative;
+    overflow-x: scroll;
     overflow-y: hidden;
-    height: var(--self-tile-height);
-    max-width: min(
-      calc(var(--self-column-count) * var(--self-tile-width)),
-      round(down, var(--self-available-width), var(--self-tile-width)));
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+    overscroll-behavior: none;
+    max-width: calc(var(--self-columns-per-page) * var(--self-tile-width));
+    max-height: fit-content;
+    display: flex;
+    gap: 16px;
 
-    transition:
-      height var(--self-transition-duration),
-      max-width var(--self-transition-duration);
-  }
-
-  &.expanded .top-site-tiles-mask {
-    height: fit-content;
+    transition: max-width var(--self-transition-duration);
   }
 
   .top-site-tiles {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 16px;
-    width: min(
-      var(--self-max-grid-width),
-      calc(${maxTileColumnCount} * var(--self-tile-width)));
+    --self-grid-columns:
+      min(var(--self-columns-per-page), var(--self-tile-count));
+
+    display: grid;
+    scroll-snap-align: start;
+    grid-template-columns:
+      repeat(var(--self-grid-columns), var(--self-tile-width));
+    grid-auto-rows: var(--self-tile-height);
+    grid-row-gap: 16px;
   }
 
   .top-site-tile {
@@ -76,29 +68,15 @@ export const style = scoped.css`
     align-items: center;
     gap: 8px;
     text-decoration: none;
-  }
 
-  .top-site-tile:nth-child(n + ${collapsedTileCount + 1}) {
-    opacity: 1;
-
-    transition-property: opacity, display;
-    transition-duration: var(--self-transition-duration);
-    transition-delay: calc(var(--self-transition-duration) - 60ms);
-    transition-behavior: allow-discrete;
-
-    @starting-style {
-      opacity: 0;
+    .sorting & {
+      transition: translate var(--self-transition-duration);
     }
-  }
 
-  &.collapsed .top-site-tile:nth-child(n + ${collapsedTileCount + 1}) {
-    display: none;
-    opacity: 0;
-    transition-delay: 0s;
-  }
-
-  .top-site-tile:nth-child(n + ${maxTileCount + 1}) {
-    display: none;
+    &.dragging {
+      opacity: 0;
+      transition: opacity var(--self-transition-duration);
+    }
   }
 
   .top-site-icon {
@@ -139,6 +117,7 @@ export const style = scoped.css`
     img {
       width: 100%;
       height: auto;
+      pointer-events: none;
     }
   }
 
@@ -165,28 +144,8 @@ export const style = scoped.css`
     text-align: center;
   }
 
-  .tile-drop-indicator {
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    height: var(--self-tile-height);
-    width: 4px;
-    border-radius: 2px;
-    background: ${color.divider.interactive};
-    display: none;
-    opacity: 0;
-
-    transition: display 100ms allow-discrete, opacity 100ms;
-
-    &.dragging {
-      display: block;
-      opacity: 1;
-
-      @starting-style {
-        opacity: 0;
-      }
-    }
+  .left-spacer {
+    flex: 0 0 24px;
   }
 
   .menu-button {
@@ -211,10 +170,18 @@ export const style = scoped.css`
     }
   }
 
+  .menu-divider {
+    border-top: solid 1px ${color.divider.subtle};
+
+    &:first-child, &:last-child {
+      display: none;
+    }
+  }
+
   .top-sites-menu {
     position-anchor: --top-sites-menu-button;
-    position-area: block-end span-inline-end;
-    position-try-fallbacks: flip-block;
+    position-area: block-end span-inline-start;
+    position-try-fallbacks: flip-inline, flip-block;
   }
 
   .top-site-context-menu-anchor {
@@ -231,35 +198,23 @@ export const style = scoped.css`
     position-try-fallbacks: flip-inline, flip-block;
   }
 
-  .expand-button {
-    --leo-icon-size: 24px;
+  .page-nav {
+    --leo-navdots-active-color: #fff;
+    --leo-navdots-active-color-hover: #fff;
+    --leo-navdots-color: #fff;
+    --leo-navdots-color-hover: #fff;
 
-    height: var(--self-tile-icon-size);
-    color: rgba(255, 255, 255, .6);
-    display: flex;
-    align-items: center;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.24);
-    opacity: 0;
-    visibility: hidden;
+    margin-top: 16px;
+    opacity: 1;
+    transition: opacity 500ms;
 
-    transition: opacity var(--self-transition-duration);
-
-    &:hover {
-      background: rgba(255, 255, 255, .35);
-    }
-
-    &:focus-visible {
-      opacity: 1;
-      background: rgba(255, 255, 255, .35);
-      outline: none;
+    @starting-style {
+      opacity: 0;
     }
   }
 
-  &:hover {
-    .menu-button, .expand-button:not(:disabled) {
-      opacity: 1;
-      visibility: visible;
-    }
+  &:hover .menu-button {
+    opacity: 1;
+    visibility: visible;
   }
 `

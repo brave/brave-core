@@ -39,7 +39,7 @@ type NeedlePosition = number
 type TextMatchRule = (targetText: string, exact?: boolean) => boolean
 type KeyValueMatchRules = [
   keyMatchRule: TextMatchRule,
-  valueMatchRule: TextMatchRule,
+  valueMatchRule: TextMatchRule | undefined,
 ]
 
 /**
@@ -91,7 +91,11 @@ const _testMatches = (test: string, value: string, exact: boolean = false): bool
   return value.includes(test)
 }
 
-const _extractKeyMatchRuleFromStr = (text: string): [TextMatchRule, number] => {
+/**
+ * Returns the key part of the `key=value` pair and the index of the start of
+ * the value part, or just the key with `undefined` if there is no value part
+ */
+const _extractKeyFromStr = (text: string): [string, number?] => {
   const quotedTerminator = '"='
   const unquotedTerminator = '='
   const isQuotedCase = text[0] === '"'
@@ -102,22 +106,36 @@ const _extractKeyMatchRuleFromStr = (text: string): [TextMatchRule, number] => {
 
   const indexOfTerminator = text.indexOf(terminator, needlePosition)
   if (indexOfTerminator === -1) {
-    throw new Error(
-      `Unable to parse key rule from ${text}. Key rule starts with `
-      + `${text[0]}, but doesn't include '${terminator}'`)
+    // No key/value separator found, attempt to extract plain key instead
+    let key = text
+    if (isQuotedCase) {
+      if (!text.endsWith('"')) {
+        throw new Error(`Quoted value '${text}' does not terminate with quote`);
+      }
+      key = text.slice(1, text.length - 1)
+    }
+    return [key, undefined]
   }
 
   const testCaseStr = text.slice(needlePosition, indexOfTerminator)
-  const testCaseFunc = _testMatches.bind(undefined, testCaseStr)
   const finalNeedlePosition = indexOfTerminator + terminator.length
-  return [testCaseFunc, finalNeedlePosition]
+
+  return [testCaseStr, finalNeedlePosition]
 }
 
 const _extractValueMatchRuleFromStr = (text: string,
                                        uriEncode = false,
                                        needlePosition = 0): TextMatchRule => {
+  const testCaseStr = _extractValueFromStr(text, uriEncode, needlePosition)
+  const testCaseFunc = _testMatches.bind(undefined, testCaseStr)
+  return testCaseFunc
+}
+
+const _extractValueFromStr = (text: string,
+                              uriEncode = false,
+                              needlePosition = 0): string => {
   const isQuotedCase = text[needlePosition] === '"'
-  let endIndex
+  let endIndex: number
 
   if (isQuotedCase) {
     if (text.at(-1) !== '"') {
@@ -136,8 +154,8 @@ const _extractValueMatchRuleFromStr = (text: string,
   if (uriEncode) {
     testCaseStr = testCaseStr.replace(/\P{ASCII}/gu, c => encodeURIComponent(c))
   }
-  const testCaseFunc = _testMatches.bind(undefined, testCaseStr)
-  return testCaseFunc
+
+  return testCaseStr
 }
 
 // Parse an argument like `"abc"="xyz"` into
@@ -153,8 +171,12 @@ const _extractValueMatchRuleFromStr = (text: string,
 //   // key matches the test condition
 // }
 const _parseKeyValueMatchRules = (arg: string): KeyValueMatchRules => {
-  const [keyMatchRule, needlePos] = _extractKeyMatchRuleFromStr(arg)
-  const valueMatchRule = _extractValueMatchRuleFromStr(arg, false, needlePos)
+  const [key, needlePos] = _extractKeyFromStr(arg)
+  const keyMatchRule = _testMatches.bind(undefined, key)
+  let valueMatchRule: TextMatchRule | undefined
+  if (needlePos !== undefined) {
+    valueMatchRule = _extractValueMatchRuleFromStr(arg, false, needlePos)
+  }
   return [keyMatchRule, valueMatchRule]
 }
 
@@ -322,7 +344,7 @@ const operatorMatchesProperty = (instruction: string,
     if (!keyTest(propName)) {
       continue
     }
-    if (!valueTest(propValue)) {
+    if (valueTest !== undefined && !valueTest(propValue)) {
       continue
     }
     return [element]
@@ -349,7 +371,7 @@ const operatorMatchesAttr = (instruction: string,
       continue
     }
     const attrValue = element.getAttribute(attrName)
-    if (attrValue === null || !valueTest(attrValue)) {
+    if (attrValue === null || (valueTest !== undefined && !valueTest(attrValue))) {
       continue
     }
     return [element]

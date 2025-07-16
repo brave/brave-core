@@ -11,12 +11,12 @@
 #include "base/logging.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
 #include "ui/views/widget/widget.h"
 
@@ -49,7 +49,8 @@ void PlaylistContentsWrapper::EnterFullscreenModeForTab(
       ->SetIsFullscreenWithinTab(true);
 
   auto* fullscreen_controller = browser_view_->browser()
-                                    ->exclusive_access_manager()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
                                     ->fullscreen_controller();
   was_browser_fullscreen_ = fullscreen_controller->IsFullscreenForBrowser();
   DCHECK(!fullscreen_controller->IsTabFullscreen())
@@ -61,7 +62,9 @@ void PlaylistContentsWrapper::EnterFullscreenModeForTab(
   fullscreen_display_id_ = options.display_id;
   if (was_browser_fullscreen_) {
     // In case it was in fullscreen for browser, we should trigger layout here.
-    coordinator_->side_panel_web_view()->InvalidateLayout();
+    auto side_panel_web_view = coordinator_->side_panel_web_view();
+    DCHECK(side_panel_web_view);
+    side_panel_web_view->InvalidateLayout();
   } else {
     widget->SetFullscreen(true, fullscreen_display_id_);
   }
@@ -162,5 +165,7 @@ void PlaylistContentsWrapper::OnExitFullscreen() {
   fullscreen_observation_.Reset();
   fullscreen_display_id_ = display::kInvalidDisplayId;
 
-  coordinator_->side_panel_web_view()->InvalidateLayout();
+  auto side_panel_web_view = coordinator_->side_panel_web_view();
+  DCHECK(side_panel_web_view);
+  side_panel_web_view->InvalidateLayout();
 }

@@ -14,9 +14,14 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "components/permissions/request_type.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+// TODO(https://github.com/brave/brave-browser/issues/47669) this file should be
+// in content/browser subfolder of a layered brave_wallet component.
 
 namespace {
 

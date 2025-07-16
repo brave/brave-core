@@ -76,10 +76,12 @@ export function createRewardsHandler(
       updatePrefs(),
       updateRewardsEnabled(),
       updateExternalWallet(),
-      updateParameters(),
-      updateBalance()
+      updateParameters()
     ])
 
+    store.update({ initialized: true })
+
+    updateBalance()
     updateAdsViewed()
   }
 

@@ -39,6 +39,14 @@ const base::FeatureParam<bool> kOmniboxOpensFullPage{
     &kAIChat, "omnibox_opens_full_page", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 
+// TODO(petemill): Consider making the algorithm
+// more sophisticated and variable by model, event type, or handled by the
+// server.
+const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
+    &kAIChat, "max_count_large_tool_use_events", 2};
+const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
+    &kAIChat, "content_size_large_tool_use_events", 1000};
+
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }

@@ -30,6 +30,7 @@ source_set("features") {
     "//brave/components/skus/common:common",
     "//brave/ios/browser/api/translate:features",
     "//brave/ios/browser/ui/commerce:features",
+    "//brave/ios/browser/ui/tab_tray:features",
     "//brave/ios/browser/ui/web_view:features",
     "//build:blink_buildflags",
     "//net",

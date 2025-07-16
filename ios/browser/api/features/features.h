@@ -81,6 +81,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViews;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
+@property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
 @end
 
 NS_ASSUME_NONNULL_END

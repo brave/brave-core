@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.signin.base.AccountInfo;
-import org.chromium.components.signin.base.GaiaId;
+import org.chromium.google_apis.gaia.GaiaId;
 
 public class BraveManageAccountDevicesLinkView extends LinearLayout {
     public BraveManageAccountDevicesLinkView(Context context, AttributeSet attrs) {

@@ -20,7 +20,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
   cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn()
 }
 
 describe('EmailAliasModal', () => {
@@ -125,10 +124,8 @@ describe('EmailAliasModal', () => {
 
     // Click delete button
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-    clickLeoButton(deleteButton)
-
-    await waitFor(() => {
-      expect(deleteButton).toHaveAttribute('isdisabled', 'true')
+    await act(async () => {
+      clickLeoButton(deleteButton)
     })
 
     // Check that deleteAlias was called

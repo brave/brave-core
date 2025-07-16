@@ -177,9 +177,15 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
 TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
   std::string file_contents;
   ASSERT_TRUE(base::ReadFileToString(
-      base::PathService::CheckedGet(base::DIR_GEN_TEST_DATA_ROOT)
-          .Append(
-              FILE_PATH_LITERAL("brave/wallet-test-data/key_io_valid.json")),
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+          .AppendASCII("brave")
+          .AppendASCII("third_party")
+          .AppendASCII("bitcoin-core")
+          .AppendASCII("src")
+          .AppendASCII("src")
+          .AppendASCII("test")
+          .AppendASCII("data")
+          .AppendASCII("key_io_valid.json"),
       &file_contents));
   auto test_items = base::test::ParseJsonList(file_contents);
   uint32_t total_tests = test_items.size();

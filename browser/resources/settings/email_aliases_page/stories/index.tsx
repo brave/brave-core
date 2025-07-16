@@ -134,11 +134,6 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
-  removeObserver (observer: EmailAliasesServiceObserverRemote |
-                            EmailAliasesServiceObserverInterface) {
-    this.observers.delete(observer)
-  }
-
   async updateAlias (email: string, note: string) {
     if (Math.random() < 1/3) {
       return { errorMessage: getLocale('emailAliasesUpdateAliasError') }
@@ -201,7 +196,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { errorMessage: null }
   }
 
-  cancelAuthenticationOrLogout () {
+  async cancelAuthenticationOrLogout () {
     window.clearTimeout(this.accountRequestId)
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
@@ -235,17 +230,13 @@ const stubEmailAliasesServiceAccountReadyInstance =
 const bindNoAccountObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
-    return () => {
-      stubEmailAliasesServiceNoAccountInstance.removeObserver(observer)
-    }
+    return () => { } // Do nothing in this mock implementation.
   }
 
 const bindAccountReadyObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
     stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
-    return () => {
-      stubEmailAliasesServiceAccountReadyInstance.removeObserver(observer)
-    }
+    return () => { } // Do nothing in this mock implementation.
   }
 
 export const SignInPage = () => {

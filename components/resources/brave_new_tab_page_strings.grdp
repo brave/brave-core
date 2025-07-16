@@ -273,6 +273,14 @@
     Show favorites
   </message>
 
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL" desc="Label for button collapses the top sites component">
+    Show fewer items
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL" desc="Label for button that expands the top sites component">
+    Show more items
+  </message>
+
   <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="Label for button that switches top sites to most visited mode">
     Show frequently visited
   </message>

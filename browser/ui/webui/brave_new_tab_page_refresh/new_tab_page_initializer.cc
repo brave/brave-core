@@ -243,6 +243,8 @@ void NewTabPageInitializer::AddStrings() {
        IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE},
       {"topSitesSettingsTitle", IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE},
       {"topSitesShowCustomLabel", IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL},
+      {"topSitesShowLessLabel", IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL},
+      {"topSitesShowMoreLabel", IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL},
       {"topSitesShowMostVisitedLabel",
        IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL},
       {"topSitesTitleLabel", IDS_NEW_TAB_TOP_SITES_TITLE_LABEL},
