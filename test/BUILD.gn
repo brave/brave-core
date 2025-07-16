@@ -969,6 +969,7 @@ test("brave_browser_tests") {
     "//components/metrics_services_manager",
     "//components/network_session_configurator/common:common",
     "//components/network_time",
+    "//components/omnibox/browser",
     "//components/optimization_guide/core",
     "//components/permissions",
     "//components/permissions:permissions_common",

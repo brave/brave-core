@@ -62,6 +62,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -227,6 +228,11 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Enabled by default after fixing
   // https://github.com/brave/brave-browser/issues/18017
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
+
+  // Disable @aimode search keyword
+  // Currently, upstream only defines an int kAIModeAllowed = 0 value and check
+  // against it (see components/omnibox/browser/omnibox_prefs.cc).
+  registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
 }
 
 }  // namespace
