@@ -117,6 +117,9 @@ extension BrowserViewController {
   /// Initializes a new WalletStore for displaying the wallet, setting up an observer to notify
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
+    if profileController.braveWalletAPI.isDisabledByPolicy {
+      return nil
+    }
     let privateMode = privateBrowsingManager.isPrivateBrowsing
     guard
       let walletStore = WalletStore.from(
