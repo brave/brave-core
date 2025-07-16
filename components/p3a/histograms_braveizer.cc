@@ -70,8 +70,8 @@ void HistogramsBraveizer::DoHistogramBravetization(
       // Unknown answer, do not report.
       return;
     }
-    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", typical_answer);
-    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefaultDaily", express_answer);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefault", typical_answer, 2);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefaultDaily", express_answer, 2);
   }
 
   if ("Extensions.LoadExtension" == histogram_name) {
