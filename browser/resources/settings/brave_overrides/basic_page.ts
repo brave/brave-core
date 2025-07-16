@@ -404,16 +404,6 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
-      // Remove all hidden performance options from basic page.
-      // We moved performance elements into system settings.
-      const performanceTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showPage_(pageVisibility_.performance)]]"]')
-      if (performanceTemplate) {
-        performanceTemplate.remove()
-      } else {
-        console.error('[Settings] Could not find performance section')
-      }
-
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
