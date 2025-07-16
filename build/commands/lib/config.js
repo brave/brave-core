@@ -760,7 +760,8 @@ Config.prototype.buildArgs = function () {
 
     if (this.isCI) {
       // We want Android CI to run Java static analyzer synchronously
-      // for non-official (PR) builds and to have it turned off for the official builds
+      // for non-official (PR) builds and to have it turned off for the
+      // official builds
       // See comment at src/build/config/android/config.gni:
       // All android bots that can build java targets need to explicitly set
       // android_static_analysis = "on" or "off" rather than rely on the default
