@@ -17,10 +17,6 @@ namespace polkadot {
 class SchnorrkelKeyPair;
 }  // namespace polkadot
 
-using polkadot::SchnorrkelKeyPair;
-using polkadot::SR25519PublicKey;
-using polkadot::SR25519Signature;
-
 class HDKeySr25519 {
  public:
   HDKeySr25519(const HDKeySr25519&) = delete;
@@ -31,14 +27,18 @@ class HDKeySr25519 {
   static std::unique_ptr<HDKeySr25519> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
-  SR25519PublicKey GetPublicKey();
-  SR25519Signature SignMessage(base::span<const uint8_t> msg);
-  bool VerifyMessage(SR25519Signature const& sig,
+  polkadot::SR25519PublicKey GetPublicKey();
+  polkadot::SR25519Signature SignMessage(base::span<const uint8_t> msg);
+  bool VerifyMessage(polkadot::SR25519Signature const& sig,
                      base::span<const uint8_t> msg);
 
+  // derive_junction should be a SCALE-encoded segment from the derivation path
+  std::unique_ptr<HDKeySr25519> DeriveHard(
+      base::span<const uint8_t> derive_junction);
+
  private:
-  explicit HDKeySr25519(std::unique_ptr<SchnorrkelKeyPair> key);
-  std::unique_ptr<SchnorrkelKeyPair> schnorrkel_key_pair_;
+  explicit HDKeySr25519(std::unique_ptr<polkadot::SchnorrkelKeyPair> key);
+  std::unique_ptr<polkadot::SchnorrkelKeyPair> schnorrkel_key_pair_;
 };
 
 }  // namespace brave_wallet

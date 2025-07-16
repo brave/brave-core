@@ -7,6 +7,7 @@ license = "MPL-2.0"
 [dependencies]
 cxx = { version = "1" }
 schnorrkel = { version = "0.11.4" }
+blake2b_simd = { version = "1.0.1" }
 
 [lib]
 name = "sr25519"

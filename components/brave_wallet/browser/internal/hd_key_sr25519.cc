@@ -12,7 +12,7 @@
 
 namespace brave_wallet {
 
-HDKeySr25519::HDKeySr25519(std::unique_ptr<SchnorrkelKeyPair> skp)
+HDKeySr25519::HDKeySr25519(std::unique_ptr<polkadot::SchnorrkelKeyPair> skp)
     : schnorrkel_key_pair_(std::move(skp)) {}
 
 HDKeySr25519::~HDKeySr25519() = default;
@@ -20,24 +20,31 @@ HDKeySr25519::~HDKeySr25519() = default;
 // static
 std::unique_ptr<HDKeySr25519> HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  auto skp = SchnorrkelKeyPair::GenerateFromSeed(seed);
+  auto skp = polkadot::SchnorrkelKeyPair::GenerateFromSeed(seed);
   if (skp) {
     return base::WrapUnique(new HDKeySr25519(std::move(skp)));
   }
   return nullptr;
 }
 
-SR25519PublicKey HDKeySr25519::GetPublicKey() {
+polkadot::SR25519PublicKey HDKeySr25519::GetPublicKey() {
   return schnorrkel_key_pair_->GetPublicKey();
 }
 
-SR25519Signature HDKeySr25519::SignMessage(base::span<const uint8_t> msg) {
+polkadot::SR25519Signature HDKeySr25519::SignMessage(
+    base::span<const uint8_t> msg) {
   return schnorrkel_key_pair_->SignMessage(msg);
 }
 
-bool HDKeySr25519::VerifyMessage(SR25519Signature const& sig,
+bool HDKeySr25519::VerifyMessage(polkadot::SR25519Signature const& sig,
                                  base::span<const uint8_t> msg) {
   return schnorrkel_key_pair_->VerifyMessage(sig, msg);
+}
+
+std::unique_ptr<HDKeySr25519> HDKeySr25519::DeriveHard(
+    base::span<const uint8_t> derive_junction) {
+  return base::WrapUnique(
+      new HDKeySr25519(schnorrkel_key_pair_->DeriveHard(derive_junction)));
 }
 
 }  // namespace brave_wallet

@@ -47,5 +47,8 @@ rust_static_library("rust_lib") {
   sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
-  deps = [ "//brave/third_party/rust/schnorrkel/v0_11:lib" ]
+  deps = [
+    "//brave/third_party/rust/schnorrkel/v0_11:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+  ]
 }

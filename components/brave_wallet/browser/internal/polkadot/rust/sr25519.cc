@@ -22,6 +22,8 @@ class SchnorrkelKeyPairImpl : public SchnorrkelKeyPair {
   SR25519Signature SignMessage(base::span<const uint8_t> msg) override;
   bool VerifyMessage(SR25519Signature const& sig,
                      base::span<const uint8_t> msg) override;
+  std::unique_ptr<SchnorrkelKeyPair> DeriveHard(
+      base::span<const uint8_t> derive_junction) override;
 
  private:
   rust::Box<CxxSchnorrkelKeyPair> impl_;
@@ -58,6 +60,13 @@ bool SchnorrkelKeyPairImpl::VerifyMessage(SR25519Signature const& sig,
   rust::Slice<const uint8_t> sig_bytes{sig.data(), sig.size()};
   rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
   return impl_->verify_message(sig_bytes, bytes);
+}
+
+std::unique_ptr<SchnorrkelKeyPair> SchnorrkelKeyPairImpl::DeriveHard(
+    base::span<const uint8_t> derive_junction) {
+  rust::Slice<const uint8_t> bytes{derive_junction.data(),
+                                   derive_junction.size()};
+  return std::make_unique<SchnorrkelKeyPairImpl>(impl_->derive_hard(bytes));
 }
 
 }  // namespace brave_wallet::polkadot
