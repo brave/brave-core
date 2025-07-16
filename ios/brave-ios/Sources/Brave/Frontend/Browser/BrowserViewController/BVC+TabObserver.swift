@@ -68,10 +68,14 @@ extension BrowserViewController: TabObserver {
     if !tab.isPrivate {
       injectedScripts += [
         LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
-        EthereumProviderScriptHandler(),
-        SolanaProviderScriptHandler(),
         BraveSearchResultAdScriptHandler(),
       ]
+      if !profileController.braveWalletAPI.isDisabledByPolicy {
+        injectedScripts += [
+          EthereumProviderScriptHandler(),
+          SolanaProviderScriptHandler(),
+        ]
+      }
     }
 
     if FeatureList.kBraveTranslateEnabled.enabled {
@@ -171,7 +175,6 @@ extension BrowserViewController: TabObserver {
 
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
-    tab.browserData?.clearSolanaConnectedAccounts()
 
     // Dismiss any alerts that are showing on page navigation.
     if let alert = tab.shownPromptAlert {
@@ -181,23 +184,27 @@ extension BrowserViewController: TabObserver {
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
-    if let browserData = tab.browserData {
-      if let provider = profileController.braveWalletAPI.ethereumProvider(
-        with: browserData,
-        isPrivateBrowsing: tab.isPrivate
-      ) {
-        // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
-        // on initialization. Fetching allowed accounts requires the origin; so we need to
-        // initialize after `commitedURL` / `url` are updated above
-        tab.walletEthProvider = provider
-        tab.walletEthProvider?.initialize(eventsListener: browserData)
-      }
-      if let provider = profileController.braveWalletAPI.solanaProvider(
-        with: browserData,
-        isPrivateBrowsing: tab.isPrivate
-      ) {
-        tab.walletSolProvider = provider
-        tab.walletSolProvider?.initialize(eventsListener: browserData)
+    if !profileController.braveWalletAPI.isDisabledByPolicy {
+      tab.browserData?.clearSolanaConnectedAccounts()
+
+      if let browserData = tab.browserData {
+        if let provider = profileController.braveWalletAPI.ethereumProvider(
+          with: browserData,
+          isPrivateBrowsing: tab.isPrivate
+        ) {
+          // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
+          // on initialization. Fetching allowed accounts requires the origin; so we need to
+          // initialize after `commitedURL` / `url` are updated above
+          tab.walletEthProvider = provider
+          tab.walletEthProvider?.initialize(eventsListener: browserData)
+        }
+        if let provider = profileController.braveWalletAPI.solanaProvider(
+          with: browserData,
+          isPrivateBrowsing: tab.isPrivate
+        ) {
+          tab.walletSolProvider = provider
+          tab.walletSolProvider?.initialize(eventsListener: browserData)
+        }
       }
     }
 
