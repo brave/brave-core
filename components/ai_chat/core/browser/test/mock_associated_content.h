@@ -42,6 +42,10 @@ class MockAssociatedContent : public AssociatedContentDelegate {
               (GetStagedEntriesCallback),
               (override));
   MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
+  MOCK_METHOD(void,
+              GetScreenshots,
+              (mojom::ConversationHandler::GetScreenshotsCallback),
+              (override));
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();

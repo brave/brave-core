@@ -299,31 +299,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
                               "window.print();");
   print_preview_observer.WaitUntilPreviewIsReady();
 }
-
-// Disable flaky test on ASAN windows 64-bit
-// https://github.com/brave/brave-browser/issues/37969
-#if BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) && defined(ARCH_CPU_64_BITS)
-#define MAYBE_PrintPreviewFallback DISABLED_PrintPreviewFallback
-#else
-#define MAYBE_PrintPreviewFallback PrintPreviewFallback
-#endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
-        // defined(ARCH_CPU_64_BITS)
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
-  ASSERT_TRUE(
-      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
-  FetchPageContent(
-      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
-
-  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
-  FetchPageContent(FROM_HERE, "this is the way");
-
-  // Does not fall back when there is regular DOM content
-  NavigateURL(
-      https_server_.GetURL("a.com", "/long_canvas_with_dom_content.html"),
-      false);
-  FetchPageContent(FROM_HERE, "Or maybe not.");
-}
 #endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
