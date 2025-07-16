@@ -30,7 +30,7 @@ function MatchImage(props: { match: AutocompleteMatch }) {
     return <Icon name='product-brave-leo' className='brave-leo-icon' />
   }
   if (!imageUrl) {
-    return <img className='icon' src={iconUrl || placeholderImageSrc} />
+    return <img className='icon' src={iconUrl.url || placeholderImageSrc} />
   }
   if (imageUrl.startsWith('chrome:')) {
     return <img src={imageUrl} />

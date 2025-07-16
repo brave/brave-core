@@ -5,7 +5,7 @@
 
 #define BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL \
   NotifyPermissionSetInternal(*request_data, std::move(callback),                         \
-                              /*persist=*/true, CONTENT_SETTING_BLOCK,                    \
+                              /*persist=*/true, PermissionDecision::kDeny,                \
                               RequestOutcome::kDeniedByPrerequisites);                    \
   return;
 

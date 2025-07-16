@@ -16,8 +16,7 @@ public abstract class BraveFirstRunFlowSequencer extends FirstRunFlowSequencer {
         super(
                 profileSupplier,
                 new ChildAccountStatusSupplier(
-                        AccountManagerFacadeProvider.getInstance(),
-                        AppRestrictionSupplier.takeMaybeInitialized()));
+                        AccountManagerFacadeProvider.getInstance(), new AppRestrictionSupplier()));
     }
 
     @Override

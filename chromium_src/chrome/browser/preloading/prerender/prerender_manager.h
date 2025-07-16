@@ -19,6 +19,18 @@ class PrerenderManager : public content::WebContentsUserData<PrerenderManager> {
 
   ~PrerenderManager() override;
 
+  // Maybe start prerendering a prewarm page if we haven't prewarm it yet for
+  // the underlying WebContents. Returns true if a new prerender is started.
+  // TODO(https://crbug.com/423465927): Decide a better timing to close.
+  bool MaybeStartPrewarmSearchResult();
+
+  // Deletes the existing prewarm page to start another one for testing.
+  void StopPrewarmSearchResultForTesting();
+
+  // Sets the prewarm page URL for testing as it's difficult to set the testing
+  // server's URL as a Finch parameter in the tests.
+  void SetPrewarmUrlForTesting(const GURL& url);
+
   // Calling this method will lead to the cancellation of the previous prerender
   // if the given `canonical_search_url` differs from the ongoing one's.
   void StartPrerenderSearchResult(

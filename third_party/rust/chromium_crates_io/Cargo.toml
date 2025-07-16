@@ -258,7 +258,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-ident-v1"
 package = "unicode-ident"
 
 [patch.crates-io.unicode-width]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-width-v0_1"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-width-v0_2"
 package = "unicode-width"
 
 [patch.crates-io.winapi-util]

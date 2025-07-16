@@ -14,6 +14,7 @@ import androidx.annotation.IdRes;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -34,24 +35,26 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
             WindowAndroid windowAndroid,
             SetFocusFunction setUrlBarFocusFunction,
             Runnable requestRenderRunnable,
-            boolean shouldShowAppUpdateBadge,
+            boolean canShowAppUpdateBadge,
             Supplier<Boolean> isInOverviewModeSupplier,
             ThemeColorProvider themeColorProvider,
             Supplier<MenuButtonState> menuButtonStateSupplier,
             Runnable onMenuButtonClicked,
-            @IdRes int menuButtonId) {
+            @IdRes int menuButtonId,
+            @Nullable VisibilityDelegate visibilityDelegate) {
         super(
                 appMenuCoordinatorSupplier,
                 controlsVisibilityDelegate,
                 windowAndroid,
                 setUrlBarFocusFunction,
                 requestRenderRunnable,
-                shouldShowAppUpdateBadge,
+                canShowAppUpdateBadge,
                 isInOverviewModeSupplier,
                 themeColorProvider,
                 menuButtonStateSupplier,
                 onMenuButtonClicked,
-                menuButtonId);
+                menuButtonId,
+                visibilityDelegate);
 
         mActivity = windowAndroid.getActivity().get();
     }

@@ -778,7 +778,8 @@ void VerticalTabStripRegionView::OnBrowserAdded(Browser* browser) {
 
 FullscreenController* VerticalTabStripRegionView::GetFullscreenController()
     const {
-  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  auto* exclusive_access_manager =
+      browser_->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
     return nullptr;
   }

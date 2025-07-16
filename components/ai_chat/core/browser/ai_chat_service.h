@@ -17,7 +17,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
@@ -234,7 +233,7 @@ class AIChatService : public KeyedService,
 
   void MaybeInitStorage();
   // Called when the database encryptor is ready.
-  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor, bool success);
+  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
   void LoadConversationsLazy(ConversationMapCallback callback);
   void OnLoadConversationsLazyData(
       std::vector<mojom::ConversationPtr> conversations);
@@ -347,8 +346,6 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
-  // Maintains the subscription for `OSCryptAsync` and cancels upon destruction.
-  base::CallbackListSubscription encryptor_ready_subscription_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
