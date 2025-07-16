@@ -307,6 +307,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GeneratePageContentInternal(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
                                      std::string previous_content);
+  void OnScreenshotsTaken(
+      GetPageContentCallback callback,
+      std::string contents_text,
+      bool is_video,
+      std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
@@ -327,6 +332,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
+
+  // Helper method to switch to vision model if needed
+  void MaybeSwitchToVisionModel(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 

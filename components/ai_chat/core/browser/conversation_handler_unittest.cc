@@ -2465,4 +2465,365 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
   }
 }
 
+struct EmptyContentTestData {
+  std::string name;
+  std::string content;
+};
+
+class ConversationHandlerUnitTest_AutoScreenshot
+    : public ConversationHandlerUnitTest,
+      public testing::WithParamInterface<EmptyContentTestData> {
+ public:
+  static std::vector<EmptyContentTestData> GetTestCases() {
+    return {
+        {"EmptyString", ""},
+        {"StandardWhitespace", "   \t\n\r  "},
+        {"MixedWhitespace", "\n\t \r\n  \t\r  "},
+    };
+  }
+};
+
+TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
+       AutoScreenshotOnEmptyContent) {
+  const EmptyContentTestData& test_data = GetParam();
+
+  // Test that screenshots are automatically taken when page content is
+  // empty/whitespace-only
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // Mock associated content to return the test content
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return(test_data.content));
+
+  // Mock GetScreenshots to return sample screenshots
+  std::vector<mojom::UploadedFilePtr> mock_screenshots =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kScreenshot);
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response with screenshots")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Submit a conversation entry
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  // Verify that screenshots were attached to the conversation turn
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
+  const auto& human_turn = history[0];  // Human turn (index 0)
+  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  EXPECT_EQ(human_turn->uploaded_files->size(), 2u);
+
+  // Verify that the files are screenshots
+  for (const auto& file : *human_turn->uploaded_files) {
+    EXPECT_EQ(file->type, mojom::UploadedFileType::kScreenshot);
+  }
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    EmptyContentVariations,
+    ConversationHandlerUnitTest_AutoScreenshot,
+    testing::ValuesIn(
+        ConversationHandlerUnitTest_AutoScreenshot::GetTestCases()),
+    [](const testing::TestParamInfo<EmptyContentTestData>& info) {
+      return info.param.name;
+    });
+
+TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
+  // Test that screenshots are NOT taken when page content exists
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // Mock associated content to return non-empty text content
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return("Some page content"));
+
+  // GetScreenshots should NOT be called
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response without screenshots")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Submit a conversation entry
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  // Verify that no screenshots were attached
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history.empty());
+  const auto& last_turn = history.back();
+  EXPECT_FALSE(last_turn->uploaded_files.has_value());
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
+  // Test that screenshots are NOT taken when screenshots already exist in
+  // conversation
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // Mock associated content to return empty text content
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return(""));
+
+  // Add existing screenshots to conversation history
+  std::vector<mojom::ConversationTurnPtr> history;
+  auto turn_with_screenshots = mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Previous question", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt,
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot), false,
+      std::nullopt);
+  history.push_back(std::move(turn_with_screenshots));
+  conversation_handler_->SetChatHistoryForTesting(std::move(history));
+
+  // GetScreenshots should NOT be called because screenshots already exist
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(
+                      "Response without new screenshots")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Submit a conversation entry
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  // Verify that no new screenshots were attached
+  const auto& new_history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(new_history.size(),
+            3u);  // Previous turn + human turn + assistant turn
+  const auto& new_turn = new_history.back();
+  EXPECT_FALSE(new_turn->uploaded_files.has_value());
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
+  // Test that screenshots are appended to existing uploaded files
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // Mock associated content to return empty text content
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return(""));
+
+  // Mock GetScreenshots to return sample screenshots
+  std::vector<mojom::UploadedFilePtr> mock_screenshots =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot);
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response with mixed content")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Submit a conversation entry with existing images
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  auto existing_images =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      Clone(existing_images));
+  loop.Run();
+
+  // Verify that screenshots were appended to existing files
+  const auto& new_history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(new_history.size(), 2u);        // Human turn + assistant turn
+  const auto& human_turn = new_history[0];  // Human turn (index 0)
+  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  EXPECT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
+
+  // Verify that the first two files are images and the last is a screenshot
+  EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
+            mojom::UploadedFileType::kImage);
+  EXPECT_EQ((*human_turn->uploaded_files)[1]->type,
+            mojom::UploadedFileType::kImage);
+  EXPECT_EQ((*human_turn->uploaded_files)[2]->type,
+            mojom::UploadedFileType::kScreenshot);
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
+  // Test that vision model is automatically switched when screenshots are taken
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // Switch to a model without vision support first
+  base::RunLoop loop_for_change_model;
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
+                                           &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("chat-basic");
+  loop_for_change_model.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  // Re-setting a mock engine because it was replaced due to ChangeModel call.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Mock associated content to return empty text content
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return(""));
+
+  // Mock GetScreenshots to return sample screenshots
+  std::vector<mojom::UploadedFilePtr> mock_screenshots =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot);
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
+
+  // Mock engine response
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillRepeatedly(testing::Invoke(
+          [](const bool& send_page_contents, const std::string& page_contents,
+             const std::vector<mojom::ConversationTurnPtr>& history,
+             const std::string& selected_language,
+             const std::vector<base::WeakPtr<Tool>>& tools,
+             std::optional<std::string_view> preferred_tool_name,
+             EngineConsumer::GenerationDataCallback callback,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
+            std::move(done_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Response with vision model")),
+                    std::nullopt /* model_key */)));
+          }));
+
+  base::RunLoop loop;
+  // Note: OnModelDataChanged expectation is set at the end for auto model
+  // switch
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
+        // Verify auto switched to vision support model
+        EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+        loop.Quit();
+      })));
+
+  // Submit a conversation entry
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  // Verify that screenshots were attached and model has vision support
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 1u);        // Only human turn (assistant turn won't
+                                        // complete due to model switch)
+  const auto& human_turn = history[0];  // Human turn (index 0)
+  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  EXPECT_EQ(human_turn->uploaded_files->size(), 1u);
+  EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
+            mojom::UploadedFileType::kScreenshot);
+  EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       NoScreenshotWhenNoAssociatedContent) {
+  // Test that screenshots are NOT taken when there's no associated content
+  conversation_handler_->SetShouldSendPageContents(true);
+
+  // GetScreenshots should NOT be called because there's no associated content
+  // Note: We can't mock associated_content_ here because it's null in this test
+  // class
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response without screenshots")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Submit a conversation entry
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  // Verify that no screenshots were attached
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history.empty());
+  const auto& last_turn = history.back();
+  EXPECT_FALSE(last_turn->uploaded_files.has_value());
+
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
 }  // namespace ai_chat
