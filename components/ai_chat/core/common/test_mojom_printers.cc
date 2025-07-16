@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -52,27 +53,33 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
   *os << "tool_name: " << event.tool_name << "\n";
   *os << "id: " << event.id << "\n";
   *os << "arguments_json: " << event.arguments_json << "\n";
-
   *os << "output:\n"
       << (!event.output.has_value()
               ? "[nullopt]"
               : " array with " + base::NumberToString(event.output->size()) +
-                    " elements");
-
+                    " elements")
+      << "\n";
   if (event.output) {
-    for (const auto& block : *event.output) {
+    for (const auto& block : event.output.value()) {
       *os << "  - ";
-      switch (block->which()) {
-        case mojom::ContentBlock::Tag::kImageContentBlock: {
-          const auto& img = block->get_image_content_block();
-          *os << "image_url: " << img->image_url.possibly_invalid_spec();
-          break;
+      if (block) {
+        switch (block->which()) {
+          case mojom::ContentBlock::Tag::kImageContentBlock: {
+            const auto& img = block->get_image_content_block();
+            *os << "image_url: " << img->image_url.possibly_invalid_spec();
+            break;
+          }
+          case mojom::ContentBlock::Tag::kTextContentBlock: {
+            const auto& txt = block->get_text_content_block();
+            *os << "text: " << txt->text;
+            break;
+          }
+          default: {
+            NOTREACHED() << "Implement PrintTo for new types of content blocks";
+          }
         }
-        case mojom::ContentBlock::Tag::kTextContentBlock: {
-          const auto& txt = block->get_text_content_block();
-          *os << "text: " << txt->text;
-          break;
-        }
+      } else {
+        *os << "[null]";
       }
       *os << "\n";
     }

@@ -8,9 +8,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -43,6 +43,9 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
 
 void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event) {
+  CHECK(mojom_event);
+  CHECK(proto_event);
+
   proto_event->clear_sources();
 
   for (const auto& mojom_source : mojom_event->sources) {
@@ -68,8 +71,9 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
 
   // Convert output ContentBlocks
   if (proto_event.output_size() > 0) {
-    mojom_event->output =
-        std::vector<mojom::ContentBlockPtr>(proto_event.output_size());
+    mojom_event->output = std::vector<mojom::ContentBlockPtr>();
+    mojom_event->output->reserve(
+        static_cast<size_t>(proto_event.output_size()));
 
     for (const auto& proto_block : proto_event.output()) {
       switch (proto_block.content_case()) {
@@ -101,7 +105,13 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
 
 bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
                            store::ToolUseEventProto* proto_event) {
-  if (!mojom_event) {
+  CHECK(mojom_event);
+  CHECK(proto_event);
+
+  // Id is the only field with required content for serialization as
+  // otherwise it won't be able to be stitched together or responded to.
+  if (mojom_event->id.empty()) {
+    DLOG(ERROR) << "Invalid ToolUseEvent found for persistence, with empty id";
     return false;
   }
 
@@ -112,7 +122,7 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   // Convert output ContentBlocks
   proto_event->clear_output();
   if (mojom_event->output) {
-    for (const auto& mojom_block : *mojom_event->output) {
+    for (const auto& mojom_block : mojom_event->output.value()) {
       store::ContentBlockProto* proto_block = proto_event->add_output();
 
       switch (mojom_block->which()) {
