@@ -2,7 +2,7 @@ diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
 index 9b13df3562fa08eff02cae11f87369ae7417f6a8..721577a2fcfc73943a0bfe473eff1ad9746bf1ae 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -619,6 +619,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -626,6 +626,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // not possible, e.g. using the wrong profile or during shutdown. The caller
    // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));

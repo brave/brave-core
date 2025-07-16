@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 8392975cdde4ecc63829cf9ac84d07ac5adca510..f30793fadb4b63b91b85ce899605d8b0b3fda463 100644
+index 28ca0a42ae16111da310361403fe89db1e889767..760b558a58d6efc9735b2c717c2cb8edeb749071 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -744,6 +744,7 @@ static_library("ui") {
+@@ -745,6 +745,7 @@ static_library("ui") {
      # from //chrome/browser/ui/webui, which are not modularized yet.
      "//chrome/browser/ui/webui/about:impl",
    ]
@@ -10,7 +10,7 @@ index 8392975cdde4ecc63829cf9ac84d07ac5adca510..f30793fadb4b63b91b85ce899605d8b0
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3532,7 +3533,10 @@ static_library("ui") {
+@@ -3475,7 +3476,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 8392975cdde4ecc63829cf9ac84d07ac5adca510..f30793fadb4b63b91b85ce899605d8b0
      }
    }
  
-@@ -5748,6 +5752,7 @@ static_library("ui_public_dependencies") {
+@@ -5634,6 +5638,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
