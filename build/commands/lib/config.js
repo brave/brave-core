@@ -758,6 +758,12 @@ Config.prototype.buildArgs = function () {
       args.enable_android_secondary_abi = true
     }
 
+    if (this.isCI) {
+      // We want Android CI to run Java static analyzer synchronously
+      // for non-official (PR) builds and to have it turned off for the official builds
+      args.android_static_analysis = this.isOfficialBuild() ? 'off' : 'on'
+    }
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
