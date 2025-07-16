@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index b2b19cb426da3ab31ecb1d0c9860170c47d2a396..0eb0c0664f0715e9e65ddb8a5c4ab27274ba6ce5 100644
+index d3d91e0abda87768ec38c81d9b90fb38e53f5f1b..2ea2de126d19a0498162992df90a9aeebaf145f5 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -356,6 +356,7 @@ class CORE_EXPORT HTMLCanvasElement final
-   void SetHitTestRegions(VectorOf<ElementHitTestRegion> hit_test_regions);
-   const VectorOf<ElementHitTestRegion>& GetHitTestRegions() const;
+@@ -390,6 +390,7 @@ class CORE_EXPORT HTMLCanvasElement final
+     UpdateMemoryUsage();
+   }
  
 +  BRAVE_HTML_CANVAS_ELEMENT_H_
   protected:
