@@ -102,6 +102,7 @@ group("brave_all_unit_tests") {
 }
 
 cached_test("quick_unit_tests") {
+  configs += []
   sources = [ "//brave/base/trace_event/brave_process_memory_dump_unittest.cc" ]
 
   deps = [
@@ -119,8 +120,15 @@ cached_test("l10n_unit_tests") {
   ]
 }
 
-test("brave_unit_tests") {
+cached_test("brave_unit_tests") {
+  shards = 50
   testonly = true
+
+  filters = [
+    "//brave/test/filters/unit_tests.filter",
+    "//brave/test/filters/unit_tests-macos.filter",
+  ]
+
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
@@ -784,8 +792,13 @@ if (is_android) {
   }
 }
 
-test("brave_browser_tests") {
+cached_test("brave_browser_tests") {
+  shards = 100
   testonly = true
+  filters = [
+    "//brave/test/filters/browser_tests.filter",
+    "//brave/test/filters/browser_tests-macos.filter",
+  ]
 
   public_deps = [ ":browser_tests_runner" ]
 
@@ -1423,14 +1436,4 @@ if (is_android) {
   }
 }  # if (is_android) {
 
-hash_runtime("brave_unit_tests.hash.json") {
-  testonly = true
-  deps = [ ":brave_unit_tests" ]
-  binary = "$root_out_dir/brave_unit_tests"
-}
 
-hash_runtime("brave_browser_tests.hash.json") {
-  testonly = true
-  deps = [ ":brave_browser_tests" ]
-  binary = "$root_out_dir/brave_browser_tests"
-}

@@ -21,6 +21,34 @@
 import("//brave/build/config.gni")
 import("//testing/test.gni")
 
+
+shard1 = [0]
+shard10 = [0,1,2,3,4,5,6,7,8,9]
+shard25 = [
+    0,1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,
+    21,22,23,24
+]
+shard50 = [
+    0,1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,
+    21,22,23,24,25,26,27,28,29,30,
+    31,32,33,34,35,36,37,38,39,40,
+    41,42,43,44,45,46,47,48,49
+]
+shard100 = [
+    0,1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,
+    21,22,23,24,25,26,27,28,29,30,
+    31,32,33,34,35,36,37,38,39,40,
+    41,42,43,44,45,46,47,48,49,50,
+    51,52,53,54,55,56,57,58,59,60,
+    61,62,63,64,65,66,67,68,69,70,
+    71,72,73,74,75,76,77,78,79,80,
+    81,82,83,84,85,86,87,88,89,90,
+    91,92,93,94,95,96,97,98,99
+]
+
 template("hash_runtime") {
   action(target_name) {
     forward_variables_from(invoker,
@@ -45,52 +73,128 @@ template("hash_runtime") {
 
 template("cached_test") {
   name = target_name
+
+  if (defined(invoker.shards)) {
+    shards = invoker.shards 
+  } else {
+    shards = 0
+  }
+
+  if (defined(invoker.filters)) {
+    filters = invoker.filters
+    filterArgs = ["--filters"] 
+    foreach(filter, filters) {
+        filterArgs += [rebase_path(filter)]
+    }
+
+  } else {
+    filters = []
+    filterArgs = []
+
+  }
+
+
+
   test(name + ".gtest") {
     testonly = true
     forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
 
     if (!defined(invoker.public_deps)) {
       public_deps = [
-        "//base/test:run_all_unittests",
-        "//base/test:test_support",
-        "//testing/gmock",
-        "//testing/gtest",
-      ]
-    }
-  }
-
-  hash_runtime(target_name + ".gtest.hash.json") {
-    testonly = true
-    deps = [ ":" + name + ".gtest" ]
-    binary = "$root_out_dir/" + name + ".gtest"
-    forward_variables_from(invoker, [ "files" ])
-  }
-
-  action(target_name) {
-    testonly = true
-    script = "//brave/test/actions/test_runner.py"
-    deps = [
-      ":" + name + ".gtest.hash.json",
-      ":" + name + ".gtest",
-    ]
-
-    inputs = [
-      "$root_out_dir/" + name + ".gtest",
-      "$root_out_dir/" + name + ".gtest.hash.json",
-    ]
-
-    if (defined(invoker.inputs)) {
-      inputs += invoker.inputs
+            "//base/test:run_all_unittests",
+            "//base/test:test_support",
+            "//testing/gmock",
+            "//testing/gtest",
+        ]
+      }
     }
 
-    outputs = [
-      "$target_gen_dir/" + name + "/result.json",
-      "$target_gen_dir/" + name + "/stdout.txt",
-    ]
+    hash_runtime(target_name + ".gtest.hash.json") {
+      testonly = true
+      deps = [ ":" + name + ".gtest" ]
+      binary = "$root_out_dir/" + name + ".gtest"
+      files = filters
+    }
 
-    args = [
-      rebase_path("$root_out_dir/" + name + ".gtest"),
-      rebase_path("$target_gen_dir/" + name),
-    ]
+    if (shards == 1) {
+        range = shard1
+    } else if (shards == 10) {
+        range = shard10
+    } else if (shards == 25) {
+        range = shard25
+    } else if (shards == 50) {
+        range = shard50
+    } else if (shards == 100) {
+        range = shard100
+    } else if (shards > 100) {
+        range = shard100
+        shard = 100
+    } else {
+         range = shard1
+         shards = 1
+    }
+
+    foreach(i, range) {
+        action(target_name + "-shard-"+i) {
+            testonly = true
+            script = "//brave/test/actions/test_runner.py"
+            deps = [
+                ":" + name + ".gtest.hash.json",
+                ":" + name + ".gtest",
+            ]
+
+            inputs = [
+                "$root_out_dir/" + name + ".gtest",
+                "$root_out_dir/" + name + ".gtest.hash.json",
+            ]
+
+            if (defined(invoker.inputs)) {
+                inputs += invoker.inputs
+            }
+
+            outputs = [
+                "$target_gen_dir/" + name + "/"+i+"/result.xml",
+                "$target_gen_dir/" + name + "/"+i+"/stdout.txt",
+            ]
+
+            args = [
+                "--executable", rebase_path("$root_out_dir/" + name + ".gtest"),
+                "--outputDir", rebase_path("$target_gen_dir/" + name + "/"+i),
+            ] + filterArgs
+
+
+            if (shards > 0) {
+                args += [
+                    "--shards", "${shards}",
+                    "--shardIndex", "${i}",
+                ]
+            }
+        }
+    }
+
+    group(target_name) {
+        testonly=true
+        deps = []
+        foreach(i, range) {
+            deps += [":"+target_name + "-shard-"+i]
+        }
+    }
+
+}
+
+
+# Test defaults.
+set_defaults("cached_test") {
+  if (is_android) {
+    # Should be kept in sync with set_defaults("cronet_test") in
+    # //components/cronet/android/cronet_test_templates.gni
+    # LINT.IfChange
+    configs = default_shared_library_configs
+    configs -= [ "//build/config/android:hide_all_but_jni_onload" ]
+    configs += [ "//build/config/android:hide_all_but_jni" ]
+
+    # LINT.ThenChange(/components/cronet/android/cronet_test_templates.gni)
+  } else {
+    configs = default_executable_configs
   }
 }

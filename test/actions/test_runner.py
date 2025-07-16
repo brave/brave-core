@@ -24,32 +24,52 @@ import sys
 import os
 import subprocess
 from datetime import datetime
+import argparse
+    
+    
+parser = argparse.ArgumentParser(
+  description="Run google test suites with sharding for gn actions"
+)
+
+parser.add_argument("--shards", type=int, help="amount of shards the test suite should be split into")
+parser.add_argument("--shardIndex", type=int, help="which test shard should be run")
+parser.add_argument("--executable", type=str, help="which gtest executable shall be run")
+parser.add_argument("--json", type=bool, default=False, help="generates test results xml or json if not set")
+parser.add_argument("--outputDir", type=str, help="path to output folder; It will include stdout, stderr and result.{xml|json}")
+parser.add_argument("--allow-failure", type=bool, default=False, help="will exit with success code even if some tests fail")
+parser.add_argument("--filters", type=str, nargs="+", default=[], help="will exit with success code even if some tests fail")
+# Use parse_known_args to avoid errors on unknown arguments
+
 
 
 def main():
+    (args, gtest_args) = parser.parse_known_args()
     print(datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-    if len(sys.argv) < 3:
-        print(f"Usage: {sys.argv[0]} <gtest_exe> <out_dir> [args...]")
-        sys.exit(1)
 
-    exe = sys.argv[1]
-    out_dir = sys.argv[2]
-    args = sys.argv[3:]
-
-    print(' '.join(sys.argv[1:]))
-
-    other_args = [x for x in args if x.startswith('-')]
+    exe = args.executable
+    out_dir = args.outputDir
 
     stdout_path = os.path.join(out_dir, "stdout.txt")
-    result_path = os.path.join(out_dir, "result.json")
+    result_path = os.path.join(out_dir, "result")
 
-    gtest_output = f"--gtest_output=json:{result_path}"
+    reportFormat = "json" if (args.json) else "xml"
+    gtest_output = f"--gtest_output={reportFormat}:{result_path}.{reportFormat}"
+
+    print(f"running {exe}  SHARD {args.shardIndex} of {args.shards}")
+
+    filterArgs = []
+    if (len(args.filters)):
+        filterArgs = ["--test-launcher-filter-file", ";".join(args.filters)]    
 
     try:
-        process = subprocess.Popen([exe, gtest_output] + other_args,
+        envs = os.environ
+        envs["GTEST_TOTAL_SHARDS"] = str(args.shards)
+        envs["GTEST_SHARD_INDEX"] = str(args.shardIndex)
+        process = subprocess.Popen([exe, gtest_output] + filterArgs + gtest_args,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
-                                   text=True)
+                                   text=True,
+                                   env=envs)
 
     except Exception as e:
         print(f"Failed to start process: {e}")
@@ -73,7 +93,9 @@ def main():
                 output_file.write(stderr_line)
 
     exit_code = process.wait()
-    sys.exit(exit_code)
+
+    print(f"{exe} exited {exit_code} shard {args.shardIndex} / {args.shards}", sys.argv)
+    sys.exit(0 if(args.allow_failure) else exit_code)
 
 
 if __name__ == "__main__":
