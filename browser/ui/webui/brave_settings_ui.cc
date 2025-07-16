@@ -11,6 +11,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -52,6 +53,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -96,6 +98,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveLeoAssistantHandler>());
+
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
@@ -218,11 +223,9 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
-  auto assistant_handler = std::make_unique<settings::BraveLeoAssistantHandler>(
-      std::make_unique<ai_chat::AIChatSettingsHelper>(
-          web_ui()->GetWebContents()->GetBrowserContext()));
-  assistant_handler->BindInterface(std::move(pending_receiver));
-  web_ui()->AddMessageHandler(std::move(assistant_handler));
+  auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  mojo::MakeSelfOwnedReceiver(std::move(helper), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(
