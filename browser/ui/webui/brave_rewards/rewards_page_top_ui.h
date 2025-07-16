@@ -28,7 +28,7 @@ class RewardsPageTopUI : public TopChromeWebUIController {
 
   void BindInterface(mojo::PendingReceiver<mojom::RewardsPageHandler> receiver);
 
-  static constexpr std::string GetWebUIName() { return "RewardsPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "RewardsPanel"; }
 
  private:
   std::unique_ptr<mojom::RewardsPageHandler> handler_;

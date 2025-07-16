@@ -127,7 +127,6 @@ function getChromiumGnArgs() {
     args.debuggable_apks = false
   } else {
     args.enable_hangout_services_extension = false
-    args.enable_nacl = false
   }
 
   if (targetOs === 'mac') {

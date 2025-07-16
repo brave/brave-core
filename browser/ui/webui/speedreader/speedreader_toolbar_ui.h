@@ -34,7 +34,9 @@ class SpeedreaderToolbarUI : public TopChromeWebUIController,
   void BindInterface(
       mojo::PendingReceiver<speedreader::mojom::ToolbarFactory> receiver);
 
-  static constexpr std::string GetWebUIName() { return "SpeedreaderPanel"; }
+  static constexpr std::string_view GetWebUIName() {
+    return "SpeedreaderPanel";
+  }
 
  private:
   void CreateInterfaces(

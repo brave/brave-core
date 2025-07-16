@@ -9,14 +9,13 @@ import {css} from '//resources/lit/v3_0/lit.rollup.js'
 import {HistoryItemElement} from './history_item-chromium.js'
 
 injectStyle(HistoryItemElement, css`
-  #progress {
-      --cr-progress-active-color: var(--leo-color-icon-interactive) !important;
+  .website-title {
+    font-size: 13px;
+    font-weight: 400;
   }
-  @media (prefers-color-scheme: light) {
-      #content:not(.is-active) {
-          /* Color for "filled cards" */
-          background-color: var(--leo-color-container-highlight) !important;
-      }
+
+  #menu-button {
+    transform: rotate(90deg) !important;
   }
 `)
 

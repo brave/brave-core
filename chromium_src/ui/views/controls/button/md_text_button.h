@@ -21,11 +21,8 @@
  protected:                 \
   virtual void UpdateTextColor
 
-#define UpdateColors virtual UpdateColors
-
 #include "src/ui/views/controls/button/md_text_button.h"  // IWYU pragma: export
 
-#undef UpdateColors
 #undef UpdateTextColor
 #undef MdTextButton
 

@@ -297,6 +297,8 @@ source_set("ui") {
       "webui/webcompat_reporter/webcompat_reporter_dialog.h",
       "webui/welcome_page/brave_welcome_ui.cc",
       "webui/welcome_page/brave_welcome_ui.h",
+      "webui/welcome_page/brave_welcome_ui_prefs.cc",
+      "webui/welcome_page/brave_welcome_ui_prefs.h",
       "webui/welcome_page/welcome_dom_handler.cc",
       "webui/welcome_page/welcome_dom_handler.h",
       "whats_new/pref_names.h",
@@ -332,6 +334,7 @@ source_set("ui") {
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
+      "//chrome/browser/ui/extensions",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/tabs:tab_menu",
@@ -612,6 +615,7 @@ source_set("ui") {
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/download",
+      "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -635,7 +639,10 @@ source_set("ui") {
           "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
 
-        deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
+        deps += [
+          "//brave/browser/brave_vpn/win:wireguard_utils",
+          "//chrome/browser:flags",
+        ]
       }
       sources += [ "brave_vpn/brave_vpn_controller.cc" ]
     }
@@ -741,6 +748,8 @@ source_set("ui") {
         "views/obsolete_system_confirm_dialog_view.h",
       ]
     }
+
+    deps += [ "//chrome/browser/infobars" ]
   }
 
   deps += [
@@ -1129,6 +1138,7 @@ source_set("ui") {
 
       deps += [
         "//brave/browser/extensions:component_loader",
+        "//chrome/browser:flags",
         "//third_party/widevine/cdm:buildflags",
       ]
 

@@ -423,7 +423,6 @@ Config.prototype.buildArgs = function () {
     branding_path_component: 'brave',
     branding_path_product: 'brave',
     enable_glic: false,
-    enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
@@ -738,18 +737,6 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    if (this.targetArch === 'arm64') {
-      // Flag use_relr_relocations is incompatible with Android 8 arm64, but
-      // makes huge optimizations on Android 9 and above.
-      // Decision is to specify android:minSdkVersion=28 for arm64 and keep
-      // 26(default) for arm32.
-      // Then:
-      //   - for Android 8 and 8.1 GP will supply arm32 bundle;
-      //   - for Android 9 and above GP will supply arm64 and we can enable all
-      //     optimizations.
-      args.default_min_sdk_version = 28
-    }
-
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
@@ -771,7 +758,6 @@ Config.prototype.buildArgs = function () {
 
     // These do not exist on android
     // TODO - recheck
-    delete args.enable_nacl
     delete args.enable_hangout_services_extension
   }
 
@@ -832,7 +818,6 @@ Config.prototype.buildArgs = function () {
     delete args.branding_path_component
     delete args.branding_path_product
     delete args.enable_glic
-    delete args.enable_nacl
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint

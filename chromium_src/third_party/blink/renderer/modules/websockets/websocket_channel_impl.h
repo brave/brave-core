@@ -37,7 +37,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
 
   static WebSocketChannelImpl* Create(ExecutionContext* execution_context,
                                       WebSocketChannelClient* client,
-                                      std::unique_ptr<SourceLocation> location);
+                                      SourceLocation* location);
 
  private:
   void TearDownFailedConnection() override;

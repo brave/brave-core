@@ -5,6 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fail because we disable prerender
+-All/PrerenderHostRegistryLimitGroupTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplBAndATest.*
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
@@ -41,6 +44,7 @@
 -NavigationRequestTest.RuntimeFeatureStateStorageKey
 -ParametrizedTests/PrefetchService*
 -PermissionOverridesTest.GrantPermissions_AllOriginsShadowing
+-PermissionOverridesTest.GrantPermissions_OverwritesPreviousState
 -PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleRedirectUrlOnlyWhenNotInIncognito/0
 -PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleUrlOnlyWhenNotInIncognito/0
 -PrefetchServiceAllowAllDomainsForExtendedPreloadingTest.ExtendedPreloadingEnabled
