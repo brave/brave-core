@@ -28,14 +28,16 @@ namespace brave_wallet {
 namespace {
 
 bool IsDisabledByPolicy(PrefService* prefs) {
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_IOS)
   DCHECK(prefs);
   return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
 #else
   return false;
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS)
-} 
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+        // BUILDFLAG(IS_IOS)
+}
 
 }  // namespace
 
