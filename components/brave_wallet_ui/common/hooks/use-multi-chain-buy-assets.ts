@@ -25,6 +25,7 @@ export const useFindBuySupportedToken = (
   const foundNativeToken =
     token
     && token.contractAddress === ''
+    && token.chainId
     && options?.find(
       (asset) =>
         asset.chainId?.toLowerCase() === token.chainId.toLowerCase()
