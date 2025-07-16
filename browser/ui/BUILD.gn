@@ -490,8 +490,6 @@ source_set("ui") {
       "views/crash_report_permission_ask_dialog_view.h",
       "views/dialog_footnote_utils.cc",
       "views/dialog_footnote_utils.h",
-      "views/download/brave_download_item_view.cc",
-      "views/download/brave_download_item_view.h",
       "views/extensions/brave_extension_menu_item_view.cc",
       "views/extensions/brave_extension_menu_item_view.h",
       "views/extensions/brave_extensions_menu_main_page_view.cc",
