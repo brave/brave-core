@@ -202,9 +202,8 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
 
   // TODO(sko) Do we have a more general way to get WebContents of the active
   // entry?
-  auto* web_view = browser_->GetFeatures()
-                       .playlist_side_panel_coordinator()
-                       ->side_panel_web_view();
+  auto web_view = PlaylistSidePanelCoordinator::FromBrowser(browser_)
+                      ->side_panel_web_view();
   if (!web_view) {
     return false;
   }

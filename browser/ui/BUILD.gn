@@ -1330,6 +1330,8 @@ source_set("ui") {
       "views/side_panel/playlist/playlist_contents_wrapper.h",
       "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
       "views/side_panel/playlist/playlist_side_panel_coordinator.h",
+      "views/side_panel/playlist/playlist_side_panel_web_view.cc",
+      "views/side_panel/playlist/playlist_side_panel_web_view.h",
       "webui/playlist_active_tab_tracker.cc",
       "webui/playlist_active_tab_tracker.h",
       "webui/playlist_ui.cc",

@@ -98,7 +98,6 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
   void ActivatePlaylistSidePanel() {
     auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-    ASSERT_TRUE(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kPlaylist);
   }
@@ -108,12 +107,11 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     // Wrap routine with lambda as ASSERT_FOO has return type internally.
     ([&]() {
-      auto* coordinator =
-          browser()->GetFeatures().playlist_side_panel_coordinator();
+      auto* coordinator = PlaylistSidePanelCoordinator::FromBrowser(browser());
       ASSERT_TRUE(coordinator);
 
       auto* contents_wrapper = coordinator->contents_wrapper();
-      ASSERT_TRUE(contents_wrapper);
+      ASSERT_TRUE(coordinator);
 
       contents = contents_wrapper->web_contents();
       ASSERT_TRUE(contents);
@@ -183,8 +181,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
-  auto* coordinator =
-      browser()->GetFeatures().playlist_side_panel_coordinator();
+  auto* coordinator = PlaylistSidePanelCoordinator::FromBrowser(browser());
   ASSERT_TRUE(coordinator);
   coordinator->is_audible_for_testing_ = true;
 
