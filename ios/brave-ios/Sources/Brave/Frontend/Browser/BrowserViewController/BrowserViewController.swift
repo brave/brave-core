@@ -509,6 +509,7 @@ public class BrowserViewController: UIViewController {
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
     Preferences.Wallet.defaultEthWallet.observe(from: self)
+    Preferences.Wallet.defaultSolWallet.observe(from: self)
 
     if rewards.rewardsAPI != nil {
       // Ledger was started immediately due to user having ads enabled
