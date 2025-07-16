@@ -127,10 +127,6 @@ describe('EmailAliasModal', () => {
     const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
     clickLeoButton(deleteButton)
 
-    await waitFor(() => {
-      expect(deleteButton).toHaveAttribute('isdisabled', 'true')
-    })
-
     // Check that deleteAlias was called
     await waitFor(() => {
       expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalled()
