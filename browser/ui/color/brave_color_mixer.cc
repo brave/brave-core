@@ -545,7 +545,6 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
   mixer[kColorSidebarAddBubbleBackground] = {nala::kColorContainerBackground};
-  mixer[kColorDownloadShelfButtonText] = {nala::kColorTextPrimary};
 
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorToolbarButtonActivated] = {nala::kColorIconInteractive};
