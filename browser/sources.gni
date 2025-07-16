@@ -251,6 +251,7 @@ brave_chrome_browser_deps = [
   "//components/gcm_driver:gcm_buildflags",
   "//components/metrics",
   "//components/ntp_tiles",
+  "//components/omnibox/browser",
   "//components/password_manager/core/common",
   "//components/permissions",
   "//components/policy/core/common:common_constants",
