@@ -30,6 +30,7 @@ export function createVpnHandler(
       longitude: 0,
       serverCount: 0,
       isAutomatic: false,
+      smartRoutingProxyState: 'none',
       country: 'Brazil',
       namePretty: 'Rio de Janeiro'
     }

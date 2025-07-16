@@ -147,6 +147,7 @@ struct Region {
   double longitude;
   int32 server_count;
   bool is_automatic;
+  string smart_routing_proxy_state;
 };
 
 const string kRegionPrecisionDefault = "default";
