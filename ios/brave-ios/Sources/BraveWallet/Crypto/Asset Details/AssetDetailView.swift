@@ -126,16 +126,18 @@ struct AssetDetailView: View {
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
       HStack(alignment: .top, spacing: 40) {
-        if assetDetailStore.isBuySupported {
+        if assetDetailStore.meldCryptoCurrency != nil {
           PortfolioHeaderButton(style: .buy) {
-            let destination = WalletActionDestination(
-              kind: .buy,
-              initialToken: assetDetailStore.assetDetailToken
-            )
-            if assetDetailStore.allAccountsForToken.isEmpty {
-              onAccountCreationNeeded(destination)
-            } else {
-              walletActionDestination = destination
+            Task { @MainActor in
+              let destination = WalletActionDestination(
+                kind: .buy,
+                initialToken: assetDetailStore.assetDetailToken
+              )
+              if await assetDetailStore.accountCreationNeededForBuy() {
+                onAccountCreationNeeded(destination)
+              } else {
+                walletActionDestination = destination
+              }
             }
           }
         }
@@ -233,16 +235,18 @@ struct AssetDetailView: View {
 
   @ViewBuilder var actionButtonsContainer: some View {
     HStack(alignment: .top, spacing: 40) {
-      if assetDetailStore.isBuySupported {
+      if assetDetailStore.meldCryptoCurrency != nil {
         PortfolioHeaderButton(style: .buy) {
-          let destination = WalletActionDestination(
-            kind: .buy,
-            initialToken: assetDetailStore.assetDetailToken
-          )
-          if assetDetailStore.allAccountsForToken.isEmpty {
-            onAccountCreationNeeded(destination)
-          } else {
-            walletActionDestination = destination
+          Task { @MainActor in
+            let destination = WalletActionDestination(
+              kind: .buy,
+              initialToken: assetDetailStore.assetDetailToken
+            )
+            if await assetDetailStore.accountCreationNeededForBuy() {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
           }
         }
       }
