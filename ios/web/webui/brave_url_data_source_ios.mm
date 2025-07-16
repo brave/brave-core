@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/ui/webui/brave_url_data_source_ios.h"
+#include "brave/ios/web/webui/brave_url_data_source_ios.h"
 
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
@@ -38,10 +38,6 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
     csp_header.append(GetContentSecurityPolicy(directive));
   }
 
-  // TODO(crbug.com/40118579): Both CSP frame ancestors and XFO headers may be
-  // added to the response but frame ancestors would take precedence. In the
-  // future, XFO will be removed so when that happens remove the check and
-  // always add frame ancestors.
   if (ShouldDenyXFrameOptions()) {
     csp_header.append(GetContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FrameAncestors));

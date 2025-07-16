@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
+#ifndef BRAVE_IOS_WEB_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
+#define BRAVE_IOS_WEB_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
 
 #include <string>
 
@@ -27,4 +27,4 @@ class BraveURLDataSourceIOS : public web::URLDataSourceIOS {
   base::flat_map<network::mojom::CSPDirectiveName, std::string> csp_overrides_;
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
+#endif  // BRAVE_IOS_WEB_WEBUI_BRAVE_URL_DATA_SOURCE_IOS_H_
