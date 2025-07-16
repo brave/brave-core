@@ -17,9 +17,7 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
   PopulateGlobalEntries_ChromiumImpl(browser, global_registry);
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    auto* playlist_coordinator =
-        browser->GetFeatures().playlist_side_panel_coordinator();
-    CHECK(playlist_coordinator);
-    playlist_coordinator->CreateAndRegisterEntry(global_registry);
+    PlaylistSidePanelCoordinator::GetOrCreateForBrowser(browser)
+        ->CreateAndRegisterEntry(global_registry);
   }
 }
