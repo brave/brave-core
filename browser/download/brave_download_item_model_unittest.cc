@@ -142,7 +142,8 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
 TEST_F(BraveDownloadItemModelTest, NoDownloadItem) {
   // Test that we handle the scenario when DownloadItemModel doesn't have the
   // DownloadItem (GetDownloadItem returns nullptr).
-  DownloadUIModel model;
+  DownloadUIModel model(
+      std::make_unique<DownloadItemModel::StatusTextBuilder>());
   BraveDownloadItemModel brave_model(&model);
   bool is_secure = false;
   EXPECT_EQ("", base::UTF16ToUTF8(brave_model.GetOriginURLText(&is_secure)));
