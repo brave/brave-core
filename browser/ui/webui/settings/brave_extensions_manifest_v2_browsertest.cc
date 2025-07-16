@@ -8,6 +8,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/constants/brave_paths.h"
@@ -25,6 +26,8 @@
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_dialog_auto_confirm.h"
+#include "extensions/browser/extension_file_task_runner.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
@@ -367,4 +370,47 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   EXPECT_TRUE(base::PathExists(extension->path()
                                    .AppendASCII("_metadata")
                                    .AppendASCII("computed_hashes.json")));
+}
+
+class BraveExtensionsManifestV2ReplaceBrowserTest
+    : public BraveExtensionsManifestV2InstallerBrowserTest {
+ public:
+  BraveExtensionsManifestV2ReplaceBrowserTest() {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        extensions_mv2::features::kExtensionsManifestV2,
+        {{extensions_mv2::features::kExtensionsManifestV2BackupSettings.name,
+          "true"},
+         {extensions_mv2::features::
+              kExtensionsManifestV2BImportSettingsOnInstall.name,
+          "true"},
+         {extensions_mv2::features::kExtensionsManifestV2AutoInstallBraveHosted
+              .name,
+          "true"}});
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
+                       ReplaceWithBraveHosted) {
+  auto extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kCwsNoScriptId)
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+
+  auto* registrar = extensions::ExtensionRegistrar::Get(browser()->profile());
+  registrar->AddExtension(extension);
+  extensions::ExtensionRegistry::Get(browser()->profile())
+      ->TriggerOnInstalled(extension.get(), false);
+  registrar->DisableExtension(
+      extensions_mv2::kCwsNoScriptId,
+      {extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION});
+  WaitExtensionInstalled();
+
+  auto* registry = extensions::ExtensionRegistry::Get(browser()->profile());
+  EXPECT_FALSE(registry->GetInstalledExtension(extensions_mv2::kCwsNoScriptId));
+  EXPECT_TRUE(registry->GetInstalledExtension(extensions_mv2::kNoScriptId));
 }
