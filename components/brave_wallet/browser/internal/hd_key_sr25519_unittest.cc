@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 
+#include <vector>
+
 #include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
