@@ -30,5 +30,15 @@ RegisterPolymerTemplateModifications({
       element => {
         element.classList.remove('first')
     })
+
+    // Replace settings-section with its children
+    const settingsSection = templateContent.querySelector('settings-section')
+    if (!settingsSection) {
+      throw new Error(
+        '[Settings] Missing settings-section on default_browser_page')
+    }
+    if (settingsSection.parentNode) {
+      settingsSection.replaceWith(...settingsSection.childNodes)
+    }
   }
 })
