@@ -641,7 +641,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
         // mode. This can also happen when a tab is re-selected after a crash and it's showing
         // the crash custom view, or is in a frozen state (likely inactive or unloaded).
-        if (isPipUnavailable(tab)) {
+        if (!BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                tab.getWebContents())) {
             mYouTubePipLayout.setVisibility(View.GONE);
             return;
         }
@@ -660,13 +661,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
         mYouTubePipLayout.setVisibility(View.GONE);
-    }
-
-    private boolean isPipUnavailable(final Tab tab) {
-        return tab.isLoading()
-                || tab.isShowingCustomView()
-                || tab.isShowingErrorPage()
-                || tab.isFrozen();
     }
 
     private void showOnBoarding() {
@@ -1171,10 +1165,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             maybeShowWalletPanel();
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
             Tab currentTab = getToolbarDataProvider().getTab();
-            if (currentTab == null || isPipUnavailable(currentTab)) {
-                return;
+            if (currentTab != null
+                    && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                            currentTab.getWebContents())) {
+                BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
             }
-            BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
         }
     }
 

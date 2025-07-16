@@ -30,6 +30,11 @@ public class BraveYouTubeScriptInjectorNativeHelper {
                 .hasFullscreenBeenRequested(webContents);
     }
 
+    public static boolean isPictureInPictureAvailable(WebContents webContents) {
+        return BraveYouTubeScriptInjectorNativeHelperJni.get()
+                .isPictureInPictureAvailable(webContents);
+    }
+
     /**
      * @noinspection unused
      */
@@ -40,5 +45,7 @@ public class BraveYouTubeScriptInjectorNativeHelper {
         void setFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
+
+        boolean isPictureInPictureAvailable(WebContents webContents);
     }
 }

@@ -58,4 +58,19 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
   return helper->HasFullscreenBeenRequested();
 }
 
+jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
+  if (helper) {
+    return helper->IsPictureInPictureAvailable();
+  }
+
+  return false;
+}
+
 }  // namespace youtube_script_injector

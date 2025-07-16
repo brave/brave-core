@@ -30,6 +30,9 @@ class YouTubeScriptInjectorTabHelper
   bool HasFullscreenBeenRequested() const;
   void SetFullscreenRequested(bool requested);
 
+  // Check if Picture-in-Picture is available for the current page.
+  bool IsPictureInPictureAvailable() const;
+
   // content::WebContentsObserver overrides:
   void PrimaryMainDocumentElementAvailable() override;
   void DidToggleFullscreenModeForTab(bool entered_fullscreen,

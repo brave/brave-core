@@ -342,4 +342,9 @@ void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
   }
 }
 
+bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
+  return IsYouTubeVideo() && web_contents() &&
+         web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
