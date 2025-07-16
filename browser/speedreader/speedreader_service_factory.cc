@@ -13,6 +13,8 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 
 namespace speedreader {
 
@@ -49,6 +51,12 @@ SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
   if (!features::IsSpeedreaderEnabled()) {
     return {};
   }
+
+  // Don't create service if disabled by policy
+  if (speedreader::IsDisabledByPolicy(user_prefs::UserPrefs::Get(context))) {
+    return {};
+  }
+
   return std::make_unique<SpeedreaderService>(
       context, g_browser_process->local_state(),
       HostContentSettingsMapFactory::GetForProfile(context));
