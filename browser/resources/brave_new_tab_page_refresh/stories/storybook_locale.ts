@@ -86,6 +86,8 @@ const localeStrings: Record<StringKey, string>  = {
   topSitesMostVisitedOptionTitle: 'Frequently Visited',
   topSitesSettingsTitle: 'Top Sites',
   topSitesShowCustomLabel: 'Show favorites',
+  topSitesShowLessLabel: 'Show fewer items',
+  topSitesShowMoreLabel: 'Show more items',
   topSitesShowMostVisitedLabel: 'Show frequently visited',
   topSitesTitleLabel: 'Name',
   topSitesURLLabel: 'URL',
