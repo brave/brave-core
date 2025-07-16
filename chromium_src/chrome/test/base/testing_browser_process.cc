@@ -11,6 +11,9 @@
 #include "src/chrome/test/base/testing_browser_process.cc"
 #undef TestingBrowserProcess
 
+TestingBrowserProcess::TestingBrowserProcess() = default;
+TestingBrowserProcess::~TestingBrowserProcess() = default;
+
 // static
 void TestingBrowserProcess::CreateInstance() {
   TestingBrowserProcess_ChromiumImpl::CreateInstance();
