@@ -108,4 +108,13 @@ public final class BravePreferenceKeys {
     public static boolean isBraveKeyInUse(String key) {
         return true;
     }
+
+    // This method is to provoke errorprone warning
+    //    [UnusedMethod] Method 'getVar' is never used
+    // To ensure android_static_analysis arg is well applied on CI
+    // and there is no other errors
+    // Do not merge into master
+    private int getVar() {
+        return 7;
+    }
 }
