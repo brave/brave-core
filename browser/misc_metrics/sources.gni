@@ -24,6 +24,7 @@ brave_browser_misc_metrics_deps = [
 
 if (!is_android) {
   brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/default_browser_monitor.cc",
     "//brave/browser/misc_metrics/profile_new_tab_metrics.cc",
     "//brave/browser/misc_metrics/profile_new_tab_metrics.h",
   ]
