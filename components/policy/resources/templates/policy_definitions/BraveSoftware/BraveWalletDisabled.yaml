@@ -32,6 +32,7 @@ owners:
 schema:
   type: boolean
 supported_on:
+- ios:138-
 - chrome.*:106-
 tags: []
 type: main

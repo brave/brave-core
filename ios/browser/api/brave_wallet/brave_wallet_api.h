@@ -36,6 +36,8 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
 
+@property(readonly) bool isDisabledByPolicy;
+
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
 
 - (nullable id<BraveWalletEthereumProvider>)
