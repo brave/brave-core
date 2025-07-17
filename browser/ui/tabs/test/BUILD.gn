@@ -41,3 +41,23 @@ source_set("browser_tests") {
     sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  if (!is_android) {
+    sources += [ "tree_tab_node_unittest.cc" ]
+    deps += [
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/tabs:public",
+      "//chrome/test:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+include_rules = [
+  "+components/tabs",
+  "+components/tab_groups",
+]
