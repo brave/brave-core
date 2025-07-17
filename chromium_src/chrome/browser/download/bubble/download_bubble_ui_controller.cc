@@ -17,11 +17,11 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
     base::WeakPtr<DownloadUIModel> model,
     DownloadCommands::Command command,
     bool is_main_view) {
-  if (command == BraveDownloadCommands::kDeleteLocalFile) {
-    if (!model) {
-      return;
-    }
+  if (!model) {
+    return;
+  }
 
+  if (command == BraveDownloadCommands::kDeleteLocalFile) {
     BraveDownloadCommands commands(model);
     commands.ExecuteCommand(command);
     return;
