@@ -11,9 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/common/features.h"
-#include "components/prefs/pref_service.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -103,11 +101,6 @@ std::optional<std::string> ExtractValueFromQueryString(
 
 void TransformToAlphanumeric(std::string& str) {
   std::erase_if(str, [](char c) { return !std::isalnum(c); });
-}
-
-bool IsWebDiscoveryEnabled(PrefService* pref_service) {
-  return pref_service->GetBoolean(kWebDiscoveryEnabled) &&
-         !pref_service->GetBoolean(kWebDiscoveryDisabledByPolicy);
 }
 
 }  // namespace web_discovery

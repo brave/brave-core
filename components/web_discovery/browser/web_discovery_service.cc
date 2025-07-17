@@ -73,6 +73,11 @@ void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kWebDiscoveryDisabledByPolicy, false);
 }
 
+bool IsWebDiscoveryEnabled(PrefService* pref_service) {
+  return pref_service->GetBoolean(kWebDiscoveryEnabled) &&
+         !pref_service->GetBoolean(kWebDiscoveryDisabledByPolicy);
+}
+
 void WebDiscoveryService::Shutdown() {
   Stop();
   pref_change_registrar_.RemoveAll();

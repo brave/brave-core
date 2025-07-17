@@ -72,13 +72,13 @@ if (!chrome.extension.inIncognitoContext) {
         chrome.webNavigation.onCommitted.removeListener(onCommitted)
       }
 
-      // disable
+       // disable
       stopWDP()
     }
   }
 
   const checkWebDiscoveryEnabled = () => {
-    chrome.webDiscovery.isWebDiscoveryExtensionEnabled((extensionEnabled) => {
+    chrome.webDiscovery.isWebDiscoveryExtensionEnabled((extensionEnabled: boolean) => {
       toggleWebDiscovery(extensionEnabled)
     })
   }
@@ -86,6 +86,8 @@ if (!chrome.extension.inIncognitoContext) {
   chrome.settingsPrivate.onPrefsChanged.addListener((prefs: chrome.settingsPrivate.PrefObject[]) => {
     const pref = prefs.find(p => p.key === WEB_DISCOVERY_PREF_KEY || p.key === WEB_DISCOVERY_DISABLED_BY_POLICY_KEY)
     if (!pref) return;
-    checkWebDiscoveryEnabled();
+    checkWebDiscoveryEnabled()
   })
+
+  checkWebDiscoveryEnabled()
 }

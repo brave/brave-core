@@ -39,6 +39,10 @@ class BackupResultsService;
 
 namespace web_discovery {
 
+// Returns true if web discovery is enabled by user preference and not
+// disabled by policy.
+bool IsWebDiscoveryEnabled(PrefService* profile_prefs);
+
 // The main service for the native re-implementation of Web Discovery Project.
 // Handles scraping and reporting of relevant pages for opted-in users.
 class WebDiscoveryService : public KeyedService {
@@ -68,6 +72,19 @@ class WebDiscoveryService : public KeyedService {
       mojo::Remote<mojom::DocumentExtractor> document_extractor);
 
  private:
+  friend class WebDiscoveryServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest, ServiceStartsWhenEnabled);
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
+                           ServiceDoesNotStartWhenDisabled);
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
+                           ServiceDoesNotStartWhenDisabledByPolicy);
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
+                           ServiceRestartsWhenReEnabled);
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
+                           ServiceStopsOnDisabledPrefChange);
+  FRIEND_TEST_ALL_PREFIXES(WebDiscoveryServiceTest,
+                           ServiceStopsOnPolicyDisabledPrefChange);
+
   void Start();
   void Stop();
   void ClearPrefs();

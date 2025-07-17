@@ -9,7 +9,7 @@
 
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/web_discovery/browser/util.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
