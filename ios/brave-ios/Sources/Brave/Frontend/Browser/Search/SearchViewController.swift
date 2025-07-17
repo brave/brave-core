@@ -50,6 +50,76 @@ protocol SearchViewControllerDelegate: AnyObject {
   func searchViewControllerAllowFindInPage() -> Bool
 }
 
+class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
+  let browserColors: BrowserColors
+
+  init(
+    browserColors: BrowserColors,
+    sectionProvider: @escaping UICollectionViewCompositionalLayoutSectionProvider,
+    configuration: UICollectionViewCompositionalLayoutConfiguration
+  ) {
+    self.browserColors = browserColors
+    super.init(sectionProvider: sectionProvider, configuration: configuration)
+    self.register(
+      FavoritesSectionBackgroundView.self,
+      forDecorationViewOfKind: "background_with_header"
+    )
+    self.register(
+      SearchSectionBackgroundView.self,
+      forDecorationViewOfKind: "background_plain"
+    )
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layoutAttributesForElements(
+    in rect: CGRect
+  ) -> [UICollectionViewLayoutAttributes]? {
+    guard let attributes = super.layoutAttributesForElements(in: rect) else { return nil }
+
+    var modifiedAttributes: [UICollectionViewLayoutAttributes] = []
+
+    for attr in attributes {
+      if let indexPath = attr.indexPath as IndexPath? {
+        if attr.representedElementKind == "background_with_header" {
+          let customAttr = FavoritesSectionBackgroundLayoutAttribute(
+            forDecorationViewOfKind: "background_with_header",
+            with: indexPath
+          )
+          customAttr.frame = attr.frame
+          customAttr.zIndex = attr.zIndex
+          customAttr.backgroundColour =
+            browserColors.favoritesAndSearchScreenSectionBackground
+          customAttr.groupBackgroundColour =
+            browserColors.favoritesAndSearchScreenSectionGroupBackground
+          modifiedAttributes.append(customAttr)
+        } else if attr.representedElementKind == "background_plain" {
+          let customAttr = SearchSectionBackgroundLayoutAttribute(
+            forDecorationViewOfKind: "background_plain",
+            with: indexPath
+          )
+          customAttr.frame = attr.frame
+          customAttr.zIndex = attr.zIndex
+          customAttr.backgroundColour =
+            browserColors.favoritesAndSearchScreenSectionBackground
+          customAttr.groupBackgroundColour =
+            browserColors.favoritesAndSearchScreenSectionGroupBackground
+          modifiedAttributes.append(customAttr)
+        } else {
+          modifiedAttributes.append(attr)
+        }
+      } else {
+        modifiedAttributes.append(attr)
+      }
+    }
+
+    return modifiedAttributes
+  }
+}
+
 // MARK: - SearchViewController
 
 public class SearchViewController: UIViewController, LoaderListener {
@@ -89,17 +159,11 @@ public class SearchViewController: UIViewController, LoaderListener {
   // MARK: Properties
 
   // UI Properties
-  lazy var collectionView: UICollectionView =
-    UICollectionView(
-      frame: .zero,
-      collectionViewLayout: compositionalLayout
-    )
-
   private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
     $0.interSectionSpacing = 8.0
   }
-
-  private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
+  private lazy var compositionalLayout = SearchCompositionalLayout(
+    browserColors: browserColors,
     sectionProvider: { [weak self] sectionIndex, _ in
       guard let self else { return nil }
       let section = self.availableSections[sectionIndex]
@@ -116,16 +180,11 @@ public class SearchViewController: UIViewController, LoaderListener {
       }
     },
     configuration: layoutConfig
-  ).then {
-    $0.register(
-      FavoritesSectionBackgroundView.self,
-      forDecorationViewOfKind: "background_with_header"
-    )
-    $0.register(
-      SearchSectionBackgroundView.self,
-      forDecorationViewOfKind: "background_plain"
-    )
-  }
+  )
+  lazy var collectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: compositionalLayout
+  )
   // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
   // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
   private let searchEngineScrollView = ButtonScrollView().then { scrollView in
@@ -253,6 +312,31 @@ public class SearchViewController: UIViewController, LoaderListener {
     super.init(nibName: nil, bundle: nil)
 
     dataSource.delegate = self
+
+    collectionView.do {
+      $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "search_optin_separator")
+      $0.register(SearchActionsCell.self)
+      $0.register(SearchSuggestionCell.self)
+      $0.register(SearchFindInPageCell.self)
+      $0.register(SearchOnYourDeviceCell.self)
+      $0.register(
+        SearchSectionHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
+      )
+      $0.register(
+        FavoritesRecentSearchFooterView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
+      )
+      $0.alwaysBounceVertical = true
+      $0.backgroundColor = .clear
+      $0.delegate = self
+      $0.dataSource = self
+      $0.keyboardDismissMode = .interactive
+      $0.addGestureRecognizer(suggestionLongPressGesture)
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
+    }
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -282,35 +366,10 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.edges.equalToSuperview()
     }
 
-    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
+    backgroundView.backgroundColor = browserColors.favoritesAndSearchScreenBackground
     searchEngineScrollView.backgroundColor = browserColors.chromeBackground
 
     setupSearchEngineScrollViewIfNeeded()
-
-    collectionView.do {
-      $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "search_optin_separator")
-      $0.register(SearchActionsCell.self)
-      $0.register(SearchSuggestionCell.self)
-      $0.register(SearchFindInPageCell.self)
-      $0.register(SearchOnYourDeviceCell.self)
-      $0.register(
-        SearchSectionHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
-      )
-      $0.register(
-        FavoritesRecentSearchFooterView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-        withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
-      )
-      $0.alwaysBounceVertical = true
-      $0.backgroundColor = .clear
-      $0.delegate = self
-      $0.dataSource = self
-      $0.keyboardDismissMode = .interactive
-      $0.addGestureRecognizer(suggestionLongPressGesture)
-      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
-    }
 
     KeyboardHelper.defaultHelper.addDelegate(self)
 
@@ -537,7 +596,11 @@ public class SearchViewController: UIViewController, LoaderListener {
     for engine in dataSource.quickSearchEngines {
       let engineButton = UIButton()
       engineButton.setImage(engine.image, for: [])
-      engineButton.imageView?.contentMode = .scaleAspectFit
+      engineButton.imageView?.do {
+        $0.layer.cornerRadius = 8.0
+        $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFit
+      }
       engineButton.backgroundColor = .clear
       engineButton.addTarget(self, action: #selector(didSelectEngine), for: .touchUpInside)
       engineButton.accessibilityLabel = String(
@@ -659,7 +722,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     if headerEnabled {
       let headerItemSize = NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1),
-        heightDimension: .absolute(50)
+        heightDimension: .absolute(46)
       )
       let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
         layoutSize: headerItemSize,
@@ -873,6 +936,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         // quick bar
         let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
         cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+        cell.isPrivateBrowsing = dataSource.isPrivate
 
         return cell
       } else if indexPath.row == 1 {
@@ -918,6 +982,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       if indexPath.row == 0 {
         // quick bar
         cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+        cell.isPrivateBrowsing = dataSource.isPrivate
 
         return cell
       } else {  // search suggestion opt-in
@@ -967,12 +1032,14 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     case .findInPage:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchFindInPageCell
       cell.setCellTitle(dataSource.searchQuery)
+      cell.isPrivateBrowsing = dataSource.isPrivate
       return cell
     case .openTabsAndHistoryAndBookmarks:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
+      cell.isPrivateBrowsing = dataSource.isPrivate
       let onYourDeviceItem = availableOnYourDeviceItems[indexPath.row]
       if let site = onYourDeviceItem.site {
-        cell.setSite(site, isPrivateBrowsing: dataSource.isPrivate)
+        cell.setSite(site)
       } else if let playlistItem = onYourDeviceItem.playlistItem {
         cell.setPlaylistItem(playlistItem)
       }
@@ -997,9 +1064,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
           for: indexPath
         ) as? SearchSectionHeaderView
       {
+        header.isPrivateBrowsing = dataSource.isPrivate
         switch section {
         case .searchSuggestionsOptIn, .searchSuggestions, .braveSearchPromotion:
-          assertionFailure("no header for search suggestion")
+          assertionFailure("no header for this section")
         case .findInPage:
           header.setTitle(Strings.findOnPageSectionHeader)
         case .openTabsAndHistoryAndBookmarks:
@@ -1008,21 +1076,25 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return header
       }
     } else if kind == UICollectionView.elementKindSectionFooter {
-      let footer =
+      if let footer =
         collectionView
         .dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
           for: indexPath
-        )
-      let tapGesture = UITapGestureRecognizer(
-        target: self,
-        action: #selector(onShowMorePressed)
-      )
-      footer.addGestureRecognizer(tapGesture)
-      footer.isUserInteractionEnabled = true
+        ) as? FavoritesRecentSearchFooterView
+      {
+        footer.isPrivateBrowsing = dataSource.isPrivate
 
-      return footer
+        let tapGesture = UITapGestureRecognizer(
+          target: self,
+          action: #selector(onShowMorePressed)
+        )
+        footer.addGestureRecognizer(tapGesture)
+        footer.isUserInteractionEnabled = true
+
+        return footer
+      }
     }
     return
       collectionView

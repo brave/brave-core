@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">Visa ofta besökta</translation>
 <translation id="4546260624932151782">Visa favoriter</translation>
 <translation id="8975314993825375476">Anpassa listan</translation>
-<translation id="5525668735313040116">Sök privat på webben</translation>
+<translation id="7407744084529395869">Sök på nätet privat med AI</translation>
 <translation id="1629390138158333592">Sök på webben</translation>
 <translation id="4016940744851230999">Visa sök-widgeten på den nya fliksidan</translation>
 <translation id="7092560902264458951">Aktivera sökmotorer på den nya fliksidan</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Dags att sluta använda Google.</translation>
 <translation id="5588534392045217394">Brave Sök varken snedvrider eller censurerar sökresultaten och profilerar dig inte.</translation>
 <translation id="6811221529729056895">Prova Brave Search nu</translation>
+<translation id="5525668735313040116">Sök privat på webben</translation>
 <translation id="3446024864193919737">Visa Brave Rewards</translation>
 <translation id="5585019845078534178">Kort</translation>
 <translation id="3870475560794762985">Visa sponsrade bilder</translation>
@@ -2277,6 +2278,7 @@
 <translation id="6543799171249004861">Foto: <ph name="AUTHOR"/></translation>
 <translation id="5430001801813715388">BELÖNINGAR</translation>
 <translation id="5966055668402779222">Fråga Brave Sök</translation>
+<translation id="167018310108390163">Anpassa sidan för ny flik</translation>
 <translation id="6851426306697017546">Visa klocka</translation>
 <translation id="4844370919312937270">Visa sökwidgeten i nya flikar</translation>
 <translation id="7328310113820087094">Med <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> kan du tjäna pengar på att se annonser på ny fliksidan.</translation>

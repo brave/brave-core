@@ -21,5 +21,6 @@ export const OnboardingSuccessStory = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingSuccess,
 }

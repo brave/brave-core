@@ -56,4 +56,7 @@ export const _EditGas = {
   },
 }
 
-export default { component: EditGas }
+export default {
+  title: 'Wallet/Panel/Panels',
+  component: EditGas,
+}

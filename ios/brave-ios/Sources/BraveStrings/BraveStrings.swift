@@ -1260,6 +1260,123 @@ extension Strings {
   )
 }
 
+extension Strings {
+  public struct TabGrid {
+    public static let closeAllTabsButtonTitle = NSLocalizedString(
+      "tabGrid.closeAllTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close All Tabs",
+      comment: "A button title which when tapped will close all of the open tabs for the user"
+    )
+    public static let moreMenuButtonTitle = NSLocalizedString(
+      "tabGrid.moreMenuButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "More",
+      comment: "A button title which when tapped will display a menu with more options"
+    )
+    public static let newTabAccessibilityLabel = NSLocalizedString(
+      "tabGrid.addTabAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "New Tab",
+      comment: "Accessibility label for a close button that when tapped opens a new tab"
+    )
+    public static let closeTabAccessibilityLabel = NSLocalizedString(
+      "tabGrid.closeTab",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close Tab",
+      comment: "Accessibility label for a close button that when tapped closes the associated tab"
+    )
+    public static let shredTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.shredTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred Tabs",
+      comment: "Accessibility label for a button that allows users to shred their tabs (erase them & associated data)"
+    )
+    public static let viewHistoryAccessibilityLabel = NSLocalizedString(
+      "tabGrid.viewHistoryAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "View History",
+      comment: "Accessibility label for a button that when tapped presents the users history & recently closed tabs"
+    )
+    public static let viewSyncedTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.viewSyncedTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "View Synced Tabs",
+      comment: "Accessibility label for a button that when tapped presents the users synced tabs"
+    )
+    public static let regularBrowsingModeAccessibilityLabel = NSLocalizedString(
+      "tabGrid.regularBrowsingModeAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Regular Browsing",
+      comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let privateBrowsingModeAccessibilityLabel = NSLocalizedString(
+      "tabGrid.privateBrowsingModeAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private Browsing",
+      comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let privateBrowsingInfoTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "private tab",
+      comment: "A title shown when in private browsing mode with no tabs open"
+    )
+    public static let privateBrowsingInfoBulletOneTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletOneTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Leave no trace on your device",
+      comment: "A bullet point explaining the benefits of private browsing"
+    )
+    public static let privateBrowsingInfoBulletOneBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletOneBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.",
+      comment: "A bullet point explaining the benefits of private browsing"
+    )
+    public static let privateBrowsingInfoBulletTwoTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletTwoTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Browsing visibility",
+      comment: "A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer"
+    )
+    public static let privateBrowsingInfoBulletTwoBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletTwoBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Note that—even in private windows—your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).",
+      comment: "A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer"
+    )
+    public static let privateBrowsingInfoBulletThreeTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletThreeTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave VPN",
+      comment: "A bullet point explaining the benefits of Brave VPN"
+    )
+    public static let privateBrowsingInfoBulletThreeBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletThreeBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave VPN encrypts and protects anything you do online, even outside the Brave browser.",
+      comment: "A bullet point explaining the benefits of Brave VPN"
+    )
+  }
+}
+
 // MARK:-  TabTrayController.swift
 extension Strings {
   public static let tabAccessibilityCloseActionLabel = NSLocalizedString(
@@ -4621,15 +4738,6 @@ extension Strings {
 
 extension Strings {
   public struct PlayList {
-    public static let playListSectionTitle =
-      NSLocalizedString(
-        "playList.playListSectionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlists",
-        comment: "Title For the Section that videos are listed"
-      )
-
     public static let playListTitle =
       NSLocalizedString(
         "playList.playListSettingTitle",
@@ -4637,15 +4745,6 @@ extension Strings {
         bundle: .module,
         value: "Playlist",
         comment: "Title Playlist (used for back button, and playlist settings)"
-      )
-
-    public static let playListSharedFolderSectionTitle =
-      NSLocalizedString(
-        "playList.playListSharedFolderSectionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Shared with you",
-        comment: "Title For the Section that videos are listed"
       )
 
     public static let removeActionButtonTitle =
@@ -4768,24 +4867,6 @@ extension Strings {
         comment: "Alert Description for adding videos to playlist"
       )
 
-    public static let savingForOfflineLabelTitle =
-      NSLocalizedString(
-        "playList.savingForOfflineLabelTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Saving for Offline…",
-        comment: "Text indicator on the table cell while saving a video for offline"
-      )
-
-    public static let savedForOfflineLabelTitle =
-      NSLocalizedString(
-        "playList.savedForOfflineLabelTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Added to Offline",
-        comment:
-          "Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline"
-      )
 
     public static let noItemLabelTitle =
       NSLocalizedString(
@@ -4803,15 +4884,6 @@ extension Strings {
         bundle: .module,
         value: "You can add items to your Brave Playlist within the browser",
         comment: "Detail Text when there are no items in the playlist"
-      )
-
-    public static let expiredLabelTitle =
-      NSLocalizedString(
-        "playList.expiredLabelTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Expired",
-        comment: "Text indicator on the table cell If a video is expired"
       )
 
     public static let expiredAlertTitle =
@@ -4832,16 +4904,6 @@ extension Strings {
           "This video was a live stream or the time limit was reached. Please reopen the link to refresh.",
         comment: "The description for the alert that shows up when an item is expired"
       )
-
-    public static let pictureInPictureErrorTitle =
-      NSLocalizedString(
-        "playList.pictureInPictureErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sorry, an error occurred while attempting to display picture-in-picture.",
-        comment: "The title for the alert that shows up when an item is expired"
-      )
-
     public static let toastAddToPlaylistTitle =
       NSLocalizedString(
         "playList.toastAddToPlaylistTitle",
@@ -4880,45 +4942,6 @@ extension Strings {
           "The title for the toast that shows up on a page when an item that has already been added, was updated."
       )
 
-    public static let removePlaylistVideoAlertTitle =
-      NSLocalizedString(
-        "playlist.removePlaylistVideoAlertTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Remove Media Item from Playlist?",
-        comment: "Title for the alert shown when the user tries to remove an item from playlist"
-      )
-
-    public static let removePlaylistVideoAlertMessage =
-      NSLocalizedString(
-        "playlist.removePlaylistVideoAlertMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "This will remove the media item from the list. Are you sure you want to continue?",
-        comment: "Message for the alert shown when the user tries to remove a video from playlist"
-      )
-
-    public static let removePlaylistOfflineDataAlertTitle =
-      NSLocalizedString(
-        "playlist.removePlaylistOfflineDataAlertTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Remove Offline Data",
-        comment:
-          "Title for the alert shown when the user tries to remove offline data of an item from playlist"
-      )
-
-    public static let removePlaylistOfflineDataAlertMessage =
-      NSLocalizedString(
-        "playlist.removePlaylistOfflineDataAlertMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "This will delete the media from offline storage. Are you sure you want to continue?",
-        comment:
-          "Message for the alert shown when the user tries to remove offline data of an item from playlist"
-      )
-
     public static let urlBarButtonOptionTitle =
       NSLocalizedString(
         "playlist.urlBarButtonOptionTitle",
@@ -4936,65 +4959,6 @@ extension Strings {
         value:
           "Adds a playlist button beside the address bar in the Brave browser. This button gives you quick access to open Playlist, or add or remove media.",
         comment: "Footer for option to disable URL-Bar button"
-      )
-
-    public static let sharePlaylistActionTitle =
-      NSLocalizedString(
-        "playlist.sharePlaylistActionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Brave Playlist Menu",
-        comment: "Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action"
-      )
-
-    public static let sharePlaylistActionDetailsTitle =
-      NSLocalizedString(
-        "playlist.sharePlaylistActionDetailsTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "You can open the current item in a New Tab, or share it via the System Share Menu",
-        comment:
-          "Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action"
-      )
-
-    public static let sharePlaylistOpenInNewTabTitle =
-      NSLocalizedString(
-        "playlist.sharePlaylistOpenInNewTabTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Open In New Tab",
-        comment:
-          "Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action"
-      )
-
-    public static let sharePlaylistOpenInNewPrivateTabTitle =
-      NSLocalizedString(
-        "playlist.sharePlaylistOpenInNewPrivateTabTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Open In Private Tab",
-        comment:
-          "Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action"
-      )
-
-    public static let sharePlaylistMoveActionMenuTitle =
-      NSLocalizedString(
-        "playlist.movePlaylistShareActionMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Move...",
-        comment:
-          "Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder"
-      )
-
-    public static let sharePlaylistShareActionMenuTitle =
-      NSLocalizedString(
-        "playlist.sharePlaylistShareActionMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Share...",
-        comment:
-          "Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action"
       )
 
     public static let playlistLongPressSettingsOptionTitle =
@@ -5033,43 +4997,6 @@ extension Strings {
         value:
           "This option will enable/disable auto-play when Playlist is opened. However, this option will not affect auto-play when loading the next video on the list.",
         comment: "Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play"
-      )
-
-    public static let playlistSidebarLocationTitle =
-      NSLocalizedString(
-        "playlist.playlistSidebarLocationTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sidebar Location",
-        comment: "Title for the Playlist Settings Option for Sidebar Location (Left/Right)"
-      )
-
-    public static let playlistSidebarLocationFooterText =
-      NSLocalizedString(
-        "playlist.playlistSidebarLocationFooterText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "This setting will change video list location between left-hand side/ right-hand side.",
-        comment: "Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right)"
-      )
-
-    public static let playlistSidebarLocationOptionLeft =
-      NSLocalizedString(
-        "playlist.playlistSidebarLocationOptionLeft",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Left",
-        comment: "Option Text for Sidebar Location Left"
-      )
-
-    public static let playlistSidebarLocationOptionRight =
-      NSLocalizedString(
-        "playlist.playlistSidebarLocationOptionRight",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Right",
-        comment: "Option Text for Sidebar Location Right"
       )
 
     public static let playlistAutoSaveSettingsTitle =
@@ -5190,33 +5117,6 @@ extension Strings {
         comment: "Footer Text for the Playlist Settings Option for resetting Playlist."
       )
 
-    public static let playlistSaveForOfflineErrorTitle =
-      NSLocalizedString(
-        "playlist.playlistSaveForOfflineErrorTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sorry, something went wrong",
-        comment: "Title of alert when saving a playlist item for offline mode"
-      )
-
-    public static let playlistSaveForOfflineErrorMessage =
-      NSLocalizedString(
-        "playlist.playlistSaveForOfflineErrorMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sorry, this item could not be saved for offline mode at this time.",
-        comment: "Error message when saving a playlist item for offline fails"
-      )
-
-    public static let playlistLiveMediaStream =
-      NSLocalizedString(
-        "playlist.playlistLiveMediaStream",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Live Stream",
-        comment: "When a video or audio is live and has no duration"
-      )
-
     public static let playlistDiskSpaceWarningTitle =
       NSLocalizedString(
         "playlist.playlistDiskSpaceWarningTitle",
@@ -5313,26 +5213,6 @@ extension Strings {
           "The already disabled button title with instructions telling the user they can tap it to enable playback."
       )
 
-    public static let playlistSaveForOfflineButtonTitle =
-      NSLocalizedString(
-        "playlist.saveForOfflineButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Save for Offline",
-        comment:
-          "The title of the button indicating that the user can save a video for offline playback. (playing without internet)"
-      )
-
-    public static let playlistDeleteForOfflineButtonTitle =
-      NSLocalizedString(
-        "playlist.deleteForOfflineButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Delete Offline Cache",
-        comment:
-          "The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline)"
-      )
-
     public static let playlistAlreadyShowingTitle =
       NSLocalizedString(
         "playlist.playlistAlreadyShowingTitle",
@@ -5378,15 +5258,6 @@ extension Strings {
         bundle: .module,
         value: "Untitled Playlist",
         comment: "The title of a folder when the user enters no name (untitled)"
-      )
-
-    public static let playlistEditFolderScreenTitle =
-      NSLocalizedString(
-        "playlistFolders.editFolderScreenTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Edit Folder",
-        comment: "The title of the screen where the user edits folder names"
       )
 
     public static let playlistNewFolderScreenTitle =
@@ -5436,140 +5307,6 @@ extension Strings {
           "The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items."
       )
 
-    public static let playlistFolderErrorSavingMessage =
-      NSLocalizedString(
-        "playlistFolders.errorSavingMessage",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sorry we were unable to save the changes you made to this folder",
-        comment: "The error shown to the user when we cannot save their changes made on a folder"
-      )
-
-    public static let playlistFolderEditMenuTitle =
-      NSLocalizedString(
-        "playlistFolders.editMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Edit Playlist",
-        comment: "The title of the menu option that allows the user to edit the name of a folder"
-      )
-
-    public static let playlistFolderEditButtonTitle =
-      NSLocalizedString(
-        "playlistFolders.editButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Edit",
-        comment: "The title of the button that allows the user to edit the name of a folder"
-      )
-
-    public static let playlistFolderNewFolderSectionTitle =
-      NSLocalizedString(
-        "playlistFolders.newFolderSectionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Add videos to this playlist",
-        comment:
-          "The title of the section where the user can select videos to add to the new folder being created"
-      )
-
-    public static let playlistFolderNewFolderSectionSubtitle =
-      NSLocalizedString(
-        "playlistFolders.newFolderSectionSubtitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Tap to select videos",
-        comment:
-          "The sub-title of the section where the user can select videos to add to the new folder being created"
-      )
-
-    public static let playlistFolderMoveFolderCurrentSectionTitle =
-      NSLocalizedString(
-        "playlistFolders.moveFolderCurrentSectionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Current Playlist",
-        comment: "The title of the section indicating the currently selected folder"
-      )
-
-    public static let playlistFolderSelectAFolderTitle =
-      NSLocalizedString(
-        "playlistFolders.selectAFolderTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Select a playlist to move %lld items to",
-        comment:
-          "The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'"
-      )
-
-    public static let playlistFolderSelectASingleFolderTitle =
-      NSLocalizedString(
-        "playlistFolders.selectASingleFolderTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Select a playlist to move 1 item to",
-        comment:
-          "The title of the section indicating that the user should select a folder to move 1 item to."
-      )
-
-    public static let playlistFolderMoveFolderScreenTitle =
-      NSLocalizedString(
-        "playlistFolders.moveFolderScreenTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Move",
-        comment:
-          "The title of the screen where the user will move an item from one folder to another folder."
-      )
-
-    public static let playlistFolderMoveFolderButtonTitle =
-      NSLocalizedString(
-        "playlistFolders.moveFolderButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Move",
-        comment:
-          "The title of the button where the user will move an item from one folder to another folder."
-      )
-
-    public static let playlistFolderMoveItemDescription =
-      NSLocalizedString(
-        "playlistFolders.moveItemDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "%@ and 1 more item",
-        comment:
-          "%@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item."
-      )
-
-    public static let playlistFolderMoveMultipleItemDescription =
-      NSLocalizedString(
-        "playlistFolders.moveMultipleItemDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "%@ and %lld more items",
-        comment:
-          "%@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items."
-      )
-
-    public static let playlistFolderMoveItemWithNoNameTitle =
-      NSLocalizedString(
-        "playlistFolders.moveItemWithNoNameTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "1 item",
-        comment: "Sometimes an item can have no name. So this is a generic title to use"
-      )
-
-    public static let playlistFolderMoveItemWithMultipleNoNameTitle =
-      NSLocalizedString(
-        "playlistFolders.moveItemWithMultipleNoNameTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "%lld items",
-        comment:
-          "%lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use"
-      )
 
     public static let playlistChangeFoldersTitle =
       NSLocalizedString(
@@ -5601,174 +5338,6 @@ extension Strings {
           "A label shown above the text field that allows the user to type a name of the playlist they are going to create"
       )
   }
-
-  public struct PlaylistFolderSharing {
-    public static let addButtonTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.addButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Save",
-        comment: "Title for the button that adds the playlist to the database."
-      )
-
-    public static let addButtonAccessibilityTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.addButtonAccessibilityTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Add to Brave Playlist Button",
-        comment: "Accessibility Title for the button that adds the playlist to the database."
-      )
-
-    public static let menuButtonAccessibilityTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.menuButtonAccessibilityTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlist Menu Button",
-        comment: "Accessibility Title for the playlist menu."
-      )
-
-    public static let syncNowMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.syncNowMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sync Now",
-        comment: "Menu Title for syncing playlist"
-      )
-
-    public static let editMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.editMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Edit",
-        comment: "Menu Title for editing a folder"
-      )
-
-    public static let renameMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.renameMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Rename",
-        comment: "Menu Title for renaming a folder"
-      )
-
-    public static let saveOfflineDataMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.saveOfflineDataMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Save Offline Data",
-        comment: "Menu Title for saving offline data/cache"
-      )
-
-    public static let deleteOfflineDataMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.deleteOfflineDataMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Remove Offline Data",
-        comment: "Menu Title for removing offline data/cache"
-      )
-
-    public static let deletePlaylistMenuTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.deletePlaylistMenuTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Delete Playlist",
-        comment: "Menu Title for deleting the playlist"
-      )
-
-    public static let offlineManagementViewTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.offlineManagementViewTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Managing your Playlist data",
-        comment: "Title of the playlist offline data management view"
-      )
-
-    public static let offlineManagementViewDescription =
-      NSLocalizedString(
-        "playlistFolderSharing.offlineManagementViewDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "Auto-save for offline use is on, meaning new additions to playlists, including shared playlists are saved to your device for viewing offline and could use your cellular data.\n\nAuto-save for offline use can be managed in Playlist settings.",
-        comment: "Description of the playlist offline data management view"
-      )
-
-    public static let offlineManagementViewAddButtonTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.offlineManagementViewAddButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Add playlist now",
-        comment: "Button that adds the playlist to the local database"
-      )
-
-    public static let offlineManagementViewSettingsButtonTitle =
-      NSLocalizedString(
-        "playlistFolderSharing.offlineManagementViewSettingsButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Settings",
-        comment: "Button that takes the user to the settings menu"
-      )
-
-    public static let playlistSharedFolderSectionTitle =
-      NSLocalizedString(
-        "playList.playlistSharedFolderSectionTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Shared with you",
-        comment: "Title for the Section that videos are listed"
-      )
-
-    public static let playlistSharedFolderAlreadyExistsTitle =
-      NSLocalizedString(
-        "playList.playlistSharedFolderAlreadyExistsTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sorry",
-        comment: "Title for the error message that shows when a playlist folder already exists"
-      )
-
-    public static let playlistSharedFolderAlreadyExistsBody =
-      NSLocalizedString(
-        "playList.playlistSharedFolderAlreadyExistsBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "This folder already exists in your Brave Playlist",
-        comment: "Body for the error message that shows when a playlist folder already exists"
-      )
-
-    public static let sharedFolderSyncAutomaticallyTitle =
-      NSLocalizedString(
-        "playList.sharedFolderSyncAutomaticallyTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Sync Playlist Folders Automatically",
-        comment:
-          "Title of the settings option to sync folders with the server automatically, every 4 hours."
-      )
-
-    public static let sharedFolderSyncAutomaticallyDescription =
-      NSLocalizedString(
-        "playList.sharedFolderSyncAutomaticallyDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Syncs all your playlist folders automatically",
-        comment:
-          "Description of the settings option to sync folders with the server automatically, every 4 hours."
-      )
-  }
-
 }
 
 // MARK: - SSL Certificate Viewer

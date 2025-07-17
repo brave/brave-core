@@ -378,7 +378,7 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan()
+  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -406,6 +406,9 @@ Config.prototype.buildArgs = function () {
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
+    is_ubsan: this.is_ubsan,
+    is_ubsan_vptr: this.is_ubsan,
+    is_ubsan_no_recover: this.is_ubsan,
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
@@ -420,7 +423,6 @@ Config.prototype.buildArgs = function () {
     branding_path_component: 'brave',
     branding_path_product: 'brave',
     enable_glic: false,
-    enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
@@ -735,18 +737,6 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    if (this.targetArch === 'arm64') {
-      // Flag use_relr_relocations is incompatible with Android 8 arm64, but
-      // makes huge optimizations on Android 9 and above.
-      // Decision is to specify android:minSdkVersion=28 for arm64 and keep
-      // 26(default) for arm32.
-      // Then:
-      //   - for Android 8 and 8.1 GP will supply arm32 bundle;
-      //   - for Android 9 and above GP will supply arm64 and we can enable all
-      //     optimizations.
-      args.default_min_sdk_version = 28
-    }
-
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
@@ -758,9 +748,16 @@ Config.prototype.buildArgs = function () {
       args.enable_android_secondary_abi = true
     }
 
+    if (this.isCI && !this.isOfficialBuild()) {
+      // We want Android CI to run Java static analyzer synchronously
+      // for non-official (PR) builds.
+      // It will be turned off for the official builds
+      // (src/build/config/android/config.gni)
+      args.android_static_analysis = 'on'
+    }
+
     // These do not exist on android
     // TODO - recheck
-    delete args.enable_nacl
     delete args.enable_hangout_services_extension
   }
 
@@ -821,7 +818,6 @@ Config.prototype.buildArgs = function () {
     delete args.branding_path_component
     delete args.branding_path_product
     delete args.enable_glic
-    delete args.enable_nacl
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
@@ -1019,6 +1015,8 @@ Config.prototype.update = function (options) {
   } else {
     this.is_asan = false
   }
+
+  this.is_ubsan = options.is_ubsan || false
 
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec

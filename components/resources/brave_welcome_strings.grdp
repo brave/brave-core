@@ -123,4 +123,9 @@
 <message name="IDS_BRAVE_WELCOME_HELP_WDP_REJECT" desc="A label 'help wdp' page">
   Maybe later
 </message>
+
+<message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
+  Welcome to Brave
+</message>
+
 </grit-part>

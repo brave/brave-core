@@ -13,7 +13,9 @@
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "components/permissions/request_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 

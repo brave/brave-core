@@ -84,6 +84,8 @@ export function createBackgroundHandler(
     ])
 
     updateCurrentBackground()
+
+    store.update({ initialized: true })
   }
 
   loadData()

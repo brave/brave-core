@@ -101,21 +101,6 @@ import SwiftUI
     reloadActions()
   }
 
-  /// Moves a visible action found at a given index to a given offset based on the way that
-  /// SwiftUI supplies source indexes + destination offsets.
-  ///
-  /// The destination offset not an index and instead a distance from the startIndex where an item
-  /// will be placed, which means the final offset is actually the endIndex (array count/"past the
-  /// end" index)
-  func moveVisibleActions(fromOffsets source: IndexSet, toOffset destination: Int) {
-    // For now we're just going to support moving a single item and drop any extras
-    guard let index = source.first, let action = visibleActions[safe: index] else { return }
-    reorderVisibleAction(
-      action,
-      to: destination >= visibleActions.endIndex ? visibleActions.endIndex - 1 : destination
-    )
-  }
-
   /// Moves a visible action to a valid index
   func reorderVisibleAction(_ action: Action, to index: Int) {
     if visibleActions.isEmpty || !visibleActions.contains(where: { action.id == $0.id })
@@ -124,19 +109,30 @@ import SwiftUI
       return
     }
     var newRank: Double = 0
+    var actions = visibleActions
     if index == 0 {
       // First item
-      newRank = rank(for: visibleActions.first!) / 2
-    } else if index == visibleActions.count - 1 {
+      newRank = rank(for: actions.first!) / 2
+    } else if index == actions.count - 1 {
       // Last item
-      newRank = rank(for: visibleActions.last!) + 1
+      newRank = rank(for: actions.last!) + 1
     } else {
+      // Remove the moving action so that we don't accidentally get its own rank for 1-index
+      // shifting items. The index should still be safe to use even after removing the item due
+      // to previous 2 checks above.
+      actions.removeAll(where: { $0.id == action.id })
       // Insert between items
-      let previousRank = rank(for: visibleActions[index - 1])
-      let nextRank = rank(for: visibleActions[index])
+      let previousRank = rank(for: actions[index - 1])
+      let nextRank = rank(for: actions[index])
       newRank = (previousRank + nextRank) / 2
     }
     actionRanks.value[action.id.id] = newRank
+    reloadActions()
+  }
+
+  func resetToDefault() {
+    actionVisibility.reset()
+    actionRanks.reset()
     reloadActions()
   }
 }

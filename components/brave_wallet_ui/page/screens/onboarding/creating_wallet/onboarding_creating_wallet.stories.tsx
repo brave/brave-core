@@ -13,7 +13,7 @@ import { Meta } from '@storybook/react'
 
 export const CreatingWallet = {}
 export default {
-  title: 'Creating Wallet',
+  title: 'Wallet/Desktop/Screens/Onboarding',
   render: () => (
     <WalletPageStory>
       <OnboardingCreatingWallet />

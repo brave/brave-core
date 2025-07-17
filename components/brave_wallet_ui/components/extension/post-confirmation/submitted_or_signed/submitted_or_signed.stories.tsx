@@ -62,6 +62,7 @@ export const _TransactionSubmittedOrSigned = {
 }
 
 export default {
+  title: 'Wallet/Panel/Panels/Post Confirmation',
   component: TransactionSubmittedOrSigned,
   argTypes: {
     transactionType: {

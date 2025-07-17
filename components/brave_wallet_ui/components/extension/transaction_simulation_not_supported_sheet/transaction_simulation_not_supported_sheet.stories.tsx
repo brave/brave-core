@@ -14,7 +14,6 @@ import {
 } from './transaction_simulation_not_supported_sheet'
 
 export const _TransactionSimulationNotSupportedSheet = {
-  title: 'Transaction Simulation Not Supported Sheet',
   render: () => {
     return (
       <WalletPanelStory>
@@ -25,6 +24,6 @@ export const _TransactionSimulationNotSupportedSheet = {
 }
 
 export default {
-  title: 'Transaction Simulation Not Supported Sheet',
+  title: 'Wallet/Panel/Panels/Transaction Simulations',
   component: TransactionSimulationNotSupportedSheet,
 }

@@ -328,10 +328,10 @@ static_library("browser") {
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
-    "//components/country_codes",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/update_client",
     "//components/value_store",
     "//crypto",
@@ -377,7 +377,9 @@ static_library("browser") {
   configs += [ ":sardine_config" ]
 }
 
-if (!is_ios) {
+# TODO(https://github.com/brave/brave-browser/issues/47669) this should be
+# in content/browser subfolder of a layered brave_wallet component.
+if (use_blink) {
   static_library("permission_utils") {
     sources = [
       "permission_utils.cc",
@@ -536,7 +538,6 @@ source_set("test_support") {
 
   deps = [
     ":browser",
-    ":test_data",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser",
@@ -545,7 +546,9 @@ source_set("test_support") {
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/services/brave_wallet/public/mojom",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gmock",
@@ -558,8 +561,6 @@ source_set("test_support") {
     "//components/value_store",
     "//components/value_store:test_support",
   ]
-
-  data = [ "$root_gen_dir/brave/wallet-test-data/" ]
 }  # source_set("test_support")
 
 generated_types("generated_blockchain_list_schemas") {
@@ -702,7 +703,6 @@ source_set("unit_tests") {
     "network_manager_unittest.cc",
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
-    "permission_utils_unittest.cc",
     "rlp_decode_unittest.cc",
     "rlp_encode_unittest.cc",
     "simple_hash_client_unittest.cc",
@@ -737,8 +737,6 @@ source_set("unit_tests") {
     "unstoppable_domains_dns_resolve_unittest.cc",
     "unstoppable_domains_multichain_calls_unittest.cc",
     "wallet_data_files_installer_unittest.cc",
-    "zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
-    "zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
     "zcash/zcash_create_transparent_transaction_task_unittest.cc",
     "zcash/zcash_grpc_utils_unittest.cc",
     "zcash/zcash_keyring_unittest.cc",
@@ -756,7 +754,6 @@ source_set("unit_tests") {
     ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
-    ":test_data",
     ":test_support",
     ":transaction",
     ":utils",
@@ -801,6 +798,8 @@ source_set("unit_tests") {
       "internal/orchard_sync_state_unittest.cc",
       "zcash/zcash_auto_sync_manager_unittest.cc",
       "zcash/zcash_blocks_batch_scan_task_unittest.cc",
+      "zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
+      "zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
       "zcash/zcash_get_chaintip_status_task_unittest.cc",
       "zcash/zcash_scan_blocks_task_unittest.cc",
       "zcash/zcash_shield_sync_service_unittest.cc",
@@ -813,18 +812,18 @@ source_set("unit_tests") {
     ]
   }
 
-  if (!is_ios) {
+  if (use_blink) {
+    sources += [ "permission_utils_unittest.cc" ]
     deps += [
       ":permission_utils",
       "//components/permissions",
-      "//content/test:test_support",
+      "//third_party/blink/public/common",
     ]
   }
-}  # source_set("unit_tests")
 
-copy("test_data") {
-  testonly = true
-  sources =
-      [ "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json" ]
-  outputs = [ "$root_gen_dir/brave/wallet-test-data/{{source_file_part}}" ]
-}
+  data = [
+    # Test vectors for
+    # BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors test.
+    "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
+  ]
+}  # source_set("unit_tests")

@@ -34,5 +34,6 @@ export const _Web3DappFilters = {
 }
 
 export default {
-  component: Web3DappFilters,
+  title: 'Wallet/Desktop/Components/Popup Modals',
+  component: _Web3DappFilters,
 }

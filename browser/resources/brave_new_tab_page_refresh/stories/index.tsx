@@ -5,8 +5,9 @@
 
 import * as React from 'react'
 
-import './news_mock'
 import './storybook_locale'
+
+import { BraveNewsContext } from '../../../../components/brave_news/browser/resources/shared/Context'
 
 import { NewTabProvider } from '../context/new_tab_context'
 import { BackgroundProvider } from '../context/background_context'
@@ -29,6 +30,9 @@ export default {
 }
 
 function StorybookAppProvider(props: { children: React.ReactNode }) {
+  const newsContext = React.useContext(BraveNewsContext)
+  newsContext.isShowOnNTPPrefEnabled = false
+
   return (
     <NewTabProvider createHandler={createNewTabHandler}>
       <BackgroundProvider createHandler={createBackgroundHandler}>

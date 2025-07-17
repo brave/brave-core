@@ -12,19 +12,21 @@
 
 //! Simple getopt alternative.
 //!
-//! Construct a vector of options, either by using `reqopt`, `optopt`, and
-//! `optflag` or by building them from components yourself, and pass them to
-//! `getopts`, along with a vector of actual arguments (not including
-//! `argv[0]`). You'll either get a failure code back, or a match. You'll have
-//! to verify whether the amount of 'free' arguments in the match is what you
-//! expect. Use `opt_*` accessors to get argument values out of the matches
-//! object.
+//! Construct instance of `Options` and configure it by using  `reqopt()`,
+//! `optopt()` and other methods that add option configuration. Then call
+//! `parse()` method and pass into it a vector of actual arguments (not
+//! including `argv[0]`).
+//!
+//! You'll either get a failure code back, or a match. You'll have to verify
+//! whether the amount of 'free' arguments in the match is what you expect. Use
+//! `opt_*` accessors to get argument values out of the matches object.
 //!
 //! Single-character options are expected to appear on the command line with a
 //! single preceding dash; multiple-character options are expected to be
 //! proceeded by two dashes. Options that expect an argument accept their
 //! argument following either a space or an equals sign. Single-character
-//! options don't require the space.
+//! options don't require the space. Everything after double-dash "--"  argument
+//! is considered to be a 'free' argument, even if it starts with dash.
 //!
 //! # Usage
 //!
@@ -75,7 +77,7 @@
 //!     opts.optflag("h", "help", "print this help menu");
 //!     let matches = match opts.parse(&args[1..]) {
 //!         Ok(m) => { m }
-//!         Err(f) => { panic!(f.to_string()) }
+//!         Err(f) => { panic!("{}", f.to_string()) }
 //!     };
 //!     if matches.opt_present("h") {
 //!         print_usage(&program, opts);
@@ -94,8 +96,7 @@
 
 #![doc(
     html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
-    html_favicon_url = "https://www.rust-lang.org/favicon.ico",
-    html_root_url = "https://docs.rs/getopts/0.2.20"
+    html_favicon_url = "https://www.rust-lang.org/favicon.ico"
 )]
 #![deny(missing_docs)]
 #![cfg_attr(test, deny(warnings))]
@@ -124,6 +125,7 @@ use unicode_width::UnicodeWidthStr;
 mod tests;
 
 /// A description of the options that a program can handle.
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Options {
     grps: Vec<OptGroup>,
     parsing_style: ParsingStyle,
@@ -192,6 +194,17 @@ impl Options {
     /// * `short_name` - e.g. `"h"` for a `-h` option, or `""` for none
     /// * `long_name` - e.g. `"help"` for a `--help` option, or `""` for none
     /// * `desc` - Description for usage help
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optflag("h", "help", "help flag");
+    ///
+    /// let matches = opts.parse(&["-h"]).unwrap();
+    /// assert!(matches.opt_present("h"));
+    /// ```
     pub fn optflag(&mut self, short_name: &str, long_name: &str, desc: &str) -> &mut Options {
         validate_names(short_name, long_name);
         self.grps.push(OptGroup {
@@ -211,6 +224,17 @@ impl Options {
     /// * `short_name` - e.g. `"h"` for a `-h` option, or `""` for none
     /// * `long_name` - e.g. `"help"` for a `--help` option, or `""` for none
     /// * `desc` - Description for usage help
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optflagmulti("v", "verbose", "verbosity flag");
+    ///
+    /// let matches = opts.parse(&["-v", "--verbose"]).unwrap();
+    /// assert_eq!(2, matches.opt_count("v"));
+    /// ```
     pub fn optflagmulti(&mut self, short_name: &str, long_name: &str, desc: &str) -> &mut Options {
         validate_names(short_name, long_name);
         self.grps.push(OptGroup {
@@ -231,6 +255,20 @@ impl Options {
     /// * `desc` - Description for usage help
     /// * `hint` - Hint that is used in place of the argument in the usage help,
     ///   e.g. `"FILE"` for a `-o FILE` option
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optflagopt("t", "text", "flag with optional argument", "TEXT");
+    ///
+    /// let matches = opts.parse(&["--text"]).unwrap();
+    /// assert_eq!(None, matches.opt_str("text"));
+    ///
+    /// let matches = opts.parse(&["--text=foo"]).unwrap();
+    /// assert_eq!(Some("foo".to_owned()), matches.opt_str("text"));
+    /// ```
     pub fn optflagopt(
         &mut self,
         short_name: &str,
@@ -258,6 +296,21 @@ impl Options {
     /// * `desc` - Description for usage help
     /// * `hint` - Hint that is used in place of the argument in the usage help,
     ///   e.g. `"FILE"` for a `-o FILE` option
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optmulti("t", "text", "text option", "TEXT");
+    ///
+    /// let matches = opts.parse(&["-t", "foo", "--text=bar"]).unwrap();
+    ///
+    /// let values = matches.opt_strs("t");
+    /// assert_eq!(2, values.len());
+    /// assert_eq!("foo", values[0]);
+    /// assert_eq!("bar", values[1]);
+    /// ```
     pub fn optmulti(
         &mut self,
         short_name: &str,
@@ -284,6 +337,21 @@ impl Options {
     /// * `desc` - Description for usage help
     /// * `hint` - Hint that is used in place of the argument in the usage help,
     ///   e.g. `"FILE"` for a `-o FILE` option
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// # use getopts::Fail;
+    /// let mut opts = Options::new();
+    /// opts.optopt("o", "optional", "optional text option", "TEXT");
+    ///
+    /// let matches = opts.parse(&["arg1"]).unwrap();
+    /// assert_eq!(None, matches.opt_str("optional"));
+    ///
+    /// let matches = opts.parse(&["--optional", "foo", "arg1"]).unwrap();
+    /// assert_eq!(Some("foo".to_owned()), matches.opt_str("optional"));
+    /// ```
     pub fn optopt(
         &mut self,
         short_name: &str,
@@ -310,6 +378,23 @@ impl Options {
     /// * `desc` - Description for usage help
     /// * `hint` - Hint that is used in place of the argument in the usage help,
     ///   e.g. `"FILE"` for a `-o FILE` option
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// # use getopts::Fail;
+    /// let mut opts = Options::new();
+    /// opts.optopt("o", "optional", "optional text option", "TEXT");
+    /// opts.reqopt("m", "mandatory", "madatory text option", "TEXT");
+    ///
+    /// let result = opts.parse(&["--mandatory", "foo"]);
+    /// assert!(result.is_ok());
+    ///
+    /// let result = opts.parse(&["--optional", "foo"]);
+    /// assert!(result.is_err());
+    /// assert_eq!(Fail::OptionMissing("mandatory".to_owned()), result.unwrap_err());
+    /// ```
     pub fn reqopt(
         &mut self,
         short_name: &str,
@@ -347,6 +432,8 @@ impl Options {
             .map(|_| Vec::new())
             .collect::<Vec<Vec<(usize, Optval)>>>();
         let mut free: Vec<String> = Vec::new();
+        let mut args_end = None;
+
         let args = args
             .into_iter()
             .map(|i| {
@@ -369,10 +456,11 @@ impl Options {
                     }
                 }
             } else if cur == "--" {
+                args_end = Some(free.len());
                 free.extend(args);
                 break;
             } else {
-                let mut names;
+                let mut name = None;
                 let mut i_arg = None;
                 let mut was_long = true;
                 if cur.as_bytes()[1] == b'-' || self.long_only {
@@ -383,57 +471,53 @@ impl Options {
                         &cur[1..]
                     };
                     let mut parts = tail.splitn(2, '=');
-                    names = vec![Name::from_str(parts.next().unwrap())];
+                    name = Some(Name::from_str(parts.next().unwrap()));
                     if let Some(rest) = parts.next() {
                         i_arg = Some(rest.to_string());
                     }
                 } else {
                     was_long = false;
-                    names = Vec::new();
                     for (j, ch) in cur.char_indices().skip(1) {
                         let opt = Short(ch);
-
-                        /* In a series of potential options (eg. -aheJ), if we
-                           see one which takes an argument, we assume all
-                           subsequent characters make up the argument. This
-                           allows options such as -L/usr/local/lib/foo to be
-                           interpreted correctly
-                        */
 
                         let opt_id = match find_opt(&opts, &opt) {
                             Some(id) => id,
                             None => return Err(UnrecognizedOption(opt.to_string())),
                         };
 
-                        names.push(opt);
-
+                        // In a series of potential options (eg. -aheJ), if we
+                        // see one which takes an argument, we assume all
+                        // subsequent characters make up the argument. This
+                        // allows options such as -L/usr/local/lib/foo to be
+                        // interpreted correctly
                         let arg_follows = match opts[opt_id].hasarg {
                             Yes | Maybe => true,
                             No => false,
                         };
 
                         if arg_follows {
+                            name = Some(opt);
                             let next = j + ch.len_utf8();
                             if next < cur.len() {
                                 i_arg = Some(cur[next..].to_string());
                                 break;
                             }
+                        } else {
+                            vals[opt_id].push((arg_pos, Given));
                         }
                     }
                 }
-                let mut name_pos = 0;
-                for nm in names.iter() {
-                    name_pos += 1;
-                    let optid = match find_opt(&opts, &nm) {
+                if let Some(nm) = name {
+                    let opt_id = match find_opt(&opts, &nm) {
                         Some(id) => id,
                         None => return Err(UnrecognizedOption(nm.to_string())),
                     };
-                    match opts[optid].hasarg {
+                    match opts[opt_id].hasarg {
                         No => {
-                            if name_pos == names.len() && i_arg.is_some() {
+                            if i_arg.is_some() {
                                 return Err(UnexpectedArgument(nm.to_string()));
                             }
-                            vals[optid].push((arg_pos, Given));
+                            vals[opt_id].push((arg_pos, Given));
                         }
                         Maybe => {
                             // Note that here we do not handle `--arg value`.
@@ -443,21 +527,18 @@ impl Options {
                             // option at the end of the arguments when
                             // FloatingFrees is in use.
                             if let Some(i_arg) = i_arg.take() {
-                                vals[optid].push((arg_pos, Val(i_arg)));
-                            } else if was_long
-                                || name_pos < names.len()
-                                || args.peek().map_or(true, |n| is_arg(&n))
-                            {
-                                vals[optid].push((arg_pos, Given));
+                                vals[opt_id].push((arg_pos, Val(i_arg)));
+                            } else if was_long || args.peek().map_or(true, |n| is_arg(&n)) {
+                                vals[opt_id].push((arg_pos, Given));
                             } else {
-                                vals[optid].push((arg_pos, Val(args.next().unwrap())));
+                                vals[opt_id].push((arg_pos, Val(args.next().unwrap())));
                             }
                         }
                         Yes => {
                             if let Some(i_arg) = i_arg.take() {
-                                vals[optid].push((arg_pos, Val(i_arg)));
+                                vals[opt_id].push((arg_pos, Val(i_arg)));
                             } else if let Some(n) = args.next() {
-                                vals[optid].push((arg_pos, Val(n)));
+                                vals[opt_id].push((arg_pos, Val(n)));
                             } else {
                                 return Err(ArgumentMissing(nm.to_string()));
                             }
@@ -476,7 +557,17 @@ impl Options {
                 return Err(OptionDuplicated(opt.name.to_string()));
             }
         }
-        Ok(Matches { opts, vals, free })
+
+        // Note that if "--" is last argument on command line, then index stored
+        // in option does not exist in `free` and must be replaced with `None`
+        args_end = args_end.filter(|pos| pos != &free.len());
+
+        Ok(Matches {
+            opts,
+            vals,
+            free,
+            args_end,
+        })
     }
 
     /// Derive a short one-line usage summary from a set of long options.
@@ -609,7 +700,7 @@ fn validate_names(short_name: &str, long_name: &str) {
 }
 
 /// What parsing style to use when parsing arguments.
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ParsingStyle {
     /// Flags and "free" arguments can be freely inter-mixed.
     FloatingFrees,
@@ -666,7 +757,7 @@ struct Opt {
 
 /// One group of options, e.g., both `-h` and `--help`, along with
 /// their shared description and properties.
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct OptGroup {
     /// Short name of the option, e.g. `h` for a `-h` option
     short_name: String,
@@ -697,8 +788,12 @@ pub struct Matches {
     opts: Vec<Opt>,
     /// Values of the Options that matched and their positions
     vals: Vec<Vec<(usize, Optval)>>,
+
     /// Free string fragments
     pub free: Vec<String>,
+
+    /// Index of first free fragment after "--" separator
+    args_end: Option<usize>,
 }
 
 /// The type returned when the command line does not conform to the
@@ -718,17 +813,7 @@ pub enum Fail {
     UnexpectedArgument(String),
 }
 
-impl Error for Fail {
-    fn description(&self) -> &str {
-        match *self {
-            ArgumentMissing(_) => "missing argument",
-            UnrecognizedOption(_) => "unrecognized option",
-            OptionMissing(_) => "missing option",
-            OptionDuplicated(_) => "duplicated option",
-            UnexpectedArgument(_) => "unexpected argument",
-        }
-    }
-}
+impl Error for Fail {}
 
 /// The result of parsing a command line with a set of options.
 pub type Result = result::Result<Matches, Fail>;
@@ -804,23 +889,38 @@ impl Matches {
         self.opt_vals(nm).into_iter().map(|(_, o)| o).next()
     }
     /// Returns true if an option was defined
-    pub fn opt_defined(&self, nm: &str) -> bool {
-        find_opt(&self.opts, &Name::from_str(nm)).is_some()
+    pub fn opt_defined(&self, name: &str) -> bool {
+        find_opt(&self.opts, &Name::from_str(name)).is_some()
     }
 
     /// Returns true if an option was matched.
-    pub fn opt_present(&self, nm: &str) -> bool {
-        !self.opt_vals(nm).is_empty()
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_present(&self, name: &str) -> bool {
+        !self.opt_vals(name).is_empty()
     }
 
     /// Returns the number of times an option was matched.
-    pub fn opt_count(&self, nm: &str) -> usize {
-        self.opt_vals(nm).len()
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_count(&self, name: &str) -> usize {
+        self.opt_vals(name).len()
     }
 
     /// Returns a vector of all the positions in which an option was matched.
-    pub fn opt_positions(&self, nm: &str) -> Vec<usize> {
-        self.opt_vals(nm).into_iter().map(|(pos, _)| pos).collect()
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_positions(&self, name: &str) -> Vec<usize> {
+        self.opt_vals(name)
+            .into_iter()
+            .map(|(pos, _)| pos)
+            .collect()
     }
 
     /// Returns true if any of several options were matched.
@@ -831,6 +931,41 @@ impl Matches {
                 Some(id) if !self.vals[id].is_empty() => true,
                 _ => false,
             })
+    }
+
+    /// Returns true if any of several options were matched.
+    ///
+    /// Similar to `opts_present` but accepts any argument that can be converted
+    /// into an iterator over string references.
+    ///
+    /// # Panics
+    ///
+    /// This function might panic if some option name is not defined.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optopt("a", "alpha", "first option", "STR");
+    /// opts.optopt("b", "beta", "second option", "STR");
+    ///
+    /// let args = vec!["-a", "foo"];
+    /// let matches = &match opts.parse(&args) {
+    ///     Ok(m) => m,
+    ///     _ => panic!(),
+    /// };
+    ///
+    /// assert!(matches.opts_present_any(&["alpha"]));
+    /// assert!(!matches.opts_present_any(&["beta"]));
+    /// ```
+    pub fn opts_present_any<C: IntoIterator>(&self, names: C) -> bool
+    where
+        C::Item: AsRef<str>,
+    {
+        names
+            .into_iter()
+            .any(|nm| !self.opt_vals(nm.as_ref()).is_empty())
     }
 
     /// Returns the string argument supplied to one of several matching options or `None`.
@@ -844,12 +979,56 @@ impl Matches {
             .next()
     }
 
+    /// Returns the string argument supplied to the first matching option of
+    /// several options or `None`.
+    ///
+    /// Similar to `opts_str` but accepts any argument that can be converted
+    /// into an iterator over string references.
+    ///
+    /// # Panics
+    ///
+    /// This function might panic if some option name is not defined.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    /// opts.optopt("a", "alpha", "first option", "STR");
+    /// opts.optopt("b", "beta", "second option", "STR");
+    ///
+    /// let args = vec!["-a", "foo", "--beta", "bar"];
+    /// let matches = &match opts.parse(&args) {
+    ///     Ok(m) => m,
+    ///     _ => panic!(),
+    /// };
+    ///
+    /// assert_eq!(Some("foo".to_string()), matches.opts_str_first(&["alpha", "beta"]));
+    /// assert_eq!(Some("bar".to_string()), matches.opts_str_first(&["beta", "alpha"]));
+    /// ```
+    pub fn opts_str_first<C: IntoIterator>(&self, names: C) -> Option<String>
+    where
+        C::Item: AsRef<str>,
+    {
+        names
+            .into_iter()
+            .filter_map(|nm| match self.opt_val(nm.as_ref()) {
+                Some(Val(s)) => Some(s),
+                _ => None,
+            })
+            .next()
+    }
+
     /// Returns a vector of the arguments provided to all matches of the given
     /// option.
     ///
     /// Used when an option accepts multiple values.
-    pub fn opt_strs(&self, nm: &str) -> Vec<String> {
-        self.opt_vals(nm)
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_strs(&self, name: &str) -> Vec<String> {
+        self.opt_vals(name)
             .into_iter()
             .filter_map(|(_, v)| match v {
                 Val(s) => Some(s),
@@ -862,8 +1041,12 @@ impl Matches {
     /// option, together with their positions.
     ///
     /// Used when an option accepts multiple values.
-    pub fn opt_strs_pos(&self, nm: &str) -> Vec<(usize, String)> {
-        self.opt_vals(nm)
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_strs_pos(&self, name: &str) -> Vec<(usize, String)> {
+        self.opt_vals(name)
             .into_iter()
             .filter_map(|(p, v)| match v {
                 Val(s) => Some((p, s)),
@@ -873,8 +1056,12 @@ impl Matches {
     }
 
     /// Returns the string argument supplied to a matching option or `None`.
-    pub fn opt_str(&self, nm: &str) -> Option<String> {
-        match self.opt_val(nm) {
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_str(&self, name: &str) -> Option<String> {
+        match self.opt_val(name) {
             Some(Val(s)) => Some(s),
             _ => None,
         }
@@ -885,8 +1072,12 @@ impl Matches {
     /// Returns `None` if the option was not present, `def` if the option was
     /// present but no argument was provided, and the argument if the option was
     /// present and an argument was provided.
-    pub fn opt_default(&self, nm: &str, def: &str) -> Option<String> {
-        match self.opt_val(nm) {
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_default(&self, name: &str, def: &str) -> Option<String> {
+        match self.opt_val(name) {
             Some(Val(s)) => Some(s),
             Some(_) => Some(def.to_string()),
             None => None,
@@ -896,11 +1087,15 @@ impl Matches {
     /// Returns some matching value or `None`.
     ///
     /// Similar to opt_str, also converts matching argument using FromStr.
-    pub fn opt_get<T>(&self, nm: &str) -> result::Result<Option<T>, T::Err>
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_get<T>(&self, name: &str) -> result::Result<Option<T>, T::Err>
     where
         T: FromStr,
     {
-        match self.opt_val(nm) {
+        match self.opt_val(name) {
             Some(Val(s)) => Ok(Some(s.parse()?)),
             Some(Given) => Ok(None),
             None => Ok(None),
@@ -912,15 +1107,56 @@ impl Matches {
     /// Similar to opt_default, except the two differences.
     /// Instead of returning None when argument was not present, return `def`.
     /// Instead of returning &str return type T, parsed using str::parse().
-    pub fn opt_get_default<T>(&self, nm: &str, def: T) -> result::Result<T, T::Err>
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the option name is not defined.
+    pub fn opt_get_default<T>(&self, name: &str, def: T) -> result::Result<T, T::Err>
     where
         T: FromStr,
     {
-        match self.opt_val(nm) {
+        match self.opt_val(name) {
             Some(Val(s)) => s.parse(),
             Some(Given) => Ok(def),
             None => Ok(def),
         }
+    }
+
+    /// Returns index of first free argument after "--".
+    ///
+    /// If double-dash separator is present and there are some args after it in
+    /// the argument list then the method returns index into `free` vector
+    /// indicating first argument after it.
+    /// behind it.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    ///
+    /// let matches = opts.parse(&vec!["arg1", "--", "arg2"]).unwrap();
+    /// let end_pos = matches.free_trailing_start().unwrap();
+    /// assert_eq!(end_pos, 1);
+    /// assert_eq!(matches.free[end_pos], "arg2".to_owned());
+    /// ```
+    ///
+    /// If the double-dash is missing from argument list or if there are no
+    /// arguments after it:
+    ///
+    /// ```
+    /// # use getopts::Options;
+    /// let mut opts = Options::new();
+    ///
+    /// let matches = opts.parse(&vec!["arg1", "--"]).unwrap();
+    /// assert_eq!(matches.free_trailing_start(), None);
+    ///
+    /// let matches = opts.parse(&vec!["arg1", "arg2"]).unwrap();
+    /// assert_eq!(matches.free_trailing_start(), None);
+    /// ```
+    ///
+    pub fn free_trailing_start(&self) -> Option<usize> {
+        self.args_end
     }
 }
 

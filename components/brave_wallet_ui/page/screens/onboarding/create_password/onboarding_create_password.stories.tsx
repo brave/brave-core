@@ -21,4 +21,7 @@ export const _OnboardingCreatePassword = {
   },
 }
 
-export default { component: OnboardingCreatePassword }
+export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
+  component: OnboardingCreatePassword,
+}

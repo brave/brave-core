@@ -17,3 +17,12 @@ In a nutshell, the steps for adding a new policy in Brave look like this:
 7. The group policy assets get output to `//out/<build_type_here>/brave_policy_templates.zip`. You can open this up and inspect the registry and adm/admx files. There is also a `policy_templates.zip` - that is the raw output before the script at `//brave/components/policy/pack_policy_templates.py` runs.
 
 If rebuilding isn't picking up your policy, you can try to delete `//out/<build_type_here>/gen/components/policy/policy_constants.cc`. Rebuilding will trigger the rebuild for this file and your changes should be there.
+
+
+## Troubleshooting
+
+If you're getting an error similar to:
+
+> ../../brave/browser/policy/brave_simple_policy_map.h:75:19: error: no member named 'kBraveSpeedreaderDisabled' in namespace 'policy::key'; did you mean 'kBraveRewardsDisabled'?
+
+It might be that the minimum Chromium version is not yet in use by Brave via the YAML's `supported_on`.  In that case you will need to temporarily specify a lower version until Brave updates to the newer version.

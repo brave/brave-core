@@ -2093,9 +2093,6 @@ Are you sure you want to do this?
     <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding legacy import text">
       Import from legacy Brave crypto wallets?
     </message>
-    <message name="IDS_RESTORE" desc="Brave Wallet restore text">
-      Restore
-    </message>
     <message name="IDS_ALREADY_HAVE_A_WALLET" desc="Brave Wallet onboarding restore title">
       Already have a wallet?
     </message>
@@ -2605,9 +2602,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_EDIT" desc="Brave wallet accounts text">
       Edit
-    </message>
-    <message name="IDS_UPDATE" desc="Brave wallet accounts text">
-      Update
     </message>
     <message name="IDS_ACCOUNT_UPDATE_FAILED" desc="Brave Wallet account update error text">
       Account update failed.

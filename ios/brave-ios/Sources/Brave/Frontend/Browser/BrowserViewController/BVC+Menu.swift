@@ -95,27 +95,17 @@ extension BrowserViewController {
       return
     }
 
-    // Present existing playlist controller
-    if let playlistController = PlaylistCoordinator.shared.playlistController {
+    // Retrieve the item and offset-time from the current tab's webview.
+    let tab = self.tabManager.selectedTab
+    PlaylistCoordinator.shared.getPlaylistController(tab: tab) {
+      [weak self] playlistController in
+      guard let self = self else { return }
+
       PlaylistP3A.recordUsage()
 
-      dismiss(animated: true) {
+      self.dismiss(animated: true) {
         PlaylistCoordinator.shared.isPlaylistControllerPresented = true
         self.present(playlistController, animated: true)
-      }
-    } else {
-      // Retrieve the item and offset-time from the current tab's webview.
-      let tab = self.tabManager.selectedTab
-      PlaylistCoordinator.shared.getPlaylistController(tab: tab) {
-        [weak self] playlistController in
-        guard let self = self else { return }
-
-        PlaylistP3A.recordUsage()
-
-        self.dismiss(animated: true) {
-          PlaylistCoordinator.shared.isPlaylistControllerPresented = true
-          self.present(playlistController, animated: true)
-        }
       }
     }
   }

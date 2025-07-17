@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
+index 99e7a64feec7870ce4422a4bd048732cdb83ac8a..902314672b5c215fd9056688050c843ae9b6b647 100644
+--- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
++++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
+@@ -716,6 +716,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+ #else
+   info.incognito_access_pending_change = false;
+ #endif
++  BRAVE_CREATE_EXTENSION_INFO_HELPER
+ 
+   // User Scripts toggle.
+   info.user_scripts_access.is_enabled =

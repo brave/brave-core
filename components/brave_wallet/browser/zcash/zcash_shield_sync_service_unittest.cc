@@ -10,8 +10,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/task/thread_pool.h"
-#include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
@@ -24,8 +23,6 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -227,6 +224,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
         }));
   }
 
+ protected:
   mojom::AccountIdPtr zcash_account_;
   base::ScopedTempDir temp_dir_;
 

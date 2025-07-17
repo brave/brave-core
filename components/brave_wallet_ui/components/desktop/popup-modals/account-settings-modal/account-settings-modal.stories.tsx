@@ -70,5 +70,6 @@ export const AccountSettingsModalRemove = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Popup Modals/Account Settings',
   component: AccountSettingsModal,
 } as Meta<typeof AccountSettingsModal>

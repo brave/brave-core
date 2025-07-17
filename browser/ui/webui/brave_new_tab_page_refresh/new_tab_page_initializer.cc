@@ -181,12 +181,16 @@ void NewTabPageInitializer::AddStrings() {
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
       {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
       {"removeTopSiteLabel", IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL},
+      {"rewardsAdsViewedTooltip", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
       {"rewardsBalanceTitle", IDS_NEW_TAB_REWARDS_BALANCE_TITLE},
       {"rewardsConnectButtonLabel", IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL},
       {"rewardsConnectText", IDS_NEW_TAB_REWARDS_CONNECT_TEXT},
       {"rewardsConnectTitle", IDS_NEW_TAB_REWARDS_CONNECT_TITLE},
       {"rewardsFeatureText1", IDS_REWARDS_ONBOARDING_TEXT_ITEM_1},
       {"rewardsFeatureText2", IDS_REWARDS_ONBOARDING_TEXT_ITEM_2},
+      {"rewardsLoginButtonLabel", IDS_NEW_TAB_REWARDS_LOGIN_BUTTON_LABEL},
+      {"rewardsLoginText", IDS_NEW_TAB_REWARDS_LOGIN_TEXT},
+      {"rewardsLoginTitle", IDS_NEW_TAB_REWARDS_LOGIN_TITLE},
       {"rewardsOnboardingButtonLabel",
        IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL},
       {"rewardsOnboardingLink", IDS_NEW_TAB_REWARDS_ONBOARDING_LINK},
@@ -239,6 +243,8 @@ void NewTabPageInitializer::AddStrings() {
        IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE},
       {"topSitesSettingsTitle", IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE},
       {"topSitesShowCustomLabel", IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL},
+      {"topSitesShowLessLabel", IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL},
+      {"topSitesShowMoreLabel", IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL},
       {"topSitesShowMostVisitedLabel",
        IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL},
       {"topSitesTitleLabel", IDS_NEW_TAB_TOP_SITES_TITLE_LABEL},
@@ -268,6 +274,8 @@ void NewTabPageInitializer::AddPluralStrings() {
   auto handler = std::make_unique<PluralStringHandler>();
   handler->AddLocalizedString("BRAVE_NEWS_SOURCE_COUNT",
                               IDS_BRAVE_NEWS_SOURCE_COUNT);
+  handler->AddLocalizedString("rewardsConnectedAdsViewedText",
+                              IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT);
   web_ui_->AddMessageHandler(std::move(handler));
 }
 

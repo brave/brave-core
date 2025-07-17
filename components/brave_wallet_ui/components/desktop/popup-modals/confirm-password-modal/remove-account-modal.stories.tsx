@@ -16,7 +16,7 @@ import { mockAccount } from '../../../../common/constants/mocks'
 
 export const _RemoveAccountModal = {}
 export default {
-  title: 'Remove Account Modal',
+  title: 'Wallet/Desktop/Components/Popup Modals',
   render: () => (
     <div style={{ width: '100%', height: '100%' }}>
       <WalletPageStory

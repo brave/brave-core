@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 
+#include "base/command_line.h"
 #include "base/logging.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"

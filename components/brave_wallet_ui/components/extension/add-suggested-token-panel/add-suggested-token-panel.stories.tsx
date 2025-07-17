@@ -20,4 +20,7 @@ export const _AddSuggestedTokenPanel = {
   },
 }
 
-export default { component: AddSuggestedTokenPanel }
+export default {
+  title: 'Wallet/Panel/Panels',
+  component: AddSuggestedTokenPanel,
+}

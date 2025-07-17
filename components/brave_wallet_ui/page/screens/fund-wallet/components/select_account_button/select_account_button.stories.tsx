@@ -28,5 +28,5 @@ export const _SelectAccountButton = () => {
 
 export default {
   component: _SelectAccountButton,
-  title: 'Fund Wallet - Select Account Button',
+  title: 'Wallet/Desktop/Components/Fund Wallet',
 }

@@ -22,6 +22,6 @@ export const OnboardingImportOrRestoreWallet = () => {
 }
 
 export default {
-  title: 'Import Hardware Wallet Welcome',
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingImportOrRestoreWallet,
 } as Meta<typeof OnboardingImportOrRestoreWallet>

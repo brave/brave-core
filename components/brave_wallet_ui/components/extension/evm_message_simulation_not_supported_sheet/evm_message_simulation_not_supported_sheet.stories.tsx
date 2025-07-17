@@ -14,7 +14,6 @@ import {
 } from './evm_message_simulation_not_supported_sheet'
 
 export const _EvmMessageSimulationNotSupportedSheet = {
-  title: 'EVM Message Simulation Not Supported Sheet',
   render: () => {
     return (
       <WalletPanelStory>
@@ -25,6 +24,6 @@ export const _EvmMessageSimulationNotSupportedSheet = {
 }
 
 export default {
-  title: 'EVM Message Simulation Not Supported Sheet',
+  title: 'Wallet/Panel/Panels/Transaction Simulations',
   component: EvmMessageSimulationNotSupportedSheet,
 }

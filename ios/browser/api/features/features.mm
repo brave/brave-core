@@ -26,8 +26,8 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
-#include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
+#include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
@@ -311,10 +311,6 @@
       initWithFeature:&brave_rewards::features::kVerboseLoggingFeature];
 }
 
-+ (Feature*)kNewPlaylistUI {
-  return [[Feature alloc] initWithFeature:&playlist::features::kNewPlaylistUI];
-}
-
 + (Feature*)kBraveHttpsByDefault {
   return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
 }
@@ -347,6 +343,11 @@
 + (Feature*)kBraveAllowExternalPurchaseLinks {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveAllowExternalPurchaseLinks];
+}
+
++ (Feature*)kModernTabTrayEnabled {
+  return
+      [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
 }
 
 @end

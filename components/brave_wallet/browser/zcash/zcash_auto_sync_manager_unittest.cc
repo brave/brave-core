@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

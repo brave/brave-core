@@ -297,6 +297,8 @@ source_set("ui") {
       "webui/webcompat_reporter/webcompat_reporter_dialog.h",
       "webui/welcome_page/brave_welcome_ui.cc",
       "webui/welcome_page/brave_welcome_ui.h",
+      "webui/welcome_page/brave_welcome_ui_prefs.cc",
+      "webui/welcome_page/brave_welcome_ui_prefs.h",
       "webui/welcome_page/welcome_dom_handler.cc",
       "webui/welcome_page/welcome_dom_handler.h",
       "whats_new/pref_names.h",
@@ -306,6 +308,7 @@ source_set("ui") {
 
     deps += [
       "//base",
+      "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
@@ -315,6 +318,7 @@ source_set("ui") {
       "//brave/components/brave_account/mojom",
       "//brave/components/constants",
       "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:mojom",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
@@ -330,6 +334,7 @@ source_set("ui") {
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
+      "//chrome/browser/ui/extensions",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/tabs:tab_menu",
@@ -610,6 +615,7 @@ source_set("ui") {
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/download",
+      "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -633,7 +639,10 @@ source_set("ui") {
           "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
 
-        deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
+        deps += [
+          "//brave/browser/brave_vpn/win:wireguard_utils",
+          "//chrome/browser:flags",
+        ]
       }
       sources += [ "brave_vpn/brave_vpn_controller.cc" ]
     }
@@ -739,6 +748,8 @@ source_set("ui") {
         "views/obsolete_system_confirm_dialog_view.h",
       ]
     }
+
+    deps += [ "//chrome/browser/infobars" ]
   }
 
   deps += [
@@ -1127,6 +1138,7 @@ source_set("ui") {
 
       deps += [
         "//brave/browser/extensions:component_loader",
+        "//chrome/browser:flags",
         "//third_party/widevine/cdm:buildflags",
       ]
 
@@ -1328,6 +1340,8 @@ source_set("ui") {
       "views/side_panel/playlist/playlist_contents_wrapper.h",
       "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
       "views/side_panel/playlist/playlist_side_panel_coordinator.h",
+      "views/side_panel/playlist/playlist_side_panel_web_view.cc",
+      "views/side_panel/playlist/playlist_side_panel_web_view.h",
       "webui/playlist_active_tab_tracker.cc",
       "webui/playlist_active_tab_tracker.h",
       "webui/playlist_ui.cc",

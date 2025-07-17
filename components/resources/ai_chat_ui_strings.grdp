@@ -105,9 +105,6 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_VISION_BASIC" desc="AI Chat intro message for the default vision model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama Vision, a model created by Meta to be performant and applicable to many use cases. Llama Vision is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
-  </message>
   <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model" formatter_data="webui=AiChat">
     Premium
   </message>
@@ -431,9 +428,6 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model" formatter_data="webui=AiChat">
       General purpose chat, coding, and more
-  </message>
-  <message name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model" formatter_data="webui=AiChat">
-    General purpose vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model" formatter_data="webui=AiChat">
     Reasoning model

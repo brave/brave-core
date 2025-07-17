@@ -64,4 +64,4 @@ export const _TransactionOrigin = {
   },
 }
 
-export default { title: 'Origin Info' }
+export default { title: 'Wallet/Panel/Components' }

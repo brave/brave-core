@@ -55,7 +55,7 @@ class AIChatUI : public ui::MojoWebUIController {
     embedder_ = embedder;
   }
 
-  static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
+  static constexpr std::string_view GetWebUIName() { return "AIChatPanel"; }
 
  private:
   friend class ai_chat::AIChatUIPageHandlerBrowserTest;

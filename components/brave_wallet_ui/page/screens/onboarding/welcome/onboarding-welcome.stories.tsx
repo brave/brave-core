@@ -19,6 +19,6 @@ export const OnboardingWelcomeStory = () => {
 }
 
 export default {
-  title: 'Welcome',
+  title: 'Wallet/Desktop/Screens/Onboarding',
   component: OnboardingWelcomeStory,
 } as Meta<typeof OnboardingWelcomeStory>

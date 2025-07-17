@@ -18,4 +18,7 @@ export const _BackupRecoveryPhraseExplainer = {
   },
 }
 
-export default { component: RecoveryPhraseExplainer }
+export default {
+  title: 'Wallet/Desktop/Screens/Backup Wallet',
+  component: RecoveryPhraseExplainer,
+}

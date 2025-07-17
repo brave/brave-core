@@ -2837,6 +2837,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Test `matches-attr` procedural filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
   UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-attr(\"testing\")\n"
       "a.com##:matches-attr(\"test-attr\"=\"test-value\")\n"
       "a.com##:matches-attr(\"/test-y.{2}-attr/\"=\"/test-y[a-z]s-value/\")");
 

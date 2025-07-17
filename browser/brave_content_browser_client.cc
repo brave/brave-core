@@ -89,6 +89,7 @@
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
@@ -239,7 +240,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -851,6 +852,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
         map);
   }
+
+  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
+  }
 #endif
 
   auto* prefs =
@@ -974,6 +980,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
+      CHECK(speedreader_service);
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(

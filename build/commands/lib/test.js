@@ -70,6 +70,7 @@ const getTestBinary = (suite) => {
 
 const getChromiumUnitTestsSuites = () => {
   return [
+    'base_unittests',
     'components_unittests',
     'content_unittests',
     'net_unittests',

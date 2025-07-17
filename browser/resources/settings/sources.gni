@@ -16,7 +16,6 @@ brave_settings_preprocess_deps =
 
 brave_settings_web_component_files = [
   "brave_appearance_page/bookmark_bar.ts",
-  "brave_appearance_page/brave_theme.ts",
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/super_referral.ts",
   "brave_appearance_page/tabs.ts",
@@ -63,7 +62,6 @@ brave_settings_web_component_files = [
 ]
 
 brave_settings_ts_files = [
-  "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_autofill_page/brave_autofill_page.ts",
@@ -160,7 +158,7 @@ brave_settings_mojo_files = [
   # ai_chat.mojom depends on tab_tracker.mojom even though it isn't used on settings
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/brave_account_settings_handler.mojom-webui.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.

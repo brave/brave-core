@@ -15,7 +15,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -41,8 +40,7 @@ OrchardNoteWitness CreateWitness(const std::vector<std::string>& path,
 
 class OrchardSyncStateTest : public testing::Test {
  public:
-  OrchardSyncStateTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+  OrchardSyncStateTest() = default;
   void SetUp() override;
 
   OrchardSyncState* sync_state() { return sync_state_.get(); }
@@ -52,7 +50,6 @@ class OrchardSyncStateTest : public testing::Test {
   mojom::AccountIdPtr account_id() { return account_id_.Clone(); }
 
  private:
-  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   mojom::AccountIdPtr account_id_;
 
@@ -758,7 +755,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
     input.note.orchard_commitment_tree_position = 2;
     auto witness_result =
         sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
-    // Since checkpont #2 was deleted we shouldn't be able to calc wittness
+    // Since checkpoint #2 was deleted we shouldn't be able to calc witness
     EXPECT_FALSE(witness_result.has_value());
   }
 

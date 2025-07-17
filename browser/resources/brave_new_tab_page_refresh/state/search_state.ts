@@ -27,6 +27,7 @@ export type AutocompleteMatch = Pick<mojom.AutocompleteMatch,
   'destinationUrl'>
 
 export interface SearchState {
+  initialized: boolean
   defaultSearchEngine: string
   searchFeatureEnabled: boolean
   showSearchBox: boolean
@@ -40,6 +41,7 @@ export interface SearchState {
 
 export function defaultSearchState(): SearchState {
   return {
+    initialized: false,
     defaultSearchEngine: braveSearchHost,
     searchFeatureEnabled: false,
     showSearchBox: false,

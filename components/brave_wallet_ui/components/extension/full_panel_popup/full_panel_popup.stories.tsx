@@ -17,4 +17,7 @@ export const _FullPanelPopup = {
   },
 }
 
-export default { component: _FullPanelPopup }
+export default {
+  title: 'Wallet/Panel/Components',
+  component: _FullPanelPopup,
+}

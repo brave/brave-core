@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { ExternalLink } from './external_link'
 
-export const _ExternalLink = {
+export const _ExternalLinkButton = {
   render: () => {
     return (
       <ExternalLink
@@ -19,5 +19,6 @@ export const _ExternalLink = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Buttons',
   component: ExternalLink,
 }
