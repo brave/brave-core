@@ -27,7 +27,7 @@ BookmarkPrefsService::~BookmarkPrefsService() = default;
 void BookmarkPrefsService::OnPreferenceChanged() {
   for (Browser* browser : *BrowserList::GetInstance()) {
     if (profile_->IsSameOrParent(browser->profile())) {
-      browser->GetFeatures().bookmark_bar_controller()->UpdateBookmarkBarState(
+      BookmarkBarController::From(browser)->UpdateBookmarkBarState(
           BookmarkBarController::StateChangeReason::kPrefChange);
     }
   }

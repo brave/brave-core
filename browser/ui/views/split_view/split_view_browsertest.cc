@@ -553,40 +553,28 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   EXPECT_FALSE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(0)));
   EXPECT_TRUE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(1)));
   EXPECT_EQ(1, tab_strip_model->active_index());
-  EXPECT_EQ(BookmarkBar::HIDDEN, browser()
-                                     ->browser_window_features()
-                                     ->bookmark_bar_controller()
-                                     ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(0);
   EXPECT_EQ(0, tab_strip_model->active_index());
-  EXPECT_EQ(BookmarkBar::HIDDEN, browser()
-                                     ->browser_window_features()
-                                     ->bookmark_bar_controller()
-                                     ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
 
   // Check bookmarks is shown only on NTP split tab.
   brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
-  EXPECT_EQ(BookmarkBar::HIDDEN, browser()
-                                     ->browser_window_features()
-                                     ->bookmark_bar_controller()
-                                     ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
-  EXPECT_EQ(BookmarkBar::SHOW, browser()
-                                   ->browser_window_features()
-                                   ->bookmark_bar_controller()
-                                   ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
 
   // Check bookmarks is shown always.
   brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
-  EXPECT_EQ(BookmarkBar::SHOW, browser()
-                                   ->browser_window_features()
-                                   ->bookmark_bar_controller()
-                                   ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(0);
-  EXPECT_EQ(BookmarkBar::SHOW, browser()
-                                   ->browser_window_features()
-                                   ->bookmark_bar_controller()
-                                   ->bookmark_bar_state());
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
 }
 
 IN_PROC_BROWSER_TEST_P(
