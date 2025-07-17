@@ -654,7 +654,7 @@
     It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
-    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$2</ph>.
+    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
     Connecting to selected custodian temporarily unavailable
@@ -663,7 +663,7 @@
     Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
-    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$2</ph> about connecting a custodial account to Brave Rewards.
+    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
     Region currently not supported
@@ -681,7 +681,7 @@
     Limited Uphold account functionality
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
-    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$2</ph> for more help.
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
     Request could not be validated
@@ -690,7 +690,7 @@
     Something went wrong
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
-    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$2</ph> if the problem persists.
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
     Your request is still being processed, please wait.
