@@ -989,7 +989,6 @@ test("brave_browser_tests") {
     "//extensions/common:common_constants",
     "//extensions/common:test_support",
     "//media:test_support",
-    "//ppapi/buildflags",
     "//services/device/public/cpp:device_features",
     "//services/network:network_service",
     "//testing/gmock",
