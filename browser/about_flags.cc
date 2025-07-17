@@ -420,6 +420,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables split view",                                                \
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),                 \
+      },                                                                       \
+      {                                                                        \
+          "brave-tree-tab",                                                    \
+          "Brave Tree Tab",                                                    \
+          "Enables the Tree Tab feature",                                      \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveTreeTab),                   \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
