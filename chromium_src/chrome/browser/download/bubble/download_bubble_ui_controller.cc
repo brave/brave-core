@@ -7,7 +7,7 @@
 
 #include "brave/browser/download/brave_download_commands.h"
 
-#define ProcessDownloadButtonPress ProcessDownloadButtonPressChromium
+#define ProcessDownloadButtonPress ProcessDownloadButtonPress_ChromiumImpl
 
 #include "src/chrome/browser/download/bubble/download_bubble_ui_controller.cc"
 
@@ -26,5 +26,5 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
     commands.ExecuteCommand(command);
     return;
   }
-  ProcessDownloadButtonPressChromium(model, command, is_main_view);
+  ProcessDownloadButtonPress_ChromiumImpl(model, command, is_main_view);
 }

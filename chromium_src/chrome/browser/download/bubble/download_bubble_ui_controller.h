@@ -8,8 +8,8 @@
 
 // Declare a decorator for the ProcessDownloadButtonPress function to handle
 // BraveDownloadCommands::kDeleteLocalFile command.
-#define ProcessDownloadButtonPress(...)            \
-  ProcessDownloadButtonPressChromium(__VA_ARGS__); \
+#define ProcessDownloadButtonPress(...)                 \
+  ProcessDownloadButtonPress_ChromiumImpl(__VA_ARGS__); \
   void ProcessDownloadButtonPress(__VA_ARGS__)
 
 #include "src/chrome/browser/download/bubble/download_bubble_ui_controller.h"  // IWYU pragma: export
