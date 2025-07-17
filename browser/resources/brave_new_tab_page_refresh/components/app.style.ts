@@ -169,7 +169,6 @@ export const style = scoped.css`
 
     anchor-name: --ntp-widget-container;
 
-    align-self: stretch;
     flex: 0 0 auto;
     min-height: var(--widget-height);
 
