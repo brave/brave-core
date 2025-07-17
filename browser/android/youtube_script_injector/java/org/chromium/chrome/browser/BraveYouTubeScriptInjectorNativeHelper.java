@@ -17,10 +17,6 @@ import org.chromium.content_public.browser.WebContents;
 @JNINamespace("youtube_script_injector")
 @NullMarked
 public class BraveYouTubeScriptInjectorNativeHelper {
-    public static boolean isYouTubeVideo(WebContents webContents) {
-        return BraveYouTubeScriptInjectorNativeHelperJni.get().isYouTubeVideo(webContents);
-    }
-
     public static void setFullscreen(WebContents webContents) {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
@@ -40,8 +36,6 @@ public class BraveYouTubeScriptInjectorNativeHelper {
      */
     @NativeMethods
     interface Natives {
-        boolean isYouTubeVideo(WebContents webContents);
-
         void setFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);

@@ -12,22 +12,6 @@
 namespace youtube_script_injector {
 
 // static
-jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsYouTubeVideo(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
-  if (!helper) {
-    return false;
-  }
-
-  return helper->IsYouTubeVideo();
-}
-
-// static
 void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
@@ -58,6 +42,7 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
   return helper->HasFullscreenBeenRequested();
 }
 
+// static
 jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {

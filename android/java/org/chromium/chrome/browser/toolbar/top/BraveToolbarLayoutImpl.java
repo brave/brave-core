@@ -641,17 +641,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
         // mode. This can also happen when a tab is re-selected after a crash and it's showing
         // the crash custom view, or is in a frozen state (likely inactive or unloaded).
-        if (!BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                tab.getWebContents())) {
-            mYouTubePipLayout.setVisibility(View.GONE);
-            return;
-        }
-        final boolean show =
-                PictureInPicture.isEnabled(getContext())
-                        && ChromeFeatureList.isEnabled(
-                                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)
-                        && BraveYouTubeScriptInjectorNativeHelper.isYouTubeVideo(
-                                tab.getWebContents());
+        final boolean available =
+                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        tab.getWebContents());
+        final boolean enabled = PictureInPicture.isEnabled(getContext());
+
+        final boolean show = available && enabled;
         mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
