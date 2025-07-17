@@ -24,14 +24,15 @@ class TorTabHelper final : public content::WebContentsObserver,
   TorTabHelper& operator=(const TorTabHelper&) = delete;
   ~TorTabHelper() override;
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents,
-                                        bool is_tor_profile);
+  static void MaybeCreateForWebContents(content::WebContents* web_contents);
 
  private:
   friend class content::WebContentsUserData<TorTabHelper>;
   explicit TorTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 

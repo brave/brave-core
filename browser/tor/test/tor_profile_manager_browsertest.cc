@@ -413,6 +413,35 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   ui_test_utils::WaitForBrowserToClose();
 }
 
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
+
+  constexpr char kCheckNavigatorShare[] = R"js(
+    navigator.canShare ? true : false
+  )js";
+
+  Profile* tor_profile = SwitchToTorProfile(
+      browser()->profile(), GetTorLauncherFactory(), 1, GURL("brave://newtab"));
+  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
+  content::WaitForLoadStop(tor_contents);
+
+  // navigator.share API is disabled for Tor windows on Mac.
+  EXPECT_EQ(!BUILDFLAG(IS_MAC),
+            content::EvalJs(tor_contents, kCheckNavigatorShare).ExtractBool());
+
+  auto* regular_contents =
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
+  EXPECT_TRUE(
+      content::EvalJs(regular_contents, kCheckNavigatorShare).ExtractBool());
+
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
+  TorProfileManager::CloseTorProfileWindows(tor_profile);
+  ui_test_utils::WaitForBrowserToClose();
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
  public:
