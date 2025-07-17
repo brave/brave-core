@@ -43,6 +43,7 @@
         "components/variations/service/field_trial_unittest.cc",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
+        "third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs",
         "v8/include/DO NOT PUT FILES HERE",
         "ui/views/controls/button/md_text_button_constants_unittest.cc"
     ],
