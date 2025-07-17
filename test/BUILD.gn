@@ -120,8 +120,9 @@ cached_test("l10n_unit_tests") {
   ]
 }
 
+
 cached_test("brave_unit_tests") {
-  shards = 50
+  shards = 10
   testonly = true
 
   filters = [

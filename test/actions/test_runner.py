@@ -25,21 +25,38 @@ import os
 import subprocess
 from datetime import datetime
 import argparse
-    
-    
+
 parser = argparse.ArgumentParser(
-  description="Run google test suites with sharding for gn actions"
-)
+    description="Run google test suites with sharding for gn actions")
 
-parser.add_argument("--shards", type=int, help="amount of shards the test suite should be split into")
-parser.add_argument("--shardIndex", type=int, help="which test shard should be run")
-parser.add_argument("--executable", type=str, help="which gtest executable shall be run")
-parser.add_argument("--json", type=bool, default=False, help="generates test results xml or json if not set")
-parser.add_argument("--outputDir", type=str, help="path to output folder; It will include stdout, stderr and result.{xml|json}")
-parser.add_argument("--allow-failure", type=bool, default=False, help="will exit with success code even if some tests fail")
-parser.add_argument("--filters", type=str, nargs="+", default=[], help="will exit with success code even if some tests fail")
-# Use parse_known_args to avoid errors on unknown arguments
+parser.add_argument(
+    "--shards",
+    type=int,
+    help="amount of shards the test suite should be split into")
+parser.add_argument("--shardIndex",
+                    type=int,
+                    help="which test shard should be run")
+parser.add_argument("--executable",
+                    type=str,
+                    help="which gtest executable shall be run")
+parser.add_argument("--json",
+                    type=bool,
+                    default=False,
+                    help="generates test results xml or json if not set")
+parser.add_argument("--outputDir",
+                    type=str,
+                    help="path to output folder; It will include stdout," +
+                    "stderr and result.{xml|json}")
+parser.add_argument("--allow-failure",
+                    type=bool,
+                    default=False,
+                    help="will exit with success code even if some tests fail")
 
+parser.add_argument("--filters",
+                    type=str,
+                    nargs="+",
+                    default=[],
+                    help="will exit with success code even if some tests fail")
 
 
 def main():
@@ -59,13 +76,14 @@ def main():
 
     filterArgs = []
     if (len(args.filters)):
-        filterArgs = ["--test-launcher-filter-file", ";".join(args.filters)]    
+        filterArgs = ["--test-launcher-filter-file", ";".join(args.filters)]
 
     try:
         envs = os.environ
         envs["GTEST_TOTAL_SHARDS"] = str(args.shards)
         envs["GTEST_SHARD_INDEX"] = str(args.shardIndex)
-        process = subprocess.Popen([exe, gtest_output] + filterArgs + gtest_args,
+        process = subprocess.Popen([exe, gtest_output] + filterArgs +
+                                   gtest_args,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    text=True,
@@ -80,8 +98,8 @@ def main():
             stdout_line = process.stdout.readline()
             stderr_line = process.stderr.readline()
 
-            if not stdout_line and not stderr_line and process.poll(
-            ) is not None:
+            if (not stdout_line and not stderr_line
+                    and process.poll() is not None):
                 break
 
             if stdout_line:
@@ -94,8 +112,8 @@ def main():
 
     exit_code = process.wait()
 
-    print(f"{exe} exited {exit_code} shard {args.shardIndex} / {args.shards}", sys.argv)
-    sys.exit(0 if(args.allow_failure) else exit_code)
+    print(f"{exe} exited {exit_code} shard {args.shardIndex} / {args.shards}")
+    sys.exit(0 if (args.allow_failure) else exit_code)
 
 
 if __name__ == "__main__":
