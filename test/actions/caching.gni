@@ -95,7 +95,7 @@ template("cached_test") {
 
 
 
-  test(name + ".gtest") {
+  test(name) {
     testonly = true
     forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
 
@@ -109,10 +109,10 @@ template("cached_test") {
       }
     }
 
-    hash_runtime(target_name + ".gtest.hash.json") {
+    hash_runtime(target_name + ".hash.json") {
       testonly = true
-      deps = [ ":" + name + ".gtest" ]
-      binary = "$root_out_dir/" + name + ".gtest"
+      deps = [ ":" + name]
+      binary = "$root_out_dir/" + name
       files = filters
     }
 
@@ -139,13 +139,13 @@ template("cached_test") {
             testonly = true
             script = "//brave/test/actions/test_runner.py"
             deps = [
-                ":" + name + ".gtest.hash.json",
-                ":" + name + ".gtest",
+                ":" + name + ".hash.json",
+                ":" + name,
             ]
 
             inputs = [
-                "$root_out_dir/" + name + ".gtest",
-                "$root_out_dir/" + name + ".gtest.hash.json",
+                "$root_out_dir/" + name,
+                "$root_out_dir/" + name + ".hash.json",
             ]
 
             if (defined(invoker.inputs)) {
@@ -158,7 +158,7 @@ template("cached_test") {
             ]
 
             args = [
-                "--executable", rebase_path("$root_out_dir/" + name + ".gtest"),
+                "--executable", rebase_path("$root_out_dir/" + name),
                 "--outputDir", rebase_path("$target_gen_dir/" + name + "/"+i),
             ] + filterArgs
 
@@ -172,14 +172,13 @@ template("cached_test") {
         }
     }
 
-    group(target_name) {
+    group(name + "-all-shards") {
         testonly=true
         deps = []
         foreach(i, range) {
-            deps += [":"+target_name + "-shard-"+i]
+            deps += [":"+name + "-shard-"+i]
         }
     }
-
 }
 
 

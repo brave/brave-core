@@ -33,20 +33,25 @@ parser.add_argument(
     "--shards",
     type=int,
     help="amount of shards the test suite should be split into")
+    
 parser.add_argument("--shardIndex",
                     type=int,
                     help="which test shard should be run")
+
 parser.add_argument("--executable",
                     type=str,
                     help="which gtest executable shall be run")
+
 parser.add_argument("--json",
                     type=bool,
                     default=False,
                     help="generates test results xml or json if not set")
+
 parser.add_argument("--outputDir",
                     type=str,
                     help="path to output folder; It will include stdout," +
                     "stderr and result.{xml|json}")
+
 parser.add_argument("--allow-failure",
                     type=bool,
                     default=False,

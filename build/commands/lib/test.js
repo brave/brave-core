@@ -100,6 +100,15 @@ const getTestsToRun = (config, suite) => {
   return testsToRun
 }
 
+const testOnRBE = (testSuite) => {
+  if (!["brave_browser_tests", "brave_unit_tests"].includes(testSuite))
+    return false;
+  return {
+    target: testSuite + '_all_shards',
+    offline: process.platform != 'linux'
+  }
+}
+
 // Returns a list of paths to files containing all the filters that would apply
 // to the current test suite, as long as such files exist in the filesystem.
 //
@@ -359,11 +368,18 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.stdio = 'inherit'
       }
 
-      let prog = util.run(testBinary, braveArgs, runOptions)
+      const rbeTestTarget = testOnRBE(testSuite);
+
+      if ( rbeTestTarget ) {
+          util.buildTargets([rbeTestTarget], {offline:rbeTestTarget.offline})
+      } else {
+
+        util.run(testBinary, braveArgs, runOptions)
+      }
 
       // convert json results to xml
       if (convertJSONToXML) {
-        prog = util.run('vpython3', [path.join('script', 'json2xunit.py')], {
+        util.run('vpython3', [path.join('script', 'json2xunit.py')], {
           ...config.defaultOptions,
           cwd: config.braveCoreDir,
           stdio: [

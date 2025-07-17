@@ -106,7 +106,6 @@ cached_test("quick_unit_tests") {
   sources = [ "//brave/base/trace_event/brave_process_memory_dump_unittest.cc" ]
 
   deps = [
-    "//brave/components/json:brave_json_unit_tests",
     "//brave/components/variations:unit_tests",
     "//brave/components/version_info:unit_tests",
   ]
