@@ -73,7 +73,7 @@ IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
   if (IsFileSystemAccessAPIEnabled()) {
     auto result =
         content::EvalJs(primary_main_frame(), "typeof self.showOpenFilePicker");
-    EXPECT_EQ(result.value.GetString(), "function");
+    EXPECT_EQ(result.ExtractString(), "function");
   } else {
     auto result =
         content::EvalJs(primary_main_frame(), "self.showOpenFilePicker()");
