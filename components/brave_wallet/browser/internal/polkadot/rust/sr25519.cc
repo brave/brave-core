@@ -13,6 +13,8 @@
 
 namespace brave_wallet::polkadot {
 
+SchnorrkelKeyPair::~SchnorrkelKeyPair() = default;
+
 class SchnorrkelKeyPairImpl : public SchnorrkelKeyPair {
  public:
   explicit SchnorrkelKeyPairImpl(rust::Box<CxxSchnorrkelKeyPair> impl);

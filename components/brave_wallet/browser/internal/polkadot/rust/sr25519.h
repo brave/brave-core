@@ -18,7 +18,7 @@ using SR25519Signature = std::array<uint8_t, 64>;
 
 class SchnorrkelKeyPair {
  public:
-  virtual ~SchnorrkelKeyPair() = default;
+  virtual ~SchnorrkelKeyPair();
 
   static std::unique_ptr<SchnorrkelKeyPair> GenerateFromSeed(
       base::span<const uint8_t> seed);
