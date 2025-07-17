@@ -61,8 +61,7 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
                                 .Activate());
 
   // Finally Set the WebState WindowID
-  IOSChromeSyncedTabDelegate::FromWebState(web_state_)
-      ->SetWindowId(session_id_);
+  IOSChromeSyncedTabDelegate::CreateForWebState(web_state_, session_id_);
 }
 
 NativeWebState::~NativeWebState() {
