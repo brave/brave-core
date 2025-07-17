@@ -29,6 +29,8 @@
     <!-- Theme colors -->
     <color name="brave_white">@android:color/white</color>
     <color name="brave_link">#4C54D2</color>
+    <color name="menu_icon_color">#212529</color>
+    <color name="text_primary">#1b1b1f</color>
 
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_90">#F9C3B6</color>
@@ -413,7 +415,6 @@
     <color name="leo_reset_text_color">#FF4B6A</color>
     <!-- End Brave Leo colors-->
 
-    <color name="text_primary">#0D1214</color>
     <color name="text_secondary">#46464a</color>
     <color name="text_tertiary">#62757e</color>
     <color name="primary_20">#d5dcff</color>

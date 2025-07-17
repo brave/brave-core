@@ -18,6 +18,8 @@
     <!-- Theme colors -->
     <color name="brave_link">#A0A5EB</color>
     <color name="brave_button_pressed">#575CA4</color>
+    <color name="menu_icon_color">#F0F2FF</color>
+    <color name="text_primary">#e3e3e8</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
@@ -250,7 +252,6 @@
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>
 
-    <color name="text_primary">#F3F5F7</color>
     <color name="text_secondary">#c7c7cc</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
