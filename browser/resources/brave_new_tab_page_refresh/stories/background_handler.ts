@@ -19,7 +19,7 @@ function delay(ms: number) {
 }
 
 const sampleBackground =
-    'https://brave.com/static-assets/images/brave-logo-sans-text.svg'
+    'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
 const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   image: {
