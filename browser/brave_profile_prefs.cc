@@ -265,6 +265,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
+  registry->RegisterBooleanPref(kBraveWaybackMachineDisabledByPolicy, false);
 #endif
 
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(

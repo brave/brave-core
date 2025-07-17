@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//testing/test.gni")
 
 assert(enable_brave_wayback_machine)
 
@@ -33,6 +34,30 @@ static_library("brave_wayback_machine") {
     "//net",
     "//services/network/public/cpp",
     "//ui/gfx:native_widget_types",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "brave_wayback_machine_policy_unittest.cc",
+    "brave_wayback_machine_utils_unittest.cc",
+    "wayback_machine_url_fetcher_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_wayback_machine",
+    "//base",
+    "//base/test:test_support",
+    "//components/sync_preferences",
+    "//components/sync_preferences:test_support",
+    "//net",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:network_service",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
     "//url",
   ]
 }

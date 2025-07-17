@@ -599,15 +599,6 @@ cached_test("brave_unit_tests") {
     ]
   }
 
-  if (enable_brave_wayback_machine) {
-    sources += [
-      "//brave/components/brave_wayback_machine/brave_wayback_machine_utils_unittest.cc",
-      "//brave/components/brave_wayback_machine/wayback_machine_url_fetcher_unittest.cc",
-    ]
-
-    deps += [ "//brave/components/brave_wayback_machine" ]
-  }
-
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader:unit_tests" ]
   }

@@ -221,6 +221,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWaybackMachineDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
