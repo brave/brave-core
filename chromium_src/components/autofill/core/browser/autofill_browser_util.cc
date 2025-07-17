@@ -16,6 +16,8 @@ bool IsFormMixedContent(const AutofillClient& client, const FormData& form) {
     return true;
   }
 
+  // We only need to handle top-level .onion pages since nested cases
+  // are already handled correctly in Chromium.
   return net::IsOnion(client.GetLastCommittedPrimaryMainFrameOrigin()) &&
          (form.action().is_valid() &&
           security_interstitials::IsInsecureFormAction(form.action()));
