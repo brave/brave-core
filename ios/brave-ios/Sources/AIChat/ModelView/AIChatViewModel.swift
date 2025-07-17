@@ -15,7 +15,6 @@ public enum AIChatModelKey: String {
   case chatQwen = "chat-qwen"
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
-  case chatVisionBasic = "chat-vision-basic"
   case chatDeepseekR1 = "chat-deepseek-r1"
 }
 
@@ -372,9 +371,6 @@ extension AiChat.Model {
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetMessageDescription
 
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionMessageDescription
-
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1MessageDescription
     }
@@ -397,9 +393,6 @@ extension AiChat.Model {
 
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
-
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
 
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
