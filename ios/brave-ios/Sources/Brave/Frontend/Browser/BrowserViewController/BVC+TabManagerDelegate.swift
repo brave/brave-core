@@ -29,7 +29,11 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
-    tab.braveShieldsHelper = .init(tab: tab)
+    let braveShieldsHelper: BraveShieldsTabHelper = .init(tab: tab)
+    tab.braveShieldsHelper = braveShieldsHelper
+    // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
+    // we should add it as a policy decider at initialization.
+    tab.addPolicyDecider(braveShieldsHelper)
   }
 
   func tabManager(
@@ -191,6 +195,9 @@ extension BrowserViewController: TabManagerDelegate {
     tab.downloadDelegate = self
     tab.certificateStore = profile.certStore
     attachTabHelpers(to: tab)
+    if let braveShieldsTabHelper = tab.braveShieldsHelper {
+      tab.addPolicyDecider(braveShieldsTabHelper)
+    }
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
