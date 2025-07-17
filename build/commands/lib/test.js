@@ -335,6 +335,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         }
       }
 
+      const rbeTestTarget = testOnRBE(testSuite)
+
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         if (config.targetOS === 'android') {
@@ -345,7 +347,9 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         } else {
           runArgs.push(`--gtest_output=xml:${outputFilename}.xml`)
         }
-        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+        if(!rbeTestTarget) {
+          fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+        }
       }
 
       if (config.targetOS === 'android' && !isJunitTestSuite) {
@@ -368,10 +372,11 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.stdio = 'inherit'
       }
 
-      const rbeTestTarget = testOnRBE(testSuite)
-
       if (rbeTestTarget) {
         util.buildTargets([rbeTestTarget], {...config.defaultOptions, offline: rbeTestTarget.offline })
+        const reportBasePath = path.join( path.basename(testBinary), 'gen', 'brave', 'test', testSuite );
+        const reports =  await fs.glob(reportBasePath+"/**/*.xml");
+        fs.appendFileSync(allResultsFilePath, reports.join('\n'))
       } else {
         util.run(testBinary, braveArgs, runOptions)
       }
