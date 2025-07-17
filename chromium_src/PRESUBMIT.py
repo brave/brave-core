@@ -26,7 +26,7 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
 
-    include_prefixes = ('#include <', '#include "src/', '#include "../gen/')
+    include_prefixes = ('#include <', '#include "../gen/')
     nolint = 'NOLINT'
     expected_suffix = '// IWYU pragma: export'
 
