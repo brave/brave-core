@@ -101,7 +101,7 @@ const getTestsToRun = (config, suite) => {
 }
 
 const testOnRBE = (testSuite) => {
-  if (!["brave_browser_tests", "brave_unit_tests"].includes(testSuite))
+  if (!['brave_browser_tests', 'brave_unit_tests'].includes(testSuite))
     return false
   return {
     target: testSuite + '_all_shards',
@@ -368,10 +368,10 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         runOptions.stdio = 'inherit'
       }
 
-      const rbeTestTarget = testOnRBE(testSuite);
+      const rbeTestTarget = testOnRBE(testSuite)
 
-      if ( rbeTestTarget ) {
-        util.buildTargets([rbeTestTarget], {offline:rbeTestTarget.offline})
+      if (rbeTestTarget) {
+        util.buildTargets([rbeTestTarget], {...config.defaultOptions, offline: rbeTestTarget.offline })
       } else {
         util.run(testBinary, braveArgs, runOptions)
       }
