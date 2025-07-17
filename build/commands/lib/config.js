@@ -776,6 +776,11 @@ Config.prototype.buildArgs = function () {
       args.android_static_analysis = 'on'
     }
 
+    // Align DCHECKs with Java asserts
+    if (args.dcheck_always_on === false) {
+      args.enable_java_asserts = false
+    }
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_hangout_services_extension
