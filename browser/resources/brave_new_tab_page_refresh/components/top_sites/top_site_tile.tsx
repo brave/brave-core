@@ -19,21 +19,16 @@ function sanitizeTileURL(url: string) {
 interface Props {
   topSite: TopSite
   canDrag: boolean
-  onRightClick?: (event: React.MouseEvent) => void
+  onContextMenu?: (event: React.MouseEvent) => void
 }
 
 export function TopSitesTile(props: Props) {
   const { favicon, title, url } = props.topSite
 
   function onContextMenu(event: React.MouseEvent) {
-    if (props.onRightClick) {
+    if (props.onContextMenu) {
       event.preventDefault()
-    }
-  }
-
-  function onMouseUp(event: React.MouseEvent) {
-    if (event.button === 2 && props.onRightClick) {
-      props.onRightClick(event)
+      props.onContextMenu(event)
     }
   }
 
@@ -46,11 +41,7 @@ export function TopSitesTile(props: Props) {
         event.dataTransfer.setData('text/uri-list', url)
       }}
     >
-      <span
-        className='top-site-icon'
-        onContextMenu={onContextMenu}
-        onMouseUp={onMouseUp}
-      >
+      <span className='top-site-icon' onContextMenu={onContextMenu}>
         <img src={favicon || faviconURL(url)} />
       </span>
       <span className='top-site-title'>
