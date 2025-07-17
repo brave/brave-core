@@ -78,15 +78,20 @@ extension ContentBlockerHelper: TabContentScript {
 
       dtos.forEach { dto in
         Task { @MainActor in
-          let isPrivateBrowsing = self.tab?.isPrivate == true
-          let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
-          if domain.areAllShieldsOff {
-            // if domain is "all_off", can just skip
+          guard let braveShieldsHelper = tab.braveShieldsHelper else { return }
+          if !braveShieldsHelper.isBraveShieldsEnabled(for: currentTabURL, isPrivate: tab.isPrivate)
+          {
+            // if shields are disabled, can return early.
             return
           }
 
           if dto.resourceType == .script
-            && domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
+            && braveShieldsHelper.isShieldExpected(
+              for: currentTabURL,
+              isPrivate: tab.isPrivate,
+              shield: .noScript,
+              considerAllShieldsOption: true
+            )
           {
             self.stats = self.stats.adding(scriptCount: 1)
             BraveGlobalShieldStats.shared.scripts += 1
@@ -97,9 +102,18 @@ extension ContentBlockerHelper: TabContentScript {
           // we use `NSURL(idnString: String)` to parse them
           guard let requestURL = NSURL(idnString: dto.resourceURL) as URL? else { return }
           guard let sourceURL = NSURL(idnString: dto.sourceURL) as URL? else { return }
-          guard let domainURLString = domain.url else { return }
+
+          let shieldLevel = braveShieldsHelper.shieldLevel(
+            for: currentTabURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          )
           let genericTypes = AdBlockGroupsManager.shared.contentBlockerManager.validGenericTypes(
-            for: domain
+            isShieldsEnabled: braveShieldsHelper.isBraveShieldsEnabled(
+              for: currentTabURL,
+              isPrivate: tab.isPrivate
+            ),
+            isAdBlockEnabled: shieldLevel.isEnabled
           )
 
           let blockedType = await blockedTypes(
@@ -107,7 +121,8 @@ extension ContentBlockerHelper: TabContentScript {
             sourceURL: sourceURL,
             enabledRuleTypes: genericTypes,
             resourceType: dto.resourceType,
-            domain: domain
+            isAdBlockEnabled: shieldLevel.isEnabled,
+            isAdBlockModeAggressive: shieldLevel.isAggressive
           )
 
           guard let blockedType = blockedType else { return }
@@ -127,12 +142,11 @@ extension ContentBlockerHelper: TabContentScript {
           }
 
           if blockedType == .ad, Preferences.PrivacyReports.captureShieldsData.value,
-            let domainURL = URL(string: domainURLString),
             let blockedResourceHost = requestURL.baseDomain,
             !tab.isPrivate
           {
             PrivacyReportsManager.pendingBlockedRequests.append(
-              (blockedResourceHost, domainURL, Date())
+              (blockedResourceHost, currentTabURL.domainURL, Date())
             )
           }
 
@@ -145,7 +159,7 @@ extension ContentBlockerHelper: TabContentScript {
               requestURL: requestURL,
               sourceURL: sourceURL,
               resourceType: dto.resourceType,
-              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+              isAggressive: shieldLevel.isAggressive,
               location: .contentBlocker
             )
           )
@@ -172,7 +186,8 @@ extension ContentBlockerHelper: TabContentScript {
     sourceURL: URL,
     enabledRuleTypes: Set<ContentBlockerManager.GenericBlocklistType>,
     resourceType: AdblockEngine.ResourceType,
-    domain: Domain
+    isAdBlockEnabled: Bool,
+    isAdBlockModeAggressive: Bool
   ) async -> BlockedType? {
     guard let host = requestURL.host, !host.isEmpty else {
       // TP Stats init isn't complete yet
@@ -188,7 +203,8 @@ extension ContentBlockerHelper: TabContentScript {
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
-        domain: domain
+        isAdBlockEnabled: isAdBlockEnabled,
+        isAdBlockModeAggressive: isAdBlockModeAggressive
       ) {
         return .ad
       }

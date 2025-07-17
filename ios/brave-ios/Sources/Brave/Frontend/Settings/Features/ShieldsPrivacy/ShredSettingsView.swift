@@ -9,14 +9,15 @@ import Data
 import Preferences
 import Strings
 import SwiftUI
+import Web
 
 struct ShredSettingsView: View {
   @ObservedObject private var settings: DomainSettings
   private let shredSiteDataNow: () -> Void
   @State private var showConfirmation = false
 
-  init(url: URL, isPersistent: Bool, shredSiteDataNow: @escaping () -> Void) {
-    self.settings = DomainSettings(url: url, isPersistent: isPersistent)
+  init(url: URL, isPersistent: Bool, tab: some TabState, shredSiteDataNow: @escaping () -> Void) {
+    self.settings = DomainSettings(url: url, isPrivate: !isPersistent, tab: tab)
     self.shredSiteDataNow = shredSiteDataNow
   }
 
@@ -83,7 +84,8 @@ struct ShredSettingsView: View {
 #Preview {
   ShredSettingsView(
     url: URL(string: "https://brave.com")!,
-    isPersistent: false
+    isPersistent: false,
+    tab: TabStateFactory.create(with: .init())
   ) {
     // Do nothing
   }
@@ -107,20 +109,21 @@ extension SiteShredLevel: Identifiable {
 }
 
 @MainActor class DomainSettings: ObservableObject {
-  let domain: Domain
   let url: URL
+  let isPrivate: Bool
+  let tab: any TabState
 
   @Published var shredLevel: SiteShredLevel {
     didSet {
-      domain.shredLevel = self.shredLevel
+      tab.braveShieldsHelper?.setShredLevel(shredLevel, for: url, isPrivate: isPrivate)
     }
   }
 
-  init(url: URL, isPersistent: Bool) {
-    let domain = Domain.getOrCreate(forUrl: url, persistent: isPersistent)
+  init(url: URL, isPrivate: Bool, tab: some TabState) {
     self.url = url
-    self.domain = domain
-    self.shredLevel = domain.shredLevel
+    self.isPrivate = isPrivate
+    self.tab = tab
+    self.shredLevel = tab.braveShieldsHelper?.shredLevel(for: url, isPrivate: isPrivate) ?? .never
   }
 }
 
@@ -129,12 +132,14 @@ class ShredSettingsHostingController: UIHostingController<ShredSettingsView> {
   init(
     url: URL,
     isPersistent: Bool,
+    tab: some TabState,
     shredSiteDataNow: @escaping () -> Void
   ) {
     super.init(
       rootView: ShredSettingsView(
         url: url,
         isPersistent: isPersistent,
+        tab: tab,
         shredSiteDataNow: shredSiteDataNow
       )
     )

@@ -10,33 +10,48 @@ import Web
 
 @MainActor
 class ShieldsSettingsViewModel: ObservableObject {
-  private var domain: Domain
   private let tab: any TabState
 
   @Published var stats: TPPageStats
   @Published var shieldsEnabled: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      domain.shield_allOff = NSNumber(booleanLiteral: !shieldsEnabled)
+      tab.braveShieldsHelper?.setBraveShieldsEnabled(
+        shieldsEnabled,
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate
+      )
       updateState()
     }
   }
   @Published var blockAdsAndTrackingLevel: ShieldLevel {
     didSet {
       guard !isUpdatingState else { return }
-      domain.domainBlockAdsAndTrackingLevel = blockAdsAndTrackingLevel
+      tab.braveShieldsHelper?.setShieldLevel(
+        blockAdsAndTrackingLevel,
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate
+      )
     }
   }
   @Published var blockScripts: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      domain.shield_noScript = NSNumber(booleanLiteral: blockScripts)
+      tab.braveShieldsHelper?.setBlockScriptsEnabled(
+        blockScripts,
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate
+      )
     }
   }
   @Published var fingerprintProtection: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      domain.shield_fpProtection = NSNumber(booleanLiteral: fingerprintProtection)
+      tab.braveShieldsHelper?.setBlockFingerprintingEnabled(
+        fingerprintProtection,
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate
+      )
     }
   }
 
@@ -47,16 +62,31 @@ class ShieldsSettingsViewModel: ObservableObject {
   /// If we are updating our state values, we don't want to assign to the domain preference.
   private var isUpdatingState: Bool = false
 
-  init(tab: some TabState, domain: Domain) {
-    self.domain = domain
+  init(tab: some TabState) {
     self.tab = tab
-    self.shieldsEnabled = !domain.areAllShieldsOff
-    self.blockAdsAndTrackingLevel = domain.domainBlockAdsAndTrackingLevel
-    self.blockScripts = domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
-    self.fingerprintProtection = domain.isShieldExpected(
-      .fpProtection,
-      considerAllShieldsOption: true
-    )
+    self.shieldsEnabled =
+      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL, isPrivate: tab.isPrivate)
+      ?? true
+    self.blockAdsAndTrackingLevel =
+      tab.braveShieldsHelper?.shieldLevel(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        considerAllShieldsOption: true
+      ) ?? .standard
+    self.blockScripts =
+      tab.braveShieldsHelper?.isShieldExpected(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        shield: .noScript,
+        considerAllShieldsOption: true
+      ) ?? false
+    self.fingerprintProtection =
+      tab.braveShieldsHelper?.isShieldExpected(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        shield: .fpProtection,
+        considerAllShieldsOption: true
+      ) ?? true
     self.stats = tab.contentBlocker?.stats ?? .init()
 
     tab.contentBlocker?.statsDidChange = { [weak self, weak tab] _ in
@@ -68,12 +98,28 @@ class ShieldsSettingsViewModel: ObservableObject {
   private func updateState() {
     isUpdatingState = true
     defer { isUpdatingState = false }
-    shieldsEnabled = !domain.areAllShieldsOff
-    blockAdsAndTrackingLevel = domain.domainBlockAdsAndTrackingLevel
-    fingerprintProtection = domain.isShieldExpected(
-      .fpProtection,
-      considerAllShieldsOption: true
-    )
-    blockScripts = domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
+    shieldsEnabled =
+      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL, isPrivate: tab.isPrivate)
+      ?? true
+    blockAdsAndTrackingLevel =
+      tab.braveShieldsHelper?.shieldLevel(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        considerAllShieldsOption: false
+      ) ?? .standard
+    self.blockScripts =
+      tab.braveShieldsHelper?.isShieldExpected(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        shield: .noScript,
+        considerAllShieldsOption: true
+      ) ?? false
+    self.fingerprintProtection =
+      tab.braveShieldsHelper?.isShieldExpected(
+        for: tab.visibleURL,
+        isPrivate: tab.isPrivate,
+        shield: .fpProtection,
+        considerAllShieldsOption: true
+      ) ?? true
   }
 }

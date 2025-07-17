@@ -298,6 +298,14 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
+  func topToolbarIsShieldsEnabled(_ topToolbar: TopToolbarView, for url: URL?) -> Bool {
+    guard let url, let currentTab = self.tabManager.selectedTab else { return false }
+    return currentTab.braveShieldsHelper?.isBraveShieldsEnabled(
+      for: url,
+      isPrivate: currentTab.isPrivate
+    ) ?? false
+  }
+
   @MainActor private func submitValidURL(
     _ text: String,
     isUserDefinedURLNavigation: Bool
@@ -579,7 +587,8 @@ extension BrowserViewController: TopToolbarDelegate {
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        tab: tabManager.selectedTab
       )
     )
 

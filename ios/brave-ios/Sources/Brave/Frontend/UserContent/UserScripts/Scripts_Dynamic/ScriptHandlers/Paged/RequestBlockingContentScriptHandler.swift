@@ -72,13 +72,18 @@ class RequestBlockingContentScriptHandler: TabContentScript {
       let isPrivateBrowsing = tab.isPrivate
 
       Task { @MainActor in
-        let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
-        guard let domainURLString = domain.url else { return }
+        let shieldLevel =
+          tab.braveShieldsHelper?.shieldLevel(
+            for: currentTabURL,
+            isPrivate: tab.isPrivate,
+            considerAllShieldsOption: true
+          ) ?? .standard
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
           sourceURL: windowOriginURL,
           resourceType: dto.data.resourceType,
-          domain: domain
+          isAdBlockEnabled: shieldLevel.isEnabled,
+          isAdBlockModeAggressive: shieldLevel.isAggressive
         )
 
         // Ensure we check that the stats we're tracking is still for the same page
@@ -95,12 +100,11 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         }
 
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
-          let domainURL = URL(string: domainURLString),
           let blockedResourceHost = requestURL.baseDomain,
           !isPrivateBrowsing
         {
           PrivacyReportsManager.pendingBlockedRequests.append(
-            (blockedResourceHost, domainURL, Date())
+            (blockedResourceHost, currentTabURL.domainURL, Date())
           )
         }
 
@@ -118,7 +122,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
               requestURL: requestURL,
               sourceURL: windowOriginURL,
               resourceType: dto.data.resourceType,
-              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+              isAggressive: shieldLevel.isAggressive,
               location: .requestBlocking
             )
           )

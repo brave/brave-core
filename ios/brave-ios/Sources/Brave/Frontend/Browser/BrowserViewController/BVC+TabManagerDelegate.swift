@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import BraveUI
 import BraveWallet
 import Data
@@ -28,6 +29,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.braveShieldsHelper = .init(tab: tab)
   }
 
   func tabManager(

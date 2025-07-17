@@ -12,7 +12,7 @@ import Preferences
 private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
 
 extension Domain {
-  @MainActor public var areAllShieldsOff: Bool {
+  @MainActor var areAllShieldsOff: Bool {
     return shield_allOff?.boolValue ?? false
   }
 
@@ -33,7 +33,7 @@ extension Domain {
   }
 
   /// The shield level for this current domain (standard/aggressive/disabled).
-  @MainActor public var domainBlockAdsAndTrackingLevel: ShieldLevel {
+  @MainActor var domainBlockAdsAndTrackingLevel: ShieldLevel {
     get {
       guard let level = self.shield_blockAdsAndTrackingLevel else {
         return ShieldPreferences.blockAdsAndTrackingLevel
@@ -56,7 +56,7 @@ extension Domain {
   ///
   /// - Warning: This does not consider the "all off" setting
   /// This also takes into consideration certain domains that are always aggressive.
-  @MainActor public var globalBlockAdsAndTrackingLevel: ShieldLevel {
+  @MainActor var globalBlockAdsAndTrackingLevel: ShieldLevel {
     guard !areAllShieldsOff else { return .disabled }
     let globalLevel = domainBlockAdsAndTrackingLevel
 
@@ -76,17 +76,8 @@ extension Domain {
     }
   }
 
-  /// Return the finterprinting protection level for this domain.
-  ///
-  /// - Warning: This does not consider the "all off" setting
-  @MainActor public var finterprintProtectionLevel: ShieldLevel {
-    guard isShieldExpected(.fpProtection, considerAllShieldsOption: false) else { return .disabled }
-    // We don't have aggressive finterprint protection in iOS
-    return .standard
-  }
-
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-  @MainActor public func isShieldExpected(
+  @MainActor func isShieldExpected(
     _ shield: BraveShield,
     considerAllShieldsOption: Bool
   ) -> Bool {
