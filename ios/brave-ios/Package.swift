@@ -391,7 +391,7 @@ var package = Package(
       dependencies: ["Storage", "TestHelpers"],
       resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]
     ),
-    .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers"]),
+    .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers", "BraveShields"]),
     .testTarget(
       name: "ClientTests",
       dependencies: ["Brave", "BraveStrings", "TestHelpers"],
