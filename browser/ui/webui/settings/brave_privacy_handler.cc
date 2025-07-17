@@ -107,7 +107,6 @@ void BravePrivacyHandler::RegisterMessages() {
 // static
 void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
                                           Profile* profile) {
-  auto* local_state = g_browser_process->local_state();
 #if BUILDFLAG(USE_GCM_FROM_PLATFORM)
   data_source->AddBoolean("pushMessagingEnabledAtStartup", true);
 #else
@@ -140,6 +139,7 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
+  auto* local_state = g_browser_process->local_state();
   data_source->AddBoolean("isP3ADisabledByPolicy",
                           local_state->GetBoolean(p3a::kP3ADisabledByPolicy));
   data_source->AddBoolean(

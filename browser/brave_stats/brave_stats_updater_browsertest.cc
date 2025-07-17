@@ -139,9 +139,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     wait_for_standard_stats_updated_loop_->Run();
   }
 
-  void DisableStatsUsagePing() {
-  }
-
  private:
   std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
   std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;

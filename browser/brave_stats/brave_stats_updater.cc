@@ -230,7 +230,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
     return;
 
   const bool reporting_enabled =
-      brave_stats::IsStatsReportingEnabled(pref_service_);
+      brave_stats::IsStatsReportingEnabled(*pref_service_);
   if (!reporting_enabled) {
     if (g_testing_stats_updated_callback)
       g_testing_stats_updated_callback->Run(GURL(kInvalidUrl));

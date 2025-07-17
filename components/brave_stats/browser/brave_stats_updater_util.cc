@@ -173,9 +173,9 @@ uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
   return result;
 }
 
-bool IsStatsReportingEnabled(PrefService* pref_service) {
-  return pref_service->GetBoolean(kStatsReportingEnabled) &&
-         !pref_service->GetBoolean(kStatsReportingDisabledByPolicy);
+bool IsStatsReportingEnabled(PrefService& pref_service) {
+  return pref_service.GetBoolean(kStatsReportingEnabled) &&
+         !pref_service.GetBoolean(kStatsReportingDisabledByPolicy);
 }
 
 }  // namespace brave_stats

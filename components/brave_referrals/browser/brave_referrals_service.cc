@@ -413,7 +413,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
     return;
 
   bool stats_reporting_enabled =
-      brave_stats::IsStatsReportingEnabled(pref_service_);
+      brave_stats::IsStatsReportingEnabled(*pref_service_);
   // Only check for referral finalization 30 times, with a 24-hour
   // wait between checks or if stats reporting is disabled.
   base::Time timestamp = pref_service_->GetTime(kReferralAttemptTimestamp);
@@ -474,7 +474,7 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 }
 
 void BraveReferralsService::InitReferral() {
-  if (!brave_stats::IsStatsReportingEnabled(pref_service_)) {
+  if (!brave_stats::IsStatsReportingEnabled(*pref_service_)) {
     pref_service_->SetBoolean(kReferralInitialization, true);
     if (g_testing_referral_initialized_callback) {
       g_testing_referral_initialized_callback->Run(std::string());
