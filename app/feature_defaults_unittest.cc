@@ -85,6 +85,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
+      &autofill::features::kAutofillEnableAmountExtractionDesktop,
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,

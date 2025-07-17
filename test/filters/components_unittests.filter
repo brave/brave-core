@@ -18,6 +18,10 @@
 -BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedBeforeAccountFoldersAdded
 -BookmarkUtilsTest.GetParentForNewNodes_ClientOverride
 
+# This test fails because we disable Amount Extraction Heuristic Regexes and
+# disalow component installation.
+-AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
+
 # This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
 -DocumentProviderTest.CachingForSyncMatches
 -DocumentProviderTest.IsDocumentProviderAllowed
