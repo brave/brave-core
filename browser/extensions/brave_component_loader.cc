@@ -100,7 +100,7 @@ bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
       web_discovery::features::kBraveWebDiscoveryNative);
 #endif
   return !native_enabled &&
-         web_discovery::IsWebDiscoveryEnabled(profile_prefs_);
+         web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

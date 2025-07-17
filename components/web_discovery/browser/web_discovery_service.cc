@@ -114,7 +114,7 @@ void WebDiscoveryService::ClearPrefs() {
 }
 
 bool WebDiscoveryService::IsWebDiscoveryEnabled() const {
-  return web_discovery::IsWebDiscoveryEnabled(profile_prefs_);
+  return web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
 }
 
 void WebDiscoveryService::OnEnabledChange() {

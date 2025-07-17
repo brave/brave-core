@@ -35,7 +35,7 @@ WebDiscoveryRetrieveBackupResultsFunction::
 ExtensionFunction::ResponseAction
 WebDiscoveryRetrieveBackupResultsFunction::Run() {
   auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!user_prefs || !web_discovery::IsWebDiscoveryEnabled(user_prefs)) {
+  if (!user_prefs || !web_discovery::IsWebDiscoveryEnabled(*user_prefs)) {
     return RespondNow(Error("web discovery is not enabled"));
   }
   EXTENSION_FUNCTION_VALIDATE(has_args() && !args().empty());
@@ -82,7 +82,7 @@ WebDiscoveryIsWebDiscoveryExtensionEnabledFunction::Run() {
 
   auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
   bool result = !native_enabled && user_prefs &&
-                web_discovery::IsWebDiscoveryEnabled(user_prefs);
+                web_discovery::IsWebDiscoveryEnabled(*user_prefs);
 
   return RespondNow(WithArguments(result));
 }

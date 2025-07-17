@@ -9,9 +9,9 @@
 
 namespace web_discovery {
 
-bool IsWebDiscoveryEnabled(PrefService* pref_service) {
-  return pref_service->GetBoolean(kWebDiscoveryEnabled) &&
-         !pref_service->GetBoolean(kWebDiscoveryDisabledByPolicy);
+bool IsWebDiscoveryEnabled(PrefService& pref_service) {
+  return pref_service.GetBoolean(kWebDiscoveryEnabled) &&
+         !pref_service.GetBoolean(kWebDiscoveryDisabledByPolicy);
 }
 
 }  // namespace web_discovery

@@ -47,7 +47,7 @@ inline constexpr char kPatternsRetrievalTime[] =
 
 // Returns true if web discovery is enabled by user preference and not
 // disabled by policy.
-bool IsWebDiscoveryEnabled(PrefService* profile_prefs);
+bool IsWebDiscoveryEnabled(PrefService& profile_prefs);
 
 }  // namespace web_discovery
 

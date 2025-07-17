@@ -234,7 +234,7 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
-  bool enabled = web_discovery::IsWebDiscoveryEnabled(profile_prefs_);
+  bool enabled = web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
   UMA_HISTOGRAM_BOOLEAN(
       kWebDiscoveryAndAdsMetric,

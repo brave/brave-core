@@ -87,7 +87,7 @@ bool ShouldShowWebDiscoveryInfoBar(TemplateURLService* service,
                                    PrefService* prefs,
                                    const WebDiscoveryCTAState& state,
                                    base::Clock* test_clock) {
-  if (web_discovery::IsWebDiscoveryEnabled(prefs)) {
+  if (web_discovery::IsWebDiscoveryEnabled(*prefs)) {
     return false;
   }
 
