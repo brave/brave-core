@@ -624,7 +624,7 @@ extension BrowserViewController {
     request: URLRequest
   ) -> String? {
     let isBraveAllowedInUA =
-      request.url.flatMap {
+      request.mainDocumentURL.flatMap {
         tab.braveUserAgentExceptions?.canShowBrave($0)
       } ?? true
     let mobile = isBraveAllowedInUA ? UserAgent.mobile : UserAgent.mobileMasked
