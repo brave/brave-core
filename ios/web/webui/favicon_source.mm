@@ -32,7 +32,6 @@
 #include "ui/base/resource/resource_scale_factor.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/gfx/codec/png_codec.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/resources/grit/ui_resources.h"
 #include "url/gurl.h"
 

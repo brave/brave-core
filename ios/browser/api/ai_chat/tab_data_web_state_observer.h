@@ -6,6 +6,8 @@
 #ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
 #define BRAVE_IOS_BROWSER_API_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
 
+#include <vector>
+
 #include "base/containers/flat_map.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "ios/web/public/permissions/permissions.h"
@@ -14,7 +16,6 @@
 
 namespace web {
 class NavigationContext;
-class Page;
 class WebState;
 }  // namespace web
 
@@ -44,7 +45,7 @@ class TabDataWebStateObserver
   };
 
   friend class web::WebStateUserData<TabDataWebStateObserver>;
-  TabDataWebStateObserver(web::WebState* web_state);
+  explicit TabDataWebStateObserver(web::WebState* web_state);
 
   // web::WebStateObserver:
   void WasShown(web::WebState* web_state) override;

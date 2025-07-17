@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -22,10 +22,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 class ProfileIOS;
-
-namespace favicon {
-class FaviconService;
-}  // namespace favicon
 
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
@@ -114,4 +110,4 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_UI_PAGE_HANDLER_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
