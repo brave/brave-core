@@ -48,7 +48,7 @@ XmlUtf8String::XmlUtf8String(std::string_view str) {
 }
 
 XmlUtf8String::XmlUtf8String(const blink::String& str)
-    : XmlUtf8String(WTF::StringUTF8Adaptor(
+    : XmlUtf8String(blink::StringUtf8Adaptor(
                         str,
                         blink::Utf8ConversionMode::kStrictReplacingErrors)
                         .AsStringView()) {}
