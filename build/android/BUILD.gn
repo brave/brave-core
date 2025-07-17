@@ -229,6 +229,7 @@ generate_jni("jni_headers") {
 
   public_deps = [
     "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+    "//brave/browser/android/youtube_script_injector:jni_headers",
     "//chrome/android:chrome_jni_headers",
   ]
 }
