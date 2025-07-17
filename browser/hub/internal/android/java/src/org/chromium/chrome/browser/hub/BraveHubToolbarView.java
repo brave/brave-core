@@ -56,9 +56,11 @@ public class BraveHubToolbarView extends HubToolbarView {
         updateButtonsVisibility();
     }
 
-    @Override
+    // TODO(alexeybarabash): redo, as setActionButton was removed from parent class
+    // @Override
     void setActionButton(@Nullable FullButtonData buttonData) {
-        super.setActionButton(buttonData);
+        // TODO(alexeybarabash): redo, as setActionButton was removed from parent class
+        // super.setActionButton(buttonData);
 
         updateButtonsVisibility();
     }
