@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <components/device_signals/core/common/signals_features.cc>
-
 #include "base/feature_override.h"
+
+#include <components/device_signals/core/common/signals_features.cc>
 
 namespace enterprise_signals::features {
 

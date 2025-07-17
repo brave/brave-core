@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "services/network/cookie_access_delegate_impl.h"
+
 #include <optional>
 
-#include "services/network/cookie_access_delegate_impl.h"
 #include <services/network/cookie_access_delegate_impl.cc>
 
 namespace network {

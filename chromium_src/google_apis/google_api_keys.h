@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_GOOGLE_APIS_GOOGLE_API_KEYS_H_
 #define BRAVE_CHROMIUM_SRC_GOOGLE_APIS_GOOGLE_API_KEYS_H_
 
-#include <string>
-
 #include <google_apis/google_api_keys.h>  // IWYU pragma: export
+
+#include <string>
 
 namespace google_apis {
 

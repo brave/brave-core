@@ -5,9 +5,9 @@
 
 #include "components/segmentation_platform/public/features.h"
 
-#include <components/segmentation_platform/public/features.cc>
-
 #include "base/feature_override.h"
+
+#include <components/segmentation_platform/public/features.cc>
 
 namespace segmentation_platform::features {
 

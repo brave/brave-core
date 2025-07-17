@@ -5,9 +5,9 @@
 
 #include "chrome/common/chrome_features.h"
 
-#include <chrome/common/chrome_features.cc>
-
 #include "base/feature_override.h"
+
+#include <chrome/common/chrome_features.cc>
 
 namespace features {
 

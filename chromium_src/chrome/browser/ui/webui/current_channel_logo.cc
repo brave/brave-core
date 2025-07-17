@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define CurrentChannelLogoResourceId CurrentChannelLogoResourceId_Unused
-#include <chrome/browser/ui/webui/current_channel_logo.cc>
-
 #include "base/notreached.h"
+
+#include <chrome/browser/ui/webui/current_channel_logo.cc>
 #undef CurrentChannelLogoResourceId
 
 namespace webui {

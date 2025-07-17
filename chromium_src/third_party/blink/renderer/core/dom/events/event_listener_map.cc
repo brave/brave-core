@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <third_party/blink/renderer/core/dom/events/event_listener_map.cc>
-
 #include "base/check.h"
+
+#include <third_party/blink/renderer/core/dom/events/event_listener_map.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #include "third_party/blink/renderer/core/probe/core_probes.h"

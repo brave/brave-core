@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FIRST_RUN_FIRST_RUN_DIALOG_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FIRST_RUN_FIRST_RUN_DIALOG_H_
 
-#include "build/build_config.h"
-
 #include <chrome/browser/first_run/first_run_dialog.h>  // IWYU pragma: export
+
+#include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
 
