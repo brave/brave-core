@@ -6,8 +6,5 @@
 brave_browser_policy_sources =
     [ "//brave/ios/browser/policy/brave_simple_policy_map_ios.h" ]
 
-brave_browser_policy_deps = [
-  "//brave/components/brave_wallet/common:pref_names",
-  "//components/policy/core/browser",
-  "//components/policy/core/common",
-]
+brave_browser_policy_deps =
+    [ "//brave/components/brave_wallet/common:pref_names" ]
