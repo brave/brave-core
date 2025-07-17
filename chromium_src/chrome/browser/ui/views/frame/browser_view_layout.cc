@@ -16,7 +16,6 @@
   SupportsWindowFeature(FEATURE) && (FEATURE != Browser::FEATURE_TABSTRIP || \
                                      delegate_->ShouldDrawTabStrip());
 
-
 #include <chrome/browser/ui/views/frame/browser_view_layout.cc>
 #undef SupportsWindowFeature
 

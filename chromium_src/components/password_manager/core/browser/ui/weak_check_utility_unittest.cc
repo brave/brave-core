@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <components/password_manager/core/browser/ui/weak_check_utility_unittest.cc>
-
 #include <string>
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+
+#include <components/password_manager/core/browser/ui/weak_check_utility_unittest.cc>
 
 namespace password_manager {
 

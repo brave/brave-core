@@ -17,9 +17,9 @@ using BlobURLStoreImpl_BraveImpl = BlobURLStoreImpl;
   friend BlobURLStoreImpl_BraveImpl; \
   bool BlobUrlIsValid
 
-#include <optional>
-
 #include <storage/browser/blob/blob_url_store_impl.h>  // IWYU pragma: export
+
+#include <optional>
 
 #undef BlobUrlIsValid
 #undef BlobURLStoreImpl

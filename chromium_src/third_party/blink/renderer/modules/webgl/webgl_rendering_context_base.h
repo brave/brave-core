@@ -14,9 +14,9 @@
   getSupportedExtensions_ChromiumImpl(); \
   std::optional<Vector<String>> getSupportedExtensions
 
-#include <optional>
-
 #include <third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h>  // IWYU pragma: export
+
+#include <optional>
 
 #undef getSupportedExtensions
 #undef getExtension

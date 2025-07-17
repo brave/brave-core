@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <components/sync/service/glue/sync_engine_backend.cc>
-
 #include "components/sync/engine/sync_protocol_error.h"
+
+#include <components/sync/service/glue/sync_engine_backend.cc>
 
 namespace syncer {
 

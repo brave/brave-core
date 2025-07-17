@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <net/base/url_util.cc>
-
 #include <iostream>
 #include <string>
 
@@ -12,6 +10,8 @@
 #include "url/origin.h"
 #include "url/third_party/mozilla/url_parse.h"
 #include "url/url_canon_ip.h"
+
+#include <net/base/url_util.cc>
 
 namespace net {
 

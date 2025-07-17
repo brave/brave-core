@@ -7,9 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
 #define CookieMonster ChromiumCookieMonster
-#include <optional>
-
 #include <net/cookies/cookie_monster.h>  // IWYU pragma: export
+
+#include <optional>
 #undef CookieMonster
 
 namespace net {

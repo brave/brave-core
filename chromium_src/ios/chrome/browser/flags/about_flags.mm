@@ -4,4 +4,5 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/ios/browser/flags/about_flags.mm"
+
 #include <ios/chrome/browser/flags/about_flags.mm>

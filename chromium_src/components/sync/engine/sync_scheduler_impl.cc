@@ -6,10 +6,10 @@
 #define BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE \
   HandleBraveConfigurationFailure(model_neutral_state);
 
-#include <components/sync/engine/sync_scheduler_impl.cc>
-
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+
+#include <components/sync/engine/sync_scheduler_impl.cc>
 
 #undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
 
