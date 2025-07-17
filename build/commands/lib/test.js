@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs-extra')
+const glob = require('glob')
 const path = require('path')
 
 const config = require('../lib/config')
@@ -375,7 +376,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       if (rbeTestTarget) {
         util.buildTargets([rbeTestTarget], {...config.defaultOptions, offline: rbeTestTarget.offline })
         const reportBasePath = path.join( path.basename(testBinary), 'gen', 'brave', 'test', testSuite );
-        const reports =  await fs.glob(reportBasePath+"/**/*.xml");
+        const reports =  await new Promise(resolve => glob(reportBasePath+"/**/*.xml", (x) => resolve(x[1])));
         fs.appendFileSync(allResultsFilePath, reports.join('\n'))
       } else {
         util.run(testBinary, braveArgs, runOptions)
