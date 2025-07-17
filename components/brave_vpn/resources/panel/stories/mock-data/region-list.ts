@@ -18,6 +18,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Sydney',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 1
       }
@@ -31,6 +32,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Australia',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 1
   },
   {
@@ -45,6 +47,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Vienna',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -58,6 +61,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Austria',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -72,6 +76,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Brussels',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -85,6 +90,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Belgium',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -99,6 +105,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Sao Paulo',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       }
@@ -112,6 +119,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Brazil',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 5
   },
   {
@@ -126,6 +134,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Toronto',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       }
@@ -139,6 +148,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Canada',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 5
   },
   {
@@ -153,6 +163,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Santiago',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 4
       }
@@ -166,6 +177,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Chile',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 4
   },
   {
@@ -180,6 +192,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Bogotá',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -193,6 +206,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Colombia',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -207,6 +221,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Zagreb',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -220,6 +235,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Croatia',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -234,6 +250,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Prague',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -247,6 +264,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Czech-Republic',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -261,6 +279,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Copenhagen',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 8
       }
@@ -274,6 +293,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Denmark',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 8
   },
   {
@@ -288,6 +308,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'London',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 8
       }
@@ -301,6 +322,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'England',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 8
   },
   {
@@ -315,6 +337,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Lille',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 1
       },
@@ -328,6 +351,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Paris',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -341,6 +365,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'France',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 11
   },
   {
@@ -355,6 +380,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Frankfurt',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'all',
         'cities': [],
         'serverCount': 15
       }
@@ -368,6 +394,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Germany',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'all',
     'serverCount': 15
   },
   {
@@ -382,6 +409,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Athens',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 6
       }
@@ -395,6 +423,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Greece',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 6
   },
   {
@@ -409,6 +438,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Dublin',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -422,6 +452,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Ireland',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -436,6 +467,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Milan',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'all',
         'cities': [],
         'serverCount': 5
       }
@@ -449,6 +481,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Italy',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'all',
     'serverCount': 5
   },
   {
@@ -463,6 +496,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Tokyo',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       }
@@ -476,6 +510,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Japan',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 5
   },
   {
@@ -490,6 +525,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Mexico City',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       }
@@ -503,6 +539,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Mexico',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 5
   },
   {
@@ -517,6 +554,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Amsterdam',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 3
       }
@@ -530,6 +568,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Netherlands',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 3
   },
   {
@@ -544,6 +583,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Warsaw',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -557,6 +597,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Poland',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -571,6 +612,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Lisbon',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -584,6 +626,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Portugal',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -598,6 +641,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Bucharest',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -611,6 +655,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Romania',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -625,6 +670,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Singapore',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -638,6 +684,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Singapore',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -652,6 +699,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Johannesburg',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -665,6 +713,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'South Africa',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -679,6 +728,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Barcelona',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 4
       },
@@ -692,6 +742,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Madrid',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       }
@@ -705,6 +756,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Spain',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 9
   },
   {
@@ -719,6 +771,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Stockholm',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -732,6 +785,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Sweden',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   },
   {
@@ -746,6 +800,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Zurich',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 3
       }
@@ -759,6 +814,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Switzerland',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 3
   },
   {
@@ -772,7 +828,8 @@ export const mockRegionList: Region[] = [
         'name': 'us-ash',
         'namePretty': 'Ashburn',
         'regionPrecision': 'city',
-        'isAutomatic': false,
+        'isAutomatic': true,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -786,6 +843,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Atlanta',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -799,6 +857,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Chicago',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 5
       },
@@ -812,6 +871,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Denver',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -825,6 +885,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Dallas',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 12
       },
@@ -838,6 +899,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Los Angeles',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -851,6 +913,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Miami',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -864,6 +927,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'New York City',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 18
       },
@@ -877,6 +941,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Seattle',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       },
@@ -890,6 +955,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'San Jose',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 15
       }
@@ -903,6 +969,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'USA',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 110
   },
   {
@@ -917,6 +984,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Kyiv',
         'regionPrecision': 'city',
         'isAutomatic': false,
+        'smartRoutingProxyState': 'none',
         'cities': [],
         'serverCount': 10
       }
@@ -930,6 +998,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Ukraine',
     'regionPrecision': 'country',
     'isAutomatic': false,
+    'smartRoutingProxyState': 'none',
     'serverCount': 10
   }
 ]
