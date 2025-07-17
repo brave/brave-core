@@ -7,25 +7,20 @@
 
 #include <utility>
 
-#include "base/no_destructor.h"
+#include "base/base64.h"
 #include "brave/components/brave_wallet/renderer/js_cardano_wallet_api.h"
+#include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
-#include "content/public/common/isolated_world_ids.h"
-#include "content/public/renderer/v8_value_converter.h"
+#include "components/grit/brave_components_resources.h"
 #include "gin/converter.h"
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-proxy.h"
-#include "v8/include/v8-typed-array.h"
 
 namespace brave_wallet {
 
@@ -46,7 +41,12 @@ std::string JSCardanoProvider::GetName() {
 }
 
 std::string JSCardanoProvider::GetIcon() {
-  return "";
+  return "data:image/png;base64," +
+         base::Base64Encode(LoadDataResource(IDR_BRAVE_WALLET_PROVIDER_ICON));
+}
+
+std::string JSCardanoProvider::GetApiVersion() {
+  return "1";
 }
 
 // gin::Wrappable<JSCardanoProvider>
@@ -58,6 +58,7 @@ gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
       .SetProperty("supportedExtensions",
                    &JSCardanoProvider::GetSupportedExtensions)
       .SetProperty("name", &JSCardanoProvider::GetName)
+      .SetProperty("apiVersion", &JSCardanoProvider::GetApiVersion)
       .SetProperty("icon", &JSCardanoProvider::GetIcon);
 }
 

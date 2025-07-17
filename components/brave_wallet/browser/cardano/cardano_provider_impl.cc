@@ -8,10 +8,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -30,7 +34,7 @@ constexpr int kAPIErrorRefused = -3;
 // DataSignErrorCode
 [[maybe_unused]] constexpr int kDataSignProofGeneration = 1;
 [[maybe_unused]] constexpr int kDataSignAddressNotPK = 2;
-[[maybe_unused]] constexpr int kDataSignUserDeclined = 3;
+constexpr int kDataSignUserDeclined = 3;
 
 // TxSendErrorCode
 [[maybe_unused]] constexpr int kTxSendRefused = 1;
@@ -137,8 +141,22 @@ void CardanoProviderImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
 
   delegate_->WalletInteractionDetected();
 
-  // Mocked values for development usage.
-  std::move(callback).Run({"1", "2", "3"}, nullptr);
+  std::vector<std::string> result;
+  for (auto& address :
+       brave_wallet_service_->GetCardanoWalletService()->GetUsedAddresses(
+           account_id)) {
+    auto cardano_address = CardanoAddress::FromString(address->address_string);
+    if (!cardano_address) {
+      std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                      kAPIErrorInternalError,
+                                      WalletInternalErrorMessage(), nullptr));
+      return;
+    }
+
+    result.push_back(HexEncodeLower(cardano_address->ToCborBytes()));
+  }
+
+  std::move(callback).Run(std::move(result), nullptr);
 }
 
 void CardanoProviderImpl::GetUnusedAddresses(
@@ -153,8 +171,22 @@ void CardanoProviderImpl::GetUnusedAddresses(
 
   delegate_->WalletInteractionDetected();
 
-  // Mocked values for development usage.
-  std::move(callback).Run({"1", "2", "3"}, nullptr);
+  std::vector<std::string> result;
+  for (auto& address :
+       brave_wallet_service_->GetCardanoWalletService()->GetUnusedAddresses(
+           account_id)) {
+    auto cardano_address = CardanoAddress::FromString(address->address_string);
+    if (!cardano_address) {
+      std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                      kAPIErrorInternalError,
+                                      WalletInternalErrorMessage(), nullptr));
+      return;
+    }
+
+    result.push_back(HexEncodeLower(cardano_address->ToCborBytes()));
+  }
+
+  std::move(callback).Run(std::move(result), nullptr);
 }
 
 void CardanoProviderImpl::GetChangeAddress(GetChangeAddressCallback callback) {
@@ -266,9 +298,67 @@ void CardanoProviderImpl::SignData(const std::string& address,
 
   delegate_->WalletInteractionDetected();
 
-  // Mocked values for development usage.
-  std::move(callback).Run(mojom::CardanoProviderSignatureResult::New("1", "2"),
-                          nullptr);
+  std::vector<uint8_t> message;
+  if (!base::HexStringToBytes(payload_hex, &message)) {
+    std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                    kAPIErrorInvalidRequest,
+                                    WalletInternalErrorMessage(), nullptr));
+    return;
+  }
+
+  auto key_id = mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0);
+
+  auto request = mojom::SignMessageRequest::New(
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(),
+      mojom::SignDataUnion::NewCardanoSignData(mojom::CardanoSignData::New(
+          std::string(base::as_string_view(message)))),
+      mojom::CoinType::ADA,
+      brave_wallet_service_->network_manager()->GetCurrentChainId(
+          mojom::CoinType::ADA, delegate_->GetOrigin()));
+
+  brave_wallet_service_->AddSignMessageRequest(
+      std::move(request),
+      base::BindOnce(&CardanoProviderImpl::OnSignMessageRequestProcessed,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     std::move(key_id), std::move(message),
+                     std::move(callback)));
+  delegate_->ShowPanel();
+}
+
+void CardanoProviderImpl::OnSignMessageRequestProcessed(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::CardanoKeyIdPtr& key_id,
+    std::vector<uint8_t> message,
+    SignDataCallback callback,
+    bool approved,
+    mojom::EthereumSignatureBytesPtr signature,
+    const std::optional<std::string>& error) {
+  if (error && !error->empty()) {
+    std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                    kAPIErrorInternalError, *error, nullptr));
+    return;
+  }
+
+  if (!approved) {
+    std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                    kDataSignUserDeclined, "", nullptr));
+    return;
+  }
+
+  auto sig_data =
+      brave_wallet_service_->keyring_service()
+          ->SignCip30MessageByCardanoKeyring(account_id, key_id, message);
+
+  if (!sig_data) {
+    std::move(callback).Run(
+        {}, mojom::CardanoProviderErrorBundle::New(
+                kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
+    return;
+  }
+
+  std::move(callback).Run(
+      mojom::CardanoProviderSignatureResult::New(std::move(*sig_data)),
+      nullptr);
 }
 
 void CardanoProviderImpl::GetCollateral(const std::string& amount,

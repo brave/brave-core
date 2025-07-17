@@ -3918,6 +3918,38 @@ TEST_F(KeyringServiceUnitTest, SignMessageByBitcoinKeyring) {
           btc_acc->account_id, mojom::BitcoinKeyId::New(1, 7), message)));
 }
 
+TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto cardano_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+  auto message = base::byte_span_from_cstring("brave");
+
+  base::Value::Dict expected_dict;
+  expected_dict.Set(
+      "key",
+      "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"
+      "57890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176032720062158207ea0"
+      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a");
+  expected_dict.Set(
+      "signature",
+      "845882a30127045839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948ef"
+      "bf42e557890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176676164647265"
+      "73735839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e55789"
+      "0352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176a166686173686564f44562"
+      "7261766558404da2b7552a3be11b2f4369a7f8063622081ccbe664bf74b148d6469ade55"
+      "239fea08557bc17af95f29eef9067e1a0cc00de06b55b70727a1df3ab3556605550e");
+
+  EXPECT_EQ(expected_dict,
+            *service.SignCip30MessageByCardanoKeyring(
+                cardano_acc->account_id,
+                mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
+                message));
+}
+
 TEST_F(KeyringServiceUnitTest, SignMessageByCardanoKeyring) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletCardanoFeature};

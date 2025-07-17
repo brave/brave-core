@@ -19,7 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -184,7 +184,7 @@ void CardanoWalletService::SignAndPostTransaction(
 
   CHECK(cardano_transaction.IsSigned());
   auto serialized_transaction =
-      CardanoSerializer().SerializeTransaction(cardano_transaction);
+      CardanoTransactionSerializer().SerializeTransaction(cardano_transaction);
 
   GetCardanoRpc(GetNetworkForCardanoAccount(account_id))
       ->PostTransaction(
@@ -212,7 +212,7 @@ bool CardanoWalletService::SignTransactionInternal(
                         std::move(addr->payment_key_id));
   }
 
-  auto hash = CardanoSerializer().GetTxHash(tx);
+  auto hash = CardanoTransactionSerializer().GetTxHash(tx);
 
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& input : tx.inputs()) {
@@ -279,6 +279,32 @@ void CardanoWalletService::OnGetTransactionStatus(
   }
 
   std::move(callback).Run(base::ok(true));
+}
+
+std::vector<mojom::CardanoAddressPtr> CardanoWalletService::GetUsedAddresses(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account.
+  auto address = keyring_service().GetCardanoAddress(
+      account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+  if (!address) {
+    return {};
+  }
+
+  std::vector<mojom::CardanoAddressPtr> result;
+  result.push_back(std::move(address));
+  return result;
+}
+
+std::vector<mojom::CardanoAddressPtr> CardanoWalletService::GetUnusedAddresses(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account. So don't have unused
+  // addresses.
+  return {};
 }
 
 cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(

@@ -40,6 +40,11 @@ class CardanoHDKeyring {
       const mojom::CardanoKeyId& key_id,
       base::span<const uint8_t> message);
 
+  std::optional<base::Value::Dict> SignCip30Message(
+      uint32_t account,
+      const mojom::CardanoKeyId& payment_key_id,
+      base::span<const uint8_t> message);
+
   mojom::KeyringId keyring_id() const { return keyring_id_; }
   bool IsTestnet() const;
 

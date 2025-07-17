@@ -2464,7 +2464,6 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
   EXPECT_TRUE(service_->sign_message_requests_.empty());
-  EXPECT_TRUE(service_->sign_message_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_requests_.empty());
 

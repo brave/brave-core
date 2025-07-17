@@ -71,6 +71,11 @@ class CardanoWalletService : public mojom::CardanoWalletService {
                             const std::string& txid,
                             GetTransactionStatusCallback callback);
 
+  std::vector<mojom::CardanoAddressPtr> GetUsedAddresses(
+      const mojom::AccountIdPtr& account_id);
+  std::vector<mojom::CardanoAddressPtr> GetUnusedAddresses(
+      const mojom::AccountIdPtr& account_id);
+
   KeyringService& keyring_service() { return *keyring_service_; }
   NetworkManager& network_manager() { return *network_manager_; }
 

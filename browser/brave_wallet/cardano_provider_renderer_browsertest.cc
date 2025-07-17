@@ -1070,8 +1070,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
             auto res = mojom::CardanoProviderSignatureResult::New();
-            res->key = "key_value";
-            res->signature = "signature_value";
+            res->signature.Set("key", "key_value");
+            res->signature.Set("signature", "signature_value");
             std::move(callback).Run(std::move(res), nullptr);
           }));
 
@@ -1102,8 +1102,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
             auto res = mojom::CardanoProviderSignatureResult::New();
-            res->key = "key_value";
-            res->signature = "signature_value";
+            res->signature.Set("key", "key_value");
+            res->signature.Set("signature", "signature_value");
             std::move(callback).Run(std::move(res), nullptr);
           }));
 

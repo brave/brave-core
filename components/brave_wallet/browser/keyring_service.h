@@ -264,6 +264,10 @@ class KeyringService : public mojom::KeyringService {
   SignMessageByCardanoKeyring(const mojom::AccountIdPtr& account_id,
                               const mojom::CardanoKeyIdPtr& key_id,
                               base::span<const uint8_t> message);
+  std::optional<base::Value::Dict> SignCip30MessageByCardanoKeyring(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::CardanoKeyIdPtr& key_id,
+      base::span<const uint8_t> message);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
