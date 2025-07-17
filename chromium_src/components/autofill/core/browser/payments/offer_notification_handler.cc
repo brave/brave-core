@@ -33,5 +33,5 @@ bool BraveIsOfferValid(const AutofillOfferData* offer) {
 #define IsUrlEligible(URL) \
   IsUrlEligible(URL) && BraveIsOfferValid(offer_manager_->GetOfferForUrl(URL))
 
-#include "src/components/autofill/core/browser/payments/offer_notification_handler.cc"
+#include <components/autofill/core/browser/payments/offer_notification_handler.cc>
 #undef IsUrlEligible

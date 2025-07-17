@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "src/google_apis/google_api_keys.h"  // IWYU pragma: export
+#include <google_apis/google_api_keys.h>  // IWYU pragma: export
 
 namespace google_apis {
 

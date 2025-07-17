@@ -35,7 +35,7 @@ class BraveTabStrip;
  public:                                                            \
   int UpdateIdealBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.h>  // IWYU pragma: export
 
 #undef UpdateIdealBounds
 

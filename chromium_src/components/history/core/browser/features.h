@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-#include "src/components/history/core/browser/features.h"  // IWYU pragma: export
+#include <components/history/core/browser/features.h>  // IWYU pragma: export
 
 namespace history {
 

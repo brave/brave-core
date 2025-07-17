@@ -13,7 +13,7 @@
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
 #define OnSetVoiceList OnSetVoiceList_ChromiumImpl
-#include "src/third_party/blink/renderer/modules/speech/speech_synthesis.cc"
+#include <third_party/blink/renderer/modules/speech/speech_synthesis.cc>
 #undef OnSetVoiceList
 
 namespace blink {

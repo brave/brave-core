@@ -25,6 +25,6 @@
 #define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR
 #endif  // BUILDFLAG(ENABLE_OMAHA4)
 
-#include "src/chrome/browser/upgrade_detector/upgrade_detector_impl.cc"
+#include <chrome/browser/upgrade_detector/upgrade_detector_impl.cc>
 
 #undef BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR

@@ -40,6 +40,6 @@
     return "brave_cardano";                             \
   case PermissionName::WEB_PRINTING
 
-#include "src/third_party/blink/renderer/modules/permissions/permission_utils.cc"
+#include <third_party/blink/renderer/modules/permissions/permission_utils.cc>
 
 #undef WEB_PRINTING

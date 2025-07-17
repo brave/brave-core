@@ -16,7 +16,7 @@ class SplitViewLocationBar;
   friend class ::SharedPinnedTabDummyView;  \
   friend class ::SplitViewLocationBar;
 
-#include "src/ui/views/view.h"  // IWYU pragma: export
+#include <ui/views/view.h>  // IWYU pragma: export
 
 #undef BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 

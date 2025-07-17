@@ -8,7 +8,7 @@
 
 #include <string_view>
 
-#include "src/third_party/blink/public/common/origin_trials/origin_trials.h"  // IWYU pragma: export
+#include <third_party/blink/public/common/origin_trials/origin_trials.h>  // IWYU pragma: export
 
 namespace blink {
 namespace origin_trials {

@@ -14,6 +14,6 @@
 #define BRAVE_SESSION_SERVICE_TAB_CLOSED \
   if (profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab))
 
-#include "src/chrome/browser/sessions/session_service.cc"
+#include <chrome/browser/sessions/session_service.cc>
 
 #undef BRAVE_SESSION_SERVICE_TAB_CLOSED

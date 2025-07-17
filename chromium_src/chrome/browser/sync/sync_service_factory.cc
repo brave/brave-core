@@ -16,6 +16,6 @@
           HistoryServiceFactory::GetForProfile(                 \
               profile, ServiceAccessType::IMPLICIT_ACCESS)));
 
-#include "src/chrome/browser/sync/sync_service_factory.cc"
+#include <chrome/browser/sync/sync_service_factory.cc>
 
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR

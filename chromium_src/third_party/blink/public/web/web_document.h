@@ -12,7 +12,7 @@
                             const WebString& feature);      \
   bool IsPluginDocument
 
-#include "src/third_party/blink/public/web/web_document.h"  // IWYU pragma: export
+#include <third_party/blink/public/web/web_document.h>  // IWYU pragma: export
 
 #undef IsPluginDocument
 

@@ -17,6 +17,6 @@
           browser_, animations_enabled_),                                  \
       INDEX)
 
-#include "src/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc"
+#include <chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc>
 
 #undef AddChildViewAt

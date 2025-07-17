@@ -8,5 +8,5 @@
 #define BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP \
   [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone];
 
-#include "src/chrome/browser/chrome_browser_main_mac.mm"
+#include <chrome/browser/chrome_browser_main_mac.mm>
 #undef BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP

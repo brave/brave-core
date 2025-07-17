@@ -8,5 +8,5 @@
 #define kDefaultURL                                           \
   kDefaultURL[] = "http://detectportal.brave-http-only.com/"; \
   const char kEmpty
-#include "src/components/captive_portal/core/captive_portal_detector.cc"
+#include <components/captive_portal/core/captive_portal_detector.cc>
 #undef kDefaultURL

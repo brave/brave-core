@@ -45,6 +45,6 @@ std::u16string GetTitle(content::RenderFrameHost* render_frame_host,
              file_types, file_type_index, default_extension, owning_window,  \
              caller)
 
-#include "src/chrome/browser/download/download_file_picker.cc"
+#include <chrome/browser/download/download_file_picker.cc>
 
 #undef SelectFile

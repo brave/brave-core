@@ -216,7 +216,7 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
 #endif  // BUILDFLAG(ENABLE_OMAHA4)
 
-#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+#include <chrome/browser/ui/webui/help/version_updater_mac.mm>
 
 #if BUILDFLAG(ENABLE_OMAHA4)
 #undef WrapUnique

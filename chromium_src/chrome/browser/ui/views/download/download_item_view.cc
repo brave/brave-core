@@ -56,7 +56,7 @@ END_METADATA
 }  // namespace views
 
 #define Button BraveDownloadItemViewButton
-#include "src/chrome/browser/ui/views/download/download_item_view.cc"
+#include <chrome/browser/ui/views/download/download_item_view.cc>
 #undef Button
 
 bool DownloadItemView::IsShowingWarningDialog() const {

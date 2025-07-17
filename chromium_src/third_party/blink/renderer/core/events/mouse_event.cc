@@ -13,7 +13,7 @@
 #define screenX() screenX_ChromiumImpl()
 #define screenY() screenY_ChromiumImpl()
 
-#include "src/third_party/blink/renderer/core/events/mouse_event.cc"
+#include <third_party/blink/renderer/core/events/mouse_event.cc>
 
 #undef screenX
 #undef screenY

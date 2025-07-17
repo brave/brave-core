@@ -9,7 +9,7 @@
 
 #define InitializeWithHost InitializeWithHost_ChromiumImpl
 
-#include "src/components/viz/service/gl/gpu_service_impl.cc"
+#include <components/viz/service/gl/gpu_service_impl.cc>
 
 #undef InitializeWithHost
 

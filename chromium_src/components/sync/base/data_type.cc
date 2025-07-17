@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define EncryptableUserTypes EncryptableUserTypes_ChromiumImpl
-#include "src/components/sync/base/data_type.cc"
+#include <components/sync/base/data_type.cc>
 #undef EncryptableUserTypes
 
 namespace syncer {

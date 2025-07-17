@@ -5,7 +5,7 @@
 
 #include "android_webview/common/aw_features.h"
 
-#include "src/android_webview/common/aw_features.cc"
+#include <android_webview/common/aw_features.cc>
 
 #include "base/feature_override.h"
 

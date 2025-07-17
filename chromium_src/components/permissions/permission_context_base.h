@@ -17,7 +17,7 @@ class ContentSettingPermissionContextBase;
 #define PermissionDecided virtual PermissionDecided
 #define CleanUpRequest virtual CleanUpRequest
 
-#include "src/components/permissions/permission_context_base.h"  // IWYU pragma: export
+#include <components/permissions/permission_context_base.h>  // IWYU pragma: export
 
 #undef PermissionContextBaseTests
 #undef PermissionDecided

@@ -12,7 +12,7 @@
   GetInsets_UnUsed() const; \
   gfx::Insets GetInsets
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_row_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/omnibox/omnibox_row_view.h>  // IWYU pragma: export
 
 #undef GetInsets
 

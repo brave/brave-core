@@ -8,7 +8,7 @@
 
 #define TabFeatures TabFeatures_Chromium
 
-#include "src/chrome/browser/android/tab_features.h"  // IWYU pragma: export
+#include <chrome/browser/android/tab_features.h>  // IWYU pragma: export
 
 #undef TabFeatures
 

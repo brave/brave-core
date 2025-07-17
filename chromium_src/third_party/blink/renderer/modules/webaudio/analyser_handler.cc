@@ -16,5 +16,5 @@
         brave::BraveSessionCache::From(*context).GetAudioFarblingHelper()); \
   }
 
-#include "src/third_party/blink/renderer/modules/webaudio/analyser_handler.cc"
+#include <third_party/blink/renderer/modules/webaudio/analyser_handler.cc>
 #undef BRAVE_ANALYSERHANDLER_CONSTRUCTOR

@@ -9,5 +9,5 @@
   return std::make_unique<BraveExtensionManagement>(                  \
       Profile::FromBrowserContext(context));
 
-#include "src/chrome/browser/extensions/extension_management.cc"
+#include <chrome/browser/extensions/extension_management.cc>
 #undef BRAVE_EXTENSION_MANAGEMENT_FACTORY_BUILD_SERVICE_INSTANCE_FOR

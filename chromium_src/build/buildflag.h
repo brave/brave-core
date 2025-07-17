@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_BUILD_BUILDFLAG_H_
 
 // This file is used in rc.exe which doesn't receive low priority additional
-// global include to support #include "src/...".
+// global include to support #include <...>.
 // #include_next is used instead to include original upstream file.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wgnu-include-next"

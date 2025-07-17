@@ -13,6 +13,6 @@
 #define BRAVE_MANAGED_PREFS \
   kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls,
 
-#include "src/components/content_settings/core/browser/content_settings_policy_provider.cc"
+#include <components/content_settings/core/browser/content_settings_policy_provider.cc>
 #undef BRAVE_MANAGED_PREFS
 #undef BRAVE_MANAGED_CONTENT_SETTINGS

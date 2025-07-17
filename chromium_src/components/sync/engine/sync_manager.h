@@ -14,7 +14,7 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) {} \
   virtual void ShutdownOnSyncThread
 
-#include "src/components/sync/engine/sync_manager.h"  // IWYU pragma: export
+#include <components/sync/engine/sync_manager.h>  // IWYU pragma: export
 
 #undef ShutdownOnSyncThread
 

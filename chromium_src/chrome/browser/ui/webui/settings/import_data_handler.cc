@@ -23,7 +23,7 @@
   browser_profile.Set("payments",                                              \
                       (browser_services & user_data_importer::PAYMENTS) != 0);
 
-#include "src/chrome/browser/ui/webui/settings/import_data_handler.cc"
+#include <chrome/browser/ui/webui/settings/import_data_handler.cc>
 #undef ExternalProcessImporterHost
 #undef BRAVE_IMPORT_DATA
 #undef BRAVE_SEND_BROWSER_PROFILE_DATA

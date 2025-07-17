@@ -13,7 +13,7 @@
   int GetPasswordStrength(const std::string& password)
 // Returns strength for `password` on a scale from 0 to 100.
 
-#include "src/components/password_manager/core/browser/ui/weak_check_utility.h"  // IWYU pragma: export
+#include <components/password_manager/core/browser/ui/weak_check_utility.h>  // IWYU pragma: export
 
 #undef BulkWeakCheck
 

@@ -15,4 +15,4 @@ std::string URLDataSourceIOS::GetContentSecurityPolicyFrameSrc() const {
 
 }  // namespace web
 
-#include "src/ios/web/webui/url_data_source_ios.mm"
+#include <ios/web/webui/url_data_source_ios.mm>

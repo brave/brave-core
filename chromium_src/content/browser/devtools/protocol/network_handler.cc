@@ -5,7 +5,7 @@
 
 #include "content/browser/devtools/protocol/network_handler.h"
 
-#include "src/content/browser/devtools/protocol/network_handler.cc"
+#include <content/browser/devtools/protocol/network_handler.cc>
 
 namespace content::protocol {
 

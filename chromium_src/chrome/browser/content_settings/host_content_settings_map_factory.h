@@ -13,7 +13,7 @@
   BuildServiceInstanceFor_ChromiumImpl(__VA_ARGS__) const; \
   scoped_refptr<RefcountedKeyedService> BuildServiceInstanceFor(__VA_ARGS__)
 
-#include "src/chrome/browser/content_settings/host_content_settings_map_factory.h"  // IWYU pragma: export
+#include <chrome/browser/content_settings/host_content_settings_map_factory.h>  // IWYU pragma: export
 
 #undef BuildServiceInstanceFor
 

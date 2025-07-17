@@ -13,7 +13,7 @@
 
 #define SetTabDragKind virtual SetTabDragKind
 
-#include "src/chrome/browser/ui/views/frame/browser_frame.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_frame.h>  // IWYU pragma: export
 
 #undef SetTabDragKind
 

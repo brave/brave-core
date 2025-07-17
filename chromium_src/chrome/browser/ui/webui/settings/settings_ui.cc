@@ -25,7 +25,7 @@
   if (false) AddSettingsPageUIHandler(std::make_unique<SearchEnginesHandler
 
 #define ClearBrowsingDataHandler BraveClearBrowsingDataHandler
-#include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
+#include <chrome/browser/ui/webui/settings/settings_ui.cc>
 #undef ClearBrowsingDataHandler
 #undef SearchEnginesHandler
 #undef ImportDataHandler

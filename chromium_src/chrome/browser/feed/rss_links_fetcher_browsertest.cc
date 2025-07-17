@@ -23,6 +23,6 @@ class HistogramTesterStub {
 
 #define HistogramTester HistogramTesterStub
 
-#include "src/chrome/browser/feed/rss_links_fetcher_browsertest.cc"
+#include <chrome/browser/feed/rss_links_fetcher_browsertest.cc>
 
 #undef HistogramTester

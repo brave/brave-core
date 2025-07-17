@@ -10,7 +10,7 @@
   HasTabSearchToolbarButton();    \
   bool HasTabSearchToolbarButton_ChromiumImpl
 
-#include "src/chrome/browser/ui/ui_features.h"  // IWYU pragma: export
+#include <chrome/browser/ui/ui_features.h>  // IWYU pragma: export
 
 #undef HasTabSearchToolbarButton
 

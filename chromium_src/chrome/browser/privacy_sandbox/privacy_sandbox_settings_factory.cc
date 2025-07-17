@@ -11,7 +11,7 @@
 
 #define BuildServiceInstanceForBrowserContext \
   BuildServiceInstanceForBrowserContext_ChromiumImpl
-#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc"
+#include <chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc>
 #undef BuildServiceInstanceForBrowserContext
 
 std::unique_ptr<KeyedService>

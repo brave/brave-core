@@ -8,7 +8,7 @@
 
 #define kOriginInAllContexts kOriginInAllContexts, kThirdPartiesOnly
 
-#include "src/content/public/browser/browsing_data_filter_builder.h"  // IWYU pragma: export
+#include <content/public/browser/browsing_data_filter_builder.h>  // IWYU pragma: export
 
 #undef kOriginInAllContexts
 

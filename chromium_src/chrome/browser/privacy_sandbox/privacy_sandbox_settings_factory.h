@@ -13,7 +13,7 @@
       const;                                                                   \
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
-#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"  // IWYU pragma: export
+#include <chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h>  // IWYU pragma: export
 
 #undef BuildServiceInstanceForBrowserContext
 

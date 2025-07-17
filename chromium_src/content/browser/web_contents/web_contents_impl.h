@@ -13,7 +13,7 @@
   bool GetShouldDoLearningForTesting() override; \
   bool ShouldDoLearning(__VA_ARGS__)
 
-#include "src/content/browser/web_contents/web_contents_impl.h"  // IWYU pragma: export
+#include <content/browser/web_contents/web_contents_impl.h>  // IWYU pragma: export
 
 #undef ShouldDoLearning
 

@@ -10,7 +10,7 @@
   GetShouldDoLearningForTesting(); \
   virtual bool IsLoading(__VA_ARGS__)
 
-#include "src/content/public/browser/web_contents.h"  // IWYU pragma: export
+#include <content/public/browser/web_contents.h>  // IWYU pragma: export
 
 #undef IsLoading
 

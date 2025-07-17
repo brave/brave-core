@@ -433,5 +433,5 @@ void AddFootnoteViewIfNeeded(
   }                                                                       \
   AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser());
 
-#include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc"
+#include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc>
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW

@@ -17,7 +17,7 @@
 
 #include <optional>
 
-#include "src/net/url_request/redirect_util.h"  // IWYU pragma: export
+#include <net/url_request/redirect_util.h>  // IWYU pragma: export
 #undef UpdateHttpRequest
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_URL_REQUEST_REDIRECT_UTIL_H_

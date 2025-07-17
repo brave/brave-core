@@ -8,7 +8,7 @@
 #include "brave/browser/ui/webui/settings/brave_site_settings_handler.h"
 
 #define SiteSettingsHandler BraveSiteSettingsHandler
-#include "src/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc"
+#include <chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc>
 #undef SiteSettingsHandler
 
 namespace settings {

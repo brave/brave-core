@@ -8,7 +8,7 @@
 #include "brave/components/brave_page_graph/common/buildflags.h"
 
 #define ProcessJavaScriptUrl ProcessJavaScriptUrl_ChromiumImpl
-#include "src/third_party/blink/renderer/core/dom/document.cc"
+#include <third_party/blink/renderer/core/dom/document.cc>
 #undef ProcessJavaScriptUrl
 
 namespace blink {

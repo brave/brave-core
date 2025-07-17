@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/ui_features.h"
 
 #define HasTabSearchToolbarButton HasTabSearchToolbarButton_ChromiumImpl
-#include "src/chrome/browser/ui/ui_features.cc"
+#include <chrome/browser/ui/ui_features.cc>
 #undef HasTabSearchToolbarButton
 
 #include "base/feature_override.h"

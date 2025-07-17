@@ -12,7 +12,7 @@
 #define ShowUpdaterPromotionInfoBar ShowUpdaterPromotionInfoBar_ChromiumImpl
 #endif
 
-#include "src/chrome/browser/ui/cocoa/keystone_infobar_delegate.cc"
+#include <chrome/browser/ui/cocoa/keystone_infobar_delegate.cc>
 
 #if BUILDFLAG(ENABLE_OMAHA4)
 #undef ShowUpdaterPromotionInfoBar

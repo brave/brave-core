@@ -6,5 +6,5 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
 #define TabContainerImpl BraveTabContainer
-#include "src/chrome/browser/ui/views/tabs/compound_tab_container.cc"
+#include <chrome/browser/ui/views/tabs/compound_tab_container.cc>
 #undef TabContainerImpl

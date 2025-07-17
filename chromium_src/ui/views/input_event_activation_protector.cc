@@ -8,7 +8,7 @@
 #define OnWindowStationaryStateChanged(...) \
   OnWindowStationaryStateChanged_ChromiumImpl(__VA_ARGS__)
 
-#include "src/ui/views/input_event_activation_protector.cc"
+#include <ui/views/input_event_activation_protector.cc>
 
 #undef OnWindowStationaryStateChanged
 

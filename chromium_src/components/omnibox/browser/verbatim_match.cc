@@ -10,7 +10,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #define kChromeUIScheme kChromeUIScheme, content::kBraveUIScheme
 #endif  // BUILDFLAG(IS_ANDROID)
-#include "src/components/omnibox/browser/verbatim_match.cc"
+#include <components/omnibox/browser/verbatim_match.cc>
 #if BUILDFLAG(IS_ANDROID)
 #undef kChromeUIScheme
 #endif  // BUILDFLAG(IS_ANDROID)

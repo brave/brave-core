@@ -8,7 +8,7 @@
 #define BuildIdentityManager BuildIdentityManager_Unused
 #define BuildIdentityManagerInitParameters \
   BuildIdentityManagerInitParameters_ChromiumImpl
-#include "src/components/signin/public/identity_manager/identity_manager_builder.cc"
+#include <components/signin/public/identity_manager/identity_manager_builder.cc>
 #undef BuildIdentityManagerInitParameters
 #undef BuildIdentityManager
 

@@ -11,7 +11,7 @@
 #include "net/cookies/cookie_access_delegate.h"
 
 #define CookieOptions CookieOptions_ChromiumImpl
-#include "src/net/cookies/cookie_options.cc"
+#include <net/cookies/cookie_options.cc>
 #undef CookieOptions
 
 namespace net {

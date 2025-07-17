@@ -85,5 +85,5 @@ class BraveTabStyle : public TabStyle {
 }  // namespace
 
 #define BRAVE_TAB_STYLE_GET return new BraveTabStyle();
-#include "src/chrome/browser/ui/tabs/tab_style.cc"
+#include <chrome/browser/ui/tabs/tab_style.cc>
 #undef BRAVE_TAB_STYLE_GET

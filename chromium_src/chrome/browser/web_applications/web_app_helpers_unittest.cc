@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/chrome/browser/web_applications/web_app_helpers_unittest.cc"
+#include <chrome/browser/web_applications/web_app_helpers_unittest.cc>
 
 namespace web_app {
 

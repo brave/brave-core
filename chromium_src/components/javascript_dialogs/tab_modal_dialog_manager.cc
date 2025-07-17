@@ -12,7 +12,7 @@
     visibility = content::Visibility::HIDDEN;                \
   }
 
-#include "src/components/javascript_dialogs/tab_modal_dialog_manager.cc"
+#include <components/javascript_dialogs/tab_modal_dialog_manager.cc>
 
 #undef BRAVE_TAB_MODAL_DIALOG_MANAGER_ON_VISIBILITY_CHANGED
 

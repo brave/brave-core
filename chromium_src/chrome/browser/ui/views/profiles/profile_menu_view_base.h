@@ -12,7 +12,7 @@
                                          \
  public:
 
-#include "src/chrome/browser/ui/views/profiles/profile_menu_view_base.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/profiles/profile_menu_view_base.h>  // IWYU pragma: export
 
 #undef BRAVE_PROFILE_MENU_VIEW_BASE_H_
 

@@ -10,5 +10,5 @@
     remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
     break;
 
-#include "src/chrome/browser/android/browsing_data/browsing_data_bridge.cc"
+#include <chrome/browser/android/browsing_data/browsing_data_bridge.cc>
 #undef BRAVE_CLEAR_BROWSING_DATA

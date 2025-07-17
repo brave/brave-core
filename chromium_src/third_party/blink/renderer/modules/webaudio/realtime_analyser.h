@@ -23,7 +23,7 @@
  private:                                               \
   std::optional<BraveAudioFarblingHelper> audio_farbling_helper_
 
-#include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/webaudio/realtime_analyser.h>  // IWYU pragma: export
 
 #undef analysis_frame_
 

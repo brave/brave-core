@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define IsChromeLabsEnabled IsChromeLabsEnabled_ChromiumImpl
-#include "src/chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc"
+#include <chrome/browser/ui/toolbar/chrome_labs/chrome_labs_utils.cc>
 #undef IsChromeLabsEnabled
 
 bool IsChromeLabsEnabled() {

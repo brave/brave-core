@@ -5,7 +5,7 @@
 
 #include "content/test/mock_clipboard_host.h"
 
-#include "src/content/test/mock_clipboard_host.cc"
+#include <content/test/mock_clipboard_host.cc>
 
 namespace content {
 

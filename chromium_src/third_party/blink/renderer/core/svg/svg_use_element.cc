@@ -19,7 +19,7 @@
   options.initiator_info
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/svg/svg_use_element.cc"
+#include <third_party/blink/renderer/core/svg/svg_use_element.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef initiator_info

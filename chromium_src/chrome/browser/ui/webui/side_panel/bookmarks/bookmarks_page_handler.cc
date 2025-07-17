@@ -9,6 +9,6 @@
 
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
 
-#include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc"
+#include <chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc>
 
 #undef BookmarksSidePanelUI

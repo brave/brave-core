@@ -8,7 +8,7 @@
 #define LoadTrustTokenKeyCommitmentsComponent \
   LoadTrustTokenKeyCommitmentsComponent_ChromiumImpl
 
-#include "src/android_webview/browser/component_updater/trust_token_key_commitments_component_loader.cc"
+#include <android_webview/browser/component_updater/trust_token_key_commitments_component_loader.cc>
 #undef LoadTrustTokenKeyCommitmentsComponent
 
 namespace android_webview {

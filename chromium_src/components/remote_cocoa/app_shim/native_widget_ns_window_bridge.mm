@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.mm"
+#include <components/remote_cocoa/app_shim/native_widget_ns_window_bridge.mm>
 
 #include "base/check.h"
 #include "base/logging.h"

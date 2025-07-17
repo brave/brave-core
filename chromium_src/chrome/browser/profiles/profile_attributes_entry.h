@@ -22,7 +22,7 @@
   friend class ProfileAttributeMigrationTest; \
   void RecordAccountNamesMetric
 
-#include "src/chrome/browser/profiles/profile_attributes_entry.h"  // IWYU pragma: export
+#include <chrome/browser/profiles/profile_attributes_entry.h>  // IWYU pragma: export
 #undef MigrateObsoleteProfileAttributes
 #undef RecordAccountNamesMetric
 

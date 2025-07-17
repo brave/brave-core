@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 
-#include "src/chrome/browser/download/download_commands.h"  // IWYU pragma: export
+#include <chrome/browser/download/download_commands.h>  // IWYU pragma: export
 
 // Create brave specific commands set instead of appending to
 // DownloadCommands::Command to avoid many upstream changes.

@@ -8,7 +8,7 @@
 
 #define ECDSA_SHA256 ECDSA_SHA256, ECDSA_SHA384
 
-#include "src/crypto/signature_verifier.h"  // IWYU pragma: export
+#include <crypto/signature_verifier.h>  // IWYU pragma: export
 
 #undef ECDSA_SHA256
 

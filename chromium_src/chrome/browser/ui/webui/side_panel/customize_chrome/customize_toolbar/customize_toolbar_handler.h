@@ -20,7 +20,7 @@
       side_panel::customize_chrome::mojom::ActionId action_id);              \
   void PinAction
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h>  // IWYU pragma: export
 
 #undef PinAction
 #undef ListActions

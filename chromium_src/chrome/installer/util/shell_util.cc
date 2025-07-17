@@ -69,7 +69,7 @@ int GetIconIndexForFileType() {
 #define BRAVE_GET_SHELL_INTEGRATION_ENTRIES
 #endif
 
-#include "src/chrome/installer/util/shell_util.cc"
+#include <chrome/installer/util/shell_util.cc>
 #undef BRAVE_GET_SHELL_INTEGRATION_ENTRIES
 #undef BRAVE_GET_APP_EXT_REGISTRATION_ENTRIES
 #undef BRAVE_GET_CHROME_PROG_ID_ENTRIES

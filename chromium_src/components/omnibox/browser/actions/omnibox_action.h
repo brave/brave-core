@@ -21,7 +21,7 @@
   virtual void OpenLeo(const std::u16string& query) = 0; \
   virtual bool IsLeoProviderEnabled
 
-#include "src/components/omnibox/browser/actions/omnibox_action.h"  // IWYU pragma: export
+#include <components/omnibox/browser/actions/omnibox_action.h>  // IWYU pragma: export
 #undef NewIncognitoWindow
 #undef OpenSharingHub
 

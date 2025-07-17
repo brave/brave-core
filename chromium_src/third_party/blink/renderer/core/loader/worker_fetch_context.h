@@ -12,7 +12,7 @@
   AllowScript_Unused() const; \
   bool AllowScript(const KURL& url)
 
-#include "src/third_party/blink/renderer/core/loader/worker_fetch_context.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/loader/worker_fetch_context.h>  // IWYU pragma: export
 #undef AllowScript
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_WORKER_FETCH_CONTEXT_H_

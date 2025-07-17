@@ -11,7 +11,7 @@
   friend class BraveLocalHistoryZeroSuggestProvider; \
   void QueryURLDatabase
 
-#include "src/components/omnibox/browser/local_history_zero_suggest_provider.h"  // IWYU pragma: export
+#include <components/omnibox/browser/local_history_zero_suggest_provider.h>  // IWYU pragma: export
 
 #undef QueryURLDatabase
 

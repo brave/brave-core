@@ -10,7 +10,7 @@
   MaybeShowToast_ChromiumImpl(ToastParams params); \
   bool MaybeShowToast
 
-#include "src/chrome/browser/ui/toasts/toast_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/toasts/toast_controller.h>  // IWYU pragma: export
 
 #undef MaybeShowToast
 

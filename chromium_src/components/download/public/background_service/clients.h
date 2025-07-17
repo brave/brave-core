@@ -8,7 +8,7 @@
 
 #define BRAVE_DOWNLOAD_CLIENT CUSTOM_LIST_SUBSCRIPTIONS = 255,
 
-#include "src/components/download/public/background_service/clients.h"  // IWYU pragma: export
+#include <components/download/public/background_service/clients.h>  // IWYU pragma: export
 #undef BRAVE_DOWNLOAD_CLIENT
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_DOWNLOAD_PUBLIC_BACKGROUND_SERVICE_CLIENTS_H_

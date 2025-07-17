@@ -23,7 +23,7 @@
 
 #define ScriptFetchOptions GetScriptFetchOptions
 
-#include "src/third_party/blink/renderer/core/scheduler/scheduled_action.cc"
+#include <third_party/blink/renderer/core/scheduler/scheduled_action.cc>
 
 #undef ScriptFetchOptions
 #undef BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR

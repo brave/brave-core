@@ -28,7 +28,7 @@
 #define ConvertUnpinnedContainerIdealBoundsToLocal \
   virtual ConvertUnpinnedContainerIdealBoundsToLocal
 
-#include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/compound_tab_container.h>  // IWYU pragma: export
 
 #undef ConvertUnpinnedContainerIdealBoundsToLocal
 #undef GetTabContainerAt

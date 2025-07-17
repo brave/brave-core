@@ -31,7 +31,7 @@
 #define GetTypesWithTemporaryGrantsInHcsm \
   GetTypesWithTemporaryGrantsInHcsm_ChromiumImpl
 
-#include "src/components/content_settings/core/browser/content_settings_utils.cc"
+#include <components/content_settings/core/browser/content_settings_utils.cc>
 #undef GetTypesWithTemporaryGrantsInHcsm
 #undef GetTypesWithTemporaryGrants
 #undef BRAVE_CAN_TRACK_LAST_VISIT

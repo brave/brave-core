@@ -33,7 +33,7 @@
 
 #define PopulateSidePanel virtual PopulateSidePanel
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
 
 #undef PopulateSidePanel
 #undef NotifyPinnedContainerOfActiveStateChange

@@ -31,7 +31,7 @@ class NoTabHelper {
 #define FontPrewarmerTabHelper NoTabHelper
 #define NetErrorTabHelper NoTabHelper
 
-#include "src/chrome/browser/ui/tab_helpers.cc"
+#include <chrome/browser/ui/tab_helpers.cc>
 
 #undef NetErrorTabHelper
 #undef FontPrewarmerTabHelper

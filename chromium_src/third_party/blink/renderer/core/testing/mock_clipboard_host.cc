@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/core/testing/mock_clipboard_host.h"
 
-#include "src/third_party/blink/renderer/core/testing/mock_clipboard_host.cc"
+#include <third_party/blink/renderer/core/testing/mock_clipboard_host.cc>
 
 namespace blink {
 

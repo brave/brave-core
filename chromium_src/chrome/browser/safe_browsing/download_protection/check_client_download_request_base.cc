@@ -27,5 +27,5 @@ void BraveFilterRequest(ClientDownloadRequest* request) {
 
 }  // namespace safe_browsing
 
-#include "src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc"
+#include <chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc>
 #undef BRAVE_ON_REQUEST_BUILT_FILTER

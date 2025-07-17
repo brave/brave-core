@@ -27,7 +27,7 @@ class FalseBoolStub {
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef should_clear_sync_account_settings_

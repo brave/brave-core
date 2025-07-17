@@ -28,5 +28,5 @@
 #define GTEST_SKIP() \
   LOG(WARNING) << "Brave: forcing test to run. Original Chromium behavior: "
 
-#include "src/chrome/browser/ui/test/test_browser_ui.cc"
+#include <chrome/browser/ui/test/test_browser_ui.cc>
 #undef GTEST_SKIP

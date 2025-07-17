@@ -13,7 +13,7 @@
 // that we dont build.
 #if !BUILDFLAG(IS_ANDROID)
 
-#include "src/extensions/browser/extension_registry.h"  // IWYU pragma: export
+#include <extensions/browser/extension_registry.h>  // IWYU pragma: export
 
 #endif  // #if BUILDFLAG(IS_ANDROID)
 

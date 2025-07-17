@@ -38,6 +38,6 @@ std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateOnionDomainThrottle(
   }                                                                       \
   blink::IsRequestDestinationFrame
 
-#include "src/chrome/renderer/url_loader_throttle_provider_impl.cc"
+#include <chrome/renderer/url_loader_throttle_provider_impl.cc>
 
 #undef IsRequestDestinationFrame

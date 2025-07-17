@@ -17,7 +17,7 @@ namespace speedreader {
 class SpeedreaderTabHelper;
 }
 
-#include "src/ui/android/view_android.h"  // IWYU pragma: export
+#include <ui/android/view_android.h>  // IWYU pragma: export
 
 #undef OnDragEvent
 

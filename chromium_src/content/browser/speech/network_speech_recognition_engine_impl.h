@@ -14,7 +14,7 @@
 #define NetworkSpeechRecognitionEngineImpl \
   NetworkSpeechRecognitionEngineImpl_ChromiumImpl
 
-#include "src/content/browser/speech/network_speech_recognition_engine_impl.h"  // IWYU pragma: export
+#include <content/browser/speech/network_speech_recognition_engine_impl.h>  // IWYU pragma: export
 
 #undef NetworkSpeechRecognitionEngineImpl
 

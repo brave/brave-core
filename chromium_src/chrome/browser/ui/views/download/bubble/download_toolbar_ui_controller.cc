@@ -11,7 +11,7 @@
 #include "components/vector_icons/vector_icons.h"
 
 #define DownloadToolbarUIController DownloadToolbarUIController_ChromiumImpl
-#include "src/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc"
+#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc>
 #undef DownloadToolbarUIController
 
 SkColor DownloadToolbarUIController_ChromiumImpl::GetIconColor(

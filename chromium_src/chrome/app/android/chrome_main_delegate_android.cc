@@ -8,5 +8,5 @@
 #include "brave/app/brave_main_delegate.h"
 
 #define ChromeMainDelegate BraveMainDelegate
-#include "src/chrome/app/android/chrome_main_delegate_android.cc"
+#include <chrome/app/android/chrome_main_delegate_android.cc>
 #undef ChromeMainDelegate
