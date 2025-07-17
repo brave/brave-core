@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
 
   auto result_first =
       EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
@@ -246,7 +246,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
 
   auto result_first =
       EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
 
   auto result_first =
       EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
-  EXPECT_EQ(base::Value(false), result_first.value);
+  EXPECT_EQ(base::Value(false), result_first);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/29631): Test flaky on
@@ -549,7 +549,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckNoCookieForFallback) {
   // Wait for the search fallback been executed
   auto result_first =
       EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 
   // Check if the search fallback call has any cookie
   ASSERT_FALSE(GetFallbackSetsCookie());
