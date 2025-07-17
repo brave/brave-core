@@ -64,8 +64,8 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
 // trigger:
 // DCHECK_LE(static_cast<uintmax_t>(sample),
 //           static_cast<uintmax_t>(T::kMaxValue));
-#define kShown kShown);           \
-  if (static_cast<int>(type) < 0) \
+#define kShown kShown);                                            \
+  if (static_cast<int>(type) < 0) /* NOLINT(readability/braces) */ \
     return; (false
 
 #define StarView BraveStarView
