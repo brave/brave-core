@@ -76,7 +76,7 @@ export const mockRegionList: Region[] = [
         'namePretty': 'Brussels',
         'regionPrecision': 'city',
         'isAutomatic': false,
-        'smartRoutingProxyState': 'none',
+        'smartRoutingProxyState': 'all',
         'cities': [],
         'serverCount': 10
       }
@@ -90,7 +90,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Belgium',
     'regionPrecision': 'country',
     'isAutomatic': false,
-    'smartRoutingProxyState': 'none',
+    'smartRoutingProxyState': 'all',
     'serverCount': 10
   },
   {

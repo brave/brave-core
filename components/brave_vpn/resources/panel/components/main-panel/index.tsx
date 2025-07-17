@@ -34,16 +34,16 @@ const RegionInfo = styled.div`
   flex: 1 0 0;
 `
 
-export const SmartProxyIcon = styled(Icon)`
+const SmartProxyIcon = styled(Icon)`
   --leo-icon-size: 18px;
   --leo-icon-color: ${color.icon.default};
-  background: ${color.container.highlight}
+  background: ${color.container.highlight};
 `
 
 const RegionLabelBox = styled.span`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
 `
 
 const RegionLabel = styled.span`
@@ -225,7 +225,10 @@ function MainPanel() {
             <RegionInfo>
               <RegionLabelBox>
                 <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
-                <SmartProxyIcon name='smart-proxy-routing' />
+                {currentRegion.smartRoutingProxyState === 'all' && (
+                    <SmartProxyIcon name='smart-proxy-routing' />
+                  )
+                }
               </RegionLabelBox>
               <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
             </RegionInfo>
