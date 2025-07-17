@@ -327,7 +327,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_PlayWithoutLocalCache) {
               .textContent == 'Cached';
         )-js");
 
-    return !result.value.is_none() && result.ExtractBool();
+    return !result.is_bool() && result.ExtractBool();
   }));
 
   // Remove cache
@@ -346,7 +346,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_PlayWithoutLocalCache) {
               .textContent != 'Cached';
        )-js");
 
-    return !result.value.is_none() && result.ExtractBool();
+    return !result.is_bool() && result.ExtractBool();
   }));
 
   // Try playing the item

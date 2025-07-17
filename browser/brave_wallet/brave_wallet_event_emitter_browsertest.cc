@@ -151,7 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_connect_event"));
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_chain_changed_event"));
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
@@ -193,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_account_changed_event"));
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 }  // namespace brave_wallet
