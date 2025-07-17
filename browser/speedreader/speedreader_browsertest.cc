@@ -769,10 +769,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
       auto eval = content::EvalJs(contents, GetDataAttribute(attr),
                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-      if (!eval.value.is_string() && value.empty()) {
+      if (!eval.is_string() && value.empty()) {
         return true;
       }
-      if (eval.ExtractString() == value) {
+      if (eval.is_string() && eval.ExtractString() == value) {
         return true;
       }
     }
