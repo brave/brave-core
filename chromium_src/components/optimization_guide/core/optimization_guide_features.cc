@@ -3,11 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/optimization_guide/core/optimization_guide_features.h"
-
-#define IsModelDownloadingEnabled IsModelDownloadingEnabled_ChromiumImpl
 #include "src/components/optimization_guide/core/optimization_guide_features.cc"
-#undef IsModelDownloadingEnabled
 
 #include "base/feature_override.h"
 
@@ -18,9 +14,5 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOptimizationGuidePersonalizedFetching, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
-
-bool IsModelDownloadingEnabled() {
-  return false;
-}
 
 }  // namespace optimization_guide::features
