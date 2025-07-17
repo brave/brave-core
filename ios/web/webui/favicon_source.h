@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_FAVICON_SOURCE_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_FAVICON_SOURCE_H_
+#ifndef BRAVE_IOS_WEB_WEBUI_FAVICON_SOURCE_H_
+#define BRAVE_IOS_WEB_WEBUI_FAVICON_SOURCE_H_
 
 #include <map>
 #include <string>
@@ -99,4 +99,4 @@ class FaviconSource : public web::URLDataSourceIOS {
   base::WeakPtrFactory<FaviconSource> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_FAVICON_SOURCE_H_
+#endif  // BRAVE_IOS_WEB_WEBUI_FAVICON_SOURCE_H_

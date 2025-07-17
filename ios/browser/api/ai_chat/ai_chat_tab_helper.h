@@ -26,11 +26,6 @@
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "url/gurl.h"
 
-namespace mojo {
-template <typename T>
-class PendingAssociatedReceiver;
-}  // namespace mojo
-
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -80,7 +75,7 @@ class AIChatTabHelper : public web::WebStateObserver,
 
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
-  AIChatTabHelper(web::WebState* web_state);
+  explicit AIChatTabHelper(web::WebState* web_state);
 
   // web::WebStateObserver
   void DidFinishNavigation(web::WebState* web_state,

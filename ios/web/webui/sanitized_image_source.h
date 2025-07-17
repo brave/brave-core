@@ -7,6 +7,8 @@
 #define BRAVE_IOS_WEB_WEBUI_SANITIZED_IMAGE_SOURCE_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
