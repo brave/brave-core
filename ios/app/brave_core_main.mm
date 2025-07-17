@@ -312,7 +312,8 @@ static bool CustomLogHandler(int severity,
       base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
       p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
-  _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
+  _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory(),
+                     GetApplicationContext()->GetComponentUpdateService());
   _histogram_braveizer = p3a::HistogramsBraveizer::Create();
   // Typically we'd register this component in RegisterComponentsForUpdate, but
   // because iOS needs to pass in the install date from the Swift side we don't
