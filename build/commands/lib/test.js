@@ -105,7 +105,7 @@ const testOnRBE = (testSuite) => {
   if (!['brave_browser_tests', 'brave_unit_tests'].includes(testSuite))
     return false
   return {
-    target: testSuite + '_all_shards',
+    target: testSuite + '-all-shards',
     offline: process.platform !== 'linux'
   }
 }
