@@ -10,7 +10,7 @@
 
 namespace webcompat_reporter {
 
-bool NeedsToGetComponentInfo(std::string_view component_id);
+bool SendComponentVersionInReport(std::string_view component_id);
 
 std::string BoolToString(bool value);
 

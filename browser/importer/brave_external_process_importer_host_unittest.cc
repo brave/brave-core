@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/importer/extensions_import_helpers.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -197,8 +198,8 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
         return extensions_import::ExtensionImportStatus::kOk;
       });
 
-  extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting() =
-      extension_installer;
+  auto installer_override = extensions_import::ExtensionsImporter::
+      OverrideExtensionInstallerForTesting(&extension_installer);
 
   LaunchExtensionsImportAndWait(source_profile);
 
@@ -216,7 +217,4 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[2], "leveldb").empty());
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[3], "blob").empty());
   EXPECT_TRUE(ReadTargetIndexedDB(kExtensions[3], "leveldb").empty());
-
-  extensions_import::ExtensionsImporter::GetExtensionInstallerForTesting()
-      .Reset();
 }

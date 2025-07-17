@@ -344,6 +344,8 @@
 <translation id="8081858229109418493">프로필 이름 및 아이콘</translation>
 <translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="984275831282074731">결제 수단</translation>
+<translation id="6278858909990433658">프로필 가져오기 사용 중</translation>
+<translation id="9071187015476020102">확장 프로그램 또는 다른 설정을 가져오려면 먼저 가져오는 브라우저를 닫아주세요.</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
 <translation id="1807246157184219062">라이트</translation>
 <translation id="2414886740292270097">어두움</translation>
@@ -827,4 +829,7 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 <translation id="5318548116565208315">아바타 봉봉 콘</translation>
 <translation id="1959966725083452288">아바타 봉봉 로열</translation>
 <translation id="2039034364578911089">아바타 봉봉 닌자</translation>
+<translation id="154702742922788359">열기 모드</translation>
+<translation id="2249111429176737533">탭 창으로 열기</translation>
+<translation id="7022756207310403729">브라우저에서 열기</translation>
 </translationbundle>

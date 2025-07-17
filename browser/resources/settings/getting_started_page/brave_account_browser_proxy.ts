@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveAccountHandler } from '../brave_account.mojom-webui.js'
-import type { BraveAccountHandlerInterface } from '../brave_account.mojom-webui.js'
+import { BraveAccountSettingsHandler } from '../brave_account_settings_handler.mojom-webui.js'
+import type { BraveAccountSettingsHandlerInterface } from '../brave_account_settings_handler.mojom-webui.js'
 
 export interface BraveAccountBrowserProxy {
-  handler: BraveAccountHandlerInterface
+  handler: BraveAccountSettingsHandlerInterface
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
-  handler: BraveAccountHandlerInterface
+  handler: BraveAccountSettingsHandlerInterface
 
   private constructor() {
-    this.handler = BraveAccountHandler.getRemote()
+    this.handler = BraveAccountSettingsHandler.getRemote()
   }
 
   static getInstance(): BraveAccountBrowserProxy {

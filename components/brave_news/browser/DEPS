@@ -1,7 +1,11 @@
 include_rules = [
-  "+net",
+  "+components/history",
+  "+components/keyed_service",
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser/browser_thread.h",
   "+content/public/test/browser_task_environment.h",
+  "+net",
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/test",

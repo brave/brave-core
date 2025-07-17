@@ -345,6 +345,8 @@
 <translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="984275831282074731">भुगतान के तरीके</translation>
+<translation id="6278858909990433658">इंपोर्ट प्रोफ़ाइल अब भी इस्तेमाल हो रही है</translation>
+<translation id="9071187015476020102">एक्सटेंशन या दूसरी सेटिंग्स इंपोर्ट करने के लिए, कृपया पहले उस ब्राउज़र को बंद करें जिससे आप इंपोर्ट कर रहे हैं।</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
 <translation id="1807246157184219062">मन्द</translation>
 <translation id="2414886740292270097">गाढ़ा</translation>
@@ -858,4 +860,7 @@ Binance
 <translation id="5318548116565208315">अवतार बॉनबॉन कॉर्न</translation>
 <translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
 <translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
+<translation id="154702742922788359">ओपन मोड</translation>
+<translation id="2249111429176737533">टैब विंडो के रूप में खोलें</translation>
+<translation id="7022756207310403729">ब्राउज़र में खोलें</translation>
 </translationbundle>

@@ -78,14 +78,13 @@ void AssociatedContentManager::LoadArchivedContent(
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::SetArchiveContent(int content_id,
+void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
                                                  std::string text_content,
                                                  bool is_video) {
   DVLOG(1) << __func__;
 
-  auto it =
-      std::ranges::find(content_delegates_, content_id,
-                        [](const auto& ptr) { return ptr->GetContentId(); });
+  auto it = std::ranges::find(content_delegates_, content_uuid,
+                              [](const auto& ptr) { return ptr->uuid(); });
   CHECK(it != content_delegates_.end()) << "Couldn't find |content_id|";
 
   auto* delegate = *it;
@@ -129,9 +128,7 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
 
   // If we're adding content, we probably want to send it, otherwise, set
   // |should_send_| to the default value.
-  should_send_ =
-      !detach_existing_content ||
-      (features::IsPageContextEnabledInitially() && HasAssociatedContent());
+  should_send_ = !detach_existing_content || HasAssociatedContent();
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -380,7 +377,7 @@ void AssociatedContentManager::SetShouldSend(bool value) {
 void AssociatedContentManager::OnNavigated(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
-  SetArchiveContent(delegate->GetContentId(),
+  SetArchiveContent(delegate->uuid(),
                     std::string(delegate->GetCachedTextContent()),
                     delegate->GetCachedIsVideo());
 

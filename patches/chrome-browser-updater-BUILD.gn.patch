@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
+index 3a3ce492e016145c9d5766ec468ce6f8118d4250..e67274baff6e3df322ed509948b6925e25c25a78 100644
+--- a/chrome/browser/updater/BUILD.gn
++++ b/chrome/browser/updater/BUILD.gn
+@@ -80,6 +80,7 @@ source_set("scheduler") {
+   ]
+ 
+   deps = [ "//base" ]
++  import("//brave/browser/updater/sources.gni") deps += brave_chrome_updater_scheduler_deps
+ 
+   if (enable_updater) {
+     if (is_mac) {

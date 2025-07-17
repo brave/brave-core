@@ -254,7 +254,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature_test_util.cc",
     "//brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature_test_util.h",
     "//brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature_unittest.cc",
-    "//brave/components/brave_ads/core/internal/common/country_code/country_code_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/crypto/crypto_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/locale/locale_util_unittest.cc",

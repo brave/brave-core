@@ -88,11 +88,6 @@ void PurchaseIntentResource::Unload() {
   resource_.reset();
 }
 
-void PurchaseIntentResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  MaybeLoad();
-}
-
 void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {

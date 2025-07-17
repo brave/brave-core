@@ -6,8 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import createSanitizedImageUrl from '$web-common/create_sanitized_image_url'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as mojom  from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './web_sources_event.module.scss'
@@ -45,8 +44,8 @@ function WebSource (props: {
 export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) {
   const [isExpanded, setIsExpanded] = React.useState(false)
 
-  const unhiddenSources = props.sources.slice(0, UNEXPANDED_SOURCES_COUNT)
-  const hiddenSources = props.sources.slice(UNEXPANDED_SOURCES_COUNT)
+  const unhiddenSources = props.sources?.slice(0, UNEXPANDED_SOURCES_COUNT)
+  const hiddenSources = props.sources?.slice(UNEXPANDED_SOURCES_COUNT)
 
   return (
     <div className={styles.sources}>
@@ -63,7 +62,7 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
           <li>
             <button name='expand' onClick={() => setIsExpanded(true)}>
               <Icon className={styles.expandIcon} name='plus-add' />
-              {formatMessage(getLocale(S.CHAT_UI_EXPAND_SOURCES), { placeholders: { $1: hiddenSources.length } })}
+              {formatLocale(S.CHAT_UI_EXPAND_SOURCES, { $1: hiddenSources.length })}
             </button>
           </li>
         )}

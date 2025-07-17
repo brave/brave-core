@@ -162,99 +162,96 @@ const Config = function () {
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
   this.targetAndroidBase = 'classic'
-  this.braveServicesProductionDomain =
-    getEnvConfig(['brave_services_production_domain']) || ''
-  this.braveServicesStagingDomain =
-    getEnvConfig(['brave_services_staging_domain']) || ''
-  this.braveServicesDevDomain =
-    getEnvConfig(['brave_services_dev_domain']) || ''
-  this.braveGoogleApiKey =
-    getEnvConfig(['brave_google_api_key'])
-    || 'AIzaSyAREPLACEWITHYOUROWNGOOGLEAPIKEY2Q'
-  this.googleApiEndpoint =
-    getEnvConfig(['brave_google_api_endpoint'])
-    || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
-  this.googleDefaultClientId = getEnvConfig(['google_default_client_id']) || ''
-  this.googleDefaultClientSecret =
-    getEnvConfig(['google_default_client_secret']) || ''
-  this.infuraProjectId = getEnvConfig(['brave_infura_project_id']) || ''
-  this.sardineClientId = getEnvConfig(['sardine_client_id']) || ''
-  this.sardineClientSecret = getEnvConfig(['sardine_client_secret']) || ''
-  this.bitFlyerProductionClientId =
-    getEnvConfig(['bitflyer_production_client_id']) || ''
-  this.bitFlyerProductionClientSecret =
-    getEnvConfig(['bitflyer_production_client_secret']) || ''
-  this.bitFlyerProductionFeeAddress =
-    getEnvConfig(['bitflyer_production_fee_address']) || ''
-  this.bitFlyerProductionUrl = getEnvConfig(['bitflyer_production_url']) || ''
-  this.bitFlyerSandboxClientId =
-    getEnvConfig(['bitflyer_sandbox_client_id']) || ''
-  this.bitFlyerSandboxClientSecret =
-    getEnvConfig(['bitflyer_sandbox_client_secret']) || ''
-  this.bitFlyerSandboxFeeAddress =
-    getEnvConfig(['bitflyer_sandbox_fee_address']) || ''
-  this.bitFlyerSandboxUrl = getEnvConfig(['bitflyer_sandbox_url']) || ''
-  this.geminiProductionApiUrl =
-    getEnvConfig(['gemini_production_api_url']) || ''
-  this.geminiProductionClientId =
-    getEnvConfig(['gemini_production_client_id']) || ''
-  this.geminiProductionClientSecret =
-    getEnvConfig(['gemini_production_client_secret']) || ''
-  this.geminiProductionFeeAddress =
-    getEnvConfig(['gemini_production_fee_address']) || ''
-  this.geminiProductionOauthUrl =
-    getEnvConfig(['gemini_production_oauth_url']) || ''
-  this.geminiSandboxApiUrl = getEnvConfig(['gemini_sandbox_api_url']) || ''
-  this.geminiSandboxClientId = getEnvConfig(['gemini_sandbox_client_id']) || ''
-  this.geminiSandboxClientSecret =
-    getEnvConfig(['gemini_sandbox_client_secret']) || ''
-  this.geminiSandboxFeeAddress =
-    getEnvConfig(['gemini_sandbox_fee_address']) || ''
-  this.geminiSandboxOauthUrl = getEnvConfig(['gemini_sandbox_oauth_url']) || ''
-  this.upholdProductionApiUrl =
-    getEnvConfig(['uphold_production_api_url']) || ''
-  this.upholdProductionClientId =
-    getEnvConfig(['uphold_production_client_id']) || ''
-  this.upholdProductionClientSecret =
-    getEnvConfig(['uphold_production_client_secret']) || ''
-  this.upholdProductionFeeAddress =
-    getEnvConfig(['uphold_production_fee_address']) || ''
-  this.upholdProductionOauthUrl =
-    getEnvConfig(['uphold_production_oauth_url']) || ''
-  this.upholdSandboxApiUrl = getEnvConfig(['uphold_sandbox_api_url']) || ''
-  this.upholdSandboxClientId = getEnvConfig(['uphold_sandbox_client_id']) || ''
-  this.upholdSandboxClientSecret =
-    getEnvConfig(['uphold_sandbox_client_secret']) || ''
-  this.upholdSandboxFeeAddress =
-    getEnvConfig(['uphold_sandbox_fee_address']) || ''
-  this.upholdSandboxOauthUrl = getEnvConfig(['uphold_sandbox_oauth_url']) || ''
-  this.zebPayProductionApiUrl =
-    getEnvConfig(['zebpay_production_api_url']) || ''
-  this.zebPayProductionClientId =
-    getEnvConfig(['zebpay_production_client_id']) || ''
-  this.zebPayProductionClientSecret =
-    getEnvConfig(['zebpay_production_client_secret']) || ''
-  this.zebPayProductionOauthUrl =
-    getEnvConfig(['zebpay_production_oauth_url']) || ''
-  this.zebPaySandboxApiUrl = getEnvConfig(['zebpay_sandbox_api_url']) || ''
-  this.zebPaySandboxClientId = getEnvConfig(['zebpay_sandbox_client_id']) || ''
-  this.zebPaySandboxClientSecret =
-    getEnvConfig(['zebpay_sandbox_client_secret']) || ''
-  this.zebPaySandboxOauthUrl = getEnvConfig(['zebpay_sandbox_oauth_url']) || ''
-  this.braveSyncEndpoint = getEnvConfig(['brave_sync_endpoint']) || ''
-  this.safeBrowsingApiEndpoint =
-    getEnvConfig(['safebrowsing_api_endpoint']) || ''
-  this.updaterProdEndpoint = getEnvConfig(['updater_prod_endpoint']) || ''
-  this.updaterDevEndpoint = getEnvConfig(['updater_dev_endpoint']) || ''
-  this.webcompatReportApiEndpoint =
-    getEnvConfig(['webcompat_report_api_endpoint'])
-    || 'https://webcompat.brave.com/1/webcompat'
-  this.rewardsGrantDevEndpoint =
-    getEnvConfig(['rewards_grant_dev_endpoint']) || ''
-  this.rewardsGrantStagingEndpoint =
-    getEnvConfig(['rewards_grant_staging_endpoint']) || ''
-  this.rewardsGrantProdEndpoint =
-    getEnvConfig(['rewards_grant_prod_endpoint']) || ''
+  this.braveServicesProductionDomain = getEnvConfig([
+    'brave_services_production_domain',
+  ])
+  this.braveServicesStagingDomain = getEnvConfig([
+    'brave_services_staging_domain',
+  ])
+  this.braveServicesDevDomain = getEnvConfig(['brave_services_dev_domain'])
+  this.braveGoogleApiKey = getEnvConfig(['brave_google_api_key'])
+  this.googleApiEndpoint = getEnvConfig(['brave_google_api_endpoint'])
+  this.googleDefaultClientId = getEnvConfig(['google_default_client_id'])
+  this.googleDefaultClientSecret = getEnvConfig([
+    'google_default_client_secret',
+  ])
+  this.infuraProjectId = getEnvConfig(['brave_infura_project_id'])
+  this.sardineClientId = getEnvConfig(['sardine_client_id'])
+  this.sardineClientSecret = getEnvConfig(['sardine_client_secret'])
+  this.bitFlyerProductionClientId = getEnvConfig([
+    'bitflyer_production_client_id',
+  ])
+  this.bitFlyerProductionClientSecret = getEnvConfig([
+    'bitflyer_production_client_secret',
+  ])
+  this.bitFlyerProductionFeeAddress = getEnvConfig([
+    'bitflyer_production_fee_address',
+  ])
+  this.bitFlyerProductionUrl = getEnvConfig(['bitflyer_production_url'])
+  this.bitFlyerSandboxClientId = getEnvConfig(['bitflyer_sandbox_client_id'])
+  this.bitFlyerSandboxClientSecret = getEnvConfig([
+    'bitflyer_sandbox_client_secret',
+  ])
+  this.bitFlyerSandboxFeeAddress = getEnvConfig([
+    'bitflyer_sandbox_fee_address',
+  ])
+  this.bitFlyerSandboxUrl = getEnvConfig(['bitflyer_sandbox_url'])
+  this.geminiProductionApiUrl = getEnvConfig(['gemini_production_api_url'])
+  this.geminiProductionClientId = getEnvConfig(['gemini_production_client_id'])
+  this.geminiProductionClientSecret = getEnvConfig([
+    'gemini_production_client_secret',
+  ])
+  this.geminiProductionFeeAddress = getEnvConfig([
+    'gemini_production_fee_address',
+  ])
+  this.geminiProductionOauthUrl = getEnvConfig(['gemini_production_oauth_url'])
+  this.geminiSandboxApiUrl = getEnvConfig(['gemini_sandbox_api_url'])
+  this.geminiSandboxClientId = getEnvConfig(['gemini_sandbox_client_id'])
+  this.geminiSandboxClientSecret = getEnvConfig([
+    'gemini_sandbox_client_secret',
+  ])
+  this.geminiSandboxFeeAddress = getEnvConfig(['gemini_sandbox_fee_address'])
+  this.geminiSandboxOauthUrl = getEnvConfig(['gemini_sandbox_oauth_url'])
+  this.upholdProductionApiUrl = getEnvConfig(['uphold_production_api_url'])
+  this.upholdProductionClientId = getEnvConfig(['uphold_production_client_id'])
+  this.upholdProductionClientSecret = getEnvConfig([
+    'uphold_production_client_secret',
+  ])
+  this.upholdProductionFeeAddress = getEnvConfig([
+    'uphold_production_fee_address',
+  ])
+  this.upholdProductionOauthUrl = getEnvConfig(['uphold_production_oauth_url'])
+  this.upholdSandboxApiUrl = getEnvConfig(['uphold_sandbox_api_url'])
+  this.upholdSandboxClientId = getEnvConfig(['uphold_sandbox_client_id'])
+  this.upholdSandboxClientSecret = getEnvConfig([
+    'uphold_sandbox_client_secret',
+  ])
+  this.upholdSandboxFeeAddress = getEnvConfig(['uphold_sandbox_fee_address'])
+  this.upholdSandboxOauthUrl = getEnvConfig(['uphold_sandbox_oauth_url'])
+  this.zebPayProductionApiUrl = getEnvConfig(['zebpay_production_api_url'])
+  this.zebPayProductionClientId = getEnvConfig(['zebpay_production_client_id'])
+  this.zebPayProductionClientSecret = getEnvConfig([
+    'zebpay_production_client_secret',
+  ])
+  this.zebPayProductionOauthUrl = getEnvConfig(['zebpay_production_oauth_url'])
+  this.zebPaySandboxApiUrl = getEnvConfig(['zebpay_sandbox_api_url'])
+  this.zebPaySandboxClientId = getEnvConfig(['zebpay_sandbox_client_id'])
+  this.zebPaySandboxClientSecret = getEnvConfig([
+    'zebpay_sandbox_client_secret',
+  ])
+  this.zebPaySandboxOauthUrl = getEnvConfig(['zebpay_sandbox_oauth_url'])
+  this.braveSyncEndpoint = getEnvConfig(['brave_sync_endpoint'])
+  this.safeBrowsingApiEndpoint = getEnvConfig(['safebrowsing_api_endpoint'])
+  this.updaterProdEndpoint = getEnvConfig(['updater_prod_endpoint'])
+  this.updaterDevEndpoint = getEnvConfig(['updater_dev_endpoint'])
+  this.webcompatReportApiEndpoint = getEnvConfig([
+    'webcompat_report_api_endpoint',
+  ])
+  this.rewardsGrantDevEndpoint = getEnvConfig(['rewards_grant_dev_endpoint'])
+  this.rewardsGrantStagingEndpoint = getEnvConfig([
+    'rewards_grant_staging_endpoint',
+  ])
+  this.rewardsGrantProdEndpoint = getEnvConfig(['rewards_grant_prod_endpoint'])
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -267,13 +264,11 @@ const Config = function () {
   this.mac_installer_signing_identifier =
     getEnvConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getEnvConfig(['mac_signing_keychain']) || 'login'
-  this.sparkleDSAPrivateKeyFile =
-    getEnvConfig(['sparkle_dsa_private_key_file']) || ''
-  this.sparkleEdDSAPrivateKey =
-    getEnvConfig(['sparkle_eddsa_private_key']) || ''
-  this.sparkleEdDSAPublicKey = getEnvConfig(['sparkle_eddsa_public_key']) || ''
-  this.notary_user = getEnvConfig(['notary_user']) || ''
-  this.notary_password = getEnvConfig(['notary_password']) || ''
+  this.sparkleDSAPrivateKeyFile = getEnvConfig(['sparkle_dsa_private_key_file'])
+  this.sparkleEdDSAPrivateKey = getEnvConfig(['sparkle_eddsa_private_key'])
+  this.sparkleEdDSAPublicKey = getEnvConfig(['sparkle_eddsa_public_key'])
+  this.notary_user = getEnvConfig(['notary_user'])
+  this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
   this.sccache = getEnvConfig(['sccache'])
@@ -303,10 +298,12 @@ const Config = function () {
   this.extraGnArgs = {}
   this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
-  this.braveAndroidSafeBrowsingApiKey =
-    getEnvConfig(['brave_safebrowsing_api_key']) || ''
-  this.braveAndroidDeveloperOptionsCode =
-    getEnvConfig(['brave_android_developer_options_code']) || ''
+  this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
+    'brave_safebrowsing_api_key',
+  ])
+  this.braveAndroidDeveloperOptionsCode = getEnvConfig([
+    'brave_android_developer_options_code',
+  ])
   this.braveAndroidKeystorePath = getEnvConfig(['brave_android_keystore_path'])
   this.braveAndroidKeystoreName = getEnvConfig(['brave_android_keystore_name'])
   this.braveAndroidKeystorePassword = getEnvConfig([
@@ -315,19 +312,19 @@ const Config = function () {
   this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
   this.braveAndroidPkcs11Provider = ''
   this.braveAndroidPkcs11Alias = ''
-  this.braveVariationsServerUrl =
-    getEnvConfig(['brave_variations_server_url']) || ''
+  this.braveVariationsServerUrl = getEnvConfig(['brave_variations_server_url'])
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
-  this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
-  this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
-  this.braveIOSDeveloperOptionsCode =
-    getEnvConfig(['brave_ios_developer_options_code']) || ''
-  this.service_key_stt = getEnvConfig(['service_key_stt']) || ''
+  this.brave_services_key_id = getEnvConfig(['brave_services_key_id'])
+  this.service_key_aichat = getEnvConfig(['service_key_aichat'])
+  this.braveIOSDeveloperOptionsCode = getEnvConfig([
+    'brave_ios_developer_options_code',
+  ])
+  this.service_key_stt = getEnvConfig(['service_key_stt'])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
 }
@@ -381,7 +378,7 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan()
+  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -409,6 +406,9 @@ Config.prototype.buildArgs = function () {
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
+    is_ubsan: this.is_ubsan,
+    is_ubsan_vptr: this.is_ubsan,
+    is_ubsan_no_recover: this.is_ubsan,
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
@@ -423,7 +423,6 @@ Config.prototype.buildArgs = function () {
     branding_path_component: 'brave',
     branding_path_product: 'brave',
     enable_glic: false,
-    enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
@@ -500,9 +499,6 @@ Config.prototype.buildArgs = function () {
     use_reclient: this.useRemoteExec,
     use_siso: false,
     use_libfuzzer: this.use_libfuzzer,
-    enable_updater: this.isOfficialBuild(),
-    // Disable "Can't update Brave" notification on macOS until we have switched
-    // to Omaha 4 and have background updates:
     enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
@@ -511,6 +507,10 @@ Config.prototype.buildArgs = function () {
     service_key_aichat: this.service_key_aichat,
     service_key_stt: this.service_key_stt,
     generate_about_credits: true,
+  }
+
+  if (this.isOfficialBuild()) {
+    args.enable_updater = true
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -737,18 +737,6 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    if (this.targetArch === 'arm64') {
-      // Flag use_relr_relocations is incompatible with Android 8 arm64, but
-      // makes huge optimizations on Android 9 and above.
-      // Decision is to specify android:minSdkVersion=28 for arm64 and keep
-      // 26(default) for arm32.
-      // Then:
-      //   - for Android 8 and 8.1 GP will supply arm32 bundle;
-      //   - for Android 9 and above GP will supply arm64 and we can enable all
-      //     optimizations.
-      args.default_min_sdk_version = 28
-    }
-
     if (
       args.target_android_output_format === 'apk'
       && (this.targetArch === 'arm64' || this.targetArch === 'x64')
@@ -760,9 +748,16 @@ Config.prototype.buildArgs = function () {
       args.enable_android_secondary_abi = true
     }
 
+    if (this.isCI && !this.isOfficialBuild()) {
+      // We want Android CI to run Java static analyzer synchronously
+      // for non-official (PR) builds.
+      // It will be turned off for the official builds
+      // (src/build/config/android/config.gni)
+      args.android_static_analysis = 'on'
+    }
+
     // These do not exist on android
     // TODO - recheck
-    delete args.enable_nacl
     delete args.enable_hangout_services_extension
   }
 
@@ -823,7 +818,6 @@ Config.prototype.buildArgs = function () {
     delete args.branding_path_component
     delete args.branding_path_product
     delete args.enable_glic
-    delete args.enable_nacl
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
@@ -1021,6 +1015,8 @@ Config.prototype.update = function (options) {
   } else {
     this.is_asan = false
   }
+
+  this.is_ubsan = options.is_ubsan || false
 
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec

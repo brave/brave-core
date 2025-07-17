@@ -12,9 +12,12 @@
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/variations/service/variations_service.h"
+#include "components/variations/service/variations_service_utils.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
@@ -172,6 +175,27 @@ bool AdsServiceDelegate::IsFullScreenMode() {
 #else
   return true;
 #endif
+}
+
+std::string AdsServiceDelegate::GetVariationsCountryCode() {
+  std::string country_code;
+
+  variations::VariationsService* variations_service =
+      g_browser_process->variations_service();
+
+  if (variations_service) {
+    country_code = variations_service->GetLatestCountry();
+  }
+
+  if (country_code.empty()) {
+    // May be empty on first run after a fresh install, so fall back to the
+    // permanently stored variations or device country code on first run.
+    country_code = variations::GetCurrentCountryCode(variations_service);
+  }
+
+  // Convert the country code to an ISO 3166-1 alpha-2 format. This ensures the
+  // country code is in uppercase, as required by the standard.
+  return base::ToUpperASCII(country_code);
 }
 
 NotificationDisplayService*

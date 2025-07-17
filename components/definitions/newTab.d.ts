@@ -130,6 +130,8 @@ declare namespace NewTab {
     searchSuggestionsEnabled: boolean
     hideAllWidgets: boolean
     isBraveNewsOptedIn: boolean
+    isBraveNewsDisabledByPolicy: boolean
+    isBraveTalkDisabledByPolicy: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
 

@@ -324,17 +324,17 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8813509417421129632">Unha páxina incrustada en <ph name="SITE"/> quere gardarse</translation>
 <translation id="7700010743463174379">Esta páxina quere gardarse</translation>
 <translation id="6774238875569752630">Unha páxina inserida nesta páxina quere gardarse</translation>
-<translation id="1233913566967531780">Enfoque nas pestanas</translation>
-<translation id="4034992002364254340">Reúne todas as pestanas relacionadas nunha nova ventá</translation>
+<translation id="1233913566967531780">Agrupación de separadores</translation>
+<translation id="4034992002364254340">Reúne todas os separadores relacionados nunha nova xanela</translation>
 <translation id="8012125596344613514">Temas suxeridos</translation>
-<translation id="7529120186020617755">Introduce un tema para centrarte...</translation>
+<translation id="7529120186020617755">Introduce un tema para agrupar...</translation>
 <translation id="6847541693235449912">Ir</translation>
 <translation id="2079545284768500474">Desfacer</translation>
-<translation id="1533980864758658574">Novo ventá creada para <ph name="TOPIC"/></translation>
-<translation id="7985042437720138349">Esta característica envía datos sobre as túas pestanas abertas a Leo, o asistente do navegador Brave con AI.</translation>
+<translation id="1533980864758658574">Nova xanela creada para <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Esta característica envía datos sobre as túas xanelas abertas a Leo, o asistente do navegador Brave con IA.</translation>
 <translation id="6165508094623778733">Máis información</translation>
 <translation id="7557539689487606886">Subscribirse á versión Premium</translation>
-<translation id="1035309871698658326">Cando se abra, isto enviará automaticamente os títulos e a orixe de todas as pestanas non privadas a Leo para clasificalas.</translation>
+<translation id="1035309871698658326">Cando se abra, isto enviará automaticamente os títulos e a orixe de todos os separadores non privados a Leo para clasificalos.</translation>
 <translation id="3435896845095436175">Activar</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
@@ -345,6 +345,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8081858229109418493">Nome e icona do perfil</translation>
 <translation id="6786747875388722282">Extensións</translation>
 <translation id="984275831282074731">Métodos de pago</translation>
+<translation id="6278858909990433658">Importar o perfil aínda en uso</translation>
+<translation id="9071187015476020102">Para importar extensións ou outras configuracións, pecha primeiro o navegador desde o cal estás a importar.</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="2414886740292270097">Escuro</translation>
@@ -738,8 +740,8 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="2751872555001636931">Mostrar icona de Leo na barra lateral</translation>
 <translation id="8055509865174199683">Mostrar a Leo no menú contextual de sitios web</translation>
 <translation id="1529674267267221673">Leo aparecerá no menú contextual cando fagas clic co botón dereito nun sitio web. Desta forma enviarase contexto desde a páxina web actual a Leo.</translation>
-<translation id="5226020406479918122">Modo de enfoque nas pestanas</translation>
-<translation id="3705539672403311123">Activa a organización das pestanas na páxina de Busca de Pestanas. Cando se abra, isto enviará automaticamente os títulos e a orixe de todas as pestanas non privadas a Leo para clasificalas. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
+<translation id="5226020406479918122">Modo de agrupación de separadores</translation>
+<translation id="3705539672403311123">Activa a organización dos separadores na páxina de Busca de separadores. Cando se abra, isto enviará automaticamente os títulos e a orixe de todos os separadores non privados a Leo para clasificalos. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar mensaxes emerxentes suxeridas na conversa</translation>
 <translation id="5781842473834867765">Gardar o meu historial de conversas</translation>
 <translation id="1082960401708055995">Ao desactivar o almacenamento das conversas, eliminaranse de forma permanente todas as conversas gardadas. Isto non se pode desfacer.</translation>
@@ -747,9 +749,9 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="1335414530428321716">Ao restablecer Leo AI, terás que aceptar usar Leo AI de Brave no futuro e isto tamén eliminará o teu historial de conversas. Limpar o historial borrará todas as conversas que tiveches con Leo AI. Isto non se pode desfacer.</translation>
 <translation id="5574059574002819179">Axustar suxestións de autocompletado</translation>
 <translation id="7942415993090181327">Historial de conversas</translation>
-<translation id="5385064007245738696">Acerca de Leo AI</translation>
-<translation id="5084498230659987096">Brave Leo ofrece chat AI que prioriza a privacidade e outras interfaces con AI no navegador. Leo nunca aprende dos teus datos nin os utiliza para adestrar modelos. Todas as solicitudes son proxectadas a través dun servidor anonimizador.</translation>
-<translation id="6458721693611638005">Le máis sobre como Brave protexe o teu uso de AI na política de privacidade de Leo. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
+<translation id="5385064007245738696">Acerca da IA de Leo</translation>
+<translation id="5084498230659987096">Leo de Brave ofrece un chat con tecnoloxía de intelixencia artificial (IA) que prioriza a privacidade e outras interfaces con IA no navegador. Leo nunca aprende dos teus datos nin os utiliza para adestrar modelos. Todas as solicitudes son proxectadas a través dun servidor anonimizador.</translation>
+<translation id="6458721693611638005">Le máis sobre como Brave protexe o teu uso da IA na política de privacidade de Leo. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modelo predeterminado para conversas novas</translation>
 <translation id="8826914609353373601">Xestionar subscrición premium</translation>
 <translation id="235457946228076038">Trae o teu propio modelo</translation>
@@ -761,7 +763,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="7634775528597575156">Punto final do servidor</translation>
 <translation id="6374563306438145841">Clave API</translation>
 <translation id="3295756655687327124">Soporte de visión</translation>
-<translation id="1415432774589088566">Se este modelo acepta imaxes como entrada, por exemplo, llama 3.2b visión</translation>
+<translation id="1415432774589088566">Se este modelo acepta imaxes como entrada, por exemplo, Llama 3.2b Vision</translation>
 <translation id="8008271349880309090">O nome do modelo tal e como aparecerá no menú de selección de modelos</translation>
 <translation id="1355326130503900056">O nome do modelo tal e como debería aparecer na solicitude ao marco de servizo, é dicir, phi-3 (ten en conta que se este nome non coincide exactamente co que se espera do marco de servizo, a integración non funcionará)</translation>
 <translation id="3213787232304349732">A URL na que o teu marco de servizo está preparado para atender as solicitudes. Se tes dúbidas, revisa a documentación do marco de servizo. Por exemplo, para Ollama, é sempre http://localhost:11434/v1/chat/completions</translation>
@@ -825,4 +827,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Modo aberto</translation>
+<translation id="2249111429176737533">Abrir como xanela con separadores</translation>
+<translation id="7022756207310403729">Abrir no navegador</translation>
 </translationbundle>

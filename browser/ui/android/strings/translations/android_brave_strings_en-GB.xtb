@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Enable support for bypassing top-level redirect tracking URLs.</translation>
 <translation id="94154759592465111">Block Scripts</translation>
 <translation id="7714773920987474116">Blocks JavaScript (may break sites)</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="2233004324252915283">Block YouTube recommended content</translation>
 <translation id="1005372663692637999">Blocks the up next and end card elements on youtube.com.</translation>
 <translation id="5152595963250646670">Block YouTube distracting elements</translation>
@@ -778,18 +777,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2199215899212542417">FUNCTION TYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">No data</translation>
 <translation id="1105525362447173583">Solana Dapp Sign Transaction</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> sent <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> sent <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> approved <ph name="ASSET"/> - <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Approved Unlimited <ph name="ASSET"/> - <ph name="PROXY"/></translation>
-<translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> swap - <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Unapproved</translation>
-<translation id="8034530868111548216">Approved</translation>
-<translation id="6015436276085482001">Rejected</translation>
-<translation id="6666273175654835609">Submitted</translation>
-<translation id="2331676293859649642">Confirmed</translation>
-<translation id="8214232307424031138">Signed</translation>
-<translation id="1165039591588034296">Error</translation>
 <translation id="2561824823738097741">Are you using the fastest web browser?</translation>
 <translation id="2065971949051836200">3x faster internet is already on your phone. Use Brave for all your web browsing.</translation>
 <translation id="2888278614497184977">Brave = 3x faster web browsing</translation>

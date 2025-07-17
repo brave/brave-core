@@ -22,4 +22,7 @@ export const _AddNftForm = {
   },
 }
 
-export default { component: AddNftForm }
+export default {
+  title: 'Wallet/Desktop/Components/Forms',
+  component: AddNftForm,
+}

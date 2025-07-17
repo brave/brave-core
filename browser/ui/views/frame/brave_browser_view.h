@@ -116,7 +116,6 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
-  TabSearchBubbleHost* GetTabSearchBubbleHost() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -142,6 +141,8 @@ class BraveBrowserView : public BrowserView,
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
+  BraveMultiContentsView* GetBraveMultiContentsView() const;
+
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
   }
@@ -164,6 +165,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -214,7 +216,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  BraveMultiContentsView* GetBraveMultiContentsView() const;
   views::View* contents_separator_for_testing() const {
     return contents_separator_;
   }

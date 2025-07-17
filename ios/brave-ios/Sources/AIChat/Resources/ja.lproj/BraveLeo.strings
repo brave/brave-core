@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "オンにして、アドレスバーからLeoを起動するショートカットを表示します。";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "アドレスバーに表示";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "デフォルトモデル";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "General Purpose Vision";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにMistral AIによって作られたモデル、Mixtral 8x7Bを搭載しています。MixtralはBrave独自の安全なインフラを通じてホストされています。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "高度なチャットタスク";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 14Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "レオ・ディスエーブルド";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leoは現在、プライベートモードではご利用いただけません。使用するには、プライベートモードを終了してもう一度お試しください。";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "このモードではLeoが使えません";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "画像をアップロード";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "了解しました";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leoは、Webの利用を向上させるプライベートなAIスマートアシスタントです。Leoは無料でご利用いただけますが、アクセスには制限があります。Brave Leo Premiumは、より多くのモデルとより高い制限を導入しており、サブスクリプションをご利用の方は新機能にいち早くアクセスすることができます。すべてのユーザーの方に向けた現在のデフォルトモデルはMixtral 8x7Bです。詳細はBraveの**[ヘルプセンター](%1$@)**をご覧ください。\n\nデフォルトでは、Leoに質問をすると、閲覧中のWebページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供します。場合によっては、Leoは、お客様の入力から派生したクエリをBrave検索に送信し、検索結果を使用してお客様の質問により適切に回答します。回答の正確性は保証されず、不正確、誤解を招く、または虚偽の情報が含まれる場合があります。機密・個人情報は送信せず、健康、金融、個人の安全などに関連する回答の内容にもご注意ください。Leoのオプションはいつでも設定 > Leoから調整できます。\n\nLeoは、IPアドレスのような個人を特定できる識別子を収集しません。LeoのデータがAIモデルのトレーニングに使用されたり、AIモデルが個人データを保持することはありません (データを削除する前に30日間保持するAnthropicを除きます)。詳しくは、**[プライバシーポリシー](%2$@)**をご覧ください。";
+"aichat.termsConditionsDescription" = "Brave Leoは、Webの利用を向上させるプライベートなAIスマートアシスタントです。Leoは無料でご利用いただけますが、アクセスには制限があります。有料版のBrave Leo Premiumではより多くのモデルと高い上限を提供しており、サブスクリプションをご利用の方は新機能にいち早くアクセスすることができます。詳細はBraveの**[ヘルプセンター](%1$@)**をご覧ください。\n\nデフォルトでは、Leoに質問をすると、閲覧中のWebページの内容やページ上でハイライトしたテキストがBrave Leoに送信され、回答を提供します。場合によっては、Leoは、お客様の入力から派生したクエリをBrave Searchに送信し、検索結果を使用してお客様の質問により適切に回答します。回答の正確性は保証されず、不正確、誤解を招く、または虚偽の情報が含まれる場合があります。機密・個人情報は送信しないでください。また、健康、金融、個人の安全などに関連する回答の内容にもご注意ください。Leoのオプションはいつでも設定 >Leoから調整できます。\n\nLeoは、IPアドレスのように個人の特定につながる識別子を収集しません。LeoのデータがAIモデルのトレーニングに使用されたり、AIモデルが個人データを保持することはありません (データを削除する前に30日間保持するAnthropicを除きます)。詳しくは、**[プライバシーポリシー](%2$@)**をご覧ください。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave Leoとプライベートチャット";

@@ -5,7 +5,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,18 +34,5 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile) {
       base::Value(static_cast<int>(
           content_settings::CookieControlsMode::kBlockThirdParty)));
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-void SetWebTorrentEnabled(Profile* profile, bool is_new_profile) {
-  const PrefService::Preference* pref_webtorrent_enabled =
-      profile->GetPrefs()->FindPreference(kWebTorrentEnabled);
-  if (!pref_webtorrent_enabled->HasUserSetting()) {
-    profile->GetPrefs()->SetBoolean(
-        kWebTorrentEnabled,
-        is_new_profile ? false
-                       : profile->GetPrefs()->GetBoolean(kWebTorrentEnabled));
-  }
-}
-#endif
 
 }  // namespace brave

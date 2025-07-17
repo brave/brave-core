@@ -67,21 +67,21 @@ OBJC_EXPORT
     Feature* kCosmeticFilteringExtraPerfMetrics;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
+@property(class, nonatomic, readonly) Feature* kBraveAccount;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
 @property(class, nonatomic, readonly) Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
-@property(class, nonatomic, readonly) Feature* kNewPlaylistUI;
 @property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
 @property(class, nonatomic, readonly) Feature* kBlockAllCookiesToggle;
-@property(class, nonatomic, readonly) Feature* kModernBrowserMenuEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViews;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
+@property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
 @end
 
 NS_ASSUME_NONNULL_END

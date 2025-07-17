@@ -11,8 +11,10 @@
 
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -20,7 +22,7 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
-#include "brave/browser/ui/webui/settings/brave_account_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -31,12 +33,16 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -48,10 +54,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -60,6 +68,7 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -69,6 +78,10 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -84,6 +97,11 @@
 #include "brave/components/playlist/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
@@ -96,6 +114,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveLeoAssistantHandler>());
+
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
@@ -150,11 +171,21 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
+  html_source->AddBoolean("isSpeedreaderDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              speedreader::kSpeedreaderDisabledByPolicy));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "braveWaybackMachineDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+  html_source->AddBoolean("isCardanoDappSupportFeatureEnabled",
+                          brave_wallet::IsCardanoDAppSupportEnabled());
   html_source->AddBoolean("isBraveWalletAllowed",
                           brave_wallet::IsAllowedForContext(profile));
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
@@ -198,8 +229,15 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
   html_source->AddBoolean(
-      "isEmailAliasesFeatureEnabled",
+      "isEmailAliasesEnabled",
       base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddBoolean(
+      "isContainersEnabled",
+      base::FeatureList::IsEnabled(containers::features::kContainers));
+#endif
+  html_source->AddBoolean("isBraveAccountEnabled",
+                          brave_account::features::IsBraveAccountEnabled());
 }
 
 // static
@@ -218,16 +256,36 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
-  auto assistant_handler = std::make_unique<settings::BraveLeoAssistantHandler>(
-      std::make_unique<ai_chat::AIChatSettingsHelper>(
-          web_ui()->GetWebContents()->GetBrowserContext()));
-  assistant_handler->BindInterface(std::move(pending_receiver));
-  web_ui()->AddMessageHandler(std::move(assistant_handler));
+  auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  mojo::MakeSelfOwnedReceiver(std::move(helper), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+    mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
         pending_receiver) {
-  brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
-      std::move(pending_receiver));
+  brave_account_settings_handler_ =
+      std::make_unique<brave_account::BraveAccountSettingsHandler>(
+          std::move(pending_receiver), web_ui());
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+        pending_receiver) {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return;
+  }
+  auto handler = std::make_unique<containers::ContainersSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  email_aliases::EmailAliasesServiceFactory::BindForProfile(
+      profile, std::move(receiver));
 }

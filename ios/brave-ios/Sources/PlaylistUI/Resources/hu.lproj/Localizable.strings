@@ -31,6 +31,9 @@
 /* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
 "playlist.accessibilityPlaybackSpeed" = "Visszajátszás sebessége";
 
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Előző tétel";
+
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
 "playlist.accessibilityRepeatModeAll" = "Ismétlési mód: összes";
 

@@ -109,11 +109,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                             std::unique_ptr<v8::Global<v8::Function>> callback,
                             v8::Global<v8::Promise::Resolver> promise_resolver,
                             v8::Isolate* isolate,
-                            base::Value id,
-                            base::Value formed_response,
-                            const bool reject,
-                            const std::string& first_allowed_account,
-                            const bool update_bind_js_properties);
+                            mojom::EthereumProviderResponsePtr response);
 
   void SendResponse(base::Value id,
                     v8::Global<v8::Context> global_context,

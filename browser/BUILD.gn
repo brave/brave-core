@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -62,16 +63,6 @@ group("browser") {
   # dependencies in brave/ (//chrome/browser does not depend on this target
   # so //brave/browser becomes essentially an alias for //chrome/browser now).
   public_deps = [ "//chrome/browser" ]
-}
-
-if (is_mac) {
-  source_set("mac_features") {
-    sources = [
-      "mac_features.cc",
-      "mac_features.h",
-    ]
-    deps = [ "//base" ]
-  }
 }
 
 source_set("unit_tests") {

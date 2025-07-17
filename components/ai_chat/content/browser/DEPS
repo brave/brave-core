@@ -1,5 +1,9 @@
 include_rules = [
   "+brave/services/printing",
+  "+components/keyed_service",
+  "+components/paint_preview",
+  "+components/pdf",
+  "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
@@ -9,6 +13,7 @@ include_rules = [
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/service_manager/public",
+  "+services/network/test",
   "+third_party/blink/public/common",
   "+third_party/blink/public/mojom/permissions",
   "+third_party/skia/include",

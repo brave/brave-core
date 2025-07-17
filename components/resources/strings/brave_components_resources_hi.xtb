@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">बार-बार विजिट की जाने वाली चीजें दिखाएँ</translation>
 <translation id="4546260624932151782">पसंदीदा दिखाएँ</translation>
 <translation id="8975314993825375476">लिस्ट को कस्टमाइज़ करें</translation>
-<translation id="5525668735313040116">गोपनीय तौर पर वेब सर्च करें</translation>
+<translation id="7407744084529395869">AI के साथ निजी तौर पर वेब सर्च करें</translation>
 <translation id="1629390138158333592">वेब पर ढूँढें</translation>
 <translation id="4016940744851230999">नए टैब पेज पर सर्च विजेट दिखाएँ</translation>
 <translation id="7092560902264458951">नए टैब पेज पर सर्च इंजन की सुविधा दें</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Google को छोड़ने का समय आ गया है.</translation>
 <translation id="5588534392045217394">सर्च नतीजों में Brave किसी तरह का भेदभाव या उन्हें सेंसर नहीं करता है, और यह आपकी प्रोफ़ाइल नहीं बनाता है.</translation>
 <translation id="6811221529729056895">Brave सर्च को अभी आज़माएँ</translation>
+<translation id="5525668735313040116">गोपनीय तौर पर वेब सर्च करें</translation>
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
 <translation id="5585019845078534178">कार्ड्स</translation>
 <translation id="3870475560794762985">स्पांसर्ड इमेजों को दिखाएं</translation>
@@ -646,7 +647,7 @@
 <translation id="6895088073061692390">हमारी ऑटोमैटिक जाँच के दौरान आपके Brave विज्ञापन में कुछ अप्रत्याशित गतिविधियों का पता चला है, जिसकी वजह से दुर्भाग्यवश आपके Brave विज्ञापन के प्रोफ़ाइल को फ़्लैग किया गया है.</translation>
 <translation id="4229056297802204697">हालाँकि प्रोफ़ाइल फ़्लैग रहने के दौरान भी आपको विज्ञापन दिख सकते हैं, लेकिन भुगतान नहीं मिल पाएँगे. आप Brave रिवॉर्ड से कस्टोडियल अकाउंट को भी कनेक्ट नहीं कर पाएँगे.</translation>
 <translation id="5124846913141379164">यह मुमकिन है कि आपके प्रोफ़ाइल को फ़्लैग करने मे कोई गड़बड़ी हुई हो और आपकी ओर से किसी भी तरह की तत्काल कार्यवाही की ज़रूरत न पड़े. आपके प्रोफ़ाइल से फ़्लैग को बाद में हटाया जा सकता है.</translation>
-<translation id="8947002243324362172">Brave के रिवॉर्ड प्रोफ़ाइल को फ़्लैग करने के प्रोसेस के बारे में और जानें.</translation>
+<translation id="8947002243324362172">Brave की रिवॉर्ड प्रोफ़ाइल को फ़्लैग करने के प्रोसेस के बारे में ज़्यादा जानें।</translation>
 <translation id="4699218748197721830">Brave Rewards प्रोफ़ाइल को फ़्लैग किया गया</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/> पर ID का वेरिफ़िकेशन पूरा करने के बाद, कृपया दोबारा कोशिश करें.</translation>
 <translation id="5037332159336402972">लॉग इन करने के लिए आपको एक वेरिफ़ाई किया गया अकाउंट चाहिए</translation>
@@ -840,7 +841,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} स्टेप}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} स्टेप्स}
     }</translation>
-<translation id="782639616412356895"><ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/> के ज़रिए <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8621264173374071200"><ph name="PROVIDER_NAME"/> के ज़रिए <ph name="EXCHANGE_NAME"/></translation>
 <translation id="3735740477244556633">इसके अनुसार क्रम से लगाएं</translation>
 <translation id="6484605214219822434">ब्रिज रिव्यु करें</translation>
 <translation id="3365052891357224017">अनुमानित समय</translation>
@@ -1045,7 +1046,7 @@
 <translation id="7702907602086592255">डोमेन</translation>
 <translation id="3586752056660754651">साइन</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> की ओर से आपके वॉलेट की पब्लिक एनक्रिप्शन की का अनुरोध किया जा रहा है. अगर आप यह की शेयर करने की सहमति देते हैं, तो यह साइट आपको एनक्रिप्ट किए हुए मैसेज भेज पाएगी।</translation>
+<translation id="2300240008330189182"><ph name="URL"/> की ओर से आपके वॉलेट की पब्लिक एनक्रिप्शन की का अनुरोध किया जा रहा है. अगर आप यह की देने के लिए सहमति देते हैं, तो यह साइट आपको एनक्रिप्ट किए हुए मैसेज भेज पाएगी.</translation>
 <translation id="3340247553212049934">प्रदान करें</translation>
 <translation id="1619778919922494944">आपके अनुरोध को पूरा करने के लिए यह DApp इस मैसेज को पढ़ना चाहेगा</translation>
 <translation id="714506544401754321">संदेश को डिक्रिप्ट करें</translation>
@@ -1341,21 +1342,21 @@
 <translation id="6248202915200795128">उम्मीद से ज्यादा समय लग रहा है?</translation>
 <translation id="5417904796609871601">एक्टिविटी में देखें</translation>
 <translation id="8915839655070878476">आप इस विंडो को सुरक्षित रूप से बंद कर सकते हैं.</translation>
-<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> पर भेजा जा रहा है</translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> अकाउंट को <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> पर भेज दिया गया है</translation>
-<translation id="3068919369514041269"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>पर <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> को <ph name="NETWORK"/> में स्वैप किया जा रहा है</translation>
-<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> की राशि आपके अकाउंट <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> में जोड़ दी गई है</translation>
-<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> के साथ ब्रिज कर रहे हैं</translation>
+<translation id="81801423138374476"><ph name="ACCOUNT"/> को <ph name="AMOUNT"/> भेजा जा रहा है</translation>
+<translation id="700397678365620426">खाते <ph name="ACCOUNT"/> को <ph name="AMOUNT"/> भेज दिया गया है</translation>
+<translation id="318655655904339974"><ph name="NETWORK"/> पर <ph name="AMOUNT"/> को <ph name="ACCOUNT"/> में स्वैप करना</translation>
+<translation id="2692630015559505926">आपके खाते <ph name="ACCOUNT"/> में <ph name="AMOUNT"/> की राशि जोड़ दी गई है</translation>
+<translation id="965763087589489448"><ph name="AMOUNT"/> को <ph name="NETWORK"/> से ब्रिज किया जा रहा है</translation>
 <translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/>नहीं हो पाएगा</translation>
-<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> पर <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> करने की कोशिश करने में एरर आई.</translation>
-<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>को इसमें <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> अप्रूव किया जा रहा है</translation>
+<translation id="5289529654748438984"><ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT"/> को <ph name="VALUE"/> में कोशिश करने में गड़बड़ी हुई</translation>
+<translation id="1694024747580135508"><ph name="AMOUNT"/> को <ph name="EXCHANGE"/> की मंज़ूरी दी गई</translation>
 <translation id="8036159955043245753">आपके मौजूदा ट्रांस्जैक्शन को कैंसल करने के लिए एक नया ट्रांस्जैक्शन बनाया जाएगा.</translation>
 <translation id="4056435949094149644">स्वैप करना</translation>
 <translation id="7694836973509310467">ब्रिज करना</translation>
-<translation id="997000407026317399"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> पर <ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/></translation>
-<translation id="6934057383578424432"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> पर <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> की कोशिश में एक गड़बड़ी हुई</translation>
-<translation id="4916833841663290382"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को शील्ड किया जा रहा है</translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को शील्ड कर दिया गया है</translation>
+<translation id="8419958386475786929"><ph name="NETWORK"/> पर <ph name="SWAPPING_OR_BRIDGING"/></translation>
+<translation id="7903225589949400974"><ph name="NETWORK"/> पर <ph name="SWAP_OR_BRIDGE"/> करने की कोशिश में गड़बड़ी हुई</translation>
+<translation id="1778601041100951971"><ph name="AMOUNT"/> को शील्ड कर रहा है</translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/> को शील्ड किया गया है</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
       other {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
@@ -1612,7 +1613,7 @@
 <translation id="5450317966495183014">प्राप्त करें (अनुमान)</translation>
 <translation id="8747614139273050577">टोकन से</translation>
 <translation id="1726158192333401896">टोकन के लिए</translation>
-<translation id="765894671068292221">में नया मूल्य<ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
+<translation id="1817370679212109974"><ph name="COUNTDOWN"/> में नया क्वोट</translation>
 <translation id="3835223348537121988">बैलेंस</translation>
 <translation id="5709875713144853427">स्वैप करने के लिए कोई टोकन चुनें</translation>
 <translation id="720404198240859011">बिना बैलेंस वाले टोकन दिखाएँ</translation>
@@ -1678,7 +1679,7 @@
 <translation id="353620741952662530">अभी दिखाने के लिए कोई NFT नहीं है</translation>
 <translation id="487317695605278176">जैसे ही किसी NFT का पता चलेगा, उसे यहाँ दिखाया जाएगा.</translation>
 <translation id="7481581122016027177">आपके NFT नहीं दिख रहे हैं?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>रीफ़्रेश करें<ph name="REFRESH_END"/> या <ph name="IMPORT"/>खुद से इंपोर्ट करें<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>रीफ़्रेश करें<ph name="REFRESH_END"/> या <ph name="IMPORT_START"/>मैन्युअल रूप से इंपोर्ट करें<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">रीफ़्रेश हो रहा है</translation>
 <translation id="4608324163534970318">नेटवर्क फ़ीस</translation>
 <translation id="6213230117190778270">प्राप्त करें</translation>
@@ -1823,6 +1824,9 @@
 <translation id="2713141960460256091">DApp ट्रांज़ैक्शन साइन करें और भेजें</translation>
 <translation id="6387730345715997739">DApp ट्रांज़ैक्शन  के लिए साइन करें</translation>
 <translation id="4150336849480030462">एसोसिएटेड टोकन अकाउंट क्रिएशन के साथ SPL टोकन ट्रांसफ़र</translation>
+<translation id="2244921323472112851">हमें वह पेज नहीं मिल रहा है जिसे आप ढूँढ रहे हैं।</translation>
+<translation id="6277237872689140644">शायद यह किसी और जगह पर ले जाया गया हो या URL में टाइपिंग से जुड़ी गलती हो।</translation>
+<translation id="2737084171727561244">पोर्टफ़ोलियो पर जाएँ</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -2120,10 +2124,10 @@
 <translation id="7692501701960747469">इस मॉडल के लिए कॉन्फ़िगर की गई API की अमान्य है। कृपया अपना कॉन्फ़िगरेशन देखें और फिर से कोशिश करें।</translation>
 <translation id="7905602379229309187">फ़िलहाल, एंडपॉइंट ओवरलोडेड है। कृपया बाद में कोशिश करें।</translation>
 <translation id="8151638057146502721">क़ॉन्फ़िगर करें</translation>
+<translation id="999273441077650169">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek R1 द्वारा संचालित हूँ, जो डीप रीज़निंग टास्क करने के लिए DeepSeek द्वारा बनाया गया एक मॉडल है. <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Mixtral 8x7B द्वारा संचालित हूँ, जो Mistral AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Mixtral हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Instant द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Instant हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
@@ -2172,6 +2176,10 @@
 <translation id="5604254791550001355">प्रॉम्प्ट में बदलाव करें</translation>
 <translation id="8115786586976830777">प्रॉम्प्ट कॉपी करें</translation>
 <translation id="1406205536570262057">जवाब में बदलाव करें</translation>
+<translation id="3386725253392845084">उसी मॉडल को फिर से आज़माएँ</translation>
+<translation id="2461822463642141190">मौजूदा</translation>
+<translation id="9098847266351882944">जवाब के लिए मॉडल बदलें</translation>
+<translation id="1431551663608182318">जवाब के लिए मॉडल बदलें (मौजूदा मॉडल: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">इससे कोई मदद नहीं मिलती</translation>
 <translation id="2976167228906046828">गलत</translation>
 <translation id="1183055847065865059">असुरक्षित/खतरनाक</translation>
@@ -2212,13 +2220,13 @@
 <translation id="887511360213807449">इतिहास बंद है</translation>
 <translation id="5380979378058584412">Leo के साथ अपनी पिछली बातचीतों को देखने के लिए, आपको बातचीत का इतिहास चालू करना होगा।</translation>
 <translation id="6291843235651817590">सामान्य विषय की चैट</translation>
-<translation id="8193130769524604031">चैट के एडवांस कार्य</translation>
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
 <translation id="7979673624064378842">फ़टाफ़ट चैट करने की सुविधा</translation>
 <translation id="2836330653441111204">संतुलित गति और बुद्धिमत्ता</translation>
 <translation id="6695329447007213917">सामान्य उद्देश्य वाली चैट, कोडिंग और भी बहुत कुछ</translation>
 <translation id="5051668914970329839">सामान्य विषय का विज़न</translation>
 <translation id="7226508434216060960">रीज़निंग मॉडल</translation>
+<translation id="8782867266498869301">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
 <translation id="1037324977127422019">नमस्ते, मैं लियो हूँ!</translation>
 <translation id="8930348081963284873">मैं AI द्वारा संचालित बुद्धिमान असिस्टेंट हूँ, जिसे Brave के अंदर बनाया गया है।</translation>
@@ -2256,6 +2264,7 @@
 <translation id="983013125018250242">Leo टूल</translation>
 <translation id="7623223587478473368">अटैचमेंट</translation>
 <translation id="3777121685517940177">फ़ाइल अपलोड करें...</translation>
+<translation id="6739516910850820220">फ़ाइल अपलोड हो रही है...</translation>
 <translation id="9088751620363630236">तस्वीर लें...</translation>
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
 <translation id="6332876390231524389">मौजूदा टैब की सामग्री</translation>
@@ -2271,8 +2280,11 @@
 <translation id="6543799171249004861"><ph name="AUTHOR"/> के द्वारा फ़ोटो</translation>
 <translation id="5430001801813715388">रिवॉर्ड्स</translation>
 <translation id="5966055668402779222">Brave Search से पूछें</translation>
+<translation id="167018310108390163">नई टैब पेज को कस्टमाइज़ करें</translation>
 <translation id="6851426306697017546">घड़ी दिखाएँ</translation>
 <translation id="4844370919312937270">नए टैब्स में सर्च विजेट दिखाएँ</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> के साथ, आप नए टैब पेज ऐड देखने के लिए कमा सकते हैं।</translation>
+<translation id="4100520468072294616">नए टैब पेज ऐड दिखाएँ</translation>
 <translation id="5009354496127441090">टॉप साइटें दिखाएँ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">आँकड़े</translation>
@@ -2292,7 +2304,6 @@
 <translation id="7143207342074048698">कनेक्‍ट हो रहा है</translation>
 <translation id="1202549130170287307">डिसकनेक्ट किया जा रहा है</translation>
 <translation id="8941703009412168350">Brave VPN</translation>
-<translation id="8793108040181436796">विजेट</translation>
 <translation id="6303294677342628402">शील्ड्स</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
 <translation id="7700894290854403770"><ph name="HOST"/> के लिए <ph name="STATUS_BEFORE"/>Shields चालू है<ph name="STATUS_AFTER"/></translation>
@@ -2378,6 +2389,36 @@
 <translation id="6821108091726602352">Brave के वेब डिस्कवरी प्रोजेक्ट में भाग लेकर वेब को ठीक करने में हमारी सहायता करें. पूरी तरह से गुमनाम सर्च सिग्नल शेयर करके, आप Brave को सर्च इंडेक्स क बढ़ाने में मदद कर सकते हैं.</translation>
 <translation id="6764845498618413165">और जानें.</translation>
 <translation id="7818938154803162778">मैं बिलकुल मदद करूंगा</translation>
+<translation id="3486480638399578250">अपना व्यक्तिगत ईमेल पता निजी रखें</translation>
+<translation id="7765422154906712751">यूनीक, रैंडम पते बनाएँ, जो आपके ब्राउज़र अकाउंट ईमेल पर फ़ॉरवर्ड होते हैं और किसी भी समय हटाए जा सकते हैं। अपने असली ईमेल पते का खुलासा करने या विज्ञापनदाताओं द्वारा उनका इस्तेमाल किए जाने से बचें।</translation>
+<translation id="5222676887888702881">साइन आउट करें</translation>
+<translation id="8090292425230843109">ईमेल उपनामों से साइन आउट करें</translation>
+<translation id="8471990782451394141">Brave अकाउंट से कनेक्ट कर रहे हैं...</translation>
+<translation id="5713644099811900409">Brave अकाउंट</translation>
+<translation id="6002159997868894136">उपनाम कॉपी करने के लिए क्लिक करें</translation>
+<translation id="8105770564756958406"><ph name="DOMAINS"/> द्वारा इस्तेमाल किया गया</translation>
+<translation id="5006956315579221642">अपने असली ईमेल पते को सुरक्षित रखने के लिए अधिकतम 5 मुफ़्त ईमेल उपनाम बना सकते हैं।</translation>
+<translation id="5663901348199429994">आपके ईमेल उपनाम</translation>
+<translation id="9046133327037621173">नया ईमेल उपनाम</translation>
+<translation id="3768606658230902536">ऐसा रैंडम ईमेल पता बनाएँ जो आपके इनबॉक्स में फ़ॉरवर्ड करता हो और आपका व्यक्तिगत ईमेल निजी रखता हो।</translation>
+<translation id="6887156107256264506">आपने 5 मुफ़्त ईमेल उपनाम की सीमा को पार कर लिया है। "प्रबंधित करें" पर क्लिक करके उपनाम को फिर से इस्तेमाल कर सकते हैं या हटा सकते हैं।</translation>
+<translation id="1104500750724567895">नया उपनाम</translation>
+<translation id="8072910658503112482">दूसरा ईमेल उपनाम सुझाएँ</translation>
+<translation id="7710361355427562228">नया उपनाम जनरेट कर रहे हैं...</translation>
+<translation id="4253168017788158739">ध्यान दें</translation>
+<translation id="7596996548739923550">अपने पते के लिए एक नोट दर्ज करें (विकल्प)</translation>
+<translation id="3810973564298564668">प्रबंधित करें</translation>
+<translation id="7446914872298825396">ईमेल उपनाम</translation>
+<translation id="3919357515365744684">ईमेल <ph name="MAIN_EMAIL"/> को फ़ॉरवर्ड किए जाएँगे</translation>
+<translation id="6063403442924238501">ईमेल उपनाम एडिट करें</translation>
+<translation id="8729265501883390499">उपनाम बनाएँ</translation>
+<translation id="8662104432574824754">शुरू करने के लिए, साइन इन करें या एक Brave अकाउंट बनाएँ</translation>
+<translation id="8069030342700068465">सुरक्षित लॉगिन लिंक पाने के लिए अपना ईमेल पता दर्ज करें। इस लिंक पर क्लिक करने से Brave अकाउंट बन जाएगा या अकाउंट का ऐक्सेस मिल जाएगा, जिससे आप मुफ़्त ईमेल उपनाम सेवा का इस्तेमाल कर सकते हैं।</translation>
+<translation id="2133391407495495735">लॉगिन लिंक पाएँ</translation>
+<translation id="3699624789011381381">ईमेल पता</translation>
+<translation id="8124939971041602970">लॉगिन ईमेल <ph name="MAIN_EMAIL"/> पर पहुँच रहा है</translation>
+<translation id="8140361186431963982">अपना अकाउंट ऐक्सेस करने के लिए ईमेल में सुरक्षित लॉगिन लिंक पर क्लिक करें।</translation>
+<translation id="6549775668256477823">ईमेल नहीं दिख रहा है? अपना स्पैम फ़ोल्डर जाँचें या <ph name="BEGIN_LINK"/>फिर से कोशिश करें<ph name="END_LINK"/></translation>
 <translation id="958268166261124668">Brave VPN: कनेक्ट हो गया है</translation>
 <translation id="6021669293402055982">Brave VPN: डिसकनेक्ट हो गया है</translation>
 <translation id="3541307549916475335">Brave VPN पैनल UI</translation>

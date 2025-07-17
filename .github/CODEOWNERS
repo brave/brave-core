@@ -22,6 +22,9 @@ browser/ui/BUILD.gn @bridiver
 # https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity
 browser/brave_browser_process.h @bridiver @goodov
 
+# Deprecated - do not use
+BraveNewsUtils.java @bridiver
+
 # New WebUI should use RegisterChromeWebUIConfigs
 browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver @petemill
 
@@ -220,6 +223,7 @@ DEPS @brave/deps-reviewers
 # sources.gni - see docs/gni_sources.md
 **/sources.gni @brave/sources-gni-reviewers
 **/*_sources.gni @brave/sources-gni-reviewers
+android/brave_java_sources.gni @brave/Android
 docs/gni_sources.md @brave/sources-gni-reviewers
 
 # Rust code
@@ -257,3 +261,5 @@ components/skus/common/skus_utils.h @brave/sec-team
 build/dotfile_settings.gni @bridiver @goodov
 
 docs/gni_sources.md @bridiver
+
+build/commands/lib/branding.js @bridiver

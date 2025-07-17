@@ -11,6 +11,7 @@
 
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/components/constants/pref_names.h"
@@ -163,7 +164,7 @@ BraveShieldsActionView::GetImageSource() {
 
     int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
-      badge_text = count > 99 ? "99+" : std::to_string(count);
+      badge_text = count > 99 ? "99+" : base::NumberToString(count);
     }
 
     is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&

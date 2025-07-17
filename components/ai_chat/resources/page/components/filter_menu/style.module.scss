@@ -8,11 +8,18 @@
 }
 
 .highlightFirstItem {
-  leo-menu-item {
+  &:not(:focus-within) leo-menu-item {
     &:first-of-type {
       background: var(--leo-color-container-interactive);
       color: var(--leo-color-text-interactive);
     }
+  }
+
+  leo-menu-item:focus-visible {
+    box-shadow: none;
+    border: none;
+    background: var(--leo-color-container-interactive);
+    color: var(--leo-color-text-interactive);
   }
 }
 
@@ -31,4 +38,47 @@
   font: var(--leo-font-components-label);
   text-transform: uppercase;
   border-top: 1px solid var(--leo-color-divider-subtle);
+}
+
+.tabsMenuHeader {
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  background: var(--leo-color-page-background);
+
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.tabMenuItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+
+  & > img {
+    width: 20px;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.tabItemInfo {
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--leo-spacing-m);
+}
+
+.tabItemTitle {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.tabItemUrl {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.tabNoMatches {
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
 }

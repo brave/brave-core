@@ -18,9 +18,11 @@
 #include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/proto_conversion.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/init_status.h"
@@ -112,49 +114,6 @@ bool MigrateFrom5to6(sql::Database* db) {
       db->GetUniqueStatement(kRemoveIsContentRefinedColumnQuery));
 
   return statement.is_valid() && statement.Run();
-}
-void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
-                              store::WebSourcesEventProto* proto_event) {
-  proto_event->clear_sources();
-
-  for (const auto& mojom_source : mojom_event->sources) {
-    if (!mojom_source->url.is_valid() ||
-        !mojom_source->favicon_url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found for persistence, with url: "
-               << mojom_source->url.spec()
-               << " and favicon url: " << mojom_source->favicon_url.spec();
-      continue;
-    }
-    store::WebSourceProto* proto_source = proto_event->add_sources();
-    proto_source->set_title(mojom_source->title);
-    proto_source->set_url(mojom_source->url.spec());
-    proto_source->set_favicon_url(mojom_source->favicon_url.spec());
-  }
-}
-
-mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
-    const store::WebSourcesEventProto& proto_event) {
-  auto mojom_event = mojom::WebSourcesEvent::New();
-  mojom_event->sources.reserve(proto_event.sources_size());
-
-  for (const auto& proto_source : proto_event.sources()) {
-    auto mojom_source = mojom::WebSource::New();
-    mojom_source->title = proto_source.title();
-    mojom_source->url = GURL(proto_source.url());
-    if (!mojom_source->url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found in database with url: "
-               << proto_source.url();
-      continue;
-    }
-    mojom_source->favicon_url = GURL(proto_source.favicon_url());
-    if (!mojom_source->favicon_url.is_valid()) {
-      DVLOG(0) << "Invalid WebSourcesEvent found in database with favicon url: "
-               << proto_source.favicon_url();
-      continue;
-    }
-    mojom_event->sources.push_back(std::move(mojom_source));
-  }
-  return mojom_event;
 }
 
 }  // namespace
@@ -511,6 +470,35 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
       }
     }
 
+    // Tool use events
+    {
+      sql::Statement event_statement(
+          GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                     "SELECT event_order, tool_use_serialized"
+                                     " FROM conversation_entry_event_tool_use"
+                                     " WHERE conversation_entry_uuid=?"
+                                     " ORDER BY event_order ASC"));
+      event_statement.BindString(0, entry_uuid);
+
+      while (event_statement.Step()) {
+        int event_order = event_statement.ColumnInt(0);
+        auto data = DecryptColumnToString(event_statement, 1);
+        store::ToolUseEventProto proto_event;
+        if (proto_event.ParseFromString(data)) {
+          mojom::ToolUseEventPtr mojom_event =
+              DeserializeToolUseEvent(proto_event);
+          if (!mojom_event) {
+            DLOG(ERROR) << "Invalid ToolUseEvent found in database for entry "
+                        << entry_uuid;
+            continue;
+          }
+          events.emplace_back(
+              Event{event_order, mojom::ConversationEntryEvent::NewToolUseEvent(
+                                     std::move(mojom_event))});
+        }
+      }
+    }
+
     // insert events in order
     if (!events.empty()) {
       std::ranges::sort(events, [](const Event& a, const Event& b) {
@@ -774,7 +762,6 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 bool AIChatDatabase::AddConversationEntry(
     std::string_view conversation_uuid,
     mojom::ConversationTurnPtr entry,
-    std::optional<std::string_view> model_key,
     std::optional<std::string> editing_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation_uuid.empty());
@@ -787,45 +774,21 @@ bool AIChatDatabase::AddConversationEntry(
   // want to add orphan conversation entries when the conversation doesn't
   // exist.
   static constexpr char kGetConversationIdQuery[] =
-      "SELECT model_key FROM conversation WHERE uuid=?";
-  sql::Statement get_conversation_model_statement(
+      "SELECT uuid FROM conversation WHERE uuid=?";
+  sql::Statement get_conversation_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationIdQuery));
-  CHECK(get_conversation_model_statement.is_valid());
-  get_conversation_model_statement.BindString(0, conversation_uuid);
-  if (!get_conversation_model_statement.Step()) {
+  CHECK(get_conversation_statement.is_valid());
+  get_conversation_statement.BindString(0, conversation_uuid);
+  if (!get_conversation_statement.Step()) {
     DVLOG(0) << "ID not found in 'conversation' table";
     return false;
   }
-  auto existing_model_key =
-      GetOptionalString(get_conversation_model_statement, 0);
 
   sql::Transaction transaction(&GetDB());
   CHECK(GetDB().is_open());
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin";
     return false;
-  }
-
-  bool has_valid_new_model_key = !model_key.value_or("").empty();
-  bool should_update_model = (
-      // Clear existing
-      (!has_valid_new_model_key && existing_model_key.has_value()) ||
-      // Change or add existing
-      (has_valid_new_model_key &&
-       (existing_model_key.value_or("") != model_key.value())));
-  if (should_update_model) {
-    // Update model key if neccessary
-    static constexpr char kUpdateModelKeyQuery[] =
-        "UPDATE conversation SET model_key=? WHERE uuid=?";
-    sql::Statement update_model_key_statement(
-        GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateModelKeyQuery));
-    update_model_key_statement.BindString(1, conversation_uuid);
-    if (has_valid_new_model_key) {
-      update_model_key_statement.BindString(0, model_key.value());
-    } else {
-      update_model_key_statement.BindNull(0);
-    }
-    update_model_key_statement.Run();
   }
 
   sql::Statement insert_conversation_entry_statement;
@@ -939,6 +902,33 @@ bool AIChatDatabase::AddConversationEntry(
           event_statement.Run();
           break;
         }
+        case mojom::ConversationEntryEvent::Tag::kToolUseEvent: {
+          sql::Statement event_statement(GetDB().GetCachedStatement(
+              SQL_FROM_HERE,
+              "INSERT INTO conversation_entry_event_tool_use"
+              " (event_order, tool_use_serialized, conversation_entry_uuid)"
+              " VALUES(?, ?, ?)"));
+          CHECK(event_statement.is_valid());
+
+          store::ToolUseEventProto proto_event;
+          if (!SerializeToolUseEvent(event->get_tool_use_event(),
+                                     &proto_event) ||
+              proto_event.tool_name().empty() || proto_event.id().empty()) {
+            // If we failed to parse the event, we can ignore the event
+            // for now. Perhaps we're persisting the entry whilst it's still
+            // partial.
+            DLOG(ERROR) << "Invalid ToolUseEvent found for persistence";
+            break;
+          }
+          event_statement.BindInt(0, static_cast<int>(i));
+          if (!BindAndEncryptString(event_statement, 1,
+                                    proto_event.SerializeAsString())) {
+            return false;
+          }
+          event_statement.BindString(2, entry->uuid.value());
+          event_statement.Run();
+          break;
+        }
         default: {
           break;
         }
@@ -948,7 +938,7 @@ bool AIChatDatabase::AddConversationEntry(
 
   if (entry->edits.has_value()) {
     for (auto& edit : entry->edits.value()) {
-      if (!AddConversationEntry(conversation_uuid, std::move(edit), model_key,
+      if (!AddConversationEntry(conversation_uuid, std::move(edit),
                                 entry->uuid.value())) {
         return false;
       }
@@ -1010,6 +1000,28 @@ bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
   if (!BindAndEncryptString(statement, 0, title)) {
     return false;
   }
+  statement.BindString(1, conversation_uuid);
+
+  return statement.Run();
+}
+
+bool AIChatDatabase::UpdateConversationModelKey(
+    std::string_view conversation_uuid,
+    std::optional<std::string> model_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for " << conversation_uuid << " with model_key "
+           << model_key.value_or("null");
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateConversationTitleQuery[] =
+      "UPDATE conversation SET model_key=? WHERE uuid=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationTitleQuery));
+  CHECK(statement.is_valid());
+
+  BindOptionalString(statement, 0, model_key);
   statement.BindString(1, conversation_uuid);
 
   return statement.Run();
@@ -1486,6 +1498,19 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateWebSourcesTableQuery));
   if (!GetDB().Execute(kCreateWebSourcesTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateToolUseEventsTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS conversation_entry_event_tool_use("
+      "conversation_entry_uuid INTEGER NOT NULL,"
+      "event_order INTEGER NOT NULL,"
+      // encrypted ToolUseEventProto data
+      "tool_use_serialized BLOB NOT NULL,"
+      "PRIMARY KEY(conversation_entry_uuid, event_order)"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateToolUseEventsTableQuery));
+  if (!GetDB().Execute(kCreateToolUseEventsTableQuery)) {
     return false;
   }
 

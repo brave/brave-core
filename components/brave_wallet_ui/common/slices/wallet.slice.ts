@@ -36,6 +36,7 @@ const defaultState: WalletState = {
   isRefreshingNetworksAndTokens: false,
   isZCashShieldedTransactionsEnabled: false,
   isCardanoEnabled: false,
+  isCardanoDappSupportEnabled: false,
 }
 
 // async actions
@@ -86,6 +87,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isZCashShieldedTransactionsEnabled =
           payload.walletInfo.isZCashShieldedTransactionsEnabled
         state.isCardanoEnabled = payload.walletInfo.isCardanoEnabled
+        state.isCardanoDappSupportEnabled =
+          payload.walletInfo.isCardanoDappSupportEnabled
       },
 
       setAssetAutoDiscoveryCompleted(

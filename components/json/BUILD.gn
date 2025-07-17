@@ -20,9 +20,10 @@ component("json") {
   ]
 }
 
-source_set("brave_json_unit_tests") {
+source_set("unit_tests") {
   testonly = true
-  sources = [ "//brave/components/json/json_parser_unittest.cc" ]
+  sources = [ "json_parser_unittest.cc" ]
+
   deps = [
     "//base",
     "//base/test:test_support",

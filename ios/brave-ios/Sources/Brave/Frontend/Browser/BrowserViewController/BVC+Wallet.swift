@@ -37,6 +37,9 @@ extension WalletStore {
       ),
       let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
         privateMode: privateMode
+      ),
+      let meldIntegrationService = BraveWallet.MeldIntegrationServiceFactory.get(
+        privateMode: privateMode
       )
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
@@ -55,7 +58,8 @@ extension WalletStore {
       ipfsApi: ipfsApi,
       walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService
+      zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService
     )
   }
 }
@@ -82,6 +86,9 @@ extension CryptoStore {
       ),
       let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
         privateMode: privateMode
+      ),
+      let meldIntegrationService = BraveWallet.MeldIntegrationServiceFactory.get(
+        privateMode: privateMode
       )
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
@@ -100,7 +107,8 @@ extension CryptoStore {
       ipfsApi: ipfsApi,
       walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService
+      zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService
     )
   }
 }

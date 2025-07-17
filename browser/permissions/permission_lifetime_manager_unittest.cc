@@ -11,6 +11,7 @@
 #include "base/run_loop.h"
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -243,15 +244,17 @@ class PermissionLifetimeManagerTest : public testing::Test {
 };
 
 TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
-  for (ContentSetting content_setting :
-       {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK}) {
+  for (PermissionDecision decision :
+       {PermissionDecision::kAllow, PermissionDecision::kDeny}) {
+    ContentSetting content_setting =
+        PermissionUtil::PermissionDecisionToContentSetting(decision);
+
     auto request(CreateRequestAndChooseContentSetting(
         kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime,
         content_setting));
     const base::Time expected_expiration_time =
         base::Time::Now() + *request->GetLifetime();
-    manager()->PermissionDecided(*request, kOrigin, kOrigin, content_setting,
-                                 false);
+    manager()->PermissionDecided(*request, kOrigin, kOrigin, decision);
     EXPECT_TRUE(timer().IsRunning());
 
     browser_task_environment_.RunUntilIdle();
@@ -267,9 +270,10 @@ TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
     CheckExpirationsPref(
         FROM_HERE, kOneTypeOneExpirationWithCsPrefValue,
         {"notifications",
-         std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                            .InMicroseconds()),
-         kOrigin.spec(), std::to_string(content_setting)});
+         base::NumberToString(
+             expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                 .InMicroseconds()),
+         kOrigin.spec(), base::NumberToString(content_setting)});
 
     // Forward time, this should trigger a setting reset to default state.
     browser_task_environment_.FastForwardBy(*request->GetLifetime() -
@@ -289,7 +293,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   browser_task_environment_.FastForwardBy(kOneSecond);
@@ -299,18 +303,18 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   browser_task_environment_.RunUntilIdle();
 
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kTwoTypesOneExpirationPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec(), "geolocation",
-       std::to_string(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin2.spec()});
 
   // Forward time, this should trigger a first setting reset to default state.
@@ -322,8 +326,8 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
       {"geolocation",
-       std::to_string(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin2.spec()});
 
   browser_task_environment_.FastForwardBy(kOneSecond);
@@ -341,7 +345,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   browser_task_environment_.FastForwardBy(kOneSecond);
@@ -351,14 +355,14 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
       base::Time::Now() + *request2->GetLifetime();
   ASSERT_EQ(expected_expiration_time, expected_expiration_time2);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kOneTypeSameTimeExpirationsPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec(), kOrigin2.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
@@ -379,7 +383,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
   EXPECT_EQ(timer().desired_run_time(), expected_expiration_time);
 
@@ -388,7 +392,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   // Timer should be restarted.
   EXPECT_EQ(timer().desired_run_time(), expected_expiration_time2);
 
@@ -396,11 +400,11 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   CheckExpirationsPref(
       FROM_HERE, kOneTypeTwoExpirationsPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin2.spec(),
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
@@ -425,7 +429,7 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   ResetManager();
@@ -447,8 +451,8 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
@@ -465,7 +469,7 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   ResetManager();
@@ -489,12 +493,12 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   ResetManager();
   browser_task_environment_.FastForwardBy(kLifetime);
@@ -507,8 +511,8 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec()});
 
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
@@ -532,7 +536,7 @@ TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
     auto request(CreateRequestAndAllowContentSetting(
         kOrigin, ContentSettingsType::GEOLOCATION, kLifetime));
     manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                                 ContentSetting::CONTENT_SETTING_ALLOW, false);
+                                 PermissionDecision::kAllow);
     EXPECT_TRUE(timer().IsRunning());
 
     host_content_settings_map_->SetContentSettingDefaultScope(
@@ -552,12 +556,12 @@ TEST_F(PermissionLifetimeManagerTest, ClearAllExpiredAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
       kOrigin, ContentSettingsType::NOTIFICATIONS, kOneSecond));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime));
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   ResetManager();
   browser_task_environment_.FastForwardBy(kLifetime);
@@ -612,7 +616,7 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin))
       .WillOnce(testing::Return(kOrigin.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_FALSE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -648,9 +652,9 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin2))
       .WillOnce(testing::Return(kOrigin2.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_FALSE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -688,17 +692,17 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin2))
       .WillOnce(testing::Return(kOrigin2.host()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kOneTypeTwoExpirationsPrefValue,
       {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
+       base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                                .InMicroseconds()),
        kOrigin.spec(), kOrigin2.host(), kOrigin2.spec()});
 
   browser_task_environment_.FastForwardBy(*request->GetLifetime());
@@ -730,7 +734,7 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
               SubscribeToPermissionOriginDestruction(kOrigin))
       .WillOnce(testing::Return(std::string()));
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+                               PermissionDecision::kAllow);
 
   // Nothing should be stored in prefs.
   CheckExpirationsPref(FROM_HERE, "{}");

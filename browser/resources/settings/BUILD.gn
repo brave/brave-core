@@ -7,6 +7,7 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -52,8 +53,6 @@ generate_grd("build_grd") {
     "brave_sync_page/start_icon.svg",
     "images/cookies_banner.svg",
     "images/cookies_banner_dark.svg",
-    "images/full_brave_brand.svg",
-    "images/full_brave_brand_dark.svg",
     "images/permissions_banner.svg",
     "images/permissions_banner_dark.svg",
     "images/safe_browsing_banner.svg",
@@ -86,6 +85,7 @@ preprocess_if_expr("preprocess") {
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_brave_vpn_wireguard=$enable_brave_vpn_wireguard",
+    "enable_containers=$enable_containers",
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_web_discovery_native=$enable_web_discovery_native",

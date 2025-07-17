@@ -4,13 +4,31 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/build/redirect_cc.gni")
+import("//build/config/compiler/compiler.gni")
 
 config("brave_chromium_src_support") {
-  # Add max priority "//brave/chromium_src" include search path to be able to
-  # redirect Chromium #include into our file if it exists.
-  # For example, to override //base/macros.h, the overriden file must be
-  # placed at //brave/chromium_src/base/macros.h.
-  include_dirs = [ "//brave/chromium_src" ]
+  # Add "//brave/chromium_src" to the quoted include search path using -iquote.
+  # This allows all source files to point to Brave overrides via #include "...",
+  # while the overrides themselves can reference original Chromium files with
+  # #include <...>.
+  iquote_flags = []
+  if (is_win) {
+    # Clang-cl doesn't know -iquote. Prepend -Xclang to make it work.
+    iquote_flags += [ "-Xclang" ]
+  }
+  iquote_flags +=
+      [ "-iquote" + rebase_path("//brave/chromium_src", root_build_dir) ]
+
+  cflags = iquote_flags
+
+  # Pass iquote_flags to asmflags only if llvm-ml is enabled.
+  if (!disable_llvm_ml) {
+    # If llvm-ml is disabled, MASM is used instead. MASM doesn't work via
+    # redirect_cc, which means we should not pass the iquote_flags to asmflags.
+    # An invalid option warning is generated in this case.
+    asmflags = iquote_flags
+  }
 
   # Add lowest priority "//.." include search path to be able to include original
   # Chromium files using "src/" prefix.
@@ -18,7 +36,7 @@ config("brave_chromium_src_support") {
   # because it should have the lowest priority to not break compile steps when a
   # path clash is possible: //base/macros.h vs //third_party/v8/src/base/macros.h.
   relative_root_dir = rebase_path("//..", root_build_dir)
-  cflags = [ "-I${relative_root_dir}" ]
+  cflags += [ "-I${relative_root_dir}" ]
 }
 
 # Config to support //base build without redirect_cc to build redirect_cc itself.

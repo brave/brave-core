@@ -13,7 +13,9 @@
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "components/permissions/request_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -87,22 +89,17 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOriginFromSubRequest) {
       {permissions::RequestType::kBraveCardano,
        "https://"
        "test.com--"
-       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
-       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       "1815_0_0_0",
        "https://"
        "test.com--"
-       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
-       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz/path",
+       "1815_0_0_0/path",
        "https://"
        "test.com__"
-       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
-       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       "1815_0_0_0",
        "https://"
        "test.com__"
-       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
-       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz:123",
-       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
-       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz"}};
+       "1815_0_0_0:123",
+       "1815_0_0_0"}};
 
   url::Origin requesting_origin;
   std::string account;
@@ -198,36 +195,25 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOrigin) {
       {permissions::RequestType::kBraveCardano,
        "https://"
        "test.com--"
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d",
+       "1815_0_0_0",
        "https://"
        "test.com__"
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d/path",
+       "1815_0_0_0/path",
        "https://"
        "test.com{addr="
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d}",
+       "1815_0_0_0}",
        "https://"
        "test.com{addr="
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d}:123",
+       "1815_0_0_0}:123",
        "https://"
        "test.com{addr="
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d&addr="
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77}",
+       "1815_0_0_0&addr="
+       "1815_0_0_0}",
        "https://"
        "test.com{addr="
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d&addr="
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77}:123",
-       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
-       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d",
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77"}};
+       "1815_0_0_0&addr="
+       "1815_0_0_0}:123",
+       "1815_0_0_0", "1815_0_0_0"}};
 
   std::string account;
   for (auto& test_case : cases) {
@@ -316,17 +302,13 @@ TEST(PermissionUtilsUnitTest, GetSubRequestOrigin) {
        "https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        "https://"
        "test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123"},
-      {permissions::RequestType::kBraveCardano,
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77",
+      {permissions::RequestType::kBraveCardano, "1815_0_0_0",
        "https://"
        "test.com__"
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77",
+       "1815_0_0_0",
        "https://"
        "test.com__"
-       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
-       "jv6xfhwzuyrujrsprx59dm9s2szdhn77:123"}};
+       "1815_0_0_0:123"}};
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.account);
 
@@ -365,7 +347,13 @@ TEST(PermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
        "chrome://wallet-panel.top-chrome/"
        "?addr=BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8&addr="
        "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV&origin-spec=https://"
+       "a.test.com:123&etld-plus-one=test.com#connectWithSite"},
+      {{"1815_0_0_0", "1815_0_0_1"},
+       "chrome://wallet-panel.top-chrome/"
+       "?addr=1815_0_0_0&addr="
+       "1815_0_0_1&origin-spec=https://"
        "a.test.com:123&etld-plus-one=test.com#connectWithSite"}};
+
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.addrs[0]);
 
@@ -428,6 +416,9 @@ TEST(PermissionUtilsUnitTest, CoinTypeToPermissionRequestType) {
   request = CoinTypeToPermissionRequestType(mojom::CoinType::SOL);
   ASSERT_TRUE(request);
   EXPECT_EQ(*request, permissions::RequestType::kBraveSolana);
+  request = CoinTypeToPermissionRequestType(mojom::CoinType::ADA);
+  ASSERT_TRUE(request);
+  EXPECT_EQ(*request, permissions::RequestType::kBraveCardano);
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
 }

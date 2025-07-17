@@ -29,4 +29,7 @@ export const _EnableTransactionSimulations = {
   },
 }
 
-export default { component: EnableTransactionSimulations }
+export default {
+  title: 'Wallet/Panel/Panels/Transaction Simulations',
+  component: EnableTransactionSimulations,
+}

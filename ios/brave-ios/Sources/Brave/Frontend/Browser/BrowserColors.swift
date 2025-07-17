@@ -28,7 +28,9 @@ protocol BrowserColors {
   var browserButtonBackgroundActive: UIColor { get }
 
   // MARK: - TabSwitcher
-  var tabSwitcherButton: UIColor { get }
+  var tabSwitcherForeground: UIColor { get }
+  var tabSwitcherSelectedCellBorder: UIColor { get }
+  var tabSwitcherCellBackground: UIColor { get }
   var tabSwitcherBackground: UIColor { get }
 
   // MARK: - Container
@@ -47,6 +49,11 @@ protocol BrowserColors {
   // MARK: - TabBar
   var tabBarTabBackground: UIColor { get }
   var tabBarTabActiveBackground: UIColor { get }
+
+  // MARK: - Favorites/Search View Controller
+  var favoritesAndSearchScreenBackground: UIColor { get }
+  var favoritesAndSearchScreenSectionBackground: UIColor { get }
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor { get }
 }
 
 extension BrowserColors where Self == StandardBrowserColors {
@@ -101,12 +108,20 @@ struct StandardBrowserColors: BrowserColors {
     .init(light: .primitiveNeutral90, dark: .primitiveNeutral5)
   }
 
-  var tabSwitcherButton: UIColor {
-    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveNeutral10))
+  var tabSwitcherForeground: UIColor {
+    .init(braveSystemName: .containerDisabled)
+  }
+
+  var tabSwitcherSelectedCellBorder: UIColor {
+    .init(braveSystemName: .buttonBackground)
+  }
+
+  var tabSwitcherCellBackground: UIColor {
+    .init(braveSystemName: .containerBackground)
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(light: .primitiveNeutral98, dark: .primitiveNeutral20)
+    .init(braveSystemName: .iosBrowserBackgroundIos)
   }
 
   var containerBackground: UIColor {
@@ -143,6 +158,18 @@ struct StandardBrowserColors: BrowserColors {
 
   var tabBarTabActiveBackground: UIColor {
     .init(light: .primitiveNeutral98, dark: .primitiveNeutral10)
+  }
+
+  var favoritesAndSearchScreenBackground: UIColor {
+    .init(light: .primitiveNeutral95, dark: .primitiveNeutral0)
+  }
+
+  var favoritesAndSearchScreenSectionBackground: UIColor {
+    .init(braveSystemName: .materialThin)
+  }
+
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor {
+    self.containerBackground
   }
 }
 
@@ -188,12 +215,20 @@ struct PrivateModeBrowserColors: BrowserColors {
     .init(braveSystemName: .primitivePrivateWindow5)
   }
 
-  var tabSwitcherButton: UIColor {
-    .init(braveSystemName: .primitivePrimary10)
+  var tabSwitcherForeground: UIColor {
+    .init(braveSystemName: .privateWindow20)
+  }
+
+  var tabSwitcherCellBackground: UIColor {
+    .init(braveSystemName: .privateWindow20)
+  }
+
+  var tabSwitcherSelectedCellBorder: UIColor {
+    .init(braveSystemName: .buttonBackground)
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(braveSystemName: .primitivePrimary20)
+    .init(braveSystemName: .privateWindow5)
   }
 
   var containerBackground: UIColor {
@@ -230,6 +265,18 @@ struct PrivateModeBrowserColors: BrowserColors {
 
   var tabBarTabActiveBackground: UIColor {
     .init(braveSystemName: .primitivePrivateWindow10)
+  }
+
+  var favoritesAndSearchScreenBackground: UIColor {
+    .init(light: .primitivePrivateWindow25, dark: .primitivePrivateWindow5)
+  }
+
+  var favoritesAndSearchScreenSectionBackground: UIColor {
+    .init(light: .primitivePrivateWindow40, dark: .primitivePrivateWindow15)
+  }
+
+  var favoritesAndSearchScreenSectionGroupBackground: UIColor {
+    .init(light: .primitivePrivateWindow50, dark: .primitivePrivateWindow25)
   }
 }
 

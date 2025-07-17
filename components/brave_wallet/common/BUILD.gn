@@ -121,7 +121,7 @@ generated_types("generated_eth_requests") {
   deps = [ "//base" ]
   visibility = [
     ":common",
-    "test:brave_wallet_unit_tests",
+    ":unit_tests",
   ]
 }
 
@@ -202,7 +202,7 @@ rust_static_library("rust_lib") {
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:transaction",
-    "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser:unit_tests",
     "//brave/components/brave_wallet/browser/zcash/rust:*",
     "//brave/components/brave_wallet/common",
   ]

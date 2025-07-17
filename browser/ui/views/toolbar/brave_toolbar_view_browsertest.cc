@@ -20,6 +20,8 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -28,6 +30,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
@@ -52,7 +55,12 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -147,6 +155,12 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     return toolbar_view_->split_tabs_for_testing();
   }
 
+  AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
+    return BrowserView::GetBrowserViewForBrowser(browser)
+        ->toolbar_button_provider()
+        ->GetAvatarToolbarButton();
+  }
+
   raw_ptr<ToolbarButtonProvider, DanglingUntriaged> toolbar_button_provider_ =
       nullptr;
   raw_ptr<BraveToolbarView, DanglingUntriaged> toolbar_view_ = nullptr;
@@ -224,8 +238,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonOpenTargetTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
-  // Load in full page is default.
-  EXPECT_TRUE(prefs->GetBoolean(
+  // Load in sidebar is default.
+  EXPECT_FALSE(prefs->GetBoolean(
       ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage));
 
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
@@ -238,21 +252,11 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
       menu_model->GetIndexOfCommandId(AIChatButton::kOpenInSidebar);
   ASSERT_TRUE(open_in_full_page_cmd_index.has_value());
   ASSERT_TRUE(open_in_sidebar_cmd_index.has_value());
-  EXPECT_TRUE(menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));
-  EXPECT_FALSE(menu_model->IsItemCheckedAt(open_in_sidebar_cmd_index.value()));
-
-  // Check loaded in full page.
-  auto* tab_strip_model = browser()->tab_strip_model();
-  button->ButtonPressed();
-  auto* web_contents = tab_strip_model->GetActiveWebContents();
-  EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
-
-  // Check loaded in sidebar.
-  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
-                    false);
   EXPECT_FALSE(
       menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));
   EXPECT_TRUE(menu_model->IsItemCheckedAt(open_in_sidebar_cmd_index.value()));
+
+  // Check loaded in sidebar.
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator =
@@ -261,6 +265,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   button->ButtonPressed();
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelShowing());
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+
+  // Check loaded in full page.
+  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
+                    true);
+  EXPECT_TRUE(menu_model->IsItemCheckedAt(open_in_full_page_cmd_index.value()));
+  EXPECT_FALSE(menu_model->IsItemCheckedAt(open_in_sidebar_cmd_index.value()));
+  auto* tab_strip_model = browser()->tab_strip_model();
+  button->ButtonPressed();
+  auto* web_contents = tab_strip_model->GetActiveWebContents();
+  EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
@@ -327,6 +341,30 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());
+}
+
+// Test private/tor window's profile avatar text when multiple windows
+// are opened.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonTextWithOTRTest) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* private_avatar_button = GetAvatarToolbarButton(incognito_browser);
+  private_avatar_button->UpdateText();
+  EXPECT_EQ(std::u16string(), private_avatar_button->GetText());
+
+  chrome::OpenEmptyWindow(incognito_browser->profile());
+  EXPECT_EQ(u"2", private_avatar_button->GetText());
+
+#if BUILDFLAG(ENABLE_TOR)
+  auto* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+  auto* tor_avatar_button = GetAvatarToolbarButton(tor_browser);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL),
+            tor_avatar_button->GetText());
+
+  chrome::OpenEmptyWindow(tor_browser->profile());
+  EXPECT_EQ(l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT, u"2"),
+            tor_avatar_button->GetText());
+#endif
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
@@ -397,6 +435,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Check avatar button's size.
   const int avatar_size = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT);
   EXPECT_EQ(gfx::Size(avatar_size, avatar_size), avatar->size());
+}
+
+// Check no crash when clicking private window's avatar button.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* avatar_button = BrowserView::GetBrowserViewForBrowser(incognito_browser)
+                            ->toolbar_button_provider()
+                            ->GetAvatarToolbarButton();
+  EXPECT_TRUE(avatar_button->GetVisible());
+  avatar_button->button_controller()->NotifyClick();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,

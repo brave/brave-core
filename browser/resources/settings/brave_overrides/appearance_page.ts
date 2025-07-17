@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '../brave_appearance_page/super_referral.js'
-import '../brave_appearance_page/brave_theme.js'
 
 import {
   html,
@@ -26,48 +25,6 @@ const superReferralStringId = 'superReferralThemeName'
 
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
-    const theme = templateContent.getElementById('themeRow')
-    if (!theme) {
-      console.error(`[Settings] Couldn't find #themeRow`)
-    } else {
-      // Insert Brave colors dropdown before theme.
-      theme.setAttribute('class', 'settings-row hr')
-      theme.insertAdjacentHTML(
-        'beforebegin',
-        getTrustedHTML`
-          <settings-brave-appearance-theme prefs="{{prefs}}">
-          </settings-brave-appearance-theme>
-      `)
-      const openTheme = templateContent.getElementById('openTheme')
-      if (!openTheme) {
-        console.error(`[Settings] Couldn't find #openTheme`)
-      } else {
-        // Remove upstream's click handler. We add our own in
-        // BraveSettingsAppearancePageElement below.
-        openTheme.removeAttribute('on-click')
-        // Restore sub-label to say Open Web Store when no theme is set.
-        openTheme.setAttribute('sub-label',
-          '[[_adjustThemeSublabel(themeSublabel_)]]')
-      }
-      // Fix theme "Reset to default" button.
-      const useDefaultButtonTemplate = templateContent.querySelector(
-        'template[is=dom-if][if="[[prefs.extensions.theme.id.value]]"]')
-      if (!useDefaultButtonTemplate) {
-        console.error(
-          '[Settings] Appearance Page cannot find use default' +
-          ' theme button template')
-      } else {
-        useDefaultButtonTemplate.setAttribute('restamp', 'true')
-      }
-    }
-
-    const customizeToolbar = templateContent.getElementById('customizeToolbar')
-    if (!customizeToolbar) {
-        console.error(`[Settings] Couldn't find #customizeToolbar`)
-    } else {
-        customizeToolbar.setAttribute('hidden', 'true')
-    }
-
     // Super-referral
     // W/o super referral, we don't need to themes link option with themes sub
     // page.
@@ -76,19 +33,6 @@ RegisterPolymerTemplateModifications({
       loadTimeData.getString(superReferralStringId) !== ''
     )
     if (hasSuperReferral) {
-      // Routes
-      const r = Router.getInstance().getRoutes()
-      if (!r.APPEARANCE) {
-        console.error(
-          '[Settings] Routes: could not find APPEARANCE page')
-        return
-      } else {
-        r.THEMES = r.APPEARANCE.createChild('/themes')
-        // Hide chromium's theme section. It's replaced with our themes page.
-        if (theme) {
-          theme.remove()
-        }
-      }
       // Subpage
       const pages = templateContent.getElementById('pages')
       if (!pages) {
@@ -236,38 +180,3 @@ RegisterPolymerTemplateModifications({
     }
   }
 })
-
-RegisterPolymerComponentReplacement(
-  'settings-appearance-page',
-  class BraveSettingsAppearancePageElement
-    extends SettingsAppearancePageElement {
-    override ready() {
-      super.ready()
-      const openTheme = this.shadowRoot!.getElementById('openTheme')
-      if (!openTheme) {
-        console.error(`[Settings] Couldn't find #openTheme`)
-      } else {
-        // Restore theme link to point to web store instead of to the profile
-        // color picker.
-        openTheme.addEventListener('click',
-          () => {
-            window.open((this as any).themeUrl_ ||
-            loadTimeData.getString('appearanceSettingsThemesGalleryUrl'),
-            '_blank', 'noopener noreferrer');
-          }
-        )
-      }
-    }
-
-    // Restore theme sub-label to say "Open Web Store" when there's no custom
-    // theme set.
-    _adjustThemeSublabel(themeSublabel: string) {
-      // <if expr="not is_linux">
-      if (themeSublabel === '') {
-        return loadTimeData.getString('appearanceSettingsOpenWebStore')
-      }
-      // </if>
-      return themeSublabel
-    }
-  }
-)

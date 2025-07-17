@@ -56,14 +56,33 @@ export function createRewardsHandler(
     store.update({ rewardsBalance: balance })
   }
 
+  async function updateAdsViewed() {
+    const { statement } = await rewardsHandler.getAdsStatement()
+    if (statement) {
+      let rewardsAdsViewed = 0
+      Object.values(statement.adTypeSummaryThisMonth).map((value) => {
+        if (typeof value === 'number') {
+          rewardsAdsViewed += value
+        }
+      })
+      store.update({ rewardsAdsViewed })
+    } else {
+      store.update({ rewardsAdsViewed: null })
+    }
+  }
+
   async function loadData() {
     await Promise.all([
       updatePrefs(),
       updateRewardsEnabled(),
       updateExternalWallet(),
-      updateParameters(),
-      updateBalance()
+      updateParameters()
     ])
+
+    store.update({ initialized: true })
+
+    updateBalance()
+    updateAdsViewed()
   }
 
   newTabProxy.addListeners({

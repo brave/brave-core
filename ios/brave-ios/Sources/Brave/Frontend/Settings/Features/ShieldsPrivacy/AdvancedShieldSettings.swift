@@ -205,7 +205,7 @@ import os
     self.clearableSettings = clearableSettings
     registerSubscriptions()
     Task { @MainActor in
-      self.isSaveContactInfoEnabled = await webcompatReporterHandler?.contactInfo().1 ?? false
+      self.isSaveContactInfoEnabled = await webcompatReporterHandler?.browserParams().1 ?? false
     }
   }
 
@@ -267,6 +267,9 @@ import os
     // Reset Webkit configuration to remove data from memory
     if clearAffectsTabs {
       self.tabManager.reset()
+      // This will recreate the webview for the selected tab.
+      // Other tabs will have webviews re-created when they are selected
+      self.tabManager.reloadSelectedTab()
       // Unlock the folders to allow clearing of data.
       await _toggleFolderAccessForBlockCookies(locked: false)
     }

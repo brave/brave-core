@@ -9,15 +9,22 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "build/buildflag.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
 
 class BraveSettingsUI;
 
 namespace brave_account {
-class BraveAccountHandler;
+class BraveAccountSettingsHandler;
 }
 
 namespace content {
@@ -50,11 +57,22 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
   void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
+          pending_receiver);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void BindInterface(
+      mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+          pending_receiver);
+#endif
+
+  void BindInterface(
+      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
           pending_receiver);
 
  private:
-  std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
+  std::unique_ptr<brave_account::BraveAccountSettingsHandler>
+      brave_account_settings_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

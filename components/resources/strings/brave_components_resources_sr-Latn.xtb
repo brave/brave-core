@@ -52,7 +52,6 @@
 <translation id="1773147648972887693">Prikaži često posećivano</translation>
 <translation id="4546260624932151782">Prikaži omiljeno</translation>
 <translation id="8975314993825375476">Prilagodi listu</translation>
-<translation id="5525668735313040116">Pretražujte veb privatno</translation>
 <translation id="1629390138158333592">Pretražujte veb</translation>
 <translation id="4016940744851230999">Prikaži vidžet za pretragu na stranici nove kartice</translation>
 <translation id="7092560902264458951">Aktiviraj pretraživače na stranici nove kartice</translation>
@@ -66,6 +65,7 @@
 <translation id="6699628638740071563">Vreme je da batalite Google.</translation>
 <translation id="5588534392045217394">Brave pretraga ne favorizuje niti cenzuriše rezultate i ne profiliše vas.</translation>
 <translation id="6811221529729056895">Probajte Brave pretragu</translation>
+<translation id="5525668735313040116">Pretražujte veb privatno</translation>
 <translation id="3446024864193919737">Prikaži Brave nagrade</translation>
 <translation id="5585019845078534178">Kartice</translation>
 <translation id="3870475560794762985">Prikaži sponzorisane slike</translation>
@@ -837,7 +837,6 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} korak}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} korak(a)}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> preko: <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
 <translation id="3735740477244556633">Sortiraj prema</translation>
 <translation id="6484605214219822434">Pregled mosta</translation>
 <translation id="3365052891357224017">Procenjeno vreme</translation>
@@ -1042,7 +1041,7 @@
 <translation id="7702907602086592255">Domen</translation>
 <translation id="3586752056660754651">Potpišite</translation>
 <translation id="3484981968509595506">Decentralizovana aplikacija traži vaš javni ključ za šifrovanje</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> traži vaš javni ključ za šifrovanje za novčanik. Ako ste saglasni da date ovaj ključ, sajt će moći da vam sastavlja šifrovane poruke.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> traži vaš javni ključ za šifrovanje za novčanik. Ako ste saglasni da date ovaj ključ, sajt će moći da vam sastavlja šifrovane poruke.</translation>
 <translation id="3340247553212049934">Pruži</translation>
 <translation id="1619778919922494944">Ova decentralizovana aplikacija želi da pročita ovu poruku da bi dovršila vaš zahtev</translation>
 <translation id="714506544401754321">Dešifruj poruku</translation>
@@ -1336,21 +1335,11 @@
 <translation id="6248202915200795128">Da li traje duže nego što ste očekivali?</translation>
 <translation id="5417904796609871601">Prikaži u aktivnostima</translation>
 <translation id="8915839655070878476">Možete bezbedno da odbacite ovaj prozor.</translation>
-<translation id="7020017785602386950">Šalje se <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/><ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> poslato je na nalog: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="3068919369514041269">Razmena <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> primaocu: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> na: <ph name="NETWORK"/></translation>
-<translation id="312867981877298982">Iznos od <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> dodat je na vaš nalog: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="2653273412609139189">Premošćava se <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na: <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="1795341197087004042">Nije moguće izvršiti sledeće: <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
-<translation id="6990756606864308319">Došlo je do greške prilikom pokušaja sledećeg: <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na: <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
-<translation id="6449575669814542383">Odobrava se <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na: <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">Nova transakcija će biti kreirana kako bi se otkazala postojeća transakcija.</translation>
 <translation id="4056435949094149644">Razmena</translation>
 <translation id="7694836973509310467">Premošćavanje</translation>
-<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> na: <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="6934057383578424432">Došlo je do greške prilikom pokušaja sledećeg: <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> na: <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="4916833841663290382">Zaštita za <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
-<translation id="6216364770732957499">Zaštićeno je <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> kod provajdera <ph name="NETWORK"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transakcija je na čekanju.}
       other {{PENDING_TRANSACTIONS} transakcija je na čekanju.}
@@ -1607,7 +1596,6 @@
 <translation id="5450317966495183014">Primanje (proc.)</translation>
 <translation id="8747614139273050577">Sa tokena</translation>
 <translation id="1726158192333401896">Na token</translation>
-<translation id="765894671068292221">Nova ponuda za <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">Stanje:</translation>
 <translation id="5709875713144853427">Izaberite token za razmenu</translation>
 <translation id="720404198240859011">Prikaži tokene bez stanja</translation>
@@ -1673,7 +1661,7 @@
 <translation id="353620741952662530">Nema NFT-ova za prikaz</translation>
 <translation id="487317695605278176">Kada NFT bude otkriven, biće prikazan ovde.</translation>
 <translation id="7481581122016027177">Ne vidite svoje NFT-ove?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>Osvežite<ph name="REFRESH_END"/> ili <ph name="IMPORT"/>unesite ručno<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>Osvežite<ph name="REFRESH_END"/> ili <ph name="IMPORT_START"/>unesite ručno<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Osvežava se</translation>
 <translation id="4608324163534970318">Mrežne naknade</translation>
 <translation id="6213230117190778270">Primanje</translation>
@@ -2114,7 +2102,6 @@
 <translation id="8151638057146502721">Konfiguriši</translation>
 <translation id="3282183392203936979">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Llama 3.1 8B, model koji je kreirala kompanija Meta kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Llama se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen 14B, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Mixtral 8x7B, model koji je kreirala kompanije Mixtral AI za obavljanje naprednih zadataka. Mixtral se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Instant, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Instant se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Haiku, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Haiku se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Sonnet, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Sonnet se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
@@ -2197,7 +2184,6 @@
 <translation id="887511360213807449">Istorija je isključena</translation>
 <translation id="5380979378058584412">Da biste videli prethodne razgovore sa asistentom Leo, morate da uključite istoriju razgovora.</translation>
 <translation id="6291843235651817590">Ćaskanje opšte namene</translation>
-<translation id="8193130769524604031">Zadaci naprednog ćaskanja</translation>
 <translation id="3185367320601718531">Razgovor i generisanje teksta</translation>
 <translation id="7979673624064378842">Munjevito brzo ćaskanje</translation>
 <translation id="2836330653441111204">Balansirana brzina i inteligencija</translation>
@@ -2269,7 +2255,6 @@
 <translation id="8814357473522731680">Omogućava</translation>
 <translation id="7143207342074048698">Povezivanje</translation>
 <translation id="1202549130170287307">Prekidanje veze</translation>
-<translation id="8793108040181436796">Vidžeti</translation>
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="8458987127502506209">Aktiviraj Brave štitove</translation>
 <translation id="8377155647357436161">Praćenja, oglasi i još toga je blokirano. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>

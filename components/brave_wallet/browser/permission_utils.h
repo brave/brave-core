@@ -12,16 +12,23 @@
 #include <string_view>
 #include <vector>
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/permissions/request_type.h"
-#include "third_party/blink/public/common/permissions/permission_utils.h"
-
 class GURL;
 namespace url {
 class Origin;
 }
 
+namespace blink {
+enum class PermissionType;
+}
+
+namespace permissions {
+enum class RequestType;
+}
+
 namespace brave_wallet {
+namespace mojom {
+enum class CoinType : int32_t;
+}
 
 /**
  * Add wallet addresses to the origin of the website asking wallet

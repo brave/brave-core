@@ -138,7 +138,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3447730462826640312">Nem szükséges az értesítésre kattintani a jutalom megszerzéséhez, de kattintson, ha érdeklik a részletek!</translation>
 <translation id="5253166205743627564">Köszönjük, hogy támogatja a Brave keresőmotort azzal, hogy rákattint egy privát hirdetésre. A nagy techcégekkel ellentétben mi anonim módon mérjük a hirdetések teljesítményét, hogy megőrizzük az Ön adatainak biztonságát.</translation>
 <translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
-<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását</translation>
+<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását.</translation>
 <translation id="4174337572777167894">Web Discovery projekt</translation>
 <translation id="8659271182272561965">Szolgáltasson névtelen keresési és böngészési adatokat, hogy pontosabbá tegye a Brave Search-öt.</translation>
 <translation id="1516554614404600536">Brave elemleírás</translation>
@@ -344,6 +344,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8081858229109418493">Profilnév és ikon</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="984275831282074731">Fizetési módok</translation>
+<translation id="6278858909990433658">Az importálandó profil még használatban van</translation>
+<translation id="9071187015476020102">A bővítmények vagy más beállítások importálásához először zárja be a böngészőt, ahonnan importál.</translation>
 <translation id="2044383478723007273">Brave színek</translation>
 <translation id="1807246157184219062">Világos</translation>
 <translation id="2414886740292270097">Sötét</translation>
@@ -686,7 +688,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6171369470447621882">Zcash szinkronizálási állapot visszaállítása</translation>
 <translation id="6705112675071480687">Újraindítja a Zcash szinkronizálását minden védett fióknál</translation>
 <translation id="2012093487873597892">Biztosan vissza kívánja állítani a Zcash szinkronizálási állapotát?
-A szinkronizálás előrehaladása minden védett fióknál el fog veszni. A megerősítéshez írja be: „<ph name="CONFIRMATION_PHRASE"/>”.</translation>
+A szinkronizálás előrehaladása minden védett fióknál el fog veszni. A megerősítéshez írja be:"<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="5031551083187285762">A Zcash-fiókok szinkronizálása visszaállt.</translation>
 <translation id="9216386092464743272">Biztosan visszaállítja az összes, tárcatranzakciókkal kapcsolatos és nonce-adatot? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="2326850911705720398">A pénztárcaadatok visszaállítása és törlése</translation>
@@ -829,4 +831,7 @@ Valamennyi kérés egy anonim proxy szerveren keresztül kerül továbbításra,
 <translation id="5318548116565208315">Bonbon Corn avatár</translation>
 <translation id="1959966725083452288">Bonbon Royal avatár</translation>
 <translation id="2039034364578911089">Bonbon Ninja avatár</translation>
+<translation id="154702742922788359">Megnyitási mód</translation>
+<translation id="2249111429176737533">Megnyitás lapozható ablakban</translation>
+<translation id="7022756207310403729">Megnyitás böngészőben</translation>
 </translationbundle>

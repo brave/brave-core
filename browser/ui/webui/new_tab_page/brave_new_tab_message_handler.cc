@@ -87,8 +87,13 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.Set("isBraveNewsOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
+  pref_data.Set(
+      "isBraveNewsDisabledByPolicy",
+      prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set("isBraveTalkDisabledByPolicy",
+                prefs->GetBoolean(kBraveTalkDisabledByPolicy));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_data.Set("showBraveVPN", prefs->GetBoolean(kNewTabPageShowBraveVPN));
 #endif
@@ -180,7 +185,7 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Preferences
   // - PrivatePage properties
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
-  plural_string_handler->AddLocalizedString("braveNewsSourceCount",
+  plural_string_handler->AddLocalizedString("BRAVE_NEWS_SOURCE_COUNT",
                                             IDS_BRAVE_NEWS_SOURCE_COUNT);
   plural_string_handler->AddLocalizedString("rewardsPublisherCountText",
                                             IDS_REWARDS_PUBLISHER_COUNT_TEXT);
@@ -252,6 +257,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_news::prefs::kBraveNewsDisabledByPolicy,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
   // New Tab Page preferences
   pref_change_registrar_.Add(
       kNewTabPageShowBackgroundImage,
@@ -303,6 +312,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       kNewTabPageShowBraveTalk,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBraveTalkDisabledByPolicy,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

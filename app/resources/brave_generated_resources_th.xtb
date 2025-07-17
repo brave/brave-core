@@ -344,6 +344,8 @@
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="984275831282074731">วิธีการชำระเงิน</translation>
+<translation id="6278858909990433658">นำเข้าโปรไฟล์ที่ยังใช้งานอยู่</translation>
+<translation id="9071187015476020102">ในการนำเข้าส่วนขยายหรือการตั้งค่าอื่น ๆ กรุณาปิดเบราว์เซอร์ที่กำลังนำเข้าก่อน</translation>
 <translation id="2044383478723007273">สี Brave</translation>
 <translation id="1807246157184219062">สว่าง</translation>
 <translation id="2414886740292270097">มืด</translation>
@@ -824,4 +826,7 @@
 <translation id="5318548116565208315">อวทาร์ Bonbon Corn</translation>
 <translation id="1959966725083452288">อวทาร์ Bonbon Royal</translation>
 <translation id="2039034364578911089">อวทาร์ Bonbon Ninja</translation>
+<translation id="154702742922788359">โหมดเปิด</translation>
+<translation id="2249111429176737533">เปิดเป็นหน้าต่างแบบแท็บ</translation>
+<translation id="7022756207310403729">เปิดในเบราว์เซอร์</translation>
 </translationbundle>

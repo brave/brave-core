@@ -52,7 +52,6 @@
 <translation id="1773147648972887693">Show frequently visited</translation>
 <translation id="4546260624932151782">Show favourites</translation>
 <translation id="8975314993825375476">Customise list</translation>
-<translation id="5525668735313040116">Search the web privately</translation>
 <translation id="1629390138158333592">Search the web</translation>
 <translation id="4016940744851230999">Show search widget on the new tab page</translation>
 <translation id="7092560902264458951">Enable search engines on the New tab page</translation>
@@ -66,6 +65,7 @@
 <translation id="6699628638740071563">It's time to ditch Google.</translation>
 <translation id="5588534392045217394">Brave Search doesn't bias or censor results, and it doesn't profile you.</translation>
 <translation id="6811221529729056895">Try Brave Search now</translation>
+<translation id="5525668735313040116">Search the web privately</translation>
 <translation id="3446024864193919737">Show Brave Rewards</translation>
 <translation id="5585019845078534178">Cards</translation>
 <translation id="3870475560794762985">Show sponsored images</translation>
@@ -825,7 +825,6 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} step}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} steps}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> via <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
 <translation id="3735740477244556633">Sort by</translation>
 <translation id="6484605214219822434">Review bridge</translation>
 <translation id="3365052891357224017">Est time</translation>
@@ -1024,7 +1023,7 @@
 <translation id="7702907602086592255">Domain</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="3484981968509595506">A DApp is requesting your public encryption key</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
 <translation id="3340247553212049934">Provide</translation>
 <translation id="1619778919922494944">This dApp would like to read this message to complete your request</translation>
 <translation id="714506544401754321">Decrypt message</translation>
@@ -1289,15 +1288,9 @@
 <translation id="6248202915200795128">Taking longer than expected?</translation>
 <translation id="5417904796609871601">View in activity</translation>
 <translation id="8915839655070878476">You can safely dismiss this window.</translation>
-<translation id="7020017785602386950">Sending <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> to <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> has been sent to account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="3068919369514041269">Swapping <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> to <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> on <ph name="NETWORK"/></translation>
-<translation id="312867981877298982">The amount of <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> has been added to your account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="2653273412609139189">Bridging <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> to <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="1795341197087004042">Unable to <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
-<translation id="6990756606864308319">There was an error attempting to <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> to <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
-<translation id="6449575669814542383">Approving <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> to <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">A new transaction will be created to cancel your existing transaction.</translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> on <ph name="NETWORK"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
       other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1554,7 +1547,6 @@
 <translation id="5450317966495183014">Receive (est.)</translation>
 <translation id="8747614139273050577">From token</translation>
 <translation id="1726158192333401896">To token</translation>
-<translation id="765894671068292221">New quote in <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">Balance:</translation>
 <translation id="5709875713144853427">Select a token to swap</translation>
 <translation id="720404198240859011">Show tokens with no balance</translation>
@@ -1620,7 +1612,7 @@
 <translation id="353620741952662530">No NFTs to display</translation>
 <translation id="487317695605278176">Once an NFT is detected, it’ll be displayed here.</translation>
 <translation id="7481581122016027177">Can’t see your NFTs?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>Refresh<ph name="REFRESH_END"/> or <ph name="IMPORT"/>Import Manually<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>Refresh<ph name="REFRESH_END"/> or <ph name="IMPORT_START"/>Import Manually<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Refreshing</translation>
 <translation id="4608324163534970318">Network fees</translation>
 <translation id="6213230117190778270">Receive</translation>
@@ -2069,7 +2061,6 @@
 <translation id="5719170755629028558">Improving your answer with Brave Search …</translation>
 <translation id="5794962229997281366">Improved answer searching for <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">General purpose chat</translation>
-<translation id="8193130769524604031">Advanced chat tasks</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
 <translation id="7979673624064378842">Lightning fast chat</translation>
 <translation id="2836330653441111204">Balanced speed and intelligence</translation>
@@ -2122,7 +2113,6 @@
 <translation id="8814357473522731680">Powered by</translation>
 <translation id="7143207342074048698">Connecting ...</translation>
 <translation id="1202549130170287307">Disconnecting</translation>
-<translation id="8793108040181436796">Widgets</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>

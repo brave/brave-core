@@ -22,6 +22,7 @@ inline constexpr auto kOFACSactionedUnM49Codes =
 
             "001",  // World which includes sanctioned countries.
             "005",  // South America which includes sanctioned Venezuela.
+            "014",  // Eastern Africa which includes Tanzania.
             "029",  // Caribbean which includes sanctioned Cuba.
             "030",  // Eastern Asia which includes sanctioned North Korea.
             "034",  // Southern Asia which includes sanctioned Iran.

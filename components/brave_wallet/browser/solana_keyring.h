@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 

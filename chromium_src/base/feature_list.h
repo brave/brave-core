@@ -6,16 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_FEATURE_LIST_H_
 #define BRAVE_CHROMIUM_SRC_BASE_FEATURE_LIST_H_
 
-#define IsFeatureOverridden                                                \
-  IsFeatureOverridden_ChromiumImpl(const std::string& feature_name) const; \
-  static FeatureState GetCompileTimeFeatureState(const Feature& feature);  \
+#define IsFeatureOverridden                                               \
+  IsFeatureOverridden_ChromiumImpl(std::string_view feature_name) const;  \
+  static FeatureState GetCompileTimeFeatureState(const Feature& feature); \
   bool IsFeatureOverridden
 
 #define GetStateIfOverridden                                 \
   GetStateIfOverridden_ChromiumImpl(const Feature& feature); \
   static std::optional<bool> GetStateIfOverridden
 
-#include "src/base/feature_list.h"  // IWYU pragma: export
+#include <base/feature_list.h>  // IWYU pragma: export
 
 #undef IsFeatureOverridden
 #undef GetStateIfOverridden

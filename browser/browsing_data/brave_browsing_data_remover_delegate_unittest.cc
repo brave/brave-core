@@ -8,12 +8,14 @@
 #include <memory>
 #include <utility>
 
-#include "base/test/bind.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "base/test/test_future.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
@@ -97,22 +99,62 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsKeepDefaults) {
             brave_shields::GetDomainBlockingType(map(), GURL()));
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kPreserve);
-  base::RunLoop run_loop;
+  base::test::TestFuture<uint64_t> complete_future;
   profile()->GetBrowsingDataRemoverDelegate()->RemoveEmbedderData(
       /*delete_begin=*/base::Time::Min(),
       /*delete_end=*/base::Time::Max(),
       /*remove_mask=*/
       chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS,
       filter_builder.get(),
-      /*origin_type_mask=*/1,
-      base::BindLambdaForTesting([&run_loop](uint64_t failed_data_types) {
-        EXPECT_EQ(failed_data_types, 0U);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+      /*origin_type_mask=*/1, complete_future.GetCallback());
+  EXPECT_EQ(0u, complete_future.Get());
 
   EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
             brave_shields::GetDomainBlockingType(map(), GURL()));
+}
+
+TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsCookiesClearing) {
+  // Allow all cookies by default.
+  brave_shields::SetCookieControlType(
+      map(), profile()->GetPrefs(), brave_shields::ControlType::ALLOW, GURL());
+
+  // Block all cookies on example.com
+  brave_shields::SetCookieControlType(map(), profile()->GetPrefs(),
+                                      brave_shields::BLOCK,
+                                      GURL("https://example.com"));
+
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kPreserve);
+
+  base::test::TestFuture<uint64_t> complete_future;
+
+  profile()->GetBrowsingDataRemoverDelegate()->RemoveEmbedderData(
+      /*delete_begin=*/base::Time::Min(),
+      /*delete_end=*/base::Time::Max(),
+      /*remove_mask=*/
+      chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS,
+      filter_builder.get(),
+      /*origin_type_mask=*/1, complete_future.GetCallback());
+  EXPECT_EQ(0u, complete_future.Get());
+
+  auto cookie_settings = CookieSettingsFactory::GetForProfile(profile());
+
+  // The default is not changed.
+  EXPECT_EQ(brave_shields::ControlType::ALLOW,
+            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
+                                                GURL()));
+
+  // Default after clearing on the example.com.
+  EXPECT_EQ(brave_shields::ControlType::ALLOW,
+            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
+                                                GURL("https://example.com")));
+
+  // Changing the default settings affects example.com
+  brave_shields::SetCookieControlType(map(), profile()->GetPrefs(),
+                                      brave_shields::BLOCK, GURL());
+  EXPECT_EQ(brave_shields::ControlType::BLOCK,
+            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
+                                                GURL("https://example.com")));
 }
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {
@@ -135,19 +177,16 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {
 
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kPreserve);
-  base::RunLoop run_loop;
+
+  base::test::TestFuture<uint64_t> complete_future;
   profile()->GetBrowsingDataRemoverDelegate()->RemoveEmbedderData(
       /*delete_begin=*/base::Time::Min(),
       /*delete_end=*/base::Time::Max(),
       /*remove_mask=*/
       chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS,
       filter_builder.get(),
-      /*origin_type_mask=*/1,
-      base::BindLambdaForTesting([&run_loop](uint64_t failed_data_types) {
-        EXPECT_EQ(failed_data_types, 0U);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+      /*origin_type_mask=*/1, complete_future.GetCallback());
+  EXPECT_EQ(0u, complete_future.Get());
 
   EXPECT_EQ(
       CONTENT_SETTING_ASK,  // The default value for BRAVE_FINGERPRINTING_V2

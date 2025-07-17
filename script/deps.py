@@ -85,8 +85,7 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
             shutil.rmtree(output_dir, ignore_errors=True)
             EnsureDirExists(output_dir)
             if url.endswith('.zip'):
-                assert path_prefix is None
-                extract_zip(tmp_file.name, output_dir)
+                extract_zip(tmp_file.name, output_dir, path_prefix)
             else:
                 with tarfile.open(tmp_file.name, mode='r:*') as t:
                     members = None

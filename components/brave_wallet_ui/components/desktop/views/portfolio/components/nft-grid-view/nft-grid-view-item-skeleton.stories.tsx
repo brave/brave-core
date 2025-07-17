@@ -7,5 +7,6 @@ import { NftGridViewItemSkeleton } from './nft-grid-view-item-skeleton'
 
 export const _NftGridViewItemSkeleton = {}
 export default {
+  title: 'Wallet/Desktop/Components/NFTs',
   component: NftGridViewItemSkeleton,
 }

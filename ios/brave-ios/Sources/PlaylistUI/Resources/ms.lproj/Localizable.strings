@@ -31,6 +31,9 @@
 /* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
 "playlist.accessibilityPlaybackSpeed" = "Kelajuan Main Semula";
 
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Item Sebelumnya";
+
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
 "playlist.accessibilityRepeatModeAll" = "Mod Ulang: Semua";
 

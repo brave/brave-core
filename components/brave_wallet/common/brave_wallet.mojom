@@ -156,6 +156,15 @@ union ProviderErrorUnion {
   CardanoProviderError cardano_provider_error;
 };
 
+// Result struct for some EthereumProvider's methods.
+struct EthereumProviderResponse {
+  mojo_base.mojom.Value id;
+  mojo_base.mojom.Value formed_response;
+  bool reject;
+  string first_allowed_account;
+  bool update_bind_js_properties;
+};
+
 // There is one EthereumProvider per renderer, the renderer communicates
 // with this for window.ethereum usage.
 interface EthereumProvider {
@@ -163,12 +172,12 @@ interface EthereumProvider {
   Init(pending_remote<EventsListener> events_listener);
 
   // Corresponds to window.ethereum.request
-  Request(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(mojo_base.mojom.Value input) => (EthereumProviderResponse response);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.ListValue params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  SendAsync(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Enable() => (EthereumProviderResponse response);
+  Send(string method, mojo_base.mojom.ListValue params) => ( EthereumProviderResponse response);
+  SendAsync(mojo_base.mojom.Value input) => (EthereumProviderResponse response);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -187,32 +196,46 @@ struct CardanoProviderPagination {
   uint32 limit;
 };
 
+struct CardanoProviderPaginationErrorPayload {
+  int32 payload;
+};
+
+struct CardanoProviderErrorBundle {
+  int32 code;
+  string error_message;
+  // Payload for the pagination error that
+  // contains max page number.
+  CardanoProviderPaginationErrorPayload? pagination_error_payload;
+};
+
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoProvider {
-  Enable() => (bool success);
+  Enable() => (CardanoProviderErrorBundle? error);
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
-    (int32 network_id, string? error_message);
+    (int32 network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
-    (array<string> used_addresses, string? error_message);
+    (array<string> used_addresses, CardanoProviderErrorBundle? error);
   GetUnusedAddresses() =>
-    (array<string> unused_addresses, string? error_message);
+    (array<string> unused_addresses, CardanoProviderErrorBundle? error);
   GetChangeAddress() =>
-    (string change_address, string? error_message);
+    (string change_address, CardanoProviderErrorBundle? error);
   GetRewardAddresses() =>
-    (array<string> reward_addresses, string? error_message);
+    (array<string> reward_addresses, CardanoProviderErrorBundle? error);
   GetBalance() =>
-    (string cbor_balance, string? error_message);
+    (string cbor_balance, CardanoProviderErrorBundle? error_message);
   GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
-    (array<string>? utxos, string? error_message);
+    (array<string>? utxos, CardanoProviderErrorBundle? error);
   SignTx(string tx_cbor, bool partial_sign) =>
-    (string signed_tx_cbor, string? error_message);
+    (string signed_tx_cbor, CardanoProviderErrorBundle? error);
   SubmitTx(string signed_tx_cbor) =>
-    (string tx_hash, string? error_message);
+    (string tx_hash, CardanoProviderErrorBundle? error);
   SignData(string address, string payload_hex) =>
-    (CardanoProviderSignatureResult result, string? error_message);
-  GetCollateral(string amount) => (array<string>? utxos, string? error_message);
+    (CardanoProviderSignatureResult? result,
+      CardanoProviderErrorBundle? error);
+  GetCollateral(string amount) => (array<string>? utxos,
+      CardanoProviderErrorBundle? error);
 };
 
 struct ChainId {
@@ -1018,6 +1041,7 @@ struct AllAccountsInfo {
   AccountInfo? selected_account;
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
+  AccountInfo? ada_dapp_selected_account;
 };
 
 struct WalletInfo {
@@ -1033,6 +1057,7 @@ struct WalletInfo {
   bool is_z_cash_shielded_transactions_enabled;
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
+  bool is_cardano_dapp_support_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1733,15 +1758,6 @@ interface JsonRpcService {
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
   UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
-
-  // Used for making requests to the currently selected EVM compatible node for
-  // coin ETH and other nodes with corresponding coin types
-  Request(string chain_id, string json_payload,
-          bool auto_retry_on_network_change,
-          mojo_base.mojom.Value id, CoinType coin) =>
-      (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,
-        bool reject, string first_allowed_account,
-        bool update_bind_js_properties);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
@@ -2751,8 +2767,6 @@ interface BraveWalletService {
   GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
 
   SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
-
-  GetCountryCode() => (string country_code);
 };
 
 // For reporting wallet related P3A metrics.

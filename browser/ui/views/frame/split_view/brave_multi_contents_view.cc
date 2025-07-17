@@ -8,13 +8,18 @@
 #include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -34,11 +39,8 @@ BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
 
 BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
-    WebContentsFocusedCallback inactive_contents_focused_callback,
-    WebContentsResizeCallback contents_resize_callback)
-    : MultiContentsView(browser_view,
-                        inactive_contents_focused_callback,
-                        contents_resize_callback) {
+    std::unique_ptr<MultiContentsViewDelegate> delegate)
+    : MultiContentsView(browser_view, std::move(delegate)) {
   // Replace upstream's resize area with ours.
   // To prevent making |resize_area_| dangling pointer,
   // reset it after setting null to |resize_area_|.
@@ -68,7 +70,7 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
       [this](ContentsContainerView* contents_container_view) {
         const bool is_active = contents_container_view->GetContentsView() ==
                                GetActiveContentsView();
-        const float corner_radius = GetCornerRadius();
+        const float corner_radius = GetCornerRadius(true);
         if (is_active) {
           contents_container_view->SetBorder(views::CreateRoundedRectBorder(
               kBorderThickness, corner_radius,
@@ -105,7 +107,7 @@ void BraveMultiContentsView::Layout(PassKey) {
       gfx::Size(widths.resize_width, available_space.height()));
   gfx::Rect end_rect(resize_rect.top_right(),
                      gfx::Size(widths.end_width, available_space.height()));
-  gfx::RoundedCornersF corners(GetCornerRadius());
+  gfx::RoundedCornersF corners(GetCornerRadius(false));
   for (auto* contents_container_view : contents_container_views_) {
     auto* contents_web_view = contents_container_view->GetContentsView();
     contents_web_view->layer()->SetRoundedCornerRadius(corners);
@@ -116,18 +118,28 @@ void BraveMultiContentsView::Layout(PassKey) {
   contents_container_views_[0]->SetBoundsRect(start_rect);
   resize_area_->SetBoundsRect(resize_rect);
   contents_container_views_[1]->SetBoundsRect(end_rect);
+
+  BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
 }
 
-float BraveMultiContentsView::GetCornerRadius() const {
+float BraveMultiContentsView::GetCornerRadius(bool for_border) const {
+  auto* exclusive_access_manager =
+      browser_view_->browser()->GetFeatures().exclusive_access_manager();
+  if (exclusive_access_manager &&
+      exclusive_access_manager->fullscreen_controller()->IsTabFullscreen()) {
+    return 0;
+  }
+
   return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
              browser_view_->browser())
-             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
+             ? BraveContentsViewUtil::kBorderRadius +
+                   (for_border ? kBorderThickness : 0)
              : 0;
 }
 
 void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
-  contents_resize_callback_.Run(0.5);
+  delegate_->ResizeWebContents(0.5);
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {

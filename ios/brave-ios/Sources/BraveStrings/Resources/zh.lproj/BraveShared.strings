@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "历史记录";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "从历史记录中删除";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "清除歷史記錄";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "清除瀏覽記錄";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "无搜索结果";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "這裡會顯示歷史記錄。";
+"history.historyEmptyStateSubtitle" = "您的浏览历史记录会在这里显示";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "「僅限私密瀏覽」模式不會留下歷史記錄。";
+"history.historyEmptyStateTitle" = "无历史记录";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "历史记录在“仅无痕浏览”模式中不可用";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "最近关闭的标签";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "搜索历史记录";

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale } from '../../../../../common/locale'
+import { formatLocale } from '$web-common/locale'
 import { Publisher } from '../../../../../brave_news/browser/resources/shared/api'
 import { OnSetPublisherPref } from '../'
 
@@ -161,18 +161,6 @@ export default function PublisherMetaComponent (props: Props) {
     )
   }, [props.publisher, props.onSetPublisherPref])
 
-  const commandText = React.useMemo<string>(() => {
-    const raw = getLocale('braveNewsDisableSourceCommand')
-    const publisherIndex = raw.indexOf('$1')
-    if (publisherIndex === -1) {
-      console.warn('Locale string for braveNewsDisableSourceCommand did not have a $1 replacement area for publisher name.', raw)
-      return `${raw} ${props.publisher.publisherName}`
-    }
-    return raw.substr(0, publisherIndex) +
-      props.publisher.publisherName +
-      raw.substr(publisherIndex + 2)
-  }, [props.publisher.publisherName])
-
   return (
     <PublisherMeta>
       <Trigger
@@ -194,7 +182,9 @@ export default function PublisherMetaComponent (props: Props) {
               tabIndex={0}
               onClick={onClickDisablePublisher}
             >
-              {commandText}
+              {formatLocale(S.BRAVE_NEWS_HIDE_CONTENT_FROM, {
+                $1: props.publisher.publisherName
+              })}
             </MenuItem>
           </Menu>
         }

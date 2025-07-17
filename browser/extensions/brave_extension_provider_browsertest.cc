@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/components/constants/brave_paths.h"

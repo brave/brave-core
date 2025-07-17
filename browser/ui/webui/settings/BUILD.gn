@@ -3,18 +3,25 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("unittests") {
+source_set("unit_tests") {
   if (!is_android) {
     testonly = true
 
     sources = [
       "brave_importer_observer_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
+      "brave_wallet_handler_unittest.cc",
     ]
 
     deps = [
       "//base/test:test_support",
-      "//brave/components/brave_shields/content/browser",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_shields/core/common",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:constants",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common:test_support",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/ui",

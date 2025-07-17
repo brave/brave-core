@@ -9,7 +9,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/unload_controller.h"
 
-#define ShouldShowBookmarkBar virtual ShouldShowBookmarkBar
 #define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
 #define ShouldDisplayFavicon virtual ShouldDisplayFavicon
@@ -22,8 +21,14 @@
   friend class BookmarkPrefsService;        \
   friend class BraveBrowser
 
+// Override to create new BraveBrowser object instead of Browser.
+#define DeprecatedCreateOwnedForTesting(...)           \
+  DeprecatedCreateOwnedForTesting_Unused(__VA_ARGS__); \
+  static std::unique_ptr<Browser> DeprecatedCreateOwnedForTesting(__VA_ARGS__)
+
 #include "src/chrome/browser/ui/browser.h"  // IWYU pragma: export
 
+#undef DeprecatedCreateOwnedForTesting
 #undef FullscreenControllerInteractiveTest
 #undef ResetTryToCloseWindow
 #undef TryToCloseWindow
@@ -32,7 +37,6 @@
 #undef ShouldDisplayFavicon
 #undef ScheduleUIUpdate
 #undef FinishWarnBeforeClosing
-#undef ShouldShowBookmarkBar
 
 // Exposing this function from the anonymous namespace in the original file
 // so that it can be used in other parts of the codebase.

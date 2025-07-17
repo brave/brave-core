@@ -1,0 +1,86 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//build/config/ui.gni")
+import("//testing/test.gni")
+import("//tools/grit/repack.gni")
+
+test("brave_components_unittests") {
+  use_xvfb = use_xvfb_in_this_config
+
+  data = [ "test/data/ai_chat/" ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser:unit_tests",
+    "//brave/components/ai_chat/core/common:unit_tests",
+    "//brave/components/api_request_helper:unit_tests",
+    "//brave/components/brave_wallet/browser:unit_tests",
+    "//brave/components/brave_wallet/common:unit_tests",
+    "//brave/components/json:unit_tests",
+    "//components/test:run_all_unittests",
+  ]
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine:unit_tests" ]
+  }
+
+  if (use_blink) {
+    deps += [
+      "//brave/components/ai_chat/content/browser:unit_tests",
+      "//brave/components/brave_wallet/renderer/test:unit_tests",
+    ]
+  }
+
+  if (is_ios) {
+    bundle_deps = [
+      ":components_tests_pak",
+      "//components:components_tests_pak_bundle_data",
+    ]
+  } else {
+    data_deps = [
+      ":components_tests_pak",
+      "//components:components_tests_pak",
+      "//third_party/angle:includes",
+      "//ui/resources:ui_test_pak_data",
+    ]
+  }
+
+  if (is_android) {
+    deps += [
+      "//content/public/android:content_java",
+      "//content/public/browser",
+      "//gin:v8_snapshot_assets",
+      "//net",
+      "//ui/android:ui_java",
+      "//ui/base",
+      "//ui/gfx",
+    ]
+  }
+}
+
+if (is_ios) {
+  bundle_data("components_tests_pak_bundle_data") {
+    testonly = true
+    public_deps = [ ":components_tests_pak" ]
+    sources = [ "$root_out_dir/brave_components_tests_resources.pak" ]
+    outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+  }
+}
+
+repack("components_tests_pak") {
+  sources = [
+    "$root_gen_dir/components/brave_components_resources.pak",
+    "$root_gen_dir/components/brave_components_strings_en-US.pak",
+  ]
+
+  output = "$root_out_dir/brave_components_tests_resources.pak"
+  public_deps = [
+    "//brave/components/resources",
+    "//brave/components/resources:strings",
+  ]
+}

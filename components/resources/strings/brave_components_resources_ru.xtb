@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">Показать часто посещаемые</translation>
 <translation id="4546260624932151782">Показать избранное</translation>
 <translation id="8975314993825375476">Настроить список</translation>
-<translation id="5525668735313040116">Конфиденциальный поиск в Интернете</translation>
+<translation id="7407744084529395869">Конфиденциальный поиск в Интернете с помощью искусственного интеллекта</translation>
 <translation id="1629390138158333592">Искать в интернете</translation>
 <translation id="4016940744851230999">Показывать виджет поиска на новой вкладке</translation>
 <translation id="7092560902264458951">Включить поисковые системы на новой вкладке</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Забудьте про Google!</translation>
 <translation id="5588534392045217394">Brave Поиск не продвигает результаты, не подвергает их цензуре и не отслеживает ваши действия.</translation>
 <translation id="6811221529729056895">Попробуйте Brave Поиск</translation>
+<translation id="5525668735313040116">Конфиденциальный поиск в Интернете</translation>
 <translation id="3446024864193919737">Показать Вознаграждение Brave</translation>
 <translation id="5585019845078534178">Карты</translation>
 <translation id="3870475560794762985">Показать рекламные изображения</translation>
@@ -840,7 +841,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} шаг}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ш.}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> с помощью <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
 <translation id="3735740477244556633">Сортировать по:</translation>
 <translation id="6484605214219822434">Проверить мост</translation>
 <translation id="3365052891357224017">Примерное время</translation>
@@ -1045,7 +1046,7 @@
 <translation id="7702907602086592255">Домен</translation>
 <translation id="3586752056660754651">Подпись</translation>
 <translation id="3484981968509595506">DApp запрашивает открытый ключ шифрования</translation>
-<translation id="2950511942409261729">Сайт <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> запрашивает открытый ключ шифрования вашего кошелька. Если вы согласитесь его предоставить, сайт сможет отправлять вам зашифрованные сообщения.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> запрашивает открытый ключ шифрования вашего кошелька. Если вы разрешите доступ, сайт сможет отправлять вам зашифрованные сообщения.</translation>
 <translation id="3340247553212049934">Предоставить</translation>
 <translation id="1619778919922494944">Для выполнения запроса приложению DApp нужен доступ к этому сообщению</translation>
 <translation id="714506544401754321">Расшифровать сообщение</translation>
@@ -1341,21 +1342,21 @@
 <translation id="6248202915200795128">Транзакция занимает много времени?</translation>
 <translation id="5417904796609871601">Посмотреть на вкладке «Активность»</translation>
 <translation id="8915839655070878476">Вы можете закрыть это окно.</translation>
-<translation id="7020017785602386950">Отправляем <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> получателю <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="4003625688926111212">Отправлено <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>. Получатель: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>.</translation>
-<translation id="3068919369514041269">Обмениваем <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> на <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> в сети <ph name="NETWORK"/></translation>
-<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> добавлено в ваш аккаунт <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="2653273412609139189">Устанавливаем мост для <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> с <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="81801423138374476">Отправка <ph name="AMOUNT"/> на <ph name="ACCOUNT"/></translation>
+<translation id="700397678365620426"><ph name="AMOUNT"/> отправлено на аккаунт <ph name="ACCOUNT"/></translation>
+<translation id="318655655904339974">Поменяйте <ph name="AMOUNT"/> на <ph name="ACCOUNT"/> на <ph name="NETWORK"/></translation>
+<translation id="2692630015559505926">Сумма <ph name="AMOUNT"/> добавлена на ваш аккаунт <ph name="ACCOUNT"/></translation>
+<translation id="965763087589489448">Переход <ph name="AMOUNT"/> к <ph name="NETWORK"/></translation>
 <translation id="1795341197087004042">Ошибка: <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
-<translation id="6990756606864308319">Возникла ошибка: <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> с <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
-<translation id="6449575669814542383">Одобрение: <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> с <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="5289529654748438984">Произошла ошибка при попытке <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT"/> на <ph name="VALUE"/></translation>
+<translation id="1694024747580135508">Одобрение <ph name="AMOUNT"/> для <ph name="EXCHANGE"/></translation>
 <translation id="8036159955043245753">Чтобы отменить существующую транзакцию, будет создана новая.</translation>
 <translation id="4056435949094149644">Обмен</translation>
 <translation id="7694836973509310467">Мостовая передача</translation>
-<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> с помощью <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="6934057383578424432">Произошла ошибка при попытке транзакции <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> на <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="4916833841663290382">Защита <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> был защищен</translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> на сайте <ph name="NETWORK"/></translation>
+<translation id="7903225589949400974">Произошла ошибка при попытке <ph name="SWAP_OR_BRIDGE"/> на <ph name="NETWORK"/></translation>
+<translation id="1778601041100951971">Защита <ph name="AMOUNT"/></translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/> замаскировано</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {еще {PENDING_TRANSACTIONS} транзакция в очереди.}
       other {еще транзакций в очереди: {PENDING_TRANSACTIONS}.}
@@ -1612,7 +1613,7 @@
 <translation id="5450317966495183014">К получению (примерно)</translation>
 <translation id="8747614139273050577">С токена</translation>
 <translation id="1726158192333401896">На токен</translation>
-<translation id="765894671068292221">Новая цена через <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
+<translation id="1817370679212109974">Новое предложение через <ph name="COUNTDOWN"/></translation>
 <translation id="3835223348537121988">Баланс:</translation>
 <translation id="5709875713144853427">Выберите токен</translation>
 <translation id="720404198240859011">Показать токены с нулевым балансом</translation>
@@ -1678,7 +1679,7 @@
 <translation id="353620741952662530">Нет NFT</translation>
 <translation id="487317695605278176">Найденные NFT появятся здесь.</translation>
 <translation id="7481581122016027177">Не удалось найти NFT?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>Обновить<ph name="REFRESH_END"/> или <ph name="IMPORT"/>Импортировать вручную<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>Обновить<ph name="REFRESH_END"/> или <ph name="IMPORT_START"/>Импортировать вручную<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Обновляем…</translation>
 <translation id="4608324163534970318">Комиссии сетей</translation>
 <translation id="6213230117190778270">Receive</translation>
@@ -1823,6 +1824,9 @@
 <translation id="2713141960460256091">Подпись и отправка транзакций через DApp</translation>
 <translation id="6387730345715997739">Подпись транзакций через DApp</translation>
 <translation id="4150336849480030462">Перевод токенов SPL с созданием аккаунта</translation>
+<translation id="2244921323472112851">Мы не можем найти страницу, которую вы ищете.</translation>
+<translation id="6277237872689140644">Возможно, она была перемещена в другое место или URL содержит опечатку.</translation>
+<translation id="2737084171727561244">Перейти в Портфолио</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -2122,10 +2126,10 @@ other {# источника}
 <translation id="7692501701960747469">Ключ API, настроенный для этой модели, недействителен. Пожалуйста, проверьте свою конфигурацию и попробуйте еще раз.</translation>
 <translation id="7905602379229309187">Конечная точка в настоящее время перегружена. Пожалуйста, повторите попытку позже.</translation>
 <translation id="8151638057146502721">Настроить</translation>
+<translation id="999273441077650169">Модель меняется динамически, чтобы использовать лучшую для задачи.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Llama 3.1 8B, модели, созданной Meta. Эта модель эффективна и применима для многих случаев использования. Llama размещается на хостинге Brave в нашей собственной безопасной инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на базе Qwen 14B, модели, созданной Alibaba Cloud. Эта модель эффективна и применима для многих случаев использования. <ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">Здравствуйте! Я Leo — по DeepSeek R1, созданной компанией DeepSeek для решения сложных задач. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Mixtral 8x7B, модели, созданной Meta. Эта модель эффективна и применима для многих случаев использования. Llama размещается на хостинге Brave в нашей собственной безопасной инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Instant, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Instant размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Haiku, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Haiku размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude  Sonnet, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude  Sonnet размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
@@ -2174,6 +2178,10 @@ other {# источника}
 <translation id="5604254791550001355">Редактировать запрос</translation>
 <translation id="8115786586976830777">Скопировать запрос</translation>
 <translation id="1406205536570262057">Редактировать ответ</translation>
+<translation id="3386725253392845084">Попробовать ту же модель снова</translation>
+<translation id="2461822463642141190">Текущая</translation>
+<translation id="9098847266351882944">Изменить модель для ответа</translation>
+<translation id="1431551663608182318">Изменить модель для ответа (текущая модель: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">Нет нужной информации</translation>
 <translation id="2976167228906046828">Ответ содержит ошибки</translation>
 <translation id="1183055847065865059">Информация небезопасна или может нанести вред</translation>
@@ -2214,13 +2222,13 @@ other {# источника}
 <translation id="887511360213807449">История отключена</translation>
 <translation id="5380979378058584412">Чтобы просмотреть Ваши предыдущие разговоры с Лео, Вам нужно включить историю разговоров.</translation>
 <translation id="6291843235651817590">Чат для общих целей</translation>
-<translation id="8193130769524604031">Чат для продвинутых задач</translation>
 <translation id="3185367320601718531">Общение и генерирование текстов</translation>
 <translation id="7979673624064378842">Сверхбыстрый чат</translation>
 <translation id="2836330653441111204">Баланс между скоростью и интеллектом</translation>
 <translation id="6695329447007213917">Чат для общего назначения, кодирование и многое другое</translation>
 <translation id="5051668914970329839">Просмотр для общих целей</translation>
 <translation id="7226508434216060960">Модель рассуждений</translation>
+<translation id="8782867266498869301">Модель меняется динамически, чтобы использовать наилучший вариант для выполнения задачи</translation>
 <translation id="3965507912994218570">Настройки Leo</translation>
 <translation id="1037324977127422019">Привет, я Лео!</translation>
 <translation id="8930348081963284873">Умный ассистент, работающий на основе ИИ и встроенный в Brave.</translation>
@@ -2258,6 +2266,7 @@ other {# источника}
 <translation id="983013125018250242">Инструменты Leo</translation>
 <translation id="7623223587478473368">Приложение</translation>
 <translation id="3777121685517940177">Загрузите файл...</translation>
+<translation id="6739516910850820220">Загрузка файла...</translation>
 <translation id="9088751620363630236">Сделайте снимок...</translation>
 <translation id="4250229828105606438">Скриншот</translation>
 <translation id="6332876390231524389">Текущее содержание вкладки</translation>
@@ -2273,8 +2282,11 @@ other {# источника}
 <translation id="6543799171249004861">Фото <ph name="AUTHOR"/></translation>
 <translation id="5430001801813715388">НАГРАДЫ</translation>
 <translation id="5966055668402779222">Задать вопрос Поиску Bravе</translation>
+<translation id="167018310108390163">Настроить новую вкладку</translation>
 <translation id="6851426306697017546">Показать часы</translation>
 <translation id="4844370919312937270">Показывать виджет поиска в новых вкладках</translation>
+<translation id="7328310113820087094">С <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, вы можете зарабатывать, просматривая рекламу на странице новой вкладки.</translation>
+<translation id="4100520468072294616">Показывать рекламу на странице новой вкладки</translation>
 <translation id="5009354496127441090">Показать топ-сайты</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">СТАТИСТИКА</translation>
@@ -2294,7 +2306,6 @@ other {# источника}
 <translation id="7143207342074048698">Подключение</translation>
 <translation id="1202549130170287307">Отключение…</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
-<translation id="8793108040181436796">Виджеты</translation>
 <translation id="6303294677342628402">Защита</translation>
 <translation id="8458987127502506209">Включить Защиту Brave</translation>
 <translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Защита UP<ph name="STATUS_AFTER"/> для <ph name="HOST"/></translation>
@@ -2381,6 +2392,36 @@ other {# источника}
 <translation id="6821108091726602352">Помогите нам сделать интернет лучше, приняв участие в проекте Brave Web Discovery Project. Разрешив отправку анонимных сигналов, вы позволите расширить наш индекс поиска.</translation>
 <translation id="6764845498618413165">Подробнее…</translation>
 <translation id="7818938154803162778">Хорошо, разрешить</translation>
+<translation id="3486480638399578250">Сохраните ваш личный адрес электронной почты в секрете</translation>
+<translation id="7765422154906712751">Создайте уникальные, случайные адреса, которые перенаправляются на ваш Brave аккаунт электронной почты и могут быть удалены в любое время. Защитите ваш реальный адрес от раскрытия или использования рекламодателями.</translation>
+<translation id="5222676887888702881">Выйти</translation>
+<translation id="8090292425230843109">Выйти из Email Aliases</translation>
+<translation id="8471990782451394141">Подключение к учетной записи Brave...</translation>
+<translation id="5713644099811900409">Учетная запись Brave</translation>
+<translation id="6002159997868894136">Нажмите, чтобы скопировать псевдоним</translation>
+<translation id="8105770564756958406">Используется <ph name="DOMAINS"/></translation>
+<translation id="5006956315579221642">Создайте до 5 бесплатных псевдонимов электронной почты, чтобы защитить свой настоящий адрес электронной почты.</translation>
+<translation id="5663901348199429994">Ваши псевдонимы электронной почты</translation>
+<translation id="9046133327037621173">Новый псевдоним электронной почты</translation>
+<translation id="3768606658230902536">Создайте случайный адрес электронной почты, который будет пересылать письма в ваш почтовый ящик, скрывая при этом ваш личный адрес.</translation>
+<translation id="6887156107256264506">Вы достигли лимита в 5 бесплатных псевдонимов электронной почты. Нажмите "Управлять", чтобы повторно использовать или удалить псевдоним.</translation>
+<translation id="1104500750724567895">Новый псевдоним</translation>
+<translation id="8072910658503112482">Предложите другой псевдоним электронной почты</translation>
+<translation id="7710361355427562228">Генерация нового псевдонима...</translation>
+<translation id="4253168017788158739">Заметка</translation>
+<translation id="7596996548739923550">Введите заметку для вашего адреса (опционально)</translation>
+<translation id="3810973564298564668">Управлять</translation>
+<translation id="7446914872298825396">Псевдоним электронной почты</translation>
+<translation id="3919357515365744684">Письма будут пересылаться на <ph name="MAIN_EMAIL"/></translation>
+<translation id="6063403442924238501">Редактировать псевдоним электронной почты</translation>
+<translation id="8729265501883390499">Создать псевдоним</translation>
+<translation id="8662104432574824754">Для начала войдите или создайте учетную запись Brave</translation>
+<translation id="8069030342700068465">Введите свой адрес электронной почты, чтобы получить безопасную ссылку для входа. Щелчок по этой ссылке создаст или откроет учетную запись Brave и позволит вам использовать бесплатную услугу псевдонимов электронной почты.</translation>
+<translation id="2133391407495495735">Получить ссылку для входа</translation>
+<translation id="3699624789011381381">Адрес электронной почты</translation>
+<translation id="8124939971041602970">Письмо для входа отправлено на <ph name="MAIN_EMAIL"/></translation>
+<translation id="8140361186431963982">Щелкните по безопасной ссылке в письме, чтобы получить доступ к своей учетной записи.</translation>
+<translation id="6549775668256477823">Не видите письмо? Проверьте папку спам или <ph name="BEGIN_LINK"/>попробуйте снова<ph name="END_LINK"/>.</translation>
 <translation id="958268166261124668">Brave VPN: подключено</translation>
 <translation id="6021669293402055982">Brave VPN: отключено</translation>
 <translation id="3541307549916475335">Интерфейс панели управления Brave VPN</translation>

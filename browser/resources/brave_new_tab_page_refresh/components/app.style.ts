@@ -7,7 +7,8 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
-export const threeColumnBreakpoint = '1420px'
+export const threeColumnBreakpoint = '1275px'
+export const horizontalContentPadding = 24
 
 export const style = scoped.css`
   & {
@@ -95,7 +96,7 @@ export const style = scoped.css`
     align-items: center;
     min-height: 100vh;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px ${horizontalContentPadding}px;
 
     > * {
       transition:
@@ -162,30 +163,42 @@ export const style = scoped.css`
 
   .widget-container {
     --widget-height: 128px;
-    --widget-width: 450px;
-    --widget-flex-basis: var(--widget-width);
+    --widget-min-width: 380px;
+    --widget-max-width: 512px;
+    --widget-gap: 16px;
 
     anchor-name: --ntp-widget-container;
 
-    flex: 0 0 var(--widget-height);
+    align-self: stretch;
+    flex: 0 0 auto;
+    min-height: var(--widget-height);
 
-    display: flex;
+    display: grid;
+    grid-auto-columns: minmax(var(--widget-min-width), var(--widget-max-width));
+    grid-auto-rows: minmax(var(--widget-height), auto);
+    grid-auto-flow: column;
     justify-content: center;
     align-items: stretch;
-    gap: 16px;
+    gap: var(--widget-gap);
 
     &:empty {
-      flex-basis: 0;
+      min-height: 0;
     }
 
     @container (width <= ${narrowBreakpoint}) {
-      --widget-flex-basis: var(--widget-height);
+      grid-auto-flow: row;
+    }
 
-      width: var(--widget-width);
-      align-self: center;
-      flex-basis: auto;
-      display: flex;
-      flex-direction: column-reverse;
+    @container (width > ${narrowBreakpoint}) {
+      &:has(> :nth-child(2)) {
+        justify-content: space-between;
+        align-self: stretch;
+      }
+
+      &:has(> :nth-child(3)) {
+        justify-content: center;
+        align-self: center;
+      }
     }
   }
 

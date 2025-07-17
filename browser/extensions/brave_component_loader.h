@@ -33,7 +33,6 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
 
-  void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
                         bool allow_file_access,
                         const base::FilePath& install_dir,

@@ -52,6 +52,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -132,7 +133,7 @@ std::string GetGasFilEstimateResponse(int64_t value) {
           }
       })";
   base::ReplaceSubstringsAfterOffset(&response, 0, "{gas_limit}",
-                                     std::to_string(value));
+                                     base::NumberToString(value));
   return response;
 }
 
@@ -164,7 +165,7 @@ std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
       }
     )";
   base::ReplaceSubstringsAfterOffset(&response, 0, "{exit_code}",
-                                     std::to_string(value));
+                                     base::NumberToString(value));
   return response;
 }
 
@@ -181,17 +182,14 @@ void UpdateCustomNetworks(PrefService* prefs,
 void OnRequestResponse(bool* callback_called,
                        bool expected_success,
                        const std::string& expected_response,
-                       base::Value id,
-                       base::Value formed_response,
-                       const bool reject,
-                       const std::string& first_allowed_account,
-                       const bool update_bind_js_properties) {
+                       mojom::EthereumProviderResponsePtr provider_response) {
   *callback_called = true;
   std::string response;
-  base::JSONWriter::Write(formed_response, &response);
+  base::JSONWriter::Write(provider_response->formed_response, &response);
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
+  GetErrorCodeMessage(std::move(provider_response->formed_response), &error,
+                      &error_message);
   bool success = error == brave_wallet::mojom::ProviderError::kSuccess;
   EXPECT_EQ(expected_success, success);
   if (!success) {
@@ -820,7 +818,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   bool GetIsEip1559FromPrefs(const std::string& chain_id) {
-    return network_manager_->IsEip1559Chain(chain_id).value_or(false);
+    return network_manager_->IsEip1559Chain(chain_id);
   }
 
   void SetEthTokenInfoInterceptor(const GURL& network_url,
@@ -1531,14 +1529,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
   void GetFilStateSearchMsgLimited(const std::string& chain_id,
                                    const std::string& cid,
                                    uint64_t period,
-                                   int64_t expected_exit_code,
+                                   std::optional<int64_t> expected_exit_code,
                                    mojom::FilecoinProviderError expected_error,
                                    const std::string& expected_error_message) {
     bool callback_called = false;
     base::RunLoop run_loop;
     json_rpc_service_->GetFilStateSearchMsgLimited(
         chain_id, cid, period,
-        base::BindLambdaForTesting([&](int64_t exit_code,
+        base::BindLambdaForTesting([&](std::optional<int64_t> exit_code,
                                        mojom::FilecoinProviderError error,
                                        const std::string& error_message) {
           EXPECT_EQ(exit_code, expected_exit_code);
@@ -2607,8 +2605,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
                  "eth_blockNumber", "true", expected_response);
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
   task_environment_.RunUntilIdle();
@@ -2625,8 +2623,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
                  "eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
   task_environment_.RunUntilIdle();
@@ -2635,8 +2633,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
   task_environment_.RunUntilIdle();
@@ -2659,8 +2657,8 @@ TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
                  "", mock_response);
   bool callback_called = false;
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -5475,8 +5473,8 @@ TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
 
   GetFilStateSearchMsgLimited(
       mojom::kLocalhostChainId,
-      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, 0,
-      mojom::FilecoinProviderError::kSuccess, "");
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
+      std::optional<int64_t>(0), mojom::FilecoinProviderError::kSuccess, "");
 
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.StateSearchMsgLimited", "", R"(
@@ -5490,15 +5488,16 @@ TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
   })");
   GetFilStateSearchMsgLimited(
       mojom::kLocalhostChainId,
-      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, -1,
-      mojom::FilecoinProviderError::kInvalidParams, "wrong param count");
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
+      std::nullopt, mojom::FilecoinProviderError::kInvalidParams,
+      "wrong param count");
 
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.StateSearchMsgLimited", "", R"({,})");
   GetFilStateSearchMsgLimited(
       mojom::kLocalhostChainId,
-      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, -1,
-      mojom::FilecoinProviderError::kInternalError,
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
+      std::nullopt, mojom::FilecoinProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),

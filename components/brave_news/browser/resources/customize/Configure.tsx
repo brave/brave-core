@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getLocale , formatLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
@@ -13,7 +13,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 import { BackArrow } from '../shared/Icons'
-import formatMessage from '$web-common/formatMessage'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
 import { PopularPage } from './Popular'
@@ -138,10 +137,8 @@ export default function Configure() {
           <Flex direction='row' align='center' gap={spacing.m}>
             {BackArrow}
             <span>
-              {formatMessage(getLocale('braveNewsBackToDashboard'), {
-                tags: {
+              {formatLocale(S.BRAVE_NEWS_BACK_TO_DASHBOARD, {
                   $1: content => <strong key="$1">{content}</strong>
-                }
               })}
             </span>
           </Flex>
@@ -152,15 +149,15 @@ export default function Configure() {
           <Icon name='close' />
         </CloseButton>
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
-          <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
+          <HeaderText>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</HeaderText>
           <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
           {feedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
-            <span slot="label">{getLocale('braveNewsOpenArticlesIn')}</span>
+            <span slot="label">{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN)}</span>
             <span slot='value'>
-              {openArticlesInNewTab ? getLocale('braveNewsOpenArticlesInNewTab') : getLocale('braveNewsOpenArticlesInCurrentTab')}
+              {openArticlesInNewTab ? getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB) : getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}
             </span>
-            <leo-option value={'true'}>{getLocale('braveNewsOpenArticlesInNewTab')}</leo-option>
-            <leo-option value={'false'}>{getLocale('braveNewsOpenArticlesInCurrentTab')}</leo-option>
+            <leo-option value={'true'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB)}</leo-option>
+            <leo-option value={'false'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}</leo-option>
           </OpenArticlesDropdown>}
         </Flex>}
       </Header>

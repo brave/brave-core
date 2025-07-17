@@ -33,7 +33,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   ~AdsClientNotifierWaiter() override;
 
   void WaitForOnNotifyDidInitializeAds();
-  void WaitForOnNotifyLocaleDidChange();
   void WaitForOnNotifyPrefDidChange();
   void WaitForOnNotifyResourceComponentDidChange();
   void WaitForOnNotifyDidUnregisterResourceComponent();
@@ -57,7 +56,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
  private:
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyResourceComponentDidChange(const std::string& manifest_version,
                                           const std::string& id) override;
@@ -91,7 +89,6 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   base::RunLoop on_notify_did_initialize_ads_run_loop_;
-  base::RunLoop on_notify_locale_did_change_run_loop_;
   base::RunLoop on_notify_pref_did_change_run_loop_;
   base::RunLoop on_notify_resource_component_did_change_run_loop_;
   base::RunLoop on_notify_did_unregister_resource_component_run_loop_;

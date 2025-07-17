@@ -18,6 +18,8 @@ AssociatedContentDelegate::AssociatedContentDelegate()
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
 
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
+  DVLOG(1) << __func__;
+
   for (auto& observer : observers_) {
     observer.OnNavigated(this);
   }

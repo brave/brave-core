@@ -155,6 +155,8 @@ RegisterPolymerComponentReplacement(
             }
             const isNativeBraveWalletEnabled =
               loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+            const isCardanoDappSupportFeatureEnabled = 
+              loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
             if (isNativeBraveWalletEnabled) {
               currentIndex++
               const ethereumItem = {
@@ -176,6 +178,18 @@ RegisterPolymerComponentReplacement(
                 disabledLabel: 'siteSettingsSolanaBlock'
               }
               lists.permissionsAdvanced.splice(currentIndex, 0, solanaItem)
+              if (isCardanoDappSupportFeatureEnabled) {
+                currentIndex++
+                const cardanoItem = {
+                  route: routes.SITE_SETTINGS_CARDANO,
+                  id: ContentSettingsTypes.CARDANO,
+                  label: 'siteSettingsCardano',
+                  icon: 'cardano-on',
+                  enabledLabel: 'siteSettingsCardanoAsk',
+                  disabledLabel: 'siteSettingsCardanoBlock'
+                }
+                lists.permissionsAdvanced.splice(currentIndex, 0, cardanoItem)
+              }
             }
           }
         }

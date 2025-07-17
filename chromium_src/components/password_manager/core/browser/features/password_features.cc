@@ -13,8 +13,14 @@ namespace password_manager::features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || \
     BUILDFLAG(IS_WIN)
-    {kSkipUndecryptablePasswords, base::FEATURE_ENABLED_BY_DEFAULT}
+    {kSkipUndecryptablePasswords, base::FEATURE_ENABLED_BY_DEFAULT},
 #endif
+#if BUILDFLAG(IS_ANDROID)
+    // This flag will be removed eventually, so we should move LoginDb related
+    // code to brave-core if we want to keep it. The follow up issue is created
+    // for this: https://github.com/brave/brave-browser/issues/47419
+    {kLoginDbDeprecationAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // BUILDFLAG(IS_ANDROID)
 }});
 
 }  // namespace password_manager::features

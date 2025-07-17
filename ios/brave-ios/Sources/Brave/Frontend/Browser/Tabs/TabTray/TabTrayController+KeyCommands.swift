@@ -33,7 +33,7 @@ extension TabTrayController {
   }
 
   @objc private func reopenRecentlyClosedTabCommand() {
-    guard let recentlyClosed = RecentlyClosed.all().first else {
+    guard let recentlyClosed = RecentlyClosed.first() else {
       return
     }
 

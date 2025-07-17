@@ -49,6 +49,7 @@ struct AssetDetailHeaderView: View {
     HStack {
       AssetIconView(
         token: assetDetailStore.assetDetailToken,
+        meldCryptoCurrency: nil,
         network: assetDetailStore.network ?? networkStore.defaultSelectedChain
       )
       if sizeCategory.isAccessibilityCategory {

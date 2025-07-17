@@ -7,7 +7,13 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/containers_menu_model.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_  \
  private:                                  \
@@ -35,7 +41,13 @@ class BraveRenderViewContextMenu;
 #undef BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
 
 // Declare our own subclass with overridden methods.
-class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
+class BraveRenderViewContextMenu
+    : public RenderViewContextMenu_Chromium
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ,
+      public containers::ContainersMenuModel::Delegate
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
  public:
   // Non-const reference passed in the parent class upstream
   // NOLINTNEXTLINE(runtime/references)
@@ -55,6 +67,15 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
 
   void AppendDeveloperItems() override;
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // ContainersMenuModel::Delegate:
+  void OnContainerSelected(
+      const containers::mojom::ContainerPtr& container) override;
+  base::flat_set<std::string> GetCurrentContainerIds() override;
+  Browser* GetBrowserToOpenSettings() override;
+  float GetScaleFactor() override;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   void SetAIEngineForTesting(
       std::unique_ptr<ai_chat::EngineConsumer> ai_engine);
   ai_chat::EngineConsumer* GetAIEngineForTesting() { return ai_engine_.get(); }
@@ -69,6 +90,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void BuildContainersMenu();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
 #endif
@@ -78,6 +103,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
   ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::unique_ptr<containers::ContainersMenuModel> containers_submenu_model_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

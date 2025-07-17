@@ -6,6 +6,7 @@
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
 #include "base/check.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"

@@ -29,7 +29,7 @@ gfx::Image BraveAvatarToolbarButtonDelegate::GetGaiaAccountImage() const {
 ui::ImageModel BraveAvatarToolbarButtonDelegate::GetAvatarIcon(
     int icon_size,
     SkColor icon_color,
-    const ui::ColorProvider* color_provider) const {
+    const ui::ColorProvider& color_provider) const {
   const auto location_bar_icon_size = GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
   if (browser_->profile()->IsTor()) {
     return ui::ImageModel::FromVectorIcon(kLeoProductTorIcon,

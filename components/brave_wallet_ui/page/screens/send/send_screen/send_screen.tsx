@@ -68,9 +68,6 @@ import {
 import {
   useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
-import {
-  useIsSendingToInternalShieldedAddress, //
-} from '../../../../common/hooks/use_is_sending_to_internal_shielded_address'
 
 // Styled Components
 import { InputRow, ToText, ToRow, ShieldingFundsAlert } from './send.style'
@@ -140,6 +137,7 @@ export const SendScreen = React.memo(() => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isAndroidOrPanel = isAndroid || isPanel
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
@@ -226,17 +224,11 @@ export const SendScreen = React.memo(() => {
     )
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
-  const isSendingToInternalShieldedAddress =
-    useIsSendingToInternalShieldedAddress(
-      getZCashTransactionTypeResult.txType ?? undefined,
-      toAddressOrUrl,
-    )
   const isShieldingFunds =
     tokenFromParams
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && (getZCashTransactionTypeResult.txType
+    && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShielding
-      || isSendingToInternalShieldedAddress)
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -580,10 +572,9 @@ export const SendScreen = React.memo(() => {
       <WalletPageWrapper
         wrapContentInBox={true}
         noCardPadding={true}
-        hideNav={isAndroid || isPanel}
-        hideHeader={isAndroid}
+        hideNav={isAndroidOrPanel}
         cardHeader={
-          isPanel ? (
+          isAndroidOrPanel ? (
             <PanelActionHeader
               title={getLocale('braveWalletSend')}
               expandRoute={WalletRoutes.Send}

@@ -7,8 +7,6 @@ import * as mojom from 'gen/ui/webui/resources/cr_components/searchbox/searchbox
 
 export const braveSearchHost = 'search.brave.com'
 
-export const defaultSearchEngine = braveSearchHost
-
 export interface SearchEngineInfo {
   prepopulateId: bigint
   name: string
@@ -29,6 +27,8 @@ export type AutocompleteMatch = Pick<mojom.AutocompleteMatch,
   'destinationUrl'>
 
 export interface SearchState {
+  initialized: boolean
+  defaultSearchEngine: string
   searchFeatureEnabled: boolean
   showSearchBox: boolean
   searchEngines: SearchEngineInfo[]
@@ -41,6 +41,8 @@ export interface SearchState {
 
 export function defaultSearchState(): SearchState {
   return {
+    initialized: false,
+    defaultSearchEngine: braveSearchHost,
     searchFeatureEnabled: false,
     showSearchBox: false,
     searchEngines: [],

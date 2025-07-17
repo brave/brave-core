@@ -1,6 +1,13 @@
 include_rules = [
   "+brave/grit/brave_generated_resources.h",
+  "+components/country_codes",
+  "+components/favicon",
+  "+components/keyed_service",
   "+components/os_crypt/sync",
+  "+components/prefs",
+  "+components/regional_capabilities",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
@@ -24,6 +31,7 @@ specific_include_rules = {
     "!chrome/test/base/testing_browser_process.h",
   ],
   "test_util\.cc": [
+    "+components/sync_preferences/pref_service_mock_factory.h",
     # component unit tests should not have chrome or brave / browser deps
     "!brave/browser/brave_rewards/rewards_service_factory.h",
     "!chrome/test/base/testing_browser_process.h",

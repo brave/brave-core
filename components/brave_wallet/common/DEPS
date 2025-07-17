@@ -1,4 +1,6 @@
 include_rules = [
+  "+components/base32",
+  "+components/prefs",
   "+crypto",
   "+brave/net/base",
 ]

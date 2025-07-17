@@ -36,6 +36,7 @@
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
+#include "services/network/public/cpp/is_potentially_trustworthy.h"
 
 #if BUILDFLAG(IS_LINUX)
 #include "base/linux_util.h"
@@ -127,15 +128,7 @@ void BraveMainDelegate::AppendCommandLineOptions() {
                                     kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
-
   command_line->AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
-
-  // Brave's sync protocol does not use the sync service url
-  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
-    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                    brave_sync_service_url);
-  }
 
   variations::AppendBraveCommandLineOptions(*command_line);
 }
@@ -212,5 +205,25 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
         switches::kComponentUpdater,
         base::StrCat({current_value, "url-source=", update_url}));
   }
+
+  // For Self-host sync service URL
+  if (command_line->HasSwitch(syncer::kSyncServiceURL)) {
+    GURL sync_service_url =
+        GURL(command_line->GetSwitchValueASCII(syncer::kSyncServiceURL));
+    // We validate the URL to ensure it meets security requirements:
+    // 1. The URL must be valid
+    // 2. The URL must use HTTPS (or be otherwise potentially trustworthy like
+    // localhost) If the URL doesn't meet these requirements, we remove the
+    // switch and use the default sync URL
+    if (!sync_service_url.is_valid() ||
+        !sync_service_url.SchemeIsHTTPOrHTTPS() ||
+        !network::IsOriginPotentiallyTrustworthy(
+            url::Origin::Create(sync_service_url))) {
+      command_line->RemoveSwitch(syncer::kSyncServiceURL);
+      LOG(WARNING) << "Provided sync service URL is invalid or insecure; "
+                      "falling back to the default Brave-hosted Sync server.";
+    }
+  }
+
   return result;
 }

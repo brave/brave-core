@@ -84,6 +84,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="2028449514182362831">Funksjoner som krever bevegelsessensorer, kommer ikke til å virke</translation>
 <translation id="2030769033451695672">Trykk for å gå tilbake til <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Angre</translation>
+<translation id="2080070583977670716">Flere innstillinger</translation>
 <translation id="2091887806945687916">Lyd</translation>
 <translation id="2096716221239095980">Slett alle data</translation>
 <translation id="2102396546234652240">Ikke la nettsteder bruke mikrofonen</translation>
@@ -229,7 +230,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3779154269823594982">Endre passordene</translation>
 <translation id="3797520601150691162">Ikke bruk mørkt tema for et bestemt nettsted</translation>
 <translation id="3803367742635802571">Nettsteder du besøker, kan slutte å fungere som de skal</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Telefonnumre</translation>
 <translation id="3826050100957962900">Tredjepartspålogging</translation>
 <translation id="3835233591525155343">Enhetsbruken din</translation>
@@ -437,7 +437,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="6452138246455930388">Avslag på den åpne fanen din, fra <ph name="OLD_PRICE"/> til <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Når vinduet er smalt, kan du be om mobilvisning</translation>
 <translation id="6527303717912515753">Del</translation>
-<translation id="652937045869844725">Prøv å tillate informasjonskapsler fra tredjeparter. Det innebærer mindre beskyttelse, men øker sannsynligheten for at nettstedsfunksjoner virker som de skal</translation>
 <translation id="6530703012083415527">Når dette er på, kan nettsteder bruke forgrunnsvinduer og viderekoblinger. Når dette er av, kan ikke nettsteder bruke forgrunnsvinduer eller viderekoblinger.</translation>
 <translation id="6540488083026747005">Du har tillatt informasjonskapsler fra tredjeparter for dette nettstedet</translation>
 <translation id="6545864417968258051">Bluetooth-skanning</translation>
@@ -451,6 +450,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="6612358246767739896">Beskyttet innhold</translation>
 <translation id="662080504995468778">Bli her</translation>
 <translation id="6635327442719709864">Når dette er på, kan nettsteder be om å få bruke serielle porter. Når dette er av, kan ikke nettsteder bruke serieporter.</translation>
+<translation id="6678072580827808850">Gjennomgå sikkerhetssjekken</translation>
 <translation id="6683865262523156564">Dette nettstedet er med i en gruppe som kan se aktiviteten din. Gruppen er definert av <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profilbilder</translation>
 <translation id="6697925417670533197">Aktive nedlastinger</translation>
@@ -485,7 +485,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="7141896414559753902">Blokkér nettsteder fra å vise forgrunnsvinduer og viderekoblinger (anbefales)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Last inn på nytt</translation>
-<translation id="7180865173735832675">Tilpass</translation>
 <translation id="7188508872042490670">Nettstedsdata på enheten</translation>
 <translation id="7201549776650881587">Denne handlingen sletter alle data og informasjonskapsler som er lagret av alle nettstedene under <ph name="ORIGIN"/> eller den tilhørende appen på startskjermen</translation>
 <translation id="7203150201908454328">Utvidet</translation>

@@ -8,16 +8,16 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 # Note: Target names in this file should match those upstream where possible.
 
 source_set("tabs_public") {
-  sources = [ "public/tab_features.h" ]
+  sources = [ "public/brave_tab_features.h" ]
 
   public_deps = [ "//chrome/browser/ui/tabs:tabs_public" ]
 }
 
 if (!is_android) {
   source_set("impl") {
-    public_deps = [ "//chrome/browser:browser_public_dependencies" ]
+    visibility = [ "//chrome/browser" ]
 
-    sources = [ "tab_features.cc" ]
+    sources = [ "brave_tab_features.cc" ]
 
     deps = [
       ":tabs_public",

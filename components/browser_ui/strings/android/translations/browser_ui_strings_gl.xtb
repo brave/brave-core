@@ -84,6 +84,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="2028449514182362831">As funcións que requiran sensores de movemento non estarán dispoñibles</translation>
 <translation id="2030769033451695672">Toca para volver a <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Desfacer</translation>
+<translation id="2080070583977670716">Máis opcións de configuración</translation>
 <translation id="2091887806945687916">Son</translation>
 <translation id="2096716221239095980">Eliminar todos os datos</translation>
 <translation id="2102396546234652240">Non permitir que os sitios utilicen o teu micrófono</translation>
@@ -229,7 +230,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3779154269823594982">Cambiar contrasinais</translation>
 <translation id="3797520601150691162">Non se lle aplica o tema escuro a un sitio concreto</translation>
 <translation id="3803367742635802571">É posible que os sitios que visites deixen de funcionar segundo o previsto</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Números de teléfono</translation>
 <translation id="3826050100957962900">Inicio de sesión de terceiros</translation>
 <translation id="3835233591525155343">Uso do dispositivo</translation>
@@ -437,7 +437,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6452138246455930388">Baixada de prezo na pestana aberta, de <ph name="OLD_PRICE"/> a <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Solicitar vista para dispositivos móbiles cando a ventá sexa estreita</translation>
 <translation id="6527303717912515753">Compartir</translation>
-<translation id="652937045869844725">Proba a permitir as cookies de terceiros. Terás menos protección, pero é máis probable que as funcións do sitio vaian ben</translation>
 <translation id="6530703012083415527">Cando esta opción está activada, os sitios poden utilizar ventás emerxentes e redireccións. Cando esta opción está desactivada, os sitios non poden utilizar ventás emerxentes nin redireccións.</translation>
 <translation id="6540488083026747005">Permitiches o uso de cookies de terceiros neste sitio</translation>
 <translation id="6545864417968258051">Busca de dispositivos Bluetooth</translation>
@@ -451,6 +450,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6612358246767739896">Contido protexido</translation>
 <translation id="662080504995468778">Quedar</translation>
 <translation id="6635327442719709864">Cando esta opción está activada, os sitios poden pedir permiso para utilizar portos de serie. Cando está desactivada, os sitios non poden usar eses portos.</translation>
+<translation id="6678072580827808850">Revisar Comprobación de seguranza</translation>
 <translation id="6683865262523156564">Este sitio está nun grupo que pode ver a túa actividade. O grupo está definido por <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Fotos do perfil</translation>
 <translation id="6697925417670533197">Descargas activas</translation>
@@ -485,7 +485,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="7141896414559753902">Non permite que os sitios mostren ventás emerxentes nin redireccións (recomendado)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> kB</translation>
 <translation id="7180611975245234373">Actualizar</translation>
-<translation id="7180865173735832675">Personalizar</translation>
 <translation id="7188508872042490670">Datos dos sitios no dispositivo</translation>
 <translation id="7201549776650881587">Ao realizar esta acción, eliminaranse todos os datos e as cookies que almacenasen os subsitios de <ph name="ORIGIN"/> ou a súa aplicación na túa pantalla de inicio</translation>
 <translation id="7203150201908454328">Ampliado</translation>
@@ -654,11 +653,11 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="969975166333045662">Impide que un sitio use o optimizador de V8.</translation>
 <translation id="3110967157686007724">Pestana do modo de incógnito</translation>
 <translation id="8623552597614912461">Este sitio web está a piques de compartir datos cunha aplicación fóra do Modo privado.</translation>
-<translation id="8157212814767579028">Sae do modo de incógnito?</translation>
+<translation id="8157212814767579028">Saír do modo privado?</translation>
 <translation id="6105125042109106861">As cookies de terceiros bloquéanse no modo de incógnito</translation>
 <translation id="6642913673024345959">Bloquear cookies de terceiros no modo de incógnito</translation>
 <translation id="20460146243579445">As funcións dalgúns sitios web poden non funcionar no Modo privado</translation>
 <translation id="8877838532507724268">Co modo de incógnito activado, os sitios web non poden utilizar cookies para ver a túa actividade de navegación neses sitios nin en sitios relacionados. Polo tanto, non se utiliza a túa actividade de navegación para, por exemplo, para personalizar os anuncios. As funcións dalgúns sitios poden non funcionar.</translation>
-<translation id="1856888821396498049">Bloquear cookies de terceiros no modo de incógnito:</translation>
+<translation id="1856888821396498049">Bloquear rastros de terceiros no modo privado:</translation>
 <translation id="1593610935874634135">Unha empresa pode definir un grupo de sitios que empregue cookies para compartir a túa actividade no grupo. Esta opción está desactivada no modo de incógnito.</translation>
 </translationbundle>

@@ -60,23 +60,18 @@ void HistogramsBraveizer::DoHistogramBravetization(
     uint64_t name_hash,
     base::HistogramBase::Sample32 sample) {
   if ("DefaultBrowser.State" == histogram_name) {
-    int answer = 0;
-    switch (sample) {
-      case 0:  // Not default.
-      case 1:  // Default.
-        answer = sample;
-        break;
-      case 2:  // Unknown, merging to "Not default".
-        answer = 0;
-        break;
-      case 3:  // Other mode is default, merging to "Default".
-        answer = 1;
-        break;
-      default:
-        return;
+    int typical_answer = 0;
+    int express_answer = INT_MAX - 1;
+    if (sample == 1 || sample == 3) {
+      // 'Enabled' or 'Other' answer should be reported as 'Yes'
+      typical_answer = 1;
+      express_answer = 1;
+    } else if (sample > 3) {
+      // Unknown answer, do not report.
+      return;
     }
-    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
-    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefaultDaily", answer);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefault", typical_answer, 2);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefaultDaily", express_answer, 2);
   }
 
   if ("Extensions.LoadExtension" == histogram_name) {

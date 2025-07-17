@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "chrome/browser/chooser_controller/title_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"

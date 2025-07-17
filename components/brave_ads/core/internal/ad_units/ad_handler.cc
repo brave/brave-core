@@ -38,12 +38,10 @@ AdHandler::AdHandler()
       search_result_ad_handler_(site_visit_) {
   conversions_observation_.Observe(&conversions_);
   site_visit_observation_.Observe(&site_visit_);
-  subdivision_.AddObserver(&country_code_);
   subdivision_.AddObserver(&subdivision_targeting_);
 }
 
 AdHandler::~AdHandler() {
-  subdivision_.RemoveObserver(&country_code_);
   subdivision_.RemoveObserver(&subdivision_targeting_);
 }
 

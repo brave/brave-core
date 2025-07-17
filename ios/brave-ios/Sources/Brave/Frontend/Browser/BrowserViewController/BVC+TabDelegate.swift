@@ -16,6 +16,11 @@ import Web
 
 extension BrowserViewController: TabDelegate {
   public func tabWebViewDidClose(_ tab: some TabState) {
+    if tab.browserData?.isInternalRedirect == true, tab.lastCommittedURL == nil {
+      // Avoid closing the tab if we cancelled the initial navigation to perform a redirect since
+      // we are now performing a new request that may not cancel without user interaction.
+      return
+    }
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
@@ -542,7 +547,10 @@ extension BrowserViewController {
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
     tab.isDisplayingBasicAuthPrompt = true
-    defer { tab.isDisplayingBasicAuthPrompt = false }
+    defer {
+      tab.isDisplayingBasicAuthPrompt = false
+      updateToolbarCurrentURL(tab.visibleURL)
+    }
 
     let isHidden = tab.view.isHidden
     defer { tab.view.isHidden = isHidden }
@@ -621,7 +629,7 @@ extension BrowserViewController {
     request: URLRequest
   ) -> String? {
     let isBraveAllowedInUA =
-      request.url.flatMap {
+      request.mainDocumentURL.flatMap {
         tab.braveUserAgentExceptions?.canShowBrave($0)
       } ?? true
     let mobile = isBraveAllowedInUA ? UserAgent.mobile : UserAgent.mobileMasked

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/mixed_content_checker.h b/third_party/blink/renderer/core/loader/mixed_content_checker.h
-index 1331328a7071ef5db98a0adaa079d80beff68843..29051ae60fb86fcc9b80c1431d2c38b2e22a5ae7 100644
+index 3cddc6f48a031c8ea34f69817195e60bee64b242..3d55c5fbbe29773713c9ae0d6f610851f056c8d4 100644
 --- a/third_party/blink/renderer/core/loader/mixed_content_checker.h
 +++ b/third_party/blink/renderer/core/loader/mixed_content_checker.h
 @@ -100,7 +100,6 @@ class CORE_EXPORT MixedContentChecker final {

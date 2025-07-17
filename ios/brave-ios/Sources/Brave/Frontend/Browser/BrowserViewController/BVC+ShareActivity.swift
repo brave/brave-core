@@ -236,13 +236,13 @@ extension BrowserViewController {
                       activityItems: [url],
                       applicationActivities: nil
                     )
+                    pdfActivityController.presentationController?.delegate = self
                     if let popoverPresentationController = pdfActivityController
                       .popoverPresentationController
                     {
                       popoverPresentationController.sourceView = sourceView
                       popoverPresentationController.sourceRect = sourceRect
                       popoverPresentationController.permittedArrowDirections = arrowDirection
-                      popoverPresentationController.delegate = self
                     }
                     self.present(pdfActivityController, animated: true)
                   } catch {
@@ -360,11 +360,11 @@ extension BrowserViewController {
       self?.cleanUpCreateActivity()
     }
 
+    controller.presentationController?.delegate = self
     if let popoverPresentationController = controller.popoverPresentationController {
       popoverPresentationController.sourceView = sourceView
       popoverPresentationController.sourceRect = sourceRect
       popoverPresentationController.permittedArrowDirections = arrowDirection
-      popoverPresentationController.delegate = self
     }
 
     present(controller, animated: true, completion: nil)
@@ -373,11 +373,5 @@ extension BrowserViewController {
   private func cleanUpCreateActivity() {
     // After dismissing, check to see if there were any prompts we queued up
     showQueuedAlertIfAvailable()
-
-    // Usually the popover delegate would handle nil'ing out the references we have to it
-    // on the BVC when displaying as a popover but the delegate method doesn't seem to be
-    // invoked on iOS 10. See Bug 1297768 for additional details.
-    displayedPopoverController = nil
-    updateDisplayedPopoverProperties = nil
   }
 }

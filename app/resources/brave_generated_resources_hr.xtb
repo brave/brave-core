@@ -344,6 +344,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8081858229109418493">Naziv profila i ikona</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="984275831282074731">Načini plaćanja</translation>
+<translation id="6278858909990433658">Uvezeni profil još uvijek se koristi</translation>
+<translation id="9071187015476020102">Za uvoz proširenja ili drugih postavki, prvo zatvorite preglednik iz kojeg uvozite.</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
 <translation id="1807246157184219062">Svjetlo</translation>
 <translation id="2414886740292270097">Tama</translation>
@@ -371,7 +373,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="2396127686705429331">Prikaži gumb knjižnih oznaka</translation>
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="4109670531935487117">Prikaži prijedloge automatskog završavanja u adresnoj traci</translation>
-<translation id="3405901785709583668">Top prijedlozi</translation>
+<translation id="3405901785709583668">Vodeći prijedlozi</translation>
 <translation id="7859704718976024901">Povijest pregledavanja</translation>
 <translation id="8820817407110198400">Knjižne oznake</translation>
 <translation id="4144468798716165316">Brze naredbe</translation>
@@ -747,7 +749,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="7942415993090181327">Povijest čavrljanja</translation>
 <translation id="5385064007245738696">O značajci Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo pruža AI chat kojem je privatnost na prvom mjestu i druga AI-pokretana sučelja u pregledniku. Leo nikada ne uči iz vaših podataka niti ih koristi za obuku modela. Svi zahtjevi prosljeđuju se preko anonimizirajućeg poslužitelja.</translation>
-<translation id="6458721693611638005">Pročitajte više o tome kako Brave štiti vaše korištenje AI-ja. <ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/></translation>
+<translation id="6458721693611638005">Pročitajte više o tome kako Brave štiti vaše korištenje AI-ja u Leovom Pravilniku o zaštiti privatnosti. <ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Zadani model za nove razgovore</translation>
 <translation id="8826914609353373601">Upravljaj pretplatom Premium</translation>
 <translation id="235457946228076038">Donesti svoj vlastiti model</translation>
@@ -823,4 +825,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5318548116565208315">Avatar Bonbon kukuruz</translation>
 <translation id="1959966725083452288">Avatar Bonbon kraljevski</translation>
 <translation id="2039034364578911089">Avatar Bonbon nindža</translation>
+<translation id="154702742922788359">Način otvaranja</translation>
+<translation id="2249111429176737533">Otvorite kao prozor u kartici</translation>
+<translation id="7022756207310403729">Otvori u pregledniku</translation>
 </translationbundle>

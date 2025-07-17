@@ -1,165 +1,314 @@
 <style>
+  :host {
+    background: transparent;
+    color: black;
+    font: 14px 'Inter Variable', 'Inter', sans-serif;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    --text-color: #1b1b1f;
+    --dynamic-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 10%);
+    --dynamic-secondary-btn-bg-color: color-mix(in srgb, var(--dynamic-color-rgb), var(--text-color) 3%);
+
+    --primary: #3E37D4;
+    --title-bar: #f0f0f4;
+    --block-btn-bg-disabled: #46464a33;
+    --block-btn-color-disabled: #21272a80;
+    --button-text: white;
+    --text-area-bg-color: white;
+  }
+
+  @media (prefers-color-scheme: dark) {
     :host {
-      background: transparent;
-      color: black;
-      font: 14px sans-serif;
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      overflow: hidden;
-      font-family: "Noto Sans", Arial, sans-serif;
-    }
-  
-    :host :focus {
-      outline: none;
-    }
-  
-    #rules-box {
-      height: 8em;
-      margin-bottom: 5px;
-      background-color: #fff;
-      border-radius: .1em;
-      display: none;
-    }
-  
-    #rules-box>textarea {
-      box-sizing: border-box;
-      height: 100%;
-      width: 100%;
-      resize: none;
-      border: none;
-      padding: 5px;
-      overflow: auto;
-      overflow-wrap: break-word;
-    }
+      --text-color: #e3e3e8;
 
-    #main-section {
-      background-color: #FFFFFF;
-      border-radius: .6em;
-      border: 1px solid #aaa;
-      color-scheme: light only;
-      bottom: 4px;
-      left: unset;
-      right: 4px;
-      width: calc(30% - 4px);
-      box-sizing: border-box;
-      min-width: 24em;
-      padding-top: 16px;
-      padding-right: 16px;
-      padding-left: 16px;
-      position: fixed;
-      opacity: 1;
-      height: auto;
+      --primary: #C1C4FF;
+      --title-bar: #303034;
+      --block-btn-bg-disabled: #ebeef033;
+      --block-btn-color-disabled: #ebeef080;
+      --button-text: #251491;
+      --text-area-bg-color: var(--dynamic-bg-color);
     }
+  }
 
-    @media (orientation: portrait) {
-      #main-section:not(.desktop) {
-        bottom: 0;
-        right: 0;
-        left: 0;
-        border-radius: unset;
-        border: none;
-        width: 100%;
-      }
-    }
-  
-    #main-section input {
-      width: calc(100% - 4px);
-    }
-  
-    #buttons {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: column;
-    }
-  
-    .buttons-line {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row;
-      padding-bottom: 16px;
-    }
-  
-    .button {
-      min-height: 36px;
-      justify-content: center;
-      align-items: center;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      flex-grow: 1;
-      border-width: 0px;
-    }
+  #rules-box {
+    height: 8em;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: .1em;
+    display: none;
+  }
 
-    .block-button.light {
-      background-color: #3E37D4;
-      color: #FFFFFF;
-    }
-    .block-button.dark {
-      background-color: #C1C4FF;
-      color: #251491;
-    }
+  .desktop.minimized>#rules-box {
+    display: none !important;
+  }
 
-    .block-button.disabled.light {
-      background: rgba(70,70,74,0.20);
-      color: rgba(33,39,42,0.50);
-    }
-    .block-button.disabled.dark {
-      background: rgba(235,238,240,0.20);
-      color: rgba(235,238,240,0.50);
-    }
+  #rules-box>textarea {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    padding: 5px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    background-color: var(--text-area-bg-color);
+    color: var(--text-color);
+  }
 
-    .secondary-button {
-      background-color: #FFFFFF;
-      color: #4036d3;
-      cursor: pointer;
-      padding: 4px 6px;
-      flex-grow: 1;
-      border-width: 0px;      
-    }
-    
-    .secondary-button.dark {
-      color: #c1c4ff;
-    }
+  #main-section {
+    background-color: var(--theme-background-color);
+    border-radius: 16px;
+    color-scheme: light only;
+    bottom: 4px;
+    left: unset;
+    right: 4px;
+    width: min(360px, calc(100vw - 32px));
+    box-sizing: border-box;
+    padding-top: 56px;
+    padding-right: 16px;
+    padding-left: 16px;
+    position: fixed;
+    opacity: 1;
+    height: auto;
+  }
 
-    .secondary-button.light {
-      color: #3E37D4
-    }
-    .secondary-button.disable.dark {
-      color: #c1c4ff;
-    }
+  #main-section.desktop.minimized {
+    width: 56px;
+    padding: 0px;
+    height: 56px;
+    min-width: auto;
+    border-radius: 12px;
+    background-color: var(--primary);
+  }
 
-    .secondary-button.disable.light {
-      color: #3E37D4
-    }
-
-    .secondary-button-bordered {
-      border-width: 1px;
-      border-color: #4036d3;
-    }
-  
-    svg {
-      cursor: crosshair;
-      box-sizing: border-box;
-      height: 100%;
-      width: 100%;
-      top: 0;
+  @media (orientation: portrait) {
+    #main-section:not(.desktop) {
+      bottom: 0;
+      right: 0;
       left: 0;
-      position: absolute;
+      border-radius: 28px 28px 0 0;
+      padding-top: 41px;
+      border: none;
+      width: 100%;
     }
-  
-    #darken {
-      fill: rgba(0, 0, 0, 0.5);
+  }
+
+  @media (orientation: landscape) {
+    #main-section:not(.desktop) {
+      padding-top: 36px;
     }
-  
-    #slider-container {
-      padding-bottom: 4px;
-    }
-    .target {
-      stroke: #3d39c8;
-      stroke-width: 2px;
-      fill: rgba(121, 116, 224, 0.25);
-    }
+  }
+
+  .minimized:not(.desktop) {
+    transition: transform 0.3s ease;
+    transform: translateY(calc(100% - 28px));
+  }
+
+  .drag-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .desktop .drag-header {
+    height: 48px;
+    justify-content: right;
+    background-color: var(--dynamic-bg-color);
+    color: var(--text-color);
+  }
+
+  .drag-indicator {
+    width: 36px;
+    height: 4px;
+    background-color: #AAAAAA;
+    border-radius: 2px;
+  }
+
+  .desktop.minimized .drag-header,
+  .desktop .drag-indicator {
+    display: none;
+  }
+
+  #title {
+    display: none;
+  }
+
+  .desktop #title {
+    display: block;
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+  }
+
+  .desktop #btn-quit,
+  .minimize-dlg-btn,
+  .close-dlg-btn {
+    display: none;
+  }
+
+  .desktop .minimize-dlg-btn,
+  .desktop .close-dlg-btn {
+    display: block;
+  }
+
+  .title-control-btn svg {
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+    position: unset;
+  }
+
+  .minimized-icon {
+    display: none;
+  }
+
+  .desktop.minimized .minimized-icon {
+    display: block;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    margin: 15px;
+  }
+
+  .desktop.minimized .minimized-icon path {
+    fill: var(--dynamic-color-rgb);
+  }
+
+  #main-section input {
+    width: calc(100% - 4px);
+  }
+
+  #buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .buttons-line {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 16px;
+  }
+
+  .button {
+    min-height: 36px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-grow: 1;
+    border-width: 0px;
+    margin: 3px;
+  }
+
+  .block-button {
+    background-color: var(--primary);
+    color: var(--button-text);
+  }
+
+  .block-button.disabled {
+    background: var(--block-btn-bg-disabled);
+    color: var(--block-btn-color-disabled);
+  }
+
+  .secondary-button {
+    background-color: var(--dynamic-secondary-btn-bg-color);
+    cursor: pointer;
+    padding: 4px 6px;
+    flex-grow: 1;
+    border-width: 0px;
+    color: var(--primary);
+  }
+
+  .secondary-button-bordered {
+    border-width: 1px;
+    border-color: #4036d3;
+  }
+
+  svg {
+    cursor: crosshair;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+
+  #darken {
+    fill: rgba(0, 0, 0, 0.5);
+  }
+
+  #slider-container {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 6px;
+  }
+
+  .desktop.minimized #slider-container,
+  .desktop.minimized #buttons {
+    display: none;;
+  }
+
+  .target {
+    stroke: #3d39c8;
+    stroke-width: 2px;
+    fill: rgba(121, 116, 224, 0.25);
+  }
+
+  input[type="range"] {
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    background: transparent;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    transition: background-image 0.2s ease-in-out;
+    background-image:
+        linear-gradient(to right,
+            transparent calc(100%/3 - 1px), var(--theme-background-color) calc(100%/3 - 1px), var(--theme-background-color) calc(100%/3 + 1px), transparent calc(100%/3 + 1px),
+            transparent calc(200%/3 - 1px), var(--theme-background-color) calc(200%/3 - 1px), var(--theme-background-color) calc(200%/3 + 1px), transparent calc(200%/3 + 1px)
+        ),
+        linear-gradient(to right, var(--primary) 0%, var(--primary) var(--value, 0%), transparent var(--value, 0%), transparent 100%);
+    background-size: 100% 100%, 100% 100%;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-color: var(--dynamic-bg-color);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 2px solid var(--primary);
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-top: -7px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
   <defs>
@@ -170,22 +319,48 @@
   <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
 </svg>
 <section id="main-section">
+  <div id="drag-header" class="drag-header">
+    <div id="title">Block Element</div>
+    <div class="drag-indicator"></div>
+    <div id="minimize-dlg-btn" class="title-control-btn minimize-dlg-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path fill="currentColor" fill-rule="evenodd"
+          d="M10.566 11.357a.8.8 0 0 0 .8-.8V5.12a.8.8 0 0 0-1.6 0v3.515l-5.4-5.4a.8.8 0 0 0-1.132 1.13l5.392 5.392H5.18a.8.8 0 0 0 0 1.6zm2.868 1.286a.8.8 0 0 0-.8.8v5.437a.8.8 0 1 0 1.6 0v-3.515l5.4 5.4a.8.8 0 0 0 1.132-1.13l-5.392-5.392h3.446a.8.8 0 0 0 0-1.6z"
+          clip-rule="evenodd">
+      </svg>
+    </div>
+    <div id="close-btn" class="title-control-btn close-dlg-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M5.287 5.287a.85.85 0 0 0 0 1.202L10.797 12l-5.51 5.511a.85.85 0 0 0 1.202 1.202L12 13.203l5.51 5.51a.85.85 0 0 0 1.202-1.203L13.202 12l5.51-5.51a.85.85 0 0 0-1.202-1.202L12 10.798 6.489 5.287a.85.85 0 0 0-1.202 0">
+      </svg>
+    </div>
+  </div>
   <div id="rules-box">
     <textarea></textarea>
   </div>
   <div>
     <div id="slider-container">
-      <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
+      <input id="custom-slider" class="slider" type="range" min="1" max="4" value="4">
     </div>
     <div id="buttons">
       <div class="buttons-line">
-        <button id="btnCreate" class="button block-button disabled light">Select element you want to block</button>
+        <button id="btn-create" class="button block-button disabled">Select element you want to
+          block</button>
       </div>
       <div class="buttons-line">
-        <button id="btnManage" class="button secondary-button disabled light">Manage filters</button>
-        <button id="btnShowRulesBox" class="button secondary-button disabled light">Show rules</button>
-        <button id="btnQuit" class="button secondary-button  disabled secondary-button-bordered light">Cancel</button>
+        <button id="btn-manage" class="button secondary-button disabled">Manage filters</button>
+        <button id="btn-show-rules-box" class="button secondary-button disabled">Show rules</button>
+        <button id="btn-quit"
+          class="button secondary-button disabled secondary-button-bordered">Cancel</button>
       </div>
     </div>
+  </div>
+  <div id="desktop-min-icon-container">
+    <svg xmlns="http://www.w3.org/2000/svg" class="minimized-icon" fill="none" viewBox="0 0 24 24">
+      <path fill="currentColor" fill-rule="evenodd"
+        d="M4.8 4a.8.8 0 0 0-.8.8v5.437a.8.8 0 0 0 1.6 0V6.722l4.4 4.4a.8.8 0 1 0 1.132-1.13L6.74 5.6h3.446a.8.8 0 0 0 0-1.6zm14.4 16a.8.8 0 0 0 .8-.8v-5.437a.8.8 0 0 0-1.6 0v3.515l-4.4-4.4a.8.8 0 1 0-1.132 1.13L17.26 18.4h-3.446a.8.8 0 0 0 0 1.6z"
+        clip-rule="evenodd">
+    </svg>
   </div>
 </section>

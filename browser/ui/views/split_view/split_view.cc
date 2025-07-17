@@ -101,7 +101,7 @@ SplitView::SplitView(Browser& browser,
 
   secondary_devtools_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<views::WebView>(browser_->profile()));
-  secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
+  secondary_devtools_scrim_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ScrimView>());
   secondary_contents_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ActivatableContentsWebView>(browser_->profile()));
@@ -126,7 +126,7 @@ SplitView::SplitView(Browser& browser,
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          secondary_devtools_web_view_, secondary_contents_scrim_view_,
+          secondary_devtools_web_view_, secondary_devtools_scrim_view_,
           secondary_contents_web_view_, secondary_lens_overlay_view_,
           secondary_contents_scrim_view_, /*border_view*/ nullptr,
           /*watermark_view*/ nullptr, secondary_reader_mode_toolbar_));
@@ -151,8 +151,9 @@ bool SplitView::IsSplitViewActive() const {
 }
 
 void SplitView::ListenFullscreenChanges() {
-  fullscreen_observation_.Observe(
-      browser_->exclusive_access_manager()->fullscreen_controller());
+  fullscreen_observation_.Observe(browser_->GetFeatures()
+                                      .exclusive_access_manager()
+                                      ->fullscreen_controller());
 }
 
 void SplitView::WillChangeActiveWebContents(
@@ -631,7 +632,8 @@ void SplitView::OnFullscreenStateChanged() {
 }
 
 bool SplitView::ShouldHideSecondaryContentsByTabFullscreen() const {
-  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  auto* exclusive_access_manager =
+      browser_->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
     return false;
   }

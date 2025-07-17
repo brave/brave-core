@@ -89,5 +89,5 @@ export const _SolStakingChange = () => {
 }
 
 export default {
-  title: 'SVM State Changes',
+  title: 'Wallet/Panel/Components/Transaction',
 }

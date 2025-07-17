@@ -5,12 +5,13 @@
 
 const config = require('../lib/config')
 const util = require('../lib/util')
+const branding = require('../lib/branding')
 
 let options = config.defaultOptions
 options.continueOnFail = false
 const outputDir = config.outputDir + '_audit'
 
-util.updateBranding()
+branding.update()
 const args = config.buildArgs()
 if (process.argv.includes('--audit_dev_deps')) {
   args.audit_dev_deps = true

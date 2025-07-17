@@ -84,6 +84,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="2028449514182362831">Hindi gagana ang mga feature na nangangailangan ng mga sensor ng paggalaw</translation>
 <translation id="2030769033451695672">Mag-tap para bumalik sa <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">I-undo</translation>
+<translation id="2080070583977670716">Higit pang mga setting</translation>
 <translation id="2091887806945687916">Tunog</translation>
 <translation id="2096716221239095980">I-delete ang lahat ng data</translation>
 <translation id="2102396546234652240">Huwag payagan ang mga site na gamitin ang iyong mikropono</translation>
@@ -229,7 +230,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3779154269823594982">Palitan ang mga password</translation>
 <translation id="3797520601150691162">Huwag ilapat ang madilim na tema para sa isang partikular na site</translation>
 <translation id="3803367742635802571">Posibleng hindi na gumana ayon sa disenyo ang mga site na binibisita mo</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Mga numero ng telepono</translation>
 <translation id="3826050100957962900">Third-party na pag-sign in</translation>
 <translation id="3835233591525155343">Iyong paggamit ng device</translation>
@@ -437,7 +437,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6452138246455930388">May pagbaba ng presyo sa iyong nakabukas na tab, <ph name="NEW_PRICE"/> na dating <ph name="OLD_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Kapag makitid ang window, i-request ang mobile view</translation>
 <translation id="6527303717912515753">Ibahagi</translation>
-<translation id="652937045869844725">Subukang payagan ang third-party na cookies, na nangangahulugan na mas mahina ang proteksyon pero mas malamang na gumana ang mga feature ng site</translation>
 <translation id="6530703012083415527">Kapag naka-on, makakagamit ng mga pop-up at pag-redirect ang mga site. Kapag naka-off, hindi makakagamit ng mga pop-up at pag-redirect ang mga site .</translation>
 <translation id="6540488083026747005">Pinayagan mo ang third-party na cookies sa site na ito</translation>
 <translation id="6545864417968258051">Pag-scan ng Bluetooth</translation>
@@ -451,6 +450,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6612358246767739896">Pinoprotektahang content</translation>
 <translation id="662080504995468778">Manatili</translation>
 <translation id="6635327442719709864">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga serial port. Kapag naka-off, hindi magagamit ng mga site ang mga serial port.</translation>
+<translation id="6678072580827808850">Suriin ang Pag-check sa Kaligtasan</translation>
 <translation id="6683865262523156564">Ang site na ito ay nasa isang grupong makakakita ng iyong aktibidad. Tinukoy ng <ph name="RWS_OWNER"/> ang grupo</translation>
 <translation id="6689172468748959065">Mga larawan sa profile</translation>
 <translation id="6697925417670533197">Mga aktibong pag-download</translation>
@@ -485,7 +485,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7141896414559753902">I-block ang pagpapakita ng mga site ng mga pop-up at pag-redirect (inirerekomenda)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">I-refresh</translation>
-<translation id="7180865173735832675">I-customize</translation>
 <translation id="7188508872042490670">On-device na data ng site</translation>
 <translation id="7201549776650881587">Ide-delete ng pagkilos na ito ang lahat ng data at cookies na na-store ng lahat ng site sa ilalim ng <ph name="ORIGIN"/> o ng app nito sa iyong Home screen</translation>
 <translation id="7203150201908454328">Pinalawak</translation>

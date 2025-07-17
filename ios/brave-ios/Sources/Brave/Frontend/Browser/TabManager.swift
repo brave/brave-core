@@ -85,8 +85,8 @@ class TabManager: NSObject {
   var selectedIndex: Int {
     return _selectedIndex
   }
-  var normalTabSelectedIndex: Int = 0
-  var privateTabSelectedIndex: Int = 0
+  var normalTabSelectedIndex: Int?
+  var privateTabSelectedIndex: Int?
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
   private var braveCore: BraveProfileController?
@@ -229,8 +229,8 @@ class TabManager: NSObject {
     if let query = query, !query.isEmpty {
       // Display title is the only data that will be present on every situation
       return allTabs.filter {
-        $0.displayTitle.lowercased().contains(query)
-          || ($0.visibleURL?.baseDomain?.contains(query) ?? false)
+        $0.displayTitle.localizedCaseInsensitiveContains(query)
+          || ($0.visibleURL?.baseDomain?.localizedCaseInsensitiveContains(query) ?? false)
       }
     } else {
       return allTabs
@@ -240,14 +240,14 @@ class TabManager: NSObject {
   /// Function for adding local tabs as synced sessions
   /// This is used when open tabs toggle is enabled in sync settings and browser constructor
   func addRegularTabsToSyncChain() {
-    let regularTabs = tabs(isPrivate: false)
-
     syncTabsTask?.cancel()
 
-    syncTabsTask = DispatchWorkItem {
-      guard let task = self.syncTabsTask, !task.isCancelled else {
+    syncTabsTask = DispatchWorkItem { [weak self] in
+      guard let self = self, let task = self.syncTabsTask, !task.isCancelled else {
         return
       }
+
+      let regularTabs = self.tabs(isPrivate: false)
 
       for tab in regularTabs {
         if let url = tab.fetchedURL, !tab.isPrivate, !url.isLocal,
@@ -644,6 +644,8 @@ class TabManager: NSObject {
       }
       if isPopup {
         tab.opener = parent
+      } else {
+        tab.orderingParent = parent
       }
       allTabs.insert(tab, at: insertIndex)
     }

@@ -6,16 +6,13 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_BRAVE_SEARCH_THROTTLE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_BRAVE_SEARCH_THROTTLE_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "content/public/browser/navigation_throttle.h"
-#include "content/public/browser/permission_result.h"
 
 namespace blink {
 namespace mojom {
@@ -53,7 +50,7 @@ class AIChatBraveSearchThrottle : public content::NavigationThrottle {
       AIChatService* ai_chat_service);
   ~AIChatBraveSearchThrottle() override;
 
-  static std::unique_ptr<AIChatBraveSearchThrottle> MaybeCreateThrottleFor(
+  static void MaybeCreateAndAdd(
       base::OnceCallback<void(content::WebContents*)> open_leo_delegate,
       content::NavigationThrottleRegistry& registry,
       AIChatService* ai_chat_service,

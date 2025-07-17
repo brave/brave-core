@@ -19,14 +19,15 @@ namespace permissions {
 
 BraveOpenAIChatPermissionContext::BraveOpenAIChatPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(
+    : ContentSettingPermissionContextBase(
           browser_context,
           ContentSettingsType::BRAVE_OPEN_AI_CHAT,
           network::mojom::PermissionsPolicyFeature::kNotFound) {}
 
 BraveOpenAIChatPermissionContext::~BraveOpenAIChatPermissionContext() = default;
 
-ContentSetting BraveOpenAIChatPermissionContext::GetPermissionStatusInternal(
+ContentSetting
+BraveOpenAIChatPermissionContext::GetContentSettingStatusInternal(
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin,
     const GURL& embedding_origin) const {
@@ -37,7 +38,7 @@ ContentSetting BraveOpenAIChatPermissionContext::GetPermissionStatusInternal(
     return ContentSetting::CONTENT_SETTING_BLOCK;
   }
 
-  return PermissionContextBase::GetPermissionStatusInternal(
+  return ContentSettingPermissionContextBase::GetContentSettingStatusInternal(
       render_frame_host, requesting_origin, embedding_origin);
 }
 

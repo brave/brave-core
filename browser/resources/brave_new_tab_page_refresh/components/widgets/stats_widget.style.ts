@@ -26,8 +26,10 @@ export const style = scoped.css`
     font: ${font.xSmall.regular};
 
     > div {
+      flex-grow: 1;
       display: flex;
       align-items: flex-start;
+      justify-content: space-between;
       gap: 24px;
     }
   }

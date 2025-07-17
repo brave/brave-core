@@ -32,14 +32,14 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
@@ -100,6 +100,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
@@ -124,6 +125,10 @@ using extensions::FeatureSwitch;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/prefs.h"
 #endif
 
 namespace brave {
@@ -260,6 +265,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
+  registry->RegisterBooleanPref(kBraveWaybackMachineDisabledByPolicy, false);
 #endif
 
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
@@ -347,6 +353,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
+  registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -435,7 +442,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       bookmarks_webui::prefs::kBookmarksViewType,
       base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
-#endif
+
+  welcome_ui::prefs::RegisterProfilePrefs(registry);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
@@ -472,6 +481,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  containers::RegisterProfilePrefs(registry);
 #endif
 }
 

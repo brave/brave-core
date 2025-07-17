@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">자주 방문하는 사이트 표시</translation>
 <translation id="4546260624932151782">즐겨찾기 표시</translation>
 <translation id="8975314993825375476">목록 맞춤 설정</translation>
-<translation id="5525668735313040116">프라이버시를 보호하며 웹 검색</translation>
+<translation id="7407744084529395869">AI를 사용하여 프라이버시를 보호하며 웹에서 검색하세요</translation>
 <translation id="1629390138158333592">웹 검색</translation>
 <translation id="4016940744851230999">새 탭 페이지에 검색 위젯 표시</translation>
 <translation id="7092560902264458951">새 탭 페이지상에 검색 엔진 활성화</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Google에 이별을 고하세요.</translation>
 <translation id="5588534392045217394">Brave 검색은 편향된 결과를 내놓거나 검열하지 않으며, 사용자를 프로파일링하지 않습니다.</translation>
 <translation id="6811221529729056895">지금 Brave 검색 사용해보기</translation>
+<translation id="5525668735313040116">프라이버시를 보호하며 웹 검색</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="5585019845078534178">카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
@@ -838,7 +839,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} 스텝}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} 스텝}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> (<ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/>을(를) 통해)</translation>
+<translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> 를 통해 <ph name="PROVIDER_NAME"/> 제공</translation>
 <translation id="3735740477244556633">정렬 기준</translation>
 <translation id="6484605214219822434">브리지 검토</translation>
 <translation id="3365052891357224017">예상 시간</translation>
@@ -1043,7 +1044,7 @@
 <translation id="7702907602086592255">도메인</translation>
 <translation id="3586752056660754651">서명</translation>
 <translation id="3484981968509595506">DApp이 공개 암호화 키를 요청합니다.</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/>이(가) 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
+<translation id="2300240008330189182"><ph name="URL"/>에서 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
 <translation id="3340247553212049934">제공</translation>
 <translation id="1619778919922494944">이 DApp이 이 메시지를 읽고 요청을 완료하고자 합니다.</translation>
 <translation id="714506544401754321">메시지 암호 해독</translation>
@@ -1339,21 +1340,21 @@
 <translation id="6248202915200795128">예상보다 오래 걸립니까?</translation>
 <translation id="5417904796609871601">활동에서 보기</translation>
 <translation id="8915839655070878476">이 창을 안전하게 닫을 수 있습니다.</translation>
-<translation id="7020017785602386950"><ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 보내는 중</translation>
-<translation id="4003625688926111212"><ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 보냄</translation>
-<translation id="3068919369514041269"><ph name="NETWORK"/>에서 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 스왑 중</translation>
-<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>의 금액이 귀하의 계정 <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>에 추가됨</translation>
-<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>(으)로 브릿징 중</translation>
+<translation id="81801423138374476"><ph name="AMOUNT"/> 를 <ph name="ACCOUNT"/> 에게 보내는 중</translation>
+<translation id="700397678365620426"><ph name="AMOUNT"/> 가 <ph name="ACCOUNT"/> 계정으로 전송되었습니다</translation>
+<translation id="318655655904339974"><ph name="NETWORK"/> 에서 <ph name="AMOUNT"/> 를 <ph name="ACCOUNT"/> 로 교환 중</translation>
+<translation id="2692630015559505926"><ph name="AMOUNT"/> 의 금액이 계좌 <ph name="ACCOUNT"/> 에 추가되었습니다</translation>
+<translation id="965763087589489448"><ph name="AMOUNT"/> 를 <ph name="NETWORK"/> 로 브리징 중</translation>
 <translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/>할 수 없음</translation>
-<translation id="6990756606864308319"><ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> <ph name="SEND_SWAP_OR_BRIDGE"/> 시도 중 오류 발생</translation>
-<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>의 <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> 승인 중</translation>
+<translation id="5289529654748438984"><ph name="AMOUNT"/> 를 <ph name="VALUE"/> 로 <ph name="SEND_SWAP_OR_BRIDGE"/> 시도 중 오류가 발생했습니다</translation>
+<translation id="1694024747580135508"><ph name="AMOUNT"/> 를 <ph name="EXCHANGE"/> 에 승인하는 중</translation>
 <translation id="8036159955043245753">새 트랜잭션이 생성되어 기존 트랜잭션이 취소됩니다.</translation>
 <translation id="4056435949094149644">스왑</translation>
 <translation id="7694836973509310467">브리지</translation>
-<translation id="997000407026317399"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>의 <ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/></translation>
-<translation id="6934057383578424432"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>에서 <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> 시도 중 오류 발생</translation>
-<translation id="4916833841663290382"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 차폐</translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) 차폐했습니다</translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> - <ph name="NETWORK"/></translation>
+<translation id="7903225589949400974"><ph name="NETWORK"/> 에서 <ph name="SWAP_OR_BRIDGE"/> 시도 중 오류가 발생했습니다</translation>
+<translation id="1778601041100951971"><ph name="AMOUNT"/> 차단 중</translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/> 가 차단되었습니다</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
       other {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
@@ -1610,7 +1611,7 @@
 <translation id="5450317966495183014">수신(추산)</translation>
 <translation id="8747614139273050577">보내는 토큰</translation>
 <translation id="1726158192333401896">받는 토큰</translation>
-<translation id="765894671068292221"><ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/> 후 새 견적</translation>
+<translation id="1817370679212109974">새 견적까지 <ph name="COUNTDOWN"/></translation>
 <translation id="3835223348537121988">잔액:</translation>
 <translation id="5709875713144853427">스왑할 토큰 선택</translation>
 <translation id="720404198240859011">잔액이 없는 토큰 표시</translation>
@@ -1676,7 +1677,7 @@
 <translation id="353620741952662530">표시할 NFT 없음</translation>
 <translation id="487317695605278176">NFT가 감지되면 여기 표시됩니다.</translation>
 <translation id="7481581122016027177">NFT가 보이지 않습니까?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>새로고침<ph name="REFRESH_END"/> 또는 <ph name="IMPORT"/>수동으로 가져오기<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>새로고침<ph name="REFRESH_END"/> 또는 <ph name="IMPORT_START"/>수동으로 가져오기<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">새로고치는 중</translation>
 <translation id="4608324163534970318">네트워크 수수료</translation>
 <translation id="6213230117190778270">받기</translation>
@@ -1821,6 +1822,9 @@
 <translation id="2713141960460256091">DApp 트랜잭션 서명하고 보내기</translation>
 <translation id="6387730345715997739">DApp 트랜잭션 서명</translation>
 <translation id="4150336849480030462">연관된 토큰 계정 생성이 있는 SPL 토큰 전송</translation>
+<translation id="2244921323472112851">찾고 있는 페이지를 지금 찾을 수 없습니다.</translation>
+<translation id="6277237872689140644">다른 곳으로 이동했거나 URL이 잘못 적혀 있을 수 있습니다.</translation>
+<translation id="2737084171727561244">포트폴리오로 이동</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -2118,10 +2122,10 @@
 <translation id="7692501701960747469">이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
+<translation id="999273441077650169">최고의 작업을 위해 동적으로 모델을 변경합니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">안녕하세요, 레오입니다. 저는 Brave에서 완전 호스된 AI 어시스턴트입니다. 저는 심층 추론 작업을 수행할 수 있도록 DeepSeek에서 만든 모델인 DeepSeek R1으로 구동됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 미스트랄 AI에서 개발한 믹스트랄 8x7B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2170,6 +2174,10 @@
 <translation id="5604254791550001355">프롬프트 편집</translation>
 <translation id="8115786586976830777">프롬프트 복사</translation>
 <translation id="1406205536570262057">답변 편집</translation>
+<translation id="3386725253392845084">같은 모델로 다시 시도</translation>
+<translation id="2461822463642141190">현재</translation>
+<translation id="9098847266351882944">답변을 위한 모델 변경</translation>
+<translation id="1431551663608182318">답변을 위한 모델 변경 (현재 모델: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">유용하지 않음</translation>
 <translation id="2976167228906046828">부정확함</translation>
 <translation id="1183055847065865059">위험/유해함</translation>
@@ -2210,13 +2218,13 @@
 <translation id="887511360213807449">기록을 비활성화함</translation>
 <translation id="5380979378058584412">레오와의 이전 대화를 보려면 대화 기록을 활성화해야 합니다.</translation>
 <translation id="6291843235651817590">일반 목적의 채팅</translation>
-<translation id="8193130769524604031">진보된 채팅 작업</translation>
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
 <translation id="7979673624064378842">빛처럼 빠른 채팅</translation>
 <translation id="2836330653441111204">속도와 지능의 균형</translation>
 <translation id="6695329447007213917">범용 채팅, 코딩 등</translation>
 <translation id="5051668914970329839">일반 목적의 비전</translation>
 <translation id="7226508434216060960">추론 모델</translation>
+<translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
 <translation id="3965507912994218570">레오 설정</translation>
 <translation id="1037324977127422019">안녕하세요, 저는 레오예요!</translation>
 <translation id="8930348081963284873">Brave에 바로 이식된 AI 기반 지능형 어시스턴트.</translation>
@@ -2254,6 +2262,7 @@
 <translation id="983013125018250242">레오 도구</translation>
 <translation id="7623223587478473368">첨부 파일</translation>
 <translation id="3777121685517940177">파일 업로드...</translation>
+<translation id="6739516910850820220">파일 업로드 중...</translation>
 <translation id="9088751620363630236">사진 찍기...</translation>
 <translation id="4250229828105606438">스크린샷</translation>
 <translation id="6332876390231524389">현재 탭 내용</translation>
@@ -2269,8 +2278,11 @@
 <translation id="6543799171249004861"><ph name="AUTHOR"/>의 사진</translation>
 <translation id="5430001801813715388">보상</translation>
 <translation id="5966055668402779222">Brave 검색을 사용해 보세요</translation>
+<translation id="167018310108390163">새 탭 페이지 맞춤 설정</translation>
 <translation id="6851426306697017546">시계 표시</translation>
 <translation id="4844370919312937270">새 탭에 검색 위젯 표시</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>를 통해, 새 탭 페이지 광고를 시청하여 수익을 올릴 수 있습니다.</translation>
+<translation id="4100520468072294616">새 탭 페이지 광고 표시</translation>
 <translation id="5009354496127441090">인기 사이트 표시</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">통계</translation>
@@ -2290,7 +2302,6 @@
 <translation id="7143207342074048698">연결 중</translation>
 <translation id="1202549130170287307">연결 해제 중</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
-<translation id="8793108040181436796">위젯</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7700894290854403770"><ph name="HOST"/>에 대해 <ph name="STATUS_BEFORE"/>쉴드 켜짐<ph name="STATUS_AFTER"/></translation>
@@ -2376,6 +2387,36 @@
 <translation id="6821108091726602352">Brave의 Web Discovery Project에 참여하여 웹 개선에 도움을 주세요. 완전히 익명화된 검색 신호를 공유하는 방법으로 Brave의 검색 색인 확보에 기여하실 수 있습니다.</translation>
 <translation id="6764845498618413165">자세히 알아보기</translation>
 <translation id="7818938154803162778">좋아요, 도울게요</translation>
+<translation id="3486480638399578250">개인 이메일 주소 비공개 유지</translation>
+<translation id="7765422154906712751">고유하고 랜덤한 주소를 생성하여 Brave 계정 이메일로 전달하고 언제든지 삭제할 수 있습니다. 실제 이메일 주소가 광고주에게 공개되거나 사용되지 않도록 보호합니다.</translation>
+<translation id="5222676887888702881">로그아웃</translation>
+<translation id="8090292425230843109">이메일 별칭에서 로그아웃</translation>
+<translation id="8471990782451394141">Brave 계정에 연결 중...</translation>
+<translation id="5713644099811900409">Brave 계정</translation>
+<translation id="6002159997868894136">클릭하여 별명 복사</translation>
+<translation id="8105770564756958406"><ph name="DOMAINS"/> 에서 사용됨</translation>
+<translation id="5006956315579221642">실제 이메일 주소를 보호하기 위해 최대 5개의 무료 이메일 별명을 만드세요.</translation>
+<translation id="5663901348199429994">이메일 별명</translation>
+<translation id="9046133327037621173">새 이메일 별명</translation>
+<translation id="3768606658230902536">개인 이메일을 비공개로 유지하면서 받은 편지함으로 전달되는 무작위 이메일 주소를 생성하세요.</translation>
+<translation id="6887156107256264506">5개의 무료 이메일 별명 한도에 도달했습니다. "관리"를 클릭하여 별명을 재사용하거나 삭제하세요.</translation>
+<translation id="1104500750724567895">새로운 별명</translation>
+<translation id="8072910658503112482">다른 이메일 별명 제안</translation>
+<translation id="7710361355427562228">새 별명 생성 중...</translation>
+<translation id="4253168017788158739">주석</translation>
+<translation id="7596996548739923550">주소에 대한 주석 입력 (선택 사항)</translation>
+<translation id="3810973564298564668">관리</translation>
+<translation id="7446914872298825396">이메일 별명</translation>
+<translation id="3919357515365744684">이메일이 <ph name="MAIN_EMAIL"/>(으)로 전달됩니다</translation>
+<translation id="6063403442924238501">이메일 별명 편집</translation>
+<translation id="8729265501883390499">별명 만들기</translation>
+<translation id="8662104432574824754">시작하려면 Brave 계정에 로그인하거나 계정을 만드세요</translation>
+<translation id="8069030342700068465">로그인 링크를 이메일로 받을 이메일 주소를 입력하세요. 이 링크를 클릭하면 Brave 계정을 만들거나 액세스할 수 있으며 무료 이메일 별명 서비스를 사용할 수 있습니다.</translation>
+<translation id="2133391407495495735">로그인 링크 받기</translation>
+<translation id="3699624789011381381">이메일 주소</translation>
+<translation id="8124939971041602970">로그인 이메일이 <ph name="MAIN_EMAIL"/>(으)로 발송되었습니다</translation>
+<translation id="8140361186431963982">계정에 액세스하려면 이메일의 안전한 로그인 링크를 클릭하세요.</translation>
+<translation id="6549775668256477823">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 <ph name="BEGIN_LINK"/>다시 시도<ph name="END_LINK"/>하세요.</translation>
 <translation id="958268166261124668">Brave VPN: 연결됨</translation>
 <translation id="6021669293402055982">Brave VPN: 연결 해제됨</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>

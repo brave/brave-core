@@ -322,8 +322,8 @@
 <translation id="8813509417421129632">Vietnē <ph name="SITE"/> iegulta lapa mēģina saglabāt</translation>
 <translation id="7700010743463174379">Šī lapa vēlas saglabāt</translation>
 <translation id="6774238875569752630">Šajā lapā iegulta lapa vēlas saglabāt</translation>
-<translation id="1233913566967531780">Cilnes fokusēšana</translation>
-<translation id="4034992002364254340">Savāciet visas saistītās cilnes jaunā logā</translation>
+<translation id="1233913566967531780">Cilņu pārvaldnieks</translation>
+<translation id="4034992002364254340">Apkopojiet visas saistītās cilnes jaunā logā</translation>
 <translation id="8012125596344613514">Ieteiktās tēmas</translation>
 <translation id="7529120186020617755">Ievadiet tēmu, uz kuru fokusēties...</translation>
 <translation id="6847541693235449912">Aiziet</translation>
@@ -343,6 +343,8 @@
 <translation id="8081858229109418493">Profila nosaukums un ikona</translation>
 <translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="984275831282074731">Maksājumu veidi</translation>
+<translation id="6278858909990433658">Importēt profilu, kas joprojām tiek izmantots</translation>
+<translation id="9071187015476020102">Lai importētu paplašinājumus vai citus iestatījumus, vispirms aizveriet pārlūkprogrammu, no kuras importējat.</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
 <translation id="1807246157184219062">Gaišs</translation>
 <translation id="2414886740292270097">Tumšs</translation>
@@ -736,7 +738,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2751872555001636931">Rādīt Leo ikonu sānjoslā</translation>
 <translation id="8055509865174199683">Rādīt Leo tīmekļa vietnēs konteksta izvēlnē</translation>
 <translation id="1529674267267221673">Leo parādīsies konteksta izvēlnē, kad noklikšķināsiet tīmekļa vietnē ar labo peles taustiņu. Tādā veidā konteksts no aktuālās tīmekļa vietnes tiks nosūtīts Leo.</translation>
-<translation id="5226020406479918122">Cilnes fokusēšanas režīms</translation>
+<translation id="5226020406479918122">Cilņu pārvaldnieka režīms</translation>
 <translation id="3705539672403311123">Iespējot ciļņu organizēšanu Ciļņu meklēšanas lapā. Atverot parastas cilnes, to nosaukumi un izcelsme tiks automātiski nosūtīti Leo to klasifikācijai. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Rādīt sarunā ieteiktos norādījumus</translation>
 <translation id="5781842473834867765">Saglabāt manu sarunu vēsturi</translation>
@@ -747,7 +749,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
 <translation id="5385064007245738696">Par Leo MI</translation>
 <translation id="5084498230659987096">Brave Leo piedāvā privātu tērzēšanu ar MI un citas ar MI darbinātas saskarnes pārlūkprogrammā. Leo nemācās no jūsu datiem, un tie netiek izmantoti modeļa apmācībai. Visi pieprasījumi tiek filtrēti caur anonimizējošu serveri.</translation>
-<translation id="6458721693611638005">Jūs varat uzzināt vairāk par to, kā Brave rūpējas par jūsu privātumu, mijiedarbojoties ar MI, izlasot Leo privātuma politiku: <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="6458721693611638005">Jūs varat uzzināt vairāk par to, kā Brave rūpējas par jūsu privātumu, kad jūs mijiedarbojaties ar MI, izlasot Leo privātuma politiku: <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
 <translation id="8826914609353373601">Pārvaldīt premium abonementu</translation>
 <translation id="235457946228076038">Atnesiet savu modeli</translation>
@@ -759,7 +761,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7634775528597575156">Servera galapunkts</translation>
 <translation id="6374563306438145841">API atslēga</translation>
 <translation id="3295756655687327124">Vizuālās apstrādes atbalsts</translation>
-<translation id="1415432774589088566">Ja šis modelis izmanto attēlu kā ievades datus, piemēram, llama 3.2b vision</translation>
+<translation id="1415432774589088566">Ja šis modelis izmanto attēlus kā ievades datus, piemēram, modelis "llama 3.2b vision"</translation>
 <translation id="8008271349880309090">Modeļa nosaukums, kāds tiks parādīts modeļa atlases izvēlnē</translation>
 <translation id="1355326130503900056">Modeļa nosaukums, kādam tam jāparādās pieprasījumā apkalpojošai struktūrai, piemēram, phi-3 (ņemiet vērā, ka šis nosaukums precīzi neatbilst tam, ko sagaida apkalpojošā struktūra, integrācija nedarbosies)</translation>
 <translation id="3213787232304349732">URL vietrādis, kurā apkalpojošā struktūra uzklausa pieprasījumus. Ja neesat pārliecināti, pārbaudiet apkalpojošās struktūras dokumentāciju. Piemēram, Ollama gadījumā tā vienmēr ir: http://localhost:11434/v1/chat/completions</translation>
@@ -823,4 +825,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Atvēršanas režīms</translation>
+<translation id="2249111429176737533">Atvērt kā cilnes logu</translation>
+<translation id="7022756207310403729">Atvērt pārlūkā</translation>
 </translationbundle>

@@ -1,0 +1,36 @@
+caption: Disable Brave News
+default: null
+desc: |-
+  Disable Brave News in Brave.
+
+  Brave News is a feature that allows users to view curated news content from various sources in a private feed on the new tab page.
+
+            If this policy is set to true, Brave News will always be disabled and all related UI elements will be hidden.
+
+            If this policy is set to false, Brave News will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Brave News will be enabled by default (subject to user preferences).
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Brave News
+  value: false
+- caption: Disable Brave News
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:138-
+tags: []
+type: main 

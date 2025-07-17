@@ -216,6 +216,7 @@ export interface WalletState {
   isRefreshingNetworksAndTokens: boolean
   isZCashShieldedTransactionsEnabled: boolean
   isCardanoEnabled: boolean
+  isCardanoDappSupportEnabled: boolean
 }
 
 export interface PanelState {
@@ -741,6 +742,7 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
 export const DAppSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.ADA,
 ]
 
 export const CustomAssetSupportedCoinTypes = [
@@ -751,6 +753,7 @@ export const CustomAssetSupportedCoinTypes = [
 export const DAppSupportedPrimaryChains = [
   BraveWallet.MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET,
+  BraveWallet.CARDANO_MAINNET,
 ]
 
 export const BitcoinMainnetKeyringIds = [

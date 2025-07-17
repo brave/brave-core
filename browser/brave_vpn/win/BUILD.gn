@@ -41,6 +41,7 @@ source_set("win") {
     "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//chrome/elevation_service:public_headers",
     "//chrome/install_static:install_static_util",
@@ -64,11 +65,13 @@ source_set("wireguard_utils") {
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard",
     "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl",
     "//chrome/common:channel_info",
     "//components/version_info",
+    "//url",
   ]
 }

@@ -52,6 +52,7 @@
 # This test fails because the message it checks has Brave intead of Google.
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy/SearchEngineChoice*
 
@@ -97,6 +98,7 @@
 -AILanguageModelHackyPrototypeTest.Basic
 -AILanguageModelTest.*
 -AIManagerTest.*
+-AIProofreaderTest.*
 -AIRewriterTest.*
 -AISummarizerTest.*
 -AIWriterTest.*
@@ -109,6 +111,8 @@
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
+-PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
+-PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -164,9 +168,10 @@
 -PerformanceHandlerTest.GetCurrentOpenSites
 
 # Prerender is disabled
--PrerenderManagerBasicRequirementTest.*
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
+-PrerenderManagerBasicRequirementTest.*
+-PrerenderManagerPrewarmTest.StartPrewarmSearchResult
 -PrerenderManagerTest.DestroyedOnNavigateAway
 -PrerenderManagerTest.DisallowSearchUrlBookmarkBar
 -PrerenderManagerTest.DisallowSearchUrlNewTabPage
@@ -231,6 +236,9 @@
 -IsolatedWebAppURLLoaderFactoryForServiceWorkerTest.*
 -IsolatedWebAppURLLoaderFactoryTest.*
 
+# These tests fail because we disable Isolated Web Apps
+-IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
+
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
@@ -239,6 +247,8 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndRevokeSyncNotAllowed
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-All/SigninUiUtilTest.GetOrderedAccountsForDisplay/*
+-All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
@@ -271,6 +281,7 @@
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
+-SigninUtilHistorySyncOptinTest.*
 -SignoutAllowed/SigninManagerTest.*
 -SyncPromoIdentityPillManagerTest.MaxShownCount
 -SyncPromoIdentityPillManagerTest.MaxUsedCount
@@ -308,8 +319,10 @@
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequestOnAllowlistMatch
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequestOnLocalModelPhishing
+-ClientSideDetectionIntelligentScanDelegateDesktopTest*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
+-DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
@@ -353,6 +366,7 @@
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_NumQueriesRecorded_BeforeConfigReady/0
 -All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_ReturnsEmptyUntilAllSetsReady/0
 -All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_WithNonEmptyConfig/0
+-FirstRunTest.CreateSentinelIfNeeded_SkippedIfSuppressed
 
 # https://issues.chromium.org/issues/41484323
 -TabSearchPageHandlerDeclutterTest.TabDeclutterExcludeTabs
@@ -586,6 +600,21 @@
 # These tests fail because we disable popular site suggestions functionality
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
 -MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
+
+# These fail because we override GetChromeChannel to always use
+# with_extended_stable = false and override channel info
+-Chromium/ChannelInfoTest.GetChannel/0
+-Chromium/ChannelInfoTest.GetChannelByName/0
+-Chromium/ChannelInfoTest.GetChannelNameWith/0
+-Chromium/ChannelInfoTest.GetChannelNameWithout/0
+
+# These tests fail because we change install channels
+-BrowserReportGeneratorTest.GenerateBasicReport
+-BrowserReportGeneratorTest.GenerateBasicReportForProfileReporting
+-BrowserReportGeneratorTest.GenerateBasicReportWithUpdate
+
+# We disable HATS
+-HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

@@ -142,7 +142,7 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         mBraveWalletPanel =
                 new BraveWalletPanel(
                         mAnchorViewHost, mDialogOrPanelDismissListener, showExpandButton);
-        mBraveWalletPanel.showLikePopDownMenu();
+        mBraveWalletPanel.showLikeMenu();
         setupLifeCycleUpdater();
     }
 

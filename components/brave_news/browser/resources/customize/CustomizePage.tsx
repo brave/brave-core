@@ -7,24 +7,16 @@ import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
-import { BackArrow } from '../shared/Icons'
 import { getLocale } from '$web-common/locale'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
-const BackButtonContainer = styled.div`
-  all: unset;
+const BackButton = styled(Button).attrs({
+  kind: 'plain-faint',
+})`
+  --leo-button-padding: 0;
+
   flex: 1;
-
-  &> button {
-    --inner-border-size: 0;
-    --outer-border-size: 0;
-    padding: 0;
-
-    &:hover {
-      --inner-border-size: 0;
-      --outer-border-size: 0;
-    }
-  }
 `
 
 const Header = styled.span`
@@ -44,12 +36,10 @@ export default function CustomizePage (props: {
   const { setCustomizePage } = useBraveNews()
   return <Flex direction="column">
     <Flex align="center">
-      <BackButtonContainer>
-        <Button onClick={() => setCustomizePage('news')}>
-          {BackArrow}
-          {getLocale('braveNewsBackButton')}
-        </Button>
-      </BackButtonContainer>
+        <BackButton onClick={() => setCustomizePage('news')}>
+          <Icon name="arrow-left" slot="icon-before" />
+          {getLocale(S.BRAVE_NEWS_BACK_BUTTON)}
+        </BackButton>
       <Header>{props.title}</Header>
       <Spacer />
     </Flex>

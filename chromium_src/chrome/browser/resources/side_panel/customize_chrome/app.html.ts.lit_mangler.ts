@@ -5,6 +5,24 @@
 
 import { mangle } from 'lit_mangler'
 
+// Insert icon to "Appearance" section's heading
+mangle(
+  (element: DocumentFragment) => {
+    const headingEl = element.querySelector(
+      '#appearance sp-heading h2[slot="heading"]',
+    )
+    if (!headingEl) {
+      throw new Error('[Customize Chrome] <#appearance sp-heading h2> is gone.')
+    }
+
+    headingEl.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `<leo-icon name="themes"></leo-icon>`,
+    )
+  },
+  (template) => template.text.includes('id="appearance"'),
+)
+
 // Update "Customize toolbar" button's icon
 mangle(
   (element) => {
@@ -41,4 +59,21 @@ mangle(
   },
   (template) =>
     template.text.includes('id="toolbar-customization-inner-heading"'),
+)
+
+// Insert a close button into the sp-heading element.
+mangle(
+  (element: DocumentFragment) => {
+    const el = element.querySelector('sp-heading')
+    if (!el) {
+      throw new Error('[Customize Chrome] sp-heading is gone.')
+    }
+
+    el.insertAdjacentHTML(
+      'afterbegin',
+      /* html */ `
+      <close-panel-button id="closeButton" iron-icon="close" slot="buttons"/>`,
+    )
+  },
+  (template) => template.text.includes('sp-heading'),
 )

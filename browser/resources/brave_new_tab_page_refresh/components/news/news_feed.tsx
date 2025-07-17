@@ -14,11 +14,19 @@ import { style } from './news_feed.style'
 
 export function NewsFeed() {
   const braveNews = useBraveNews()
+  const [shouldRenderNews, setShouldRenderNews] = React.useState(false)
+
+  React.useEffect(() => {
+    setTimeout(() => setShouldRenderNews(true), 1000)
+  }, [])
+
   return <>
     {
       braveNews.isShowOnNTPPrefEnabled &&
         <div data-css-scope={style.scope}>
-          {braveNews.isOptInPrefEnabled ? <NewsPage /> : <OptIn />}
+          {braveNews.isOptInPrefEnabled
+            ? shouldRenderNews && <NewsPage />
+            : <OptIn />}
         </div>
     }
     {braveNews.customizePage && <CustomizeModal />}

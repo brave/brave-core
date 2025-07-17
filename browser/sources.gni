@@ -35,6 +35,7 @@ import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
+import("//brave/browser/updater/buildflags.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
 import("//brave/browser/webcompat_reporter/sources.gni")
@@ -45,7 +46,6 @@ import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -118,6 +118,7 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
   "//brave/browser/ai_chat",
+  "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_ads",
@@ -132,6 +133,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_wallet:brave_wallet_delegate",
   "//brave/browser/brave_wallet:tab_helper",
   "//brave/browser/component_updater",
+  "//brave/browser/email_aliases",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -141,6 +143,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
+  "//brave/browser/ui/webui/brave_account",
+  "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/content/browser",
@@ -149,7 +153,7 @@ brave_chrome_browser_deps = [
   "//brave/components/ai_chat/core/common/mojom",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
-  "//brave/components/brave_account/core/mojom",
+  "//brave/components/brave_account:features",
   "//brave/components/brave_adaptive_captcha",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
@@ -176,6 +180,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
   "//brave/components/brave_user_agent/browser",
+  "//brave/components/brave_user_agent/common",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_vpn/common/mojom",
   "//brave/components/brave_wallet/browser",
@@ -184,7 +189,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_wallet/common:mojom",
   "//brave/components/brave_wallet/common:pref_names",
   "//brave/components/brave_wayback_machine/buildflags",
-  "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
   "//brave/components/containers/buildflags",
@@ -209,6 +213,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
   "//brave/components/p3a_utils",
+  "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/psst/browser/content",
@@ -301,6 +306,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/user_education:features",
+    "//brave/components/brave_account/mojom",
     "//chrome/browser/regional_capabilities",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
@@ -319,7 +325,10 @@ if (is_android) {
 }
 
 if (enable_containers) {
-  brave_chrome_browser_deps += [ "//brave/components/containers/core/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+  ]
 }
 
 if (enable_commander) {
@@ -346,6 +355,7 @@ if (is_mac) {
   brave_chrome_browser_deps += [
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
+    "//brave/browser/updater:buildflags",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
@@ -357,6 +367,17 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.h",
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
+  ]
+}
+
+if (enable_omaha4) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/brave_browser_main_extra_parts_p3a.cc",
+    "//brave/browser/brave_browser_main_extra_parts_p3a.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/updater:features",
+    "//brave/browser/updater:p3a",
   ]
 }
 
@@ -410,7 +431,7 @@ if (is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
-    "//brave/browser/android:tab_features",
+    "//brave/browser/android:tabs_impl",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/android/youtube_script_injector",
@@ -456,11 +477,6 @@ if (enable_extensions) {
     "//extensions/browser",
     "//extensions/common:common_constants",
   ]
-
-  if (enable_brave_webtorrent) {
-    brave_chrome_browser_deps +=
-        [ "//brave/components/brave_webtorrent/browser" ]
-  }
 }
 
 if (enable_brave_wayback_machine) {
@@ -498,6 +514,7 @@ if (is_win) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/components/windows_recall",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
   ]
@@ -651,8 +668,8 @@ if (enable_widevine) {
 if (is_android) {
   brave_chrome_browser_allow_circular_includes_from += [
     "//brave/browser/android:android_browser_process",
+    "//brave/browser/android:tabs_impl",
     "//brave/browser/android/preferences",
-    "//brave/browser/android:tab_features",
   ]
 }
 
@@ -662,8 +679,4 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
-}
-
-if (target_os == "mac") {
-  brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }

@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 
-#include <string>
-
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -14,17 +12,24 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_generated_resources_webui_strings.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
@@ -50,13 +55,6 @@ namespace settings {
 
 namespace {
 
-constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
-    u"https://search.brave.com";
-constexpr char16_t kBraveAccountTermsOfServiceURL[] =
-    u"https://brave.com/terms-of-use/";
-constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
-    u"https://brave.com/privacy/browser/";
-
 constexpr char16_t kWebRTCLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
@@ -65,6 +63,11 @@ constexpr char16_t kBraveBuildInstructionsUrl[] =
 constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
 constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
+#if BUILDFLAG(ENABLE_CONTAINERS)
+constexpr char16_t kContainersLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Containers";
+#endif
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
@@ -120,6 +123,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsCategorySolana", IDS_SETTINGS_SITE_SETTINGS_SOLANA},
       {"siteSettingsSolanaAsk", IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK},
       {"siteSettingsSolanaBlock", IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK},
+      {"siteSettingsCardano", IDS_SETTINGS_SITE_SETTINGS_CARDANO},
+      {"siteSettingsCardanoAsk", IDS_SETTINGS_SITE_SETTINGS_CARDANO_ASK},
+      {"siteSettingsCardanoBlock", IDS_SETTINGS_SITE_SETTINGS_CARDANO_BLOCK},
 
       {"siteSettingsGoogleSignIn", IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN},
       {"siteSettingsCategoryGoogleSignIn",
@@ -153,87 +159,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
-
-      // <Brave Account>
-      // Row:
-      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
-      {"braveAccountRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
-      {"braveAccountGetStartedButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountManageAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
-
-      // 'Entry' dialog:
-      {"braveAccountEntryDialogTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
-      {"braveAccountEntryDialogDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION},
-      {"braveAccountCreateBraveAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL},
-      {"braveAccountAlreadyHaveAccountSignInButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
-      {"braveAccountSelfCustodyButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL},
-
-      // 'Create' dialog:
-      {"braveAccountCreateDialogTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE},
-      {"braveAccountCreateDialogDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION},
-      {"braveAccountEmailInputErrorMessage",
-       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE},
-      {"braveAccountCreatePasswordInputLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL},
-      {"braveAccountPasswordStrengthMeterWeak",
-       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK},
-      {"braveAccountPasswordStrengthMeterMedium",
-       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM},
-      {"braveAccountPasswordStrengthMeterStrong",
-       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG},
-      {"braveAccountConfirmPasswordInputLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL},
-      {"braveAccountConfirmPasswordInputPlaceholder",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER},
-      {"braveAccountConfirmPasswordInputErrorMessage",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE},
-      {"braveAccountConfirmPasswordInputSuccessMessage",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE},
-      {"braveAccountCreateAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL},
-
-      // 'Sign In' dialog:
-      {"braveAccountSignInDialogTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE},
-      {"braveAccountSignInDialogDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION},
-      {"braveAccountPasswordInputLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL},
-      {"braveAccountForgotPasswordButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL},
-      {"braveAccountSignInButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
-
-      // 'Forgot Password' dialog:
-      {"braveAccountForgotPasswordDialogTitle",
-       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE},
-      {"braveAccountForgotPasswordDialogDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION},
-      {"braveAccountAlertMessage", IDS_SETTINGS_BRAVE_ACCOUNT_ALERT_MESSAGE},
-      {"braveAccountCancelButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL},
-      {"braveAccountResetPasswordButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
-
-      // Common:
-      {"braveAccountEmailInputLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
-      {"braveAccountEmailInputPlaceholder",
-       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER},
-      {"braveAccountPasswordInputPlaceholder",
-       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER},
-      // </Brave Account>
-
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -440,6 +365,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"requestOTRAlways", IDS_SETTINGS_REQUEST_OTR_ALWAYS},
       {"requestOTRNever", IDS_SETTINGS_REQUEST_OTR_NEVER},
 #endif
+#if BUILDFLAG(IS_WIN)
+      {"windowsRecallDisabledLabel",
+       IDS_SETTINGS_WINDOWS_RECALL_DISABLED_LABEL},
+      {"windowsRecallDisabledSubLabel",
+       IDS_SETTINGS_WINDOWS_RECALL_DISABLED_SUBLABEL},
+#endif
       {"braveSync", IDS_SETTINGS_BRAVE_SYNC_TITLE},
       {"braveSyncSetupActionLabel", IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL},
       {"braveSyncSetupTitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE},
@@ -571,8 +502,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
       {"braveLeoModelSubtitle-chat-gemma", IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-vision-basic",
-       IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE},
       {"braveLeoModelSubtitle-chat-deepseek-r1",
        IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE},
       {"braveLeoAssistantManageUrlLabel",
@@ -955,18 +884,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   };
 
   html_source->AddLocalizedStrings(localized_strings);
-  // <Brave Account>
-  html_source->AddString(
-      "braveAccountSelfCustodyDescription",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
-          kBraveAccountSelfCustodyLearnMoreURL));
-  html_source->AddString(
-      "braveAccountConsentCheckboxLabel",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL,
-          kBraveAccountTermsOfServiceURL, kBraveAccountPrivacyAgreementURL));
-  // </Brave Account>
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
@@ -1020,7 +937,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               g_browser_process->GetApplicationLocale())
               .spec()));
   html_source->AddString("autoLockMinutesValue",
-                         std::to_string(profile->GetPrefs()->GetInteger(
+                         base::NumberToString(profile->GetPrefs()->GetInteger(
                              kBraveWalletAutoLockMinutes)));
 
   html_source->AddString(
@@ -1033,6 +950,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
                              kUnstoppableDomainsLearnMoreURL));
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddLocalizedStrings(webui::kContainersStrings);
+  html_source->AddString("containersLearnMoreURL", kContainersLearnMoreURL);
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddString(
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
@@ -1095,6 +1016,7 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
     return;
   }
   webui::LocalizedString localized_strings[] = {
+      {"emailAliasesLabel", IDS_SETTINGS_EMAIL_ALIASES_LABEL},
       {"emailAliasesShortDescription",
        IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION},
       {"emailAliasesDescription", IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION},
@@ -1174,6 +1096,24 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
   html_source->AddLocalizedStrings(localized_strings);
 }
 
+void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
+  if (!brave_account::features::IsBraveAccountEnabled()) {
+    return;
+  }
+
+  webui::LocalizedString localized_strings[] = {
+      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
+      {"braveAccountRowDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountGetStartedButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
+      {"braveAccountManageAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+  };
+
+  html_source->AddLocalizedStrings(localized_strings);
+}
+
 }  // namespace
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
@@ -1184,6 +1124,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
   BraveAddEmailAliasesStrings(html_source);
+  BraveAddBraveAccountStrings(html_source);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
@@ -1201,6 +1142,20 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
+
+  html_source->AddBoolean("braveNewsDisabledByPolicy",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_news::prefs::kBraveNewsDisabledByPolicy));
+
+  html_source->AddBoolean(
+      "braveTalkDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "braveWaybackMachineDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
+#endif
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

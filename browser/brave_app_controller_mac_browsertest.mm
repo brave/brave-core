@@ -222,32 +222,22 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
 
   // Total 5 items - basic 3 items (Bookmark Manager, Bookmark This Tab... and
-  // Bookmark All Tabs..), separator, and "Other Bookmarks" (which contains the
-  // new bookmark item).
+  // Bookmark All Tabs..), separator, and "Bookmarks" (which contains the new
+  // bookmark item).
   EXPECT_EQ(5, [normal_window_submenu numberOfItems]);
-  EXPECT_TRUE([[normal_window_submenu itemAtIndex:4] hasSubmenu]);
-  NSMenu* other_bookmarks_submenu =
-      [[normal_window_submenu itemAtIndex:4] submenu];
-  // The "Other Bookmarks" menu is lazy loaded
-  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 0);
-  [ac bookmarkMenuBridge]->UpdateNonRootMenu(
-      other_bookmarks_submenu, BookmarkParentFolder::OtherFolder());
-  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 1);
-  EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
-            base::SysNSStringToUTF16(
-                [[other_bookmarks_submenu itemAtIndex:0] title]));
+  EXPECT_EQ(
+      std::u16string(kPersistBookmarkTitle),
+      base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
 
   // Create private browser and check bookmark menubar has same items.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());
   [ac setLastProfile:private_browser->profile()];
   NSMenu* private_browser_submenu = [ac bookmarkMenuBridge]->BookmarkMenu();
   [[private_browser_submenu delegate] menuNeedsUpdate:private_browser_submenu];
-  NSMenu* private_other_bookmarks_submenu =
-      [[private_browser_submenu itemAtIndex:4] submenu];
-  EXPECT_EQ([private_other_bookmarks_submenu numberOfItems], 1);
+  EXPECT_EQ(5, [private_browser_submenu numberOfItems]);
   EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
             base::SysNSStringToUTF16(
-                [[private_other_bookmarks_submenu itemAtIndex:0] title]));
+                [[private_browser_submenu itemAtIndex:4] title]));
 
   // Close private browser and check bookmark menubar still has same items.
   chrome::CloseWindow(private_browser);
@@ -256,10 +246,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [ac setLastProfile:browser()->profile()];
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
   EXPECT_EQ(5, [normal_window_submenu numberOfItems]);
-  EXPECT_EQ([other_bookmarks_submenu numberOfItems], 1);
-  EXPECT_EQ(std::u16string(kPersistBookmarkTitle),
-            base::SysNSStringToUTF16(
-                [[other_bookmarks_submenu itemAtIndex:0] title]));
+  EXPECT_EQ(
+      std::u16string(kPersistBookmarkTitle),
+      base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
 }
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -345,6 +334,92 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   EXPECT_FALSE(tor_menu.enabled);
   EXPECT_TRUE(tor_menu.isHidden);
 }
-#endif  // BUILDFLAG(ENABLE_TOR)
 
+// Verify that _torMainMenuItem is never null when Tor is enabled
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorMenuItemExists) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* controller =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(controller);
+
+  [controller setLastProfile:browser()->profile()];
+  [controller mainMenuCreated];
+
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  ASSERT_TRUE(fileMenu);
+
+  NSMenuItem* torMenuItem =
+      [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  ASSERT_TRUE(torMenuItem);
+}
+
+// Verify that tor_main_pref_observer_ is lazily created when Tor is enabled
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
+                       TorPrefObserverLazyCreationEnabled) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* controller =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(controller);
+
+  // Ensure Tor is enabled
+  browser()->profile()->GetPrefs()->ClearPref(
+      policy::policy_prefs::kIncognitoModeAvailability);
+  g_browser_process->local_state()->ClearPref(tor::prefs::kTorDisabled);
+  ASSERT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+
+  [controller mainMenuCreated];
+
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  ASSERT_TRUE(fileMenu);
+
+  NSMenuItem* torMenuItem =
+      [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  ASSERT_TRUE(torMenuItem);
+
+  // Ensure menu updates are processed
+  [[torMenuItem menu] setDelegate:controller];
+
+  // Trigger menu update
+  [controller setLastProfile:browser()->profile()];
+  [controller menuNeedsUpdate:[torMenuItem menu]];
+
+  EXPECT_TRUE([torMenuItem isEnabled]);
+  EXPECT_FALSE([torMenuItem isHidden]);
+}
+
+// Verify that tor_main_pref_observer_ is lazily created when Tor is disabled
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
+                       TorPrefObserverLazyCreationDisabled) {
+  NSApplication* app = [NSApplication sharedApplication];
+  BraveAppController* controller =
+      base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
+  ASSERT_TRUE(controller);
+
+  // Ensure Tor is disabled
+  browser()->profile()->GetPrefs()->SetInteger(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      static_cast<int>(policy::IncognitoModeAvailability::kDisabled));
+  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
+  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+
+  [controller mainMenuCreated];
+
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  ASSERT_TRUE(fileMenu);
+
+  NSMenuItem* torMenuItem =
+      [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  ASSERT_TRUE(torMenuItem);
+
+  // Ensure menu updates are processed
+  [[torMenuItem menu] setDelegate:controller];
+
+  // Trigger menu update
+  [controller setLastProfile:browser()->profile()];
+  [controller menuNeedsUpdate:[torMenuItem menu]];
+
+  EXPECT_FALSE([torMenuItem isEnabled]);
+  EXPECT_TRUE([torMenuItem isHidden]);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
 }  // namespace

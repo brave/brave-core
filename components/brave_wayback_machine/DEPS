@@ -1,4 +1,6 @@
 include_rules = [
+  "+components/prefs",
+  "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
@@ -7,3 +9,9 @@ include_rules = [
   "+services/data_decoder/public",
   "+ui/gfx/native_widget_types.h",
 ]
+
+specific_include_rules = {
+  "brave_wayback_machine_policy_unittest.cc": [
+    "+components/sync_preferences",
+  ],
+}

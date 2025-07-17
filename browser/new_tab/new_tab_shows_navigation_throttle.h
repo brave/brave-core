@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NEW_TAB_NEW_TAB_SHOWS_NAVIGATION_THROTTLE_H_
 #define BRAVE_BROWSER_NEW_TAB_NEW_TAB_SHOWS_NAVIGATION_THROTTLE_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "url/gurl.h"
@@ -22,8 +20,7 @@ class NewTabShowsNavigationThrottle : public content::NavigationThrottle {
   NewTabShowsNavigationThrottle& operator=(
       const NewTabShowsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<NewTabShowsNavigationThrottle> MaybeCreateThrottleFor(
-      content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
  private:
   // content::NavigationThrottle overrides:

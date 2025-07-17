@@ -1,3 +1,5 @@
 include_rules = [
+  "+components/history",
+  "+components/sync",
   "+sql/test",
 ]

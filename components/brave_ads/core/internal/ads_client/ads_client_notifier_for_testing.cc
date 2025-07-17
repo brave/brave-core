@@ -47,13 +47,6 @@ void AdsClientNotifierForTesting::NotifyRewardsWalletDidUpdate(
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyLocaleDidChange(
-    const std::string& locale) {
-  ads_client_notifier_.NotifyLocaleDidChange(locale);
-
-  RunTaskEnvironmentUntilIdle();
-}
-
 void AdsClientNotifierForTesting::NotifyPrefDidChange(const std::string& path) {
   ads_client_notifier_.NotifyPrefDidChange(path);
 

@@ -15,10 +15,6 @@ export const style = scoped.css`
     > * {
       flex: 0 1 auto;
     }
-
-    :first-child {
-      flex: 1 1 auto;
-    }
   }
 
   textarea {
@@ -31,5 +27,19 @@ export const style = scoped.css`
     border-radius: 12px;
     background: ${color.container.background};
     border: none;
+  }
+
+  .auto-refresh {
+    --leo-icon-size: 20px;
+
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+
+    leo-icon {
+      opacity: .75;
+    }
   }
 `

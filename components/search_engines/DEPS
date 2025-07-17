@@ -1,3 +1,5 @@
 include_rules = [
+  "+components/regional_capabilities",
+  "+components/search_engines",
   "+third_party/search_engines_data",
 ]

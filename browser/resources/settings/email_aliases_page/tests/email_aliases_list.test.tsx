@@ -28,7 +28,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
   cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn()
 }
 
 describe('AliasList', () => {
@@ -122,10 +121,8 @@ describe('AliasList', () => {
       />
     )
 
-    await act(async () => {
-      const createButton = screen.getByText('emailAliasesCreateAliasLabel')
-      clickLeoButton(createButton)
-    })
+    const createButton = screen.getByText('emailAliasesCreateAliasLabel')
+    clickLeoButton(createButton)
 
     expect(mockOnCreateClicked).toHaveBeenCalled()
   })

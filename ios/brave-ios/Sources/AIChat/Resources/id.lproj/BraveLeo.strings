@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Aktifkan untuk menampilkan pintasan untuk meluncurkan Leo dari bilah alamat.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Tampilkan di Bilah Alamat";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Model Bawaan";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Visi tujuan umum";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang diciptakan oleh Mistral AI untuk menangani tugas-tugas tingkat lanjut. Mixtral dihost oleh Brave dalam infrastruktur kami yang aman.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Tugas obrolan lanjutan";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo Dinonaktifkan";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo saat ini tidak tersedia dalam Mode Penelusuran Pribadi. Untuk menggunakan Leo, keluar dari Mode Penelusuran Pribadi dan coba lagi.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo Tidak Tersedia";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Unggah Gambar";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Saya Paham";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo adalah asisten pintar Pribadi AI yang meningkatkan penggunaan web Anda. Leo gratis digunakan dengan akses terbatas. Brave Leo Premium menawarkan lebih banyak model, batas yang lebih tinggi, dan memberikan akses awal ke fitur-fitur baru kepada pelanggan. Model bawaan untuk semua pengguna saat ini adalah Mixtral 8x7B. Lihat **[Pusat Bantuan] Brave (%1$@)** untuk lebih jelasnya.\n\nSecara bawaan, ketika Anda mengajukan pertanyaan kepada Leo, ia dapat mengirim dan menggunakan konten halaman web yang Anda lihat atau teks apa pun yang Anda sorot pada halaman ke Brave Leo untuk memberikan tanggapan. Dalam beberapa kasus, Leo akan mengirimkan pertanyaan yang berasal dari masukan Anda ke Pencarian Brave dan menggunakan hasil pencarian untuk menjawab pertanyaan Anda dengan lebih baik. Keakuratan jawaban tidak dijamin, dan dapat mencakup informasi yang tidak akurat, menyesatkan, atau salah. Jangan kirimkan informasi yang sensitif atau privat, dan berhati-hatilah dengan jawaban yang berhubungan dengan kesehatan, keuangan, keselamatan pribadi, atau yang serupa. Anda dapat menyesuaikan opsi Leo di Pengaturan kapan saja. Buka Pengaturan > Leo.\n\nLeo tidak mengumpulkan pengidentifikasi seperti alamat IP yang dapat ditautkan dengan Anda. Tidak ada data yang digunakan untuk melatih model AI dan tidak ada data pribadi yang disimpan oleh model AI (kecuali untuk Anthropic yang menyimpan data selama 30 hari sebelum menghapusnya). Lihat **[kebijakan privasi](%2$@)** untuk informasi lebih lanjut.";
+"aichat.termsConditionsDescription" = "Brave Leo adalah asisten pintar pribadi AI untuk memaksimalkan penggunaan web. Leo dapat digunakan secara gratis dengan akses terbatas. Brave Leo Premium menawarkan lebih banyak model, limit lebih tinggi, dan memberi pelanggan akses awal ke fitur-fitur baru. Buka **[Pusat Bantuan](%1$@)** Brave untuk detail selengkapnya.\n\nSecara default, saat Anda mengajukan pertanyaan ke Leo, ia dapat mengirim dan menggunakan konten halaman web yang Anda lihat atau teks apa pun yang Anda soroti di halaman ke Brave Leo untuk memberikan respons. Dalam beberapa kasus, Leo akan mengirimkan kueri yang berasal dari input Anda ke Brave Penelusuran dan menggunakan hasil penelusuran untuk menjawab pertanyaan Anda dengan lebih baik. Keakuratan respons tidak dijamin, dan mungkin mengandung informasi yang tidak akurat, menyesatkan, atau salah. Jangan kirimkan informasi yang bersifat sensitif atau pribadi, dan berhati-hatilah dengan jawaban apa pun yang terkait dengan kesehatan, keuangan, keselamatan pribadi, atau semacamnya. Anda dapat menyesuaikan opsi Leo di Pengaturan kapan saja. Buka Pengaturan > Leo.\n\nLeo tidak mengumpulkan pengidentifikasi seperti alamat IP yang dapat dikaitkan dengan Anda. Tidak ada data yang digunakan untuk melatih model AI dan tidak ada data pribadi yang disimpan oleh model AI (kecuali untuk Anthropic yang menyimpan data selama 30 hari sebelum menghapusnya). Baca **[kebijakan privasi](%2$@)** untuk informasi selengkapnya.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Mengobrol Secara Privat dengan Brave Leo";

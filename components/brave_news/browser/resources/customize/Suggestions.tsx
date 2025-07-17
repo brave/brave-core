@@ -18,18 +18,18 @@ export function SuggestionsCarousel () {
 
   return <Carousel
     title={<Flex justify='space-between'>
-      {getLocale('braveNewsSuggestionsTitle')}
+      {getLocale(S.BRAVE_NEWS_SUGGESTIONS_TITLE)}
       <CustomizeLink onClick={() => setCustomizePage('suggestions')}>
-        {getLocale('braveNewsViewAllButton')}
+        {getLocale(S.BRAVE_NEWS_VIEW_ALL_BUTTON)}
       </CustomizeLink>
     </Flex>}
-    subtitle={getLocale('braveNewsSuggestionsSubtitle')}
+    subtitle={getLocale(S.BRAVE_NEWS_SUGGESTIONS_SUBTITLE)}
     publisherIds={suggestedPublisherIds}/>
 }
 
 export function SuggestionsPage () {
   const { suggestedPublisherIds } = useBraveNews()
-  return <CustomizePage title={getLocale('braveNewsSuggestionsTitle')}>
+  return <CustomizePage title={getLocale(S.BRAVE_NEWS_SUGGESTIONS_TITLE)}>
     <DiscoverSection>
       {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
     </DiscoverSection>

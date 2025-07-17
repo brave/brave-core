@@ -15,6 +15,7 @@ import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
+import { Link } from '$web-common/useRoute'
 
 interface SimpleInputProps {
   text?: string
@@ -87,7 +88,7 @@ function ConversationItem(props: ConversationItemProps) {
 
   return (
     <li>
-      <a
+      <Link
         className={classnames(
           styles.navItem,
           isActive && styles.navItemActive,
@@ -150,7 +151,7 @@ function ConversationItem(props: ConversationItemProps) {
             />
           </div>
         )}
-      </a>
+      </Link>
     </li>
   )
 }

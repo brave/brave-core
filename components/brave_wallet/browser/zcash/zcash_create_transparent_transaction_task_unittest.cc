@@ -15,6 +15,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -25,7 +26,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -88,9 +88,11 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
         db_path, *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
 
+#if BUILDFLAG(ENABLE_ORCHARD)
     sync_state_ = base::SequenceBound<OrchardSyncState>(
         base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
         db_path);
+#endif
 
     zcash_rpc_ = std::make_unique<MockZCashRPC>();
 
@@ -104,8 +106,12 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
   }
 
   ZCashActionContext zcash_action_context() {
+#if BUILDFLAG(ENABLE_ORCHARD)
     return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_,
                               mojom::kZCashMainnet);
+#else
+    return ZCashActionContext(*zcash_rpc_, account_id_, mojom::kZCashMainnet);
+#endif
   }
 
   base::PassKey<ZCashCreateTransparentTransactionTaskTest> pass_key() {
@@ -132,7 +138,9 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
   std::unique_ptr<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
 
+#if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState> sync_state_;
+#endif
 
   base::test::TaskEnvironment task_environment_;
 };
@@ -299,7 +307,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
 }
 
 TEST_F(ZCashCreateTransparentTransactionTaskTest,
-       TransactionNotCreated_NotEnoughtFunds) {
+       TransactionNotCreated_NotEnoughFunds) {
   ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,

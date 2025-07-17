@@ -16,7 +16,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -176,6 +176,14 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     scroll_view_->SetBackgroundColor(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
+    if (unpinned_tab_container_->parent()) {
+      // On Aura, when adding a view to a new parent, it'll be removed from the
+      // old parent automatically. But this causes CHECK failure while updating
+      // tooltip. In order to avoid that, we remove the view from the old parent
+      // manually before adding it to the new parent.
+      unpinned_tab_container_->parent()->RemoveChildView(
+          base::to_address(unpinned_tab_container_));
+    }
     contents_view->AddChildView(base::to_address(unpinned_tab_container_));
     DeprecatedLayoutImmediately();
   } else {
@@ -228,6 +236,8 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
   }
 
   if (layout_dirty) {
+    // Tab could have different insets per containers(ex, split tabs).
+    tab->UpdateInsets();
     DeprecatedLayoutImmediately();
   }
 }

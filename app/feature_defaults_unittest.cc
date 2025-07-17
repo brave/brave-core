@@ -51,7 +51,6 @@
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
-#include "components/webui/chrome_urls/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
 #include "content/public/common/buildflags.h"
@@ -86,6 +85,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
+      &autofill::features::kAutofillEnableAmountExtractionDesktop,
+      &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
@@ -214,8 +215,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
       &optimization_guide::features::kRemoteOptimizationGuideFetching,
-      &optimization_guide::features::
-          kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
       &permissions::features::kCpssUseTfliteSignatureRunner,
@@ -268,6 +267,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if BUILDFLAG(IS_ANDROID)
@@ -294,6 +294,10 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
 // it via its helper function
 TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
   EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
+}
+
+TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
+  EXPECT_TRUE(features::HasTabSearchToolbarButton());
 }
 
 #if !BUILDFLAG(IS_ANDROID)

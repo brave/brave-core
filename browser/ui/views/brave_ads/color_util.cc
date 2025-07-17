@@ -14,6 +14,7 @@
 #include "base/containers/span_reader.h"
 #include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_view_util.h"
 
 namespace brave_ads {
 

@@ -1,0 +1,47 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/updater/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+
+  flags = [ "ENABLE_OMAHA4=$enable_omaha4" ]
+}
+
+if (enable_omaha4) {
+  source_set("features") {
+    sources = [
+      "features.cc",
+      "features.h",
+    ]
+    public_deps = [ "//base" ]
+  }
+
+  source_set("p3a") {
+    sources = [
+      "updater_p3a.cc",
+      "updater_p3a.h",
+    ]
+
+    public_deps = [
+      "//base",
+      "//components/prefs",
+    ]
+  }
+
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "updater_p3a_unittest.cc" ]
+
+    deps = [
+      ":p3a",
+      "//base",
+      "//base/test:test_support",
+      "//components/prefs:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

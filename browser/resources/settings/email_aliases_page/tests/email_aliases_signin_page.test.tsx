@@ -32,7 +32,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn()
 }
 
 describe('MainEmailEntryForm', () => {
@@ -53,12 +52,12 @@ describe('MainEmailEntryForm', () => {
     const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
     const emailInput = screen
       .getByPlaceholderText('emailAliasesEmailAddressPlaceholder')
-    await act(async () => {
-      fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
-      clickLeoButton(signUpButton)
+    fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
+    clickLeoButton(signUpButton)
+    await waitFor(() => {
+      expect(mockEmailAliasesService.requestAuthentication)
+        .toHaveBeenCalledWith(mockAuthEmail)
     })
-    expect(mockEmailAliasesService.requestAuthentication)
-      .toHaveBeenCalledWith(mockAuthEmail)
   })
 
   it('handles error when requesting authentication', async () => {
@@ -79,10 +78,9 @@ describe('MainEmailEntryForm', () => {
     const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
     const emailInput = screen
       .getByPlaceholderText('emailAliasesEmailAddressPlaceholder')
-    await act(async () => {
-      fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
-      clickLeoButton(signUpButton)
-    })
+    fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
+    clickLeoButton(signUpButton)
+
     await waitFor(() => {
       expect(mockEmailAliasesService.requestAuthentication)
         .toHaveBeenCalledWith(mockAuthEmail)

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 brave_ui_allow_circular_includes_from =
@@ -13,6 +14,8 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_education",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_news_internals",
+    "//brave/browser/ui/webui/cr_components",
+    "//brave/browser/ui/webui/side_panel/customize_chrome",
   ]
 }
 if (is_android) {
@@ -22,7 +25,12 @@ if (is_android) {
 if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/split_view",
     "//brave/browser/ui/sidebar",
   ]
+
+  if (enable_containers) {
+    brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
+  }
 }

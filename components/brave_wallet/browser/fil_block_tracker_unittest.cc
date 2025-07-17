@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -64,7 +65,7 @@ class FilBlockTrackerUnitTest : public testing::Test {
   std::string GetResponseString() const {
     return "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"Blocks\":[],\"Cids\":[{"
            "\"/\":\"cid\"}],\"Height\":" +
-           std::to_string(response_height_) + "}}";
+           base::NumberToString(response_height_) + "}}";
   }
 
   void TestGetLatestHeight(const std::string& chain_id,

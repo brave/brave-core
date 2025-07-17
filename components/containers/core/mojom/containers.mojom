@@ -1,0 +1,94 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module containers.mojom;
+
+import "skia/public/mojom/skcolor.mojom";
+
+// Represents the icons that can be used for containers. These icons are
+// used to visually distinguish different containers in the user interface.
+//
+// IMPORTANT: The values of these icons are stored in preferences, so they
+// should not be changed or reordered. If a new icon is added, it should be
+// appended to the end of the enum. When removing an icon, it should be
+// suffixed with "_DEPRECATED" to maintain compatibility with existing preferences.
+enum Icon {
+  kPersonal = 0,
+  kWork = 1,
+  kShopping = 2,
+  kSocial = 3,
+  kEvents = 4,
+  kBanking = 5,
+  kStar = 6,
+  kTravel = 7,
+  kSchool = 8,
+  kPrivate = 9,
+  kMessaging = 10,
+
+  kDefault = kPersonal,  // Default icon used when no specific icon is set.
+};
+
+// Represents a container that holds a separate browsing context/identity.
+// Containers allow users to maintain different identities within the same
+// browser profile, keeping cookies, storage, and other site data separate
+// between containers.
+struct Container {
+  // Unique identifier for the container.
+  string id;
+  // User-friendly name for the container.
+  string name;
+  // User-friendly icon for the container.
+  Icon icon;
+  // Background color for the container icon.
+  skia.mojom.SkColor background_color;
+};
+
+// Represents an error that occurred during a container CRUD operation.
+enum ContainerOperationError {
+  // The container ID is set, but the operation expects it to be empty.
+  kIdShouldBeEmpty = 1,
+  // The container ID is not set, but the operation expects it to be non-empty.
+  kIdShouldBeSet,
+  // The container name is invalid.
+  kInvalidName,
+  // The container icon is invalid.
+  kInvalidIcon,
+  // The container background color is invalid.
+  kInvalidBackgroundColor,
+  // The container was not found.
+  kNotFound,
+};
+
+// Interface for settings UI -> browser communication. This interface allows the
+// settings UI to perform CRUD operations on containers, with all operations
+// being handled in the browser process.
+interface ContainersSettingsHandler {
+  // Establishes a connection with the UI for browser -> UI notifications. This
+  // creates a 1-to-1 connection between the handler and the settings UI.
+  BindUI(pending_remote<ContainersSettingsUI> ui);
+
+  // Retrieves the current list of containers. Returns: Array of all configured
+  // containers
+  GetContainers() => (array<Container> containers);
+
+  // Creates a new container.
+  AddContainer(Container container) => (ContainerOperationError? error);
+
+  // Updates an existing container.
+  UpdateContainer(Container container) => (ContainerOperationError? error);
+
+  // Removes a container by its ID.
+  RemoveContainer(string id) => (ContainerOperationError? error);
+};
+
+// Interface for browser -> settings UI communication. This interface allows the
+// browser process to notify the settings UI about changes to the containers
+// list.
+interface ContainersSettingsUI {
+  // Notifies the settings UI when the containers list is modified. This ensures
+  // the UI stays in sync with the browser-side container state.
+  // - `containers`: Updated list of all containers.
+  OnContainersChanged(array<Container> containers);
+};

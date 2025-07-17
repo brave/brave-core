@@ -7,6 +7,12 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+// Selectors
+import {
+  useSafeUISelector, //
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // Types
 import {
   AccountButtonOptionsObjectType,
@@ -77,18 +83,15 @@ interface Props {
   account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
-  isAndroid: boolean
-  isPanel: boolean
 }
 
 export const AccountDetailsHeader = (props: Props) => {
-  const {
-    account,
-    onClickMenuOption,
-    tokenBalancesRegistry,
-    isAndroid,
-    isPanel,
-  } = props
+  const { account, onClickMenuOption, tokenBalancesRegistry } = props
+
+  // UI Selectors (safe)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroidOrPanel = isAndroid || isPanel
 
   // routing
   const history = useHistory()
@@ -213,14 +216,11 @@ export const AccountDetailsHeader = (props: Props) => {
   }, [account])
 
   const headerPadding = React.useMemo(() => {
-    if (isAndroid) {
-      return '16px 0px 0px 0px'
-    }
-    if (isPanel) {
+    if (isAndroidOrPanel) {
       return '16px'
     }
     return '24px 0px'
-  }, [isAndroid, isPanel])
+  }, [isAndroidOrPanel])
 
   // Methods
   const goBack = React.useCallback(() => {
@@ -234,7 +234,7 @@ export const AccountDetailsHeader = (props: Props) => {
       data-key='account-details-header'
     >
       <Row width='unset'>
-        {isPanel ? (
+        {isAndroidOrPanel ? (
           <Row
             width='unset'
             margin='0px 12px 0px 0px'
@@ -285,7 +285,7 @@ export const AccountDetailsHeader = (props: Props) => {
       </Row>
 
       <Row width='unset'>
-        {!isPanel && !isAndroid && (
+        {!isAndroidOrPanel && (
           <>
             <Column
               alignItems='flex-end'
@@ -311,7 +311,7 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          {isPanel ? (
+          {isAndroidOrPanel ? (
             <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
               <ButtonIcon name='more-vertical' />
             </Button>

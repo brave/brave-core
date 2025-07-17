@@ -18,6 +18,8 @@ export function createTopSitesHandler(
 
   store.update({
 
+    initialized: true,
+
     showTopSites: true,
 
     topSitesListKind: TopSitesListKind.kCustom,

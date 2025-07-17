@@ -115,11 +115,6 @@ void AntiTargetingResource::Unload() {
   resource_.reset();
 }
 
-void AntiTargetingResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  MaybeLoad();
-}
-
 void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
       DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||

@@ -56,11 +56,103 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/item.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/extensions/item.html.ts
++++ gen/chrome/browser/resources/extensions/preprocessed/item.html.ts
+@@ -13,10 +13,9 @@
+ </div>
+ <div id=\\"card\\" class=\\"\${this.computeClasses_()}\\">
+   <div id=\\"main\\">
+     <div id=\\"icon-wrapper\\">
+-      <img id=\\"icon\\" src=\\"\${this.data.iconUrl}\\"
+-          aria-describedby=\\"a11yAssociation\\" alt=\\"\\">
++      <img id=\\"icon\\" src=\\"\${this.data.iconUrl}\\" aria-describedby=\\"a11yAssociation\\" alt=\\"\\">
+       \${this.computeSourceIndicatorIcon_() ? html\`
+         <div id=\\"source-indicator\\">
+           <div class=\\"source-icon-wrapper\\" role=\\"img\\"
+               aria-describedby=\\"a11yAssociation\\"
+@@ -38,20 +37,19 @@
+       <!--Note: We wrap inspect-views in a div so that the outer div
+           doesn't shrink (because it's not display: flex).-->
+       <div>
+         <div id=\\"name-and-version\\" class=\\"layout-horizontal-center\\">
+-          <div id=\\"name\\" role=\\"heading\\" aria-level=\\"3\\"
+-              class=\\"clippable-flex-text\\">
++          <div id=\\"name\\" role=\\"heading\\" aria-level=\\"3\\" class=\\"clippable-flex-text\\">
+             \${this.data.name}
+           </div>
+-          <span id=\\"version\\" class=\\"cr-secondary-text\\"
+-              ?hidden=\\"\${!this.inDevMode}\\">
++          <span id=\\"version\\" class=\\"cr-secondary-text\\" ?hidden=\\"\${!this.inDevMode}\\">
+             \${this.data.version}
+           </span>
+-        </div>
++        </div><div ?hidden=\\"\${!this.isBraveHosted_(this.data.id)}\\" class=\\"brave-hosted\\">
++          $i18n{braveHosted}
++       </div>
+       </div>
+-      <div id=\\"description\\" class=\\"cr-secondary-text multiline-clippable-text\\"
+-          ?hidden=\\"\${!this.showDescription_()}\\">
++      <div id=\\"description\\" class=\\"cr-secondary-text multiline-clippable-text\\" ?hidden=\\"\${!this.showDescription_()}\\">
+         \${this.data.description}
+       </div>
+       \${this.showSevereWarnings() ? html\`
+         <div id=\\"warnings\\">
+@@ -132,15 +130,12 @@
+     </div>
+   </div>
+   <div id=\\"button-strip\\" class=\\"layout-horizontal-center cr-secondary-text\\">
+     <div class=\\"layout-horizontal-center flex\\">
+-      <cr-button id=\\"detailsButton\\" @click=\\"\${this.onDetailsClick_}\\"
+-          aria-describedby=\\"a11yAssociation\\">
++      <cr-button id=\\"detailsButton\\" @click=\\"\${this.onDetailsClick_}\\" aria-describedby=\\"a11yAssociation\\">
+         $i18n{itemDetails}
+       </cr-button>
+-      <cr-button id=\\"removeButton\\" @click=\\"\${this.onRemoveClick_}\\"
+-          aria-describedby=\\"a11yAssociation\\"
+-          ?hidden=\\"\${this.data.mustRemainInstalled}\\">
++      <cr-button id=\\"removeButton\\" @click=\\"\${this.onRemoveClick_}\\" aria-describedby=\\"a11yAssociation\\" ?hidden=\\"\${this.data.mustRemainInstalled}\\">
+         $i18n{remove}
+       </cr-button>
+       \${this.shouldShowErrorsButton_() ? html\`
+         <cr-button id=\\"errors-button\\" @click=\\"\${this.onErrorsClick_}\\"
+@@ -168,24 +163,14 @@
+       <cr-button id=\\"terminated-reload-button\\" @click=\\"\${this.onReloadClick_}\\"
+           aria-describedby=\\"a11yAssociation\\" class=\\"action-button\\">
+         $i18n{itemReload}
+       </cr-button>\` : ''}
+-    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\"
+-        ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\"
+-        tooltip-text=\\"$i18n{parentDisabledPermissions}\\"
+-        icon-class=\\"cr20:kite\\"
+-        icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
++    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\" ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\" tooltip-text=\\"$i18n{parentDisabledPermissions}\\" icon-class=\\"cr20:kite\\" icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
+     </cr-tooltip-icon>
+-    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\"
+-        aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds>
++    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\" aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds=\\"\\">
+       \${this.getEnableToggleTooltipText_()}
+     </cr-tooltip>
+-    <cr-toggle id=\\"enableToggle\\"
+-        aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\"
+-        aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\"
+-        ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\"
+-        ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\"
+-        ?hidden=\\"\${!this.showEnableToggle_()}\\">
++    <cr-toggle id=\\"enableToggle\\" aria-label=\\"\${this.getEnableToggleAriaLabel_()}\\" aria-describedby=\\"a11yAssociation enable-toggle-tooltip\\" ?checked=\\"\${this.isEnabled_()}\\" @change=\\"\${this.onEnableToggleChange_}\\" ?disabled=\\"\${!this.isEnableToggleEnabled_()}\\" ?hidden=\\"\${!this.showEnableToggle_()}\\">
+     </cr-toggle>
+   </div>
+ </div>
+ <!--_html_template_end_-->\`;
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/side_panel/customize_chrome/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,31 +4,23 @@
+@@ -4,31 +4,24 @@
  
  export function getHtml(this: AppElement) {
    // clang-format off
@@ -72,8 +164,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div page-name=\\"overview\\" id=\\"overviewPage\\">
      <div id=\\"appearance\\" class=\\"section sp-card\\">
 -      <sp-heading hide-back-button>
+-        <h2 slot=\\"heading\\">$i18n{appearanceHeader}</h2>
 +      <sp-heading hide-back-button=\\"\\">
-         <h2 slot=\\"heading\\">$i18n{appearanceHeader}</h2>
++      <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
++        <h2 slot=\\"heading\\"><leo-icon name=\\"themes\\"></leo-icon>$i18n{appearanceHeader}</h2>
        </sp-heading>
 -      <customize-chrome-appearance @edit-theme-click=\\"\${this.onEditThemeClick_}\\"
 -          @wallpaper-search-click=\\"\${this.onWallpaperSearchSelect_}\\"
@@ -99,7 +193,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
       \${this.isSourceTabFirstPartyNtp_() ? html\`<hr class=\\"sp-cards-separator\\">
      <div id=\\"shortcuts\\" class=\\"section sp-card\\">
        <sp-heading hide-back-button>
-@@ -98,10 +90,9 @@
+@@ -98,10 +91,9 @@
      <customize-chrome-wallpaper-search @back-click=\\"\${this.onBackClick_}\\"
          page-name=\\"wallpaper-search\\" id=\\"wallpaperSearchPage\\">
      </customize-chrome-wallpaper-search>
@@ -118,7 +212,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,81 +4,49 @@
+@@ -4,80 +4,49 @@
  
  export function getHtml(this: AppearanceElement) {
    // clang-format off
@@ -153,12 +247,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  \${this.showManagedButton_ ? html\`
 -  <customize-chrome-hover-button id=\\"thirdPartyManageLinkButton\\"
 -      aria-button-label=\\"\${this.i18n('newTabPageManagedByA11yLabel',
--                           this.ntpManagedByName_)}\\"
+-                           this.managedByName_)}\\"
 -      class=\\"link-out-button theme-button\\"
 -      @click=\\"\${this.onNewTabPageManageByButtonClicked_}\\"
--      label=\\"\${this.ntpManagedByName_}\\"
--      label-description=\\"\${this.i18n('newTabPageManagedBy',
--                           this.ntpManagedByName_)}\\">
+-      label=\\"\${this.managedByName_}\\"
+-      label-description=\\"\${this.managedByDesc_}\\">
 -  </customize-chrome-hover-button>
 +  
    \`: ''}
@@ -230,7 +323,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/customize_toolbar/toolbar.html.ts
-@@ -4,26 +4,21 @@
+@@ -4,26 +4,22 @@
  
  export function getHtml(this: ToolbarElement) {
    return html\`<!--_html_template_start_-->
@@ -238,8 +331,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\"
 -      back-button-aria-label=\\"$i18n{backButton}\\"
 -      back-button-title=\\"$i18n{backButton}\\">
-+  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\">
-     <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
+-    <h2 slot=\\"heading\\">$i18n{toolbarHeader}</h2>
++  <sp-heading id=\\"heading\\" @back-button-click=\\"\${this.onBackClick_}\\" back-button-aria-label=\\"$i18n{backButton}\\" back-button-title=\\"$i18n{backButton}\\" hide-back-button=\\"true\\">
++        <close-panel-button id=\\"closeButton\\" iron-icon=\\"close\\" slot=\\"buttons\\"></close-panel-button>
++    <h2 slot=\\"heading\\"><leo-icon name=\\"window-edit\\"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
 -  <div id=\\"miniToolbarBackground\\">
 -    <svg id=\\"miniToolbar\\" src=\\"icons/mini_toolbar.svg\\">
@@ -267,7 +362,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  <div class=\\"sp-card\\" id=\\"pinningSelectionCard\\">
    \${
        this.categories_.map(
-@@ -71,14 +66,12 @@
+@@ -71,14 +67,12 @@
                categoryIndex !== this.categories_.length - 1 ?
                    html\`<hr class=\\"sp-hr\\">\` :
                    ''}

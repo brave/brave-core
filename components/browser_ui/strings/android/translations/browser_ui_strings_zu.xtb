@@ -84,6 +84,7 @@ Ukuvikela Okuthuthukile kulawula lawa masethingi eBrave:
 <translation id="2028449514182362831">Izici ezidinga izinzwa zokunyakaza ngeke zisebenze</translation>
 <translation id="2030769033451695672">Thepha ukubuyela ku-<ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Hlehlisa</translation>
+<translation id="2080070583977670716">Ezinye izilungiselelo</translation>
 <translation id="2091887806945687916">Umsindo</translation>
 <translation id="2096716221239095980">Sula yonke idatha</translation>
 <translation id="2102396546234652240">Ungavumeli amasayithi asebenzise imakrofoni yakho</translation>
@@ -232,7 +233,6 @@ Ukuvikela Okuthuthukile kulawula lawa masethingi eBrave:
 <translation id="3779154269823594982">Shintsha amaphasiwedi</translation>
 <translation id="3797520601150691162">Ungasebenzisi itimu emnyama yesayithi elithile</translation>
 <translation id="3803367742635802571">Amasayithi owavakashelayo angase ayeke ukusebenza ngendlela eklanywe ngayo</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Izinombolo zefoni</translation>
 <translation id="3826050100957962900">Ukungena ngemvume kwenkampani yangaphandle</translation>
 <translation id="3835233591525155343">Umsebenzi wedivayisi yakho</translation>
@@ -445,7 +445,6 @@ Ukuvikela Okuthuthukile kulawula lawa masethingi eBrave:
 <translation id="6452138246455930388">Ukwehla kwentengo kwethebhu yakho evuliwe, kusukela ku-<ph name="OLD_PRICE"/> kuya ku-<ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Uma iwindi lilincane, cela ukubuka kweselula</translation>
 <translation id="6527303717912515753">Yabelana</translation>
-<translation id="652937045869844725">Zama ukuvumela amakhukhi ezinkampani zangaphandle, okusho ukuvikeleka okuncane kodwa izakhi zesayithi cishe zizosebenza</translation>
 <translation id="6530703012083415527">Lapho ivuliwe, amasayithi angasebenzisa ama-pop-up nokuqondisa kabusha. Lapho ivaliwe, amasayithi awakwazi ukusebenzisa ama-pop-up nokuqondisa kabusha.</translation>
 <translation id="6540488083026747005">Uvumele amakhukhi ezinkampani zangaphandle kule sayithi</translation>
 <translation id="6545864417968258051">Ukuskena kwe-Bluetooth</translation>
@@ -459,6 +458,7 @@ Ukuvikela Okuthuthukile kulawula lawa masethingi eBrave:
 <translation id="6612358246767739896">Okuqukethwe okuvikelekile</translation>
 <translation id="662080504995468778">Hlala</translation>
 <translation id="6635327442719709864">Lapho evuliwe, amasayithi angacela ukusebenzisa izibulo lochunge lokuxhumana. Lapho evaliwe, amasayithi ngeke akwazi ukusebenzisa izibulo lochunge lokuxhumana.</translation>
+<translation id="6678072580827808850">Buyekeza Ukuhlola Ukuphepha</translation>
 <translation id="6683865262523156564">Le sayithi iseqenjini elikwazi ukubona izinto ozenzayo. Iqembu lichazwa ngu-<ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Izithombe zephrofayela</translation>
 <translation id="6697925417670533197">Ukulanda okusebenzayo</translation>
@@ -493,7 +493,6 @@ Ukuvikela Okuthuthukile kulawula lawa masethingi eBrave:
 <translation id="7141896414559753902">Vimbela amasayithi kusukela ekuboniseni okwesikhashana nokuqondiswa kabusha (kunconyiwe)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
 <translation id="7180611975245234373">Qala kabusha</translation>
-<translation id="7180865173735832675">Yenza ngokwezifiso</translation>
 <translation id="7188508872042490670">Idatha yesayithi ekudivayisi</translation>
 <translation id="7201549776650881587">Lesi senzo sizosula yonke idatha namakhukhi agcinwe yiwo wonke amasayithi ngaphansi kwa-<ph name="ORIGIN"/> noma nge-app yakho esikrinini sakho sasekhaya</translation>
 <translation id="7203150201908454328">Inwetshiwe</translation>

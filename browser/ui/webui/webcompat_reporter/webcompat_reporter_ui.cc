@@ -334,6 +334,7 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
       submission_args.FindString(kAdBlockSettingField);
   const std::string* fp_block_setting_arg =
       submission_args.FindString(kFPBlockSettingField);
+  const base::Value* category_arg = submission_args.Find(kCategoryField);
   const base::Value* details_arg = submission_args.Find(kDetailsField);
   const base::Value* contact_arg = submission_args.Find(kContactField);
   pending_report_->shields_enabled = BoolToString(
@@ -353,6 +354,9 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   }
   if (fp_block_setting_arg != nullptr) {
     pending_report_->fp_block_setting = *fp_block_setting_arg;
+  }
+  if (category_arg != nullptr && category_arg->is_string()) {
+    pending_report_->category = category_arg->GetString();
   }
   if (details_arg != nullptr && details_arg->is_string()) {
     pending_report_->details = details_arg->GetString();

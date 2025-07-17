@@ -12,7 +12,9 @@ source_set("split_view") {
   deps = [
     "//brave/browser/ui/views/split_view",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/exclusive_access",
     "//ui/base/metadata",
     "//ui/compositor",
     "//ui/views",

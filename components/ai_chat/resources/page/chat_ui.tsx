@@ -96,13 +96,22 @@ function ConversationEntries(props: ConversationEntriesProps) {
       // Use the first height change to notify that the iframe has rendered,
       // in lieu of an actual "has rendered the conversation entries" event
       // which, if we get any bugs with this and need to add complexity, might
-      // be simpler to implement excplicitly, from child -> parent.
+      // be simpler to implement explicitly, from child -> parent.
       if (!hasNotifiedContentReady.current && height > 0) {
         hasNotifiedContentReady.current = true
         props.onIsContentReady(true)
       }
       if (iframeRef.current) {
-        iframeRef.current.style.height = height + 'px'
+        // Additional height is added here to address the issue where the
+        // button menu's get cut off when the conversation is short since
+        // they cant be rendered outside of the iframe.
+        // See https://github.com/brave/brave-browser/issues/46042
+        const additionalHeight = Math.max(0, 500 - height)
+        document.body.style.setProperty(
+          '--iframe-additional-margin-for-menus',
+          additionalHeight + 'px'
+        )
+        iframeRef.current.style.height = (height + additionalHeight) + 'px'
         props.onHeightChanged()
       }
     }

@@ -58,7 +58,7 @@ const Container = styled.div`
   }
 `
 
-const description = formatLocale('braveNewsIntroDescriptionTwo', {
+const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
   $1: (content) => (
     <SecureLink href='https://brave.com/privacy/browser/'>{content}</SecureLink>
   )
@@ -70,9 +70,9 @@ export default function OptIn() {
   return (
     <Container data-theme='dark' className={NEWS_FEED_CLASS}>
       <div className='graphic' />
-      <h3>{getLocale('braveNewsIntroTitle')}</h3>
+      <h3>{getLocale(S.BRAVE_NEWS_INTRO_TITLE)}</h3>
       <div>
-        <p>{getLocale('braveNewsIntroDescription')}</p>
+        <p>{getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}</p>
         <p>{description}</p>
       </div>
       <div>
@@ -80,13 +80,13 @@ export default function OptIn() {
           kind='filled'
           onClick={() => toggleBraveNewsOnNTP(true)}
         >
-          {getLocale('braveNewsOptInActionLabel')}
+          {getLocale(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
         </Button>
         <Button
           kind='plain-faint'
           onClick={() => toggleBraveNewsOnNTP(false)}
         >
-          {getLocale('braveNewsOptOutActionLabel')}
+          {getLocale(S.BRAVE_NEWS_OPT_OUT_ACTION_LABEL)}
         </Button>
       </div>
     </Container>

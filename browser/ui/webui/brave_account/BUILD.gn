@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_account") {
+  sources = [
+    "brave_account_ui.cc",
+    "brave_account_ui.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
+    "//brave/components/constants",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/webui",
+    "//content/public/browser",
+    "//content/public/common",
+    "//ui/webui",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "brave_account_ui_desktop.cc",
+      "brave_account_ui_desktop.h",
+    ]
+
+    deps += [
+      "//ui/compositor",
+      "//ui/gfx/geometry",
+      "//ui/views",
+      "//ui/web_dialogs",
+      "//url",
+    ]
+  }
+}

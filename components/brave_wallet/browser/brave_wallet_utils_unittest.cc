@@ -18,14 +18,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -807,6 +804,26 @@ TEST(BraveWalletUtilsUnitTest, SetAssetCompressed) {
   EXPECT_FALSE(sol_asset->is_compressed);
   EXPECT_TRUE(SetAssetCompressed(&prefs, sol_asset));
   EXPECT_TRUE(GetAllUserAssets(&prefs)[13]->is_compressed);
+}
+
+TEST(BraveWalletUtilsUnitTest, GetAccountPermissionIdentifier) {
+  auto cardano_addr = mojom::AccountId::New(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kHardware, "addr", 1, "unique_key");
+  auto non_cardano_addr = mojom::AccountId::New(
+      mojom::CoinType::ETH, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kHardware, "addr", 1, "unique_key");
+  EXPECT_EQ("unique_key", GetAccountPermissionIdentifier(cardano_addr));
+  EXPECT_EQ("addr", GetAccountPermissionIdentifier(non_cardano_addr));
+}
+
+TEST(BraveWalletCommonUIUnitTest, IsBraveWalletOrigin) {
+  ASSERT_TRUE(IsBraveWalletOrigin(
+      url::Origin::Create(GURL("chrome://wallet-panel.top-chrome/"))));
+  ASSERT_TRUE(
+      IsBraveWalletOrigin(url::Origin::Create(GURL("chrome://wallet/"))));
+  ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL("https://a.com"))));
+  ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL())));
 }
 
 }  // namespace brave_wallet

@@ -14,9 +14,9 @@ interface Props {
 export default function CardNoContent (props: Props) {
   return (
     <UnidealMessageCard
-      heading={getLocale('braveNewsNoContentHeading')}
-      message={getLocale('braveNewsNoContentMessage')}
-      actionLabel={getLocale('braveNewsNoContentActionLabel')}
+      heading={getLocale(S.BRAVE_NEWS_NO_CONTENT_HEADING)}
+      message={getLocale(S.BRAVE_NEWS_NO_CONTENT_MESSAGE)}
+      actionLabel={getLocale(S.BRAVE_NEWS_NO_CONTENT_ACTION_LABEL)}
       onActionClick={props.onCustomize}
     />
   )

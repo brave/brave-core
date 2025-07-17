@@ -5,7 +5,6 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"

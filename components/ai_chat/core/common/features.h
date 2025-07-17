@@ -35,6 +35,13 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kOmniboxOpensFullPage;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
+
+// The size of a tool use event's output that triggers that events to
+// be marked as "large".
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 

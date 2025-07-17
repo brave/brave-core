@@ -104,9 +104,18 @@ export function AuthorizationModal() {
       case 'success':
         return ''
       case 'device-limit-reached':
-        return formatMessage(getString('authorizeDeviceLimitReachedText'), [
-          providerName
-        ])
+        return (
+          <span>
+            {
+              formatMessage(getString('authorizeDeviceLimitReachedText'), [
+                providerName
+              ])
+            }{' '}
+            <NewTabLink href={urls.deviceLimitLearnMoreURL}>
+              {getString('learnMoreLink')}
+            </NewTabLink>
+          </span>
+        )
       case 'flagged-wallet':
         return <>
           <p>

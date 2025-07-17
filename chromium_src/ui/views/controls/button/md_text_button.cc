@@ -215,7 +215,7 @@ namespace views {
 
 MdTextButton::MdTextButton(
     PressedCallback callback,
-    const std::u16string& text,
+    std::u16string_view text,
     int button_context,
     bool use_text_color_for_icon,
     std::unique_ptr<LabelButtonImageContainer> image_container)
@@ -224,9 +224,6 @@ MdTextButton::MdTextButton(
                        button_context,
                        use_text_color_for_icon,
                        std::move(image_container)) {
-  // TODO(simonhong): Use --leo-radius-l when it's available in ui layer.
-  constexpr int kLeoRadiusL = 12;
-  SetCornerRadius(kLeoRadiusL);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
 

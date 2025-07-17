@@ -183,6 +183,15 @@ EXCLUDE_COMMANDS = [
     "IDC_SIDEBAR_SHOW_OPTION_NEVER",
     "IDC_BRAVE_VPN_MENU",
 
+    # Brave Containers: This command needs additional user input to decide
+    # which container to use, so not useful. We might want to try opening the
+    # current tab in the default container, but that would be undesirable as
+    # Containers are security/privacy sensitive feature.
+    "IDC_OPEN_IN_CONTAINER",
+    "IDC_OPEN_IN_CONTAINER_START",
+    "IDC_OPEN_IN_CONTAINER_END",
+    "IDC_OPEN_CONTAINERS_SETTING",
+
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",
     "IDC_BRAVE_COMMANDS_LAST",

@@ -12,6 +12,18 @@ namespace tabs::switches {
 // useful when vertical tab strip causes browser to crash on start up.
 inline constexpr char kDisableVerticalTabsSwitch[] = "disable-vertical-tabs";
 
+// This switch should be followed by a number in milliseconds, which
+// specifies the delay before expanding the vertical tab strip when hovering
+// over it.
+inline constexpr char kVerticalTabExpandDelaySwitch[] =
+    "vertical-tab-expand-delay";
+
+// This switch should be followed by a number in milliseconds, which
+// specifies the delay before collapsing the vertical tab strip when the mouse
+// exits the tab strip in floating mode.
+inline constexpr char kVerticalTabCollapseDelaySwitch[] =
+    "vertical-tab-collapse-delay";
+
 }  // namespace tabs::switches
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_SWITCHES_H_

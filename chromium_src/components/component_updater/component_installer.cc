@@ -46,6 +46,8 @@ void ComponentInstaller::Register(
           "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
           "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
           "ldfkbgjbencjpgjfleiooeldhjdapggh",  // Probabilistic Reveal Tokens
+          "hajigopbbjhghbfimgkfmpenfkclmohk",  // Amount Extraction Heuristic
+                                               // Regexes
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest

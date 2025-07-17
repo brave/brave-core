@@ -270,6 +270,7 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr GetSelectedWalletAccount();
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();
+  mojom::AccountInfoPtr GetSelectedCardanoDappAccount();
   void MaybeFixAccountSelection();
 
  private:

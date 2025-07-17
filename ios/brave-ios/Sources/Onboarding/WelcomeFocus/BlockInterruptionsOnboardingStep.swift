@@ -11,11 +11,20 @@ struct BlockInterruptionsGraphicView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
+    let subdirectory: String = {
+      let base = "LottieAssets"
+      let validLangauges: Set<String> = ["en", "ja"]
+      let langagueCode = Locale.current.language.languageCode?.identifier ?? ""
+      if validLangauges.contains(langagueCode) {
+        return "\(base)/\(langagueCode)"
+      }
+      return base
+    }()
     LottieView {
       try await DotLottieFile.named(
         colorScheme == .dark ? "novideo-ads-dark" : "novideo-ads-light",
         bundle: .module,
-        subdirectory: "LottieAssets/\(Locale.current.region?.identifier == "JP" ? "ja" : "en")"
+        subdirectory: subdirectory
       )
     }
     .resizable()

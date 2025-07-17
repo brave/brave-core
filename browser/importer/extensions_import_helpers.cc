@@ -11,10 +11,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
-#include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -26,10 +26,15 @@
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
-#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 namespace extensions_import {
+
+namespace {
+
+InstallExtensionFnForTesting* g_extension_installer_for_testing = nullptr;
+
+}
 
 // Silent installer via webstore w/o any prompt or bubble.
 class WebstoreInstallerForImporting
@@ -191,15 +196,6 @@ ExtensionsImporter::ExtensionsImporter(const base::FilePath& source_profile,
 
 ExtensionsImporter::~ExtensionsImporter() = default;
 
-// static
-base::RepeatingCallback<ExtensionImportStatus(const std::string& extension_id)>&
-ExtensionsImporter::GetExtensionInstallerForTesting() {
-  static base::NoDestructor<base::RepeatingCallback<ExtensionImportStatus(
-      const std::string& extension_id)>>
-      g_intsaller;
-  return *g_intsaller;
-}
-
 void ExtensionsImporter::Prepare(OnReady on_ready) {
   CHECK(extensions_.empty());
   extensions::GetExtensionFileTaskRunner()->PostTaskAndReplyWithResult(
@@ -227,7 +223,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
       continue;
     }
 
-    auto wrapper = base::BindOnce(
+    auto done_callback = base::BindOnce(
         [](base::WeakPtr<ExtensionsImporter> self, OnExtensionImported callback,
            const std::string& id, ExtensionImportStatus status) {
           if (self) {
@@ -237,24 +233,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
         },
         weak_factory_.GetWeakPtr(), on_extension);
 
-    auto& installer = GetExtensionInstallerForTesting();  // IN-TEST
-    if (installer) {
-      const auto status = installer.Run(extension.id);
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE,
-          base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
-                         weak_factory_.GetWeakPtr(), extension.id,
-                         std::move(wrapper),
-                         status == ExtensionImportStatus::kOk, "",
-                         extensions::webstore_install::Result::SUCCESS));
-    } else {
-      extension.installer = base::MakeRefCounted<WebstoreInstallerForImporting>(
-          extension.id, target_profile_, /*parent_window=*/gfx::NativeWindow(),
-          base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
-                         weak_factory_.GetWeakPtr(), extension.id,
-                         std::move(wrapper)));
-      extension.installer->BeginInstall();
-    }
+    StartExtensionInstall(extension, std::move(done_callback));
   }
 
   return true;
@@ -271,6 +250,42 @@ const ImportingExtension* ExtensionsImporter::GetExtension(
 
 bool ExtensionsImporter::IsImportInProgress() const {
   return in_progress_count_ > 0;
+}
+
+// static [[nodiscard]]
+base::AutoReset<InstallExtensionFnForTesting*>
+ExtensionsImporter::OverrideExtensionInstallerForTesting(
+    InstallExtensionFnForTesting* installer) {
+  base::AutoReset result(&g_extension_installer_for_testing, installer);
+  return result;
+}
+
+void ExtensionsImporter::StartExtensionInstall(
+    ImportingExtension& extension,
+    base::OnceCallback<void(const std::string& id,
+                            ExtensionImportStatus status)> done_callback) {
+  if (!g_extension_installer_for_testing) {
+    // In production, start installation from the Web Store.
+    extension.installer = base::MakeRefCounted<WebstoreInstallerForImporting>(
+        extension.id, target_profile_, /*parent_window=*/gfx::NativeWindow(),
+        base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
+                       weak_factory_.GetWeakPtr(), extension.id,
+                       std::move(done_callback)));
+    extension.installer->BeginInstall();
+  } else {
+    // In tests, we don't have access to the Web Store and we already know the
+    // installation result from test expectations, so we emulate an async
+    // installation process.
+    CHECK_IS_TEST();
+    const auto status = g_extension_installer_for_testing->Run(extension.id);
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
+                       weak_factory_.GetWeakPtr(), extension.id,
+                       std::move(done_callback),
+                       status == ExtensionImportStatus::kOk, "",
+                       extensions::webstore_install::Result::SUCCESS));
+  }
 }
 
 ImportingExtension* ExtensionsImporter::FindExtension(const std::string& id) {

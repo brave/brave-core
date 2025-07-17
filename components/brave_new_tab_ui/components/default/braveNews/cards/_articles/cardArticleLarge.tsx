@@ -141,7 +141,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
                     />
                   </svg>
                 </Card.PromotedIcon>
-                {getLocale('promoted')}
+                {getLocale('braveNewsPromoted')}
               </Card.PromotedLabel>
               }
             </Card.Source>

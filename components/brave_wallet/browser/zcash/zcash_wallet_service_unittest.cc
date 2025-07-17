@@ -53,10 +53,12 @@ namespace brave_wallet {
 
 namespace {
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 constexpr char kGateJuniorMnemonic[] =
     "gate junior chunk maple cage select orange circle price air tortoise "
     "jelly art frequent fence middle ice moral wage toddler attitude sign "
     "lesson grain";
+#endif
 
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
@@ -120,6 +122,7 @@ class MockZCashRPC : public ZCashRpc {
                     GetLightdInfoCallback callback));
 };
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 class MockOrchardSyncState : public OrchardSyncState {
  public:
   explicit MockOrchardSyncState(const base::FilePath& path_to_database)
@@ -172,6 +175,7 @@ class MockOrchardSyncStateProxy : public OrchardSyncState {
  private:
   raw_ptr<OrchardSyncState> instance_;
 };
+#endif
 
 }  // namespace
 
@@ -1084,6 +1088,24 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kShielding),
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+    zcash_wallet_service_->GetTransactionType(
+        mojom::kZCashMainnet, account_id_1.Clone(), false,
+        account_info->orchard_internal_address.value(), callback.Get());
+  }
+
+  {
+    auto account_id_2 = MakeIndexBasedAccountId(
+        mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
+        mojom::AccountKind::kDerived, 0);
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kShielding),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
     zcash_wallet_service_->GetTransactionType(
         mojom::kZCashMainnet, account_id_1.Clone(), false,
         account_info->orchard_internal_address.value(), callback.Get());

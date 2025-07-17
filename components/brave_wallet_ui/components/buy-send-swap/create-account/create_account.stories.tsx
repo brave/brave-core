@@ -15,7 +15,7 @@ import { mockNetworks } from '../../../stories/mock-data/mock-networks'
 export const CreateAccount = {}
 
 export default {
-  title: 'Create Account Tab',
+  title: 'Wallet/Desktop/Components',
   component: CreateAccountTab,
   render: () => (
     <WalletPanelStory>

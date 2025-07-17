@@ -14,6 +14,23 @@
   --toolbar-button-height: 20px;
 }
 
+#container {
+  padding-top: 0;
+}
+
+#appearance > sp-heading {
+  height: 60px;
+}
+
+sp-heading h2[slot="heading"] {
+  --leo-icon-color: var(--leo-gradient-icons-active);
+
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  flex-grow: 1;
+}
+
 /* separator before toolbar button */
 #overviewPage .sp-cards-separator:first-of-type {
   border-top: 1px solid var(--leo-color-divider-subtle);

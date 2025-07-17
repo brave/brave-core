@@ -62,7 +62,7 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
-  brave_l10n::RegisterL10nLocalStatePrefs(registry);
+  brave_l10n::RegisterLocalStatePrefsForMigration(registry);
   ai_chat::prefs::RegisterLocalStatePrefs(registry);
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
   ntp_background_images::RegisterLocalStatePrefs(registry);

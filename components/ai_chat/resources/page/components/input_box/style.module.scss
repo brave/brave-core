@@ -108,7 +108,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--leo-spacing-m) var(--leo-spacing-xl) 10px;
+  padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-xl);
 }
 
 .tools {
@@ -137,4 +137,30 @@
 .attachmentWrapperScrollStyles {
   padding: var(--leo-spacing-m);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.button {
+  --leo-button-radius: var(--leo-radius-full);
+  --leo-button-padding: var(--leo-spacing-m);
+}
+
+
+.sendButtonDisabled {
+  --leo-button-color: var(--leo-color-button-disabled);
+}
+
+.sendIconDisabled {
+  // Not able to use --leo-icon-color in .sendButtonDisabled class
+  // because it gets overridden by the button component's default styles.
+  --leo-icon-color: var(--leo-color-icon-disabled);
+}
+
+.streamingButton {
+  --leo-button-color:
+    color-mix(in srgb, var(--leo-color-button-background) 5%, transparent);
+}
+
+.streamingIcon {
+  // Same is applied to the icon in the .streamingButton class.
+  --leo-icon-color: var(--leo-color-icon-interactive);
 }

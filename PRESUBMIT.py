@@ -45,10 +45,10 @@ def CheckLeoVariables(input_api, output_api):
             brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
                                          'audit-tokens.js')
         ]
-        brave_node.RunNode(parts)
+        brave_node.RunNode(parts, include_command_in_error=False)
         return []
     except RuntimeError as err:
-        return [output_api.PresubmitError(err.args[1])]
+        return [output_api.PresubmitError(str(err))]
 
 
 # Check and fix formatting issues (supports --fix).
@@ -60,13 +60,13 @@ def CheckPatchFormatted(input_api, output_api):
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
-        brave_node.RunNode(cmd)
+        brave_node.RunNode(cmd, include_command_in_error=False)
         return []
     except RuntimeError as err:
         return [
             output_api.PresubmitError(
                 f'The code requires formatting. '
-                f'Please run: npm run presubmit -- --fix.\n\n{err.args[1]}')
+                f'Please run: npm run presubmit -- --fix.\n\n{err}')
         ]
 
 
@@ -227,6 +227,37 @@ def CheckLicense(input_api, output_api):
     return result
 
 
+def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
+    """Checks newly added theme resources to ensure there is a corresponding
+       file in upstream """
+
+    source_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=[r"^app/theme/.*"],
+        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+
+    new_sources = []
+    for f in input_api.AffectedSourceFiles(source_file_filter):
+        if f.Action() != 'A':
+            continue
+        new_sources.append(f.LocalPath())
+
+    problems = []
+    for f in new_sources:
+        path = brave_chromium_utils.to_wspath(f)
+        if not os.path.exists(path):
+            problems.append(f)
+
+    if problems:
+        return [
+            output_api.PresubmitError(
+                'Missing upstream theme file to override',
+                items=sorted(problems),
+                long_text='app/theme should only be used for overrides of '
+                'upstream theme files in chrome/app/theme')
+        ]
+    return []
+
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
@@ -268,6 +299,37 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
                 'corresponding changes in gn or gni files.')
         ]
     return []
+
+
+def CheckPlasterFiles(input_api, output_api):
+    """Checks that all Plaster files are up-to-date with their patches.
+
+    This check ensures that all Plaster files in the repository are
+    synchronized with their corresponding patches in the Chromium repository.
+    This helps detecting unintentiional manual patching for sources that already
+    have a Plaster file.
+    """
+
+    affected_files = []
+    for f in input_api.AffectedFiles(include_deletes=True):
+        local_path = f.LocalPath()
+        if (local_path.startswith("patches/") and local_path.endswith(".patch")
+            ) or (local_path.startswith("rewrite/")
+                  and local_path.endswith(".toml")):
+            affected_files.append(local_path)
+
+    if not affected_files:
+        return []
+
+    cmd = [input_api.python3_executable, 'tools/cr/plaster.py', 'check'
+           ] + affected_files
+    kwargs = {'cwd': input_api.PresubmitLocalPath()}
+    return input_api.RunTests([
+        input_api.Command(name='plaster_check',
+                          cmd=cmd,
+                          kwargs=kwargs,
+                          message=output_api.PresubmitError),
+    ])
 
 
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
@@ -319,9 +381,20 @@ _BANNED_CPP_FUNCTIONS += (
          'you must inject into the main world, consider using '
          'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
          'instead. This is a warning only for existing usages, new usages are '
-         'strictly banned.'),
+         'strictly banned.', ),
         treat_as_error=False,
-    ))
+    ),
+    BanRule(
+        pattern=r'//\s*nogncheck(\s|$)',
+        explanation=
+        ('Avoid suppressing gn checks with `nogncheck` comments, and only do '
+         'it if it is absolutely necessary. Make sure that this is not the '
+         'case that the exclusion for the inclusion line has in the C++ source '
+         'has a mismatch with what is being included/excluded in the gn file.',
+         ),
+        treat_as_error=False,
+    ),
+)
 
 
 # Extend BanRule exclude lists with Brave-specific paths.

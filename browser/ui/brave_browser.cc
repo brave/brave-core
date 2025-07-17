@@ -37,6 +37,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/common/url_constants.h"
@@ -75,37 +76,12 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
-  CHECK(exclusive_access_manager());
+  CHECK(GetFeatures().exclusive_access_manager());
   brave_window()->ReadyToListenFullscreenChanges();
 }
 
 BraveBrowser::~BraveBrowser() = default;
 
-// We have one more option for showing bookmarks bar. It's "only show bookmarks
-// bar on NTP". Even |kShowBookmarkBar| is false, we need to check
-// |kAlwaysShowBookmarkBarOnNTP| in NTP.
-bool BraveBrowser::ShouldShowBookmarkBar() const {
-  content::WebContents* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (web_contents && IsShowingNTP_ChromiumImpl(web_contents)) {
-    Profile* profile =
-        Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    if (profile->IsGuestSession()) {
-      return false;
-    }
-
-    PrefService* prefs = profile->GetPrefs();
-    if (prefs->IsManagedPreference(bookmarks::prefs::kShowBookmarkBar) &&
-        !prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar)) {
-      return false;
-    }
-
-    if (!prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar)) {
-      return prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP);
-    }
-  }
-
-  return Browser::ShouldShowBookmarkBar();
-}
 
 void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
@@ -289,6 +265,20 @@ bool BraveBrowser::TryToCloseWindow(
 void BraveBrowser::ResetTryToCloseWindow() {
   confirmed_to_close_ = false;
   Browser::ResetTryToCloseWindow();
+}
+
+bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
+  const auto original_visible = Browser::IsWebContentsVisible(web_contents);
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
+  if (!tab) {
+    return original_visible;
+  }
+
+  if (original_visible && !tab->IsActivated()) {
+    return false;
+  }
+
+  return original_visible;
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,

@@ -326,9 +326,9 @@
 <translation id="4034992002364254340">将所有相关标签页在新窗口中聚合</translation>
 <translation id="8012125596344613514">建议主题</translation>
 <translation id="7529120186020617755">输入一个要聚合的主题……</translation>
-<translation id="6847541693235449912">立即前往</translation>
+<translation id="6847541693235449912">开始</translation>
 <translation id="2079545284768500474">撤消</translation>
-<translation id="1533980864758658574">已创建<ph name="TOPIC"/>的新窗口</translation>
+<translation id="1533980864758658574">已创建“<ph name="TOPIC"/>”的新窗口</translation>
 <translation id="7985042437720138349">此功能会将已打开的标签页的数据发送给 Leo，即 Brave 的 AI 驱动浏览器助手。</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
@@ -343,6 +343,8 @@
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
 <translation id="6786747875388722282">扩展程序</translation>
 <translation id="984275831282074731">付款方式</translation>
+<translation id="6278858909990433658">导入的个人资料仍在使用中</translation>
+<translation id="9071187015476020102">如要导入扩展或其他设置，请先关闭您要导入的浏览器。</translation>
 <translation id="2044383478723007273">Brave 颜色</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
@@ -737,7 +739,7 @@
 <translation id="8055509865174199683">在网站的右键菜单中显示 Leo</translation>
 <translation id="1529674267267221673">当你右键点击网站时，Leo 将出现在上下文菜单中。这将把当前网页的上下文发送到 Leo。</translation>
 <translation id="5226020406479918122">标签页聚合模式</translation>
-<translation id="3705539672403311123">在“标签页搜索”页面启用标签页整理功能。开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="3705539672403311123">在“标签页搜索”页面启用标签页整理功能。开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">在对话中显示建议提示</translation>
 <translation id="5781842473834867765">保存我的对话记录</translation>
 <translation id="1082960401708055995">禁用对话存储功能将永久删除所有以前存储的对话。此操作无法撤销。</translation>
@@ -826,4 +828,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="5318548116565208315">邦邦 Corn 的头像</translation>
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
+<translation id="154702742922788359">打开模式</translation>
+<translation id="2249111429176737533">作为标签页窗口打开</translation>
+<translation id="7022756207310403729">在浏览器中打开</translation>
 </translationbundle>

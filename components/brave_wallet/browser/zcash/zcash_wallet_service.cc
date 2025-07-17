@@ -442,9 +442,16 @@ ZCashWalletService::GetTransactionType(const std::string& chain_id,
     }
 
     if (ValidateOrchardRecipientAddress(testnet, addr).has_value()) {
-      auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
-      if (account_info && account_info->orchard_internal_address == addr) {
-        return base::ok(mojom::ZCashTxType::kShielding);
+      const auto& account_infos = keyring_service_->GetAllAccountInfos();
+      for (const auto& account_info : account_infos) {
+        if (account_info->account_id->keyring_id != account_id->keyring_id) {
+          continue;
+        }
+        auto zcash_account_info =
+            keyring_service_->GetZCashAccountInfo(account_info->account_id);
+        if (zcash_account_info->orchard_internal_address == addr) {
+          return base::ok(mojom::ZCashTxType::kShielding);
+        }
       }
       return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
     }

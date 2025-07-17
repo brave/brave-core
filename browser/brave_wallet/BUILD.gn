@@ -85,9 +85,9 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/build/android:jni_headers",
-      "//chrome/browser/ui:tab_model_enums_java",
       "//chrome/browser/ui:ui",
       "//chrome/browser/ui/android/tab_model",
+      "//chrome/browser/ui/android/tab_model:enums_java",
     ]
   } else {
     sources += [
@@ -177,7 +177,6 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",
-    "//brave/components/brave_wallet/browser/test:test_support",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:rust_lib",
@@ -188,12 +187,12 @@ source_set("unit_tests") {
     "//chrome/browser/permissions",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
-    "//components/country_codes",
     "//testing/gtest",
   ]
   if (!is_android) {
     sources += [
       "brave_wallet_tab_helper_unittest.cc",
+      "cardano_provider_impl_unittest.cc",
       "ethereum_provider_impl_unittest.cc",
       "notifications/wallet_notification_service_unittest.cc",
       "solana_provider_impl_unittest.cc",

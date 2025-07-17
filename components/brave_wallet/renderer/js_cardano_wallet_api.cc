@@ -28,6 +28,26 @@
 
 namespace brave_wallet {
 
+// See Error Types section from https://cips.cardano.org/cip/CIP-30
+v8::Local<v8::Value> ConvertError(
+    v8::Isolate* isolate,
+    const v8::Local<v8::Context>& context,
+    const mojom::CardanoProviderErrorBundlePtr& error) {
+  CHECK(error);
+  base::Value::Dict error_value;
+
+  if (error->pagination_error_payload) {
+    error_value.Set("maxNumber",
+                    base::Value(error->pagination_error_payload->payload));
+    return content::V8ValueConverter::Create()->ToV8Value(error_value, context);
+  }
+
+  error_value.Set("code", base::Value(error->code));
+  error_value.Set("info", error->error_message);
+
+  return content::V8ValueConverter::Create()->ToV8Value(error_value, context);
+}
+
 // content::RenderFrameObserver
 void JSCardanoWalletApi::OnDestruct() {}
 
@@ -85,7 +105,7 @@ void JSCardanoWalletApi::HandleStringResult(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     const std::string& result,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -96,12 +116,12 @@ void JSCardanoWalletApi::HandleStringResult(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     std::ignore = resolver->Resolve(
         context, gin::StringToV8(context->GetIsolate(), result));
   } else {
     std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+        context, ConvertError(context->GetIsolate(), context, error));
   }
 }
 
@@ -110,7 +130,7 @@ void JSCardanoWalletApi::HandleStringVecResult(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     const std::vector<std::string>& result,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -126,13 +146,13 @@ void JSCardanoWalletApi::HandleStringVecResult(
   }
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     std::ignore = resolver->Resolve(
         context,
         content::V8ValueConverter::Create()->ToV8Value(list_value, context));
   } else {
     std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+        context, ConvertError(context->GetIsolate(), context, error));
   }
 }
 
@@ -141,7 +161,7 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     const std::optional<std::vector<std::string>>& result,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -152,7 +172,7 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     base::ListValue list_value;
     for (const auto& item : result.value()) {
       list_value.Append(base::Value(item));
@@ -163,7 +183,7 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
         content::V8ValueConverter::Create()->ToV8Value(list_value, context));
   } else {
     std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+        context, ConvertError(context->GetIsolate(), context, error));
   }
 }
 
@@ -196,7 +216,7 @@ void JSCardanoWalletApi::OnGetNetworkId(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     int32_t network,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -207,11 +227,11 @@ void JSCardanoWalletApi::OnGetNetworkId(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     std::ignore = resolver->Resolve(context, v8::Int32::New(isolate, network));
   } else {
     std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+        context, ConvertError(context->GetIsolate(), context, error));
   }
 }
 
@@ -511,7 +531,7 @@ void JSCardanoWalletApi::OnSignData(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     mojom::CardanoProviderSignatureResultPtr result,
-    const std::optional<std::string>& error_message) {
+    mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
   }
@@ -522,7 +542,7 @@ void JSCardanoWalletApi::OnSignData(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (!error_message) {
+  if (!error) {
     base::Value::Dict dict;
     dict.Set("signature", base::Value(result->signature));
     dict.Set("key", base::Value(result->key));
@@ -531,7 +551,7 @@ void JSCardanoWalletApi::OnSignData(
                      dict, isolate->GetCurrentContext()));
   } else {
     std::ignore = resolver->Reject(
-        context, gin::StringToV8(context->GetIsolate(), error_message.value()));
+        context, ConvertError(context->GetIsolate(), context, error));
   }
 }
 

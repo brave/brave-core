@@ -11,10 +11,6 @@
 class Profile;
 class Browser;
 
-namespace url {
-class Origin;
-}  // namespace url
-
 namespace content {
 class WebContents;
 }  // namespace content
@@ -22,8 +18,6 @@ class WebContents;
 namespace brave_wallet {
 
 void AddBlockchainTokenImageSource(Profile* profile);
-
-bool IsBraveWalletOrigin(const url::Origin& origin);
 
 content::WebContents* GetWebContentsFromTabId(Browser** browser,
                                               int32_t tab_id);

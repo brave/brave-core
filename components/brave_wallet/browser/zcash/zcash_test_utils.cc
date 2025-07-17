@@ -14,7 +14,7 @@
 
 namespace brave_wallet {
 
-// MockOrchardBlockScannerProxy
+#if BUILDFLAG(ENABLE_ORCHARD)
 MockOrchardBlockScannerProxy::MockOrchardBlockScannerProxy(Callback callback)
     : OrchardBlockScannerProxy({}), callback_(callback) {}
 
@@ -28,6 +28,7 @@ void MockOrchardBlockScannerProxy::ScanBlocks(
         callback) {
   callback_.Run(std::move(tree_state), std::move(blocks), std::move(callback));
 }
+#endif
 
 OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
                                        uint8_t seed) {

@@ -70,6 +70,16 @@ class ChromiumTabState: TabState, TabStateImpl {
   }
 
   private func webviewBackForwardStateDidChange() {
+    backForwardList = webView.flatMap {
+      if let backForwardList = $0.backForwardList {
+        return ChromiumBackForwardList(
+          backForwardList,
+          canGoBack: $0.canGoBack,
+          canGoForward: $0.canGoForward
+        )
+      }
+      return nil
+    }
     observers.forEach {
       $0.tabDidChangeBackForwardState(self)
     }
@@ -353,9 +363,7 @@ class ChromiumTabState: TabState, TabStateImpl {
   var canGoForward: Bool {
     webView?.canGoForward ?? false
   }
-  var backForwardList: (any BackForwardListProxy)? {
-    return webView?.backForwardList.flatMap { ChromiumBackForwardList($0) }
-  }
+  var backForwardList: (any BackForwardListProxy)?
 
   var redirectChain: [URL] = []
 
@@ -557,26 +565,25 @@ private struct ChromiumBackForwardList: BackForwardListProxy {
     }
   }
 
-  init(_ backForwardList: CWVBackForwardList) {
+  init(_ backForwardList: CWVBackForwardList, canGoBack: Bool, canGoForward: Bool) {
     self.backForwardList = backForwardList
+    self.currentItem = backForwardList.currentItem.flatMap(Item.init)
+    if canGoBack {
+      self.backItem = backForwardList.backItem.flatMap(Item.init)
+      self.backList = backForwardList.backList.map(Item.init)
+    }
+    if canGoForward {
+      self.forwardItem = backForwardList.forwardItem.flatMap(Item.init)
+      self.forwardList = backForwardList.forwardList.map(Item.init)
+    }
   }
-  var backForwardList: CWVBackForwardList
 
-  var backList: [any BackForwardListItemProxy] {
-    backForwardList.backList.map(Item.init)
-  }
-  var forwardList: [any BackForwardListItemProxy] {
-    backForwardList.forwardList.map(Item.init)
-  }
-  var currentItem: (any BackForwardListItemProxy)? {
-    backForwardList.currentItem.flatMap(Item.init)
-  }
-  var backItem: (any BackForwardListItemProxy)? {
-    backForwardList.backItem.flatMap(Item.init)
-  }
-  var forwardItem: (any BackForwardListItemProxy)? {
-    backForwardList.forwardItem.flatMap(Item.init)
-  }
+  var backForwardList: CWVBackForwardList
+  var backList: [any BackForwardListItemProxy] = []
+  var forwardList: [any BackForwardListItemProxy] = []
+  var currentItem: (any BackForwardListItemProxy)?
+  var backItem: (any BackForwardListItemProxy)?
+  var forwardItem: (any BackForwardListItemProxy)?
 }
 
 /// A simple container view used to maintain the visibility and layout of the containing CWVWebView

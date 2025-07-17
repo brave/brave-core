@@ -847,6 +847,9 @@
 /* Title for history menu item */
 "HistortMenuItem" = "Előzmények";
 
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "Törlés az előzményekből";
+
 /* Title for History Clear All Action */
 "history.historyClearActionTitle" = "Előzmények törlése";
 
@@ -856,11 +859,20 @@
 /* Title for Clear All History Alert Title */
 "history.historyClearAlertTitle" = "Böngészési előzmények törlése";
 
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "Nincs eredmény";
+
 /* Title which is displayed when History screen is empty. */
-"history.historyEmptyStateTitle" = "Az előzmények itt fognak megjelenni.";
+"history.historyEmptyStateSubtitle" = "A böngészési előzmények itt jelennek meg";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "Az előzmények nem érhetők el Csak privát böngészés módban.";
+"history.historyEmptyStateTitle" = "Nincs böngészési előzmény";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "Az előzmények nem érhetők el Csak privát böngészés módban";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "Nemrég bezárt lapok";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "Keresési előzmények";

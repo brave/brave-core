@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"

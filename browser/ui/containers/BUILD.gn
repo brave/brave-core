@@ -1,0 +1,57 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(enable_containers,
+       "Containers feature must be enabled to build this target.")
+
+source_set("containers") {
+  sources = [
+    "container_model.cc",
+    "container_model.h",
+    "containers_icon_generator.cc",
+    "containers_icon_generator.h",
+    "containers_menu_model.cc",
+    "containers_menu_model.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app:command_ids",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom:mojom",
+    "//brave/components/vector_icons",
+    "//chrome/app:generated_resources",
+    "//ui/base",
+    "//ui/menus",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "containers_icon_generator_unittest.cc",
+    "containers_menu_model_test_api.cc",
+    "containers_menu_model_test_api.h",
+    "containers_menu_model_unittest.cc",
+    "mock_containers_menu_model_delegate.cc",
+    "mock_containers_menu_model_delegate.h",
+  ]
+
+  deps = [
+    ":containers",
+    "//base",
+    "//base/allocator/partition_allocator/src/partition_alloc:test_support",
+    "//brave/app:command_ids",
+    "//brave/components/containers/core/mojom",
+    "//brave/components/vector_icons",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

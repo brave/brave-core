@@ -31,7 +31,8 @@ class TransactionDetailsStoreTests: XCTestCase {
         accounts: allAccounts,
         selectedAccount: allAccounts.first,
         ethDappSelectedAccount: allAccounts.first(where: { $0.coin == .eth }),
-        solDappSelectedAccount: allAccounts.first(where: { $0.coin == .sol })
+        solDappSelectedAccount: allAccounts.first(where: { $0.coin == .sol }),
+        adaDappSelectedAccount: nil
       )
       completion(allAccountsInfo)
     }

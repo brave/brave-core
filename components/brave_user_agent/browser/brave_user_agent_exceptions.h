@@ -6,11 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_EXCEPTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_EXCEPTIONS_H_
 
-#include <memory>
 #include <set>
 #include <string>
+#include <string_view>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
@@ -31,6 +32,7 @@ class BraveUserAgentExceptions {
   void OnComponentReady(const base::FilePath&);
   bool CanShowBrave(const GURL& url);
   void SetIsReadyForTesting() { is_ready_ = true; }
+  void AddToExceptedDomainsForTesting(std::string_view domain);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveUserAgentExceptionsUnitTest,

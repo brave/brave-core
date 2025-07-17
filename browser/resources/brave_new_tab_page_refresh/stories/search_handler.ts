@@ -10,6 +10,8 @@ import { SearchState, SearchActions, defaultSearchActions } from '../state/searc
 
 export function createSearchHandler(store: Store<SearchState>): SearchActions {
   store.update({
+    initialized: true,
+
     searchFeatureEnabled: true,
 
     showSearchBox: true,
@@ -76,7 +78,7 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
           allowedToBeDefaultMatch: false,
           contents: stringToMojoString16('contents 1'),
           description: stringToMojoString16('description 1'),
-          iconUrl: '',
+          iconUrl: { url: '' },
           imageUrl: '',
           destinationUrl: { url: '' }
         },
@@ -84,7 +86,7 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
           allowedToBeDefaultMatch: true,
           contents: stringToMojoString16('contents 2'),
           description: stringToMojoString16('Ask Leo'),
-          iconUrl: '',
+          iconUrl: { url: '' },
           imageUrl: '',
           destinationUrl: { url: '' }
         }]

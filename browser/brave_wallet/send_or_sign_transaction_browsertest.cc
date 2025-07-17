@@ -6,9 +6,6 @@
 #include <optional>
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
-#include "base/memory/raw_ptr.h"
-#include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -27,7 +24,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,7 +35,6 @@
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -179,10 +174,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII("brave-wallet");
-    https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
+    https_server_for_files()->ServeFilesFromDirectory(
+        BraveWalletTestDataFolder());
     ASSERT_TRUE(https_server_for_files()->Start());
 
     json_rpc_service()->SetSkipEthChainIdValidationForTesting(true);

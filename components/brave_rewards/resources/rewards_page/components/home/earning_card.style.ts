@@ -29,15 +29,27 @@ export const style = scoped.css`
     color: ${color.text.tertiary};
     text-align: center;
     min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .counter-value {
-    --leo-icon-size: 16px;
+    --leo-icon-size: 14px;
+
+    position: relative;
     font: ${font.heading.h2};
     color: ${color.text.primary};
 
     leo-tooltip {
-      padding-inline-start: 8px;
+      position: absolute;
+      inset-inline-start: calc(100% + 6px);
+      inset-block-start: 4px;
+
+      [slot=content] {
+        max-width: 250px;
+        text-align: start;
+      }
     }
   }
 

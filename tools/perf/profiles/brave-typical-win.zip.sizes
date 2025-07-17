@@ -1,29 +1,28 @@
-Total size 104696K
+Total size 86039K
 
-GROUP Adblock [8834K total]
-   226K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.378 [adcocjohghhfpidemphmcmlmhnfgikei]
-    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.13533 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1476K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.15046 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8852K total]
+   234K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.390 [adcocjohghhfpidemphmcmlmhnfgikei]
+    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.14038 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1448K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.15656 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     97K Brave Ad Block Updater (Regional Catalog) 1.0.77 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5740K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.12744 [iodkpdagapdfkphljnddpjlldadblomo]
-  1236K Brave Ad Block Updater (Resources) 1.0.107 [mfddibmblmbccpadfndgakiopmmhebop]
+  5762K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.13394 [iodkpdagapdfkphljnddpjlldadblomo]
+  1251K Brave Ad Block Updater (Resources) 1.0.110 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
     68K Brave Ads Resources 1.0.109 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13343K total]
+GROUP Ntp [12893K total]
  11624K Brave NTP background images 1.0.19 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1719K Brave NTP sponsored images 1.0.2059 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1269K Brave NTP sponsored images 1.0.2092 [gccbbckogglekeggclmmekihdgdpdgoe]
 
-GROUP Other [182K total]
-   182K Brave Local Data Files Updater 1.0.1195 [afalakplffnnnlkncjhbmahjfjhmlkal]
+GROUP Other [177K total]
+   177K Brave Local Data Files Updater 1.0.1216 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [48420K total]
+GROUP large_files [30910K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
   1022K Default\Local Storage\leveldb\000003.ldb
-  6537K Default\RewardsCreators.db
+  6539K Default\RewardsCreators.db
   1010K Default\Session Storage\000003.ldb
-  1870K Safe Browsing\ChromeExtMalware.store.32_13394478064787546
- 17358K Safe Browsing\UrlSoceng.store.4_13394478064487972
- 17359K Safe Browsing\UrlSoceng.store.4_13394478487523772
+  1870K Safe Browsing\ChromeExtMalware.store.32_13396899039412276
+ 17205K Safe Browsing\UrlSoceng.store.4_13396899039122943

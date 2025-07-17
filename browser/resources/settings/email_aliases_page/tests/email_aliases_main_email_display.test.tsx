@@ -17,7 +17,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   addObserver: jest.fn(),
-  removeObserver: jest.fn(),
 }
 
 describe('MainEmailDisplay', () => {
@@ -31,9 +30,8 @@ describe('MainEmailDisplay', () => {
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
     const signOutButton = screen.getByTitle('emailAliasesSignOutTitle')
-    await act(async () => {
-      clickLeoButton(signOutButton)
-    })
+    clickLeoButton(signOutButton)
+
     expect(mockEmailAliasesService.cancelAuthenticationOrLogout)
       .toHaveBeenCalled()
   })

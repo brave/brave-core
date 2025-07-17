@@ -27,7 +27,6 @@ import {
 } from '../../../common/constants/mocks'
 
 export const _SignSimulatedTransactionPanel = {
-  title: 'Sign Simulated Transaction Panel',
   render: () => {
     return (
       <WalletPanelStory>
@@ -51,7 +50,6 @@ export const _SignSimulatedTransactionPanel = {
 }
 
 export const _EmptySignSimulatedTransactionPanel = {
-  title: 'Empty Sign Simulated Transaction Panel',
   render: () => {
     return (
       <WalletPanelStory>
@@ -75,5 +73,5 @@ export const _EmptySignSimulatedTransactionPanel = {
 }
 
 export default {
-  title: 'Sign Simulated Transaction Panel',
+  title: 'Wallet/Panel/Panels/Transaction Simulations',
 }

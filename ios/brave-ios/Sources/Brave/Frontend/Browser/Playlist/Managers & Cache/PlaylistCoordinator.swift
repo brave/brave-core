@@ -20,7 +20,6 @@ import os.log
 /// Coordinates the usage of playlist across the main UI, Picture in Picture and CarPlay
 public class PlaylistCoordinator: NSObject {
   private var carPlayStatusObservers = [Any]()
-  private(set) weak var mediaPlayer: MediaPlayer?
   private(set) var isCarPlayAvailable = false
 
   private var carPlayController: Any?
@@ -34,48 +33,8 @@ public class PlaylistCoordinator: NSObject {
   var currentPlaylistItem: PlaylistInfo?
   var isPlaylistControllerPresented = false
 
-  // New UI only
   private var playerModel: PlayerModel?
   private var isPiPStarting: Bool = false
-  // ----
-
-  // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
-  var playlistController: PlaylistViewController? {
-    didSet {
-      // TODO: REFACTOR and Decide what happens to Playlist in multiple windows in the future
-      // IE: Will we show it on each window OR just the one browser controller.
-      // After all, we can't play media simultaneously.
-      if let selectedTab = browserController?.tabManager.selectedTab,
-        let playlistItem = selectedTab.playlistItem,
-        PlaylistManager.shared.index(of: playlistItem.tagId) == nil
-      {
-
-        // Support for `blob:` Playlist Items
-        if playlistItem.src.hasPrefix("blob:")
-          && PlaylistManager.shared.allItems.filter({ $0.pageSrc == playlistItem.pageSrc }).first
-            != nil
-        {
-          return
-        }
-
-        browserController?.updatePlaylistURLBar(
-          tab: selectedTab,
-          state: .newItem,
-          item: playlistItem
-        )
-      }
-    }
-  }
-
-  public func destroyPiP() {
-    // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
-    // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
-    // This is because `AVPictureInPictureController` is NOT a view controller and there is no way to dismiss it
-    // other than to deallocate the restoration controXller.
-    // We could also call `AVPictureInPictureController.stopPictureInPicture` BUT we'd still have to deallocate all resources.
-    // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
-    playlistController = nil
-  }
 
   // There can only ever be one instance of this class
   // Because there can only be a single AudioSession and MediaPlayer
@@ -110,29 +69,14 @@ public class PlaylistCoordinator: NSObject {
       webLoaderFactory: LivePlaylistWebLoaderFactory()
     )
 
-    if FeatureList.kNewPlaylistUI.enabled {
-      let player =
-        self.playerModel
-        ?? PlayerModel(
-          mediaStreamer: mediaStreamer,
-          initialPlaybackInfo: nil
-        )
-      self.playerModel = player
-      return CarPlayController(player: player, interface: carplayInterface)
-    }
-
-    // If there is no media player, create one,
-    // pass it to the car-play controller
-    let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-
-    // Construct the CarPlay UI
-    let carPlayController = PlaylistLegacyCarplayController(
-      mediaStreamer: mediaStreamer,
-      player: mediaPlayer,
-      interfaceController: carplayInterface
-    )
-    self.mediaPlayer = mediaPlayer
-    return carPlayController
+    let player =
+      self.playerModel
+      ?? PlayerModel(
+        mediaStreamer: mediaStreamer,
+        initialPlaybackInfo: nil
+      )
+    self.playerModel = player
+    return CarPlayController(player: player, interface: carplayInterface)
   }
 
   func getPlaylistController(
@@ -147,65 +91,41 @@ public class PlaylistCoordinator: NSObject {
     // On iPad, media will continue to play with or without the background play setting.
     tab?.stopMediaPlayback()
 
-    if FeatureList.kNewPlaylistUI.enabled {
-      let mediaStreamer = PlaylistMediaStreamer(
-        playerView: browserController!.view,
-        webLoaderFactory: LivePlaylistWebLoaderFactory()
+    let mediaStreamer = PlaylistMediaStreamer(
+      playerView: browserController!.view,
+      webLoaderFactory: LivePlaylistWebLoaderFactory()
+    )
+    let player =
+      self.playerModel
+      ?? PlayerModel(
+        mediaStreamer: mediaStreamer,
+        initialPlaybackInfo: initialItem.map { item in
+          .init(itemUUID: item.id, timestamp: initialItemPlaybackOffset)
+        }
       )
-      let player =
-        self.playerModel
-        ?? PlayerModel(
-          mediaStreamer: mediaStreamer,
-          initialPlaybackInfo: initialItem.map { item in
-            .init(itemUUID: item.id, timestamp: initialItemPlaybackOffset)
+    player.pictureInPictureDelegate = self
+    self.playerModel = player
+    return PlaylistHostingController(
+      player: player,
+      delegate: .init(
+        openTabURL: { [weak browserController] url, isPrivate in
+          browserController?.dismiss(animated: true)
+          browserController?.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
+        },
+        onDismissal: { [weak self, weak player] in
+          guard let self else { return }
+          self.isPlaylistControllerPresented = false
+          if let player, !player.isPictureInPictureActive, !isPiPStarting {
+            self.destroyPlayerModelIfUnused()
           }
-        )
-      player.pictureInPictureDelegate = self
-      self.playerModel = player
-      return PlaylistHostingController(
-        player: player,
-        delegate: .init(
-          openTabURL: { [weak browserController] url, isPrivate in
-            browserController?.dismiss(animated: true)
-            browserController?.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
-          },
-          onDismissal: { [weak self, weak player] in
-            guard let self else { return }
-            self.isPlaylistControllerPresented = false
-            if let player, !player.isPictureInPictureActive, !isPiPStarting {
-              self.destroyPlayerModelIfUnused()
-            }
-            isPiPStarting = false
-          }
-        )
+          isPiPStarting = false
+        }
       )
-    }
-
-    // If there is no media player, create one,
-    // pass it to the play-list controller
-    let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-
-    let playlistController =
-      self.playlistController
-      ?? PlaylistViewController(
-        openInNewTab: browserController?.openURLInNewTab,
-        openPlaylistSettingsMenu: browserController?.openPlaylistSettingsMenu,
-        profile: browserController?.profile,
-        mediaPlayer: mediaPlayer,
-        initialItem: initialItem,
-        initialItemPlaybackOffset: initialItemPlaybackOffset,
-        isPrivateBrowsing: browserController?.privateBrowsingManager.isPrivateBrowsing == true
-      )
-    self.mediaPlayer = mediaPlayer
-    return playlistController
+    )
   }
 
   func getPlaylistController(tab: (any TabState)?, completion: @escaping (UIViewController) -> Void)
   {
-    if let playlistController = self.playlistController {
-      return completion(playlistController)
-    }
-
     if let tab = tab,
       let item = tab.playlistItem,
       let tag = tab.playlistItem?.tagId
@@ -232,17 +152,11 @@ public class PlaylistCoordinator: NSObject {
   }
 
   func pauseAllPlayback() {
-    if FeatureList.kNewPlaylistUI.enabled {
-      playerModel?.pause()
-    } else {
-      mediaPlayer?.pause()
-    }
+    playerModel?.pause()
   }
 
   var isPictureInPictureActive: Bool {
-    FeatureList.kNewPlaylistUI.enabled
-      ? playerModel?.isPictureInPictureActive == true
-      : mediaPlayer?.pictureInPictureController?.isPictureInPictureActive == true
+    playerModel?.isPictureInPictureActive == true
   }
 
   private func destroyPlayerModelIfUnused() {
@@ -269,7 +183,6 @@ public class PlaylistCoordinator: NSObject {
       }
     } else {
       carPlayController = nil
-      mediaPlayer = nil
       destroyPlayerModelIfUnused()
     }
 

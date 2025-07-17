@@ -82,8 +82,10 @@ class TorPrefObserver : public BooleanPrefMember {
   NSMenuItem* _copyCleanLinkMenuItem;
 
 #if BUILDFLAG(ENABLE_TOR)
-  NSMenuItem* _torMenuItem;
+  NSMenuItem* _torMenuItem;      // For dock menu
+  NSMenuItem* _torMainMenuItem;  // For main menu
   std::unique_ptr<TorPrefObserver> tor_pref_observer_;
+  std::unique_ptr<TorPrefObserver> tor_main_pref_observer_;
 #endif  // BUILDFLAG(ENABLE_TOR)
 }
 @end
@@ -100,16 +102,33 @@ class TorPrefObserver : public BooleanPrefMember {
   _copyCleanLinkMenuItem = [editMenu itemWithTag:IDC_COPY_CLEAN_LINK];
   DCHECK(_copyCleanLinkMenuItem);
   [[_copyCleanLinkMenuItem menu] setDelegate:self];
+
+#if BUILDFLAG(ENABLE_TOR)
+  // Find and set up the main menu Tor item
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  _torMainMenuItem = [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
+  CHECK(_torMainMenuItem);
+  [[_torMainMenuItem menu] setDelegate:self];
+  // Don't create observer yet - profile may not be loaded during startup
+  // Observer will be created when first needed in torMainMenuNeedsUpdate
+  [self torMainMenuNeedsUpdate];  // Initial state update
+#endif                            // BUILDFLAG(ENABLE_TOR)
 }
 
 - (void)dealloc {
   [[_copyMenuItem menu] setDelegate:nil];
   [[_copyCleanLinkMenuItem menu] setDelegate:nil];
+#if BUILDFLAG(ENABLE_TOR)
+  CHECK(_torMainMenuItem);
+  [[_torMainMenuItem menu] setDelegate:nil];
+#endif  // BUILDFLAG(ENABLE_TOR)
 }
 
 - (void)applicationWillTerminate:(NSNotification*)notification {
   tor_pref_observer_.reset();
+  tor_main_pref_observer_.reset();
   _torMenuItem = nil;
+  _torMainMenuItem = nil;
   [super applicationWillTerminate:notification];
 }
 
@@ -145,7 +164,11 @@ class TorPrefObserver : public BooleanPrefMember {
     [self torMenuNeedsUpdate];
     return;
   }
-#endif  // BUILDFLAG(ENALBLE_TOR)
+  if (menu == [_torMainMenuItem menu]) {
+    [self torMainMenuNeedsUpdate];
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_TOR)
 
   [super menuNeedsUpdate:menu];
 }
@@ -168,6 +191,26 @@ class TorPrefObserver : public BooleanPrefMember {
 - (void)torMenuNeedsUpdate {
   _torMenuItem.enabled = [self validateUserInterfaceItem:_torMenuItem];
   _torMenuItem.hidden = !_torMenuItem.enabled;
+}
+
+- (void)torMainMenuNeedsUpdate {
+  if (_torMainMenuItem) {
+    auto* profile = [self lastProfileIfLoaded];
+    if (profile) {
+      // Create observer lazily once profile is loaded
+      if (!tor_main_pref_observer_) {
+        tor_main_pref_observer_ =
+            std::make_unique<TorPrefObserver>(self, [_torMainMenuItem menu]);
+      }
+      bool tor_enabled = !TorProfileServiceFactory::IsTorDisabled(profile);
+      _torMainMenuItem.enabled = tor_enabled;
+      _torMainMenuItem.hidden = !tor_enabled;
+    } else {
+      // Profile not loaded yet, hide the item
+      _torMainMenuItem.enabled = NO;
+      _torMainMenuItem.hidden = YES;
+    }
+  }
 }
 #endif  // BUILDFLAG(ENABLE_TOR)
 

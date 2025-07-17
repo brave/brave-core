@@ -7,9 +7,6 @@
 /* The description for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteDescription" = "Kapcsolja be, hogy megjelenjen egy parancsikon a Leo címsorból történő indításához.";
 
-/* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Megjelenítés a címsorban";
-
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Alapértelmezett modell";
 
@@ -185,12 +182,6 @@
 "aichat.introMessageLlamaVisionModelPurposeDescription" = "Általános célú képfeldolgozás";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense, a működésem a Mixtral 8x7B modellen alapul, amelyet a Mistral AI fejlesztett ki összetett feladatok végrehajtására. A Mixtral a Brace által biztosított, saját biztonságos stuktúrán fut.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageMixtralModelPurposeDescription" = "Speciális csevegési feladatok";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 14B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model's purpose - Describes what it can do best */
@@ -216,6 +207,12 @@
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
 "aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo jelenleg nem érhető el a Privát böngészés módban. A Leo használatához kérjük, lépjen ki a Privát böngészési módból, és próbálja meg újra.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "A Leo nem elérhető";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
 "aichat.leoDocumentPickerButtonAccessibilityTitle" = "Kép feltöltése";
@@ -428,7 +425,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Megértettem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "A Brave Leo egy privát mesterséges intelligens asszisztens, amely javítja az internethasználatot. A Leo korlátozott hozzáféréssel ingyenesen használható. A Brave Leo Premium több modellt, magasabb korlátokat kínál, és korai hozzáférést biztosít az előfizetőknek az új funkciókhoz. Az összes felhasználó alapértelmezett modellje jelenleg a Mixtral 8x7B. A további részleteket lásd: Brave **[Súgó] (%1$@)**.\n\nAlapértelmezetten, amikor feltesz egy kérdést Leónak, elküldheti a Brave Leo számára és a válaszadáshoz felhasználhatja az éppen megtekintett weboldal tartalmát vagy az Ön által kiemelt szöveget. Bizonyos esetekben a Leo az Ön által megadott adatokból származó lekérdezéseket küld a Brave keresőnek, és a keresési eredményeket felhasználja az Ön kérdésének jobb megválaszolására. A válaszok pontossága nem garantált, és tartalmazhat pontatlan, félrevezető vagy hamis információkat. Ne adjon meg bizalmas vagy magánjellegű információkat, és legyen körültekintő az egészséggel, pénzügyekkel, személyes biztonsággal vagy hasonlókkal kapcsolatos válaszokkal. A Leo beállításait bármikor módosíthatja a Beállításokban. Ehhez lépjen a Beállítások > Leo lehetőségre.\n\nA Leo nem gyűjt olyan azonosítókat, mint például az Ön IP-címe, amely összekapcsolható Önnel. Az MI-modellek betanításához nem kerülnek felhasználásra adatok, és az MI-modellek nem tárolnak személyes adatokat (az Anthropic kivételével, amely 30 napig tárolja az adatokat törlés előtt). További információkat lásd: **[adatvédelmi szabályzat](%2$@)**.";
+"aichat.termsConditionsDescription" = "A Brave Leo egy adatvédelmet szem előtt tartó, mesterséges intelligencián alapuló asszisztens, amely segíti Önt a böngészés során. A Leo ingyenesen is használható, korlátozott hozzáféréssel. A Brave Leo Prémium előfizetés további modelleket, magasabb használati kereteket biztosít, és lehetőséget ad arra, hogy előfizetőként elsőként férjen hozzá új funkciókhoz. További részleteket a Brave **[Súgóközpontban] (%1$@)** talál.\n\nAmikor kérdést tesz fel a Leónak, alapértelmezés szerint előfordulhat, hogy az éppen megtekintett weboldal tartalmát, illetve az Ön által kijelölt szöveget elküldi és felhasználja a válasz megfogalmazásához. Bizonyos esetekben a Leo a kérdés alapján keresést indíthat a Brave keresés segítségével, és az ott kapott eredményeket is felhasználhatja a válasz pontosításához. Fontos tudnia, hogy a válaszok pontossága nem garantált, tartalmazhatnak pontatlan, félrevezető vagy téves információkat. Kérjük, ne osszon meg érzékeny vagy személyes adatokat, és fokozott óvatossággal kezelje az egészséggel, pénzügyekkel, személyes biztonsággal vagy hasonló témákkal kapcsolatos válaszokat. Leo beállításait bármikor módosíthatja a Beállítások > Leo menüpontban.\n\nA Brave Leo nem gyűjt olyan azonosítókat – például az IP-címét –, amelyek Önhöz köthetők lennének. Az AI modellek tanításához nem használják fel a beírt adatokat, és a rendszerek nem őriznek meg személyes információkat (kivéve az Anthropic szolgáltatót, amely 30 napig tárolja az adatokat, majd törli azokat). További információkért olvassa el **[Adatvédelmi tájékoztatónkat.](%2$@)** is.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Csevegjen privátban a Brave Leóval";

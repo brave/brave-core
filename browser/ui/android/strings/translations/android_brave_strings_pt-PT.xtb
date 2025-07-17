@@ -84,7 +84,6 @@
 <translation id="1118970888826017401">Ative o suporte para ignorar o redirecionamento principal de URLs de monitorização.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
 <translation id="7714773920987474116">Bloqueia JavaScript (pode causar problemas nos sites)</translation>
-<translation id="995782501881226248">Youtube</translation>
 <translation id="2233004324252915283">Bloquear conteúdo recomendado do YouTube</translation>
 <translation id="1005372663692637999">Bloqueia os elementos do cartão seguinte e final em youtube.com.</translation>
 <translation id="5152595963250646670">Bloquear elementos de distração do YouTube</translation>
@@ -111,11 +110,6 @@
 <translation id="5989135139219497991">Mostrar principais sugestões</translation>
 <translation id="6285118765755298263">Indexar outros motores de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente Web sites que seguem a especificação OpenSearch</translation>
-<translation id="412411722208944922">Motores de pesquisa rápida</translation>
-<translation id="2836969042340015500">Mecanismos de pesquisa rápida</translation>
-<translation id="9120455214794270250">Mostrar barra de pesquisa rápida</translation>
-<translation id="1052991798173010693">Mecanismos de pesquisa usados no momento</translation>
-<translation id="335303688425891752">Pressione durante alguns segundos para alterar a ordem</translation>
 <translation id="9148058034647219655">Sair</translation>
 <translation id="8047754398610073499">Bloquear avisos de consentimento de cookies</translation>
 <translation id="2621893359845808115">Bloqueia pop-ups que pedem para aceitar/recusar cookies num site</translation>
@@ -677,6 +671,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="3952797765659730604">Introduza, cole ou importe o seu ficheiro de cadeia de chave privada ou JSON.</translation>
 <translation id="569068482611873351">Importar...</translation>
 <translation id="4522570452068850558">Detalhes</translation>
+<translation id="3114681061018999547">A proteger</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="4412698727486357573">Centro de Ajuda</translation>
 <translation id="8239147115686034860">Bloquear automaticamente a carteira Brave</translation>
@@ -808,18 +803,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="2199215899212542417">TIPO DE FUNÇÃO: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Sem dados</translation>
 <translation id="1105525362447173583">Transação de assinatura do Solana Dapp</translation>
-<translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviou<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) — <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> enviou <ph name="ASSET"/> n.º<ph name="ASSET_ID"/> — <ph name="DATE"/></translation>
-<translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprovou <ph name="ASSET"/> — <ph name="DATE"/></translation>
-<translation id="7400134344541309180">Aprovou <ph name="ASSET"/> ilimitados — <ph name="PROXY"/></translation>
-<translation id="2428770727194227378">Troca de <ph name="ACCOUNT_NAME"/> — <ph name="DATE"/></translation>
-<translation id="2833661570529295305">Não aprovado</translation>
-<translation id="8034530868111548216">Aprovado</translation>
-<translation id="6015436276085482001">Recusado</translation>
-<translation id="6666273175654835609">Enviado</translation>
-<translation id="2331676293859649642">Confirmado</translation>
-<translation id="8214232307424031138">Assinado</translation>
-<translation id="1165039591588034296">Erro</translation>
 <translation id="2561824823738097741">Está a utilizar o navegador de web mais rápido?</translation>
 <translation id="2065971949051836200">A internet 3x mais rápida já está no seu telefone. Utilize o Brave para toda a sua navegação na web.</translation>
 <translation id="2888278614497184977">Brave = navegação na web 3x mais rápida</translation>
@@ -1239,4 +1222,5 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegação Segura</translation>
 <translation id="2735247450315842119">Permitir capturas de tela em abas privadas</translation>
 <translation id="8420414929552321089">Se permitido, as abas privadas também ficarão visíveis quando vários aplicativos estiverem abertos.</translation>
+<translation id="7956713633345437162">Marcadores móveis</translation>
 </translationbundle>

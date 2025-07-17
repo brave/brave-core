@@ -128,9 +128,6 @@
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
   </message>
-  <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
-    This reflects your estimated earnings range for Brave Ads this month.
-  </message>
   <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
     How does it work?
   </message>
@@ -612,10 +609,10 @@
     Error
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TEXT" desc="">
-    You've reached the maximum device limit for this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+    You’ve connected the maximum number of Brave Rewards profiles to this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TITLE" desc="">
-    Device limit reached
+    Limit reached on payout account
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_1" desc="">
     Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.
@@ -654,7 +651,7 @@
     It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
-    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$2</ph>.
+    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
     Connecting to selected custodian temporarily unavailable
@@ -663,7 +660,7 @@
     Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
-    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$2</ph> about connecting a custodial account to Brave Rewards.
+    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
     Region currently not supported
@@ -681,7 +678,7 @@
     Limited Uphold account functionality
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
-    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$2</ph> for more help.
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
     Request could not be validated
@@ -690,7 +687,7 @@
     Something went wrong
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
-    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$2</ph> if the problem persists.
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
     Your request is still being processed, please wait.
@@ -764,6 +761,9 @@
   </message>
   <message name="IDS_REWARDS_ADS_SETTINGS_TEXT" desc="">
     Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.
+  </message>
+  <message name="IDS_REWARDS_ADS_VIEWED_TOOLTIP" desc="">
+    This shows the number of Brave Ads you've seen this month that qualify for earning BAT.
   </message>
   <message name="IDS_REWARDS_AD_TYPE_INLINE_CONTENT_LABEL" desc="">
     Brave News ads

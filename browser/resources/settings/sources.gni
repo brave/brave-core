@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build
 # Since our components start in a different path, we'll do the first step (move them to
@@ -15,7 +16,6 @@ brave_settings_preprocess_deps =
 
 brave_settings_web_component_files = [
   "brave_appearance_page/bookmark_bar.ts",
-  "brave_appearance_page/brave_theme.ts",
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/super_referral.ts",
   "brave_appearance_page/tabs.ts",
@@ -62,7 +62,6 @@ brave_settings_web_component_files = [
 ]
 
 brave_settings_ts_files = [
-  "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_autofill_page/brave_autofill_page.ts",
@@ -123,31 +122,13 @@ brave_settings_ts_files = [
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
   "email_aliases_page/email_aliases_page.ts",
   "getting_started_page/brave_account_browser_proxy.ts",
-  "getting_started_page/brave_account_common.ts",
-  "getting_started_page/brave_account_create_dialog.html.ts",
-  "getting_started_page/brave_account_create_dialog.ts",
-  "getting_started_page/brave_account_dialog.html.ts",
-  "getting_started_page/brave_account_dialog.ts",
-  "getting_started_page/brave_account_entry_dialog.html.ts",
-  "getting_started_page/brave_account_entry_dialog.ts",
-  "getting_started_page/brave_account_forgot_password_dialog.html.ts",
-  "getting_started_page/brave_account_forgot_password_dialog.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
-  "getting_started_page/brave_account_sign_in_dialog.html.ts",
-  "getting_started_page/brave_account_sign_in_dialog.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-brave_settings_local_css_files = [
-  "getting_started_page/brave_account_common.css",
-  "getting_started_page/brave_account_create_dialog.css",
-  "getting_started_page/brave_account_dialog.css",
-  "getting_started_page/brave_account_entry_dialog.css",
-  "getting_started_page/brave_account_forgot_password_dialog.css",
-  "getting_started_page/brave_account_row.css",
-  "getting_started_page/brave_account_sign_in_dialog.css",
-]
+brave_settings_local_css_files =
+    [ "getting_started_page/brave_account_row.css" ]
 
 if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
@@ -167,16 +148,6 @@ brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_wallet.d.ts",
 ]
 
-# Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
-brave_settings_local_ts_files =
-    brave_settings_web_component_files + brave_settings_ts_files
-
-brave_settings_local_html_files = []
-foreach(component_file, brave_settings_web_component_files) {
-  brave_settings_local_html_files +=
-      [ string_replace(component_file, ".ts", ".html") ]
-}
-
 brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
@@ -187,15 +158,54 @@ brave_settings_mojo_files = [
   # ai_chat.mojom depends on tab_tracker.mojom even though it isn't used on settings
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_account/core/mojom/brave_account.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/brave_account_settings_handler.mojom-webui.ts",
+
+  # Add generated strings as mojo files. Currently, this is the only way to
+  # include them in build_webui() target.
+  "$root_gen_dir/brave/grit/brave_generated_resources_webui_strings.ts",
 ]
 
 brave_settings_mojo_files_deps = [
   "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
-  "//brave/components/brave_account/core/mojom:mojom_ts__generator",
+  "//brave/components/brave_account/mojom:mojom_ts__generator",
+
+  # Add generated strings to the build_webui() via mojo_files_deps.
+  "//brave/app:brave_generated_resources_grit",
 ]
 
 brave_settings_ts_deps = [
   "//third_party/lit/v3_0:build_ts",
   "//ui/webui/resources/mojo:build_ts",
 ]
+
+if (enable_containers) {
+  brave_settings_ts_files +=
+      [ "brave_content_page/containers_browser_proxy.ts" ]
+  brave_settings_ts_files += [
+    "brave_content_page/background_colors.ts",
+    "brave_content_page/containers_background_chip.html.ts",
+    "brave_content_page/containers_background_chip.ts",
+    "brave_content_page/containers_icon.html.ts",
+    "brave_content_page/containers_icon.ts",
+    "brave_content_page/containers.html.ts",
+    "brave_content_page/containers.ts",
+  ]
+  brave_settings_local_css_files += [
+    "brave_content_page/containers_background_chip.css",
+    "brave_content_page/containers.css",
+    "brave_content_page/containers_icon.css",
+  ]
+  brave_settings_mojo_files_deps +=
+      [ "//brave/components/containers/core/mojom:mojom_ts__generator" ]
+  brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]
+}
+
+# Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
+brave_settings_local_ts_files =
+    brave_settings_web_component_files + brave_settings_ts_files
+
+brave_settings_local_html_files = []
+foreach(component_file, brave_settings_web_component_files) {
+  brave_settings_local_html_files +=
+      [ string_replace(component_file, ".ts", ".html") ]
+}

@@ -16,6 +16,7 @@
 #include "base/location.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
@@ -256,11 +257,12 @@ class SolanaTxManagerUnitTest : public testing::Test {
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                 "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":\"" +
                     latest_blockhash + "\", \"lastValidBlockHeight\":" +
-                    std::to_string(last_valid_block_height) + "}}}");
+                    base::NumberToString(last_valid_block_height) + "}}}");
           } else if (*method == "getBlockHeight") {
             url_loader_factory_.AddResponse(
                 request.url.spec(), R"({"jsonrpc":"2.0", "id":1, "result":)" +
-                                        std::to_string(block_height) + "}");
+                                        base::NumberToString(block_height) +
+                                        "}");
           } else if (*method == "sendTransaction") {
             send_transaction_calls_++;
             url_loader_factory_.AddResponse(

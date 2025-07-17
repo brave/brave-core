@@ -20,8 +20,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -47,6 +47,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
@@ -125,6 +126,17 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   const float contrast_ratio =
       color_utils::GetContrastRatio(background_color, frame_color);
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
+}
+
+void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
+  // Chromium asks hover style to all split tabs but we only set hover style
+  // to hovered tab.
+  tab->ShowHover(style);
+}
+
+void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
+  // See the comment of ShowHover().
+  tab->HideHover(style);
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {

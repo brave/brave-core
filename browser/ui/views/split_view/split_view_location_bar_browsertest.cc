@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/run_loop.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -46,7 +45,7 @@ class SplitViewLocationBarBrowserTest
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     if (IsSideBySideEnabled()) {
       return *static_cast<BraveMultiContentsView*>(
-                  browser_view->multi_contents_view_for_testing())
+                  browser_view->multi_contents_view())
                   ->secondary_location_bar_;
     }
     return *static_cast<BraveBrowserView*>(browser_view)

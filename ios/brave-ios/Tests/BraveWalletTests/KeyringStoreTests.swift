@@ -30,7 +30,8 @@ class KeyringStoreTests: XCTestCase {
           accounts: [currentSelectedAccount],
           selectedAccount: currentSelectedAccount,
           ethDappSelectedAccount: [currentSelectedAccount].first(where: { $0.coin == .eth }),
-          solDappSelectedAccount: [currentSelectedAccount].first(where: { $0.coin == .sol })
+          solDappSelectedAccount: [currentSelectedAccount].first(where: { $0.coin == .sol }),
+          adaDappSelectedAccount: nil
         )
       )
     }

@@ -7,7 +7,7 @@
 #include <string_view>
 
 #include "base/path_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -399,7 +399,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
   scoped_refptr<const extensions::Extension> extension =
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
-  const GURL url = extension->GetResourceURL("/empty.html");
+  const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);

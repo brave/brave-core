@@ -24,12 +24,14 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -299,13 +301,17 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
-                       !browser_->profile()->IsOffTheRecord());
+                       !browser_->profile()->IsOffTheRecord() &&
+                           !browser_->profile()->GetPrefs()->GetBoolean(
+                               brave_news::prefs::kBraveNewsDisabledByPolicy));
 
   UpdateCommandEnabled(
       IDC_CONFIGURE_SHORTCUTS,
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
+  UpdateCommandEnabled(
+      IDC_SHOW_BRAVE_TALK,
+      !browser_->profile()->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
 

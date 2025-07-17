@@ -84,6 +84,7 @@ La Protection Avancée contrôle les paramètres Brave suivants :
 <translation id="2028449514182362831">Les fonctionnalités qui nécessitent l'accès aux capteurs de mouvement ne seront pas disponibles</translation>
 <translation id="2030769033451695672">Appuyez pour revenir à l'adresse <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Annuler</translation>
+<translation id="2080070583977670716">Plus de paramètres</translation>
 <translation id="2091887806945687916">Son</translation>
 <translation id="2096716221239095980">Supprimer toutes les données</translation>
 <translation id="2102396546234652240">Ne pas autoriser les sites à utiliser votre micro</translation>
@@ -229,7 +230,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :
 <translation id="3779154269823594982">Modifier les mots de passe</translation>
 <translation id="3797520601150691162">Ne pas appliquer le thème sombre à un site précis</translation>
 <translation id="3803367742635802571">Les sites que vous consultez ne fonctionneront peut-être plus comme prévu</translation>
-<translation id="3804247818991980532"><ph name="TYPE_1"/>. <ph name="TYPE_2"/>.</translation>
 <translation id="381841723434055211">Numéros de téléphone</translation>
 <translation id="3826050100957962900">Connexion tierce</translation>
 <translation id="3835233591525155343">Savoir si vous utilisez l'appareil</translation>
@@ -437,7 +437,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :
 <translation id="6452138246455930388">Baisse de prix dans votre onglet ouvert, de <ph name="OLD_PRICE"/> à <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
 <translation id="6500423977866688905">Si la fenêtre est étroite, demander l'affichage sur mobile</translation>
 <translation id="6527303717912515753">Partager</translation>
-<translation id="652937045869844725">Essayez d'autoriser les cookies tiers. Vous bénéficierez d'une protection réduite, mais les fonctionnalités du site seront plus susceptibles de fonctionner.</translation>
 <translation id="6530703012083415527">Lorsque cette option est activée, les sites peuvent utiliser des pop-ups et des redirections. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser de pop-ups ni de redirections.</translation>
 <translation id="6540488083026747005">Vous avez autorisé les cookies tiers sur ce site</translation>
 <translation id="6545864417968258051">Recherche Bluetooth</translation>
@@ -451,6 +450,7 @@ La Protection Avancée contrôle les paramètres Brave suivants :
 <translation id="6612358246767739896">Contenu protégé</translation>
 <translation id="662080504995468778">Rester</translation>
 <translation id="6635327442719709864">Les sites peuvent demander à utiliser des ports série quand cette option est activée et ne peuvent pas quand elle est désactivée.</translation>
+<translation id="6678072580827808850">Examiner le contrôle de sécurité</translation>
 <translation id="6683865262523156564">Ce site fait partie d'un groupe qui peut voir votre activité. Le groupe est défini par <ph name="RWS_OWNER"/>.</translation>
 <translation id="6689172468748959065">Photos de profil</translation>
 <translation id="6697925417670533197">Téléchargements actifs</translation>
@@ -485,7 +485,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :
 <translation id="7141896414559753902">Bloquer l'affichage de fenêtres pop-up et les redirections par les sites (recommandé)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> Ko</translation>
 <translation id="7180611975245234373">Actualiser</translation>
-<translation id="7180865173735832675">Personnaliser</translation>
 <translation id="7188508872042490670">Données des sites sur l'appareil</translation>
 <translation id="7201549776650881587">L'ensemble des données et cookies stockés par tous les sites dépendant de <ph name="ORIGIN"/> ou par l'appli associée sur votre écran d'accueil seront supprimés</translation>
 <translation id="7203150201908454328">Développé</translation>

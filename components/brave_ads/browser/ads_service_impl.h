@@ -89,7 +89,7 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
-      brave_ads::ResourceComponent* resource_component,
+      ResourceComponent* resource_component,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       HostContentSettingsMap* host_content_settings);
@@ -176,7 +176,7 @@ class AdsServiceImpl final : public AdsService,
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSearchResultAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
-  void OnCountryCodePrefChanged(const std::string& path);
+  void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
@@ -469,8 +469,7 @@ class AdsServiceImpl final : public AdsService,
 
   const std::string channel_name_;
 
-  base::ScopedObservation<brave_ads::ResourceComponent,
-                          ResourceComponentObserver>
+  base::ScopedObservation<ResourceComponent, ResourceComponentObserver>
       resource_component_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_;  // Not owned.

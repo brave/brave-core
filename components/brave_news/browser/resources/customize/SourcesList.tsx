@@ -28,11 +28,11 @@ export default function SourcesList () {
   const { subscribedPublisherIds } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
 
-  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString('braveNewsSourceCount', subscribedPublisherIds.length + channels.length), [subscribedPublisherIds.length, channels.length])
+  const { result: sourcesCount } = usePromise(async () => PluralStringProxyImpl.getInstance().getPluralString(S.BRAVE_NEWS_SOURCE_COUNT, subscribedPublisherIds.length + channels.length), [subscribedPublisherIds.length, channels.length])
 
   return <div>
     <Flex direction="row" justify="space-between" align="center">
-      <Title>{getLocale('braveNewsFeedsHeading')}</Title>
+      <Title>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</Title>
       <Subtitle>{sourcesCount}</Subtitle>
     </Flex>
     <Flex direction="column">

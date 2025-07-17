@@ -23,10 +23,6 @@ void AdsClientNotifierWaiter::WaitForOnNotifyDidInitializeAds() {
   on_notify_did_initialize_ads_run_loop_.Run();
 }
 
-void AdsClientNotifierWaiter::WaitForOnNotifyLocaleDidChange() {
-  on_notify_locale_did_change_run_loop_.Run();
-}
-
 void AdsClientNotifierWaiter::WaitForOnNotifyPrefDidChange() {
   on_notify_pref_did_change_run_loop_.Run();
 }
@@ -107,11 +103,6 @@ void AdsClientNotifierWaiter::WaitForOnNotifyDidSolveAdaptiveCaptcha() {
 
 void AdsClientNotifierWaiter::OnNotifyDidInitializeAds() {
   on_notify_did_initialize_ads_run_loop_.Quit();
-}
-
-void AdsClientNotifierWaiter::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  on_notify_pref_did_change_run_loop_.Quit();
 }
 
 void AdsClientNotifierWaiter::OnNotifyPrefDidChange(

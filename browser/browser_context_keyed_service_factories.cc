@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -36,10 +38,11 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -188,6 +191,14 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryServiceFactory::GetInstance();
 #endif
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    brave_account::BraveAccountServiceFactory::GetInstance();
+  }
+
+  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    email_aliases::EmailAliasesServiceFactory::GetInstance();
+  }
 }
 
 }  // namespace brave

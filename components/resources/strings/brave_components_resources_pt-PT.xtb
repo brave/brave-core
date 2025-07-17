@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">Mostrar os visitados frequentemente</translation>
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="8975314993825375476">Personalizar lista</translation>
-<translation id="5525668735313040116">Pesquise a web em privado</translation>
+<translation id="7407744084529395869">Pesquise na Internet de forma privada, com IA</translation>
 <translation id="1629390138158333592">Pesquisar na web</translation>
 <translation id="4016940744851230999">Mostrar o widget de pesquisa na página do novo separador</translation>
 <translation id="7092560902264458951">Ativar motores de pesquisa na página do novo separador</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Esqueça o Google.</translation>
 <translation id="5588534392045217394">A Pesquisa Brave não apresenta resultados tendenciosos nem censurados. E não traça o perfil de quem a usa.</translation>
 <translation id="6811221529729056895">Experimente já a Pesquisa Brave</translation>
+<translation id="5525668735313040116">Pesquise a web em privado</translation>
 <translation id="3446024864193919737">Mostrar Recompensas Brave</translation>
 <translation id="5585019845078534178">Cartões</translation>
 <translation id="3870475560794762985">Mostrar Imagens Patrocinadas</translation>
@@ -838,7 +839,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} passo}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} passos}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> via <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> através de <ph name="PROVIDER_NAME"/>;</translation>
 <translation id="3735740477244556633">Ordenar por</translation>
 <translation id="6484605214219822434">Rever ponte</translation>
 <translation id="3365052891357224017">Tempo est.</translation>
@@ -1043,7 +1044,7 @@
 <translation id="7702907602086592255">Domínio</translation>
 <translation id="3586752056660754651">Assinar</translation>
 <translation id="3484981968509595506">Uma DApp requer a sua chave de encriptação pública</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> está a solicitar a chave de encriptação pública da sua carteira. Se autorizar o fornecimento dessa chave, o site poderá escrever mensagens encriptadas para si.</translation>
 <translation id="3340247553212049934">Providenciar</translation>
 <translation id="1619778919922494944">Esta DApp pretende ler esta mensagem para concluir o seu pedido</translation>
 <translation id="714506544401754321">Descodificar mensagem</translation>
@@ -1339,21 +1340,21 @@
 <translation id="6248202915200795128">Está a demorar mais do que o previsto?</translation>
 <translation id="5417904796609871601">Ver na atividade</translation>
 <translation id="8915839655070878476">Esta janela pode ser ignorada com segurança.</translation>
-<translation id="7020017785602386950">A enviar <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> para <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> foi enviado para a conta <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="3068919369514041269">A trocar <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> por <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> em <ph name="NETWORK"/></translation>
-<translation id="312867981877298982">Foi adicionado o montante de <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> à sua conta <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="2653273412609139189">A criar uma ponte <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> para <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="81801423138374476">A enviar <ph name="AMOUNT"/> para <ph name="ACCOUNT"/></translation>
+<translation id="700397678365620426"><ph name="AMOUNT"/> foi enviado para a conta <ph name="ACCOUNT"/></translation>
+<translation id="318655655904339974">A trocar <ph name="AMOUNT"/> por <ph name="ACCOUNT"/> em <ph name="NETWORK"/></translation>
+<translation id="2692630015559505926">O montante de <ph name="AMOUNT"/> foi adicionado à sua conta <ph name="ACCOUNT"/></translation>
+<translation id="965763087589489448">A transferir <ph name="AMOUNT"/> para <ph name="NETWORK"/></translation>
 <translation id="1795341197087004042">Não é possível <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
-<translation id="6990756606864308319">Ocorreu um erro ao tentar <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> para <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
-<translation id="6449575669814542383">A aprovar <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> para <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="5289529654748438984">Ocorreu um erro ao tentar <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT"/> para <ph name="VALUE"/></translation>
+<translation id="1694024747580135508">A aprovar <ph name="AMOUNT"/> para <ph name="EXCHANGE"/></translation>
 <translation id="8036159955043245753">Será criada uma nova transação para cancelar a transação existente.</translation>
 <translation id="4056435949094149644">Swapping</translation>
 <translation id="7694836973509310467">Bridging</translation>
-<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> em <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="6934057383578424432">Ocurreu um erro ao tentar <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> em <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="4916833841663290382">A proteger <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> está agora protegido</translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> em <ph name="NETWORK"/></translation>
+<translation id="7903225589949400974">Ocorreu um erro ao tentar <ph name="SWAP_OR_BRIDGE"/> em <ph name="NETWORK"/></translation>
+<translation id="1778601041100951971">A proteger <ph name="AMOUNT"/></translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/> está agora protegido</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {mais {PENDING_TRANSACTIONS} transações pendentes.}
       other {mais {PENDING_TRANSACTIONS} transações pendentes.}
@@ -1610,7 +1611,7 @@
 <translation id="5450317966495183014">A receber (est.)</translation>
 <translation id="8747614139273050577">Token de origem</translation>
 <translation id="1726158192333401896">Token de destino</translation>
-<translation id="765894671068292221">Nova estimativa em <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
+<translation id="1817370679212109974">Nova estimativa em <ph name="COUNTDOWN"/></translation>
 <translation id="3835223348537121988">Saldo:</translation>
 <translation id="5709875713144853427">Selecionar um token para troca</translation>
 <translation id="720404198240859011">Mostrar tokens sem saldo</translation>
@@ -1676,7 +1677,7 @@
 <translation id="353620741952662530">Sem NFT a apresentar</translation>
 <translation id="487317695605278176">Assim que um NFT é detetado, é apresentado aqui.</translation>
 <translation id="7481581122016027177">Não consegue ver os seus NFT?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>Atualize<ph name="REFRESH_END"/> ou <ph name="IMPORT"/>importe manualmente<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>Atualize<ph name="REFRESH_END"/> ou <ph name="IMPORT_START"/>Importe Manualmente<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">A atualizar</translation>
 <translation id="4608324163534970318">Taxas da rede</translation>
 <translation id="6213230117190778270">Receber</translation>
@@ -1821,6 +1822,9 @@
 <translation id="2713141960460256091">Assinar e enviar transação DApp</translation>
 <translation id="6387730345715997739">Assinar transação DApp</translation>
 <translation id="4150336849480030462">Transferência de Token SPL com criação de conta de token associado</translation>
+<translation id="2244921323472112851">De momento, não conseguimos encontrar a página que procura.</translation>
+<translation id="6277237872689140644">A mesma pode ter sido movida para outro lugar ou o URL pode conter um erro.</translation>
+<translation id="2737084171727561244">Ir para o Portfólio</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação geral</translation>
 <translation id="4045404575593562245">Eventos de controlo do Tor</translation>
@@ -2118,10 +2122,10 @@
 <translation id="7692501701960747469">A chave API configurada para este modelo é inválida. Verifique a configuração e tente novamente.</translation>
 <translation id="7905602379229309187">De momento, o terminal encontra-se sobrecarregado. Por favor, tente novamente mais tarde.</translation>
 <translation id="8151638057146502721">Configurar</translation>
+<translation id="999273441077650169">Para que seja utilizado o melhor modelo para a tarefa, este muda de forma dinâmica.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">Olá, chamo-me Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Llama 3.1 8B, criado pela Meta. O Llama é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Olá, sou o Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Qwen 14B, criado pela Alibaba Cloud. O Qwen é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">Olá, chamo-me Leo. Sou um assistente de IA integralmente alojado no Brave. Funciono através do DeepSeek R1, um modelo criado pela DeepSeek para realizar tarefas complexas de raciocínio. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">Olá, chamo-me Leo. Sou o assistente de IA alojado integralmente pela Brave. Para lidar com as tarefas avançadas, utilizo o modelo Mixtral 8x7B, criado pela Mistral AI. O Mixtral é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Olá, o meu nome é Leo. Sou representado pela Brave. Para alimentar as tarefas de conversação e o processamento de texto, utilizo o modelo Claude Instant, criado pela Anthropic. O Claude Instant é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Olá, chamo-me Leo. Sou representado pela Brave e potenciado pelo Claude Haiku, um modelo criado pela Anthropic para realizar tarefas de conversa e de processamento de texto. O Claude Haiku é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Olá, chamo-me Leo. Sou representado pela Brave e potenciado pelo Claude Sonnet, um modelo criado pela Anthropic para realizar tarefas de conversa e de processamento de texto. O Claude Sonnet é hospedado pela Brave através de nossa própria infraestrutura segura. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
@@ -2170,6 +2174,10 @@
 <translation id="5604254791550001355">Editar pedido</translation>
 <translation id="8115786586976830777">Copiar pedido</translation>
 <translation id="1406205536570262057">Editar resposta</translation>
+<translation id="3386725253392845084">Tentar novamente o mesmo modelo</translation>
+<translation id="2461822463642141190">Atual</translation>
+<translation id="9098847266351882944">Mudar modelo para resposta</translation>
+<translation id="1431551663608182318">Mudar modelo para resposta (modelo atual: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">Não é útil</translation>
 <translation id="2976167228906046828">Incorreta</translation>
 <translation id="1183055847065865059">Perigosa/Prejudicial</translation>
@@ -2210,13 +2218,13 @@
 <translation id="887511360213807449">O histórico está desativado</translation>
 <translation id="5380979378058584412">Para ver as suas conversas anteriores com o Leo, tem de ativar o histórico de conversas.</translation>
 <translation id="6291843235651817590">Chat de utilização geral</translation>
-<translation id="8193130769524604031">Tarefas avançadas de chat</translation>
 <translation id="3185367320601718531">Criação de conversa e texto</translation>
 <translation id="7979673624064378842">Chat ultrarrápido</translation>
 <translation id="2836330653441111204">Velocidade e inteligência equilibradas</translation>
 <translation id="6695329447007213917">Conversa de carácter geral, codificação e muito mais</translation>
 <translation id="5051668914970329839">Visão de uso geral</translation>
 <translation id="7226508434216060960">Modelo de raciocínio</translation>
+<translation id="8782867266498869301">Para que seja utilizado o melhor modelo para a tarefa, este muda de forma dinâmica</translation>
 <translation id="3965507912994218570">Definições do Leo</translation>
 <translation id="1037324977127422019">Olá, sou o Leo!</translation>
 <translation id="8930348081963284873">Um assistente inteligente fornecido por IA, incorporado diretamente no Brave.</translation>
@@ -2254,6 +2262,7 @@
 <translation id="983013125018250242">Ferramentas do Leo</translation>
 <translation id="7623223587478473368">Anexo</translation>
 <translation id="3777121685517940177">Enviar arquivo...</translation>
+<translation id="6739516910850820220">A carregar ficheiro...</translation>
 <translation id="9088751620363630236">Tirar uma foto...</translation>
 <translation id="4250229828105606438">Captura de ecrã</translation>
 <translation id="6332876390231524389">Conteúdo do separador atual</translation>
@@ -2269,8 +2278,11 @@
 <translation id="6543799171249004861">Foto de <ph name="AUTHOR"/></translation>
 <translation id="5430001801813715388">RECOMPENSAS</translation>
 <translation id="5966055668402779222">Pergunte à Pesquisa Brave</translation>
+<translation id="167018310108390163">Personalizar Página de Novo Separador</translation>
 <translation id="6851426306697017546">Mostrar relógio</translation>
 <translation id="4844370919312937270">Mostrar widget de pesquisa na nova guia</translation>
+<translation id="7328310113820087094">Com o <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, pode ganhar dinheiro por ver anúncios nas páginas de novos separadores.</translation>
+<translation id="4100520468072294616">Mostrar anúncios na páginas de novos separadores</translation>
 <translation id="5009354496127441090">Mostrar melhores sites</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="4784802981241664605">ESTATÍSTICAS</translation>
@@ -2290,7 +2302,6 @@
 <translation id="7143207342074048698">A ligar</translation>
 <translation id="1202549130170287307">A desligar</translation>
 <translation id="8941703009412168350">VPN BRAVE</translation>
-<translation id="8793108040181436796">Widgets</translation>
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="8458987127502506209">Ativar Proteções do Brave</translation>
 <translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Os escudos estão a funcionar<ph name="STATUS_AFTER"/> para <ph name="HOST"/></translation>
@@ -2376,6 +2387,36 @@
 <translation id="6821108091726602352">Ajude-nos a melhorar a web ao participar no projeto Web Discovery do Brave. Ao partilhar sinais de pesquisa totalmente anónimos, pode ajudar a aumentar o índice de pesquisa do Brave.</translation>
 <translation id="6764845498618413165">Saiba mais.</translation>
 <translation id="7818938154803162778">Quero ajudar</translation>
+<translation id="3486480638399578250">Mantenha o seu endereço de e-mail pessoal privado</translation>
+<translation id="7765422154906712751">Crie endereços únicos e aleatórios que reencaminham e-mails para o endereço eletrónico da sua conta Brave e podem ser excluídos a qualquer momento. Evite que o seu endereço de e-mail real seja divulgado ou utilizado por anunciantes.</translation>
+<translation id="5222676887888702881">Terminar sessão</translation>
+<translation id="8090292425230843109">Sair dos Endereços de E-mail Alternativos</translation>
+<translation id="8471990782451394141">A conectar à Conta Brave...</translation>
+<translation id="5713644099811900409">Conta Brave</translation>
+<translation id="6002159997868894136">Clique para copiar o endereço alternativo</translation>
+<translation id="8105770564756958406">Usado por <ph name="DOMAINS"/></translation>
+<translation id="5006956315579221642">Crie até 5 endereços de e-mail alternativos gratuitos, para proteger o seu endereço de e-mail real.</translation>
+<translation id="5663901348199429994">Os Seus Endereços de E-mail Alternativos</translation>
+<translation id="9046133327037621173">Novo endereço de e-mail alternativo</translation>
+<translation id="3768606658230902536">Crie um endereço de e-mail aleatório que reencaminha e-mails para a sua caixa de entrada e mantenha o seu endereço de e-mail pessoal privado.</translation>
+<translation id="6887156107256264506">Atingiu o limite de 5 endereços de e-mail alternativos grátis. Clique em "Gerir" para reutilizar ou excluir um endereço de e-mail alternativo.</translation>
+<translation id="1104500750724567895">Novo endereço de e-mail alternativo</translation>
+<translation id="8072910658503112482">Sugerir outro endereço de e-mail alternativo</translation>
+<translation id="7710361355427562228">A criar outro endereço de e-mail alternativo...</translation>
+<translation id="4253168017788158739">Nota</translation>
+<translation id="7596996548739923550">Insira uma nota para seu endereço (opcional)</translation>
+<translation id="3810973564298564668">Gerir</translation>
+<translation id="7446914872298825396">Endereço de e-mail alternativo</translation>
+<translation id="3919357515365744684">Os e-mails serão reencaminhados para <ph name="MAIN_EMAIL"/></translation>
+<translation id="6063403442924238501">Editar endereço de e-mail alternativo</translation>
+<translation id="8729265501883390499">Criar endereço de e-mail alternativo</translation>
+<translation id="8662104432574824754">Para começar, inicie sessão ou crie uma conta Brave</translation>
+<translation id="8069030342700068465">Introduza o seu endereço de e-mail para obter um link de início de sessão seguro, enviado para o seu endereço de e-mail. Ao clicar nesta link, criará ou acederá a uma conta Brave e poderá utilizar o serviço gratuito de endereços alternativos de e-mail.</translation>
+<translation id="2133391407495495735">Obter link de início de sessão</translation>
+<translation id="3699624789011381381">Endereço de e-mail</translation>
+<translation id="8124939971041602970">Um e-mail de início de sessão está a caminho de <ph name="MAIN_EMAIL"/></translation>
+<translation id="8140361186431963982">Clique no link seguro de início de sessão para aceder à sua conta.</translation>
+<translation id="6549775668256477823">Não encontra o e-mail? Verifique sua pasta de spam ou <ph name="BEGIN_LINK"/>tente novamente<ph name="END_LINK"/>.</translation>
 <translation id="958268166261124668">VPN Brave: Ligada</translation>
 <translation id="6021669293402055982">VPN Brave: Desligada</translation>
 <translation id="3541307549916475335">IU do painel VPN Brave</translation>

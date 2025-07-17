@@ -58,6 +58,10 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -214,10 +218,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
-  // WebTorrent pref
-  (*s_brave_allowlist)[kWebTorrentEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWaybackMachineDisabledByPolicy] =
       settings_api::PrefType::kBoolean;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
@@ -322,6 +326,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if !BUILDFLAG(IS_ANDROID)
   (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  (*s_brave_allowlist)[windows_recall::prefs::kWindowsRecallDisabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

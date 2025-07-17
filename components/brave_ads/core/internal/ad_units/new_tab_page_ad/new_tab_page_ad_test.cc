@@ -155,6 +155,25 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       AlwaysServeAdIfUserHasJoinedBraveRewardsAndNotConnectedWallet) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
+  test::DisconnectExternalBraveRewardsWallet();
+
+  MockCreativeNewTabPageAds();
+
+  // Act & Assert
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        DoNotServeAdIfPermissionRulesAreDenied) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(

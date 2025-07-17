@@ -12,7 +12,6 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"

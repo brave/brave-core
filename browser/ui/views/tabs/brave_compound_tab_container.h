@@ -8,7 +8,9 @@
 
 #include <memory>
 #include <optional>
+#include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 
 namespace views {

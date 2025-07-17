@@ -1,4 +1,11 @@
+include_rules = [
+  "+components/prefs",
+]
+
 specific_include_rules = {
+  "brave_news_policy_unittest.cc": [
+    "+components/sync_preferences",
+  ],
   "locales_helper\.cc": [
     "!brave/components/l10n/common/locale_util.h",
   ],

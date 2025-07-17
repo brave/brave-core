@@ -2,35 +2,17 @@
 
 <head>
     <script>
-        const ytplayer =
+        window.ytcfg =
         {
-            "config": {
-                "args": {
-                    "raw_player_response": {
-                        "captions": {
-                            "playerCaptionsTracklistRenderer": {
-                                "captionTracks": [
-                                    {
-                                        "baseUrl": "https://www.youtube.com/initial.xml"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        async function loadNewConfig() {
-            await fetch('/youtubei/v1/player')
-            console.log('CLICKED')
+          "data_": {
+            "INNERTUBE_API_KEY":"brave_test_innertube_api_key"
+          }
         }
     </script>
 
 </head>
 
 <body>
-    <div id="config" onclick="loadNewConfig();">CLICK ME</div>
 </body>
 
 </html>

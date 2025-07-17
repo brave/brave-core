@@ -44,22 +44,22 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -81,17 +81,19 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
+#include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -190,10 +192,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
@@ -242,6 +240,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
+#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -265,6 +264,19 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/brave_browser_main_extra_parts_p3a.h"
 #endif
 
 namespace {
@@ -459,6 +471,10 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
+#if BUILDFLAG(ENABLE_OMAHA4)
+  chrome_main_parts->AddParts(
+      std::make_unique<BraveBrowserMainExtraPartsP3A>());
+#endif
   return main_parts;
 }
 
@@ -533,17 +549,6 @@ void BraveContentBrowserClient::
           },
           &render_frame_host));
 #endif
-
-  // AI Chat page content extraction renderer -> browser interface
-  associated_registry.AddInterface<ai_chat::mojom::PageContentExtractorHost>(
-      base::BindRepeating(
-          [](content::RenderFrameHost* render_frame_host,
-             mojo::PendingAssociatedReceiver<
-                 ai_chat::mojom::PageContentExtractorHost> receiver) {
-            ai_chat::AIChatTabHelper::BindPageContentExtractorHost(
-                render_frame_host, std::move(receiver));
-          },
-          &render_frame_host));
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
@@ -641,6 +646,11 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 }
 
 std::optional<base::UnguessableToken>
@@ -837,8 +847,16 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
+        map);
+  }
+
+  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
+  }
 #endif
 
   auto* prefs =
@@ -872,6 +890,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       BraveEducationPageUI>(map);
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        containers::mojom::ContainersSettingsHandler, BraveSettingsUI>(map);
+  }
 #endif
 }
 
@@ -955,6 +980,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
+      CHECK(speedreader_service);
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(
@@ -1146,9 +1172,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationThrottleRegistry& registry) {
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  registry.MaybeAddThrottle(
-      brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
-          registry));
+  brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 
@@ -1156,79 +1180,60 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   content::BrowserContext* context =
       navigation_handle.GetWebContents()->GetBrowserContext();
 #if !BUILDFLAG(IS_ANDROID)
-  registry.MaybeAddThrottle(
-      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(registry));
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  registry.AddThrottle(
-      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(
-          registry));
+  NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  registry.MaybeAddThrottle(tor::TorNavigationThrottle::MaybeCreateThrottleFor(
-      registry, context->IsTor()));
-  registry.MaybeAddThrottle(
-      tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
-          registry, TorProfileServiceFactory::IsTorDisabled(context),
-          context->IsTor()));
+  tor::TorNavigationThrottle::MaybeCreateAndAdd(registry, context->IsTor());
+  tor::OnionLocationNavigationThrottle::MaybeCreateAndAdd(
+      registry, TorProfileServiceFactory::IsTorDisabled(context),
+      context->IsTor());
 #endif
 
-  registry.MaybeAddThrottle(
-      decentralized_dns::DecentralizedDnsNavigationThrottle::
-          MaybeCreateThrottleFor(registry, user_prefs::UserPrefs::Get(context),
-                                 g_browser_process->local_state(),
-                                 g_browser_process->GetApplicationLocale()));
+  decentralized_dns::DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
+      registry, user_prefs::UserPrefs::Get(context),
+      g_browser_process->local_state(),
+      g_browser_process->GetApplicationLocale());
 
   // Debounce
-  registry.MaybeAddThrottle(
-      debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
-          registry,
-          debounce::DebounceServiceFactory::GetForBrowserContext(context)));
+  debounce::DebounceNavigationThrottle::MaybeCreateAndAdd(
+      registry,
+      debounce::DebounceServiceFactory::GetForBrowserContext(context));
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   if (host_content_settings_map) {
-    registry.MaybeAddThrottle(
-        brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-            registry, g_brave_browser_process->ad_block_service(),
-            g_brave_browser_process->ad_block_service()
-                ->custom_filters_provider(),
-            EphemeralStorageServiceFactory::GetForContext(context),
-            host_content_settings_map,
-            g_browser_process->GetApplicationLocale()));
+    brave_shields::DomainBlockNavigationThrottle::MaybeCreateAndAdd(
+        registry, g_brave_browser_process->ad_block_service(),
+        g_brave_browser_process->ad_block_service()->custom_filters_provider(),
+        EphemeralStorageServiceFactory::GetForContext(context),
+        host_content_settings_map, g_browser_process->GetApplicationLocale());
   }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   // Request Off-The-Record
-  registry.MaybeAddThrottle(
-      request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
-          registry,
-          request_otr::RequestOTRServiceFactory::GetForBrowserContext(context),
-          EphemeralStorageServiceFactory::GetForContext(context),
-          Profile::FromBrowserContext(context)->GetPrefs(),
-          g_browser_process->GetApplicationLocale()));
+  request_otr::RequestOTRNavigationThrottle::MaybeCreateAndAdd(
+      registry,
+      request_otr::RequestOTRServiceFactory::GetForBrowserContext(context),
+      EphemeralStorageServiceFactory::GetForContext(context),
+      Profile::FromBrowserContext(context)->GetPrefs(),
+      g_browser_process->GetApplicationLocale());
 #endif
 
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
-    registry.MaybeAddThrottle(
-        ai_chat::AIChatThrottle::MaybeCreateThrottleFor(registry));
+    ai_chat::AIChatThrottle::MaybeCreateAndAdd(registry);
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  registry.MaybeAddThrottle(
-      ai_chat::AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
-          base::BindOnce(&ai_chat::OpenAIChatForTab), registry,
-          ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
-          user_prefs::UserPrefs::Get(context)));
+  ai_chat::AIChatBraveSearchThrottle::MaybeCreateAndAdd(
+      base::BindOnce(&ai_chat::OpenAIChatForTab), registry,
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
+      user_prefs::UserPrefs::Get(context));
 #endif
 
-  registry.MaybeAddThrottle(
-      brave_search::BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
-          registry));
+  brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
 }
 
 bool PreventDarkModeFingerprinting(WebContents* web_contents,
@@ -1360,6 +1365,15 @@ std::optional<GURL> BraveContentBrowserClient::SanitizeURL(
     return std::nullopt;
   }
   return sanitized_url;
+}
+
+bool BraveContentBrowserClient::IsWindowsRecallDisabled() {
+#if BUILDFLAG(IS_WIN)
+  return windows_recall::IsWindowsRecallDisabled(
+      g_browser_process->local_state());
+#else
+  return false;
+#endif
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(

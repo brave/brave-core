@@ -40,6 +40,8 @@ export function createTopSitesHandler(
       updateTopSites(),
       updatePrefs()
     ])
+
+    store.update({ initialized: true })
   }
 
   function currentListKind() {
@@ -97,9 +99,20 @@ export function createTopSitesHandler(
     },
 
     setTopSitePosition(url, pos) {
-      if (currentListKind() === TopSitesListKind.kCustom) {
-        handler.setCustomTopSitePosition(url, pos)
+      if (currentListKind() !== TopSitesListKind.kCustom) {
+        return
       }
+
+      handler.setCustomTopSitePosition(url, pos)
+
+      store.update(({ topSites }) => {
+        const current = topSites.findIndex((item) => item.url === url)
+        if (current >= 0) {
+          const item = topSites.splice(current, 1)[0]
+          topSites.splice(pos, 0, item)
+        }
+        return { topSites: [...topSites] }
+      })
     }
   }
 }

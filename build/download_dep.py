@@ -18,7 +18,7 @@ def main():
     dep_url = DEPS_PACKAGES_URL + '/' + args.dep_path
     dest_dir = wspath(args.dest_dir)
     if dep_url != get_url(dest_dir):
-        deps.DownloadAndUnpack(dep_url, dest_dir)
+        deps.DownloadAndUnpack(dep_url, dest_dir, args.path_prefix)
         set_url(dest_dir, dep_url)
 
 
@@ -26,6 +26,7 @@ def parse_args():
     parser = ArgumentParser(description='Download and extract an archive.')
     parser.add_argument('dep_path')
     parser.add_argument('dest_dir')
+    parser.add_argument('path_prefix', nargs='?', default=None)
     return parser.parse_args()
 
 

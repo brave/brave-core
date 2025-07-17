@@ -52,7 +52,6 @@
 <translation id="1773147648972887693">Toon veel bezocht</translation>
 <translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="8975314993825375476">Lijst aanpassen</translation>
-<translation id="5525668735313040116">Privé op het web zoeken</translation>
 <translation id="1629390138158333592">Zoeken op internet</translation>
 <translation id="4016940744851230999">Zoekwidget weergeven op het nieuwe tabblad</translation>
 <translation id="7092560902264458951">Zoekmachines inschakelen op de pagina Nieuw tabblad</translation>
@@ -66,6 +65,7 @@
 <translation id="6699628638740071563">Het is tijd om Google aan de kant te zetten.</translation>
 <translation id="5588534392045217394">Brave Search vertekent of censureert de resultaten niet en maakt geen profiel van jou.</translation>
 <translation id="6811221529729056895">Probeer Brave Zoeken nu</translation>
+<translation id="5525668735313040116">Privé op het web zoeken</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
 <translation id="5585019845078534178">Kaarten</translation>
 <translation id="3870475560794762985">Laat gesponsorde afbeeldingen zien</translation>
@@ -838,7 +838,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} stap}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} stappen}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> via <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
 <translation id="3735740477244556633">Sorteren op</translation>
 <translation id="6484605214219822434">Overbrugging bekijken</translation>
 <translation id="3365052891357224017">Geschatte tijd</translation>
@@ -1043,7 +1043,7 @@
 <translation id="7702907602086592255">Domein</translation>
 <translation id="3586752056660754651">Teken</translation>
 <translation id="3484981968509595506">Een DApp vraagt uw openbare coderingssleutel aan</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> vraagt de openbare coderingssleutel van uw wallet aan. Indien u deze sleutel deelt, kan de site versleutelde berichten aan u opstellen.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> vraagt om de openbare encryptiesleutel van uw wallet. Als u deze sleutel deelt, kan de website versleutelde berichten aan u sturen.</translation>
 <translation id="3340247553212049934">Verlenen</translation>
 <translation id="1619778919922494944">Deze DApp wil dit bericht lezen om uw verzoek af te ronden</translation>
 <translation id="714506544401754321">Bericht decoderen</translation>
@@ -1339,21 +1339,21 @@
 <translation id="6248202915200795128">Duurt het langer dan verwacht?</translation>
 <translation id="5417904796609871601">Weergeven in activiteit</translation>
 <translation id="8915839655070878476">Je kunt dit venster veilig sluiten.</translation>
-<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> naar <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> verzenden</translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> is verzonden naar het account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="3068919369514041269"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> naar <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> on <ph name="NETWORK"/> omwisselen</translation>
-<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> is toegevoegd aan je account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
-<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> naar <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> overbruggen</translation>
+<translation id="81801423138374476"><ph name="AMOUNT"/> verzenden naar <ph name="ACCOUNT"/></translation>
+<translation id="700397678365620426"><ph name="AMOUNT"/> is verzonden naar het account <ph name="ACCOUNT"/></translation>
+<translation id="318655655904339974"><ph name="AMOUNT"/> swappen naar <ph name="ACCOUNT"/> op <ph name="NETWORK"/></translation>
+<translation id="2692630015559505926"><ph name="AMOUNT"/> is toegevoegd aan je account <ph name="ACCOUNT"/></translation>
+<translation id="965763087589489448"><ph name="AMOUNT"/> overbruggen naar <ph name="NETWORK"/></translation>
 <translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/> niet mogelijk</translation>
-<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/> van <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> naar <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> is mislukt vanwege een fout</translation>
-<translation id="6449575669814542383">Goedkeuren van <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> naar <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="5289529654748438984"><ph name="SEND_SWAP_OR_BRIDGE"/> van <ph name="AMOUNT"/> naar <ph name="VALUE"/> is mislukt vanwege een fout</translation>
+<translation id="1694024747580135508"><ph name="AMOUNT"/> naar <ph name="EXCHANGE"/> goedkeuren</translation>
 <translation id="8036159955043245753">Er wordt een nieuwe transactie gemaakt om je bestaande transactie te annuleren.</translation>
 <translation id="4056435949094149644">Omwisselen</translation>
 <translation id="7694836973509310467">Overbruggen</translation>
-<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> via <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="6934057383578424432"><ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> via <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> is mislukt vanwege een fout</translation>
-<translation id="4916833841663290382"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> beschermen</translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> is beschermd</translation>
+<translation id="8419958386475786929"><ph name="SWAPPING_OR_BRIDGING"/> op <ph name="NETWORK"/></translation>
+<translation id="7903225589949400974"><ph name="SWAP_OR_BRIDGE"/> op <ph name="NETWORK"/> is mislukt vanwege een fout</translation>
+<translation id="1778601041100951971"><ph name="AMOUNT"/> afschermen</translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/> is afgeschermd</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
       other {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
@@ -1610,7 +1610,7 @@
 <translation id="5450317966495183014">Ontvangen (ong.)</translation>
 <translation id="8747614139273050577">Van token</translation>
 <translation id="1726158192333401896">Naar token</translation>
-<translation id="765894671068292221">Nieuwe schatting over <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
+<translation id="1817370679212109974">Nieuwe schatting over <ph name="COUNTDOWN"/></translation>
 <translation id="3835223348537121988">Saldo:</translation>
 <translation id="5709875713144853427">Selecteer een token om te ruilen</translation>
 <translation id="720404198240859011">Toon tokens zonder saldo</translation>
@@ -1676,7 +1676,7 @@
 <translation id="353620741952662530">Geen NFT's om weer te geven</translation>
 <translation id="487317695605278176">Zodra een NFT is waargenomen, wordt deze hier weergegeven.</translation>
 <translation id="7481581122016027177">Ziet u uw NFT's niet?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>Actualiseren<ph name="REFRESH_END"/> of <ph name="IMPORT"/>ze handmatig importeren<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>Vernieuwen<ph name="REFRESH_END"/> of <ph name="IMPORT_START"/>Handmatig importeren<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Vernieuwen</translation>
 <translation id="4608324163534970318">Netwerkkosten</translation>
 <translation id="6213230117190778270">Receive</translation>
@@ -1821,6 +1821,9 @@
 <translation id="2713141960460256091">DApp-transactie ondertekenen en verzenden</translation>
 <translation id="6387730345715997739">DApp-transactie ondertekenen</translation>
 <translation id="4150336849480030462">Overdracht van SPL-tokens met bijbehorende aanmaak van token-account</translation>
+<translation id="2244921323472112851">We kunnen de pagina die je zoekt nu niet vinden.</translation>
+<translation id="6277237872689140644">Misschien is die verplaatst of bevat de URL een typefout.</translation>
+<translation id="2737084171727561244">Naar portfolio</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -2118,10 +2121,10 @@
 <translation id="7692501701960747469">De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.</translation>
 <translation id="7905602379229309187">Het eindpunt is momenteel overbelast. Probeer het later nog eens.</translation>
 <translation id="8151638057146502721">Configureren</translation>
+<translation id="999273441077650169">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama 3.1 8B, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Qwen 14B, een efficiënt en breed inzetbaar model ontwikkeld door Alibaba Cloud. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word aangestuurd door DeepSeek R1, een model ontwikkeld door DeepSeek voor complexe redeneertaken. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">Hallo, ik ben Leo. Ik nem AI-assistent die volledig door Brave wordt gehost. Ik ben gebaseerd op Mixtral 8x7B, een krachtig model van Mistral AI voor geavanceerde toepassingen. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
@@ -2170,6 +2173,10 @@
 <translation id="5604254791550001355">Prompt bewerken</translation>
 <translation id="8115786586976830777">Prompt kopiëren</translation>
 <translation id="1406205536570262057">Antwoord bewerken</translation>
+<translation id="3386725253392845084">Zelfde model opnieuw proberen</translation>
+<translation id="2461822463642141190">Huidig</translation>
+<translation id="9098847266351882944">Model voor antwoord wijzigen</translation>
+<translation id="1431551663608182318">Model voor antwoord wijzigen (huidig model: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">Niet nuttig</translation>
 <translation id="2976167228906046828">Onjuist</translation>
 <translation id="1183055847065865059">Onveilig/gevaarlijk</translation>
@@ -2210,13 +2217,13 @@
 <translation id="887511360213807449">Geschiedenis is uitgeschakeld</translation>
 <translation id="5380979378058584412">Als je je eerdere gesprekken met Leo wilt bekijken, moet je de gespreksgeschiedenis inschakelen.</translation>
 <translation id="6291843235651817590">Chat voor algemene taken</translation>
-<translation id="8193130769524604031">Chat voor geavanceerde taken</translation>
 <translation id="3185367320601718531">Gespreks- en tekstproductie</translation>
 <translation id="7979673624064378842">Razendsnelle chat</translation>
 <translation id="2836330653441111204">Snelheid en intelligentie in balans</translation>
 <translation id="6695329447007213917">Chat voor algemene doeleinden, codering en meer</translation>
 <translation id="5051668914970329839">Beelden voor algemene taken</translation>
 <translation id="7226508434216060960">Redeneermodel</translation>
+<translation id="8782867266498869301">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="1037324977127422019">Hallo, ik ben Leo!</translation>
 <translation id="8930348081963284873">Ik ben een AI-assistent die rechtstreeks in Brave is ingebouwd.</translation>
@@ -2254,6 +2261,7 @@
 <translation id="983013125018250242">Leo-tools</translation>
 <translation id="7623223587478473368">Bijlage</translation>
 <translation id="3777121685517940177">Bestand uploaden...</translation>
+<translation id="6739516910850820220">Bestand uploaden...</translation>
 <translation id="9088751620363630236">Foto nemen...</translation>
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="6332876390231524389">Huidige tabbladinhoud</translation>
@@ -2269,8 +2277,11 @@
 <translation id="6543799171249004861">Foto gemaakt door <ph name="AUTHOR"/></translation>
 <translation id="5430001801813715388">BELONINGEN</translation>
 <translation id="5966055668402779222">Brave Search vragen</translation>
+<translation id="167018310108390163">Nieuw tabblad aanpassen</translation>
 <translation id="6851426306697017546">Klok weergeven</translation>
 <translation id="4844370919312937270">Zoekwidget weergeven op nieuwe tabbladen</translation>
+<translation id="7328310113820087094">Met <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> krijg je betaald voor het bekijken van advertenties op nieuwe tabbladen.</translation>
+<translation id="4100520468072294616">Advertenties op nieuwe tabbladen tonen</translation>
 <translation id="5009354496127441090">Topsites weergeven</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="4784802981241664605">STATISTIEKEN</translation>
@@ -2290,7 +2301,6 @@
 <translation id="7143207342074048698">Verbinding maken</translation>
 <translation id="1202549130170287307">Verbinding wordt verbroken</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
-<translation id="8793108040181436796">Widgets</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="8458987127502506209">Brave Schilden inschakelen</translation>
 <translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Shields staat AAN<ph name="STATUS_AFTER"/> voor <ph name="HOST"/></translation>
@@ -2376,6 +2386,36 @@
 <translation id="6821108091726602352">Help ons het web beter te maken door deel te nemen aan het Web Discovery Project van Brave. Door volledig anoniem zoeksignalen te delen, kunt u Brave helpen de zoekindex uit te breiden.</translation>
 <translation id="6764845498618413165">Meer informatie.</translation>
 <translation id="7818938154803162778">Natuurlijk, ik wil helpen</translation>
+<translation id="3486480638399578250">Houd je persoonlijke e-mailadres privé</translation>
+<translation id="7765422154906712751">Maak unieke, willekeurige adressen die je altijd kunt verwijderen en laat je e-mailberichten doorsturen naar je Brave-account. Voorkom dat je je echte e-mailadres moet delen met adverteerders.</translation>
+<translation id="5222676887888702881">Uitloggen</translation>
+<translation id="8090292425230843109">Uitloggen bij e-mailaliassen</translation>
+<translation id="8471990782451394141">Verbinden met Brave-account...</translation>
+<translation id="5713644099811900409">Brave-account</translation>
+<translation id="6002159997868894136">Klik om alias te kopiëren</translation>
+<translation id="8105770564756958406">Gebruikt door <ph name="DOMAINS"/></translation>
+<translation id="5006956315579221642">Maak tot 5 gratis e-mailaliassen om je echte e-mailadres te beschermen.</translation>
+<translation id="5663901348199429994">Je e-mailaliassen</translation>
+<translation id="9046133327037621173">Nieuwe e-mailalias</translation>
+<translation id="3768606658230902536">Houd je persoonlijke e-mailadres privé door een willekeurig e-mailadres te maken waarmee je e-mail laat doorsturen naar je inbox.</translation>
+<translation id="6887156107256264506">Je hebt de limiet van 5 gratis e-mailaliassen bereikt. Klik op 'Beheren' om een alias opnieuw te gebruiken of te verwijderen.</translation>
+<translation id="1104500750724567895">Nieuwe alias</translation>
+<translation id="8072910658503112482">Andere e-mailalias voorstellen</translation>
+<translation id="7710361355427562228">Nieuwe alias genereren...</translation>
+<translation id="4253168017788158739">Opmerking</translation>
+<translation id="7596996548739923550">Voer een opmerking voor je adres in (optioneel)</translation>
+<translation id="3810973564298564668">Beheren</translation>
+<translation id="7446914872298825396">E-mailalias</translation>
+<translation id="3919357515365744684">E-mails worden doorgestuurd naar <ph name="MAIN_EMAIL"/></translation>
+<translation id="6063403442924238501">E-mailalias bewerken</translation>
+<translation id="8729265501883390499">Alias maken</translation>
+<translation id="8662104432574824754">Ga aan de slag door in te loggen of een Brave-account te maken</translation>
+<translation id="8069030342700068465">Voer je e-mailadres in om een beveiligde inloglink te ontvangen. Als je op deze link klikt, maak je een Brave-account of krijg je toegang tot je account. Daarna kun je de gratis e-mailaliassen gebruiken.</translation>
+<translation id="2133391407495495735">Inloglink vragen</translation>
+<translation id="3699624789011381381">E-mailadres</translation>
+<translation id="8124939971041602970">We hebben een e-mail met een inloglink gestuurd naar <ph name="MAIN_EMAIL"/></translation>
+<translation id="8140361186431963982">Klik op de beveiligde inloglink in de e-mail om toegang te krijgen tot je account.</translation>
+<translation id="6549775668256477823">Zie je de e-mail niet? Controleer dan de spammap of <ph name="BEGIN_LINK"/>probeer het opnieuw<ph name="END_LINK"/>.</translation>
 <translation id="958268166261124668">Brave VPN: verbonden</translation>
 <translation id="6021669293402055982">Brave VPN: geen verbinding</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>

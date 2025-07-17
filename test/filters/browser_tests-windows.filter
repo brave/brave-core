@@ -17,6 +17,7 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-All/CookieSettingsTest.AllowCookiesUsingExceptions/0
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AiDataKeyedServiceBrowserTest.TabInnerText
@@ -27,6 +28,8 @@
 -ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
+-WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
+-WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
@@ -46,10 +49,24 @@
 
 # These tests fail on CI but passes locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
--All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
+
+# These tests fail in Release due to resource being optimized out.
+# Check failed: !data->empty(). Unable to find resource: 10679. If this happens
+# in a browser test running on Windows, it may be that dead-code elimination
+# stripped out the code that uses the resource, causing the resource to be
+# stripped out because the resource is not used by chrome.dll. See
+# https://crbug.com/1181150.
+-All/CreateShortcutConfirmationViewBrowserTest.*
+
+# These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
+# chrome/browser/extensions/install_verifier.cc (on Win and Mac), which causes
+# InstallVerifier::ShouldEnforce to return true and leads to the test failing
+# to install extension due to it not being from webstore. Unclear why this is
+# not failing upstream for the same reason.
+-ChromeSignoutConfirmationPromptWithExtensionsPixelTest.*
 
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*

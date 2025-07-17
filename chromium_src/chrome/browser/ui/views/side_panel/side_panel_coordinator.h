@@ -9,7 +9,6 @@
 // Moved all header includes of upstream side_panel_coordinator.h to apply
 // final define only to side_panel_coordinator.h as the final keyword is very
 // commonly used from many places.
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_multi_source_observation.h"

@@ -1,46 +1,46 @@
 {
   "appName": {
-    "message": "Die Brave-uitbreiding",
+    "message": "The Brave Extension",
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Skilde",
+    "message": "Shields",
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "aan",
+    "message": "up",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "af",
+    "message": "down",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "vir hierdie werf",
+    "message": "for this site",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "As 'n webwerf stukkend voorkom, probeer met skilde af",
+    "message": "If a site appears broken, try shields down",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "U blaai deur hierdie werf sonder Brave se privaatheid- of sekuriteitsbeskerming. Werk dit nie reg wanneer die skild op is nie?",
+    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Rapporteer ’n stukkende werf",
+    "message": "Report a broken site",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items versper",
+    "message": "Items blocked",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item versper",
+    "message": "Item blocked",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "en",
+    "message": "and",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
@@ -80,7 +80,7 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Skripte versper",
+    "message": "Scripts blocked",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
@@ -88,11 +88,11 @@
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Koekies is versper",
+    "message": "Cookies blocked",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Alle koekies toegelaat",
+    "message": "All cookies allowed",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -116,31 +116,31 @@
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Skripte op hierdie werf",
+    "message": "Scripts on this site",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Versperde skripte",
+    "message": "Blocked scripts",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Toegelate skripte",
+    "message": "Allowed scripts",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Versper alles",
+    "message": "Block all",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Staan alles toe",
+    "message": "Allow all",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Versper",
+    "message": "Block",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Staan Toe",
+    "message": "Allow",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
@@ -156,15 +156,15 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Kanselleer",
+    "message": "Cancel",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Gaan terug",
+    "message": "Go back",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Pas eenmalig toe",
+    "message": "Apply once",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
@@ -180,15 +180,15 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Gevorderde Aansig",
+    "message": "Advanced View",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Eenvoudige Aansig",
+    "message": "Simple View",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Werwe sluit dikwels koekies en skripte in wat u en u toestel probeer identifiseer (dikwels by advertensies ingebed). Hulle probeer vasstel wie u is en volg u regoor die web — spoor na wat u op elke werf doen. Brave versper hierdie dinge sodat u kan blaai sonder om agtervolg te word.",
+    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
@@ -200,27 +200,27 @@
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Het dit",
+    "message": "Got it",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Leer meer",
+    "message": "Learn more",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Voeg toe tot Brave",
+    "message": "Add to Brave",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {
-    "message": "Verwyder uit Brave",
+    "message": "Remove from Brave",
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {
-    "message": "Toev. aan Chrome",
+    "message": "Add to Chrome",
     "description": "Message for adding an extension to Chrome"
   },
   "removeFromChrome": {
-    "message": "Verwijderen uit Chrome",
+    "message": "Remove from Chrome",
     "description": "Message for removing an extension from Chrome"
   }
 }

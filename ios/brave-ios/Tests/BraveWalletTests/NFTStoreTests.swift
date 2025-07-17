@@ -128,7 +128,8 @@ class NFTStoreTests: XCTestCase {
           accounts: [self.solAccount, self.ethAccount1, self.ethAccount2],
           selectedAccount: self.ethAccount1,
           ethDappSelectedAccount: self.ethAccount1,
-          solDappSelectedAccount: self.solAccount
+          solDappSelectedAccount: self.solAccount,
+          adaDappSelectedAccount: nil
         )
       )
     }

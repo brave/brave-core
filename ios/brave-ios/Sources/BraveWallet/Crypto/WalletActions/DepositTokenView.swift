@@ -129,6 +129,7 @@ struct DepositTokenView: View {
                   .foregroundColor(Color(.separator))
               }
             }
+            .modifier(WalletButtonStyleModifier())
             .padding(.vertical, 6)
             .accessibilityElement()
             .accessibilityLabel(accessibilityLabel(viewModel))
@@ -212,7 +213,8 @@ struct DepositTokenView: View {
     .addAccount(
       keyringStore: keyringStore,
       networkStore: networkStore,
-      accountNetwork: savedTokenViewModel?.network,
+      preselectedAccountCoin: savedTokenViewModel?.network.coin,
+      preselectedAccountNetwork: savedTokenViewModel?.network,
       isShowingConfirmation: $isPresentingAddAccountConfirmation,
       isShowingAddAccount: $isPresentingAddAccount,
       onConfirmAddAccount: { isPresentingAddAccount = true },

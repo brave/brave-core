@@ -5131,6 +5131,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN" desc="Permission string for access to Login API.">
           Launch and exit managed guest sessions
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_LOGIN" desc="Permission string for access to Enterprise Login API.">
+          Exit managed guest sessions
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_UI" desc="Permission string for access to login screen UI.">
           Display UI on the login screen
         </message>
@@ -7214,6 +7217,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Always show full URLs
         </message>
       </if>
+      <if expr="use_titlecase">
+        <then>
+          <message name="IDS_CONTEXT_MENU_SHOW_SEARCH_TOOLS" desc="In Title Case: The text label of the omnibox context menu option to show the toolbar in the omnibox popup">
+            Show Search Shortcuts
+          </message>
+        </then>
+        <else>
+          <message name="IDS_CONTEXT_MENU_SHOW_SEARCH_TOOLS" desc="The text label of the omnibox context menu option to show the toolbar in the omnibox popup">
+            Show search shortcuts
+          </message>
+        </else>
+      </if>
 
       <!-- NTP -->
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
@@ -7299,6 +7314,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_CANT_REMOVE" desc="A catchall error message for when the shortcut cannot be removed. (On the New Tab Page)">
        Can't remove shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_HELP_PIN" desc="The in-product help text instructing the user on how to pin a shortcut (On the New Tab Page)">
+        Tap and hold to pin shortcuts
       </message>
       <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_REMOVED" desc="The title of the shortcut removed confirmation message when removing a custom link. (On the New Tab Page)">
         Shortcut removed
@@ -7408,8 +7426,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_FOOTER_HEADER" desc="The toggle for the Footer title in the customization menu on the New Tab Page." meaning="The footer which shows at the bottom of the New Tab page.">
         Footer
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_CHROME_MANAGED_NEW_TAB_PAGE" desc="The string that shows on the customize chrome UI when a 3rd party manages the new tab page.">
-        <ph name="THIRD_PARTY_NTP_MANAGER">$1<ex>ZomboCom</ex></ph> is managing your new tab page
+      <message name="IDS_NTP_MANAGED_BY_SEARCH_ENGINE" desc="The string that shows on the customize chrome UI when a 3rd party manages the new tab page.">
+        Current search engine managing your new tab page
+      </message>
+      <message name="IDS_NTP_MANAGED_BY_EXTENSION" desc="The string that shows on the customize chrome UI when a 3rd party manages the new tab page.">
+        Current extension managing your new tab page
       </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_MANAGED_NEW_TAB_PAGE_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="Accessibility label for the button that shows on the customize chrome UI when a 3rd party manages the new tab page.">
         <ph name="THIRD_PARTY_NTP_MANAGER">$1<ex>ZomboCom</ex></ph> is managing your new tab page, opens in a new tab
@@ -8120,6 +8141,25 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Reset to default
         </message>
       </if>
+      <!-- TODO(crbug.com/423679752): Make the following string translatable. -->
+      <message name="IDS_NTP_COMPOSE_ENTRYPOINT" desc="The text for the compose entrypoint in the searchbox on the New Tab Page." translateable="false">
+        AI Mode
+      </message>
+      <message name="IDS_NTP_COMPOSE_PLACEHOLDER_TEXT" desc="The placeholder for the input in the compose box.">
+        Ask anything
+      </message>
+      <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL" desc="The accessibility label for the cancel button on the compose box.">
+        Dismiss
+      </message>
+      <message name="IDS_NTP_COMPOSE_IMAGE_UPLOAD_BUTTON_A11Y_LABEL" desc="The accessibility label for the image upload button on the compose box.">
+        Upload an image
+      </message>
+      <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_BUTTON_A11Y_LABEL" desc="The accessibility label for the file upload button on the compose box.">
+        Upload a file
+      </message>
+      <message name="IDS_NTP_COMPOSE_SUBMIT_BUTTON_A11Y_LABEL" desc="The accessibility label for the submit button on the compose box.">
+        Send
+      </message>
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_INFO_BUTTON_TITLE" desc="Text shown in tooltip of info button of an NTP module.">
@@ -8452,13 +8492,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NEW_TAB_FOOTER_NAME" desc="The name of the New Tab Footer feature, a UI that may show at the bottom of the New Tab Page." translateable="false">
         New Tab Footer
       </message>
-      <message name="IDS_OPENS_IN_CURRENT_TAB" desc="ARIA (accessibility) label describing a link which opens in the current tab.">
-        Opens in current tab
+       <message name="IDS_OPENS_MANAGEMENT_PAGE" desc="ARIA (accessibility) role description for a link in the New Tab footer which opens the chrome://management page in the current tab.">
+        Learn about how your browser is managed
       </message>
-      <message name="IDS_OPENS_NTP_EXTENSION_OPTIONS_PAGE" desc="ARIA (accessibility) role description for a link which opens an extension's option page in the current tab.">
-      Open new tab page extension's option page in current tab
+      <message name="IDS_HIDE_NEW_TAB_FOOTER" desc="Label for option to hide New Tab Footer feature, a UI that may show at the bottom of the New Tab Page.">
+        Hide footer on New Tab page
       </message>
-
+      <message name="IDS_NEW_TAB_FOOTER_BACKGROUND_ATTRIBUTION_ARIA_DESC" desc="Attribution shown in the New Tab footer when the New Tab page has a background applied.">
+        Learn more about your New Tab page background
+      </message>
+      <message name="IDS_NEW_TAB_FOOTER_BACKGROUND_ATTRIBUTION_TEXT" desc="ARIA (accessibility) role description for a link in the New Tab footer which opens the page for the New Tab page background.">
+        <ph name="ATTRIBUTION_LINE_1">$1<ex>Background Name</ex></ph>, <ph name="ATTRIBUTION_LINE_2">$2<ex>Artist Name</ex></ph>
+      </message>
       <!-- Star View menu -->
       <if expr="use_titlecase">
         <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
@@ -9491,17 +9536,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         More options for split view
       </message>
 
-      <!-- Strings for experimental AI promo -->
-      <message name="IDS_IPH_EXPERIMENTAL_AI_PROMO" desc="The title text of the IPH promo for experimental AI." translateable="false">
-        Try out experimental AI features
-      </message>
-      <message name="IDS_IPH_EXPERIMENTAL_AI_PROMO_BODY" desc="The body text of the IPH promo for experimental AI." translateable="false">
-        Get help writing, organizing tabs and creating custom themes
-      </message>
-      <message name="IDS_IPH_EXPERIMENTAL_AI_PROMO_BUTTON_CONTINUE" desc="The text of the continue button for the experimental AI IPH promo." translateable="false">
-        Continue
-      </message>
-
       <!-- Strings for intent picker -->
       <if expr="not is_android">
         <message name="IDS_TOOLTIP_INTENT_PICKER_ICON" desc="The tooltip for the intent picker bubble icon">
@@ -10502,6 +10536,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_EMPTY_MESSAGE" desc="Message indicating that the list of saved passwords for this site is empty.">
           No saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
         </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_TRUSTED_VAULT_KEY_RETRIEVAL_REQUIRED_MESSAGE" desc="Message indicating that trusted vault key retrieval is required before passwords can be used.">
+          You need to verify it's you before you can access your passwords
+        </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_TITLE" desc="The title of a list of saved passwords for the currently visible site." translateable="false">
           Saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
         </message>
@@ -10513,6 +10550,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_SELECT_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved credentials from any origin if the user is about to fill a password or username field. Allows user to pick one of the saved passwords to be filled in.">
           Select password
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_RETRIEVE_TRUSTED_VAULT_KEY" desc="The text of the link in the password sheet that opens the trusted vault key retrieval flow.">
+          Verify it's you
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_SELECT_PASSKEY" desc="The text of the link in the password sheet that opens the system's selection for available Passkeys.">
           Select passkey
@@ -11006,13 +11046,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add tabs to new group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Add tab to split view
+          Add tab to new split view
+        </message>
+        <message name="IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+          New split view with current tab
         </message>
         <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="The label of the tab context menu submenu for exiting split view.">
           Arrange split view
         </message>
         <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="The label of the tab context menu item for swapping a tab with the current view in the split.">
-          Swap with current view
+          Move tab into split view
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New group
@@ -11116,13 +11159,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add Tabs to New Group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Add Tab to Split View
+          Add Tab to New Split View
+        </message>
+        <message name="IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+          New Split View with Current Tab
         </message>
         <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="The label of the tab context menu submenu for exiting split view.">
           Arrange Split View
         </message>
         <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="The label of the tab context menu item for swapping a tab with the current view in the split.">
-          Swap with Current View
+          Move Tab into Split View
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New Group
@@ -11200,8 +11246,32 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_CLOSE" translateable="false" desc="The label for a menu item that closes the inactive split tab when clicked.">
           Close this view
         </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" translateable="false" desc="The label for a menu item that closes the left view in the active split.">
+          Close left view
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" translateable="false" desc="The label for a menu item that closes the right view in the active split.">
+          Close right view
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" translateable="false" desc="The label for a menu item that closes the top view in the active split.">
+          Close top view
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" translateable="false" desc="The label for a menu item that closes the bottom view in the active split.">
+          Close bottom view
+        </message>
         <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" translateable="false" desc="The label for a menu item that unsplits the split tab when clicked.">
           Separate views
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" translateable="false" desc="The label for a menu item that swaps the left view in the active split with the selected tab.">
+          Swap with left view
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" translateable="false" desc="The label for a menu item that swaps the right view in the active split with the selected tab.">
+          Swap with right view
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" translateable="false" desc="The label for a menu item that swaps the top view in the active split with the selected tab.">
+          Swap with top view
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="The label for a menu item that swaps the bottom view in the active split with the selected tab.">
+          Swap with bottom view
         </message>
       </if>
       <if expr="use_titlecase">
@@ -11220,8 +11290,32 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_CLOSE" translateable="false" desc="In title case: the label for a menu item that closes the inactive split tab when clicked.">
           Close This View
         </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the left view in the active split.">
+          Close Left View
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the right view in the active split.">
+          Close Right View
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the top view in the active split.">
+          Close Top View
+        </message>
+        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the bottom view in the active split.">
+          Close Bottom View
+        </message>
         <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" translateable="false" desc="In title case: the label for a menu item that unsplits the split tab when clicked.">
           Separate Views
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the left view in the active split with the selected tab.">
+          Swap with Left View
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the right view in the active split with the selected tab.">
+          Swap with Right View
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the top view in the active split with the selected tab.">
+          Swap with Top View
+        </message>
+        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the bottom view in the active split with the selected tab.">
+          Swap with Bottom View
         </message>
       </if>
 
@@ -13786,7 +13880,7 @@ This can include information about installed software, files, your browser, the 
         <message name="IDS_SYNC_PASSPHRASE_DIALOG_TITLE" desc="Title of the sync passphrase dialog">
           Enter your passphrase
         </message>
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_OK_BUTTON" desc="Label of the main button of the sync passphrase dialog">
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_OK_BUTTON" meaning="An on-screen button that opens the dialog for the user to enter a custom passphrase" desc="Label of the main button of the sync passphrase dialog">
           Enter
         </message>
 
@@ -16046,6 +16140,29 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Communications
       </message>
     </if>
+    <if expr="is_android">
+      <message name="IDS_GENERIC_AUDIO_DEVICE_NAME" desc="Generic input or output audio device of an unspecified type. Used as a final fallback if no other more specific name can be given to the audio device. This is typically presented to users in a drop-down list of device choices.">
+        Audio device
+      </message>
+      <message name="IDS_INTERNAL_SPEAKER_AUDIO_DEVICE_NAME" desc="Speaker that is internal to / built into the device running the browser. This is typically presented to users in a drop-down list of device choices.">
+        Speaker (internal)
+      </message>
+      <message name="IDS_INTERNAL_MIC_AUDIO_DEVICE_NAME" desc="Microphone that is internal to / built into the device running the browser. This is typically presented to users in a drop-down list of device choices.">
+        Mic (internal)
+      </message>
+      <message name="IDS_WIRED_HEADPHONES_AUDIO_DEVICE_NAME" desc="Pair of wired headphones, for instance connected via an audio phone connector. May be used when presenting the headphones as an input device (if the headphones also function as a microphone) or as an output device. This is typically presented to users in a drop-down list of device choices.">
+        Wired headphones
+      </message>
+      <message name="IDS_BLUETOOTH_AUDIO_DEVICE_NAME" desc="Audio device connected over Bluetooth. May be used when presenting the Bluetooth device as an input device (e.g. if it is a microphone or a headset) or as an output device (e.g. if it is a speaker or a headset). This is typically presented to users in a drop-down list of device choices.">
+        Bluetooth device
+      </message>
+      <message name="IDS_USB_AUDIO_DEVICE_NAME" desc="Audio device connected over USB. May be used when presenting the USB device as an input device (e.g. if it is a microphone or a headset) or as an output device (e.g. if it is a speaker or a headset). This is typically presented to users in a drop-down list of device choices.">
+        USB device
+      </message>
+      <message name="IDS_HDMI_AUDIO_DEVICE_NAME" desc="Audio device connected over HDMI. May be used when presenting the HDMI device as an input device or as an output device. This is typically presented to users in a drop-down list of device choices.">
+        HDMI device
+      </message>
+    </if>
 
     <if expr="not is_android">
       <!-- Device Chooser Prompt -->
@@ -16703,12 +16820,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_PASSKEY_PHONE_TABLET_OR_SECURITY_KEY_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. Users can also insert and tap their security key on the QR code screen.">
         Use a phone, tablet, or security key
       </message>
-      <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_PHONE_OR_TABLET_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. This string is used when a specific phone is also an option in the list, so the word 'different' is intended to communicate that this is the correct option when none of the previously list phones are correct.">
-        Use a different phone or tablet
-      </message>
-      <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_PHONE_TABLET_OR_SECURITY_KEY_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. This string is used when a specific phone is also an option in the list, so the word 'different' is intended to communicate that this is the correct option when none of the previously list phones are correct. Users can also insert and tap their security key on the QR code screen.">
-        Use a different phone, tablet, or security key
-      </message>
       <message name="IDS_WEBAUTHN_PHONE_CONFIRMATION_TITLE" desc="The title of a dialog shown when a user can use a passkey from a phone or tablet they have already paired with Brave to sign in to a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
         Use a passkey from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph> to sign in to <ph name="WEBSITE">$2<ex>accounts.google.com</ex></ph>
       </message>
@@ -16914,9 +17025,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_SOURCE_USB_SECURITY_KEY" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in a USB security key.">
         USB security key
-      </message>
-      <message name="IDS_WEBAUTHN_SOURCE_PHONE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in their phone.">
-        From "<ph name="PHONE_NAME">$1<ex>Pixel 7</ex></ph>"
       </message>
       <message name="IDS_WEBAUTHN_PASSKEYS_AND_SECURITY_KEYS" desc="The title of a dialog prompting the user to create or use a passkey on their phones by scanning a QR code or on a security key. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
         Passkeys &amp; Security Keys
@@ -17170,6 +17278,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Follow the steps on your other device
       </message>
 
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_FLOW_CANCEL_BUTTON_TEXT" desc="The button text to cancel the current flow.">
+        Cancel
+      </message>
+
     <!-- Interstitial shown prior to making digital identity request to wallet -->
     <!-- Android strings are declared in android_chrome_strings.grd. -->
     <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_DIALOG_TITLE">
@@ -17199,17 +17311,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
       Private
     </message>
-    <message name="IDS_INCOGNITO_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open incogntio windows. This is not used for zero windows.[ICU Syntax]">
-      {0, plural,
-        =1 {# open window}
-        other {# open windows}
-      }
-    </message>
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
-    </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all Private windows.">
-      Close Private
     </message>
 
     <!-- Private Delete Browsing Data dialog bubble. -->
@@ -17223,32 +17326,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Close windows
     </message>
 
-  <!-- Private History Disclaimer dialog bubble. -->
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
-    Sites you visit aren’t saved in Private
-  </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
-    To delete Private browsing history from your device, close all Private tabs
-  </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
-    Close Private
-  </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
-    Got it
-  </message>
-
-   <!-- Guest Profile Menu bubble. -->
-   <message name="IDS_GUEST_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open guest windows. This is not used for zero windows.[ICU Syntax]">
-      {0, plural,
-        =1 {# open window}
-        other {# open windows}
-      }
+    <!-- Private History Disclaimer dialog bubble. -->
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+      Sites you visit aren’t saved in Private
     </message>
-    <message name="IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all guest windows. The number in ICU syntax represents the number of open guest windows, but it is not used in the English text and can be used to choose singular/plural in translation to other languages, if needed.[ICU Syntax]">
-      {0, plural,
-        =1 {Close Guest}
-        other {Close Guest}
-      }
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+      To delete Private browsing history from your device, close all Private tabs
+    </message>
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+      Close Private
+    </message>
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
+      Got it
     </message>
 
     <message name="IDS_NOTIFICATION_DEFAULT_HELPFUL_BUTTON_TEXT" desc="Text body for the helpful button in notifications sent from notification scheduler.">
@@ -17364,6 +17453,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DATA_CONTROLS_CLIPBOARD_COPY_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their clipboard copy (ctrl-c) is not recommended by their admin.">
       Copying from this site is not recommended
     </message>
+    <message name="IDS_DATA_CONTROLS_CLIPBOARD_SHARE_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their share is not recommended by their admin.">
+      Sharing from this site is not recommended
+    </message>
+    <message name="IDS_DATA_CONTROLS_CLIPBOARD_ACTION_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their action is not recommended by their admin.">
+      This action is not recommended
+    </message>
     <message name="IDS_DATA_CONTROLS_BLOCKED_LABEL" desc="Generic text displayed in a dialog telling the user their action has been blocked by their administrator.">
       Your administrator has blocked this action
     </message>
@@ -17376,11 +17471,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DATA_CONTROLS_COPY_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before copying from a site.">
       Copy anyway
     </message>
+    <message name="IDS_DATA_CONTROLS_SHARE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before sharing from a site.">
+      Share anyway
+    </message>
     <message name="IDS_DATA_CONTROLS_PASTE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before pasting to a site.">
       Don't paste
     </message>
     <message name="IDS_DATA_CONTROLS_COPY_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before copying from a site.">
       Don't copy
+    </message>
+    <message name="IDS_DATA_CONTROLS_SHARE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before sharing from a site.">
+      Don't share
     </message>
 
     <!-- Data sharing UI strings -->
@@ -17694,8 +17795,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue-to sheet. Sheet is shown to prompt user to continue using their identity from an identity provider on a website.">
       Continue to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
     </message>
-    <message name="IDS_ACCOUNT_SELECTION_SHEET_SUBTITLE" desc="Subtitle for account selection sheet. Shows the top-level site when choosing an account to sign up/in with." translateable="false">
-      on <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_SUBTITLE" desc="Subtitle for account selection sheet. Explains the relationship between the embedder website and the embedded iframe." translateable="false">
+      <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> embeds content from <ph name="IFRAME_ETLD_PLUS_ONE">$2<ex>iframe.example</ex></ph>
     </message>
     <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
       Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
@@ -18369,11 +18470,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           =1 {Brave removed permissions from 1 site}
           other {Brave removed permissions from {NUM_SITES} sites}}
         </message>
-        <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_MENU_NOTIFICATION" desc="Title for the permissions review Safety Check module on the Magic Stack. Shown when Safety Check has identified several unused sites that have granted permissions.">
-          {NUM_SITES, plural,
-          =1 {Brave removed permissions from 1 site}
-          other {Brave removed permissions from {NUM_SITES} sites}}
-        </message>
         <message name="IDS_SETTINGS_SAFETY_HUB_COMPROMISED_PASSWORDS_MENU_NOTIFICATION" desc="Summary for the compromised passwords Safety Check module on the Magic Stack. Shown when Safety Check has identified insecure credentials.">
           {NUM_SITES, plural,
           =1 {Found 1 compromised password}
@@ -18420,6 +18516,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
+    <!-- Multi Capture -->
+    <if expr="is_chromeos">
+      <message name="IDS_MULTI_CAPTURE_MAY_CAPTURE_ALL_NOTIFY_NOTIFICATION_MESSAGE" desc="String notifying that the screens may be captured for apps where all of them will show a capture indication.">
+      {NUM_APPS, plural, offset:2
+          =1 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>. You will be notified when the recording starts.}
+          =2 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph> and <ph name="APP1_NAME">{APP1_NAME}</ph>. You will be notified when the recording starts.}
+          =3 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and 1 other app. You will be notified when the recording starts.}
+          other {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and # other apps. You will be notified when the recording starts.}
+        }
+      </message>
+      <message name="IDS_MULTI_CAPTURE_MAY_CAPTURE_NONE_NOTIFY_NOTIFICATION_MESSAGE" desc="String notifying that the screens may be captured for apps where none of them will show a capture indication.">
+      {NUM_APPS, plural, offset:2
+          =1 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>. You will not be notified when the recording starts.}
+          =2 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph> and <ph name="APP1_NAME">{APP1_NAME}</ph>. You will not be notified when the recording starts.}
+          =3 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and 1 other app. You will not be notified when the recording starts.}
+          other {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and # other apps. You will not be notified when the recording starts.}
+        }
+      </message>
+      <message name="IDS_MULTI_CAPTURE_MAY_CAPTURE_SOME_NOTIFY_NOTIFICATION_MESSAGE" desc="String notifying that the screens may be captured for apps where none of them will show a capture indication.">
+      {NUM_APPS, plural, offset:2
+          =1 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>.}
+          =2 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph> and <ph name="APP1_NAME">{APP1_NAME}</ph>.}
+          =3 {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and 1 other app.}
+          other {Your administrator can record your screen with <ph name="APP0_NAME">{APP0_NAME}</ph>, <ph name="APP1_NAME">{APP1_NAME}</ph> and # other apps.}
+        }
+      </message>
+    </if>
 
   <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_TITLE" desc="The title for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied.">
     Always allow
@@ -18449,6 +18572,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="is_chromeos">
       <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_NOTIFICATION_MESSAGE" desc="Message of the notification displayed while launching a user-installed app.">
         This Brave app will stop working after your ChromeOS version is updated. Save any app data you want to keep. To learn about your options, contact the app developer or your IT support team.
+      </message>
+      <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_BLOCKED_LAUNCH_DIALOG_TITLE" desc="The title of the dialog displayed when a Crome App launch is blocked.">
+        <ph name="APP_NAME">$1<ex>Application</ex></ph> can't be launched
+      </message>
+      <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_BLOCKED_LAUNCH_DIALOG_MESSAGE" desc="The content of the dialog displayed when a Crome App launch is blocked, explaining why the app was not launched.">
+        Brave apps stopped running on ChromeOS devices in July 2025. Consider an alternative app.
+      </message>
+      <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_BLOCKED_LAUNCH_DIALOG_CLOSE_BUTTON" desc="The text of the button to dismiss the dialog displayed when a Brave App launch is blocked.">
+        Got it
       </message>
     </if>
 

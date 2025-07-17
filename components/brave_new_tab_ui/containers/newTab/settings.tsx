@@ -101,7 +101,7 @@ const tabIcons: TabMap<string> = {
 
 const tabTranslationKeys: TabMap<string> = {
   [TabType.BackgroundImage]: 'backgroundImageTitle',
-  [TabType.BraveNews]: 'braveNewsTitle',
+  [TabType.BraveNews]: S.BRAVE_NEWS_SETTINGS_TITLE,
   [TabType.BraveStats]: 'statsTitle',
   [TabType.Clock]: 'clockTitle',
   [TabType.TopSites]: 'topSitesTitle',
@@ -113,7 +113,13 @@ const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget
 export default function Settings(props: Props) {
   const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
     (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
-    (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
+    (featureFlagSearchWidget || t !== TabType.Search) &&
+    (!props.newTabData.isBraveNewsDisabledByPolicy ||
+      t !== TabType.BraveNews)
+  ), [
+    props.allowBackgroundCustomization,
+    props.newTabData.isBraveNewsDisabledByPolicy
+  ])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
     ? TabType.BackgroundImage
     : TabType.BraveStats)
@@ -147,9 +153,15 @@ export default function Settings(props: Props) {
     <SettingsContent id='settingsBody'>
       <Sidebar id="sidebar">
         <NavigationMenu>
-          {allowedTabTypes.map(tabType => <SidebarItem key={tabType} icon={tabIcons[tabType]} isCurrent={activeTab === tabType} onClick={() => changeTab(tabType)}>
-            {getLocale(tabTranslationKeys[tabType])}
-          </SidebarItem>)}
+          {allowedTabTypes.map(tabType =>
+            <SidebarItem
+              key={tabType}
+              icon={tabIcons[tabType]}
+              isCurrent={activeTab === tabType}
+              onClick={() => changeTab(tabType)}
+            >
+              {getLocale(tabTranslationKeys[tabType])}
+            </SidebarItem>)}
         </NavigationMenu>
       </Sidebar>
       <SettingsFeatureBody id='content'>

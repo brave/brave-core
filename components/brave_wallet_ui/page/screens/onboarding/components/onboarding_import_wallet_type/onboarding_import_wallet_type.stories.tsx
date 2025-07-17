@@ -22,4 +22,7 @@ export const _OnboardingImportWalletType = {
   },
 }
 
-export default { component: OnboardingImportWalletType }
+export default {
+  title: 'Wallet/Desktop/Screens/Onboarding/Components',
+  component: OnboardingImportWalletType,
+}

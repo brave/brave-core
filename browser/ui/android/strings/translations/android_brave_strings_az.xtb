@@ -11,12 +11,6 @@
 <translation id="7335142069363686805">İndi qiymətləndir</translation>
 <translation id="6681362094306959654">Brave-i sevdiniz?</translation>
 <translation id="5488843227043643519">Play Store-da qiymətləndirmək istəyirsiniz?</translation>
-<translation id="2233004324252915283">YouTube tövsiyəli məzmunu bloklayın</translation>
-<translation id="1005372663692637999">youtube.com saytında videolentlərin növbəti və son elementlərini bloklayır.</translation>
-<translation id="5152595963250646670">YouTube-un əhəmiyyətsiz elementlərini bloklayın</translation>
-<translation id="2998960761270772157">youtube.com saytında hesaba daxil olma, menyu, şərhlər və video məlumat elementlərini bloklayır.</translation>
-<translation id="8531835121131500698">YouTube Shorts-u bloklayın</translation>
-<translation id="2167271714269158912">youtube.com saytındakı əsas səhifədən, trend səhifədən və axtarış nəticələrindən Shorts-u bloklayır.</translation>
 <translation id="8617525558807213034">Məxfi tabulyasiyaları avtomatik doldurun</translation>
 <translation id="8685431198160039193">Yaddaşda saxlanmış məlumatlar məxfi tabulyasiyalarda avtomatik doldurula bilər</translation>
 <translation id="6583902294974160967">Dəstək</translation>
@@ -29,17 +23,12 @@
 <translation id="7823038307453615214">Brave Xəbərləri göstər</translation>
 <translation id="1654539412343893324">Verilənləriniz haqqında ətraflı məlumat</translation>
 <translation id="2448893613530489637">İzləyicilərin &amp; reklamların yüklənməsinin və veb-səhifələrdə göstərilməsinin qarşısını alır</translation>
-<translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
-<translation id="8659271182272561965">Brave Axtarışı təkmilləşdirmək üçün bəzi anonim axtarış &amp; baxış məlumatları aparın.</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
 <translation id="9008534313521214777">Qənaət edilmiş\ntəxmini vaxt</translation>
-<translation id="1690924763769415936">Arxa fonda oxutma</translation>
 <translation id="6332924730165919598">Bütün tabulyasiyalar bağlandıqda Brave də bağlanır</translation>
-<translation id="8308305244351876417">Brave-də və ya başqa bir tətbiqdə digər tab-vərəqəyə keçdiyiniz zaman, yaxud da cihazınızın ekranı sönülü ikən audio faylın oxudulmasını təmin edir.</translation>
 <translation id="4150201353443180367">Göstər</translation>
 <translation id="4275663329226226506">Media</translation>
-<translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">Görünüş</translation>
 <translation id="4117451092682672487">Məxfilik. Sadə və asan.</translation>
 <translation id="7909375417585209817">Brave standart olaraq təyin edildikdə, toxunduğunuz hər keçid Brave-in məxfiliyin qorunması funksiyası ilə açılır.</translation>
@@ -47,10 +36,6 @@
 <translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
 <translation id="6718362830686703942">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
 <translation id="8616157231067364693">Brave istifadəçilərinin hansı funksiyalardan istifadə etdiyi ilə əlaqəli məxfi və anonim məhsul məlumatları paylaşın.</translation>
-<translation id="7044431516245362795">İndeksi yüksəltmək və axtarış nəticələrini təkmilləşdirmək üçün Veb Kəşfetmə Layihəsinə qoşulun. <ph name="LEARN_MORE_START"/>Ətraflı məlumat.<ph name="LEARN_MORE_END"/></translation>
-<translation id="7818938154803162778">Əlbəttə kömək edərəm</translation>
-<translation id="3545804467215833536">Brave Təhlükəsizlik Qalxanlarını açmaq üçün toxunun</translation>
-<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklamlar və i̇zləyicilər bloklandı</translation>
 <translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="5806601733251372221">Brave Qalxanları</translation>
 <translation id="3333887201479867589">Brave Mükafatları</translation>
@@ -59,9 +44,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave Xəbərlər</translation>
 <translation id="8428213095426709021">Parametrlər</translation>
-<translation id="348794064910142198">Brave Sinx, fərqli cihazlarınızdakı Brave Brauzerlər arasında əlfəcin məlumatlarının məxfi sinxronlaşdırılmasına imkan verir.\n\nSadəcə başqa cihazda yaratdığınız sinxronizasiya zəncirindəki kodu skan edin, ya da onu yeni cihazlardan birində yaradın.</translation>
-<translation id="7745082336226088126">Sinxronizasiya kodunu skan edin və ya daxil edin</translation>
-<translation id="1602067095281698985">Yeni bir sinxronizasiya zənciri yaradın</translation>
 <translation id="2149973817440762519">Əlfəcini redaktə et</translation>
 <translation id="1426410128494586442">Bəli</translation>
 <translation id="6336451774241870485">Yeni məxfi tabulyasiya</translation>
@@ -126,7 +108,6 @@
 <translation id="6053992191006521518">PULSUZ versiyanı sınaqdan keçir</translation>
 <translation id="5903391101107992067">7 günlük pulsuz versiyanı sınaqdan keçirin</translation>
 <translation id="8681480718817027245">Abunəlik</translation>
-<translation id="2304783958703511257">Təkmil Parametrlər</translation>
 <translation id="9065203028668620118">Redaktə et</translation>
 <translation id="1450735350187803276">Bu ay görülən reklamlar</translation>
 <translation id="5233638681132016545">Yeni tabulyasiya</translation>
@@ -141,9 +122,7 @@
 <translation id="6278643716658443228">Mükafat parametrləri</translation>
 <translation id="4272136334824111854">Bu ay siz, Brave Mükafatlar tərəfindən dəstəklənən <ph name="CREATOR_COUNT"/> yaradıcı saytına baş çəkmisiniz</translation>
 <translation id="1179407411385015942">Leo brauzerin içində yaradılmış Sİ dəstəkli ağıllı köməkçidir</translation>
-<translation id="5781842473834867765">Söhbət tarixçəmi yaddaşda saxla</translation>
 <translation id="4109670531935487117">Ünvan panelində avtomatik tamamlama təkliflərini göstər</translation>
-<translation id="6106701981952170121">Bütün Leo Sİ söhbət məlumatlarını sil</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Bir il</translation>
 <translation id="2985392169397572983">ƏN YAXŞI DƏYƏR</translation>

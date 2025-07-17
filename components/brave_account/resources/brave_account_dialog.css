@@ -1,0 +1,87 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px var(--leo-spacing-4xl);
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  min-height: var(--leo-spacing-4xl);
+  width: 100%;
+}
+
+:host([show-back-button]) .navigation-buttons {
+  justify-content: space-between;
+}
+
+leo-button[size='tiny'] {
+  --leo-button-padding: 0px;
+  flex: none;
+  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
+}
+
+leo-icon {
+  --leo-icon-size: var(--leo-icon-m);
+}
+
+.logo {
+  background-image: url('full_brave_brand.svg');
+  background-size: cover;
+  height: var(--leo-spacing-4xl);
+  width: calc(var(--leo-spacing-4xl) * 129 / 40);
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    background-image: url('full_brave_brand_dark.svg');
+  }
+}
+
+.body {
+  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+    var(--leo-spacing-2xl);
+}
+
+.title-and-description {
+  color: var(--leo-color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin: 0px 0px var(--leo-spacing-3xl);
+}
+
+.title {
+  font: var(--leo-font-heading-h4);
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+}
+
+:host ::slotted([slot='inputs']) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl);
+  margin: 0px 0px var(--leo-spacing-2xl);
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+:host ::slotted([slot='footer']) {
+  border-top: 1px solid var(--leo-color-divider-subtle);
+}

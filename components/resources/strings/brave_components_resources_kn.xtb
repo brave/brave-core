@@ -52,7 +52,7 @@
 <translation id="1773147648972887693">ಹೆಚ್ಚು ಭೇಟಿ ನೀಡಿದ ಸೈಟ್‍ಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="4546260624932151782">ನೆಚ್ಚಿನವುಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="8975314993825375476">ಪಟ್ಟಿಯನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
-<translation id="5525668735313040116">ವೆಬ್ ಅನ್ನು ಖಾಸಗಿಯಾಗಿ ಹುಡುಕಿ</translation>
+<translation id="7407744084529395869">AI ಜೊತೆ ಖಾಸಗಿಯಾಗಿ ವೆಬ್ ಸರ್ಚ್ ಮಾಡಿ</translation>
 <translation id="1629390138158333592">ವೆಬ್ ಹುಡುಕಿ</translation>
 <translation id="4016940744851230999">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ಹುಡುಕಾಟ ವಿಜೆಟ್ ತೋರಿಸಿ</translation>
 <translation id="7092560902264458951">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
@@ -66,6 +66,7 @@
 <translation id="6699628638740071563">Google ಅನ್ನು ತ್ಯಜಿಸುವ ಸಮಯ ಇದಾಗಿದೆ.</translation>
 <translation id="5588534392045217394">Brave ಹುಡುಕಾಟವು ಫಲಿತಾಂಶಗಳ ಪಕ್ಷಪಾತ ಅಥವಾ ಅದನ್ನು ಸೆನ್ಸಾರ್ ಮಾಡುವುದಿಲ್ಲ ಮತ್ತು ಅದು ನಿಮ್ಮನ್ನು ಪ್ರೊಫೈಲ್ ಮಾಡುವುದಿಲ್ಲ.</translation>
 <translation id="6811221529729056895">Brave ಹುಡುಕಾಟವನ್ನು ಇದೀಗ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="5525668735313040116">ವೆಬ್ ಅನ್ನು ಖಾಸಗಿಯಾಗಿ ಹುಡುಕಿ</translation>
 <translation id="3446024864193919737">Brave Rewards ತೋರಿಸಿ</translation>
 <translation id="5585019845078534178">ಕಾರ್ಡ್‌ಗಳು</translation>
 <translation id="3870475560794762985">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ</translation>
@@ -644,7 +645,7 @@
 <translation id="6895088073061692390">ದುರದೃಷ್ಟವಶಾತ್, ನಮ್ಮ ಸ್ವಯಂಚಾಲಿತ ಪರಿಶೀಲನೆಗಳಲ್ಲಿ ಕೆಲವು ಅನಿರೀಕ್ಷಿತ Brave ಜಾಹೀರಾತುಗಳ ಚಟುವಟಿಕೆಯು ಕಂಡುಬಂದಿರುವ ಕಾರಣದಿಂದ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ.</translation>
 <translation id="4229056297802204697">ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿರುವ ಕಾರಣದಿಂದ, ಜಾಹೀರಾತುಗಳು ನಿಮಗೆ ಕಾಣುವುದು ಮುಂದುವರಿಯುತ್ತದೆ, ಆದರೆ ಪೇಔಟ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಅರ್ಹರಾಗಿರುವುದಿಲ್ಲ. ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಯನ್ನು Brave ರಿವಾರ್ಡ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸಲು ಸಹ ನಿಮಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="5124846913141379164">ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ದೋಷದಲ್ಲಿ ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿರುವ ಸಾಧ್ಯತೆ ಇರುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಕಡೆಯಿಂದ ಯಾವುದೇ ತಕ್ಷಣದ ಕ್ರಮ ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ಭವಿಷ್ಯದಲ್ಲಿ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಮೇಲಿನ ಫ್ಲ್ಯಾಗ್ ಅನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.</translation>
-<translation id="8947002243324362172">ರಿವಾರ್ಡ್‌ಗಳ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಫ್ಲ್ಯಾಗ್‌ ಮಾಡುವ Brave ಪ್ರಕ್ರಿಯೆಯ ಬಗ್ಗೆ ಇನ್ನಷ್ಟನ್ನು ತಿಳಿದುಕೊಳ್ಳಿ.</translation>
+<translation id="8947002243324362172">ರಿವಾರ್ಡ್‌ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಫ್ಲ್ಯಾಗ್‌ ಮಾಡುವ ಬ್ರೇವ್ ಪ್ರಕ್ರಿಯೆಯ ಬಗ್ಗೆ ಇನ್ನ‌ಷ್ಟು ತಿಳಿದುಕೊಳ್ಳಿ.</translation>
 <translation id="4699218748197721830">Brave ರಿವಾರ್ಡ್‌ಗಳ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>ನಲ್ಲಿ ನೀವು ID ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿದ ನಂತರ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="5037332159336402972">ಲಾಗ್ ಇನ್ ಮಾಡಲು ನೀವು ದೃಢೀಕೃತ ಖಾತೆ ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ</translation>
@@ -838,7 +839,7 @@
       =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ಹಂತ}
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ಹಂತಗಳು}
     }</translation>
-<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/><ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/> ಮೂಲಕ</translation>
+<translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> ಮೂಲಕ <ph name="PROVIDER_NAME"/></translation>
 <translation id="3735740477244556633">ಈ ಪ್ರಕಾರ ವಿಂಗಡಿಸಿ</translation>
 <translation id="6484605214219822434">ರಿವ್ಯೂ ಬ್ರಿಡ್ಜ್‌</translation>
 <translation id="3365052891357224017">ಅಂದಾಜು ಸಮಯ</translation>
@@ -1043,7 +1044,7 @@
 <translation id="7702907602086592255">ಡೊಮೇನ್</translation>
 <translation id="3586752056660754651">ಸಹಿ</translation>
 <translation id="3484981968509595506">ನಿಮ್ಮ ಸಾರ್ವಜನಿಕ ಎನ್‌ಕ್ರಿಪ್ಷನ್ ಕೀ ಅನ್ನು ಒಂದು DApp ವಿನಂತಿಸುತ್ತಿದೆ</translation>
-<translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನ ಸಾರ್ವಜನಿಕ ಎನ್‌ಕ್ರಿಪ್ಷನ್‌ ಕೀಗಾಗಿ ವಿನಂತಿಸುತ್ತಿದೆ. ಈ ಕೀ ಒದಗಿಸಲು ನೀವು ಸಮ್ಮತಿಸಿದರೆ, ನಿಮಗಾಗಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾದ ಸಂದೇಶಗಳನ್ನು ರಚಿಸಲು ಸೈಟ್‌ಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
+<translation id="2300240008330189182"><ph name="URL"/> ಯು ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನ ಸಾರ್ವಜನಿಕ ಎನ್‌ಕ್ರಿಪ್ಷನ್‌ ಕೀಗಾಗಿ ವಿನಂತಿಸುತ್ತಿದೆ. ಈ ಕೀ ಒದಗಿಸಲು ನೀವು ಸಮ್ಮತಿಸಿದರೆ, ನಿಮಗಾಗಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾದ ಸಂದೇಶಗಳನ್ನು ರಚಿಸಲು ಸೈಟ್‌ಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
 <translation id="3340247553212049934">ಒದಗಿಸಿ</translation>
 <translation id="1619778919922494944">ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವುದಕ್ಕಾಗಿ ಈ DApp ಈ ಸಂದೇಶವನ್ನು ಓದಲು ಬಯಸುತ್ತದೆ</translation>
 <translation id="714506544401754321">ಸಂದೇಶವನ್ನು ಡೀಕ್ರಿಪ್ಟ್ ಮಾಡಿ</translation>
@@ -1339,21 +1340,21 @@
 <translation id="6248202915200795128">ನಿರೀಕ್ಷೆಗಿಂತ ಹೆಚ್ಚು ಸಮಯವನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆಯೇ?</translation>
 <translation id="5417904796609871601">ಚಟುವಟಿಕೆಯಲ್ಲಿ ನೋಡಿ</translation>
 <translation id="8915839655070878476">ಈ ವಿಂಡೋ ಅನ್ನು ನೀವು ಸುರಕ್ಷಿತವಾಗಿ ವಜಾಗೊಳಿಸಬಹುದು.</translation>
-<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಅನ್ನು <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ</translation>
-<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಅನ್ನು <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಖಾತೆಗೆ ಕಳುಹಿಸಲಾಗಿದೆ</translation>
-<translation id="3068919369514041269"><ph name="NETWORK"/> ನಲ್ಲಿ <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಸ್ವ್ಯಾಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
-<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಮೊತ್ತವನ್ನು ನಿಮ್ಮ ಖಾತೆ <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಸೇರಿಸಲಾಗಿದೆ</translation>
-<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> ಗೆ ಬ್ರಿಡ್ಜ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
+<translation id="81801423138374476"><ph name="AMOUNT"/> ಅನ್ನು <ph name="ACCOUNT"/>ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ;</translation>
+<translation id="700397678365620426"><ph name="AMOUNT"/> ಅನ್ನು <ph name="ACCOUNT"/>ಖಾತೆಗೆ ಕಳುಹಿಸಲಾಗಿದೆ;</translation>
+<translation id="318655655904339974"><ph name="AMOUNT"/> ಅನ್ನು <ph name="ACCOUNT"/> ಗೆ <ph name="NETWORK"/>ನಲ್ಲಿ ವಿನಿಮಯ ಮಾಡಲಾಗುತ್ತಿದೆ;</translation>
+<translation id="2692630015559505926"><ph name="AMOUNT"/> ಮೊತ್ತವನ್ನು ನಿಮ್ಮ <ph name="ACCOUNT"/>ಖಾತೆಗೆ ಸೇರಿಸಲಾಗಿದೆ;</translation>
+<translation id="965763087589489448"><ph name="AMOUNT"/> ಅನ್ನು <ph name="NETWORK"/>ಗೆ ಬ್ರಿಡ್ಜ್ ಮಾಡಲಾಗುತ್ತಿದೆ;</translation>
 <translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/> ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
-<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> ಗೆ ಪ್ರಯತ್ನಿಸುವಲ್ಲಿ ಒಂದು ದೋಷವಿದೆ</translation>
-<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> ಗೆ ಅನುಮೋದಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="5289529654748438984"><ph name="SEND_SWAP_OR_BRIDGE"/> ಮಾಡಲು ಪ್ರಯತ್ನಿಸುವ ಸಂದರ್ಭದಲ್ಲಿ <ph name="AMOUNT"/> ಅನ್ನು <ph name="VALUE"/>ಗೆ ಕಳುಹಿಸಲು ದೋಷ ಕಂಡು ಬಂದಿದೆ;</translation>
+<translation id="1694024747580135508"><ph name="AMOUNT"/> ಅನ್ನು <ph name="EXCHANGE"/>ಗೆ ಅನುಮೋದಿಸಲಾಗುತ್ತಿದೆ;</translation>
 <translation id="8036159955043245753">ನಿಮ್ಮ ಪ್ರಸ್ತುತ ವಹಿವಾಟನ್ನು ರದ್ದುಗೊಳಿಸಲು ಹೊಸ ವಹಿವಾಟನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="4056435949094149644">ವಿನಿಮಯ</translation>
 <translation id="7694836973509310467">ಬ್ರಿಡ್ಜಿಂಗ್</translation>
-<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> ಮೇಲೆ‌ <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="6934057383578424432">ಪ್ರಯತ್ನದಲ್ಲಿ ದೋಷ ಕಂಡು ಬಂದಿದೆ <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> on <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
-<translation id="4916833841663290382">ರಕ್ಷಾಕವಚ <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
-<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಅನ್ನು ರಕ್ಷಿಸಲಾಗಿದೆ</translation>
+<translation id="8419958386475786929"><ph name="NETWORK"/> ನಲ್ಲಿ <ph name="SWAPPING_OR_BRIDGING"/></translation>
+<translation id="7903225589949400974"><ph name="SWAP_OR_BRIDGE"/> <ph name="NETWORK"/> ನಲ್ಲಿ ಪ್ರಯತ್ನಿಸುವ ವೇಳೆ ದೋಷ ಕಂಡು ಬಂದಿದೆ;</translation>
+<translation id="1778601041100951971"><ph name="AMOUNT"/>ಅನ್ನು ಶೀಲ್ಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ;</translation>
+<translation id="5549369333299694936"><ph name="AMOUNT"/>ಅನ್ನು ಶೀಲ್ಡ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟು ಬಾಕಿ ಇದೆ.}
       other {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟುಗಳು ಬಾಕಿ ಇವೆ.}
@@ -1610,7 +1611,7 @@
 <translation id="5450317966495183014">ಸ್ವೀಕರಿಸಿ (ಅಂದಾಜು.)</translation>
 <translation id="8747614139273050577">ಟೋಕನ್‌ನಿಂದ</translation>
 <translation id="1726158192333401896">ಟೋಕನ್‌ಗೆ</translation>
-<translation id="765894671068292221"><ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/> ನಲ್ಲಿ ಹೊಸ ಕೋಟ್‌</translation>
+<translation id="1817370679212109974">ಹೊಸ ಕೋಟ್ <ph name="COUNTDOWN"/>ನಲ್ಲಿ;</translation>
 <translation id="3835223348537121988">ಬ್ಯಾಲೆನ್ಸ್:</translation>
 <translation id="5709875713144853427">ಸ್ವಾಪ್ ಮಾಡಲು ಟೋಕನ್ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="720404198240859011">ಯಾವುದೇ ಬ್ಯಾಲೆನ್ಸ್ ಇರದ ಟೋಕನ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
@@ -1676,7 +1677,7 @@
 <translation id="353620741952662530">ಪ್ರದರ್ಶಿಸಲು ಯಾವುದೇ NFT ಗಳಿಲ್ಲ</translation>
 <translation id="487317695605278176">ಒಮ್ಮೆ NFT ಅನ್ನು ಪತ್ತಮಾಡಿದಾಗ, ಅದನ್ನು ಇಲ್ಲಿ ಪ್ರದರ್ಶಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="7481581122016027177">ನಿಮ್ಮ NFT ಗಳನ್ನು ನೋಡಲಾಗುತ್ತಿಲ್ಲವೇ?</translation>
-<translation id="7756624047234151641"><ph name="REFRESH"/>ರಿಫ್ರೆಶ್ ಮಾಡಿ<ph name="REFRESH_END"/> ಅಥವಾ <ph name="IMPORT"/>ಹಸ್ತಚಾಲಿತವಾಗಿ ಇಂಪೋರ್ಟ್ ಮಾಡಿ<ph name="IMPORT_END"/></translation>
+<translation id="3214633363105739658"><ph name="REFRESH_START"/>ರಿಫ್ರೆಶ್ ಮಾಡಿ<ph name="REFRESH_END"/> ಅಥವಾ <ph name="IMPORT_START"/> ನೀವೇ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಂಪೋರ್ಟ್ ಮಾಡಿ<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">ರಿಫ್ರೆಶಿಂಗ್</translation>
 <translation id="4608324163534970318">ನೆಟ್ ವರ್ಕ್ ಶುಲ್ಕಗಳು</translation>
 <translation id="6213230117190778270">ಸ್ವೀಕರಿಸಿ</translation>
@@ -1820,6 +1821,9 @@
 <translation id="2713141960460256091">ಸಹಿ ಮಾಡಿ ಮತ್ತು DApp ವಹಿವಾಟು ಕಳುಹಿಸಿ</translation>
 <translation id="6387730345715997739">DApp ವಹಿವಾಟಿಗೆ ಸಹಿ ಮಾಡಿ</translation>
 <translation id="4150336849480030462">ಸಂಬಂಧಿಸಿದ ಟೋಕನ್ ಖಾತೆ ರಚನೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ SPL ಟೋಕನ್ ವರ್ಗಾವಣೆ</translation>
+<translation id="2244921323472112851">ನೀವು ಹುಡುಕುತ್ತಿರುವ ಪುಟ ನಮಗೆ ಈಗ ಕಾಣುತ್ತಿಲ್ಲ.</translation>
+<translation id="6277237872689140644">ಇದು ಬೇರೊಂದು ಸ್ಥಳಕ್ಕೆ ಸರಿಯಬಹುದು ಅಥವಾ URL ನಲ್ಲಿ ಇದ್ದಂತೆ ಮಾಡಬಹುದು.</translation>
+<translation id="2737084171727561244">ಪೋರ್ಟ್‌ಫೋಲಿಯೊಗೆ ಹೋಗಿ</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -2117,10 +2121,10 @@
 <translation id="7692501701960747469">ಈ ಮಾದರಿಗಾಗಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ API ಕೀ ಅಮಾನ್ಯವಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7905602379229309187">ಎಂಡ್‌ ಪಾಯಿಂಟ್ ಪ್ರಸ್ತುತ ಓವರ್‌ಲೋಡ್ ಆಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="8151638057146502721">ಕಾನ್ಫಿಗರ್</translation>
+<translation id="999273441077650169">ಟಾಸ್ಕ್‌ಗೆ ಉತ್ತಮವಾದದ್ದನ್ನು ಬಳಸಲು ಮಾದರಿಯು ಕ್ರಿಯಾತ್ಮಕವಾಗಿ ಬದಲಾಗುತ್ತದೆ.<ph name="LINK_BEFORE"/>ಹೆಚ್ಚಾಗಿ ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಲಾಮಾ 3.1 8Bನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಇದು ಮೆಟಾದಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಒಂದು ಮಾದರಿಯಾಗಿದ್ದು, ಇದು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ಲಾಮಾ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ <ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Qwen 14B ಯಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಅಲಿಬಾಬಾ ಕ್ಲೌಡ್‌ನಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಒಂದು ಮಾದರಿಯಾಗಿದ್ದು, ಇದು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಮತ್ತು ಅನೇಕ ಬಳಕೆಯ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. Qwen ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">ನಮಸ್ಕಾರ, ನಾನು ಲಿಯೋ. ನಾನು ಸಂಪೂರ್ಣವಾಗಿ ಬ್ರೇವ್‌ನಿಂದ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಸಹಾಯಕ. ಡೀಪ್ಆ‌ ರೀಸನಿಂಗ್‌ ಕಾರ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಲು DeepSeek ನಿಂದ ರಚಿಸಲಾದ ಮಾದರಿಯಾದ DeepSeek R1 ನಿಂದ ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
-<translation id="8345529480300554358">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಮಿಸ್ಟ್ರಲ್ 8x7B ನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಮುಂದುವರಿದ ಕಾರ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಲು ಮಿಸ್ಟ್ರಲ್ AI ನಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಮಾದರಿಯಾಗಿದೆ. ಮಿಸ್ಟ್ರಲ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಪ್ರಾಕ್ಸಿ ಮಾಡಲ್ಪಟ್ಟಿದ್ದೇನೆ ಮತ್ತು ಕ್ಲೌಡ್ ಇನ್‌ಸ್ಟಂಟ್‌ನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಸಂವಾದಗಳಿಗೆ ಮತ್ತು ಪದಗಳನ್ನು ಸರಿಪಡಿಸಲು ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಕ್ಲೌಡ್ ಇನ್‌ಸ್ಟಂಟ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಪ್ರಾಕ್ಸಿ ಮಾಡಲ್ಪಟ್ಟಿದ್ದೇನೆ ಮತ್ತು ಕ್ಲೌಡ್ ಹೈಕು ಅವರಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಸಂವಾದ ಮತ್ತು ಪದಗನ್ನು ಸರಿಪಡಿಸುವುದಕ್ಕೆ ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಕ್ಲೌಡ್ ಹೈಕು ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ..<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಪ್ರಾಕ್ಸಿ ಮಾಡಲ್ಪಟ್ಟಿದ್ದೇನೆ ಮತ್ತು ಕ್ಲೌಡ್ ಸಾನೆಟ್‌ನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಸಂವಾದ ಮತ್ತು ಪದಗಳನ್ನು ಸರಿಪಡಿಸುವುದಕ್ಕೆ ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಕ್ಲೌಡ್ ಸಾನೆಟ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
@@ -2169,6 +2173,10 @@
 <translation id="5604254791550001355">ಪ್ರಾಂಪ್ಟ್‌ ಎಡಿಟ್‌ ಮಾಡಿ</translation>
 <translation id="8115786586976830777">ಪ್ರಾಂಪ್ಟ್‌ ನಕಲು ಮಾಡಿ</translation>
 <translation id="1406205536570262057">ಉತ್ತರವನ್ನು ಎಡಿಟ್‌ ಮಾಡಿ</translation>
+<translation id="3386725253392845084">ಅದೇ ಮಾದರಿಯನ್ನು ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="2461822463642141190">ಪ್ರಸ್ತುತ</translation>
+<translation id="9098847266351882944">ಮಾದರಿಯನ್ನು ಉತ್ತರಕ್ಕೆ ಬದಲಿಸಿ</translation>
+<translation id="1431551663608182318">ಉತ್ತರಕ್ಕೆ ಮಾದರಿಯನ್ನು ಬದಲಿಸಿ (ಪ್ರಸ್ತುತ ಮಾದರಿ: <ph name="MODEL_NAME"/>)</translation>
 <translation id="2399439821649319175">ಉಪಯುಕ್ತವಾಗಿಲ್ಲ</translation>
 <translation id="2976167228906046828">ತಪ್ಪಾಗಿದೆ</translation>
 <translation id="1183055847065865059">ಅಸುರಕ್ಷಿತ/ಅಪಾಯಕಾರಿ</translation>
@@ -2210,13 +2218,13 @@ Uttaravannu iṣṭ;</translation>
 <translation id="887511360213807449">ಇತಿಹಾಸವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="5380979378058584412">Leo ಜೊತೆಗಿನ ನಿಮ್ಮ ಹಿಂದಿನ ಸಂವಾದಗಳನ್ನು ವೀಕ್ಷಿಸಲು, ನೀವು ಸಂವಾದದ ಇತಿಹಾಸವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕು.</translation>
 <translation id="6291843235651817590">ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ಚಾಟ್</translation>
-<translation id="8193130769524604031">ಸುಧಾರಿತ ಚಾಟ್ ಕಾರ್ಯಗಳು</translation>
 <translation id="3185367320601718531">ಸಂಭಾಷಣೆ ಮತ್ತು ಪಠ್ಯ ಜೆನರೇಶನ್</translation>
 <translation id="7979673624064378842">ಮಿಂಚಿನ ವೇಗದ ಚಾಟ್</translation>
 <translation id="2836330653441111204">ಸಮತೋಲಿತ ವೇಗ ಮತ್ತು ಬುದ್ಧಿಶಕ್ತಿ</translation>
 <translation id="6695329447007213917">ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ಚಾಟ್, ಕೋಡಿಂಗ್ ಮತ್ತು ಇನ್ನಷ್ಟು</translation>
 <translation id="5051668914970329839">ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ವಿಷನ್</translation>
 <translation id="7226508434216060960">ತಾರ್ಕಿಕ ಮಾದರಿ</translation>
+<translation id="8782867266498869301">‌ ಟಾಸ್ಕ್‌ಗೆ ಉತ್ತಮವಾದದ್ದನ್ನು ಬಳಸಲು ಮಾದರಿಯು ಕ್ರಿಯಾತ್ಮಕವಾಗಿ ಬದಲಾಗುತ್ತದೆ</translation>
 <translation id="3965507912994218570">Leo ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="1037324977127422019">ನಮಸ್ಕಾರ, ನಾನು ಲಿಯೋ!</translation>
 <translation id="8930348081963284873">Brave ನಲ್ಲಿಯೇ ನಿರ್ಮಿಸಲಾದ, AI-ಸಾಮರ್ಥ್ಯದ ಬುದ್ಧಿವಂತ ಸಹಾಯಕ.</translation>
@@ -2254,6 +2262,7 @@ Uttaravannu iṣṭ;</translation>
 <translation id="983013125018250242">Leo ಪರಿಕರಗಳು</translation>
 <translation id="7623223587478473368">ಅಟ್ಯಾಚ್‌ಮೆಂಟ್</translation>
 <translation id="3777121685517940177">ಫೈಲ್‌ ಅಪ್‌ಲೋಡ್‌ ಮಾಡಿ...</translation>
+<translation id="6739516910850820220">ಫೈಲ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="9088751620363630236">ಚಿತ್ರವನ್ನು ತೆಗೆಯಿರಿ...</translation>
 <translation id="4250229828105606438">ಸ್ಕ್ರೀನ್‌ಶಾಟ್</translation>
 <translation id="6332876390231524389">ಪ್ರಸ್ತುತ ಟ್ಯಾಬ್ ವಿಷಯಗಳು</translation>
@@ -2266,11 +2275,14 @@ Uttaravannu iṣṭ;</translation>
 <translation id="8343473178272604223">ಸಕ್ರಿಯಗೊಳಿಸಿದ‌ ಸರ್ಚಿಂಗ್‌ ಇಂಜಿನ್‌ಗಳು</translation>
 <translation id="5355776323718420036">ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
 <translation id="9173319813356700250">ಸುದ್ದಿ</translation>
-<translation id="6543799171249004861"><ph name="AUTHOR"/> ಮೂಲಕ ಫೋಟೋ</translation>
+<translation id="6543799171249004861"><ph name="AUTHOR"/>ಮೂಲಕ ಫೋಟೋ;</translation>
 <translation id="5430001801813715388">ಬಹುಮಾನಗಳು</translation>
 <translation id="5966055668402779222">ಬ್ರೇವ್ ಸರ್ಚ್‌ ಕೇಳಿ</translation>
+<translation id="167018310108390163">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="6851426306697017546">ಗಡಿಯಾರವನ್ನು ತೋರಿಸಿ</translation>
 <translation id="4844370919312937270">ಹೊಸ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ ಸರ್ಚ್‌ ವಿಜೆಟ್ ಅನ್ನು ತೋರಿಸಿ</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್<ph name="LINK_END"/> ಸಹಯೋಗದೊಂದಿಗೆ, ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಿ ಗಳಿಸಬಹುದು.</translation>
+<translation id="4100520468072294616">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದ ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="5009354496127441090">ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">ಅಂಕಿಅಂಶಗಳು</translation>
@@ -2290,7 +2302,6 @@ Uttaravannu iṣṭ;</translation>
 <translation id="7143207342074048698">ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="1202549130170287307">ಸಂಪರ್ಕಕಡಿತಗೊಳ್ಳುತ್ತಿದೆ</translation>
 <translation id="8941703009412168350">ಬ್ರೇವ್ VPN</translation>
-<translation id="8793108040181436796">ವಿಜೆಟ್‌ಗಳು</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="8458987127502506209">Brave ಶೀಲ್ಡ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>ಶೀಲ್ಡ್‌ಗಳು <ph name="STATUS_AFTER"/> ಗಾಗಿ <ph name="HOST"/> ಮೇಲಕ್ಕೆ ಇರುತ್ತವೆ.</translation>
@@ -2376,6 +2387,36 @@ Uttaravannu iṣṭ;</translation>
 <translation id="6821108091726602352">Brave ನ ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್‌ನಲ್ಲಿ ಭಾಗವಹಿಸುವ ಮೂಲಕ ವೆಬ್ ಸರಿಪಡಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿ. ಸಂಪೂರ್ಣವಾಗಿ ಅನಾಮಧೇಯ ಹುಡುಕಾಟ ಸಂಕೇತಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಮೂಲಕ, ಹುಡುಕಾಟ ಇಂಡೆಕ್ಸ್‌ನ ಬೆಳವಣಿಗೆ ಮಾಡಲು Brave ಗೆ ನೀವು ಸಹಾಯ ಮಾಡಬಹುದು.</translation>
 <translation id="6764845498618413165">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.</translation>
 <translation id="7818938154803162778">ಖಂಡಿತ, ನಾನು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ</translation>
+<translation id="3486480638399578250">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಖಾಸಗಿಯಾಗಿ ಇಡಿ</translation>
+<translation id="7765422154906712751">ನಿಮ್ಮ ಬ್ರೇವ್ ಇಮೇಲ್‌ಗೆ ಫಾರ್ವರ್ಡ್ ಮಾಡುವ ಮತ್ತು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಅಳಿಸಬಹುದಾದ ಯೂನಿಕ್‌, ರ್ಯಾಂಡಮ್ ವಿಳಾಸಗಳನ್ನು ರಚಿಸಿ. ನಿಮ್ಮ ನಿಜವಾದ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಜಾಹೀರಾತುದಾರರು ಬಹಿರಂಗಪಡಿಸದಂತೆ ಅಥವಾ ಬಳಸದಂತೆ ನೋಡಿಕೊಳ್ಳಿ.</translation>
+<translation id="5222676887888702881">ಸೈನ್ ಔಟ್</translation>
+<translation id="8090292425230843109">ಇಮೇಲ್ ಅ‌ಲಿಯಾಸ್‌ ಸೈನ್‌ ಔಟ್</translation>
+<translation id="8471990782451394141">ಬ್ರೇವ್ ಖಾತೆಗೆ ಸಂಪರ್ಕ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="5713644099811900409">ಬ್ರೇವ್ ಖಾತೆ</translation>
+<translation id="6002159997868894136">ಅಲಿಯಾಸ್ ಕಾಪಿ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
+<translation id="8105770564756958406">ಇದರ ಮೂಲಕ ಬಳಸಲಾಗಿದೆ <ph name="DOMAINS"/></translation>
+<translation id="5006956315579221642">ನಿಮ್ಮ ನಿಜವಾದ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ರಕ್ಷಿಸಲು 5 ಉಚಿತ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳನ್ನು ಸೃಷ್ಟಿಸಿ.</translation>
+<translation id="5663901348199429994">ನಿಮ್ಮ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳು</translation>
+<translation id="9046133327037621173">ಹೊಸ ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
+<translation id="3768606658230902536">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಇಮೇಲ್ ಖಾಸಗಿಯಾಗಿ ಇಡಲು ಇನ್‌ಬಾಕ್ಸ್‌ಗೆ ಫಾರ್ವರ್ಡ್ ಮಾಡುವ ರ್ಯಾಂಡಮ್ ಇಮೇಲ್ ವಿಳಾಸ ಸೃಷ್ಟಿಸಿ.</translation>
+<translation id="6887156107256264506">ನೀವು 5 ಉಚಿತ ಇಮೇಲ್ ಅಲಿಯಾ‌ಸ್‌ಗಳ ಮಿತಿ ತಲುಪಿದ್ದೀರಿ. ಅಲಿಯಾಸ್ ಪುನಃ ಬಳಸಲು ಅಥವಾ ಅಳಿಸಲು "ಮ್ಯಾನೇಜ್" ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
+<translation id="1104500750724567895">ಹೊಸ ಅಲಿಯಾಸ್</translation>
+<translation id="8072910658503112482">ಇ‌ನ್ನೂ ಒಂದು ಇಮೇಲ್ ಅಲಿಯಾಸ್ ಸೂಚಿಸಿ</translation>
+<translation id="7710361355427562228">ಹೊಸ ಅಲಿಯಾಸ್ ರಚಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="4253168017788158739">ಟಿಪ್ಪಣಿ</translation>
+<translation id="7596996548739923550">ನಿಮ್ಮ ವಿಳಾಸಕ್ಕೆ ಟಿಪ್ಪಣಿ ನಮೂದಿಸಿ (ಐಚ್ಛಿಕ)</translation>
+<translation id="3810973564298564668">ನೆರೆವು</translation>
+<translation id="7446914872298825396">ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
+<translation id="3919357515365744684">ಇಮೇಲ್‌ಗಳು ಫಾರ್ವರ್ಡ್ ಮಾಡಲಾಗುತ್ತದೆ <ph name="MAIN_EMAIL"/></translation>
+<translation id="6063403442924238501">ಇಮೇಲ್ ಅಲಿಯಾಸ್ ಸಂಪಾದಿಸಿ</translation>
+<translation id="8729265501883390499">ಅಲಿಯಾಸ್ ರಚಿಸಿ</translation>
+<translation id="8662104432574824754">ಆರಂಭಿಸಲು, ಸೈನ್ ಇನ್ ಆಗಿ ಅಥವಾ ಬ್ರೇವ್ ಖಾತೆ ಸೃಷ್ಟಿಸಿ</translation>
+<translation id="8069030342700068465">ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಇಮೇಲ್ ಗೆ ಸುರಕ್ಷಿತ ಲಾಗಿನ್ ಲಿಂಕ್ ಕಳುಹಿಸಲು ಪಡೆಯಿರಿ.ಈ ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ ಬ್ರೇವ್ ಖಾತೆಯನ್ನು ಸೃಷ್ಟಿಸಲು ಅಥವಾ ಪ್ರವೇಶಿಸಲು ಬಳಸಬಹುದು ಮತ್ತು ಉಚಿತ ಇಮೇಲ್ ಅಲಿಯಾಸ್ ಸೇವೆಯನ್ನು ಬಳಸಬಹುದು</translation>
+<translation id="2133391407495495735">ಲಾಗಿನ್ ಲಿಂಕ್ ಪಡೆಯಿರಿ</translation>
+<translation id="3699624789011381381">ಇಮೇಲ್ ವಿಳಾಸ</translation>
+<translation id="8124939971041602970">ಲಾಗಿನ್ ಇಮೇಲ್ ಕಳುಹಿಸಲು ಬಿಟ್ಟಿದೆ <ph name="MAIN_EMAIL"/></translation>
+<translation id="8140361186431963982">ನಿಮ್ಮ ಖಾತೆಗೆ ಪ್ರವೇಶಿಸಲು ಇಮೇಲ್ ನಲ್ಲಿ ಸುರಕ್ಷಿತ ಲಾಗಿನ್ ಲಿಂಕ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
+<translation id="6549775668256477823">ಇಮೇಲ್ ಕಾಣಿಸುತ್ತಿಲ್ಲವೇ? ನಿಮ್ಮ ಸ್ಪೈಮ್ ಫೋಲ್ಡರ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ <ph name="BEGIN_LINK"/>ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ<ph name="END_LINK"/>.</translation>
 <translation id="958268166261124668">Brave VPN: ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
 <translation id="6021669293402055982">Brave VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="3541307549916475335">Brave VPN ಪ್ಯಾನೆಲ್ UI</translation>

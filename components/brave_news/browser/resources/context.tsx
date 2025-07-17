@@ -10,6 +10,7 @@ import {
 import * as React from 'react';
 import { BraveNewsContextProvider } from './shared/Context';
 import getBraveNewsController from './shared/api';
+import './strings';
 
 export interface InspectContext {
   signals: { [key: string]: Signal },

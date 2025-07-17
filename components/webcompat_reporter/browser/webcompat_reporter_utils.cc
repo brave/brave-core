@@ -13,27 +13,28 @@
 
 namespace {
 
-constexpr auto kComponentIds = base::MakeFixedFlatSet<std::string_view>({
-    "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
-                                         // Filters (plaintext)
-    "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
-                                         // (plaintext)
-    "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",  // EasyList Cookie (plaintext)
-    "gkboaolpopklhgplhaaiboijnklogmbc",  // Regional Catalog
-    "iodkpdagapdfkphljnddpjlldadblomo",  // Brave Ad Block Updater
-                                         // (plaintext)
-    "jcfckfokjmopfomnoebdkdhbhcgjfnbi",  // Brave Experimental Adblock
-                                         // Rules (plaintext)
-    brave_shields::kAdBlockResourceComponentId,  // Brave Ad Block Updater
-                                                 // (Resources)
-});
+constexpr auto kComponentIdsToReport =
+    base::MakeFixedFlatSet<std::string_view>({
+        "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
+                                             // Filters (plaintext)
+        "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
+                                             // (plaintext)
+        "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",  // EasyList Cookie (plaintext)
+        "gkboaolpopklhgplhaaiboijnklogmbc",  // Regional Catalog
+        "iodkpdagapdfkphljnddpjlldadblomo",  // Brave Ad Block Updater
+                                             // (plaintext)
+        "jcfckfokjmopfomnoebdkdhbhcgjfnbi",  // Brave Experimental Adblock
+                                             // Rules (plaintext)
+        brave_shields::kAdBlockResourceComponentId,  // Brave Ad Block Updater
+                                                     // (Resources)
+    });
 
 }  // namespace
 
 namespace webcompat_reporter {
 
-bool NeedsToGetComponentInfo(std::string_view component_id) {
-  return base::Contains(kComponentIds, component_id);
+bool SendComponentVersionInReport(std::string_view component_id) {
+  return base::Contains(kComponentIdsToReport, component_id);
 }
 
 std::string BoolToString(bool value) {

@@ -20,12 +20,6 @@ extension Preferences {
       default: nil
     )
 
-    /// A boolean indicating whether or not the user has URL-Bar/Search-Bar auto-complete for AI-Chat
-    public static let autocompleteSuggestionsEnabled = Option<Bool>(
-      key: "aichat.autocompletesuggestions-enabled",
-      default: true
-    )
-
     /// A boolean indicating whether or not the user has dismissed the Premium Prompt on the Feedback Form
     public static let showPremiumFeedbackAd = Option<Bool>(
       key: "aichat.show-premium-feedback-ad",

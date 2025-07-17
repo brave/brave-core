@@ -5,7 +5,11 @@
 
 #include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/mac_features.h"
+#include "brave/browser/updater/buildflags.h"
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
+#endif
 
 #define DoPeriodicTasks DoPeriodicTasks_ChromiumImpl
 
@@ -16,9 +20,13 @@
 namespace updater {
 
 void DoPeriodicTasks(base::OnceClosure callback) {
-  if (brave::ShouldUseOmaha4()) {
+#if BUILDFLAG(ENABLE_OMAHA4)
+  if (brave_updater::ShouldUseOmaha4()) {
     DoPeriodicTasks_ChromiumImpl(std::move(callback));
+    return;
   }
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
+  std::move(callback).Run();
 }
 
 }  // namespace updater

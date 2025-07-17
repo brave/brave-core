@@ -12,8 +12,28 @@ import XCTest
 class AssetDetailStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
 
+  let mockCryptoCurrencies: [BraveWallet.MeldCryptoCurrency] = [
+    .init(
+      currencyCode: "ETH",
+      name: "Ethereum",
+      chainCode: "ETH",
+      chainName: "Ethereum",
+      chainId: "0x1",
+      contractAddress: nil,
+      symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
+    ),
+    .init(
+      currencyCode: "SOL",
+      name: "Solana",
+      chainCode: "SOLANA",
+      chainName: "Solana",
+      chainId: "0x65",
+      contractAddress: nil,
+      symbolImageUrl: "https://images-currency.meld.io/crypto/SOL/symbol.png"
+    ),
+  ]
+
   func testUpdateWithBlockchainToken() {
-    let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
@@ -97,6 +117,10 @@ class AssetDetailStoreTests: XCTestCase {
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     let store = AssetDetailStore(
@@ -111,6 +135,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
     )
@@ -240,7 +265,6 @@ class AssetDetailStoreTests: XCTestCase {
   }
 
   func testUpdateWithBlockchainTokenBitcoin() {
-    let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
@@ -322,6 +346,10 @@ class AssetDetailStoreTests: XCTestCase {
       )
     }
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     let store = AssetDetailStore(
@@ -336,6 +364,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.mockBTCToken)
     )
@@ -513,6 +542,10 @@ class AssetDetailStoreTests: XCTestCase {
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     var store = AssetDetailStore(
@@ -527,6 +560,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
     )
@@ -640,6 +674,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketEth)
     )

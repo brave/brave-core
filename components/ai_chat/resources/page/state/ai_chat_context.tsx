@@ -27,6 +27,7 @@ type AIChatContextInternal = AIChatContextProps & {
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
+  getPluralString: (key: string, count: number) => Promise<string>
   uiHandler?: Mojom.AIChatUIHandlerRemote
   service?: Mojom.ServiceRemote
 
@@ -41,9 +42,10 @@ type AIChatContextInternal = AIChatContextProps & {
 
 export type AIChatContext = AIChat.State & AIChatContextInternal
 
-const defaultContext: AIChatContext = {
+export const defaultContext: AIChatContext = {
   ...AIChat.defaultUIState,
   initialized: false,
+  getPluralString: async () => '',
   goPremium: () => { },
   managePremium: () => { },
   handleAgreeClick: () => { },
@@ -83,6 +85,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
   const store: AIChatContext = {
     ...context,
     goPremium: () => api.uiHandler.goPremium(),
+    getPluralString: (key, count) => api.uiHandler.getPluralString(key, count).then(r => r.pluralString),
     managePremium: () => api.uiHandler.managePremium(),
     dismissStorageNotice: () => api.service.dismissStorageNotice(),
     enableStoragePref: () => api.service.enableStoragePref(),

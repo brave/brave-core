@@ -6,7 +6,9 @@
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
@@ -90,6 +92,10 @@ void RegisterChromeWebUIConfigs() {
 
   if (ai_chat::features::IsAIChatEnabled()) {
     map.AddWebUIConfig(std::make_unique<AIChatUIConfig>());
+  }
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    map.AddWebUIConfig(std::make_unique<BraveAccountUIConfig>());
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
