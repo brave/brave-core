@@ -609,19 +609,19 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Incognito) {
 
   auto result =
       EvalJs(web_contents(private_browser), CheckSolanaProviderScript);
-  EXPECT_EQ(base::Value(false), result.value);
+  EXPECT_EQ(base::Value(false), result);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
   auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript);
 
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result);
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
   ReloadAndWaitForLoadStop(browser());
   auto result2 = EvalJs(web_contents(browser()), CheckSolanaProviderScript);
-  EXPECT_EQ(base::Value(false), result2.value);
+  EXPECT_EQ(base::Value(false), result2);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
@@ -687,7 +687,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
       SCOPED_TRACE(method);
       auto result = EvalJs(web_contents(browser()),
                            NonWriteableScriptMethod(provider, method));
-      EXPECT_EQ(base::Value(true), result.value) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result.error;
     }
     // window.braveSolana.* and window.solana.* (properties)
     for (const std::string& property :
@@ -695,7 +695,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
       SCOPED_TRACE(property);
       auto result = EvalJs(web_contents(browser()),
                            NonWriteableScriptProperty(provider, property));
-      EXPECT_EQ(base::Value(true), result.value) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result.error;
     }
   }
 }
@@ -707,10 +707,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantomAndIsBraveWallet) {
   // Both are non-writable
   auto result1 =
       EvalJs(web_contents(browser()), "window.braveSolana.isPhantom");
-  EXPECT_EQ(base::Value(true), result1.value);
+  EXPECT_EQ(base::Value(true), result1);
   auto result2 =
       EvalJs(web_contents(browser()), "window.braveSolana.isBraveWallet");
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
@@ -724,14 +724,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
        }) {
     SCOPED_TRACE(valid_case);
     auto result = EvalJs(web_contents(browser()), ConnectScript(valid_case));
-    EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+    EXPECT_EQ(base::Value(kTestPublicKey), result);
   }
 
   // non object args
   auto result2 = EvalJs(web_contents(browser()), ConnectScript("123"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result2.value);
+      result2);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -744,7 +744,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result3.value);
+            result3);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnConnect) {
@@ -757,13 +757,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnConnect) {
                   connect();
                 });
               )");
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  EXPECT_EQ(base::Value(kTestPublicKey), result);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsConnected) {
   auto result =
       EvalJs(web_contents(browser()), "window.braveSolana.isConnected");
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -774,13 +774,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsConnected) {
 
   auto result2 =
       EvalJs(web_contents(browser()), "window.braveSolana.isConnected");
-  EXPECT_EQ(base::Value(false), result2.value);
+  EXPECT_EQ(base::Value(false), result2);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, GetPublicKey) {
   auto result = EvalJs(web_contents(browser()),
                        "window.braveSolana.publicKey.toString()");
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  EXPECT_EQ(base::Value(kTestPublicKey), result);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
@@ -793,32 +793,32 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
                     return false;
                 }
                 disconnect();)");
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
   const std::string tx =
       base::StrCat({"(", CreateTransactionScript(kSerializedTx), ")"});
   auto result = EvalJs(web_contents(browser()), SignTransactionScript(tx));
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result);
 
   // allow extra parameters
   const std::string tx2 = base::StrCat({"(", tx, ", {})"});
   auto result2 = EvalJs(web_contents(browser()), SignTransactionScript(tx2));
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
 
   // no arg
   auto result3 = EvalJs(web_contents(browser()), SignTransactionScript("()"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result3.value);
+      result3);
 
   // not solanaWeb3.Transaction
   auto result4 =
       EvalJs(web_contents(browser()), SignTransactionScript("('123')"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result4.value);
+      result4);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -831,7 +831,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result5.value);
+            result5);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
@@ -839,28 +839,28 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
       base::StrCat({"([", CreateTransactionScript(kSerializedTx), ",",
                     CreateTransactionScript(kSerializedTx), "])"});
   auto result = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs));
-  EXPECT_EQ(base::Value(true), result.value);
+  EXPECT_EQ(base::Value(true), result);
 
   // allow extra parameters
   const std::string txs2 =
       base::StrCat({"([", CreateTransactionScript(kSerializedTx), "], 1234)"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript(txs2));
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
 
   // no arg
   auto result3 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript("()"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result3.value);
+      result3);
 
   // not array
   auto result4 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result4.value);
+      result4);
 
   // not entirely solanaWeb3.Transaction[]
   const std::string txs3 =
@@ -869,7 +869,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
       EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result5.value);
+      result5);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -882,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result6.value);
+            result6);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
@@ -901,7 +901,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   auto send_options_result =
       EvalJs(web_contents(browser()),
              SignAndSendTransactionScript(tx_with_send_options));
-  EXPECT_EQ(base::Value(true), send_options_result.value);
+  EXPECT_EQ(base::Value(true), send_options_result);
 
   provider->SetSendOptions(std::nullopt);
   const std::string tx =
@@ -913,7 +913,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
     SCOPED_TRACE(valid_case);
     auto result = EvalJs(web_contents(browser()),
                          SignAndSendTransactionScript(valid_case));
-    EXPECT_EQ(base::Value(true), result.value);
+    EXPECT_EQ(base::Value(true), result);
   }
 
   // allow extra parameters
@@ -921,7 +921,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   const std::string tx2 = base::StrCat({"(", tx, ", {}, {})"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2));
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
   provider->SetSendOptions(std::nullopt);
 
   // no arg
@@ -929,14 +929,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
       EvalJs(web_contents(browser()), SignAndSendTransactionScript("()"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result3.value);
+      result3);
 
   // not solanaWeb3.Transaction
   auto result4 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript("('123')"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result4.value);
+      result4);
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
@@ -946,7 +946,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result5.value);
+            result5);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
@@ -967,7 +967,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
     SCOPED_TRACE(valid_case);
     auto result =
         EvalJs(web_contents(browser()), SignMessageScript(valid_case));
-    EXPECT_EQ(base::Value(true), result.value);
+    EXPECT_EQ(base::Value(true), result);
   }
 
   // not Uint8Array
@@ -975,19 +975,19 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   auto result4 = EvalJs(web_contents(browser()), SignMessageScript(msg4));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result4.value);
+      result4);
 
   // no arg
   auto result5 = EvalJs(web_contents(browser()), SignMessageScript("()"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result5.value);
+      result5);
 
   // display is not string, use default utf8 encoding
   const std::string msg6 =
       base::StrCat({"(new Uint8Array([", msg_str, "], 12345))"});
   auto result6 = EvalJs(web_contents(browser()), SignMessageScript(msg6));
-  EXPECT_EQ(base::Value(true), result6.value);
+  EXPECT_EQ(base::Value(true), result6);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -1000,7 +1000,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result7.value);
+            result7);
 }
 
 // Request test here won't be testing params object, renderer just convert the
@@ -1010,30 +1010,30 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
   const std::string request =
       base::StrCat({"(", GetRequestObject("connect"), ")"});
   auto result = EvalJs(web_contents(browser()), RequestScript(request));
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  EXPECT_EQ(base::Value(kTestPublicKey), result);
 
   const std::string request2 =
       base::StrCat({"(", GetRequestObject("signAndSendTransaction"), ")"});
   auto result2 = EvalJs(web_contents(browser()), RequestScript(request2));
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
 
   // allow extra parameters
   const std::string request3 =
       base::StrCat({"(", GetRequestObject("signTransaction"), ", 123)"});
   auto result3 = EvalJs(web_contents(browser()), RequestScript(request3));
-  EXPECT_EQ(base::Value(true), result2.value);
+  EXPECT_EQ(base::Value(true), result2);
 
   // no arg
   auto result4 = EvalJs(web_contents(browser()), RequestScript("()"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result4.value);
+      result4);
 
   // object without method
   auto result5 = EvalJs(web_contents(browser()), RequestScript("({})"));
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
-      result5.value);
+      result5);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -1046,12 +1046,12 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result6.value);
+            result6);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
   auto result = EvalJs(web_contents(browser()), OnAccountChangedScript);
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  EXPECT_EQ(base::Value(kTestPublicKey), result);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
@@ -1060,7 +1060,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
   provider->SetEmitEmptyAccountChanged(true);
 
   auto result2 = EvalJs(web_contents(browser()), OnAccountChangedScript);
-  EXPECT_EQ(base::Value(), result2.value);
+  EXPECT_EQ(base::Value(), result2);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
@@ -1252,5 +1252,5 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
                        SolanaWeb3PrototypePollution) {
   ASSERT_TRUE(ExecJs(web_contents(browser()), "Object.freeze = ()=>{}"));
   auto result = EvalJs(web_contents(browser()), ConnectScript(""));
-  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+  EXPECT_EQ(base::Value(kTestPublicKey), result);
 }

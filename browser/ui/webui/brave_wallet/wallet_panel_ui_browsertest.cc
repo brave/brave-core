@@ -114,7 +114,7 @@ bool WaitAndClickElement(content::WebContents* web_contents,
       return false;
     }
     auto result = EvalJs(web_contents, selector + ".click()");
-    if (result.value.is_none() && result.error.empty()) {
+    if (result.is_ok() && result == base::Value()) {
       return true;
     }
   }
@@ -172,8 +172,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     settings_index_ = browser()->tab_strip_model()->active_index();
     // Overriding native confirmation dialog so it always confirms.
-    EXPECT_TRUE(
-        EvalJs(settings(), "window.confirm = () => true").value.is_none());
+    EXPECT_TRUE(EvalJs(settings(), "window.confirm = () => true").is_ok());
   }
 
   void ActivateSettingsTab() {
@@ -261,10 +260,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
 
   // Both Polygon and Neon EVM are listed.
   ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
-  ASSERT_TRUE(
-      EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(
-      EvalJs(wallet(), QuerySelectorJS(NeonEVMNetwork())).value.is_dict());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).is_dict());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(NeonEVMNetwork())).is_dict());
 
   // Wait and click on hide button for Neon EVM network in settings.
   CreateSettingsTab();
@@ -280,10 +277,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
 
   // Polygon is listed but Neon EVM is not.
   ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
-  ASSERT_TRUE(
-      EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(
-      EvalJs(wallet(), QuerySelectorJS(NeonEVMNetwork())).value.is_none());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).is_dict());
+  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(NeonEVMNetwork())).is_ok());
 }
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
