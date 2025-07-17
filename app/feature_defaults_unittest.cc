@@ -295,10 +295,6 @@ TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
   EXPECT_TRUE(features::HasTabSearchToolbarButton());
 }
 
-TEST(FeatureDefaultsTest, IsModelDownloadingEnabled) {
-  EXPECT_FALSE(optimization_guide::features::IsModelDownloadingEnabled());
-}
-
 #if !BUILDFLAG(IS_ANDROID)
 TEST(FeatureDefaultsTest, IsScreenAIMainContentExtractionEnabled) {
   EXPECT_FALSE(features::IsScreenAIMainContentExtractionEnabled());
