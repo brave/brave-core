@@ -8,5 +8,9 @@
 #include "src/chrome/browser/download/download_item_model.cc"
 
 void DownloadItemModel::DeleteLocalFile() {
+  // Passing base::DoNothing() as a callback because we don't have follow-up
+  // actions to take after the deletion.
+  // In case of success, DownloadItemModel will be updated by itself.
+  // On the other hand, if the deletion fails, we don't have to do anything.
   download_->DeleteFile(base::DoNothing());
 }
