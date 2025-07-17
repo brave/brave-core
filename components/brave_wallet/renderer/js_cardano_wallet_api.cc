@@ -543,12 +543,9 @@ void JSCardanoWalletApi::OnSignData(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (!error) {
-    base::Value::Dict dict;
-    dict.Set("signature", base::Value(result->signature));
-    dict.Set("key", base::Value(result->key));
     std::ignore = resolver->Resolve(
         context, content::V8ValueConverter::Create()->ToV8Value(
-                     dict, isolate->GetCurrentContext()));
+                     result->signature, isolate->GetCurrentContext()));
   } else {
     std::ignore = resolver->Reject(
         context, ConvertError(context->GetIsolate(), context, error));

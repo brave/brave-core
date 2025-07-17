@@ -27,7 +27,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
  public:
   CardanoProviderImpl(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl& operator=(const CardanoProviderImpl&) = delete;
-  CardanoProviderImpl(BraveWalletService& brave_wallet_service_,
+  CardanoProviderImpl(BraveWalletService& brave_wallet_service,
                       std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~CardanoProviderImpl() override;
 
@@ -77,6 +77,14 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
       mojom::RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
+  void OnSignMessageRequestProcessed(const mojom::AccountIdPtr& account_id,
+                                     const mojom::CardanoKeyIdPtr& key_id,
+                                     std::vector<uint8_t> message,
+                                     SignDataCallback callback,
+                                     bool approved,
+                                     mojom::EthereumSignatureBytesPtr signature,
+                                     const std::optional<std::string>& error);
+
   raw_ref<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
 
@@ -85,8 +93,8 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   url::Origin pending_request_cardano_permissions_origin_;
   bool wallet_onboarding_shown_ = false;
 
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
-      keyring_observer_receiver_{this};
+  mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
+      this};
 
   base::WeakPtrFactory<CardanoProviderImpl> weak_ptr_factory_{this};
 };

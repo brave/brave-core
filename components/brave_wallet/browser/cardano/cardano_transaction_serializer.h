@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TRANSACTION_SERIALIZER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TRANSACTION_SERIALIZER_H_
 
 #include <array>
 #include <vector>
@@ -15,7 +15,7 @@
 namespace brave_wallet {
 
 // Utility class for serializing Cardano transactions and related functionality.
-class CardanoSerializer {
+class CardanoTransactionSerializer {
  public:
   // Serialization options flags.
   struct Options {
@@ -31,8 +31,8 @@ class CardanoSerializer {
     bool use_dummy_witness_set = false;
   };
 
-  CardanoSerializer();
-  explicit CardanoSerializer(Options options);
+  CardanoTransactionSerializer();
+  explicit CardanoTransactionSerializer(Options options);
 
   // Serializes a Cardano transaction into a byte vector (CBOR format).
   std::vector<uint8_t> SerializeTransaction(const CardanoTransaction& tx);
@@ -61,4 +61,4 @@ class CardanoSerializer {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TRANSACTION_SERIALIZER_H_

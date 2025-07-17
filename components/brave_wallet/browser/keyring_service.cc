@@ -2527,6 +2527,23 @@ KeyringService::SignMessageByCardanoKeyring(
                                       message);
 }
 
+std::optional<base::Value::Dict>
+KeyringService::SignCip30MessageByCardanoKeyring(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::CardanoKeyIdPtr& key_id,
+    base::span<const uint8_t> message) {
+  CHECK(IsCardanoAccount(account_id));
+  CHECK(key_id);
+
+  auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(account_id->keyring_id);
+  if (!cardano_keyring) {
+    return std::nullopt;
+  }
+
+  return cardano_keyring->SignCip30Message(account_id->account_index, *key_id,
+                                           message);
+}
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> next_receive_index,

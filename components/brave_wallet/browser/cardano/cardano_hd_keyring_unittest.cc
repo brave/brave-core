@@ -11,6 +11,9 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/files/file_util.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -139,6 +142,42 @@ TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
             "63c5d69570349e4233a0575811464f0e8a3fd329abe76e9bdc3d3f1b95982179"
             "a45ece90549a7719fdb7b6b102bae034b13676aa4b39ad1296ec95bbac68447a"
             "85eca08f33a2aba606eb1fd3d1fc9fb2b49338a657cf75661e7022b718a9d303");
+}
+
+TEST(CardanoHDKeyringUnitTest, CardanoSdkCip8Cip30) {
+  CardanoHDKeyring mainnet_keyring(
+      *bip39::MnemonicToEntropy(kMnemonicAbandonAbandon), kCardanoMainnet);
+
+  std::string file_contents;
+
+  ASSERT_TRUE(base::ReadFileToString(BraveWalletComponentsTestDataFolder()
+                                         .AppendASCII("cardano")
+                                         .AppendASCII("cardano_sdk_cip8_cip30")
+                                         .AppendASCII("test_vectors.json"),
+                                     &file_contents));
+
+  auto test_items = base::test::ParseJsonList(file_contents);
+  ASSERT_EQ(test_items.size(), 1000u);
+
+  for (auto& test : test_items) {
+    auto& test_dict = test.GetDict();
+    auto* name = test_dict.FindString("test");
+    SCOPED_TRACE(testing::Message() << *name);
+
+    std::vector<uint8_t> payload;
+    if (!test_dict.FindString("payload")->empty()) {
+      ASSERT_TRUE(
+          base::HexStringToBytes(*test_dict.FindString("payload"), &payload));
+    }
+    auto key_index = *test_dict.FindInt("keyIndex");
+    auto& expected_cip8_signature = *test_dict.FindDict("cip8Signature");
+
+    EXPECT_EQ(
+        expected_cip8_signature,
+        *mainnet_keyring.SignCip30Message(
+            0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, key_index),
+            payload));
+  }
 }
 
 }  // namespace brave_wallet

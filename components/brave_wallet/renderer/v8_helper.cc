@@ -104,9 +104,7 @@ void SetProviderNonWritable(v8::Local<v8::Context> context,
                             bool is_enumerable) {
   v8::PropertyDescriptor desc(provider_obj, false);
   desc.set_configurable(false);
-  if (!is_enumerable) {
-    desc.set_enumerable(false);
-  }
+  desc.set_enumerable(is_enumerable);
   global->DefineProperty(context, provider_name, desc).Check();
 }
 

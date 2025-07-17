@@ -47,6 +47,7 @@ class KeyringService;
 class NetworkManager;
 class TxService;
 class AccountDiscoveryManager;
+struct PendingSignMessageRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
 
@@ -191,6 +192,7 @@ class BraveWalletService : public KeyedService,
   mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
+  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequestsSync();
   void GetPendingSignMessageErrors(
       GetPendingSignMessageErrorsCallback callback) override;
   void GetPendingSignSolTransactionsRequests(
@@ -401,8 +403,7 @@ class BraveWalletService : public KeyedService,
 
   int sign_message_id_ = 0;
   int sign_sol_transactions_id_ = 0;
-  base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
-  base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
+  base::circular_deque<PendingSignMessageRequest> sign_message_requests_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
   base::circular_deque<mojom::SignSolTransactionsRequestPtr>
       sign_sol_transactions_requests_;

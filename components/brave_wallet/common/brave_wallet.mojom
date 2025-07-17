@@ -187,8 +187,7 @@ interface EthereumProvider {
 };
 
 struct CardanoProviderSignatureResult {
-  string key;
-  string signature;
+  mojo_base.mojom.DictionaryValue signature;
 };
 
 struct CardanoProviderPagination {
@@ -2532,11 +2531,17 @@ struct SolanaSignData {
   array<uint8>? message_bytes;
 };
 
+struct CardanoSignData {
+  // message for display
+  string message;
+};
+
 union SignDataUnion {
   EthStandardSignData eth_standard_sign_data;
   EthSignTypedData eth_sign_typed_data;
   SIWEMessage eth_siwe_data;
   SolanaSignData solana_sign_data;
+  CardanoSignData cardano_sign_data;
 };
 
 struct SignMessageRequest {
@@ -2544,7 +2549,7 @@ struct SignMessageRequest {
   int32 id;
   AccountId account_id;
   SignDataUnion sign_data;
-  CoinType coin;  // ETH or SOL.
+  CoinType coin;  // ETH or SOL or ADA.
   string chain_id;
 };
 
