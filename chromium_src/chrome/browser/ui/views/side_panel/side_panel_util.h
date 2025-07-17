@@ -11,7 +11,7 @@
                                      SidePanelRegistry* global_registry); \
   static void PopulateGlobalEntries
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_util.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/side_panel_util.h>  // IWYU pragma: export
 
 #undef PopulateGlobalEntries
 

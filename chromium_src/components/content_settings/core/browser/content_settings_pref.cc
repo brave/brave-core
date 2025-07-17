@@ -14,6 +14,6 @@
 #define BRAVE_SET_WEBSITE_SETTING
 #endif
 
-#include "src/components/content_settings/core/browser/content_settings_pref.cc"
+#include <components/content_settings/core/browser/content_settings_pref.cc>
 
 #undef BRAVE_SET_WEBSITE_SETTING

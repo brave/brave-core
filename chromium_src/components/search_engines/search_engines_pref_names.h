@@ -8,7 +8,7 @@
 
 #include "brave/components/search_engines/brave_search_engines_pref_names.h"
 
-#include "src/components/search_engines/search_engines_pref_names.h"  // IWYU pragma: export
+#include <components/search_engines/search_engines_pref_names.h>  // IWYU pragma: export
 
 namespace prefs {
 

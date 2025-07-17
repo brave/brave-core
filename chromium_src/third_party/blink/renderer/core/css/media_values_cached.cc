@@ -12,7 +12,7 @@
 #define CalculateDeviceHeight(...) \
   CalculateDeviceHeight(__VA_ARGS__, /* early = */ true)
 
-#include "src/third_party/blink/renderer/core/css/media_values_cached.cc"
+#include <third_party/blink/renderer/core/css/media_values_cached.cc>
 
 #undef CalculateDeviceWidth
 #undef CalculateDeviceHeight

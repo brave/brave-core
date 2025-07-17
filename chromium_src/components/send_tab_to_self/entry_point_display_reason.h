@@ -9,7 +9,7 @@
 #define GetEntryPointDisplayReason GetEntryPointDisplayReason_ChromiumImpl
 #include <optional>
 
-#include "src/components/send_tab_to_self/entry_point_display_reason.h"  // IWYU pragma: export
+#include <components/send_tab_to_self/entry_point_display_reason.h>  // IWYU pragma: export
 #undef GetEntryPointDisplayReason
 
 namespace send_tab_to_self {

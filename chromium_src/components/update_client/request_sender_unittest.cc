@@ -6,7 +6,7 @@
 #include "base/functional/bind.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "src/components/update_client/request_sender_unittest.cc"
+#include <components/update_client/request_sender_unittest.cc>
 
 namespace update_client {
 

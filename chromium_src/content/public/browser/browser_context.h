@@ -11,7 +11,7 @@
   virtual bool IsOffTheRecord
 #include <optional>
 
-#include "src/content/public/browser/browser_context.h"  // IWYU pragma: export
+#include <content/public/browser/browser_context.h>  // IWYU pragma: export
 #undef IsOffTheRecord
 
 #include <string>

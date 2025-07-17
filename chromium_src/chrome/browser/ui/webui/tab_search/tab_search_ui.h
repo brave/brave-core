@@ -9,7 +9,7 @@
 #define TabSearchUI TabSearchUI_ChromiumImpl
 #define TabSearchUIConfig TabSearchUIConfig_Unused
 
-#include "src/chrome/browser/ui/webui/tab_search/tab_search_ui.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/tab_search/tab_search_ui.h>  // IWYU pragma: export
 
 #undef TabSearchUI
 #undef TabSearchUIConfig

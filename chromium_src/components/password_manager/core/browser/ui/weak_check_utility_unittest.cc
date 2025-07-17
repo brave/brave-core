@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/password_manager/core/browser/ui/weak_check_utility_unittest.cc"
+#include <components/password_manager/core/browser/ui/weak_check_utility_unittest.cc>
 
 #include <string>
 #include <utility>

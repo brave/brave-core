@@ -15,6 +15,6 @@
       loader_->web_contents());                                         \
   content_settings::PageSpecificContentSettings
 
-#include "src/chrome/browser/offline_pages/background_loader_offliner.cc"
+#include <chrome/browser/offline_pages/background_loader_offliner.cc>
 
 #undef PageSpecificContentSettings

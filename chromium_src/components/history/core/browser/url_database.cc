@@ -23,6 +23,6 @@ constexpr int kBraveLowQualityMatchAgeLimitInDays = 365;
   /* DCHECK, to make sure we aren't overriding something we shouldn't */ \
   DCHECK(num == kLowQualityMatchAgeLimitInDays
 
-#include "src/components/history/core/browser/url_database.cc"
+#include <components/history/core/browser/url_database.cc>
 
 #undef Days

@@ -14,7 +14,7 @@
                                url::Origin().Serialize());         \
   } else /* NOLINT */
 
-#include "src/services/network/cors/cors_url_loader.cc"
+#include <services/network/cors/cors_url_loader.cc>
 
 #include "base/strings/string_util.h"
 #undef BRAVE_CORS_URL_LOADER_START_REQUEST

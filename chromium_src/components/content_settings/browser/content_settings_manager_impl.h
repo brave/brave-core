@@ -30,7 +30,7 @@
       override;                                                             \
   void OnContentBlocked
 
-#include "src/components/content_settings/browser/content_settings_manager_impl.h"  // IWYU pragma: export
+#include <components/content_settings/browser/content_settings_manager_impl.h>  // IWYU pragma: export
 
 #undef OnContentBlocked
 #undef GetCookieSettings

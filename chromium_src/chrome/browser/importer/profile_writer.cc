@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/chrome/browser/importer/profile_writer.cc"
+#include <chrome/browser/importer/profile_writer.cc>
 
 #include "base/uuid.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"

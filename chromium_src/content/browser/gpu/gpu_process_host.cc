@@ -17,7 +17,7 @@
 
 #endif  // BUILDFLAG(IS_WIN)
 
-#include "src/content/browser/gpu/gpu_process_host.cc"
+#include <content/browser/gpu/gpu_process_host.cc>
 
 #if BUILDFLAG(IS_WIN)
 

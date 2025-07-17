@@ -10,7 +10,7 @@
   on_filtering_complete_closure_;      \
   friend class VerticalTabStripRootViewBrowserTest
 
-#include "src/chrome/browser/ui/views/frame/browser_root_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_root_view.h>  // IWYU pragma: export
 #undef on_filtering_complete_closure_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_ROOT_VIEW_H_

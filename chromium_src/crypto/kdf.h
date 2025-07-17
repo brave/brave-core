@@ -8,7 +8,7 @@
 
 #include "base/check_op.h"
 
-#include "src/crypto/kdf.h"  // IWYU pragma: export
+#include <crypto/kdf.h>  // IWYU pragma: export
 
 namespace crypto::kdf {
 

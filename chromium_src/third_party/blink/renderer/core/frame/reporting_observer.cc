@@ -6,7 +6,7 @@
 #include "third_party/blink/renderer/core/frame/reporting_observer.h"
 
 #define QueueReport QueueReport_Unused
-#include "src/third_party/blink/renderer/core/frame/reporting_observer.cc"
+#include <third_party/blink/renderer/core/frame/reporting_observer.cc>
 #undef QueueReport
 
 namespace blink {

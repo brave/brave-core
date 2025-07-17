@@ -8,5 +8,5 @@
 #include "components/omnibox/browser/autocomplete_controller.h"
 
 #define ChromeAutocompleteSchemeClassifier BraveAutocompleteSchemeClassifier
-#include "src/chrome/browser/autocomplete/autocomplete_classifier_factory.cc"
+#include <chrome/browser/autocomplete/autocomplete_classifier_factory.cc>
 #undef ChromeAutocompleteSchemeClassifier

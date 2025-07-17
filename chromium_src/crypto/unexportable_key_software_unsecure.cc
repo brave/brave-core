@@ -8,5 +8,5 @@
 #define RSA_PSS_SHA256 \
   RSA_PSS_SHA256:      \
   case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384
-#include "src/crypto/unexportable_key_software_unsecure.cc"
+#include <crypto/unexportable_key_software_unsecure.cc>
 #undef RSA_PSS_SHA256

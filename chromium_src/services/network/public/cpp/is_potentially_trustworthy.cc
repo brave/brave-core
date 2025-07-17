@@ -7,6 +7,6 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
-#include "src/services/network/public/cpp/is_potentially_trustworthy.cc"
+#include <services/network/public/cpp/is_potentially_trustworthy.cc>
 
 #undef IsLocalhost

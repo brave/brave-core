@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_INIT BraveInit();
-#include "src/components/content_settings/core/browser/content_settings_registry.cc"
+#include <components/content_settings/core/browser/content_settings_registry.cc>
 #undef BRAVE_INIT
 
 #include "base/containers/fixed_flat_map.h"

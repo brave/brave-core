@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/v8/src/api/api.cc"
+#include <v8/src/api/api.cc>
 
 #include "brave/v8/include/v8-isolate-page-graph-utils.h"
 

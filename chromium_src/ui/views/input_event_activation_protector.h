@@ -18,7 +18,7 @@
  public:                                                     \
   void OnWindowStationaryStateChanged(__VA_ARGS__)
 
-#include "src/ui/views/input_event_activation_protector.h"  // IWYU pragma: export
+#include <ui/views/input_event_activation_protector.h>  // IWYU pragma: export
 
 #undef OnWindowStationaryStateChanged
 

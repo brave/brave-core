@@ -7,7 +7,7 @@
 
 #include "net/base/features.h"
 #include "services/network/cookie_settings.h"
-#include "src/services/network/cookie_settings.cc"
+#include <services/network/cookie_settings.cc>
 #include "url/origin.h"
 
 namespace network {

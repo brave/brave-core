@@ -17,6 +17,6 @@
   bookmark_label->SetSubpixelRenderingEnabled(false); \
   bookmark_label->layer()->SetFillsBoundsOpaquely(false);
 
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_button.cc"
+#include <chrome/browser/ui/views/bookmarks/bookmark_button.cc>
 
 #undef InstallPillHighlightPathGenerator

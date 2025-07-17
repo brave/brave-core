@@ -10,7 +10,7 @@
 
 #define ContentSettingPermissionContextBase \
   ContentSettingPermissionContextBase_ChromiumImpl
-#include "src/components/permissions/content_setting_permission_context_base.cc"
+#include <components/permissions/content_setting_permission_context_base.cc>
 #undef ContentSettingPermissionContextBase
 
 #include "brave/components/permissions/permission_lifetime_manager.h"

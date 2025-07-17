@@ -68,7 +68,7 @@
 
 // clang-format on
 
-#include "src/chrome/browser/flags/android/chrome_feature_list.cc"
+#include <chrome/browser/flags/android/chrome_feature_list.cc>
 #undef kForceWebContentsDarkMode
 #undef BRAVE_AI_CHAT_FLAGS
 #undef BRAVE_WEB_DISCOVERY_FLAG

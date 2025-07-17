@@ -5,4 +5,4 @@
 
 #include "brave/services/network/public/cpp/system_request_handler.h"
 
-#include "src/chrome/browser/net/system_network_context_manager.cc"
+#include <chrome/browser/net/system_network_context_manager.cc>

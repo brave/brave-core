@@ -10,7 +10,7 @@
   GetPasswordCardData_ChromiumImpl(bool signed_in); \
   base::Value::Dict GetPasswordCardData
 
-#include "src/chrome/browser/ui/safety_hub/password_status_check_service.h"  // IWYU pragma: export
+#include <chrome/browser/ui/safety_hub/password_status_check_service.h>  // IWYU pragma: export
 
 #undef GetPasswordCardData
 

@@ -12,7 +12,7 @@
 
 #define HostPortPair HostPortPair_ChromiumImpl
 
-#include "src/net/base/host_port_pair.h"  // IWYU pragma: export
+#include <net/base/host_port_pair.h>  // IWYU pragma: export
 
 #undef HostPortPair
 

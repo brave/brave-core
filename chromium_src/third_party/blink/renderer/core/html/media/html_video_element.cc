@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/core/html/media/html_video_element.cc"
+#include <third_party/blink/renderer/core/html/media/html_video_element.cc>
 
 namespace blink {
 

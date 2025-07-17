@@ -7,7 +7,7 @@
 
 #define WebPreferences WebPreferences_ChromiumImpl
 
-#include "src/third_party/blink/common/web_preferences/web_preferences_mojom_traits.cc"
+#include <third_party/blink/common/web_preferences/web_preferences_mojom_traits.cc>
 
 #undef WebPreferences
 

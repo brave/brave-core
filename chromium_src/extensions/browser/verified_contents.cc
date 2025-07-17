@@ -96,6 +96,6 @@ constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
       VerifiedContents* vc, std::string_view contents) {                   \
     std::unique_ptr<VerifiedContents> verified_contents(vc)
 
-#include "src/extensions/browser/verified_contents.cc"
+#include <extensions/browser/verified_contents.cc>
 
 #undef WrapUnique

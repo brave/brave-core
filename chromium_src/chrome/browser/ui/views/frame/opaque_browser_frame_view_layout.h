@@ -11,7 +11,7 @@
   friend class BrowserFrameViewLayoutLinux; \
   virtual void SetBoundsForButton
 
-#include "src/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h>  // IWYU pragma: export
 
 #undef SetBoundsForButton
 

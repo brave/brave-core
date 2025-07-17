@@ -14,7 +14,7 @@
   UpdateClientFactory_ChromiumImpl(scoped_refptr<Configurator> config); \
   scoped_refptr<UpdateClient> UpdateClientFactory
 
-#include "src/components/update_client/update_client.h"  // IWYU pragma: export
+#include <components/update_client/update_client.h>  // IWYU pragma: export
 
 #undef Uninstall
 #undef UpdateClientFactory

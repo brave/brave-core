@@ -17,7 +17,7 @@
 
 // clang-format on
 
-#include "src/sandbox/win/src/interceptors.h"  // IWYU pragma: export
+#include <sandbox/win/src/interceptors.h>  // IWYU pragma: export
 
 #undef CREATE_SECTION_ID
 

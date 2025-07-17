@@ -8,7 +8,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
-#include "src/components/regional_capabilities/regional_capabilities_utils.h"  // IWYU pragma: export
+#include <components/regional_capabilities/regional_capabilities_utils.h>  // IWYU pragma: export
 
 namespace regional_capabilities {
 

@@ -15,7 +15,7 @@
     return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);             \
   }
 
-#include "src/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/bindings/core/v8/to_v8_traits.h>  // IWYU pragma: export
 
 #undef BRAVE_TO_V8_TRAITS_PAGE_GRAPH_OVERRIDE
 

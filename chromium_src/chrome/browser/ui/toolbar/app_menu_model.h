@@ -17,7 +17,7 @@
   void CreateZoomMenu
 
 #define BookmarkSubMenuModel BraveBookmarkSubMenuModel
-#include "src/chrome/browser/ui/toolbar/app_menu_model.h"  // IWYU pragma: export
+#include <chrome/browser/ui/toolbar/app_menu_model.h>  // IWYU pragma: export
 #undef BookmarkSubMenuModel
 #undef CreateZoomMenu
 

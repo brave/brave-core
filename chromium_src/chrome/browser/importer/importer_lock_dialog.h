@@ -10,7 +10,7 @@
   ShowImportLockDialog(__VA_ARGS__); \
   void ShowImportLockDialog(gfx::NativeView parent_view, __VA_ARGS__)
 
-#include "src/chrome/browser/importer/importer_lock_dialog.h"  // IWYU pragma: export
+#include <chrome/browser/importer/importer_lock_dialog.h>  // IWYU pragma: export
 
 #undef ShowImportLockDialog
 

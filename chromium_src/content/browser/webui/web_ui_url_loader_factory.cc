@@ -49,7 +49,7 @@ void RangeDataAvailable(
   }                                                                           \
   URLDataSource::GotDataCallback
 
-#include "src/content/browser/webui/web_ui_url_loader_factory.cc"
+#include <content/browser/webui/web_ui_url_loader_factory.cc>
 
 #undef GotDataCallback
 

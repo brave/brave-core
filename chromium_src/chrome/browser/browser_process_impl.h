@@ -35,7 +35,7 @@
 #define PostDestroyThreads virtual PostDestroyThreads
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include "src/chrome/browser/browser_process_impl.h"  // IWYU pragma: export
+#include <chrome/browser/browser_process_impl.h>  // IWYU pragma: export
 
 #undef PostDestroyThreads
 #undef StartTearDown

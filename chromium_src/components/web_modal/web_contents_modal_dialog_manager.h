@@ -13,7 +13,7 @@ class SplitViewWithTabDialogBrowserTest;
   friend class ::SplitViewWithTabDialogBrowserTest; \
   void FocusTopmostDialog
 
-#include "src/components/web_modal/web_contents_modal_dialog_manager.h"  // IWYU pragma: export
+#include <components/web_modal/web_contents_modal_dialog_manager.h>  // IWYU pragma: export
 
 #undef FocusTopmostDialog
 

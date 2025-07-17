@@ -16,7 +16,7 @@
   ShowActionEphemerallyInToolbar_ChromiumImpl(__VA_ARGS__); \
   void ShowActionEphemerallyInToolbar(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h>  // IWYU pragma: export
 #undef ShowActionEphemerallyInToolbar
 #undef UpdateActionState
 

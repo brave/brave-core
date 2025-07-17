@@ -10,7 +10,7 @@
   JavaScriptTabModalDialogManagerDelegateDesktop;      \
   friend class BraveJavaScriptTabModalDialogViewViews
 
-#include "src/chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.h>  // IWYU pragma: export
 
 #undef JavaScriptTabModalDialogManagerDelegateDesktop
 

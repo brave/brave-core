@@ -7,7 +7,7 @@
 
 #define AddUiColorMixer AddUiColorMixer_Chromium
 
-#include "src/ui/color/ui_color_mixer.cc"
+#include <ui/color/ui_color_mixer.cc>
 
 #undef AddUiColorMixer
 

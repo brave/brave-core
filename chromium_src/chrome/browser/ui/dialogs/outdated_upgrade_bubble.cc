@@ -34,5 +34,5 @@ GURL BraveGetUpdateUrl() {
 
 #define OpenURLParams(URL, ...) OpenURLParams(BraveGetUpdateUrl(), __VA_ARGS__)
 
-#include "src/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc"
+#include <chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc>
 #undef OpenURLParams

@@ -32,7 +32,7 @@
 #include "ui/views/view_class_properties.h"
 
 #define MdTextButton MdTextButtonBase
-#include "src/ui/views/controls/button/md_text_button.cc"
+#include <ui/views/controls/button/md_text_button.cc>
 #undef MdTextButton
 
 namespace {

@@ -8,7 +8,7 @@
 
 #include "build/build_config.h"
 
-#include "src/chrome/browser/profiles/profile_avatar_icon_util.h"  // IWYU pragma: export
+#include <chrome/browser/profiles/profile_avatar_icon_util.h>  // IWYU pragma: export
 
 namespace profiles {
 

@@ -32,7 +32,7 @@
               SECURE, HTTP_ONLY, SAME_SITE, PRIORITY, PARTITION,              \
               SOURCE_SCHEME, PORT, COOKIE_SOURCE)
 
-#include "src/services/network/restricted_cookie_manager.cc"
+#include <services/network/restricted_cookie_manager.cc>
 
 #undef FromStorage
 #undef IsFullCookieAccessAllowed

@@ -6,7 +6,7 @@
 #define GetAvatarSyncErrorType GetAvatarSyncErrorType_Unused
 #include <optional>
 
-#include "src/chrome/browser/sync/sync_ui_util.cc"
+#include <chrome/browser/sync/sync_ui_util.cc>
 #undef GetAvatarSyncErrorType
 
 std::optional<AvatarSyncErrorType> GetAvatarSyncErrorType(Profile* profile) {

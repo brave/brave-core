@@ -12,7 +12,7 @@
   CommitWrite() override; \
   void SanitizeOnNextWriteText
 
-#include "src/third_party/blink/renderer/core/testing/mock_clipboard_host.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/testing/mock_clipboard_host.h>  // IWYU pragma: export
 
 #undef CommitWrite
 

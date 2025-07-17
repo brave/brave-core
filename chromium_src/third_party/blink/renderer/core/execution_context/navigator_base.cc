@@ -61,7 +61,7 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
                                         &hardware_concurrency); \
   probe::ApplyHardwareConcurrencyOverride
 
-#include "src/third_party/blink/renderer/core/execution_context/navigator_base.cc"
+#include <third_party/blink/renderer/core/execution_context/navigator_base.cc>
 #undef ApplyHardwareConcurrencyOverride
 #undef userAgent
 

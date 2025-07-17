@@ -7,5 +7,5 @@
   case DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS:  \
     return "CustomListSubscriptions";
 
-#include "src/components/download/public/background_service/clients.cc"
+#include <components/download/public/background_service/clients.cc>
 #undef BRAVE_BACKGROUND_DOWNLOAD_CLIENT_TO_STRING

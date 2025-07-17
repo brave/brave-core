@@ -14,5 +14,5 @@
   kChromeUIPasswordManagerHost &&    \
       !kInstallablePWAWebUIHosts.contains(url.host_piece())
 
-#include "src/components/webapps/browser/banners/app_banner_manager.cc"
+#include <components/webapps/browser/banners/app_banner_manager.cc>
 #undef kChromeUIPasswordManagerHost

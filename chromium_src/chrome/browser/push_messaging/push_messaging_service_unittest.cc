@@ -14,7 +14,7 @@
   DISABLED_RecordsRevocationAndSourceUiWithReporterTest
 
 #define TestingProfile BraveTestingProfile
-#include "src/chrome/browser/push_messaging/push_messaging_service_unittest.cc"
+#include <chrome/browser/push_messaging/push_messaging_service_unittest.cc>
 #undef TestingProfile
 #undef RecordsRevocationAndSourceUiWithReporterTest
 #undef RecordsRevocationAndSourceUiNoReporterTest

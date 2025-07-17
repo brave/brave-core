@@ -91,7 +91,7 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #define MigrateObsoleteLocalStatePrefs \
   MigrateObsoleteLocalStatePrefs_ChromiumImpl
 
-#include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
+#include <ios/chrome/browser/shared/model/prefs/browser_prefs.mm>
 
 #undef MigrateObsoleteLocalStatePrefs
 #undef MigrateObsoleteProfilePrefs

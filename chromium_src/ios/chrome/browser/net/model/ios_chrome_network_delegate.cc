@@ -6,7 +6,7 @@
 #include "ios/chrome/browser/net/model/ios_chrome_network_delegate.h"
 
 #define IOSChromeNetworkDelegate IOSChromeNetworkDelegate_ChromiumImpl
-#include "src/ios/chrome/browser/net/model/ios_chrome_network_delegate.cc"
+#include <ios/chrome/browser/net/model/ios_chrome_network_delegate.cc>
 #undef IOSChromeNetworkDelegate
 
 #include "brave/components/constants/brave_services_key.h"

@@ -10,7 +10,7 @@
   ShouldInstall_ChromiumImpl(PrefService* local_state); \
   static bool ShouldInstall
 
-#include "src/chrome/browser/screen_ai/screen_ai_install_state.h"  // IWYU pragma: export
+#include <chrome/browser/screen_ai/screen_ai_install_state.h>  // IWYU pragma: export
 
 #undef ShouldInstall
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/platform/bindings/idl_member_installer.cc"
+#include <third_party/blink/renderer/platform/bindings/idl_member_installer.cc>
 
 #include <string_view>
 

@@ -14,5 +14,5 @@
   case user_data_importer::TYPE_WHALE:         \
   break;                                       \
   case user_data_importer::TYPE_FIREFOX
-#include "src/chrome/browser/importer/importer_uma.cc"
+#include <chrome/browser/importer/importer_uma.cc>
 #undef TYPE_FIREFOX

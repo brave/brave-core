@@ -12,6 +12,6 @@
   void WebLanguageDetectionDetails::                       \
       RecordAcceptLanguageAndXmlHtmlLangMetric_ChromiumImpl(__VA_ARGS__)
 
-#include "src/third_party/blink/renderer/core/exported/web_language_detection_details.cc"
+#include <third_party/blink/renderer/core/exported/web_language_detection_details.cc>
 
 #undef RecordAcceptLanguageAndXmlHtmlLangMetric

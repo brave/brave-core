@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/ios/chrome/browser/autocomplete/model/autocomplete_provider_client_impl.mm"
+#include <ios/chrome/browser/autocomplete/model/autocomplete_provider_client_impl.mm>
 
 #include "build/build_config.h"
 

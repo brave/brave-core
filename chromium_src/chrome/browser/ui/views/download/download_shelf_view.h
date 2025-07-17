@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/views/download/download_item_view.h"
 
 #define DownloadItemView BraveDownloadItemView
-#include "src/chrome/browser/ui/views/download/download_shelf_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/download/download_shelf_view.h>  // IWYU pragma: export
 #undef DownloadItemView
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_SHELF_VIEW_H_

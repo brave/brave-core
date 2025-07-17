@@ -13,7 +13,7 @@
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (0)
 #endif
 
-#include "src/chrome/browser/metrics/google_update_metrics_provider_win.cc"
+#include <chrome/browser/metrics/google_update_metrics_provider_win.cc>
 
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/brave_restore_google_update_integration.h"

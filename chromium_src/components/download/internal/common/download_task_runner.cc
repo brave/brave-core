@@ -7,7 +7,7 @@
 
 #include "base/check_is_test.h"
 
-#include "src/components/download/internal/common/download_task_runner.cc"
+#include <components/download/internal/common/download_task_runner.cc>
 
 namespace download {
 

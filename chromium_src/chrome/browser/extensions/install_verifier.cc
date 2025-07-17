@@ -55,7 +55,7 @@
   IsUnpackedLocation(__VA_ARGS__) || \
       extensions_mv2::IsKnownMV2Extension(extension->id())
 
-#include "src/chrome/browser/extensions/install_verifier.cc"
+#include <chrome/browser/extensions/install_verifier.cc>
 
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING

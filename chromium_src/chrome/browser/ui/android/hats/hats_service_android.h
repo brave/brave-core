@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_ANDROID_HATS_HATS_SERVICE_ANDROID_H_
 
 #define HatsServiceAndroid HatsServiceAndroid_ChromiumImpl
-#include "src/chrome/browser/ui/android/hats/hats_service_android.h"  // IWYU pragma: export
+#include <chrome/browser/ui/android/hats/hats_service_android.h>  // IWYU pragma: export
 #undef HatsServiceAndroid
 
 class HatsServiceAndroid : public HatsServiceAndroid_ChromiumImpl {

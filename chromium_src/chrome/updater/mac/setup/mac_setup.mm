@@ -16,5 +16,5 @@
 #define GetWakeTaskPlistPath(scope) \
   std::nullopt;                     \
   return true;
-#include "src/chrome/updater/mac/setup/mac_setup.mm"
+#include <chrome/updater/mac/setup/mac_setup.mm>
 #undef GetWakeTaskPlistPath

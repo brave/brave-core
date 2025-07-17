@@ -15,7 +15,7 @@
   friend class BraveConfirmInfoBar; \
   virtual void CloseButtonPressed
 
-#include "src/chrome/browser/ui/views/infobars/infobar_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/infobars/infobar_view.h>  // IWYU pragma: export
 
 #undef CloseButtonPressed
 

@@ -10,7 +10,7 @@
   IsNonCoalescingHeader(std::string_view name); \
   static bool IsNonCoalescingHeader_ChromiumImpl
 
-#include "src/net/http/http_util.h"  // IWYU pragma: export
+#include <net/http/http_util.h>  // IWYU pragma: export
 
 #undef IsNonCoalescingHeader
 

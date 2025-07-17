@@ -11,7 +11,7 @@
 
 #include <optional>
 
-#include "src/net/cookies/cookie_deletion_info.h"  // IWYU pragma: export
+#include <net/cookies/cookie_deletion_info.h>  // IWYU pragma: export
 
 #undef BRAVE_COOKIE_DELETION_INFO_H
 

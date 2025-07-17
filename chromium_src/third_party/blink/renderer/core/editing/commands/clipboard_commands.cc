@@ -11,6 +11,6 @@
     frame.GetSystemClipboard()->SanitizeOnNextWriteText(); \
   }
 
-#include "src/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc"
+#include <third_party/blink/renderer/core/editing/commands/clipboard_commands.cc>
 
 #undef BRAVE_CLIPBOARD_COMMANDS_CHECK_SOURCE

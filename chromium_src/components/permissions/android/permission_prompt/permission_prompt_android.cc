@@ -9,7 +9,7 @@
 #include "components/permissions/features.h"
 
 #define PermissionPromptAndroid PermissionPromptAndroid_ChromiumImpl
-#include "src/components/permissions/android/permission_prompt/permission_prompt_android.cc"
+#include <components/permissions/android/permission_prompt/permission_prompt_android.cc>
 #undef PermissionPromptAndroid
 
 namespace permissions {
