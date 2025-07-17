@@ -7,24 +7,15 @@
 
 #include <utility>
 
-#include "base/no_destructor.h"
-#include "brave/components/brave_wallet/renderer/v8_helper.h"
-#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
-#include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-proxy.h"
-#include "v8/include/v8-typed-array.h"
 
 namespace brave_wallet {
 
@@ -530,7 +521,7 @@ void JSCardanoWalletApi::OnSignData(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    mojom::CardanoProviderSignatureResultPtr result,
+    base::Value::Dict result,
     mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
@@ -545,7 +536,7 @@ void JSCardanoWalletApi::OnSignData(
   if (!error) {
     std::ignore = resolver->Resolve(
         context, content::V8ValueConverter::Create()->ToV8Value(
-                     result->signature, isolate->GetCurrentContext()));
+                     result, isolate->GetCurrentContext()));
   } else {
     std::ignore = resolver->Reject(
         context, ConvertError(context->GetIsolate(), context, error));

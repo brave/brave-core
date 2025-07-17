@@ -186,10 +186,6 @@ interface EthereumProvider {
   IsLocked() => (bool isLocked);
 };
 
-struct CardanoProviderSignatureResult {
-  mojo_base.mojom.DictionaryValue signature;
-};
-
 struct CardanoProviderPagination {
   uint32 page;
   uint32 limit;
@@ -231,7 +227,7 @@ interface CardanoProvider {
   SubmitTx(string signed_tx_cbor) =>
     (string tx_hash, CardanoProviderErrorBundle? error);
   SignData(string address, string payload_hex) =>
-    (CardanoProviderSignatureResult? result,
+    (mojo_base.mojom.DictionaryValue signature,
       CardanoProviderErrorBundle? error);
   GetCollateral(string amount) => (array<string>? utxos,
       CardanoProviderErrorBundle? error);

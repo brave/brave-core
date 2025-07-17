@@ -221,13 +221,21 @@ bool CardanoWalletService::SignTransactionInternal(
     }
     auto& key_id = address_map.at(input.utxo_address);
 
-    auto signature =
+    auto signature_pair =
         keyring_service().SignMessageByCardanoKeyring(account_id, key_id, hash);
-    if (!signature) {
+    if (!signature_pair) {
       return false;
     }
-
-    witnesses.emplace_back(*signature);
+    static_assert(kCardanoWitnessSize ==
+                  kEd25519PublicKeySize + kEd25519SignatureSize);
+    std::array<uint8_t, kCardanoWitnessSize> witness_bytes;
+    base::span(witness_bytes)
+        .first<kEd25519PublicKeySize>()
+        .copy_from_nonoverlapping(signature_pair->pubkey);
+    base::span(witness_bytes)
+        .last<kEd25519SignatureSize>()
+        .copy_from_nonoverlapping(signature_pair->signature);
+    witnesses.emplace_back(witness_bytes);
   }
 
   tx.SetWitnesses(std::move(witnesses));
