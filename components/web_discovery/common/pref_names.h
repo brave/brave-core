@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_
-#define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_
+#ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_COMMON_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_WEB_DISCOVERY_COMMON_PREF_NAMES_H_
 
 #include "base/types/strong_alias.h"
+
+class PrefService;
 
 namespace web_discovery {
 
@@ -43,6 +45,10 @@ inline constexpr char kPageCounts[] = "brave.web_discovery.page_counts";
 inline constexpr char kPatternsRetrievalTime[] =
     "brave.web_discovery.patterns_retrieval_time";
 
+// Returns true if web discovery is enabled by user preference and not
+// disabled by policy.
+bool IsWebDiscoveryEnabled(PrefService* profile_prefs);
+
 }  // namespace web_discovery
 
-#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_COMMON_PREF_NAMES_H_

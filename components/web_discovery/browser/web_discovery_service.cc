@@ -13,10 +13,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/util.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -71,11 +71,6 @@ void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kUsedBasenameCounts);
   registry->RegisterDictionaryPref(kPageCounts);
   registry->RegisterBooleanPref(kWebDiscoveryDisabledByPolicy, false);
-}
-
-bool IsWebDiscoveryEnabled(PrefService* pref_service) {
-  return pref_service->GetBoolean(kWebDiscoveryEnabled) &&
-         !pref_service->GetBoolean(kWebDiscoveryDisabledByPolicy);
 }
 
 void WebDiscoveryService::Shutdown() {

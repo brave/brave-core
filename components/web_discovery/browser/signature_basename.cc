@@ -17,9 +17,9 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/util.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/sha2.h"
 

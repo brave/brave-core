@@ -25,6 +25,7 @@ source_set("component_loader") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
+    "//brave/components/web_discovery/common",
     "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",

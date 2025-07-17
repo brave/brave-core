@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
