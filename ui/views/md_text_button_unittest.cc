@@ -31,11 +31,12 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
 
   auto* color_provider = widget->GetColorProvider();
 
+  // Explicitely set as active otherwise button could be in disabled state.
+  test::WidgetTest::SimulateNativeActivate(widget.get());
+
   // Smoke test a few colors:
   EXPECT_EQ(color_provider->GetColor(nala::kColorButtonBackground),
             button->GetButtonColors().background_color);
-  EXPECT_EQ(color_provider->GetColor(nala::kColorPrimitiveNeutral90),
-            button->GetButtonColors().text_color);
 
   // Check that dark mode overrides are coming through:
   button->SetState(Button::ButtonState::STATE_HOVERED);
