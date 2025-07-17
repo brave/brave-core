@@ -17,8 +17,10 @@
 
 namespace brave_wallet {
 
-inline constexpr uint32_t kCardanoSignatureSize =
-    kEd25519PublicKeySize + kEd25519SignatureSize;
+struct CardanoSignMessageResult {
+  std::array<uint8_t, kEd25519PublicKeySize> pubkey = {};
+  std::array<uint8_t, kEd25519SignatureSize> signature = {};
+};
 
 // Keyring based on SLIP-0023 keys.
 class CardanoHDKeyring {
@@ -35,14 +37,9 @@ class CardanoHDKeyring {
 
   std::optional<std::string> AddNewHDAccount(uint32_t index);
 
-  std::optional<std::array<uint8_t, kCardanoSignatureSize>> SignMessage(
+  std::optional<CardanoSignMessageResult> SignMessage(
       uint32_t account,
       const mojom::CardanoKeyId& key_id,
-      base::span<const uint8_t> message);
-
-  std::optional<base::Value::Dict> SignCip30Message(
-      uint32_t account,
-      const mojom::CardanoKeyId& payment_key_id,
       base::span<const uint8_t> message);
 
   mojom::KeyringId keyring_id() const { return keyring_id_; }

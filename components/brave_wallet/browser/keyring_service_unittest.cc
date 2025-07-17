@@ -14,6 +14,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
@@ -3918,6 +3919,38 @@ TEST_F(KeyringServiceUnitTest, SignMessageByBitcoinKeyring) {
           btc_acc->account_id, mojom::BitcoinKeyId::New(1, 7), message)));
 }
 
+TEST_F(KeyringServiceUnitTest, SignMessageByCardanoKeyring) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto cardano_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+  std::array<uint8_t, 32> message;
+  message.fill('1');
+
+  auto signature_pair = service.SignMessageByCardanoKeyring(
+      cardano_acc->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 3), message);
+
+  EXPECT_EQ(base::HexEncode(signature_pair->pubkey),
+            "F339E3A7125516323A77477FBC3E36E2132CDC0743AFBC77D940C1BC065DBECF");
+  EXPECT_EQ(base::HexEncode(signature_pair->signature),
+            "BFA0F3DC0B052FF09FBFA1A4B5E7B23019F98735E3D21764A12C1105CB90CB22"
+            "8DE8418C23139F92F6268E314A80B8FECF40C1B430AB218601CAB37B1EFF190B");
+
+  signature_pair = service.SignMessageByCardanoKeyring(
+      cardano_acc->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kInternal, 7), message);
+
+  EXPECT_EQ(base::HexEncode(signature_pair->pubkey),
+            "BAA3656376527BCDD3292428A84E50CB9A18C638F234CA0E16BA265CC3C95282");
+  EXPECT_EQ(base::HexEncode(signature_pair->signature),
+            "08A1D98E9AC85EE0B3B6CF0388E81AE3C6177780232C36C20105C5DC15DE4CDB"
+            "BA8E2B3310ADF7B648424305B437FF97AABD385508D9B2CAC9778A32641D2C0B");
+}
+
 TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletCardanoFeature};
@@ -3950,33 +3983,43 @@ TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
                 message));
 }
 
-TEST_F(KeyringServiceUnitTest, SignMessageByCardanoKeyring) {
-  base::test::ScopedFeatureList feature_list{
-      features::kBraveWalletCardanoFeature};
-
+TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring_TestVectors) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-
-  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  AccountUtils(&service).CreateWallet(kMnemonicAbandonAbandon,
+                                      kTestWalletPassword);
   auto cardano_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
-  std::array<uint8_t, 32> message;
-  message.fill('1');
 
-  EXPECT_EQ(
-      "F339E3A7125516323A77477FBC3E36E2132CDC0743AFBC77D940C1BC065DBECFBFA0F3DC"
-      "0B052FF09FBFA1A4B5E7B23019F98735E3D21764A12C1105CB90CB228DE8418C23139F92"
-      "F6268E314A80B8FECF40C1B430AB218601CAB37B1EFF190B",
-      base::HexEncode(*service.SignMessageByCardanoKeyring(
-          cardano_acc->account_id,
-          mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 3),
-          message)));
-  EXPECT_EQ(
-      "BAA3656376527BCDD3292428A84E50CB9A18C638F234CA0E16BA265CC3C9528208A1D98E"
-      "9AC85EE0B3B6CF0388E81AE3C6177780232C36C20105C5DC15DE4CDBBA8E2B3310ADF7B6"
-      "48424305B437FF97AABD385508D9B2CAC9778A32641D2C0B",
-      base::HexEncode(*service.SignMessageByCardanoKeyring(
-          cardano_acc->account_id,
-          mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kInternal, 7),
-          message)));
+  std::string file_contents;
+
+  ASSERT_TRUE(base::ReadFileToString(BraveWalletComponentsTestDataFolder()
+                                         .AppendASCII("cardano")
+                                         .AppendASCII("cardano_sdk_cip30")
+                                         .AppendASCII("test_vectors.json"),
+                                     &file_contents));
+
+  auto test_items = base::test::ParseJsonList(file_contents);
+  ASSERT_EQ(test_items.size(), 1000u);
+
+  for (auto& test : test_items) {
+    auto& test_dict = test.GetDict();
+    auto* name = test_dict.FindString("test");
+    SCOPED_TRACE(testing::Message() << *name);
+
+    std::vector<uint8_t> payload;
+    if (!test_dict.FindString("payload")->empty()) {
+      ASSERT_TRUE(
+          base::HexStringToBytes(*test_dict.FindString("payload"), &payload));
+    }
+    auto key_index = *test_dict.FindInt("keyIndex");
+    auto& expected_cip8_signature = *test_dict.FindDict("cip8Signature");
+
+    ASSERT_EQ(expected_cip8_signature,
+              *service.SignCip30MessageByCardanoKeyring(
+                  cardano_acc->account_id,
+                  mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal,
+                                           key_index),
+                  payload));
+  }
 }
 
 TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {

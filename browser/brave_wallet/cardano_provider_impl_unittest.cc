@@ -9,25 +9,20 @@
 #include <optional>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test_utils.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -362,12 +357,12 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsError_WhenNoPermission) {
   }
 
   {
-    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
+    base::test::TestFuture<base::Value::Dict,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignData("", "", future.GetCallback());
     auto [data, error] = future.Take();
-    EXPECT_FALSE(data);
+    EXPECT_EQ(data, base::Value::Dict());
     EXPECT_EQ(error->code, -3);
     EXPECT_FALSE(error->pagination_error_payload);
   }
@@ -501,7 +496,7 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsSuccess_WhenHasPermission) {
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
+    base::test::TestFuture<base::Value::Dict,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignData("", "", future.GetCallback());

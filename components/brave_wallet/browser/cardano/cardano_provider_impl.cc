@@ -356,9 +356,7 @@ void CardanoProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  std::move(callback).Run(
-      mojom::CardanoProviderSignatureResult::New(std::move(*sig_data)),
-      nullptr);
+  std::move(callback).Run(std::move(*sig_data), nullptr);
 }
 
 void CardanoProviderImpl::GetCollateral(const std::string& amount,

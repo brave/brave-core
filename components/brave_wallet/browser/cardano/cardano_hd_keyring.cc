@@ -13,14 +13,10 @@
 
 #include "base/check.h"
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
-#include "components/cbor/values.h"
-#include "components/cbor/writer.h"
 
 namespace brave_wallet {
 
@@ -99,10 +95,10 @@ std::optional<std::string> CardanoHDKeyring::AddNewHDAccount(uint32_t index) {
   return "";
 }
 
-std::optional<std::array<uint8_t, kCardanoSignatureSize>>
-CardanoHDKeyring::SignMessage(uint32_t account,
-                              const mojom::CardanoKeyId& key_id,
-                              base::span<const uint8_t> message) {
+std::optional<CardanoSignMessageResult> CardanoHDKeyring::SignMessage(
+    uint32_t account,
+    const mojom::CardanoKeyId& key_id,
+    base::span<const uint8_t> message) {
   auto hd_key = DeriveKey(account, key_id);
   if (!hd_key) {
     return std::nullopt;
@@ -112,46 +108,11 @@ CardanoHDKeyring::SignMessage(uint32_t account,
     return std::nullopt;
   }
 
-  std::array<uint8_t, kCardanoSignatureSize> result;
-  base::span(result).first<kEd25519PublicKeySize>().copy_from_nonoverlapping(
-      hd_key->GetPublicKeyAsSpan());
-  base::span(result).last<kEd25519SignatureSize>().copy_from_nonoverlapping(
-      *signature);
+  CardanoSignMessageResult result;
+  base::span(result.signature).copy_from_nonoverlapping(*signature);
+  base::span(result.pubkey)
+      .copy_from_nonoverlapping(hd_key->GetPublicKeyAsSpan());
 
-  return result;
-}
-
-std::optional<base::Value::Dict> CardanoHDKeyring::SignCip30Message(
-    uint32_t account,
-    const mojom::CardanoKeyId& payment_key_id,
-    base::span<const uint8_t> message) {
-  auto payment_hd_key = DeriveKey(account, payment_key_id);
-  if (!payment_hd_key) {
-    return std::nullopt;
-  }
-
-  auto delegation_hd_key = DeriveKey(account, CardanoDefaultDelegationKeyId());
-  if (!delegation_hd_key) {
-    return std::nullopt;
-  }
-
-  auto payment_address = MakeCaranoAddressFromKeys(IsTestnet(), *payment_hd_key,
-                                                   *delegation_hd_key);
-
-  auto signature = payment_hd_key->Sign(
-      CardanoCip30Serializer::SerializedSignPayload(payment_address, message));
-  if (!signature) {
-    return std::nullopt;
-  }
-
-  base::Value::Dict result;
-  result.Set("key",
-             HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataKey(
-                 payment_address, payment_hd_key->GetPublicKeyAsSpan())));
-  result.Set(
-      "signature",
-      HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
-          payment_address, message, *signature)));
   return result;
 }
 
