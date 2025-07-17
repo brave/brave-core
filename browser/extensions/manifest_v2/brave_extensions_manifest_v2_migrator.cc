@@ -5,6 +5,8 @@
 
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 
+#include <utility>
+
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
