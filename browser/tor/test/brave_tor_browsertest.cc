@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
     return EvalJs(web_contents,
                   base::StrCat({"!window.testing.torSubpage.getElementById('",
                                 id, "').disabled"}))
-        .value.GetBool();
+        .ExtractBool();
   };
 
   // Disable incognito mode for this profile.
