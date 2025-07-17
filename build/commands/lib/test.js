@@ -374,7 +374,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       }
 
       if (rbeTestTarget) {
-        util.buildTargets([rbeTestTarget], {...config.defaultOptions, offline: rbeTestTarget.offline })
+        util.buildTargets([rbeTestTarget.target], {...config.defaultOptions, offline: rbeTestTarget.offline })
         const reportBasePath = path.join( path.basename(testBinary), 'gen', 'brave', 'test', testSuite );
         const reports = await new Promise(resolve => glob(reportBasePath+"/**/*.xml", (err, files) => resolve(files)));
         fs.appendFileSync(allResultsFilePath, reports.join('\n'))
