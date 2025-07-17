@@ -228,7 +228,7 @@ bool CardanoWalletService::SignTransactionInternal(
     }
     static_assert(kCardanoWitnessSize ==
                   kEd25519PublicKeySize + kEd25519SignatureSize);
-    std::array<uint8_t, kCardanoWitnessSize> witness_bytes;
+    std::array<uint8_t, kCardanoWitnessSize> witness_bytes = {};
     base::span(witness_bytes)
         .first<kEd25519PublicKeySize>()
         .copy_from_nonoverlapping(signature_pair->pubkey);
