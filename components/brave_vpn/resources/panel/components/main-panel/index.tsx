@@ -131,6 +131,7 @@ function MainPanel() {
   const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
   const stateDescription = useSelector((state) => state.stateDescription)
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -225,9 +226,9 @@ function MainPanel() {
             <RegionInfo>
               <RegionLabelBox>
                 <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
-                {currentRegion.smartRoutingProxyState === 'all' && (
-                    <SmartProxyIcon name='smart-proxy-routing' />
-                  )
+                {smartProxyRoutingEnabled && currentRegion.smartRoutingProxyState === 'all' && (
+                  <SmartProxyIcon name='smart-proxy-routing' />
+                )
                 }
               </RegionLabelBox>
               <RegionServerLabel>{regionServerLabel}</RegionServerLabel>

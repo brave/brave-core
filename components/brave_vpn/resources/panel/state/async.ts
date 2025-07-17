@@ -96,14 +96,16 @@ handler.on(Actions.purchaseExpired.getType(), async (store) => {
 })
 
 handler.on(Actions.initialize.getType(), async (store) => {
-  const [{ state }, { urls }] = await Promise.all([
+  const [{ state }, { urls }, { enabled }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getPurchasedState(),
-    getPanelBrowserAPI().serviceHandler.getProductUrls()
+    getPanelBrowserAPI().serviceHandler.getProductUrls(),
+    getPanelBrowserAPI().serviceHandler.getSmartProxyRoutingState()
   ])
 
   store.dispatch(
     Actions.initialized({
-      productUrls: urls
+      productUrls: urls,
+      smartProxyRoutingEnabled: enabled
     })
   )
 

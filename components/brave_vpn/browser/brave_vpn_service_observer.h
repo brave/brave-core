@@ -33,6 +33,7 @@ class BraveVPNServiceObserver : public mojom::ServiceObserver {
 #if !BUILDFLAG(IS_ANDROID)
   void OnConnectionStateChanged(mojom::ConnectionState state) override {}
   void OnSelectedRegionChanged(mojom::RegionPtr region) override {}
+  void OnSmartProxyRoutingStateChanged(bool enabled) override {}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
  private:
