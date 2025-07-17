@@ -63,10 +63,6 @@ export const SettingDesc = styled.div`
   color: ${color.text.tertiary};
   font: ${font.small.regular};
   align-self: stretch;
-
-  a {
-    color: ${color.text.tertiary};
-  }
 `
 
 export const StyledIcon = styled(Icon)`
