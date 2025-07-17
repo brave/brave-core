@@ -195,9 +195,6 @@ extension BrowserViewController: TabManagerDelegate {
     tab.downloadDelegate = self
     tab.certificateStore = profile.certStore
     attachTabHelpers(to: tab)
-    if let braveShieldsTabHelper = tab.braveShieldsHelper {
-      tab.addPolicyDecider(braveShieldsTabHelper)
-    }
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
