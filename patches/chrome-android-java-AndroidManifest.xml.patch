@@ -52,7 +52,7 @@ index f8815b416307b3a64aa2c628ef3df180014f2f08..c745a028afe47586a6ff4ccfe971776e
      <uses-permission android:name="android.permission.VIBRATE"/>
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
 -    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
