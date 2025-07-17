@@ -27,19 +27,30 @@ TEST(HDKeySr25519, GenerateFromSeed) {
 
   kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
   EXPECT_TRUE(kpresult);
+
+  kpresult = HDKeySr25519::GenerateFromSeed(std::array<uint8_t, 31>{});
+  EXPECT_FALSE(kpresult);
+
+  kpresult = HDKeySr25519::GenerateFromSeed(std::array<uint8_t, 33>{});
+  EXPECT_FALSE(kpresult);
 }
 
 TEST(HDKeySr25519, GetPublicKey) {
   auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  EXPECT_TRUE(kpresult);
+  ASSERT_TRUE(kpresult);
 
   auto public_key = kpresult->GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
+
+  auto kpresult2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  ASSERT_TRUE(kpresult2);
+
+  EXPECT_EQ(kpresult->GetPublicKey(), kpresult2->GetPublicKey());
 }
 
 TEST(HDKeySr25519, SignAndVerify) {
   auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  EXPECT_TRUE(kpresult);
+  ASSERT_TRUE(kpresult);
 
   auto public_key = kpresult->GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
@@ -57,6 +68,34 @@ TEST(HDKeySr25519, SignAndVerify) {
   std::array<uint8_t, 64> bad_message = {};
   is_verified = kpresult->VerifyMessage(sig, bad_message);
   EXPECT_FALSE(is_verified);
+}
+
+TEST(HDKeySr25519, HardDerive) {
+  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  ASSERT_TRUE(kpresult);
+
+  // manually create a SCALE-encoded chaincode value
+  unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
+  unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
+
+  auto derived1 = kpresult->DeriveHard(path1);
+  auto derived2 = kpresult->DeriveHard(path2);
+  auto derived3 = kpresult->DeriveHard(path1);
+
+  EXPECT_EQ(derived1->GetPublicKey(), derived3->GetPublicKey());
+  EXPECT_NE(derived1->GetPublicKey(), derived2->GetPublicKey());
+
+  auto kpresult2 = HDKeySr25519::GenerateFromSeed(
+      {250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
+       60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
+       202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
+  ASSERT_TRUE(kpresult2);
+
+  auto derived4 = kpresult2->DeriveHard(path1);
+  auto derived5 = kpresult2->DeriveHard(path2);
+
+  EXPECT_NE(derived4->GetPublicKey(), derived1->GetPublicKey());
+  EXPECT_NE(derived5->GetPublicKey(), derived2->GetPublicKey());
 }
 
 TEST(HDKeySr25519, PolkadotSDKTestVector1) {
@@ -85,6 +124,36 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
 
   auto derived = kpresult->DeriveHard(path);
   auto pkey = derived->GetPublicKey();
+  EXPECT_EQ(base::span{pkey}, base::span{expected});
+
+  // Now test the blake2 hashing portion given a sufficiently long derive
+  // junction.
+  // Because this test isn't a formal vector, we generate it manually via:
+  //
+  // let pair1 = polkadot_sdk::sp_core::sr25519::Pair::from_string(
+  //   &format!("{}//AnIncrediblyLongDerivationPathNameToTriggerBlake2",
+  //   polkadot_sdk::sp_core::crypto::DEV_PHRASE), None,
+  //  )
+  // .unwrap();
+  //
+  // let expected =
+  //   hex_to_bytes("225ba704a8fb5acfadb790e41cda8c8f75698e6f1fd5a99a5bd2183b9b899857").unwrap();
+  // assert_eq!(pair1.public().as_slice(), &expected);
+
+  expected.clear();
+  base::HexStringToBytes(
+      "225ba704a8fb5acfadb790e41cda8c8f75698e6f1fd5a99a5bd2183b9b899857",
+      &expected);
+
+  // Rotely copy the SCALE-encoded version of the string:
+  // "AnIncrediblyLongDerivationPathNameToTriggerBlake2"
+  unsigned char long_path[] = {196, 65,  110, 73,  110, 99,  114, 101, 100, 105,
+                               98,  108, 121, 76,  111, 110, 103, 68,  101, 114,
+                               105, 118, 97,  116, 105, 111, 110, 80,  97,  116,
+                               104, 78,  97,  109, 101, 84,  111, 84,  114, 105,
+                               103, 103, 101, 114, 66,  108, 97,  107, 101, 50};
+  derived = kpresult->DeriveHard(long_path);
+  pkey = derived->GetPublicKey();
   EXPECT_EQ(base::span{pkey}, base::span{expected});
 }
 
