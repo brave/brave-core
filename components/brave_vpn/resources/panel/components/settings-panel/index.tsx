@@ -10,6 +10,7 @@ import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
 import Toggle from '@brave/leo/react/toggle'
+import { useSelector } from '../../state/hooks'
 
 interface Props {
   closeSettingsPanel: () => void
@@ -22,11 +23,10 @@ function SettingsPanel(props: Props) {
     enabled: false
   })
 
-  const [smartProxyRoutingEnabled, setSmartProxyRoutingEnabled] = React.useState({ enabled: false })
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   React.useEffect(() => {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
-    getPanelBrowserAPI().serviceHandler.getSmartProxyRoutingState().then(setSmartProxyRoutingEnabled)
   }, [])
 
   const handleClick = (entry: ManageURLType) => {
@@ -53,7 +53,6 @@ function SettingsPanel(props: Props) {
   }
 
   const handleSmartProxyRoutingChange = ({ checked }: { checked: boolean }) => {
-    setSmartProxyRoutingEnabled({ enabled: checked })
     getPanelBrowserAPI().serviceHandler.enableSmartProxyRouting(checked)
   }
 
@@ -94,7 +93,7 @@ function SettingsPanel(props: Props) {
           )}
           <Style.Setting
             onClick={
-              e => handleSmartProxyRoutingChange({ checked: !smartProxyRoutingEnabled.enabled })
+              e => handleSmartProxyRoutingChange({ checked: !smartProxyRoutingEnabled })
             }
           >
             <Style.StyledIcon name='smart-proxy-routing'></Style.StyledIcon>
@@ -107,7 +106,7 @@ function SettingsPanel(props: Props) {
               </Style.SettingDesc>
             </Style.SettingLabelBox>
             <Toggle
-              checked={smartProxyRoutingEnabled.enabled}
+              checked={smartProxyRoutingEnabled}
               onChange={handleSmartProxyRoutingChange}
               size='small'
               aria-label={getLocale(S.BRAVE_VPN_SMART_PROXY_ROUTING)}

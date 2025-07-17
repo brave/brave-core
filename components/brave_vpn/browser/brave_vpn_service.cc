@@ -66,6 +66,10 @@ BraveVpnService::BraveVpnService(
       base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
                           base::Unretained(this)));
 
+  smart_proxy_routing_enabled_.Init(
+      prefs::kBraveVPNSmartProxyRoutingEnabled, local_prefs_,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   CheckInitialState();
@@ -369,6 +373,14 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kManagedBraveVPNDisabled) {
     if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
       connection_manager_->Disconnect();
+    }
+    return;
+  }
+
+  if (pref_name == prefs::kBraveVPNSmartProxyRoutingEnabled) {
+    const bool enabled = smart_proxy_routing_enabled_.GetValue();
+    for (const auto& obs : observers_) {
+      obs->OnSmartProxyRoutingStateChanged(enabled);
     }
     return;
   }

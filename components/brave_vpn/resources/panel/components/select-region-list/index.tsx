@@ -112,6 +112,7 @@ interface RegionContentProps {
 function RegionContent(props: RegionContentProps) {
   const dispatch = useDispatch()
   const currentRegion = useSelector((state) => state.currentRegion)
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
   const handleConnect = (region: Region) => {
     dispatch(Actions.connectToNewRegion(region))
   }
@@ -140,7 +141,7 @@ function RegionContent(props: RegionContentProps) {
             <Style.RegionCountryLabel selected={!props.open && props.selected}>
               {props.region.namePretty}
             </Style.RegionCountryLabel>
-            {props.region.smartRoutingProxyState === 'all' && (
+            {smartProxyRoutingEnabled && props.region.smartRoutingProxyState === 'all' && (
               <Tooltip mode='mini'>
                 <SmartProxyIcon name='smart-proxy-routing' />
                 <div slot='content'>
