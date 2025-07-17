@@ -22,7 +22,7 @@ std::vector<uint8_t> MakeSerializedProtectedHeaders(
   // https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030#apisigndataaddr-address-payload-bytes-promisedatasignature
   constexpr int kAlgHeaderKey = 1;
   constexpr int kAlgHeaderValueEdDSA = -8;
-  constexpr int kKidHeaderKey = -4;
+  constexpr int kKidHeaderKey = 4;
   constexpr char kAddressHeaderKey[] = "address";
 
   cbor::Value::MapValue protected_headers;

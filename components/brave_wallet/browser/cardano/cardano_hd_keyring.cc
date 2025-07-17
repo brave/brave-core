@@ -109,9 +109,9 @@ std::optional<CardanoSignMessageResult> CardanoHDKeyring::SignMessage(
   }
 
   CardanoSignMessageResult result;
-  base::span(result.signature).copy_from_nonoverlapping(*signature);
   base::span(result.pubkey)
       .copy_from_nonoverlapping(hd_key->GetPublicKeyAsSpan());
+  base::span(result.signature).copy_from_nonoverlapping(*signature);
 
   return result;
 }

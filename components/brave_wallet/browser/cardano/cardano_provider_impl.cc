@@ -296,6 +296,19 @@ void CardanoProviderImpl::SignData(const std::string& address,
     return;
   }
 
+  // We now support only one address per cardano account.
+  auto supported_signing_address =
+      brave_wallet_service_->keyring_service()->GetCardanoAddress(
+          account_id,
+          mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+  if (!supported_signing_address ||
+      supported_signing_address->address_string != address) {
+    std::move(callback).Run(
+        {}, mojom::CardanoProviderErrorBundle::New(
+                kAPIErrorRefused, kAccountNotConnectedError, nullptr));
+    return;
+  }
+
   delegate_->WalletInteractionDetected();
 
   std::vector<uint8_t> message;
@@ -305,8 +318,6 @@ void CardanoProviderImpl::SignData(const std::string& address,
                                     WalletInternalErrorMessage(), nullptr));
     return;
   }
-
-  auto key_id = mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0);
 
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(),
@@ -320,8 +331,8 @@ void CardanoProviderImpl::SignData(const std::string& address,
       std::move(request),
       base::BindOnce(&CardanoProviderImpl::OnSignMessageRequestProcessed,
                      weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
-                     std::move(key_id), std::move(message),
-                     std::move(callback)));
+                     std::move(supported_signing_address->payment_key_id),
+                     std::move(message), std::move(callback)));
   delegate_->ShowPanel();
 }
 
