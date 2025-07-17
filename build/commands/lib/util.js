@@ -475,7 +475,6 @@ const util = {
       use_remoteexec: config.useRemoteExec,
       use_reclient: config.useRemoteExec,
       use_siso: false,
-      rbe_exec_root: config.rbeExecRoot,
       reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
