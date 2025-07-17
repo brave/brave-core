@@ -399,7 +399,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   {
     std::string command = "window.braveEthereum.isBraveWallet";
     EXPECT_EQ(base::Value(true),
-              content::EvalJs(primary_main_frame(), command).value);
+              content::EvalJs(primary_main_frame(), command));
   }
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
@@ -415,7 +415,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
                                       "networkVersion", "selectedAddress"}) {
     SCOPED_TRACE(property);
     auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property));
-    EXPECT_EQ(base::Value(true), result.value) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result.error;
   }
   // window.ethereum.* (methods)
   // send should be writable because of
@@ -427,25 +427,25 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
     {
       auto result =
           EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method));
-      EXPECT_EQ(base::Value(true), result.value) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result.error;
     }
 
     {
       auto result = EvalJs(web_contents(),
                            NonWriteableScriptMethod("braveEthereum", method));
-      EXPECT_EQ(base::Value(true), result.value) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result.error;
     }
   }
   {
     auto result =
         EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", "send"));
-    EXPECT_EQ(base::Value(false), result.value) << result.error;
+    EXPECT_EQ(base::Value(false), result) << result.error;
   }
 
   {
     auto result = EvalJs(web_contents(),
                          NonWriteableScriptMethod("braveEthereum", "send"));
-    EXPECT_EQ(base::Value(false), result.value) << result.error;
+    EXPECT_EQ(base::Value(false), result) << result.error;
   }
 
   // window._metamask.isUnlocked()
@@ -453,7 +453,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
     auto result =
         EvalJs(web_contents(),
                NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"));
-    EXPECT_EQ(base::Value(true), result.value) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result.error;
   }
 }
 
