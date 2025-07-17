@@ -86,6 +86,7 @@ brave_settings_ts_files = [
   "brave_overrides/edit_dictionary_page.ts",
   "brave_overrides/import_data_dialog.ts",
   "brave_overrides/index.ts",
+  "brave_overrides/memory_page.ts",
   "brave_overrides/on_startup_page.ts",
   "brave_overrides/page_visibility.ts",
   "brave_overrides/passwords_section.ts",
