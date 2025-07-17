@@ -40,6 +40,10 @@ std::unique_ptr<BackgroundDownloadService> BuildDownloadServiceOverride(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
+  // Do not download prediction models
+  clients->erase(
+      download::DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS);
+
   return BuildDownloadService(
       simple_factory_key, std::move(clients), network_connection_tracker,
       storage_dir, download_manager_coordinator, std::move(proto_db_provider),
