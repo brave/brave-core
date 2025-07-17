@@ -11,8 +11,8 @@
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/webui_url_constants.h"
+#include "content/public/common/buildflags.h"
 #include "net/net_buildflags.h"
-#include "ppapi/buildflags/buildflags.h"
 
 namespace chrome {
 
