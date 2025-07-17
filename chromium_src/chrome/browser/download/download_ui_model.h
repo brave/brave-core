@@ -7,13 +7,13 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_MODEL_H_
 
 // Declare a method to handle BraveDownloadCommands::kDeleteLocalFile command.
-#define SetOpenWhenComplete(...)    \
-  SetOpenWhenComplete_Unused() {}   \
-  virtual void DeleteLocalFile() {} \
-  virtual void SetOpenWhenComplete(__VA_ARGS__)
+#define OpenUsingPlatformHandler(...)  \
+  OpenUsingPlatformHandler_Unused() {} \
+  virtual void DeleteLocalFile() {}    \
+  virtual void OpenUsingPlatformHandler(__VA_ARGS__)
 
 #include "src/chrome/browser/download/download_ui_model.h"  // IWYU pragma: export
 
-#undef SetOpenWhenComplete
+#undef OpenUsingPlatformHandler
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_MODEL_H_
