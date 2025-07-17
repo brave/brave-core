@@ -88,9 +88,11 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
         db_path, *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
 
+#if BUILDFLAG(ENABLE_ORCHARD)
     sync_state_ = base::SequenceBound<OrchardSyncState>(
         base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
         db_path);
+#endif
 
     zcash_rpc_ = std::make_unique<MockZCashRPC>();
 
@@ -104,8 +106,12 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
   }
 
   ZCashActionContext zcash_action_context() {
+#if BUILDFLAG(ENABLE_ORCHARD)
     return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_,
                               mojom::kZCashMainnet);
+#else
+    return ZCashActionContext(*zcash_rpc_, account_id_, mojom::kZCashMainnet);
+#endif
   }
 
   base::PassKey<ZCashCreateTransparentTransactionTaskTest> pass_key() {
@@ -132,7 +138,9 @@ class ZCashCreateTransparentTransactionTaskTest : public testing::Test {
   std::unique_ptr<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
 
+#if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState> sync_state_;
+#endif
 
   base::test::TaskEnvironment task_environment_;
 };
