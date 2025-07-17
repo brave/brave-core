@@ -24,24 +24,24 @@ namespace {
 constexpr char kSnowflakeExtensionId[] = "mafpmfcccpbjnhfhjnllmmalhifmlcie";
 
 bool ClickSnowflakeToggle(content::WebContents* web_contents) {
-  return EvalJs(
-             web_contents,
-             "window.testing.torSubpage.getElementById('torSnowflake').click()")
-      .value.is_none();
+  return EvalJs(web_contents,
+                "window.testing.torSubpage.getElementById('torSnowflake')."
+                "click()")
+      .is_ok();
 }
 
 bool IsSnowflakeToggled(content::WebContents* web_contents) {
   return EvalJs(
              web_contents,
              "window.testing.torSubpage.getElementById('torSnowflake').checked")
-      .value.GetBool();
+      .ExtractBool();
 }
 
 bool IsSnowflakeToggleEnabled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "!window.testing.torSubpage.getElementById('torSnowflake')."
                 "disabled")
-      .value.GetBool();
+      .ExtractBool();
 }
 
 }  // namespace
