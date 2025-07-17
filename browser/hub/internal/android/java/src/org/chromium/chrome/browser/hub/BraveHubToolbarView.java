@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import androidx.annotation.Nullable;
-
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 
@@ -52,13 +50,6 @@ public class BraveHubToolbarView extends HubToolbarView {
     @Override
     void setMenuButtonVisible(boolean visible) {
         super.setMenuButtonVisible(visible);
-
-        updateButtonsVisibility();
-    }
-
-    @Override
-    void setActionButton(@Nullable FullButtonData buttonData) {
-        super.setActionButton(buttonData);
 
         updateButtonsVisibility();
     }
