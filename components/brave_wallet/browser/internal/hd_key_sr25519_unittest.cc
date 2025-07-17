@@ -96,6 +96,29 @@ TEST(HDKeySr25519, HardDerive) {
 
   EXPECT_NE(derived4->GetPublicKey(), derived1->GetPublicKey());
   EXPECT_NE(derived5->GetPublicKey(), derived2->GetPublicKey());
+
+  auto grandchild = derived1->DeriveHard(path2);
+  EXPECT_NE(grandchild->GetPublicKey(), derived1->GetPublicKey());
+  EXPECT_NE(grandchild->GetPublicKey(), derived2->GetPublicKey());
+}
+
+TEST(HDKeySr25519, HardDeriveSignAndVerify) {
+  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  ASSERT_TRUE(kpresult);
+
+  // manually create a SCALE-encoded chaincode value
+  unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
+  unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
+
+  auto derived1 = kpresult->DeriveHard(path1);
+  auto derived2 = kpresult->DeriveHard(path2);
+  auto derived3 = kpresult->DeriveHard(path1);
+
+  unsigned char const message[] = {1, 2, 3, 4, 5, 6};
+  auto signature = derived1->SignMessage(message);
+
+  EXPECT_FALSE(derived2->VerifyMessage(signature, message));
+  EXPECT_TRUE(derived3->VerifyMessage(signature, message));
 }
 
 TEST(HDKeySr25519, PolkadotSDKTestVector1) {
