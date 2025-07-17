@@ -523,7 +523,7 @@ extension BrowserViewController {
         return .none
       },
     ]
-    if !profileController.braveWalletAPI.isDisabledByPolicy {
+    if profileController.braveWalletAPI.isAllowed {
       actions.append(
         .init(id: .braveWallet) { @MainActor [unowned self] _ in
           // Present wallet already handles dismiss + present

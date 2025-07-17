@@ -70,7 +70,7 @@ extension BrowserViewController: TabObserver {
         LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
         BraveSearchResultAdScriptHandler(),
       ]
-      if !profileController.braveWalletAPI.isDisabledByPolicy {
+      if profileController.braveWalletAPI.isAllowed {
         injectedScripts += [
           EthereumProviderScriptHandler(),
           SolanaProviderScriptHandler(),
@@ -184,7 +184,7 @@ extension BrowserViewController: TabObserver {
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
-    if !profileController.braveWalletAPI.isDisabledByPolicy {
+    if profileController.braveWalletAPI.isAllowed {
       tab.browserData?.clearSolanaConnectedAccounts()
 
       if let browserData = tab.browserData {
