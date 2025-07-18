@@ -64,10 +64,10 @@ void OnRequestPermissions(
 
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
     content::WebContents* web_contents,
-    content::RenderFrameHost* const render_frame_host)
+    content::GlobalRenderFrameHostId render_frame_host_id)
     : WebContentsObserver(web_contents),
       web_contents_(web_contents),
-      host_id_(render_frame_host->GetGlobalId()),
+      host_id_(render_frame_host_id),
       weak_ptr_factory_(this) {}
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
