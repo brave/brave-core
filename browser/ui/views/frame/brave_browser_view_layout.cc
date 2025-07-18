@@ -127,7 +127,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     return contents_container_->y() - GetContentsMargins().top();
   };
 
-  gfx::Rect vertical_tab_strip_bounds = vertical_layout_rect_;
+  gfx::Rect vertical_tab_strip_bounds = browser_view_->GetLocalBounds();
   vertical_tab_strip_bounds.SetVerticalBounds(get_vertical_tabs_top(),
                                               browser_view_->height());
   gfx::Insets insets;
@@ -171,43 +171,48 @@ int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
   return BrowserViewLayout::LayoutTabStripRegion(top);
 }
 
-int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
-                                                      int browser_view_y) {
+int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(
+    int top,
+    int browser_view_y,
+    const gfx::Rect& browser_view_bounds) {
   if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
-    return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
+    return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y,
+                                                        browser_view_bounds);
   }
 
-  auto new_rect = vertical_layout_rect_;
+  auto new_rect = browser_view_bounds;
   new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
-  return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
+  return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y,
+                                                      new_rect);
 }
 
-int BraveBrowserViewLayout::LayoutInfoBar(int top) {
+int BraveBrowserViewLayout::LayoutInfoBar(
+    int top,
+    const gfx::Rect& browser_view_bounds) {
   if (!vertical_tab_strip_host_) {
-    return BrowserViewLayout::LayoutInfoBar(top);
+    return BrowserViewLayout::LayoutInfoBar(top, browser_view_bounds);
   }
 
   if (ShouldPushBookmarkBarForVerticalTabs()) {
     // Insets are already applied from LayoutBookmarkAndInfoBar().
-    return BrowserViewLayout::LayoutInfoBar(top);
+    return BrowserViewLayout::LayoutInfoBar(top, browser_view_bounds);
   }
 
-  auto new_rect = vertical_layout_rect_;
+  auto new_rect = browser_view_bounds;
   new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
-  return BrowserViewLayout::LayoutInfoBar(top);
+  return BrowserViewLayout::LayoutInfoBar(top, new_rect);
 }
 
-void BraveBrowserViewLayout::LayoutContentsContainerView(int top, int bottom) {
-  auto new_rect = vertical_layout_rect_;
+void BraveBrowserViewLayout::LayoutContentsContainerView(
+    int top,
+    int bottom,
+    const gfx::Rect& browser_view_bounds) {
+  auto new_rect = browser_view_bounds;
   if (vertical_tab_strip_host_) {
     new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   }
-  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
 
-  gfx::Rect contents_container_bounds(vertical_layout_rect_.x(), top,
-                                      vertical_layout_rect_.width(),
+  gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
                                       std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
     // The WebUI tab strip container should "push" the tab contents down without
