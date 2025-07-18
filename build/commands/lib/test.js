@@ -280,7 +280,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
     let progStatus = 0
 
     if (config.targetOS === 'ios') {
-      var outputDir = path.join(config.outputDir, `run_${testSuite}_out`)
+      const outputDir = path.join(config.outputDir, `run_${testSuite}_out`)
       if (fs.existsSync(outputDir)) {
         fs.rmSync(outputDir, { recursive: true })
       }
