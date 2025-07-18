@@ -59,9 +59,14 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   // BrowserViewLayout:
   void Layout(views::View* host) override;
   int LayoutTabStripRegion(int top) override;
-  int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
-  int LayoutInfoBar(int top) override;
-  void LayoutContentsContainerView(int top, int bottom) override;
+  int LayoutBookmarkAndInfoBars(int top,
+                                int browser_view_y,
+                                const gfx::Rect& browser_view_bounds) override;
+  int LayoutInfoBar(int top, const gfx::Rect& browser_view_bounds) override;
+  void LayoutContentsContainerView(
+      int top,
+      int bottom,
+      const gfx::Rect& browser_view_bounds) override;
   void UpdateSplitViewInsets() override;
 
  private:
