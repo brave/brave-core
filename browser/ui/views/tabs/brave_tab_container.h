@@ -68,6 +68,7 @@ class BraveTabContainer : public TabContainerImpl,
   void OnTileTabs(const TabTile& tile) override;
   void OnDidBreakTile(const TabTile& tile) override;
   void OnSwapTabsInTile(const TabTile& tile) override;
+  void OnWillDeleteBrowserData() override;
 
  private:
   class DropArrow {
