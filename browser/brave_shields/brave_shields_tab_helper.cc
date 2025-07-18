@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/i18n/number_formatting.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
