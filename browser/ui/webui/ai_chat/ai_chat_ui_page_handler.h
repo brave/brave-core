@@ -98,7 +98,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void HandleWebContentsDestroyed();
 
   // AssociatedContentDelegate::Observer
-  void OnNavigated(AssociatedContentDelegate* delegate) override;
+  void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
   // UploadFileHelper::Observer
   void OnFilesSelected() override;

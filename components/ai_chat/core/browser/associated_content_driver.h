@@ -22,7 +22,6 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "url/gurl.h"
 
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 class AIChatUIBrowserTest;
@@ -61,11 +60,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   AssociatedContentDriver& operator=(const AssociatedContentDriver&) = delete;
 
   // AssociatedContentDelegate
-  int GetContentId() const override;
-  GURL GetURL() const override;
-  std::u16string GetTitle() const override;
   void GetContent(GetPageContentCallback callback) override;
-  const PageContent& GetCachedPageContent() const override;
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback) override;
 
   base::WeakPtr<AssociatedContentDriver> GetWeakPtr() {
@@ -76,8 +71,6 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   using GetSearchSummarizerKeyCallback =
       base::OnceCallback<void(const std::optional<std::string>&)>;
 
-  virtual GURL GetPageURL() const = 0;
-  virtual std::u16string GetPageTitle() const = 0;
   // Get summarizer-key meta tag content from Brave Search SERP if exists.
   virtual void GetSearchSummarizerKey(
       GetSearchSummarizerKeyCallback callback) = 0;
@@ -130,13 +123,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
-  PageContent cached_page_content_;
   std::string content_invalidation_token_;
-
-  // Store the unique ID for each "page" so that
-  // we can ignore API async responses against any navigated-away-from
-  // documents.
-  int64_t current_navigation_id_{0};
 
   base::WeakPtrFactory<AssociatedContentDriver> weak_ptr_factory_{this};
 };
