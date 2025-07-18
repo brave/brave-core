@@ -18,103 +18,101 @@
   }
 </style>
 <div hidden="[[!braveOriginEnabled_]]">
-  <settings-origin-page prefs="{{prefs}}">
-    <div class="settings-box first">
-      <div class="flex">
-        <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
-        <div class="label secondary secondary-title">
-          <p>$i18n{braveOriginHeadingDescription1}</p>
-          <p>$i18n{braveOriginHeadingDescription2}</p>
-          <p class="origin-note">
-            $i18n{braveOriginHeadingDescription3}
-          </p>
-        </div>
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginHeadingDescription1}</p>
+        <p>$i18n{braveOriginHeadingDescription2}</p>
+        <p class="origin-note">
+          $i18n{braveOriginHeadingDescription3}
+        </p>
       </div>
     </div>
+  </div>
 
-    <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+  <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
 
-    <settings-toggle-button id="toggleNtpAdsButton"
-        pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
-        label="$i18n{braveOriginNtpAdsToggleTitle}"
-        icon="price-tag">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleNtpAdsButton"
+      pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
+      label="$i18n{braveOriginNtpAdsToggleTitle}"
+      icon="price-tag">
+  </settings-toggle-button>
 
-    <settings-toggle-button id="toggleRewardsButton"
-        pref="{{prefs.brave.rewards.disabled_by_policy}}"
-        label="$i18n{braveOriginRewardsToggleTitle}"
-        icon="product-bat-outline">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleRewardsButton"
+      pref="{{prefs.brave.rewards.disabled_by_policy}}"
+      label="$i18n{braveOriginRewardsToggleTitle}"
+      icon="product-bat-outline">
+  </settings-toggle-button>
 
-    <!--settings-toggle-button id="toggleSearchAdsButton"
-        pref="[[toggleSearchAds_]]"
-        label="$i18n{braveOriginSearchAdsToggleTitle}"
-        on-settings-boolean-control-change="toggleSearchAdsButtonChange_"
-        icon="brave-icon-search">
-    </settings-toggle-button>
+  <!--settings-toggle-button id="toggleSearchAdsButton"
+      pref="[[toggleSearchAds_]]"
+      label="$i18n{braveOriginSearchAdsToggleTitle}"
+      on-settings-boolean-control-change="toggleSearchAdsButtonChange_"
+      icon="brave-icon-search">
+  </settings-toggle-button>
 
-    <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+  <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
 
-    <settings-toggle-button id="toggleEmailAliasButton"
-        pref="[[toggleEmailAlias_]]"
-        label="$i18n{braveOriginEmailAliasToggleTitle}"
-        on-settings-boolean-control-change="toggleEmailAliasChange_"
-        icon="email-shield">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleEmailAliasButton"
+      pref="[[toggleEmailAlias_]]"
+      label="$i18n{braveOriginEmailAliasToggleTitle}"
+      on-settings-boolean-control-change="toggleEmailAliasChange_"
+      icon="email-shield">
+  </settings-toggle-button>
 
-    <settings-toggle-button id="toggleLeoAiButton"
-        pref="[[toggleLeoAi_]]"
-        label="$i18n{braveOriginLeoAiToggleTitle}"
-        on-settings-boolean-control-change="toggleLeoAiChange_"
-        icon="product-brave-leo">
-    </settings-toggle-button-->
+  <settings-toggle-button id="toggleLeoAiButton"
+      pref="[[toggleLeoAi_]]"
+      label="$i18n{braveOriginLeoAiToggleTitle}"
+      on-settings-boolean-control-change="toggleLeoAiChange_"
+      icon="product-brave-leo">
+  </settings-toggle-button-->
 
-    <settings-toggle-button id="toggleNewsButton"
-        pref="{{prefs.brave.news.disabled_by_policy}}"
-        label="$i18n{braveOriginNewsToggleTitle}"
-        icon="product-brave-news">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleNewsButton"
+      pref="{{prefs.brave.news.disabled_by_policy}}"
+      label="$i18n{braveOriginNewsToggleTitle}"
+      icon="product-brave-news">
+  </settings-toggle-button>
 
-    <!--settings-toggle-button id="toggleP3ACrashReportButton"
-        pref="[[toggleP3ACrashReport_]]"
-        label="$i18n{braveOriginP3ACrashReportToggleTitle}"
-        on-settings-boolean-control-change="toggleP3ACrashReportChange_"
-        icon="bar-chart">
-    </settings-toggle-button>
+  <!--settings-toggle-button id="toggleP3ACrashReportButton"
+      pref="[[toggleP3ACrashReport_]]"
+      label="$i18n{braveOriginP3ACrashReportToggleTitle}"
+      on-settings-boolean-control-change="toggleP3ACrashReportChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
 
-    <settings-toggle-button id="toggleSidebarButton"
-        pref="[[toggleSidebar_]]"
-        label="$i18n{braveOriginSidebarToggleTitle}"
-        on-settings-boolean-control-change="toggleSidebarChange_"
-        icon="browser-sidebar-right">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleSidebarButton"
+      pref="[[toggleSidebar_]]"
+      label="$i18n{braveOriginSidebarToggleTitle}"
+      on-settings-boolean-control-change="toggleSidebarChange_"
+      icon="browser-sidebar-right">
+  </settings-toggle-button>
 
-    <settings-toggle-button id="toggleTorWindowsButton"
-        pref="[[toggleTorWindows_]]"
-        label="$i18n{braveOriginTorWindowsToggleTitle}"
-        on-settings-boolean-control-change="toggleTorWindowsChange_"
-        icon="product-tor">
-    </settings-toggle-button-->
+  <settings-toggle-button id="toggleTorWindowsButton"
+      pref="[[toggleTorWindows_]]"
+      label="$i18n{braveOriginTorWindowsToggleTitle}"
+      on-settings-boolean-control-change="toggleTorWindowsChange_"
+      icon="product-tor">
+  </settings-toggle-button-->
 
-    <settings-toggle-button id="toggleVpnButton"
-        pref="{{prefs.brave.brave_vpn.disabled_by_policy}}"
-        label="$i18n{braveOriginVpnToggleTitle}"
-        icon="product-vpn">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleVpnButton"
+      pref="{{prefs.brave.brave_vpn.disabled_by_policy}}"
+      label="$i18n{braveOriginVpnToggleTitle}"
+      icon="product-vpn">
+  </settings-toggle-button>
 
-    <settings-toggle-button id="toggleWalletButton"
-        pref="{{prefs.brave.wallet.disabled_by_policy}}"
-        label="$i18n{braveOriginWalletToggleTitle}"
-        icon="product-brave-wallet">
-    </settings-toggle-button>
+  <settings-toggle-button id="toggleWalletButton"
+      pref="{{prefs.brave.wallet.disabled_by_policy}}"
+      label="$i18n{braveOriginWalletToggleTitle}"
+      icon="product-brave-wallet">
+  </settings-toggle-button>
 
-    <!--settings-toggle-button id="toggleWeb3DomainsButton"
-        pref="[[toggleWeb3Domains_]]"
-        label="$i18n{braveOriginWeb3DomainsToggleTitle}"
-        on-settings-boolean-control-change="toggleWeb3DomainsChange_"
-        icon="web3">
-    </settings-toggle-button-->
+  <!--settings-toggle-button id="toggleWeb3DomainsButton"
+      pref="[[toggleWeb3Domains_]]"
+      label="$i18n{braveOriginWeb3DomainsToggleTitle}"
+      on-settings-boolean-control-change="toggleWeb3DomainsChange_"
+      icon="web3">
+  </settings-toggle-button-->
 
-    <div class="cr-row">$i18n{braveOriginResetToDefaultsTitle}</div>
-  </settings-origin-page>
+  <div class="cr-row">$i18n{braveOriginResetToDefaultsTitle}</div>
 </div>

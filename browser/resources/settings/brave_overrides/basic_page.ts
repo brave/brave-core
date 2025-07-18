@@ -150,7 +150,7 @@ RegisterPolymerTemplateModifications({
       const sectionOrigin = document.createElement('template')
       sectionOrigin.setAttribute('is', 'dom-if')
       sectionOrigin.setAttribute('restamp', 'true')
-      sectionOrigin.setAttribute('if', '[[showPage_(pageVisibility.origin)]]')
+      sectionOrigin.setAttribute('if', '[[showPage_(pageVisibility_.origin)]]')
       sectionOrigin.content.appendChild(createSectionElement(
         'origin',
         'braveOriginTitle',

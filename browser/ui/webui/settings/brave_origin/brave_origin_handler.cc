@@ -47,6 +47,8 @@ void BraveOriginHandler::HandleGetInitialState(
 
   base::Value::Dict initial_state;
 
+  LOG(ERROR) << "BSC]] HandleGetInitialState";
+
   initial_state.Set("enabled", brave_origin_enabled);
   initial_state.Set("toggle_search_ads", toggle_search_ads);
   initial_state.Set("toggle_email_alias", toggle_email_alias);

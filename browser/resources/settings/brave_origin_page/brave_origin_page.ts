@@ -18,7 +18,6 @@ import {getTemplate} from './brave_origin_page.html.js'
 
 export interface SettingsBraveOriginPageElement {
   $: {
-    toggleRewardsButton: SettingsToggleButtonElement,
     toggleSearchAdsButton: SettingsToggleButtonElement,
     toggleEmailAliasButton: SettingsToggleButtonElement,
     toggleLeoAiButton: SettingsToggleButtonElement,
@@ -131,10 +130,6 @@ export class SettingsBraveOriginPageElement
     this.toggleSidebar_ = initial_state.toggle_sidebar;
     this.toggleTorWindows_ = initial_state.toggle_tor_windows;
     this.toggleWeb3Domains_ = initial_state.toggle_web3domains;
-  }
-
-  private toggleRewardsButtonChange_ () {
-    console.log('toggleRewards_', this.$.toggleRewardsButton.checked)
   }
 
   private toggleSearchAdsButtonChange_ () {
