@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 5dcac25c8ad5f760e49a4ec6c16c96b0ef8f63c1..b3cc47c8d45027774486eaabce8357c736d18bcc 100644
+index 363a46d1d0eeade1eb94a3e3969d3ff075383d1e..905558242e0eb2e5113645ddc435c169d27bc585 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -697,6 +697,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -690,6 +690,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(prefs::kNTPLensEntryPointNewBadgeShownCount, 0);
    registry->RegisterIntegerPref(
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
@@ -10,10 +10,10 @@ index 5dcac25c8ad5f760e49a4ec6c16c96b0ef8f63c1..b3cc47c8d45027774486eaabce8357c7
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1115,6 +1116,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterBooleanPref(kFirstSyncCompletedInFullSyncMode, false);
-   registry->RegisterStringPref(kGoogleServicesSecondLastSyncingGaiaId,
+@@ -1116,6 +1117,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 std::string());
+   registry->RegisterInt64Pref(kOptGuideModelFetcherLastFetchAttempt, 0);
+   registry->RegisterInt64Pref(kOptGuideModelFetcherLastFetchSuccess, 0);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
