@@ -1,5 +1,5 @@
 diff --git a/services/network/resolve_host_request.cc b/services/network/resolve_host_request.cc
-index 3095fe0124d77e8e1a434f1af6a91d3ddde091a6..5f67a8154179e4bb9a2c6828c8d13ebf53304838 100644
+index 14891709d7b7373dfaf1aaa3a62f8ea066c65875..fec05e56462f9d955592dc9cb0a0bf875fe98a53 100644
 --- a/services/network/resolve_host_request.cc
 +++ b/services/network/resolve_host_request.cc
 @@ -94,6 +94,7 @@ int ResolveHostRequest::Start(
@@ -9,4 +9,4 @@ index 3095fe0124d77e8e1a434f1af6a91d3ddde091a6..5f67a8154179e4bb9a2c6828c8d13ebf
 +    BRAVE_RESOLVE_HOST_REQUEST_START
      response_client->OnComplete(rv, GetResolveErrorInfo(),
                                  base::OptionalFromPtr(GetAddressResults()),
-                                 GetEndpointResultsWithMetadata());
+                                 GetAlternativeEndpoints());
