@@ -390,15 +390,9 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 PageContentFetcher::PageContentFetcher(web::WebState* web_state)
     : web_state_(web_state),
       url_loader_factory_(
-          web_state_->GetBrowserState()->GetSharedURLLoaderFactory()) {
-  web_state_->AddObserver(this);
-}
+          web_state_->GetBrowserState()->GetSharedURLLoaderFactory()) { }
 
-PageContentFetcher::~PageContentFetcher() {
-  if (web_state_) {
-    web_state_->RemoveObserver(this);
-  }
-}
+PageContentFetcher::~PageContentFetcher() = default;
 
 void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
                                           FetchPageContentCallback callback) {
@@ -454,11 +448,6 @@ void PageContentFetcher::GetOpenAIChatButtonNonce(
   web_state_->GetInterfaceBinderForMainFrame()->BindInterface(
       extractor.BindNewPipeAndPassReceiver());
   fetcher->GetOpenAIChatButtonNonce(std::move(extractor), std::move(callback));
-}
-
-void PageContentFetcher::WebStateDestroyed(web::WebState* web_state) {
-  web_state->RemoveObserver(this);
-  web_state_ = nullptr;
 }
 
 }  // namespace ai_chat

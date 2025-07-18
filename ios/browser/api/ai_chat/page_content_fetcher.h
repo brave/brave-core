@@ -25,8 +25,7 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
-class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate,
-                           public web::WebStateObserver {
+class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
  public:
   using AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
 
@@ -52,9 +51,6 @@ class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate,
   }
 
  private:
-  // web::WebStateObserver:
-  void WebStateDestroyed(web::WebState* web_state) override;
-
   raw_ptr<web::WebState> web_state_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
