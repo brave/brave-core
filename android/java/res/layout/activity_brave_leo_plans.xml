@@ -406,7 +406,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/already_purchased"
-                        android:textColor="@color/primitive_primary_20"
+                        android:textColor="@color/text_color_20"
                         android:textAlignment="center"/>
 
                     <TextView
