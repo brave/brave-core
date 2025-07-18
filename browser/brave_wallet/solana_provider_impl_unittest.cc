@@ -144,7 +144,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
     provider_ = std::make_unique<SolanaProviderImpl>(
         *host_content_settings_map, brave_wallet_service_.get(),
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetPrimaryMainFrame()));
+            web_contents(),
+            web_contents()->GetPrimaryMainFrame()->GetGlobalId()));
     observer_ = std::make_unique<MockEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }

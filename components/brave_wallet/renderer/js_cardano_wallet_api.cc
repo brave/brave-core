@@ -79,11 +79,12 @@ gin::WrapperInfo JSCardanoWalletApi::kWrapperInfo = {gin::kEmbedderNativeGin};
 JSCardanoWalletApi::~JSCardanoWalletApi() = default;
 
 JSCardanoWalletApi::JSCardanoWalletApi(
+    mojo::Remote<mojom::CardanoApi> remote,
     base::PassKey<class JSCardanoProvider> pass_key,
     v8::Local<v8::Context> context,
     v8::Isolate* isolate,
     content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {
+    : RenderFrameObserver(render_frame), cardano_api_(std::move(remote)) {
   EnsureConnected();
 }
 
@@ -91,13 +92,7 @@ bool JSCardanoWalletApi::EnsureConnected() {
   if (!render_frame()) {
     return false;
   }
-
-  if (!cardano_provider_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker().GetInterface(
-        cardano_provider_.BindNewPipeAndPassReceiver());
-  }
-
-  return cardano_provider_.is_bound();
+  return cardano_api_.is_bound();
 }
 
 void JSCardanoWalletApi::HandleStringResult(
@@ -192,7 +187,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetNetworkId(v8::Isolate* isolate) {
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
   v8::Global<v8::Context> context(isolate, isolate->GetCurrentContext());
 
-  cardano_provider_->GetNetworkId(base::BindOnce(
+  cardano_api_->GetNetworkId(base::BindOnce(
       &JSCardanoWalletApi::OnGetNetworkId, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
@@ -237,7 +232,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUsedAddresses(
   v8::Global<v8::Context> global_context(isolate, isolate->GetCurrentContext());
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
 
-  cardano_provider_->GetUsedAddresses(
+  cardano_api_->GetUsedAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -259,7 +254,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUnusedAddresses(
   v8::Global<v8::Context> global_context(isolate, isolate->GetCurrentContext());
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
 
-  cardano_provider_->GetUnusedAddresses(
+  cardano_api_->GetUnusedAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -282,7 +277,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetChangeAddress(
   v8::Global<v8::Context> global_context(isolate, isolate->GetCurrentContext());
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
 
-  cardano_provider_->GetChangeAddress(base::BindOnce(
+  cardano_api_->GetChangeAddress(base::BindOnce(
       &JSCardanoWalletApi::HandleStringResult, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
@@ -304,7 +299,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetRewardAddresses(
   v8::Global<v8::Context> global_context(isolate, isolate->GetCurrentContext());
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
 
-  cardano_provider_->GetRewardAddresses(
+  cardano_api_->GetRewardAddresses(
       base::BindOnce(&JSCardanoWalletApi::HandleStringVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -326,7 +321,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetBalance(v8::Isolate* isolate) {
   v8::Global<v8::Context> global_context(isolate, isolate->GetCurrentContext());
   v8::Global<v8::Promise::Resolver> promise_resolver(isolate, resolver_local);
 
-  cardano_provider_->GetBalance(base::BindOnce(
+  cardano_api_->GetBalance(base::BindOnce(
       &JSCardanoWalletApi::HandleStringResult, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
@@ -389,7 +384,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
     page = mojom::CardanoProviderPagination::New(*page_value, *page_limit);
   }
 
-  cardano_provider_->GetUtxos(
+  cardano_api_->GetUtxos(
       amount, std::move(page),
       base::BindOnce(&JSCardanoWalletApi::HandleUtxoVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -444,7 +439,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
     partial_sign = arg2_value->GetIfBool().value_or(false);
   }
 
-  cardano_provider_->SignTx(
+  cardano_api_->SignTx(
       arg1_value->GetString(), partial_sign,
       base::BindOnce(&JSCardanoWalletApi::HandleStringResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -489,7 +484,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
     return v8::Local<v8::Promise>();
   }
 
-  cardano_provider_->SignData(
+  cardano_api_->SignData(
       arg1_value->GetString(), arg2_value->GetString(),
       base::BindOnce(&JSCardanoWalletApi::OnSignData,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -555,7 +550,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SubmitTx(gin::Arguments* args) {
     return v8::Local<v8::Promise>();
   }
 
-  cardano_provider_->SubmitTx(
+  cardano_api_->SubmitTx(
       arg1_value->GetString(),
       base::BindOnce(&JSCardanoWalletApi::HandleStringResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -619,7 +614,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
     return v8::Local<v8::Promise>();
   }
 
-  cardano_provider_->GetCollateral(
+  cardano_api_->GetCollateral(
       *amount_property,
       base::BindOnce(&JSCardanoWalletApi::HandleUtxoVecResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),

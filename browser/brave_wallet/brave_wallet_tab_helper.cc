@@ -33,6 +33,17 @@
 
 namespace brave_wallet {
 
+namespace {
+
+std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
+    content::WebContents* web_contents,
+    content::GlobalRenderFrameHostId host_id) {
+  return std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
+                                                           host_id);
+}
+
+}  // namespace
+
 BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
     : content::WebContentsUserData<BraveWalletTabHelper>(*web_contents) {}
 
@@ -75,8 +86,8 @@ void BraveWalletTabHelper::BindEthereumProvider(
   tab_helper->ethereum_provider_receivers_.Add(
       std::make_unique<EthereumProviderImpl>(
           host_content_settings_map, brave_wallet_service,
-          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
-                                                            frame_host),
+          std::make_unique<BraveWalletProviderDelegateImpl>(
+              web_contents, frame_host->GetGlobalId()),
           prefs),
       std::move(receiver));
 }
@@ -107,8 +118,8 @@ void BraveWalletTabHelper::BindSolanaProvider(
   tab_helper->solana_provider_receivers_.Add(
       std::make_unique<SolanaProviderImpl>(
           *host_content_settings_map, brave_wallet_service,
-          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
-                                                            frame_host)),
+          std::make_unique<BraveWalletProviderDelegateImpl>(
+              web_contents, frame_host->GetGlobalId())),
       std::move(receiver));
 }
 
@@ -141,8 +152,8 @@ void BraveWalletTabHelper::BindCardanoProvider(
   tab_helper->cardano_provider_receivers_.Add(
       std::make_unique<CardanoProviderImpl>(
           *brave_wallet_service,
-          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
-                                                            frame_host)),
+          base::BindRepeating(&CreateDelegate, web_contents,
+                              frame_host->GetGlobalId())),
       std::move(receiver));
 }
 
