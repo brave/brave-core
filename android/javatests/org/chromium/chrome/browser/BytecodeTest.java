@@ -811,8 +811,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "canEnterMultiWindowMode",
                         MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class));
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
