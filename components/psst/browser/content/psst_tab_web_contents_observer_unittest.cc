@@ -12,6 +12,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -78,6 +79,14 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   std::move(
       const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
       .Run(nullptr);
+  loop->Quit();
+}
+
+ACTION_P(CheckIfMatchWithSubNavCallback, cb, loop, match_rule) {
+  cb.Run();
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(base::WrapUnique(match_rule));
   loop->Quit();
 }
 
@@ -225,9 +234,126 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
   }
 }
 
-// TODO(bridiver) - test multiple main frame navigations in a row
-// TODO(bridiver) - test redirects
-// TODO(bridiver) - test for navigating after OnLoad but before script
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       ShouldProcessMultipleMainFrameNavigations) {
+  const std::string first_nav_user_script = "user1";
+  const std::string second_nav_user_script = "user2";
+  const std::string policy_script = "policy";
+  const GURL first_navigation_url("https://example1.com");
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(first_navigation_url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &first_nav_check_loop,
+          CreateMatchedRule(first_nav_user_script, policy_script)));
+
+  base::RunLoop second_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &second_nav_check_loop,
+          CreateMatchedRule(second_nav_user_script, policy_script)));
+
+  base::RunLoop first_nav_user_script_insert_loop;
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(first_nav_user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_loop,
+                                           base::Value()));
+  base::RunLoop second_nav_user_script_insert_loop;
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(second_nav_user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&second_nav_user_script_insert_loop,
+                                           base::Value()));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), first_navigation_url);
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), second_navigation_url);
+  observer.Wait();
+  second_nav_check_loop.Run();
+  first_nav_check_loop.Run();
+  first_nav_user_script_insert_loop.Run();
+  second_nav_user_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const GURL redirect_target("https://redirect.example1.com/");
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  base::RunLoop user_script_insert_loop;
+  auto value = base::Value();
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(value)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  auto simulator =
+      content::NavigationSimulator::CreateBrowserInitiated(url, web_contents());
+  simulator->Redirect(redirect_target);
+  simulator->Commit();
+
+  observer.Wait();
+  check_loop.Run();
+  user_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       ShouldProcessLastNavigationStartedAfterOnLoad) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL first_navigation_url("https://example1.com");
+  const GURL second_navigation_url("https://example2.com");
+
+  auto* current_webcontents = this->web_contents();
+
+  base::RunLoop second_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(
+          CheckIfMatchCallback(&second_nav_check_loop,
+                               CreateMatchedRule(user_script, policy_script)));
+
+  base::RunLoop user_script_insert_loop;
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+      .WillOnce(
+          InsertScriptInPageCallback(&user_script_insert_loop, base::Value()));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+
+  base::RunLoop first_nav_check_loop;
+  auto check_if_match_callback = base::BindLambdaForTesting(
+      [current_webcontents, &second_navigation_url, &second_nav_check_loop]() {
+
+        // Navigate to the second URL after the first navigation
+        // but (user|policy) scripts has not been injected yet.
+
+        // ???? I can't start new navigation here for same web_contents as in that case 
+        // happens this: https://github.com/brave/chromium/blob/4e22a93b12f76cc59ee084f7f6887afc232e2afd/content/test/navigation_simulator_impl.cc#L741
+        // because the navigation finished more then once
+        content::NavigationSimulator::NavigateAndCommitFromBrowser(
+            current_webcontents, second_navigation_url);
+
+        second_nav_check_loop.Run();
+      });
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(first_navigation_url, _))
+      .WillOnce(CheckIfMatchWithSubNavCallback(
+          std::move(check_if_match_callback), &first_nav_check_loop,
+          CreateMatchedRule(user_script, policy_script)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), first_navigation_url);
+  observer.Wait();
+
+  user_script_insert_loop.Run();
+  first_nav_check_loop.Run();
+}
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNotPrimaryMainFrame) {
