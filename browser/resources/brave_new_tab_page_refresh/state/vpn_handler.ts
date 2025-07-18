@@ -14,6 +14,7 @@ export function createVpnHandler(
   store: Store<VpnState>
 ): VpnActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
+    store.update({ initialized: true })
     return defaultVpnActions()
   }
 
