@@ -445,7 +445,7 @@ const util = {
   mergeWithDefault: (options) => {
     return Object.assign({}, config.defaultOptions, options)
   },
-)
+
   buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(
