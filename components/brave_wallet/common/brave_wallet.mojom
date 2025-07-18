@@ -2442,6 +2442,9 @@ interface BraveWalletServiceObserver {
   // Fired when the default Solana wallet setting changes
   OnDefaultSolanaWalletChanged(DefaultWallet wallet);
 
+  // Fired when the default Colana wallet setting changes
+  OnDefaultCardanoWalletChanged(DefaultWallet wallet);
+
   // Fired when the default base currency changes (e.g. USD -> CAD)
   OnDefaultBaseCurrencyChanged(string currency);
 
@@ -2626,10 +2629,12 @@ interface BraveWalletService {
   // Obtains the default wallet setting
   GetDefaultEthereumWallet() => (DefaultWallet default_wallet);
   GetDefaultSolanaWallet() => (DefaultWallet default_wallet);
+  GetDefaultCardanoWallet() => (DefaultWallet default_wallet);
 
   // Modifies the default wallet setting
   SetDefaultEthereumWallet(DefaultWallet default_wallet);
   SetDefaultSolanaWallet(DefaultWallet default_wallet);
+  SetDefaultCardanoWallet(DefaultWallet default_wallet);
 
   // Obtains the default base currency
   GetDefaultBaseCurrency() => (string currency);

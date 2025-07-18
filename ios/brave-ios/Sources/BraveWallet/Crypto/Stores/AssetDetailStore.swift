@@ -709,6 +709,9 @@ extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
   func onDefaultSolanaWalletChanged(wallet: BraveWallet.DefaultWallet) {
   }
 
+  func onDefaultCardanoWalletChanged(wallet: BraveWallet.DefaultWallet) {
+  }
+
   func onDiscoverAssetsStarted() {
   }
 

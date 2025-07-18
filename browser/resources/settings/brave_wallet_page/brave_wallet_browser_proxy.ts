@@ -37,18 +37,21 @@ export type Option = {
 }
 
 export type SolanaProvider = Option
+export type CardanoProvider = Option
 
 export interface BraveWalletBrowserProxy {
   resetWallet: () => void
   resetZCashSyncState: () => void
   getWeb3ProviderList: () => Promise<string>
   getSolanaProviderOptions: () => Promise<SolanaProvider[]>
+  getCardanoProviderOptions: () => Promise<CardanoProvider[]>
   getTransactionSimulationOptInStatusOptions: () => Promise<Option[]>
   isNativeWalletEnabled: () => Promise<boolean>
   isBitcoinEnabled: () => Promise<boolean>
   isZCashEnabled: () => Promise<boolean>
   isZCashShieldedTxEnabled: () => Promise<boolean>
   isCardanoEnabled: () => Promise<boolean>
+  isCardanoDAppSupportEnabled: () => Promise<boolean>
   getAutoLockMinutes: () => Promise<number>
   getNetworksList: (coin: number) => Promise<NetworksList>
   getPrepopulatedNetworksList: () => Promise<NetworkInfo[]>
@@ -127,6 +130,9 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return sendWithPromise('getSolanaProviderOptions')
   }
 
+  getCardanoProviderOptions() {
+    return sendWithPromise('getCardanoProviderOptions')
+  }
 
   isBitcoinEnabled() {
     return sendWithPromise('isBitcoinEnabled')
@@ -142,6 +148,10 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isCardanoEnabled() {
     return sendWithPromise('isCardanoEnabled')
+  }
+
+  isCardanoDAppSupportEnabled() {
+    return sendWithPromise('isCardanoDAppSupportEnabled')
   }
 
   getTransactionSimulationOptInStatusOptions() {

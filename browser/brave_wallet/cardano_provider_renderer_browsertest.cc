@@ -1529,4 +1529,16 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
   EXPECT_EQ(base::Value(true), result.value);
 }
 
+IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NotInstalled) {
+  brave_wallet::SetDefaultCardanoWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
+
+  GURL url = embedded_test_server()->GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
+  EXPECT_EQ(base::Value(false), result.value);
+}
+
 }  // namespace brave_wallet

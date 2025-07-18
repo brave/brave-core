@@ -414,6 +414,11 @@ mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs) {
       prefs->GetInteger(kDefaultSolanaWallet));
 }
 
+mojom::DefaultWallet GetDefaultCardanoWallet(PrefService* prefs) {
+  return static_cast<brave_wallet::mojom::DefaultWallet>(
+      prefs->GetInteger(kDefaultCardanoWallet));
+}
+
 void SetDefaultEthereumWallet(PrefService* prefs,
                               mojom::DefaultWallet default_wallet) {
   // We should not be using this value anymore
@@ -426,6 +431,13 @@ void SetDefaultSolanaWallet(PrefService* prefs,
   // We should not be using these values anymore
   DCHECK(default_wallet != mojom::DefaultWallet::AskDeprecated);
   prefs->SetInteger(kDefaultSolanaWallet, static_cast<int>(default_wallet));
+}
+
+void SetDefaultCardanoWallet(PrefService* prefs,
+                             mojom::DefaultWallet default_wallet) {
+  DCHECK(default_wallet == mojom::DefaultWallet::BraveWallet ||
+         default_wallet == mojom::DefaultWallet::None);
+  prefs->SetInteger(kDefaultCardanoWallet, static_cast<int>(default_wallet));
 }
 
 void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency) {
