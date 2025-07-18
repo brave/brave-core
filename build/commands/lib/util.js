@@ -445,7 +445,7 @@ const util = {
   mergeWithDefault: (options) => {
     return Object.assign({}, config.defaultOptions, options)
   },
-
+)
   buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(
@@ -612,6 +612,9 @@ const util = {
     targets = config.buildTargets,
     options = config.defaultOptions,
   ) => {
+    if (options.no_gn_gen === undefined) {
+      await util.generateNinjaFiles()
+    }
     assert(Array.isArray(targets))
     const buildId = crypto.randomUUID()
     const outputDir = options.outputDir || config.outputDir
