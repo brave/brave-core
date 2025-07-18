@@ -28,7 +28,7 @@ class SchnorrkelKeyPair {
   virtual bool VerifyMessage(SR25519Signature const& sig,
                              base::span<const uint8_t> msg) = 0;
   virtual std::unique_ptr<SchnorrkelKeyPair> DeriveHard(
-      base::span<const uint8_t> derive_junction);
+      base::span<const uint8_t> derive_junction) = 0;
 };
 
 }  // namespace brave_wallet::polkadot
