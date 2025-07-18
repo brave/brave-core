@@ -16,11 +16,11 @@
 BraveAccountUI::BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url)
     : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui)),
       web::WebUIIOSController(web_ui, url.host()) {
-  using PageHandlerFactory = void (BraveAccountUIBase::*)(
-      mojo::PendingReceiver<brave_account::mojom::PageHandlerFactory>);
+  using PageHandler = void (BraveAccountUIBase::*)(
+      mojo::PendingReceiver<brave_account::mojom::PageHandler>);
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(
-          static_cast<PageHandlerFactory>(&BraveAccountUIBase::BindInterface),
+          static_cast<PageHandler>(&BraveAccountUIBase::BindInterface),
           base::Unretained(this)));
 
   using PasswordStrengthMeter = void (BraveAccountUIBase::*)(
@@ -34,7 +34,7 @@ BraveAccountUI::BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url)
 
 BraveAccountUI::~BraveAccountUI() {
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
-      brave_account::mojom::PageHandlerFactory::Name_);
+      brave_account::mojom::PageHandler::Name_);
 
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       password_strength_meter::mojom::PasswordStrengthMeter::Name_);

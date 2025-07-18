@@ -5,10 +5,6 @@
 
 module brave_account.mojom;
 
-interface PageHandlerFactory {
-  CreatePageHandler(pending_receiver<PageHandler> handler);
-};
-
 interface PageHandler {
   RegisterInitialize(string email,
                      string blindedMessage) => (string serializedResponse);

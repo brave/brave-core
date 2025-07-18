@@ -41,7 +41,7 @@
 template <typename Profile,
           typename WebUIDataSource,
           typename BraveAccountServiceFactory>
-class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
+class BraveAccountUIBase {
  public:
   explicit BraveAccountUIBase(
       Profile* profile,
@@ -58,11 +58,11 @@ class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
     SetupWebUIDataSource(source);
   }
 
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::PageHandlerFactory>
-          pending_receiver) {
-    receiver_.reset();
-    receiver_.Bind(std::move(pending_receiver));
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::PageHandler>
+                         pending_receiver) {
+    page_handler_ = std::make_unique<BraveAccountPageHandler>(
+        BraveAccountServiceFactory::GetFor(profile_),
+        std::move(pending_receiver));
   }
 
   void BindInterface(mojo::PendingReceiver<
@@ -174,17 +174,7 @@ class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
   }
 
  private:
-  // brave_account::mojom::PageHandlerFactory:
-  void CreatePageHandler(
-      mojo::PendingReceiver<brave_account::mojom::PageHandler> pending_receiver)
-      override {
-    page_handler_ = std::make_unique<BraveAccountPageHandler>(
-        BraveAccountServiceFactory::GetFor(profile_),
-        std::move(pending_receiver));
-  }
-
   const raw_ptr<Profile> profile_;
-  mojo::Receiver<brave_account::mojom::PageHandlerFactory> receiver_{this};
   std::unique_ptr<BraveAccountPageHandler> page_handler_;
 };
 
