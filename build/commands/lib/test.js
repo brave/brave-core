@@ -10,7 +10,6 @@ const Config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-const build = require('./build')
 
 const getTestBinary = (config, suite) => {
   let testBinary = suite
