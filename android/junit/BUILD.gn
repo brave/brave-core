@@ -15,4 +15,20 @@ if (is_android) {
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tabbed_mode") {
+    sources = [ "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.toolbar") {
+    sources = [ "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java" ]
+
+    deps = [
+      "//brave/browser/ui/android/toolbar:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
 }

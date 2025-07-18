@@ -38,8 +38,8 @@ export function getSectionElement (
   templateContent: HTMLTemplateElement,
   sectionName: string)
 {
-  const sectionEl = templateContent.querySelector(`template[if*='showPage_(pageVisibility.${sectionName}']`) ||
-    templateContent.querySelector(`template[if*='pageVisibility.${sectionName}']`) ||
+  const sectionEl = templateContent.querySelector(`template[if*='showPage_(pageVisibility_.${sectionName}']`) ||
+    templateContent.querySelector(`template[if*='pageVisibility_.${sectionName}']`) ||
     templateContent.querySelector(`settings-section[section="${sectionName}"]`)
   if (!sectionEl) {
     console.error(`[Brave Settings Overrides] Could not find section '${sectionName}'`)
@@ -131,20 +131,19 @@ RegisterPolymerTemplateModifications({
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
       sectionGetStarted.setAttribute('restamp', 'true')
-      sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility.getStarted)]]')
+      sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility_.getStarted)]]')
       sectionGetStarted.content.appendChild(createSectionElement(
         'getStarted',
         'braveGetStartedTitle',
         'brave-settings-getting-started',
         {
           prefs: '{{prefs}}',
-          'page-visibility': '[[pageVisibility]]'
         }
       ))
       const sectionToolbar = document.createElement('template')
       sectionToolbar.setAttribute('is', 'dom-if')
       sectionToolbar.setAttribute('restamp', 'true')
-      sectionToolbar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionToolbar.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
       sectionToolbar.content.appendChild(createNestedSectionElement(
         'toolbar',
         'appearance',
@@ -152,13 +151,12 @@ RegisterPolymerTemplateModifications({
         'settings-brave-appearance-toolbar',
         {
           prefs: '{{prefs}}',
-          'page-visibility': '[[pageVisibility]]'
         }
       ))
       const sectionTabs = document.createElement('template')
       sectionTabs.setAttribute('is', 'dom-if')
       sectionTabs.setAttribute('restamp', 'true')
-      sectionTabs.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionTabs.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
       sectionTabs.content.appendChild(createNestedSectionElement(
         'tabs',
         'appearance',
@@ -171,7 +169,7 @@ RegisterPolymerTemplateModifications({
       const sectionSidebar = document.createElement('template')
       sectionSidebar.setAttribute('is', 'dom-if')
       sectionSidebar.setAttribute('restamp', 'true')
-      sectionSidebar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionSidebar.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
       sectionSidebar.content.appendChild(createNestedSectionElement(
         'sidebar',
         'appearance',
@@ -184,7 +182,7 @@ RegisterPolymerTemplateModifications({
       const sectionExtensions = document.createElement('template')
       sectionExtensions.setAttribute('is', 'dom-if')
       sectionExtensions.setAttribute('restamp', 'true')
-      sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility.extensions)]]')
+      sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility_.extensions)]]')
       sectionExtensions.content.appendChild(createSectionElement(
         'extensions',
         'braveDefaultExtensions',
@@ -196,7 +194,7 @@ RegisterPolymerTemplateModifications({
       const sectionTor = document.createElement('template')
       sectionTor.setAttribute('is', 'dom-if')
       sectionTor.setAttribute('restamp', 'true')
-      sectionTor.setAttribute('if', '[[showPage_(pageVisibility.braveTor)]]')
+      sectionTor.setAttribute('if', '[[showPage_(pageVisibility_.braveTor)]]')
       sectionTor.content.appendChild(createNestedSectionElement(
         'tor',
         'privacy',
@@ -210,7 +208,7 @@ RegisterPolymerTemplateModifications({
       sectionDataCollection.setAttribute('is', 'dom-if')
       sectionDataCollection.setAttribute('restamp', 'true')
       sectionDataCollection.
-        setAttribute('if', '[[showPage_(pageVisibility.braveDataCollection)]]')
+        setAttribute('if', '[[showPage_(pageVisibility_.braveDataCollection)]]')
       sectionDataCollection.content.appendChild(createNestedSectionElement(
         'dataCollection',
         'privacy',
@@ -226,7 +224,7 @@ RegisterPolymerTemplateModifications({
         sectionWallet = document.createElement('template')
         sectionWallet.setAttribute('is', 'dom-if')
         sectionWallet.setAttribute('restamp', 'true')
-        sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
+        sectionWallet.setAttribute('if', '[[showPage_(pageVisibility_.braveWallet)]]')
         sectionWallet.content.appendChild(createNestedSectionElement(
           'wallet',
           'web3',
@@ -241,7 +239,7 @@ RegisterPolymerTemplateModifications({
       sectionWeb3Domains.setAttribute('is', 'dom-if')
       sectionWeb3Domains.setAttribute('restamp', 'true')
       sectionWeb3Domains.setAttribute('if',
-        '[[showPage_(pageVisibility.braveWeb3Domains)]]')
+        '[[showPage_(pageVisibility_.braveWeb3Domains)]]')
       sectionWeb3Domains.content.appendChild(createNestedSectionElement(
         'web3Domains',
         'web3',
@@ -254,7 +252,7 @@ RegisterPolymerTemplateModifications({
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', 'true')
-      sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
+      sectionSync.setAttribute('if', '[[showPage_(pageVisibility_.braveSync)]]')
       sectionSync.content.appendChild(createSectionElement(
         'braveSync',
         'braveSync',
@@ -264,7 +262,7 @@ RegisterPolymerTemplateModifications({
       const sectionShields = document.createElement('template')
       sectionShields.setAttribute('is', 'dom-if')
       sectionShields.setAttribute('restamp', 'true')
-      sectionShields.setAttribute('if', '[[showPage_(pageVisibility.shields)]]')
+      sectionShields.setAttribute('if', '[[showPage_(pageVisibility_.shields)]]')
       sectionShields.content.appendChild(createSectionElement(
         'shields',
         'braveShieldsTitle',
@@ -276,7 +274,7 @@ RegisterPolymerTemplateModifications({
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', 'true')
-      sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility.socialBlocking)]]')
+      sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility_.socialBlocking)]]')
       sectionSocialBlocking.content.appendChild(createNestedSectionElement(
         'socialBlocking',
         'shields',
@@ -290,7 +288,7 @@ RegisterPolymerTemplateModifications({
       sectionLeoAssist.setAttribute('is', 'dom-if')
       sectionLeoAssist.setAttribute('restamp', 'true')
       sectionLeoAssist
-        .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
+        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
       sectionLeoAssist.content.appendChild(createSectionElement(
         'leoAssistant',
         'leoAssistant',
@@ -303,7 +301,7 @@ RegisterPolymerTemplateModifications({
       sectionLeoCustomModels.setAttribute('is', 'dom-if')
       sectionLeoCustomModels.setAttribute('restamp', 'true')
       sectionLeoCustomModels
-        .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
+        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
       sectionLeoCustomModels.content.appendChild(createNestedSectionElement(
         'leoAssistant',
         'leoAssistant',
@@ -317,7 +315,7 @@ RegisterPolymerTemplateModifications({
       const sectionContent = document.createElement('template')
       sectionContent.setAttribute('is', 'dom-if')
       sectionContent.setAttribute('restamp', 'true')
-      sectionContent.setAttribute('if', '[[showPage_(pageVisibility.content)]]')
+      sectionContent.setAttribute('if', '[[showPage_(pageVisibility_.content)]]')
       sectionContent.content.appendChild(createNestedSectionElement(
         'content',
         'content',
@@ -325,7 +323,6 @@ RegisterPolymerTemplateModifications({
         'settings-brave-content-content',
         {
           prefs: '{{prefs}}',
-          'page-visibility': '[[pageVisibility]]'
         }
       ))
 
@@ -333,7 +330,7 @@ RegisterPolymerTemplateModifications({
       sectionSurveyPanelist.setAttribute('is', 'dom-if')
       sectionSurveyPanelist.setAttribute('restamp', 'true')
       sectionSurveyPanelist
-        .setAttribute('if', '[[showPage_(pageVisibility.surveyPanelist)]]')
+        .setAttribute('if', '[[showPage_(pageVisibility_.surveyPanelist)]]')
       sectionSurveyPanelist.content.appendChild(createSectionElement(
         'surveyPanelist',
         'surveyPanelist',
@@ -346,7 +343,7 @@ RegisterPolymerTemplateModifications({
       const sectionPlaylist = document.createElement('template')
       sectionPlaylist.setAttribute('is', 'dom-if')
       sectionPlaylist.setAttribute('restamp', 'true')
-      sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility.playlist)]]')
+      sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility_.playlist)]]')
       sectionPlaylist.content.appendChild(createNestedSectionElement(
         'playlist',
         'content',
@@ -360,7 +357,7 @@ RegisterPolymerTemplateModifications({
       const sectionSpeedreader = document.createElement('template')
       sectionSpeedreader.setAttribute('is', 'dom-if')
       sectionSpeedreader.setAttribute('restamp', 'true')
-      sectionSpeedreader.setAttribute('if', '[[showPage_(pageVisibility.speedreader)]]')
+      sectionSpeedreader.setAttribute('if', '[[showPage_(pageVisibility_.speedreader)]]')
       sectionSpeedreader.content.appendChild(createNestedSectionElement(
         'speedreader',
         'content',
@@ -374,7 +371,7 @@ RegisterPolymerTemplateModifications({
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', 'true')
-      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.newTab)]]')
+      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility_.newTab)]]')
       sectionNewTab.content.appendChild(createNestedSectionElement(
         'newTab',
         'getStarted',
@@ -388,7 +385,7 @@ RegisterPolymerTemplateModifications({
       // Remove all hidden performance options from basic page.
       // We moved performance elements into system settings.
       const performanceTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showPage_(pageVisibility.performance)]]"]')
+        'template[if="[[showPage_(pageVisibility_.performance)]]"]')
       if (performanceTemplate) {
         performanceTemplate.remove()
       } else {
@@ -444,7 +441,7 @@ RegisterPolymerTemplateModifications({
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
       // Advanced
-      const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
+      const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility_.advancedSettings)]]"]')
       if (!advancedTemplate) {
         console.error('[Brave Settings Overrides] Could not find advanced section')
       }

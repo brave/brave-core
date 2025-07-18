@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 7e49b4e44998193f92c54619878cc9709d19d371..b40b324b0d05b7489a1f079dbeb27da896b9a6d6 100644
+index a427371dbe18bcb259a5d0954cee4a084ef453ee..6ef50e5c4e11d34525564cf5a1cc2ec4dfc4e6f4 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -137,7 +137,7 @@ if (enable_uncompressed_archive) {
@@ -11,7 +11,7 @@ index 7e49b4e44998193f92c54619878cc9709d19d371..b40b324b0d05b7489a1f079dbeb27da8
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -319,6 +319,7 @@ template("generate_mini_installer") {
+@@ -317,6 +317,7 @@ template("generate_mini_installer") {
        no_default_deps = true
        ldflags += [ "/ENTRY:MainEntryPoint" ]
      }

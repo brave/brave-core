@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
@@ -21,6 +22,10 @@
 #include "ui/views/controls/button/button.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
+
+class BraveTooltipsTest;
+FORWARD_DECLARE_TEST(BraveTooltipsTest, OkButtonPressed);
+FORWARD_DECLARE_TEST(BraveTooltipsTest, CancelButtonPressed);
 
 namespace gfx {
 class Point;
@@ -110,6 +115,9 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
                              const gfx::Rect& new_bounds) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(::BraveTooltipsTest, OkButtonPressed);
+  FRIEND_TEST_ALL_PREFIXES(::BraveTooltipsTest, CancelButtonPressed);
+  friend class ::BraveTooltipsTest;
   void CreatePopup();
 
   gfx::Point GetDefaultOriginForSize(const gfx::Size& size);

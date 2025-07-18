@@ -2,7 +2,7 @@
 <grit-part>
   <part file="omnibox_pedal_ui_strings_override.grdp" />
 
-  <if expr="use_titlecase">
+<if expr="use_titlecase">
     </if>
   <if expr="not use_titlecase">
     </if>

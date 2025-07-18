@@ -28,6 +28,7 @@ source_set("search_result_ad") {
     "//brave/components/brave_search/common",
     "//brave/components/vector_icons",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/infobars/content",

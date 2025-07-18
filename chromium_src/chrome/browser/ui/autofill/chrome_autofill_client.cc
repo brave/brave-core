@@ -16,10 +16,6 @@
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/autofill_ai/chrome_autofill_ai_client.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
-
 namespace autofill {
 
 namespace {

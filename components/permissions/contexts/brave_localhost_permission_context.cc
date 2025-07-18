@@ -15,7 +15,7 @@ namespace permissions {
 
 BraveLocalhostPermissionContext::BraveLocalhostPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(
+    : ContentSettingPermissionContextBase(
           browser_context,
           ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
           network::mojom::PermissionsPolicyFeature::kNotFound) {}

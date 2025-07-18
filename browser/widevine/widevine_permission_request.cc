@@ -65,12 +65,11 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 #endif
 
 void WidevinePermissionRequest::PermissionDecided(
-    ContentSetting result,
-    bool is_one_time,
+    PermissionDecision decision,
     bool is_final_decision,
     const permissions::PermissionRequestData& request_data) {
   // Permission granted
-  if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
+  if (decision == PermissionDecision::kAllow) {
     if (!for_restart_) {
       EnableWidevineCdm();
     } else {
@@ -86,12 +85,9 @@ void WidevinePermissionRequest::PermissionDecided(
       }
     }
     // Permission denied
-  } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
+  } else if (decision == PermissionDecision::kDeny) {
     prefs_->SetBoolean(kAskEnableWidvine, !get_dont_ask_again());
     // Cancelled
-  } else {
-    DCHECK(result == CONTENT_SETTING_DEFAULT);
-    // Do nothing.
   }
 }
 

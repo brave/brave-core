@@ -176,6 +176,14 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     scroll_view_->SetBackgroundColor(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
+    if (unpinned_tab_container_->parent()) {
+      // On Aura, when adding a view to a new parent, it'll be removed from the
+      // old parent automatically. But this causes CHECK failure while updating
+      // tooltip. In order to avoid that, we remove the view from the old parent
+      // manually before adding it to the new parent.
+      unpinned_tab_container_->parent()->RemoveChildView(
+          base::to_address(unpinned_tab_container_));
+    }
     contents_view->AddChildView(base::to_address(unpinned_tab_container_));
     DeprecatedLayoutImmediately();
   } else {

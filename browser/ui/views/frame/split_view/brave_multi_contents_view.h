@@ -29,10 +29,8 @@ class BraveMultiContentsView : public MultiContentsView,
 
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  BraveMultiContentsView(
-      BrowserView* browser_view,
-      WebContentsFocusedCallback inactive_contents_focused_callback,
-      WebContentsResizeCallback contents_resize_callback);
+  BraveMultiContentsView(BrowserView* browser_view,
+                         std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
   void UpdateSecondaryLocationBar();
