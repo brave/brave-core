@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index d1c024e8c2033d98b931ad6e2d561f6c316a491e..0f5168f46fd25b3524b734b6a3d87d46134ac748 100644
+index eda0766f484d8a8e213698c29c06f32d5dae663b..ae52d4473df712aa2611331daf7866bb62b98455 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -405,6 +405,7 @@ class CORE_EXPORT HTMLCanvasElement final
-   // Recreates the resource provider.
-   CanvasResourceProvider* RecreateCanvasResourceProviderForCanvas2D();
+@@ -407,6 +407,7 @@ class CORE_EXPORT HTMLCanvasElement final
+ 
+   void ResetLayer();
  
 +  BRAVE_HTML_CANVAS_ELEMENT_H_
   protected:
