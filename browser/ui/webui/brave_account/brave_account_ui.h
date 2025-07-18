@@ -19,9 +19,9 @@ class WebUI;
 }  // namespace content
 
 class BraveAccountUI
-    : public BraveAccountUIBase<brave_account::BraveAccountServiceFactory,
-                                Profile,
-                                content::WebUIDataSource>,
+    : public BraveAccountUIBase<Profile,
+                                content::WebUIDataSource,
+                                brave_account::BraveAccountServiceFactory>,
       public ConstrainedWebDialogUI {
  public:
   explicit BraveAccountUI(content::WebUI* web_ui);

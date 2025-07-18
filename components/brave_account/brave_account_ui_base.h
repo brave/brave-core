@@ -36,10 +36,11 @@
 // across desktop, Android, and iOS. It streamlines the creation and
 // configuration of a WebUIDataSource.
 //
-// Intended to be subclassed with the appropriate WebUIDataSource type.
-template <typename BraveAccountServiceFactory,
-          typename Profile,
-          typename WebUIDataSource>
+// Intended to be subclassed with the appropriate Profile, WebUIDataSource, and
+// BraveAccountServiceFactory types.
+template <typename Profile,
+          typename WebUIDataSource,
+          typename BraveAccountServiceFactory>
 class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
  public:
   explicit BraveAccountUIBase(
@@ -50,24 +51,24 @@ class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
       : profile_(profile) {
     CHECK(brave_account::features::IsBraveAccountEnabled());
 
-    auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
+    auto* source = WebUIDataSource::CreateAndAdd(profile_, kBraveAccountHost);
     std::move(setup_webui_data_source)
         .Run(source, kBraveAccountResources,
              IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
     SetupWebUIDataSource(source);
   }
 
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::PageHandlerFactory>
+          pending_receiver) {
+    receiver_.reset();
+    receiver_.Bind(std::move(pending_receiver));
+  }
+
   void BindInterface(mojo::PendingReceiver<
                      password_strength_meter::mojom::PasswordStrengthMeter>
                          pending_receiver) {
     password_strength_meter::BindInterface(std::move(pending_receiver));
-  }
-
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::PageHandlerFactory>
-          receiver) {
-    page_factory_receiver_.reset();
-    page_factory_receiver_.Bind(std::move(receiver));
   }
 
  private:
@@ -175,15 +176,15 @@ class BraveAccountUIBase : public brave_account::mojom::PageHandlerFactory {
  private:
   // brave_account::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingReceiver<brave_account::mojom::PageHandler> receiver)
+      mojo::PendingReceiver<brave_account::mojom::PageHandler> pending_receiver)
       override {
     page_handler_ = std::make_unique<BraveAccountPageHandler>(
-        BraveAccountServiceFactory::GetFor(profile_), std::move(receiver));
+        BraveAccountServiceFactory::GetFor(profile_),
+        std::move(pending_receiver));
   }
 
-  raw_ptr<Profile> profile_;
-  mojo::Receiver<brave_account::mojom::PageHandlerFactory>
-      page_factory_receiver_{this};
+  const raw_ptr<Profile> profile_;
+  mojo::Receiver<brave_account::mojom::PageHandlerFactory> receiver_{this};
   std::unique_ptr<BraveAccountPageHandler> page_handler_;
 };
 

@@ -19,9 +19,9 @@ class WebUIIOS;
 }
 
 class BraveAccountUI
-    : public BraveAccountUIBase<brave_account::BraveAccountServiceFactoryIOS,
-                                ProfileIOS,
-                                BraveWebUIIOSDataSource>,
+    : public BraveAccountUIBase<ProfileIOS,
+                                BraveWebUIIOSDataSource,
+                                brave_account::BraveAccountServiceFactoryIOS>,
       public web::WebUIIOSController {
  public:
   BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url);
