@@ -126,7 +126,7 @@ struct AssetDetailView: View {
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
       HStack(alignment: .top, spacing: 40) {
-        if assetDetailStore.meldCryptoCurrency != nil {
+        if assetDetailStore.isBuySupported {
           PortfolioHeaderButton(style: .buy) {
             Task { @MainActor in
               let destination = WalletActionDestination(
@@ -235,7 +235,7 @@ struct AssetDetailView: View {
 
   @ViewBuilder var actionButtonsContainer: some View {
     HStack(alignment: .top, spacing: 40) {
-      if assetDetailStore.meldCryptoCurrency != nil {
+      if assetDetailStore.isBuySupported {
         PortfolioHeaderButton(style: .buy) {
           Task { @MainActor in
             let destination = WalletActionDestination(

@@ -262,6 +262,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 
   func testUpdateWithBlockchainTokenBitcoin() {
@@ -474,6 +475,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
   }
 
   func testUpdateWithCoinMarket() {
@@ -659,6 +661,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailBitcoinException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
     cancellables.removeAll()
 
     // setup store
@@ -778,5 +781,6 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailNonBitcoinException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 }

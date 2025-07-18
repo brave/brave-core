@@ -73,6 +73,10 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       .reduce(0, +)
   }
 
+  var isBuySupported: Bool {
+    meldCryptoCurrency != nil
+  }
+
   private let assetRatioService: BraveWalletAssetRatioService
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -585,8 +589,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     guard let meldCryptoCurrency else {
       return false
     }
-    let allAccounts = await keyringService.allAccounts().accounts
-    return !allAccounts.contains { $0.coin == meldCryptoCurrency.coin }
+    return await !keyringService.isAccountAvailable(for: meldCryptoCurrency.coin)
   }
 
   /// Should be called after dismissing create account. Returns true if an account was created
