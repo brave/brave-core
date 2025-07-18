@@ -76,6 +76,8 @@
     <color name="brave_theme_success">#51cf66</color>
     <color name="brave_theme_error_txt">#E32444</color>
     <color name="brave_text_button_color">#4C54D2</color>
+    <color name="text_color_20">#d5dcff</color>
+    <color name="text_color_30">#b7c6ff</color>
 
     <!-- Onboarding colors -->
     <color name="onboarding_orange">#fb542b</color>
