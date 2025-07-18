@@ -10,7 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_EXPORT
 @interface BraveVariationsSeedFetcher : NSObject
 - (instancetype)init;
 - (void)fetchSeedWithCompletion:(void (^)(bool success))completion;

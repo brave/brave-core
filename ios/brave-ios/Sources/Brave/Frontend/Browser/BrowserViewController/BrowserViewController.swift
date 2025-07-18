@@ -223,6 +223,7 @@ public class BrowserViewController: UIViewController {
 
   private var cancellables: Set<AnyCancellable> = []
 
+  let p3aUtils: BraveP3AUtils
   let rewards: BraveRewards
   var rewardsObserver: RewardsObserver?
   var promotionFetchTimer: Timer?
@@ -291,6 +292,7 @@ public class BrowserViewController: UIViewController {
     self.braveCore = braveCore
     self.profileController = profileController
     self.bookmarkManager = BookmarkManager(bookmarksAPI: profileController.bookmarksAPI)
+    self.p3aUtils = braveCore.p3aUtils!
     self.rewards = rewards
     self.crashedLastSession = crashedLastSession
     self.privateBrowsingManager = privateBrowsingManager
@@ -337,7 +339,7 @@ public class BrowserViewController: UIViewController {
     )
 
     iapObserver = BraveVPN.iapObserver
-    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
+    ntpP3AHelper = .init(p3aUtils: p3aUtils, rewards: rewards)
 
     super.init(nibName: nil, bundle: nil)
     didInit()
@@ -394,7 +396,7 @@ public class BrowserViewController: UIViewController {
       screenTimeViewController = STWebpageController()
     }
 
-    braveCore.adblockService.registerFilterListChanges { [weak self] _ in
+    braveCore.adblockService?.registerFilterListChanges { [weak self] _ in
       // Filter lists updated, reset selectors cache(s).
       self?.tabManager.allTabs.forEach {
         $0.contentBlocker?.resetSelectorsCache()

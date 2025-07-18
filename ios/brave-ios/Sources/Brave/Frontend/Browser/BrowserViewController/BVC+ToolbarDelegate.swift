@@ -521,7 +521,7 @@ extension BrowserViewController: TopToolbarDelegate {
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(privateMode: false),
           braveCore: profileController,
-          p3aUtils: braveCore.p3aUtils,
+          p3aUtils: p3aUtils,
           rewards: rewards,
           webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in

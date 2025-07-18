@@ -34,12 +34,20 @@ typedef bool (^BraveCoreLogHandler)(BraveCoreLogSeverity severity,
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-
-@property(nonatomic, readonly)
+// MARK: - Properties
+@property(nonatomic, readonly, nullable)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 
 @property(nonatomic, readonly, nullable)
     BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
+
+@property(readonly, nullable) AdblockService* adblockService;
+
+@property(readonly, nullable) BraveP3AUtils* p3aUtils;
+
+@property(readonly, nullable) BraveProfileController* profileController;
+
+// MARK: - Methods
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
@@ -53,20 +61,17 @@ OBJC_EXPORT
 - (instancetype)initWithAdditionalSwitches:
     (NSArray<BraveCoreSwitch*>*)additionalSwitches;
 
-- (void)finishBasicStartup;
+- (void)startup:(bool)shouldFetchVariationsSeed
+    withCompletion:(void (^)())completion
+    NS_SWIFT_NAME(startup(shouldFetchVariationsSeed:completion:));
 
 - (void)scheduleLowPriorityStartupTasks;
 
 - (void)setUserAgent:(NSString*)userAgent;
 
-@property(readonly) AdblockService* adblockService;
-
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                       installationDate:(NSDate*)installDate;
 
-@property(readonly) BraveP3AUtils* p3aUtils;
-
-@property(readonly, nullable) BraveProfileController* profileController;
 - (void)loadDefaultProfile:(void (^)(BraveProfileController*))completionHandler;
 
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle

@@ -46,7 +46,7 @@ extension BrowserViewController {
       Preferences.Onboarding.isNewRetentionUser.value == true
     {
       let onboardingController = WelcomeViewController(
-        p3aUtilities: braveCore.p3aUtils,
+        p3aUtilities: p3aUtils,
         attributionManager: attributionManager
       )
       onboardingController.modalPresentationStyle = .fullScreen
@@ -392,7 +392,7 @@ extension BrowserViewController {
 
     let controller = OnboardingController(
       environment: .init(
-        p3aUtils: braveCore.p3aUtils,
+        p3aUtils: p3aUtils,
         attributionManager: attributionManager
       ),
       onCompletion: {
