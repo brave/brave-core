@@ -15,7 +15,7 @@ export const style = scoped.css`
     --search-transition-duration: 120ms;
   }
 
-  @keyframes scroll-fade {
+  @keyframes background-scroll-fade {
     from {
       background: rgba(0, 0, 0, 0);
       backdrop-filter: blur(0);
@@ -34,7 +34,7 @@ export const style = scoped.css`
     inset: 0;
     z-index: 1;
 
-    animation: linear scroll-fade both;
+    animation: linear background-scroll-fade both;
     animation-timeline: scroll();
     animation-range: 0px 100vh;
   }
@@ -89,6 +89,7 @@ export const style = scoped.css`
 
   main {
     container-type: inline-size;
+    view-timeline-name: --ntp-main-view-timeline;
     position: relative;
     z-index: 1;
     display: flex;
