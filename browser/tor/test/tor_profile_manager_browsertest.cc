@@ -416,7 +416,6 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   ui_test_utils::WaitForBrowserToClose();
 }
 
-#if !BUILDFLAG(IS_LINUX)
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
@@ -433,20 +432,25 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   content::WaitForLoadStop(tor_contents);
 
+  // navigator.share is disabled on Linux.
+  constexpr bool kDefaultValue = !BUILDFLAG(IS_LINUX);
+
   // navigator.share API is disabled for Tor windows on Mac.
-  EXPECT_EQ(!BUILDFLAG(IS_MAC),
+  constexpr bool kShouldBeDisabledInTor = !kDefaultValue || BUILDFLAG(IS_MAC);
+
+  EXPECT_EQ((kShouldBeDisabledInTor ? false : true),
             content::EvalJs(tor_contents, kCheckNavigatorShare).ExtractBool());
 
   auto* regular_contents =
       ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
-  EXPECT_TRUE(
+  EXPECT_EQ(
+      kDefaultValue,
       content::EvalJs(regular_contents, kCheckNavigatorShare).ExtractBool());
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
   ui_test_utils::WaitForBrowserToClose();
 }
-#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
