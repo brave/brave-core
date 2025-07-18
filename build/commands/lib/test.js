@@ -284,10 +284,10 @@ const runTests = (passthroughArgs, suite, config, options) => {
       args.push('--runtime-cache-prefix', `${outputDir}/Runtime-ios-`)
       args.push('--iossim', `${outputDir}/iossim`)
       args.push('--platform', 'iPhone 16')
-      args.push('--version', '18.3.1')
+      args.push('--version', '18.4')
       args.push('--out-dir', `${outputDir}/output`)
       args.push('--xctest')
-      args.push('--xcode-build-version', '16e140')
+      args.push('--xcode-build-version', '16E140')
       let iosRunOptions = Object.assign({}, runOptions)
       // run.py doesn't like it when you mess with PYTHONPATH
       delete iosRunOptions.env.PYTHONPATH
