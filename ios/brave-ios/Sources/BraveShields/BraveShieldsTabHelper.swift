@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Foundation
 import Preferences
@@ -21,21 +22,34 @@ extension TabDataValues {
 @MainActor
 public class BraveShieldsTabHelper {
   private weak var tab: (any TabState)?
+  private let braveShieldsUtils: BraveShieldsUtilsIOS
 
-  public init(tab: some TabState) {
+  public init(
+    tab: some TabState,
+    braveShieldsUtils: BraveShieldsUtilsIOS
+  ) {
     self.tab = tab
+    self.braveShieldsUtils = braveShieldsUtils
   }
 
   public func isBraveShieldsEnabled(for url: URL?, isPrivate: Bool) -> Bool {
     guard let url = url ?? tab?.visibleURL else { return false }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    return !domain.areAllShieldsOff
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      return braveShieldsUtils.isBraveShieldsEnabled(for: url, isPrivate: isPrivate)
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      return !domain.areAllShieldsOff
+    }
   }
 
   public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?, isPrivate: Bool) {
     guard let url = url ?? tab?.visibleURL else { return }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    domain.shield_allOff = NSNumber(booleanLiteral: !isEnabled)
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      braveShieldsUtils.setBraveShieldsEnabled(isEnabled, for: url, isPrivate: isPrivate)
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      domain.shield_allOff = NSNumber(booleanLiteral: !isEnabled)
+    }
   }
 
   public func shieldLevel(
@@ -44,24 +58,36 @@ public class BraveShieldsTabHelper {
     considerAllShieldsOption: Bool
   ) -> ShieldLevel {
     guard let url = url ?? tab?.visibleURL else { return .disabled }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    if considerAllShieldsOption {
-      return domain.globalBlockAdsAndTrackingLevel
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      return braveShieldsUtils.adBlockMode(for: url, isPrivate: isPrivate).shieldLevel
     } else {
-      return domain.domainBlockAdsAndTrackingLevel
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      if considerAllShieldsOption {
+        return domain.globalBlockAdsAndTrackingLevel
+      } else {
+        return domain.domainBlockAdsAndTrackingLevel
+      }
     }
   }
 
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?, isPrivate: Bool) {
     guard let url = url ?? tab?.visibleURL else { return }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    domain.domainBlockAdsAndTrackingLevel = shieldLevel
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      braveShieldsUtils.setAdBlockMode(shieldLevel.adBlockMode, for: url, isPrivate: isPrivate)
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      domain.domainBlockAdsAndTrackingLevel = shieldLevel
+    }
   }
 
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?, isPrivate: Bool) {
     guard let url = url ?? tab?.visibleURL else { return }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    domain.shield_noScript = NSNumber(booleanLiteral: isEnabled)
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      braveShieldsUtils.setBlockScriptsEnabled(isEnabled, for: url, isPrivate: isPrivate)
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      domain.shield_noScript = NSNumber(booleanLiteral: isEnabled)
+    }
   }
 
   public func setBlockFingerprintingEnabled(
@@ -70,8 +96,12 @@ public class BraveShieldsTabHelper {
     isPrivate: Bool
   ) {
     guard let url = url ?? tab?.visibleURL else { return }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    domain.shield_fpProtection = NSNumber(booleanLiteral: isEnabled)
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      braveShieldsUtils.setBlockFingerprintingEnabled(isEnabled, for: url, isPrivate: isPrivate)
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      domain.shield_fpProtection = NSNumber(booleanLiteral: isEnabled)
+    }
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
@@ -82,8 +112,23 @@ public class BraveShieldsTabHelper {
     considerAllShieldsOption: Bool
   ) -> Bool {
     guard let url = url ?? tab?.visibleURL else { return false }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    return domain.isShieldExpected(shield, considerAllShieldsOption: considerAllShieldsOption)
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      if considerAllShieldsOption && !isBraveShieldsEnabled(for: url, isPrivate: isPrivate) {
+        // Shields is disabled for this url
+        return false
+      }
+      switch shield {
+      case .allOff:
+        return braveShieldsUtils.isBraveShieldsEnabled(for: url, isPrivate: isPrivate)
+      case .fpProtection:
+        return braveShieldsUtils.isBlockFingerprintingEnabled(for: url, isPrivate: isPrivate)
+      case .noScript:
+        return braveShieldsUtils.isBlockScriptsEnabled(for: url, isPrivate: isPrivate)
+      }
+    } else {
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      return domain.isShieldExpected(shield, considerAllShieldsOption: considerAllShieldsOption)
+    }
   }
 
   public func shredLevel(
@@ -91,6 +136,7 @@ public class BraveShieldsTabHelper {
     isPrivate: Bool
   ) -> SiteShredLevel {
     guard let url = url ?? tab?.visibleURL else { return .never }
+    // TODO: Support AutoShred via content settings brave-browser#47753
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     return domain.shredLevel
   }
@@ -101,6 +147,7 @@ public class BraveShieldsTabHelper {
     isPrivate: Bool
   ) {
     guard let url = url ?? tab?.visibleURL else { return }
+    // TODO: Support AutoShred via content settings brave-browser#47753
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shredLevel = shredLevel
   }

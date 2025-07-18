@@ -67,7 +67,7 @@ import os
     didSet {
       if FeatureList.kBraveShieldsContentSettings.enabled {
         guard oldValue != adBlockAndTrackingPreventionLevel else { return }
-        braveShieldsUtils.setDefaultAdBlockMode(adBlockAndTrackingPreventionLevel.adBlockMode)
+        braveShieldsUtils.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       } else {
         ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
       }
@@ -76,13 +76,13 @@ import os
   @Published var isBlockScriptsEnabled: Bool {
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
-      braveShieldsUtils.setBlockScriptsEnabledByDefault(isBlockScriptsEnabled)
+      braveShieldsUtils.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
     }
   }
   @Published var isBlockFingerprintingEnabled: Bool {
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
-      braveShieldsUtils.setBlockFingerprintingEnabledByDefault(isBlockFingerprintingEnabled)
+      braveShieldsUtils.isBlockFingerprintingEnabledByDefault = isBlockFingerprintingEnabled
     }
   }
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
@@ -151,9 +151,9 @@ import os
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     if FeatureList.kBraveShieldsContentSettings.enabled {
-      self.adBlockAndTrackingPreventionLevel = braveShieldsUtils.defaultAdBlockMode().shieldLevel
-      self.isBlockScriptsEnabled = braveShieldsUtils.isBlockScriptsEnabledByDefault()
-      self.isBlockFingerprintingEnabled = braveShieldsUtils.isBlockFingerprintingEnabledByDefault()
+      self.adBlockAndTrackingPreventionLevel = braveShieldsUtils.defaultAdBlockMode.shieldLevel
+      self.isBlockScriptsEnabled = braveShieldsUtils.isBlockScriptsEnabledByDefault
+      self.isBlockFingerprintingEnabled = braveShieldsUtils.isBlockFingerprintingEnabledByDefault
     } else {
       self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
       // NOTE: unused, the toggle in the view updates the pref directly

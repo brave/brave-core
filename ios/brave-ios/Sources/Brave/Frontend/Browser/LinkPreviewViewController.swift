@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import Data
 import Shared
@@ -42,7 +43,10 @@ class LinkPreviewViewController: UIViewController {
     tab.miscDelegate = browserController
     tab.createWebView()
     tab.addPolicyDecider(browserController)
-    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(tab: tab)
+    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
+      tab: tab,
+      braveShieldsUtils: browserController.profileController.braveShieldsUtils
+    )
     tab.braveShieldsHelper = braveShieldsTabHelper
     tab.addPolicyDecider(braveShieldsTabHelper)
     tab.delegate = browserController

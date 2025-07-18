@@ -29,7 +29,10 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
-    let braveShieldsHelper: BraveShieldsTabHelper = .init(tab: tab)
+    let braveShieldsHelper: BraveShieldsTabHelper = .init(
+      tab: tab,
+      braveShieldsUtils: profileController.braveShieldsUtils
+    )
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
     // we should add it as a policy decider at initialization.
