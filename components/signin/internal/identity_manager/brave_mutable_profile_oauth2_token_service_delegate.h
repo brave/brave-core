@@ -21,9 +21,7 @@ class BraveMutableProfileOAuth2TokenServiceDelegate
       scoped_refptr<TokenWebData> token_web_data,
       signin::AccountConsistencyMethod account_consistency,
       RevokeAllTokensOnLoad revoke_all_tokens_on_load,
-#if BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
       std::unique_ptr<TokenBindingHelper> token_binding_helper,
-#endif  // BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
       FixRequestErrorCallback fix_request_error_callback);
   ~BraveMutableProfileOAuth2TokenServiceDelegate() override;
   BraveMutableProfileOAuth2TokenServiceDelegate(
