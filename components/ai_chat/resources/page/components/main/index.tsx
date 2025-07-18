@@ -181,7 +181,7 @@ function Main() {
   }
 
   const extractedQuery = useExtractedQuery(conversationContext.inputText, {
-    onlyAtStart: false,
+    onlyAtStart: true,
     triggerCharacter: '/',
   })
 
