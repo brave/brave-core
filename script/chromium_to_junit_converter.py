@@ -77,8 +77,6 @@ class ChromiumToJUnitConverter:
             # Handle actual results (may be multiple if test was retried)
             actual_results = test_data.get('actual', '').split()
             expected = test_data.get('expected', 'PASS')
-            # TODO(bridiver) ?
-            # is_unexpected = test_data.get('is_unexpected', False)
 
             # Use the last result as the final result
             final_result = actual_results[-1] if actual_results else 'UNKNOWN'
