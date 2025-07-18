@@ -105,14 +105,20 @@ v8::Local<v8::Promise> JSCardanoProvider::Enable(v8::Isolate* isolate) {
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
 
-  cardano_provider_->Enable(base::BindOnce(
-      &JSCardanoProvider::OnEnableResponse, weak_ptr_factory_.GetWeakPtr(),
-      std::move(global_context), std::move(promise_resolver), isolate));
+  mojo::Remote<mojom::CardanoApi> remote;
+  auto pending_receiver = remote.BindNewPipeAndPassReceiver();
+  cardano_provider_->Enable(
+      std::move(pending_receiver),
+      base::BindOnce(&JSCardanoProvider::OnEnableResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(remote),
+                     std::move(global_context), std::move(promise_resolver),
+                     isolate));
 
   return resolver_local->GetPromise();
 }
 
 void JSCardanoProvider::OnEnableResponse(
+    mojo::Remote<mojom::CardanoApi> remote,
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
@@ -129,9 +135,9 @@ void JSCardanoProvider::OnEnableResponse(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (!error) {
     gin::Handle<JSCardanoWalletApi> wallet_api = gin::CreateHandle(
-        isolate, new JSCardanoWalletApi(base::PassKey<JSCardanoProvider>(),
-                                        global_context.Get(isolate), isolate,
-                                        render_frame()));
+        isolate, new JSCardanoWalletApi(
+                     std::move(remote), base::PassKey<JSCardanoProvider>(),
+                     global_context.Get(isolate), isolate, render_frame()));
     if (wallet_api.IsEmpty()) {
       return;
     }
