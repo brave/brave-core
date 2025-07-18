@@ -43,9 +43,11 @@
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
+#include "brave/ios/browser/variations/model/brave_variations_seed_fetcher.h"
 #include "brave/ios/browser/web/brave_web_client.h"
 #import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/variations/service/variations_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
@@ -79,6 +81,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
+@property(nonatomic) bool webMainStarted;
+@property(nonatomic) BraveVariationsSeedFetcher* variationsSeedFetcher;
 @property(nonatomic) BraveProfileController* profileController;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic)
@@ -174,19 +178,49 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 - (void)dealloc {
   _profileController = nil;
+  _variationsSeedFetcher = nil;
 
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
 }
 
-- (void)finishBasicStartup {
+- (void)startup:(bool)shouldFetchVariationsSeed
+    withCompletion:(void (^)())completion {
+  if (shouldFetchVariationsSeed && !_variationsSeedFetcher) {
+    // Same as in ios/chrome/app/variations_app_state_agent.mm
+    double timestamp = [[NSUserDefaults standardUserDefaults]
+        doubleForKey:@"kLastVariationsSeedFetchTime"];
+    auto last_seed_fetch_time =
+        base::Time::FromSecondsSinceUnixEpoch(timestamp);
+
+    if (last_seed_fetch_time.is_null()) {
+      __weak BraveCoreMain* weakSelf = self;
+      _variationsSeedFetcher = [[BraveVariationsSeedFetcher alloc] init];
+      [_variationsSeedFetcher fetchSeedWithCompletion:^(bool success) {
+        [weakSelf initializeWebMainAndServices];
+        weakSelf.variationsSeedFetcher = nil;
+        completion();
+      }];
+
+      return;
+    }
+  }
+
+  [self initializeWebMainAndServices];
+  completion();
+}
+
+- (void)initializeWebMainAndServices {
   // Start WebMain
   _webMain->Startup();
+  _webMainStarted = true;
 
   // Setup WebUI (Sync Internals and other WebViews)
   web::WebUIIOSControllerFactory::RegisterFactory(
       BraveWebUIControllerFactory::GetInstance());
+
+  // Other Startup:
 
   // TODO(darkdh): move _adblockService and _backgroundImageService to
   // BraveWebMainParts::PreMainMessageLoopRun
@@ -197,9 +231,28 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
 }
 
+- (void)saveVariationsLastSeedFetchTime {
+  auto* context = GetApplicationContext();
+  if (context) {
+    const base::Time seed_fetch_time =
+        context->GetVariationsService()->GetLatestSeedFetchTime();
+
+    if (!seed_fetch_time.is_null()) {
+      [[NSUserDefaults standardUserDefaults]
+          setDouble:seed_fetch_time.InSecondsFSinceUnixEpoch()
+             forKey:@"kLastVariationsSeedFetchTime"];
+    }
+  }
+}
+
 - (void)onAppEnterBackground:(NSNotification*)notification {
   auto* context = GetApplicationContext();
   if (context) {
+    // Chromium saves the seed fetch time once fetching has completed AND the
+    // app has backgrounded. We can just do it once fetching is completed. No
+    // need to do it upon shutdown.
+    [self saveVariationsLastSeedFetchTime];
+
     context->OnAppEnterBackground();
     // Since we don't use the WebViewWebMainParts, local state is never commited
     // on app background
@@ -214,6 +267,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
+  // Chromium saves the seed fetch time once fetching has completed AND the app
+  // has backgrounded. We can just do it once fetching is completed. No need to
+  // do it upon shutdown.
+  [self saveVariationsLastSeedFetchTime];
+
   // ApplicationContextImpl doesn't get teardown call at the moment because we
   // cannot dealloc this class yet without crashing.
   GetApplicationContext()->GetLocalState()->CommitPendingWrite();
@@ -225,6 +283,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)scheduleLowPriorityStartupTasks {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   // Install overrides
   ios::provider::InstallOverrides();
 
@@ -256,6 +316,8 @@ static bool CustomLogHandler(int severity,
 
 - (void)loadDefaultProfile:
     (void (^)(BraveProfileController*))completionHandler {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   // Initialize and set the main browser state.
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profileManager = GetApplicationContext()->GetProfileManager();
@@ -283,6 +345,8 @@ static bool CustomLogHandler(int severity,
 #pragma mark -
 
 - (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_httpsUpgradeExceptionsService) {
     _httpsUpgradeExceptionsService =
         [[HTTPSUpgradeExceptionsService alloc] init];
@@ -291,6 +355,8 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveUserAgentExceptionsIOS*)braveUserAgentExceptions {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_braveUserAgentExceptions) {
     brave_user_agent::BraveUserAgentExceptions* brave_user_agent_exceptions =
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
@@ -306,6 +372,8 @@ static bool CustomLogHandler(int severity,
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                       installationDate:(NSDate*)installDate {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   _p3a_service = base::MakeRefCounted<p3a::P3AService>(
       *GetApplicationContext()->GetLocalState(),
       base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
@@ -324,6 +392,8 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveP3AUtils*)p3aUtils {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_p3aUtils) {
     _p3aUtils = [[BraveP3AUtils alloc]
         initWithLocalState:GetApplicationContext()->GetLocalState()

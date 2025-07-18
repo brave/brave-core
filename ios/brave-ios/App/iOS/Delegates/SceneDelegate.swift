@@ -131,7 +131,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     )
 
     Task { @MainActor in
-      await setupBraveCoreDependencies()
+      await startupBraveCore()
+
       let (profileController, profileState) = await loadDefaultProfile()
       Self.profileState = profileState
       let browserViewController = prepareBrowserViewController(
@@ -266,23 +267,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
 
-  @MainActor private func setupBraveCoreDependencies() async {
-    if Preferences.Chromium.lastVariationsSeedFetchDate.value == nil {
-      Preferences.Chromium.lastVariationsSeedFetchDate.value = Date()
-
-      // Fetch variations seed before Brave-Core is setup/loaded
-      // attachProfilesToAllConnectedScenes is called after AppInitStage::kVariationsSeed
-      let success = await BraveVariationsSeedFetcher().fetchSeed()
-      Logger.module.info("[Variations] - Seed Fetched: \(success)")
-      AppState.shared.state = .variationsLoaded
+  @MainActor private func startupBraveCore() async {
+    // Swift compiler bug causes the async version to fail compiling
+    await withCheckedContinuation { continuation in
+      AppState.shared.braveCore.startup(shouldFetchVariationsSeed: true) {
+        continuation.resume()
+      }
     }
 
     // If the profile was already loaded, we don't need to setup anything else
     if case .profileLoaded = AppState.shared.state {
       return
     }
-
-    AppState.shared.state = .variationsLoaded
 
     // Setup P3A
     if let installDate = Preferences.P3A.installationDate.value, AppConstants.isOfficialBuild {
@@ -294,10 +290,14 @@ extension SceneDelegate {
 
     // Finish setting up adblock
     Task(priority: .high) {
+      guard let adblockService = AppState.shared.braveCore.adblockService else {
+        fatalError("Adblock Service failed to initalize")
+      }
+
       // Start preparing the ad-block services right away
       // So it's ready a lot faster
       await LaunchHelper.shared.prepareAdBlockServices(
-        adBlockService: AppState.shared.braveCore.adblockService
+        adBlockService: adblockService
       )
     }
   }
@@ -439,7 +439,7 @@ extension SceneDelegate {
       if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
         // If P3A is not enabled, send the organic install code at daily pings which is BRV001
         // User has not opted in to share private and anonymous product insights
-        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
+        if AppState.shared.braveCore.p3aUtils?.isP3AEnabled == true {
           Task { @MainActor in
             do {
               try await attributionManager.handleSearchAdsInstallAttribution()
