@@ -107,7 +107,7 @@ const test = async (
   Config.buildConfig = buildConfig
   Config.update(options)
 
-  if (config.targetOS === 'ios' && config.targetEnvironment === 'device') {
+  if (Config.targetOS === 'ios' && Config.targetEnvironment === 'device') {
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
@@ -132,7 +132,11 @@ const buildTests = async (suite, config, options = {}) => {
   util.touchOverriddenFiles()
   util.touchGsutilChangeLogFile()
 
-  await util.buildTargets(config.buildTargets, config.defaultOptions, options.no_gn_gen)
+  await util.buildTargets(
+    config.buildTargets,
+    config.defaultOptions,
+    options.no_gn_gen,
+  )
 }
 
 const deleteFile = (filePath) => {
@@ -283,11 +287,15 @@ const runTests = (passthroughArgs, suite, config, options) => {
       fs.mkdirSync(path.join(outputDir, 'iossim'), { recursive: true })
       fs.mkdirSync(path.join(outputDir, 'output'), { recursive: true })
 
-      let xcode_build_version = options.ios_xcode_build_version
+      let xcodeBuildVersion = options.ios_xcode_build_version
 
-      if (xcode_build_version === undefined) {
-        xcode_build_version = util.run('xcodebuild',
-          ['-version']).stdout.toString().trim().split(' ').pop()
+      if (xcodeBuildVersion === undefined) {
+        xcodeBuildVersion = util
+          .run('xcodebuild', ['-version'])
+          .stdout.toString()
+          .trim()
+          .split(' ')
+          .pop()
       }
 
       let args = []
@@ -296,7 +304,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
       args.push('--iossim', `${outputDir}/iossim`)
       args.push('--out-dir', `${outputDir}/output`)
       args.push('--xctest')
-      args.push('--xcode-build-version', xcode_build_version)
+      args.push('--xcode-build-version', xcodeBuildVersion)
       if (config.targetEnvironment === 'simulator') {
         args.push('--platform', options.ios_simulator_platform || 'iPhone 16') // update as needed for version
         args.push('--version', options.ios_simulator_version || '18.4') // should match ios_deployment_target
