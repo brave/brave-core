@@ -59,5 +59,22 @@
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>
 </div>
+<!-- <if expr="is_win"> -->
+  <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
+    <settings-toggle-button id="windowsRecallDisabled"
+        class="cr-row"
+        pref="[[windowsRecallDisabledPref_]]"
+        on-settings-boolean-control-change="windowsRecallDisabledChange_"
+        label="$i18n{windowsRecallDisabledLabel}"
+        sub-label="$i18n{windowsRecallDisabledSubLabel}">
+        <template is="dom-if"
+                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabledPref_.value)]]">
+            <cr-button on-click="restartBrowser_" slot="more-actions">
+              $i18n{restart}
+            </cr-button>
+        </template>
+    </settings-toggle-button>
+  </template>
+<!-- </if> -->
 <settings-do-not-track-toggle id="doNotTrack" prefs="{{prefs}}">
 </settings-do-not-track-toggle>
