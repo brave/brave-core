@@ -68,6 +68,7 @@ void FullScreenshotter::CaptureScreenshots(
   capture_params.web_contents = web_contents;
   capture_params.persistence =
       paint_preview::RecordingPersistence::kMemoryBuffer;
+  capture_params.capture_links = false;
   CapturePaintPreview(
       capture_params,
       base::BindOnce(&FullScreenshotter::OnScreenshotCaptured,
