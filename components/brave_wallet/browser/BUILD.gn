@@ -655,6 +655,7 @@ source_set("unit_tests") {
     "cardano/cardano_hd_keyring_unittest.cc",
     "cardano/cardano_knapsack_solver_unittest.cc",
     "cardano/cardano_max_send_solver_unittest.cc",
+    "cardano/cardano_provider_impl_unittest.cc",
     "cardano/cardano_rpc_schema_unittest.cc",
     "cardano/cardano_rpc_unittest.cc",
     "cardano/cardano_transaction_serializer_unittest.cc",

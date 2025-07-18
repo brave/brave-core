@@ -1339,6 +1339,8 @@ void BraveWalletService::AddSignMessageRequest(
     request->id = sign_message_id_++;
   }
   sign_message_requests_.emplace_back(std::move(request), std::move(callback));
+
+  sign_message_added_callback_list_.Notify();
 }
 
 void BraveWalletService::AddSignMessageError(mojom::SignMessageErrorPtr error) {
@@ -1956,6 +1958,12 @@ BraveWalletService::GetTransactionSimulationOptInStatusSync() {
 void BraveWalletService::SetTransactionSimulationOptInStatus(
     mojom::BlowfishOptInStatus status) {
   ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
+}
+
+base::CallbackListSubscription
+BraveWalletService::RegisterSignMessageRequestAddedCallback(
+    base::RepeatingClosure cb) {
+  return sign_message_added_callback_list_.Add(std::move(cb));
 }
 
 }  // namespace brave_wallet

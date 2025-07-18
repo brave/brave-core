@@ -151,6 +151,22 @@ TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(CardanoWalletServiceUnitTest, GetUsedAddresses) {
+  SetupCardanoAccount();
+  auto addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
+  EXPECT_EQ(addresses.size(), 1u);
+  EXPECT_EQ(addresses[0]->address_string,
+            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetUnusedAddresses) {
+  SetupCardanoAccount();
+
+  EXPECT_EQ(0u,
+            cardano_wallet_service_->GetUnusedAddresses(account_id()).size());
+}
+
 TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   // TODO(https://github.com/brave/brave-browser/issues/45278): needs more tests
   // for all corner cases.
