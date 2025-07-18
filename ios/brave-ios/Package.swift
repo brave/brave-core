@@ -138,7 +138,7 @@ var package = Package(
     ),
     .target(
       name: "BraveShields",
-      dependencies: ["Strings", "Preferences", "BraveCore"],
+      dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -163,7 +163,7 @@ var package = Package(
     ),
     .target(
       name: "Data",
-      dependencies: ["BraveShields", "BraveShared", "Storage", "Strings", "Preferences", "Shared"],
+      dependencies: ["BraveShared", "Storage", "Strings", "Preferences", "Shared"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -391,7 +391,7 @@ var package = Package(
       dependencies: ["Storage", "TestHelpers"],
       resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]
     ),
-    .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers"]),
+    .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers", "BraveShields"]),
     .testTarget(
       name: "ClientTests",
       dependencies: ["Brave", "BraveStrings", "TestHelpers"],
@@ -416,7 +416,7 @@ var package = Package(
       name: "Playlist",
       dependencies: [
         "Data", "BraveShared", "Shared", "Storage", "Preferences", "Strings", "CodableHelpers",
-        "UserAgent", "Then",
+        "UserAgent", "Then", "BraveShields",
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -443,7 +443,7 @@ var package = Package(
       name: "BrowserMenu",
       dependencies: [
         "DesignSystem", "BraveUI", "Preferences", "Strings", "BraveStrings", "BraveVPN",
-        "GuardianConnect", "BraveWallet",
+        "GuardianConnect", "BraveWallet", "BraveShields",
       ]
     ),
     .target(
@@ -505,6 +505,7 @@ var braveTarget: PackageDescription.Target = .target(
     "PlaylistUI",
     "BrowserMenu",
     "Web",
+    "BraveShields",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",

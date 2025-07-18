@@ -13,11 +13,19 @@ import Preferences
 import Shared
 import Strings
 import SwiftUI
+import Web
 
 struct SubmitReportView: View {
   @Environment(\.dismiss) private var dismiss: DismissAction
   let url: URL
   let isPrivateBrowsing: Bool
+  private weak var tab: (any TabState)?
+
+  init(url: URL, isPrivateBrowsing: Bool, tab: (any TabState)?) {
+    self.url = url
+    self.isPrivateBrowsing = isPrivateBrowsing
+    self.tab = tab
+  }
 
   @ScaledMetric private var textEditorHeight = 80.0
   @State private var additionalDetails = ""
@@ -128,11 +136,6 @@ struct SubmitReportView: View {
   }
 
   @MainActor func createAndSubmitReport() async {
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-    var blockScripts: String?
-    if let noScript = domain.shield_noScript {
-      blockScripts = noScript == 1 ? "true" : "false"
-    }
     guard
       let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
         privateMode: isPrivateBrowsing
@@ -145,6 +148,20 @@ struct SubmitReportView: View {
       AppInfo.appVersion,
       AppInfo.buildNumber
     )
+    let isBlockScriptsEnabled =
+      (tab?.braveShieldsHelper?.isShieldExpected(
+        for: tab?.visibleURL,
+        isPrivate: isPrivateBrowsing,
+        shield: .noScript,
+        considerAllShieldsOption: false
+      ) ?? false)
+    let isBlockFingerprintingEnabled =
+      (tab?.braveShieldsHelper?.isShieldExpected(
+        for: tab?.visibleURL,
+        isPrivate: isPrivateBrowsing,
+        shield: .fpProtection,
+        considerAllShieldsOption: false
+      ) ?? true)
     let adblkList = FilterListStorage.shared.filterLists
       .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
       .joined(separator: ",")
@@ -153,9 +170,19 @@ struct SubmitReportView: View {
         channel: AppConstants.buildChannel.webCompatReportName,
         braveVersion: version,
         reportUrl: url.absoluteString,
-        shieldsEnabled: String(!domain.areAllShieldsOff),
-        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
-        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        shieldsEnabled: String(
+          tab?.braveShieldsHelper?.isBraveShieldsEnabled(
+            for: tab?.visibleURL,
+            isPrivate: isPrivateBrowsing
+          ) ?? true
+        ),
+        adBlockSetting: (tab?.braveShieldsHelper?.shieldLevel(
+          for: tab?.visibleURL,
+          isPrivate: isPrivateBrowsing,
+          considerAllShieldsOption: false
+        ) ?? .standard).reportLabel,
+        fpBlockSetting: isBlockFingerprintingEnabled
+          ? ShieldLevel.standard.reportLabel : ShieldLevel.disabled.reportLabel,
         adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
@@ -164,7 +191,7 @@ struct SubmitReportView: View {
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
-        blockScripts: blockScripts,
+        blockScripts: String(isBlockScriptsEnabled),
         adBlockComponentsVersion: nil,
         screenshotPng: nil,
         webcompatReporterErrors: nil
@@ -176,7 +203,8 @@ struct SubmitReportView: View {
 #Preview {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
-    isPrivateBrowsing: false
+    isPrivateBrowsing: false,
+    tab: TabStateFactory.create(with: .init())
   )
 }
 

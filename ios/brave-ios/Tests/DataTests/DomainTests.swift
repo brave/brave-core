@@ -3,12 +3,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
-import BraveShields
 import CoreData
 import Preferences
 import TestHelpers
 import XCTest
 
+@testable import BraveShields
 @testable import Data
 
 class DomainTests: CoreDataTestCase {
