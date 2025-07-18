@@ -121,6 +121,7 @@ void BackupExtensionSettingsOnFileThread(
   if (base::PathExists(local_settings_path)) {
     const auto local_settings_backup_path =
         backup_path.Append(extensions::kLocalExtensionSettingsDirectoryName);
+    base::DeletePathRecursively(local_settings_backup_path);
     base::CreateDirectory(local_settings_backup_path);
     base::CopyDirectory(local_settings_path, local_settings_backup_path, true);
   }
@@ -130,8 +131,10 @@ void BackupExtensionSettingsOnFileThread(
 
   GetIndexedSettings(cws_extension_id, profile_dir)
       .ForEach([&indexeddb_settings_backup_path](const base::FilePath& path) {
-        base::CopyDirectory(
-            path, indexeddb_settings_backup_path.Append(path.BaseName()), true);
+        const auto destination =
+            indexeddb_settings_backup_path.Append(path.BaseName());
+        base::DeletePathRecursively(destination);
+        base::CopyDirectory(path, destination, true);
       });
 }
 
