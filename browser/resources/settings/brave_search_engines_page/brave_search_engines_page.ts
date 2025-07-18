@@ -15,7 +15,7 @@ import {loadTimeData} from '../i18n_setup.js'
 import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_page_browser_proxy.js'
 import {getTemplate} from './brave_search_engines_page.html.js'
 import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
-import type {SearchEngine} from '../search_engines_page/search_engines_browser_proxy.js'
+import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
 
 const BraveSearchEnginesPageBase =
   WebUiListenerMixin(I18nMixin(RouteObserverMixin(PolymerElement)))

@@ -16,7 +16,7 @@ import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener
 import {assert} from 'chrome://resources/js/assert.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import type {SearchEngine} from '../search_engines_page/search_engines_browser_proxy.js'
+import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
 import type {BraveSearchEnginesPageBrowserProxy} from './brave_search_engines_page_browser_proxy.js'
 import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_page_browser_proxy.js'
 
