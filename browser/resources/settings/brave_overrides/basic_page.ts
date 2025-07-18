@@ -19,6 +19,7 @@ import '../brave_wallet_page/brave_wallet_page.js'
 import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
+import '../ad_block_only_mode_page/ad_block_only_mode_page.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
@@ -278,6 +279,19 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionAdBlockOnlyMode = document.createElement('template')
+      sectionAdBlockOnlyMode.setAttribute('is', 'dom-if')
+      sectionAdBlockOnlyMode.setAttribute('restamp', 'true')
+      sectionAdBlockOnlyMode.setAttribute('if', '[[showPage_(pageVisibility.adBlockOnlyMode)]]')
+      sectionAdBlockOnlyMode.content.appendChild(createNestedSectionElement(
+        'adBlockOnlyMode',
+        'shields',
+        'adBlockOnlyMode',
+        'settings-shields-lite-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', 'true')
@@ -440,6 +454,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionSpeedreader)
       // Insert shields
       last = last.insertAdjacentElement('afterend', sectionShields)
+      // Insert nested ad block only mode under shields
+      last = last.insertAdjacentElement('afterend', sectionAdBlockOnlyMode)
       // Insert nested Social Blocking under shields
       last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
       // Move privacy section to after shields

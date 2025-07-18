@@ -16,6 +16,7 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -23,6 +24,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
@@ -66,6 +68,44 @@ void BraveShieldsTabHelper::DidFinishNavigation(
       webcompat_features_invoked_.clear();
     }
     ClearAllResourcesList();
+
+    MaybeNotifyAfterRepeatedReloads(navigation_handle);
+  }
+}
+
+void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
+    content::NavigationHandle* navigation_handle) {
+  last_navigated_url_ = navigation_handle->GetURL();
+
+  if (ignore_force_reload_web_contents_) {
+    ignore_force_reload_web_contents_ = false;
+    return;
+  }
+
+  if (GetBraveShieldsAdBlockOnlyModeEnabled()) {
+    // Do not notify if shields ad block only mode is enabled.
+    reloads_ = 0;
+    return;
+  }
+
+  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    // Do not notify if the navigation is a restore.
+    return;
+  }
+
+  if (!PageTransitionCoreTypeIs(navigation_handle->GetPageTransition(),
+                                ui::PAGE_TRANSITION_RELOAD)) {
+    // Do not notify if the navigation is not a reload.
+    reloads_ = 0;
+    return;
+  }
+
+  reloads_++;
+  if (reloads_ >= 3 && reloads_ <= 5) {
+    // If the page is reloaded between 3 and 5 times, notify observers.
+    for (Observer& observer : observer_list_) {
+      observer.OnAfterRepeatedReloads();
+    }
   }
 }
 
@@ -100,6 +140,8 @@ void BraveShieldsTabHelper::OnFaviconUpdated(
 }
 
 void BraveShieldsTabHelper::ReloadWebContents() {
+  ignore_force_reload_web_contents_ = true;
+
   web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
@@ -183,6 +225,32 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
                                         g_browser_process->local_state());
   ReloadWebContents();
+}
+
+bool BraveShieldsTabHelper::GetBraveShieldsAdBlockOnlyModeEnabled() {
+  // TODO(tmancey): See `brave_shields::GetBraveShieldsEnabled` as we need to
+  // decide if we also need the `base::FeatureList::IsEnabled` check.
+  if (GetCurrentSiteURL().is_valid() &&
+      !GetCurrentSiteURL().SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  return profile_prefs->GetBoolean(kShieldsAdBlockOnlyModeEnabled);
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
+    bool is_enabled) {
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  profile_prefs->SetBoolean(kShieldsAdBlockOnlyModeEnabled, is_enabled);
+
+  for (Observer& obs : observer_list_) {
+    obs.OnShieldsAdBlockOnlyModeEnabledChanged();
+  }
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() {
