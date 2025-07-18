@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/visibility.h"
@@ -44,9 +45,13 @@ PlaylistSidePanelCoordinator::Proxy::GetCoordinator() {
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator::Proxy);
 
-PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(Browser* browser)
-    : BrowserUserData<PlaylistSidePanelCoordinator>(*browser),
-      browser_(browser) {}
+PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(
+    BrowserWindowInterface* browser,
+    sidebar::SidebarController* sidebar_controller,
+    Profile* profile)
+    : browser_(browser),
+      sidebar_controller_(sidebar_controller),
+      profile_(profile) {}
 
 PlaylistSidePanelCoordinator::~PlaylistSidePanelCoordinator() = default;
 
@@ -60,8 +65,7 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 void PlaylistSidePanelCoordinator::ActivatePanel() {
-  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
-  sidebar_controller->ActivatePanelItem(
+  sidebar_controller_->ActivatePanelItem(
       sidebar::SidebarItem::BuiltInItemType::kPlaylist);
 }
 
@@ -84,10 +88,11 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
   const bool should_create_contents_wrapper = !contents_wrapper_;
   if (should_create_contents_wrapper) {
     contents_wrapper_ = std::make_unique<PlaylistContentsWrapper>(
-        GURL(kPlaylistURL), GetBrowser().profile(),
-        IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
+        GURL(kPlaylistURL), profile_, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
         /*esc_closes_ui=*/false,
-        static_cast<BrowserView*>(GetBrowser().window()), this);
+        BrowserView::GetBrowserViewForBrowser(
+            browser_->GetBrowserForMigrationOnly()),
+        this);
     contents_wrapper_->ReloadWebContents();
 
     Proxy::CreateForWebContents(contents_wrapper_->web_contents(),
@@ -104,9 +109,10 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
         content::Visibility::VISIBLE);
   }
 
-  auto web_view = std::make_unique<PlaylistSidePanelWebView>(
-      &GetBrowser(), scope, base::DoNothing(), contents_wrapper_.get());
-  side_panel_web_view_ = web_view->GetWeakPtr();
+  auto web_view = std::make_unique<SidePanelWebUIView>(
+      scope, /*on_show_cb=*/base::RepeatingClosure(),
+      /*close_cb=*/base::DoNothing(), contents_wrapper_.get());
+  side_panel_web_view_ = web_view.get();
 
   if (!should_create_contents_wrapper) {
     // SidePanelWebView's initial visibility is hidden. Thus, we need to
@@ -121,17 +127,15 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
 }
 
 BrowserView* PlaylistSidePanelCoordinator::GetBrowserView() {
-  return static_cast<BrowserView*>(GetBrowser().window());
+  return BrowserView::GetBrowserViewForBrowser(
+      browser_->GetBrowserForMigrationOnly());
 }
 
 void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
-  DestroyWebContentsIfNeeded();
-
   view_observation_.Reset();
-}
 
-void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
   DCHECK(contents_wrapper_);
+  side_panel_web_view_ = nullptr;
 
   if (is_audible_for_testing_) {
     CHECK_IS_TEST();
@@ -142,5 +146,3 @@ void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
     contents_wrapper_.reset();
   }
 }
-
-BROWSER_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator);

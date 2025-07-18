@@ -14,9 +14,12 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
@@ -68,21 +71,23 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
-  BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
-      browser_view);
+  if (sidebar::CanUseSidebar(browser_view->browser())) {
+    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
+        browser_view->browser(), browser_view->GetProfile());
+    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      playlist_side_panel_coordinator_ =
+          std::make_unique<PlaylistSidePanelCoordinator>(
+              browser_view->browser(), sidebar_controller_.get(),
+              browser_view->GetProfile());
+    }
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
-}
 
-void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
-  BrowserWindowFeatures_ChromiumImpl::InitPostWindowConstruction(browser);
-
-  if (sidebar::CanUseSidebar(browser)) {
-    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
-        browser, browser->profile());
-  }
+  BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
+      browser_view);
 }
 
 void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
@@ -98,5 +103,6 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
 #endif
   if (sidebar_controller_) {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();
+    playlist_side_panel_coordinator_.reset();
   }
 }
