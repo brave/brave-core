@@ -42,7 +42,8 @@ export default {
         isSelectingRegion: false,
         connectionStatus: select('Current Status', ConnectionState, ConnectionState.DISCONNECTED),
         regions: mockRegionList,
-        currentRegion: mockRegionList[2]
+        currentRegion: mockRegionList[2],
+        smartProxyRoutingEnabled: boolean('smartProxyRoutingEnabled', true)
       })
 
       return (
