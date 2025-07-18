@@ -149,7 +149,9 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
   if (tabs::features::IsBraveSplitViewEnabled()) {
     auto* split_view_browser_data =
         browser->GetFeatures().split_view_browser_data();
-    CHECK(split_view_browser_data);
+    if (!split_view_browser_data) {
+      return bounds.origin();
+    }
 
     auto tile = split_view_browser_data->GetTile(tab_handle);
     if (!tile) {

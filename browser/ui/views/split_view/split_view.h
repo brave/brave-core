@@ -123,6 +123,7 @@ class SplitView : public views::View,
   void OnTileTabs(const TabTile& tile) override;
   void OnDidBreakTile(const TabTile& tile) override;
   void OnSwapTabsInTile(const TabTile& tile) override;
+  void OnWillDeleteBrowserData() override;
 
   // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override;

@@ -44,6 +44,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return rewards_panel_coordinator_.get();
   }
   BraveVPNController* brave_vpn_controller();
+
+  // Checks this is not null before using it always because this is reset
+  // at the very early stage of browser window destruction. That means this
+  // could be null when most of UI is live.
   SplitViewBrowserData* split_view_browser_data() {
     return split_view_browser_data_.get();
   }

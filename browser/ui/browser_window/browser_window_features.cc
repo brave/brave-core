@@ -86,6 +86,12 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
 }
 
 void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  // SplitView depends on some browser window features(ex, fullscreen
+  // controller) that destroyed via
+  // BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction().
+  // So we need to reset it before they're gone.
+  split_view_browser_data_.reset();
+
   BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_.reset();
