@@ -211,7 +211,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
     self.suggestedQuestions = state.suggestedQuestions
     self.suggestionsStatus = state.suggestionStatus
     self.siteInfo = state.associatedContent
-    self._shouldSendPageContents = state.shouldSendContent
+    self._shouldSendPageContents = state.associatedContent.count == 1
     self.apiError = state.error
     self.models = state.allModels
 
@@ -340,11 +340,10 @@ extension AIChatViewModel: AIChatDelegate {
   }
 
   public func onPageHasContent(
-    _ siteInfo: [AiChat.AssociatedContent],
-    shouldSendContent shouldSendPageContents: Bool
+    _ siteInfo: [AiChat.AssociatedContent]
   ) {
     self.siteInfo = siteInfo
-    self._shouldSendPageContents = shouldSendPageContents
+    self._shouldSendPageContents = siteInfo.count == 1
   }
 
   public func onServiceStateChanged(_ state: AiChat.ServiceState) {

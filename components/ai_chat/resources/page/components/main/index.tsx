@@ -267,7 +267,7 @@ function Main() {
                       {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
                       {SUGGESTION_STATUS_SHOW_BUTTON.has(
                         conversationContext.suggestionStatus
-                      ) && conversationContext.shouldSendPageContents && (
+                      ) && conversationContext.associatedContentInfo.length > 0 && (
                           <GenerateSuggestionsButton />
                         )}
                     </div>

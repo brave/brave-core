@@ -512,7 +512,6 @@ struct ConversationState {
   array<string> suggested_questions;
   SuggestionGenerationStatus suggestion_status;
   array<AssociatedContent> associated_content;
-  bool should_send_content;
   APIError error;
   // Indicates whether the conversation is temporary which would be in-memory
   // only and not persisted in database.
@@ -576,9 +575,7 @@ interface ConversationHandler {
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
   GetAssociatedContentInfo() => (
-      array<AssociatedContent> associated_content, bool should_send_content);
-
-  SetShouldSendPageContents(bool should_send);
+      array<AssociatedContent> associated_content);
 
   GetAPIResponseError() => (APIError error);
   RetryAPIRequest();
@@ -650,7 +647,7 @@ interface ConversationUI {
       array<string> questions, SuggestionGenerationStatus status);
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
-  OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content, bool should_send_page_contents);
+  OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);
   OnConversationDeleted();
 };
 

@@ -46,7 +46,6 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   shouldDisableUserInput: boolean
   shouldShowLongPageWarning: boolean
   shouldShowLongConversationInfo: boolean
-  shouldSendPageContents: boolean
   inputText: string
   selectedActionType: Mojom.ActionType | undefined
   isToolsMenuOpen: boolean
@@ -56,7 +55,6 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   switchToBasicModel: () => void
   generateSuggestedQuestions: () => void
   dismissLongConversationInfo: () => void
-  updateShouldSendPageContents: (shouldSend: boolean) => void
   retryAPIRequest: () => void
   handleResetError: () => void
   handleStopGenerating: () => Promise<void>
@@ -102,7 +100,6 @@ export const defaultContext: ConversationContext = {
   currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
-  shouldSendPageContents: true,
   inputText: '',
   selectedActionType: undefined,
   isToolsMenuOpen: false,
@@ -112,7 +109,6 @@ export const defaultContext: ConversationContext = {
   switchToBasicModel: () => { },
   generateSuggestedQuestions: () => { },
   dismissLongConversationInfo: () => { },
-  updateShouldSendPageContents: () => { },
   retryAPIRequest: () => { },
   handleResetError: () => { },
   handleStopGenerating: async () => { },
@@ -126,7 +122,7 @@ export const defaultContext: ConversationContext = {
   showAttachments: false,
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
-  getScreenshots: () => {},
+  getScreenshots: () => { },
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
@@ -221,7 +217,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         suggestedQuestions,
         suggestionStatus,
         associatedContent,
-        shouldSendContent,
         error,
         temporary
       } } = await conversationHandler.getState()
@@ -232,7 +227,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         suggestedQuestions,
         suggestionStatus,
         associatedContentInfo: associatedContent,
-        shouldSendPageContents: shouldSendContent,
         currentError: error,
         isTemporaryChat: temporary
       })
@@ -281,12 +275,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     id = callbackRouter.onAssociatedContentInfoChanged.addListener(
       (
-        associatedContentInfo: Mojom.AssociatedContent[],
-        shouldSendPageContents: boolean
+        associatedContentInfo: Mojom.AssociatedContent[]
       ) => {
         setPartialContext({
-          associatedContentInfo,
-          shouldSendPageContents
+          associatedContentInfo
         })
       }
     )
@@ -357,9 +349,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     if (options) {
       totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
-      totalCharLimit += context.shouldSendPageContents
-        ? options.maxAssociatedContentLength ?? 0
-        : 0
+      if (context.associatedContentInfo.length > 0) {
+        totalCharLimit += options.maxAssociatedContentLength ?? 0
+      }
     }
 
     return !hasDismissedLongConversationInfo
@@ -394,7 +386,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   React.useEffect(() => {
     try {
       getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
-    } catch (e) {}
+    } catch (e) { }
   }, [context.selectedActionType])
 
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
@@ -503,43 +495,43 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const processUploadedImage = (images: Mojom.UploadedFile[]) => {
-        const totalUploadedImages = context.conversationHistory.reduce(
-          (total, turn) => total +
-            (getImageFiles(turn.uploadedFiles)?.length || 0),
-          0
-        )
-        const currentPendingImages = context.pendingMessageImages.length
-        const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
-        const newImages = images.slice(0, Math.max(0, maxNewImages))
+    const totalUploadedImages = context.conversationHistory.reduce(
+      (total, turn) => total +
+        (getImageFiles(turn.uploadedFiles)?.length || 0),
+      0
+    )
+    const currentPendingImages = context.pendingMessageImages.length
+    const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
+    const newImages = images.slice(0, Math.max(0, maxNewImages))
 
-        if (newImages.length > 0) {
-          setPartialContext({
-            isUploadingFiles: false,
-            pendingMessageImages:
-              [...context.pendingMessageImages, ...newImages]
-          })
-        }
+    if (newImages.length > 0) {
+      setPartialContext({
+        isUploadingFiles: false,
+        pendingMessageImages:
+          [...context.pendingMessageImages, ...newImages]
+      })
     }
+  }
 
   const getScreenshots = () => {
     setPartialContext({
       isUploadingFiles: true
     })
     conversationHandler.getScreenshots()
-    .then(({screenshots}) => {
-      if (screenshots) {
-        processUploadedImage(screenshots)
-      }
-    })
+      .then(({ screenshots }) => {
+        if (screenshots) {
+          processUploadedImage(screenshots)
+        }
+      })
   }
 
   const uploadImage = (useMediaCapture: boolean) => {
     aiChatContext.uiHandler?.uploadImage(useMediaCapture)
-    .then(({uploadedImages}) => {
-      if (uploadedImages) {
-        processUploadedImage(uploadedImages)
-      }
-    })
+      .then(({ uploadedImages }) => {
+        if (uploadedImages) {
+          processUploadedImage(uploadedImages)
+        }
+      })
   }
 
   const removeImage = (index: number) => {
@@ -648,7 +640,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
     resetSelectedActionType,
-    updateShouldSendPageContents: (shouldSend) => conversationHandler.setShouldSendPageContents(shouldSend),
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
     submitInputTextToAPI,
