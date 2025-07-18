@@ -5,7 +5,16 @@
 
 #include "chrome/browser/download/download_item_model.h"
 
+// Add switch-case handling for Brave-specific commands.
+// These cases are not used by the DownloadItemModel, so just fall through.
+#define EDIT_WITH_MEDIA_APP               \
+  EDIT_WITH_MEDIA_APP:                    \
+  case DownloadCommands::kRemoveFromList: \
+  case DownloadCommands::kDeleteLocalFile
+
 #include "src/chrome/browser/download/download_item_model.cc"
+
+#undef EDIT_WITH_MEDIA_APP
 
 void DownloadItemModel::DeleteLocalFile() {
   // Passing base::DoNothing() as a callback because we don't have follow-up

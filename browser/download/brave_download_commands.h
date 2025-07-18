@@ -13,16 +13,6 @@
 // DownloadShelfView.
 class BraveDownloadCommands : public DownloadCommands {
  public:
-  // Create brave specific commands set instead of appending to
-  // DownloadCommands::Command to avoid many upstream changes.
-  // Removes the download item from the list. The actual file is not deleted.
-  // Used by download shelf view.
-  static constexpr Command kRemoveFromList = Command(Command::kMaxValue + 1);
-
-  // Remove downloaded file from disk and and remove the download item from the
-  // list. Used by download bubble view.
-  static constexpr Command kDeleteLocalFile = Command(Command::kMaxValue + 2);
-
   using DownloadCommands::DownloadCommands;
   ~BraveDownloadCommands() override = default;
 
