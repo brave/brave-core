@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mockAccount, mockNetwork } from '../../common/constants/mocks'
+import { mockAccount } from '../../common/constants/mocks'
 import { BraveWallet } from '../../constants/types'
-import { mockEthMainnet } from './mock-networks'
-import { mockOriginInfo } from './mock-origin-info'
+import { mockEthMainnet, mockBNBChainNetwork } from './mock-networks'
+import { mockOriginInfo, mockUniswapOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
 
 export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
@@ -77,8 +77,8 @@ export const mockSignMessageError: BraveWallet.SignMessageError = {
 }
 
 export const mockAddChainRequest = {
-  originInfo: mockOriginInfo,
-  networkInfo: mockNetwork,
+  originInfo: mockUniswapOriginInfo,
+  networkInfo: mockBNBChainNetwork,
 }
 
 export const mockGetEncryptionPublicKeyRequest: //
@@ -97,6 +97,6 @@ export const mockDecryptRequest = {
 
 export const mockSwitchChainRequest = {
   requestId: '',
-  originInfo: mockOriginInfo,
-  chainId: '',
+  originInfo: mockUniswapOriginInfo,
+  chainId: BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
 }

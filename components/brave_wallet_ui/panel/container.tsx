@@ -17,7 +17,7 @@ import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import { SignPanel } from '../components/extension/sign-panel/index'
 import {
   AllowAddChangeNetworkPanel, //
-} from '../components/extension/allow-add-change-network-panel/index'
+} from '../components/extension/allow_add_change_network_panel/allow_add_change_network_panel'
 import {
   ConnectHardwareWalletPanel, //
 } from '../components/extension/connect-hardware-wallet-panel/index'
@@ -208,20 +208,22 @@ function Container() {
 
   if (addChainRequest) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
-        </LongWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
       </PanelWrapper>
     )
   }
 
   if (switchChainRequest) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
-        </LongWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
       </PanelWrapper>
     )
   }
