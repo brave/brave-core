@@ -29,14 +29,10 @@ class PasswordInit {
 
   void Send(const std::string& email,
             const std::string& blinded_message,
-            base::OnceCallback<void(const std::string&)> callback);
+            api_request_helper::APIRequestHelper::ResultCallback callback);
 
  private:
-  void OnResponse(base::OnceCallback<void(const std::string&)> callback,
-                  api_request_helper::APIRequestResult result);
-
   api_request_helper::APIRequestHelper api_request_helper_;
-  base::WeakPtrFactory<PasswordInit> weak_factory_{this};
 };
 
 }  // namespace brave_account::endpoints

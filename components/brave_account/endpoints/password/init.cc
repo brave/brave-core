@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
@@ -50,7 +49,7 @@ PasswordInit::~PasswordInit() = default;
 
 void PasswordInit::Send(const std::string& email,
                         const std::string& blinded_message,
-                        base::OnceCallback<void(const std::string&)> callback) {
+                        api_request_helper::APIRequestHelper::ResultCallback callback) {
   base::Value::Dict dict;
   dict.Set("blindedMessage", blinded_message);
   dict.Set("newAccountEmail", email);
@@ -64,39 +63,8 @@ void PasswordInit::Send(const std::string& email,
                {url::kHttpsScheme, url::kStandardSchemeSeparator,
                 brave_domains::GetServicesDomain(kPasswordInitHostnamePart)}))
           .Resolve(kPasswordInitPath);
-  api_request_helper_.Request(
-      "POST", endpoint_url, json, "application/json",
-      base::BindOnce(&PasswordInit::OnResponse, weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
-}
-
-void PasswordInit::OnResponse(
-    base::OnceCallback<void(const std::string&)> callback,
-    api_request_helper::APIRequestResult result) {
-  DVLOG(0) << result.response_code();
-  DVLOG(0) << result.value_body();
-  if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-    const std::string* serialized_response =
-        result.value_body().GetDict().FindString("serializedResponse");
-    const std::string* verification_token =
-        result.value_body().GetDict().FindString("verificationToken");
-
-    // Create a combined response with both serialized response and verification
-    // token
-    base::Value::Dict response_dict;
-    if (serialized_response) {
-      response_dict.Set("serializedResponse", *serialized_response);
-    }
-    if (verification_token) {
-      response_dict.Set("verificationToken", *verification_token);
-    }
-
-    std::string combined_response;
-    base::JSONWriter::Write(response_dict, &combined_response);
-    std::move(callback).Run(combined_response);
-  } else {
-    std::move(callback).Run("");
-  }
+  api_request_helper_.Request("POST", endpoint_url, json, "application/json",
+                              std::move(callback));
 }
 
 }  // namespace brave_account::endpoints

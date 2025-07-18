@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
@@ -48,9 +47,10 @@ PasswordFinalize::PasswordFinalize(
 
 PasswordFinalize::~PasswordFinalize() = default;
 
-void PasswordFinalize::Send(const std::string& verification_token,
-                            const std::string& serialized_record,
-                            base::OnceCallback<void(bool)> callback) {
+void PasswordFinalize::Send(
+    const std::string& verification_token,
+    const std::string& serialized_record,
+    api_request_helper::APIRequestHelper::ResultCallback callback) {
   base::Value::Dict dict;
   dict.Set("serializedRecord", serialized_record);
 
@@ -66,18 +66,8 @@ void PasswordFinalize::Send(const std::string& verification_token,
                          brave_domains::GetServicesDomain(
                              kPasswordFinalizeHostnamePart)}))
           .Resolve(kPasswordFinalizePath);
-  api_request_helper_.Request(
-      "POST", endpoint_url, json, "application/json",
-      base::BindOnce(&PasswordFinalize::OnResponse, weak_factory_.GetWeakPtr(),
-                     std::move(callback)),
-      headers);
-}
-
-void PasswordFinalize::OnResponse(base::OnceCallback<void(bool)> callback,
-                                  api_request_helper::APIRequestResult result) {
-  DVLOG(0) << result.response_code();
-  DVLOG(0) << result.value_body();
-  std::move(callback).Run(result.Is2XXResponseCode());
+  api_request_helper_.Request("POST", endpoint_url, json, "application/json",
+                              std::move(callback), headers);
 }
 
 }  // namespace brave_account::endpoints

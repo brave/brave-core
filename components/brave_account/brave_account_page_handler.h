@@ -19,7 +19,7 @@ class BraveAccountPageHandler : public brave_account::mojom::PageHandler {
  public:
   BraveAccountPageHandler(
       brave_account::BraveAccountService* brave_account_service,
-      mojo::PendingReceiver<brave_account::mojom::PageHandler> receiver);
+      mojo::PendingReceiver<brave_account::mojom::PageHandler> pending_receiver);
 
   BraveAccountPageHandler(const BraveAccountPageHandler&) = delete;
   BraveAccountPageHandler& operator=(const BraveAccountPageHandler&) = delete;

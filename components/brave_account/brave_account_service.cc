@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "brave/components/brave_account/endpoints/password/finalize.h"
 #include "brave/components/brave_account/endpoints/password/init.h"
@@ -44,43 +43,43 @@ void BraveAccountService::RegisterInitialize(
 void BraveAccountService::RegisterFinalize(
     const std::string& serialized_record,
     base::OnceCallback<void(bool)> callback) {
-  std::string verification_token = pref_service_->GetString(kVerificationToken);
   password_finalize_->Send(
-      verification_token, serialized_record,
+      pref_service_->GetString(kVerificationToken), serialized_record,
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::OnRegisterInitialize(
     base::OnceCallback<void(const std::string&)> callback,
-    const std::string& serialized_response) {
-  // Parse verification token from the response and save it to preferences
-  if (!serialized_response.empty()) {
-    auto parsed_response = base::JSONReader::Read(serialized_response);
-    if (parsed_response && parsed_response->is_dict()) {
-      const std::string* verification_token =
-          parsed_response->GetDict().FindString("verificationToken");
-      if (verification_token && !verification_token->empty()) {
-        pref_service_->SetString(kVerificationToken, *verification_token);
-      }
+    api_request_helper::APIRequestResult result) {
+  auto& body = result.value_body();
+  DVLOG(0) << result.response_code();
+  DVLOG(0) << body;
 
-      // Extract the serialized response for the callback
-      const std::string* response =
-          parsed_response->GetDict().FindString("serializedResponse");
-      if (response) {
-        std::move(callback).Run(*response);
-        return;
-      }
-    }
+  if (!result.Is2XXResponseCode() || !body.is_dict()) {
+    return std::move(callback).Run("");
   }
 
-  std::move(callback).Run(serialized_response);
+  const std::string* verification_token =
+      body.GetDict().FindString("verificationToken");
+  const std::string* serialized_response =
+      body.GetDict().FindString("serializedResponse");
+
+  if (!verification_token || verification_token->empty() ||
+      !serialized_response || serialized_response->empty()) {
+    return std::move(callback).Run("");
+  }
+
+  pref_service_->SetString(kVerificationToken, *verification_token);
+  std::move(callback).Run(*serialized_response);
 }
 
 void BraveAccountService::OnRegisterFinalize(
     base::OnceCallback<void(bool)> callback,
-    bool success) {
-  std::move(callback).Run(success);
+    api_request_helper::APIRequestResult result) {
+  DVLOG(0) << result.response_code();
+  DVLOG(0) << result.value_body();
+  std::move(callback).Run(result.Is2XXResponseCode());
 }
 
 }  // namespace brave_account

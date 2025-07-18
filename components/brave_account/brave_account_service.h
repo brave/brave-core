@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
@@ -49,10 +50,10 @@ class BraveAccountService : public KeyedService {
  private:
   void OnRegisterInitialize(
       base::OnceCallback<void(const std::string&)> callback,
-      const std::string& serialized_response);
+      api_request_helper::APIRequestResult result);
 
   void OnRegisterFinalize(base::OnceCallback<void(bool)> callback,
-                          bool success);
+                          api_request_helper::APIRequestResult result);
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

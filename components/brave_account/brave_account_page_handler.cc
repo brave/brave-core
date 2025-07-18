@@ -12,9 +12,9 @@
 
 BraveAccountPageHandler::BraveAccountPageHandler(
     brave_account::BraveAccountService* brave_account_service,
-    mojo::PendingReceiver<brave_account::mojom::PageHandler> receiver)
+    mojo::PendingReceiver<brave_account::mojom::PageHandler> pending_receiver)
     : brave_account_service_(brave_account_service),
-      receiver_(this, std::move(receiver)) {}
+      receiver_(this, std::move(pending_receiver)) {}
 
 BraveAccountPageHandler::~BraveAccountPageHandler() = default;
 
