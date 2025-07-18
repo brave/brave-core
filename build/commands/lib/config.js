@@ -965,6 +965,10 @@ Config.prototype.update = function (options) {
     this.isUniversalBinary = true
   }
 
+  if (options.target_cpu) {
+    options.target_arch = options.target_cpu
+  }
+
   if (options.target_arch === 'x86') {
     this.targetArch = options.target_arch
     this.gypTargetArch = 'ia32'

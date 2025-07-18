@@ -611,8 +611,9 @@ const util = {
   buildTargets: async (
     targets = config.buildTargets,
     options = config.defaultOptions,
+    no_gn_gen = false
   ) => {
-    if (options.no_gn_gen === undefined) {
+    if (!no_gn_gen) {
       await util.generateNinjaFiles()
     }
     assert(Array.isArray(targets))

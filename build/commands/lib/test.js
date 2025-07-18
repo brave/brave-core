@@ -128,7 +128,7 @@ const buildTests = async (suite, config, options = {}) => {
   util.touchOverriddenFiles()
   util.touchGsutilChangeLogFile()
 
-  await util.buildTargets()
+  await util.buildTargets(config.buildTargets, config.defaultOptions, options.no_gn_gen)
 }
 
 const deleteFile = (filePath) => {
@@ -279,15 +279,26 @@ const runTests = (passthroughArgs, suite, config, options) => {
       fs.mkdirSync(path.join(outputDir, 'iossim'), { recursive: true })
       fs.mkdirSync(path.join(outputDir, 'output'), { recursive: true })
 
+      let xcode_build_version = options.ios_xcode_build_version
+
+      if (xcode_build_version === undefined) {
+        xcode_build_version = util.run('xcodebuild',
+          ['-version']).stdout.toString().trim().split(' ').pop()
+      }
+
       let args = []
       args.push('--app', getTestBinary(Config, testSuite))
       args.push('--runtime-cache-prefix', `${outputDir}/Runtime-ios-`)
       args.push('--iossim', `${outputDir}/iossim`)
-      args.push('--platform', 'iPhone 16')
-      args.push('--version', '18.4')
       args.push('--out-dir', `${outputDir}/output`)
       args.push('--xctest')
-      args.push('--xcode-build-version', '16E140')
+      args.push('--xcode-build-version', xcode_build_version)
+      if (config.targetEnvironment === 'simulator') {
+        args.push('--platform', options.ios_simulator_platform || 'iPhone 16') // update as needed for version
+        args.push('--version', options.ios_simulator_version || '18.4') // should match ios_deployment_target
+      } else if (config.targetEnvironment === 'device') {
+        args.push('--xcodebuild-device-runner')
+      }
       let iosRunOptions = Object.assign({}, runOptions)
       // run.py doesn't like it when you mess with PYTHONPATH
       delete iosRunOptions.env.PYTHONPATH
