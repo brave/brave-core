@@ -753,6 +753,48 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_RemoveArchivedContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
+
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "Content 1");
+  conversation_handler_->associated_content_manager()->SetArchiveContent(
+      associated_content1.uuid(), "Content 1", false);
+
+  // Should not be able to remove the content via
+  // RemoveContent(associated_content1) now.
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      associated_content1.uuid());
+
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            0u);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_AddingContentSetsShouldSend) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);

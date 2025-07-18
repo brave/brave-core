@@ -155,6 +155,19 @@ void AssociatedContentManager::RemoveContent(
   }
 }
 
+void AssociatedContentManager::RemoveContent(std::string_view content_uuid,
+                                             bool notify_updated) {
+  DVLOG(1) << __func__;
+
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  if (it != content_delegates_.end()) {
+    RemoveContent(*it, notify_updated);
+  }
+}
+
 void AssociatedContentManager::ClearContent() {
   DVLOG(1) << __func__;
   if (!HasAssociatedContent()) {
