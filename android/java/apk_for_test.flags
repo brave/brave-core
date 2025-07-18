@@ -986,3 +986,12 @@
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
 }
+
+
+-keep class org.chromium.chrome.browser.toolbar.ToolbarLongPressMenuHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.BraveToolbarLongPressMenuHandler {
+    public <init>(...);
+}

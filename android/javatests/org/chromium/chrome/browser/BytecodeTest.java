@@ -1942,6 +1942,18 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/ToolbarLongPressMenuHandler",
+                        "org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler",
+                        Context.class,
+                        ObservableSupplier.class,
+                        boolean.class,
+                        BooleanSupplier.class,
+                        ActivityLifecycleDispatcher.class,
+                        WindowAndroid.class,
+                        java.util.function.Supplier.class,
+                        java.util.function.Supplier.class));
     }
 
     @Test
