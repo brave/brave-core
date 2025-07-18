@@ -16,7 +16,7 @@ import {
 export const HeaderTitle = styled.span<{
   isAndroidOrPanel?: boolean
 }>`
-  font-family: Poppins;
+  font-family: system-ui;
   font-style: normal;
   font-size: ${(p) => (p.isAndroidOrPanel ? 16 : 28)}px;
   font-weight: ${(p) => (p.isAndroidOrPanel ? 600 : 500)};

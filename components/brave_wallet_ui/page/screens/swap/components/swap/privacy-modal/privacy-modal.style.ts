@@ -13,7 +13,7 @@ export const Section = styled(Column)`
 `
 
 export const Link = styled.a`
-  font-family: 'Poppins';
+  font-family: system-ui;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;

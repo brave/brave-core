@@ -25,7 +25,7 @@ export const SelectAccountItemWrapper = styled.div`
 `
 
 export const SelectAccountTitle = styled.span`
-  font-family: Poppins;
+  font-family: system-ui;
   font-size: 12px;
   line-height: 18px;
   font-weight: 600;

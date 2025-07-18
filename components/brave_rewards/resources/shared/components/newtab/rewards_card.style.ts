@@ -121,7 +121,7 @@ export const balanceAmount = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-family: Poppins;
+  font-family: system-ui;
 
   .amount {
     font-size: 36px;
@@ -261,10 +261,7 @@ export const earningsDisplay = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: Poppins;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
+  font: ${font.large.regular};
 
   .currency {
     font: ${font.small.semibold};
