@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
 <style include="settings-shared md-select">
   .label.shields-primary-title
   {
@@ -6,7 +7,7 @@
     padding-top: 1em;
   }
   .label.shields-secondary-title {
-    padding-bottom: 1em;
+    padding-bottom: 0;
   }
   .flex-center {
     align-items: center;
@@ -32,6 +33,21 @@
     cursor: pointer;
     color: red;
   }
+  .shields-options-disabled-container {
+    padding-bottom: var(--leo-spacing-xl);
+  }
+  .shields-options-disabled-container leo-alert {
+    padding-top: var(--leo-spacing-m);
+  }
+  .shields-options-disabled-alert-title {
+    font: var(--leo-font-heading-h4);
+  }
+  .shields-options-disabled-alert-content {
+    font: var(--leo-font-default-regular);
+  }
+  .shields-options-disabled-alert-button {
+    padding-top: var(--leo-spacing-xl);
+  }
 </style>
 <div hidden="[[isAdBlockRoute_]]">
   <div class="settings-box first">
@@ -41,17 +57,31 @@
         <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
       </div>
+      <div class="shields-options-disabled-container">
+        <template is="dom-if" if="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
+          <leo-alert type="info" hideIcon="true" has-actions="false">
+            <div class="shields-options-disabled-alert-title">Shields options are currently disabled</div>
+            <div class="shields-options-disabled-alert-content">Ad block only mode only enables ad blocking rules to prevent
+              possible web breakages. If you would like to enable
+              standard shields, please disable this mode.</div>
+            <leo-button on-click="onTurnOffAdBlockOnlyMode_" class="shields-options-disabled-alert-button">Turn off ad block only
+              mode</leo-button>
+          </leo-alert>
+        </template>
+      </div>
     </div>
   </div>
   <settings-toggle-button
       class="cr-row"
       pref="{{prefs.brave.shields.stats_badge_visible}}"
-      label="$i18n{showStatsBlockedBadgeLabel}">
+      label="$i18n{showStatsBlockedBadgeLabel}"
+      disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
   </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
-        on-change="onAdControlChange_">
+        on-change="onAdControlChange_"
+        disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
       <template is="dom-repeat" items="[[adControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, adControlType_)]]">
@@ -76,12 +106,14 @@
       class="cr-row"
       pref="{{prefs.brave.no_script_default}}"
       label="$i18n{noScriptControlLabel}"
-      on-settings-boolean-control-change="onNoScriptControlChange_">
+      on-settings-boolean-control-change="onNoScriptControlChange_"
+      disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
   </settings-toggle-button>
   <div hidden="[[!showStrictFingerprintingMode_]]" class="settings-box">
     <div class="start">$i18n{fingerprintingControlLabel}</div>
     <select id="fingerprintingSelectControlType" class="md-select"
-        on-change="onFingerprintingSelectControlChange_">
+        on-change="onFingerprintingSelectControlChange_"
+        disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
@@ -95,7 +127,8 @@
     class="cr-row"
     pref="[[isFingerprintingEnabled_]]"
     label="$i18n{fingerprintingControlLabel}"
-    on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
+    on-settings-boolean-control-change="onFingerprintingToggleControlChange_"
+    disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
   </settings-toggle-button>
   <div class="settings-box">
     <div class="start">
@@ -105,7 +138,8 @@
       </div>
     </div>
     <select id="cookieControlType" class="md-select"
-        on-change="onCookieControlChange_">
+        on-change="onCookieControlChange_"
+        disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, cookieControlType_)]]">
@@ -120,14 +154,16 @@
     label="$i18n{forgetFirstPartyStorageLabel}"
     sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
-    pref="[[isForgetFirstPartyStorageEnabled_]]">
+    pref="[[isForgetFirstPartyStorageEnabled_]]"
+    disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
   </settings-toggle-button>
   <settings-toggle-button id="setContactInfoSaveFlagToggle"
       class="cr-row"
       pref="[[isContactInfoSaveFlagEnabled_]]"
       label="$i18n{braveShieldsSaveContactInfo}"
       sub-label="$i18n{braveShieldsSaveContactInfoSublabel}"
-      on-settings-boolean-control-change="onSaveContactInfoToggle_">
+      on-settings-boolean-control-change="onSaveContactInfoToggle_"
+      disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
   </settings-toggle-button>
   </div>
 <settings-animated-pages id="filters" section="shields">
@@ -138,12 +174,14 @@
       label="$i18n{adblockContentFilteringLabel}"
       sub-label="$i18n{adblockContentFilterLabelDesc}"
       on-click="onAdblockPageClick_"
+      disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]"
     ></cr-link-row>
   </div>
   <template is="dom-if" route-path="/shields/filters" no-search>
     <settings-subpage
       associated-control="[[$$('#contentFiltersRow')]]"
-      page-title="$i18n{adblockContentFiltersLabel}">
+      page-title="$i18n{adblockContentFiltersLabel}"
+      disabled$="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
       <adblock-subpage prefs="{{prefs}}"></adblock-subpage>
     </settings-subpage>
   </template>

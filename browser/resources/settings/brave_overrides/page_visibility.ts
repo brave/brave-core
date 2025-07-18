@@ -45,6 +45,7 @@ function getPageVisibility () {
     // Hide appropriate brave sections as well as chromium ones
     return {
       ...chromiumPageVisibility,
+      adBlockOnlyMode: true,
       braveSync: false,
       braveWallet: false,
       // <if expr="enable_containers">

@@ -496,6 +496,8 @@ void ToggleShieldsEnabled(Browser* browser) {
     return;
   }
 
+  // TODO(tmancey): Should we add SetBraveShieldsAdBlockOnlyModeEnabled to
+  // browser commands?
   shields->SetBraveShieldsEnabled(!shields->GetBraveShieldsEnabled());
 }
 

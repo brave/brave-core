@@ -6,10 +6,12 @@ import * as React from 'react'
 
 import Toggle from '@brave/leo/react/toggle'
 import Button from '@brave/leo/react/button'
+import Alert from '@brave/leo/react/alert'
 
 import * as S from './style'
 import AdvancedControlsContent from '../advanced-controls-content'
 import AdvancedControlsContentScroller from '../advanced-controls-scroller'
+import AdBlockOnlyModeControlsContent from '../ad-block-only-mode-controls-content'
 import { formatLocale, getLocale } from '$web-common/locale'
 import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
@@ -19,9 +21,86 @@ const handleLearnMoreClick = () => {
   chrome.tabs.create({ url: 'https://brave.com/privacy-features/', active: true })
 }
 
-function MainPanel () {
+const onDismissClick = (onDismiss?: () => void) => {
+  if (onDismiss) {
+    onDismiss()
+  }
+}
+
+const onEnableAdBlockOnlyModeClick = async () => {
+  await getPanelBrowserAPI().dataHandler.setBraveShieldsAdBlockOnlyModeEnabled(true)
+  await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(true)
+  getPanelBrowserAPI().panelHandler.closeUI()
+}
+
+function AreYouExperiencingIssuesAfterRepeatedReloads() {
+  return (
+    <div style={{ padding: 'var(--leo-spacing-xl)' }}>
+      <div style={{ font: 'var(--leo-font-heading-h4)' }}>
+        {getLocale('braveShieldsAreYouExperiencingIssuesWithThisSiteTitle')}
+      </div>
+      <div style={{ padding: 'var(--leo-spacing-xl) 0', font: 'var(--leo-font-default-regular)' }}>
+        {formatLocale(`braveShieldsAreYouExperiencingIssuesWithThisSiteDesc`, {
+          $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
+        })}
+      </div>
+      <div
+        style={{
+          paddingTop: 'var(--leo-spacing-xl)',
+          display: 'flex',
+          gap: 'var(--leo-spacing-m)'
+        }}
+      >
+        <Button kind="plain" size="medium" onClick={() => getPanelBrowserAPI().panelHandler.closeUI()}>
+          {getLocale('braveShieldsDismissAlert')}
+        </Button>
+        <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
+      </div>
+    </div>
+  );
+}
+
+function AreYouExperiencingIssuesAndDisabledShields({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <div style={{ padding: '0 var(--leo-spacing-xl) var(--leo-spacing-xl)' }}>
+      <Alert
+        type='info'
+        hideIcon
+        hasActions={false}
+      >
+        <div style={{ font: 'var(--leo-font-heading-h4)' }}>
+          {getLocale('braveShieldsAreYouExperiencingIssuesWithShieldsTitle')}
+        </div>
+        <div style={{ font: 'var(--leo-font-default-regular)' }}>
+          {formatLocale(`braveShieldsAreYouExperiencingIssuesWithShieldsDesc`, {
+            $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
+          })}
+        </div>
+        <div
+          style={{
+            paddingTop: 'var(--leo-spacing-xl)',
+            display: 'flex',
+            gap: 'var(--leo-spacing-m)'
+          }}
+        >
+          <Button kind="plain" size="medium" onClick={() => onDismissClick(onDismiss)}>{getLocale('braveShieldsDismissAlert')}</Button>
+          <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
+        </div>
+      </Alert>
+    </div>
+  )
+}
+
+function MainPanel() {
+  const [hasDismissedAreYouExperiencingIssuesAndDisabledShields, setDismissedAreYouExperiencingIssuesAndDisabledShields] = React.useState(false)
+
   const { isExpanded, toggleIsExpanded } = useIsExpanded()
   const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
+
+  const urlParams = new URLSearchParams(window.location.search)
+
+  const shouldShowAreYouExperiencingIssuesAfterRepeatedReloads =
+    urlParams.get('mode') === 'afterRepeatedReloads'
 
   const braveShieldsStatus = formatLocale(siteBlockInfo?.isBraveShieldsEnabled
     ? 'braveShieldsUp'
@@ -30,15 +109,25 @@ function MainPanel () {
         $2: () => siteBlockInfo?.host
     })
 
-  const braveShieldsBrokenText = formatLocale('braveShieldsBroken', {
-    $1: content => <span>{content}</span>
-  })
+  const braveShieldsBrokenText = siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled
+    ? getLocale('braveShieldsBroken')
+    : (
+      <>
+        {getLocale('braveShieldsBroken')}{' '}
+        {formatLocale('braveShieldsBrokenNote', {
+          $1: content => <span>{content}</span>
+        })}
+      </>
+    );
 
-  const braveShieldsNote = formatLocale(siteBlockInfo?.isBraveShieldsEnabled
-    ? 'braveShieldsBlockedNote'
-    : 'braveShieldsNOTBlockedNote', {
-      $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
-    })
+  const braveShieldsNoteKey = siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled
+    ? 'braveShieldsAdsBlockedNote'
+    : siteBlockInfo?.isBraveShieldsEnabled
+      ? 'braveShieldsBlockedNote'
+      : 'braveShieldsNOTBlockedNote';
+  const braveShieldsNote = formatLocale(braveShieldsNoteKey, {
+    $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
+  });
 
   const handleToggleChange = async (detail: { checked: boolean }) => {
     await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(detail.checked)
@@ -93,7 +182,7 @@ function MainPanel () {
       </S.ControlBox>
     </S.Footnote>
   )
-  let advancedControlButtonElement = (isExpanded != null) && (
+  let advancedControlButtonElement = (isExpanded != null && !siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled) && (
     <S.AdvancedControlsButton
       type="button"
       aria-expanded={isExpanded}
@@ -134,7 +223,8 @@ function MainPanel () {
         <S.ReportSiteAction>
           <span>{getLocale('braveShieldsReportSiteDesc')}</span>
           <Button
-            kind="filled"
+            kind="outline"
+            size="medium"
             onClick={handleReportSite}
           >
             {getLocale('braveShieldsReportSite')}
@@ -142,6 +232,10 @@ function MainPanel () {
         </S.ReportSiteAction>
       </S.ReportSiteBox>
     )
+  }
+
+  if (shouldShowAreYouExperiencingIssuesAfterRepeatedReloads) {
+    return <AreYouExperiencingIssuesAfterRepeatedReloads />
   }
 
   return (
@@ -178,8 +272,9 @@ function MainPanel () {
           </S.StatusToggle>
         </S.ControlBox>
         {!siteBlockInfo?.isBraveShieldsManaged &&
+          !siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled &&
         <S.StatusFootnoteBox>
-          {reportSiteOrFootnoteElement}
+            {reportSiteOrFootnoteElement}
         </S.StatusFootnoteBox>
         }
         {siteBlockInfo?.isBraveShieldsManaged &&
@@ -188,24 +283,36 @@ function MainPanel () {
         </S.StatusFootnoteBox>
         }
       </S.StatusBox>
-      {advancedControlButtonElement}
-      { isExpanded &&
+      {!siteBlockInfo?.isBraveShieldsEnabled &&
+        !siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled &&
+        !hasDismissedAreYouExperiencingIssuesAndDisabledShields && (
+          <AreYouExperiencingIssuesAndDisabledShields onDismiss={() => setDismissedAreYouExperiencingIssuesAndDisabledShields(true)} />
+        )}
+
+      {siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled && (
+        <AdBlockOnlyModeControlsContent
+          showGlobalSettings={siteBlockInfo?.isBraveShieldsEnabled}
+        />
+      )}
+
+      {isExpanded &&
         siteBlockInfo?.isBraveShieldsEnabled &&
-        <AdvancedControlsContentScroller
-          isExpanded={isExpanded}
-        >
-          <AdvancedControlsContent />
-        </AdvancedControlsContentScroller>
-      }
-      {
-        areAnyBlockedElementsPresent &&
+        !siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled && (
+          <AdvancedControlsContentScroller isExpanded={!!isExpanded}>
+            <AdvancedControlsContent />
+          </AdvancedControlsContentScroller>
+        )}
+
+      {areAnyBlockedElementsPresent && (
         <S.GlobalDefaultsButton
           type="button"
           onClick={handleResetBlockedElements}
         >
           <span>{getLocale('braveShieldsShowAllBlockedElems')}</span>
         </S.GlobalDefaultsButton>
-      }
+      )}
+
+      {advancedControlButtonElement}
     </S.Box>
   )
 }

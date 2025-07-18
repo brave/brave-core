@@ -28,6 +28,8 @@ using brave_shields::mojom::FingerprintMode;
 using brave_shields::mojom::HttpsUpgradeMode;
 using content::NavigationEntry;
 
+class GURL;
+
 namespace brave_shields {
 
 // Per-tab class to manage Shields panel data
@@ -46,6 +48,8 @@ class BraveShieldsTabHelper
     virtual void OnResourcesChanged() = 0;
     virtual void OnFaviconUpdated() {}
     virtual void OnShieldsEnabledChanged() {}
+    virtual void OnShieldsAdBlockOnlyModeEnabledChanged() {}
+    virtual void OnAfterRepeatedReloads() {}
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -63,6 +67,8 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
+  bool GetBraveShieldsAdBlockOnlyModeEnabled();
+  void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
   GURL GetCurrentSiteURL();
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
@@ -115,6 +121,12 @@ class BraveShieldsTabHelper
                         const gfx::Image& image) override;
 
   void ReloadWebContents();
+  void MaybeNotifyAfterRepeatedReloads(
+      content::NavigationHandle* navigation_handle);
+
+  bool ignore_force_reload_web_contents_ = false;
+  size_t reloads_ = 0;
+  GURL last_navigated_url_;
 
   base::ObserverList<Observer> observer_list_;
   std::set<GURL> resource_list_blocked_ads_;
