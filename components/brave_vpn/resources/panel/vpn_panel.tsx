@@ -19,8 +19,6 @@ import Container from './container'
 import store from './state/store'
 import getPanelBrowserAPI from './api/panel_browser_api'
 
-import './strings'
-
 setIconBasePath('//resources/brave-icons')
 
 function App () {
