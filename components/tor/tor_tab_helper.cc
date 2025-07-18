@@ -34,7 +34,8 @@ void TorTabHelper::ReadyToCommitNavigation(
     return;
   }
 
-  const bool should_disable_web_share = BUILDFLAG(IS_MAC);
+#if BUILDFLAG(IS_MAC)
+  const bool should_disable_web_share = true;
 
   blink::web_pref::WebPreferences prefs =
       web_contents()->GetOrCreateWebPreferences();
@@ -42,6 +43,7 @@ void TorTabHelper::ReadyToCommitNavigation(
     prefs.disable_web_share = should_disable_web_share;
     web_contents()->SetWebPreferences(prefs);
   }
+#endif
 }
 
 void TorTabHelper::DidFinishNavigation(

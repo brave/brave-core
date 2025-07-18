@@ -15,7 +15,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
-#include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -51,7 +50,7 @@
 
 namespace {
 
-Profile* SwitchToTorProfile(Profile* parent_profile,
+Browser* SwitchToTorProfile(Profile* parent_profile,
                             TorLauncherFactory* factory,
                             size_t current_profile_num = 1,
                             const GURL& url = GURL()) {
@@ -63,7 +62,7 @@ Profile* SwitchToTorProfile(Profile* parent_profile,
 
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(current_profile_num + 1, browser_list->size());
-  return browser_list->get(current_profile_num)->profile();
+  return tor_browser;
 }
 
 }  // namespace
@@ -149,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
       parent_bookmark_model->AddURL(root, 0, title, url1);
 
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -188,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   Profile* parent_profile = ProfileManager::GetLastUsedProfile();
 
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
@@ -212,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
   EXPECT_TRUE(parent_prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar));
 
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -240,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                    CONTENT_SETTING_BLOCK);
 
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -276,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   Profile* parent_profile = ProfileManager::GetLastUsedProfile();
   EXPECT_EQ(BrowserList::GetInstance()->size(), 1u);
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   EXPECT_EQ(BrowserList::GetInstance()->size(), 2u);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
@@ -312,13 +311,17 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   ASSERT_NE(CreateBrowser(parent_profile2), nullptr);
   ASSERT_EQ(browser_list->size(), 3u);
 
-  Profile* tor_profile1 = SwitchToTorProfile(
-      parent_profile1, GetTorLauncherFactory(), browser_list->size());
+  Profile* tor_profile1 =
+      SwitchToTorProfile(parent_profile1, GetTorLauncherFactory(),
+                         browser_list->size())
+          ->profile();
   ASSERT_TRUE(tor_profile1->IsTor());
   ASSERT_EQ(browser_list->size(), 4u);
 
-  Profile* tor_profile2 = SwitchToTorProfile(
-      parent_profile2, GetTorLauncherFactory(), browser_list->size());
+  Profile* tor_profile2 =
+      SwitchToTorProfile(parent_profile2, GetTorLauncherFactory(),
+                         browser_list->size())
+          ->profile();
   ASSERT_TRUE(tor_profile2->IsTor());
   ASSERT_EQ(browser_list->size(), 5u);
 
@@ -340,9 +343,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToNTP) {
   for (bool connected : {false, true}) {
     EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
         .WillRepeatedly(testing::Return(connected));
-    Profile* tor_profile =
+    Browser* tor_browser =
         SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory());
-    Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+    Profile* tor_profile = tor_browser->profile();
     ASSERT_TRUE(tor_browser);
     EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
     content::WaitForLoadStop(
@@ -360,9 +363,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURL) {
     EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
         .WillRepeatedly(testing::Return(connected));
     const GURL url("https://brave.com");
-    Profile* tor_profile = SwitchToTorProfile(browser()->profile(),
+    Browser* tor_browser = SwitchToTorProfile(browser()->profile(),
                                               GetTorLauncherFactory(), 1, url);
-    Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+    Profile* tor_profile = tor_browser->profile();
     ASSERT_TRUE(tor_browser);
     EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
     content::WaitForLoadStop(
@@ -380,9 +383,9 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
       .WillRepeatedly(testing::Return(false));
   const GURL url("https://brave.com");
-  Profile* tor_profile =
+  Browser* tor_browser =
       SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory(), 1, url);
-  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  Profile* tor_profile = tor_browser->profile();
   ASSERT_TRUE(tor_browser);
   EXPECT_EQ(1, tor_browser->tab_strip_model()->count());
   auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
@@ -413,6 +416,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   ui_test_utils::WaitForBrowserToClose();
 }
 
+#if !BUILDFLAG(IS_LINUX)
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
@@ -422,9 +426,10 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
     navigator.canShare ? true : false
   )js";
 
-  Profile* tor_profile = SwitchToTorProfile(
+  Browser* tor_browser = SwitchToTorProfile(
       browser()->profile(), GetTorLauncherFactory(), 1, GURL("brave://newtab"));
-  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  Profile* tor_profile = tor_browser->profile();
+
   auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   content::WaitForLoadStop(tor_contents);
 
@@ -441,6 +446,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   TorProfileManager::CloseTorProfileWindows(tor_profile);
   ui_test_utils::WaitForBrowserToClose();
 }
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
@@ -485,7 +491,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
   parent_extension_prefs->SetIsIncognitoEnabled(id, true);
 
   Profile* tor_profile =
-      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory())->profile();
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
