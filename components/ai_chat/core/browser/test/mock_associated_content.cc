@@ -8,15 +8,17 @@
 namespace ai_chat {
 
 MockAssociatedContent::MockAssociatedContent() = default;
+MockAssociatedContent::~MockAssociatedContent() = default;
 
-MockAssociatedContent::~MockAssociatedContent() {
-  // Let observers know this content is gone.
-  OnNewPage(-1);
+void MockAssociatedContent::SetTitle(std::u16string title) {
+  AssociatedContentDelegate::SetTitle(std::move(title));
+}
+
+void MockAssociatedContent::OnNewPage(int64_t navigation_id) {
+  AssociatedContentDelegate::OnNewPage(navigation_id);
 }
 
 void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
-  cached_page_content_.content = GetTextContent();
-  cached_page_content_.is_video = GetIsVideo();
   std::move(callback).Run(cached_page_content_);
 }
 

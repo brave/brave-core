@@ -74,7 +74,7 @@ class MockAssociatedContentObserver
   MockAssociatedContentObserver() = default;
   ~MockAssociatedContentObserver() override = default;
 
-  MOCK_METHOD(void, OnNavigated, (AssociatedContentDelegate*), (override));
+  MOCK_METHOD(void, OnRequestArchive, (AssociatedContentDelegate*), (override));
 };
 
 class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
@@ -135,7 +135,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
       simulator->Commit();
     }
     SimulateTitleChange(base::UTF8ToUTF16(title));
-    EXPECT_EQ(helper_->GetPageURL(), url);
+    EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
   }
 
   void SimulateTitleChange(const std::u16string& title) {
@@ -144,7 +144,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
   }
 
   void SimulateLoadFinished() {
-    helper_->DidFinishLoad(main_rfh(), helper_->GetPageURL());
+    helper_->DidFinishLoad(main_rfh(), web_contents()->GetLastCommittedURL());
   }
 
   void GetPageContent(AIChatTabHelper::FetchPageContentCallback callback,
@@ -195,42 +195,42 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
-  EXPECT_CALL(*observer_, OnNavigated).Times(3);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(3);
   NavigateTo(GURL("https://www.brave.com"));
   NavigateTo(GURL("https://www.brave.com/1"));
   NavigateTo(GURL("https://www.brave.com/2"));
 
   // Going back should notify navigated
-  EXPECT_CALL(*observer_, OnNavigated).Times(1);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
   content::NavigationSimulator::GoBack(web_contents());
 
   // Same with going forward
-  EXPECT_CALL(*observer_, OnNavigated).Times(1);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
   content::NavigationSimulator::GoForward(web_contents());
 
   // Same-document navigation should not call OnNewPage if page title is the
   // same
-  EXPECT_CALL(*observer_, OnNavigated).Times(0);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(0);
   NavigateTo(GURL("https://www.brave.com/2/3"), false, true, "www.brave.com/2");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   // ...unless the page title changes before the next navigation.
-  EXPECT_CALL(*observer_, OnNavigated).Times(1);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
   SimulateTitleChange(u"New Title");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   // Back same-document navigation doesn't get a different title event
   // so let's check it's still detected as a new page if the navigation
   // results in a title difference.
-  EXPECT_CALL(*observer_, OnNavigated).Times(1);
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
   content::NavigationSimulator::GoBack(web_contents());
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Title changes after different-document navigation should not
   // trigger OnNewPage.
-  EXPECT_CALL(*observer_, OnNavigated(_)).Times(1);
+  EXPECT_CALL(*observer_, OnRequestArchive(_)).Times(1);
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://www.brave.com/3"));
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_CALL(*observer_, OnNavigated(_)).Times(0);
+  EXPECT_CALL(*observer_, OnRequestArchive(_)).Times(0);
   SimulateTitleChange(u"Another New Title");
   testing::Mock::VerifyAndClearExpectations(&observer_);
 }

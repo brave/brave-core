@@ -17,45 +17,19 @@ AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
                                                    std::string text_content,
                                                    std::u16string title,
                                                    bool is_video,
-                                                   std::string uuid)
-    : url_(url), title_(title), cached_page_content_(text_content, is_video) {
+                                                   std::string uuid) {
   DVLOG(1) << "Made archive for content at: " << url.spec() << "\n"
            << "title: " << title << "text: " << text_content;
   set_uuid(std::move(uuid));
+  set_url(std::move(url));
+  set_cached_page_content(PageContent(std::move(text_content), is_video));
+  SetTitle(std::move(title));
 }
 
 AssociatedArchiveContent::~AssociatedArchiveContent() = default;
 
-void AssociatedArchiveContent::SetMetadata(GURL url,
-                                           std::u16string title,
-                                           bool is_video) {
-  url_ = url;
-  title_ = title;
-  cached_page_content_.is_video = is_video;
-}
-
-void AssociatedArchiveContent::SetContent(std::string text_content) {
-  cached_page_content_.content = text_content;
-}
-
-int AssociatedArchiveContent::GetContentId() const {
-  return -1;
-}
-
-GURL AssociatedArchiveContent::GetURL() const {
-  return url_;
-}
-
-std::u16string AssociatedArchiveContent::GetTitle() const {
-  return title_;
-}
-
 void AssociatedArchiveContent::GetContent(GetPageContentCallback callback) {
-  std::move(callback).Run(cached_page_content_);
-}
-
-const PageContent& AssociatedArchiveContent::GetCachedPageContent() const {
-  return cached_page_content_;
+  std::move(callback).Run(cached_page_content());
 }
 
 }  // namespace ai_chat

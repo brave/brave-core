@@ -82,7 +82,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     DCHECK(chat_tab_helper);
     conversation_handler =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+            chat_tab_helper->content_id(), chat_tab_helper->GetWeakPtr());
     if (!conversation_handler) {
       return;
     }
