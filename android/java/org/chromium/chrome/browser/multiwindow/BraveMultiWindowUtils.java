@@ -11,6 +11,7 @@ import android.content.Intent;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -27,9 +28,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
         super();
     }
 
-    public boolean shouldShowEnableWindow(Activity activity) {
-        return super.isOpenInOtherWindowSupported(activity)
-                || super.canEnterMultiWindowMode(activity);
+    public boolean shouldShowEnableWindow(@Nullable Activity activity) {
+        return super.isOpenInOtherWindowSupported(activity) || super.canEnterMultiWindowMode();
     }
 
     public static boolean shouldShowManageWindowsMenu() {
@@ -37,7 +37,7 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     }
 
     @Override
-    public boolean isOpenInOtherWindowSupported(Activity activity) {
+    public boolean isOpenInOtherWindowSupported(@Nullable Activity activity) {
         return shouldEnableMultiWindows() && super.isOpenInOtherWindowSupported(activity);
     }
 
@@ -49,8 +49,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     }
 
     @Override
-    public boolean canEnterMultiWindowMode(Activity activity) {
-        return shouldEnableMultiWindows() && super.canEnterMultiWindowMode(activity);
+    public boolean canEnterMultiWindowMode() {
+        return shouldEnableMultiWindows() && super.canEnterMultiWindowMode();
     }
 
     public static boolean shouldEnableMultiWindows() {
