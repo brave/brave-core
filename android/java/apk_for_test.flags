@@ -995,3 +995,11 @@
 -keep class org.chromium.chrome.browser.infobar.BraveInfoBarContainerView {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.ToolbarLongPressMenuHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.BraveToolbarLongPressMenuHandler {
+    public <init>(...);
+}
