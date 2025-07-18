@@ -7,6 +7,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const Config = require('../lib/config')
+const build = require('../lib/build')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
@@ -125,9 +126,8 @@ const buildTests = async (suite, config, options = {}) => {
   } else {
     config.buildTargets = [suite]
   }
-  util.touchOverriddenFiles()
   util.touchGsutilChangeLogFile()
-  await util.buildTargets()
+  await build(config, options)
 }
 
 const deleteFile = (filePath) => {
@@ -251,8 +251,8 @@ const runTests = (passthroughArgs, suite, config, options) => {
     if (config.targetOS === 'android' && !isJunitTestSuite) {
       assert(
         config.targetArch === 'x86'
-          || config.targetArch === 'x64'
-          || options.manual_android_test_device,
+        || config.targetArch === 'x64'
+        || options.manual_android_test_device,
         'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.',
       )
 
