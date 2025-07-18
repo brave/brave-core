@@ -107,6 +107,10 @@ const test = async (
   Config.buildConfig = buildConfig
   Config.update(options)
 
+  if (config.targetOS === 'ios' && config.targetEnvironment === 'device') {
+    Log.error('Running ios tests on a device is not yet supported')
+    process.exit(1)
+  }
   await buildTests(suite, Config, options)
   runTests(passthroughArgs, suite, Config, options)
 }
@@ -297,7 +301,8 @@ const runTests = (passthroughArgs, suite, config, options) => {
         args.push('--platform', options.ios_simulator_platform || 'iPhone 16') // update as needed for version
         args.push('--version', options.ios_simulator_version || '18.4') // should match ios_deployment_target
       } else if (config.targetEnvironment === 'device') {
-        args.push('--xcodebuild-device-runner')
+        // TODO(bridiver)
+        // args.push('--xcodebuild-device-runner')
       }
       let iosRunOptions = Object.assign({}, runOptions)
       // run.py doesn't like it when you mess with PYTHONPATH
