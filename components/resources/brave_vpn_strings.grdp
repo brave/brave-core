@@ -90,15 +90,15 @@
     Reconnect automatically
   </message>
 
-  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing" formatter_data="webui=BraveVPNPanelUi">
+  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing">
     Smart proxy routing
   </message>
 
-  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING_ICON_TOOLTIP" desc="Label to smart proxy routing icon tooltip" formatter_data="webui=BraveVPNPanelUi">
+  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING_ICON_TOOLTIP" desc="Label to smart proxy routing icon tooltip">
     Smart Proxy Routing available
   </message>
 
-  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING_DESC" desc="Label to smart proxy routing desc" formatter_data="webui=BraveVPNPanelUi">
+  <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING_DESC" desc="Label to smart proxy routing desc">
     Ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third party services.
   </message>
 
