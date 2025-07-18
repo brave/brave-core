@@ -57,6 +57,7 @@ export default {
           host: text('Host name', 'brave.com'),
           totalBlockedResources: (LIST_ADS.length + LIST_JS.length),
           isBraveShieldsEnabled: boolean('Enable Shields', true),
+          isBraveShieldsAdBlockOnlyModeEnabled: boolean('Enable Shields Ad Block Only Mode', false),
           isBraveShieldsManaged: boolean('Shields Managed', false),
           adsList: LIST_ADS,
           blockedJsList: LIST_JS,

@@ -18,6 +18,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsUp", IDS_BRAVE_SHIELDS_UP},
     {"braveShieldsDown", IDS_BRAVE_SHIELDS_DOWN},
     {"braveShieldsBroken", IDS_BRAVE_SHIELDS_BROKEN},
+    {"braveShieldsBrokenNote", IDS_BRAVE_SHIELDS_BROKEN_NOTE},
+    {"braveShieldsAdsBlockedNote", IDS_BRAVE_SHIELDS_ADS_BLOCKED_NOTE},
     {"braveShieldsBlockedNote", IDS_BRAVE_SHIELDS_BLOCKED_NOTE},
     {"braveShieldsNOTBlockedNote", IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE},
     {"braveShieldsAdvancedCtrls", IDS_BRAVE_SHIELDS_ADVANCED_CTRLS},

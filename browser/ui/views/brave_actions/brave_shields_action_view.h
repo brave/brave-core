@@ -59,6 +59,7 @@ class BraveShieldsActionView
   // brave_shields::BraveShieldsTabHelper
   void OnResourcesChanged() override;
   void OnShieldsEnabledChanged() override;
+  void OnAfterRepeatedReloads() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
@@ -66,10 +67,12 @@ class BraveShieldsActionView
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
+  const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   raw_ref<Profile> profile_;
   raw_ref<TabStripModel> tab_strip_model_;
   std::unique_ptr<WebUIBubbleManager> webui_bubble_manager_;
+  bool was_showing_after_repeated_reloads_widget_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_SHIELDS_ACTION_VIEW_H_

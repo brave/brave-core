@@ -90,6 +90,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Default Brave shields
   (*s_brave_allowlist)[kShieldsAdvancedViewEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kShieldsAdBlockOnlyModeEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShieldsStatsBadgeVisible] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAdControlType] = settings_api::PrefType::kBoolean;

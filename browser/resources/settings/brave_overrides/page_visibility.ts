@@ -33,6 +33,7 @@ function getPageVisibility () {
     return {
       ...chromiumPageVisibility,
       shields: true,
+      adBlockOnlyMode: true,
       socialBlocking: true,
       braveSync: false,
       getStarted: false,

@@ -77,6 +77,7 @@ BraveShieldsActionView::BraveShieldsActionView(
                                       base::Unretained(this),
                                       browser_window_interface),
                   std::u16string()),
+      browser_window_interface_(browser_window_interface),
       profile_(CHECK_DEREF(browser_window_interface->GetProfile())),
       tab_strip_model_(
           CHECK_DEREF(browser_window_interface->GetTabStripModel())) {
@@ -213,17 +214,17 @@ void BraveShieldsActionView::ButtonPressed(
     return;
   }
 
-  if (!webui_bubble_manager_) {
-    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        this, browser_window_interface, GURL(kShieldsPanelURL),
-        IDS_BRAVE_SHIELDS);
-  }
-
-  if (webui_bubble_manager_->GetBubbleWidget()) {
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
     webui_bubble_manager_->CloseBubble();
     return;
   }
 
+  if (!webui_bubble_manager_ || was_showing_after_repeated_reloads_widget_) {
+    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
+        this, browser_window_interface, GURL(kShieldsPanelURL),
+        IDS_BRAVE_SHIELDS);
+  }
+  was_showing_after_repeated_reloads_widget_ = false;
   webui_bubble_manager_->ShowBubble();
 }
 
@@ -320,6 +321,27 @@ void BraveShieldsActionView::OnResourcesChanged() {
 
 void BraveShieldsActionView::OnShieldsEnabledChanged() {
   UpdateIconState();
+}
+
+void BraveShieldsActionView::OnAfterRepeatedReloads() {
+  auto* web_content = tab_strip_model_->GetActiveWebContents();
+  if (!ShouldShowBubble(web_content)) {
+    return;
+  }
+
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
+    // Widget is already showing, so just return.
+    return;
+  }
+
+  if (!webui_bubble_manager_ || !was_showing_after_repeated_reloads_widget_) {
+    const GURL url =
+        GURL(std::string(kShieldsPanelURL) + "?mode=afterRepeatedReloads");
+    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
+        this, browser_window_interface_, GURL(url), IDS_BRAVE_SHIELDS);
+  }
+  was_showing_after_repeated_reloads_widget_ = true;
+  webui_bubble_manager_->ShowBubble();
 }
 
 void BraveShieldsActionView::OnTabStripModelChanged(

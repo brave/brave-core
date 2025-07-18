@@ -97,6 +97,9 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
+constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/38076796692109";
+
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/36550092449165";
 
@@ -286,6 +289,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
       {"braveShieldsDefaultsSectionDescription2",
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
+      {"adBlockOnlyMode", IDS_SETTINGS_AD_BLOCK_ONLY_MODE},
+      {"adBlockOnlyModeLabel", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL},
+      {"adBlockOnlyModeDesc", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC},
       {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
       {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
       {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -963,6 +969,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LABEL,
           kBlockAllCookiesLearnMoreUrl));
+
+  html_source->AddString(
+      "adBlockOnlyModeDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC,
+                                 kAdBlockOnlyModeLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantAboutLeoDesc2",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
+                                 kLeoPrivacyPolicyURL));
 
   html_source->AddString(
       "braveLeoAssistantYourModelsDesc2",

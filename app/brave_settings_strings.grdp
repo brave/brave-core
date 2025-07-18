@@ -590,6 +590,17 @@
     Show Brave Rewards button
   </message>
 
+  <!-- Settings / Ad block only mode -->
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE" desc="Title for an item in the 'Ad block only mode' section of Shields Settings">
+    Ad block only mode
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL" desc="The text for settings option to enable shields ad block only mode">
+    Use ad block only mode
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC" desc="The description for settings option to enable shields ad block only mode">
+    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+
   <!-- Settings / Social media blocking -->
   <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
     Social media blocking

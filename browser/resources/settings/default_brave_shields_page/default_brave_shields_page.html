@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
 <style include="settings-shared md-select">
   .label.shields-primary-title
   {
@@ -6,7 +7,7 @@
     padding-top: 1em;
   }
   .label.shields-secondary-title {
-    padding-bottom: 1em;
+    padding-bottom: 0;
   }
   .flex-center {
     align-items: center;
@@ -32,6 +33,21 @@
     cursor: pointer;
     color: red;
   }
+  .shields-options-disabled-container {
+    padding-bottom: var(--leo-spacing-xl);
+  }
+  .shields-options-disabled-container leo-alert {
+    padding-top: var(--leo-spacing-m);
+  }
+  .shields-options-disabled-alert-title {
+    font: var(--leo-font-heading-h4);
+  }
+  .shields-options-disabled-alert-content {
+    font: var(--leo-font-default-regular);
+  }
+  .shields-options-disabled-alert-button {
+    padding-top: var(--leo-spacing-xl);
+  }
 </style>
 <div hidden="[[isAdBlockRoute_]]">
   <div class="settings-box first">
@@ -40,6 +56,17 @@
       <div class="label secondary shields-secondary-title">
         <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
+      </div>
+      <div class="shields-options-disabled-container">
+        <template is="dom-if" if="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
+          <leo-alert type="info" hideIcon="true" has-actions="false">
+            <div class="shields-options-disabled-alert-title">Shields options are currently disabled</div>
+            <div class="shields-options-disabled-alert-content">Sed posuere consectetur est at lobortis. Cum sociis natoque
+              penatibus et magnis dis parturient montes, nascetur ridiculus mus.</div>
+            <leo-button on-click="onTurnOffAdBlockOnlyMode_" class="shields-options-disabled-alert-button">Turn off ad block only
+              mode</leo-button>
+          </leo-alert>
+        </template>
       </div>
     </div>
   </div>
