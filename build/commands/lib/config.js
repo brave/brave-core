@@ -714,8 +714,6 @@ Config.prototype.buildArgs = function () {
       }
     }
 
-    args.ios_enable_content_widget_extension = false
-    args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = true
     args.ios_enable_widget_kit_extension = false
