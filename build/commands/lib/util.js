@@ -486,6 +486,7 @@ const util = {
     await util.buildTargets(
       ['brave/tools/redirect_cc'],
       util.mergeWithDefault({ outputDir: config.nativeRedirectCCDir }),
+      true
     )
     Log.progressFinish('build redirect_cc')
   },
