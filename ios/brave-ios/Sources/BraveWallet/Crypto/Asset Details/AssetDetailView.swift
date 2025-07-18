@@ -128,14 +128,16 @@ struct AssetDetailView: View {
       HStack(alignment: .top, spacing: 40) {
         if assetDetailStore.isBuySupported {
           PortfolioHeaderButton(style: .buy) {
-            let destination = WalletActionDestination(
-              kind: .buy,
-              initialToken: assetDetailStore.assetDetailToken
-            )
-            if assetDetailStore.allAccountsForToken.isEmpty {
-              onAccountCreationNeeded(destination)
-            } else {
-              walletActionDestination = destination
+            Task { @MainActor in
+              let destination = WalletActionDestination(
+                kind: .buy,
+                initialToken: assetDetailStore.assetDetailToken
+              )
+              if await assetDetailStore.accountCreationNeededForBuy() {
+                onAccountCreationNeeded(destination)
+              } else {
+                walletActionDestination = destination
+              }
             }
           }
         }
@@ -235,14 +237,16 @@ struct AssetDetailView: View {
     HStack(alignment: .top, spacing: 40) {
       if assetDetailStore.isBuySupported {
         PortfolioHeaderButton(style: .buy) {
-          let destination = WalletActionDestination(
-            kind: .buy,
-            initialToken: assetDetailStore.assetDetailToken
-          )
-          if assetDetailStore.allAccountsForToken.isEmpty {
-            onAccountCreationNeeded(destination)
-          } else {
-            walletActionDestination = destination
+          Task { @MainActor in
+            let destination = WalletActionDestination(
+              kind: .buy,
+              initialToken: assetDetailStore.assetDetailToken
+            )
+            if await assetDetailStore.accountCreationNeededForBuy() {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
           }
         }
       }
