@@ -395,6 +395,13 @@ program
     'whether to use RBE for building',
     JSON.parse,
   )
+  .option('--no_gn_gen', 'Build without running gn gen')
+  .option('--ios_xcode_build_version', 'xcode build version for ios')
+  .option(
+    '--ios_simulator_platform',
+    'platform to use for ios simulator ex: iPhone 16',
+  )
+  .option('--ios_simulator_version', 'ios version for simulator ex: 18.4')
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))

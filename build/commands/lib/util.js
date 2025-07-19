@@ -486,6 +486,7 @@ const util = {
     await util.buildTargets(
       ['brave/tools/redirect_cc'],
       util.mergeWithDefault({ outputDir: config.nativeRedirectCCDir }),
+      true
     )
     Log.progressFinish('build redirect_cc')
   },
@@ -611,7 +612,11 @@ const util = {
   buildTargets: async (
     targets = config.buildTargets,
     options = config.defaultOptions,
+    noGnGen = false
   ) => {
+    if (!noGnGen) {
+      await util.generateNinjaFiles()
+    }
     assert(Array.isArray(targets))
     const buildId = crypto.randomUUID()
     const outputDir = options.outputDir || config.outputDir
