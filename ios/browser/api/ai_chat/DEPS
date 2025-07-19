@@ -1,4 +1,9 @@
 include_rules = [
   "+brave/components/ai_chat/core/browser",
   "+brave/components/ai_chat/core/common",
+  "+components/keyed_service/content",
+  "+components/tabs/public",
+  "+services/data_decoder/public/cpp",
+  "+services/data_decoder/public/mojom",
+  "+services/service_manager/public/cpp",
 ]

@@ -364,6 +364,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "credits",
       "sync-internals",
       "account",
+      "leo-ai",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
