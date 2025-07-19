@@ -19,6 +19,7 @@ export function WidgetsPanel() {
   const vpnActions = useVpnActions()
 
   const showStats = useNewTabState((s) => s.showShieldsStats)
+  const talkFeatureEnabled = useNewTabState((s) => s.talkFeatureEnabled)
   const showTalkWidget = useNewTabState((s) => s.showTalkWidget)
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
@@ -63,16 +64,19 @@ export function WidgetsPanel() {
             />
           </div>
       }
-      <div className='control-row'>
-        <label>{getString('showTalkWidgetLabel')}</label>
-        <Toggle
-          size='small'
-          checked={showTalkWidget}
-          onChange={({ checked }) => {
-            newTabActions.setShowTalkWidget(checked)
-          }}
-        />
-      </div>
+      {
+        talkFeatureEnabled &&
+          <div className='control-row'>
+            <label>{getString('showTalkWidgetLabel')}</label>
+            <Toggle
+              size='small'
+              checked={showTalkWidget}
+              onChange={({ checked }) => {
+                newTabActions.setShowTalkWidget(checked)
+              }}
+            />
+          </div>
+      }
     </div>
   )
 }

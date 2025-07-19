@@ -13,7 +13,7 @@ import { SearchProvider } from './context/search_context'
 import { TopSitesProvider } from './context/top_sites_context'
 import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
-import { BraveNewsContextProvider } from '../../../components/brave_news/browser/resources/shared/Context'
+import { NewsProvider } from './context/news_context'
 
 import { App } from './components/app'
 
@@ -27,9 +27,9 @@ function AppProvider(props: { children: React.ReactNode }) {
           <TopSitesProvider name='topSites'>
             <VpnProvider name='vpn'>
               <RewardsProvider name='rewards'>
-                <BraveNewsContextProvider>
+                <NewsProvider>
                   {props.children}
-                </BraveNewsContextProvider>
+                </NewsProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
