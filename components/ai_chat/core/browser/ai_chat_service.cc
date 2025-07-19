@@ -797,16 +797,17 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
 void AIChatService::OnConversationEntryAdded(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::vector<std::string_view>> maybe_associated_content) {
+    std::optional<PageContentses> maybe_associated_content) {
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
   std::optional<std::vector<std::string>> associated_content;
   if (maybe_associated_content.has_value()) {
     associated_content = std::vector<std::string>();
-    std::ranges::transform(maybe_associated_content.value(),
-                           std::back_inserter(associated_content.value()),
-                           [](const auto& view) { return std::string(view); });
+    std::ranges::transform(
+        maybe_associated_content.value(),
+        std::back_inserter(associated_content.value()),
+        [](const auto& page_content) { return page_content.get().content; });
   }
 
   if (!conversation->has_content) {

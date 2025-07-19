@@ -15,8 +15,9 @@ MockAssociatedContent::~MockAssociatedContent() {
 }
 
 void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
-  cached_text_content_ = GetTextContent();
-  std::move(callback).Run(GetTextContent(), GetCachedIsVideo(), "");
+  cached_page_content_.content = GetTextContent();
+  cached_page_content_.is_video = GetIsVideo();
+  std::move(callback).Run(cached_page_content_);
 }
 
 }  // namespace ai_chat

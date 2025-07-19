@@ -15,8 +15,10 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
@@ -25,11 +27,8 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
-
-const char kPageTagRegex[] = "</?page>";
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -192,17 +191,18 @@ AssociatedContentManager::GetAssociatedContent() const {
 
   std::vector<mojom::AssociatedContentPtr> result;
   for (auto* delegate : content_delegates_) {
+    auto cached_page_content = delegate->GetCachedPageContent();
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
     content->uuid = delegate->uuid();
     content->content_id = delegate->GetContentId();
     content->url = delegate->GetURL();
     content->title = base::UTF16ToUTF8(delegate->GetTitle());
-    content->content_type = delegate->GetCachedIsVideo()
+    content->content_type = cached_page_content.is_video
                                 ? mojom::ContentType::VideoTranscript
                                 : mojom::ContentType::PageContent;
 
     const uint32_t content_length =
-        delegate->GetCachedTextContent().length() + kAdditionalCharsPerContent;
+        cached_page_content.content.length() + kAdditionalCharsPerContent;
     if (total_consumed_chars + content_length <=
         max_associated_content_length) {
       content->content_used_percentage = 100;
@@ -222,6 +222,41 @@ AssociatedContentManager::GetAssociatedContent() const {
     total_consumed_chars += content_length;
   }
   return result;
+}
+
+void AssociatedContentManager::HasContentUpdated(
+    base::OnceCallback<void(bool)> callback) {
+  DVLOG(1) << __func__;
+
+  std::vector<PageContent> cached_content;
+  std::ranges::copy(GetCachedContent(), std::back_inserter(cached_content));
+
+  GetContent(base::BindOnce(
+      [](base::WeakPtr<AssociatedContentManager> self,
+         std::vector<PageContent> cached_content,
+         base::OnceCallback<void(bool)> callback) {
+        if (!self) {
+          return;
+        }
+
+        auto new_contents = self->GetCachedContent();
+        bool changed = cached_content.size() != new_contents.size();
+        if (!changed) {
+          for (size_t i = 0; i < cached_content.size(); ++i) {
+            auto cached = cached_content[i];
+            auto& new_content = new_contents[i].get();
+            if (cached.content != new_content.content ||
+                cached.is_video != new_content.is_video) {
+              changed = true;
+              break;
+            }
+          }
+        }
+
+        std::move(callback).Run(changed);
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(cached_content),
+      std::move(callback)));
 }
 
 void AssociatedContentManager::GetContent(base::OnceClosure callback) {
@@ -253,8 +288,7 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
             weak_ptr_factory_.GetWeakPtr()));
     for (auto* content : content_delegates_) {
       content->GetContent(base::BindOnce(
-          [](base::RepeatingClosure callback, std::string content,
-             bool is_video, std::string invalidation_token) { callback.Run(); },
+          [](base::RepeatingClosure callback, PageContent) { callback.Run(); },
           content_callback));
     }
   } else {
@@ -263,7 +297,7 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
 }
 
 void AssociatedContentManager::GetScreenshots(
-    ConversationHandler::GetScreenshotsCallback callback) {
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
   DVLOG(1) << __func__;
 
   if (content_delegates_.size() == 0) {
@@ -314,42 +348,11 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
   content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
-std::string AssociatedContentManager::GetCachedTextContent() const {
+PageContentses AssociatedContentManager::GetCachedContent() const {
   DVLOG(1) << __func__;
-
-  auto cached_content = GetCachedContent();
-  std::vector<std::string> transformed_content;
-  std::ranges::transform(cached_content,
-                         std::back_inserter(transformed_content),
-                         [](const auto& content) {
-                           std::string text(content);
-                           while (RE2::GlobalReplace(&text, kPageTagRegex, ""))
-                             ;
-                           return text;
-                         });
-
-  // If we only have one content delegate directly return the content.
-  // Otherwise, wrap each content in <page> tags.
-  if (transformed_content.size() == 1) {
-    return std::string(transformed_content[0]);
-  }
-
-  if (transformed_content.size() == 0) {
-    return "";
-  }
-
-  return base::StrCat({"<page>",
-                       base::JoinString(transformed_content, "</page><page>"),
-                       "</page>"});
-}
-
-std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
-    const {
-  DVLOG(1) << __func__;
-
-  std::vector<std::string_view> result;
+  PageContentses result;
   for (auto* delegate : content_delegates_) {
-    result.push_back(delegate->GetCachedTextContent());
+    result.push_back(delegate->GetCachedPageContent());
   }
 
   return result;
@@ -378,15 +381,16 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->GetCachedIsVideo();
+         content_delegates_[0]->GetCachedPageContent().is_video;
 }
 
 void AssociatedContentManager::OnNavigated(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
-  SetArchiveContent(delegate->uuid(),
-                    std::string(delegate->GetCachedTextContent()),
-                    delegate->GetCachedIsVideo());
+
+  auto page_content = delegate->GetCachedPageContent();
+  SetArchiveContent(delegate->uuid(), page_content.content,
+                    page_content.is_video);
 
   // Note: We don't call conversation_->OnAssociatedContentUpdated() here
   // because the content should not have changed.
