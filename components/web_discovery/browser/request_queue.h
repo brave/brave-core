@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;

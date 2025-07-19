@@ -20,6 +20,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/profiles/profile.h"
@@ -196,6 +197,11 @@ void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  // Don't allow enabling web discovery if it's disabled by policy
+  if (profile_->GetPrefs()->GetBoolean(
+          web_discovery::kWebDiscoveryDisabledByPolicy)) {
+    return;
+  }
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 #endif
 }

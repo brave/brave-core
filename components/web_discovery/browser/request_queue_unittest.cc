@@ -10,8 +10,8 @@
 
 #include "base/test/task_environment.h"
 #include "base/values.h"
-#include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
+#include "brave/components/web_discovery/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
