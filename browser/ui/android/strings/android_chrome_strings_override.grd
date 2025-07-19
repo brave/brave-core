@@ -227,6 +227,9 @@ CHAR_LIMIT guidelines:
         Private
       </message>
 
+      <if expr="enable_extensions_core">
+        </if>
+
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
         Enter Private mode
       </message>
