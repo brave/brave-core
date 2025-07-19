@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
@@ -178,7 +179,10 @@ void AccumulateAcceleratorsRecursively(
     base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>*
         accelerators,
     NSMenu* menu) {
-  CHECK(menu);
+  if (!menu) {
+    CHECK_IS_TEST() << "Could be null in unittest with browser view";
+    return;
+  }
 
   for (NSMenuItem* item in [menu itemArray]) {
     if (auto mapping = ToAcceleratorMapping(item)) {
