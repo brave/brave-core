@@ -44,6 +44,30 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
+const readArgsGn = (srcDir, outputDir) => {
+  const util = require('./util')
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+
+  const result = util.run(
+    'python3',
+    [
+      '-c',
+      `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`,
+    ],
+    { skipLogging: true },
+  )
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
@@ -947,7 +971,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.updateInternal = function (options) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -1148,6 +1172,26 @@ Config.prototype.update = function (options) {
 
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
+  }
+}
+
+Config.prototype.fromGnArgs = function (options) {
+  if (options.C === undefined) {
+    Log.error(`You must specific output directory with -C to use --no_gn_gen`)
+    process.exit(1)
+  }
+  const gnArgs = readArgsGn(this.srcDir, options.C)
+  Object.assign({}, gnArgs, { 'C': options.C })
+  // only gnArgs that match command line options for updateInternal will be
+  // processed here
+  this.updateInternal(gnArgs)
+}
+
+Config.prototype.update = function (options) {
+  if (options.no_gn_gen !== undefined) {
+    this.fromGnArgs(options)
+  } else {
+    this.updateInternal(options)
   }
 }
 
