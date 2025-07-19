@@ -172,10 +172,11 @@ const _extractValueFromStr = (text: string,
 // }
 const _parseKeyValueMatchRules = (arg: string): KeyValueMatchRules => {
   const [key, needlePos] = _extractKeyFromStr(arg)
-  const keyMatchRule = _testMatches.bind(undefined, key)
+  const keyMatchRule = (arg: string) => _testMatches(key, arg, true)
   let valueMatchRule: TextMatchRule | undefined
   if (needlePos !== undefined) {
-    valueMatchRule = _extractValueMatchRuleFromStr(arg, false, needlePos)
+    const value = _extractValueFromStr(arg, false, needlePos)
+    valueMatchRule = (arg: string) => _testMatches(value, arg, true)
   }
   return [keyMatchRule, valueMatchRule]
 }
