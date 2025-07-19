@@ -45,6 +45,24 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
+const readArgsGn = (srcDir, outputDir) => {
+  const util = require('./util')
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+  const argsGnPath = path.join(outputDir, 'args.gn')
+
+  const result = util.run('python3', ['-c', `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`], { skipLogging: true })
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
@@ -1157,9 +1175,8 @@ Config.prototype.fromGnArgs = function (options) {
     Log.error(`You must specific output directory with -C to use --no_gn_gen`)
     process.exit(1)
   }
-  const gnArgs = dotenv.parse(
-    fs.readFileSync(path.join(options.C, 'args_generated.gni')),
-  )
+  const gnArgs = readArgsGn(this.srcDir, options.C)
+  Object.assign({}, gnArgs, {'C': options.C})
   // only gnArgs that match command line options for updateInternal will be
   // processed here
   this.updateInternal(gnArgs)
