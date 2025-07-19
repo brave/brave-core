@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index ff42c4bc7d776dbb4cb27d5c2c7b1a78dba9c750..999bc0b985657643621f89e8d01906f93814ebe9 100644
+index 2406cb3ad5ea6f9709d1e0ef984cbfdf969f3c40..77f32c084d60670679c78b9a0dc5ea6bbe7a515b 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -5220,6 +5220,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
@@ -26,7 +26,7 @@ index ff42c4bc7d776dbb4cb27d5c2c7b1a78dba9c750..999bc0b985657643621f89e8d01906f9
      return false;
    }
  
-@@ -9809,6 +9812,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -9822,6 +9825,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

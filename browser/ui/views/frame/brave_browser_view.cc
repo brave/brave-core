@@ -234,7 +234,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       contents_container_->AddChildView(std::make_unique<ReaderModeToolbarView>(
           browser_->profile(), use_rounded_corners));
 
-  views::View* contents_view = contents_web_view_;
+  views::View* contents_view = contents_container_view_;
   // MultiContentsView is contents view with SideBySide feature.
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     contents_view = multi_contents_view_;
@@ -243,8 +243,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view(), devtools_scrim_view(), contents_view,
-          lens_overlay_view_, contents_scrim_view(), /*border_view*/ nullptr,
-          watermark_view_.get(), reader_mode_toolbar_));
+          lens_overlay_view_, /*border_view=*/nullptr, watermark_view_.get(),
+          reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {
@@ -433,16 +433,6 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
   return BrowserView::GetTabStripVisible();
 }
-
-#if BUILDFLAG(IS_WIN)
-bool BraveBrowserView::GetSupportsTitle() const {
-  if (tabs::utils::SupportsVerticalTabs(browser())) {
-    return true;
-  }
-
-  return BrowserView::GetSupportsTitle();
-}
-#endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BraveBookmarkButton* button =

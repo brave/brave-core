@@ -403,25 +403,11 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
-      // Remove all hidden performance options from basic page.
-      // We moved performance elements into system settings.
-      const performanceTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showPage_(pageVisibility_.performance)]]"]')
-      if (performanceTemplate) {
-        performanceTemplate.remove()
-      } else {
-        console.error('[Settings] Could not find performance section')
-      }
-
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
       // Insert New Tab
       last = last.insertAdjacentElement('afterend', sectionNewTab)
-      // Move Appearance item
-      const sectionAppearance = getSectionElement(actualTemplate.content,
-        'appearance')
-      last = last.insertAdjacentElement('afterend', sectionAppearance)
       // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
       last = last.insertAdjacentElement('afterend', sectionToolbar)
       last = last.insertAdjacentElement('afterend', sectionTabs)
@@ -443,9 +429,6 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
       last = last.insertAdjacentElement('afterend', sectionSync)
-      // Move search
-      const sectionSearch = getSectionElement(actualTemplate.content, 'search')
-      last = last.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       last = last.insertAdjacentElement('afterend', sectionExtensions)
       // Insert Wallet
@@ -464,25 +447,6 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
       // Insert Custom Models List
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
-
-      // Advanced
-      const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility_.advancedSettings)]]"]')
-      if (!advancedTemplate) {
-        console.error('[Brave Settings Overrides] Could not find advanced section')
-      }
-      const advancedSubSectionsTemplate = advancedTemplate.content.querySelector('settings-idle-load template')
-      if (!advancedSubSectionsTemplate) {
-        console.error('[Brave Settings Overrides] Could not find advanced sub-sections container')
-      }
-      // Move autofill to before languages
-      const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
-      if (sectionAutofill) {
-        const sectionLanguages =
-          getSectionElement(advancedSubSectionsTemplate.content, 'languages')
-        if (sectionLanguages) {
-          sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
-        }
-      }
     }
   }
 })

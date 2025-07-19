@@ -1,12 +1,12 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index ada289497b25fbf90087d31065a2a5e0ba063c8a..fa92ddd4d7ed55a7b7f7d9731e7716d449bd70e4 100644
+index 7b1e29e99375a030c7e654d88da921bf6f95a52b..62c24d9f2d674b76a98a247d29b9a77a6f23644c 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -354,6 +354,7 @@ is_posix = !is_win && !is_fuchsia
+@@ -359,6 +359,7 @@ is_posix = !is_win && !is_fuchsia
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [
 +  "//brave/build:compiler",
-   "//build/config:feature_flags",
+   "//build/config/compiler/pgo:default_pgo_flags",
    "//build/config/compiler:afdo",
    "//build/config/compiler:afdo_optimize_size",

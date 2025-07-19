@@ -89,6 +89,12 @@
   <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION" desc="The description of the autofill AI button on chrome://settings/autofill.">
     Brave understands forms better and can autofill them faster for you
   </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION_FEATURE_ON" desc="The sublabel of the autofill AI row on chrome://settings/ai when the autofill AI feature is on. ">
+Brave understands forms better and can autofill them faster for you. This setting is on.
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION_FEATURE_OFF" desc="The sublabel of the autofill AI row on chrome://settings/ai when the autofill AI feature is off.">
+Brave understands forms better and can autofill them faster for you. This setting is off.
+  </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using Autofill with AI, this feature can offer to save the user's submitted info. When Brave saves that info, we save the submitted values and consider the page context.">
     Brave understands forms better and can autofill them faster for you
   </message>
@@ -265,6 +271,9 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_SETTING_SUBLABEL" desc="By default Brave auto-revokes (disables) permissions (e.g. Camera, Location, etc.) for websites that were not visited for a while. This sublabel is for the toggle that allows users to switch off/on this functionality.">
     To protect your data, let Brave remove permissions from sites you haven't visited recently. Doesn't stop notifications.
   </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_AND_NOTIFICATIONS_SETTING_SUBLABEL" desc="By default Brave auto-revokes (disables) permissions (e.g. Camera, Location, etc.) for websites that were not visited for a while. This sublabel is for the toggle that allows users to switch off/on this functionality.">
+    To protect your data, let Brave remove permissions from sites you haven't visited recently.
+  </message>
 
   <!-- Safe Browsing -->
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_TWO" desc="Bullet point under the safe browsing enhanced protection mode">
@@ -306,6 +315,9 @@
   </message>
   <message name="IDS_SETTINGS_PEOPLE_EXPLICIT_SIGN_IN_PROMPT_SECONDARY_WITH_NO_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is already present in Brave.">
     To get your passwords and more on all your devices, sign in to Brave
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_EXPLICIT_SIGN_IN_PROMPT_SECONDARY_WITH_NO_ACCOUNT_WITH_BOOKMARKS" desc="The secondary text displayed to prompt users to enable sync for an account that is already present in Brave.">
+    To get your passwords, bookmarks, and more on all your devices, sign in to Brave
   </message>
   <message name="IDS_SETTINGS_PEOPLE_ACCOUNT_AWARE_SIGNIN_ACCOUNT_ROW_TITLE" desc="The title of the avatar row shown to users who are signed in only to the web">
     Your Brave

@@ -311,6 +311,27 @@ exports.update = () => {
     )
     explicitSourceFiles[iconDest] = iconSource
 
+    // Set proper mac app asset catalog for channel to
+    // chrome/app/theme/mac/Assets.car. Each channel's resource catalog is
+    // stored in brave/app/theme/$channel/Assets.car. With this copying, we
+    // don't need to modify chrome/BUILD.gn for this.
+    const assetCatalogSource = path.join(
+      braveAppDir,
+      'theme',
+      'brave',
+      'mac',
+      config.channel,
+      'Assets.car',
+    )
+    const assetCatalogDest = path.join(
+      chromeAppDir,
+      'theme',
+      'brave',
+      'mac',
+      'Assets.car',
+    )
+    explicitSourceFiles[assetCatalogDest] = assetCatalogSource
+
     // Set proper branding file.
     let brandingFileName = 'BRANDING'
     if (config.channel)

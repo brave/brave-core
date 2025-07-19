@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
+index 494480b1ab0f4831ea9740bf2032190e89f92dc5..b095db8eaf806608e9760af76d11023e52b7187d 100644
+--- a/chrome/browser/ui/browser_window/public/browser_window_features.h
++++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
+@@ -149,7 +149,7 @@ class SplitTabScrimController;
+ class BrowserWindowFeatures {
+  public:
+   BrowserWindowFeatures();
+-  ~BrowserWindowFeatures();
++  virtual ~BrowserWindowFeatures();
+ 
+   BrowserWindowFeatures(const BrowserWindowFeatures&) = delete;
+   BrowserWindowFeatures& operator=(const BrowserWindowFeatures&) = delete;

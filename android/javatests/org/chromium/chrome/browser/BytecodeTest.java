@@ -143,7 +143,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
-import org.chromium.chrome.browser.ui.extensions.ExtensionService;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -659,7 +658,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
-                        "updateSearchProviderHasLogo",
+                        "updateSearchProvider",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
@@ -812,8 +811,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "canEnterMultiWindowMode",
                         MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class));
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
@@ -847,6 +845,7 @@ public class BytecodeTest {
                         "showUndoBar",
                         MethodModifier.REGULAR,
                         void.class,
+                        List.class,
                         List.class,
                         boolean.class));
         Assert.assertTrue(
@@ -1117,9 +1116,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
-                        "shouldUseParentIds",
+                        "shouldGroupWithParent",
                         MethodModifier.REGULAR,
                         boolean.class,
+                        Tab.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
@@ -1227,7 +1227,6 @@ public class BytecodeTest {
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
-                        ExtensionService.class,
                         OneshotSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1261,7 +1260,6 @@ public class BytecodeTest {
                         ActivityTabProvider.class,
                         ScrimManager.class,
                         ToolbarActionModeCallback.class,
-                        ExtensionService.class,
                         FindToolbarManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1732,7 +1730,8 @@ public class BytecodeTest {
                         BookmarkUiPrefs.class,
                         BookmarkOpener.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        Function.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1800,6 +1799,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                         TabContextMenuItemDelegate.class,
                         Supplier.class,
+                        List.class,
                         int.class,
                         Context.class,
                         ContextMenuParams.class,

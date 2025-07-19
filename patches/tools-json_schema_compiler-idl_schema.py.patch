@@ -1,8 +1,8 @@
 diff --git a/tools/json_schema_compiler/idl_schema.py b/tools/json_schema_compiler/idl_schema.py
-index a0df36c7246e76781f3fa5211a28e8f0931e5d43..6032046735bc3aec1db5b856a1283f7622f095fb 100755
+index 51a36245086315a668cc607f08517c93a23a6f8c..6c9ba58ce4f6d768f9660ec0726324bd52f0e12f 100755
 --- a/tools/json_schema_compiler/idl_schema.py
 +++ b/tools/json_schema_compiler/idl_schema.py
-@@ -560,6 +560,8 @@ class IDLSchema(object):
+@@ -564,6 +564,8 @@ class IDLSchema(object):
            compiler_options['generate_error_messages'] = True
          elif node.name == 'deprecated':
            deprecated = str(node.value)

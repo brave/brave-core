@@ -1,8 +1,8 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 2202a76584bc0caf604314f25d34892258162008..52c1f4dc71315d253330ec314880875f8fb6f0d4 100644
+index 4ba3dd259934c46de5732c1d131d412e5eab52ea..f17afd6fa3c189643b60dd3fa770a6caa6458e15 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3731,6 +3731,7 @@ source_set("browser") {
+@@ -3660,6 +3660,7 @@ source_set("browser") {
    if (is_chromeos) {
      deps += [ "//ash/constants:constants" ]
    }

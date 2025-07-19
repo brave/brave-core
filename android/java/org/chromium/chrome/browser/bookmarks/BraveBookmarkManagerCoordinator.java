@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +14,10 @@ import androidx.annotation.Nullable;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgePadAdjuster;
 import org.chromium.ui.base.ActivityWindowAndroid;
+
+import java.util.function.Function;
 
 public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator {
     // Overridden Chromium's BookmarkManagerCoordinator.mMediator
@@ -27,7 +31,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
             @NonNull BookmarkUiPrefs bookmarkUiPrefs,
             @NonNull BookmarkOpener bookmarkOpener,
             @Nullable BookmarkManagerOpener bookmarkManagerOpener,
-            @NonNull PriceDropNotificationManager priceDropNotificationManager) {
+            @NonNull PriceDropNotificationManager priceDropNotificationManager,
+            @Nullable Function<View, EdgeToEdgePadAdjuster> edgeToEdgePadAdjusterGenerator) {
         super(
                 context,
                 isDialogUi,
@@ -36,7 +41,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
                 bookmarkUiPrefs,
                 bookmarkOpener,
                 bookmarkManagerOpener,
-                priceDropNotificationManager);
+                priceDropNotificationManager,
+                edgeToEdgePadAdjusterGenerator);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

@@ -19,7 +19,7 @@ EdgeEventListenerAction::EdgeEventListenerAction(
     NodeActor* out_node,
     NodeHTMLElement* in_node,
     const FrameId& frame_id,
-    const String& event_type,
+    const blink::String& event_type,
     const EventListenerId listener_id,
     NodeActor* listener_script)
     : GraphEdge(context, out_node, in_node),
@@ -38,7 +38,7 @@ ScriptId EdgeEventListenerAction::GetListenerScriptId() const {
 }
 
 ItemDesc EdgeEventListenerAction::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << GraphEdge::GetItemDesc() << " [" << event_type_ << "]"
      << " [listener id: " << listener_id_ << "]"
      << " [listener script id: " << GetListenerScriptId() << "]";

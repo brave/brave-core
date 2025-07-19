@@ -56,7 +56,7 @@ export class SettingsBraveAppearanceSuperReferralElement extends
     return [
       'themeChanged_(prefs.extensions.theme.id.value, useSystemTheme_)',
 
-      // <if expr="is_linux and not chromeos_ash">
+      // <if expr="is_linux and not is_chromeos">
       // NOTE: this pref only exists on Linux.
       'useSystemThemePrefChanged_(prefs.extensions.theme.use_system.value)',
       // </if>
@@ -91,7 +91,7 @@ export class SettingsBraveAppearanceSuperReferralElement extends
     this.appearanceBrowserProxy_.useDefaultTheme();
   }
 
-  // <if expr="is_linux and not chromeos_ash">
+  // <if expr="is_linux and not is_chromeos">
   private useSystemThemePrefChanged_(useSystemTheme: boolean) {
     this.useSystemTheme_ = useSystemTheme;
   }
@@ -149,10 +149,10 @@ export class SettingsBraveAppearanceSuperReferralElement extends
     }
 
     let i18nId;
-    // <if expr="is_linux and not chromeos_ash">
+    // <if expr="is_linux and not is_chromeos">
     i18nId = useSystemTheme ? 'gtkTheme' : 'classicTheme';
     // </if>
-    // <if expr="not is_linux or chromeos_ash">
+    // <if expr="not is_linux or is_chromeos">
     i18nId = 'chooseFromWebStore';
     // </if>
     this.themeSublabel_ = this.i18n(i18nId);
@@ -160,4 +160,3 @@ export class SettingsBraveAppearanceSuperReferralElement extends
 }
 
 customElements.define(SettingsBraveAppearanceSuperReferralElement.is, SettingsBraveAppearanceSuperReferralElement)
-

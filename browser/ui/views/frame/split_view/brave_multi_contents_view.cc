@@ -139,7 +139,7 @@ float BraveMultiContentsView::GetCornerRadius(bool for_border) const {
 
 void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
-  delegate_->ResizeWebContents(0.5);
+  delegate_->ResizeWebContents(0.5, /*done_resizing=*/false);
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {

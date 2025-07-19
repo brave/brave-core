@@ -157,13 +157,14 @@
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
   CloseAllWebStates(*_otr_browser->GetWebStateList(),
-                    WebStateList::CLOSE_NO_FLAGS);
+                    WebStateList::ClosingReason::kDefault);
   _otr_browser.reset();
 
   _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
-  CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_browser->GetWebStateList(),
+                    WebStateList::ClosingReason::kDefault);
   _browser.reset();
 
   _profile = nil;
@@ -386,7 +387,7 @@
   // in their -dealloc method, ensure the -autorelease introduced by ARC are
   // processed before the WebStateList destructor is called.
   @autoreleasepool {
-    CloseAllWebStates(*webStateList, WebStateList::CLOSE_NO_FLAGS);
+    CloseAllWebStates(*webStateList, WebStateList::ClosingReason::kDefault);
   }
 }
 
