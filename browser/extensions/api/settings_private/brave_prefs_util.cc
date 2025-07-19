@@ -181,6 +181,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_news::prefs::kBraveNewsDisabledByPolicy] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kEnabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_TOR)
+  (*s_brave_allowlist)[tor::prefs::kTorDisabled] =
+      settings_api::PrefType::kBoolean;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kManagedBraveVPNDisabled] =
       settings_api::PrefType::kBoolean;

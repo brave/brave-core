@@ -39,23 +39,17 @@ void BraveOriginHandler::HandleGetInitialState(
   // TODO(bsclifton): look at real preference values.
   bool toggle_search_ads = false;
   bool toggle_email_alias = false;
-  bool toggle_leo_ai = false;
   bool toggle_p3a_crash_report = false;
   bool toggle_sidebar = false;
-  bool toggle_tor_windows = false;
   bool toggle_web3domains = false;
 
   base::Value::Dict initial_state;
 
-  LOG(ERROR) << "BSC]] HandleGetInitialState";
-
   initial_state.Set("enabled", brave_origin_enabled);
   initial_state.Set("toggle_search_ads", toggle_search_ads);
   initial_state.Set("toggle_email_alias", toggle_email_alias);
-  initial_state.Set("toggle_leo_ai", toggle_leo_ai);
   initial_state.Set("toggle_p3a_crash_report", toggle_p3a_crash_report);
   initial_state.Set("toggle_sidebar", toggle_sidebar);
-  initial_state.Set("toggle_tor_windows", toggle_tor_windows);
   initial_state.Set("toggle_web3domains", toggle_web3domains);
 
   ResolveJavascriptCallback(

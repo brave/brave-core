@@ -20,10 +20,8 @@ export interface SettingsBraveOriginPageElement {
   $: {
     toggleSearchAdsButton: SettingsToggleButtonElement,
     toggleEmailAliasButton: SettingsToggleButtonElement,
-    toggleLeoAiButton: SettingsToggleButtonElement,
     toggleP3ACrashReportButton: SettingsToggleButtonElement,
     toggleSidebarButton: SettingsToggleButtonElement,
-    toggleTorWindowsButton: SettingsToggleButtonElement,
     toggleWeb3DomainsButton: SettingsToggleButtonElement
   }
 }
@@ -80,19 +78,11 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false
       },
-      toggleLeoAi_: {
-        type: Boolean,
-        value: false
-      },
       toggleP3ACrashReport_: {
         type: Boolean,
         value: false
       },
       toggleSidebar_: {
-        type: Boolean,
-        value: false
-      },
-      toggleTorWindows_: {
         type: Boolean,
         value: false
       },
@@ -125,10 +115,8 @@ export class SettingsBraveOriginPageElement
     this.braveOriginEnabled_ = initial_state.enabled;
     this.toggleSearchAds_ = initial_state.search_ads;
     this.toggleEmailAlias_ = initial_state.toggle_email_alias;
-    this.toggleLeoAi_ = initial_state.toggle_leo_ai;
     this.toggleP3ACrashReport_ = initial_state.toggle_p3a_crash_report;
     this.toggleSidebar_ = initial_state.toggle_sidebar;
-    this.toggleTorWindows_ = initial_state.toggle_tor_windows;
     this.toggleWeb3Domains_ = initial_state.toggle_web3domains;
   }
 
@@ -140,20 +128,12 @@ export class SettingsBraveOriginPageElement
     console.log('toggleEmailAlias_', this.$.toggleEmailAliasButton.checked)
   }
 
-  private toggleLeoAiChange_ () {
-    console.log('toggleLeoAi_', this.$.toggleLeoAiButton.checked)
-  }
-
   private toggleP3ACrashReportChange_ () {
     console.log('toggleP3ACrashReport_', this.$.toggleP3ACrashReportButton.checked)
   }
 
   private toggleSidebarChange_ () {
     console.log('toggleSidebar_', this.$.toggleSidebarButton.checked)
-  }
-
-  private toggleTorWindowsChange_ () {
-    console.log('toggleTorWindows_', this.$.toggleTorWindowsButton.checked)
   }
 
   private toggleWeb3DomainsChange_ () {
