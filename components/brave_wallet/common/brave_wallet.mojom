@@ -2909,12 +2909,14 @@ interface BraveWalletService {
   GetDefaultEthereumWallet() => (DefaultWallet default_wallet);
 
   GetDefaultSolanaWallet() => (DefaultWallet default_wallet);
+
   GetDefaultCardanoWallet() => (DefaultWallet default_wallet);
 
   // Modifies the default wallet setting
   SetDefaultEthereumWallet(DefaultWallet default_wallet);
 
   SetDefaultSolanaWallet(DefaultWallet default_wallet);
+
   SetDefaultCardanoWallet(DefaultWallet default_wallet);
 
   // Obtains the default base currency
