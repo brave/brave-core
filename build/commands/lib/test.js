@@ -4,12 +4,59 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs-extra')
+const glob = require('glob')
 const path = require('path')
 
 const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
+const cacheClient = require('./cache-client')
+
+const { createHash } = require('crypto')
+
+function hashString(content) {
+  return createHash('sha-1').update(content).digest('hex')
+}
+
+const hashFile = async (filePath) => {
+  try {
+    const hash = crypto.createHash('sha-1')
+    const rs = fs.createReadStream(filePath)
+    for await (const chunk of rs) {
+      hash.update(chunk)
+    }
+    return hash.digest('hex')
+  } catch (error) {
+    console.error('Error while calculating hash:', error)
+  }
+}
+
+async function calculateCacheKey(testSuite, options) {
+  const testBinary = getTestBinary(testSuite)
+  const filterFilePaths = getApplicableFilters(testSuite)
+  await util.buildTargets([testSuite + '.hash.json'], {
+    ...config.defaultOptions,
+    continueOnFail: true,
+  })
+  const { hash } = JSON.parse(
+    await fs.readFile(testBinary + '.hash.json', 'utf-8'),
+  )
+
+  // TODO: check if we can avoid hashing this
+  const filterFileHashes = await Promise.all(filterFilePaths.map(hashFile))
+
+  const argsToHash = [
+    options.filter,
+    options.run_disabled_tests ? 'run_disabled_tests' : null,
+    ...filterFileHashes,
+  ].filter((x) => x)
+
+  const argHash = argsToHash.length ? '-' + hashString(argsToHash.join('')) : ''
+
+  // we might need to be careful because windows paths have a limit...
+  return `${testSuite}-${hash}${argHash}.xml`
+}
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -52,6 +99,15 @@ const getTestsToRun = (config, suite) => {
     testsToRun = [suite]
   }
   return testsToRun
+}
+
+const testOnRBE = (testSuite) => {
+  if (!['brave_browser_tests', 'brave_unit_tests'].includes(testSuite))
+    return false
+  return {
+    target: testSuite + '-all-shards',
+    offline: process.platform !== 'linux'
+  }
 }
 
 // Returns a list of paths to files containing all the filters that would apply
@@ -99,7 +155,7 @@ const test = async (
   options = {},
 ) => {
   await buildTests(suite, buildConfig, options)
-  runTests(passthroughArgs, suite, buildConfig, options)
+  await runTests(passthroughArgs, suite, buildConfig, options)
 }
 
 const buildTests = async (
@@ -134,7 +190,7 @@ const deleteFile = (filePath) => {
   }
 }
 
-const runTests = (passthroughArgs, suite, buildConfig, options) => {
+const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -220,13 +276,14 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     ]
 
     // Run the tests
-    getTestsToRun(config, suite).every((testSuite) => {
+
+    for (const testSuite of getTestsToRun(config, suite)) {
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
 
       // Filter out upstream tests that are known to fail for Brave
+      const filterFilePaths = getApplicableFilters(testSuite)
       if (upstreamTestSuites.includes(testSuite)) {
-        const filterFilePaths = getApplicableFilters(testSuite)
         if (filterFilePaths.length > 0) {
           runArgs.push(
             `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
@@ -256,6 +313,31 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         runOptions.continueOnFail = true
       }
 
+      const testBinary = getTestBinary(testSuite)
+
+      let cacheKey = null
+      const cache = options.output_xml ? await cacheClient() : null
+
+      if (cache) {
+        cacheKey = await calculateCacheKey(testSuite, options).catch((e) => {
+          console.error(e)
+          return null
+        })
+
+        console.log({ cacheKey })
+
+        if (cacheKey && (await cache.check(cacheKey))) {
+          if (await cache.download(cacheKey, `${outputFilename}.xml`)) {
+            console.log(
+              `SKIPPING TEST; Retriving test result from cache: ${cacheKey}`,
+            )
+            continue
+          }
+        }
+      }
+
+      const rbeTestTarget = testOnRBE(testSuite)
+
       if (options.output_xml) {
         // Add filename of xml output of each test suite into the results file
         if (config.targetOS === 'android') {
@@ -266,7 +348,9 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         } else {
           runArgs.push(`--gtest_output=xml:${outputFilename}.xml`)
         }
-        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+        if(!rbeTestTarget) {
+          fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+        }
       }
 
       if (config.targetOS === 'android' && !isJunitTestSuite) {
@@ -289,11 +373,18 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         runOptions.stdio = 'inherit'
       }
 
-      let prog = util.run(getTestBinary(testSuite), runArgs, runOptions)
+      if (rbeTestTarget) {
+        util.buildTargets([rbeTestTarget.target], {...config.defaultOptions, lerc: true })
+        const reportBasePath = path.join( path.basename(testBinary), 'gen', 'brave', 'test', testSuite );
+        const reports = await new Promise(resolve => glob(reportBasePath+"/**/*.xml", (err, files) => resolve(files)));
+        fs.appendFileSync(allResultsFilePath, reports.join('\n'))
+      } else {
+        util.run(testBinary, braveArgs, runOptions)
+      }
 
       // convert json results to xml
       if (convertJSONToXML) {
-        prog = util.run('vpython3', [path.join('script', 'json2xunit.py')], {
+        util.run('vpython3', [path.join('script', 'json2xunit.py')], {
           ...config.defaultOptions,
           cwd: config.braveCoreDir,
           stdio: [
@@ -303,11 +394,19 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
           ],
         })
       }
+
+      if (cacheKey) {
+        console.log(`caching test results ${cacheKey}`)
+        await cache.upload(cacheKey, `${outputFilename}.xml`)
+      }
+
       // If we output results into an xml file (CI), then we want to run all
       // suites to get all potential failures. Otherwise, for example, if
       // running locally, it makes sense to stop once one suite has failures.
-      return options.output_xml || prog.status === 0
-    })
+      if (!options.output_xml && prog.status !== 0) {
+        break
+      }
+    }
   }
 }
 

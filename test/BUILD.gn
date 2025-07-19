@@ -17,6 +17,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//brave/test/actions/caching.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
 import("//chrome/common/features.gni")
@@ -100,14 +101,38 @@ group("brave_all_unit_tests") {
   }
 }
 
-test("brave_unit_tests") {
+cached_test("quick_unit_tests") {
+  configs += []
+  sources = [ "//brave/base/trace_event/brave_process_memory_dump_unittest.cc" ]
+
+  deps = [
+    "//brave/components/variations:unit_tests",
+    "//brave/components/version_info:unit_tests",
+  ]
+}
+
+cached_test("l10n_unit_tests") {
+  deps = [
+    "//brave/components/l10n/common",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/l10n/common:unit_tests",
+  ]
+}
+
+
+cached_test("brave_unit_tests") {
+  shards = 10
   testonly = true
+
+  filters = [
+    "//brave/test/filters/unit_tests.filter",
+    "//brave/test/filters/unit_tests-macos.filter",
+  ]
 
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
   ]
-
   sources = [
     "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
     "//brave/browser/brave_content_browser_client_unittest.cc",
@@ -647,6 +672,12 @@ if (!is_android) {
       }
     }
   }
+
+  hash_runtime("brave_installer_unittests.hash.json") {
+    testonly = true
+    deps = [ ":brave_installer_unittests" ]
+    binary = "$root_out_dir/brave_installer_unittests"
+  }
 }
 
 static_library("browser_test_support") {
@@ -735,6 +766,12 @@ if (!is_android) {
       deps += [ "//brave/components/playlist/common" ]
     }
   }
+
+  hash_runtime("brave_network_audit_tests.hash.json") {
+    testonly = true
+    deps = [ ":brave_network_audit_tests" ]
+    binary = "$root_out_dir/brave_network_audit_tests"
+  }
 }
 
 # Android browser test manifest
@@ -747,8 +784,13 @@ if (is_android) {
   }
 }
 
-test("brave_browser_tests") {
+cached_test("brave_browser_tests") {
+  shards = 100
   testonly = true
+  filters = [
+    "//brave/test/filters/browser_tests.filter",
+    "//brave/test/filters/browser_tests-macos.filter",
+  ]
 
   public_deps = [ ":browser_tests_runner" ]
 
@@ -1390,3 +1432,5 @@ if (is_android) {
     ]
   }
 }  # if (is_android) {
+
+
