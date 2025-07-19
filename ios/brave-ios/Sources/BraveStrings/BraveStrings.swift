@@ -1269,6 +1269,13 @@ extension Strings {
       value: "Close All Tabs",
       comment: "A button title which when tapped will close all of the open tabs for the user"
     )
+    public static let privateTabsSettingsTitle = NSLocalizedString(
+      "tabGrid.privateTabsSettingsTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private Tabs Settings",
+      comment: "A button title which when tapped will present settings for private tabs"
+    )
     public static let moreMenuButtonTitle = NSLocalizedString(
       "tabGrid.moreMenuButtonTitle",
       tableName: "BraveShared",
@@ -6454,6 +6461,30 @@ extension Strings {
         bundle: .module,
         value: "Require Face ID",
         comment: ""
+      )
+    public static let privateBrowsingLockDescriptionFaceID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionFaceID",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require Face ID to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device biometrics"
+      )
+    public static let privateBrowsingLockDescriptionTouchID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionTouchID",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require Touch ID to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device biometrics"
+      )
+    public static let privateBrowsingLockDescriptionPinCode =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionPinCode",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require your device PIN to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device PIN"
       )
     public static let privateBrowsingLockTitleTouchID =
       NSLocalizedString(

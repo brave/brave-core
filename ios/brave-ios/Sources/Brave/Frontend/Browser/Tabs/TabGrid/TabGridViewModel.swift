@@ -158,6 +158,22 @@ class TabGridViewModel {
     }
   }
 
+  private func persistPrivateTabs() {
+    tabManager.saveAllTabs()
+  }
+
+  private func unpersistPrivateTabs() {
+    if isPrivateBrowsing {
+      // Since this change is happening inside tab grid, while private browsing, we dont actually
+      // want to remove the tabs. If the user leaves private browsing they will be removed later
+      SessionTab.deleteAll(tabIds: tabManager.allTabs.filter(\.isPrivate).map(\.id))
+    } else {
+      // Theoretically this shouldn't happen since the settings that change this pref are only
+      // accessible when in private mode, but just in case we'll perform the regular mode wipe too
+      tabManager.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
+    }
+  }
+
   // MARK -
 
   private func updateTabs() {
@@ -262,6 +278,18 @@ class TabGridViewModel {
       .sink { [weak self] success, type in
         guard type == .tabTray else { return }
         self?.handleAuthenticationResult(success: success, error: nil)
+      }
+      .store(in: &cancellables)
+
+    Preferences.Privacy.persistentPrivateBrowsing.$value
+      .receive(on: RunLoop.main)
+      .sink { [weak self] newValue in
+        guard let self else { return }
+        if newValue {
+          persistPrivateTabs()
+        } else {
+          unpersistPrivateTabs()
+        }
       }
       .store(in: &cancellables)
   }
