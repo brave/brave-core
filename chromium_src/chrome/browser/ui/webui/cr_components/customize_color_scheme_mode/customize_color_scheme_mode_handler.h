@@ -11,7 +11,7 @@
   friend class BraveCustomizeColorSchemeModeHandler; \
   virtual void UpdateColorSchemeMode
 
-#include "src/chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h>  // IWYU pragma: export
 
 #undef UpdateColorSchemeMode
 

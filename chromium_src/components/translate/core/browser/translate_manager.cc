@@ -6,5 +6,5 @@
 #include "components/translate/core/browser/translate_manager.h"
 
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
-#include "src/components/translate/core/browser/translate_manager.cc"
+#include <components/translate/core/browser/translate_manager.cc>
 #undef HasAPIKeyConfigured

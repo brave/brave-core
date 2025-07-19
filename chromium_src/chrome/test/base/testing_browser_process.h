@@ -14,7 +14,7 @@ using TestingBrowserProcess_BraveImpl = TestingBrowserProcess;
   friend TestingBrowserProcess_BraveImpl; \
   bool is_shutting_down_
 #define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
-#include "src/chrome/test/base/testing_browser_process.h"  // IWYU pragma: export
+#include <chrome/test/base/testing_browser_process.h>  // IWYU pragma: export
 #undef TestingBrowserProcess
 #undef is_shutting_down_
 

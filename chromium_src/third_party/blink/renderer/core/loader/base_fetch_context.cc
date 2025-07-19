@@ -9,5 +9,5 @@
 
 #define AllowScript() AllowScript(url)
 
-#include "src/third_party/blink/renderer/core/loader/base_fetch_context.cc"
+#include <third_party/blink/renderer/core/loader/base_fetch_context.cc>
 #undef AllowScript

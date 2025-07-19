@@ -19,6 +19,6 @@
       base::BindRepeating(&SidePanelControllerViews::CloseSidePanel,       \
                           weak_ptr_factory_.GetWeakPtr()));
 
-#include "src/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc"
+#include <chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc>
 
 #undef ShowUI

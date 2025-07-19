@@ -26,7 +26,7 @@
 #include "url/origin.h"
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
-#include "src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc"
+#include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
 #undef TabSearchPageHandler
 
 TabSearchPageHandler::TabSearchPageHandler(

@@ -19,7 +19,7 @@
 
 #define BuildSystemMenuForBrowserWindow virtual BuildSystemMenuForBrowserWindow
 
-#include "src/chrome/browser/ui/views/frame/system_menu_model_builder.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/system_menu_model_builder.h>  // IWYU pragma: export
 
 #undef BuildSystemMenuForBrowserWindow
 #undef Init

@@ -11,7 +11,7 @@
 #define SetUserData(key, ...)                                                \
   SetUserData(key, base::WrapUnique(new BraveWKWebViewConfigurationProvider( \
                        browser_state)));
-#include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.mm"
+#include <ios/web/web_state/ui/wk_web_view_configuration_provider.mm>
 #undef SetUserData
 
 namespace web {

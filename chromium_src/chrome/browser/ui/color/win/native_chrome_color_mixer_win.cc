@@ -40,5 +40,5 @@ class FakeAccentColorObserver {
 }  // namespace ui
 
 #define AccentColorObserver FakeAccentColorObserver
-#include "src/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc"
+#include <chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc>
 #undef AccentColorObserver

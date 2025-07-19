@@ -8,7 +8,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 
 #define RegisterProfilePrefs RegisterProfilePrefs_ChromiumImpl
-#include "src/components/saved_tab_groups/public/pref_names.cc"
+#include <components/saved_tab_groups/public/pref_names.cc>
 #undef RegisterProfilePrefs
 
 namespace tab_groups::prefs {

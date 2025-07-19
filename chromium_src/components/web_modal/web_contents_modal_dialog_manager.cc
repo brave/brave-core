@@ -9,7 +9,7 @@
     web_contents_visibility_ = content::Visibility::HIDDEN;              \
   }
 
-#include "src/components/web_modal/web_contents_modal_dialog_manager.cc"
+#include <components/web_modal/web_contents_modal_dialog_manager.cc>
 
 #undef BRAVE_WEB_CONTENTS_MODAL_DIALOG_MANAGER_ON_VISIBILITY_CHANGED
 

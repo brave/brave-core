@@ -15,6 +15,6 @@
       web_contents);                                                    \
   content_settings::PageSpecificContentSettings
 
-#include "src/chrome/browser/ui/views/media_router/presentation_receiver_window_view.cc"
+#include <chrome/browser/ui/views/media_router/presentation_receiver_window_view.cc>
 
 #undef PageSpecificContentSettings

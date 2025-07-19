@@ -11,7 +11,7 @@
 
 #define GetAvatarIcon virtual GetAvatarIcon
 #define GetAvatarTooltipText virtual GetAvatarTooltipText
-#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h>  // IWYU pragma: export
 #undef GetAvatarIcon
 #undef GetAvatarTooltipText
 

@@ -9,7 +9,7 @@
 
 #define JNI_AboutSettingsBridge_GetApplicationVersion \
   JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl
-#include "src/chrome/browser/android/preferences/about_settings_bridge.cc"
+#include <chrome/browser/android/preferences/about_settings_bridge.cc>
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 
 static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {

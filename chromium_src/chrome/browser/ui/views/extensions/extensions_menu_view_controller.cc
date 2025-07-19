@@ -15,6 +15,6 @@
     return;                                                                \
   }
 
-#include "src/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc"
+#include <chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc>
 
 #undef BRAVE_EXTENSIONS_MENU_VIEW_CONTROLLER_OPEN_MAIN_PAGE

@@ -11,6 +11,6 @@
       ui::kScaleFactorNone);                                        \
   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(__VA_ARGS__)
 
-#include "src/components/test/components_test_suite.cc"
+#include <components/test/components_test_suite.cc>
 
 #undef AddDataPackFromPath

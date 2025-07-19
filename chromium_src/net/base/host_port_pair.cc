@@ -58,7 +58,7 @@ std::string MaybeAddUsernameAndPassword(const HostPortPair* host_port_pair,
 
 #define HostPortPair HostPortPair_ChromiumImpl
 
-#include "src/net/base/host_port_pair.cc"
+#include <net/base/host_port_pair.cc>
 
 #undef HostPortPair
 

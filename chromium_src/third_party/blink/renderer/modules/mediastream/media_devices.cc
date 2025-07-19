@@ -38,5 +38,5 @@ void FarbleMediaDevices(ExecutionContext* context,
     brave::FarbleMediaDevices(context, &media_devices);               \
   }
 
-#include "src/third_party/blink/renderer/modules/mediastream/media_devices.cc"
+#include <third_party/blink/renderer/modules/mediastream/media_devices.cc>
 #undef BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED

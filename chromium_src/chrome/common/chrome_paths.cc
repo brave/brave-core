@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define RegisterPathProvider RegisterPathProvider_ChromiumImpl
-#include "src/chrome/common/chrome_paths.cc"
+#include <chrome/common/chrome_paths.cc>
 #undef RegisterPathProvider
 
 #include "brave/components/constants/brave_paths.h"

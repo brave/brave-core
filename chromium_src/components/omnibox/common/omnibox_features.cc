@@ -5,7 +5,7 @@
 
 #include "base/feature_override.h"
 
-#include "src/components/omnibox/common/omnibox_features.cc"
+#include <components/omnibox/common/omnibox_features.cc>
 
 namespace omnibox {
 

@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "src/components/permissions/bluetooth_scanning_prompt_controller.cc"
+#include <components/permissions/bluetooth_scanning_prompt_controller.cc>
 
 namespace permissions {
 

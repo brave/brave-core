@@ -31,7 +31,7 @@
   CreateCustomizeColorSchemeModeHandler_Unused(__VA_ARGS__); \
   void CreateCustomizeColorSchemeModeHandler(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h>  // IWYU pragma: export
 
 #undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler

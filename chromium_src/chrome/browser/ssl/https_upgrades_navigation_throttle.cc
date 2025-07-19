@@ -44,7 +44,7 @@ bool NormalWindowHttpsOnly(content::NavigationHandle& handle,
 #define GetBoolean(ORIGINAL_PREF) \
   GetBooleanOr(ORIGINAL_PREF, NormalWindowHttpsOnly(handle, profile))
 
-#include "src/chrome/browser/ssl/https_upgrades_navigation_throttle.cc"
+#include <chrome/browser/ssl/https_upgrades_navigation_throttle.cc>
 
 #undef GetBoolean
 #undef SetNavigationTimeout

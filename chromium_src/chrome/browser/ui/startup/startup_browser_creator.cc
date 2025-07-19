@@ -77,5 +77,5 @@ void BraveStartupBrowserCreatorImpl::Launch(
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
-#include "src/chrome/browser/ui/startup/startup_browser_creator.cc"
+#include <chrome/browser/ui/startup/startup_browser_creator.cc>
 #undef StartupBrowserCreatorImpl

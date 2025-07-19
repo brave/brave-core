@@ -22,7 +22,7 @@
   std::string GetShaderPrefixKey
 #endif
 
-#include "src/components/viz/host/gpu_host_impl.h"  // IWYU pragma: export
+#include <components/viz/host/gpu_host_impl.h>  // IWYU pragma: export
 
 #undef GetGPUInfo
 #undef GetShaderPrefixKey

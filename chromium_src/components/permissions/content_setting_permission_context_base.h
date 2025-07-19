@@ -20,7 +20,7 @@ class PermissionLifetimeManager;
   ContentSettingPermissionContextBase_ChromiumImpl
 #define BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_ \
   friend ContentSettingPermissionContextBase_BraveImpl;
-#include "src/components/permissions/content_setting_permission_context_base.h"  // IWYU pragma: export
+#include <components/permissions/content_setting_permission_context_base.h>  // IWYU pragma: export
 
 #undef BRAVE_CONTENT_SETTING_PERMISSION_CONTEXT_BASE_
 #undef ContentSettingPermissionContextBase

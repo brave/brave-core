@@ -10,7 +10,7 @@
   GetCountryCode() const; \
   country_codes::CountryId GetForTesting
 
-#include "src/components/regional_capabilities/regional_capabilities_country_id.h"  // IWYU pragma: export
+#include <components/regional_capabilities/regional_capabilities_country_id.h>  // IWYU pragma: export
 
 #undef GetForTesting
 

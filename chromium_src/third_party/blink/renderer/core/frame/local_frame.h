@@ -17,7 +17,7 @@ class SkBitmap;
   ScriptEnabled(const KURL& script_url); \
   bool ScriptEnabled_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/frame/local_frame.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/frame/local_frame.h>  // IWYU pragma: export
 #undef ScriptEnabled
 #undef CopyImageAtViewportPoint
 

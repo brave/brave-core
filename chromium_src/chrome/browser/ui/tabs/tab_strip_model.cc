@@ -6,5 +6,5 @@
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 #define DraggingTabsSession DraggingTabsSessionChromium
-#include "src/chrome/browser/ui/tabs/tab_strip_model.cc"  // IWYU pragma: export
+#include <chrome/browser/ui/tabs/tab_strip_model.cc>  // IWYU pragma: export
 #undef DraggingTabsSession

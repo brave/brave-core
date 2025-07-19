@@ -14,7 +14,7 @@
       const url::Origin& security_origin, blink::mojom::MediaStreamType type); \
   bool CheckMediaAccessPermission
 
-#include "src/android_webview/browser/aw_web_contents_delegate.h"  // IWYU pragma: export
+#include <android_webview/browser/aw_web_contents_delegate.h>  // IWYU pragma: export
 
 #undef CheckMediaAccessPermission
 

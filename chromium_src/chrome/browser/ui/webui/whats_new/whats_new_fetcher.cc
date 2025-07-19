@@ -8,7 +8,7 @@
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
 #define StartWhatsNewFetch StartWhatsNewFetch_UnUsed
-#include "src/chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc"
+#include <chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc>
 #undef StartWhatsNewFetch
 
 namespace whats_new {

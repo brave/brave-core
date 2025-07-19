@@ -8,7 +8,7 @@
 #include <string_view>
 
 #define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
-#include "src/net/base/lookup_string_in_fixed_set.cc"
+#include <net/base/lookup_string_in_fixed_set.cc>
 #undef LookupSuffixInReversedSet
 
 #include "brave/net/decentralized_dns/constants.h"

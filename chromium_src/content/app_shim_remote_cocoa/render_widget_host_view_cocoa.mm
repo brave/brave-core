@@ -7,5 +7,5 @@
 #define BRAVE_ACCESSIBILITY_PARENT  \
   if (self == _accessibilityParent) \
     return [super accessibilityParent];
-#include "src/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm"
+#include <content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm>
 #undef BRAVE_ACCESSIBILITY_PARENT

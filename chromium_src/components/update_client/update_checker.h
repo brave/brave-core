@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 
+#include <components/update_client/update_checker.h>  // IWYU pragma: export
+
 #include <deque>
 #include <optional>
 #include <string>
@@ -19,7 +21,6 @@
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
 #include "components/update_client/update_client_errors.h"
-#include "src/components/update_client/update_checker.h"  // IWYU pragma: export
 
 namespace update_client {
 

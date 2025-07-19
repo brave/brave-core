@@ -22,8 +22,9 @@
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
 #undef BraveBookmarkBridge
 
-#include "src/chrome/browser/bookmarks/android/bookmark_bridge.cc"
 #include "ui/android/window_android.h"
+
+#include <chrome/browser/bookmarks/android/bookmark_bridge.cc>
 
 using base::android::JavaParamRef;
 using user_data_importer::SearchEngineInfo;

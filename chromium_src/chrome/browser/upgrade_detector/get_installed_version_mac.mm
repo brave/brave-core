@@ -33,7 +33,7 @@ InstalledAndCriticalVersion GetInstalledVersionSynchronous() {
 }  // namespace
 
 #define GetInstalledVersion GetInstalledVersion_ChromiumImpl
-#include "src/chrome/browser/upgrade_detector/get_installed_version_mac.mm"
+#include <chrome/browser/upgrade_detector/get_installed_version_mac.mm>
 #undef GetInstalledVersion
 
 void GetInstalledVersion(InstalledVersionCallback callback) {

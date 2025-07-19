@@ -11,7 +11,7 @@
 #endif
 
 #define AddTabStripColorMixer AddTabStripColorMixer_ChromiumImpl
-#include "src/chrome/browser/ui/color/tab_strip_color_mixer.cc"
+#include <chrome/browser/ui/color/tab_strip_color_mixer.cc>
 #undef AddTabStripColorMixer
 
 namespace {

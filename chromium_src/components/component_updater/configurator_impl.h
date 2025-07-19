@@ -16,7 +16,7 @@
   EnabledCupSigning_Unused() const; \
   bool EnabledCupSigning
 
-#include "src/components/component_updater/configurator_impl.h"  // IWYU pragma: export
+#include <components/component_updater/configurator_impl.h>  // IWYU pragma: export
 
 #undef EnabledCupSigning
 

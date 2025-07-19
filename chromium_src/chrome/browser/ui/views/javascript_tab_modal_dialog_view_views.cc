@@ -11,6 +11,6 @@
 // brave_javascript_tab_modal_dialog_view_views.cc.
 #define CreateNewDialog CreateNewDialog_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.cc"
+#include <chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.cc>
 
 #undef CreateNewDialog

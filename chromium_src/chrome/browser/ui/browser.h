@@ -26,7 +26,7 @@
   DeprecatedCreateOwnedForTesting_Unused(__VA_ARGS__); \
   static std::unique_ptr<Browser> DeprecatedCreateOwnedForTesting(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/browser.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser.h>  // IWYU pragma: export
 
 #undef DeprecatedCreateOwnedForTesting
 #undef FullscreenControllerInteractiveTest

@@ -19,7 +19,7 @@
 // BraveOmniboxResultView instance as a child view, in the constructor code.
 #define OmniboxResultView BraveOmniboxResultView
 #define GetInsets GetInsets_UnUsed
-#include "src/chrome/browser/ui/views/omnibox/omnibox_row_view.cc"
+#include <chrome/browser/ui/views/omnibox/omnibox_row_view.cc>
 #undef GetInsets
 #undef OmniboxResultView
 

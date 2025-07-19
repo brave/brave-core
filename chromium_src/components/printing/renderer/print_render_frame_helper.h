@@ -18,7 +18,7 @@ using PrintRenderFrameHelper_BraveImpl = PrintRenderFrameHelper;
   SetupOnStopLoadingTimeout_Unused();      \
   friend PrintRenderFrameHelper_BraveImpl; \
   void SetupOnStopLoadingTimeout
-#include "src/components/printing/renderer/print_render_frame_helper.h"  // IWYU pragma: export
+#include <components/printing/renderer/print_render_frame_helper.h>  // IWYU pragma: export
 #undef SetupOnStopLoadingTimeout
 #undef PrintRenderFrameHelper
 #undef SetPrintPreviewUI

@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/base/json/json_reader.cc"
-
 #include "base/notimplemented.h"
 #include "third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs.h"
+
+#include <base/json/json_reader.cc>
 
 namespace serde_json_lenient {
 

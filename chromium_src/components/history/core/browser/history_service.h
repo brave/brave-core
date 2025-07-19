@@ -20,7 +20,7 @@ class BraveHistoryQuickProviderTest;
       base::OnceCallback<void(history::HistoryCountResult)> callback); \
   void AddRelatedSearchesForVisit
 
-#include "src/components/history/core/browser/history_service.h"  // IWYU pragma: export
+#include <components/history/core/browser/history_service.h>  // IWYU pragma: export
 
 #undef AddRelatedSearchesForVisit
 

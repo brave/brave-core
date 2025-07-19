@@ -26,7 +26,7 @@
            });                                                              \
   }
 
-#include "src/content/browser/browsing_data/browsing_data_filter_builder_impl.cc"
+#include <content/browser/browsing_data/browsing_data_filter_builder_impl.cc>
 
 #undef BRAVE_MATCHES_STORAGE_KEY
 #undef BRAVE_MATCHES_STORAGE_KEY_SWITCH

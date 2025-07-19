@@ -15,6 +15,6 @@
   brave::InitializeResourceBundle();
 
 #define ChromeContentClient BraveContentClient
-#include "src/chrome/test/base/chrome_unit_test_suite.cc"
+#include <chrome/test/base/chrome_unit_test_suite.cc>
 #undef ChromeContentClient
 #undef InitSharedInstanceWithLocale

@@ -17,7 +17,7 @@
   friend class BraveToolbarView; \
   virtual void LoadImages
 
-#include "src/chrome/browser/ui/views/toolbar/toolbar_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/toolbar_view.h>  // IWYU pragma: export
 
 #undef Init
 #undef Update

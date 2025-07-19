@@ -10,7 +10,7 @@
 
 #define BuildUpdateCheckExtraRequestHeaders \
   BuildUpdateCheckExtraRequestHeaders_ChromiumImpl
-#include "src/components/update_client/protocol_serializer.cc"
+#include <components/update_client/protocol_serializer.cc>
 #undef BuildUpdateCheckExtraRequestHeaders
 
 namespace update_client {

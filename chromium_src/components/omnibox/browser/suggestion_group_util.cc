@@ -9,7 +9,7 @@
 #include "components/grit/brave_components_strings.h"
 
 #define BuildDefaultGroups BuildDefaultGroups_ChromiumImpl
-#include "src/components/omnibox/browser/suggestion_group_util.cc"
+#include <components/omnibox/browser/suggestion_group_util.cc>
 #undef BuildDefaultGroups
 
 namespace omnibox {

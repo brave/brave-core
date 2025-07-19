@@ -10,5 +10,5 @@
   if (operation.urls.empty() || operation.size < 0 || \
       operation.sha256_out.empty())
 
-#include "src/components/update_client/pipeline.cc"
+#include <components/update_client/pipeline.cc>
 #undef BRAVE_MAKE_OPERATIONS

@@ -44,7 +44,7 @@ class GURL;
   }                                                                         \
   virtual bool AllowStorageAccessSync
 
-#include "src/third_party/blink/public/platform/web_content_settings_client.h"  // IWYU pragma: export
+#include <third_party/blink/public/platform/web_content_settings_client.h>  // IWYU pragma: export
 
 #undef AllowStorageAccessSync
 

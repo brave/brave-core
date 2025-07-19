@@ -32,7 +32,7 @@ void BraveRemoveJumplist(Profile* profile) {
   remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
   break;                                                                    \
   case BrowsingDataType::HOSTED_APPS_DATA
-#include "src/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc"
+#include <chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc>
 #undef HOSTED_APPS_DATA
 
 #if BUILDFLAG(IS_WIN)

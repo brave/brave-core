@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 
-#include "src/third_party/blink/renderer/core/frame/dom_window.cc"
+#include <third_party/blink/renderer/core/frame/dom_window.cc>
 
 namespace blink {
 

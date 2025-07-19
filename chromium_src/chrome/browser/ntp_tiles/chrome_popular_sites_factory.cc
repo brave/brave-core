@@ -8,5 +8,5 @@
 #include "brave/components/ntp_tiles/brave_popular_sites_impl.h"
 
 #define PopularSitesImpl BravePopularSitesImpl
-#include "src/chrome/browser/ntp_tiles/chrome_popular_sites_factory.cc"
+#include <chrome/browser/ntp_tiles/chrome_popular_sites_factory.cc>
 #undef PopularSitesImpl

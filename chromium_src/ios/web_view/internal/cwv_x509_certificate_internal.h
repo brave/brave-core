@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_X509_CERTIFICATE_INTERNAL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_X509_CERTIFICATE_INTERNAL_H_
 
-#include "src/ios/web_view/internal/cwv_x509_certificate_internal.h"  // IWYU pragma: export
+#include <ios/web_view/internal/cwv_x509_certificate_internal.h>  // IWYU pragma: export
 
 // Expose the underlying net::X509Certificate that is not public so that
 // cwv_x509_certificate_extras.mm can access the private property and expose

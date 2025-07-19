@@ -79,7 +79,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
-#include "src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
+#include <third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc>
 #undef getSupportedExtensions
 #undef getExtension
 

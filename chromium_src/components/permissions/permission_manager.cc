@@ -15,7 +15,7 @@
     return;                                                            \
   }
 
-#include "src/components/permissions/permission_manager.cc"
+#include <components/permissions/permission_manager.cc>
 
 #undef BRAVE_GET_PERMISSION_RESULT_FOR_CURRENT_DOCUMENT
 #undef BRAVE_REQUEST_PERMISSION_FROM_CURRENT_DOCUMENT

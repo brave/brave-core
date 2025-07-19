@@ -14,7 +14,7 @@
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
 #define GetReadingListModel GetReadingListModel_ChromiumImpl
 #define kChromeUISplitViewNewTabPageURL kChromeUINewTabURL
-#include "src/chrome/browser/ui/browser_commands.cc"
+#include <chrome/browser/ui/browser_commands.cc>
 #undef kChromeUISplitViewNewTabPageURL
 #undef ReloadBypassingCache
 #undef GetReadingListModel

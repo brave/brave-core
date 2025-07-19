@@ -15,6 +15,6 @@
   set_corner_radius(16);         \
   SetLayoutManager(LAYOUT)
 
-#include "src/chrome/browser/ui/views/bubble/webui_bubble_dialog_view.cc"
+#include <chrome/browser/ui/views/bubble/webui_bubble_dialog_view.cc>
 
 #undef SetLayoutManager

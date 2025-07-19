@@ -9,6 +9,6 @@
 // ShowFirstRunDialog() is re-defined at brave_first_run_dialog.cc.
 #define ShowFirstRunDialog ShowFirstRunDialog_UnUsed
 
-#include "src/chrome/browser/ui/views/first_run_dialog.cc"
+#include <chrome/browser/ui/views/first_run_dialog.cc>
 
 #undef ShowFirstRunDialog

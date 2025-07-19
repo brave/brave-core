@@ -8,7 +8,7 @@
 
 #define ChromeMetricsServiceClient ChromeMetricsServiceClient_ChromiumImpl
 #define RegisterMetricsServiceProviders virtual RegisterMetricsServiceProviders
-#include "src/chrome/browser/metrics/chrome_metrics_service_client.h"  // IWYU pragma: export
+#include <chrome/browser/metrics/chrome_metrics_service_client.h>  // IWYU pragma: export
 #undef RegisterMetricsServiceProviders
 #undef ChromeMetricsServiceClient
 

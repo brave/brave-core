@@ -17,7 +17,7 @@
       base::optional_ref<const url::Origin> top_frame_origin) const override; \
   bool ShouldTreatUrlAsTrustworthy
 
-#include "src/services/network/cookie_access_delegate_impl.h"  // IWYU pragma: export
+#include <services/network/cookie_access_delegate_impl.h>  // IWYU pragma: export
 
 #undef ShouldTreatUrlAsTrustworthy
 

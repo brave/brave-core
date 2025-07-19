@@ -16,5 +16,5 @@
     }                                                                         \
   }                                                                           \
   void UnloadController::TabStripEmpty_ChromiumImpl
-#include "src/chrome/browser/ui/unload_controller.cc"
+#include <chrome/browser/ui/unload_controller.cc>
 #undef TabStripEmpty

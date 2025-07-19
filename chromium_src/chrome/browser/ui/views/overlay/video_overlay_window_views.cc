@@ -9,7 +9,7 @@
 #define BRAVE_UPDATE_MAX_SIZE max_size_ = work_area.size();
 #define BackToTabLabelButton BraveBackToTabLabelButton
 
-#include "src/chrome/browser/ui/views/overlay/video_overlay_window_views.cc"
+#include <chrome/browser/ui/views/overlay/video_overlay_window_views.cc>
 
 #undef BackToTabLabelButton
 #undef BRAVE_UPDATE_MAX_SIZE

@@ -15,7 +15,7 @@
   friend class BraveTabGroupUnderline;        \
   virtual gfx::Rect CalculateTabGroupUnderlineBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_underline.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_group_underline.h>  // IWYU pragma: export
 
 #undef CalculateTabGroupUnderlineBounds
 #undef GetInsetsForUnderline

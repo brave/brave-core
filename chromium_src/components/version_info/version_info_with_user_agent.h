@@ -13,7 +13,7 @@
 #define GetProductNameAndVersionForUserAgent \
   GetProductNameAndVersionForUserAgent_Unused
 
-#include "src/components/version_info/version_info_with_user_agent.h"  // IWYU pragma: export
+#include <components/version_info/version_info_with_user_agent.h>  // IWYU pragma: export
 #undef GetProductNameAndVersionForUserAgent
 
 namespace version_info {

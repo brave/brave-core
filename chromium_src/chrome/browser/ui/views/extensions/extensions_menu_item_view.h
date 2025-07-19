@@ -14,7 +14,7 @@
 #define UpdateContextMenuButton virtual UpdateContextMenuButton
 #define UpdatePinButton virtual UpdatePinButton
 
-#include "src/chrome/browser/ui/views/extensions/extensions_menu_item_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/extensions/extensions_menu_item_view.h>  // IWYU pragma: export
 
 #undef UpdatePinButton
 #undef UpdateContextMenuButton

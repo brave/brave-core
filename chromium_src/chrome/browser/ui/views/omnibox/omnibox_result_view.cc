@@ -11,6 +11,6 @@
 // We want the rounded rect background to have a radius of 0
 #define kRowHeight kRowHeight * 0
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.cc"
+#include <chrome/browser/ui/views/omnibox/omnibox_result_view.cc>
 
 #undef kRowHeight

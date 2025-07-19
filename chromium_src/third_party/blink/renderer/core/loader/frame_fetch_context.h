@@ -25,7 +25,7 @@
 
 #define AllowScript() AllowScript(const KURL& url)
 
-#include "src/third_party/blink/renderer/core/loader/frame_fetch_context.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/loader/frame_fetch_context.h>  // IWYU pragma: export
 #undef AllowScript
 #undef DoesLCPPHaveAnyHintData
 

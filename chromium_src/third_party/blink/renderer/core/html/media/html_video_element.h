@@ -12,7 +12,7 @@
   RequestFullscreen() final;         \
   void RequestEnterPictureInPicture
 
-#include "src/third_party/blink/renderer/core/html/media/html_video_element.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/html/media/html_video_element.h>  // IWYU pragma: export
 
 #undef RequestEnterPictureInPicture
 

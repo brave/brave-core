@@ -9,7 +9,7 @@
 #define TestRegisterMetricsServiceProviders \
   DISABLED_TestRegisterMetricsServiceProviders
 
-#include "src/chrome/browser/metrics/chrome_metrics_service_client_unittest.cc"
+#include <chrome/browser/metrics/chrome_metrics_service_client_unittest.cc>
 
 #undef TestRegisterMetricsServiceProviders
 #undef TestRegisterUKMProviders

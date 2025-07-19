@@ -10,6 +10,6 @@
       source->source()->GetContentSecurityPolicyFrameSrc()); \
         void(void
 
-#include "src/ios/web/webui/url_data_manager_ios_backend.mm"
+#include <ios/web/webui/url_data_manager_ios_backend.mm>
 
 #undef ShouldDenyXFrameOptions

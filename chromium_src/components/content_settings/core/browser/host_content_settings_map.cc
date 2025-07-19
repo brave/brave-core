@@ -54,7 +54,7 @@ bool IsMorePermissive_BraveImpl(ContentSettingsType content_type,
 
 #define IsMorePermissive(a, b) IsMorePermissive_BraveImpl(content_type, a, b)
 
-#include "src/components/content_settings/core/browser/host_content_settings_map.cc"
+#include <components/content_settings/core/browser/host_content_settings_map.cc>
 
 #undef IsMorePermissive
 

@@ -22,7 +22,7 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
                                  NSURLRequest* request);
 }  // namespace brave
 
-#include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
+#include <ios/web/navigation/crw_wk_navigation_handler.mm>
 
 // Setup a CRWWKNavigationHandler subclass so that we may integrate Brave
 // features that Chrome does not support or expose access to (such as the

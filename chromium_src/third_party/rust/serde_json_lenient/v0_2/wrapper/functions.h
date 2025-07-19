@@ -16,7 +16,7 @@
 // therefore we have to cancel it, that both header and override file are being
 // added by the visitor.
 #if BUILDFLAG(ENABLE_JSON_64BIT_INT_SUPPORT)
-#include "src/third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h"  // IWYU pragma: export
+#include <third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h>  // IWYU pragma: export
 #endif
 
 namespace base {

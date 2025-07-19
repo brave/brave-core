@@ -14,7 +14,7 @@
 
 #define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
 
-#include "src/chrome/browser/ui/webui/chrome_web_ui_configs.cc"
+#include <chrome/browser/ui/webui/chrome_web_ui_configs.cc>
 #undef RegisterChromeWebUIConfigs
 
 #if !BUILDFLAG(IS_ANDROID)

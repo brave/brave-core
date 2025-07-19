@@ -31,7 +31,7 @@
   bool is_tab_in_group_ = false;               \
   float TransformForPinnednessAndOpenness
 
-#include "src/chrome/browser/ui/views/tabs/tab_width_constraints.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_width_constraints.h>  // IWYU pragma: export
 
 #undef TransformForPinnednessAndOpenness
 
