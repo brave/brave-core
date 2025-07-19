@@ -10,7 +10,6 @@ const fs = require('fs')
 const assert = require('assert')
 const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
-const dotenv = require('dotenv')
 
 let envConfig = null
 
@@ -48,9 +47,12 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
 const readArgsGn = (srcDir, outputDir) => {
   const util = require('./util')
   const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
-  const argsGnPath = path.join(outputDir, 'args.gn')
 
-  const result = util.run('python3', ['-c', `
+  const result = util.run(
+    'python3',
+    [
+      '-c',
+      `
 import sys
 import os
 sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
@@ -58,7 +60,10 @@ import gn_helpers
 result = gn_helpers.ReadArgsGN('${outputDir}')
 import json
 print(json.dumps(result))
-`], { skipLogging: true })
+`,
+    ],
+    { skipLogging: true },
+  )
 
   return JSON.parse(result.stdout.toString().trim())
 }
@@ -1176,7 +1181,7 @@ Config.prototype.fromGnArgs = function (options) {
     process.exit(1)
   }
   const gnArgs = readArgsGn(this.srcDir, options.C)
-  Object.assign({}, gnArgs, {'C': options.C})
+  Object.assign({}, gnArgs, { 'C': options.C })
   // only gnArgs that match command line options for updateInternal will be
   // processed here
   this.updateInternal(gnArgs)
