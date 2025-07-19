@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index a2935c737ed7a9e43d705600a82127cd3d58af98..13d53e8992314bbe32adc5f2e0efaa823ad55c4a 100644
+index e66971781f9dafba1f0ed424c203f5c7d56d74d1..48b22a38d5c04ebbb7144f5e7efd66aec731b723 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -451,6 +451,7 @@ public class ToolbarPhone extends ToolbarLayout
@@ -26,7 +26,7 @@ index a2935c737ed7a9e43d705600a82127cd3d58af98..13d53e8992314bbe32adc5f2e0efaa82
          // Draw the tab stack button and associated text if necessary.
          if (getTabSwitcherButtonCoordinator() != null && mUrlExpansionFraction != 1f) {
              // Draw the tab stack button image.
-@@ -1692,6 +1695,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1695,6 +1698,7 @@ public class ToolbarPhone extends ToolbarLayout
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
          mIsHomeButtonEnabled = homeButtonEnabled;
@@ -34,7 +34,7 @@ index a2935c737ed7a9e43d705600a82127cd3d58af98..13d53e8992314bbe32adc5f2e0efaa82
          updateButtonVisibility();
      }
  
-@@ -2011,6 +2015,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2014,6 +2018,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

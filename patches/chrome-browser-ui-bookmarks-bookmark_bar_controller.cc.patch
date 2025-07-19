@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-index 206ebe2c3f277d2e4cbf5878a27220250723a345..61136ca862c8a3d88163d90a55676cf9839d339f 100644
+index c1927b0d5958bf187fcdbddcd336d6c5bf7f1c96..ab5fc04c535e8ba97b2fdf64101eff8a5eb2e1c1 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-@@ -151,6 +151,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+@@ -161,6 +161,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
    if (tabs.empty()) {
      return false;
    }

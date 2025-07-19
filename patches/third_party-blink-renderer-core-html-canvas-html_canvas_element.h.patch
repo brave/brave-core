@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index eda0766f484d8a8e213698c29c06f32d5dae663b..ae52d4473df712aa2611331daf7866bb62b98455 100644
+index 689e72208e41758f5c1bb830d6fb612792aef6e7..e54ab07a3162cdaa2dc2a38bb8850559ffcaebe9 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -407,6 +407,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -396,6 +396,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    void ResetLayer();
  

@@ -1,10 +1,12 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 3fd2e1a0eb9d000824b57f57f520ef7fbd274c5b..9c20969aae92cd1cb1cc35704495f9bb05725948 100644
+index be417d0c32aebde41fd82dd67188f878aea3b45d..24be0f403086f83a12c06073b1155478a0a7b798 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -62,4 +62,5 @@ source_set("internal") {
+@@ -79,6 +79,7 @@ source_set("internal") {
        deps += [ "//chrome/browser/ui:overscroll_pref_manager" ]
      }
    }
 +  deps += [ "//brave/browser/ui/browser_window/internal" ]
  }
+ 
+ # Android targets need to be guarded by is_android because:
