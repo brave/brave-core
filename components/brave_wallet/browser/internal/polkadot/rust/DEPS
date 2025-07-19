@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "sr25519\.c": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+}

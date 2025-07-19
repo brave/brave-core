@@ -1,6 +1,33 @@
 Recent Changes (arrayvec)
 =========================
 
+## 0.7.6
+
+- Fix no-std build [#274](https://github.com/bluss/arrayvec/pull/274)
+
+## 0.7.5
+
+- Add `as_ptr` and `as_mut_ptr` to `ArrayString` [@YuhanLiin](https://github.com/YuhanLiin) [#260](https://github.com/bluss/arrayvec/pull/260)
+- Add borsh serialization support by @honzasp and @Fuuzetsu [#259](https://github.com/bluss/arrayvec/pull/259)
+- Move length field before before data in ArrayVec and ArrayString by @JakkuSakura [#255](https://github.com/bluss/arrayvec/pull/255)
+- Fix miri error for ZST case in extend by @bluss
+- implement AsRef<Path> for ArrayString by [@Zoybean](https://github.com/Zoybean) [#218](https://github.com/bluss/arrayvec/pull/218)
+- Fix typos in changelog by [@striezel](https://github.com/striezel) [#241](https://github.com/bluss/arrayvec/pull/241)
+- Add `as_slice`, `as_mut_slice` methods to `IntoIter` by [@clarfonthey](https://github.com/clarfonthey) [#224](https://github.com/bluss/arrayvec/pull/224)
+
+
+## 0.7.4
+
+- Add feature zeroize to support the `Zeroize` trait by @elichai
+
+## 0.7.3
+
+- Use track_caller on multiple methods like push and similar, for capacity
+  overflows by @kornelski
+- impl BorrowMut for ArrayString by @msrd0
+- Fix stacked borrows violations by @clubby789
+- Update Miri CI by @RalfJung
+
 ## 0.7.2
 
 - Add `.as_mut_str()` to `ArrayString` by @clarfonthey
@@ -106,7 +133,7 @@ Recent Changes (arrayvec)
   users outside the crate.
 - Add `FromStr` impl for `ArrayString` by @despawnerer
 - Add method `try_extend_from_slice` to `ArrayVec`, which is always
-  effecient by @Thomasdezeeuw.
+  efficient by @Thomasdezeeuw.
 - Add method `remaining_capacity` by @Thomasdezeeuw
 - Improve performance of the `extend` method.
 - The index type of zero capacity vectors is now itself zero size, by
@@ -157,7 +184,7 @@ Recent Changes (arrayvec)
 
   - Fix future compat warning about raw pointer casts
   - Use `drop_in_place` when dropping the arrayvec by-value iterator
-  - Decrease mininum Rust version (see docs) by @jeehoonkang
+  - Decrease minimum Rust version (see docs) by @jeehoonkang
 
 - 0.3.25
 
