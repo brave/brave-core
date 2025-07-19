@@ -206,7 +206,7 @@ public class LanguageMetrics {
   ]
 
   static func answerForLangaugeCode(_ languageCode: String?) -> Int {
-    let suspendedMetricValue = Int.max - 1
+    let suspendedMetricValue = Int(Int32.max - 1)
     guard let languageCode = languageCode,
       case let primaryLanguage = languageSynonyms[languageCode, default: languageCode],
       let answer = acceptedLanguages.firstIndex(of: primaryLanguage)

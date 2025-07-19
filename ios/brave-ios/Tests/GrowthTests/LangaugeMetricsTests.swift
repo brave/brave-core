@@ -10,7 +10,7 @@ import XCTest
 
 class LanguageMetricsTests: XCTestCase {
   func testInvalidLanguageCodes() {
-    let expectedValue = Int.max - 1
+    let expectedValue = Int(Int32.max - 1)
     XCTAssertEqual(LanguageMetrics.answerForLangaugeCode(nil), expectedValue)
     XCTAssertEqual(LanguageMetrics.answerForLangaugeCode("notalangugage"), expectedValue)
   }
