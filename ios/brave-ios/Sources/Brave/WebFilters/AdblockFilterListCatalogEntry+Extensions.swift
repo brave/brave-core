@@ -25,6 +25,12 @@ extension AdblockFilterListCatalogEntry {
   /// The component id of the YouTube shorts filter list.
   /// This is a special filter list that has more accessible UI to control it
   public static let youtubeShortsComponentID = "almolcgbkikkhliiibfjkohebgklegam"
+  /// The component id of the anti-newsletter filter list.
+  public static let antiNewsletterComponentID = "kdddfellohomdnfkdhombbddhojklibj"
+  /// The component id of the social filter list.
+  public static let socialComponentID = "nbkknaieglghmocpollinelcggiehfco"
+  /// The component id of the anti-chat filter list.
+  public static let antiChatComponentID = "cjoooeeofnfjohnalnghhmdlalopplja"
 
   public static let disabledContentBlockersComponentIDs = [
     // The Anti-porn list has 500251 rules and is strictly all content blocking driven content
