@@ -7,6 +7,7 @@ import AIChat
 import Brave
 import BraveCore
 import BraveNews
+import BraveShared
 import Data
 import Foundation
 import Growth
@@ -42,6 +43,9 @@ public class AppState {
     didSet {
       switch state {
       case .launching(_, let isActive):
+        // Always initialize reachability
+        _ = Reachability.shared
+
         if didBecomeActive {
           assertionFailure("Cannot set launching state twice!")
         }
@@ -68,10 +72,6 @@ public class AppState {
           }
 
           Preferences.Chromium.lastWebViewsFlagState.value = useChromiumWebViews
-        }
-
-        if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
-          NetworkMonitor.shared.start()
         }
         break
       case .active:

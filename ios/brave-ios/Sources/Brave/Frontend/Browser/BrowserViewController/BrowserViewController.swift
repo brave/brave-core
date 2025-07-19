@@ -2893,11 +2893,9 @@ extension BrowserViewController: PreferencesObserver {
       ])
       tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:
+      let status = Reachability.shared.status
       tabManager.allTabs.forEach {
-        YoutubeQualityScriptHandler.setEnabled(
-          option: Preferences.General.youtubeHighQuality,
-          for: $0
-        )
+        $0.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
       }
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
