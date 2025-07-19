@@ -8,6 +8,7 @@
 #include <string_view>
 #include <vector>
 
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -135,19 +136,21 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
 std::vector<ContentSettingsType> GetVisiblePermissionCategories(
     const std::string& origin,
     Profile* profile) {
-  static constexpr ContentSettingsType extra_types[] = {
-      ContentSettingsType::AUTOPLAY,
-      ContentSettingsType::BRAVE_ETHEREUM,
-      ContentSettingsType::BRAVE_SOLANA,
-      ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
-      ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
-      ContentSettingsType::BRAVE_OPEN_AI_CHAT,
-      ContentSettingsType::BRAVE_CARDANO,
-  };
-
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);
 
-  types.insert(std::end(types), std::begin(extra_types), std::end(extra_types));
+  // Add Brave-specific content settings types
+  types.push_back(ContentSettingsType::AUTOPLAY);
+  types.push_back(ContentSettingsType::BRAVE_GOOGLE_SIGN_IN);
+  types.push_back(ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
+  types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
+
+  // Only add Web3-related content settings if wallet is allowed
+  if (brave_wallet::IsAllowedForContext(profile)) {
+    types.push_back(ContentSettingsType::BRAVE_ETHEREUM);
+    types.push_back(ContentSettingsType::BRAVE_SOLANA);
+    types.push_back(ContentSettingsType::BRAVE_CARDANO);
+  }
+
   return types;
 }
 }  // namespace site_settings

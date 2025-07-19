@@ -5,7 +5,10 @@
 
 import './config.js'
 
-import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  RegisterPolymerComponentReplacement,
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
@@ -155,9 +158,11 @@ RegisterPolymerComponentReplacement(
             }
             const isNativeBraveWalletEnabled =
               loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
-            const isCardanoDappSupportFeatureEnabled = 
+            const isCardanoDappSupportFeatureEnabled =
               loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-            if (isNativeBraveWalletEnabled) {
+            const isBraveWalletAllowed =
+              loadTimeData.getBoolean('isBraveWalletAllowed')
+            if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
               currentIndex++
               const ethereumItem = {
                 route: routes.SITE_SETTINGS_ETHEREUM,

@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
@@ -38,6 +39,11 @@ void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
   }
 
   if (!navigation_handle.IsInMainFrame()) {
+    return;
+  }
+
+  // Don't create the throttle if Brave Wallet is disabled by policy
+  if (!brave_wallet::IsAllowed(user_prefs)) {
     return;
   }
 
