@@ -31,6 +31,7 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -110,6 +111,9 @@ class BraveVpnService :
   void ResetConnectionState() override;
   void EnableOnDemand(bool enable) override;
   void GetOnDemandState(GetOnDemandStateCallback callback) override;
+  void EnableSmartProxyRouting(bool enable) override;
+  void GetSmartProxyRoutingState(
+      GetSmartProxyRoutingStateCallback callback) override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
@@ -232,6 +236,7 @@ class BraveVpnService :
   raw_ptr<BraveVPNConnectionManager, DanglingUntriaged> connection_manager_ =
       nullptr;
 
+  BooleanPrefMember smart_proxy_routing_enabled_;
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 

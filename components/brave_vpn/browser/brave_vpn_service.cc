@@ -66,6 +66,10 @@ BraveVpnService::BraveVpnService(
       base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
                           base::Unretained(this)));
 
+  smart_proxy_routing_enabled_.Init(
+      prefs::kBraveVPNSmartProxyRoutingEnabled, local_prefs_,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   CheckInitialState();
@@ -337,6 +341,25 @@ void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
 #endif
 }
 
+void BraveVpnService::EnableSmartProxyRouting(bool enable) {
+  local_prefs_->SetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled, enable);
+
+  // If not connected, do nothing because smart proxy routing bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply smart proxy routing config("
+            << enable << "> to current connection";
+    Connect();
+  }
+}
+
+void BraveVpnService::GetSmartProxyRoutingState(
+    GetSmartProxyRoutingStateCallback callback) {
+  std::move(callback).Run(
+      local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
@@ -350,6 +373,14 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kManagedBraveVPNDisabled) {
     if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
       connection_manager_->Disconnect();
+    }
+    return;
+  }
+
+  if (pref_name == prefs::kBraveVPNSmartProxyRoutingEnabled) {
+    const bool enabled = smart_proxy_routing_enabled_.GetValue();
+    for (const auto& obs : observers_) {
+      obs->OnSmartProxyRoutingStateChanged(enabled);
     }
     return;
   }

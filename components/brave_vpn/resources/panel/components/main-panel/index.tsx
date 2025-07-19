@@ -7,6 +7,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import * as S from './style'
+import Icon from '@brave/leo/react/icon'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
@@ -31,6 +32,18 @@ const RegionInfo = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex: 1 0 0;
+`
+
+const SmartProxyIcon = styled(Icon)`
+  --leo-icon-size: 18px;
+  --leo-icon-color: ${color.icon.default};
+  background: ${color.container.highlight};
+`
+
+const RegionLabelBox = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `
 
 const RegionLabel = styled.span`
@@ -118,6 +131,7 @@ function MainPanel() {
   const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
   const stateDescription = useSelector((state) => state.stateDescription)
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -210,7 +224,13 @@ function MainPanel() {
           >
             <Flag countryCode={currentRegion.countryIsoCode} />
             <RegionInfo>
-              <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+              <RegionLabelBox>
+                <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+                {smartProxyRoutingEnabled && currentRegion.smartRoutingProxyState === 'all' && (
+                  <SmartProxyIcon name='smart-proxy-routing' />
+                )
+                }
+              </RegionLabelBox>
               <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
             </RegionInfo>
             <S.StyledIcon name='carat-right' />
