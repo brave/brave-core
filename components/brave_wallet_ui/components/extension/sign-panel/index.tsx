@@ -122,6 +122,7 @@ export const SignPanel = (props: Props) => {
   const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
   const ethSIWETypedData = selectedQueueData.signData.ethSiweData
   const solanaSignTypedData = selectedQueueData.signData.solanaSignData
+  const cardanoSignTypedData = selectedQueueData.signData.cardanoSignData
 
   // methods
   const onCancel = async () => {
@@ -309,6 +310,16 @@ export const SignPanel = (props: Props) => {
           {solanaSignTypedData && (
             <MessageBox>
               <MessageText>{solanaSignTypedData.message}</MessageText>
+            </MessageBox>
+          )}
+
+          {cardanoSignTypedData && (
+            <MessageBox>
+              <MessageText>
+                {!renderUnicode && hasUnicode(cardanoSignTypedData.message)
+                  ? unicodeEscape(cardanoSignTypedData.message)
+                  : cardanoSignTypedData.message}
+              </MessageText>
             </MessageBox>
           )}
         </>

@@ -13,8 +13,8 @@
 #include "base/numerics/clamped_math.h"
 #include "base/rand_util.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -38,9 +38,10 @@ base::expected<CardanoTransaction, std::string> CardanoMaxSendSolver::Solve() {
   auto result = base_transaction_;
   result.AddInputs(std::move(inputs_));
 
-  uint64_t fee = CardanoSerializer({.max_value_for_target_output = true,
-                                    .use_dummy_witness_set = true})
-                     .CalcMinTransactionFee(result, latest_epoch_parameters_);
+  uint64_t fee =
+      CardanoTransactionSerializer(
+          {.max_value_for_target_output = true, .use_dummy_witness_set = true})
+          .CalcMinTransactionFee(result, latest_epoch_parameters_);
 
   if (result.TotalInputsAmount() <= fee) {
     return base::unexpected(

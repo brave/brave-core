@@ -118,6 +118,7 @@ std::string GenerateRandomHexString();
 std::string WalletInternalErrorMessage();
 std::string WalletParsingErrorMessage();
 std::string WalletInsufficientBalanceErrorMessage();
+std::string WalletUserRejectedRequestErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);

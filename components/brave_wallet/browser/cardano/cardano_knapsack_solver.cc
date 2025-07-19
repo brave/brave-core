@@ -14,8 +14,8 @@
 #include "base/rand_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -38,14 +38,14 @@ uint64_t GetCostOfChangeOutput(
   tx_with_change.AddInput(std::move(fake_input));
 
   auto fee_with_change =
-      CardanoSerializer(
+      CardanoTransactionSerializer(
           {.max_value_for_change_output = true, .use_dummy_witness_set = true})
           .CalcMinTransactionFee(tx_with_change, latest_epoch_parameters);
 
   auto tx_without_change = tx_with_change;
   tx_without_change.ClearChangeOutput();
   auto fee_without_change =
-      CardanoSerializer(
+      CardanoTransactionSerializer(
           {.max_value_for_change_output = true, .use_dummy_witness_set = true})
           .CalcMinTransactionFee(tx_without_change, latest_epoch_parameters);
 
@@ -64,17 +64,18 @@ bool SetFeeAndChangeForTransaction(
   // inputs and outputs.
   // Then run some iterations trying to find minimal fee which fits matches tx
   // size.
-  auto min_fee = CardanoSerializer({.max_value_for_change_output = true,
+  auto min_fee =
+      CardanoTransactionSerializer({.max_value_for_change_output = true,
                                     .max_value_for_fee = true,
                                     .use_dummy_witness_set = true})
-                     .CalcMinTransactionFee(tx, latest_epoch_parameters);
+          .CalcMinTransactionFee(tx, latest_epoch_parameters);
   if (!tx.MoveSurplusFeeToChangeOutput(min_fee)) {
     return false;
   }
 
   for (int i = 0; i < kSetFeeAndChangeForTransactionIterations; i++) {
     uint64_t min_fee_next =
-        CardanoSerializer({.use_dummy_witness_set = true})
+        CardanoTransactionSerializer({.use_dummy_witness_set = true})
             .CalcMinTransactionFee(tx, latest_epoch_parameters);
 
     if (min_fee_next >= min_fee) {
@@ -167,9 +168,10 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
 
         // Minimum fee required for this transaction to be accepted.
         // Depends on transaction's size and current fee rate.
-        uint64_t min_fee = CardanoSerializer({.use_dummy_witness_set = true})
-                               .CalcMinTransactionFee(next_transaction,
-                                                      latest_epoch_parameters_);
+        uint64_t min_fee =
+            CardanoTransactionSerializer({.use_dummy_witness_set = true})
+                .CalcMinTransactionFee(next_transaction,
+                                       latest_epoch_parameters_);
 
         if (next_transaction.AmountsAreValid(min_fee)) {
           has_valid_transaction_for_iteration = true;
