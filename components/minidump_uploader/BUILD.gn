@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//testing/test.gni")
+
+robolectric_library("junit") {
+  deps = [
+    "//base:base_java",
+    "//base:base_java_test_support",
+    "//base:base_junit_test_support",
+    "//base/version_info/android:version_constants_java",
+    "//components/minidump_uploader:minidump_uploader_java",
+    "//third_party/androidx:androidx_test_runner_java",
+    "//third_party/junit",
+  ]
+  sources = [ "android/javatests/src/org/chromium/components/minidump_uploader/BraveHttpURLConnectionFactoryImplTest.java" ]
+}
