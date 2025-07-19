@@ -10,6 +10,7 @@ include_rules = [
   "+extensions/common",
   "+services/data_decoder/public",
   "+services/network/public",
+  "+third_party/blink/public/common/web_preferences",
   "+third_party/re2",
 ]
 

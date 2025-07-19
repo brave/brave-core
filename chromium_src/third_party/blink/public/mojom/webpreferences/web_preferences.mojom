@@ -12,4 +12,5 @@ struct WebPreferences {
   // remove ads from the page.
   bool force_cosmetic_filtering;
   bool page_in_reader_mode = false;
+  bool disable_web_share = false;
 };

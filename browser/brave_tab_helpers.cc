@@ -187,8 +187,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorTabHelper::MaybeCreateForWebContents(
-      web_contents, web_contents->GetBrowserContext()->IsTor());
+  tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
 #endif
 
