@@ -18,6 +18,7 @@ import {getTemplate} from './brave_origin_page.html.js'
 
 export interface SettingsBraveOriginPageElement {
   $: {
+    toggleRewardsButton: SettingsToggleButtonElement,
     toggleSearchAdsButton: SettingsToggleButtonElement,
     toggleEmailAliasButton: SettingsToggleButtonElement,
     toggleP3ACrashReportButton: SettingsToggleButtonElement,
@@ -56,20 +57,12 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false,
       },
-
-      // NOTE(bsclifton): these don't bind properly in polymer
-      // needs to be something like this instead:
-      //
-      // toggleRewards_: {
-      //   type: Object,
-      //   value: {
-      //     key: '',
-      //     type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      //     value: false,
-      //   }
-      // },
-      //
-      // but we can do that later. important part is having handlers.
+      rewardsEnabledPref_: {
+        type: Object,
+        value() {
+           return {}
+        }
+      },
       toggleSearchAds_: {
         type: Boolean,
         value: false
@@ -94,6 +87,7 @@ export class SettingsBraveOriginPageElement
   }
 
   private declare braveOriginEnabled_: boolean
+  private declare rewardsEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare toggleSearchAds_: boolean
   private declare toggleEmailAlias_: boolean
   private declare toggleLeoAi_: boolean
@@ -101,13 +95,16 @@ export class SettingsBraveOriginPageElement
   private declare toggleSidebar_: boolean
   private declare toggleTorWindows_: boolean
   private declare toggleWeb3Domains_: boolean
+  declare showRestartToast_: boolean
 
   private originBrowserProxy_: BraveOriginBrowserProxy =
     BraveOriginBrowserProxyImpl.getInstance();
 
   override ready() {
     super.ready()
-    this.originBrowserProxy_.getInitialState().then(this.onGetInitialState.bind(this))
+    this.originBrowserProxy_.getInitialState().then(
+      this.onGetInitialState.bind(this)
+    )
   }
 
   private onGetInitialState(initial_state: any) {
@@ -118,6 +115,21 @@ export class SettingsBraveOriginPageElement
     this.toggleP3ACrashReport_ = initial_state.toggle_p3a_crash_report;
     this.toggleSidebar_ = initial_state.toggle_sidebar;
     this.toggleWeb3Domains_ = initial_state.toggle_web3domains;
+
+    this.setRewardsEnabledPref_(initial_state.rewards_enabled)
+  }
+
+  setRewardsEnabledPref_(enabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.rewardsEnabledPref_ = pref
+  }
+
+  private toggleRewardsButtonChange_ () {
+    this.originBrowserProxy_.setRewardsEnabled(this.$.toggleRewardsButton.checked)
   }
 
   private toggleSearchAdsButtonChange_ () {
@@ -138,6 +150,11 @@ export class SettingsBraveOriginPageElement
 
   private toggleWeb3DomainsChange_ () {
     console.log('toggleWeb3Domains_', this.$.toggleWeb3DomainsButton.checked)
+  }
+
+  restartBrowser_(e: Event) {
+    e.stopPropagation()
+    window.open("chrome://restart", "_self")
   }
 }
 

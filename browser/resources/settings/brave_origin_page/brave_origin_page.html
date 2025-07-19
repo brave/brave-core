@@ -40,8 +40,9 @@
   </settings-toggle-button>
 
   <settings-toggle-button id="toggleRewardsButton"
-      pref="{{prefs.brave.rewards.disabled_by_policy}}"
+      pref="[[setRewardsEnabledPref_]]"
       label="$i18n{braveOriginRewardsToggleTitle}"
+      on-settings-boolean-control-change="toggleRewardsButtonChange_"
       icon="product-bat-outline">
   </settings-toggle-button>
 

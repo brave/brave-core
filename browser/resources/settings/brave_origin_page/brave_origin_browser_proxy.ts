@@ -6,12 +6,17 @@
 import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export interface BraveOriginBrowserProxy {
-  getInitialState(): Promise<any>;
+  getInitialState(): Promise<any>
+  setRewardsEnabled(value: boolean): void
 }
 
 export class BraveOriginBrowserProxyImpl implements BraveOriginBrowserProxy {
   getInitialState () {
     return sendWithPromise('getInitialState');
+  }
+
+  setRewardsEnabled(value: boolean) {
+    chrome.send('setRewardsEnabled', [value])
   }
 
   static getInstance(): BraveOriginBrowserProxy {

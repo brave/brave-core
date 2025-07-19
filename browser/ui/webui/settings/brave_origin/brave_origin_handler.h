@@ -29,6 +29,7 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   void RegisterMessages() override;
 
   void HandleGetInitialState(const base::Value::List& args);
+  void SetRewardsEnabled(const base::Value::List& args);
 
   // SettingsPageUIHandler implementation.
   void OnJavascriptAllowed() override {}
