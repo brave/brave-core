@@ -100,7 +100,7 @@ export function TopSitesGrid(props: Props) {
     scrollRef.current?.scrollTo({ left: page * pageWidth, behavior: 'smooth' })
   }
 
-  function rightClickHandler(topSite: TopSite) {
+  function contextMenuHandler(topSite: TopSite) {
     return (event: React.MouseEvent) => {
       props.onTopSiteContextMenu(topSite, event)
     }
@@ -140,7 +140,7 @@ export function TopSitesGrid(props: Props) {
                       key={i}
                       topSite={tile}
                       canDrag={props.canReorderSites}
-                      onRightClick={rightClickHandler(tile)}
+                      onContextMenu={contextMenuHandler(tile)}
                     />
                 )
               }
