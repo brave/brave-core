@@ -302,8 +302,6 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         tab.currentPageData = PageData(mainFrameURL: mainDocumentURL)
       }
 
-      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
-
       if !requestInfo.isNewWindow {
         tab.currentPageData?.addSubframeURL(
           forRequestURL: requestURL,
@@ -311,8 +309,9 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
-            domain: domainForMainFrame,
-            isDeAmpEnabled: false
+            isDeAmpEnabled: false,
+            isAdBlockEnabled: true,  // enabled for playlist
+            isBlockFingerprintingEnabled: true
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }
@@ -323,13 +322,12 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         let etldP1 = requestURL.baseDomain,
         tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: false)
-
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
           sourceURL: requestURL,
           resourceType: .document,
-          domain: domain
+          isAdBlockEnabled: true,  // enabled for playlist
+          isAdBlockModeAggressive: true
         )
 
         if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
@@ -343,16 +341,10 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
         requestInfo.isMainFrame
       {
-        let domainForShields = Domain.getOrCreate(
-          forUrl: mainDocumentURL,
-          persistent: !false
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+          isBraveShieldsEnabled: true,
+          shieldLevel: .aggressive
         )
-
-        // Force adblocking on
-        domainForShields.shield_allOff = 0
-        domainForShields.domainBlockAdsAndTrackingLevel = .standard
-
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
         tab.contentBlocker?.set(ruleLists: ruleLists)
       }
 

@@ -42,11 +42,10 @@ final class PageDataTests: XCTestCase {
     Task { @MainActor in
       // When
       // We get the script types for the main frame
-      let domain = pageData.domain(persistent: false)
-
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
 
       // Then
@@ -61,8 +60,9 @@ final class PageDataTests: XCTestCase {
       // When
       // Nothing has changed
       let unchangedScriptTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
 
       // Then
@@ -78,8 +78,9 @@ final class PageDataTests: XCTestCase {
       // NOTE: This is because we have no engines on AdBlockStats.
       // If we were to add some engines we might see additional types
       let addedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .nacl, .farblingProtection(etld: "example.com"),
@@ -98,8 +99,9 @@ final class PageDataTests: XCTestCase {
       // We get the same result as before
       XCTAssertTrue(isUpgradedMainFrame)
       let upgradedMainFrameRequestTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
       XCTAssertEqual(upgradedMainFrameRequestTypes, unchangedScriptTypes)
 
@@ -114,8 +116,9 @@ final class PageDataTests: XCTestCase {
       // We get the same result as before
       XCTAssertTrue(isUpgradedSubFrame)
       let upgradedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
       XCTAssertEqual(upgradedSubFrameFrameRequestTypes, unchangedScriptTypes)
 
@@ -146,11 +149,10 @@ final class PageDataTests: XCTestCase {
     let expectation = expectation(description: "")
 
     Task { @MainActor in
-      let domain = pageData.domain(persistent: false)
-
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: false
+        isDeAmpEnabled: false,
+        isAdBlockEnabled: true,
+        isBlockFingerprintingEnabled: true
       )
 
       XCTAssertTrue(

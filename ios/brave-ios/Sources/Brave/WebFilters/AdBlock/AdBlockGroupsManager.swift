@@ -4,9 +4,11 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import Data
 import Foundation
 import Preferences
+import Web
 import os
 
 /// A class that helps manage file sources and enabled filter lists so that 2 engines (standard and aggressive) are continually updated.
@@ -378,13 +380,18 @@ import os
   }
 
   /// Get all required rule lists for the given domain
-  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
-    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
-    let level = domain.globalBlockAdsAndTrackingLevel
+  public func ruleLists(
+    isBraveShieldsEnabled: Bool,
+    shieldLevel: ShieldLevel
+  ) async -> Set<WKContentRuleList> {
+    let validBlocklistTypes = self.validBlocklistTypes(
+      isBraveShieldsEnabled: isBraveShieldsEnabled,
+      shieldLevel: shieldLevel
+    )
 
     return await Set(
       validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
-        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
+        let mode = blocklistType.mode(isAggressiveMode: shieldLevel.isAggressive)
 
         do {
           return try await self.contentBlockerManager.ruleList(for: blocklistType, mode: mode)
@@ -399,12 +406,17 @@ import os
   }
 
   /// A list of all valid (enabled) blocklist types for the given domain
-  private func validBlocklistTypes(for domain: Domain) -> Set<(ContentBlockerManager.BlocklistType)>
-  {
-    guard !domain.areAllShieldsOff else { return [] }
+  private func validBlocklistTypes(
+    isBraveShieldsEnabled: Bool,
+    shieldLevel: ShieldLevel
+  ) -> Set<(ContentBlockerManager.BlocklistType)> {
+    guard isBraveShieldsEnabled else { return [] }
 
     // 1. Get the generic types
-    let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
+    let genericTypes = contentBlockerManager.validGenericTypes(
+      isShieldsEnabled: isBraveShieldsEnabled,
+      isAdBlockEnabled: shieldLevel.isEnabled
+    ).filter { type in
       switch type {
       case .blockAds:
         // We only use this list during first install if the standard manager is not ready
@@ -420,7 +432,7 @@ import os
       return .generic(genericType)
     }
 
-    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
+    guard shieldLevel.isEnabled else {
       return Set(genericRuleLists)
     }
 
@@ -552,14 +564,16 @@ import os
     requestURL: URL,
     sourceURL: URL,
     resourceType: AdblockEngine.ResourceType,
-    domain: Domain
+    isAdBlockEnabled: Bool,
+    isAdBlockModeAggressive: Bool
   ) async -> Bool {
-    return await cachedEngines(for: domain).asyncConcurrentMap({ cachedEngine in
+    return await cachedEngines(isAdBlockEnabled: isAdBlockEnabled).asyncConcurrentMap({
+      cachedEngine in
       return await cachedEngine.shouldBlock(
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
-        isAggressiveMode: domain.globalBlockAdsAndTrackingLevel.isAggressive
+        isAggressiveMode: isAdBlockModeAggressive
       )
     }).contains(where: { $0 })
   }
@@ -569,10 +583,10 @@ import os
     frameURL: URL,
     isMainFrame: Bool,
     isDeAmpEnabled: Bool,
-    domain: Domain
+    isAdBlockEnabled: Bool
   ) async -> Set<UserScriptType> {
     // Add any engine scripts for this frame
-    return await cachedEngines(for: domain).enumerated().asyncMap({
+    return await cachedEngines(isAdBlockEnabled: isAdBlockEnabled).enumerated().asyncMap({
       index,
       cachedEngine -> Set<UserScriptType> in
       do {
@@ -595,17 +609,17 @@ import os
   }
 
   /// Returns all appropriate engines for the given domain
-  func cachedEngines(for domain: Domain) -> [GroupedAdBlockEngine] {
-    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else { return [] }
+  func cachedEngines(isAdBlockEnabled: Bool) -> [GroupedAdBlockEngine] {
+    guard isAdBlockEnabled else { return [] }
     return GroupedAdBlockEngine.EngineType.allCases.compactMap({ getManager(for: $0).engine })
   }
 
   /// Returns all the models for this frame URL
   func cosmeticFilterModels(
     forFrameURL frameURL: URL,
-    domain: Domain
+    isAdBlockEnabled: Bool
   ) async -> [CosmeticFilterModelTuple] {
-    return await cachedEngines(for: domain).asyncConcurrentCompactMap {
+    return await cachedEngines(isAdBlockEnabled: isAdBlockEnabled).asyncConcurrentCompactMap {
       cachedEngine -> CosmeticFilterModelTuple? in
       do {
         guard let model = try await cachedEngine.cosmeticFilterModel(forFrameURL: frameURL) else {
