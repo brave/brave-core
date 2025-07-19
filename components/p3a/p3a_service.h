@@ -28,6 +28,10 @@
 class PrefRegistrySimple;
 class PrefService;
 
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
+
 namespace network {
 class SharedURLLoaderFactory;
 }
@@ -84,7 +88,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   bool IsP3AEnabled() const;
 
   // Needs a living browser process to complete the initialization.
-  void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+            component_updater::ComponentUpdateService* cus);
 
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
@@ -136,6 +141,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   const raw_ref<PrefService> local_state_;
   P3AConfig config_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
+      nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

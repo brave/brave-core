@@ -312,15 +312,15 @@ static bool CustomLogHandler(int severity,
       base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
       p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
-  _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
+  _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory(),
+                     GetApplicationContext()->GetComponentUpdateService());
   _histogram_braveizer = p3a::HistogramsBraveizer::Create();
   // Typically we'd register this component in RegisterComponentsForUpdate, but
   // because iOS needs to pass in the install date from the Swift side we don't
   // initialize the P3A service until after WebMain is started. If this changes
   // in the future, move this call there.
-  p3a::RegisterP3AComponent(
-      GetApplicationContext()->GetComponentUpdateService(),
-      _p3a_service->remote_config_manager()->GetWeakPtr());
+  p3a::MaybeToggleP3AComponent(
+      GetApplicationContext()->GetComponentUpdateService(), _p3a_service.get());
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 

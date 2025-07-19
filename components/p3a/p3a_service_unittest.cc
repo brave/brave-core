@@ -43,7 +43,7 @@ class P3AServiceTest : public testing::Test {
     ASSERT_TRUE(base::Time::FromString("2049-01-01", &install_time));
     p3a_service_ = scoped_refptr(
         new P3AService(local_state_, "release", install_time, {}));
-    p3a_service_->Init(shared_url_loader_factory_);
+    p3a_service_->Init(shared_url_loader_factory_, nullptr);
   }
 
   void TriggerRemoteConfigLoad() {
