@@ -616,12 +616,6 @@
 # We disable HATS
 -HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
 
-# These tails fail because we add a new quick action to download bubble to delete local file.
--DownloadBubbleRowViewInfoTest.InProgressOrCompletedInfo
-#-DownloadBubbleRowViewTest.InputProtectorDeniesClicks
-#-DownloadBubbleRowViewTest.OnlyEnabledQuickActionsVisible
-#-DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
-
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
