@@ -146,7 +146,6 @@ TEST_F(DownloadBubbleTest, DeleteLocalFileCommand_Incomplete) {
   // When download isn't complete, QuickActionsForDownload should not contain
   // kDeleteLocalFile command.
   ASSERT_NE(model_.GetState(), DownloadItem::COMPLETE);
-  auto quick_actions = QuickActionsForDownload(model_);
   EXPECT_FALSE(ContainsDeleteLocalFileCommand());
 }
 
@@ -157,7 +156,6 @@ TEST_F(DownloadBubbleTest, DeleteLocalFileCommand_Cancelled) {
   // When download is cancelled, QuickActionsForDownload should not contain
   // kDeleteLocalFile command.
   ASSERT_EQ(model_.GetState(), DownloadItem::CANCELLED);
-  auto quick_actions = QuickActionsForDownload(model_);
   EXPECT_FALSE(ContainsDeleteLocalFileCommand());
 }
 
@@ -168,7 +166,6 @@ TEST_F(DownloadBubbleTest, DeleteLocalFileCommand_Complete) {
   // When download is complete, QuickActionsForDownload should contain
   // kDeleteLocalFile command.
   ASSERT_EQ(model_.GetState(), DownloadItem::COMPLETE);
-  auto quick_actions = QuickActionsForDownload(model_);
   EXPECT_TRUE(ContainsDeleteLocalFileCommand());
 }
 
