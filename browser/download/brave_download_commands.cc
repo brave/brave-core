@@ -8,8 +8,11 @@
 #include "chrome/browser/download/download_ui_model.h"
 
 bool BraveDownloadCommands::IsCommandEnabled(Command command) const {
+  if (!model_) {
+    return false;
+  }
+
   if (command == DELETE_LOCAL_FILE) {
-    CHECK(model_);
     return model_->GetState() == download::DownloadItem::COMPLETE &&
            !model_->GetFileExternallyRemoved() &&
            !model_->GetFullPath().empty();
@@ -18,8 +21,11 @@ bool BraveDownloadCommands::IsCommandEnabled(Command command) const {
 }
 
 void BraveDownloadCommands::ExecuteCommand(Command command) {
+  if (model_) {
+    return;
+  }
+
   if (command == DELETE_LOCAL_FILE) {
-    CHECK(model_);
     model_->DeleteLocalFile();
     return;
   }
