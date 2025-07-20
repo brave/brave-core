@@ -97,7 +97,7 @@ class DownloadBubbleTest : public testing::Test {
   bool ContainsDeleteLocalFileCommand() {
     auto quick_actions = QuickActionsForDownload(model_);
     return std::ranges::find(
-               quick_actions, BraveDownloadCommands::kDeleteLocalFile,
+               quick_actions, BraveDownloadCommands::DELETE_LOCAL_FILE,
                &DownloadBubbleQuickAction::command) != quick_actions.end();
   }
 
@@ -115,7 +115,7 @@ TEST_F(DownloadBubbleTest, ContextMenuCompletedItemTest) {
   DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_TRUE(
-      menu_model->GetIndexOfCommandId(BraveDownloadCommands::kRemoveFromList));
+      menu_model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST));
 }
 
 TEST_F(DownloadBubbleTest, ContextMenuInProgressItemTest) {
@@ -126,7 +126,7 @@ TEST_F(DownloadBubbleTest, ContextMenuInProgressItemTest) {
   DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_FALSE(
-      menu_model->GetIndexOfCommandId(BraveDownloadCommands::kRemoveFromList));
+      menu_model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST));
 }
 
 TEST_F(DownloadBubbleTest, ContextMenuCancelledItemTest) {
@@ -137,7 +137,7 @@ TEST_F(DownloadBubbleTest, ContextMenuCancelledItemTest) {
   DownloadShelfContextMenuView ctx_menu(model_.GetWeakPtr());
   auto* menu_model = ctx_menu.GetMenuModel();
   EXPECT_TRUE(
-      menu_model->GetIndexOfCommandId(BraveDownloadCommands::kRemoveFromList));
+      menu_model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST));
 }
 
 TEST_F(DownloadBubbleTest, DeleteLocalFileCommand_Incomplete) {
@@ -184,7 +184,7 @@ TEST_F(DownloadBubbleTest, BraveDownloadCommands_DeleteLocalFileEnabled) {
 
   BraveDownloadCommands commands(model_.GetWeakPtr());
   EXPECT_TRUE(
-      commands.IsCommandEnabled(BraveDownloadCommands::kDeleteLocalFile));
+      commands.IsCommandEnabled(BraveDownloadCommands::DELETE_LOCAL_FILE));
 }
 
 TEST_F(DownloadBubbleTest,
@@ -200,7 +200,7 @@ TEST_F(DownloadBubbleTest,
 
   BraveDownloadCommands commands(model_.GetWeakPtr());
   EXPECT_FALSE(
-      commands.IsCommandEnabled(BraveDownloadCommands::kDeleteLocalFile));
+      commands.IsCommandEnabled(BraveDownloadCommands::DELETE_LOCAL_FILE));
 }
 
 TEST_F(DownloadBubbleTest,
@@ -215,5 +215,5 @@ TEST_F(DownloadBubbleTest,
 
   BraveDownloadCommands commands(model_.GetWeakPtr());
   EXPECT_FALSE(
-      commands.IsCommandEnabled(BraveDownloadCommands::kDeleteLocalFile));
+      commands.IsCommandEnabled(BraveDownloadCommands::DELETE_LOCAL_FILE));
 }

@@ -20,10 +20,10 @@
 #define OPEN_WITH_MEDIA_APP                                             \
   /* Removes the download item from the list. The actual file is not */ \
   /* deleted. Used by download shelf view. */                           \
-  kRemoveFromList = 23,                                                        \
+  REMOVE_FROM_LIST = 23,                                                       \
   /* Remove downloaded file from disk and and remove the download item from */ \
   /* the list. Used by download bubble view. */                                \
-  kDeleteLocalFile = 24,                                                       \
+  DELETE_LOCAL_FILE = 24,                                                      \
   OPEN_WITH_MEDIA_APP
 
 #include "src/chrome/browser/download/download_commands.h"  // IWYU pragma: export

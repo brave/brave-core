@@ -21,7 +21,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
     return;
   }
 
-  if (command == BraveDownloadCommands::kDeleteLocalFile) {
+  if (command == BraveDownloadCommands::DELETE_LOCAL_FILE) {
     BraveDownloadCommands commands(model);
     commands.ExecuteCommand(command);
     return;

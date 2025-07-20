@@ -15,7 +15,7 @@
 // quick action for deleting local files.
 #define SetNotifyEnterExitOnChild(...)    \
   SetNotifyEnterExitOnChild(__VA_ARGS__); \
-  AddQuickAction(BraveDownloadCommands::kDeleteLocalFile)
+  AddQuickAction(BraveDownloadCommands::DELETE_LOCAL_FILE)
 
 // Insert switch case handling for kDeleteLocalFile command in
 // DownloadBubbleRowView::GetAccessibleNameForQuickAction().
@@ -26,7 +26,7 @@ constexpr auto kQuickActionAccessibilityResourceId =
 #define IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY \
     kQuickActionAccessibilityResourceId,                              \
     info_->model()->GetFileNameToReportUser().LossyDisplayName());    \
-  case BraveDownloadCommands::kDeleteLocalFile:                       \
+  case BraveDownloadCommands::DELETE_LOCAL_FILE:                      \
       return l10n_util::GetStringFUTF16(                              \
          IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY
 

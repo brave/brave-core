@@ -8,10 +8,10 @@
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadShelfContextMenu, so just fall
 // through.
-#define EDIT_WITH_MEDIA_APP               \
-  EDIT_WITH_MEDIA_APP:                    \
-  case DownloadCommands::kRemoveFromList: \
-  case DownloadCommands::kDeleteLocalFile
+#define EDIT_WITH_MEDIA_APP                \
+  EDIT_WITH_MEDIA_APP:                     \
+  case DownloadCommands::REMOVE_FROM_LIST: \
+  case DownloadCommands::DELETE_LOCAL_FILE
 
 #include "src/chrome/browser/download/download_shelf_context_menu.cc"
 

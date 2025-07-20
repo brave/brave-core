@@ -39,7 +39,7 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
 
   // Early return if |model| has the item. |model| is cached by base class.
   if (auto index =
-          model->GetIndexOfCommandId(BraveDownloadCommands::kRemoveFromList)) {
+          model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST)) {
     return model;
   }
 
@@ -51,7 +51,7 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
 
   if (auto index =
           model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
-    model->InsertItemAt(*index + 1, BraveDownloadCommands::kRemoveFromList,
+    model->InsertItemAt(*index + 1, BraveDownloadCommands::REMOVE_FROM_LIST,
                         l10n_util::GetStringUTF16(
                             IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
   }
@@ -60,7 +60,7 @@ ui::SimpleMenuModel* DownloadShelfContextMenuView::GetMenuModel() {
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdEnabled(int command_id) const {
-  if (command_id == BraveDownloadCommands::kRemoveFromList) {
+  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
@@ -68,7 +68,7 @@ bool DownloadShelfContextMenuView::IsCommandIdEnabled(int command_id) const {
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdChecked(int command_id) const {
-  if (command_id == BraveDownloadCommands::kRemoveFromList) {
+  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
     return false;
   }
 
@@ -76,7 +76,7 @@ bool DownloadShelfContextMenuView::IsCommandIdChecked(int command_id) const {
 }
 
 bool DownloadShelfContextMenuView::IsCommandIdVisible(int command_id) const {
-  if (command_id == BraveDownloadCommands::kRemoveFromList) {
+  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
@@ -85,7 +85,7 @@ bool DownloadShelfContextMenuView::IsCommandIdVisible(int command_id) const {
 
 void DownloadShelfContextMenuView::ExecuteCommand(int command_id,
                                                   int event_flags) {
-  if (command_id == BraveDownloadCommands::kRemoveFromList) {
+  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
     GetDownload()->GetDownloadItem()->Remove();
     return;
   }
