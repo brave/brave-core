@@ -134,6 +134,7 @@ enum ManageURLType {
   ABOUT,
   MANAGE,
   SUPPORT,
+  ABOUT_SMART_PROXY,
 };
 
 struct PurchasedInfo {

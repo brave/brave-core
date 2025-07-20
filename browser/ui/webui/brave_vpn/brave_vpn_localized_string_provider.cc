@@ -40,6 +40,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnReconnectAutomatically", IDS_BRAVE_VPN_RECONNECT_AUTOMATICALLY},
       {"braveVpnSmartProxyRouting", IDS_BRAVE_VPN_SMART_PROXY_ROUTING},
       {"braveVpnSmartProxyRoutingDesc", IDS_BRAVE_VPN_SMART_PROXY_ROUTING_DESC},
+      {"braveVpnSmartProxyRoutingDescLearnMore",
+       IDS_BRAVE_VPN_SMART_PROXY_ROUTING_DESC_LEARN_MORE},
       {"braveVpnSmartProxyRoutingIconTooltip",
        IDS_BRAVE_VPN_SMART_PROXY_ROUTING_ICON_TOOLTIP},
       {"braveVpnContactSupport", IDS_BRAVE_VPN_CONTACT_SUPPORT},

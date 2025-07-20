@@ -158,6 +158,10 @@ GURL GetManageURLForUIType(mojom::ManageURLType type, const GURL& manage_url) {
       return GURL(brave_vpn::kAboutUrl);
     case mojom::ManageURLType::MANAGE:
       return manage_url;
+    case mojom::ManageURLType::ABOUT_SMART_PROXY:
+      return GURL(
+          "https://support.brave.app/hc/en-us/articles/"
+          "32105253704333-What-is-Smart-Proxy-Routing");
     default:
       break;
   }

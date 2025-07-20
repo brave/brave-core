@@ -30,6 +30,7 @@ provideStrings({
   braveVpnSmartProxyRouting: 'Smart proxy routing',
   braveVpnSmartProxyRoutingIconTooltip: 'Smart Proxy Routing available',
   braveVpnSmartProxyRoutingDesc: 'Ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third party services.',
+  braveVpnSmartProxyRoutingDescLearnMore: 'Learn more',
   braveVpnContactSupport: 'Contact technical support',
   braveVpnAbout: 'About',
   braveVpnErrorPanelBackButtonAriaLabel: 'Go to main',

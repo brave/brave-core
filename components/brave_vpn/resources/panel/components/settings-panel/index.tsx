@@ -101,7 +101,19 @@ function SettingsPanel(props: Props) {
                 {getLocale('braveVpnSmartProxyRouting')}
               </S.SettingLabel>
               <S.SettingDesc>
-                {getLocale('braveVpnSmartProxyRoutingDesc')}
+                {getLocale('braveVpnSmartProxyRoutingDesc')}{' '}
+                  <a
+                    href='#'
+                    onClick={
+                      (e) => {
+                        // Prevent toggle when clicking this link.
+                        e.stopPropagation()
+                        handleClick(ManageURLType.ABOUT_SMART_PROXY)
+                      }
+                    }
+                  >
+                    {getLocale('braveVpnSmartProxyRoutingDescLearnMore')}
+                  </a>
               </S.SettingDesc>
             </S.SettingLabelBox>
             <Toggle
