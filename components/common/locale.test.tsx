@@ -31,12 +31,22 @@ describe('formatString', () => {
     }), 'I say Kiora!')
   })
 
+  it('should allow providing an array of replacements', () => {
+    assert.equal(formatString('$1 say $2', ['I', () => 'Kiora' + '!']),
+      'I say Kiora!')
+  })
+
   it('should allow replacing a range', () => {
     assert.equal(formatString('$1 in $2nz/$2 say $3', {
       $1: 'People',
       $2: 'NZ',
       $3: 'Kiora'
     }), 'People in NZ say Kiora')
+  })
+
+  it('should allow replacing a range using an array of replacements', () => {
+    assert.equal(formatString('$1 in $2nz/$2 say $3', ['People', 'NZ', 'Kiora']),
+      'People in NZ say Kiora')
   })
 
   it('should allow replacing with a range and a function', () => {
@@ -56,6 +66,11 @@ describe('formatString', () => {
     }))
   })
 
+  it('should fail if a replacement does not exist using an array of replacements', () => {
+    assert.throws(() => formatString('$1 in $2nz/$2 say $3',
+      ['People', 'NZ', 'Kiora', 'MISSING!']))
+  })
+
   it('should not fail if a replacement does not exist if noErrorOnMissingReplacement is true', () => {
     expect(formatString('$1 in $2nz/$2 say $3', {
       $1: 'People',
@@ -67,14 +82,34 @@ describe('formatString', () => {
     })).toBe('People in NZ say Kiora')
   })
 
+  it('should not fail if a replacement does not exist if noErrorOnMissingReplacement is true using an array of replacements', () => {
+    expect(formatString('$1 in $2nz/$2 say $3',
+      ['People', 'NZ', 'Kiora', 'MISSING!'], {
+        noErrorOnMissingReplacement: true
+      })).toBe('People in NZ say Kiora')
+  })
+
   it('should not change text with no replacements', () => {
     assert.equal(formatString('Hello world', {}), 'Hello world')
+  })
+
+  it('should not change text with no replacements using an array of replacements', () => {
+    assert.equal(formatString('Hello world', []), 'Hello world')
+  })
+
+  it('should not change text with placeholders and no replacements using an array of replacements', () => {
+    assert.equal(formatString('Hello $1', []), 'Hello $1')
   })
 
   it('should accept React nodes as replacements', () => {
     assert.deepEqual(formatString('Hello $1', {
       $1: <b>world</b>
     }), <>Hello <b>world</b></>)
+  })
+
+  it('should accept React nodes as array replacements', () => {
+    assert.deepEqual(formatString('Hello $1', [<b>world</b>]),
+      <>Hello <b>world</b></>)
   })
 
   it('should be able to return React nodes and take content as an argument', () => {
@@ -144,6 +179,11 @@ describe('formatString', () => {
     assert.deepEqual(formatString('Hello from $1 to $1', {
       $1: 'me'
     }), 'Hello from me to me')
+  })
+
+  it('should be possible to replace multiple instances of the same key with an array of replacements', () => {
+    assert.deepEqual(formatString('Hello from $1 to $1', ['me']),
+      'Hello from me to me')
   })
 
   it('should be possible to replace multiple instances of the same key with tags and nesting', () => {
