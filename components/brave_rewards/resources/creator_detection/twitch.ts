@@ -7,10 +7,12 @@ import { CreatorInfo, initializeDetector } from './creator_detection'
 import { log, getPathComponents, pollFor } from './helpers'
 
 initializeDetector(() => {
+  const isMobile = location.hostname.toLocaleLowerCase().startsWith('m.')
 
   function scrapeIcon() {
-    const elem =
-      document.querySelector('.channel-info-content .tw-avatar [src]')
+    const elem = document.querySelector(
+      isMobile ? '.tw-avatar .tw-image-avatar[src]'
+               : '.channel-info-content .tw-avatar [src]')
     return (elem && elem.getAttribute('src')) || ''
   }
 
