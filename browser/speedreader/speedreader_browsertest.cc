@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
@@ -1058,21 +1059,77 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
       tab_helper()->PageDistillState()));
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
+class SpeedReaderWithSplitViewBrowserTest
+    : public SpeedReaderBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SpeedReaderWithSplitViewBrowserTest() {
+    if (IsSideBySideEnabled()) {
+      scoped_features_.InitWithFeatures(
+          /*enabled_features*/ {features::kSideBySide}, {});
+    }
+  }
+  ~SpeedReaderWithSplitViewBrowserTest() override = default;
+
+  void NewSplitTab() {
+    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
+                          : brave::NewSplitViewForTab(browser());
+  }
+
+  BraveBrowserView* brave_browser_view() {
+    return static_cast<BraveBrowserView*>(browser()->window());
+  }
+
+  ReaderModeToolbarView* GetPrimaryToolbar() {
+    if (IsSideBySideEnabled()) {
+      return nullptr;
+    }
+
+    return brave_browser_view()->reader_mode_toolbar();
+  }
+
+  ReaderModeToolbarView* GetSecondaryToolbar() {
+    if (IsSideBySideEnabled()) {
+      return nullptr;
+    }
+
+    return brave_browser_view()->split_view()->secondary_reader_mode_toolbar();
+  }
+
+  views::Widget* GetSecondaryLocationBarWidget() {
+    if (IsSideBySideEnabled()) {
+      return nullptr;
+    }
+
+    return brave_browser_view()
+        ->split_view()
+        ->secondary_location_bar_widget_.get();
+  }
+
+  views::View* GetSecondaryContentsContainer() {
+    if (IsSideBySideEnabled()) {
+      return nullptr;
+    }
+
+    return brave_browser_view()->split_view()->secondary_contents_container();
+  }
+
+  bool IsSideBySideEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   ToggleSpeedreader();
 
-  brave::NewSplitViewForTab(browser());
+  NewSplitTab();
 
-  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
-
-  auto* toolbar = browser_view->reader_mode_toolbar();
-  auto* secondary_toolbar =
-      browser_view->split_view()->secondary_reader_mode_toolbar();
+  auto* toolbar = GetPrimaryToolbar();
+  auto* secondary_toolbar = GetSecondaryToolbar();
   ASSERT_TRUE(toolbar && secondary_toolbar);
-  auto* secondary_location_bar_widget =
-      browser_view->split_view()->secondary_location_bar_widget_.get();
-  auto* secondary_contents_container =
-      browser_view->split_view()->secondary_contents_container();
+  auto* secondary_location_bar_widget = GetSecondaryLocationBarWidget();
+  auto* secondary_contents_container = GetSecondaryContentsContainer();
 
   // No toolbars.
   EXPECT_FALSE(toolbar->GetVisible());
@@ -1152,16 +1209,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   WaitToolbarVisibility(secondary_toolbar, false);
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
+IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
   ToggleSpeedreader();
 
-  brave::NewSplitViewForTab(browser());
+  NewSplitTab();
 
-  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
-
-  auto* toolbar = browser_view->reader_mode_toolbar();
-  auto* secondary_toolbar =
-      browser_view->split_view()->secondary_reader_mode_toolbar();
+  auto* toolbar = GetPrimaryToolbar();
+  auto* secondary_toolbar = GetSecondaryToolbar();
+  ASSERT_TRUE(toolbar && secondary_toolbar);
 
   // No toolbars.
   EXPECT_FALSE(toolbar->GetVisible());
@@ -1195,3 +1250,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
   WaitToolbarVisibility(secondary_toolbar, false);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SpeedReaderWithSplitViewBrowserTest,
+    ::testing::Bool());
