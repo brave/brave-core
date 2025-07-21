@@ -911,7 +911,6 @@
     *** mToolbarCoordinator;
     *** mTabController;
     *** mMinimizationManagerHolder;
-    *** mCustomTabFeatureOverridesManager;
     *** getAppHeaderCoordinator(...);
     *** getBrowserServicesThemeColorProvider(...);
     public <init>(...);
