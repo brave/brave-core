@@ -73,7 +73,8 @@ export function createVpnHandler(
   const vpnServiceObserver = new mojom.ServiceObserverReceiver({
     onConnectionStateChanged: updateConnectionInfo,
     onSelectedRegionChanged: updateConnectionInfo,
-    onPurchasedStateChanged: updateConnectionInfo
+    onPurchasedStateChanged: updateConnectionInfo,
+    onSmartProxyRoutingStateChanged: (enabled: boolean) => {}
   })
 
   vpnService.addObserver(vpnServiceObserver.$.bindNewPipeAndPassRemote())

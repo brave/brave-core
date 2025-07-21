@@ -48,6 +48,10 @@ BraveVPN.setPanelBrowserApiForTesting({
       success: true,
       response: 'OK'
     }),
+    getSmartProxyRoutingState: () => Promise.resolve({
+      enabled: true
+    }),
+    enableSmartProxyRouting: (enable: boolean) => {},
     getOnDemandState: () => Promise.resolve({
       available: true,
       enabled: false
