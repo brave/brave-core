@@ -295,12 +295,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, focusable);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         popupWindow.setElevation(20);
-        Rect bgPadding = new Rect();
-        int popupWidth =
-                wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
-                        + bgPadding.left
-                        + bgPadding.right;
-        popupWindow.setWidth(popupWidth);
         // Set the location of the window on the screen
         mAnchorView = anchorView;
         if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
