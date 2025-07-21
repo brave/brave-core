@@ -9,6 +9,7 @@ import DataImporter
 import DesignSystem
 import SwiftUI
 import UniformTypeIdentifiers
+import os.log
 
 private class BookmarkFile: ReferenceFileDocument {
   typealias Snapshot = BookmarkFile
@@ -300,7 +301,7 @@ struct BookmarksListView: View {
             }
           }
         case .failure(let error):
-          print(error)
+          Logger.module.error("[Bookmarks] - Failed to import Bookmarks: \(error)")
           importExportResult = .init(
             showAlert: true,
             title: Strings.Bookmarks.bookmarksImportExportErrorTitle,
@@ -322,7 +323,7 @@ struct BookmarksListView: View {
             message: Strings.Bookmarks.bookmarksExportSuccessMessage
           )
         case .failure(let error):
-          print(error)
+          Logger.module.error("[Bookmarks] - Failed to export Bookmarks: \(error)")
           importExportResult = .init(
             showAlert: true,
             title: Strings.Bookmarks.bookmarksImportExportErrorTitle,
