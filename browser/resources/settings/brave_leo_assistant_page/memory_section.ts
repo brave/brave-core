@@ -105,21 +105,15 @@ class MemorySection extends MemorySectionBase {
     // Check if prefs and the specific pref are available before accessing
     if (this.prefs?.brave?.ai_chat?.user_memories?.value) {
       this.memoriesList_ = [...this.prefs.brave.ai_chat.user_memories.value];
-    } else {
-      // Initialize with empty array if prefs are not available yet
-      this.memoriesList_ = [];
     }
   }
 
   saveMemory_(memoryItem: string, oldItem: string | null) {
-    console.log('saveMemory_ called with oldItem:', oldItem);
     if (!oldItem) {
-      console.log('Adding new memory');
       this.appendPrefListItem(USER_MEMORIES_PREF_KEY, memoryItem);
       // Manually reload memories immediately
       this.loadMemories_();
     } else {
-      console.log('Updating memory from:', oldItem, 'to:', memoryItem);
       this.updatePrefListItem(USER_MEMORIES_PREF_KEY, oldItem, memoryItem);
       // Manually reload memories immediately
       this.loadMemories_();
@@ -137,7 +131,7 @@ class MemorySection extends MemorySectionBase {
     this.showMemoryDialog_ = false;
   }
 
-  handleDelete_(e: any) {
+  handleDelete_(e: { model: { item: string | null }}) {
     this.deleteMemoryItem_ = e.model.item;
     this.showDeleteDialog_ = true;
   }
@@ -156,7 +150,7 @@ class MemorySection extends MemorySectionBase {
     this.deleteMemoryItem_ = null;
   }
 
-  handleEdit_(e: any) {
+  handleEdit_(e: { model: { item: string | null }}) {
     this.editingMemoryItem_ = e.model.item;
     this.editingMemory_ = e.model.item || '';
     this.showMemoryDialog_ = true;
@@ -168,7 +162,7 @@ class MemorySection extends MemorySectionBase {
     this.showMemoryDialog_ = true;
   }
 
-  onDialogInput_(e: any) {
+  onDialogInput_(e: { value: string }) {
     const trimmedValue = e.value.trim()
     this.editingMemory_ = trimmedValue
     this.isMemoryInputError_ = trimmedValue.length > 512
@@ -177,10 +171,6 @@ class MemorySection extends MemorySectionBase {
   computeMemoryInputValid_(editingMemory: string): boolean {
     const trimmedMemory = editingMemory.trim()
     return trimmedMemory.length > 0 && trimmedMemory.length <= 512
-  }
-
-  computeHasMemories_(memoriesList: string[]): boolean {
-    return memoriesList.length > 0
   }
 
   hasMemories_(memoriesList: string[]): boolean {
@@ -204,12 +194,6 @@ class MemorySection extends MemorySectionBase {
     return editingMemoryItem === null
       ? this.i18n('braveLeoAssistantCreateMemoryDialogTitle')
       : this.i18n('braveLeoAssistantEditMemoryDialogTitle')
-  }
-
-  private getInputPlaceholder_(editingMemory: string) {
-    return editingMemory === ''
-      ? this.i18n('braveLeoAssistantMemoryInputPlaceholder')
-      : ''
   }
 
   handleDeleteAllMemories_() {

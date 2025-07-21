@@ -61,16 +61,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     gap: var(--leo-spacing-m);
   }
 
-  cr-icon-button.size-20 {
-    --iron-icon-width: 20px;
-    --cr-icon-button-size: 20px;
-    --cr-icon-button-height: 20px;
-    --cr-icon-button-width: 20px;
-    --cr-icon-button-margin-start: 0;
-    --cr-icon-button-margin-end: 0;
-    --cr-icon-button-icon-size: 20px;
-  }
-
   settings-toggle-button {
     margin-left: 0 !important;
     padding-left: 0 !important;
@@ -120,7 +110,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
   cr-dialog [slot="body"] {
     display: flex;
-    padding: 0px var(--leo-spacing-2xl);
+    padding: var(--leo-spacing-m) var(--leo-spacing-2xl);
     flex-direction: column;
     align-items: center;
     gap: var(--leo-spacing-2xl);
@@ -171,9 +161,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     --primary-color: var(--leo-color-systemfeedback-error-background);
   }
 
-  leo-button {
-    --leo-button-radius: var(--leo-radius-full);
-  }
   .error-message {
     display: flex;
     align-items: center;
@@ -230,16 +217,18 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
             <div class="label">[[item]]</div>
           </div>
           <div class="memory-actions">
-            <cr-icon-button
-              on-click="handleEdit_"
-              class="size-20"
-              iron-icon="edit-pencil"
-            ></cr-icon-button>
-            <cr-icon-button
-              on-click="handleDelete_"
-              class="size-20"
-              iron-icon="trash"
-            ></cr-icon-button>
+            <leo-button
+              kind="plain-faint"
+              fab size="medium"
+              on-click="handleEdit_">
+              <leo-icon name="edit-pencil"></leo-icon>
+            </leo-button>
+            <leo-button
+              kind="plain-faint"
+              fab size="medium"
+              on-click="handleDelete_">
+              <leo-icon name="trash"></leo-icon>
+            </leo-button>
           </div>
         </div>
       </template>
@@ -271,7 +260,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <cr-dialog id="memoryDialog" show-on-attach show-close-button on-close="onDialogCancel_">
     <div slot="title">[[getDialogTitle_(editingMemoryItem_)]]</div>
     <div slot="body">
-      <leo-input required id="memoryInput" type="text" value="[[editingMemory_]]" on-change="onDialogInput_" on-input="onDialogInput_" showErrors$="[[isMemoryInputError_]]" placeholder="[[getInputPlaceholder_(editingMemory_)]]" style="width:100%">
+      <leo-input required id="memoryInput" type="text"
+        value="[[editingMemory_]]" on-input="onDialogInput_"
+        showErrors$="[[isMemoryInputError_]]"
+        placeholder="$i18n{braveLeoAssistantMemoryInputPlaceholder}"
+        style="width:100%">
         <div slot="errors" class="error-message" hidden$="[[!isMemoryInputError_]]">
           <leo-icon name="warning-triangle-filled"></leo-icon>
           <span>$i18n{braveLeoAssistantMemoryInputError}</span>
