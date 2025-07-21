@@ -23,7 +23,6 @@ struct PageContent {
   // |EngineConsumer::SanitizeInput| before sending it.
   std::string content = "";
   bool is_video = false;
-  std::string invalidation_token = "";
 
   PageContent();
   PageContent(std::string content,
@@ -36,8 +35,7 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video &&
-           invalidation_token == other.invalidation_token;
+    return content == other.content && is_video == other.is_video;
   }
 };
 

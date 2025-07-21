@@ -18,7 +18,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/test_renderer_host.h"
@@ -264,7 +263,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   std::string transcript_xml = CreateTranscriptXmlResponse(transcript_text);
   SimulateNetworkResponse(transcript_url, net::HTTP_OK, transcript_xml);
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -337,7 +336,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINetworkError) {
                       api_key);
   SimulateNetworkError(inner_tube_url, net::ERR_NETWORK_CHANGED);
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -384,7 +383,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIInvalidJsonResponse) {
                       api_key);
   SimulateNetworkResponse(inner_tube_url, net::HTTP_OK, "invalid json");
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -431,7 +430,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINoCaptionTracks) {
                       api_key);
   SimulateNetworkResponse(inner_tube_url, net::HTTP_OK, "{}");
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -486,7 +485,7 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
   std::string transcript_xml = CreateTranscriptXmlResponse(transcript_text);
   SimulateNetworkResponse(transcript_url, net::HTTP_OK, transcript_xml);
 
-  base::test::TestFuture<PageContent> future1;
+  base::test::TestFuture<std::string, bool, std::string> future1;
   fetcher_->FetchPageContent("", future1.GetCallback());
 
   // Wait for the first result
@@ -509,7 +508,7 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
             std::move(callback).Run(youtube_content2.Clone());
           }));
 
-  base::test::TestFuture<PageContent> future2;
+  base::test::TestFuture<std::string, bool, std::string> future2;
   fetcher_->FetchPageContent(invalidation_token1, future2.GetCallback());
 
   // Wait for the second result
@@ -550,7 +549,7 @@ TEST_F(PageContentFetcherTest, ContentUrlExtraction) {
   // Set up network response for content URL
   SimulateNetworkResponse(content_url, net::HTTP_OK, transcript_text);
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -579,7 +578,7 @@ TEST_F(PageContentFetcherTest, NullPageContentResponse) {
             std::move(callback).Run(nullptr);
           }));
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -609,7 +608,7 @@ TEST_F(PageContentFetcherTest, TextContentExtraction) {
             std::move(callback).Run(text_page_content.Clone());
           }));
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result
@@ -673,7 +672,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
   std::string transcript_xml = CreateTranscriptXmlResponse(transcript_text);
   SimulateNetworkResponse(transcript_url, net::HTTP_OK, transcript_xml);
 
-  base::test::TestFuture<PageContent> future;
+  base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
 
   // Wait for the result

@@ -63,7 +63,7 @@ namespace ai_chat {
 namespace {
 
 using FetchPageContentCallback =
-    AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
+    AssociatedContentDriver::FetchPageContentCallback;
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Hosts to use for screenshot based text retrieval
@@ -436,7 +436,7 @@ class PageContentFetcherInternal {
                                std::string content = "",
                                std::string invalidation_token = "",
                                bool is_video = false) {
-    std::move(callback).Run(PageContent(content, is_video, invalidation_token));
+    std::move(callback).Run(content, is_video, invalidation_token);
     delete this;
   }
 
@@ -514,7 +514,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
     LOG(ERROR)
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
-    std::move(callback).Run(PageContent());
+    std::move(callback).Run("", false, "");
     return;
   }
 

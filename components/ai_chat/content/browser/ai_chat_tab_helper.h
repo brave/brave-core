@@ -18,7 +18,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/content/browser/full_screenshotter.h"
-#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -39,7 +38,7 @@ class NavigationEntry;
 class RenderFrameHost;
 class WebContents;
 struct LoadCommittedDetails;
-}
+}  // namespace content
 
 class AIChatUIBrowserTest;
 
@@ -51,8 +50,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
                         public AssociatedContentDriver {
  public:
-  using GetPageContentCallback = GetPageContentCallback;
-
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
    public:
@@ -72,9 +69,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   class PageContentFetcherDelegate {
    public:
-    using FetchPageContentCallback =
-        base::OnceCallback<void(PageContent content)>;
-
     virtual ~PageContentFetcherDelegate() = default;
 
     // Gets text of the page content, making an attempt
@@ -134,7 +128,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;
-  void GetPageContent(GetPageContentCallback callback,
+  void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
@@ -155,29 +149,31 @@ class AIChatTabHelper : public content::WebContentsObserver,
       mojom::ConversationHandler::GetScreenshotsCallback callback,
       base::expected<std::vector<std::vector<uint8_t>>, std::string>);
 
-  void OnFetchPageContentComplete(GetPageContentCallback callback,
-                                  PageContent page_content);
+  void OnFetchPageContentComplete(FetchPageContentCallback callback,
+                                  std::string content,
+                                  bool is_video,
+                                  std::string invalidation_token);
 
   void OnExtractPrintPreviewContentComplete(
-      GetPageContentCallback callback,
+      FetchPageContentCallback callback,
       base::expected<std::string, std::string>);
 
 #if BUILDFLAG(ENABLE_PDF)
-  void OnPDFDocumentLoadComplete(GetPageContentCallback callback);
+  void OnPDFDocumentLoadComplete(FetchPageContentCallback callback);
 
-  void OnGetPDFPageCount(GetPageContentCallback callback,
+  void OnGetPDFPageCount(FetchPageContentCallback callback,
                          pdf::mojom::PdfListener::GetPdfBytesStatus status,
                          const std::vector<uint8_t>& bytes,
                          uint32_t page_count);
 
   void OnAllPDFPagesTextReceived(
-      GetPageContentCallback callback,
+      FetchPageContentCallback callback,
       const std::vector<std::pair<size_t, std::string>>& page_texts);
 #endif  // BUILDFLAG(ENABLE_PDF)
 
-  bool MaybePrintPreviewExtract(GetPageContentCallback& callback);
+  bool MaybePrintPreviewExtract(FetchPageContentCallback& callback);
 
-  void SetPendingGetContentCallback(GetPageContentCallback callback);
+  void SetPendingGetContentCallback(FetchPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
@@ -187,7 +183,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_page_loaded_ = false;
 
   // TODO(petemill): Use signal to allow for multiple callbacks
-  GetPageContentCallback pending_get_page_content_callback_;
+  FetchPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PrintPreviewExtractionDelegate>
       print_preview_extraction_delegate_;

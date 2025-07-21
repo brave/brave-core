@@ -25,8 +25,8 @@ namespace ai_chat {
 
 class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
  public:
-  using AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
-
+  using FetchPageContentCallback =
+      AssociatedContentDriver::FetchPageContentCallback;
   explicit PageContentFetcher(content::WebContents* web_contents);
   ~PageContentFetcher() override;
   PageContentFetcher(const PageContentFetcher&) = delete;

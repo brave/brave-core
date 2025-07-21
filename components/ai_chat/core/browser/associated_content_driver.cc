@@ -104,7 +104,7 @@ void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   GetPageContent(
       base::BindOnce(&AssociatedContentDriver::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id_),
-      cached_page_content_.invalidation_token);
+      invalidation_token_);
 }
 
 void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
@@ -118,23 +118,24 @@ void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
 
 void AssociatedContentDriver::OnGeneratePageContentComplete(
     int64_t navigation_id,
-    PageContent content) {
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
   DVLOG(1) << "OnGeneratePageContentComplete";
-  DVLOG(4) << "Contents(is_video=" << content.is_video
-           << ", invalidation_token=" << content.invalidation_token
-           << "): " << content.content;
+  DVLOG(4) << "Contents(is_video=" << is_video
+           << ", invalidation_token=" << invalidation_token << "): " << content;
   if (navigation_id != current_navigation_id_) {
     return;
   }
 
   // If invalidation token matches existing token, then
   // content was not re-fetched and we can use our existing cache.
-  if (content.invalidation_token.empty() ||
-      (content.invalidation_token != cached_page_content_.invalidation_token)) {
+  if (invalidation_token.empty() ||
+      (invalidation_token != invalidation_token_)) {
     // Cache page content on instance so we don't always have to re-fetch
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
-    cached_page_content_ = std::move(content);
+    cached_page_content_ = PageContent(std::move(content), is_video);
 
     if (cached_page_content_.content.empty()) {
       DVLOG(1) << __func__ << ": No data";
