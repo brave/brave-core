@@ -64,7 +64,7 @@
 
   BookmarkFolder* other = (BookmarkFolder*)object;
 
-  return self.bookmarkNode.nodeId == other.bookmarkNode.nodeId &&
+  return [self.bookmarkNode isEqual:other.bookmarkNode] &&
          self.indentationLevel == other.indentationLevel;
 }
 
