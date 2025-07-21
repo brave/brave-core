@@ -21,7 +21,7 @@ bool BraveDownloadCommands::IsCommandEnabled(Command command) const {
 }
 
 void BraveDownloadCommands::ExecuteCommand(Command command) {
-  if (model_) {
+  if (!model_) {
     return;
   }
 
