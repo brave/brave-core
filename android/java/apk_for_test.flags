@@ -993,3 +993,11 @@
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
 }
+
+-keep class org.chromium.components.minidump_uploader.util.HttpURLConnectionFactoryImpl {
+    <init>(...);
+}
+
+-keep class org.chromium.components.minidump_uploader.util.BraveHttpURLConnectionFactoryImpl {
+    <init>(...);
+}

@@ -1942,6 +1942,10 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/minidump_uploader/util/HttpURLConnectionFactoryImpl", // presubmit: ignore-long-line
+                        "org/chromium/components/minidump_uploader/util/BraveHttpURLConnectionFactoryImpl")); // presubmit: ignore-long-line
     }
 
     @Test
