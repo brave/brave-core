@@ -151,14 +151,12 @@ struct SubmitReportView: View {
     let isBlockScriptsEnabled =
       (tab?.braveShieldsHelper?.isShieldExpected(
         for: tab?.visibleURL,
-        isPrivate: isPrivateBrowsing,
         shield: .noScript,
         considerAllShieldsOption: false
       ) ?? false)
     let isBlockFingerprintingEnabled =
       (tab?.braveShieldsHelper?.isShieldExpected(
         for: tab?.visibleURL,
-        isPrivate: isPrivateBrowsing,
         shield: .fpProtection,
         considerAllShieldsOption: false
       ) ?? true)
@@ -171,14 +169,10 @@ struct SubmitReportView: View {
         braveVersion: version,
         reportUrl: url.absoluteString,
         shieldsEnabled: String(
-          tab?.braveShieldsHelper?.isBraveShieldsEnabled(
-            for: tab?.visibleURL,
-            isPrivate: isPrivateBrowsing
-          ) ?? true
+          tab?.braveShieldsHelper?.isBraveShieldsEnabled(for: tab?.visibleURL) ?? true
         ),
         adBlockSetting: (tab?.braveShieldsHelper?.shieldLevel(
           for: tab?.visibleURL,
-          isPrivate: isPrivateBrowsing,
           considerAllShieldsOption: false
         ) ?? .standard).reportLabel,
         fpBlockSetting: isBlockFingerprintingEnabled

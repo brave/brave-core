@@ -26,24 +26,20 @@ public class BraveShieldsTabHelper {
     self.tab = tab
   }
 
-  public func isBraveShieldsEnabled(for url: URL?, isPrivate: Bool) -> Bool {
-    guard let url = url ?? tab?.visibleURL else { return false }
+  public func isBraveShieldsEnabled(for url: URL?) -> Bool {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return false }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     return !domain.areAllShieldsOff
   }
 
-  public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?, isPrivate: Bool) {
-    guard let url = url ?? tab?.visibleURL else { return }
+  public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?) {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_allOff = NSNumber(booleanLiteral: !isEnabled)
   }
 
-  public func shieldLevel(
-    for url: URL?,
-    isPrivate: Bool,
-    considerAllShieldsOption: Bool
-  ) -> ShieldLevel {
-    guard let url = url ?? tab?.visibleURL else { return .disabled }
+  public func shieldLevel(for url: URL?, considerAllShieldsOption: Bool) -> ShieldLevel {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .disabled }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     if considerAllShieldsOption {
       return domain.globalBlockAdsAndTrackingLevel
@@ -52,24 +48,20 @@ public class BraveShieldsTabHelper {
     }
   }
 
-  public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?, isPrivate: Bool) {
-    guard let url = url ?? tab?.visibleURL else { return }
+  public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.domainBlockAdsAndTrackingLevel = shieldLevel
   }
 
-  public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?, isPrivate: Bool) {
-    guard let url = url ?? tab?.visibleURL else { return }
+  public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_noScript = NSNumber(booleanLiteral: isEnabled)
   }
 
-  public func setBlockFingerprintingEnabled(
-    _ isEnabled: Bool,
-    for url: URL?,
-    isPrivate: Bool
-  ) {
-    guard let url = url ?? tab?.visibleURL else { return }
+  public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_fpProtection = NSNumber(booleanLiteral: isEnabled)
   }
@@ -77,30 +69,27 @@ public class BraveShieldsTabHelper {
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
   public func isShieldExpected(
     for url: URL?,
-    isPrivate: Bool,
     shield: BraveShield,
     considerAllShieldsOption: Bool
   ) -> Bool {
-    guard let url = url ?? tab?.visibleURL else { return false }
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return false }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     return domain.isShieldExpected(shield, considerAllShieldsOption: considerAllShieldsOption)
   }
 
   public func shredLevel(
-    for url: URL?,
-    isPrivate: Bool
+    for url: URL?
   ) -> SiteShredLevel {
-    guard let url = url ?? tab?.visibleURL else { return .never }
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .never }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     return domain.shredLevel
   }
 
   public func setShredLevel(
     _ shredLevel: SiteShredLevel,
-    for url: URL?,
-    isPrivate: Bool
+    for url: URL?
   ) {
-    guard let url = url ?? tab?.visibleURL else { return }
+    guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shredLevel = shredLevel
   }

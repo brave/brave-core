@@ -300,10 +300,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarIsShieldsEnabled(_ topToolbar: TopToolbarView, for url: URL?) -> Bool {
     guard let url, let currentTab = self.tabManager.selectedTab else { return false }
-    return currentTab.braveShieldsHelper?.isBraveShieldsEnabled(
-      for: url,
-      isPrivate: currentTab.isPrivate
-    ) ?? false
+    return currentTab.braveShieldsHelper?.isBraveShieldsEnabled(for: url) ?? false
   }
 
   @MainActor private func submitValidURL(

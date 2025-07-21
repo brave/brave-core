@@ -775,7 +775,7 @@ class TabManager: NSObject {
     else { return }
     forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
     let shredLevel =
-      tab.braveShieldsHelper?.shredLevel(for: url, isPrivate: tab.isPrivate) ?? .never
+      tab.braveShieldsHelper?.shredLevel(for: url) ?? .never
 
     switch shredLevel {
     case .never:

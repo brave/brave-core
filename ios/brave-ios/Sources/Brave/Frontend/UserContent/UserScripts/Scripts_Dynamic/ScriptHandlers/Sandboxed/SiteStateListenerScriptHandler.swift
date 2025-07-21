@@ -66,7 +66,6 @@ class SiteStateListenerScriptHandler: TabContentScript {
           guard let braveShieldsHelper = tab.braveShieldsHelper,
             case let shieldLevel = braveShieldsHelper.shieldLevel(
               for: pageData.mainFrameURL,
-              isPrivate: tab.isPrivate,
               considerAllShieldsOption: true
             ),
             shieldLevel.isEnabled,

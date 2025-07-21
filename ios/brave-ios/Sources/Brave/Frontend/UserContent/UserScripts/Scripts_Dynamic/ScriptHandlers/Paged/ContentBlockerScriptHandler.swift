@@ -79,8 +79,7 @@ extension ContentBlockerHelper: TabContentScript {
       dtos.forEach { dto in
         Task { @MainActor in
           guard let braveShieldsHelper = tab.braveShieldsHelper else { return }
-          if !braveShieldsHelper.isBraveShieldsEnabled(for: currentTabURL, isPrivate: tab.isPrivate)
-          {
+          if !braveShieldsHelper.isBraveShieldsEnabled(for: currentTabURL) {
             // if shields are disabled, can return early.
             return
           }
@@ -88,7 +87,6 @@ extension ContentBlockerHelper: TabContentScript {
           if dto.resourceType == .script
             && braveShieldsHelper.isShieldExpected(
               for: currentTabURL,
-              isPrivate: tab.isPrivate,
               shield: .noScript,
               considerAllShieldsOption: true
             )
@@ -105,14 +103,10 @@ extension ContentBlockerHelper: TabContentScript {
 
           let shieldLevel = braveShieldsHelper.shieldLevel(
             for: currentTabURL,
-            isPrivate: tab.isPrivate,
             considerAllShieldsOption: true
           )
           let genericTypes = AdBlockGroupsManager.shared.contentBlockerManager.validGenericTypes(
-            isShieldsEnabled: braveShieldsHelper.isBraveShieldsEnabled(
-              for: currentTabURL,
-              isPrivate: tab.isPrivate
-            ),
+            isShieldsEnabled: braveShieldsHelper.isBraveShieldsEnabled(for: currentTabURL),
             isAdBlockEnabled: shieldLevel.isEnabled
           )
 

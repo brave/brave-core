@@ -32,16 +32,10 @@ extension BraveShieldsTabHelper: TabPolicyDecider {
     else { return .allow }
     // Identify specific block lists that need to be applied to the requesting domain
     let isBraveShieldsEnabled =
-      tab.braveShieldsHelper?.isBraveShieldsEnabled(
-        for: mainDocumentURL,
-        isPrivate: tab.isPrivate
-      ) ?? true
+      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: mainDocumentURL) ?? true
     let shieldLevel =
-      tab.braveShieldsHelper?.shieldLevel(
-        for: mainDocumentURL,
-        isPrivate: tab.isPrivate,
-        considerAllShieldsOption: true
-      ) ?? .standard
+      tab.braveShieldsHelper?.shieldLevel(for: mainDocumentURL, considerAllShieldsOption: true)
+      ?? .standard
 
     // Load rule lists
     let ruleLists = await AdBlockGroupsManager.shared.ruleLists(

@@ -43,12 +43,10 @@ extension BrowserViewController: TabPolicyDecider {
           isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: pageData.mainFrameURL,
-            isPrivate: tab.isPrivate,
             considerAllShieldsOption: true
           ).isEnabled ?? true,
           isBlockFingerprintingEnabled: tab.braveShieldsHelper?.isShieldExpected(
             for: pageData.mainFrameURL,
-            isPrivate: tab.isPrivate,
             shield: .fpProtection,
             considerAllShieldsOption: true
           ) ?? true
@@ -273,13 +271,11 @@ extension BrowserViewController: TabPolicyDecider {
       let isAdBlockEnabled =
         tab.braveShieldsHelper?.shieldLevel(
           for: mainDocumentURL,
-          isPrivate: tab.isPrivate,
           considerAllShieldsOption: true
         ).isEnabled ?? true
       let isBlockFingerprintingEnabled =
         tab.braveShieldsHelper?.isShieldExpected(
           for: mainDocumentURL,
-          isPrivate: tab.isPrivate,
           shield: .noScript,
           considerAllShieldsOption: true
         ) ?? true
@@ -357,7 +353,6 @@ extension BrowserViewController: TabPolicyDecider {
         let isAdBlockModeAggressive =
           tab.braveShieldsHelper?.shieldLevel(
             for: requestURL,
-            isPrivate: tab.isPrivate,
             considerAllShieldsOption: true
           ).isAggressive ?? true
 
@@ -446,7 +441,6 @@ extension BrowserViewController: TabPolicyDecider {
         let shieldLevel =
           tab.braveShieldsHelper?.shieldLevel(
             for: requestURL,
-            isPrivate: tab.isPrivate,
             considerAllShieldsOption: true
           ) ?? .standard
 

@@ -16,32 +16,20 @@ class ShieldsSettingsViewModel: ObservableObject {
   @Published var shieldsEnabled: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setBraveShieldsEnabled(
-        shieldsEnabled,
-        for: tab.visibleURL,
-        isPrivate: tab.isPrivate
-      )
+      tab.braveShieldsHelper?.setBraveShieldsEnabled(shieldsEnabled, for: tab.visibleURL)
       updateState()
     }
   }
   @Published var blockAdsAndTrackingLevel: ShieldLevel {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setShieldLevel(
-        blockAdsAndTrackingLevel,
-        for: tab.visibleURL,
-        isPrivate: tab.isPrivate
-      )
+      tab.braveShieldsHelper?.setShieldLevel(blockAdsAndTrackingLevel, for: tab.visibleURL)
     }
   }
   @Published var blockScripts: Bool {
     didSet {
       guard !isUpdatingState else { return }
-      tab.braveShieldsHelper?.setBlockScriptsEnabled(
-        blockScripts,
-        for: tab.visibleURL,
-        isPrivate: tab.isPrivate
-      )
+      tab.braveShieldsHelper?.setBlockScriptsEnabled(blockScripts, for: tab.visibleURL)
     }
   }
   @Published var fingerprintProtection: Bool {
@@ -49,8 +37,7 @@ class ShieldsSettingsViewModel: ObservableObject {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setBlockFingerprintingEnabled(
         fingerprintProtection,
-        for: tab.visibleURL,
-        isPrivate: tab.isPrivate
+        for: tab.visibleURL
       )
     }
   }
@@ -65,25 +52,20 @@ class ShieldsSettingsViewModel: ObservableObject {
   init(tab: some TabState) {
     self.tab = tab
     self.shieldsEnabled =
-      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL, isPrivate: tab.isPrivate)
+      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
       ?? true
     self.blockAdsAndTrackingLevel =
-      tab.braveShieldsHelper?.shieldLevel(
-        for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
-        considerAllShieldsOption: true
-      ) ?? .standard
+      tab.braveShieldsHelper?.shieldLevel(for: tab.visibleURL, considerAllShieldsOption: true)
+      ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
         for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
         shield: .noScript,
         considerAllShieldsOption: true
       ) ?? false
     self.fingerprintProtection =
       tab.braveShieldsHelper?.isShieldExpected(
         for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true
@@ -98,26 +80,21 @@ class ShieldsSettingsViewModel: ObservableObject {
   private func updateState() {
     isUpdatingState = true
     defer { isUpdatingState = false }
-    shieldsEnabled =
-      tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL, isPrivate: tab.isPrivate)
-      ?? true
+    shieldsEnabled = tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL) ?? true
     blockAdsAndTrackingLevel =
       tab.braveShieldsHelper?.shieldLevel(
         for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
         considerAllShieldsOption: false
       ) ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
         for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
         shield: .noScript,
         considerAllShieldsOption: true
       ) ?? false
     self.fingerprintProtection =
       tab.braveShieldsHelper?.isShieldExpected(
         for: tab.visibleURL,
-        isPrivate: tab.isPrivate,
         shield: .fpProtection,
         considerAllShieldsOption: true
       ) ?? true

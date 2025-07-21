@@ -55,7 +55,6 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: frameURL,
-            isPrivate: tab.isPrivate,
             considerAllShieldsOption: true
           ).isEnabled ?? true
         )

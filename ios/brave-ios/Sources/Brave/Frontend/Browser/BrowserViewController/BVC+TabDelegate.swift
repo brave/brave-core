@@ -339,7 +339,6 @@ extension BrowserViewController: TabDelegate {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
     return tab.braveShieldsHelper?.isShieldExpected(
       for: documentTargetURL,
-      isPrivate: tab.isPrivate,
       shield: .noScript,
       considerAllShieldsOption: true
     ) ?? false

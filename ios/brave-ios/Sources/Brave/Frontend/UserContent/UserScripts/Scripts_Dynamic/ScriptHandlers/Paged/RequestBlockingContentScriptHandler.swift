@@ -73,11 +73,8 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
       Task { @MainActor in
         let shieldLevel =
-          tab.braveShieldsHelper?.shieldLevel(
-            for: currentTabURL,
-            isPrivate: tab.isPrivate,
-            considerAllShieldsOption: true
-          ) ?? .standard
+          tab.braveShieldsHelper?.shieldLevel(for: currentTabURL, considerAllShieldsOption: true)
+          ?? .standard
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
           sourceURL: windowOriginURL,
