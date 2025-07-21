@@ -1546,7 +1546,7 @@ ConversationHandler::GetStateForConversationEntries() {
 
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
-  // TODO: test
+
   entries_state->is_generating =
       IsRequestInProgress() || is_tool_use_in_progress_;
   entries_state->is_leo_model = is_leo_model;

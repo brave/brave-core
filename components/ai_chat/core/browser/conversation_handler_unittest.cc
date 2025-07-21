@@ -16,6 +16,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -124,6 +125,37 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
+};
+
+class MockUntrustedConversationHandlerClient
+    : public mojom::UntrustedConversationUI {
+ public:
+  explicit MockUntrustedConversationHandlerClient(ConversationHandler* driver) {
+    driver->BindUntrustedConversationUI(
+        conversation_ui_receiver_.BindNewPipeAndPassRemote(),
+        base::DoNothing());
+  }
+
+  ~MockUntrustedConversationHandlerClient() override = default;
+
+  void Disconnect() { conversation_ui_receiver_.reset(); }
+
+  MOCK_METHOD(void,
+              OnConversationHistoryUpdate,
+              (mojom::ConversationTurnPtr),
+              (override));
+  MOCK_METHOD(void,
+              OnEntriesUIStateChanged,
+              (mojom::ConversationEntriesStatePtr),
+              (override));
+  MOCK_METHOD(void,
+              AssociatedContentChanged,
+              (std::vector<mojom::AssociatedContentPtr>),
+              (override));
+
+ private:
+  mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{
+      this};
 };
 
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
@@ -303,6 +335,10 @@ class ConversationHandlerUnitTest_NoAssociatedContent
     has_associated_content_ = false;
   }
 };
+
+MATCHER_P(ConversationEntriesStateIsGenerating, expected_is_generating, "") {
+  return arg->is_generating == expected_is_generating;
+}
 
 MATCHER_P(LastTurnHasText, expected_text, "") {
   if (arg.empty()) {
@@ -2587,9 +2623,12 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       conversation_handler_->GetEngineForTesting());
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
 
   base::RunLoop run_loop;
   testing::Sequence seq;
+  bool second_generation_started = false;
 
   // First call to engine mocks the use tool requests
   EXPECT_CALL(*engine, GenerateAssistantResponse)
@@ -2613,11 +2652,28 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                         std::nullopt)));
               })));
 
+  // We will still be "in progress" whilst any automatic tools are being called
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(
+                                    ConversationEntriesStateIsGenerating(true)))
+      .Times(testing::AtLeast(1));
+
+  // Only the weather_tool UseTool should be called
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Weather in New York: 72°F")));
+        std::move(callback).Run(std::move(result));
+      }));
+
   // Second call to engine receives the tool output and provides the next
   // assistant response iteration.
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
+          testing::InvokeWithoutArgs(
+              [&]() { second_generation_started = true; }),
           testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -2636,13 +2692,13 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                 run_loop.Quit();
               })));
 
-  // Only the weather_tool UseTool should be called
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
-      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
-        std::vector<mojom::ContentBlockPtr> result;
-        result.push_back(mojom::ContentBlock::NewTextContentBlock(
-            mojom::TextContentBlock::New("Weather in New York: 72°F")));
-        std::move(callback).Run(std::move(result));
+  // We should see the final "generation in progress" change to false
+  EXPECT_CALL(
+      untrusted_client,
+      OnEntriesUIStateChanged(ConversationEntriesStateIsGenerating(false)))
+      .WillRepeatedly(testing::InvokeWithoutArgs([&]() {
+        // This should only be called after the second generation has started
+        EXPECT_TRUE(second_generation_started);
       }));
 
   EXPECT_CALL(*tool2_ptr, UseTool).Times(0);
