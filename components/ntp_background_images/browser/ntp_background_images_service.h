@@ -187,12 +187,8 @@ class NTPBackgroundImagesService {
                                        const std::string& json_string);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
-  void OnMappingTableComponentReady(const base::FilePath& installed_dir);
-  void OnPreferenceChanged(const std::string& pref_name);
   void OnVariationsCountryPrefChanged();
-  void OnGetMappingTableData(const std::string& json_string);
 
-  std::string GetReferralPromoCode() const;
   bool IsValidSuperReferralComponentInfo(
       const base::Value::Dict& component_info) const;
 
@@ -200,12 +196,8 @@ class NTPBackgroundImagesService {
   void CheckSponsoredImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
-  virtual void CheckSuperReferralComponent();
   virtual void RegisterBackgroundImagesComponent();
   virtual void RegisterSponsoredImagesComponent();
-  virtual void RegisterSuperReferralComponent();
-  virtual void DownloadSuperReferralMappingTable();
-  virtual void MonitorReferralPromoCodeChange();
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 

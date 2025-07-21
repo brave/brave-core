@@ -361,34 +361,14 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
  public:
   using NTPBackgroundImagesService::NTPBackgroundImagesService;
 
-  void CheckSuperReferralComponent() override {
-    NTPBackgroundImagesService::CheckSuperReferralComponent();
-    checked_super_referral_component = true;
-  }
-
   void RegisterSponsoredImagesComponent() override {
     NTPBackgroundImagesService::RegisterSponsoredImagesComponent();
     sponsored_images_component_started = true;
   }
 
-  void RegisterSuperReferralComponent() override {
-    NTPBackgroundImagesService::RegisterSuperReferralComponent();
-    super_referral_component_started = true;
-  }
-
   void RegisterBackgroundImagesComponent() override {
     NTPBackgroundImagesService::RegisterBackgroundImagesComponent();
     background_images_component_started = true;
-  }
-
-  void DownloadSuperReferralMappingTable() override {
-    NTPBackgroundImagesService::DownloadSuperReferralMappingTable();
-    mapping_table_requested = true;
-  }
-
-  void MonitorReferralPromoCodeChange() override {
-    NTPBackgroundImagesService::MonitorReferralPromoCodeChange();
-    referral_promo_code_change_monitored = true;
   }
 
   void MarkThisInstallIsNotSuperReferralForever() override {
@@ -401,12 +381,8 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
     unregistered_super_referral_component = true;
   }
 
-  bool super_referral_component_started = false;
-  bool checked_super_referral_component = false;
   bool sponsored_images_component_started = false;
   bool background_images_component_started = false;
-  bool mapping_table_requested = false;
-  bool referral_promo_code_change_monitored = false;
   bool marked_this_install_is_not_super_referral_forever = false;
   bool unregistered_super_referral_component = false;
 };
@@ -786,27 +762,9 @@ TEST_F(NTPBackgroundImagesServiceTest, TestOnNonReferralService) {
   Init();
 
   EXPECT_TRUE(service_->sponsored_images_component_started);
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
-  EXPECT_FALSE(service_->super_referral_component_started);
 }
 
 #else
-
-constexpr char kTestMappingTable[] = R"(
-    {
-        "schemaVersion": 1,
-        "BRV003": {
-          "publicKey": "ABCDEFGHIJKLMN",
-          "componentID": "abcdefghijklmn",
-          "themeName": "Alphabet software"
-        },
-        "BRV004": {
-          "publicKey": "1234567890",
-          "componentID": "0123456789",
-          "themeName": "Numeric software"
-        }
-    })";
 
 // Super referral wallpaper json data.
 constexpr char kTestSuperReferral[] = R"(
@@ -889,10 +847,6 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
 
   // Initially, only SI is started and pref is monitored to get referral code.
   EXPECT_TRUE(service_->sponsored_images_component_started);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
-  EXPECT_FALSE(service_->checked_super_referral_component);
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->super_referral_component_started);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 
   observer_.on_super_referral_ended = false;
@@ -915,10 +869,6 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
   // This will not monitor prefs change because we already marked this is not
   // the super referral.
   EXPECT_TRUE(service_->sponsored_images_component_started);
-  EXPECT_FALSE(service_->checked_super_referral_component);
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
-  EXPECT_FALSE(service_->super_referral_component_started);
 }
 
 // Test non default referral code but it's not super referral.
@@ -927,16 +877,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   Init();
 
   EXPECT_TRUE(service_->sponsored_images_component_started);
-  EXPECT_FALSE(service_->checked_super_referral_component);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->super_referral_component_started);
 
   pref_service_.SetString(kReferralPromoCode, "BRV002");
 
-  // Mapping table is not requested because super referral functionality is
-  // disabled.
-  EXPECT_FALSE(service_->mapping_table_requested);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 
   // Initialize NTP SI data.
@@ -946,14 +889,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   EXPECT_TRUE(service_->GetSponsoredImagesData(/*super_referral=*/false,
                                                /*supports_rich_media=*/true));
 
-  observer_.on_super_referral_ended = false;
-  service_->OnGetMappingTableData(kTestMappingTable);
-  // We should notify OnSuperReferralCampaignDidEnd() if this is not NTP SR.
-  EXPECT_TRUE(observer_.on_super_referral_ended);
-
-  // If it's not super-referral, we mark this install is not a valid SR.
-  EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever);
-  EXPECT_FALSE(service_->super_referral_component_started);
+  // Don't mark this install is not a valid SR because super referral
+  // functionality is disabled.
+  EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
@@ -963,10 +901,6 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   Init();
 
   EXPECT_TRUE(service_->sponsored_images_component_started);
-  EXPECT_FALSE(service_->checked_super_referral_component);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->super_referral_component_started);
 
   EXPECT_THAT(
       pref_service_.GetString(prefs::kNewTabPageCachedSuperReferralCode),
@@ -975,20 +909,16 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
       prefs::kNewTabPageGetInitialSuperReferralComponentInProgress));
   pref_service_.SetString(kReferralPromoCode, "BRV003");
 
-  // Mapping table is requested because it's not a default code.
-  EXPECT_FALSE(service_->mapping_table_requested);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 
   EXPECT_FALSE(
       service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)));
-  service_->OnGetMappingTableData(kTestMappingTable);
   EXPECT_FALSE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSuperReferralComponentInProgress));
-  EXPECT_EQ("BRV003",
+  // Empty string because super referral functionality is disabled.
+  EXPECT_EQ("",
             pref_service_.GetString(prefs::kNewTabPageCachedSuperReferralCode));
-  // This is super referral code. So, start SR component.
-  EXPECT_TRUE(service_->super_referral_component_started);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 
   EXPECT_THAT(pref_service_.GetString(
@@ -1003,8 +933,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   const NTPSponsoredImagesData* const data =
       service_->GetSponsoredImagesData(/*super_referral=*/true,
                                        /*supports_rich_media=*/true);
-  EXPECT_TRUE(service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_FALSE(
+      service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_FALSE(data);
   EXPECT_THAT(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData),
@@ -1071,8 +1002,6 @@ TEST_F(NTPBackgroundImagesServiceTest,
       pref_service_
           .FindPreference(prefs::kNewTabPageCachedSuperReferralComponentInfo)
           ->IsDefaultValue());
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
 }
 
 TEST_F(NTPBackgroundImagesServiceTest,
@@ -1085,11 +1014,6 @@ TEST_F(NTPBackgroundImagesServiceTest,
   pref_service_.SetString(kReferralPromoCode, "BRV003");
 
   Init();
-
-  // In this case, directly request mapping table w/o monitoring promoCode pref
-  // changing.
-  EXPECT_FALSE(service_->mapping_table_requested);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored);
 }
 
 #endif  // OS_LINUX
