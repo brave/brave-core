@@ -1288,6 +1288,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "serviceWorkerSize",
       l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   // We add strings regardless of the FeatureFlag state to prevent crash

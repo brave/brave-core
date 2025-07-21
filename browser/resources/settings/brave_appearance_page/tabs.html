@@ -31,6 +31,13 @@
       pref="{{prefs.brave.tabs.vertical_tabs_show_scrollbar}}"
       label="$i18n{appearanceSettingsTabsVerticalTabShowScrollbar}">
     </settings-checkbox>
+    <template is="dom-if" if="[[isTreeTabsFlagEnabled()]]">
+      <settings-checkbox
+        class="list-item"
+        pref="{{prefs.brave.tabs.tree_tabs_enabled}}"
+        label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_USE_TREE_TABS}">
+      </settings-checkbox>
+    </template>
     <settings-radio-group
     class="list-item"
     pref="{{prefs.brave.tabs.vertical_tabs_on_right}}"
