@@ -457,16 +457,6 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
 }
 
-std::string_view GetUnstoppableDomainsProxyReaderContractAddress(
-    std::string_view chain_id) {
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(
-          chain_id_lower)) {
-    return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id_lower);
-  }
-  return "";
-}
-
 std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);

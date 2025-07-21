@@ -12,21 +12,21 @@
 
 namespace brave_wallet::eth {
 
-std::string eth_chainId() {
+std::string GetChainIdPayload() {
   return GetJsonRpcString("eth_chainId");
 }
 
-std::string eth_gasPrice() {
+std::string GetGasPricePayload() {
   return GetJsonRpcString("eth_gasPrice");
 }
 
-std::string eth_blockNumber() {
+std::string GetBlockNumberPayload() {
   return GetJsonRpcString("eth_blockNumber");
 }
 
-std::string eth_feeHistory(const std::string& num_blocks,
-                           const std::string& head,
-                           const std::vector<double>& reward_percentiles) {
+std::string GetFeeHistoryPayload(std::string_view num_blocks,
+                                 std::string_view head,
+                                 base::span<const double> reward_percentiles) {
   base::Value::List percentile_values;
   for (double reward_percentile : reward_percentiles) {
     percentile_values.Append(base::Value(reward_percentile));
@@ -41,22 +41,22 @@ std::string eth_feeHistory(const std::string& num_blocks,
   return GetJSON(dictionary);
 }
 
-std::string eth_getBalance(const std::string& address,
-                           const std::string& quantity_tag) {
+std::string GetBalancePayload(std::string_view address,
+                              std::string_view quantity_tag) {
   return GetJsonRpcString("eth_getBalance", address, quantity_tag);
 }
 
-std::string eth_getTransactionCount(const std::string& address,
-                                    const std::string& quantity_tag) {
+std::string GetTransactionCountPayload(std::string_view address,
+                                       std::string_view quantity_tag) {
   return GetJsonRpcString("eth_getTransactionCount", address, quantity_tag);
 }
 
-std::string eth_getCode(const std::string& address,
-                        const std::string& quantity_tag) {
+std::string GetCodePayload(std::string_view address,
+                           std::string_view quantity_tag) {
   return GetJsonRpcString("eth_getCode", address, quantity_tag);
 }
 
-std::string eth_sendRawTransaction(const std::string& raw_transaction) {
+std::string GetSendRawTransactionPayload(std::string_view raw_transaction) {
   base::Value::List params;
   params.Append(base::Value(raw_transaction));
   base::Value::Dict dictionary =
@@ -64,21 +64,31 @@ std::string eth_sendRawTransaction(const std::string& raw_transaction) {
   return GetJSON(dictionary);
 }
 
-std::string eth_call(const std::string& from_address,
-                     const std::string& to_address,
-                     const std::string& gas,
-                     const std::string& gas_price,
-                     const std::string& val,
-                     const std::string& data,
-                     const std::string& quantity_tag) {
-  base::Value::List params;
+std::string GetCallPayload(std::optional<std::string_view> from_address,
+                           std::string_view to_address,
+                           std::optional<std::string_view> gas,
+                           std::optional<std::string_view> gas_price,
+                           std::optional<std::string_view> value,
+                           std::string_view data,
+                           std::string_view quantity_tag) {
   base::Value::Dict transaction;
-  AddKeyIfNotEmpty(&transaction, "data", data);
-  AddKeyIfNotEmpty(&transaction, "from", from_address);
-  AddKeyIfNotEmpty(&transaction, "gas", gas);
-  AddKeyIfNotEmpty(&transaction, "gasPrice", gas_price);
-  transaction.Set("to", base::Value(to_address));
-  AddKeyIfNotEmpty(&transaction, "value", val);
+  if (from_address.has_value()) {
+    transaction.Set("from", *from_address);
+  }
+  if (gas.has_value()) {
+    transaction.Set("gas", *gas);
+  }
+  if (gas_price.has_value()) {
+    transaction.Set("gasPrice", *gas_price);
+  }
+  if (value.has_value()) {
+    transaction.Set("value", *value);
+  }
+
+  transaction.Set("data", data);
+  transaction.Set("to", to_address);
+
+  base::Value::List params;
   params.Append(std::move(transaction));
   params.Append(std::move(quantity_tag));
   base::Value::Dict dictionary =
@@ -86,16 +96,18 @@ std::string eth_call(const std::string& from_address,
   return GetJSON(dictionary);
 }
 
-std::string eth_call(const std::string& to_address, const std::string& data) {
-  return eth::eth_call("", to_address, "", "", "", data, "latest");
+std::string GetCallPayload(std::string_view to_address, std::string_view data) {
+  return GetCallPayload(/*from_address=*/std::nullopt, to_address,
+                        /*gas=*/std::nullopt, /*gas_price=*/std::nullopt,
+                        /*value=*/std::nullopt, data, "latest");
 }
 
-std::string eth_estimateGas(const std::string& from_address,
-                            const std::string& to_address,
-                            const std::string& gas,
-                            const std::string& gas_price,
-                            const std::string& val,
-                            const std::string& data) {
+std::string GetEstimateGasPayload(std::string_view from_address,
+                                  std::string_view to_address,
+                                  std::string_view gas,
+                                  std::string_view gas_price,
+                                  std::string_view val,
+                                  std::string_view data) {
   base::Value::List params;
   base::Value::Dict transaction;
   AddKeyIfNotEmpty(&transaction, "data", data);
@@ -110,7 +122,7 @@ std::string eth_estimateGas(const std::string& from_address,
   return GetJSON(dictionary);
 }
 
-std::string eth_getBlockByHash(const std::string& block_hash,
+std::string eth_getBlockByHash(std::string_view block_hash,
                                bool full_transaction_object) {
   base::Value::List params;
   params.Append(base::Value(block_hash));
@@ -120,8 +132,8 @@ std::string eth_getBlockByHash(const std::string& block_hash,
   return GetJSON(dictionary);
 }
 
-std::string eth_getBlockByNumber(const std::string& quantity_tag,
-                                 bool full_transaction_object) {
+std::string GetBlockByNumberPayload(std::string_view quantity_tag,
+                                    bool full_transaction_object) {
   base::Value::List params;
   params.Append(base::Value(quantity_tag));
   params.Append(base::Value(full_transaction_object));
@@ -130,11 +142,11 @@ std::string eth_getBlockByNumber(const std::string& quantity_tag,
   return GetJSON(dictionary);
 }
 
-std::string eth_getTransactionReceipt(const std::string& transaction_hash) {
+std::string GetTransactionReceiptPayload(std::string_view transaction_hash) {
   return GetJsonRpcString("eth_getTransactionReceipt", transaction_hash);
 }
 
-std::string eth_getLogs(base::Value::Dict filter_options) {
+std::string GetLogsPayload(base::Value::Dict filter_options) {
   base::Value::List params;
   params.Append(std::move(filter_options));
   base::Value::Dict dictionary =
