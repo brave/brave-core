@@ -232,6 +232,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     auto extension =
         extensions::ExtensionBuilder("test")
             .SetID(extensions_mv2::kCwsUBlockId)
+            .SetVersion("1.65.0")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
             .Build();
@@ -253,6 +254,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
                               profile()
                                   ->GetPath()
                                   .AppendASCII("ExtensionsMV2Backup")
+                                  .AppendASCII(extensions_mv2::kCwsUBlockId)
                                   .AppendASCII("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
           profile()->GetPath().Append(
@@ -260,6 +262,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
           profile()
               ->GetPath()
               .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII(extensions_mv2::kCwsUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
       EXPECT_FALSE(base::PathExists(
@@ -272,6 +275,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     auto extension =
         extensions::ExtensionBuilder("test")
             .SetID(extensions_mv2::kUBlockId)
+            .SetVersion("1.65.0")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
             .Build();
@@ -284,25 +288,30 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     if (GetParam().import_enabled || !GetParam().backup_enabled) {
       // Settings are moved from backup to the extension prefs with the
       // brave-hosted id.
-      EXPECT_TRUE(base::IsDirectoryEmpty(profile()
-                                             ->GetPath()
-                                             .AppendASCII("ExtensionsMV2Backup")
-                                             .AppendASCII("IndexedDB")));
+      EXPECT_TRUE(
+          base::IsDirectoryEmpty(profile()
+                                     ->GetPath()
+                                     .AppendASCII("ExtensionsMV2Backup")
+                                     .AppendASCII(extensions_mv2::kCwsUBlockId)
+                                     .AppendASCII("IndexedDB")));
       EXPECT_TRUE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
               .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII(extensions_mv2::kCwsUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
       EXPECT_FALSE(
           base::IsDirectoryEmpty(profile()
                                      ->GetPath()
                                      .AppendASCII("ExtensionsMV2Backup")
+                                     .AppendASCII(extensions_mv2::kCwsUBlockId)
                                      .AppendASCII("IndexedDB")));
       EXPECT_FALSE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
               .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII(extensions_mv2::kCwsUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     }
 
@@ -339,6 +348,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
                               profile()
                                   ->GetPath()
                                   .AppendASCII("ExtensionsMV2Backup")
+                                  .AppendASCII(extensions_mv2::kCwsUBlockId)
                                   .AppendASCII("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
           profile()->GetPath().Append(
@@ -346,6 +356,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
           profile()
               ->GetPath()
               .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII(extensions_mv2::kCwsUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     }
   }

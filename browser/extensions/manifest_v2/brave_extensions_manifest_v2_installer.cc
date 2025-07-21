@@ -173,11 +173,23 @@ void ExtensionManifestV2Installer::BeginInstall() {
       4096);
 }
 
+void ExtensionManifestV2Installer::OnUpdateManifestDownloaded(
+    base::OnceCallback<bool(const base::DictValue&)> on_update_manifest) {
+  on_update_manifest_ = std::move(on_update_manifest);
+}
+
 void ExtensionManifestV2Installer::OnUpdateManifestResponse(
     std::optional<std::string> body) {
   if (body) {
     auto update_manifest = base::JSONReader::ReadDict(body.value());
     if (update_manifest) {
+      if (on_update_manifest_) {
+        if (!std::move(on_update_manifest_).Run(*update_manifest)) {
+          return std::move(callback_).Run(
+              false, "Cancelled by manifest handler.",
+              extensions::webstore_install::Result::INVALID_MANIFEST);
+        }
+      }
       const GURL crx_url = GetCrxDownloadUrl(*update_manifest, extension_id_);
       if (crx_url.is_valid() && !crx_url.is_empty()) {
         return DownloadCrx(crx_url);

@@ -56,6 +56,7 @@ base::FilePath GetLocalSettingsForImport(
   }
   const auto backup =
       profile_dir.Append(kExtensionMV2BackupDir)
+          .AppendASCII(*cws_extensions_id)
           .Append(extensions::kLocalExtensionSettingsDirectoryName)
           .AppendASCII(*cws_extensions_id);
   return !base::IsDirectoryEmpty(backup) ? backup : base::FilePath();
@@ -80,9 +81,11 @@ base::FileEnumerator GetIndexedSettingsForImport(
 
   const auto pattern = ASCIIToPathStringType(
       base::StrCat({"chrome-extension_", *cws_extension_id, "_*indexeddb*"}));
-  return base::FileEnumerator(
-      profile_dir.Append(kExtensionMV2BackupDir).Append(kIndexedDBDir), false,
-      base::FileEnumerator::DIRECTORIES, pattern);
+  return base::FileEnumerator(profile_dir.Append(kExtensionMV2BackupDir)
+                                  .AppendASCII(*cws_extension_id)
+                                  .Append(kIndexedDBDir),
+                              false, base::FileEnumerator::DIRECTORIES,
+                              pattern);
 }
 
 bool IsBackupAvailableFor(
@@ -93,6 +96,12 @@ bool IsBackupAvailableFor(
   const auto cws_extension_id =
       extensions_mv2::GetCwsExtensionId(brave_hosted_extension_id);
   if (!cws_extension_id) {
+    return false;
+  }
+
+  if (!base::PathExists(profile_dir.Append(kExtensionMV2BackupDir)
+                            .AppendASCII(*cws_extension_id)
+                            .AppendASCII("version"))) {
     return false;
   }
 
@@ -109,15 +118,35 @@ bool IsBackupAvailableFor(
   return false;
 }
 
-void BackupExtensionSettingsOnFileThread(
+base::Version GetBackupVersion(const extensions::ExtensionId& cws_extension_id,
+                               const base::FilePath& profile_dir) {
+  const auto version_path = profile_dir.Append(kExtensionMV2BackupDir)
+                                .AppendASCII(cws_extension_id)
+                                .AppendASCII("version");
+  if (std::string content;
+      base::ReadFileToStringWithMaxSize(version_path, &content, 256)) {
+    return base::Version(content);
+  }
+  return base::Version();
+}
+
+base::Version BackupExtensionSettingsOnFileThread(
     const extensions::ExtensionId& cws_extension_id,
+    const base::Version& version,
     const base::FilePath& profile_dir) {
   CHECK(extensions_mv2::IsKnownCwsMV2Extension(cws_extension_id));
+
+  const auto backup_path =
+      profile_dir.Append(kExtensionMV2BackupDir).AppendASCII(cws_extension_id);
+
+  if (base::PathExists(backup_path.AppendASCII("version"))) {
+    // We already have backup for this extension.
+    return GetBackupVersion(cws_extension_id, profile_dir);
+  }
 
   const auto local_settings_path =
       profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
           .AppendASCII(cws_extension_id);
-  const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir);
   if (base::PathExists(local_settings_path)) {
     const auto local_settings_backup_path =
         backup_path.Append(extensions::kLocalExtensionSettingsDirectoryName);
@@ -136,6 +165,9 @@ void BackupExtensionSettingsOnFileThread(
         base::DeletePathRecursively(destination);
         base::CopyDirectory(path, destination, true);
       });
+
+  base::WriteFile(backup_path.AppendASCII("version"), version.GetString());
+  return version;
 }
 
 void ClearExtensionSettingsOnFileThread(
@@ -183,6 +215,36 @@ void ImportExtensionSettingsOnFileThread(
             ASCIIToPathStringType(brave_hosted_extension_id));
         base::Move(path, profile_dir.Append(kIndexedDBDir).Append(name));
       });
+}
+
+base::Version GetBraveHostedVersion(const base::Value::Dict& update_manifest) {
+  const auto* gupdate = update_manifest.FindDict("gupdate");
+  if (!gupdate) {
+    return base::Version();
+  }
+  const auto* app_list = gupdate->FindList("app");
+  if (!app_list) {
+    return base::Version();
+  }
+
+  for (const auto& appv : *app_list) {
+    if (!appv.is_dict()) {
+      continue;
+    }
+    const auto& app = appv.GetDict();
+
+    const auto* update_check = app.FindDict("updatecheck");
+    if (!update_check) {
+      break;
+    }
+    const auto* version = update_check->FindString("version");
+    if (!version) {
+      break;
+    }
+    return base::Version(*version);
+  }
+
+  return base::Version();
 }
 
 }  // namespace
@@ -260,17 +322,22 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
 
 void ExtensionsManifectV2Migrator::BackupExtensionSettings(
     const extensions::ExtensionId& cws_extension_id) {
-  extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
+  auto* prefs = extensions::ExtensionPrefs::Get(profile_);
+  const base::Version cws_extension_version(
+      prefs->GetVersionString(cws_extension_id));
+
+  extensions::GetExtensionFileTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&BackupExtensionSettingsOnFileThread, cws_extension_id,
-                     profile_->GetPath()),
+                     cws_extension_version, profile_->GetPath()),
       base::BindOnce(&ExtensionsManifectV2Migrator::OnBackupSettingsCompleted,
                      weak_factory_.GetWeakPtr(), cws_extension_id));
 }
 
 void ExtensionsManifectV2Migrator::OnBackupSettingsCompleted(
-    const extensions::ExtensionId& cws_extension_id) {
-  if (!features::IsExtensionReplacementEnabled()) {
+    const extensions::ExtensionId& cws_extension_id,
+    const base::Version& backup_version) {
+  if (!features::IsExtensionReplacementEnabled() || !backup_version.IsValid()) {
     return;
   }
   const auto brave_hosted_extesnion_id =
@@ -289,6 +356,24 @@ void ExtensionsManifectV2Migrator::OnBackupSettingsCompleted(
       *brave_hosted_extesnion_id, profile_, profile_->GetURLLoaderFactory(),
       base::BindOnce(&ExtensionsManifectV2Migrator::OnSilentInstall,
                      weak_factory_.GetWeakPtr(), *brave_hosted_extesnion_id));
+
+  auto check_version = [](const base::Version& cws_version,
+                          const base::DictValue& manifest) {
+    const auto brave_hosted_version = GetBraveHostedVersion(manifest);
+    if (brave_hosted_version.IsValid()) {
+      if (cws_version > brave_hosted_version) {
+        // CWS extension is newer than brave-hosted, cancel.
+        return false;
+      }
+      // Brave-hosted extension is newer, so it can load an old settings
+      // as it does while updating.
+      return true;
+    }
+    return false;
+  };
+
+  installer->OnUpdateManifestDownloaded(
+      base::BindOnce(std::move(check_version), backup_version));
   installer->BeginInstall();
   silent_installers_.push_back(std::move(installer));
 }

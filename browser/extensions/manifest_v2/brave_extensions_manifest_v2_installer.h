@@ -47,6 +47,8 @@ class ExtensionManifestV2Installer {
   const extensions::ExtensionId& extension_id() const { return extension_id_; }
 
   void BeginInstall();
+  void OnUpdateManifestDownloaded(
+      base::OnceCallback<bool(const base::DictValue&)> on_update_manifest);
 
  private:
   ExtensionManifestV2Installer(
@@ -70,6 +72,7 @@ class ExtensionManifestV2Installer {
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   scoped_refptr<extensions::CrxInstaller> crx_installer_;
   bool silent_ = false;
+  base::OnceCallback<bool(const base::DictValue&)> on_update_manifest_;
   base::WeakPtrFactory<ExtensionManifestV2Installer> weak_factory_{this};
 };
 

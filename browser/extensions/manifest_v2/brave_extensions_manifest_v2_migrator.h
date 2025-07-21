@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
+#include "base/version.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/browser/extension_prefs_observer.h"
@@ -54,7 +55,8 @@ class ExtensionsManifectV2Migrator
 
   void BackupExtensionSettings(const extensions::ExtensionId& cws_extension_id);
   void OnBackupSettingsCompleted(
-      const extensions::ExtensionId& cws_extension_id);
+      const extensions::ExtensionId& cws_extension_id,
+      const base::Version& version);
 
   void OnSilentInstall(const extensions::ExtensionId& extension_id,
                        bool success,

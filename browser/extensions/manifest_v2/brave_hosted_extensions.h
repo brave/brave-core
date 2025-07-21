@@ -22,7 +22,7 @@ inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
 inline constexpr char kCwsNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
 inline constexpr char kCwsUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
 inline constexpr char kCwsUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-inline constexpr char kCwsAdGuardId[] = "bgnkhhnnamicmpeenaelnjfhikgbkllg";
+inline constexpr char kCwsAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
 
 inline constexpr auto kBraveHosted =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
