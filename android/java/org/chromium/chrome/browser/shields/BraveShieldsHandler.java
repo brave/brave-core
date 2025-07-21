@@ -21,7 +21,6 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -259,7 +258,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             anchorView = mHardwareButtonMenuAnchor;
         }
 
-        ContextThemeWrapper wrapper = new ContextThemeWrapper(mContext, R.style.OverflowMenuThemeOverlay);
         Point pt = new Point();
         ((Activity)mContext).getWindowManager().getDefaultDisplay().getSize(pt);
         // Get the height and width of the display.
