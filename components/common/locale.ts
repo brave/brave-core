@@ -9,31 +9,18 @@ import * as React from 'react'
 /**
  * Gets the localized string
  * @param {string} key - translation identifier
- * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
  * @returns {string} - the localized string
  */
-export const getLocale = (
-  key: string,
-  replacements?: Record<string, string>
-) => {
+export const getLocale = (key: string) => {
   if (!key) {
     console.error('locale string requires a key!')
     return key
   }
 
-  let returnVal = loadTimeData.getString(key)
+  const returnVal = loadTimeData.getString(key)
   if (!returnVal) {
     console.error(`locale string not found for key: ${key}`)
     return key
-  }
-
-  if (replacements) {
-    for (let item in replacements) {
-      returnVal = returnVal.replace(
-        new RegExp('\\[\\[\\s*' + item + '\\s*\\]\\]'),
-        replacements[item].toString()
-      )
-    }
   }
 
   return returnVal
