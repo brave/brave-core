@@ -50,9 +50,6 @@ class NTPBackgroundImagesService {
     // Called when the sponsored content component is updated.
     virtual void OnSponsoredContentDidUpdate(const base::Value::Dict& data) {}
 
-    // Called when the super referral campaign ends.
-    virtual void OnSuperReferralCampaignDidEnd() {}
-
    protected:
     virtual ~Observer() = default;
   };
@@ -181,10 +178,8 @@ class NTPBackgroundImagesService {
                            BasicSuperReferralDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
 
-  void OnSponsoredComponentReady(bool is_super_referral,
-                                 const base::FilePath& installed_dir);
-  void OnGetSponsoredComponentJsonData(bool is_super_referral,
-                                       const std::string& json_string);
+  void OnSponsoredComponentReady(const base::FilePath& installed_dir);
+  void OnGetSponsoredComponentJsonData(const std::string& json_string);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnVariationsCountryPrefChanged();
@@ -198,8 +193,6 @@ class NTPBackgroundImagesService {
   // virtual for test.
   virtual void RegisterBackgroundImagesComponent();
   virtual void RegisterSponsoredImagesComponent();
-  virtual void UnRegisterSuperReferralComponent();
-  virtual void MarkThisInstallIsNotSuperReferralForever();
 
   std::optional<base::Time> last_updated_at_;
 
@@ -223,21 +216,6 @@ class NTPBackgroundImagesService {
   std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
   std::unique_ptr<NTPSponsoredImagesData>
       sponsored_images_data_excluding_rich_media_;
-
-  base::FilePath super_referrals_installed_dir_;
-  std::unique_ptr<NTPSponsoredImagesData> super_referrals_images_data_;
-  // This is only used for registration during initial(first) SR component
-  // download. After initial download is done, it's cached to
-  // |kNewTabPageCachedSuperReferralComponentInfo|. At next launch, this cached
-  // info is used for registering SR component. Why component info is
-  // temporarily stored to |initial_super_referrals_component_info_| when
-  // mapping table is fetched instead of directly store it into that prefs? The
-  // reason is |kNewTabPageCachedSuperReferralComponentInfo| is used to check
-  // whether initial download is finished or not. Knowing initial download is
-  // done is important for super referral. If this is SR install, we should not
-  // show SI images until user chooses Brave default images. So, we should know
-  // the exact timing whether SR assets is ready to use or not.
-  std::optional<base::Value::Dict> initial_super_referrals_component_info_;
 
   base::ObserverList<Observer>::Unchecked observers_;
 

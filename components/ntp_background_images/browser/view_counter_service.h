@@ -181,7 +181,6 @@ class ViewCounterService : public KeyedService,
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
   void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
-  void OnSuperReferralCampaignDidEnd() override;
 
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 

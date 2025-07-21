@@ -280,9 +280,6 @@ class ViewCounterServiceTest : public testing::Test {
            base::FilePath(FILE_PATH_LITERAL("brave.png"))},
           {"BAT", "https://basicattentiontoken.org/", "bat.png",
            base::FilePath(FILE_PATH_LITERAL("bat.png"))}};
-
-      background_images_service_->super_referrals_images_data_ =
-          std::move(images_data);
       return;
     }
 
@@ -291,7 +288,7 @@ class ViewCounterServiceTest : public testing::Test {
 
   void MockMalformedSponsoredImagesData() {
     background_images_service_->OnGetSponsoredComponentJsonData(
-        /*is_super_referral=*/false, "MALFORMED JSON");
+        "MALFORMED JSON");
   }
 
   void MockBackgroundImagesData() {
@@ -586,7 +583,7 @@ TEST_F(ViewCounterServiceTest, ModelTest) {
   MockSponsoredImagesData(WallpaperType::kImage, /*super_referral=*/true);
   MockSponsoredImagesData(WallpaperType::kImage, /*super_referral=*/false);
   view_counter_service_->OnSponsoredImagesDataDidUpdate(
-      background_images_service_->super_referrals_images_data_.get());
+      background_images_service_->sponsored_images_data_.get());
   // SR wallpaper shouldn't be shown because super referral functionality is
   // disabled.
   EXPECT_FALSE(view_counter_service_->model_.always_show_branded_wallpaper_);
@@ -599,9 +596,7 @@ TEST_F(ViewCounterServiceTest, ModelTest) {
   EXPECT_NE(expected_count,
             view_counter_service_->model_.count_to_branded_wallpaper_);
 
-  background_images_service_->super_referrals_images_data_ =
-      std::make_unique<NTPSponsoredImagesData>();
-  view_counter_service_->OnSuperReferralCampaignDidEnd();
+  view_counter_service_->ResetModel();
   EXPECT_FALSE(view_counter_service_->model_.always_show_branded_wallpaper_);
   EXPECT_EQ(expected_count,
             view_counter_service_->model_.count_to_branded_wallpaper_);
@@ -674,7 +669,7 @@ TEST_F(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
 
   background_images_service_->OnGetSponsoredComponentJsonData(
-      /*is_super_referral=*/false, kSponsoredRichMediaCampaignsJson);
+      kSponsoredRichMediaCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
@@ -693,7 +688,7 @@ TEST_F(
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
   background_images_service_->OnGetSponsoredComponentJsonData(
-      /*is_super_referral=*/false, kSponsoredRichMediaCampaignsJson);
+      kSponsoredRichMediaCampaignsJson);
   ASSERT_FALSE(view_counter_service_->CanShowSponsoredImages());
 
   const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
@@ -711,7 +706,7 @@ TEST_F(ViewCounterServiceTest,
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
 
   background_images_service_->OnGetSponsoredComponentJsonData(
-      /*is_super_referral=*/false, kSponsoredImageCampaignsJson);
+      kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
@@ -729,7 +724,7 @@ TEST_F(ViewCounterServiceTest,
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
   background_images_service_->OnGetSponsoredComponentJsonData(
-      /*is_super_referral=*/false, kSponsoredImageCampaignsJson);
+      kSponsoredImageCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
   const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();

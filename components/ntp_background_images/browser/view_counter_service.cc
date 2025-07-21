@@ -361,12 +361,6 @@ void ViewCounterService::OnSponsoredContentDidUpdate(
   }
 }
 
-void ViewCounterService::OnSuperReferralCampaignDidEnd() {
-  // Need to reset model because SI images are shown only for every 4th NTP but
-  // we've shown SR images for every NTP.
-  ResetModel();
-}
-
 void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
   if (success) {
     MaybePrefetchNewTabPageAd();
