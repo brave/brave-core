@@ -573,6 +573,10 @@ class JsonRpcService : public mojom::JsonRpcService {
 
   NetworkManager* network_manager() { return network_manager_; }
 
+  static std::string_view
+  GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+      std::string_view coin);
+
  private:
   void FireNetworkChanged(mojom::CoinType coin,
                           const std::string& chain_id,
