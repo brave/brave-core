@@ -86,6 +86,14 @@ void SolanaProviderImpl::Connect(std::optional<base::Value::Dict> arg,
   }
   auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
+    if (!keyring_service_->IsWalletCreatedSync()) {
+      delegate_->ShowWalletOnboarding();
+      std::move(callback).Run(
+          mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), "");
+      return;
+    }
+
     // Prompt users to create a Solana account. If wallet is not setup, users
     // will be lead to onboarding first.
     if (!account_creation_shown_) {
