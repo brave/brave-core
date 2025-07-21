@@ -166,15 +166,8 @@ NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
       host_content_settings_map_->GetDefaultContentSetting(
           ContentSettingsType::JAVASCRIPT) == CONTENT_SETTING_ALLOW;
 
-  NTPSponsoredImagesData* images_data =
-      background_images_service_->GetSponsoredImagesData(
-          /*super_referral=*/true, supports_rich_media);
-  if (images_data && IsSuperReferralWallpaperOptedIn()) {
-    return images_data;
-  }
-
   return background_images_service_->GetSponsoredImagesData(
-      /*super_referral=*/false, supports_rich_media);
+      supports_rich_media);
 }
 
 std::optional<base::Value::Dict>

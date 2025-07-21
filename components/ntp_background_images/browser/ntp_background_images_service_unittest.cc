@@ -420,8 +420,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   // Check with json file w/o schema version with empty object.
   service_->sponsored_images_data_.reset();
   service_->OnGetSponsoredComponentJsonData("{}");
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(/*supports_rich_media=*/true));
   service_->background_images_data_.reset();
   service_->OnGetComponentJsonData("{}");
   EXPECT_FALSE(service_->GetBackgroundImagesData());
@@ -431,8 +430,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->sponsored_images_data_.reset();
   observer_.on_sponsored_images_updated = false;
   service_->OnGetSponsoredComponentJsonData(kTestEmptyComponent);
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(/*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   observer_.background_images_data = nullptr;
@@ -450,8 +448,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   observer_.on_sponsored_images_updated = false;
   service_->OnGetSponsoredComponentJsonData(kTestSponsoredImages);
   NTPSponsoredImagesData* const images_data =
-      service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                       /*supports_rich_media=*/true);
+      service_->GetSponsoredImagesData(/*supports_rich_media=*/true);
   EXPECT_TRUE(images_data);
   EXPECT_TRUE(images_data->IsValid());
   EXPECT_FALSE(images_data->IsSuperReferral());
@@ -549,8 +546,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->sponsored_images_data_.reset();
   observer_.on_sponsored_images_updated = false;
   service_->OnGetSponsoredComponentJsonData(test_json_string_higher_schema);
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(/*supports_rich_media=*/true));
 
   constexpr char kTestBackgroundJsonStringHigherSchema[] = R"(
   {
@@ -586,8 +582,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   service_->OnGetSponsoredComponentJsonData(
       kTestSponsoredImagesWithMultipleCampaigns);
   const NTPSponsoredImagesData* const images_data =
-      service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                       /*supports_rich_media=*/true);
+      service_->GetSponsoredImagesData(/*supports_rich_media=*/true);
   EXPECT_TRUE(images_data);
   EXPECT_TRUE(images_data->IsValid());
   EXPECT_FALSE(images_data->IsSuperReferral());
@@ -624,8 +619,8 @@ TEST_F(NTPBackgroundImagesServiceTest,
   service_->OnGetSponsoredComponentJsonData(
       kSponsoredImageContentWithNonHttpsSchemeTargetUrl);
 
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
@@ -645,8 +640,8 @@ TEST_F(NTPBackgroundImagesServiceTest,
   service_->OnGetSponsoredComponentJsonData(
       kSponsoredImageContentWithWallpaperRelativeUrlReferencingParent);
 
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
@@ -667,8 +662,8 @@ TEST_F(
   service_->OnGetSponsoredComponentJsonData(
       kSponsoredImageContentWithWallpaperButtonImageRelativeUrlReferencingParent);
 
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
@@ -689,8 +684,8 @@ TEST_F(
   service_->OnGetSponsoredComponentJsonData(
       kSponsoredRichMediaContentWithWallpaperRelativeUrlReferencingParent);
 
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
@@ -709,8 +704,8 @@ TEST_F(NTPBackgroundImagesServiceTest, SponsoredImageWithMissingImageUrlTest) {
   service_->OnGetSponsoredComponentJsonData(
       kTestSponsoredImagesWithMissingImageUrl);
 
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
@@ -794,10 +789,6 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   observer_.on_sponsored_images_updated = false;
   observer_.sponsored_images_data = nullptr;
   service_->OnGetSponsoredComponentJsonData(kTestSuperReferral);
-  const NTPSponsoredImagesData* const images_data =
-      service_->GetSponsoredImagesData(/*super_referral=*/true,
-                                       /*supports_rich_media=*/true);
-  EXPECT_FALSE(images_data);
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
 }
 
@@ -838,8 +829,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   // Initialize NTP SI data.
   service_->OnGetSponsoredComponentJsonData(kTestSponsoredImages);
   // NTP SI data is ready and we don't wait for SR mapping table data.
-  EXPECT_TRUE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                               /*supports_rich_media=*/true));
+  EXPECT_TRUE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
@@ -874,13 +865,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   service_->OnGetSponsoredComponentJsonData(kTestSuperReferral);
   EXPECT_FALSE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSuperReferralComponentInProgress));
-  const NTPSponsoredImagesData* const data =
-      service_->GetSponsoredImagesData(/*super_referral=*/true,
-                                       /*supports_rich_media=*/true);
   EXPECT_FALSE(
       service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)));
-  EXPECT_FALSE(data);
   EXPECT_THAT(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData),
               ::testing::IsEmpty());
@@ -902,19 +889,17 @@ TEST_F(NTPBackgroundImagesServiceTest, CheckReferralServiceInitStatusTest) {
   Init();
 
   // Initially, data is not available.
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/true,
-                                                /*supports_rich_media=*/true));
-  EXPECT_FALSE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/true));
+  EXPECT_FALSE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
 
   // Simulate SI data is initialized first before referral service is
   // initialized.
   service_->OnGetSponsoredComponentJsonData(kTestSponsoredImages);
-  EXPECT_TRUE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                               /*supports_rich_media=*/true));
+  EXPECT_TRUE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
 
-  EXPECT_TRUE(service_->GetSponsoredImagesData(/*super_referral=*/false,
-                                               /*supports_rich_media=*/true));
+  EXPECT_TRUE(service_->GetSponsoredImagesData(
+      /*supports_rich_media=*/true));
 }
 
 TEST_F(NTPBackgroundImagesServiceTest,

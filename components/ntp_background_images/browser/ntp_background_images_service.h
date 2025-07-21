@@ -75,7 +75,6 @@ class NTPBackgroundImagesService {
 
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
   NTPSponsoredImagesData* GetSponsoredImagesData(
-      bool super_referral,
       bool supports_rich_media) const;
 
   bool IsSuperReferral() const;

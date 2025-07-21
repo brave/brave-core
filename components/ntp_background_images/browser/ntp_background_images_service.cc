@@ -250,12 +250,7 @@ NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
 }
 
 NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
-    bool super_referral,
     bool supports_rich_media) const {
-  if (super_referral) {
-    return nullptr;
-  }
-
   NTPSponsoredImagesData* const images_data =
       supports_rich_media ? sponsored_images_data_.get()
                           : sponsored_images_data_excluding_rich_media_.get();
