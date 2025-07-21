@@ -43,7 +43,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/arrayref/v0_3:lib",
     "//brave/third_party/rust/arrayvec/v0_7:lib",
     "//brave/third_party/rust/curve25519_dalek/v4:lib",
-    "//brave/third_party/rust/getrandom_or_panic/v0_0:lib",
+    "//brave/third_party/rust/getrandom_or_panic/v0_0_3:lib",
     "//brave/third_party/rust/merlin/v3:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/serde_bytes/v0_11:lib",

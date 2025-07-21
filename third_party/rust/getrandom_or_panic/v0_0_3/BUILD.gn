@@ -10,10 +10,10 @@ import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
   crate_name = "getrandom_or_panic"
-  epoch = "0.0"
+  epoch = "0.0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0_3/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/getrandom_or_panic-v0_0_3/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
