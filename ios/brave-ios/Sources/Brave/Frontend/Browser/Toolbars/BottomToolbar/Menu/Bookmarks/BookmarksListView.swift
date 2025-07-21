@@ -116,7 +116,7 @@ struct BookmarksListView: View {
                   model.openAllBookmarks(node: node)
                 } label: {
                   Label(
-                    String(format: Strings.openAllBookmarks, model.bookmarks(in: node).count),
+                    String(format: Strings.openAllBookmarks, node.childUrlCount),
                     systemImage: "plus.square.on.square"
                   )
                 }
@@ -212,7 +212,9 @@ struct BookmarksListView: View {
 
         if viewModel.folder != nil && !viewModel.items.isEmpty {
           Button {
-            editMode = editMode.isEditing ? .inactive : .active
+            withAnimation {
+              editMode = editMode.isEditing ? .inactive : .active
+            }
           } label: {
             Label {
               Text(
