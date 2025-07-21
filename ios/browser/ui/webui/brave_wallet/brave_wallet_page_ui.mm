@@ -124,11 +124,8 @@ void BraveWalletPageUI::CreatePageHandler(
 //   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
 //       std::move(wallet_receiver), browser_state);
 
-//   mojo::PendingRemote<brave_wallet::mojom::SwapService> swap_service =
-//         brave_wallet::SwapServiceFactory::GetForProfile(browser_state);
-//   swap_service_.Bind(std::move(swap_service_receiver));
-//   brave_wallet::SwapServiceFactory::GetServiceForState(browser_state)
-//       ->Bind(std::move(swap_service_receiver));
+  brave_wallet::SwapServiceFactory::GetServiceForState(browser_state)
+      ->Bind(std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::GetServiceForState(browser_state)
       ->Bind(std::move(asset_ratio_service_receiver));
   brave_wallet::BraveWalletService* wallet_service =
