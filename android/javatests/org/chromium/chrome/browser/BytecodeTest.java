@@ -2377,10 +2377,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
                         "mMinimizationManagerHolder"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
-                        "mCustomTabFeatureOverridesManager"));
         Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
