@@ -71,7 +71,16 @@ interface ReplacedRange {
  *   $1: (content) => <a href="#">{content}</a>
  * }) // 'Hello <a href="#">world</a>'
  */
-export function formatString<T extends Replacement>(text: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
+export function formatString<T extends Replacement>(text: string, replacementsRaw: Record<`$${string}`, T> | T[], options?: Options): ReturnType<T> {
+  // If the replacements are an array, convert them to an object with the
+  // correct keys (0 ==> $1, 1 ==> $2, etc).
+  const replacements = Array.isArray(replacementsRaw)
+    ? replacementsRaw.reduce<Record<`$${string}`, T>>((acc, replacement, index) => {
+        acc[`$${index + 1}`] = replacement
+        return acc
+      }, {})
+    : replacementsRaw
+
   const result: ReplacedRange = {
     children: [],
     start: 0,
@@ -179,10 +188,10 @@ export function formatString<T extends Replacement>(text: string, replacements: 
     throw new Error(`Missing replacements (${Object.keys(replacements).filter(key => !seen.has(key)).join(', ')} we not found in ${text})`)
   }
 
-  const formatted = getReplacedContent(result) as ReturnType<T>
-  return Array.isArray(formatted) ?
+  const formatted = getReplacedContent(result)
+  return (Array.isArray(formatted) ?
     React.createElement(React.Fragment, null, ...formatted)
-    : formatted as any
+    : formatted) as ReturnType<T>
 }
 
 /**
@@ -196,6 +205,6 @@ export function formatString<T extends Replacement>(text: string, replacements: 
  *   $1: status => <b>${status}</b>
  * }) // <>Shields are <b>UP</b></>
  */
-export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
+export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${string}`, T> | T[], options?: Options): ReturnType<T> {
   return formatString(getLocale(key), replacements, options)
 }
