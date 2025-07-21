@@ -47,8 +47,7 @@ import org.chromium.ui.util.ColorUtils;
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
 
-    // Unused members, never read:
-    // - mIsEnterAnimationCompleted
+    // Exposed through bytecode patch
     @SuppressWarnings("UnusedVariable")
     private boolean mIsEnterAnimationCompleted;
 
@@ -60,7 +59,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private BrowserServicesIntentDataProvider mIntentDataProvider;
     private CustomTabActivityTabController mTabController;
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
-    private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
     public static boolean sIsFullScreenCustomTabActivityClosed;
 
@@ -229,7 +227,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         mBackPressManager,
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
-                        () -> mCustomTabFeatureOverridesManager,
                         () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
                         getEdgeToEdgeManager(),
                         getAppHeaderCoordinator(),
