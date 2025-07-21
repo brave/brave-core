@@ -81,17 +81,16 @@ extension Domain {
     _ shield: BraveShield,
     considerAllShieldsOption: Bool
   ) -> Bool {
-    let isShieldOn = { () -> Bool in
+    let isShieldOn =
       switch shield {
       case .allOff:
-        return self.shield_allOff?.boolValue ?? false
+        self.shield_allOff?.boolValue ?? false
       case .fpProtection:
-        return self.shield_fpProtection?.boolValue
+        self.shield_fpProtection?.boolValue
           ?? Preferences.Shields.fingerprintingProtection.value
       case .noScript:
-        return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
+        self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
       }
-    }()
 
     let isAllShieldsOff = self.shield_allOff?.boolValue ?? false
     let isSpecificShieldOn = isShieldOn
