@@ -20,8 +20,8 @@ namespace {
 constexpr int kFreshInstallDatabaseVersion = 0;
 
 std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
-  return base::StringPrintf("%d_to_%d", test_param.param,
-                            database::kVersionNumber);
+  return absl::StrFormat("%d_to_%d", test_param.param,
+                         database::kVersionNumber);
 }
 
 }  // namespace
@@ -48,8 +48,8 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
   static int GetSchemaVersion() { return GetParam(); }
 
   static std::string DatabasePathForSchemaVersion() {
-    return base::StringPrintf("database/migration/database_schema_%d.sqlite",
-                              GetSchemaVersion());
+    return absl::StrFormat("database/migration/database_schema_%d.sqlite",
+                           GetSchemaVersion());
   }
 
   static bool IsTestingFreshInstall() {

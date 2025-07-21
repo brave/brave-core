@@ -90,8 +90,8 @@ void FullScreenshotter::OnScreenshotCaptured(
   if (status != PaintPreviewBaseService::CaptureStatus::kOk ||
       !result->capture_success) {
     std::move(callback).Run(base::unexpected(
-        base::StringPrintf("Failed to capture a screenshot (CaptureStatus=%d)",
-                           static_cast<int>(status))));
+        absl::StrFormat("Failed to capture a screenshot (CaptureStatus=%d)",
+                        static_cast<int>(status))));
     return;
   }
 
@@ -224,8 +224,8 @@ void FullScreenshotter::OnBitmapReceived(
       bitmap.empty()) {
     std::move(pending->callback)
         .Run(base::unexpected(
-            base::StringPrintf("Failed to get bitmap (BitmapStatus=%d)",
-                               static_cast<int>(status))));
+            absl::StrFormat("Failed to get bitmap (BitmapStatus=%d)",
+                            static_cast<int>(status))));
     return;
   }
 

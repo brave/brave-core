@@ -16,9 +16,8 @@ std::string BuildGetSignedTokensUrlPath(const std::string& payment_id,
   CHECK(!payment_id.empty());
   CHECK(!nonce.empty());
 
-  return base::StringPrintf("/v%d/confirmation/token/%s?nonce=%s",
-                            kTokensServerVersion, payment_id.c_str(),
-                            nonce.c_str());
+  return absl::StrFormat("/v%d/confirmation/token/%s?nonce=%s",
+                         kTokensServerVersion, payment_id, nonce);
 }
 
 }  // namespace brave_ads

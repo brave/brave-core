@@ -39,7 +39,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, status, address, updated_at) "
       "VALUES (?, ?, ?, ?)",
@@ -80,7 +80,7 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
     GetServerPublisherInfoCallback callback,
     mojom::PublisherBannerPtr banner) {
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT status, address, updated_at "
       "FROM %s WHERE publisher_key=?",
       kTableName);
@@ -149,7 +149,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
   // Get a list of publisher keys that are older than |max_age_seconds|.
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       "SELECT publisher_key FROM %s WHERE updated_at < ?", kTableName);
   BindInt64(command.get(), 0, cutoff);
 
@@ -195,8 +195,8 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
   command->command =
-      base::StringPrintf("DELETE FROM %s WHERE publisher_key IN (%s)",
-                         kTableName, publisher_key_list.c_str());
+      absl::StrFormat("DELETE FROM %s WHERE publisher_key IN (%s)", kTableName,
+                      publisher_key_list);
 
   transaction->commands.push_back(std::move(command));
 

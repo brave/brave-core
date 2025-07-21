@@ -14,8 +14,8 @@ namespace brave_ads {
 std::string BuildRedeemPaymentTokensUrlPath(const std::string& payment_id) {
   CHECK(!payment_id.empty());
 
-  return base::StringPrintf("/v%d/confirmation/payment/%s",
-                            kTokensServerVersion, payment_id.c_str());
+  return absl::StrFormat("/v%d/confirmation/payment/%s", kTokensServerVersion,
+                         payment_id);
 }
 
 }  // namespace brave_ads

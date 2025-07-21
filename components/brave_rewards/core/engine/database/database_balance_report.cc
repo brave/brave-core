@@ -21,7 +21,7 @@ namespace {
 constexpr char kTableName[] = "balance_report_info";
 
 std::string GetBalanceReportId(mojom::ActivityMonth month, int year) {
-  return base::StringPrintf("%u_%u", year, base::to_underlying(month));
+  return absl::StrFormat("%u_%u", year, base::to_underlying(month));
 }
 
 std::string GetTypeColumn(mojom::ReportType type) {
@@ -63,7 +63,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(balance_report_id, grants_ugp, grants_ads, auto_contribute, "
       "tip_recurring, tip) "
@@ -99,7 +99,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(balance_report_id, grants_ugp, grants_ads, auto_contribute, "
       "tip_recurring, tip) "
@@ -141,7 +141,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
 
   const std::string id = GetBalanceReportId(month, year);
 
-  const std::string insert_query = base::StringPrintf(
+  const std::string insert_query = absl::StrFormat(
       "INSERT OR IGNORE INTO %s "
       "(balance_report_id, grants_ugp, grants_ads, auto_contribute, "
       "tip_recurring, tip) "
@@ -154,9 +154,9 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
   BindString(command.get(), 0, id);
   transaction->commands.push_back(std::move(command));
 
-  const std::string update_query = base::StringPrintf(
-      "UPDATE %s SET %s = %s + ? WHERE balance_report_id = ?", kTableName,
-      GetTypeColumn(type).c_str(), GetTypeColumn(type).c_str());
+  const std::string update_query =
+      absl::StrFormat("UPDATE %s SET %s = %s + ? WHERE balance_report_id = ?",
+                      kTableName, GetTypeColumn(type), GetTypeColumn(type));
 
   command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
@@ -183,7 +183,7 @@ void DatabaseBalanceReport::GetRecord(
   auto transaction = mojom::DBTransaction::New();
 
   // when new month starts we need to insert blank values
-  const std::string insert_query = base::StringPrintf(
+  const std::string insert_query = absl::StrFormat(
       "INSERT OR IGNORE INTO %s "
       "(balance_report_id, grants_ugp, grants_ads, auto_contribute, "
       "tip_recurring, tip) "
@@ -196,7 +196,7 @@ void DatabaseBalanceReport::GetRecord(
   BindString(command.get(), 0, GetBalanceReportId(month, year));
   transaction->commands.push_back(std::move(command));
 
-  const std::string select_query = base::StringPrintf(
+  const std::string select_query = absl::StrFormat(
       "SELECT balance_report_id, grants_ugp, grants_ads, "
       "auto_contribute, tip_recurring, tip "
       "FROM %s WHERE balance_report_id = ?",
@@ -254,7 +254,7 @@ void DatabaseBalanceReport::GetAllRecords(
     GetBalanceReportListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT balance_report_id, grants_ugp, grants_ads, "
       "auto_contribute, tip_recurring, tip "
       "FROM %s",
@@ -310,7 +310,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
 void DatabaseBalanceReport::DeleteAllRecords(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
+  const std::string query = absl::StrFormat("DELETE FROM %s", kTableName);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;

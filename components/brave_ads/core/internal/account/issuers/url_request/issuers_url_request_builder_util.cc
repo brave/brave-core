@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 std::string BuildIssuersUrlPath() {
-  return base::StringPrintf("/v%d/issuers", kIssuersServerVersion);
+  return absl::StrFormat("/v%d/issuers", kIssuersServerVersion);
 }
 
 }  // namespace brave_ads

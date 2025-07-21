@@ -85,7 +85,7 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
 
   void InitializeDatabaseAtVersion(int version) {
     base::FilePath path = GetTestDataPath().AppendASCII(
-        base::StringPrintf("publisher_info_db_v%d.sql", version));
+        absl::StrFormat("publisher_info_db_v%d.sql", version));
 
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
@@ -93,8 +93,7 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
   }
 
   int CountTableRows(const std::string& table) {
-    const std::string sql =
-        base::StringPrintf("SELECT COUNT(*) FROM %s", table.c_str());
+    const std::string sql = absl::StrFormat("SELECT COUNT(*) FROM %s", table);
     sql::Statement s(GetDB()->GetUniqueStatement(sql));
     return s.Step() ? static_cast<int>(s.ColumnInt64(0)) : -1;
   }

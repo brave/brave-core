@@ -402,8 +402,7 @@ INSTANTIATE_TEST_SUITE_P(
     AIChatServiceUnitTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatServiceUnitTest::ParamType>& info) {
-      return base::StringPrintf("History%s",
-                                info.param ? "Enabled" : "Disabled");
+      return absl::StrFormat("History%s", info.param ? "Enabled" : "Disabled");
     });
 
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {

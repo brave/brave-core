@@ -821,15 +821,14 @@ std::string Publisher::GetShareURL(
   // with the supplied comment; otherwise, just tweet the comment.
   std::string share_url;
   if (tweet_id != args.end() && !tweet_id->second.empty()) {
-    const std::string quoted_tweet_url =
-        base::StringPrintf("https://twitter.com/%s/status/%s",
-                           name->second.c_str(), tweet_id->second.c_str());
-    share_url = base::StringPrintf(
-        "https://twitter.com/intent/tweet?text=%s&url=%s",
-        comment_with_hashtag.c_str(), quoted_tweet_url.c_str());
+    const std::string quoted_tweet_url = absl::StrFormat(
+        "https://twitter.com/%s/status/%s", name->second, tweet_id->second);
+    share_url =
+        absl::StrFormat("https://twitter.com/intent/tweet?text=%s&url=%s",
+                        comment_with_hashtag, quoted_tweet_url);
   } else {
-    share_url = base::StringPrintf("https://twitter.com/intent/tweet?text=%s",
-                                   comment_with_hashtag.c_str());
+    share_url = absl::StrFormat("https://twitter.com/intent/tweet?text=%s",
+                                comment_with_hashtag);
   }
 
   return share_url;

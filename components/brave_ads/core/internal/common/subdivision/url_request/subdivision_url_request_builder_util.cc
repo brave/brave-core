@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 std::string BuildSubdivisionUrlPath() {
-  return base::StringPrintf("/v%d/getstate", kSubdivisionServerVersion);
+  return absl::StrFormat("/v%d/getstate", kSubdivisionServerVersion);
 }
 
 }  // namespace brave_ads

@@ -40,7 +40,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(contribution_queue_id, publisher_key, amount_percent) VALUES (?, ?, ?)",
       kTableName);
@@ -73,7 +73,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT publisher_key, amount_percent "
       "FROM %s WHERE contribution_queue_id = ?",
       kTableName);

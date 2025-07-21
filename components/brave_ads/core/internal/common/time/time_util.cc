@@ -67,9 +67,8 @@ std::string TimeToPrivacyPreservingIso8601(base::Time time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
 
-  return base::StringPrintf("%04d-%02d-%02dT%02d:00:00.000Z", exploded.year,
-                            exploded.month, exploded.day_of_month,
-                            exploded.hour);
+  return absl::StrFormat("%04d-%02d-%02dT%02d:00:00.000Z", exploded.year,
+                         exploded.month, exploded.day_of_month, exploded.hour);
 }
 
 }  // namespace brave_ads

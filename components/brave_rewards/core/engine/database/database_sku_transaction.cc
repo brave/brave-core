@@ -36,7 +36,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 
   auto db_transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(transaction_id, order_id, external_transaction_id, type, amount, "
       "status) "
@@ -72,7 +72,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
     return;
   }
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET "
       "external_transaction_id = ?, status = ? WHERE transaction_id = ?",
       kTableName);
@@ -105,7 +105,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
   }
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT transaction_id, order_id, external_transaction_id, amount, type, "
       "status FROM %s WHERE order_id = ?",
       kTableName);
