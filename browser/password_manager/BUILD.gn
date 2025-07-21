@@ -13,6 +13,7 @@ if (!is_android) {
     deps = [
       "//brave/browser",
       "//chrome/browser",
+      "//chrome/browser/password_manager/factories:password_factory_headers",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
