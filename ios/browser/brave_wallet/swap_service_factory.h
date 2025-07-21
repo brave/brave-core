@@ -26,6 +26,8 @@ class BrowserState;
 
 namespace brave_wallet {
 
+class SwapService;
+
 class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   // Creates the service if it doesn't exist already for |profile|.
