@@ -151,22 +151,6 @@ void NTPBackgroundImagesService::Init() {
             &NTPBackgroundImagesService::OnVariationsCountryPrefChanged,
             weak_factory_.GetWeakPtr()));
   }
-
-  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
-    // Flag override for testing or demo purposes
-    base::FilePath override_super_referrals_component_path(
-        base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
-            switches::kOverrideSuperReferralsComponentPath));
-    if (!override_super_referrals_component_path.empty()) {
-      DVLOG(6)
-          << "NTP Super Referral test data will be loaded from local path at: "
-          << override_super_referrals_component_path.LossyDisplayName();
-      OnSponsoredComponentReady(/*is_super_referral=*/false,
-                                override_super_referrals_component_path);
-    } else {
-      CheckSuperReferralComponent();
-    }
-  }
 }
 
 void NTPBackgroundImagesService::StartTearDown() {
@@ -368,11 +352,6 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
 void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string& pref_name) {
 #if !BUILDFLAG(IS_IOS)
-  if (!base::FeatureList::IsEnabled(
-          features::kBraveNTPSuperReferralWallpaper)) {
-    return MarkThisInstallIsNotSuperReferralForever();
-  }
-
   DCHECK_EQ(kReferralPromoCode, pref_name);
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(6) << "Got referral promo code: " << new_referral_code;
@@ -509,29 +488,8 @@ NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
 NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
     bool super_referral,
     bool supports_rich_media) const {
-  const bool is_super_referrals_enabled =
-      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
-  if (is_super_referrals_enabled) {
-    if (super_referral) {
-      if (super_referrals_images_data_ &&
-          super_referrals_images_data_->IsValid()) {
-        return super_referrals_images_data_.get();
-      }
-      return nullptr;
-    }
-
-    // Don't give SI data until we can confirm this is not SR.
-    // W/o this check, NTP could show SI images before getting SR data at first
-    // run.
-    if (pref_service_
-            ->FindPreference(prefs::kNewTabPageCachedSuperReferralComponentInfo)
-            ->IsDefaultValue()) {
-      return nullptr;
-    }
-  } else {
-    if (super_referral) {
-      return nullptr;
-    }
+  if (super_referral) {
+    return nullptr;
   }
 
   NTPSponsoredImagesData* const images_data =
@@ -695,23 +653,11 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
-  const base::Value::Dict& value = pref_service_->GetDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
-  return base::FeatureList::IsEnabled(
-             features::kBraveNTPSuperReferralWallpaper) &&
-         IsValidSuperReferralComponentInfo(value);
+  return false;
 }
 
 std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
-  std::string theme_name;
-  const base::Value::Dict& value = pref_service_->GetDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
-  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
-      IsValidSuperReferralComponentInfo(value)) {
-    theme_name = *value.FindString(kThemeNameKey);
-  }
-
-  return theme_name;
+  return "";
 }
 
 std::string NTPBackgroundImagesService::GetSuperReferralCode() const {

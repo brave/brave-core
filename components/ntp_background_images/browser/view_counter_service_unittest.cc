@@ -188,11 +188,6 @@ class ViewCounterServiceTest : public testing::Test {
   ~ViewCounterServiceTest() override = default;
 
   void SetUp() override {
-#if !BUILDFLAG(IS_LINUX)
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kBraveNTPSuperReferralWallpaper);
-#endif  // !BUILDFLAG(IS_LINUX)
-
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
@@ -507,12 +502,13 @@ TEST_F(ViewCounterServiceTest, ActiveOptedInWithNTPBackgoundOption) {
   SetBackgroundImagesVisibility(false);
   MockSponsoredImagesData(WallpaperType::kImage, /*super_referral=*/true);
 
-  // Even with bg images turned off, SR wallpaper should be active.
+  // SR wallpaper shouldn't be shown because super referral functionality is
+  // disabled.
   SetSuperReferralVisibility(true);
 #if BUILDFLAG(IS_LINUX)
   EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
 #else   // BUILDFLAG(IS_LINUX)
-  EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
 #endif  // !BUILDFLAG(IS_LINUX)
 
   SetSuperReferralVisibility(false);
@@ -546,13 +542,13 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
   SetSuperReferralVisibility(false);
   EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
 
-  // Active if SR is only opted in.
+  // Not active if SR is only opted in.
   SetSponsoredImagesVisibility(false);
   SetSuperReferralVisibility(true);
 #if BUILDFLAG(IS_LINUX)
   EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
 #else   // BUILDFLAG(IS_LINUX)
-  EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
 #endif  // !BUILDFLAG(IS_LINUX)
 }
 
@@ -591,14 +587,16 @@ TEST_F(ViewCounterServiceTest, ModelTest) {
   MockSponsoredImagesData(WallpaperType::kImage, /*super_referral=*/false);
   view_counter_service_->OnSponsoredImagesDataDidUpdate(
       background_images_service_->super_referrals_images_data_.get());
-  EXPECT_TRUE(view_counter_service_->model_.always_show_branded_wallpaper_);
+  // SR wallpaper shouldn't be shown because super referral functionality is
+  // disabled.
+  EXPECT_FALSE(view_counter_service_->model_.always_show_branded_wallpaper_);
 
-  // Initial count is not changed because branded wallpaper is always
-  // visible in SR mode.
+  // Count to branded wallpaper is changed because super referral functionality
+  // is disabled.
   int expected_count = GetInitialCountToBrandedWallpaper();
   view_counter_service_->RegisterPageView();
   view_counter_service_->RegisterPageView();
-  EXPECT_EQ(expected_count,
+  EXPECT_NE(expected_count,
             view_counter_service_->model_.count_to_branded_wallpaper_);
 
   background_images_service_->super_referrals_images_data_ =

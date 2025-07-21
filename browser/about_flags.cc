@@ -827,14 +827,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
-          "brave-super-referral",                                              \
-          "Enable Brave Super Referral",                                       \
-          "Use custom theme for Brave Super Referral",                         \
-          flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,          \
-          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
-                                 kBraveNTPSuperReferralWallpaper),             \
-      },                                                                       \
-      {                                                                        \
           "brave-ephemeral-storage",                                           \
           "Enable Ephemeral Storage",                                          \
           "Use ephemeral storage for third-party frames",                      \
