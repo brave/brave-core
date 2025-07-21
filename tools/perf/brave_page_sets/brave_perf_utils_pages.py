@@ -90,8 +90,8 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
     # Chromium telemetry code fails to deal with empty directories.
     # Remove empty directories in `dest_profile`:
     for root, dirs, _ in os.walk(dest_profile):
-      for dir in dirs:
-        dir_path = os.path.join(root, dir)
+      for dir_name in dirs:
+        dir_path = os.path.join(root, dir_name)
         if not os.listdir(dir_path):
           os.rmdir(dir_path)
 
