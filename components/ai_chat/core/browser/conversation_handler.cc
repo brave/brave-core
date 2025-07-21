@@ -551,15 +551,10 @@ void ConversationHandler::SubmitHumanConversationEntry(
     if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
         last_entry->events && !last_entry->events->empty()) {
       // Delete any event that is_tool_use_event and has no output
-      last_entry->events.value().erase(
-          std::remove_if(
-              last_entry->events.value().begin(),
-              last_entry->events.value().end(),
-              [](const auto& event) {
-                return event->is_tool_use_event() &&
-                       !event->get_tool_use_event()->output.has_value();
-              }),
-          last_entry->events->end());
+      std::erase_if(last_entry->events.value(), [](const auto& event) {
+        return event->is_tool_use_event() &&
+               !event->get_tool_use_event()->output.has_value();
+      });
     }
   }
 
@@ -1145,8 +1140,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     DVLOG(2) << __func__
              << " Got event for tool use: " << tool_use_event->tool_name
              << " is empty? " << tool_use_event->tool_name.empty()
-             << " with input: " << tool_use_event->arguments_json
-             << " is last event tool use? " << last_event->is_tool_use_event();
+             << " with input: " << tool_use_event->arguments_json;
 
     if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
       last_event->get_tool_use_event()->arguments_json =
@@ -1259,7 +1253,6 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestions_[0].title =
         l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
                                         metadata_->associated_content.size());
-    OnSuggestedQuestionsChanged();
   }
   OnSuggestedQuestionsChanged();
 }

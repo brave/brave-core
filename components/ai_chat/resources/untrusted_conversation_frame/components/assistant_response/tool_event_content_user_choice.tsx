@@ -20,8 +20,7 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
     // Tool already completed, don't allow further response
     content.toolText = (
       <ConversationAreaButton
-        onClick={() => {}}
-        isDisabled={true}
+        isDisabled
         icon={
           <Icon
             className={styles.completedChoiceIcon}
@@ -29,15 +28,15 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
           />
         }
       >
-        <span data-testid={`tool-choice-text-0`}>{props.toolUseEvent.output[0]?.textContentBlock?.text}</span>
+        <span data-testid='tool-choice-text-0'>
+          {props.toolUseEvent.output[0]?.textContentBlock?.text}
+        </span>
       </ConversationAreaButton>
     )
   } else {
     content.progressIcon = (
       <span data-testid='tool-choice-progress-icon'>
-        <Icon
-          name='help-outline'
-        />
+        <Icon name='help-outline' />
       </span>
     )
 

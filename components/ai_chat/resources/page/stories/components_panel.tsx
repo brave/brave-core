@@ -37,7 +37,7 @@ import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
 
-// TODO(petemill): Attempt to split this file up
+// TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
@@ -1035,7 +1035,7 @@ export const _ToolUse = {
     return (
       <div className={styles.container}>
         {toolEvents.map((event) => (
-          <ToolEvent key={event.id} toolUseEvent={event} isEntryActive={true}></ToolEvent>
+          <ToolEvent key={event.id} toolUseEvent={event} isEntryActive></ToolEvent>
         ))}
       </div>
     )
