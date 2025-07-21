@@ -2784,6 +2784,25 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                         std::nullopt)));
               })));
 
+  // Setup tool use results
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool1")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool2")));
+        std::move(callback).Run(std::move(result));
+      }));
+
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
@@ -2804,23 +2823,6 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                         std::nullopt)));
                 run_loop.Quit();
               })));
-
-  // Setup tool use results
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
-      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
-        std::vector<mojom::ContentBlockPtr> result;
-        result.push_back(mojom::ContentBlock::NewTextContentBlock(
-            mojom::TextContentBlock::New("Result from tool1")));
-        std::move(callback).Run(std::move(result));
-      }));
-
-  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
-      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
-        std::vector<mojom::ContentBlockPtr> result;
-        result.push_back(mojom::ContentBlock::NewTextContentBlock(
-            mojom::TextContentBlock::New("Result from tool2")));
-        std::move(callback).Run(std::move(result));
-      }));
 
   // Submit human entry to start the flow
   conversation_handler_->SubmitHumanConversationEntry("What's the weather?",

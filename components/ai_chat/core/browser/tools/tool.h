@@ -21,7 +21,7 @@ namespace ai_chat {
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
-  using ToolResult = std::optional<std::vector<mojom::ContentBlockPtr>>;
+  using ToolResult = std::vector<mojom::ContentBlockPtr>;
   using UseToolCallback = base::OnceCallback<void(ToolResult output)>;
 
   Tool();

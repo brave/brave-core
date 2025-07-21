@@ -978,41 +978,48 @@ void ConversationHandler::OnUserOptedIn() {
 }
 
 void ConversationHandler::RespondToToolUseRequest(
-    const std::string& tool_id,
-    std::optional<std::vector<mojom::ContentBlockPtr>> output) {
-  auto* tool_use = GetToolUseEventForLastResponse(tool_id);
+    const std::string& tool_use_id,
+    std::vector<mojom::ContentBlockPtr> output) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    is_tool_use_in_progress_ = false;
+    OnAPIRequestInProgressChanged();
     return;
   }
 
-  // Some calls to this function are tools that user is giving
-  // permission to use, some are users's giving the answer, and some are to be
-  // run immediately after the tool is requested by the assistant.
+  // Tool uses require output. Whilst we could have some tools
+  // produce no output in order to prevent wasted API calls
+  // for user-only actions, it could lead to weird behavior when we have
+  // to remove the tool use event from the history before we send to the API
+  // (since the APIs don't like tool use requests with no output).
+  CHECK(!output.empty()) << "No output from tool use: " << tool_use->tool_name
+                         << " (" << tool_use_id << ")";
 
-  // Some tools are handled by the Tool, some by the UI and some are handled by
-  // this class.
-  if (output.has_value()) {
-    // Tool use has already been handled by the UI
-    OnToolUseComplete(tool_id, std::move(output));
-    return;
-  }
-  // Tool use will be handled by the Tool itself
-  base::WeakPtr<Tool> tool = nullptr;
-  auto tools = GetTools();
-  auto tool_it =
-      std::ranges::find_if(tools, [&tool_use](const base::WeakPtr<Tool> tool) {
-        return tool && tool->Name() == tool_use->tool_name;
-      });
-  if (tool_it != tools.end()) {
-    tool = *tool_it;
+  DVLOG(0) << "got output for tool: " << tool_use->tool_name;
+
+  tool_use->output = std::move(output);
+
+  OnHistoryUpdate(chat_history_.back()->Clone());
+
+  // Only perform generation if there are no pending tools left to run from
+  // the last entry.
+  if (std::ranges::all_of(
+          *chat_history_.back()->events,
+          [](const mojom::ConversationEntryEventPtr& event) {
+            return !event->is_tool_use_event() ||
+                   event->get_tool_use_event()->output.has_value();
+          })) {
+    DVLOG(0) << "No more tool use requests to handle, performing generation";
+    is_request_in_progress_ = true;
+    is_tool_use_in_progress_ = false;
+    OnAPIRequestInProgressChanged();
+    PerformAssistantGenerationWithPossibleContent();
   } else {
-    DLOG(ERROR) << "Tool called but not found: " << tool_use->tool_name;
-    return;
+    DVLOG(0) << "Tool use request handled, but still have more to handle";
+    // Still have more tool use requests to handle.
+    MaybeRespondToNextToolUseRequest();
   }
-  DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name();
-  tool->UseTool(tool_use->arguments_json,
-                base::BindOnce(&ConversationHandler::OnToolUseComplete,
-                               weak_ptr_factory_.GetWeakPtr(), tool_id));
 }
 
 void ConversationHandler::AddToConversationHistory(
@@ -1701,7 +1708,13 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
             !tool->RequiresUserInteractionBeforeHandling()) {
           is_tool_use_in_progress_ = true;
           OnAPIRequestInProgressChanged();
-          RespondToToolUseRequest(tool_use_event->id, std::nullopt);
+          // Tool use will be handled by the Tool itself
+          DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name();
+          tool->UseTool(
+              tool_use_event->arguments_json,
+              base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             tool_use_event->id));
           break;
         }
       }
@@ -1709,50 +1722,6 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         break;
       }
     }
-  }
-}
-
-void ConversationHandler::OnToolUseComplete(
-    const std::string& tool_use_id,
-    std::optional<std::vector<mojom::ContentBlockPtr>> output) {
-  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
-  if (!tool_use) {
-    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
-    is_tool_use_in_progress_ = false;
-    OnAPIRequestInProgressChanged();
-    return;
-  }
-
-  // If there's no output, we don't need to send to the assistant
-  if (!output) {
-    DLOG(ERROR) << "No output from tool use: " << tool_use->tool_name;
-    is_tool_use_in_progress_ = false;
-    OnAPIRequestInProgressChanged();
-    return;
-  }
-
-  DVLOG(0) << "got output for tool: " << tool_use->tool_name;
-
-  tool_use->output = std::move(output);
-  // TODO(petemill): don't Clone
-  OnHistoryUpdate(chat_history_.back()->Clone());
-  // Only perform generation if there are no pending tools left to run from
-  // the last entry.
-  if (std::ranges::all_of(
-          *chat_history_.back()->events,
-          [](const mojom::ConversationEntryEventPtr& event) {
-            return !event->is_tool_use_event() ||
-                   event->get_tool_use_event()->output.has_value();
-          })) {
-    DVLOG(0) << "No more tool use requests to handle, performing generation";
-    is_request_in_progress_ = true;
-    is_tool_use_in_progress_ = false;
-    OnAPIRequestInProgressChanged();
-    PerformAssistantGenerationWithPossibleContent();
-  } else {
-    DVLOG(0) << "Tool use request handled, but still have more to handle";
-    // Still have more tool use requests to handle.
-    MaybeRespondToNextToolUseRequest();
   }
 }
 
