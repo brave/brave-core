@@ -5,6 +5,8 @@
 
 #include "chrome/browser/download/download_item_model.h"
 
+#include "chrome/browser/download/download_commands.h"
+
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadItemModel, so just fall through.
 #define EDIT_WITH_MEDIA_APP                \
