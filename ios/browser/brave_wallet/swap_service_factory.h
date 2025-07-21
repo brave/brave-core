@@ -31,6 +31,7 @@ class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
   // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::SwapService> GetForProfile(
       ProfileIOS* profile);
+  static SwapService* GetServiceForState(ProfileIOS* profile);
 
   static SwapServiceFactory* GetInstance();
 
