@@ -7,8 +7,10 @@ import BraveCore
 import SwiftUI
 
 private let braveCoreMain: BraveCoreMain = {
-  let main = BraveCoreMain(userAgent: nil)
-  main.scheduleLowPriorityStartupTasks()
+  let main = BraveCoreMain(additionalSwitches: [])
+  main.startup(shouldFetchVariationsSeed: false) { [weak main] in
+    main?.scheduleLowPriorityStartupTasks()
+  }
   return main
 }()
 
