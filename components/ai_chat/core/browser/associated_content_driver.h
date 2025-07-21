@@ -48,6 +48,11 @@ namespace ai_chat {
 // extracting the content of a web page.
 class AssociatedContentDriver : public AssociatedContentDelegate {
  public:
+  using FetchPageContentCallback =
+      base::OnceCallback<void(std::string page_content,
+                              bool is_video,
+                              std::string invalidation_token)>;
+
   explicit AssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~AssociatedContentDriver() override;
@@ -82,7 +87,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   // |invalidation_token| is an optional parameter received in a prior callback
   // response of this function against the same page. See GetPageContentCallback
   // for explanation.
-  virtual void GetPageContent(GetPageContentCallback callback,
+  virtual void GetPageContent(FetchPageContentCallback callback,
                               std::string_view invalidation_token) = 0;
 
   // Implementer should call this when the content is updated in a way that
@@ -103,7 +108,9 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
                            ParseSearchQuerySummaryResponse);
 
   void OnGeneratePageContentComplete(int64_t navigation_id,
-                                     PageContent content);
+                                     std::string content,
+                                     bool is_video,
+                                     std::string invalidation_token);
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
                                              int64_t navigation_id);
 
@@ -124,6 +131,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
   PageContent cached_page_content_;
+  std::string invalidation_token_;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from

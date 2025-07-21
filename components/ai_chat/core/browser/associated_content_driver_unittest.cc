@@ -41,7 +41,7 @@ using testing::Optional;
 
 class MockAssociatedContentDriver : public AssociatedContentDriver {
  public:
-  MockAssociatedContentDriver(
+  explicit MockAssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       : AssociatedContentDriver(url_loader_factory) {}
   ~MockAssociatedContentDriver() override = default;
@@ -50,7 +50,8 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
   MOCK_METHOD(std::u16string, GetPageTitle, (), (const, override));
   MOCK_METHOD(void,
               GetPageContent,
-              (GetPageContentCallback, std::string_view),
+              (AssociatedContentDriver::FetchPageContentCallback,
+               std::string_view),
               (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
@@ -100,16 +101,16 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   // Should only ask content once
   base::RunLoop run_loop;
   EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
-      .WillOnce([&](GetPageContentCallback callback,
+      .WillOnce([&](AssociatedContentDriver::FetchPageContentCallback callback,
                     std::string_view invalidation_token) {
         // Simulate async response so that multiple calls can queue
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-            FROM_HERE, base::BindOnce(
-                           [](GetPageContentCallback callback) {
-                             std::move(callback).Run(
-                                 PageContent("content", false, "token"));
-                           },
-                           std::move(callback)));
+            FROM_HERE,
+            base::BindOnce(
+                [](AssociatedContentDriver::FetchPageContentCallback callback) {
+                  std::move(callback).Run("content", false, "token");
+                },
+                std::move(callback)));
       });
 
   // Test

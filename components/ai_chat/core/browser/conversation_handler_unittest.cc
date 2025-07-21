@@ -759,7 +759,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   EXPECT_EQ(conversation_handler_->associated_content_manager()
-                ->GetCachedTextContent(),
+                ->GetCachedContent()[0]
+                .get()
+                .content,
             "Content 1");
   conversation_handler_->associated_content_manager()->SetArchiveContent(
       associated_content1.uuid(), "Content 1", false);

@@ -130,7 +130,7 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                                      std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
   bool pdf_helper_not_available = false;
@@ -168,15 +168,15 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
-    GetPageContentCallback callback,
-    PageContent page_content) {
-  auto& content = page_content.content;
-
+    FetchPageContentCallback callback,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
   // Once page load is complete, try again. If it's still empty, fallback
   // to print preview extraction.
-  if (content.empty() && !page_content.is_video) {
+  if (content.empty() && !is_video) {
     // When page isn't loaded yet, wait until DidFinishLoad
     DVLOG(1) << __func__ << " empty content, will attempt fallback";
     if (MaybePrintPreviewExtract(callback)) {
@@ -189,19 +189,20 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     // When print preview extraction isn't available, return empty content
     DVLOG(1) << "no fallback available";
   }
-  std::move(callback).Run(std::move(page_content));
+  std::move(callback).Run(std::move(content), is_video,
+                          std::move(invalidation_token));
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run({});
+    std::move(pending_get_page_content_callback_).Run("", false, "");
   }
   pending_get_page_content_callback_ = std::move(callback);
 }
 
 bool AIChatTabHelper::MaybePrintPreviewExtract(
-    GetPageContentCallback& callback) {
+    FetchPageContentCallback& callback) {
   if (print_preview_extraction_delegate_ == nullptr) {
     DVLOG(1) << "print preview extraction not supported";
     return false;
@@ -220,14 +221,14 @@ bool AIChatTabHelper::MaybePrintPreviewExtract(
 }
 
 void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     base::expected<std::string, std::string> result) {
   // Invalidation token not applicable for print preview OCR
   if (result.has_value()) {
-    std::move(callback).Run(PageContent(result.value(), false));
+    std::move(callback).Run(std::move(result.value()), false, "");
   } else {
     VLOG(1) << result.error();
-    std::move(callback).Run({});
+    std::move(callback).Run("", false, "");
   }
 }
 
@@ -239,7 +240,7 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run({});
+    std::move(pending_get_page_content_callback_).Run("", false, "");
   }
 }
 
@@ -259,11 +260,11 @@ void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
 
 #if BUILDFLAG(ENABLE_PDF)
 void AIChatTabHelper::OnPDFDocumentLoadComplete(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (!pdf_helper) {
-    std::move(callback).Run(PageContent("", false, ""));
+    std::move(callback).Run("", false, "");
     return;
   }
 
@@ -275,7 +276,7 @@ void AIChatTabHelper::OnPDFDocumentLoadComplete(
 }
 
 void AIChatTabHelper::OnGetPDFPageCount(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     pdf::mojom::PdfListener::GetPdfBytesStatus status,
     const std::vector<uint8_t>& bytes,
     uint32_t page_count) {
@@ -283,7 +284,7 @@ void AIChatTabHelper::OnGetPDFPageCount(
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
       !pdf_helper) {
-    std::move(callback).Run(PageContent("", false, ""));
+    std::move(callback).Run("", false, "");
     return;
   }
 
@@ -309,7 +310,7 @@ void AIChatTabHelper::OnGetPDFPageCount(
 }
 
 void AIChatTabHelper::OnAllPDFPagesTextReceived(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     const std::vector<std::pair<size_t, std::string>>& page_texts) {
   // Pre-size vector to hold all texts in order
   std::vector<std::string> ordered_texts(page_texts.size());
@@ -327,7 +328,7 @@ void AIChatTabHelper::OnAllPDFPagesTextReceived(
     }
   }
 
-  std::move(callback).Run(PageContent(std::move(content), false, ""));
+  std::move(callback).Run(std::move(content), false, "");
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
