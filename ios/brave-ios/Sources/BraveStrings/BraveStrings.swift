@@ -6339,12 +6339,30 @@ extension Strings {
 
 extension Strings {
   public struct Bookmarks {
+    public static let bookmarksEditButtonInActiveAccessibilityTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksEditButtonInActiveAccessibilityTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Edit Bookmarks",
+        comment: "Title for the voice-over accessibility when the user can begin edit bookmarks"
+      )
+
+    public static let bookmarksEditButtonActiveAccessibilityTitle =
+      NSLocalizedString(
+        "bookmarks.bookmarksEditButtonActiveAccessibilityTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "End Edit Bookmarks",
+        comment: "Title for the voice-over accessibility when the user stops edit bookmarks"
+      )
+
     public static let bookmarksEmptySearchTitle =
       NSLocalizedString(
         "bookmarks.bookmarksEmptySearchTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Search Bookmarks",
+        value: "No Bookmarks Found",
         comment: "Title displayed for placeholder inside Search Bar in Bookmarks"
       )
 
@@ -6353,7 +6371,7 @@ extension Strings {
         "bookmarks.bookmarksEmptyStateTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "No Search Results",
+        value: "No Bookmarks in Folder",
         comment: "Title which is displayed on Bookmarks screen when you search for something but no results are found"
       )
 
