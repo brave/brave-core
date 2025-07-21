@@ -617,9 +617,9 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
 }
 
 TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
-  bool account_creation_callback_called = false;
-  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
-      [&]() { account_creation_callback_called = true; }));
+  bool onboarding_callback_called = false;
+  SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { onboarding_callback_called = true; }));
   Navigate(GURL("https://brave.com"));
 
   mojom::SolanaProviderError error;
@@ -629,11 +629,9 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
-  EXPECT_TRUE(account_creation_callback_called);
-  EXPECT_TRUE(provider_->account_creation_shown_);
+  EXPECT_TRUE(onboarding_callback_called);
 
-  provider_->account_creation_shown_ = false;
-  account_creation_callback_called = false;
+  bool account_creation_callback_called = false;
   SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
       [&]() { account_creation_callback_called = true; }));
   // No solana account
