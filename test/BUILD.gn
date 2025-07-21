@@ -708,6 +708,7 @@ if (!is_android) {
       "//chrome:resources",
       "//chrome:strings",
       "//chrome/browser",
+      "//chrome/browser/password_manager/factories:password_factory_headers",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
