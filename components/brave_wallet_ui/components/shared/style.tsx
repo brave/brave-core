@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // types
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
@@ -604,4 +605,8 @@ export const DefaultPageWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+`
+
+export const LoadingRing = styled(ProgressRing)<{ size?: string }>`
+  --leo-progressring-size: ${(p) => p?.size || '40px'};
 `
