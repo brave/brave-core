@@ -54,13 +54,14 @@ def GetProcessOutput(args: List[str],
                      cwd: Optional[str] = None,
                      check=False,
                      output_to_debug=True,
-                     timeout: Optional[int] = None) -> Tuple[bool, str]:
+                     timeout: Optional[int] = None,
+                     env=os.environ) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
     logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
     process = subprocess.Popen(args,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
-                               env=os.environ,
+                               env=env,
                                cwd=cwd,
                                bufsize=0,
                                universal_newlines=True)
@@ -95,7 +96,7 @@ def GetProcessOutput(args: List[str],
     output = subprocess.check_output(args,
                                      stderr=subprocess.STDOUT,
                                      cwd=cwd,
-                                     env=os.environ,
+                                     env=env,
                                      timeout=timeout,
                                      universal_newlines=True)
     return True, output
