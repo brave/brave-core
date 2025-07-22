@@ -26,6 +26,7 @@
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -160,6 +161,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
       ::prefs::kEnableMediaRouter));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kEnableMediaRouterOnRestart));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, AIModePrefTest) {
+  EXPECT_EQ(-1, chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                    ::omnibox::kAIModeSettings));
+  EXPECT_FALSE(omnibox::IsMiaAllowedByPolicy(
+      chrome_test_utils::GetProfile(this)->GetPrefs()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
