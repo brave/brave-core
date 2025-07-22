@@ -142,7 +142,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
-  deleteFile(allResultsFilePath)
   await fs.writeFile(allResultsFilePath, '', 'utf-8')
 
   let braveArgs = []
