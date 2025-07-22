@@ -52,13 +52,14 @@ def ReportToDashboardImpl(
   build_properties['buildnumber'] = build_number
 
   chromium_version_str = version.chromium_version.to_string()
-  os.environ['DASHBOARD_EXTRA_DIAG_brave_chrome_version'] = chromium_version_str
-  os.environ['DASHBOARD_EXTRA_DIAG_brave_tag'] = version.to_string()
-  os.environ['DASHBOARD_EXTRA_DIAG_brave_job_name'] = job_name
-  os.environ['DASHBOARD_EXTRA_DIAG_brave_job_id'] = build_number
+  env = os.environ.copy()
+  env['DASHBOARD_EXTRA_DIAG_brave_chrome_version'] = chromium_version_str
+  env['DASHBOARD_EXTRA_DIAG_brave_tag'] = version.to_string()
+  env['DASHBOARD_EXTRA_DIAG_brave_job_name'] = job_name
+  env['DASHBOARD_EXTRA_DIAG_brave_job_id'] = build_number
 
   if griffin_rev is not None:
-    os.environ['DASHBOARD_EXTRA_DIAG_brave_variations_revisions'] = griffin_rev
+    env['DASHBOARD_EXTRA_DIAG_brave_variations_revisions'] = griffin_rev
 
   build_properties[
       'got_revision_cp'] = 'refs/heads/main@{#%s}' % version.revision_number
@@ -72,7 +73,7 @@ def ReportToDashboardImpl(
   build_properties_serialized = json.dumps(build_properties)
   args.append('--build-properties=' + build_properties_serialized)
 
-  success, _ = perf_test_utils.GetProcessOutput(args)
+  success, _ = perf_test_utils.GetProcessOutput(args, env=env)
   if success:
     return True, [], version.revision_number
 
@@ -236,9 +237,11 @@ class RunableConfiguration:
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
 
+    env = os.environ.copy()
+    env['CHROME_SHUTDOWN_TIMEOUT'] = '20'
     args.append('--browser-logging-verbosity=non-verbose')
     success, _ = perf_test_utils.GetProcessOutput(
-        args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
+        args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout, env=env)
     if success and not local_run:
       assert (out_dir is not None)
       assert (bench_out_dir is not None)
