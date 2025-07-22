@@ -193,6 +193,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.tabmodel.RedirectTabCreator {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.tabmodel.ChromeTabCreator {
     public <init>(...);
 }
