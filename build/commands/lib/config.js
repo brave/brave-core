@@ -1180,12 +1180,11 @@ Config.prototype.fromGnArgs = function (options) {
     process.exit(1)
   }
   const gnArgs = readArgsGn(this.srcDir, options.C)
-  Object.assign({}, gnArgs, { 'C': options.C })
   Log.warn(
     '--no-gn-gen is experimental and only gn args that match command '
       + 'line options will be processed',
   )
-  this.updateInternal(gnArgs)
+  this.updateInternal(Object.assign({}, gnArgs, { 'C': options.C }))
   assert(!this.isCI)
 }
 
