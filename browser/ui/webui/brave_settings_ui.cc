@@ -238,6 +238,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
   html_source->AddBoolean("isBraveAccountEnabled",
                           brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean(
+      "isTreeTabsFlagEnabled",
+      base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
 }
 
 // static
