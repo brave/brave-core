@@ -17,13 +17,13 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-class BraveWalletPageUI : public web::WebUIIOSController,
-                          public brave_wallet::mojom::PageHandlerFactory {
+class WalletPageUI : public web::WebUIIOSController,
+                     public brave_wallet::mojom::PageHandlerFactory {
  public:
-  explicit BraveWalletPageUI(web::WebUIIOS* web_ui, const GURL& url);
-  BraveWalletPageUI(const BraveWalletPageUI&) = delete;
-  BraveWalletPageUI& operator=(const BraveWalletPageUI&) = delete;
-  ~BraveWalletPageUI() override;
+  explicit WalletPageUI(web::WebUIIOS* web_ui, const GURL& url);
+  WalletPageUI(const WalletPageUI&) = delete;
+  WalletPageUI& operator=(const WalletPageUI&) = delete;
+  ~WalletPageUI() override;
 
   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
@@ -38,9 +38,9 @@ class BraveWalletPageUI : public web::WebUIIOSController,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
-          bitcoin_rpc_service_receiver,
+          bitcoin_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
-          zcash_service_receiver,
+          zcash_service,
       mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
           cardano_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
@@ -58,7 +58,7 @@ class BraveWalletPageUI : public web::WebUIIOSController,
       mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
           filecoin_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
-          btc_tx_manager_proxy,
+          bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
