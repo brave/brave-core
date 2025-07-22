@@ -390,7 +390,7 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 PageContentFetcher::PageContentFetcher(web::WebState* web_state)
     : web_state_(web_state),
       url_loader_factory_(
-          web_state_->GetBrowserState()->GetSharedURLLoaderFactory()) { }
+          web_state_->GetBrowserState()->GetSharedURLLoaderFactory()) {}
 
 PageContentFetcher::~PageContentFetcher() = default;
 

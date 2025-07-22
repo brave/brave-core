@@ -74,7 +74,6 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
       profile_(ProfileIOS::FromWebUIIOS(web_ui)),
       active_web_state_(GetActiveWebState(web_ui)) {
   DCHECK(profile_);
-  // DCHECK(profile_->IsRegularProfile());
   DCHECK(!profile_->IsOffTheRecord());
 
   // Create a URLDataSource and add resources.
@@ -91,8 +90,6 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
-
-  //  web_ui->AddRequestableScheme(kChromeUIUntrustedScheme);  // TODO??????
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
