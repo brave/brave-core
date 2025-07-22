@@ -119,10 +119,10 @@ void BraveWalletPageUI::CreatePageHandler(
   auto* browser_state = ProfileIOS::FromWebUIIOS(web_ui());
   DCHECK(browser_state);
 
-//   page_handler_ = std::make_unique<WalletPageHandler>(std::move(page_receiver));
+  page_handler_ = std::make_unique<WalletPageHandler>(std::move(page_receiver));
 
-//   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
-//       std::move(wallet_receiver), browser_state);
+  wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+      std::move(wallet_receiver), browser_state);
 
   brave_wallet::SwapServiceFactory::GetServiceForState(browser_state)
       ->Bind(std::move(swap_service_receiver));
