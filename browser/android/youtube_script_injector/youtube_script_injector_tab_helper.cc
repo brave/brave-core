@@ -367,10 +367,10 @@ bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
 }
 
 void YouTubeScriptInjectorTabHelper::MaybePauseYouTubeVideo() {
-  if (IsBackgroundVideoPlaybackEnabled(contents) && 
-  IsYouTubeVideo() && web_contents() &&
-         web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
-    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+  if (IsBackgroundVideoPlaybackEnabled(web_contents()) && IsYouTubeVideo() &&
+      web_contents() &&
+      web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
+    web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePausePlayback, base::NullCallback());
   }
 }

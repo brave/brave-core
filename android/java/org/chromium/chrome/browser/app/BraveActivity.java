@@ -98,6 +98,7 @@ import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
+import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.IntentHandler;
@@ -503,6 +504,17 @@ public abstract class BraveActivity extends ChromeActivity
         super.onDestroyInternal();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
+        super.onPictureInPictureModeChanged(inPicture, newConfig);
+
+        if (!inPicture && getCurrentWebContents() != null) {
+            // PiP has been dismissed.
+            // If watching a YT video, then pause it.
+            BraveYouTubeScriptInjectorNativeHelper.maybePauseYouTubeVideo(getCurrentWebContents());
+        }
     }
 
     /**
