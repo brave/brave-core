@@ -1,5 +1,5 @@
 diff --git a/components/minidump_uploader/BUILD.gn b/components/minidump_uploader/BUILD.gn
-index d51e0d1146a4a192b542068a3f4b39cd1c59642d..ac7265711e18aa981a90221643c704ff74546332 100644
+index dc243320e1c2d069d30c0f8cc540d4f5567dd5e2..9251194d58d7ec7da4bd6e82b54894520744a2d0 100644
 --- a/components/minidump_uploader/BUILD.gn
 +++ b/components/minidump_uploader/BUILD.gn
 @@ -75,6 +75,7 @@ android_library("minidump_uploader_java") {
