@@ -290,7 +290,7 @@ exports.update = () => {
   ])
 
   let explicitSourceFiles = new Set()
-  if (config.getTargetOS() === 'mac') {
+  if (config.targetOS === 'mac') {
     // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.
     // Each channel's app icons are stored in brave/app/theme/$channel/app.icns.
     // With this copying, we don't need to modify chrome/BUILD.gn for this.

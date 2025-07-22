@@ -538,7 +538,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.shouldSign()) {
-    if (this.getTargetOS() === 'mac') {
+    if (this.targetOS === 'mac') {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier =
         this.mac_installer_signing_identifier
@@ -615,7 +615,7 @@ Config.prototype.buildArgs = function () {
   //    configuration. symbol_level = 2 cannot be used because of "relocation
   //    R_X86_64_32 out of range" errors.
   if (
-    this.getTargetOS() === 'linux'
+    this.targetOS === 'linux'
     && (this.targetArch === 'x86'
       || (!this.isDebug()
         && !this.isComponentBuild()
@@ -627,12 +627,12 @@ Config.prototype.buildArgs = function () {
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
   // unless use_debug_fission is set. However, they don't set it when a
   // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
-  if (this.getTargetOS() === 'linux' && this.isReleaseBuild()) {
+  if (this.targetOS === 'linux' && this.isReleaseBuild()) {
     args.use_debug_fission = true
   }
 
   if (
-    this.getTargetOS() === 'mac'
+    this.targetOS === 'mac'
     && fs.existsSync(
       path.join(
         this.srcDir,
@@ -647,7 +647,7 @@ Config.prototype.buildArgs = function () {
     args.use_system_xcode = false
   }
 
-  if (this.getTargetOS() === 'linux') {
+  if (this.targetOS === 'linux') {
     if (this.targetArch !== 'x86') {
       // Include vaapi support
       // TODO: Consider setting use_vaapi_x11 instead of use_vaapi. Also
@@ -657,7 +657,7 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (['android', 'linux', 'mac'].includes(this.getTargetOS())) {
+  if (['android', 'linux', 'mac'].includes(this.targetOS)) {
     // LSAN only works with ASAN and has very low overhead.
     args.is_lsan = args.is_asan
   }
@@ -877,7 +877,7 @@ Config.prototype.shouldSign = function () {
     return this.braveAndroidKeystorePath !== undefined
   }
 
-  if (this.getTargetOS() === 'mac') {
+  if (this.targetOS === 'mac') {
     return this.mac_signing_identifier !== undefined
   }
 
@@ -981,10 +981,6 @@ Config.prototype.update = function (options) {
     } else {
       this.targetOS = options.target_os
     }
-    assert(
-      ['android', 'ios', 'linux', 'mac', 'win'].includes(this.targetOS),
-      `Unsupported target_os value: ${this.targetOS}`,
-    )
   }
 
   if (this.targetOS === 'android') {
@@ -1151,12 +1147,26 @@ Config.prototype.update = function (options) {
   }
 }
 
-Config.prototype.getTargetOS = function () {
-  if (this.targetOS) {
-    return this.targetOS
-  }
-  return this.hostOS
-}
+Object.defineProperty(Config.prototype, 'targetOS', {
+  get: function () {
+    if (this._targetOS) {
+      return this._targetOS
+    }
+    return this.hostOS
+  },
+  set: function (value) {
+    this._targetOS = value
+    if (this._targetOS) {
+      const supportedOS = ['android', 'ios', 'linux', 'mac', 'win']
+      assert(
+        supportedOS.includes(this._targetOS),
+        `Unsupported target_os value: ${
+          this._targetOS
+        }, supported values: ${supportedOS.join(', ')}`,
+      )
+    }
+  },
+})
 
 Config.prototype.getCachePath = function () {
   return this.git_cache_path || process.env.GIT_CACHE_PATH
@@ -1181,7 +1191,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       true,
     )
     env = this.addPathToEnv(env, this.depotToolsDir, true)
-    if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
+    if (this.targetOS === 'mac' && process.platform !== 'darwin') {
       const crossCompilePath = path.join(
         this.srcDir,
         'brave',
