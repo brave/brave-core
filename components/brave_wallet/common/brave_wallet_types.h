@@ -63,13 +63,13 @@ struct Log {
 
   std::string address;
   std::string block_hash;
-  uint256_t block_number;
+  uint256_t block_number{0u};
   std::string data;
-  uint32_t log_index;
-  bool removed;
+  uint32_t log_index{0u};
+  bool removed{false};
   std::vector<std::string> topics;
   std::string transaction_hash;
-  uint32_t transaction_index;
+  uint32_t transaction_index{0u};
 };
 
 struct TransactionReceipt {
@@ -80,13 +80,13 @@ struct TransactionReceipt {
   bool operator!=(const TransactionReceipt&) const;
 
   std::string transaction_hash;
-  uint256_t transaction_index;
+  uint256_t transaction_index{0u};
   std::string block_hash;
-  uint256_t block_number;
+  uint256_t block_number{0u};
   std::string from;
   std::string to;
-  uint256_t cumulative_gas_used;
-  uint256_t gas_used;
+  uint256_t cumulative_gas_used{0u};
+  uint256_t gas_used{0u};
   std::string contract_address;
   std::vector<Log> logs;
   std::string logs_bloom;
@@ -142,7 +142,7 @@ struct SolanaAccountInfo {
   bool operator!=(const SolanaAccountInfo&) const;
 
   // Number of lamports assigned to this account.
-  uint64_t lamports;
+  uint64_t lamports{0u};
 
   // base-58 encoded Pubkey of the program this account has been assigned to.
   std::string owner;
@@ -151,10 +151,10 @@ struct SolanaAccountInfo {
   std::string data;
 
   // Indicating if the account contains a program.
-  bool executable;
+  bool executable{false};
 
   // The epoch at which this account will next owe rent.
-  uint64_t rent_epoch;
+  uint64_t rent_epoch{0u};
 };
 
 inline constexpr char kMetamaskExtensionId[] =
