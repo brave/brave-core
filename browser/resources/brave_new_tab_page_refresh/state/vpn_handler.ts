@@ -14,6 +14,7 @@ export function createVpnHandler(
   store: Store<VpnState>
 ): VpnActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
+    store.update({ initialized: true })
     return defaultVpnActions()
   }
 
@@ -72,7 +73,8 @@ export function createVpnHandler(
   const vpnServiceObserver = new mojom.ServiceObserverReceiver({
     onConnectionStateChanged: updateConnectionInfo,
     onSelectedRegionChanged: updateConnectionInfo,
-    onPurchasedStateChanged: updateConnectionInfo
+    onPurchasedStateChanged: updateConnectionInfo,
+    onSmartProxyRoutingStateChanged: (enabled: boolean) => {}
   })
 
   vpnService.addObserver(vpnServiceObserver.$.bindNewPipeAndPassRemote())

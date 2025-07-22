@@ -91,6 +91,7 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
   var _onActiveOriginChanged: ((_ originInfo: BraveWallet.OriginInfo) -> Void)?
   var _onDefaultEthereumWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
+  var _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultBaseCurrencyChanged: ((_ currency: String) -> Void)?
   var _onDefaultBaseCryptocurrencyChanged: ((_ cryptocurrency: String) -> Void)?
   var _onNetworkListChanged: (() -> Void)?
@@ -103,6 +104,7 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     _onActiveOriginChanged: ((_ originInfo: BraveWallet.OriginInfo) -> Void)? = nil,
     _onDefaultEthereumWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
+    _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultBaseCurrencyChanged: ((_ currency: String) -> Void)? = nil,
     _onDefaultBaseCryptocurrencyChanged: ((_ cryptocurrency: String) -> Void)? = nil,
     _onNetworkListChanged: (() -> Void)? = nil,
@@ -114,6 +116,7 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     self._onActiveOriginChanged = _onActiveOriginChanged
     self._onDefaultEthereumWalletChanged = _onDefaultEthereumWalletChanged
     self._onDefaultSolanaWalletChanged = _onDefaultSolanaWalletChanged
+    self._onDefaultCardanoWalletChanged = _onDefaultCardanoWalletChanged
     self._onDefaultBaseCurrencyChanged = _onDefaultBaseCurrencyChanged
     self._onDefaultBaseCryptocurrencyChanged = _onDefaultBaseCryptocurrencyChanged
     self._onNetworkListChanged = _onNetworkListChanged
@@ -133,6 +136,10 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
 
   func onDefaultSolanaWalletChanged(wallet: BraveWallet.DefaultWallet) {
     _onDefaultSolanaWalletChanged?(wallet)
+  }
+
+  func onDefaultCardanoWalletChanged(wallet: BraveWallet.DefaultWallet) {
+    _onDefaultCardanoWalletChanged?(wallet)
   }
 
   func onDefaultBaseCurrencyChanged(currency: String) {

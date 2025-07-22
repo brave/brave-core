@@ -75,6 +75,10 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::GetSolanaProviderOptions,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "getCardanoProviderOptions",
+      base::BindRepeating(&BraveWalletHandler::GetCardanoProviderOptions,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getTransactionSimulationOptInStatusOptions",
       base::BindRepeating(
           &BraveWalletHandler::GetTransactionSimulationOptInStatusOptions,
@@ -124,6 +128,10 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::IsCardanoEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "isCardanoDAppSupportEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsCardanoDAppSupportEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "isTransactionSimulationsFeatureEnabled",
       base::BindRepeating(&BraveWalletHandler::IsTransactionSimulationsEnabled,
                           base::Unretained(this)));
@@ -152,6 +160,20 @@ void BraveWalletHandler::GetSolanaProviderOptions(
       l10n_util::GetStringUTF16(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
       ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
+      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
+      ::brave_wallet::mojom::DefaultWallet::None));
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], list);
+}
+
+void BraveWalletHandler::GetCardanoProviderOptions(
+    const base::Value::List& args) {
+  base::Value::List list;
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
       ::brave_wallet::mojom::DefaultWallet::BraveWallet));
@@ -398,6 +420,14 @@ void BraveWalletHandler::IsCardanoEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsCardanoEnabled()));
+}
+
+void BraveWalletHandler::IsCardanoDAppSupportEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0], base::Value(::brave_wallet::IsCardanoDAppSupportEnabled()));
 }
 
 void BraveWalletHandler::IsTransactionSimulationsEnabled(

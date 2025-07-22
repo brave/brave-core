@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43c30d88e9 100644
+index 40da3e5ffeab78e7db474151e77d50363a05aa4a..1b64ecc9c4fa2c542eabfba8e968b625a06d91b4 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -20,7 +20,16 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -83,25 +86,33 @@ by a child template that "extends" this file.
+@@ -76,32 +79,42 @@ by a child template that "extends" this file.
+     {% endif %}
+     {% set enable_screen_capture = enable_screen_capture|default(0) %}
+     {% if enable_screen_capture == "true" %}
++<!--
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
++-->
+     {% endif %}
+     <!-- TODO(crbug.com/40259231): Remove this tools:ignore attribute once it's no longer necessary. -->
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
@@ -52,11 +61,11 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
      <uses-permission android:name="android.permission.VIBRATE"/>
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
 -    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -148,7 +159,9 @@ by a child template that "extends" this file.
+@@ -148,7 +161,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -66,7 +75,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -359,6 +372,7 @@ by a child template that "extends" this file.
+@@ -359,6 +374,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -74,7 +83,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -887,6 +901,7 @@ by a child template that "extends" this file.
+@@ -887,6 +903,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -82,7 +91,7 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -910,6 +925,7 @@ by a child template that "extends" this file.
+@@ -910,6 +927,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -90,7 +99,16 @@ index 40da3e5ffeab78e7db474151e77d50363a05aa4a..665c82b85253679f6e149965b4ed8f43
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1220,6 +1236,7 @@ by a child template that "extends" this file.
+@@ -1146,7 +1164,7 @@ by a child template that "extends" this file.
+             {% elif is_desktop_android == "true" %}
+             android:foregroundServiceType="camera|microphone"
+             {% elif enable_screen_capture == "true" %}
+-            android:foregroundServiceType="mediaProjection|mediaPlayback"
++            android:foregroundServiceType="mediaPlayback"
+             {% endif %}
+             android:exported="false"/>
+         <service android:name="org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerServices$PlaybackListenerService"
+@@ -1220,6 +1238,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

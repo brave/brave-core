@@ -149,11 +149,11 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(network, .mockMainnet)
       }
       .store(in: &cancellables)
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNotNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -262,6 +262,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 
   func testUpdateWithBlockchainTokenBitcoin() {
@@ -378,11 +379,11 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(network, .mockBitcoinMainnet)
       }
       .store(in: &cancellables)
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -474,6 +475,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
   }
 
   func testUpdateWithCoinMarket() {
@@ -567,11 +569,11 @@ class AssetDetailStoreTests: XCTestCase {
 
     let assetDetailBitcoinException = expectation(description: "update-coinMarket-bitcoin")
     assetDetailBitcoinException.expectedFulfillmentCount = 10
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailBitcoinException.fulfill() }
-        XCTAssertFalse($0)
+        XCTAssertNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -659,6 +661,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailBitcoinException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
     cancellables.removeAll()
 
     // setup store
@@ -680,11 +683,11 @@ class AssetDetailStoreTests: XCTestCase {
     )
     let assetDetailNonBitcoinException = expectation(description: "update-coinMarket-non-bitcoin")
     assetDetailNonBitcoinException.expectedFulfillmentCount = 10
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailNonBitcoinException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNotNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -778,5 +781,6 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailNonBitcoinException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 }

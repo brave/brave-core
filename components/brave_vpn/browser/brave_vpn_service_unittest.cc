@@ -21,6 +21,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
@@ -140,7 +141,7 @@ std::string GenerateTestingCreds(const std::string& domain,
 using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
-class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
+class TestBraveVPNServiceObserver : public BraveVPNServiceObserver {
  public:
   TestBraveVPNServiceObserver() = default;
 

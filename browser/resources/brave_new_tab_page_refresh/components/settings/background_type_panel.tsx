@@ -17,7 +17,10 @@ import {
   solidBackgrounds,
   gradientBackgrounds } from '../../state/background_state'
 
-import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
+import {
+  useBackgroundState,
+  useCurrentBackground,
+  useBackgroundActions } from '../../context/background_context'
 
 interface Props {
   backgroundType: SelectedBackgroundType
@@ -30,7 +33,7 @@ export function BackgroundTypePanel(props: Props) {
 
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
-  const currentBackground = useBackgroundState((s) => s.currentBackground)
+  const currentBackground = useCurrentBackground()
 
   const type = props.backgroundType
 

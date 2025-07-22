@@ -14,5 +14,14 @@ export const style = scoped.css`
     backdrop-filter: blur(50px);
     display: flex;
     align-items: stretch;
+
+    animation: linear widget-scroll-fade both;
+    animation-timeline: --ntp-main-view-timeline;
+    animation-range: exit-crossing 10% exit-crossing 100%;
+  }
+
+  @keyframes widget-scroll-fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 `

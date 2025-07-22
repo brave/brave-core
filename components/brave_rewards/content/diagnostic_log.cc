@@ -41,7 +41,7 @@ std::string GetLogVerboseLevelName(int verbose_level) {
     }
 
     default: {
-      verbose_level_name = base::StringPrintf("VERBOSE%d", verbose_level);
+      verbose_level_name = absl::StrFormat("VERBOSE%d", verbose_level);
       break;
     }
   }
@@ -335,9 +335,9 @@ void DiagnosticLog::Write(const std::string& log_entry,
   const base::FilePath file_path = base::FilePath().AppendASCII(file);
   const std::string filename = file_path.BaseName().MaybeAsASCII();
 
-  const std::string formatted_log_entry = base::StringPrintf(
-      "[%s:%s:%s(%d)] %s\n", formatted_time.c_str(), verbose_level_name.c_str(),
-      filename.c_str(), line, log_entry.c_str());
+  const std::string formatted_log_entry =
+      absl::StrFormat("[%s:%s:%s(%d)] %s\n", formatted_time, verbose_level_name,
+                      filename, line, log_entry);
 
   Write(formatted_log_entry, std::move(callback));
 }

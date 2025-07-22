@@ -19,13 +19,13 @@ const Log = require('./logging')
 // Use the same filename as for Brave archive.
 const getOutputFilename = () => {
   const platform = (() => {
-    if (config.getTargetOS() === 'win') {
+    if (config.targetOS === 'win') {
       return 'win32'
     }
-    if (config.getTargetOS() === 'mac') {
+    if (config.targetOS === 'mac') {
       return 'darwin'
     }
-    return config.getTargetOS()
+    return config.targetOS
   })()
   return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
 }
@@ -109,7 +109,7 @@ const chromiumConfigs = {
 // 1. Chromium perf builds: tools/mb/mb_config_expectations/chromium.perf.json
 // 2. Brave Release build configuration
 function getChromiumGnArgs() {
-  const targetOs = config.getTargetOS()
+  const targetOs = config.targetOS
   const targetArch = config.targetArch
   const args = {
     target_cpu: targetArch,
@@ -157,14 +157,14 @@ function buildChromiumRelease(buildOptions = {}) {
   config.isChromium = true
   config.update(buildOptions)
 
-  const chromiumConfig = chromiumConfigs[config.getTargetOS()]
+  const chromiumConfig = chromiumConfigs[config.targetOS]
   if (!chromiumConfig) {
-    throw Error(`${config.getTargetOS()} is unsupported`)
+    throw Error(`${config.targetOS} is unsupported`)
   }
 
   depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(
-    [config.getTargetOS()],
+    [config.targetOS],
     [config.targetArch],
     true,
   )

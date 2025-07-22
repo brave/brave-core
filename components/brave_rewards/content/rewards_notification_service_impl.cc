@@ -17,7 +17,6 @@
 #include "base/logging.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -134,8 +133,8 @@ RewardsNotificationServiceImpl::GetAllNotifications() const {
 
 RewardsNotificationServiceImpl::RewardsNotificationID
 RewardsNotificationServiceImpl::GenerateRewardsNotificationID() const {
-  return base::StringPrintf(
-      "%d", base::RandInt(0, std::numeric_limits<int32_t>::max()));
+  return base::NumberToString(
+      base::RandInt(0, std::numeric_limits<int32_t>::max()));
 }
 
 RewardsNotificationServiceImpl::RewardsNotificationTimestamp

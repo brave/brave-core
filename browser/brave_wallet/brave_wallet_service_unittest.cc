@@ -220,6 +220,10 @@ class TestBraveWalletServiceObserver
     default_solana_wallet_ = wallet;
     default_solana_wallet_changed_fired_ = true;
   }
+  void OnDefaultCardanoWalletChanged(mojom::DefaultWallet wallet) override {
+    default_cardano_wallet_ = wallet;
+    default_cardano_wallet_changed_fired_ = true;
+  }
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
     currency_ = currency;
     default_base_currency_changed_fired_ = true;
@@ -241,11 +245,17 @@ class TestBraveWalletServiceObserver
   mojom::DefaultWallet GetDefaultSolanaWallet() {
     return default_solana_wallet_;
   }
+  mojom::DefaultWallet GetDefaultCardanoWallet() {
+    return default_cardano_wallet_;
+  }
   bool DefaultEthereumWalletChangedFired() {
     return default_ethereum_wallet_changed_fired_;
   }
   bool DefaultSolanaWalletChangedFired() {
     return default_solana_wallet_changed_fired_;
+  }
+  bool DefaultCardanoWalletChangedFired() {
+    return default_cardano_wallet_changed_fired_;
   }
   std::string GetDefaultBaseCurrency() { return currency_; }
   std::string GetDefaultBaseCryptocurrency() { return cryptocurrency_; }
@@ -265,6 +275,7 @@ class TestBraveWalletServiceObserver
   void Reset() {
     default_ethereum_wallet_changed_fired_ = false;
     default_solana_wallet_changed_fired_ = false;
+    default_cardano_wallet_changed_fired_ = false;
     default_base_currency_changed_fired_ = false;
     default_base_cryptocurrency_changed_fired_ = false;
     network_list_changed_fired_ = false;
@@ -275,8 +286,11 @@ class TestBraveWalletServiceObserver
       mojom::DefaultWallet::BraveWalletPreferExtension;
   mojom::DefaultWallet default_solana_wallet_ =
       mojom::DefaultWallet::BraveWalletPreferExtension;
+  mojom::DefaultWallet default_cardano_wallet_ =
+      mojom::DefaultWallet::BraveWallet;
   bool default_ethereum_wallet_changed_fired_ = false;
   bool default_solana_wallet_changed_fired_ = false;
+  bool default_cardano_wallet_changed_fired_ = false;
   bool default_base_currency_changed_fired_ = false;
   bool default_base_cryptocurrency_changed_fired_ = false;
   bool network_list_changed_fired_ = false;
@@ -599,6 +613,20 @@ class BraveWalletServiceUnitTest : public testing::Test {
     observer_->Reset();
   }
 
+  void SetDefaultCardanoWallet(mojom::DefaultWallet default_wallet) {
+    auto old_default_wallet = observer_->GetDefaultCardanoWallet();
+    EXPECT_FALSE(observer_->DefaultCardanoWalletChangedFired());
+    service_->SetDefaultCardanoWallet(default_wallet);
+    task_environment_.RunUntilIdle();
+    if (old_default_wallet != default_wallet) {
+      EXPECT_TRUE(observer_->DefaultCardanoWalletChangedFired());
+    } else {
+      EXPECT_FALSE(observer_->DefaultCardanoWalletChangedFired());
+    }
+    EXPECT_EQ(default_wallet, observer_->GetDefaultCardanoWallet());
+    observer_->Reset();
+  }
+
   void SetDefaultBaseCurrency(const std::string& currency) {
     auto old_currency = observer_->GetDefaultBaseCurrency();
     EXPECT_FALSE(observer_->DefaultBaseCurrencyChangedFired());
@@ -643,6 +671,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop run_loop;
     mojom::DefaultWallet default_wallet;
     service_->GetDefaultSolanaWallet(
+        base::BindLambdaForTesting([&](mojom::DefaultWallet v) {
+          default_wallet = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return default_wallet;
+  }
+
+  mojom::DefaultWallet GetDefaultCardanoWallet() {
+    base::RunLoop run_loop;
+    mojom::DefaultWallet default_wallet;
+    service_->GetDefaultCardanoWallet(
         base::BindLambdaForTesting([&](mojom::DefaultWallet v) {
           default_wallet = v;
           run_loop.Quit();
@@ -1511,6 +1551,17 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultSolanaWallet) {
   SetDefaultSolanaWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
   EXPECT_EQ(GetDefaultSolanaWallet(),
             mojom::DefaultWallet::BraveWalletPreferExtension);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultCardanoWallet) {
+  SetDefaultCardanoWallet(mojom::DefaultWallet::BraveWallet);
+  EXPECT_EQ(GetDefaultCardanoWallet(), mojom::DefaultWallet::BraveWallet);
+
+  SetDefaultCardanoWallet(mojom::DefaultWallet::None);
+  EXPECT_EQ(GetDefaultCardanoWallet(), mojom::DefaultWallet::None);
+
+  SetDefaultCardanoWallet(mojom::DefaultWallet::BraveWallet);
+  EXPECT_EQ(GetDefaultCardanoWallet(), mojom::DefaultWallet::BraveWallet);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCurrency) {

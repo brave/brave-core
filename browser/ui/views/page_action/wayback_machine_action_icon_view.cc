@@ -12,9 +12,13 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_loading_indicator_view.h"
+#include "components/user_prefs/user_prefs.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/gfx/canvas.h"
@@ -170,6 +174,15 @@ void WaybackMachineActionIconView::OnExecuting(ExecuteSource source) {
 }
 
 void WaybackMachineActionIconView::UpdateImpl() {
+  // Hide icon if disabled by policy
+  auto* prefs = user_prefs::UserPrefs::Get(browser_->profile());
+  if (IsDisabledByPolicy(prefs)) {
+    SetVisible(false);
+    SetIsLoading(false);
+    SetCommandEnabled(false);
+    return;
+  }
+
   const auto state = state_manager_.GetActiveTabWaybackState();
   switch (state) {
     case WaybackState::kInitial:

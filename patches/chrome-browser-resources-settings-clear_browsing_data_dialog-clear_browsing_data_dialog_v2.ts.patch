@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
-index fdd4f3582c4dc8233f83bc7bc5f395dcf36e07ce..601027bef1f85c9d47f44e0d3f0d02a7012cfce2 100644
+index 6edc6fbfdd0bdc8448039f776e239113f901f230..125b0a957cb36098f106a3f3463d0de6f28b781c 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
 @@ -116,6 +116,7 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {

@@ -10,12 +10,12 @@ import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
 import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'
-import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
+import { useCurrentBackground, useBackgroundActions } from '../../context/background_context'
 
 import { style } from './background_caption.style'
 
 export function BackgroundCaption() {
-  const currentBackground = useBackgroundState((s) => s.currentBackground)
+  const currentBackground = useCurrentBackground()
 
   function renderCaption() {
     switch (currentBackground?.type) {

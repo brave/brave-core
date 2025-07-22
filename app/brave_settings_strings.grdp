@@ -150,6 +150,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS" desc="The label for showing tabs vertically">
     Use vertical tabs
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_TREE_TABS" desc="The label for using tree tabs" formatter_data="webui=BraveSettings">
+    Use tree tabs
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_TITLE_BAR" desc="The label for showing window title when vertical tab strip is enabled.">
     Show title bar
   </message>
@@ -1266,6 +1269,9 @@
   </message>
   <message name="IDS_SETTINGS_DEFAULT_SOLANA_WALLET_DESC" desc="The default cryptocurrency wallet for the Solana blockchain">
     Default Solana wallet
+  </message>
+  <message name="IDS_SETTINGS_DEFAULT_CARDANO_WALLET_DESC" desc="The default cryptocurrency wallet for the Cardano blockchain">
+    Default Cardano wallet
   </message>
   <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE" desc="Select control value for which web3 provider to use">
     Brave Wallet

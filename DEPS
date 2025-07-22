@@ -17,7 +17,7 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@6c9e870da453d7328eec81f3964cd8d1ff535c11",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@782d0a041d09f9b02cdf633dae6567bb1f140a27",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
@@ -91,7 +91,8 @@ hooks = [
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/download_dep.py',
                'omaha4/BraveUpdater-136.1.79.71.zip',
-               '//third_party/updater/chrome_mac_universal_prod/cipd'],
+               '//brave/third_party/updater/mac',
+               'BraveUpdater.app/'],
   },
   {
     'name': 'update_pip',

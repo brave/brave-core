@@ -15,6 +15,7 @@ export function createRewardsHandler(
   store: Store<RewardsState>
 ): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
+    store.update({ initialized: true })
     return defaultRewardsActions()
   }
 

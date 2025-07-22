@@ -9,6 +9,7 @@ import {
   FILECOINIcon,
   SOLIcon,
   BTCIcon,
+  BNBIcon,
 } from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthMainnet: BraveWallet.NetworkInfo = {
@@ -137,6 +138,20 @@ export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
   symbolName: 'Bitcoin',
 }
 
+export const mockBNBChainNetwork: BraveWallet.NetworkInfo = {
+  chainId: '0x38',
+  chainName: 'BNB Smart Chain Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://bsc-mainnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://bscscan.com'],
+  symbol: 'BNB',
+  symbolName: 'BNB',
+  decimals: 18,
+  iconUrls: [BNBIcon],
+  coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
+}
+
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockEthMainnet,
   mockSepolia,
@@ -146,4 +161,5 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockSolanaTestnetNetwork,
   mockEthLocalhost,
   mockBitcoinMainnet,
+  mockBNBChainNetwork,
 ]

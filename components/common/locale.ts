@@ -9,31 +9,18 @@ import * as React from 'react'
 /**
  * Gets the localized string
  * @param {string} key - translation identifier
- * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
  * @returns {string} - the localized string
  */
-export const getLocale = (
-  key: string,
-  replacements?: Record<string, string>
-) => {
+export const getLocale = (key: string) => {
   if (!key) {
     console.error('locale string requires a key!')
     return key
   }
 
-  let returnVal = loadTimeData.getString(key)
+  const returnVal = loadTimeData.getString(key)
   if (!returnVal) {
     console.error(`locale string not found for key: ${key}`)
     return key
-  }
-
-  if (replacements) {
-    for (let item in replacements) {
-      returnVal = returnVal.replace(
-        new RegExp('\\[\\[\\s*' + item + '\\s*\\]\\]'),
-        replacements[item].toString()
-      )
-    }
   }
 
   return returnVal
@@ -50,8 +37,8 @@ interface ReplacedRange {
   start: number
   end: number
   key: `$${number}`
-
   children: ReplacedRange[]
+  hasClosingTag: boolean
 }
 
 /**
@@ -67,16 +54,26 @@ interface ReplacedRange {
  *   $1: 'world'
  * }) // 'Hello world'
  *
- * formatString('Hello $1world$1', {
+ * formatString('Hello $1world/$1', {
  *   $1: (content) => <a href="#">{content}</a>
  * }) // 'Hello <a href="#">world</a>'
  */
-export function formatString<T extends Replacement>(text: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
+export function formatString<T extends Replacement>(text: string, replacementsRaw: Record<`$${string}`, T> | T[], options?: Options): ReturnType<T> {
+  // If the replacements are an array, convert them to an object with the
+  // correct keys (0 ==> $1, 1 ==> $2, etc).
+  const replacements = Array.isArray(replacementsRaw)
+    ? replacementsRaw.reduce<Record<`$${string}`, T>>((acc, replacement, index) => {
+        acc[`$${index + 1}`] = replacement
+        return acc
+      }, {})
+    : replacementsRaw
+
   const result: ReplacedRange = {
     children: [],
     start: 0,
     end: text.length,
-    key: `` as any
+    key: `` as any,
+    hasClosingTag: false
   }
 
   const getReplacedContent = (range: ReplacedRange): Content | Content[] => {
@@ -93,11 +90,14 @@ export function formatString<T extends Replacement>(text: string, replacements: 
       bits.push(getReplacedContent(child))
       consumed = child.end
     }
-    maybePushSlice(consumed, range.end - range.key.length)
+    // If we have a closing tag (i.e. /$1) it is one character longer than the
+    // start tag.
+    const contentEnd = range.end - range.key.length - (range.hasClosingTag ? 1 : 0)
+    maybePushSlice(consumed, contentEnd)
 
     const childContent = bits.every(c => typeof c === 'string')
       ? bits.join('')
-      : React.createElement(React.Fragment, null, ...bits)
+      : React.createElement(React.Fragment, null, ...bits.filter(b => !!b))
 
     const replacement = replacements[range.key]
     if (!replacement) return childContent
@@ -108,14 +108,16 @@ export function formatString<T extends Replacement>(text: string, replacements: 
   }
 
   const stack = [result]
-  const regex = /\$(\d+)/gm
+  const regex = /\/?\$(\d+)/gm
 
   // Keep track of the keys we've seen, so we can throw an error if a key is
   // missing.
   const seen = new Set<string>()
 
   for (const match of text.matchAll(regex)) {
-    const key = match[0] as keyof typeof replacements
+    const tag = match[0]
+    const isClosingTag = tag.startsWith('/')
+    const key = (isClosingTag ? tag.substring(1) : tag) as keyof typeof replacements
 
     // If we should throw an error for missing replacements, keep track of the
     // keys we've seen.
@@ -123,23 +125,29 @@ export function formatString<T extends Replacement>(text: string, replacements: 
       seen.add(key)
     }
 
-    // If this is a closing tag, pop the element off the stack.
-    if (stack.at(-1)!.key === key) {
-      stack.pop()
-      continue
-    }
-
     // We're not going to replace this key, so ignore it.
     if (!replacements[key]) { continue }
 
+    // If this is a closing tag, pop the element off the stack.
+    if (isClosingTag) {
+      if (stack.at(-1)!.key === key) {
+        stack.pop()
+      } else {
+        throw new Error(`Mismatched closing tag: ${tag} in message "${text}"`)
+      }
+      continue
+    }
+
     // Check if we have a closing tag for this key.
-    let selfClosing = false
-    let endIndex = text.indexOf(key, match.index + key.length)
+    let hasClosingTag = true
+    let endIndex = text.indexOf("/" + key, match.index + key.length)
 
     // If we don't have a closing tag, the end tag is the same as the start tag.
     if (endIndex === -1) {
       endIndex = match.index
-      selfClosing = true
+      hasClosingTag = false
+    } else {
+      endIndex += 1 // Include the slash
     }
 
     // Add the key length so it is fully included in the range.
@@ -150,12 +158,13 @@ export function formatString<T extends Replacement>(text: string, replacements: 
       end: endIndex,
       start: match.index,
       key: key as `$${number}`,
+      hasClosingTag
     }
     stack.at(-1)!.children.push(range)
 
     // If this is not a self-closing tag, push the element onto the stack, so
     // elements inside it can be added as children.
-    if (!selfClosing) {
+    if (hasClosingTag) {
       stack.push(range)
     }
   }
@@ -166,10 +175,10 @@ export function formatString<T extends Replacement>(text: string, replacements: 
     throw new Error(`Missing replacements (${Object.keys(replacements).filter(key => !seen.has(key)).join(', ')} we not found in ${text})`)
   }
 
-  const formatted = getReplacedContent(result) as ReturnType<T>
-  return Array.isArray(formatted) ?
+  const formatted = getReplacedContent(result)
+  return (Array.isArray(formatted) ?
     React.createElement(React.Fragment, null, ...formatted)
-    : formatted as any
+    : formatted) as ReturnType<T>
 }
 
 /**
@@ -183,6 +192,6 @@ export function formatString<T extends Replacement>(text: string, replacements: 
  *   $1: status => <b>${status}</b>
  * }) // <>Shields are <b>UP</b></>
  */
-export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
+export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${string}`, T> | T[], options?: Options): ReturnType<T> {
   return formatString(getLocale(key), replacements, options)
 }

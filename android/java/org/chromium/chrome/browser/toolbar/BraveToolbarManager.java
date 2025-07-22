@@ -461,8 +461,10 @@ public class BraveToolbarManager extends ToolbarManager
         assert toolbarLayout instanceof BraveToolbarLayoutImpl
                 : "Something has changed in the upstream!";
         if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
-            ((BraveToolbarLayoutImpl) toolbarLayout)
-                    .setTabModelSelector(mTabModelSelectorSupplier.get());
+            final BraveToolbarLayoutImpl braveToolbarLayout =
+                    (BraveToolbarLayoutImpl) toolbarLayout;
+            braveToolbarLayout.setFullscreenManager(mFullscreenManager);
+            braveToolbarLayout.setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
 

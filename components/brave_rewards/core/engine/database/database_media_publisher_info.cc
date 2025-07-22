@@ -38,7 +38,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s (media_key, publisher_id) VALUES (?, ?)",
       kTableName);
 
@@ -65,7 +65,7 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
       "pi.provider, spi.status, spi.updated_at, pi.excluded "
       "FROM %s as mpi "

@@ -18,7 +18,8 @@ import {
   BraveWalletBrowserProxy,
   BraveWalletBrowserProxyImpl,
   type Option,
-  type SolanaProvider
+  type SolanaProvider,
+  type CardanoProvider
 } from './brave_wallet_browser_proxy.js'
 
 import {assert} from 'chrome://resources/js/assert.js'
@@ -64,6 +65,13 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         }
       },
 
+      cardano_provider_options_: {
+        type: Array,
+        value() {
+          return []
+        }
+      },
+
       transaction_simulation_opt_in_options_: {
         type: Array,
         value() {
@@ -86,6 +94,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       },
 
       isNativeWalletEnabled_: {
+        type: Boolean
+      },
+
+      isCardanoDAppSupportEnabled_: {
         type: Boolean
       },
 
@@ -119,6 +131,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
 
   private declare ethereum_provider_options_: Option[]
   private declare solana_provider_options_: SolanaProvider[]
+  private declare cardano_provider_options_: CardanoProvider[]
   private declare transaction_simulation_opt_in_options_: Option[]
   private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
@@ -128,6 +141,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartToast_: boolean
   private declare isZCashShieldedTxEnabled_: boolean
+  private declare isCardanoDAppSupportEnabled_: boolean
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()
@@ -141,6 +155,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.getSolanaProviderOptions().then(list => {
       // TODO(petemill): provide wallets type
       this.solana_provider_options_ = list
+    })
+    this.browserProxy_.getCardanoProviderOptions().then(list => {
+      this.cardano_provider_options_ = list
     })
     this.browserProxy_.isNativeWalletEnabled().then(val => {
       this.isNativeWalletEnabled_ = val
@@ -164,6 +181,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     })
     this.browserProxy_.isZCashShieldedTxEnabled().then(val => {
       this.isZCashShieldedTxEnabled_ = val
+    })
+    this.browserProxy_.isCardanoDAppSupportEnabled().then(val => {
+      this.isCardanoDAppSupportEnabled_ = val
     })
 
     this.cryptocurrency_list_ = [

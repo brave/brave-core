@@ -25,6 +25,7 @@ source_set("impl") {
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:split_view",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/playlist/common",
     "//chrome/browser/ui/browser_window",
   ]
 

@@ -24,9 +24,17 @@ export function useWidgetLayoutReady() {
   const newTabInitialized = useNewTabState((s) => s.initialized)
   const rewardsInitialized = useRewardsState((s) => s.initialized)
   const vpnInitialized = useVpnState((s) => s.initialized)
-  const newsInitialized = useBraveNews().isShowOnNTPPrefEnabled !== undefined
+  const newsInitialized = useBraveNewsInitialized()
 
   return (
     newTabInitialized && rewardsInitialized && vpnInitialized && newsInitialized
   )
+}
+
+function useBraveNewsInitialized() {
+  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+  if (!newsFeatureEnabled) {
+    return true
+  }
+  return useBraveNews().isShowOnNTPPrefEnabled !== undefined
 }

@@ -9,16 +9,22 @@ import { useBraveNews } from '../../../../../components/brave_news/browser/resou
 import OptIn from '../../../../../components/brave_news/browser/resources/OptIn'
 import NewsPage from '../../../../../components/brave_news/browser/resources/Page'
 import CustomizeModal from '../../../../../components/brave_news/browser/resources/customize/Modal'
+import { useNewTabState } from '../../context/new_tab_context'
 
 import { style } from './news_feed.style'
 
 export function NewsFeed() {
   const braveNews = useBraveNews()
+  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
   const [shouldRenderNews, setShouldRenderNews] = React.useState(false)
 
   React.useEffect(() => {
     setTimeout(() => setShouldRenderNews(true), 1000)
   }, [])
+
+  if (!newsFeatureEnabled) {
+    return null
+  }
 
   return <>
     {

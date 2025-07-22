@@ -17,7 +17,9 @@
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
@@ -120,6 +122,7 @@ void NewTabPageInitializer::AddCSPOverrides() {
 
 void NewTabPageInitializer::AddLoadTimeValues() {
   auto* profile = GetProfile();
+  auto* prefs = profile->GetPrefs();
 
   source_->AddBoolean("customBackgroundFeatureEnabled",
                       !profile->GetPrefs()->IsManagedPreference(
@@ -141,13 +144,19 @@ void NewTabPageInitializer::AddLoadTimeValues() {
                       brave_rewards::IsSupportedForProfile(profile));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(profile->GetPrefs());
+  bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(prefs);
 #else
   bool vpn_feature_enabled = false;
 #endif
   source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
 
   source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled", true);
+
+  source_->AddBoolean(
+      "newsFeatureEnabled",
+      !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+  source_->AddBoolean("talkFeatureEnabled",
+                      !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
 }
 
 void NewTabPageInitializer::AddStrings() {

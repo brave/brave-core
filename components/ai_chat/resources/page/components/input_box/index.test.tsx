@@ -27,7 +27,6 @@ const defaultContext: InputBoxProps['context'] = {
   setInputText: () => {},
   setIsToolsMenuOpen: () => {},
   shouldDisableUserInput: false,
-  shouldSendPageContents: true,
   submitInputTextToAPI: () => {},
   uploadImage: () => {},
   associatedContentInfo: [],
@@ -53,7 +52,6 @@ describe('input box', () => {
             url: { url: 'https://example.com' },
             uuid: '1234'
           }],
-          shouldSendPageContents: true
         }}
         conversationStarted={false}
       />
@@ -65,38 +63,12 @@ describe('input box', () => {
     ).toBeInTheDocument()
   })
 
-  it('associated content is not rendered in input box before conversation starts if should send contents is false', () => {
-    const { container } = render(
-      <InputBox
-        context={{
-          ...defaultContext,
-          associatedContentInfo: [{
-            contentId: 1,
-            contentType: ContentType.PageContent,
-            contentUsedPercentage: 0.5,
-            title: 'Associated Content',
-            url: { url: 'https://example.com' },
-            uuid: '1234'
-          }],
-          shouldSendPageContents: false
-        }}
-        conversationStarted={false}
-      />
-    )
-
-    expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
-    expect(
-      container.querySelector('img[src*="//favicon2"]')
-    ).not.toBeInTheDocument()
-  })
-
   it('associated content is not rendered in input box when there is no associated content', () => {
     const { container } = render(
       <InputBox
         context={{
           ...defaultContext,
           associatedContentInfo: [],
-          shouldSendPageContents: true
         }}
         conversationStarted={false}
       />
@@ -121,7 +93,6 @@ describe('input box', () => {
             url: { url: 'https://example.com' },
             uuid: '1234'
           }],
-          shouldSendPageContents: true
         }}
         conversationStarted
       />

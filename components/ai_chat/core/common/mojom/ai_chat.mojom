@@ -482,8 +482,8 @@ interface AIChatUIHandler {
   // Associates an open tab with a conversation.
   AssociateTab(TabData tab, string conversation_uuid);
 
-  // Disassociates an open tab from a conversation.
-  DisassociateTab(TabData tab, string conversation_uuid);
+  // Disassociates attached content from a conversation.
+  DisassociateContent(AssociatedContent content, string conversation_uuid);
 
   // Make a completely new conversation, which may
   // be bound to the associated conversation, if this UI has a target
@@ -512,7 +512,6 @@ struct ConversationState {
   array<string> suggested_questions;
   SuggestionGenerationStatus suggestion_status;
   array<AssociatedContent> associated_content;
-  bool should_send_content;
   APIError error;
   // Indicates whether the conversation is temporary which would be in-memory
   // only and not persisted in database.
@@ -576,9 +575,7 @@ interface ConversationHandler {
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
   GetAssociatedContentInfo() => (
-      array<AssociatedContent> associated_content, bool should_send_content);
-
-  SetShouldSendPageContents(bool should_send);
+      array<AssociatedContent> associated_content);
 
   GetAPIResponseError() => (APIError error);
   RetryAPIRequest();
@@ -650,7 +647,7 @@ interface ConversationUI {
       array<string> questions, SuggestionGenerationStatus status);
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
-  OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content, bool should_send_page_contents);
+  OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);
   OnConversationDeleted();
 };
 

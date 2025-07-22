@@ -107,13 +107,22 @@ def get_lzma_exec():
     return lzma_exec
 
 
-def extract_zip(zip_path, destination):
+def extract_zip(zip_path, destination, path_prefix=None):
     if sys.platform in ('darwin', 'linux'):
         # Use the unzip command to properly handle symbolic links.
-        execute(['unzip', zip_path, '-d', destination])
+        args = ['unzip', zip_path]
+        if path_prefix:
+            args.append(path_prefix + '*')
+        args.extend(['-d', destination])
+        execute(args)
     else:
         with zipfile.ZipFile(zip_path) as z:
-            z.extractall(destination)
+            members = None
+            if path_prefix is not None:
+                members = [
+                    m for m in z.namelist() if m.startswith(path_prefix)
+                ]
+            z.extractall(destination, members=members)
 
 
 def make_zip(zip_file_path, files, dirs):

@@ -1094,22 +1094,20 @@ void AIChatService::MaybeAssociateContent(
                         content->GetWeakPtr());
 }
 
-void AIChatService::DisassociateContent(AssociatedContentDelegate* content,
-                                        const std::string& conversation_uuid) {
-  CHECK(content);
-
+void AIChatService::DisassociateContent(
+    const mojom::AssociatedContentPtr& content,
+    const std::string& conversation_uuid) {
   // Note: This will only work if the conversation is already loaded.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;
   }
-
-  conversation->associated_content_manager()->RemoveContent(content);
+  conversation->associated_content_manager()->RemoveContent(content->uuid);
 
   // If this conversation is the most recent one for the content, remove it from
   // content_conversations_.
-  if (content_conversations_[content->GetContentId()] == conversation_uuid) {
-    content_conversations_.erase(content->GetContentId());
+  if (content_conversations_[content->content_id] == conversation_uuid) {
+    content_conversations_.erase(content->content_id);
   }
 }
 

@@ -14,8 +14,21 @@ import {
 // Merge our interface additions with upstream's interface
 declare module '../page_visibility' {
   export interface PageVisibility {
-    getStarted?: boolean
+    braveSync?: boolean
+    braveWallet?: boolean
     braveWeb3?: boolean
+    // <if expr="enable_containers">
+    containers?: boolean
+    // </if>
+    content?: boolean
+    getStarted?: boolean
+    leoAssistant?: boolean
+    newTab?: boolean
+    playlist?: boolean
+    shields?: boolean
+    socialBlocking?: boolean
+    speedreader?: boolean
+    surveyPanelist?: boolean,
   }
 }
 
@@ -32,21 +45,21 @@ function getPageVisibility () {
     // Hide appropriate brave sections as well as chromium ones
     return {
       ...chromiumPageVisibility,
-      shields: true,
-      socialBlocking: true,
       braveSync: false,
-      getStarted: false,
-      newTab: false,
       braveWallet: false,
       braveWeb3: false,
-      leoAssistant: false,
-      surveyPanelist: false,
       // <if expr="enable_containers">
       containers: false,
       // </if>
       content: false,
+      getStarted: false,
+      leoAssistant: false,
+      newTab: false,
       playlist: false,
+      shields: true,
+      socialBlocking: true,
       speedreader: false,
+      surveyPanelist: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of

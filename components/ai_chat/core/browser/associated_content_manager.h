@@ -56,6 +56,13 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
+  // Removes the content delegate with |content_uuid| from the list of content
+  // delegates.
+  void RemoveContent(std::string_view content_uuid, bool notify_updated = true);
+
+  // Clears all content from the conversation.
+  void ClearContent();
+
   void GetContent(base::OnceClosure callback);
   void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
@@ -82,17 +89,12 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void OnNavigated(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
 
-  bool should_send() const { return should_send_; }
-  void SetShouldSend(bool value);
-
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
   }
 
  private:
   void DetachContent();
-
-  bool should_send_ = false;
 
   raw_ptr<ConversationHandler> conversation_;
 

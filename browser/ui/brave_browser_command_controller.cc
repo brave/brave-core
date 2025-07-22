@@ -470,9 +470,10 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  if (!split_view_browser_data_observation_.IsObserving()) {
-    split_view_browser_data_observation_.Observe(
-        browser_->GetFeatures().split_view_browser_data());
+  if (auto* data = browser_->GetFeatures().split_view_browser_data()) {
+    if (!split_view_browser_data_observation_.IsObserving()) {
+      split_view_browser_data_observation_.Observe(data);
+    }
   }
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(

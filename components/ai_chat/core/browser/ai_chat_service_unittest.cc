@@ -148,7 +148,7 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
-              (std::vector<mojom::AssociatedContentPtr>, bool),
+              (std::vector<mojom::AssociatedContentPtr>),
               (override));
 
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
@@ -402,8 +402,7 @@ INSTANTIATE_TEST_SUITE_P(
     AIChatServiceUnitTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatServiceUnitTest::ParamType>& info) {
-      return base::StringPrintf("History%s",
-                                info.param ? "Enabled" : "Disabled");
+      return absl::StrFormat("History%s", info.param ? "Enabled" : "Disabled");
     });
 
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
@@ -644,8 +643,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   ExpectConversationsSize(FROM_HERE, 1u);
 
   // Reset the content to be empty.
-  conversation_with_content->associated_content_manager()->AddContent(
-      nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
+  conversation_with_content->associated_content_manager()->ClearContent();
 
   WaitForConversationUnload();
 
@@ -707,8 +705,7 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
   base::RunLoop run_loop;
   conversation_with_content->GetAssociatedContentInfo(
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::AssociatedContentPtr> associated_content,
-              bool should_send_page_contents) {
+          [&](std::vector<mojom::AssociatedContentPtr> associated_content) {
             EXPECT_EQ(associated_content.size(), 1u);
             EXPECT_EQ(associated_content[0]->url, GURL("https://example.com"));
             run_loop.Quit();
@@ -777,9 +774,7 @@ TEST_P(AIChatServiceUnitTest,
   base::RunLoop run_loop;
   conversation_with_content->GetAssociatedContentInfo(
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::AssociatedContentPtr> associated_content,
-              bool should_send_page_contents) {
-            EXPECT_FALSE(should_send_page_contents);
+          [&](std::vector<mojom::AssociatedContentPtr> associated_content) {
             EXPECT_TRUE(associated_content.empty());
             run_loop.Quit();
           }));
@@ -1129,7 +1124,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent) {
                          associated_content.GetContentId(),
                          associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = std::move(
+      handler->associated_content_manager()->GetAssociatedContent()[0]);
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1148,7 +1145,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttached) {
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1173,7 +1172,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttachedInvalidScheme) {
                          associated_content.GetContentId(),
                          associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler->get_conversation_uuid());
 
   EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
@@ -1210,7 +1211,9 @@ TEST_P(AIChatServiceUnitTest, DisassociateContent_AttachedToOtherConversation) {
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr()));
 
-  ai_chat_service_->DisassociateContent(&associated_content,
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = associated_content.uuid();
+  ai_chat_service_->DisassociateContent(content,
                                         handler1->get_conversation_uuid());
 
   EXPECT_FALSE(handler1->associated_content_manager()->HasAssociatedContent());
@@ -1269,8 +1272,7 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     base::RunLoop run_loop;
     data[i].conversation_handler->GetAssociatedContentInfo(
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::AssociatedContentPtr> site_info,
-                bool should_send_page_contents) {
+            [&](std::vector<mojom::AssociatedContentPtr> site_info) {
               SCOPED_TRACE(testing::Message() << "data index: " << i);
               ASSERT_FALSE(site_info.empty());
               EXPECT_EQ(site_info.size(), 1u);
@@ -1307,8 +1309,7 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     base::RunLoop run_loop;
     data[i].conversation_handler->GetAssociatedContentInfo(
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::AssociatedContentPtr> site_info,
-                bool should_send_page_contents) {
+            [&](std::vector<mojom::AssociatedContentPtr> site_info) {
               SCOPED_TRACE(testing::Message() << "data index: " << i);
               if (i == 1) {
                 EXPECT_EQ(0u, site_info.size());

@@ -196,6 +196,7 @@ export const style = scoped.css`
     position-anchor: --top-site-context-menu-anchor;
     position-area: block-end span-inline-end;
     position-try-fallbacks: flip-inline, flip-block;
+    margin: -8px;
   }
 
   .page-nav {

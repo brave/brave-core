@@ -9,4 +9,8 @@
 inline constexpr char kBraveWaybackMachineEnabled[] =
     "brave.wayback_machine_enabled";
 
+// Used to enable/disable Wayback Machine via a policy.
+inline constexpr char kBraveWaybackMachineDisabledByPolicy[] =
+    "brave.wayback_machine.disabled_by_policy";
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_PREF_NAMES_H_

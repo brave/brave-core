@@ -18,6 +18,8 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -611,6 +613,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveDefaultExtensions", IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
       {"defaultEthereumWalletDesc", IDS_SETTINGS_DEFAULT_ETHEREUM_WALLET_DESC},
       {"defaultSolanaWalletDesc", IDS_SETTINGS_DEFAULT_SOLANA_WALLET_DESC},
+      {"defaultCardanoWalletDesc", IDS_SETTINGS_DEFAULT_CARDANO_WALLET_DESC},
       {"defaultBaseCurrencyDesc", IDS_SETTINGS_DEFAULT_BASE_CURRENCY_DESC},
       {"defaultBaseCryptocurrencyDesc",
        IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC},
@@ -1148,6 +1151,12 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "braveTalkDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "braveWaybackMachineDisabledByPolicy",
+      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
+#endif
+
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     const webui::LocalizedString kSessionOnlyToEphemeralStrings[] = {
@@ -1279,6 +1288,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "serviceWorkerSize",
       l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+  html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   // We add strings regardless of the FeatureFlag state to prevent crash
