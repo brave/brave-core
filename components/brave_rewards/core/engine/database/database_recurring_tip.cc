@@ -49,7 +49,7 @@ void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, amount, added_date) "
       "VALUES (?, ?, ?)",
@@ -90,7 +90,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, amount, added_date, next_contribution_at) "
       "VALUES (?, ?, ?, ?)",
@@ -116,7 +116,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
 void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
     const std::vector<std::string>& publisher_ids,
     base::OnceCallback<void(bool)> callback) {
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET next_contribution_at = ? WHERE publisher_id = ?",
       kTableName);
 
@@ -151,7 +151,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       "UPDATE %s SET next_contribution_at = ? "
       "WHERE next_contribution_at IS NULL",
       kTableName);
@@ -160,8 +160,8 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
 
   command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
-  command->command = base::StringPrintf(
-      "SELECT MIN(next_contribution_at) FROM %s", kTableName);
+  command->command =
+      absl::StrFormat("SELECT MIN(next_contribution_at) FROM %s", kTableName);
   command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE};
   transaction->commands.push_back(std::move(command));
 
@@ -195,7 +195,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
 void DatabaseRecurringTip::GetAllRecords(GetRecurringTipsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
       "rd.amount, rd.next_contribution_at, spi.status, spi.updated_at, "
       "pi.provider "
@@ -275,7 +275,7 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query =
-      base::StringPrintf("DELETE FROM %s WHERE publisher_id = ?", kTableName);
+      absl::StrFormat("DELETE FROM %s WHERE publisher_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;

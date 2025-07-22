@@ -50,7 +50,7 @@ TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeToString) {
     if (kAllowedHttpStatusCodes.contains(i)) {
       EXPECT_EQ(base::NumberToString(i), http_status_code);
     } else {
-      EXPECT_EQ(base::StringPrintf("%dxx", /*http_status_code_class*/ i / 100),
+      EXPECT_EQ(absl::StrFormat("%dxx", /*http_status_code_class*/ i / 100),
                 http_status_code);
     }
   }

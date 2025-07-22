@@ -23,8 +23,8 @@ std::string GetScheduledCaptchaUrl(const std::string& payment_id,
   DCHECK(!payment_id.empty());
   DCHECK(!captcha_id.empty());
 
-  const std::string path = base::StringPrintf(
-      "/v3/captcha/%s/%s", payment_id.c_str(), captcha_id.c_str());
+  const std::string path =
+      absl::StrFormat("/v3/captcha/%s/%s", payment_id, captcha_id);
   return brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
 }
 

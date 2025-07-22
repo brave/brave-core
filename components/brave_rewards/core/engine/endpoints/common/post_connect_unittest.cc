@@ -33,7 +33,7 @@ class PostConnectMock final : public endpoints::PostConnect {
 
  private:
   std::string Path(base::cstring_view payment_id) const override {
-    return base::StringPrintf("/v3/wallet/mock/%s/claim", payment_id.c_str());
+    return absl::StrFormat("/v3/wallet/mock/%s/claim", payment_id);
   }
 };
 

@@ -206,7 +206,7 @@ void DatabaseMigration::RunDBTransactionCallback(
     if (migrated_version >= 29) {
       engine_->database()->SaveEventLog(
           log::kDatabaseMigrated,
-          base::StringPrintf("%d->%d", start_version - 1, migrated_version));
+          absl::StrFormat("%d->%d", start_version - 1, migrated_version));
     }
 
     return std::move(callback).Run(mojom::Result::OK);

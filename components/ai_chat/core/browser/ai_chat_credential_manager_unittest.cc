@@ -134,7 +134,7 @@ std::string formatSkusStateValue(const base::Time start_time,
     base::Time incremented_time = shifted_start_time + base::Days(i);
     base::Time::Exploded exploded;
     incremented_time.UTCExplode(&exploded);
-    std::string formatted_time = base::StringPrintf(
+    std::string formatted_time = absl::StrFormat(
         "%04d-%02d-%02dT%02d:%02d:%02d", exploded.year, exploded.month,
         exploded.day_of_month, exploded.hour, exploded.minute, exploded.second);
 

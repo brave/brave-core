@@ -89,8 +89,7 @@ INSTANTIATE_TEST_SUITE_P(
     // and no tables are missing or different.
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatDatabaseTest::ParamType>& info) {
-      return base::StringPrintf("DropTablesFirst_%s",
-                                info.param ? "Yes" : "No");
+      return absl::StrFormat("DropTablesFirst_%s", info.param ? "Yes" : "No");
     });
 
 // Functions tested:
@@ -1011,7 +1010,7 @@ class AIChatDatabaseMigrationTest : public testing::Test,
     base::test::TestFuture<os_crypt_async::Encryptor> future;
     os_crypt_->GetInstance(future.GetCallback());
     CreateDatabase(
-        base::StringPrintf("aichat_database_dump_version_%d.sql", version()));
+        absl::StrFormat("aichat_database_dump_version_%d.sql", version()));
     db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
   }
 
@@ -1073,8 +1072,8 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Range(kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion),
     [](const testing::TestParamInfo<AIChatDatabaseMigrationTest::ParamType>&
            info) {
-      return base::StringPrintf("From_v%d_to_v%d", info.param,
-                                kCurrentDatabaseVersion);
+      return absl::StrFormat("From_v%d_to_v%d", info.param,
+                             kCurrentDatabaseVersion);
     });
 
 // Tests the migration of the database from version() to kCurrentVersionNumber

@@ -104,7 +104,7 @@ std::optional<std::vector<std::string>> PostConnectUphold::Headers(
 }
 
 std::string PostConnectUphold::Path(base::cstring_view payment_id) const {
-  return base::StringPrintf("/v3/wallet/uphold/%s/claim", payment_id.c_str());
+  return absl::StrFormat("/v3/wallet/uphold/%s/claim", payment_id);
 }
 
 }  // namespace brave_rewards::internal::endpoints

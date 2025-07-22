@@ -37,7 +37,7 @@ void DatabaseEventLog::Insert(const std::string& key,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT INTO %s (event_log_id, key, value, created_at) "
       "VALUES (?, ?, ?, ?)",
       kTableName);
@@ -69,17 +69,16 @@ void DatabaseEventLog::InsertRecords(
 
   auto transaction = mojom::DBTransaction::New();
   auto time = util::GetCurrentTimeStamp();
-  const std::string base_query = base::StringPrintf(
+  const std::string base_query = absl::StrFormat(
       "INSERT INTO %s (event_log_id, key, value, created_at) VALUES ",
       kTableName);
 
   std::string query = base_query;
   for (const auto& record : records) {
-    query += base::StringPrintf(
-        R"(('%s','%s','%s',%u),)",
-        base::Uuid::GenerateRandomV4().AsLowercaseString().c_str(),
-        record.first.c_str(), record.second.c_str(),
-        static_cast<uint32_t>(time));
+    query += absl::StrFormat(R"(('%s','%s','%s',%u),)",
+                             base::Uuid::GenerateRandomV4().AsLowercaseString(),
+                             record.first, record.second,
+                             static_cast<uint32_t>(time));
   }
 
   query.pop_back();
@@ -97,7 +96,7 @@ void DatabaseEventLog::InsertRecords(
 void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT event_log_id, key, value, created_at "
       "FROM %s ORDER BY created_at DESC, ROWID DESC LIMIT 2000",
       kTableName);

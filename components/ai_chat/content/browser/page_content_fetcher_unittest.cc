@@ -168,8 +168,7 @@ class PageContentFetcherTest : public content::RenderViewHostTestHarness {
 
   // Helper method to create a YouTube InnerTube API response
   std::string CreateInnerTubeResponse(const std::string& base_url) {
-    base::Value response =
-        base::test::ParseJson(base::StringPrintf(R"({
+    base::Value response = base::test::ParseJson(absl::StrFormat(R"({
       "captions": {
         "playerCaptionsTracklistRenderer": {
           "captionTracks": [
@@ -182,7 +181,7 @@ class PageContentFetcherTest : public content::RenderViewHostTestHarness {
         }
       }
     })",
-                                                 base_url.c_str()));
+                                                                 base_url));
 
     std::string response_str;
     base::JSONWriter::Write(response, &response_str);
@@ -284,8 +283,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
 
   // Verify the request body
   ASSERT_EQ(request_bodies.size(), 1u);
-  base::Value expected_body =
-      base::test::ParseJson(base::StringPrintf(R"({
+  base::Value expected_body = base::test::ParseJson(absl::StrFormat(R"({
     "videoId": "%s",
     "context": {
       "client": {
@@ -294,7 +292,7 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
       }
     }
   })",
-                                               video_id.c_str()));
+                                                                    video_id));
 
   std::string expected_body_str;
   base::JSONWriter::Write(expected_body, &expected_body_str);

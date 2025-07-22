@@ -39,7 +39,7 @@ std::optional<std::string> PostConnectZebPay::Content() const {
 }
 
 std::string PostConnectZebPay::Path(base::cstring_view payment_id) const {
-  return base::StringPrintf("/v3/wallet/zebpay/%s/claim", payment_id.c_str());
+  return absl::StrFormat("/v3/wallet/zebpay/%s/claim", payment_id);
 }
 
 }  // namespace brave_rewards::internal::endpoints
