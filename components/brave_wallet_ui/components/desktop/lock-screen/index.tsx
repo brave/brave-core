@@ -43,7 +43,7 @@ import { VerticalSpace, Row, Text } from '../../shared/style'
 export const LockScreen = () => {
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // routing
   const history = useHistory()
@@ -109,7 +109,7 @@ export const LockScreen = () => {
   }
 
   // render
-  if (isAndroid) {
+  if (isMobile) {
     return (
       <AndroidLockScreenWrapper onClick={onDoubleTap}>
         <DoubleTapIcon />

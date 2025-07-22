@@ -140,8 +140,8 @@ export const DepositFundsScreen = () => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // render
   return (
@@ -151,10 +151,10 @@ export const DepositFundsScreen = () => {
         exact
       >
         <WalletPageWrapper
-          hideNav={isAndroidOrPanel}
+          hideNav={isMobileOrPanel}
           wrapContentInBox={true}
           cardHeader={
-            isAndroidOrPanel ? (
+            isMobileOrPanel ? (
               <PanelActionHeader
                 title={getLocale('braveWalletDepositCryptoButton')}
                 expandRoute={WalletRoutes.DepositFundsPage}
@@ -174,11 +174,11 @@ export const DepositFundsScreen = () => {
 
       <Route path={WalletRoutes.DepositFundsPage}>
         <WalletPageWrapper
-          hideNav={isAndroidOrPanel}
+          hideNav={isMobileOrPanel}
           wrapContentInBox={true}
           useFullHeight={true}
           cardHeader={
-            isAndroidOrPanel ? (
+            isMobileOrPanel ? (
               <PanelActionHeader
                 title={getLocale('braveWalletDepositCryptoButton')}
                 expandRoute={WalletRoutes.DepositFundsPage}
@@ -210,8 +210,8 @@ function AssetSelection() {
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(
@@ -489,7 +489,7 @@ function AssetSelection() {
         <LeoSquaredButton
           onClick={nextStep}
           isDisabled={!isNextStepEnabled}
-          size={isAndroidOrPanel ? 'medium' : 'large'}
+          size={isMobileOrPanel ? 'medium' : 'large'}
         >
           {selectedAsset
             ? getLocale('braveWalletButtonContinue')
