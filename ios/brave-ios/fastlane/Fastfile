@@ -10,6 +10,9 @@ platform :ios do
   desc "Builds the app for testing"
   lane :build_for_testing do |options|
     defaultScanParams = scan_params()
+    if options[:build_type]
+      defaultScanParams[:scheme] = "#{options[:build_type]} (No Core)"
+    end
     run_tests(defaultScanParams.merge!({
       build_for_testing: true
     }))
@@ -18,6 +21,9 @@ platform :ios do
   desc "Runs unit tests on a previous build (assumes build_for_testing is run)"
   lane :test_without_building do |options|
     defaultScanParams = scan_params()
+    if options[:build_type]
+      defaultScanParams[:scheme] = "#{options[:build_type]} (No Core)"
+    end
     run_tests(defaultScanParams.merge!({
       test_without_building: true,
       skip_testing: skipped_tests()

@@ -44,6 +44,29 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
+const readArgsGn = (srcDir, outputDir) => {
+  const util = require('./util')
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+
+  const script = `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`
+
+  const result = util.run('python3', ['-'], {
+    skipLogging: true,
+    input: script,
+    encoding: 'utf8',
+  })
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
@@ -769,16 +792,10 @@ Config.prototype.buildArgs = function () {
       args.brave_ios_marketing_version_patch =
         this.braveIOSMarketingPatchVersion
     }
-    args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
     args.ios_enable_code_signing = false
-    args.fatal_linker_warnings = !this.isComponentBuild()
-    // DCHECK's crash on Static builds without allowing the debugger to continue
-    // Can be removed when approprioate DCHECK's have been fixed:
-    // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isComponentBuild()
 
     if (!args.is_official_build) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
@@ -947,7 +964,7 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.updateInternal = function (options) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -959,6 +976,10 @@ Config.prototype.update = function (options) {
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
+  }
+
+  if (options.target_cpu) {
+    options.target_arch = options.target_cpu
   }
 
   if (options.target_arch === 'x86') {
@@ -1144,6 +1165,28 @@ Config.prototype.update = function (options) {
 
   if (options.pkcs11Alias) {
     this.braveAndroidPkcs11Alias = options.pkcs11Alias
+  }
+}
+
+Config.prototype.fromGnArgs = function (options) {
+  if (options.C === undefined) {
+    Log.error(`You must specify output directory with -C to use --no_gn_gen`)
+    process.exit(1)
+  }
+  const gnArgs = readArgsGn(this.srcDir, options.C)
+  Log.warn(
+    '--no-gn-gen is experimental and only gn args that match command '
+      + 'line options will be processed',
+  )
+  this.updateInternal(Object.assign({}, gnArgs, { 'C': options.C }))
+  assert(!this.isCI)
+}
+
+Config.prototype.update = function (options) {
+  if (options.no_gn_gen == null) {
+    this.updateInternal(options)
+  } else {
+    this.fromGnArgs(options)
   }
 }
 
@@ -1348,7 +1391,11 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (this.targetEnvironment && this.targetEnvironment !== 'device') {
+    if (
+      this.targetOS === 'ios'
+      && this.targetEnvironment
+      && this.targetEnvironment !== 'device'
+    ) {
       buildConfigDir = buildConfigDir + '_' + this.targetEnvironment
     }
     if (this.isChromium) {
