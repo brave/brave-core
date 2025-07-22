@@ -584,13 +584,17 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
   SubmitSelectedText(input, action_type);
 }
 
-void ConversationHandler::ModifyConversation(uint32_t turn_index,
+void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
                                              const std::string& new_text) {
-  if (turn_index >= chat_history_.size()) {
+  CHECK(!entry_uuid.empty()) << "Entry UUID is empty";
+  auto turn_it = std::ranges::find_if(
+      chat_history_,
+      [&entry_uuid](const auto& turn) { return turn->uuid == entry_uuid; });
+  if (turn_it == chat_history_.end()) {
     return;
   }
 
-  auto& turn = chat_history_.at(turn_index);
+  auto& turn = *turn_it;
   // Modifying answer, create an entry in edits with updated completion event.
   if (turn->character_type == CharacterType::ASSISTANT) {
     if (!turn->events || turn->events->empty()) {
@@ -666,7 +670,8 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
   if (!turn->edits) {
     turn->edits.emplace();
   }
-  // Erase all turns after the edited turn and notify observers
+  // Erase all turns after the edited turn (turn_it) and notify observers
+  auto turn_index = std::distance(chat_history_.begin(), turn_it);
   std::vector<std::optional<std::string>> erased_turn_ids;
   std::ranges::transform(
       chat_history_.begin() + turn_index, chat_history_.end(),

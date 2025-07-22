@@ -168,7 +168,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
       mojom::ActionType action_type) override;
-  void ModifyConversation(uint32_t turn_index,
+  void ModifyConversation(const std::string& entry_uuid,
                           const std::string& new_text) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;

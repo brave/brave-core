@@ -1265,7 +1265,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   observer.Observe(conversation_handler_.get());
 
   // Make a first edit
-  conversation_handler_->ModifyConversation(0, "prompt2");
+  conversation_handler_->ModifyConversation(history[0]->uuid.value(),
+                                            "prompt2");
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Create the entries events in the way we're expecting to look
@@ -1314,7 +1315,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
                       mojom::CompletionEvent::New("")),
                   "chat-basic" /* model_key */)))));
 
-  conversation_handler_->ModifyConversation(0, "prompt3");
+  conversation_handler_->ModifyConversation(
+      conversation_history[0]->uuid.value(), "prompt3");
 
   auto second_edit_expected_history = CloneHistory(first_edit_expected_history);
   auto second_edit = first_edit->Clone();
@@ -1336,7 +1338,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Engine should not be called for an assistant edit
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
       .Times(0);
-  conversation_handler_->ModifyConversation(1, " answer2 ");
+  conversation_handler_->ModifyConversation(
+      conversation_history[1]->uuid.value(), " answer2 ");
 
   auto third_edit_expected_history = CloneHistory(second_edit_expected_history);
 

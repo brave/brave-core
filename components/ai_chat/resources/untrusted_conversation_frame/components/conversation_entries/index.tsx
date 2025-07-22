@@ -32,11 +32,6 @@ function ConversationEntries() {
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
 
-  const handleEditSubmit = (index: number, text: string) => {
-    conversationContext.conversationHandler?.modifyConversation(index, text)
-    setEditInputId(undefined)
-  }
-
   const showHumanMenu = (id: number) => {
     setActiveMenuId(id)
   }
@@ -69,6 +64,13 @@ function ConversationEntries() {
     () => groupConversationEntries(conversationContext.conversationHistory),
     [conversationContext.conversationHistory]
   )
+
+  const handleEditSubmit = (index: number, text: string) => {
+    const entryUuid = conversationContext.conversationHistory[index]?.uuid
+    if (!entryUuid) return
+    conversationContext.conversationHandler?.modifyConversation(entryUuid, text)
+    setEditInputId(undefined)
+  }
 
   return (
     <>
@@ -229,7 +231,7 @@ function ConversationEntries() {
                         {showEditInput && (
                           <EditInput
                             text={firstEntryEdit.text}
-                            onSubmit={(text) => handleEditSubmit(index, text)} // TODO: uuid
+                            onSubmit={(text) => handleEditSubmit(index, text)}
                             onCancel={() => setEditInputId(undefined)}
                             isSubmitDisabled={
                               !conversationContext.canSubmitUserEntries

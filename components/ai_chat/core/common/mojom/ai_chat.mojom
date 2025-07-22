@@ -569,7 +569,6 @@ interface ConversationHandler {
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
-  ModifyConversation(uint32 turn_index, string new_text);
   SubmitSummarizationRequest();
 
   // Submit one of the generated suggested questions for response from
@@ -619,7 +618,7 @@ interface UntrustedConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
-  ModifyConversation(uint32 turn_index, string new_text);
+  ModifyConversation(string entry_uuid, string new_text);
 
   // Allows a client to provide an answer to a tool use request
   // as a result of a user action.
