@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -81,10 +82,11 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildPageContentMessages_Truncates);
 
-  base::Value::List BuildPageContentMessages(const PageContents& page_contents,
-                                             int max_associated_content_length,
-                                             int video_message_id,
-                                             int page_message_id);
+  base::Value::List BuildPageContentMessages(
+      const PageContents& page_contents,
+      uint32_t max_associated_content_length,
+      int video_message_id,
+      int page_message_id);
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

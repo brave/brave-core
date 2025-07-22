@@ -2054,4 +2054,64 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+class MockConversationAPIEngineConsumer : public EngineConsumerConversationAPI {
+ public:
+  MockConversationAPIEngineConsumer(
+      const mojom::LeoModelOptions& model_options,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      AIChatCredentialManager* credential_manager,
+      ModelService* model_service)
+      : EngineConsumerConversationAPI(model_options,
+                                      url_loader_factory,
+                                      credential_manager,
+                                      model_service) {}
+
+  MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
+};
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_CallsSanitizeInputOnPageContent) {
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer =
+      std::make_unique<MockConversationAPIEngineConsumer>(
+          *model_->options->get_leo_model_options(), nullptr, nullptr,
+          model_service_.get());
+  mock_engine_consumer->SetAPIForTesting(
+      std::make_unique<MockConversationAPIClient>(
+          model_->options->get_leo_model_options()->name));
+
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New());
+  mock_engine_consumer->GenerateAssistantResponse(
+      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+      base::DoNothing(), base::DoNothing());
+  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateQuestionSuggestions_CallsSanitizeInputOnPageContent) {
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer =
+      std::make_unique<MockConversationAPIEngineConsumer>(
+          *model_->options->get_leo_model_options(), nullptr, nullptr,
+          model_service_.get());
+  mock_engine_consumer->SetAPIForTesting(
+      std::make_unique<MockConversationAPIClient>(
+          model_->options->get_leo_model_options()->name));
+
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+  mock_engine_consumer->GenerateQuestionSuggestions(
+      {page_content_1, page_content_2}, "", base::DoNothing());
+  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+}
+
 }  // namespace ai_chat

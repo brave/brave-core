@@ -119,7 +119,7 @@ class EngineConsumerConversationAPI : public EngineConsumer {
 
   ConversationAPIClient::ConversationEvent
   GetAssociatedContentConversationEvent(const PageContent& content,
-                                        int remaining_length);
+                                        uint32_t remaining_length);
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};

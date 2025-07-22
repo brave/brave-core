@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -182,10 +183,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string truncated_text =
-      text.size() > max_associated_content_length_
-          ? text.substr(0, max_associated_content_length_)
-          : text;
+  std::string truncated_text = text.substr(0, max_associated_content_length_);
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
@@ -300,10 +298,15 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
         last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
+  uint32_t remaining_length = max_associated_content_length_;
+  uint32_t selected_text_length = selected_text.value_or("").size();
+  if (selected_text_length > max_associated_content_length_) {
+    remaining_length = 0;
+  } else {
+    remaining_length -= selected_text_length;
+  }
   auto page_content_messages = BuildPageContentMessages(
-      page_contents,
-      max_associated_content_length_ - selected_text.value_or("").size(),
-      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
   base::Value::List messages =
       BuildMessages(model_options_, std::move(page_content_messages),
@@ -329,7 +332,7 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
 
 base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     const PageContents& page_contents,
-    int max_associated_content_length,
+    uint32_t max_associated_content_length,
     int video_message_id,
     int page_message_id) {
   base::Value::List messages;
@@ -338,8 +341,6 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     std::string truncated_page_content =
         page_content.get().content.substr(0, max_associated_content_length);
     SanitizeInput(truncated_page_content);
-    max_associated_content_length -= truncated_page_content.size();
-
     std::string prompt = base::ReplaceStringPlaceholders(
         l10n_util::GetStringUTF8(page_content.get().is_video ? video_message_id
                                                              : page_message_id),
@@ -350,9 +351,10 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     message.Set("content", std::move(prompt));
     messages.Append(std::move(message));
 
-    if (max_associated_content_length <= 0) {
+    if (truncated_page_content.size() > max_associated_content_length) {
       break;
     }
+    max_associated_content_length -= truncated_page_content.size();
   }
 
   return messages;
