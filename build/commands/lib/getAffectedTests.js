@@ -14,7 +14,7 @@ const getTestTargets = (outDir, filters = ['//*']) =>
     outDir,
     '--type=executable',
     '--testonly=true',
-    filters,
+    ...filters,
   ]).then((x) => x.stdout.trim().split('\n'))
 
 // set base = HEAD if you want to ignore the current workspace changes
@@ -45,7 +45,7 @@ async function getReferenceCommit() {
     return 'origin/master'
   }
 
-  // bail: we don't know the last succesful test run
+  // bail: we don't know the last succesfull test run
   return null
 }
 
