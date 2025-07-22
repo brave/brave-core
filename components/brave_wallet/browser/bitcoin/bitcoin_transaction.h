@@ -32,7 +32,7 @@ class BitcoinTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
-    SHA256HashArray txid;
+    SHA256HashArray txid{};
     uint32_t index = 0;
   };
 
