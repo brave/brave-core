@@ -13,7 +13,7 @@ class ResizeArea;
 #define UpdateContentsBorderAndOverlay \
   UnUsed() {}                          \
   friend class BraveMultiContentsView; \
-  virtual void UpdateContentsBorderAndOverlay
+  void UpdateContentsBorderAndOverlay
 
 // Changed to base class as we want to point to our views::ResizeArea subclass.
 #define MultiContentsResizeArea views::ResizeArea

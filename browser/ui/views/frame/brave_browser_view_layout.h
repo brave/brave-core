@@ -63,6 +63,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
   int LayoutInfoBar(int top) override;
   void LayoutContentsContainerView(int top, int bottom) override;
+  void UpdateSplitViewInsets() override;
 
  private:
   void LayoutVerticalTabs();
