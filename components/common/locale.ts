@@ -39,10 +39,19 @@ export const getLocale = (
   return returnVal
 }
 
-type Replacement = string | React.ReactNode | ((contents: string) => React.ReactNode | string)
+type Content = string | React.ReactNode
+type Replacement = Content | ((contents: string) => Content)
 type ReturnType<T extends Replacement> = T extends (string | ((contents: string) => string)) ? string : React.ReactNode
 type Options = {
   noErrorOnMissingReplacement?: boolean
+}
+
+interface ReplacedRange {
+  start: number
+  end: number
+  key: `$${number}`
+
+  children: ReplacedRange[]
 }
 
 /**
@@ -63,85 +72,105 @@ type Options = {
  * }) // 'Hello <a href="#">world</a>'
  */
 export function formatString<T extends Replacement>(text: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
-  const keysToReplace = Object.keys(replacements) as (keyof typeof replacements)[]
-  const replacedRanges: ({
-    start: number,
-    end: number,
-    value: string | React.ReactNode,
-    key: keyof typeof replacements
-  })[] = []
+  const result: ReplacedRange = {
+    children: [],
+    start: 0,
+    end: text.length,
+    key: `` as any
+  }
 
-  let onlyText = true
-
-  for (const key of keysToReplace) {
-    const start = text.indexOf(key)
-
-    // If we couldn't find the key the string or replacement is wrong.
-    if (start === -1) {
-      if (options?.noErrorOnMissingReplacement) {
-        continue
-      }
-      throw new Error(`Replacement key ${key} not found in text`)
+  const getReplacedContent = (range: ReplacedRange): Content | Content[] => {
+    const bits: Content[] = []
+    const maybePushSlice = (start: number, end: number) => {
+      if (start === end) return
+      bits.push(text.slice(start, end))
     }
 
-    // If we find an end tag, we need to replace the entire range.
-    let end = text.indexOf(key, start + key.length)
+    let consumed = range.start + range.key.length
+    for (let i = 0; i < range.children.length; i++) {
+      const child = range.children[i]
+      maybePushSlice(consumed, child.start)
+      bits.push(getReplacedContent(child))
+      consumed = child.end
+    }
+    maybePushSlice(consumed, range.end - range.key.length)
 
-    // If we don't find an end tag we just replace the key.
-    if (end === -1) end = start
+    const childContent = bits.every(c => typeof c === 'string')
+      ? bits.join('')
+      : React.createElement(React.Fragment, null, ...bits)
 
-    const contents = text.substring(start + key.length, end)
-      .replaceAll(key, '')
+    const replacement = replacements[range.key]
+    if (!replacement) return childContent
 
-    // Make sure the range includes the entire key. We do this after getting the
-    // contents so the contents doesn't include the key.
-    end += key.length
-
-    const value: React.ReactNode | string = typeof replacements[key] === 'function'
-      ? replacements[key](contents)
-      : replacements[key]
-
-    // Keep track of whether we have any non-text replacements.
-    onlyText = onlyText && typeof value === 'string'
-
-    replacedRanges.push({
-      start,
-      end,
-      value,
-      key
-    })
+    return typeof replacement === 'function'
+      ? replacement(childContent as string)
+      : replacement
   }
 
-  // Sort the ranges by start index so we can check for overlaps (which indicates a bug).
-  replacedRanges.sort((a, b) => a.start - b.start)
-  for (let i = 1; i < replacedRanges.length; i++) {
-    if (replacedRanges[i].start < replacedRanges[i - 1].end) {
-      throw new Error(`Replacement range ${replacedRanges[i].key}} overlaps with ${replacedRanges[i - 1].key}`)
+  const stack = [result]
+  const regex = /\$(\d+)/gm
+
+  // Keep track of the keys we've seen, so we can throw an error if a key is
+  // missing.
+  const seen = new Set<string>()
+
+  for (const match of text.matchAll(regex)) {
+    const key = match[0] as keyof typeof replacements
+
+    // If we should throw an error for missing replacements, keep track of the
+    // keys we've seen.
+    if (!options?.noErrorOnMissingReplacement) {
+      seen.add(key)
+    }
+
+    // If this is a closing tag, pop the element off the stack.
+    if (stack.at(-1)!.key === key) {
+      stack.pop()
+      continue
+    }
+
+    // We're not going to replace this key, so ignore it.
+    if (!replacements[key]) { continue }
+
+    // Check if we have a closing tag for this key.
+    let selfClosing = false
+    let endIndex = text.indexOf(key, match.index + key.length)
+
+    // If we don't have a closing tag, the end tag is the same as the start tag.
+    if (endIndex === -1) {
+      endIndex = match.index
+      selfClosing = true
+    }
+
+    // Add the key length so it is fully included in the range.
+    endIndex += key.length
+
+    const range: ReplacedRange = {
+      children: [],
+      end: endIndex,
+      start: match.index,
+      key: key as `$${number}`,
+    }
+    stack.at(-1)!.children.push(range)
+
+    // If this is not a self-closing tag, push the element onto the stack, so
+    // elements inside it can be added as children.
+    if (!selfClosing) {
+      stack.push(range)
     }
   }
 
-  let lastIndex = 0
-  let result: (string | React.ReactNode)[] = []
-  for (const range of replacedRanges) {
-    // Push the literal text before our replacement.
-    if (lastIndex !== range.start) result.push(text.substring(lastIndex, range.start))
-
-    // Push the replacement.
-    result.push(range.value)
-
-    // Update our last index.
-    lastIndex = range.end
+  // If we should throw an error for missing replacements check to see if they
+  // were all present in our text.
+  if (!options?.noErrorOnMissingReplacement && seen.size < Object.keys(replacements).length) {
+    throw new Error(`Missing replacements (${Object.keys(replacements).filter(key => !seen.has(key)).join(', ')} we not found in ${text})`)
   }
 
-  // Push the rest of the literal text.
-  if (lastIndex !== text.length) result.push(text.substring(lastIndex))
-
-  // If we only have text, return a string. Otherwise, wrap the result in a fragment.
-  return (onlyText
-    ? result.join('')
-    : React.createElement(React.Fragment, null, ...result)) as any
+  const formatted = getReplacedContent(result) as ReturnType<T>
+  return Array.isArray(formatted) ?
+    React.createElement(React.Fragment, null, ...formatted)
+    : formatted as any
 }
-
 
 /**
  * Formats a locale string with replacements. This is the same as formatString
