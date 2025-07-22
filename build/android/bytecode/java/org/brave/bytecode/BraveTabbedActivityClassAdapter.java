@@ -17,8 +17,11 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
             "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate";
     static String sBraveTabbedAppMenuPropertiesDelegateClassName =
             "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate";
+
     static String sChromeTabCreatorClassName =
             "org/chromium/chrome/browser/tabmodel/ChromeTabCreator";
+    static String sRedirectTabCreatorClassName =
+            "org/chromium/chrome/browser/tabmodel/RedirectTabCreator";
     static String sBraveTabCreatorClassName =
             "org/chromium/chrome/browser/tabmodel/BraveTabCreator";
 
@@ -30,6 +33,8 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
         redirectConstructor(
                 sTabbedAppMenuPropertiesDelegateClassName,
                 sBraveTabbedAppMenuPropertiesDelegateClassName);
+
+        changeSuperName(sRedirectTabCreatorClassName, sBraveTabCreatorClassName);
 
         redirectConstructor(sChromeTabCreatorClassName, sBraveTabCreatorClassName);
 
