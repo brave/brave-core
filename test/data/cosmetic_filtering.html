@@ -277,6 +277,9 @@ const classes = (expectedClasses) =>
         </div>
         <p data-expect="visible">This should not be hidden</p>
         <p class="needle" expect="hidden">This should be hidden</p>
+        <p style="clear: left" expect="hidden">This should be hidden</p>
+        <p style="clear: right" expect="hidden">This should be hidden</p>
+        <p style="clear: both" expect="visible">This should not be hidden</p>
       </div>
 
       <div>
