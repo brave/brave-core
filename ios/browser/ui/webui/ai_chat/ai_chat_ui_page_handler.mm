@@ -12,6 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -21,6 +22,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_communication_tab_helper+private.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -147,16 +149,40 @@ AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 
 void AIChatUIPageHandler::HandleVoiceRecognition(
     const std::string& conversation_uuid) {
-  //  ai_chat::HandleVoiceRecognition(owner_web_state_.get(),
-  //  conversation_uuid);
+  auto* web_state_to_navigate = (active_chat_tab_helper_)
+                                    ? active_chat_tab_helper_->web_state()
+                                    : owner_web_state_.get();
+
+  auto* controller =
+      [AIChatCommunicationController fromWebState:web_state_to_navigate];
+  if (auto delegate = [controller delegate]) {
+    [delegate
+        handleVoiceRecognition:controller
+            withConversationId:base::SysUTF8ToNSString(conversation_uuid)];
+  }
 }
 
-void AIChatUIPageHandler::ShowSoftKeyboard() {
-  //  ai_chat::HandleShowSoftKeyboard(owner_web_state_.get());  // TODO: Fix
-}
+void AIChatUIPageHandler::ShowSoftKeyboard() {}
 
 void AIChatUIPageHandler::UploadImage(bool use_media_capture,
-                                      UploadImageCallback callback) {}
+                                      UploadImageCallback callback) {
+  auto* web_state_to_navigate = (active_chat_tab_helper_)
+                                    ? active_chat_tab_helper_->web_state()
+                                    : owner_web_state_.get();
+
+  auto* controller =
+      [AIChatCommunicationController fromWebState:web_state_to_navigate];
+  if (auto delegate = [controller delegate]) {
+    [delegate fetchImageForChatUpload:controller
+                           completion:^(NSURL* url) {
+                             // TODO: Load Images into files:
+                             std::vector<mojom::UploadedFilePtr> files;
+
+                             // TODO: Load image from URL and call
+                             // std::move(callback).Run(files);
+                           }];
+  }
+}
 
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                           int32_t count,
@@ -168,11 +194,15 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
-  // TODO: Fix
-  //  web::WebState* web_state_to_navigate =
-  //      (active_chat_tab_helper_) ? active_chat_tab_helper_->web_state()
-  //                                : owner_web_state_.get();
-  //  ai_chat::ShowBraveLeoSettings(web_state_to_navigate);
+  auto* web_state_to_navigate = (active_chat_tab_helper_)
+                                    ? active_chat_tab_helper_->web_state()
+                                    : owner_web_state_.get();
+
+  auto* controller =
+      [AIChatCommunicationController fromWebState:web_state_to_navigate];
+  if (auto delegate = [controller delegate]) {
+    [delegate openSettings:controller];
+  }
 }
 
 void AIChatUIPageHandler::OpenConversationFullPage(
@@ -207,11 +237,15 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 }
 
 void AIChatUIPageHandler::GoPremium() {
-  // TODO: Fix
-  //  auto* web_state_to_navigate = (active_chat_tab_helper_)
-  //                                    ? active_chat_tab_helper_->web_state()
-  //                                    : owner_web_state_.get();
-  //  ai_chat::GoPremium(web_state_to_navigate);
+  auto* web_state_to_navigate = (active_chat_tab_helper_)
+                                    ? active_chat_tab_helper_->web_state()
+                                    : owner_web_state_.get();
+
+  auto* controller =
+      [AIChatCommunicationController fromWebState:web_state_to_navigate];
+  if (auto delegate = [controller delegate]) {
+    [delegate goPremium:controller];
+  }
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
@@ -219,10 +253,15 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 }
 
 void AIChatUIPageHandler::ManagePremium() {
-  //  auto* web_state_to_navigate = (active_chat_tab_helper_)
-  //                                    ? active_chat_tab_helper_->web_state()
-  //                                    : owner_web_state_.get();
-  //  ai_chat::ManagePremium(web_state_to_navigate);
+  auto* web_state_to_navigate = (active_chat_tab_helper_)
+                                    ? active_chat_tab_helper_->web_state()
+                                    : owner_web_state_.get();
+
+  auto* controller =
+      [AIChatCommunicationController fromWebState:web_state_to_navigate];
+  if (auto delegate = [controller delegate]) {
+    [delegate managePremium:controller];
+  }
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
@@ -241,8 +280,20 @@ void AIChatUIPageHandler::HandleWebStateDestroyed() {
 }
 
 void AIChatUIPageHandler::CloseUI() {
-  // TODO: Fix
-  //  ai_chat::CloseActivity(owner_web_state_);
+  // TODO: Somehow figure out which WebView to close??? Maybe easier to call
+  // `window.close()` in Javascript???
+
+  //  auto* web_state_to_navigate = (active_chat_tab_helper_)
+  //                                    ? active_chat_tab_helper_->web_state()
+  //                                    : owner_web_state_.get();
+  //
+  //  if (auto* tab_helper =
+  //  BraveWebUIMessagingTabHelper::FromWebState(web_state_to_navigate)) {
+  //    if (id<BraveWebUIMessagingTabHelperDelegate> delegate =
+  //    tab_helper->GetBridgingDelegate()) {
+  ////      [delegate aiChatCloseWebUI:nullptr];
+  //    }
+  //  }
 }
 
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,

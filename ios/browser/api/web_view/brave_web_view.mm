@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
 #include "base/notreached.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_communication_tab_helper+private.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -128,6 +129,10 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
 - (CWVTranslationController*)translationController {
   NOTREACHED();
   return nil;
+}
+
+- (AIChatCommunicationController*)aiChatController {
+  return [AIChatCommunicationController fromWebState:self.webState];
 }
 
 #pragma mark - CRWWebStateDelegate

@@ -89,7 +89,7 @@ class AIChatTabHelper : public web::WebStateObserver,
 
   // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;
-  void GetPageContent(GetPageContentCallback callback,
+  void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
@@ -103,12 +103,12 @@ class AIChatTabHelper : public web::WebStateObserver,
 
   bool HasOpenAIChatPermission() const override;
 
-  void OnFetchPageContentComplete(GetPageContentCallback callback,
+  void OnFetchPageContentComplete(FetchPageContentCallback callback,
                                   std::string content,
                                   bool is_video,
                                   std::string invalidation_token);
 
-  void SetPendingGetContentCallback(GetPageContentCallback callback);
+  void SetPendingGetContentCallback(FetchPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
@@ -120,7 +120,7 @@ class AIChatTabHelper : public web::WebStateObserver,
   bool is_page_loaded_ = false;
 
   // TODO(petemill): Use signal to allow for multiple callbacks
-  GetPageContentCallback pending_get_page_content_callback_;
+  FetchPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
