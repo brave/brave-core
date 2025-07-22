@@ -125,6 +125,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             return mValue;
         }
 
+        public boolean isPlaceholder() {
+            return mId == -1;
+        }
+
         @Override
         public String toString() {
             return mText;
@@ -985,7 +989,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     @Override
                     public void onItemSelected(
                             AdapterView<?> parent, View view, int position, long id) {
-                        CategorySpinnerItem item =
+                        final CategorySpinnerItem item =
                                 (CategorySpinnerItem) parent.getItemAtPosition(position);
 
                         final boolean isIssueCategorySelected = item.getId() != -1;
@@ -997,9 +1001,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                                 ? R.drawable.orange_rounded_button
                                                 : R.drawable.set_default_rounded_button_disabled,
                                         /* theme= */ null));
-                        if (isIssueCategorySelected) {
-                            mIssueCategorySpinnerAdapter.remove(
-                                    mIssueCategorySpinnerAdapter.getItem(0));
+                        final CategorySpinnerItem firstItem =
+                                (CategorySpinnerItem) mIssueCategorySpinnerAdapter.getItem(0);
+                        if (isIssueCategorySelected && firstItem.isPlaceholder()) {
+                            mIssueCategorySpinnerAdapter.remove(firstItem);
                         }
                     }
 
