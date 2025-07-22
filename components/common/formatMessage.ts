@@ -25,30 +25,33 @@ interface FormatOptions {
   tags?: Record<string, (content: any) => any>
 }
 
-// Formats a locale-specific message template that contains $N placeholders and
-// returns an array containing the processed message parts.
-//
-// If |options| is an array, then the values in the array are used to fill
-// message placeholders, with the first value in the array filling the "$1"
-// placeholder, the second value filling the "$2" placeholder, etc.
-//
-// Example:
-//   const result = formatMessage('Your balance is $1 $2, [1, 'BAT'])
-//   console.assert(result.join(''), 'Your balance is 1 BAT')
-//
-// If |options| is an object, then it may contain a |placeholders| property and
-// a |tags| property. Placeholders are filled using the |placeholders| object
-// and placeholder tag pairs are replaced using the |tags| object.
-//
-// Example:
-//   const result = formatMessage('Hello $1, view $2your profile$3', {
-//     placeholders: {
-//       $1: 'world'
-//     },
-//     tags: {
-//       $2: (content) => <a key='profile' href='/profile'>{content}</a>
-//     }
-//   })
+/**
+ * @deprecated Use `formatLocale` or `formatString` from `$web-common/locale` instead.
+ * Formats a locale-specific message template that contains $N placeholders and
+ * returns an array containing the processed message parts.
+ *
+ * If |options| is an array, then the values in the array are used to fill
+ * message placeholders, with the first value in the array filling the "$1"
+ * placeholder, the second value filling the "$2" placeholder, etc.
+ *
+ * Example:
+ *   const result = formatMessage('Your balance is $1 $2, [1, 'BAT'])
+ *   console.assert(result.join(''), 'Your balance is 1 BAT')
+ *
+ * If |options| is an object, then it may contain a |placeholders| property and
+ * a |tags| property. Placeholders are filled using the |placeholders| object
+ * and placeholder tag pairs are replaced using the |tags| object.
+ *
+ * Example:
+ *   const result = formatMessage('Hello $1, view $2your profile$3', {
+ *     placeholders: {
+ *       $1: 'world'
+ *     },
+ *     tags: {
+ *       $2: (content) => <a key='profile' href='/profile'>{content}</a>
+ *     }
+ *   })
+ */
 export default function formatMessage (
   message: string,
   options: FormatOptions | any[]
