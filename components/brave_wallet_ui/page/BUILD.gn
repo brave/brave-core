@@ -4,7 +4,6 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
-import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_wallet_page_ui") {
