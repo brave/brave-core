@@ -21,7 +21,7 @@ const getTestTargets = (outDir, filters = ['//*']) =>
 async function getModifiedFiles(target = 'HEAD~', base = null) {
   const args = ['diff', '--name-only', target, base].filter((x) => x)
 
-  return await exec('git', args, { maxBuffer: 1024 * 1024 * 50 }).then((x) =>
+  return exec('git', args, { maxBuffer: 1024 * 1024 * 50 }).then((x) =>
     x.stdout
       .trim()
       .split('\n')

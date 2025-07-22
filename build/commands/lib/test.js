@@ -222,7 +222,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = await getAffectedTests('out/Component_arm64')
+    const analysis = await getAffectedTests(config.outputDir)
     const affectedFiles = new Set(
       analysis.files.map((x) =>
         path.join(config.braveCoreDir, x.replace('//brave', '')),
