@@ -22,19 +22,20 @@ END_METADATA
 
 namespace {
 
-class InitiallyFocusedWebView : public SidePanelWebUIViewT<AIChatUI> {
+// A custom web view to set focus correctly when the side panel is shown.
+class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
  public:
-  InitiallyFocusedWebView(
+  AIChatSidePanelWebView(
       SidePanelEntryScope& scope,
       std::unique_ptr<WebUIContentsWrapperT<AIChatUI>> contents_wrapper)
       : SidePanelWebUIViewT<AIChatUI>(
             scope,
-            base::BindRepeating(&InitiallyFocusedWebView::OnShow,
+            base::BindRepeating(&AIChatSidePanelWebView::OnShow,
                                 base::Unretained(this)),
             base::RepeatingClosure(),
             std::move(contents_wrapper)) {}
 
-  ~InitiallyFocusedWebView() override = default;
+  ~AIChatSidePanelWebView() override = default;
 
   // views::View:
   void ViewHierarchyChanged(
@@ -73,7 +74,7 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
     SidePanelEntryScope& scope) {
   CHECK(profile);
 
-  auto web_view = std::make_unique<InitiallyFocusedWebView>(
+  auto web_view = std::make_unique<AIChatSidePanelWebView>(
       scope, std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
                  ai_chat::TabAssociatedConversationUrl(), profile.get(),
                  IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
