@@ -39,7 +39,7 @@ export const store = configureStore({
   preloadedState: {
     ui: {
       ...defaultUIState,
-      isAndroid: loadTimeData.getBoolean('isAndroid') || false,
+      isMobile: loadTimeData.getBoolean('isMobile') || false,
     },
   },
   middleware: (getDefaultMiddleware) =>

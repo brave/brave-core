@@ -53,13 +53,13 @@ const enableNftAutoDiscovery = formatLocale(
 export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   return (
     <PopupModal
       title=''
       width='477px'
-      hideHeader={!isPanel && !isAndroid}
+      hideHeader={!isPanel && !isMobile}
       onClose={onCancel}
     >
       <Column

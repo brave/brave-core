@@ -41,8 +41,8 @@ export function ShieldAccountAlert(props: Props) {
 
   // Safe Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isPanelOrAndroid = isPanel || isAndroid
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isPanelOrAndroid = isPanel || isMobile
 
   return (
     <>
