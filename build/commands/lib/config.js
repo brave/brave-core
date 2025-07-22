@@ -443,6 +443,14 @@ Config.prototype.buildArgs = function () {
     args[key] = getEnvConfig([key])
   }
 
+  if (this.targetOS === 'linux') {
+    args.dcheck_always_on = false
+    args.is_component_build = false
+    args.is_debug = false
+    args.is_msan = true
+    args.msan_track_origins = 0
+  }
+
   if (this.isOfficialBuild()) {
     args.enable_updater = true
   }
