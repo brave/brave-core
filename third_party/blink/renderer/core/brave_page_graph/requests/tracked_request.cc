@@ -165,7 +165,7 @@ void TrackedRequest::FinishResponseBodyHash() {
   CHECK(hash_.empty());
   blink::DigestValue digest;
   CHECK(body_digestor_.Finish(digest));
-  hash_ = WTF::Base64Encode(digest);
+  hash_ = blink::Base64Encode(digest);
 }
 
 }  // namespace brave_page_graph

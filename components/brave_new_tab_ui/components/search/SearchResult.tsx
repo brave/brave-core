@@ -110,7 +110,7 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
   //    url machinery.
   const isGeneric = !match.imageUrl
   return isGeneric
-    ? <SearchIcon url={match.iconUrl} />
+    ? <SearchIcon url={match.iconUrl.url} />
     : match.imageUrl.startsWith('chrome')
       ? <FavIcon url={match.imageUrl} />
       : <MaybeImage src={match.imageUrl} />

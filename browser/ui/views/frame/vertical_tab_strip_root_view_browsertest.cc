@@ -124,7 +124,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                   .EqualsIgnoringRef(url));
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
+#define MAYBE_DragOnCurrentTab DISABLED_DragOnCrruentTab
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
+                       MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));

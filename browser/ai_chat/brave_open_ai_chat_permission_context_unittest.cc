@@ -29,7 +29,7 @@ class BraveOpenAIChatPermissionContextTest
   BraveOpenAIChatPermissionContextTest() = default;
   ~BraveOpenAIChatPermissionContextTest() override = default;
 
-  ContentSetting RequestPermission(
+  blink::mojom::PermissionStatus RequestPermission(
       BraveOpenAIChatPermissionContext* permission_context,
       const GURL& url) {
     NavigateAndCommit(url);
@@ -38,18 +38,18 @@ class BraveOpenAIChatPermissionContextTest
     const PermissionRequestID id(
         web_contents()->GetPrimaryMainFrame()->GetGlobalId(),
         PermissionRequestID::RequestLocalId());
-    ContentSetting setting = ContentSetting::CONTENT_SETTING_DEFAULT;
+    blink::mojom::PermissionStatus status;
     base::RunLoop run_loop;
     permission_context->RequestPermission(
         std::make_unique<PermissionRequestData>(permission_context, id,
                                                 /*user_gesture=*/true, url),
-        base::BindLambdaForTesting([&](ContentSetting result) {
-          setting = result;
+        base::BindLambdaForTesting([&](blink::mojom::PermissionStatus result) {
+          status = result;
           run_loop.Quit();
         }));
     run_loop.Run();
 
-    return setting;
+    return status;
   }
 
  protected:
@@ -74,7 +74,7 @@ TEST_F(BraveOpenAIChatPermissionContextTest, PromptForBraveSearch) {
 
   prompt_factory_->set_response_type(PermissionRequestManager::ACCEPT_ALL);
   BraveOpenAIChatPermissionContext context(browser_context());
-  EXPECT_EQ(ContentSetting::CONTENT_SETTING_ALLOW,
+  EXPECT_EQ(content::PermissionStatus::GRANTED,
             RequestPermission(&context, brave_search_url));
   EXPECT_EQ(prompt_factory_->show_count(), 1);
 }
@@ -84,7 +84,7 @@ TEST_F(BraveOpenAIChatPermissionContextTest, BlockForNonBraveSearch) {
 
   prompt_factory_->set_response_type(PermissionRequestManager::ACCEPT_ALL);
   BraveOpenAIChatPermissionContext context(browser_context());
-  EXPECT_EQ(ContentSetting::CONTENT_SETTING_BLOCK,
+  EXPECT_EQ(content::PermissionStatus::DENIED,
             RequestPermission(&context, brave_url));
   EXPECT_EQ(prompt_factory_->show_count(), 0);
 }

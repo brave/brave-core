@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_DECENTRALIZED_DNS_CONTENT_DECENTRALIZED_DNS_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_DECENTRALIZED_DNS_CONTENT_DECENTRALIZED_DNS_NAVIGATION_THROTTLE_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -30,11 +29,10 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
   DecentralizedDnsNavigationThrottle& operator=(
       const DecentralizedDnsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<DecentralizedDnsNavigationThrottle>
-  MaybeCreateThrottleFor(content::NavigationThrottleRegistry& registry,
-                         PrefService* user_prefs,
-                         PrefService* local_state,
-                         const std::string& locale);
+  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                PrefService* user_prefs,
+                                PrefService* local_state,
+                                const std::string& locale);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;

@@ -85,23 +85,22 @@ void ClearRedirectChain(NavigationHandle* navigation_handle) {
 }  // namespace
 
 // static
-std::unique_ptr<DebounceNavigationThrottle>
-DebounceNavigationThrottle::MaybeCreateThrottleFor(
+void DebounceNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     DebounceService* debounce_service) {
   // If debouncing is disabled in brave://flags, debounce service will
   // never be created (will be null) so we won't create the throttle
   // either. Caller must nullcheck this.
   if (!debounce_service) {
-    return nullptr;
+    return;
   }
 
   if (!debounce_service->IsEnabled()) {
-    return nullptr;
+    return;
   }
 
-  return std::make_unique<DebounceNavigationThrottle>(registry,
-                                                      *debounce_service);
+  registry.AddThrottle(std::make_unique<DebounceNavigationThrottle>(
+      registry, *debounce_service));
 }
 
 DebounceNavigationThrottle::DebounceNavigationThrottle(

@@ -18,12 +18,6 @@ class BraveProfileMenuView : public ProfileMenuView {
   friend class ProfileMenuView;
   using ProfileMenuView::ProfileMenuView;
 
-  // Helper methods for building the menu.
-  void SetProfileIdentityInfo(
-      const ui::ImageModel& image_model,
-      const std::u16string& title,
-      const std::u16string& subtitle = std::u16string(),
-      const gfx::VectorIcon* header_art_icon = nullptr) override;
   void BuildFeatureButtons() override;
 };
 

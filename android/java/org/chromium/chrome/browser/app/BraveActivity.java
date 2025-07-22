@@ -2417,9 +2417,9 @@ public abstract class BraveActivity extends ChromeActivity
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
     }
 
-    public void showBookmarkManager(Profile profile) {
+    public void showBookmarkManager(Profile profile, Tab currentTab) {
         if (mBookmarkManagerOpenerSupplier.get() != null) {
-            mBookmarkManagerOpenerSupplier.get().showBookmarkManager(this, profile);
+            mBookmarkManagerOpenerSupplier.get().showBookmarkManager(this, currentTab, profile);
         }
     }
 

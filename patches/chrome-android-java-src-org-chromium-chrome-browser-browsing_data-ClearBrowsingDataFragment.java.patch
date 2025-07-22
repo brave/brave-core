@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
-index dea7164915a3b3afde38cc3bb9332a248c9f7a48..4b11856e97f7adebc7bb55e55856fac28be864a5 100644
+index 428effc54c2090d0051e0327c3a915102c17c7ad..cf3e31d5b560e3036240ab0905f09ade00156aab 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
-@@ -348,7 +348,7 @@ public class ClearBrowsingDataFragment extends ChromeBaseSettingsFragment
+@@ -347,7 +347,7 @@ public class ClearBrowsingDataFragment extends ChromeBaseSettingsFragment
      }
  
      /** Called when browsing data is about to be cleared. */

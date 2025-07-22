@@ -276,7 +276,7 @@
                     style="@style/SmallRegular"
                     android:layout_margin="16dp"
                     android:text="@string/brave_vpn_renewal_text"
-                    android:textColor="@color/primitive_primary_30"
+                    android:textColor="@color/text_color_30"
                     android:textAlignment="textStart"
                     android:layout_gravity="center"
                     android:gravity="center"/>
@@ -288,7 +288,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/already_purchased"
-                    android:textColor="@color/primitive_primary_20"
+                    android:textColor="@color/text_color_20"
                     android:textAlignment="center"/>
 
                 <TextView

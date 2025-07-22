@@ -7,6 +7,25 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Brave colors taken from Nala -->
+    <color name="primitive_primary_10">#000668</color>
+    <color name="primitive_primary_20">#0210a2</color>
+    <color name="primitive_primary_30">#2833b7</color>
+    <color name="primitive_primary_40">#434fcf</color>
+    <color name="primitive_primary_50">#5d69e9</color>
+    <color name="primitive_primary_60">#7985ff</color>
+    <color name="primitive_primary_70">#9ca4ff</color>
+    <color name="primitive_primary_80">#bdc2ff</color>
+    <color name="primitive_primary_90">#e0e0ff</color>
+    <color name="primitive_primary_95">#f1efff</color>
+    <color name="primitive_secondary_40">#5a5c7a</color>
+    <color name="primitive_secondary_50">#737594</color>
+    <color name="primitive_secondary_60">#8d8eaf</color>
+    <color name="primitive_secondary_70">#a7a9ca</color>
+    <color name="primitive_secondary_80">#c3c4e6</color>
+    <color name="primitive_tertiary_40">#804e71</color>
+    <color name="primitive_tertiary_80">#fbb0db</color>
+
     <!-- Theme colors -->
     <color name="brave_white">@android:color/white</color>
     <color name="brave_link">#4C54D2</color>
@@ -14,7 +33,8 @@
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_90">#F9C3B6</color>
     <color name="baseline_primary_80">#FF7654</color>
-    <color name="baseline_primary_40">#EA3A0D</color>
+    <color name="baseline_primary_40">#EC4E25</color>
+    <color name="baseline_primary_30">#EA3A0D</color>
     <color name="baseline_primary_20">@color/modern_blue_600</color>
     <color name="baseline_primary_10">@color/modern_blue_700</color>
     <color name="black_alpha_30">#4D000000</color>
@@ -26,7 +46,9 @@
     <color name="default_text_color_on_accent1_dark">@color/baseline_neutral_0</color>
     <color name="gm3_baseline_surface_tint_light">#948989</color>
     <color name="gm3_baseline_surface_tint_dark">#F7F9FC</color>
-    <color name="gm3_baseline_surface_container_high_light">#F0EEEE</color>
+    <color name="gm3_baseline_surface_container_light">#F3F1F1</color>
+    <color name="gm3_baseline_surface_container_high_light">#F2F0F0</color>
+    <color name="gm3_baseline_surface_container_highest_light">#F0EEEE</color>
 
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_onboarding_item_background_color">#687485</color>
@@ -54,6 +76,8 @@
     <color name="brave_theme_success">#51cf66</color>
     <color name="brave_theme_error_txt">#E32444</color>
     <color name="brave_text_button_color">#4C54D2</color>
+    <color name="text_color_20">#d5dcff</color>
+    <color name="text_color_30">#b7c6ff</color>
 
     <!-- Onboarding colors -->
     <color name="onboarding_orange">#fb542b</color>
@@ -148,6 +172,7 @@
 
     <!-- Incognito mode colors -->
     <color name="toolbar_background_primary_dark">@color/primitive_private_window_5</color>
+    <color name="toolbar_background_incognito">@color/primitive_private_window_5</color>
     <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
     <color name="brave_private_tabs_bg_color">#13052A</color>
     <color name="brave_private_reauth_unlock_button_bg_color">#4B415D</color>
@@ -393,8 +418,6 @@
     <color name="text_tertiary">#62757e</color>
     <color name="primary_20">#d5dcff</color>
     <color name="button_background">#3F39E8</color>
-    <color name="primitive_primary_20">#d5dcff</color>
-    <color name="primitive_primary_30">#b7c6ff</color>
 
     <color name="divider_interactive">#c1c4ff</color>
 
@@ -440,4 +463,23 @@
     <color name="empty_state_icon_tabswitcher_bg_color">#EFF0FF</color>
     <color name="empty_state_tab_border_color">#4551D1</color>
     <color name="empty_state_tab_group_border_color">#4551D1</color>
+
+    <!-- GM3 dynamic colors that point to the baseline palette for below Android S.-->
+    <color name="material_primary_95">@color/primitive_primary_95</color>
+    <color name="material_primary_90">@color/primitive_primary_90</color>
+    <color name="material_primary_80">@color/primitive_primary_80</color>
+    <color name="material_primary_70">@color/primitive_primary_70</color>
+    <color name="material_primary_60">@color/primitive_primary_60</color>
+    <color name="material_primary_50">@color/primitive_primary_50</color>
+    <color name="material_primary_40">@color/primitive_primary_40</color>
+    <color name="material_primary_30">@color/primitive_primary_30</color>
+    <color name="material_primary_20">@color/primitive_primary_20</color>
+    <color name="material_primary_10">@color/primitive_primary_10</color>
+    <color name="material_secondary_80">@color/primitive_secondary_80</color>
+    <color name="material_secondary_70">@color/primitive_secondary_70</color>
+    <color name="material_secondary_60">@color/primitive_secondary_60</color>
+    <color name="material_secondary_50">@color/primitive_secondary_50</color>
+    <color name="material_secondary_40">@color/primitive_secondary_40</color>
+    <color name="material_tertiary_80">@color/primitive_tertiary_80</color>
+    <color name="material_tertiary_40">@color/primitive_tertiary_40</color>
 </resources>

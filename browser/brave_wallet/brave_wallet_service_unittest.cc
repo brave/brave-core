@@ -52,10 +52,10 @@
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
@@ -3248,21 +3248,6 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateSPLNfts) {
 
   // Migration should be marked as done.
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated));
-}
-
-TEST_F(BraveWalletServiceUnitTest, GetCountryCode) {
-  const struct {
-    const int country_code;
-    const std::string expected_country;
-  } kCountryCodeCases[] = {{21843, "US"}, {17217, "CA"}, {16725, "AU"}};
-
-  for (const auto& [country_code, expected_country] : kCountryCodeCases) {
-    GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall, country_code);
-    service_->GetCountryCode(base::BindLambdaForTesting(
-        [&expected_country](const std::string& cc) -> void {
-          EXPECT_EQ(expected_country, cc);
-        }));
-  }
 }
 
 TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {

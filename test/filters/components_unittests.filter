@@ -18,6 +18,19 @@
 -BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedBeforeAccountFoldersAdded
 -BookmarkUtilsTest.GetParentForNewNodes_ClientOverride
 
+# This test fails because we disable Amount Extraction Heuristic Regexes and
+# disalow component installation.
+-AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
+
+# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
+-DocumentProviderTest.CachingForSyncMatches
+-DocumentProviderTest.IsDocumentProviderAllowed
+-DocumentProviderTest.MaxMatches
+
+# This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
+# https://github.com/brave/brave-browser/issues/47218
+-OmniboxTextUtilTest.AdjustTextForCopy
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
