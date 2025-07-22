@@ -30,10 +30,6 @@ void TorTabHelper::MaybeCreateForWebContents(
 
 void TorTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInPrimaryMainFrame()) {
-    return;
-  }
-
 #if BUILDFLAG(IS_MAC)
   const bool should_disable_web_share = true;
 
