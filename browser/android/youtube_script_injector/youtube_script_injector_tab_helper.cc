@@ -263,7 +263,7 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
           weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
 }
 
-bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo() const {
+bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
   const GURL& url = web_contents()->GetLastCommittedURL();
   if (!url.is_valid() || url.is_empty()) {
     return false;
@@ -274,6 +274,15 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo() const {
           url, GURL("https://www.youtube.com"),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return false;
+  }
+
+  // If mobileOnly is true, require host to be exactly "m.youtube.com"
+  // (case-insensitive).
+  if (mobileOnly) {
+    const std::string& host = url.host();
+    if (!base::EqualsCaseInsensitiveASCII(host, "m.youtube.com")) {
+      return false;
+    }
   }
 
   // Check if path is exactly "/watch" (case sensitive).
@@ -346,7 +355,7 @@ void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
   return base::FeatureList::IsEnabled(
              preferences::features::kBravePictureInPictureForYouTubeVideos) &&
-         IsYouTubeVideo() && web_contents() &&
+         IsYouTubeVideo(true) && web_contents() &&
          web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
 }
 

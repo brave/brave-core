@@ -23,7 +23,7 @@ class YouTubeScriptInjectorTabHelper
   YouTubeScriptInjectorTabHelper& operator=(
       const YouTubeScriptInjectorTabHelper&) = delete;
   ~YouTubeScriptInjectorTabHelper() override;
-  bool IsYouTubeVideo() const;
+  bool IsYouTubeVideo(bool mobileOnly = false) const;
   void MaybeSetFullscreen();
 
   // Fullscreen state management using PageUserData
