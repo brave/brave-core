@@ -12,6 +12,7 @@
 #include "ios/web_view/internal/cwv_navigation_action_internal.h"
 #include "ios/web_view/internal/cwv_navigation_type_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
+#include "brave/ios/web/webui/brave_webui_messaging_tab_helper.h"
 
 @interface BraveNavigationAction ()
 - (instancetype)initWithRequest:(NSURLRequest*)request
@@ -165,6 +166,23 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
   if ([self.navigationDelegate
           respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
     [self.navigationDelegate webViewDidRedirectNavigation:self];
+  }
+}
+
+#pragma mark - BraveWebUIMessagingTabHelperDelegate
+
+- (id<BraveWebUIMessagingTabHelperDelegate>)webUIDelegate {
+  auto* tab_helper = BraveWebUIMessagingTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    return tab_helper->GetBridgingDelegate();
+  }
+  return nullptr;
+}
+
+- (void)setWebUIDelegate:(id<BraveWebUIMessagingTabHelperDelegate>)webUIDelegate {
+  auto* tab_helper = BraveWebUIMessagingTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    tab_helper->SetBridgingDelegate(webUIDelegate);
   }
 }
 

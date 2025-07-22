@@ -21,6 +21,9 @@ source_set("webui") {
     "sanitized_image_source.mm",
     "untrusted_sanitized_image_source.h",
     "untrusted_sanitized_image_source.mm",
+    "brave_webui_messaging_tab_helper.h",
+    "brave_webui_messaging_tab_helper.mm",
+    "brave_webui_messaging_tab_helper_delegate.h",
   ]
 
   deps = [
