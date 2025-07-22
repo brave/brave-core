@@ -10,6 +10,7 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
+const getAffectedTests = require('./getAffectedTests')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -98,8 +99,8 @@ const test = async (
   buildConfig = config.defaultBuildConfig,
   options = {},
 ) => {
-  await buildTests(suite, buildConfig, options)
-  runTests(passthroughArgs, suite, buildConfig, options)
+  await buildTests(suite, buildConfig, options)  
+  await runTests(passthroughArgs, suite, buildConfig, options)
 }
 
 const buildTests = async (
@@ -134,7 +135,7 @@ const deleteFile = (filePath) => {
   }
 }
 
-const runTests = (passthroughArgs, suite, buildConfig, options) => {
+const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -220,13 +221,22 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     ]
 
     // Run the tests
+
+    const analysis = await getAffectedTests("out/Component_arm64");
+    const affectedFiles = new Set(analysis.files.map(x => path.join(config.braveCoreDir, x.replace('//brave', ''))))
+    const affectedTestExecutables = new Set(analysis.affectedTests.map(x=>x.split(':').at(1)));
+
+    console.log(affectedFiles)
     getTestsToRun(config, suite).every((testSuite) => {
+      console.log(testSuite);
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
 
       // Filter out upstream tests that are known to fail for Brave
+      let filterFilePaths = [];
       if (upstreamTestSuites.includes(testSuite)) {
-        const filterFilePaths = getApplicableFilters(testSuite)
+        filterFilePaths = getApplicableFilters(testSuite)
+        console.log({testSuite, filterFilePaths});
         if (filterFilePaths.length > 0) {
           runArgs.push(
             `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
@@ -239,6 +249,12 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             runArgs.push(ignorePreliminaryFailures)
           }
         }
+      }
+
+      const filterAffected = filterFilePaths.find(filter => affectedFiles.has(filter))
+      if (!affectedTestExecutables.has(testSuite) && !filterAffected) {
+        console.log(`SKIPPED: "${testSuite}" as it didn't change since ${analysis.targetCommit}`)
+        return;
       }
 
       let convertJSONToXML = false
