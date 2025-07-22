@@ -15,6 +15,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -157,7 +158,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   SetupBtcAccount();
 
-  base::MockCallback<BitcoinWalletService::GetBalanceCallback> callback;
+  base::test::TestFuture<base::expected<mojom::BitcoinBalancePtr, std::string>>
+      balance_future;
 
   // GetBalance works.
   auto expected_balance = mojom::BitcoinBalance::New();
@@ -176,13 +178,9 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   expected_balance->available_balance =
       10000 + 100000 - 5000 - 50000 - 2222 - 22222;
   expected_balance->pending_balance = 8888 + 88888 - 2222 - 22222;
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinBalancePtr& balance) {
-                              return balance == expected_balance;
-                            }),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->GetBalance(account_id(),
+                                      balance_future.GetCallback());
+  EXPECT_EQ(balance_future.Take().value(), expected_balance);
 
   bitcoin_test_rpc_server_->AddMempoolBalance(address_0, 1000, 10000000);
   bitcoin_test_rpc_server_->AddTransactedAddress(address_6);
@@ -191,13 +189,9 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   expected_balance->total_balance = 0;
   expected_balance->available_balance = 0;
   expected_balance->pending_balance = 1000 - 10000000;  // negative
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinBalancePtr& balance) {
-                              return balance == expected_balance;
-                            }),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->GetBalance(account_id(),
+                                      balance_future.GetCallback());
+  EXPECT_EQ(balance_future.Take().value(), expected_balance);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {

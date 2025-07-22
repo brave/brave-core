@@ -61,10 +61,10 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   // methods
   const fetchBalance = React.useCallback(async () => {
     setLoading(true)
-    const result = await getAPIProxy().bitcoinWalletService.getBalance(
+    const { result } = await getAPIProxy().bitcoinWalletService.getBalance(
       props.accountId,
     )
-    setBalance(result.balance || undefined)
+    setBalance(result.success || undefined)
     setLoading(false)
   }, [props.accountId])
 

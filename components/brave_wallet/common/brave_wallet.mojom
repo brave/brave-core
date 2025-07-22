@@ -1874,7 +1874,7 @@ struct BitcoinAccountInfo {
 interface BitcoinWalletService {
   // Fetches BitcoinBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
-  GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
+  GetBalance(AccountId account_id) => result<BitcoinBalance, string>;
 
   // Checks balance of possible hw account.
   GetExtendedKeyAccountBalance(string chain_id, string extended_key) => (BitcoinBalance? balance, string? error_message);

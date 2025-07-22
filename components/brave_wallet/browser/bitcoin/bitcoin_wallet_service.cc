@@ -164,12 +164,12 @@ void GetBalanceTask::WorkOnTask() {
   }
 
   if (error_) {
-    std::move(callback_).Run(nullptr, std::move(*error_));
+    std::move(callback_).Run(base::unexpected(std::move(*error_)));
     return;
   }
 
   if (result_) {
-    std::move(callback_).Run(std::move(result_), std::nullopt);
+    std::move(callback_).Run(base::ok(std::move(result_)));
     return;
   }
 
@@ -762,7 +762,7 @@ void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
 
   auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
-    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
@@ -781,11 +781,10 @@ void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
 void BitcoinWalletService::OnGetBalanceTaskDone(
     GetBalanceTask* task,
     GetBalanceCallback callback,
-    mojom::BitcoinBalancePtr balance,
-    const std::optional<std::string>& error) {
+    base::expected<mojom::BitcoinBalancePtr, std::string> balance) {
   CHECK(get_balance_tasks_.erase(task));
 
-  std::move(callback).Run(std::move(balance), error);
+  std::move(callback).Run(std::move(balance));
 }
 
 void BitcoinWalletService::GetExtendedKeyAccountBalance(
