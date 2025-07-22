@@ -43,9 +43,10 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   // const baseCommit = process.argv[3];
 
   const root = path.resolve(process.cwd(), '../')
-  outDir = (outDir.startsWith('..') || outDir.startsWith('/')) 
-    ? outDir 
-    : `${root}/${outDir}`
+  outDir = 
+    (outDir.startsWith('..') || outDir.startsWith('/')) 
+      ? outDir 
+      : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const files = await getModifiedFiles(targetCommit)
 

@@ -11,6 +11,7 @@ const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 const getAffectedTests = require('./getAffectedTests')
+const { writeFile } = require('fs')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -143,6 +144,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
   deleteFile(allResultsFilePath)
+  writeFile(allResultsFilePath, '');
 
   let braveArgs = []
 
@@ -222,8 +224,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = await getAffectedTests(config.outputDir);
-    const targetCommit = analysis.targetCommit;
+    const analysis = await getAffectedTests(config.outputDir)
+    const {targetCommit} = analysis
     const affectedFiles = new Set(
       analysis.files.map((x) =>
         path.join(config.braveCoreDir, x.replace('//brave', '')),
