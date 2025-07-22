@@ -223,7 +223,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = await getAffectedTests(config.outputDir)
+    const analysis = null; // await getAffectedTests(config.outputDir)
 
     const targetCommit = analysis?.targetCommit
     const affectedFiles = new Set(
