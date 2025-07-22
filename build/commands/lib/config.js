@@ -792,16 +792,10 @@ Config.prototype.buildArgs = function () {
       args.brave_ios_marketing_version_patch =
         this.braveIOSMarketingPatchVersion
     }
-    args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
     args.ios_enable_code_signing = false
-    args.fatal_linker_warnings = !this.isComponentBuild()
-    // DCHECK's crash on Static builds without allowing the debugger to continue
-    // Can be removed when approprioate DCHECK's have been fixed:
-    // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isComponentBuild()
 
     if (!args.is_official_build) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
