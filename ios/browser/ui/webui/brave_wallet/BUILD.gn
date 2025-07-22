@@ -13,6 +13,8 @@ source_set("brave_wallet") {
     "brave_wallet_page_ui.mm",
     "wallet_page_handler.h",
     "wallet_page_handler.mm",
+    "wallet_handler.h",
+    "wallet_handler.mm",
   ]
 
   deps = [

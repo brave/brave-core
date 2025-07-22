@@ -9,6 +9,8 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_handler.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -66,8 +68,8 @@ class BraveWalletPageUI : public web::WebUIIOSController,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
           meld_integration_service) override;
 
-//   std::unique_ptr<WalletPageHandler> page_handler_;
-//   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
+  std::unique_ptr<WalletPageHandler> page_handler_;
+  std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
       page_factory_receiver_{this};
