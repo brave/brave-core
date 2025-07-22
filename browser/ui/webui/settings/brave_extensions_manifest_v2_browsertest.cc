@@ -85,7 +85,8 @@ std::string GupdateResponse() {
           {
             "appid": "bgkmgpgeempochogfoddiobpbhdfgkdi",
             "updatecheck": {
-              "codebase": "https://a.test/manifest_v2/bgkmgpgeempochogfoddiobpbhdfgkdi.crx"
+              "codebase": "https://a.test/manifest_v2/bgkmgpgeempochogfoddiobpbhdfgkdi.crx",
+              "version": "1.0.0"
             }
           }
         ]
@@ -397,12 +398,16 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
   auto extension =
       extensions::ExtensionBuilder("test")
           .SetID(extensions_mv2::kCwsNoScriptId)
+          .SetVersion("1.0.0")
           .AddFlags(extensions::Extension::FROM_WEBSTORE)
           .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
           .Build();
 
   auto* registrar = extensions::ExtensionRegistrar::Get(browser()->profile());
   registrar->AddExtension(extension);
+  extensions::ExtensionPrefs::Get(browser()->profile())
+      ->UpdateExtensionPref(extensions_mv2::kCwsNoScriptId, "manifest.version",
+                            base::Value("1.0.0"));
   extensions::ExtensionRegistry::Get(browser()->profile())
       ->TriggerOnInstalled(extension.get(), false);
   registrar->DisableExtension(
