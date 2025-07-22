@@ -59,6 +59,13 @@ constexpr char16_t kYoutubeBackgroundPlayback[] =
 }());
 )";
 
+constexpr char16_t kYoutubePausePlayback[] =
+    uR"(
+(function() {
+  document.querySelector('video')?.pause();
+}());
+)";
+
 constexpr char16_t kYoutubePictureInPictureSupport[] =
     uR"(
 (function() {
@@ -357,6 +364,15 @@ bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
              preferences::features::kBravePictureInPictureForYouTubeVideos) &&
          IsYouTubeVideo(true) && web_contents() &&
          web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
+}
+
+void YouTubeScriptInjectorTabHelper::MaybePauseYouTubeVideo() {
+  if (IsBackgroundVideoPlaybackEnabled(contents) && 
+  IsYouTubeVideo() && web_contents() &&
+         web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubePausePlayback, base::NullCallback());
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
