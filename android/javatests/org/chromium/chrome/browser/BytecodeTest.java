@@ -272,6 +272,7 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/RedirectTabCreator"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment"));
@@ -1238,6 +1239,18 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
+                        "org/chromium/chrome/browser/tabmodel/BraveTabCreator",
+                        Activity.class,
+                        WindowAndroid.class,
+                        Supplier.class,
+                        OneshotSupplier.class,
+                        boolean.class,
+                        AsyncTabParamsManager.class,
+                        Supplier.class,
+                        Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
                         "org/chromium/chrome/browser/tabmodel/BraveTabCreator",
                         Activity.class,
                         WindowAndroid.class,
@@ -2558,6 +2571,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tab_group_sync/StartupHelper",
                         "org/chromium/chrome/browser/tab_group_sync/BraveStartupHelper"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
+                        "org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
     }
 
     @Test
