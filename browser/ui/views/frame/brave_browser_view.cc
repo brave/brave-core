@@ -239,9 +239,10 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                                                 use_rounded_corners));
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
-            devtools_web_view(), devtools_scrim_view(), contents_container_view_,
-            lens_overlay_view_, contents_scrim_view(), /*border_view*/ nullptr,
-            watermark_view_.get(), reader_mode_toolbar_));
+            devtools_web_view(), devtools_scrim_view(),
+            contents_container_view_, lens_overlay_view_, contents_scrim_view(),
+            /*border_view*/ nullptr, watermark_view_.get(),
+            reader_mode_toolbar_));
   }
 #endif
 
@@ -298,7 +299,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal()) {
     split_view_ =
         contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-            *browser_, contents_container_, contents_web_view_));
+            *browser_, contents_container_,
+            contents_container_view_->GetContentsView()));
     set_contents_view(split_view_);
   }
 
@@ -1051,8 +1053,9 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
         }
       };
 
-  update_corner_radius(contents_web_view_, devtools_web_view_,
-                       devtools_docked_placement(), corners);
+  update_corner_radius(contents_container_view_->GetContentsView(),
+                       devtools_web_view_, devtools_docked_placement(),
+                       corners);
 
   if (in_split_view_mode) {
     split_view_->UpdateCornerRadius(corners);
