@@ -30,6 +30,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.aiChatWebUITabHelper = .init(tab: tab, browser: self)
     let braveShieldsHelper: BraveShieldsTabHelper = .init(tab: tab)
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
