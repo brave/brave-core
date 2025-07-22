@@ -99,7 +99,7 @@ const test = async (
   buildConfig = config.defaultBuildConfig,
   options = {},
 ) => {
-  await buildTests(suite, buildConfig, options)  
+  await buildTests(suite, buildConfig, options)
   await runTests(passthroughArgs, suite, buildConfig, options)
 }
 
@@ -222,21 +222,26 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = await getAffectedTests("out/Component_arm64");
-    const affectedFiles = new Set(analysis.files.map(x => path.join(config.braveCoreDir, x.replace('//brave', ''))))
-    const affectedTestExecutables = new Set(analysis.affectedTests.map(x=>x.split(':').at(1)));
+    const analysis = await getAffectedTests('out/Component_arm64')
+    const affectedFiles = new Set(
+      analysis.files.map((x) =>
+        path.join(config.braveCoreDir, x.replace('//brave', '')),
+      ),
+    )
+    const affectedTestExecutables = new Set(
+      analysis.affectedTests.map((x) => x.split(':').at(1)),
+    )
 
-    console.log(affectedFiles)
     getTestsToRun(config, suite).every((testSuite) => {
-      console.log(testSuite);
+      console.log(testSuite)
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
 
       // Filter out upstream tests that are known to fail for Brave
-      let filterFilePaths = [];
+      let filterFilePaths = []
       if (upstreamTestSuites.includes(testSuite)) {
         filterFilePaths = getApplicableFilters(testSuite)
-        console.log({testSuite, filterFilePaths});
+        console.log({ testSuite, filterFilePaths })
         if (filterFilePaths.length > 0) {
           runArgs.push(
             `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
@@ -251,10 +256,14 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         }
       }
 
-      const filterAffected = filterFilePaths.find(filter => affectedFiles.has(filter))
+      const filterAffected = filterFilePaths.find((filter) =>
+        affectedFiles.has(filter),
+      )
       if (!affectedTestExecutables.has(testSuite) && !filterAffected) {
-        console.log(`SKIPPED: "${testSuite}" as it didn't change since ${analysis.targetCommit}`)
-        return;
+        console.log(
+          `SKIPPED: "${testSuite}" as it didn't change since ${analysis.targetCommit}`,
+        )
+        return
       }
 
       let convertJSONToXML = false
