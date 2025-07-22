@@ -22,10 +22,8 @@ mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForProfile(
 }
 
 // static
-SwapService* SwapServiceFactory::GetServiceForState(
-    ProfileIOS* profile) {
-  return GetInstance()
-      ->GetServiceForProfileAs<SwapService>(profile, true);
+SwapService* SwapServiceFactory::GetServiceForState(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<SwapService>(profile, true);
 }
 
 // static
