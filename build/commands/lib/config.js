@@ -1191,9 +1191,9 @@ Config.prototype.fromGnArgs = function (options) {
 
 Config.prototype.update = function (options) {
   if (options.no_gn_gen == null) {
-    this.fromGnArgs(options)
-  } else {
     this.updateInternal(options)
+  } else {
+    this.fromGnArgs(options)
   }
 }
 
