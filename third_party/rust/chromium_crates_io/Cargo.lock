@@ -266,6 +266,7 @@ dependencies = [
  "bls-signatures",
  "curve25519-dalek",
  "cxx",
+ "schnorrkel",
 ]
 
 [[package]]
@@ -362,7 +363,6 @@ dependencies = [
  "document-extractor",
  "filecoin-cxx",
  "json-cxx",
- "schnorrkel",
  "skus-cxx",
  "speedreader-ffi",
  "zcash",
