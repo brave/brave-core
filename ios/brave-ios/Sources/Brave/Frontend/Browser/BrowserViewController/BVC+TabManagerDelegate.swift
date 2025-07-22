@@ -36,6 +36,7 @@ extension BrowserViewController: TabManagerDelegate {
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profile)
     )
+    tab.aiChatWebUITabHelper = .init(tab: tab, browser: self)
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
     // we should add it as a policy decider at initialization.

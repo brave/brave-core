@@ -17,6 +17,8 @@
 #import "cwv_web_view.h"             // NOLINT
 #import "cwv_web_view_extras.h"      // NOLINT
 
+@class AIChatCommunicationController;
+
 NS_ASSUME_NONNULL_BEGIN
 
 CWV_EXPORT
@@ -102,6 +104,8 @@ CWV_EXPORT
 // This web view's UI delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
 
+// The controller for communicating with AIChat WebUI
+- (nullable AIChatCommunicationController*)aiChatController;
 @end
 
 NS_ASSUME_NONNULL_END

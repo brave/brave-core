@@ -101,7 +101,7 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_state_->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                                      std::string_view invalidation_token) {
   page_content_fetcher_delegate_->FetchPageContent(
       invalidation_token,
@@ -142,7 +142,7 @@ bool AIChatTabHelper::HasOpenAIChatPermission() const {
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     std::string content,
     bool is_video,
     std::string invalidation_token) {
@@ -158,7 +158,7 @@ void AIChatTabHelper::OnFetchPageContentComplete(
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
