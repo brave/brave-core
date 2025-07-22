@@ -161,46 +161,46 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
-int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
+void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     // In case we're using vertical tabstrip, we can decide the position
     // after we finish laying out views in top container.
-    return top;
+    return;
   }
 
-  return BrowserViewLayout::LayoutTabStripRegion(top);
+  return BrowserViewLayout::LayoutTabStripRegion(available_bounds);
 }
 
-int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(
-    int top,
-    int browser_view_y,
-    const gfx::Rect& browser_view_bounds) {
+void BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(
+    gfx::Rect& available_bounds,
+    int browser_view_y) {
   if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
-    return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y,
-                                                        browser_view_bounds);
+    BrowserViewLayout::LayoutBookmarkAndInfoBars(available_bounds,
+                                                 browser_view_y);
+    return;
   }
 
-  auto new_rect = browser_view_bounds;
-  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y,
-                                                      new_rect);
+  available_bounds.Inset(GetInsetsConsideringVerticalTabHost());
+  BrowserViewLayout::LayoutBookmarkAndInfoBars(available_bounds,
+                                               browser_view_y);
+  return;
 }
 
-int BraveBrowserViewLayout::LayoutInfoBar(
-    int top,
-    const gfx::Rect& browser_view_bounds) {
+void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
   if (!vertical_tab_strip_host_) {
-    return BrowserViewLayout::LayoutInfoBar(top, browser_view_bounds);
+    BrowserViewLayout::LayoutInfoBar(available_bounds);
+    return;
   }
 
   if (ShouldPushBookmarkBarForVerticalTabs()) {
     // Insets are already applied from LayoutBookmarkAndInfoBar().
-    return BrowserViewLayout::LayoutInfoBar(top, browser_view_bounds);
+    BrowserViewLayout::LayoutInfoBar(available_bounds);
+    return;
   }
 
-  auto new_rect = browser_view_bounds;
+  auto new_rect = available_bounds;
   new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  return BrowserViewLayout::LayoutInfoBar(top, new_rect);
+  BrowserViewLayout::LayoutInfoBar(new_rect);
 }
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(

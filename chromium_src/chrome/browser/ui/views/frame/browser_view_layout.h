@@ -8,9 +8,9 @@
 
 // Make override-able
 #define LayoutTabStripRegion           \
-  UnUsed() { return {}; }              \
+  UnUsed();                            \
   friend class BraveBrowserViewLayout; \
-  virtual int LayoutTabStripRegion
+  virtual void LayoutTabStripRegion
 #define LayoutBookmarkAndInfoBars virtual LayoutBookmarkAndInfoBars
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
