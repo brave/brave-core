@@ -99,7 +99,7 @@ struct DecodedZCashTransparentAddress {
 
 struct OrchardOutput {
   uint32_t value = 0;
-  OrchardAddrRawPart addr;
+  OrchardAddrRawPart addr{};
   std::optional<OrchardMemo> memo;
 
   bool operator==(const OrchardOutput& other) const = default;
@@ -112,7 +112,7 @@ struct OrchardOutput {
 struct OrchardNoteSpend {
   // Block id where spent nullifier was met.
   uint32_t block_id = 0;
-  std::array<uint8_t, kOrchardNullifierSize> nullifier;
+  std::array<uint8_t, kOrchardNullifierSize> nullifier{};
 
   bool operator==(const OrchardNoteSpend& other) const = default;
 };
@@ -122,13 +122,13 @@ struct OrchardNoteSpend {
 // in the Orchard commitment tree, amount and data required
 // for costructing zk-proof for spending.
 struct OrchardNote {
-  OrchardAddrRawPart addr;
+  OrchardAddrRawPart addr{};
   uint32_t block_id = 0;
-  OrchardNullifier nullifier;
+  OrchardNullifier nullifier{};
   uint32_t amount = 0;
   uint32_t orchard_commitment_tree_position = 0;
-  OrchardRho rho;
-  OrchardRseed seed;
+  OrchardRho rho{};
+  OrchardRseed seed{};
 
   bool operator==(const OrchardNote& other) const = default;
   base::Value::Dict ToValue() const;
@@ -167,8 +167,8 @@ struct OrchardSpendsBundle {
   ~OrchardSpendsBundle();
   OrchardSpendsBundle(const OrchardSpendsBundle& other);
 
-  OrchardSpendingKey sk;
-  OrchardFullViewKey fvk;
+  OrchardSpendingKey sk{};
+  OrchardFullViewKey fvk{};
   std::vector<OrchardInput> inputs;
 };
 
