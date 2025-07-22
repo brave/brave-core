@@ -37,24 +37,15 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
 
   ~AIChatSidePanelWebView() override = default;
 
-  // views::View:
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override {
-    SidePanelWebUIViewT<AIChatUI>::ViewHierarchyChanged(details);
-    if (details.is_add && details.child == this) {
-      CHECK(IsDrawn() && IsFocusable());
-      MaybeRequestFocus();
-    }
-  }
-
  private:
+  // This callback is invoked multipole times, so we need to ensure that
+  // focus is set only once with `should_focus_`.
   void OnShow() {
-    should_focus_ = true;
-    MaybeRequestFocus();
-  }
+    if (!should_focus_) {
+      return;
+    }
 
-  void MaybeRequestFocus() {
-    if (should_focus_ && IsFocusable()) {
+    if (IsFocusable()) {
       auto* widget = GetWidget();
       CHECK(widget);
       // There's a bug in focus handling. We should clear focus before setting
@@ -66,7 +57,7 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
     }
   }
 
-  bool should_focus_ = false;
+  bool should_focus_ = true;
 };
 
 std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
