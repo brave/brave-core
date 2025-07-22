@@ -261,13 +261,12 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         }
       }
 
-      
       const filterAffected = filterFilePaths.find((filter) =>
         affectedFiles.has(filter),
       )
       if (
         analysis
-        && skippableTestSuites.has(testSuite)
+        // && skippableTestSuites.has(testSuite)
         && !affectedTestExecutables.has(testSuite)
         && !filterAffected
       ) {
@@ -277,7 +276,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
         // FAKE a test run
         runArgs.push(`--gtest_filter=SKIP_ALL_TESTS`)
-        //return
+        // return
       }
 
       let convertJSONToXML = false
