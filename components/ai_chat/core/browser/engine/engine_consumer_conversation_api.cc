@@ -144,7 +144,7 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
-    PageContentses page_contents,
+    PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
@@ -153,6 +153,9 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     conversation.emplace_back(
         GetAssociatedContentConversationEvent(content, remaining_length));
     remaining_length -= content.get().content.size();
+    if (remaining_length <= 0) {
+      break;
+    }
   }
 
   conversation.emplace_back(ConversationEventRole::User,
@@ -193,7 +196,7 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    PageContentses page_contents,
+    PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -211,6 +214,10 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   for (const auto& content : page_contents) {
     conversation.push_back(
         GetAssociatedContentConversationEvent(content, remaining_length));
+    remaining_length -= content.get().content.size();
+    if (remaining_length <= 0) {
+      break;
+    }
   }
 
   // We're going to iterate over the conversation entries and

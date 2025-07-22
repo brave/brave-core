@@ -94,9 +94,9 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   base::MockCallback<GetPageContentCallback> callback2;
   base::MockCallback<GetPageContentCallback> callback3;
 
-  EXPECT_CALL(callback1, Run(PageContent("content", false, "token"))).Times(1);
-  EXPECT_CALL(callback2, Run(PageContent("content", false, "token"))).Times(1);
-  EXPECT_CALL(callback3, Run(PageContent("content", false, "token"))).Times(1);
+  EXPECT_CALL(callback1, Run(PageContent("content", false))).Times(1);
+  EXPECT_CALL(callback2, Run(PageContent("content", false))).Times(1);
+  EXPECT_CALL(callback3, Run(PageContent("content", false))).Times(1);
 
   // Should only ask content once
   base::RunLoop run_loop;

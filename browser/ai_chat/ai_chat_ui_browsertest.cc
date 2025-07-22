@@ -177,9 +177,10 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     chat_tab_helper_->GetPageContent(
         base::BindLambdaForTesting(
             [&run_loop, expected_text, wait_for_callback](
-                std::string content, bool is_video,
+                std::string text, bool is_video,
                 std::string invalidation_token) {
-              EXPECT_EQ(content, expected_text);
+              EXPECT_FALSE(is_video);
+              EXPECT_EQ(text, expected_text);
               if (wait_for_callback) {
                 run_loop.Quit();
               }

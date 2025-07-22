@@ -49,11 +49,11 @@ class EngineConsumerConversationAPI : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      PageContentses page_contents,
+      PageContents page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      PageContentses page_contents,
+      PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,

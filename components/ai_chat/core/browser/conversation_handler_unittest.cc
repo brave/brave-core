@@ -604,7 +604,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
-      conversation->associated_content_manager()->GetCachedContent();
+      conversation->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
@@ -638,7 +638,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
-      conversation->associated_content_manager()->GetCachedContent();
+      conversation->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
 }
@@ -680,7 +680,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   auto cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
@@ -698,7 +698,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 2");
 }
@@ -722,7 +722,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   EXPECT_EQ(conversation_handler_->associated_content_manager()
-                ->GetCachedContent()[0]
+                ->GetCachedContents()[0]
                 .get()
                 .content,
             "Content 1");
@@ -821,7 +821,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   auto cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
@@ -833,7 +833,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
@@ -846,7 +846,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
@@ -876,7 +876,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
                 .size(),
             2u);
   auto cached_content =
-      conversation_handler_->associated_content_manager()->GetCachedContent();
+      conversation_handler_->associated_content_manager()->GetCachedContents();
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "The content of one");
   EXPECT_EQ(cached_content[1].get().content, "The content of two");
@@ -1793,7 +1793,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContentses page_contents,
+          [](PageContents page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language,
              const std::vector<base::WeakPtr<Tool>>& tools,

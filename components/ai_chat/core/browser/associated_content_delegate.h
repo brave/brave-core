@@ -25,9 +25,7 @@ struct PageContent {
   bool is_video = false;
 
   PageContent();
-  PageContent(std::string content,
-              bool is_video,
-              std::string invalidation_token = "");
+  PageContent(std::string content, bool is_video);
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);

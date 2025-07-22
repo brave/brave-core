@@ -17,9 +17,7 @@ PageContent& PageContent::operator=(const PageContent&) = default;
 PageContent& PageContent::operator=(PageContent&&) = default;
 
 PageContent::PageContent() = default;
-PageContent::PageContent(std::string content,
-                         bool is_video,
-                         std::string invalidation_token)
+PageContent::PageContent(std::string content, bool is_video)
     : content(std::move(content)), is_video(is_video) {}
 
 AssociatedContentDelegate::AssociatedContentDelegate()

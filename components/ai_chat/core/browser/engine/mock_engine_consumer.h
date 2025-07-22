@@ -23,14 +23,14 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateQuestionSuggestions,
-              (PageContentses page_contents,
+              (PageContents page_contents,
                const std::string& selected_language,
                SuggestedQuestionsCallback callback),
               (override));
 
   MOCK_METHOD(void,
               GenerateAssistantResponse,
-              (PageContentses page_contents,
+              (PageContents page_contents,
                const ConversationHistory& conversation_history,
                const std::string& selected_language,
                const std::vector<base::WeakPtr<Tool>>& tools,
