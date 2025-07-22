@@ -1,0 +1,24 @@
+diff --git a/telemetry/telemetry/internal/backends/chrome/desktop_browser_backend.py b/telemetry/telemetry/internal/backends/chrome/desktop_browser_backend.py
+index 35fa3d04188f176f4fd5461f218a95e93aa0f697..675ac15763012e84a3b91e0ab19425b170dfb5cd 100644
+--- a/telemetry/telemetry/internal/backends/chrome/desktop_browser_backend.py
++++ b/telemetry/telemetry/internal/backends/chrome/desktop_browser_backend.py
+@@ -392,17 +392,18 @@ class DesktopBrowserBackend(chrome_browser_backend.ChromeBrowserBackend):
+       logging.warning('Proceed to kill the browser.')
+       self._proc.kill()
+       try:
++        logging.info('Waiting for browser to shutdown... %d sec', int(os.getenv('CHROME_SHUTDOWN_TIMEOUT', '5')))
+         py_utils.WaitFor(lambda: not self.IsBrowserRunning(),
+                          timeout=int(os.getenv('CHROME_SHUTDOWN_TIMEOUT', '5')))
+         self._proc = None
+       except py_utils.TimeoutException:
+         logging.warning('Failed to kill the browser.')
++        raise
+ 
+     if self._tmp_output_file:
+       self._tmp_output_file.close()
+       os.remove(self._tmp_output_file.name)
+       self._tmp_output_file = None
+-
+     if self._tmp_minidump_dir:
+       shutil.rmtree(self._tmp_minidump_dir, ignore_errors=True)
+       self._tmp_minidump_dir = None

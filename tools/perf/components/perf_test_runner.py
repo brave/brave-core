@@ -236,6 +236,8 @@ class RunableConfiguration:
 
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
+    else:
+      args.append('--verbose')
 
     env = os.environ.copy()
     env['CHROME_SHUTDOWN_TIMEOUT'] = '20'
