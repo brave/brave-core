@@ -912,8 +912,7 @@ bool AIChatDatabase::AddConversationEntry(
 
           store::ToolUseEventProto proto_event;
           if (!SerializeToolUseEvent(event->get_tool_use_event(),
-                                     &proto_event) ||
-              proto_event.tool_name().empty() || proto_event.id().empty()) {
+                                     &proto_event)) {
             // If we failed to parse the event, we can ignore the event
             // for now. Perhaps we're persisting the entry whilst it's still
             // partial.
@@ -1002,8 +1001,7 @@ bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
   CHECK(statement.is_valid());
 
   store::ToolUseEventProto proto_event;
-  if (!SerializeToolUseEvent(tool_use_event, &proto_event) ||
-      proto_event.tool_name().empty() || proto_event.id().empty()) {
+  if (!SerializeToolUseEvent(tool_use_event, &proto_event)) {
     // If we failed to parse the event, we can ignore the event
     // for now. Perhaps we're persisting the entry whilst it's still
     // partial.
