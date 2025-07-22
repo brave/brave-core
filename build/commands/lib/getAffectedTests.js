@@ -42,9 +42,10 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   const targetCommit = ciLastSuccessfulCommit || 'HEAD^'
   // const baseCommit = process.argv[3];
 
+  const root = path.resolve(process.cwd(), '../')
   outDir = (outDir.startsWith('..') || outDir.startsWith('/')) 
     ? outDir 
-    : '../'+outDir
+    : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const files = await getModifiedFiles(targetCommit)
 
@@ -54,7 +55,6 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   }
 
   // paths are relative to package.json
-  const root = path.resolve(process.cwd(), '../')
   await writeFile(
     `${root}/out/analyze.json`,
     JSON.stringify(toAnalyze, null, 2),
@@ -62,7 +62,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   )
   await exec('./vendor/depot_tools/gn', [
     'analyze',
-    `${root}/${outDir}`,
+    outDir,
     `${root}/out/analyze.json`,
     `${root}/out/out.json`,
   ])
