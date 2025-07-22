@@ -384,7 +384,7 @@ void AIChatTabHelper::OnScreenshotsCaptured(
     for (auto& screenshot : result.value()) {
       size_t screenshot_size = screenshot.size();
       screenshots.push_back(mojom::UploadedFile::New(
-          base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
+          absl::StrFormat("fullscreenshot_%i.png", screenshot_index++),
           screenshot_size, std::move(screenshot),
           mojom::UploadedFileType::kScreenshot));
     }

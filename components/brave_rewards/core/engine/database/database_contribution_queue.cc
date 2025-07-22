@@ -44,7 +44,7 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s (contribution_queue_id, type, amount, "
       "partial) "
       "VALUES (?, ?, ?, ?)",
@@ -89,7 +89,7 @@ void DatabaseContributionQueue::GetFirstRecord(
     GetFirstContributionQueueCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT contribution_queue_id, type, amount, partial "
       "FROM %s WHERE completed_at = 0 "
       "ORDER BY created_at ASC LIMIT 1",
@@ -165,7 +165,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(const std::string& id,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET completed_at = ? WHERE contribution_queue_id = ?",
       kTableName);
 

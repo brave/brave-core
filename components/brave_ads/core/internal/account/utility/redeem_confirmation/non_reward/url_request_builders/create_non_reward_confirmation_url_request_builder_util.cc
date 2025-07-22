@@ -18,8 +18,8 @@ std::string BuildCreateNonRewardConfirmationUrlPath(
     const std::string& transaction_id) {
   CHECK(!transaction_id.empty());
 
-  return base::StringPrintf("/v%d/confirmation/%s", kConfirmationServerVersion,
-                            transaction_id.c_str());
+  return absl::StrFormat("/v%d/confirmation/%s", kConfirmationServerVersion,
+                         transaction_id);
 }
 
 }  // namespace brave_ads

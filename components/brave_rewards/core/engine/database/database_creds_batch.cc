@@ -35,7 +35,7 @@ void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status) "
@@ -70,7 +70,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
   DCHECK(!trigger_id.empty());
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status FROM %s "
       "WHERE trigger_id = ? AND trigger_type = ?",
@@ -144,7 +144,7 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET signed_creds = ?, public_key = ?, batch_proof = ?, "
       "status = ? WHERE trigger_id = ? AND trigger_type = ?",
       kTableName);
@@ -170,7 +170,7 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
 void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status FROM %s",
       kTableName);
@@ -239,7 +239,7 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET status = ? WHERE trigger_id = ? AND trigger_type = ?",
       kTableName);
 
@@ -271,9 +271,9 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET status = ? WHERE trigger_id IN (%s) AND trigger_type = ?",
-      kTableName, GenerateStringInCase(trigger_ids).c_str());
+      kTableName, GenerateStringInCase(trigger_ids));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
@@ -294,11 +294,11 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
     GetCredsBatchListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status FROM %s "
       "WHERE trigger_id IN (%s)",
-      kTableName, GenerateStringInCase(trigger_ids).c_str());
+      kTableName, GenerateStringInCase(trigger_ids));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;

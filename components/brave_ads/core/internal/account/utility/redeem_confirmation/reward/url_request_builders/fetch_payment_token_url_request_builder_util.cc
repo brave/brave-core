@@ -11,8 +11,8 @@
 namespace brave_ads {
 
 std::string BuildFetchPaymentTokenUrlPath(const std::string& transaction_id) {
-  return base::StringPrintf("/v%d/confirmation/%s/paymentToken",
-                            kTokensServerVersion, transaction_id.c_str());
+  return absl::StrFormat("/v%d/confirmation/%s/paymentToken",
+                         kTokensServerVersion, transaction_id);
 }
 
 }  // namespace brave_ads

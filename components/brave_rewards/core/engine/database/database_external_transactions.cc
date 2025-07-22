@@ -33,7 +33,7 @@ void DatabaseExternalTransactions::Insert(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       R"(
         INSERT INTO %s (transaction_id, contribution_id, destination, amount)
         VALUES(?, ?, ?, ?)
@@ -69,7 +69,7 @@ void DatabaseExternalTransactions::GetTransaction(
     GetExternalTransactionCallback callback) {
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       R"(
         SELECT transaction_id, contribution_id, destination, amount
         FROM %s

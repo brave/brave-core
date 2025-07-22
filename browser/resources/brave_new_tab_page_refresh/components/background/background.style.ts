@@ -11,9 +11,9 @@ export const style = scoped.css`
     inset: 0;
     z-index: 0;
     display: flex;
-    animation-name: fade-in;
+    animation-name: background-fade-in;
     animation-timing-function: ease-in-out;
-    animation-duration: 350ms;
+    animation-duration: 60ms;
     animation-delay: 0s;
     animation-fill-mode: both;
 
@@ -43,7 +43,7 @@ export const style = scoped.css`
     }
   }
 
-  @keyframes fade-in {
+  @keyframes background-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
   }

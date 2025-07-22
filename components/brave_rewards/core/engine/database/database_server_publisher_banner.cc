@@ -42,7 +42,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, title, description, background, logo, web3_url) "
       "VALUES (?, ?, ?, ?, ?, ?)",
@@ -71,8 +71,8 @@ void DatabaseServerPublisherBanner::DeleteRecords(
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
   command->command =
-      base::StringPrintf("DELETE FROM %s WHERE publisher_key IN (%s)",
-                         kTableName, publisher_key_list.c_str());
+      absl::StrFormat("DELETE FROM %s WHERE publisher_key IN (%s)", kTableName,
+                      publisher_key_list);
 
   transaction->commands.push_back(std::move(command));
 
@@ -88,7 +88,7 @@ void DatabaseServerPublisherBanner::GetRecord(
     return;
   }
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT title, description, background, logo, web3_url "
       "FROM %s "
       "WHERE publisher_key=?",
