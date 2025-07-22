@@ -11,7 +11,6 @@ import os.log
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
   case sponsoredMedia(NTPSponsoredImageBackground)
-  case superReferral(NTPSponsoredImageBackground, code: String)
 
   var backgroundVideoPath: URL? {
     if case .sponsoredMedia(let background) = self {
@@ -30,8 +29,6 @@ enum NTPWallpaper {
         return nil
       }
       imagePath = background.imagePath
-    case .superReferral(let background, _):
-      imagePath = background.imagePath
     }
     return UIImage(contentsOfFile: imagePath.path)
   }
@@ -43,8 +40,6 @@ enum NTPWallpaper {
       imagePath = nil
     case .sponsoredMedia(let background):
       imagePath = background.logo.imagePath
-    case .superReferral(let background, _):
-      imagePath = background.logo.imagePath
     }
     return imagePath.flatMap { UIImage(contentsOfFile: $0.path) }
   }
@@ -54,8 +49,6 @@ enum NTPWallpaper {
     case .image:
       return nil  // Will eventually return a real value
     case .sponsoredMedia(let background):
-      return background.focalPoint
-    case .superReferral(let background, _):
       return background.focalPoint
     }
   }
@@ -94,9 +87,7 @@ public class NTPDataSource {
 
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
 
-    self.service.sponsoredImageDataUpdated = { [weak self] _ in
-      self?.sponsorComponentUpdated()
-    }
+    self.service.sponsoredImageDataUpdated = { _ in }
   }
 
   deinit {
@@ -159,17 +150,6 @@ public class NTPDataSource {
     let backgroundSet = {
       () -> [NTPWallpaper] in
 
-      if let theme = service.superReferralImageData,
-        case let refCode = service.superReferralCode,
-        !refCode.isEmpty,
-        Preferences.NewTabPage.selectedCustomTheme.value != nil
-      {
-        return
-          theme.campaigns.flatMap(\.backgrounds).map {
-            NTPWallpaper.superReferral($0, code: refCode)
-          }
-      }
-
       if service.backgroundImages.isEmpty {
         return [NTPWallpaper.image(.fallback)]
       }
@@ -226,15 +206,6 @@ public class NTPDataSource {
     Preferences.NewTabPage.backgroundRotationCounter.value += 1
 
     return background
-  }
-
-  func sponsorComponentUpdated() {
-    if let superReferralImageData = service.superReferralImageData,
-      superReferralImageData.isSuperReferral,
-      Preferences.NewTabPage.preloadedFavoritiesInitialized.value
-    {
-      replaceFavoritesIfNeeded?(superReferralImageData.topSites)
-    }
   }
 
   private func hasGracePeriodEnded(_ sponsoredImageData: NTPSponsoredImageData) -> Bool {

@@ -105,10 +105,6 @@ class NTPBackgroundImagesServiceObserverBridge
   return [[NTPSponsoredImageData alloc] initWithData:*data];
 }
 
-- (NTPSponsoredImageData*)superReferralImageData {
-  return nil;
-}
-
 - (NSInteger)initialCountToBrandedWallpaper {
   return ntp_background_images::features::kInitialCountToBrandedWallpaper.Get();
 }
@@ -119,10 +115,6 @@ class NTPBackgroundImagesServiceObserverBridge
 
 - (void)updateSponsoredImageComponentIfNeeded {
   _service->MaybeCheckForSponsoredComponentUpdate();
-}
-
-- (NSString*)superReferralCode {
-  return base::SysUTF8ToNSString(_service->GetSuperReferralCode());
 }
 
 - (void)onUpdatedNTPBackgroundImagesData:
