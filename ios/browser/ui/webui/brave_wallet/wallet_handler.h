@@ -11,7 +11,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace brave_wallet {
 
@@ -20,7 +20,7 @@ class BraveWalletService;
 class WalletHandler : public mojom::WalletHandler {
  public:
   WalletHandler(mojo::PendingReceiver<mojom::WalletHandler> receiver,
-                ChromeBrowserState* browser_state);
+                ProfileIOS* browser_state);
 
   WalletHandler(const WalletHandler&) = delete;
   WalletHandler& operator=(const WalletHandler&) = delete;
