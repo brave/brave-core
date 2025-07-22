@@ -785,10 +785,6 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetOS === 'ios') {
-    // Configure unit tests to run outside of chromium infra
-    // https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
-    args.enable_run_ios_unittests_with_xctest = true
-
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
@@ -1414,11 +1410,7 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (
-      this.targetOS === 'ios'
-      && this.targetEnvironment
-      && this.targetEnvironment !== 'device'
-    ) {
+    if (this.targetEnvironment && this.targetEnvironment !== 'device') {
       buildConfigDir = buildConfigDir + '_' + this.targetEnvironment
     }
     if (this.isChromium) {
