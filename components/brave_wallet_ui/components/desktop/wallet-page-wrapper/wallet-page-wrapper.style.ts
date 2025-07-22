@@ -153,7 +153,7 @@ export const ContainerCard = styled.div<{
 `
 
 export const CardHeaderWrapper = styled.div<{
-  isAndroidOrPanel?: boolean
+  isMobileOrPanel?: boolean
 }>`
   display: flex;
   flex-direction: column;
@@ -170,14 +170,14 @@ export const CardHeaderWrapper = styled.div<{
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
-    z-index: ${(p) => (p.isAndroidOrPanel ? 10 : 'unset')};
+    z-index: ${(p) => (p.isMobileOrPanel ? 10 : 'unset')};
   }
 `
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
   backgroundOpacity?: number
-  isAndroidOrPanel?: boolean
+  isMobileOrPanel?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
@@ -200,9 +200,9 @@ export const CardHeader = styled.div<{
     p.useDarkBackground
       ? 'var(--dark-background-color)'
       : leo.color.container.background};
-  border-radius: ${(p) => (p.isAndroidOrPanel ? '0px' : '24px 24px 0px 0px')};
+  border-radius: ${(p) => (p.isMobileOrPanel ? '0px' : '24px 24px 0px 0px')};
   width: 100%;
-  padding: ${(p) => (p.isAndroidOrPanel ? '0px' : '0px 32px')};
+  padding: ${(p) => (p.isMobileOrPanel ? '0px' : '0px 32px')};
   position: relative;
   max-width: ${maxCardWidth}px;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));
