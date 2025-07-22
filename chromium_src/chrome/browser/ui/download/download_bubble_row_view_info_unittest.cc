@@ -9,6 +9,6 @@
 #define OPEN_WHEN_COMPLETE \
   OPEN_WHEN_COMPLETE, DownloadCommands::Command::DELETE_LOCAL_FILE
 
-#include "src/chrome/browser/ui/download/download_bubble_row_view_info_unittest.cc"
+#include <chrome/browser/ui/download/download_bubble_row_view_info_unittest.cc>
 
 #undef OPEN_WHEN_COMPLETE

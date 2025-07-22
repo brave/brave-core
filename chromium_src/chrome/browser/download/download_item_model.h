@@ -13,7 +13,7 @@
   SetOpenWhenComplete(__VA_ARGS__) override; \
   void DeleteLocalFile()
 
-#include "src/chrome/browser/download/download_item_model.h"  // IWYU pragma: export
+#include <chrome/browser/download/download_item_model.h>  // IWYU pragma: export
 
 #undef SetOpenWhenComplete
 

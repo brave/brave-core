@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/net/base/url_util_unittest.cc"
+#include <net/base/url_util_unittest.cc>
 
 namespace net {
 namespace {

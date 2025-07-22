@@ -14,7 +14,7 @@
   case DownloadCommands::REMOVE_FROM_LIST: \
   case DownloadCommands::DELETE_LOCAL_FILE
 
-#include "src/chrome/browser/download/download_item_model.cc"
+#include <chrome/browser/download/download_item_model.cc>
 
 #undef EDIT_WITH_MEDIA_APP
 

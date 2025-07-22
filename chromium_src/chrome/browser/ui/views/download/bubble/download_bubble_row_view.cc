@@ -30,7 +30,7 @@ constexpr auto kQuickActionAccessibilityResourceId =
       return l10n_util::GetStringFUTF16(                              \
          IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY
 
-#include "src/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc"
+#include <chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc>
 
 #undef IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY
 #undef SetNotifyEnterExitOnChild
