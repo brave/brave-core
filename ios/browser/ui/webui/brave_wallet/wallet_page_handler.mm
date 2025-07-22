@@ -15,3 +15,4 @@ WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {}
 void WalletPageHandler::ShowWalletBackupUI() {}
+void WalletPageHandler::UnlockWalletUI() {}

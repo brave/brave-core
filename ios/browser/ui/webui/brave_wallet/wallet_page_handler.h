@@ -25,6 +25,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   // brave_wallet::mojom::PageHandler
   void ShowApprovePanelUI() override;
   void ShowWalletBackupUI() override;
+  void UnlockWalletUI() override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
